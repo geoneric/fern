@@ -1,8 +1,7 @@
-module ra.BinaryOperation;
+module ranally.operations.local.framework.binaryoperation;
 
-import ra.ClipMaskPolicies;
-import ra.NoDataPolicies;
-import ra.Plus;
+import ranally.operations.local.policies.clipmask;
+import ranally.operations.local.policies.nodata;
 
 
 
@@ -11,24 +10,37 @@ class BinaryOperation(
          ClipMaskPolicy=IgnoreClipMask,
          NoDataPolicy=IgnoreNoData):
               public LocalOperation
-              // public ClipMaskPolicy,
-              // public NoDataPolicy
 {
-  alias LocalOperation.Argument Argument;
-  alias LocalOperation.Result Result;
-  alias LocalOperation.DomainPolicy DomainPolicy;
-  alias LocalOperation.RangePolicy RangePolicy;
+  // alias LocalOperation.Argument Argument;
+  // alias LocalOperation.Result Result;
+  // alias LocalOperation.DomainPolicy DomainPolicy;
+  // alias LocalOperation.RangePolicy RangePolicy;
 
-  static Result opCall(
+private:
+
+  ClipMaskPolicy   _clipMaskPolicy;
+
+  NoDataPolicy     _noDataPolicy;
+
+public:
+
+  static void opCall(
+         ref Result result,
          Argument argument1,
          Argument argument2)
   {
-    return LocalOperation.algorithm(argument1, argument2);
-  }
-}
+    // if(!_clipMaskPolicy.mask(cast(size_t)0)) {
+    //   if(!DomainPolicy.inDomain(argument1, argument2)) {
+    //     _noDataPolicy.setNoData(cast(size_t)0);
+    //   }
+    //   else {
+        result = algorithm(argument1, argument2);
 
-unittest {
-  ra.BinaryOperation.BinaryOperation!(ra.Plus.Plus!(int)) operation;
-  assert(operation(2, 3) == 5);
+    //     if(!RangePolicy.inRange(argument1, argument2, result)) {
+    //       _noDataPolicy.setNoData(cast(size_t)0);
+    //     }
+    //   }
+    // }
+  }
 }
 

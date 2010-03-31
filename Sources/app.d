@@ -3,12 +3,19 @@
 import std.stdio;
 
 import ranally.operations.local.algorithms.binary.plus;
+import ranally.operations.local.framework.binaryoperation;
+
+// TODO How about references?
 
 
 
 void main()
 {
   writeln("Hello, world!");
+  // writeln(double.max);
+  // writeln(double.max + double.max);
+  // writeln(double.min);
+  // writeln(-double.min - double.min);
   // int result = ra.Plus.Plus!(int).algorithm(3, 4);
   // writeln("3 + 4");
   // writeln(result);
@@ -19,5 +26,17 @@ void main()
 
 unittest
 {
-  assert(Plus!(int).algorithm(3, 4) == 7);
+  {
+    BinaryOperation!(Plus!(int)) plus;
+    int result = -9;
+    plus(result, 4, 5);
+    assert(result == 9);
+  }
+
+  {
+    BinaryOperation!(Plus!(double)) plus;
+    double result = -9.9;
+    plus(result, 4.5, 5.5);
+    assert(result == 10.0);
+  }
 }

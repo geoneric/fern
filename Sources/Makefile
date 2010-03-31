@@ -15,6 +15,7 @@
 sources := \
   app.d \
   ranally/operations/local/algorithms/binary/*.d \
+  ranally/operations/local/framework/*.d \
   ranally/operations/local/policies/*.d
 
 all:

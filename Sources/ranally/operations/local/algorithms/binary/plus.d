@@ -34,39 +34,59 @@ class Plus(T)
     assert(Plus!(double).DomainPolicy.inDomain(-2.0, -2.0));
   }
 
-  // TODO Range policies should be evaluated after the algorithm and should
-  //      get the result value too. That way we don't need to calculate more
-  //      than once.
   class RangePolicy
   {
     @safe
     static pure nothrow bool inRange(
          T argument1,
-         T argument2) nothrow
+         T argument2,
+         T result) nothrow
     {
       assert(__traits(isArithmetic, T));
+      assert(__traits(isIntegral, T) || __traits(isFloating, T));
 
-      if(argument1 < 0 && argument2 < 0) {
-        return argument1 + argument2 < 0;
-      }
-      else if(argument1 > 0 && argument2 > 0) {
-        return argument1 + argument2 >= 0;
+      static if(__traits(isFloating, T)) {
+        // Returns true, even if result is infinity.
+        return true;
       }
       else {
-        return true;
+        static if(__traits(isUnsigned, T)) {
+          // Return true if the value is not wrapped.
+          return !(result < argument1);
+        }
+        else {
+          if(argument1 < cast(T)0 && argument2 < cast(T)0) {
+            return argument1 + argument2 < cast(T)0;
+          }
+          else if(argument1 > cast(T)0 && argument2 > cast(T)0) {
+            return argument1 + argument2 >= cast(T)0;
+          }
+          else {
+            return true;
+          }
+        }
       }
     }
 
     unittest {
-      assert( Plus!(int).RangePolicy.inRange(int.max, 0));
-      assert(!Plus!(int).RangePolicy.inRange(int.max, 1));
-      assert( Plus!(int).RangePolicy.inRange(int.min, 0));
-      assert(!Plus!(int).RangePolicy.inRange(int.min, -1));
+      assert( Plus!(int).RangePolicy.inRange(int.max,  0, int.max +  0));
+      assert(!Plus!(int).RangePolicy.inRange(int.max,  1, int.max +  1));
+      assert( Plus!(int).RangePolicy.inRange(int.min,  0, int.min +  0));
+      assert(!Plus!(int).RangePolicy.inRange(int.min, -1, int.min + -1));
 
-      assert( Plus!(double).RangePolicy.inRange(double.max,  0.0));
-      // TODO assert(!Plus!(double).RangePolicy.inRange(double.max,  1.0));
-      assert( Plus!(double).RangePolicy.inRange(double.min,  0.0));
-      // TODO assert(!Plus!(double).RangePolicy.inRange(double.min, -1.0));
+      assert( Plus!(double).RangePolicy.inRange(double.max,  0.0,
+         double.max + 0.0));
+      assert( Plus!(double).RangePolicy.inRange(double.max, double.max,
+         double.max + double.max));
+
+      assert( Plus!(uint).RangePolicy.inRange(uint.max, cast(uint)0,
+         uint.max + cast(uint)0));
+         // algorithm(uint.max, cast(uint)0)));
+      assert(!Plus!(uint).RangePolicy.inRange(uint.max, cast(uint)1,
+         uint.max + cast(uint)1));
+         // algorithm(uint.max, cast(uint)1)));
+      // assert( Plus!(uint).RangePolicy.inRange(int.max, 0, int.max + 1));
+      // assert( Plus!(uint).RangePolicy.inRange(0, 0, 0 + 0));
     }
   }
 
