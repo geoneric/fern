@@ -20,7 +20,7 @@ sources := \
 
 all:
 	dmd -unittest ${sources}
-	app
+	./app
 
 doc:
 	dmd -Ddhtml ${sources}
