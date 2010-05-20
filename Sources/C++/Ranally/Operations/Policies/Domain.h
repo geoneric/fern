@@ -3,9 +3,9 @@
 
 
 
-namespace Ranally {
-namespace Operations {
-namespace Policies {
+namespace ranally {
+namespace operations {
+namespace policies {
 
 template<typename T>
 class DummyDomain
@@ -24,8 +24,8 @@ class DummyDomain
   }
 };
 
-} // namespace Policies
-} // namespace Operations
-} // namespace Ranally
+} // namespace policies
+} // namespace operations
+} // namespace ranally
 
 #endif

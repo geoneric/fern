@@ -3,6 +3,11 @@
 #define INCLUDED_PLUSTEST
 #endif
 
+#ifndef INCLUDED_LIMITS
+#include <limits>
+#define INCLUDED_LIMITS
+#endif
+
 #ifndef INCLUDED_BOOST_SHARED_PTR
 #include <boost/shared_ptr.hpp>
 #define INCLUDED_BOOST_SHARED_PTR
@@ -55,8 +60,42 @@ PlusTest::PlusTest()
 
 void PlusTest::testDomain()
 {
-  bool testImplemented = false;
-  BOOST_WARN(testImplemented);
+  using namespace ranally::operations::binary
+
+  // int
+  {
+    plus::DomainPolicy<int> domainPolicy();
+
+    BOOST_CHECK(domainPolicy.inDomain( 0));
+    BOOST_CHECK(domainPolicy.inDomain(-1));
+    BOOST_CHECK(domainPolicy.inDomain( 1));
+    BOOST_CHECK(domainPolicy.inDomain(std::numeric_limits<int>::min));
+    BOOST_CHECK(domainPolicy.inDomain(std::numeric_limits<int>::max));
+  }
+
+  // unsigned int
+  {
+    plus::DomainPolicy<unsigned int> domainPolicy();
+
+    BOOST_CHECK(domainPolicy.inDomain(0u));
+    BOOST_CHECK(domainPolicy.inDomain(1u));
+    BOOST_CHECK(domainPolicy.inDomain(std::numeric_limits<unsigned int>::min));
+    BOOST_CHECK(domainPolicy.inDomain(std::numeric_limits<unsigned int>::max));
+  }
+
+  // float
+  {
+    plus::DomainPolicy<double> domainPolicy();
+
+    BOOST_CHECK(domainPolicy.inDomain( 0.0));
+    BOOST_CHECK(domainPolicy.inDomain(-1.0));
+    BOOST_CHECK(domainPolicy.inDomain( 1.0));
+    BOOST_CHECK(domainPolicy.inDomain( std::numeric_limits<double>::min));
+    BOOST_CHECK(domainPolicy.inDomain(-std::numeric_limits<double>::min));
+    BOOST_CHECK(domainPolicy.inDomain( std::numeric_limits<double>::max));
+    BOOST_CHECK(domainPolicy.inDomain(-std::numeric_limits<double>::max));
+    // TODO BOOST_CHECK(domainPolicy.inDomain(nan);
+  }
 }
 
 
@@ -71,7 +110,29 @@ void PlusTest::testAlgorithm()
 
 void PlusTest::testRange()
 {
-  bool testImplemented = false;
-  BOOST_WARN(testImplemented);
+  using namespace ranally::operations::binary
+
+  // int
+  {
+    plus::RangePolicy<int> rangePolicy();
+
+    BOOST_CHECK( rangePolicy.inRange( 0,  0,  0));
+    BOOST_CHECK( rangePolicy.inRange( 3,  4,  7));
+    BOOST_CHECK( rangePolicy.inRange( 3, -4, -1));
+    BOOST_CHECK( rangePolicy.inRange(-3, -4, -7));
+
+    BOOST_CHECK(!rangePolicy.inRange( 3,  4, -7));
+    BOOST_CHECK(!rangePolicy.inRange(-3, -4,  7));
+  }
+
+  // unsigned int
+  {
+    // TODO
+  }
+
+  // float
+  {
+    // TODO
+  }
 }
 

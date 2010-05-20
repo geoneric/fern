@@ -18,14 +18,15 @@
 
 
 
-namespace Ranally {
-namespace Operations {
-namespace Binary {
-namespace Plus {
+namespace ranally {
+namespace operations {
+namespace binary {
+namespace plus {
 
 template<typename T>
-class Algorithm {
-  static inline T operator()(
+class Algorithm
+{
+  inline static T operator()(
          T argument1,
          T argument2)
   {
@@ -35,7 +36,8 @@ class Algorithm {
   }
 };
 
-class DomainPolicy: public Ranally::Operations::Policies::DummyDomain
+template<typename T>
+class DomainPolicy: public ranally::operations::Policies::DummyDomain<T>
 {
 };
 
@@ -57,6 +59,7 @@ class RangePolicy<T, true>
          T argument2,
          T result)
   {
+    // All floating points values are valid.
     return true;
   }
 };
@@ -117,9 +120,9 @@ class RangePolicy: public detail::RangePolicy<T,
 {
 };
 
-} // namespace Plus
-} // namespace Binary
-} // namespace Operations
-} // namespace Ranally
+} // namespace plus
+} // namespace binary
+} // namespace operations
+} // namespace ranally
 
 #endif
