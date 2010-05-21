@@ -23,6 +23,11 @@
 #define INCLUDED_BOOST_TEST_UNIT_TEST_SUITE
 #endif
 
+#ifndef INCLUDED_RANALLY_OPERATIONS_LOCAL_BINARY_PLUS
+#include "Ranally/Operations/Local/Binary/Plus.h"
+#define INCLUDED_RANALLY_OPERATIONS_LOCAL_BINARY_PLUS
+#endif
+
 
 
 //------------------------------------------------------------------------------
@@ -60,40 +65,42 @@ PlusTest::PlusTest()
 
 void PlusTest::testDomain()
 {
-  using namespace ranally::operations::binary
+  using namespace ranally::operations::binary;
 
   // int
   {
-    plus::DomainPolicy<int> domainPolicy();
+    plus::DomainPolicy<int> domainPolicy;
 
     BOOST_CHECK(domainPolicy.inDomain( 0));
     BOOST_CHECK(domainPolicy.inDomain(-1));
     BOOST_CHECK(domainPolicy.inDomain( 1));
-    BOOST_CHECK(domainPolicy.inDomain(std::numeric_limits<int>::min));
-    BOOST_CHECK(domainPolicy.inDomain(std::numeric_limits<int>::max));
+    BOOST_CHECK(domainPolicy.inDomain(std::numeric_limits<int>::min()));
+    BOOST_CHECK(domainPolicy.inDomain(std::numeric_limits<int>::max()));
   }
 
   // unsigned int
   {
-    plus::DomainPolicy<unsigned int> domainPolicy();
+    plus::DomainPolicy<unsigned int> domainPolicy;
 
     BOOST_CHECK(domainPolicy.inDomain(0u));
     BOOST_CHECK(domainPolicy.inDomain(1u));
-    BOOST_CHECK(domainPolicy.inDomain(std::numeric_limits<unsigned int>::min));
-    BOOST_CHECK(domainPolicy.inDomain(std::numeric_limits<unsigned int>::max));
+    BOOST_CHECK(domainPolicy.inDomain(
+         std::numeric_limits<unsigned int>::min()));
+    BOOST_CHECK(domainPolicy.inDomain(
+         std::numeric_limits<unsigned int>::max()));
   }
 
   // float
   {
-    plus::DomainPolicy<double> domainPolicy();
+    plus::DomainPolicy<double> domainPolicy;
 
     BOOST_CHECK(domainPolicy.inDomain( 0.0));
     BOOST_CHECK(domainPolicy.inDomain(-1.0));
     BOOST_CHECK(domainPolicy.inDomain( 1.0));
-    BOOST_CHECK(domainPolicy.inDomain( std::numeric_limits<double>::min));
-    BOOST_CHECK(domainPolicy.inDomain(-std::numeric_limits<double>::min));
-    BOOST_CHECK(domainPolicy.inDomain( std::numeric_limits<double>::max));
-    BOOST_CHECK(domainPolicy.inDomain(-std::numeric_limits<double>::max));
+    BOOST_CHECK(domainPolicy.inDomain( std::numeric_limits<double>::min()));
+    BOOST_CHECK(domainPolicy.inDomain(-std::numeric_limits<double>::min()));
+    BOOST_CHECK(domainPolicy.inDomain( std::numeric_limits<double>::max()));
+    BOOST_CHECK(domainPolicy.inDomain(-std::numeric_limits<double>::max()));
     // TODO BOOST_CHECK(domainPolicy.inDomain(nan);
   }
 }
@@ -110,11 +117,11 @@ void PlusTest::testAlgorithm()
 
 void PlusTest::testRange()
 {
-  using namespace ranally::operations::binary
+  using namespace ranally::operations::binary;
 
   // int
   {
-    plus::RangePolicy<int> rangePolicy();
+    plus::RangePolicy<int> rangePolicy;
 
     BOOST_CHECK( rangePolicy.inRange( 0,  0,  0));
     BOOST_CHECK( rangePolicy.inRange( 3,  4,  7));

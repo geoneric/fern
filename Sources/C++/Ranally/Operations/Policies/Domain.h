@@ -8,15 +8,15 @@ namespace operations {
 namespace policies {
 
 template<typename T>
-class DummyDomain
+struct DummyDomain
 {
-  static inline inDomain(
+  static inline bool inDomain(
          T /* argument */)
   {
     return true;
   }
 
-  static inline inDomain(
+  static inline bool inDomain(
          T /* argument1 */,
          T /* argument2 */)
   {

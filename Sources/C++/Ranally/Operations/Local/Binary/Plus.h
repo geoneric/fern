@@ -24,9 +24,9 @@ namespace binary {
 namespace plus {
 
 template<typename T>
-class Algorithm
+struct Algorithm
 {
-  inline static T operator()(
+  inline T operator()(
          T argument1,
          T argument2)
   {
@@ -37,14 +37,14 @@ class Algorithm
 };
 
 template<typename T>
-class DomainPolicy: public ranally::operations::Policies::DummyDomain<T>
+struct DomainPolicy: public ranally::operations::policies::DummyDomain<T>
 {
 };
 
 namespace detail {
 
 template<typename T, bool isFloatingPoint>
-class RangePolicy
+struct RangePolicy
 {
   static bool      inRange             (T argument1,
                                         T argument2,
@@ -52,7 +52,7 @@ class RangePolicy
 };
 
 template<typename T>
-class RangePolicy<T, true>
+struct RangePolicy<T, true>
 {
   inline static bool inRange(
          T argument1,
@@ -65,7 +65,7 @@ class RangePolicy<T, true>
 };
 
 template<typename T, bool isSigned>
-class RangePolicyForIntegrals
+struct RangePolicyForIntegrals
 {
   bool             inRange             (T argument1,
                                         T argument2,
@@ -73,7 +73,7 @@ class RangePolicyForIntegrals
 };
 
 template<typename T>
-class RangePolicyForIntegrals<T, true>
+struct RangePolicyForIntegrals<T, true>
 {
   inline static bool inRange(
          T argument1,
@@ -94,7 +94,7 @@ class RangePolicyForIntegrals<T, true>
 };
 
 template<typename T>
-class RangePolicyForIntegrals<T, false>
+struct RangePolicyForIntegrals<T, false>
 {
   inline static bool inRange(
          T argument1,
@@ -107,15 +107,15 @@ class RangePolicyForIntegrals<T, false>
 };
 
 template<typename T>
-class RangePolicy<T, false>: public RangePolicyForIntergrals<T,
-         boost::is_signed<Argument>::value>
+struct RangePolicy<T, false>: public RangePolicyForIntegrals<T,
+         boost::is_signed<T>::value>
 {
 };
 
 } // namespace detail
 
 template<typename T>
-class RangePolicy: public detail::RangePolicy<T,
+struct RangePolicy: public detail::RangePolicy<T,
          boost::is_floating_point<T>::value>
 {
 };
