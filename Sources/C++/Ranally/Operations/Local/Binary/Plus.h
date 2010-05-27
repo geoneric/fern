@@ -26,7 +26,7 @@ namespace plus {
 template<typename T>
 struct Algorithm
 {
-  inline T operator()(
+  inline static T calculate(
          T argument1,
          T argument2)
   {

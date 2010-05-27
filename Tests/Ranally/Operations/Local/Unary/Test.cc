@@ -3,9 +3,9 @@
 #define INCLUDED_BOOST_TEST_INCLUDED_UNIT_TEST
 #endif
 
-#ifndef INCLUDED_BINARYSAMETEST
-#include "BinarySameTest.h"
-#define INCLUDED_BINARYSAMETEST
+#ifndef INCLUDED_UNARYSAMETEST
+#include "UnarySameTest.h"
+#define INCLUDED_UNARYSAMETEST
 #endif
 
 #ifndef INCLUDED_PLUSTEST
@@ -34,7 +34,7 @@ boost::unit_test::test_suite* init_unit_test_suite(
   test->add(PlusTest().suite());
 
   // Operation frameworks.
-  test->add(BinarySameTest().suite());
+  test->add(UnarySameTest().suite());
 
   return test;
 }

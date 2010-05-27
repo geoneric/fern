@@ -5,10 +5,10 @@ INCLUDE(Site)
 INCLUDE(UseBoost)
 
 INCLUDE_DIRECTORIES(
-  ../../../Sources/C++
+  ../../../../../Sources/C++
 )
 SET(TEST_SOURCES
-  BinarySameTest.cc
+  UnarySameTest.cc
   PlusTest.cc
   Test.cc
 )

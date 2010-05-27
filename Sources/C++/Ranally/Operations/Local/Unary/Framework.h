@@ -1,5 +1,5 @@
-#ifndef INCLUDED_RANALLY_OPERATIONS_LOCAL_BINARY_FRAMEWORK
-#define INCLUDED_RANALLY_OPERATIONS_LOCAL_BINARY_FRAMEWORK
+#ifndef INCLUDED_RANALLY_OPERATIONS_LOCAL_UNARY_FRAMEWORK
+#define INCLUDED_RANALLY_OPERATIONS_LOCAL_UNARY_FRAMEWORK
 
 #ifndef INCLUDED_ITERATOR
 #include <iterator>
@@ -15,15 +15,15 @@
 
 namespace ranally {
 namespace operations {
-namespace binary {
+namespace unary {
 namespace framework {
 
 
-// TODO Let BinarySame use BinaryDifferent as a base class.
+// TODO Let UnarySame use UnaryDifferent as a base class.
 // TODO Add ClipMaskPolicy.
 
 
-//! Template class for binary local operations with equal argument and result types.
+//! Template class for unary local operations with equal argument and result types.
 /*!
   \tparam    T Type of argument and result values.
   \tparam    NoData Type of no-data values.
@@ -42,7 +42,7 @@ template<typename T,
          template<typename> class RangePolicy,
          template<typename> class NoDataPolicy
 >
-class BinarySame
+class UnarySame
 {
 private:
 
@@ -155,7 +155,7 @@ public:
 };
 
 } // namespace framework
-} // namespace binary
+} // namespace unary
 } // namespace operations
 } // namespace ranally
 

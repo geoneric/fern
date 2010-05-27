@@ -23,9 +23,9 @@
 #define INCLUDED_BOOST_TEST_UNIT_TEST_SUITE
 #endif
 
-#ifndef INCLUDED_RANALLY_OPERATIONS_LOCAL_BINARY_PLUS
-#include "Ranally/Operations/Local/Binary/Plus.h"
-#define INCLUDED_RANALLY_OPERATIONS_LOCAL_BINARY_PLUS
+#ifndef INCLUDED_RANALLY_OPERATIONS_LOCAL_UNARY_PLUS
+#include "Ranally/Operations/Local/Unary/Plus.h"
+#define INCLUDED_RANALLY_OPERATIONS_LOCAL_UNARY_PLUS
 #endif
 
 
@@ -64,7 +64,7 @@ PlusTest::PlusTest()
 
 void PlusTest::testDomain()
 {
-  using namespace ranally::operations::binary;
+  using namespace ranally::operations::unary;
 
   // int
   {
@@ -116,29 +116,32 @@ void PlusTest::testAlgorithm()
 
 void PlusTest::testRange()
 {
-  using namespace ranally::operations::binary;
+  using namespace ranally::operations::unary;
 
   // int
   {
     plus::RangePolicy<int> rangePolicy;
 
-    BOOST_CHECK( rangePolicy.inRange( 0,  0,  0));
-    BOOST_CHECK( rangePolicy.inRange( 3,  4,  7));
-    BOOST_CHECK( rangePolicy.inRange( 3, -4, -1));
-    BOOST_CHECK( rangePolicy.inRange(-3, -4, -7));
-
-    BOOST_CHECK(!rangePolicy.inRange( 3,  4, -7));
-    BOOST_CHECK(!rangePolicy.inRange(-3, -4,  7));
+    BOOST_CHECK(rangePolicy.inRange( 0,  0));
+    BOOST_CHECK(rangePolicy.inRange( 3,  3));
+    BOOST_CHECK(rangePolicy.inRange(-3, -3));
   }
 
   // unsigned int
   {
-    // TODO
+    plus::RangePolicy<unsigned int> rangePolicy;
+
+    BOOST_CHECK(rangePolicy.inRange( 0u,  0u));
+    BOOST_CHECK(rangePolicy.inRange( 3u,  3u));
   }
 
   // float
   {
-    // TODO
+    plus::RangePolicy<float> rangePolicy;
+
+    BOOST_CHECK(rangePolicy.inRange( 0.0,  0.0));
+    BOOST_CHECK(rangePolicy.inRange( 3.0,  3.0));
+    BOOST_CHECK(rangePolicy.inRange(-3.0, -3.0));
   }
 }
 

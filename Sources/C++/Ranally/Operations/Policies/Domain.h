@@ -1,5 +1,5 @@
-#ifndef INCLUDED_RANALLY_OPERATIONS_POLICIES
-#define INCLUDED_RANALLY_OPERATIONS_POLICIES
+#ifndef INCLUDED_RANALLY_OPERATIONS_POLICIES_DOMAIN
+#define INCLUDED_RANALLY_OPERATIONS_POLICIES_DOMAIN
 
 
 
@@ -10,16 +10,18 @@ namespace policies {
 template<typename T>
 struct DummyDomain
 {
-  static inline bool inDomain(
+  inline static bool inDomain(
          T /* argument */)
   {
+    // No-op.
     return true;
   }
 
-  static inline bool inDomain(
+  inline static bool inDomain(
          T /* argument1 */,
          T /* argument2 */)
   {
+    // No-op.
     return true;
   }
 };
