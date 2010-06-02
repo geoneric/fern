@@ -57,14 +57,14 @@ class TestNoDataValue<bool>
 {
 public:
 
-  inline void setNoData(
-         bool& noData) const
+  inline static void setNoData(
+         bool& noData)
   {
     noData = true;
   }
 
-  inline bool isNoData(
-         bool noData) const
+  inline static bool isNoData(
+         bool noData)
   {
     return noData;
   }
