@@ -28,9 +28,14 @@
 #define INCLUDED_RANALLY_OPERATIONS_LOCAL_BINARY_PLUS
 #endif
 
-#ifndef INCLUDED_RANALLY_OPERATIONS_POLICIES_NO_DATA
+#ifndef INCLUDED_RANALLY_OPERATIONS_POLICIES_CLIPMASK
+#include "Ranally/Operations/Policies/ClipMask.h"
+#define INCLUDED_RANALLY_OPERATIONS_POLICIES_CLIPMASK
+#endif
+
+#ifndef INCLUDED_RANALLY_OPERATIONS_POLICIES_NODATA
 #include "Ranally/Operations/Policies/NoData.h"
-#define INCLUDED_RANALLY_OPERATIONS_POLICIES_NO_DATA
+#define INCLUDED_RANALLY_OPERATIONS_POLICIES_NODATA
 #endif
 
 
@@ -71,21 +76,31 @@ void BinarySameTest::test()
   // TODO Use operation with an input domain.
 
   {
-    framework::BinarySame<int, bool, plus::Algorithm, plus::DomainPolicy,
-         plus::RangePolicy, TestNoDataValue> operation;
+    framework::BinarySame<int, bool, bool, plus::Algorithm, plus::DomainPolicy,
+         plus::RangePolicy, TestClipMaskValue, TestNoDataValue> operation;
     int result;
-    bool isNoData;
+    bool clipMask, isNoData;
 
     result = -999;
+    clipMask = false;
     isNoData = false;
-    operation(3, 4, result, isNoData);
+    operation(3, 4, result, clipMask, isNoData);
     BOOST_CHECK(!isNoData);
     BOOST_CHECK_EQUAL(result, 7);
 
+    // Clip mask.
+    result = -999;
+    clipMask = true;
+    isNoData = false;
+    operation(3, 4, result, clipMask, isNoData);
+    BOOST_CHECK(!isNoData);
+    BOOST_CHECK_EQUAL(result, -999);
+
     // No-data input.
     result = -999;
+    clipMask = false;
     isNoData = true;
-    operation(3, 4, result, isNoData);
+    operation(3, 4, result, clipMask, isNoData);
     BOOST_CHECK(isNoData);
     BOOST_CHECK_EQUAL(result, -999);
 
@@ -93,8 +108,9 @@ void BinarySameTest::test()
 
     // Result out of range.
     result = -999;
+    clipMask = false;
     isNoData = false;
-    operation(std::numeric_limits<int>::max(), 1, result, isNoData);
+    operation(std::numeric_limits<int>::max(), 1, result, clipMask, isNoData);
     BOOST_CHECK(isNoData);
   }
 
