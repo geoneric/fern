@@ -1,0 +1,5 @@
+- Model solution: combination of model and engine.
+- Base OpenMI API on a bit more low level API. OpenMI is just one of the API's
+  we want to support.
+- Plugins.
+

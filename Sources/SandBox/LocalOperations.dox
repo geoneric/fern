@@ -1,0 +1,101 @@
+// vim:syntax=doxygen
+
+/*! \mainpage LocalOperations
+
+\section introduction Introduction
+
+Local operations are about calculating new values for each cell location in a raster, based on one or more input values at that same location. There are a few factors that need to be taken into account when implementing local operations (apart from speed, speed and speed):
+- handling of no-data
+- handling of domain of input values
+- masking of values
+
+Different approaches to the handling of no-data, value domain and masking may be necessary in different contexts. For testing purposes alone it is already convenient to be able to use different approaches.
+
+Because of this, a policy based approach is used. Now, the various approaches can be configured by the user/caller of the local operations. Policies separate out the various responsibilities nicely and allow the behaviour of the algorithm to change without needing to change the algorithm itself. The behaviour has become configurable. A plus operation will always be the same plus operation, but how to go about missing values, masking and value domains may be subject to change, at design, compile or even at run time.
+
+\sa Modern C++ Design, by Alexandrescu, chapter 1.
+
+Three categories of local operations are currently recognized. Using these templates in combination with different combinations of policies many concrete implementations can be generated at compile time.
+- UnaryOperation One input, one output.
+- BinaryOperation Two inputs, one output.
+- AggregateOperation N inputs, one output.
+
+\section nodata No-data value handling
+If one of the input values of an operation falls outside the domain of valid
+values, the result is set using the configured no-data handler. Although it is common for a no-data policy to set the result value to a no-data value, the policy could set it to other values. The IsNull operation, for example, can be configured, by using a no-data policy that writes a valid value (true) to those cells that currently contain a no-data value.
+
+A no-data policy must at least implement:
+
+\code
+void setNoData(T& value);
+\endcode
+
+The default installed no-data policy (IgnoreNoData) does not change the value passed in.
+
+\sa \ref ignoreNoData, NoDataValue
+
+\section domain Value domain handling
+The input values can optionally be checked for out-of-range values. If one of the input values is outside of the configured domain the result will be handled byt the no-data handler.
+
+A value domain policy must at least implement:
+
+\code
+bool inDomain(T const& value);
+\endcode
+
+The default installed value domain policy (DontCheckValueDomain) accepts all
+input values.
+
+\sa DomainByPredicate
+
+\section mask Masking
+A mask can optionally be used to mask out certain cells. When a cell is masked, no calculation will be performed for that cell. The original value in the cell we be retained.
+
+A mask policy must at least implement:
+
+\code
+bool mask(size_t i);
+\endcode
+
+Where i is a linear, 0-based, cell index.
+
+The default installed mask policy (DontMask) masks no cells.
+
+\sa MaskByValuePredicate
+
+\section topics Topics
+
+\subsection precedence Check precedence
+The mask check takes precedence over the domain check, so:
+\code
+if(cell_is_masked) {
+  // result is not touched.
+}
+else if(input_is_out_of_domain) {
+  // result is set by no-data handler.
+}
+else {
+  // result is calculated.
+}
+\endcode
+
+This general schema may change a bit when we implement \ref ignoreNoData.
+
+\subsection requirements Additional requirements (not mentioned above)
+- Possibility to specialize the core of an operation. Be able to provide different implementions for different value types.
+- Possibility to use operations with different argument and result types.
+- \ref ignoreNoData.
+- All this must work with gcc-3.3:
+  - Rebuild PCRTEAM_EXTERN for gcc-3.3.
+  - Uncomment set of CMAKE_C_COMPILER and CMAKE_CXX_COMPILER in toplevel CMakeLists.txt file.
+
+\subsection ignoreNoData Ignoring no-data values
+The mask is for masking certain cells, <strong>whatever their values</strong>. Masking no-data cell can be handled by configuring the mask to include no-data cells. Using a single mask, cells from all input data sources can be skipped.
+
+But, if we are to continue calculation of new values, even though some cells used in the calculation are no-data cells, then we need to do more fine grained testing. In such a case we need to test for no-data cells in each input data source used in the calculation. Currently we don't have access to a test on no-data, but such a requirement can be added to the no-data policy concept.
+
+\subsection design Pieces of design
+- No virtual function calls for often called functions.
+- The loop used to iterate over the argument and result values should call a single, inlined function to calculate the new value.
+- A std::vector<bool> is a specialized version of std::vector with bits used internally to store the values in. Iterators into this collection don't point to bool's but to proxy objects translating bool's to bits and vise-versa. That's why some templates are partially specialized for std::vector<bool>::reference.
+*/

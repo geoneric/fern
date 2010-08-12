@@ -1,0 +1,52 @@
+Components hierarchy
+
+ModelingEngine
+  XMLParser
+  Annotator
+  Analyzer
+    SemanticsChecker
+    Optimizer
+  Executor
+  Interogator
+- Gets the model by means of an XML.
+- Operation libraries can be plugged in.
+
+ModelingLanguage
+  Parser
+  SyntaxTree
+- Adds nested execution contexts.
+- Adds support for value dimensions (units).
+
+OperationLibrary
+  OperationFramework
+    OperationModels
+      LocalOperation
+      FocalOperation
+      ZonalOperation
+      GlobalOperation
+  Implementations
+    Plus (Model of LocalOperation)
+    Slope (Model of FocalOperation)
+    ...
+- Uses plugins to make information about operations useable by other components.
+
+DataAbstractions
+  RasterLayer
+  FeatureLayer
+  TimeSeries
+- Handles abstraction of dimensionality of the data.
+- Iteration.
+- Data selection.
+- Read and write of data at certain locations in data space.
+
+PythonExtension
+  Operations
+
+Extensions
+  OpenMI
+    Uses ModelingEngine's Interogator.
+  Debugger
+    Uses ModelingEngine's Interogator.
+  Editor
+    Uses ModelingEngine's Interogator.
+
