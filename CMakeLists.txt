@@ -7,6 +7,7 @@ INCLUDE(UseDevEnv)
 
 INCLUDE(UseBoost)
 INCLUDE(UseIcu)
+INCLUDE(UsePython)
 
 # ADD_SUBDIRECTORY(Tests/Ranally/Algorithms)
 # ADD_SUBDIRECTORY(Tests/Ranally/Operations/Local/Unary)

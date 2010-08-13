@@ -2,7 +2,7 @@
 
 
 
-namespace pack {
+namespace ranally {
 
 Class::Class()
 {
@@ -14,5 +14,5 @@ Class::~Class()
 {
 }
 
-} // namespace pack
+} // namespace ranally
 

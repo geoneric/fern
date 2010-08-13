@@ -1,1 +1,1 @@
-ADD_SUBDIRECTORY(ModelingLanguage)
+ADD_SUBDIRECTORY(Language)

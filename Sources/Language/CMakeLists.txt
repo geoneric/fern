@@ -1,8 +1,23 @@
 SET(SOURCES
+  AlgebraParser.cc
   Identifier.cc
 )
-ADD_LIBRARY(ModelingLanguage
+ADD_LIBRARY(RanallyLanguage
   ${SOURCES}
 )
 
-
+SET(TEST_SOURCES
+  AlgebraParserTest.cc
+  Test.cc
+)
+ADD_EXECUTABLE(testRanallyLanguage
+  ${TEST_SOURCES}
+)
+TARGET_LINK_LIBRARIES(testRanallyLanguage
+  RanallyLanguage
+  ${DEVENV_UTILS_LIBRARY}
+  ${DEVENV_UNICODE_UTILS_LIBRARY}
+  ${PYTHON_LIBRARIES}
+  ${ICU_LIBRARIES}
+  ${BOOST_REGEX_LIBRARY}
+)
