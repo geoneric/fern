@@ -1,0 +1,18 @@
+.. vim:syntax=rst
+
+=====================================
+Simulation modelling project proposal
+=====================================
+
+.. |date| date::
+
+:Author: PCRaster R&D team
+:Contact: k.dejong@geo.uu.nl
+:Generated on: |date|
+
+.. contents:: Table of Contents
+
+.. include:: Introduction.txt
+.. include:: Brainstorm.txt
+
+.. target-notes::
