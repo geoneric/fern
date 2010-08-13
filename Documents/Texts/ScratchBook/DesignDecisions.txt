@@ -1,0 +1,4 @@
+
+algebra -> xml -> ast.
+Why xml? Because it can contain more information than the algebra. Some clients that don't need the algebra may be able to pass useful information about the task in xml.
+
