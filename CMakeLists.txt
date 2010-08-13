@@ -1,4 +1,13 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+PROJECT(Ranally)
 
-ADD_SUBDIRECTORY(Tests/Ranally/Algorithms)
+SET(CMAKE_MODULE_PATH $ENV{CMAKE_MODULE_PATH})
+INCLUDE(Site)
+INCLUDE(UseDevEnv)
+
+INCLUDE(UseBoost)
+INCLUDE(UseIcu)
+
+# ADD_SUBDIRECTORY(Tests/Ranally/Algorithms)
 # ADD_SUBDIRECTORY(Tests/Ranally/Operations/Local/Unary)
+ADD_SUBDIRECTORY(Sources)
