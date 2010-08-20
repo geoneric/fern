@@ -22,8 +22,8 @@ class AlgebraParser: public dev::PythonClient
 
 private:
 
-  UnicodeString    parse               (UnicodeString const& string,
-                                        UnicodeString const& fileName);
+  // UnicodeString    parse               (UnicodeString const& string,
+  //                                       UnicodeString const& fileName);
 
 protected:
 
