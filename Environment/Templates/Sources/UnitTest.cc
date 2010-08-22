@@ -10,9 +10,9 @@ boost::unit_test::test_suite* ClassTest::suite()
 {
   boost::unit_test::test_suite* suite = BOOST_TEST_SUITE(__FILE__);
   boost::shared_ptr<ClassTest> instance(
-         new ClassTest());
+    new ClassTest());
   suite->add(BOOST_CLASS_TEST_CASE(
-         &ClassTest::test, instance));
+    &ClassTest::test, instance));
 
   return suite;
 }

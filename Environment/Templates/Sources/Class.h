@@ -1,5 +1,5 @@
-#ifndef INCLUDED_PACK_CLASS
-#define INCLUDED_PACK_CLASS
+#ifndef INCLUDED_RANALLY_CLASS
+#define INCLUDED_RANALLY_CLASS
 
 #include <boost/noncopyable.hpp>
 
