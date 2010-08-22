@@ -1,7 +1,5 @@
-#ifndef INCLUDED_RANALLY_IDENTIFIER
-#define INCLUDED_RANALLY_IDENTIFIER
-
-#include <boost/noncopyable.hpp>
+#ifndef INCLUDED_RANALLY_XMLPARSER
+#define INCLUDED_RANALLY_XMLPARSER
 
 
 
@@ -13,10 +11,10 @@ namespace ranally {
 
   \sa        .
 */
-class Identifier: private boost::noncopyable
+class XmlParser
 {
 
-  friend class IdentifierTest;
+  friend class XmlParserTest;
 
 private:
 
@@ -24,9 +22,9 @@ protected:
 
 public:
 
-                   Identifier          ();
+                   XmlParser               ();
 
-  /* virtual */    ~Identifier         ();
+  /* virtual */    ~XmlParser              ();
 
 };
 

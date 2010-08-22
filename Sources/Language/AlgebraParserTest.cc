@@ -14,11 +14,11 @@ boost::unit_test::test_suite* AlgebraParserTest::suite()
 {
   boost::unit_test::test_suite* suite = BOOST_TEST_SUITE(__FILE__);
   boost::shared_ptr<AlgebraParserTest> instance(
-         new AlgebraParserTest());
+    new AlgebraParserTest());
   suite->add(BOOST_CLASS_TEST_CASE(
-         &AlgebraParserTest::testParseString, instance));
-  suite->add(BOOST_CLASS_TEST_CASE(
-         &AlgebraParserTest::testParseFile, instance));
+    &AlgebraParserTest::testParseString, instance));
+  /// suite->add(BOOST_CLASS_TEST_CASE(
+  ///   &AlgebraParserTest::testParseFile, instance));
 
   return suite;
 }
@@ -34,19 +34,23 @@ AlgebraParserTest::AlgebraParserTest()
 void AlgebraParserTest::testParseString()
 {
   ranally::AlgebraParser parser;
-  UnicodeString xml(parser.parseString(UnicodeString("a")));
 
-  std::cout << dev::encodeInUTF8(xml) << std::endl;
-
-  bool testImplemented = false;
-  BOOST_WARN(testImplemented);
+  {
+    UnicodeString xml(parser.parseString(UnicodeString("a")));
+    BOOST_CHECK(xml ==
+      "<module>"
+        "<expression line=\"1\" col=\"0\">"
+          "<name>a</name>"
+        "</expression>"
+      "</module>");
+  }
 }
 
 
 
-void AlgebraParserTest::testParseFile()
-{
-  bool testImplemented = false;
-  BOOST_WARN(testImplemented);
-}
+/// void AlgebraParserTest::testParseFile()
+/// {
+///   bool testImplemented = false;
+///   BOOST_WARN(testImplemented);
+/// }
 

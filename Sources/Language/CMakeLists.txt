@@ -1,6 +1,9 @@
 SET(SOURCES
   AlgebraParser.cc
-  Identifier.cc
+  ExpressionVertex.cc
+  NameVertex.cc
+  SyntaxVertex.cc
+  XmlParser.cc
 )
 ADD_LIBRARY(RanallyLanguage
   ${SOURCES}
@@ -8,7 +11,11 @@ ADD_LIBRARY(RanallyLanguage
 
 SET(TEST_SOURCES
   AlgebraParserTest.cc
+  ExpressionVertexTest.cc
+  NameVertexTest.cc
+  SyntaxVertexTest.cc
   Test.cc
+  XmlParserTest.cc
 )
 ADD_EXECUTABLE(testRanallyLanguage
   ${TEST_SOURCES}

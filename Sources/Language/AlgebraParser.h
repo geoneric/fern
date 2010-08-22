@@ -35,7 +35,7 @@ public:
 
   UnicodeString    parseString         (UnicodeString const& string);
 
-  UnicodeString    parseFile           (UnicodeString const& fileName);
+  /// UnicodeString    parseFile           (UnicodeString const& fileName);
 
 };
 

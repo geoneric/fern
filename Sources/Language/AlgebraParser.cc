@@ -1,8 +1,8 @@
 #include <Python.h> // This one first, to get rid of preprocessor warnings.
 #include <cassert>
 #include <iostream>
-
 #include "Python-ast.h"
+#include <boost/format.hpp>
 
 #include "dev_UnicodeUtils.h"
 
@@ -18,13 +18,14 @@ namespace {
 
 void writeNameNode(
          identifier const id,
-         expr_context_ty const ctx,
+         expr_context_ty const /* context */,
          UnicodeString& xml)
 {
   assert(PyString_Check(id));
 
+  xml += "<name>";
   xml += PyString_AsString(id);
-
+  xml += "</name>";
 
   // PyObject* bytes = PyUnicode_AsUTF8String(id);
   // assert(bytes);
@@ -39,15 +40,37 @@ void writeExpressionNode(
 {
   assert(expression);
 
-  xml += "<expression>";
+  // 1-based linenumber.
+  // 0-based column id.
+  xml += (boost::format("<expression line=\"%1%\" col=\"%2%\">")
+         % expression->lineno
+         % expression->col_offset).str().c_str();
 
   switch(expression->kind) {
     case Name_kind: {
       writeNameNode(expression->v.Name.id, expression->v.Name.ctx, xml);
       break;
     }
-    default: {
-      assert(false);
+    case BoolOp_kind:
+    case BinOp_kind:
+    case UnaryOp_kind:
+    case Lambda_kind:
+    case IfExp_kind:
+    case Dict_kind:
+    case ListComp_kind:
+    case GeneratorExp_kind:
+    case Yield_kind:
+    case Compare_kind:
+    case Call_kind:
+    case Repr_kind:
+    case Num_kind:
+    case Str_kind:
+    case Attribute_kind:
+    case Subscript_kind:
+    case List_kind:
+    case Tuple_kind: {
+      bool implemented = false;
+      assert(implemented);
       break;
     }
   }
@@ -75,8 +98,30 @@ void writeModuleNode(
         writeExpressionNode(statement->v.Expr.value, xml);
         break;
       }
-      default: {
-        assert(false);
+      case FunctionDef_kind:
+      case ClassDef_kind:
+      case Return_kind:
+      case Delete_kind:
+      case Assign_kind:
+      case AugAssign_kind:
+      case Print_kind:
+      case For_kind:
+      case While_kind:
+      case If_kind:
+      case With_kind:
+      case Raise_kind:
+      case TryExcept_kind:
+      case TryFinally_kind:
+      case Assert_kind:
+      case Import_kind:
+      case ImportFrom_kind:
+      case Exec_kind:
+      case Global_kind:
+      case Pass_kind:
+      case Break_kind:
+      case Continue_kind: {
+        bool implemented = false;
+        assert(implemented);
         break;
       }
     }
@@ -92,10 +137,6 @@ UnicodeString pythonAstToXml(
 {
   assert(ast);
 
-  // The result is a Python AST that needs to be converted to an XML string.
-  // - How do we walk the tree? We cannot modify the node types. Is loki
-  //   still useful? We can create a parallel visitor tree.
-
   UnicodeString xml;
 
   switch(ast->kind) {
@@ -107,19 +148,16 @@ UnicodeString pythonAstToXml(
       writeExpressionNode(ast->v.Expression.body, xml);
       break;
     }
-    default: {
-      assert(false);
+    case Interactive_kind:
+    case Suite_kind: {
+      bool implemented = false;
+      assert(implemented);
       break;
     }
   }
 
   return xml;
 }
-
-
-
-
-
 
 } // Anonymous namespace
 
@@ -173,20 +211,20 @@ UnicodeString AlgebraParser::parseString(
 
 
 
-UnicodeString AlgebraParser::parseFile(
-         UnicodeString const& fileName)
-{
-  PyArena* arena = PyArena_New();
-  assert(arena);
-
-  UnicodeString result(pythonAstToXml(PyParser_ASTFromString(
-         "string", "file name", Py_file_input, 0, arena)));
-
-  PyArena_Free(arena);
-  arena = 0;
-
-  return result;
-}
+/// UnicodeString AlgebraParser::parseFile(
+///          UnicodeString const& fileName)
+/// {
+///   PyArena* arena = PyArena_New();
+///   assert(arena);
+/// 
+///   UnicodeString result(pythonAstToXml(PyParser_ASTFromString(
+///          "string", "file name", Py_file_input, 0, arena)));
+/// 
+///   PyArena_Free(arena);
+///   arena = 0;
+/// 
+///   return result;
+/// }
 
 } // namespace ranally
 
