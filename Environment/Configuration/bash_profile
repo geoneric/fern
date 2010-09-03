@@ -1,0 +1,29 @@
+# vim:syntax=sh
+
+# Requires:
+# - DEVELOPMENT_ROOT
+# Sets:
+# - DEVENV_BRANCH
+# - RANALLY
+
+# Set branches.
+export DEVENV_BRANCH=trunk
+
+_devEnv="$DEVELOPMENT_ROOT/projects/DevEnv-$DEVENV_BRANCH"
+_personalConfiguration="$_devEnv/configuration/personal/Kor"
+
+# Load common settings and utility functions.
+source "$_personalConfiguration/Profiles/Utils.sh"
+source "$_personalConfiguration/Profiles/common"
+setPcrTeamExternIfNotSetAlready $DEVENV_BRANCH
+setPromptForProject Ranally
+
+# Load project settings.
+source "$_personalConfiguration/Profiles/DevEnv"
+
+export RANALLY=$projects/Ranally
+
+cd $RANALLY
+
+unset _devEnv
+unset _personalConfiguration
