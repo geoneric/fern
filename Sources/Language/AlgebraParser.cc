@@ -23,9 +23,9 @@ void writeNameNode(
 {
   assert(PyString_Check(id));
 
-  xml += "<name>";
+  xml += "<Name>";
   xml += PyString_AsString(id);
-  xml += "</name>";
+  xml += "</Name>";
 
   // PyObject* bytes = PyUnicode_AsUTF8String(id);
   // assert(bytes);
@@ -42,7 +42,7 @@ void writeExpressionNode(
 
   // 1-based linenumber.
   // 0-based column id.
-  xml += (boost::format("<expression line=\"%1%\" col=\"%2%\">")
+  xml += (boost::format("<Expression line=\"%1%\" col=\"%2%\">")
          % expression->lineno
          % expression->col_offset).str().c_str();
 
@@ -75,7 +75,7 @@ void writeExpressionNode(
     }
   }
 
-  xml += "</expression>";
+  xml += "</Expression>";
 }
 
 
@@ -86,7 +86,7 @@ void writeModuleNode(
 {
   assert(statements);
 
-  xml += "<module>";
+  xml += "<Ranally>";
 
   for(int i = 0; i < statements->size; ++i) {
     stmt_ty const statement = static_cast<stmt_ty const>(
@@ -127,7 +127,7 @@ void writeModuleNode(
     }
   }
 
-  xml += "</module>";
+  xml += "</Ranally>";
 }
 
 
@@ -200,8 +200,10 @@ UnicodeString AlgebraParser::parseString(
   PyArena* arena = PyArena_New();
   assert(arena);
 
-  UnicodeString result(pythonAstToXml(PyParser_ASTFromString(
-         dev::encodeInUTF8(string).c_str(), "", Py_file_input, 0, arena)));
+  UnicodeString result("<?xml version=\"1.0\">");
+
+  result += pythonAstToXml(PyParser_ASTFromString(
+         dev::encodeInUTF8(string).c_str(), "", Py_file_input, 0, arena));
 
   PyArena_Free(arena);
   arena = 0;

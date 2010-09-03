@@ -1,6 +1,7 @@
 #include <boost/test/included/unit_test.hpp>
 
 #include "AlgebraParserTest.h"
+#include "XmlParserTest.h"
 
 
 
@@ -21,6 +22,7 @@ boost::unit_test::test_suite* init_unit_test_suite(
   TestSuite* test = new TestSuite(argc, argv);
 
   test->add(AlgebraParserTest::suite());
+  test->add(XmlParserTest::suite());
 
   return test;
 }

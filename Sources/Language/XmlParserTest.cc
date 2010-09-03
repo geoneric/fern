@@ -4,6 +4,7 @@
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
 
+#include "AlgebraParser.h"
 #include "XmlParser.h"
 
 
@@ -29,18 +30,12 @@ XmlParserTest::XmlParserTest()
 
 void XmlParserTest::testParse()
 {
-  ranally::XmlParser parser;
+  ranally::AlgebraParser algebraParser;
+  ranally::XmlParser xmlParser;
 
-  // {
-  //   ranally::Ast ast(parser.parse(UnicodeString xml(
-  //     "<module>"
-  //       "<expression line=\"1\" col=\"0\">"
-  //         "<name>a</name>"
-  //       "</expression>"
-  //     "</module>")));
-  // }
-
-  bool testImplemented = false;
-  BOOST_WARN(testImplemented);
+  {
+    UnicodeString xml(algebraParser.parseString(UnicodeString("a")));
+    ranally::SyntaxTree tree(xmlParser.parse(xml));
+  }
 }
 

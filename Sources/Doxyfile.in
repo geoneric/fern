@@ -1,0 +1,13 @@
+PROJECT_NAME            = Ranally
+
+INPUT                   = @CMAKE_CURRENT_SOURCE_DIR@/Language \
+                          @CMAKE_CURRENT_BINARY_DIR@/Language
+
+ALWAYS_DETAILED_SEC     = YES
+INLINE_INHERITED_MEMB   = YES
+INHERIT_DOCS            = YES
+EXTRACT_ALL             = YES
+EXTRACT_PRIVATE         = YES
+EXTRACT_STATIC          = YES
+
+EXCLUDE_PATTERNS        = *Test.h *Test.cc

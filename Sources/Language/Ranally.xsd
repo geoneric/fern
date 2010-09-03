@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<xs:schema
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:ranally="http://www.jemig.eu/ranally"
+  elementFormDefault="qualified"
+  targetNamespace="http://www.jemig.eu/ranally"
+>
+  <xs:complexType
+    name="Ranally">
+    <xs:sequence>
+      <xs:element
+        name="Expression"
+        type="ranally:Expression"/>
+    </xs:sequence>
+    <xs:attribute name="line" type="xs:integer"/>
+    <xs:attribute name="col" type="xs:integer"/>
+  </xs:complexType>
+
+  <xs:complexType name="Expression">
+    <xs:sequence>
+      <xs:element name="Name" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

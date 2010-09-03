@@ -1,9 +1,15 @@
 #ifndef INCLUDED_RANALLY_XMLPARSER
 #define INCLUDED_RANALLY_XMLPARSER
 
+#include <unicode/unistr.h>
+
+#include "dev_XercesClient.h"
+
 
 
 namespace ranally {
+
+typedef int SyntaxTree;
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -11,7 +17,7 @@ namespace ranally {
 
   \sa        .
 */
-class XmlParser
+class XmlParser: public dev::XercesClient
 {
 
   friend class XmlParserTest;
@@ -22,9 +28,11 @@ protected:
 
 public:
 
-                   XmlParser               ();
+                   XmlParser           ();
 
-  /* virtual */    ~XmlParser              ();
+  /* virtual */    ~XmlParser          ();
+
+  SyntaxTree       parse               (UnicodeString const& xml);
 
 };
 

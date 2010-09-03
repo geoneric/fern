@@ -6,8 +6,11 @@ INCLUDE(Site)
 INCLUDE(UseDevEnv)
 
 INCLUDE(UseBoost)
+INCLUDE(UseExpat)
 INCLUDE(UseIcu)
 INCLUDE(UsePython)
+INCLUDE(UseXerces)
+INCLUDE(UseXsd)
 
 # ADD_SUBDIRECTORY(Tests/Ranally/Algorithms)
 # ADD_SUBDIRECTORY(Tests/Ranally/Operations/Local/Unary)
