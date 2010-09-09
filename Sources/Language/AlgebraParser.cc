@@ -200,7 +200,7 @@ UnicodeString AlgebraParser::parseString(
   PyArena* arena = PyArena_New();
   assert(arena);
 
-  UnicodeString result("<?xml version=\"1.0\">");
+  UnicodeString result("<?xml version=\"1.0\"?>");
 
   result += pythonAstToXml(PyParser_ASTFromString(
          dev::encodeInUTF8(string).c_str(), "", Py_file_input, 0, arena));

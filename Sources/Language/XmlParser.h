@@ -32,7 +32,9 @@ public:
 
   /* virtual */    ~XmlParser          ();
 
-  SyntaxTree       parse               (UnicodeString const& xml);
+  SyntaxTree       parse               (UnicodeString const& xml) const;
+
+  SyntaxTree       parse               (std::istream& stream) const;
 
 };
 

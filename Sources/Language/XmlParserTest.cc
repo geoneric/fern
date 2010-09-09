@@ -5,6 +5,7 @@
 #include <boost/test/unit_test_suite.hpp>
 
 #include "AlgebraParser.h"
+#include "Ranally-pskel.hxx"
 #include "XmlParser.h"
 
 
@@ -32,10 +33,41 @@ void XmlParserTest::testParse()
 {
   ranally::AlgebraParser algebraParser;
   ranally::XmlParser xmlParser;
+  UnicodeString xml;
 
   {
-    UnicodeString xml(algebraParser.parseString(UnicodeString("a")));
+    xml = algebraParser.parseString(UnicodeString("a"));
     ranally::SyntaxTree tree(xmlParser.parse(xml));
+  }
+
+  {
+    // Empty xml.
+    BOOST_CHECK_THROW(xmlParser.parse(UnicodeString()),
+      xml_schema::parsing);
+
+    // Random string.
+    BOOST_CHECK_THROW(xmlParser.parse(UnicodeString("blabla")),
+      xml_schema::parsing);
+
+    // Attribute value missing.
+    xml =
+      "<?xml version=\"1.0\"?>"
+      "<Ranally>"
+        "<Expression col=\"0\">"
+          "<Name>a</Name>"
+        "</Expression>"
+      "</Ranally>";
+    BOOST_CHECK_THROW(xmlParser.parse(xml), xml_schema::parsing);
+
+    // Attribute value out of range.
+    xml =
+      "<?xml version=\"1.0\"?>"
+      "<Ranally>"
+        "<Expression line=\"-1\" col=\"0\">"
+          "<Name>a</Name>"
+        "</Expression>"
+      "</Ranally>";
+    BOOST_CHECK_THROW(xmlParser.parse(xml), xml_schema::parsing);
   }
 }
 

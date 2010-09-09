@@ -38,7 +38,7 @@ void AlgebraParserTest::testParseString()
   {
     UnicodeString xml(parser.parseString(UnicodeString("a")));
     BOOST_CHECK(xml ==
-      "<?xml version=\"1.0\">"
+      "<?xml version=\"1.0\"?>"
       "<Ranally>"
         "<Expression line=\"1\" col=\"0\">"
           "<Name>a</Name>"

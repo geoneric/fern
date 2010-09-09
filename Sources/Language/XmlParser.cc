@@ -1,6 +1,5 @@
 #include "XmlParser.h"
 
-#include <iostream>
 #include <sstream>
 
 #include "dev_UnicodeUtils.h"
@@ -14,21 +13,8 @@ namespace {
 class Ranally_pimpl: public ranally::Ranally_pskel
 {
 public:
-  void line(
-    long long line)
-  {
-    std::cout << line << std::endl;
-  }
-
-  void col(
-    long long col)
-  {
-    std::cout << col << std::endl;
-  }
-
   void Expression()
   {
-    std::cout << "Expression" << std::endl;
   }
 };
 
@@ -36,11 +22,28 @@ public:
 
 class Expression_pimpl: public ranally::Expression_pskel
 {
+private:
+  unsigned long long _line;
+  unsigned long long _col;
+  std::string      _name;
+
 public:
+  void line(
+    unsigned long long line)
+  {
+    _line = line;
+  }
+
+  void col(
+    unsigned long long col)
+  {
+    _col = col;
+  }
+
   void Name(
     std::string const& name)
   {
-    std::cout << name << std::endl;
+    _name = name;
   }
 };
 
@@ -67,56 +70,48 @@ XmlParser::~XmlParser()
 
 
 SyntaxTree XmlParser::parse(
-         UnicodeString const& xml)
+         std::istream& stream) const
 {
-  // Do a validating parse of the xml (only in debug?).
+  xml_schema::string_pimpl string_p;
+  xml_schema::non_negative_integer_pimpl non_negative_integer_p;
 
-  // Generate a Syntax Tree based on the XML contents.
+  Expression_pimpl expression_p;
+  expression_p.parsers(string_p, non_negative_integer_p,
+    non_negative_integer_p);
 
-  // boost::scoped_ptr<xercesc::SAX2XMLReader> parser(
-  //        xercesc::XMLReaderFactory::createXMLReader());
+  Ranally_pimpl ranally_p;
+  ranally_p.parsers(expression_p);
 
-  try {
-    xml_schema::string_pimpl string_p;
-    xml_schema::integer_pimpl integer_p;
+  xml_schema::document doc_p(ranally_p, "Ranally");
 
-    Expression_pimpl expression_p;
-    expression_p.parsers(string_p);
-
-    Ranally_pimpl ranally_p;
-    ranally_p.parsers(expression_p, integer_p, integer_p);
-
-    xml_schema::document doc_p(ranally_p, "Ranally");
-
-    std::stringstream stream;
-    stream.exceptions (std::ifstream::badbit | std::ifstream::failbit);
-    stream << dev::encodeInUTF8(xml) << std::endl;
-
-    std::cout << dev::encodeInUTF8(xml) << std::endl;
-
-    ranally_p.pre();
-    doc_p.parse(stream);
-    ranally_p.post_Ranally();
-
-    // TODO error handling using a handler. The caller must be in control.
-  }
-  catch(xml_schema::parsing const& exception) {
-    std::cout << "parsing" << std::endl;
-    std::cerr << exception << std::endl;
-  }
-  catch(xml_schema::exception const& exception) {
-    std::cout << "exception" << std::endl;
-    std::cerr << exception << std::endl;
-  }
-  catch(std::exception const& exception) {
-    std::cout << "std::exception" << std::endl;
-    std::cerr << exception.what() << std::endl;
-  }
-  catch(...) {
-    std::cout << "errror" << std::endl;
-  }
+  ranally_p.pre();
+  doc_p.parse(stream);
+  ranally_p.post_Ranally();
 
   return 5;
+}
+
+
+
+//!
+/*!
+  \tparam    .
+  \param     .
+  \return    .
+  \exception std::exception In case of a System category error.
+  \exception xml_schema::parsing In case of Xml category error.
+  \warning   .
+  \sa        .
+*/
+SyntaxTree XmlParser::parse(
+         UnicodeString const& xml) const
+{
+  // Copy string contents in a string stream and work with that.
+  std::stringstream stream;
+  stream.exceptions(std::ifstream::badbit | std::ifstream::failbit);
+  stream << dev::encodeInUTF8(xml); // << std::endl;
+
+  return parse(stream);
 }
 
 } // namespace ranally
