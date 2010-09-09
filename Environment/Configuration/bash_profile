@@ -23,6 +23,8 @@ source "$_personalConfiguration/Profiles/DevEnv"
 
 export RANALLY=$projects/Ranally
 
+export CDPATH=$CDPATH:$RANALLY/Sources
+
 cd $RANALLY
 
 unset _devEnv
