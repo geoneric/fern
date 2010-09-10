@@ -1,7 +1,7 @@
 PROJECT_NAME            = Ranally
 
-INPUT                   = @CMAKE_CURRENT_SOURCE_DIR@/Language \
-                          @CMAKE_CURRENT_BINARY_DIR@/Language
+INPUT                   = ${CMAKE_CURRENT_SOURCE_DIR}/Language \
+                          ${CMAKE_CURRENT_BINARY_DIR}/Language
 
 ALWAYS_DETAILED_SEC     = YES
 INLINE_INHERITED_MEMB   = YES

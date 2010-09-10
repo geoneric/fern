@@ -20,7 +20,9 @@ public:
 
                    AlgebraParserTest   ();
 
-  void             testParseString     ();
+  void             testParseNameExpression();
+
+  void             testParseAssignment ();
 
   void             testParseFile       ();
 

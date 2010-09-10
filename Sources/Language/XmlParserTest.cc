@@ -37,7 +37,7 @@ void XmlParserTest::testParse()
 
   {
     xml = algebraParser.parseString(UnicodeString("a"));
-    ranally::SyntaxTree tree(xmlParser.parse(xml));
+    boost::shared_ptr<ranally::SyntaxTree> tree(xmlParser.parse(xml));
   }
 
   {

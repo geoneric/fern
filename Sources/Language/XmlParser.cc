@@ -1,10 +1,13 @@
 #include "XmlParser.h"
 
 #include <sstream>
+#include <boost/make_shared.hpp>
 
 #include "dev_UnicodeUtils.h"
 
 #include "Ranally-pskel.hxx"
+
+#include "NameVertex.h"
 
 
 
@@ -12,9 +15,27 @@ namespace {
 
 class Ranally_pimpl: public ranally::Ranally_pskel
 {
+private:
+  boost::shared_ptr<ranally::SyntaxTree> _syntaxTree;
+
 public:
-  void Expression()
+  void pre()
   {
+    _syntaxTree = boost::make_shared<ranally::SyntaxTree>();
+  }
+
+  void Expression(
+    boost::shared_ptr<ranally::ExpressionVertex> vertex)
+  {
+    assert(_syntaxTree);
+    assert(vertex);
+
+    // TODO add vertex to tree;
+  }
+
+  boost::shared_ptr<ranally::SyntaxTree> post_Ranally()
+  {
+    return _syntaxTree;
   }
 };
 
@@ -23,11 +44,19 @@ public:
 class Expression_pimpl: public ranally::Expression_pskel
 {
 private:
-  unsigned long long _line;
-  unsigned long long _col;
-  std::string      _name;
+  int              _line;
+  int              _col;
+  UnicodeString    _name;
+  boost::shared_ptr<ranally::ExpressionVertex> _vertex;
 
 public:
+  void pre()
+  {
+    _line = -1;
+    _col = -1;
+    _name = UnicodeString();
+  }
+
   void line(
     unsigned long long line)
   {
@@ -43,7 +72,13 @@ public:
   void Name(
     std::string const& name)
   {
-    _name = name;
+    _name = dev::decodeFromUTF8(name);
+    _vertex = boost::make_shared<ranally::NameVertex>(_line, _col, _name);
+  }
+
+  boost::shared_ptr<ranally::ExpressionVertex> post_Expression()
+  {
+    return _vertex;
   }
 };
 
@@ -69,7 +104,7 @@ XmlParser::~XmlParser()
 
 
 
-SyntaxTree XmlParser::parse(
+boost::shared_ptr<SyntaxTree> XmlParser::parse(
          std::istream& stream) const
 {
   xml_schema::string_pimpl string_p;
@@ -86,9 +121,7 @@ SyntaxTree XmlParser::parse(
 
   ranally_p.pre();
   doc_p.parse(stream);
-  ranally_p.post_Ranally();
-
-  return 5;
+  return ranally_p.post_Ranally();
 }
 
 
@@ -103,7 +136,7 @@ SyntaxTree XmlParser::parse(
   \warning   .
   \sa        .
 */
-SyntaxTree XmlParser::parse(
+boost::shared_ptr<SyntaxTree> XmlParser::parse(
          UnicodeString const& xml) const
 {
   // Copy string contents in a string stream and work with that.

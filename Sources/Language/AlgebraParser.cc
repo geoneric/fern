@@ -17,9 +17,9 @@ namespace {
 //   std::cout << PyString_AsString(string) << std::endl;
 
 void writeNameNode(
-         identifier const id,
-         expr_context_ty const /* context */,
-         UnicodeString& xml)
+  identifier const id,
+  expr_context_ty const& /* context */,
+  UnicodeString& xml)
 {
   assert(PyString_Check(id));
 
@@ -35,16 +35,16 @@ void writeNameNode(
 
 
 void writeExpressionNode(
-         expr_ty const expression,
-         UnicodeString& xml)
+  expr_ty const& expression,
+  UnicodeString& xml)
 {
   assert(expression);
 
   // 1-based linenumber.
   // 0-based column id.
   xml += (boost::format("<Expression line=\"%1%\" col=\"%2%\">")
-         % expression->lineno
-         % expression->col_offset).str().c_str();
+    % expression->lineno
+    % expression->col_offset).str().c_str();
 
   switch(expression->kind) {
     case Name_kind: {
@@ -80,6 +80,35 @@ void writeExpressionNode(
 
 
 
+/// void writeTargetNode(
+///   asdl_seq const& target,
+///   UnicodeString& xml)
+/// {
+/// }
+
+
+
+void writeAssignmentNode(
+  asdl_seq const* targets,
+  expr_ty value,
+  UnicodeString& xml)
+{
+  // Copy the value expression to one or more targets.
+  // I guess that when there is more than one target, value should be an
+  // iterable.
+  // For now we can limit the number of targets to one.
+
+
+  xml += "<Assignment>";
+
+
+  writeExpressionNode(value, xml);
+  xml += "</Assignment>";
+
+}
+
+
+
 void writeModuleNode(
          asdl_seq const* statements,
          UnicodeString& xml)
@@ -88,9 +117,10 @@ void writeModuleNode(
 
   xml += "<Ranally>";
 
+  // See Python-ast.h.
   for(int i = 0; i < statements->size; ++i) {
     stmt_ty const statement = static_cast<stmt_ty const>(
-         asdl_seq_GET(statements, i));
+      asdl_seq_GET(statements, i));
     assert(statement);
 
     switch(statement->kind) {
@@ -98,11 +128,15 @@ void writeModuleNode(
         writeExpressionNode(statement->v.Expr.value, xml);
         break;
       }
+      case Assign_kind: {
+        writeAssignmentNode(statement->v.Assign.targets,
+          statement->v.Assign.value, xml);
+        break;
+      }
       case FunctionDef_kind:
       case ClassDef_kind:
       case Return_kind:
       case Delete_kind:
-      case Assign_kind:
       case AugAssign_kind:
       case Print_kind:
       case For_kind:
@@ -133,7 +167,7 @@ void writeModuleNode(
 
 
 UnicodeString pythonAstToXml(
-         mod_ty const ast)
+  mod_ty const ast)
 {
   assert(ast);
 
@@ -182,8 +216,8 @@ AlgebraParser::~AlgebraParser()
 
 
 // UnicodeString AlgebraParser::parse(
-//          UnicodeString const& string,
-//          UnicodeString const& fileName)
+//   UnicodeString const& string,
+//   UnicodeString const& fileName)
 // {
 //   // struct _node* PyParser_SimpleParseStringFlagsFilename(const char *str, const char *filename, int start, int flags)
 // 
@@ -195,7 +229,7 @@ AlgebraParser::~AlgebraParser()
 
 
 UnicodeString AlgebraParser::parseString(
-         UnicodeString const& string)
+  UnicodeString const& string)
 {
   PyArena* arena = PyArena_New();
   assert(arena);
@@ -203,7 +237,7 @@ UnicodeString AlgebraParser::parseString(
   UnicodeString result("<?xml version=\"1.0\"?>");
 
   result += pythonAstToXml(PyParser_ASTFromString(
-         dev::encodeInUTF8(string).c_str(), "", Py_file_input, 0, arena));
+    dev::encodeInUTF8(string).c_str(), "", Py_file_input, 0, arena));
 
   PyArena_Free(arena);
   arena = 0;
