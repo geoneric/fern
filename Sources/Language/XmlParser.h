@@ -4,8 +4,6 @@
 #include <unicode/unistr.h>
 #include <boost/shared_ptr.hpp>
 
-#include "dev_XercesClient.h"
-
 
 
 namespace ranally {
@@ -20,7 +18,7 @@ class SyntaxTree;
 
   \sa        .
 */
-class XmlParser: public dev::XercesClient
+class XmlParser
 {
 
   friend class XmlParserTest;

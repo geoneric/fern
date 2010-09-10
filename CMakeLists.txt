@@ -9,7 +9,6 @@ INCLUDE(UseBoost)
 INCLUDE(UseExpat)
 INCLUDE(UseIcu)
 INCLUDE(UsePython)
-INCLUDE(UseXerces)
 INCLUDE(UseXsd)
 
 # ADD_SUBDIRECTORY(Tests/Ranally/Algorithms)

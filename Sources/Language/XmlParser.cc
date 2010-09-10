@@ -89,11 +89,7 @@ public:
 namespace ranally {
 
 XmlParser::XmlParser()
-
-  : dev::XercesClient()
-
 {
-  assert(dev::XercesClient::isInitialized());
 }
 
 
