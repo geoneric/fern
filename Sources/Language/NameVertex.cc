@@ -9,7 +9,8 @@ NameVertex::NameVertex(
   int colId,
   UnicodeString const& name)
 
-  : ExpressionVertex(lineNr, colId, name)
+  : ExpressionVertex(lineNr, colId),
+    _name(name)
 
 {
 }

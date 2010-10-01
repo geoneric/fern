@@ -9,11 +9,42 @@
 -->
   <xs:complexType
     name="Ranally">
+    <xs:choice
+      minOccurs="0"
+      maxOccurs="unbounded">
+      <xs:element
+        name="Expression"
+        type="ranally:Expression"/>
+      <xs:element
+        name="Assignment"
+        type="ranally:Assignment"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="Assignment">
+    <xs:sequence>
+      <xs:element
+        name="Targets"
+        type="ranally:Targets"/>
+      <xs:element
+        name="Expressions"
+        type="ranally:Expressions"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Targets">
     <xs:sequence>
       <xs:element
         name="Expression"
-        type="ranally:Expression"
-        maxOccurs="unbounded"/>
+        type="ranally:Expression"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Expressions">
+    <xs:sequence>
+      <xs:element
+        name="Expression"
+        type="ranally:Expression"/>
     </xs:sequence>
   </xs:complexType>
 

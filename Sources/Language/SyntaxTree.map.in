@@ -10,9 +10,15 @@
 namespace http://www.jemig.eu/ranally
 {
   include <boost/shared_ptr.hpp>;
+  include "${CMAKE_CURRENT_SOURCE_DIR}/AssignmentVertex.h";
   include "${CMAKE_CURRENT_SOURCE_DIR}/ExpressionVertex.h";
   include "${CMAKE_CURRENT_SOURCE_DIR}/SyntaxTree.h";
 
-  Ranally    "boost::shared_ptr<SyntaxTree>";
-  Expression "boost::shared_ptr<ExpressionVertex>";
+  Ranally          "boost::shared_ptr<SyntaxTree>";
+  Expression       "boost::shared_ptr<ExpressionVertex>";
+  Assignment       "boost::shared_ptr<AssignmentVertex>";
+  Targets          "std::vector<boost::shared_ptr<
+                     ranally::ExpressionVertex> >";
+  Expressions      "std::vector<boost::shared_ptr<
+                     ranally::ExpressionVertex> >";
 }

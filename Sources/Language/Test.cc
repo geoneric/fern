@@ -1,6 +1,7 @@
 #include <boost/test/included/unit_test.hpp>
 
 #include "AlgebraParserTest.h"
+#include "AssignmentVertexTest.h"
 #include "ExpressionVertexTest.h"
 #include "NameVertexTest.h"
 #include "SyntaxTreeTest.h"
@@ -26,10 +27,13 @@ boost::unit_test::test_suite* init_unit_test_suite(
   TestSuite* test = new TestSuite(argc, argv);
 
   test->add(AlgebraParserTest::suite());
+
   test->add(SyntaxVertexTest::suite());
-  test->add(SyntaxTreeTest::suite());
-  test->add(ExpressionVertexTest::suite());
   test->add(NameVertexTest::suite());
+  test->add(ExpressionVertexTest::suite());
+  test->add(AssignmentVertexTest::suite());
+  test->add(SyntaxTreeTest::suite());
+
   test->add(XmlParserTest::suite());
 
   return test;

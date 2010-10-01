@@ -36,15 +36,24 @@ void XmlParserTest::testParse()
   UnicodeString xml;
 
   {
+    // Empty xml.
+    xml = algebraParser.parseString(UnicodeString(""));
+    boost::shared_ptr<ranally::SyntaxTree> tree(xmlParser.parse(xml));
+  }
+
+  {
+    // Name expression.
     xml = algebraParser.parseString(UnicodeString("a"));
     boost::shared_ptr<ranally::SyntaxTree> tree(xmlParser.parse(xml));
   }
 
   {
-    // Empty xml.
-    BOOST_CHECK_THROW(xmlParser.parse(UnicodeString()),
-      xml_schema::parsing);
+    // Assignment statement.
+    xml = algebraParser.parseString(UnicodeString("a = b"));
+    boost::shared_ptr<ranally::SyntaxTree> tree(xmlParser.parse(xml));
+  }
 
+  {
     // Random string.
     BOOST_CHECK_THROW(xmlParser.parse(UnicodeString("blabla")),
       xml_schema::parsing);

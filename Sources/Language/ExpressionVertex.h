@@ -25,8 +25,7 @@ protected:
 public:
 
                    ExpressionVertex    (int lineNr,
-                                        int colId,
-                                        UnicodeString const& value);
+                                        int colId);
 
   virtual          ~ExpressionVertex   ();
 

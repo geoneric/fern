@@ -22,6 +22,7 @@ ADD_CUSTOM_COMMAND(
 SET(SOURCES
   ${CMAKE_CURRENT_BINARY_DIR}/Ranally-pskel.cxx
   AlgebraParser.cc
+  AssignmentVertex.cc
   ExpressionVertex.cc
   NameVertex.cc
   SyntaxTree.cc
@@ -33,6 +34,7 @@ ADD_LIBRARY(RanallyLanguage
 )
 SET(TEST_SOURCES
   AlgebraParserTest.cc
+  AssignmentVertexTest.cc
   ExpressionVertexTest.cc
   NameVertexTest.cc
   SyntaxTreeTest.cc

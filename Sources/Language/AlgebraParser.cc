@@ -88,30 +88,47 @@ void writeExpressionNode(
 
 
 
+//!
+/*!
+  \param     targets One or more targets of the value or values passed in.
+  \param     value One or more values to assign to the targets.
+  \return    .
+  \exception .
+  \warning   .
+  \sa        .
+*/
 void writeAssignmentNode(
   asdl_seq const* targets,
-  expr_ty value,
+  expr_ty const& value,
   UnicodeString& xml)
 {
   // Copy the value expression to one or more targets.
-  // I guess that when there is more than one target, value should be an
-  // iterable.
+  // When there is more than one target, value should be an iterable.
   // For now we can limit the number of targets to one.
 
+  // expr_ty:
+  //   BoolOp_kind=1, BinOp_kind=2, UnaryOp_kind=3, Lambda_kind=4,
+  //   IfExp_kind=5, Dict_kind=6, ListComp_kind=7, GeneratorExp_kind=8,
+  //   Yield_kind=9, Compare_kind=10, Call_kind=11, Repr_kind=12, Num_kind=13,
+  //   Str_kind=14, Attribute_kind=15, Subscript_kind=16, Name_kind=17,
+  //   List_kind=18, Tuple_kind=19
 
-  xml += "<Assignment>";
+  assert(targets->size == 1); // TODO Error handling.
+  expr_ty const target = static_cast<expr_ty const>(asdl_seq_GET(targets, 0));
+  assert(target->kind == Name_kind); // TODO Error handling.
 
-
+  xml += "<Assignment><Targets>";
+  writeExpressionNode(target, xml);
+  xml += "</Targets><Expressions>";
   writeExpressionNode(value, xml);
-  xml += "</Assignment>";
-
+  xml += "</Expressions></Assignment>";
 }
 
 
 
 void writeModuleNode(
-         asdl_seq const* statements,
-         UnicodeString& xml)
+  asdl_seq const* statements,
+  UnicodeString& xml)
 {
   assert(statements);
 

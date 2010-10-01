@@ -1,8 +1,6 @@
 #ifndef INCLUDED_RANALLY_SYNTAXVERTEX
 #define INCLUDED_RANALLY_SYNTAXVERTEX
 
-#include <unicode/unistr.h>
-
 
 
 namespace ranally {
@@ -19,21 +17,23 @@ class SyntaxVertex
   friend class SyntaxVertexTest;
 
 private:
+
   int              _line;
 
   int              _col;
-
-  UnicodeString    _value;
 
 protected:
 
 public:
 
                    SyntaxVertex        (int lineNr,
-                                        int colId,
-                                        UnicodeString const& value);
+                                        int colId);
 
   virtual          ~SyntaxVertex       ();
+
+  int              line                () const;
+
+  int              col                 () const;
 
 };
 

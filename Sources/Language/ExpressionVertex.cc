@@ -6,10 +6,9 @@ namespace ranally {
 
 ExpressionVertex::ExpressionVertex(
   int lineNr,
-  int colId,
-  UnicodeString const& value)
+  int colId)
 
-  : SyntaxVertex(lineNr, colId, value)
+  : SyntaxVertex(lineNr, colId)
 
 {
 }

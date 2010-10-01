@@ -25,9 +25,16 @@ public:
   }
 
   void Expression(
-    boost::shared_ptr<ranally::ExpressionVertex> vertex)
+    boost::shared_ptr<ranally::ExpressionVertex> const& vertex)
   {
-    assert(_syntaxTree);
+    assert(vertex);
+
+    // TODO add vertex to tree;
+  }
+
+  void Assignment(
+    boost::shared_ptr<ranally::ExpressionVertex> const& vertex)
+  {
     assert(vertex);
 
     // TODO add vertex to tree;
@@ -36,6 +43,97 @@ public:
   boost::shared_ptr<ranally::SyntaxTree> post_Ranally()
   {
     return _syntaxTree;
+  }
+};
+
+
+
+class Assignment_pimpl: public ranally::Assignment_pskel
+{
+private:
+  std::vector<boost::shared_ptr<ranally::ExpressionVertex> > _targets;
+  std::vector<boost::shared_ptr<ranally::ExpressionVertex> > _expressions;
+
+public:
+  void pre()
+  {
+    _targets.clear();
+    _expressions.clear();
+  }
+
+  void Targets(
+    std::vector<boost::shared_ptr<ranally::ExpressionVertex> > const& vertices)
+  {
+    assert(!vertices.empty());
+    _targets = vertices;
+  }
+
+  void Expressions(
+    std::vector<boost::shared_ptr<ranally::ExpressionVertex> > const& vertices)
+  {
+    assert(!vertices.empty());
+    _expressions = vertices;
+  }
+
+  boost::shared_ptr<ranally::AssignmentVertex> post_Assignment()
+  {
+    assert(!_targets.empty() && !_expressions.empty());
+    return boost::make_shared<ranally::AssignmentVertex>(_targets,
+      _expressions);
+  }
+};
+
+
+
+class Targets_pimpl: public ranally::Targets_pskel
+{
+private:
+  std::vector<boost::shared_ptr<ranally::ExpressionVertex> > _vertices;
+
+public:
+  void pre()
+  {
+    _vertices.clear();
+  }
+
+  void Expression(
+    boost::shared_ptr<ranally::ExpressionVertex> const& vertex)
+  {
+    assert(vertex);
+    _vertices.push_back(vertex);
+  }
+
+  std::vector<boost::shared_ptr<ranally::ExpressionVertex> > post_Targets()
+  {
+    assert(!_vertices.empty());
+    return _vertices;
+  }
+};
+
+
+
+class Expressions_pimpl: public ranally::Expressions_pskel
+{
+private:
+  std::vector<boost::shared_ptr<ranally::ExpressionVertex> > _vertices;
+
+public:
+  void pre()
+  {
+    _vertices.clear();
+  }
+
+  void Expression(
+    boost::shared_ptr<ranally::ExpressionVertex> const& vertex)
+  {
+    assert(vertex);
+    _vertices.push_back(vertex);
+  }
+
+  std::vector<boost::shared_ptr<ranally::ExpressionVertex> > post_Expressions()
+  {
+    assert(!_vertices.empty());
+    return _vertices;
   }
 };
 
@@ -110,8 +208,17 @@ boost::shared_ptr<SyntaxTree> XmlParser::parse(
   expression_p.parsers(string_p, non_negative_integer_p,
     non_negative_integer_p);
 
+  Targets_pimpl targets_p;
+  targets_p.parsers(expression_p);
+
+  Expressions_pimpl expressions_p;
+  expressions_p.parsers(expression_p);
+
+  Assignment_pimpl assignment_p;
+  assignment_p.parsers(targets_p, expressions_p);
+
   Ranally_pimpl ranally_p;
-  ranally_p.parsers(expression_p);
+  ranally_p.parsers(expression_p, assignment_p);
 
   xml_schema::document doc_p(ranally_p, "Ranally");
 

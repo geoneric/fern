@@ -60,7 +60,22 @@ void AlgebraParserTest::testParseAssignment()
 
   {
     UnicodeString xml(parser.parseString(UnicodeString("a = b")));
-    BOOST_CHECK(xml == "wrong");
+    BOOST_CHECK(xml ==
+      "<?xml version=\"1.0\"?>"
+        "<Ranally>"
+          "<Assignment>"
+            "<Targets>"
+              "<Expression line=\"1\" col=\"0\">"
+                "<Name>a</Name>"
+              "</Expression>"
+            "</Targets>"
+            "<Expressions>"
+              "<Expression line=\"1\" col=\"4\">"
+                "<Name>b</Name>"
+              "</Expression>"
+            "</Expressions>"
+          "</Assignment>"
+        "</Ranally>");
   }
 }
 
