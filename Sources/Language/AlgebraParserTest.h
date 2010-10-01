@@ -26,6 +26,10 @@ public:
 
   void             testParseFile       ();
 
+  void             testParseString     ();
+
+  void             testParseNumber     ();
+
   static boost::unit_test::test_suite* suite();
 
 };

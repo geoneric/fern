@@ -19,8 +19,10 @@ boost::unit_test::test_suite* AlgebraParserTest::suite()
     &AlgebraParserTest::testParseNameExpression, instance));
   suite->add(BOOST_CLASS_TEST_CASE(
     &AlgebraParserTest::testParseAssignment, instance));
-
-
+  suite->add(BOOST_CLASS_TEST_CASE(
+    &AlgebraParserTest::testParseString, instance));
+  suite->add(BOOST_CLASS_TEST_CASE(
+    &AlgebraParserTest::testParseNumber, instance));
 
   /// suite->add(BOOST_CLASS_TEST_CASE(
   ///   &AlgebraParserTest::testParseFile, instance));
@@ -76,6 +78,30 @@ void AlgebraParserTest::testParseAssignment()
             "</Expressions>"
           "</Assignment>"
         "</Ranally>");
+  }
+}
+
+
+
+void AlgebraParserTest::testParseString()
+{
+  ranally::AlgebraParser parser;
+
+  {
+    UnicodeString xml(parser.parseString(UnicodeString("five")));
+    BOOST_CHECK(xml == "TODO");
+  }
+}
+
+
+
+void AlgebraParserTest::testParseNumber()
+{
+  ranally::AlgebraParser parser;
+
+  {
+    UnicodeString xml(parser.parseString(UnicodeString("5")));
+    BOOST_CHECK(xml == "TODO");
   }
 }
 
