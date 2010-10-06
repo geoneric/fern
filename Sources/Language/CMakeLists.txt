@@ -25,6 +25,7 @@ SET(SOURCES
   AssignmentVertex.cc
   ExpressionVertex.cc
   NameVertex.cc
+  StringVertex.cc
   SyntaxTree.cc
   SyntaxVertex.cc
   XmlParser.cc
@@ -37,6 +38,7 @@ SET(TEST_SOURCES
   AssignmentVertexTest.cc
   ExpressionVertexTest.cc
   NameVertexTest.cc
+  StringVertexTest.cc
   SyntaxTreeTest.cc
   SyntaxVertexTest.cc
   Test.cc

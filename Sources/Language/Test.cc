@@ -4,6 +4,7 @@
 #include "AssignmentVertexTest.h"
 #include "ExpressionVertexTest.h"
 #include "NameVertexTest.h"
+#include "StringVertexTest.h"
 #include "SyntaxTreeTest.h"
 #include "SyntaxVertexTest.h"
 #include "XmlParserTest.h"
@@ -30,6 +31,7 @@ boost::unit_test::test_suite* init_unit_test_suite(
 
   test->add(SyntaxVertexTest::suite());
   test->add(NameVertexTest::suite());
+  test->add(StringVertexTest::suite());
   test->add(ExpressionVertexTest::suite());
   test->add(AssignmentVertexTest::suite());
   test->add(SyntaxTreeTest::suite());

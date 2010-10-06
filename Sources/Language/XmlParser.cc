@@ -8,6 +8,7 @@
 #include "Ranally-pskel.hxx"
 
 #include "NameVertex.h"
+#include "StringVertex.h"
 
 
 
@@ -145,6 +146,7 @@ private:
   int              _line;
   int              _col;
   UnicodeString    _name;
+  UnicodeString    _string;
   boost::shared_ptr<ranally::ExpressionVertex> _vertex;
 
 public:
@@ -153,6 +155,7 @@ public:
     _line = -1;
     _col = -1;
     _name = UnicodeString();
+    _string = UnicodeString();
   }
 
   void line(
@@ -172,6 +175,13 @@ public:
   {
     _name = dev::decodeFromUTF8(name);
     _vertex = boost::make_shared<ranally::NameVertex>(_line, _col, _name);
+  }
+
+  void String(
+    std::string const& string)
+  {
+    _string = dev::decodeFromUTF8(string);
+    _vertex = boost::make_shared<ranally::StringVertex>(_line, _col, _string);
   }
 
   boost::shared_ptr<ranally::ExpressionVertex> post_Expression()
@@ -205,7 +215,7 @@ boost::shared_ptr<SyntaxTree> XmlParser::parse(
   xml_schema::non_negative_integer_pimpl non_negative_integer_p;
 
   Expression_pimpl expression_p;
-  expression_p.parsers(string_p, non_negative_integer_p,
+  expression_p.parsers(string_p, string_p, non_negative_integer_p,
     non_negative_integer_p);
 
   Targets_pimpl targets_p;

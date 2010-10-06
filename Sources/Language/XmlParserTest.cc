@@ -48,6 +48,24 @@ void XmlParserTest::testParse()
   }
 
   {
+    // String expression.
+    xml = algebraParser.parseString(UnicodeString("\"five\""));
+    boost::shared_ptr<ranally::SyntaxTree> tree(xmlParser.parse(xml));
+  }
+
+  // {
+  //   // Numeric expression.
+  //   xml = algebraParser.parseString(UnicodeString("5"));
+  //   boost::shared_ptr<ranally::SyntaxTree> tree(xmlParser.parse(xml));
+
+  //   xml = algebraParser.parseString(UnicodeString("5L"));
+  //   boost::shared_ptr<ranally::SyntaxTree> tree(xmlParser.parse(xml));
+
+  //   xml = algebraParser.parseString(UnicodeString("5.5"));
+  //   boost::shared_ptr<ranally::SyntaxTree> tree(xmlParser.parse(xml));
+  // }
+
+  {
     // Assignment statement.
     xml = algebraParser.parseString(UnicodeString("a = b"));
     boost::shared_ptr<ranally::SyntaxTree> tree(xmlParser.parse(xml));

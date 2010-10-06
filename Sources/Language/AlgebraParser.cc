@@ -34,6 +34,60 @@ void writeNameNode(
 
 
 
+void writeNumberNode(
+  object const& number,
+  UnicodeString& xml)
+{
+  // TODO Handle all numeric types.
+  xml += "<Number>";
+
+  if (PyInt_CheckExact(number)) {
+    xml += "<Integer>";
+    xml += (boost::format("%1%") % PyInt_AsLong(number)).str().c_str();
+    xml += "</Integer>";
+  }
+  else if (PyLong_CheckExact(number)) {
+    xml += "<Long>";
+    xml += (boost::format("%1%") % PyLong_AsLong(number)).str().c_str();
+    xml += "</Long>";
+  }
+  else if(PyFloat_CheckExact(number)) {
+    xml += "<Double>";
+    xml += (boost::format("%1%") % PyFloat_AsDouble(number)).str().c_str();
+    xml += "</Double>";
+  }
+  else {
+    // TODO Error handling.
+    // PyObject* type = PyObject_Type(number);
+    // PyObject* string = PyObject_Str(type);
+    // std::cout << PyString_AsString(string) << std::endl;
+    assert(false);
+  }
+
+  xml += "</Number>";
+}
+
+
+
+void writeStringNode(
+  string const string,
+  UnicodeString& xml)
+{
+  // TODO Verify the string is encoded as UTF8.
+  assert(PyString_Check(string));
+
+  if(PyString_Size(string) == 0) {
+    xml += "<String/>";
+  }
+  else {
+    xml += "<String>";
+    xml += PyString_AsString(string);
+    xml += "</String>";
+  }
+}
+
+
+
 void writeExpressionNode(
   expr_ty const& expression,
   UnicodeString& xml)
@@ -51,6 +105,14 @@ void writeExpressionNode(
       writeNameNode(expression->v.Name.id, expression->v.Name.ctx, xml);
       break;
     }
+    case Num_kind: {
+      writeNumberNode(expression->v.Num.n, xml);
+      break;
+    }
+    case Str_kind: {
+      writeStringNode(expression->v.Str.s, xml);
+      break;
+    }
     case BoolOp_kind:
     case BinOp_kind:
     case UnaryOp_kind:
@@ -63,8 +125,6 @@ void writeExpressionNode(
     case Compare_kind:
     case Call_kind:
     case Repr_kind:
-    case Num_kind:
-    case Str_kind:
     case Attribute_kind:
     case Subscript_kind:
     case List_kind:
