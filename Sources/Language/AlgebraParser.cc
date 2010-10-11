@@ -12,6 +12,9 @@
 
 namespace {
 
+void               writeExpressionNode (expr_ty const& expression,
+                                        UnicodeString& xml);
+
 //   PyObject* type = PyObject_Type(id);
 //   PyObject* string = PyObject_Str(type);
 //   std::cout << PyString_AsString(string) << std::endl;
@@ -39,14 +42,15 @@ void writeNumberNode(
   UnicodeString& xml)
 {
   // TODO Handle all numeric types.
+  // TODO Use types with a known size: int32, int64, float32, float64, etc.
   xml += "<Number>";
 
-  if (PyInt_CheckExact(number)) {
+  if(PyInt_CheckExact(number)) {
     xml += "<Integer>";
     xml += (boost::format("%1%") % PyInt_AsLong(number)).str().c_str();
     xml += "</Integer>";
   }
-  else if (PyLong_CheckExact(number)) {
+  else if(PyLong_CheckExact(number)) {
     xml += "<Long>";
     xml += (boost::format("%1%") % PyLong_AsLong(number)).str().c_str();
     xml += "</Long>";
@@ -58,9 +62,6 @@ void writeNumberNode(
   }
   else {
     // TODO Error handling.
-    // PyObject* type = PyObject_Type(number);
-    // PyObject* string = PyObject_Str(type);
-    // std::cout << PyString_AsString(string) << std::endl;
     assert(false);
   }
 
@@ -84,6 +85,50 @@ void writeStringNode(
     xml += PyString_AsString(string);
     xml += "</String>";
   }
+}
+
+
+
+void writeExpressionsNode(
+  asdl_seq const* expressions,
+  UnicodeString& xml)
+{
+  if(expressions == 0) {
+    xml += "<Expressions/>";
+  }
+  else {
+    assert(expressions->size > 0);
+    xml += "<Expressions>";
+
+    for(int i = 0; i < expressions->size; ++i) {
+      expr_ty const expression = static_cast<expr_ty const>(
+        asdl_seq_GET(expressions, i));
+      writeExpressionNode(expression, xml);
+    }
+
+    xml += "</Expressions>";
+  }
+}
+
+
+
+void writeCallNode(
+  expr_ty const function,
+  asdl_seq const* arguments,
+  asdl_seq const* keywords,
+  expr_ty const starargs,
+  expr_ty const kwargs,
+  UnicodeString& xml)
+{
+  assert(keywords == 0 || keywords->size == 0); // TODO Support keywords.
+  assert(starargs == 0); // TODO
+  assert(kwargs == 0); // TODO
+
+  xml += "<Function>";
+  assert(function->kind == Name_kind);
+  writeNameNode(function->v.Name.id, function->v.Name.ctx, xml);
+  writeExpressionsNode(arguments, xml);
+  xml += "</Function>";
 }
 
 
@@ -113,6 +158,12 @@ void writeExpressionNode(
       writeStringNode(expression->v.Str.s, xml);
       break;
     }
+    case Call_kind: {
+      writeCallNode(expression->v.Call.func, expression->v.Call.args,
+        expression->v.Call.keywords, expression->v.Call.starargs,
+        expression->v.Call.kwargs, xml);
+      break;
+    }
     case BoolOp_kind:
     case BinOp_kind:
     case UnaryOp_kind:
@@ -123,7 +174,6 @@ void writeExpressionNode(
     case GeneratorExp_kind:
     case Yield_kind:
     case Compare_kind:
-    case Call_kind:
     case Repr_kind:
     case Attribute_kind:
     case Subscript_kind:
@@ -137,14 +187,6 @@ void writeExpressionNode(
 
   xml += "</Expression>";
 }
-
-
-
-/// void writeTargetNode(
-///   asdl_seq const& target,
-///   UnicodeString& xml)
-/// {
-/// }
 
 
 

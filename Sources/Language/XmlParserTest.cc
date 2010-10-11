@@ -1,8 +1,11 @@
 #include "XmlParserTest.h"
 
+#include <iostream>
 #include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
+
+#include "dev_UnicodeUtils.h"
 
 #include "AlgebraParser.h"
 #include "Ranally-pskel.hxx"
@@ -34,41 +37,52 @@ void XmlParserTest::testParse()
   ranally::AlgebraParser algebraParser;
   ranally::XmlParser xmlParser;
   UnicodeString xml;
+  boost::shared_ptr<ranally::SyntaxTree> tree;
 
   {
     // Empty xml.
     xml = algebraParser.parseString(UnicodeString(""));
-    boost::shared_ptr<ranally::SyntaxTree> tree(xmlParser.parse(xml));
+    tree = xmlParser.parse(xml);
   }
 
   {
     // Name expression.
     xml = algebraParser.parseString(UnicodeString("a"));
-    boost::shared_ptr<ranally::SyntaxTree> tree(xmlParser.parse(xml));
+    tree = xmlParser.parse(xml);
   }
 
   {
     // String expression.
     xml = algebraParser.parseString(UnicodeString("\"five\""));
-    boost::shared_ptr<ranally::SyntaxTree> tree(xmlParser.parse(xml));
+    tree = xmlParser.parse(xml);
   }
 
-  // {
-  //   // Numeric expression.
-  //   xml = algebraParser.parseString(UnicodeString("5"));
-  //   boost::shared_ptr<ranally::SyntaxTree> tree(xmlParser.parse(xml));
+  {
+    // Numeric expression.
+    xml = algebraParser.parseString(UnicodeString("5"));
+    tree = xmlParser.parse(xml);
 
-  //   xml = algebraParser.parseString(UnicodeString("5L"));
-  //   boost::shared_ptr<ranally::SyntaxTree> tree(xmlParser.parse(xml));
+    xml = algebraParser.parseString(UnicodeString("5L"));
+    tree = xmlParser.parse(xml);
 
-  //   xml = algebraParser.parseString(UnicodeString("5.5"));
-  //   boost::shared_ptr<ranally::SyntaxTree> tree(xmlParser.parse(xml));
-  // }
+    xml = algebraParser.parseString(UnicodeString("5.5"));
+    tree = xmlParser.parse(xml);
+  }
+
+  {
+    // Function call.
+    xml = algebraParser.parseString(UnicodeString("f()"));
+    tree = xmlParser.parse(xml);
+
+    xml = algebraParser.parseString(UnicodeString(
+      "f(1, \"2\", three, four())"));
+    tree = xmlParser.parse(xml);
+  }
 
   {
     // Assignment statement.
     xml = algebraParser.parseString(UnicodeString("a = b"));
-    boost::shared_ptr<ranally::SyntaxTree> tree(xmlParser.parse(xml));
+    tree = xmlParser.parse(xml);
   }
 
   {

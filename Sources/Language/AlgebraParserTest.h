@@ -30,6 +30,8 @@ public:
 
   void             testParseNumber     ();
 
+  void             testParseCall       ();
+
   static boost::unit_test::test_suite* suite();
 
 };

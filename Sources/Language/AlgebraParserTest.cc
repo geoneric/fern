@@ -23,6 +23,8 @@ boost::unit_test::test_suite* AlgebraParserTest::suite()
     &AlgebraParserTest::testParseString, instance));
   suite->add(BOOST_CLASS_TEST_CASE(
     &AlgebraParserTest::testParseNumber, instance));
+  suite->add(BOOST_CLASS_TEST_CASE(
+    &AlgebraParserTest::testParseCall, instance));
 
   /// suite->add(BOOST_CLASS_TEST_CASE(
   ///   &AlgebraParserTest::testParseFile, instance));
@@ -162,6 +164,60 @@ void AlgebraParserTest::testParseNumber()
           "<Number>"
             "<Double>5.5</Double>"
           "</Number>"
+        "</Expression>"
+      "</Ranally>");
+  }
+}
+
+
+
+void AlgebraParserTest::testParseCall()
+{
+  ranally::AlgebraParser parser;
+  UnicodeString xml;
+
+  {
+    xml = parser.parseString(UnicodeString("f()"));
+    BOOST_CHECK(xml ==
+      "<?xml version=\"1.0\"?>"
+      "<Ranally>"
+        "<Expression line=\"1\" col=\"0\">"
+          "<Function>"
+            "<Name>f</Name>"
+            "<Expressions/>"
+          "</Function>"
+        "</Expression>"
+      "</Ranally>");
+  }
+
+  {
+    xml = parser.parseString(UnicodeString("f(1, \"2\", three, four())"));
+    BOOST_CHECK(xml ==
+      "<?xml version=\"1.0\"?>"
+      "<Ranally>"
+        "<Expression line=\"1\" col=\"0\">"
+          "<Function>"
+            "<Name>f</Name>"
+            "<Expressions>"
+              "<Expression line=\"1\" col=\"2\">"
+                "<Number>"
+                  "<Integer>1</Integer>"
+                "</Number>"
+              "</Expression>"
+              "<Expression line=\"1\" col=\"5\">"
+                "<String>2</String>"
+              "</Expression>"
+              "<Expression line=\"1\" col=\"10\">"
+                "<Name>three</Name>"
+              "</Expression>"
+              "<Expression line=\"1\" col=\"17\">"
+                "<Function>"
+                  "<Name>four</Name>"
+                  "<Expressions/>"
+                "</Function>"
+              "</Expression>"
+            "</Expressions>"
+          "</Function>"
         "</Expression>"
       "</Ranally>");
   }

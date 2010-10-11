@@ -4,6 +4,12 @@
 
 namespace ranally {
 
+SyntaxVertex::SyntaxVertex()
+{
+}
+
+
+
 SyntaxVertex::SyntaxVertex(
   int lineNr,
   int colId)
@@ -18,6 +24,16 @@ SyntaxVertex::SyntaxVertex(
 
 SyntaxVertex::~SyntaxVertex()
 {
+}
+
+
+
+void SyntaxVertex::setPosition(
+  int lineNr,
+  int colId)
+{
+  _line = lineNr;
+  _col = colId;
 }
 
 

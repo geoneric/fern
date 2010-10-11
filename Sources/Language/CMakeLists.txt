@@ -24,7 +24,9 @@ SET(SOURCES
   AlgebraParser.cc
   AssignmentVertex.cc
   ExpressionVertex.cc
+  FunctionVertex.cc
   NameVertex.cc
+  NumberVertex.cc
   StringVertex.cc
   SyntaxTree.cc
   SyntaxVertex.cc
@@ -37,7 +39,9 @@ SET(TEST_SOURCES
   AlgebraParserTest.cc
   AssignmentVertexTest.cc
   ExpressionVertexTest.cc
+  FunctionVertexTest.cc
   NameVertexTest.cc
+  NumberVertexTest.cc
   StringVertexTest.cc
   SyntaxTreeTest.cc
   SyntaxVertexTest.cc

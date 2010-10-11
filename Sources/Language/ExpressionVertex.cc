@@ -4,6 +4,15 @@
 
 namespace ranally {
 
+ExpressionVertex::ExpressionVertex()
+
+  : SyntaxVertex()
+
+{
+}
+
+
+
 ExpressionVertex::ExpressionVertex(
   int lineNr,
   int colId)

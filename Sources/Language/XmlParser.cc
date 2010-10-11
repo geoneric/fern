@@ -1,13 +1,16 @@
 #include "XmlParser.h"
 
 #include <sstream>
+#include <stack>
 #include <boost/make_shared.hpp>
 
 #include "dev_UnicodeUtils.h"
 
 #include "Ranally-pskel.hxx"
 
+#include "FunctionVertex.h"
 #include "NameVertex.h"
+#include "NumberVertex.h"
 #include "StringVertex.h"
 
 
@@ -116,25 +119,118 @@ public:
 class Expressions_pimpl: public ranally::Expressions_pskel
 {
 private:
-  std::vector<boost::shared_ptr<ranally::ExpressionVertex> > _vertices;
+  typedef std::vector<boost::shared_ptr<ranally::ExpressionVertex> >
+    ExpressionsData;
+
+  std::stack<ExpressionsData> _dataStack;
 
 public:
   void pre()
   {
-    _vertices.clear();
+    _dataStack.push(ExpressionsData());
   }
 
   void Expression(
     boost::shared_ptr<ranally::ExpressionVertex> const& vertex)
   {
     assert(vertex);
-    _vertices.push_back(vertex);
+    _dataStack.top().push_back(vertex);
   }
 
   std::vector<boost::shared_ptr<ranally::ExpressionVertex> > post_Expressions()
   {
-    assert(!_vertices.empty());
-    return _vertices;
+    assert(!_dataStack.empty());
+    ExpressionsData result(_dataStack.top());
+    _dataStack.pop();
+    return result;
+  }
+};
+
+
+
+class Number_pimpl: public ranally::Number_pskel
+{
+private:
+  boost::shared_ptr<ranally::ExpressionVertex> _vertex;
+
+public:
+  void pre()
+  {
+    _vertex.reset();
+  }
+
+  void Integer(
+    int value)
+  {
+    assert(!_vertex);
+    _vertex = boost::make_shared<ranally::NumberVertex<int> >(value);
+  }
+
+  void Long(
+    long long value)
+  {
+    assert(!_vertex);
+    _vertex = boost::make_shared<ranally::NumberVertex<long long> >(value);
+  }
+
+  void Double(
+    double value)
+  {
+    assert(!_vertex);
+    _vertex = boost::make_shared<ranally::NumberVertex<double> >(value);
+  }
+
+  boost::shared_ptr<ranally::ExpressionVertex> post_Number()
+  {
+    assert(_vertex);
+    return _vertex;
+  }
+};
+
+
+
+class Function_pimpl: public ranally::Function_pskel
+{
+private:
+  typedef std::vector<boost::shared_ptr<ranally::ExpressionVertex> >
+    ExpressionVertices;
+
+  struct FunctionData
+  {
+    UnicodeString name;
+    ExpressionVertices expressionVertices;
+  };
+
+  std::stack<FunctionData> _dataStack;
+
+public:
+  void pre()
+  {
+    _dataStack.push(FunctionData());
+  }
+
+  void Name(
+    std::string const& name)
+  {
+    assert(!_dataStack.empty());
+    _dataStack.top().name = dev::decodeFromUTF8(name);
+  }
+
+  void Expressions(
+    std::vector<boost::shared_ptr<ranally::ExpressionVertex> > const& vertices)
+  {
+    assert(!_dataStack.empty());
+    assert(_dataStack.top().expressionVertices.empty());
+    _dataStack.top().expressionVertices = vertices;
+  }
+
+  boost::shared_ptr<ranally::FunctionVertex> post_Function()
+  {
+    assert(!_dataStack.empty());
+    FunctionData result(_dataStack.top());
+    _dataStack.pop();
+    return boost::make_shared<ranally::FunctionVertex>(result.name,
+      result.expressionVertices);
   }
 };
 
@@ -143,50 +239,79 @@ public:
 class Expression_pimpl: public ranally::Expression_pskel
 {
 private:
-  int              _line;
-  int              _col;
-  UnicodeString    _name;
-  UnicodeString    _string;
-  boost::shared_ptr<ranally::ExpressionVertex> _vertex;
+  struct ExpressionData
+  {
+    int line;
+    int col;
+    boost::shared_ptr<ranally::ExpressionVertex> vertex;
+  };
+
+  std::stack<ExpressionData> _dataStack;
 
 public:
   void pre()
   {
-    _line = -1;
-    _col = -1;
-    _name = UnicodeString();
-    _string = UnicodeString();
+    _dataStack.push(ExpressionData());
   }
 
   void line(
     unsigned long long line)
   {
-    _line = line;
+    assert(!_dataStack.empty());
+    _dataStack.top().line = line;
   }
 
   void col(
     unsigned long long col)
   {
-    _col = col;
+    assert(!_dataStack.empty());
+    _dataStack.top().col = col;
   }
 
   void Name(
     std::string const& name)
   {
-    _name = dev::decodeFromUTF8(name);
-    _vertex = boost::make_shared<ranally::NameVertex>(_line, _col, _name);
+    assert(!_dataStack.empty());
+    assert(!_dataStack.top().vertex);
+    _dataStack.top().vertex = boost::make_shared<ranally::NameVertex>(
+      _dataStack.top().line, _dataStack.top().col, dev::decodeFromUTF8(name));
   }
 
   void String(
     std::string const& string)
   {
-    _string = dev::decodeFromUTF8(string);
-    _vertex = boost::make_shared<ranally::StringVertex>(_line, _col, _string);
+    assert(!_dataStack.empty());
+    assert(!_dataStack.top().vertex);
+    _dataStack.top().vertex = boost::make_shared<ranally::StringVertex>(
+      _dataStack.top().line, _dataStack.top().col, dev::decodeFromUTF8(string));
+  }
+
+  void Number(
+    boost::shared_ptr<ranally::ExpressionVertex> const& vertex)
+  {
+    assert(!_dataStack.empty());
+    assert(!_dataStack.top().vertex);
+    _dataStack.top().vertex = vertex;
+    _dataStack.top().vertex->setPosition(_dataStack.top().line,
+      _dataStack.top().col);
+  }
+
+  void Function(
+    boost::shared_ptr<ranally::FunctionVertex> const& vertex)
+  {
+    assert(!_dataStack.empty());
+    assert(!_dataStack.top().vertex);
+    _dataStack.top().vertex = vertex;
+    _dataStack.top().vertex->setPosition(_dataStack.top().line,
+      _dataStack.top().col);
   }
 
   boost::shared_ptr<ranally::ExpressionVertex> post_Expression()
   {
-    return _vertex;
+    assert(!_dataStack.empty());
+    ExpressionData result(_dataStack.top());
+    _dataStack.pop();
+    return result.vertex;
   }
 };
 
@@ -211,18 +336,28 @@ XmlParser::~XmlParser()
 boost::shared_ptr<SyntaxTree> XmlParser::parse(
          std::istream& stream) const
 {
-  xml_schema::string_pimpl string_p;
+  xml_schema::int_pimpl int_p;
   xml_schema::non_negative_integer_pimpl non_negative_integer_p;
+  xml_schema::long_pimpl long_p;
+  xml_schema::double_pimpl double_p;
+  xml_schema::string_pimpl string_p;
+
+  Number_pimpl number_p;
+  number_p.parsers(int_p, long_p, double_p);
 
   Expression_pimpl expression_p;
-  expression_p.parsers(string_p, string_p, non_negative_integer_p,
-    non_negative_integer_p);
-
-  Targets_pimpl targets_p;
-  targets_p.parsers(expression_p);
 
   Expressions_pimpl expressions_p;
   expressions_p.parsers(expression_p);
+
+  Function_pimpl function_p;
+  function_p.parsers(string_p, expressions_p);
+
+  expression_p.parsers(string_p, string_p, number_p, function_p,
+    non_negative_integer_p, non_negative_integer_p);
+
+  Targets_pimpl targets_p;
+  targets_p.parsers(expression_p);
 
   Assignment_pimpl assignment_p;
   assignment_p.parsers(targets_p, expressions_p);

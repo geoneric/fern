@@ -22,10 +22,12 @@ private:
 
 protected:
 
-public:
+                   ExpressionVertex    ();
 
                    ExpressionVertex    (int lineNr,
                                         int colId);
+
+public:
 
   virtual          ~ExpressionVertex   ();
 

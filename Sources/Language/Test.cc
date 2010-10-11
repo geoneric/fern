@@ -3,7 +3,9 @@
 #include "AlgebraParserTest.h"
 #include "AssignmentVertexTest.h"
 #include "ExpressionVertexTest.h"
+#include "FunctionVertexTest.h"
 #include "NameVertexTest.h"
+#include "NumberVertexTest.h"
 #include "StringVertexTest.h"
 #include "SyntaxTreeTest.h"
 #include "SyntaxVertexTest.h"
@@ -31,8 +33,10 @@ boost::unit_test::test_suite* init_unit_test_suite(
 
   test->add(SyntaxVertexTest::suite());
   test->add(NameVertexTest::suite());
+  test->add(NumberVertexTest::suite());
   test->add(StringVertexTest::suite());
   test->add(ExpressionVertexTest::suite());
+  test->add(FunctionVertexTest::suite());
   test->add(AssignmentVertexTest::suite());
   test->add(SyntaxTreeTest::suite());
 

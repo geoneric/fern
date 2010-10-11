@@ -23,6 +23,7 @@
 
   <xs:complexType name="Assignment">
     <xs:sequence>
+      <!-- TODO Replace Targets by Expressions. -->
       <xs:element
         name="Targets"
         type="ranally:Targets"/>
@@ -41,7 +42,9 @@
   </xs:complexType>
 
   <xs:complexType name="Expressions">
-    <xs:sequence>
+    <xs:sequence
+      minOccurs="0"
+      maxOccurs="unbounded">
       <xs:element
         name="Expression"
         type="ranally:Expression"/>
@@ -52,10 +55,45 @@
     <xs:choice
       minOccurs="0"
       maxOccurs="unbounded">
-      <xs:element name="Name" type="xs:string"/>
-      <xs:element name="String" type="xs:string"/>
+      <xs:element
+        name="Name"
+        type="xs:string"/>
+      <xs:element
+        name="String"
+        type="xs:string"/>
+      <xs:element
+        name="Number"
+        type="ranally:Number"/>
+      <xs:element
+        name="Function"
+        type="ranally:Function"/>
     </xs:choice>
     <xs:attribute name="line" type="xs:nonNegativeInteger" use="required"/>
     <xs:attribute name="col" type="xs:nonNegativeInteger" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="Number">
+    <xs:choice>
+      <xs:element
+        name="Integer"
+        type="xs:int"/>
+      <xs:element
+        name="Long"
+        type="xs:long"/>
+      <xs:element
+        name="Double"
+        type="xs:double"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="Function">
+    <xs:sequence>
+      <xs:element
+        name="Name"
+        type="xs:string"/>
+      <xs:element
+        name="Expressions"
+        type="ranally:Expressions"/>
+    </xs:sequence>
   </xs:complexType>
 </xs:schema>

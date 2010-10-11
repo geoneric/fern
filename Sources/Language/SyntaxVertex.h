@@ -24,12 +24,17 @@ private:
 
 protected:
 
-public:
+                   SyntaxVertex        ();
 
                    SyntaxVertex        (int lineNr,
                                         int colId);
 
+public:
+
   virtual          ~SyntaxVertex       ();
+
+  void             setPosition         (int lineNr,
+                                        int colId);
 
   int              line                () const;
 
