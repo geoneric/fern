@@ -16,6 +16,8 @@ boost::unit_test::test_suite* AlgebraParserTest::suite()
   boost::shared_ptr<AlgebraParserTest> instance(
     new AlgebraParserTest());
   suite->add(BOOST_CLASS_TEST_CASE(
+    &AlgebraParserTest::testParseEmptyScript, instance));
+  suite->add(BOOST_CLASS_TEST_CASE(
     &AlgebraParserTest::testParseNameExpression, instance));
   suite->add(BOOST_CLASS_TEST_CASE(
     &AlgebraParserTest::testParseAssignment, instance));
@@ -25,6 +27,8 @@ boost::unit_test::test_suite* AlgebraParserTest::suite()
     &AlgebraParserTest::testParseNumber, instance));
   suite->add(BOOST_CLASS_TEST_CASE(
     &AlgebraParserTest::testParseCall, instance));
+  suite->add(BOOST_CLASS_TEST_CASE(
+    &AlgebraParserTest::testParseIf, instance));
 
   /// suite->add(BOOST_CLASS_TEST_CASE(
   ///   &AlgebraParserTest::testParseFile, instance));
@@ -40,6 +44,22 @@ AlgebraParserTest::AlgebraParserTest()
 
 
 
+void AlgebraParserTest::testParseEmptyScript()
+{
+  ranally::AlgebraParser parser;
+
+  {
+    UnicodeString xml(parser.parseString(UnicodeString("")));
+    BOOST_CHECK(xml ==
+      "<?xml version=\"1.0\"?>"
+      "<Ranally>"
+        "<Statements/>"
+      "</Ranally>");
+  }
+}
+
+
+
 void AlgebraParserTest::testParseNameExpression()
 {
   ranally::AlgebraParser parser;
@@ -49,9 +69,13 @@ void AlgebraParserTest::testParseNameExpression()
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
       "<Ranally>"
-        "<Expression line=\"1\" col=\"0\">"
-          "<Name>a</Name>"
-        "</Expression>"
+        "<Statements>"
+          "<Statement>"
+            "<Expression line=\"1\" col=\"0\">"
+              "<Name>a</Name>"
+            "</Expression>"
+          "</Statement>"
+        "</Statements>"
       "</Ranally>");
   }
 }
@@ -67,18 +91,22 @@ void AlgebraParserTest::testParseAssignment()
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
       "<Ranally>"
-        "<Assignment>"
-          "<Targets>"
-            "<Expression line=\"1\" col=\"0\">"
-              "<Name>a</Name>"
-            "</Expression>"
-          "</Targets>"
-          "<Expressions>"
-            "<Expression line=\"1\" col=\"4\">"
-              "<Name>b</Name>"
-            "</Expression>"
-          "</Expressions>"
-        "</Assignment>"
+        "<Statements>"
+          "<Statement>"
+            "<Assignment>"
+              "<Targets>"
+                "<Expression line=\"1\" col=\"0\">"
+                  "<Name>a</Name>"
+                "</Expression>"
+              "</Targets>"
+              "<Expressions>"
+                "<Expression line=\"1\" col=\"4\">"
+                  "<Name>b</Name>"
+                "</Expression>"
+              "</Expressions>"
+            "</Assignment>"
+          "</Statement>"
+        "</Statements>"
       "</Ranally>");
   }
 }
@@ -94,9 +122,13 @@ void AlgebraParserTest::testParseString()
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
       "<Ranally>"
-        "<Expression line=\"1\" col=\"0\">"
-          "<String>five</String>"
-        "</Expression>"
+        "<Statements>"
+          "<Statement>"
+            "<Expression line=\"1\" col=\"0\">"
+              "<String>five</String>"
+            "</Expression>"
+          "</Statement>"
+        "</Statements>"
       "</Ranally>");
   }
 
@@ -105,9 +137,13 @@ void AlgebraParserTest::testParseString()
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
       "<Ranally>"
-        "<Expression line=\"1\" col=\"0\">"
-          "<String/>"
-        "</Expression>"
+        "<Statements>"
+          "<Statement>"
+            "<Expression line=\"1\" col=\"0\">"
+              "<String/>"
+            "</Expression>"
+          "</Statement>"
+        "</Statements>"
       "</Ranally>");
   }
 
@@ -116,9 +152,13 @@ void AlgebraParserTest::testParseString()
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
       "<Ranally>"
-        "<Expression line=\"1\" col=\"0\">"
-          "<String> </String>"
-        "</Expression>"
+        "<Statements>"
+          "<Statement>"
+            "<Expression line=\"1\" col=\"0\">"
+              "<String> </String>"
+            "</Expression>"
+          "</Statement>"
+        "</Statements>"
       "</Ranally>");
   }
 }
@@ -134,11 +174,15 @@ void AlgebraParserTest::testParseNumber()
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
       "<Ranally>"
-        "<Expression line=\"1\" col=\"0\">"
-          "<Number>"
-            "<Integer>5</Integer>"
-          "</Number>"
-        "</Expression>"
+        "<Statements>"
+          "<Statement>"
+            "<Expression line=\"1\" col=\"0\">"
+              "<Number>"
+                "<Integer>5</Integer>"
+              "</Number>"
+            "</Expression>"
+          "</Statement>"
+        "</Statements>"
       "</Ranally>");
   }
 
@@ -147,11 +191,15 @@ void AlgebraParserTest::testParseNumber()
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
       "<Ranally>"
-        "<Expression line=\"1\" col=\"0\">"
-          "<Number>"
-            "<Long>5</Long>"
-          "</Number>"
-        "</Expression>"
+        "<Statements>"
+          "<Statement>"
+            "<Expression line=\"1\" col=\"0\">"
+              "<Number>"
+                "<Long>5</Long>"
+              "</Number>"
+            "</Expression>"
+          "</Statement>"
+        "</Statements>"
       "</Ranally>");
   }
 
@@ -160,13 +208,19 @@ void AlgebraParserTest::testParseNumber()
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
       "<Ranally>"
-        "<Expression line=\"1\" col=\"0\">"
-          "<Number>"
-            "<Double>5.5</Double>"
-          "</Number>"
-        "</Expression>"
+        "<Statements>"
+          "<Statement>"
+            "<Expression line=\"1\" col=\"0\">"
+              "<Number>"
+                "<Double>5.5</Double>"
+              "</Number>"
+            "</Expression>"
+          "</Statement>"
+        "</Statements>"
       "</Ranally>");
   }
+
+  // Test handling of Unicode characters.
 }
 
 
@@ -181,12 +235,16 @@ void AlgebraParserTest::testParseCall()
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
       "<Ranally>"
-        "<Expression line=\"1\" col=\"0\">"
-          "<Function>"
-            "<Name>f</Name>"
-            "<Expressions/>"
-          "</Function>"
-        "</Expression>"
+        "<Statements>"
+          "<Statement>"
+            "<Expression line=\"1\" col=\"0\">"
+              "<Function>"
+                "<Name>f</Name>"
+                "<Expressions/>"
+              "</Function>"
+            "</Expression>"
+          "</Statement>"
+        "</Statements>"
       "</Ranally>");
   }
 
@@ -195,30 +253,167 @@ void AlgebraParserTest::testParseCall()
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
       "<Ranally>"
-        "<Expression line=\"1\" col=\"0\">"
-          "<Function>"
-            "<Name>f</Name>"
-            "<Expressions>"
-              "<Expression line=\"1\" col=\"2\">"
-                "<Number>"
-                  "<Integer>1</Integer>"
-                "</Number>"
+        "<Statements>"
+          "<Statement>"
+            "<Expression line=\"1\" col=\"0\">"
+              "<Function>"
+                "<Name>f</Name>"
+                "<Expressions>"
+                  "<Expression line=\"1\" col=\"2\">"
+                    "<Number>"
+                      "<Integer>1</Integer>"
+                    "</Number>"
+                  "</Expression>"
+                  "<Expression line=\"1\" col=\"5\">"
+                    "<String>2</String>"
+                  "</Expression>"
+                  "<Expression line=\"1\" col=\"10\">"
+                    "<Name>three</Name>"
+                  "</Expression>"
+                  "<Expression line=\"1\" col=\"17\">"
+                    "<Function>"
+                      "<Name>four</Name>"
+                      "<Expressions/>"
+                    "</Function>"
+                  "</Expression>"
+                "</Expressions>"
+              "</Function>"
+            "</Expression>"
+          "</Statement>"
+        "</Statements>"
+      "</Ranally>");
+  }
+}
+
+
+
+void AlgebraParserTest::testParseIf()
+{
+  ranally::AlgebraParser parser;
+  UnicodeString xml;
+
+  {
+    xml = parser.parseString(UnicodeString(
+      "if(a):\n"
+      "  b"));
+    BOOST_CHECK(xml ==
+      "<?xml version=\"1.0\"?>"
+      "<Ranally>"
+        "<Statements>"
+          "<Statement>"
+            "<If>"
+              "<Expression line=\"1\" col=\"3\">"
+                "<Name>a</Name>"
               "</Expression>"
-              "<Expression line=\"1\" col=\"5\">"
-                "<String>2</String>"
+              "<Statements>"
+                "<Statement>"
+                  "<Expression line=\"2\" col=\"2\">"
+                    "<Name>b</Name>"
+                  "</Expression>"
+                "</Statement>"
+              "</Statements>"
+              "<Statements/>"
+            "</If>"
+          "</Statement>"
+        "</Statements>"
+      "</Ranally>");
+  }
+
+  {
+    xml = parser.parseString(UnicodeString(
+      "if(a):\n"
+      "  b\n"
+      "elif(c):\n"
+      "  d"));
+    BOOST_CHECK(xml ==
+      "<?xml version=\"1.0\"?>"
+      "<Ranally>"
+        "<Statements>"
+          "<Statement>"
+            "<If>"
+              "<Expression line=\"1\" col=\"3\">"
+                "<Name>a</Name>"
               "</Expression>"
-              "<Expression line=\"1\" col=\"10\">"
-                "<Name>three</Name>"
+              "<Statements>"
+                "<Statement>"
+                  "<Expression line=\"2\" col=\"2\">"
+                    "<Name>b</Name>"
+                  "</Expression>"
+                "</Statement>"
+              "</Statements>"
+              "<Statements>"
+                "<Statement>"
+                  "<If>"
+                    "<Expression line=\"3\" col=\"5\">"
+                      "<Name>c</Name>"
+                    "</Expression>"
+                    "<Statements>"
+                      "<Statement>"
+                        "<Expression line=\"4\" col=\"2\">"
+                          "<Name>d</Name>"
+                        "</Expression>"
+                      "</Statement>"
+                    "</Statements>"
+                    "<Statements/>"
+                  "</If>"
+                "</Statement>"
+              "</Statements>"
+            "</If>"
+          "</Statement>"
+        "</Statements>"
+      "</Ranally>");
+  }
+
+  {
+    xml = parser.parseString(UnicodeString(
+      "if(a):\n"
+      "  b\n"
+      "elif(c):\n"
+      "  d\n"
+      "else:\n"
+      "  e"));
+    BOOST_CHECK(xml ==
+      "<?xml version=\"1.0\"?>"
+      "<Ranally>"
+        "<Statements>"
+          "<Statement>"
+            "<If>"
+              "<Expression line=\"1\" col=\"3\">"
+                "<Name>a</Name>"
               "</Expression>"
-              "<Expression line=\"1\" col=\"17\">"
-                "<Function>"
-                  "<Name>four</Name>"
-                  "<Expressions/>"
-                "</Function>"
-              "</Expression>"
-            "</Expressions>"
-          "</Function>"
-        "</Expression>"
+              "<Statements>"
+                "<Statement>"
+                  "<Expression line=\"2\" col=\"2\">"
+                    "<Name>b</Name>"
+                  "</Expression>"
+                "</Statement>"
+              "</Statements>"
+              "<Statements>"
+                "<Statement>"
+                  "<If>"
+                    "<Expression line=\"3\" col=\"5\">"
+                      "<Name>c</Name>"
+                    "</Expression>"
+                    "<Statements>"
+                      "<Statement>"
+                        "<Expression line=\"4\" col=\"2\">"
+                          "<Name>d</Name>"
+                        "</Expression>"
+                      "</Statement>"
+                    "</Statements>"
+                    "<Statements>"
+                      "<Statement>"
+                        "<Expression line=\"6\" col=\"2\">"
+                          "<Name>e</Name>"
+                        "</Expression>"
+                      "</Statement>"
+                    "</Statements>"
+                  "</If>"
+                "</Statement>"
+              "</Statements>"
+            "</If>"
+          "</Statement>"
+        "</Statements>"
       "</Ranally>");
   }
 }

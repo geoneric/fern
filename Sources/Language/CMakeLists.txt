@@ -27,6 +27,7 @@ SET(SOURCES
   FunctionVertex.cc
   NameVertex.cc
   NumberVertex.cc
+  StatementVertex.cc
   StringVertex.cc
   SyntaxTree.cc
   SyntaxVertex.cc
@@ -42,6 +43,7 @@ SET(TEST_SOURCES
   FunctionVertexTest.cc
   NameVertexTest.cc
   NumberVertexTest.cc
+  StatementVertexTest.cc
   StringVertexTest.cc
   SyntaxTreeTest.cc
   SyntaxVertexTest.cc

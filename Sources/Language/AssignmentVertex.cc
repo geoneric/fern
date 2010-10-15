@@ -10,7 +10,7 @@ AssignmentVertex::AssignmentVertex(
 
   // First (left most) target contains the start position of the assignment
   // statement.
-  : SyntaxVertex(targets[0]->line(), targets[0]->col()),
+  : StatementVertex(targets[0]->line(), targets[0]->col()),
     _targets(targets),
     _expressions(expressions)
 

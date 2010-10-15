@@ -5,6 +5,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include "ExpressionVertex.h"
+#include "StatementVertex.h"
 
 
 
@@ -16,7 +17,7 @@ namespace ranally {
 
   \sa        .
 */
-class AssignmentVertex: public SyntaxVertex
+class AssignmentVertex: public StatementVertex
 {
 
   friend class AssignmentVertexTest;

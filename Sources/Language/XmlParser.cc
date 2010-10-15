@@ -116,6 +116,62 @@ public:
 
 
 
+class Statements_pimpl: public ranally::Statements_pskel
+{
+private:
+  typedef std::vector<boost::shared_ptr<ranally::StatementVertex> >
+    StatementsData;
+
+  std::stack<StatementsData> _dataStack;
+
+public:
+  void pre()
+  {
+    _dataStack.push(StatementsData());
+  }
+
+  void Statement(
+    boost::shared_ptr<ranally::StatementVertex> const& vertex)
+  {
+    assert(vertex);
+    _dataStack.top().push_back(vertex);
+  }
+
+  std::vector<boost::shared_ptr<ranally::StatementVertex> > post_Statements()
+  {
+    assert(!_dataStack.empty());
+    StatementsData result(_dataStack.top());
+    _dataStack.pop();
+    return result;
+  }
+};
+
+
+
+class Statement_pimpl: public ranally::Statement_pskel
+{
+private:
+  typedef boost::shared_ptr<ranally::StatementVertex> StatementData;
+
+  std::stack<StatementData> _dataStack;
+
+public:
+  void pre()
+  {
+    _dataStack.push(StatementData());
+  }
+
+  boost::shared_ptr<ranally::StatementVertex> post_Statement()
+  {
+    assert(!_dataStack.empty());
+    StatementData result(_dataStack.top());
+    _dataStack.pop();
+    return result;
+  }
+};
+
+
+
 class Expressions_pimpl: public ranally::Expressions_pskel
 {
 private:
@@ -336,6 +392,7 @@ XmlParser::~XmlParser()
 boost::shared_ptr<SyntaxTree> XmlParser::parse(
          std::istream& stream) const
 {
+  // TODO hier verder: voeg Statement parser in op de juiste plekken.
   xml_schema::int_pimpl int_p;
   xml_schema::non_negative_integer_pimpl non_negative_integer_p;
   xml_schema::long_pimpl long_p;
@@ -362,8 +419,14 @@ boost::shared_ptr<SyntaxTree> XmlParser::parse(
   Assignment_pimpl assignment_p;
   assignment_p.parsers(targets_p, expressions_p);
 
+  Statement_pimpl statement_p;
+  statement_p.parsers(expression_p, assignment_p);
+
+  Statements_pimpl statements_p;
+  statements_p.parsers(statement_p);
+
   Ranally_pimpl ranally_p;
-  ranally_p.parsers(expression_p, assignment_p);
+  ranally_p.parsers(statements_p);
 
   xml_schema::document doc_p(ranally_p, "Ranally");
 

@@ -6,6 +6,7 @@
 #include "FunctionVertexTest.h"
 #include "NameVertexTest.h"
 #include "NumberVertexTest.h"
+#include "StatementVertexTest.h"
 #include "StringVertexTest.h"
 #include "SyntaxTreeTest.h"
 #include "SyntaxVertexTest.h"
@@ -20,8 +21,8 @@ boost::unit_test::test_suite* init_unit_test_suite(
   struct TestSuite: public boost::unit_test::test_suite
   {
     TestSuite(
-         int& argc,
-         char** argv)
+         int& /* argc */,
+         char** /* argv */)
       : boost::unit_test::test_suite("Master test suite")
     {
     }
@@ -38,6 +39,7 @@ boost::unit_test::test_suite* init_unit_test_suite(
   test->add(ExpressionVertexTest::suite());
   test->add(FunctionVertexTest::suite());
   test->add(AssignmentVertexTest::suite());
+  test->add(StatementVertexTest::suite());
   test->add(SyntaxTreeTest::suite());
 
   test->add(XmlParserTest::suite());

@@ -86,6 +86,14 @@ void XmlParserTest::testParse()
   }
 
   {
+    // // If statement.
+    // xml = algebraParser.parseString(UnicodeString(
+    //   "if a:\n"
+    //   "  b"));
+    // tree = xmlParser.parse(xml);
+  }
+
+  {
     // Random string.
     BOOST_CHECK_THROW(xmlParser.parse(UnicodeString("blabla")),
       xml_schema::parsing);

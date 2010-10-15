@@ -1,0 +1,29 @@
+#ifndef INCLUDED_RANALLY_STATEMENTVERTEXTEST
+#define INCLUDED_RANALLY_STATEMENTVERTEXTEST
+
+
+
+namespace boost {
+  namespace unit_test {
+    class test_suite;
+  }
+}
+
+
+
+class StatementVertexTest
+{
+
+private:
+
+public:
+
+                   StatementVertexTest ();
+
+  void             test                ();
+
+  static boost::unit_test::test_suite* suite();
+
+};
+
+#endif

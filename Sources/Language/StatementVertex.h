@@ -1,5 +1,5 @@
-#ifndef INCLUDED_RANALLY_EXPRESSIONVERTEX
-#define INCLUDED_RANALLY_EXPRESSIONVERTEX
+#ifndef INCLUDED_RANALLY_STATEMENTVERTEX
+#define INCLUDED_RANALLY_STATEMENTVERTEX
 
 #include "SyntaxVertex.h"
 
@@ -13,23 +13,23 @@ namespace ranally {
 
   \sa        .
 */
-class ExpressionVertex: virtual public SyntaxVertex
+class StatementVertex: public SyntaxVertex
 {
 
-  friend class ExpressionVertexTest;
+  friend class StatementVertexTest;
 
 private:
 
 protected:
 
-                   ExpressionVertex    ();
+                   StatementVertex    ();
 
-                   ExpressionVertex    (int lineNr,
+                   StatementVertex    (int lineNr,
                                         int colId);
 
 public:
 
-  virtual          ~ExpressionVertex   ();
+  virtual          ~StatementVertex   ();
 
 };
 

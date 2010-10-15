@@ -20,6 +20,8 @@ public:
 
                    AlgebraParserTest   ();
 
+  void             testParseEmptyScript();
+
   void             testParseNameExpression();
 
   void             testParseAssignment ();
@@ -31,6 +33,8 @@ public:
   void             testParseNumber     ();
 
   void             testParseCall       ();
+
+  void             testParseIf         ();
 
   static boost::unit_test::test_suite* suite();
 

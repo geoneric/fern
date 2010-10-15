@@ -10,14 +10,20 @@
 
 
 
+//   PyObject* type = PyObject_Type(id);
+//   PyObject* string = PyObject_Str(type);
+//   std::cout << PyString_AsString(string) << std::endl;
+
+
+
 namespace {
 
 void               writeExpressionNode (expr_ty const& expression,
                                         UnicodeString& xml);
+void               writeStatementNodes (asdl_seq const* statements,
+                                        UnicodeString& xml);
 
-//   PyObject* type = PyObject_Type(id);
-//   PyObject* string = PyObject_Str(type);
-//   std::cout << PyString_AsString(string) << std::endl;
+
 
 void writeNameNode(
   identifier const id,
@@ -228,59 +234,86 @@ void writeAssignmentNode(
 
 
 
-void writeModuleNode(
+void writeIfNode(
+  expr_ty const test,
+  asdl_seq const* body,
+  asdl_seq const* orelse,
+  UnicodeString& xml)
+{
+  xml += "<If>";
+  writeExpressionNode(test, xml);
+  writeStatementNodes(body, xml);
+  writeStatementNodes(orelse, xml);
+  xml += "</If>";
+}
+
+
+
+void writeStatementNodes(
   asdl_seq const* statements,
   UnicodeString& xml)
 {
-  assert(statements);
-
-  xml += "<Ranally>";
-
-  // See Python-ast.h.
-  for(int i = 0; i < statements->size; ++i) {
-    stmt_ty const statement = static_cast<stmt_ty const>(
-      asdl_seq_GET(statements, i));
-    assert(statement);
-
-    switch(statement->kind) {
-      case Expr_kind: {
-        writeExpressionNode(statement->v.Expr.value, xml);
-        break;
-      }
-      case Assign_kind: {
-        writeAssignmentNode(statement->v.Assign.targets,
-          statement->v.Assign.value, xml);
-        break;
-      }
-      case FunctionDef_kind:
-      case ClassDef_kind:
-      case Return_kind:
-      case Delete_kind:
-      case AugAssign_kind:
-      case Print_kind:
-      case For_kind:
-      case While_kind:
-      case If_kind:
-      case With_kind:
-      case Raise_kind:
-      case TryExcept_kind:
-      case TryFinally_kind:
-      case Assert_kind:
-      case Import_kind:
-      case ImportFrom_kind:
-      case Exec_kind:
-      case Global_kind:
-      case Pass_kind:
-      case Break_kind:
-      case Continue_kind: {
-        bool implemented = false;
-        assert(implemented);
-        break;
-      }
-    }
+  if(!statements || statements->size == 0) {
+    xml += "<Statements/>";
   }
+  else {
+    xml += "<Statements>";
 
-  xml += "</Ranally>";
+    // See Python-ast.h.
+    for(int i = 0; i < statements->size; ++i) {
+      stmt_ty const statement = static_cast<stmt_ty const>(
+        asdl_seq_GET(statements, i));
+      assert(statement);
+
+      xml += "<Statement>";
+
+      switch(statement->kind) {
+        case Expr_kind: {
+          writeExpressionNode(statement->v.Expr.value, xml);
+          break;
+        }
+        case Assign_kind: {
+          writeAssignmentNode(statement->v.Assign.targets,
+            statement->v.Assign.value, xml);
+          break;
+        }
+        case If_kind: {
+          writeIfNode(statement->v.If.test, statement->v.If.body,
+            statement->v.If.orelse, xml);
+          break;
+        }
+        case Break_kind:
+        case Continue_kind:
+        case Assert_kind:
+        case FunctionDef_kind:
+        case ClassDef_kind:
+        case Return_kind:
+        case Delete_kind:
+        case AugAssign_kind:
+        case Print_kind:
+        case For_kind:
+        case While_kind:
+        case With_kind:
+        case Raise_kind:
+        case TryExcept_kind:
+        case TryFinally_kind:
+        case Import_kind:
+        case ImportFrom_kind:
+        case Exec_kind:
+        case Global_kind:
+        case Pass_kind:
+        {
+          bool implemented = false;
+          assert(implemented);
+          break;
+        }
+      }
+
+      xml += "</Statement>";
+    }
+
+    xml += "</Statements>";
+  }
 }
 
 
@@ -294,13 +327,15 @@ UnicodeString pythonAstToXml(
 
   switch(ast->kind) {
     case Module_kind: {
-      writeModuleNode(ast->v.Module.body, xml);
+      xml += "<Ranally>";
+      writeStatementNodes(ast->v.Module.body, xml);
+      xml += "</Ranally>";
       break;
     }
-    case Expression_kind: {
-      writeExpressionNode(ast->v.Expression.body, xml);
-      break;
-    }
+    case Expression_kind: // {
+    //   writeExpressionNode(ast->v.Expression.body, xml);
+    //   break;
+    // }
     case Interactive_kind:
     case Suite_kind: {
       bool implemented = false;

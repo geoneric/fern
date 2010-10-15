@@ -18,10 +18,13 @@ namespace http://www.jemig.eu/ranally
   Ranally          "boost::shared_ptr<SyntaxTree>";
   Number           "boost::shared_ptr<ExpressionVertex>";
   Expression       "boost::shared_ptr<ExpressionVertex>";
+  Statement        "boost::shared_ptr<StatementVertex>";
   Function         "boost::shared_ptr<FunctionVertex>";
   Assignment       "boost::shared_ptr<AssignmentVertex>";
   Targets          "std::vector<boost::shared_ptr<
                      ranally::ExpressionVertex> >";
   Expressions      "std::vector<boost::shared_ptr<
                      ranally::ExpressionVertex> >";
+  Statements       "std::vector<boost::shared_ptr<
+                     ranally::StatementVertex> >";
 }
