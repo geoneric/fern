@@ -86,11 +86,25 @@ void XmlParserTest::testParse()
   }
 
   {
-    // // If statement.
-    // xml = algebraParser.parseString(UnicodeString(
-    //   "if a:\n"
-    //   "  b"));
-    // tree = xmlParser.parse(xml);
+    // If statement.
+    xml = algebraParser.parseString(UnicodeString(
+      "if a:\n"
+      "  b"));
+    tree = xmlParser.parse(xml);
+
+    xml = algebraParser.parseString(UnicodeString(
+      "if a:\n"
+      "  b\n"
+      "else:\n"
+      "  c"));
+    tree = xmlParser.parse(xml);
+
+    xml = algebraParser.parseString(UnicodeString(
+      "if a:\n"
+      "  b\n"
+      "elif c:\n"
+      "  d"));
+    tree = xmlParser.parse(xml);
   }
 
   {

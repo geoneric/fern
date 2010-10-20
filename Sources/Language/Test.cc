@@ -4,6 +4,7 @@
 #include "AssignmentVertexTest.h"
 #include "ExpressionVertexTest.h"
 #include "FunctionVertexTest.h"
+#include "IfVertexTest.h"
 #include "NameVertexTest.h"
 #include "NumberVertexTest.h"
 #include "StatementVertexTest.h"
@@ -40,6 +41,7 @@ boost::unit_test::test_suite* init_unit_test_suite(
   test->add(FunctionVertexTest::suite());
   test->add(AssignmentVertexTest::suite());
   test->add(StatementVertexTest::suite());
+  test->add(IfVertexTest::suite());
   test->add(SyntaxTreeTest::suite());
 
   test->add(XmlParserTest::suite());

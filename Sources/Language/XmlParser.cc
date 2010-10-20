@@ -9,6 +9,7 @@
 #include "Ranally-pskel.hxx"
 
 #include "FunctionVertex.h"
+#include "IfVertex.h"
 #include "NameVertex.h"
 #include "NumberVertex.h"
 #include "StringVertex.h"
@@ -116,6 +117,60 @@ public:
 
 
 
+class If_pimpl: public ranally::If_pskel
+{
+private:
+  typedef std::vector<boost::shared_ptr<ranally::StatementVertex> >
+    StatementVertices;
+
+  struct IfData
+  {
+    boost::shared_ptr<ranally::ExpressionVertex> conditionVertex;
+    StatementVertices trueStatementVertices;
+    StatementVertices falseStatementVertices;
+  };
+
+  std::stack<IfData> _dataStack;
+
+public:
+  void pre()
+  {
+    _dataStack.push(IfData());
+  }
+
+  void Expression(
+    boost::shared_ptr<ranally::ExpressionVertex> const& vertex)
+  {
+    assert(!_dataStack.top().conditionVertex);
+    assert(vertex);
+    _dataStack.top().conditionVertex = vertex;
+  }
+
+  void Statements(
+    std::vector<boost::shared_ptr<ranally::StatementVertex> > const& vertices)
+  {
+    if(_dataStack.top().trueStatementVertices.empty()) {
+      assert(!vertices.empty());
+      _dataStack.top().trueStatementVertices = vertices;
+    }
+    else {
+      assert(_dataStack.top().falseStatementVertices.empty());
+      _dataStack.top().falseStatementVertices = vertices;
+    }
+  }
+
+  boost::shared_ptr<ranally::IfVertex> post_If()
+  {
+    assert(!_dataStack.empty());
+    IfData result(_dataStack.top());
+    _dataStack.pop();
+    return boost::make_shared<ranally::IfVertex>(result.conditionVertex,
+      result.trueStatementVertices, result.falseStatementVertices);
+  }
+};
+
+
+
 class Statements_pimpl: public ranally::Statements_pskel
 {
 private:
@@ -159,6 +214,30 @@ public:
   void pre()
   {
     _dataStack.push(StatementData());
+  }
+
+  void Expression(
+    boost::shared_ptr<ranally::ExpressionVertex> const& vertex)
+  {
+    assert(vertex);
+    assert(!_dataStack.empty());
+    _dataStack.top() = vertex;
+  }
+
+  void Assignment(
+    boost::shared_ptr<ranally::AssignmentVertex> const& vertex)
+  {
+    assert(vertex);
+    assert(!_dataStack.empty());
+    _dataStack.top() = vertex;
+  }
+
+  void If(
+    boost::shared_ptr<ranally::IfVertex> const& vertex)
+  {
+    assert(vertex);
+    assert(!_dataStack.empty());
+    _dataStack.top() = vertex;
   }
 
   boost::shared_ptr<ranally::StatementVertex> post_Statement()
@@ -392,7 +471,6 @@ XmlParser::~XmlParser()
 boost::shared_ptr<SyntaxTree> XmlParser::parse(
          std::istream& stream) const
 {
-  // TODO hier verder: voeg Statement parser in op de juiste plekken.
   xml_schema::int_pimpl int_p;
   xml_schema::non_negative_integer_pimpl non_negative_integer_p;
   xml_schema::long_pimpl long_p;
@@ -419,10 +497,14 @@ boost::shared_ptr<SyntaxTree> XmlParser::parse(
   Assignment_pimpl assignment_p;
   assignment_p.parsers(targets_p, expressions_p);
 
-  Statement_pimpl statement_p;
-  statement_p.parsers(expression_p, assignment_p);
-
   Statements_pimpl statements_p;
+
+  If_pimpl if_p;
+  if_p.parsers(expression_p, statements_p /* , statements_p */);
+
+  Statement_pimpl statement_p;
+  statement_p.parsers(expression_p, assignment_p, if_p);
+
   statements_p.parsers(statement_p);
 
   Ranally_pimpl ranally_p;

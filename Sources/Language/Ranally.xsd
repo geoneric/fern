@@ -37,29 +37,28 @@
       <xs:element
         name="Assignment"
         type="ranally:Assignment"/>
-        <!--
       <xs:element
         name="If"
         type="ranally:If"/>
-        -->
     </xs:choice>
   </xs:complexType>
 
-<!--
   <xs:complexType name="If">
     <xs:sequence>
+      <!-- Condition. -->
       <xs:element
-        name="Test"
-        type="ranally:Test"/>
+        name="Expression"
+        type="ranally:Expression"/>
+      <!-- True block. -->
       <xs:element
-        name="Body"
-        type="ranally:Body"/>
+        name="Statements"
+        type="ranally:Statements"/>
+      <!-- False block. -->
       <xs:element
-        name="Body"
-        type="ranally:Body"/>
-
+        name="Statements"
+        type="ranally:Statements"/>
+    </xs:sequence>
   </xs:complexType>
-  -->
 
   <xs:complexType name="Assignment">
     <xs:sequence>

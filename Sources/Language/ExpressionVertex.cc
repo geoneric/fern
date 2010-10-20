@@ -6,7 +6,7 @@ namespace ranally {
 
 ExpressionVertex::ExpressionVertex()
 
-  : SyntaxVertex()
+  : StatementVertex()
 
 {
 }
@@ -17,7 +17,7 @@ ExpressionVertex::ExpressionVertex(
   int lineNr,
   int colId)
 
-  : SyntaxVertex(lineNr, colId)
+  : StatementVertex(lineNr, colId)
 
 {
 }

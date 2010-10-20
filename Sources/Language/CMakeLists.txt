@@ -25,6 +25,7 @@ SET(SOURCES
   AssignmentVertex.cc
   ExpressionVertex.cc
   FunctionVertex.cc
+  IfVertex.cc
   NameVertex.cc
   NumberVertex.cc
   StatementVertex.cc
@@ -41,6 +42,7 @@ SET(TEST_SOURCES
   AssignmentVertexTest.cc
   ExpressionVertexTest.cc
   FunctionVertexTest.cc
+  IfVertexTest.cc
   NameVertexTest.cc
   NumberVertexTest.cc
   StatementVertexTest.cc
