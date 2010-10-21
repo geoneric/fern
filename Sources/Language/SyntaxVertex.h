@@ -1,6 +1,8 @@
 #ifndef INCLUDED_RANALLY_SYNTAXVERTEX
 #define INCLUDED_RANALLY_SYNTAXVERTEX
 
+#include <loki/Visitor.h>
+
 
 
 namespace ranally {
@@ -11,7 +13,7 @@ namespace ranally {
 
   \sa        .
 */
-class SyntaxVertex
+class SyntaxVertex: public Loki::BaseVisitable<>
 {
 
   friend class SyntaxVertexTest;
@@ -30,6 +32,8 @@ protected:
                                         int colId);
 
 public:
+
+  LOKI_DEFINE_VISITABLE()
 
   virtual          ~SyntaxVertex       ();
 

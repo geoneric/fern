@@ -8,6 +8,7 @@ INCLUDE(UseDevEnv)
 INCLUDE(UseBoost)
 INCLUDE(UseExpat)
 INCLUDE(UseIcu)
+INCLUDE(UseLoki)
 INCLUDE(UsePython)
 INCLUDE(UseXsd)
 

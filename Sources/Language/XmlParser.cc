@@ -13,6 +13,7 @@
 #include "NameVertex.h"
 #include "NumberVertex.h"
 #include "StringVertex.h"
+#include "SyntaxVertex.h"
 
 
 
@@ -21,33 +22,28 @@ namespace {
 class Ranally_pimpl: public ranally::Ranally_pskel
 {
 private:
-  boost::shared_ptr<ranally::SyntaxTree> _syntaxTree;
+
+  typedef std::vector<boost::shared_ptr<ranally::StatementVertex> >
+    StatementVertices;
+
+  StatementVertices _statementVertices;
 
 public:
   void pre()
   {
-    _syntaxTree = boost::make_shared<ranally::SyntaxTree>();
+    _statementVertices.clear();
   }
 
-  void Expression(
-    boost::shared_ptr<ranally::ExpressionVertex> const& vertex)
+  void Statements(
+    std::vector<boost::shared_ptr<ranally::StatementVertex> > const& vertices)
   {
-    assert(vertex);
-
-    // TODO add vertex to tree;
-  }
-
-  void Assignment(
-    boost::shared_ptr<ranally::ExpressionVertex> const& vertex)
-  {
-    assert(vertex);
-
-    // TODO add vertex to tree;
+    assert(_statementVertices.empty());
+    _statementVertices = vertices;
   }
 
   boost::shared_ptr<ranally::SyntaxTree> post_Ranally()
   {
-    return _syntaxTree;
+    return boost::make_shared<ranally::SyntaxTree>(_statementVertices);
   }
 };
 

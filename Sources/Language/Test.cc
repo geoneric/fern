@@ -7,6 +7,7 @@
 #include "IfVertexTest.h"
 #include "NameVertexTest.h"
 #include "NumberVertexTest.h"
+#include "ScriptVisitorTest.h"
 #include "StatementVertexTest.h"
 #include "StringVertexTest.h"
 #include "SyntaxTreeTest.h"
@@ -45,6 +46,8 @@ boost::unit_test::test_suite* init_unit_test_suite(
   test->add(SyntaxTreeTest::suite());
 
   test->add(XmlParserTest::suite());
+
+  test->add(ScriptVisitorTest::suite());
 
   return test;
 }

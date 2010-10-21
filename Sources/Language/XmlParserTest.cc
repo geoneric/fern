@@ -37,7 +37,7 @@ void XmlParserTest::testParse()
   ranally::AlgebraParser algebraParser;
   ranally::XmlParser xmlParser;
   UnicodeString xml;
-  boost::shared_ptr<ranally::SyntaxTree> tree;
+  boost::shared_ptr<ranally::SyntaxVertex> tree;
 
   {
     // Empty xml.

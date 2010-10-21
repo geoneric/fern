@@ -4,7 +4,11 @@
 
 namespace ranally {
 
-SyntaxTree::SyntaxTree()
+SyntaxTree::SyntaxTree(
+  StatementVertices const& statements)
+
+  : _statements(statements)
+
 {
 }
 

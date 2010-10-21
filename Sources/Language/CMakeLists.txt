@@ -28,6 +28,7 @@ SET(SOURCES
   IfVertex.cc
   NameVertex.cc
   NumberVertex.cc
+  ScriptVisitor.cc
   StatementVertex.cc
   StringVertex.cc
   SyntaxTree.cc
@@ -45,6 +46,7 @@ SET(TEST_SOURCES
   IfVertexTest.cc
   NameVertexTest.cc
   NumberVertexTest.cc
+  ScriptVisitorTest.cc
   StatementVertexTest.cc
   StringVertexTest.cc
   SyntaxTreeTest.cc
