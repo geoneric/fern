@@ -1,10 +1,10 @@
-#include "SyntaxTree.h"
+#include "ScriptVertex.h"
 
 
 
 namespace ranally {
 
-SyntaxTree::SyntaxTree(
+ScriptVertex::ScriptVertex(
   StatementVertices const& statements)
 
   : _statements(statements)
@@ -14,7 +14,7 @@ SyntaxTree::SyntaxTree(
 
 
 
-SyntaxTree::~SyntaxTree()
+ScriptVertex::~ScriptVertex()
 {
 }
 

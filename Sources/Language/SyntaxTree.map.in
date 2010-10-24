@@ -1,7 +1,7 @@
 # namespace http://www.jemig.eu/ranally ranally
 # {
 #   include "${CMAKE_CURRENT_SOURCE_DIR}/ExpressionVertex.h";
-#   include "${CMAKE_CURRENT_SOURCE_DIR}/SyntaxTree.h";
+#   include "${CMAKE_CURRENT_SOURCE_DIR}/ScriptVertex.h";
 # 
 #   Ranally    SyntaxTree*;
 #   Expression boost::shared_ptr<ExpressionVertex>;
@@ -14,9 +14,9 @@ namespace http://www.jemig.eu/ranally
   include "${CMAKE_CURRENT_SOURCE_DIR}/ExpressionVertex.h";
   include "${CMAKE_CURRENT_SOURCE_DIR}/FunctionVertex.h";
   include "${CMAKE_CURRENT_SOURCE_DIR}/IfVertex.h";
-  include "${CMAKE_CURRENT_SOURCE_DIR}/SyntaxTree.h";
+  include "${CMAKE_CURRENT_SOURCE_DIR}/ScriptVertex.h";
 
-  Ranally          "boost::shared_ptr<SyntaxTree>";
+  Ranally          "boost::shared_ptr<ScriptVertex>";
   Number           "boost::shared_ptr<ExpressionVertex>";
   Expression       "boost::shared_ptr<ExpressionVertex>";
   Statement        "boost::shared_ptr<StatementVertex>";

@@ -28,10 +28,10 @@ SET(SOURCES
   IfVertex.cc
   NameVertex.cc
   NumberVertex.cc
+  ScriptVertex.cc
   ScriptVisitor.cc
   StatementVertex.cc
   StringVertex.cc
-  SyntaxTree.cc
   SyntaxVertex.cc
   XmlParser.cc
 )
@@ -46,10 +46,10 @@ SET(TEST_SOURCES
   IfVertexTest.cc
   NameVertexTest.cc
   NumberVertexTest.cc
+  ScriptVertexTest.cc
   ScriptVisitorTest.cc
   StatementVertexTest.cc
   StringVertexTest.cc
-  SyntaxTreeTest.cc
   SyntaxVertexTest.cc
   Test.cc
   XmlParserTest.cc

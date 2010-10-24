@@ -1,11 +1,10 @@
-#ifndef INCLUDED_RANALLY_SYNTAXTREE
-#define INCLUDED_RANALLY_SYNTAXTREE
+#ifndef INCLUDED_RANALLY_SCRIPTVERTEX
+#define INCLUDED_RANALLY_SCRIPTVERTEX
 
 #include <vector>
 #include <boost/shared_ptr.hpp>
 
 #include "StatementVertex.h"
-#include "SyntaxVertex.h"
 
 
 
@@ -15,14 +14,12 @@ namespace ranally {
 /*!
   longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 
-  TODO Rename to ScriptVertex
-
   \sa        .
 */
-class SyntaxTree: public SyntaxVertex
+class ScriptVertex: public SyntaxVertex
 {
 
-  friend class SyntaxTreeTest;
+  friend class ScriptVertexTest;
 
 public:
 
@@ -39,10 +36,9 @@ protected:
 
 public:
 
-                   SyntaxTree               (
-                                       StatementVertices const& statements);
+                   ScriptVertex        (StatementVertices const& statements);
 
-  /* virtual */    ~SyntaxTree              ();
+  /* virtual */    ~ScriptVertex       ();
 
 };
 

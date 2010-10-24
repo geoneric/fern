@@ -5,8 +5,8 @@
 #include <boost/test/unit_test_suite.hpp>
 
 #include "AlgebraParser.h"
+#include "ScriptVertex.h"
 #include "ScriptVisitor.h"
-#include "SyntaxTree.h"
 #include "XmlParser.h"
 
 
@@ -35,7 +35,7 @@ void ScriptVisitorTest::test()
   ranally::AlgebraParser algebraParser;
   ranally::XmlParser xmlParser;
   UnicodeString xml;
-  boost::shared_ptr<ranally::SyntaxTree> tree;
+  boost::shared_ptr<ranally::ScriptVertex> tree;
   ranally::ScriptVisitor visitor;
 
   {

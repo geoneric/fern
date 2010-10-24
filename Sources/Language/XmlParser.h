@@ -8,7 +8,7 @@
 
 namespace ranally {
 
-class SyntaxTree;
+class ScriptVertex;
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -31,9 +31,9 @@ public:
 
   /* virtual */    ~XmlParser          ();
 
-  boost::shared_ptr<SyntaxTree> parse  (UnicodeString const& xml) const;
+  boost::shared_ptr<ScriptVertex> parse(UnicodeString const& xml) const;
 
-  boost::shared_ptr<SyntaxTree> parse  (std::istream& stream) const;
+  boost::shared_ptr<ScriptVertex> parse(std::istream& stream) const;
 
 };
 

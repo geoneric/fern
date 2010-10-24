@@ -1,5 +1,5 @@
-#ifndef INCLUDED_RANALLY_SYNTAXTREETEST
-#define INCLUDED_RANALLY_SYNTAXTREETEST
+#ifndef INCLUDED_RANALLY_SCRIPTVERTEXTEST
+#define INCLUDED_RANALLY_SCRIPTVERTEXTEST
 
 
 
@@ -11,14 +11,14 @@ namespace boost {
 
 
 
-class SyntaxTreeTest
+class ScriptVertexTest
 {
 
 private:
 
 public:
 
-                   SyntaxTreeTest      ();
+                   ScriptVertexTest    ();
 
   void             test                ();
 

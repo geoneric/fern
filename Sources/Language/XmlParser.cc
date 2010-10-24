@@ -41,9 +41,9 @@ public:
     _statementVertices = vertices;
   }
 
-  boost::shared_ptr<ranally::SyntaxTree> post_Ranally()
+  boost::shared_ptr<ranally::ScriptVertex> post_Ranally()
   {
-    return boost::make_shared<ranally::SyntaxTree>(_statementVertices);
+    return boost::make_shared<ranally::ScriptVertex>(_statementVertices);
   }
 };
 
@@ -464,7 +464,7 @@ XmlParser::~XmlParser()
 
 
 
-boost::shared_ptr<SyntaxTree> XmlParser::parse(
+boost::shared_ptr<ScriptVertex> XmlParser::parse(
          std::istream& stream) const
 {
   xml_schema::int_pimpl int_p;
@@ -525,7 +525,7 @@ boost::shared_ptr<SyntaxTree> XmlParser::parse(
   \warning   .
   \sa        .
 */
-boost::shared_ptr<SyntaxTree> XmlParser::parse(
+boost::shared_ptr<ScriptVertex> XmlParser::parse(
          UnicodeString const& xml) const
 {
   // Copy string contents in a string stream and work with that.
