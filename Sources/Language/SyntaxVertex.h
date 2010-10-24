@@ -1,6 +1,7 @@
 #ifndef INCLUDED_RANALLY_SYNTAXVERTEX
 #define INCLUDED_RANALLY_SYNTAXVERTEX
 
+#include <boost/noncopyable.hpp>
 #include <loki/Visitor.h>
 
 
@@ -13,7 +14,8 @@ namespace ranally {
 
   \sa        .
 */
-class SyntaxVertex: public Loki::BaseVisitable<>
+class SyntaxVertex: private boost::noncopyable,
+                    public Loki::BaseVisitable<>
 {
 
   friend class SyntaxVertexTest;

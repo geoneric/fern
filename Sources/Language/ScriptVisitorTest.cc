@@ -6,6 +6,7 @@
 
 #include "AlgebraParser.h"
 #include "ScriptVisitor.h"
+#include "SyntaxTree.h"
 #include "XmlParser.h"
 
 
