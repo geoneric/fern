@@ -41,6 +41,9 @@ void ScriptVisitorTest::test()
   {
     xml = algebraParser.parseString(UnicodeString("a"));
     tree = xmlParser.parse(xml);
+    // hier verder
+    // - Somehow capture the result of the visit.
+    // - Test for all syntax tree elements that the roundtrip works.
     tree->Accept(visitor);
   }
 }
