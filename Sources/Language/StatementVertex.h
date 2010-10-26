@@ -22,14 +22,16 @@ private:
 
 protected:
 
-                   StatementVertex    ();
+                   StatementVertex     ();
 
-                   StatementVertex    (int lineNr,
+                   StatementVertex     (int lineNr,
                                         int colId);
 
 public:
 
-  virtual          ~StatementVertex   ();
+  LOKI_DEFINE_VISITABLE()
+
+  virtual          ~StatementVertex    ();
 
 };
 

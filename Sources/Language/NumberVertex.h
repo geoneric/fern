@@ -29,6 +29,8 @@ protected:
 
 public:
 
+  LOKI_DEFINE_VISITABLE()
+
                    NumberVertex        (T value);
 
                    NumberVertex        (int lineNr,
@@ -36,6 +38,8 @@ public:
                                         T value);
 
   /* virtual */    ~NumberVertex       ();
+
+  T                value               () const;
 
 };
 

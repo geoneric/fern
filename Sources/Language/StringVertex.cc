@@ -21,5 +21,12 @@ StringVertex::~StringVertex()
 {
 }
 
+
+
+UnicodeString const& StringVertex::string() const
+{
+  return _string;
+}
+
 } // namespace ranally
 

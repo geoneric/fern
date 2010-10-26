@@ -1,9 +1,6 @@
 #ifndef INCLUDED_RANALLY_ASSIGNMENTVERTEX
 #define INCLUDED_RANALLY_ASSIGNMENTVERTEX
 
-#include <vector>
-#include <boost/shared_ptr.hpp>
-
 #include "ExpressionVertex.h"
 #include "StatementVertex.h"
 
@@ -24,8 +21,7 @@ class AssignmentVertex: public StatementVertex
 
 public:
 
-  typedef std::vector<boost::shared_ptr<ranally::ExpressionVertex> >
-    ExpressionVertices;
+  LOKI_DEFINE_VISITABLE()
 
 private:
 
@@ -41,6 +37,10 @@ public:
                                         ExpressionVertices const& expressions);
 
   /* virtual */    ~AssignmentVertex   ();
+
+  ExpressionVertices const& targets    () const;
+
+  ExpressionVertices const& expressions() const;
 
 };
 

@@ -21,5 +21,19 @@ FunctionVertex::~FunctionVertex()
 {
 }
 
+
+
+UnicodeString const& FunctionVertex::name() const
+{
+  return _name;
+}
+
+
+
+ExpressionVertices const& FunctionVertex::expressions() const
+{
+  return _expressions;
+}
+
 } // namespace ranally
 

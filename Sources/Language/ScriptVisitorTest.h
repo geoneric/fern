@@ -1,6 +1,10 @@
 #ifndef INCLUDED_RANALLY_SCRIPTVISITORTEST
 #define INCLUDED_RANALLY_SCRIPTVISITORTEST
 
+#include "AlgebraParser.h"
+#include "XmlParser.h"
+#include "ScriptVisitor.h"
+
 
 
 namespace boost {
@@ -16,11 +20,25 @@ class ScriptVisitorTest
 
 private:
 
+  ranally::AlgebraParser _algebraParser;
+  ranally::XmlParser _xmlParser;
+  ranally::ScriptVisitor _visitor;
+
 public:
 
                    ScriptVisitorTest   ();
 
-  void             test                ();
+  void             testVisitEmptyScript();
+
+  void             testVisitName       ();
+
+  void             testVisitAssignment ();
+
+  void             testVisitString     ();
+
+  void             testVisitNumber     ();
+
+  void             testVisitCall       ();
 
   static boost::unit_test::test_suite* suite();
 

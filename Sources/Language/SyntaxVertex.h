@@ -1,12 +1,23 @@
 #ifndef INCLUDED_RANALLY_SYNTAXVERTEX
 #define INCLUDED_RANALLY_SYNTAXVERTEX
 
+#include <vector>
 #include <boost/noncopyable.hpp>
+#include <boost/shared_ptr.hpp>
 #include <loki/Visitor.h>
+#include <unicode/unistr.h>
 
 
 
 namespace ranally {
+
+class ExpressionVertex;
+class StatementVertex;
+
+typedef std::vector<boost::shared_ptr<ranally::ExpressionVertex> >
+  ExpressionVertices;
+typedef std::vector<boost::shared_ptr<ranally::StatementVertex> >
+  StatementVertices;
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -15,7 +26,7 @@ namespace ranally {
   \sa        .
 */
 class SyntaxVertex: private boost::noncopyable,
-                    public Loki::BaseVisitable<>
+                    public Loki::BaseVisitable<UnicodeString>
 {
 
   friend class SyntaxVertexTest;

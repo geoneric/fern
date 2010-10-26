@@ -24,8 +24,7 @@ class FunctionVertex: public ExpressionVertex
 
 public:
 
-  typedef std::vector<boost::shared_ptr<ranally::ExpressionVertex> >
-    ExpressionVertices;
+  LOKI_DEFINE_VISITABLE()
 
 private:
 
@@ -41,6 +40,10 @@ public:
                                         ExpressionVertices const& expressions);
 
   /* virtual */    ~FunctionVertex     ();
+
+  UnicodeString const& name            () const;
+
+  ExpressionVertices const& expressions() const;
 
 };
 

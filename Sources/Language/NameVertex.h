@@ -28,11 +28,15 @@ protected:
 
 public:
 
+  LOKI_DEFINE_VISITABLE()
+
                    NameVertex          (int lineNr,
                                         int colId,
                                         UnicodeString const& name);
 
   /* virtual */    ~NameVertex         ();
+
+  UnicodeString const& name            () const;
 
 };
 

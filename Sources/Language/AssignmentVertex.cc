@@ -23,5 +23,19 @@ AssignmentVertex::~AssignmentVertex()
 {
 }
 
+
+
+ExpressionVertices const& AssignmentVertex::targets() const
+{
+  return _targets;
+}
+
+
+
+ExpressionVertices const& AssignmentVertex::expressions() const
+{
+  return _expressions;
+}
+
 } // namespace ranally
 

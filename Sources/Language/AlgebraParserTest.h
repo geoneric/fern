@@ -22,7 +22,7 @@ public:
 
   void             testParseEmptyScript();
 
-  void             testParseNameExpression();
+  void             testParseName       ();
 
   void             testParseAssignment ();
 

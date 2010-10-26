@@ -1,9 +1,6 @@
 #ifndef INCLUDED_RANALLY_SCRIPTVERTEX
 #define INCLUDED_RANALLY_SCRIPTVERTEX
 
-#include <vector>
-#include <boost/shared_ptr.hpp>
-
 #include "StatementVertex.h"
 
 
@@ -25,9 +22,6 @@ public:
 
   LOKI_DEFINE_VISITABLE()
 
-  typedef std::vector<boost::shared_ptr<ranally::StatementVertex> >
-    StatementVertices;
-
 private:
 
   StatementVertices _statements;
@@ -39,6 +33,8 @@ public:
                    ScriptVertex        (StatementVertices const& statements);
 
   /* virtual */    ~ScriptVertex       ();
+
+  StatementVertices const& statements  () const;
 
 };
 

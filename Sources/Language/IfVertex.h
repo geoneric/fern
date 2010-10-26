@@ -1,9 +1,6 @@
 #ifndef INCLUDED_RANALLY_IFVERTEX
 #define INCLUDED_RANALLY_IFVERTEX
 
-#include <vector>
-#include <boost/shared_ptr.hpp>
-
 #include "ExpressionVertex.h"
 #include "StatementVertex.h"
 
@@ -24,8 +21,7 @@ class IfVertex: public StatementVertex
 
 public:
 
-  typedef std::vector<boost::shared_ptr<ranally::StatementVertex> >
-    StatementVertices;
+  LOKI_DEFINE_VISITABLE()
 
 private:
 

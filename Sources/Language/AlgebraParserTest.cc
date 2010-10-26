@@ -18,7 +18,7 @@ boost::unit_test::test_suite* AlgebraParserTest::suite()
   suite->add(BOOST_CLASS_TEST_CASE(
     &AlgebraParserTest::testParseEmptyScript, instance));
   suite->add(BOOST_CLASS_TEST_CASE(
-    &AlgebraParserTest::testParseNameExpression, instance));
+    &AlgebraParserTest::testParseName, instance));
   suite->add(BOOST_CLASS_TEST_CASE(
     &AlgebraParserTest::testParseAssignment, instance));
   suite->add(BOOST_CLASS_TEST_CASE(
@@ -60,7 +60,7 @@ void AlgebraParserTest::testParseEmptyScript()
 
 
 
-void AlgebraParserTest::testParseNameExpression()
+void AlgebraParserTest::testParseName()
 {
   ranally::AlgebraParser parser;
 
@@ -161,6 +161,8 @@ void AlgebraParserTest::testParseString()
         "</Statements>"
       "</Ranally>");
   }
+
+  // Test handling of Unicode characters.
 }
 
 
@@ -219,8 +221,6 @@ void AlgebraParserTest::testParseNumber()
         "</Statements>"
       "</Ranally>");
   }
-
-  // Test handling of Unicode characters.
 }
 
 

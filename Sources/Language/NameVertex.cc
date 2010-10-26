@@ -21,5 +21,12 @@ NameVertex::~NameVertex()
 {
 }
 
+
+
+UnicodeString const& NameVertex::name() const
+{
+  return _name;
+}
+
 } // namespace ranally
 

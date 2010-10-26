@@ -18,5 +18,12 @@ ScriptVertex::~ScriptVertex()
 {
 }
 
+
+
+StatementVertices const& ScriptVertex::statements() const
+{
+  return _statements;
+}
+
 } // namespace ranally
 
