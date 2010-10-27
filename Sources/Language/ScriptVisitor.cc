@@ -1,9 +1,12 @@
-#include <iostream>
+// #include <iostream>
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
 
+// #include "dev_UnicodeUtils.h"
+
 #include "AssignmentVertex.h"
 #include "FunctionVertex.h"
+#include "IfVertex.h"
 #include "NameVertex.h"
 #include "NumberVertex.h"
 #include "ScriptVertex.h"
@@ -15,7 +18,12 @@
 
 namespace ranally {
 
-ScriptVisitor::ScriptVisitor()
+ScriptVisitor::ScriptVisitor(
+  size_t tabSize)
+
+  : _tabSize(tabSize),
+    _indentLevel(0)
+
 {
 }
 
@@ -23,6 +31,36 @@ ScriptVisitor::ScriptVisitor()
 
 ScriptVisitor::~ScriptVisitor()
 {
+}
+
+
+
+UnicodeString ScriptVisitor::indent(
+  UnicodeString const& statement)
+{
+  // Only the first line of multi-line statements (if-statement) is indented
+  // here.
+  UnicodeString indentation = std::string(_indentLevel * _tabSize, ' ').c_str();
+  return indentation + statement;
+}
+
+
+
+UnicodeString ScriptVisitor::visitStatements(
+  StatementVertices const& statements)
+{
+  UnicodeString result;
+
+  BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex> statementVertex,
+    statements) {
+    result += indent(statementVertex->Accept(*this));
+
+    if(!result.endsWith("\n")) {
+      result += "\n";
+    }
+  }
+
+  return result;
 }
 
 
@@ -83,13 +121,9 @@ UnicodeString ScriptVisitor::Visit(
 UnicodeString ScriptVisitor::Visit(
   ScriptVertex& vertex)
 {
-  UnicodeString result;
-
-  BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex> statementVertex,
-    vertex.statements()) {
-    result += statementVertex->Accept(*this);
-  }
-
+  _indentLevel = 0;
+  UnicodeString result = visitStatements(vertex.statements());
+  assert(_indentLevel == 0);
   return result;
 }
 
@@ -98,7 +132,7 @@ UnicodeString ScriptVisitor::Visit(
 UnicodeString ScriptVisitor::Visit(
   StringVertex& vertex)
 {
-  return "\"" + vertex.string() + "\"";
+  return "\"" + vertex.value() + "\"";
 }
 
 
@@ -120,17 +154,46 @@ UnicodeString ScriptVisitor::Visit(
 
 
 UnicodeString ScriptVisitor::Visit(
-  NumberVertex<long long>& /* vertex */)
+  NumberVertex<long long>& vertex)
 {
-  return "long long";
+  return UnicodeString((boost::format("%1%L") % vertex.value()).str().c_str());
 }
 
 
 
 UnicodeString ScriptVisitor::Visit(
-  NumberVertex<double>& /* vertex */)
+  NumberVertex<double>& vertex)
 {
-  return "double";
+  return UnicodeString((boost::format("%1%") % vertex.value()).str().c_str());
+}
+
+
+
+UnicodeString ScriptVisitor::Visit(
+  IfVertex& vertex)
+{
+  assert(!vertex.trueStatements().empty());
+
+  UnicodeString result;
+
+  // The indent function called in visitStatements of the parent vertex
+  // indents the first line of this if-statement, so we have to indent the
+  // else line ourselves.
+  // The statements that are part of the true and false blocks are indented
+  // by the visitStatements.
+  result += "if " + vertex.condition()->Accept(*this) + ":\n";
+  ++_indentLevel;
+  result += visitStatements(vertex.trueStatements());
+  --_indentLevel;
+
+  if(!vertex.falseStatements().empty()) {
+    result += indent("else:\n");
+    ++_indentLevel;
+    result += visitStatements(vertex.falseStatements());
+    --_indentLevel;
+  }
+
+  return result;
 }
 
 } // namespace ranally

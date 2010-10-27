@@ -40,6 +40,10 @@ public:
 
   void             testVisitCall       ();
 
+  void             testVisitMultipleStatements();
+
+  void             testVisitIf         ();
+
   static boost::unit_test::test_suite* suite();
 
 };

@@ -1,11 +1,11 @@
 #include "ScriptVisitorTest.h"
 
-// #include <iostream>
+#include <iostream>
 #include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
 
-// #include "dev_UnicodeUtils.h"
+#include "dev_UnicodeUtils.h"
 
 #include "ScriptVertex.h"
 
@@ -28,6 +28,10 @@ boost::unit_test::test_suite* ScriptVisitorTest::suite()
     &ScriptVisitorTest::testVisitNumber, instance));
   suite->add(BOOST_CLASS_TEST_CASE(
     &ScriptVisitorTest::testVisitCall, instance));
+  suite->add(BOOST_CLASS_TEST_CASE(
+    &ScriptVisitorTest::testVisitMultipleStatements, instance));
+  suite->add(BOOST_CLASS_TEST_CASE(
+    &ScriptVisitorTest::testVisitIf, instance));
 
   return suite;
 }
@@ -55,7 +59,7 @@ void ScriptVisitorTest::testVisitName()
   UnicodeString xml;
 
   xml = _algebraParser.parseString(UnicodeString("a"));
-  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "a");
+  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "a\n");
 }
 
 
@@ -65,7 +69,7 @@ void ScriptVisitorTest::testVisitAssignment()
   UnicodeString xml;
 
   xml = _algebraParser.parseString(UnicodeString("a = b"));
-  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "a = b");
+  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "a = b\n");
 }
 
 
@@ -75,7 +79,7 @@ void ScriptVisitorTest::testVisitString()
   UnicodeString xml;
 
   xml = _algebraParser.parseString(UnicodeString("\"five\""));
-  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "\"five\"");
+  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "\"five\"\n");
 }
 
 
@@ -84,15 +88,14 @@ void ScriptVisitorTest::testVisitNumber()
 {
   UnicodeString xml;
 
-  // TODO hier verder
-  // xml = _algebraParser.parseString(UnicodeString("5"));
-  // BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "5");
+  xml = _algebraParser.parseString(UnicodeString("5"));
+  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "5\n");
 
-  // xml = _algebraParser.parseString(UnicodeString("5L"));
-  // BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "5L");
+  xml = _algebraParser.parseString(UnicodeString("5L"));
+  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "5L\n");
 
-  // xml = _algebraParser.parseString(UnicodeString("5.5"));
-  // BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "5.5");
+  xml = _algebraParser.parseString(UnicodeString("5.5"));
+  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "5.5\n");
 }
 
 
@@ -102,11 +105,74 @@ void ScriptVisitorTest::testVisitCall()
   UnicodeString xml;
 
   xml = _algebraParser.parseString(UnicodeString("f()"));
-  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "f()");
+  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "f()\n");
 
   xml = _algebraParser.parseString(UnicodeString("f(1, \"2\", three, four())"));
   BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) ==
-    "f(1, \"2\", three, four())");
+    "f(1, \"2\", three, four())\n");
 }
 
+
+
+void ScriptVisitorTest::testVisitMultipleStatements()
+{
+  UnicodeString xml;
+
+  xml = _algebraParser.parseString(UnicodeString("a\nb"));
+  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "a\nb\n");
+}
+
+
+
+void ScriptVisitorTest::testVisitIf()
+{
+  UnicodeString xml;
+
+  xml = _algebraParser.parseString(UnicodeString(
+      "if a:\n"
+      "  b\n"
+      "  c"));
+  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) ==
+      "if a:\n"
+      "  b\n"
+      "  c\n");
+
+  xml = _algebraParser.parseString(UnicodeString(
+      "if a:\n"
+      "  b\n"
+      "  c\n"
+      "elif d:\n"
+      "  e\n"
+      "  f\n"));
+  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) ==
+      "if a:\n"
+      "  b\n"
+      "  c\n"
+      "else:\n"
+      "  if d:\n"
+      "    e\n"
+      "    f\n");
+
+  xml = _algebraParser.parseString(UnicodeString(
+      "if a:\n"
+      "  b\n"
+      "  c\n"
+      "elif d:\n"
+      "  e\n"
+      "  f\n"
+      "else:\n"
+      "  g\n"
+      "  h\n"));
+  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) ==
+      "if a:\n"
+      "  b\n"
+      "  c\n"
+      "else:\n"
+      "  if d:\n"
+      "    e\n"
+      "    f\n"
+      "  else:\n"
+      "    g\n"
+      "    h\n");
+}
 

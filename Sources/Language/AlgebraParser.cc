@@ -393,7 +393,8 @@ UnicodeString AlgebraParser::parseString(
   result += pythonAstToXml(PyParser_ASTFromString(
     dev::encodeInUTF8(string).c_str(), "", Py_file_input, 0, arena));
 
-  PyArena_Free(arena);
+  // TODO Memory leak!
+  // PyArena_Free(arena);
   arena = 0;
 
   return result;

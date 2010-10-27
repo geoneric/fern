@@ -7,10 +7,10 @@ namespace ranally {
 StringVertex::StringVertex(
   int lineNr,
   int colId,
-  UnicodeString const& string)
+  UnicodeString const& value)
 
   : ExpressionVertex(lineNr, colId),
-    _string(string)
+    _value(value)
 
 {
 }
@@ -23,9 +23,9 @@ StringVertex::~StringVertex()
 
 
 
-UnicodeString const& StringVertex::string() const
+UnicodeString const& StringVertex::value() const
 {
-  return _string;
+  return _value;
 }
 
 } // namespace ranally

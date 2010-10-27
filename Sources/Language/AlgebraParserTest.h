@@ -34,6 +34,8 @@ public:
 
   void             testParseCall       ();
 
+  void             testParseMultipleStatements();
+
   void             testParseIf         ();
 
   static boost::unit_test::test_suite* suite();

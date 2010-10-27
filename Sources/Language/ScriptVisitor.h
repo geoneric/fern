@@ -5,16 +5,18 @@
 #include <loki/Visitor.h>
 #include <unicode/unistr.h>
 
+#include "SyntaxVertex.h"
+
 
 
 namespace ranally {
 
 class AssignmentVertex;
 class FunctionVertex;
+class IfVertex;
 class NameVertex;
 class ScriptVertex;
 class StringVertex;
-class SyntaxVertex;
 template<typename T>
   class NumberVertex;
 
@@ -28,6 +30,7 @@ class ScriptVisitor: private boost::noncopyable,
   public Loki::BaseVisitor,
   public Loki::Visitor<AssignmentVertex, UnicodeString>,
   public Loki::Visitor<FunctionVertex, UnicodeString>,
+  public Loki::Visitor<IfVertex, UnicodeString>,
   public Loki::Visitor<NameVertex, UnicodeString>,
   public Loki::Visitor<NumberVertex<int>, UnicodeString>,
   public Loki::Visitor<NumberVertex<long long>, UnicodeString>,
@@ -41,17 +44,27 @@ class ScriptVisitor: private boost::noncopyable,
 
 private:
 
+  size_t           _tabSize;
+
+  size_t           _indentLevel;
+
+  UnicodeString    indent              (UnicodeString const& statement);
+
+  UnicodeString    visitStatements     (StatementVertices const& statements);
+
 protected:
 
 public:
 
-                   ScriptVisitor       ();
+                   ScriptVisitor       (size_t tabSize=2);
 
   /* virtual */    ~ScriptVisitor      ();
 
   UnicodeString    Visit               (AssignmentVertex&);
 
   UnicodeString    Visit               (FunctionVertex&);
+
+  UnicodeString    Visit               (IfVertex&);
 
   UnicodeString    Visit               (NameVertex&);
 

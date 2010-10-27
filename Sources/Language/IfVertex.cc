@@ -23,5 +23,26 @@ IfVertex::~IfVertex()
 {
 }
 
+
+
+boost::shared_ptr<ranally::ExpressionVertex> const& IfVertex::condition() const
+{
+  return _condition;
+}
+
+
+
+StatementVertices const& IfVertex::trueStatements() const
+{
+  return _trueStatements;
+}
+
+
+
+StatementVertices const& IfVertex::falseStatements() const
+{
+  return _falseStatements;
+}
+
 } // namespace ranally
 

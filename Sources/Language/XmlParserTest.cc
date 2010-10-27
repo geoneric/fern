@@ -86,6 +86,12 @@ void XmlParserTest::testParse()
   }
 
   {
+    // Multiple statements.
+    xml = algebraParser.parseString(UnicodeString("a\nb"));
+    tree = xmlParser.parse(xml);
+  }
+
+  {
     // If statement.
     xml = algebraParser.parseString(UnicodeString(
       "if a:\n"

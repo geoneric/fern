@@ -28,6 +28,8 @@ boost::unit_test::test_suite* AlgebraParserTest::suite()
   suite->add(BOOST_CLASS_TEST_CASE(
     &AlgebraParserTest::testParseCall, instance));
   suite->add(BOOST_CLASS_TEST_CASE(
+    &AlgebraParserTest::testParseMultipleStatements, instance));
+  suite->add(BOOST_CLASS_TEST_CASE(
     &AlgebraParserTest::testParseIf, instance));
 
   /// suite->add(BOOST_CLASS_TEST_CASE(
@@ -287,6 +289,33 @@ void AlgebraParserTest::testParseCall()
 
 
 
+void AlgebraParserTest::testParseMultipleStatements()
+{
+  ranally::AlgebraParser parser;
+
+  {
+    UnicodeString xml(parser.parseString(UnicodeString("a\nb")));
+    BOOST_CHECK(xml ==
+      "<?xml version=\"1.0\"?>"
+      "<Ranally>"
+        "<Statements>"
+          "<Statement>"
+            "<Expression line=\"1\" col=\"0\">"
+              "<Name>a</Name>"
+            "</Expression>"
+          "</Statement>"
+          "<Statement>"
+            "<Expression line=\"2\" col=\"0\">"
+              "<Name>b</Name>"
+            "</Expression>"
+          "</Statement>"
+        "</Statements>"
+      "</Ranally>");
+  }
+}
+
+
+
 void AlgebraParserTest::testParseIf()
 {
   ranally::AlgebraParser parser;
@@ -294,7 +323,7 @@ void AlgebraParserTest::testParseIf()
 
   {
     xml = parser.parseString(UnicodeString(
-      "if(a):\n"
+      "if a:\n"
       "  b"));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
@@ -321,7 +350,7 @@ void AlgebraParserTest::testParseIf()
 
   {
     xml = parser.parseString(UnicodeString(
-      "if(a):\n"
+      "if a:\n"
       "  b\n"
       "elif(c):\n"
       "  d"));
@@ -366,9 +395,9 @@ void AlgebraParserTest::testParseIf()
 
   {
     xml = parser.parseString(UnicodeString(
-      "if(a):\n"
+      "if a:\n"
       "  b\n"
-      "elif(c):\n"
+      "elif c:\n"
       "  d\n"
       "else:\n"
       "  e"));

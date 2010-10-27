@@ -19,10 +19,6 @@ class IfVertex: public StatementVertex
 
   friend class IfVertexTest;
 
-public:
-
-  LOKI_DEFINE_VISITABLE()
-
 private:
 
   boost::shared_ptr<ranally::ExpressionVertex> _condition;
@@ -35,12 +31,20 @@ protected:
 
 public:
 
+  LOKI_DEFINE_VISITABLE()
+
                    IfVertex      (
                         boost::shared_ptr<ExpressionVertex> const& condition,
                         StatementVertices const& trueStatements,
                         StatementVertices const& falseStatements);
 
   /* virtual */    ~IfVertex     ();
+
+  boost::shared_ptr<ranally::ExpressionVertex> const& condition() const;
+
+  StatementVertices const& trueStatements() const;
+
+  StatementVertices const& falseStatements() const;
 
 };
 

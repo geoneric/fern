@@ -22,7 +22,7 @@ class StringVertex: public ExpressionVertex
 
 private:
 
-  UnicodeString    _string;
+  UnicodeString    _value;
 
 protected:
 
@@ -32,11 +32,11 @@ public:
 
                    StringVertex        (int lineNr,
                                         int colId,
-                                        UnicodeString const& string);
+                                        UnicodeString const& value);
 
   /* virtual */    ~StringVertex       ();
 
-  UnicodeString const& string          () const;
+  UnicodeString const& value           () const;
 
 };
 
