@@ -25,7 +25,12 @@ export RANALLY=$projects/Ranally
 
 export CDPATH=$CDPATH:$RANALLY/Sources
 
-cd $RANALLY
+_baseName=`basename $RANALLY`
 
+export PATH=$OBJECTS/$_baseName/bin:$PATH
+
+unset _basename
 unset _devEnv
 unset _personalConfiguration
+
+cd $RANALLY
