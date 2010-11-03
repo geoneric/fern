@@ -402,20 +402,31 @@ UnicodeString AlgebraParser::parseString(
 
 
 
-/// UnicodeString AlgebraParser::parseFile(
-///          UnicodeString const& fileName)
-/// {
-///   PyArena* arena = PyArena_New();
-///   assert(arena);
-/// 
-///   UnicodeString result(pythonAstToXml(PyParser_ASTFromString(
-///          "string", "file name", Py_file_input, 0, arena)));
-/// 
-///   PyArena_Free(arena);
-///   arena = 0;
-/// 
-///   return result;
-/// }
+UnicodeString AlgebraParser::parseFile(
+         UnicodeString const& /* fileName */)
+{
+  PyArena* arena = PyArena_New();
+  assert(arena);
+
+  UnicodeString result("<?xml version=\"1.0\"?>");
+
+  // // TODO read file and pass contents?
+  // // TODO or can we pass the filename instead? or a FILE pointer.
+
+  // result += pythonAstToXml(PyParser_ASTFromString(
+  //   dev::encodeInUTF8(string).c_str(), "", Py_file_input, 0, arena));
+
+
+
+
+  // UnicodeString result(pythonAstToXml(PyParser_ASTFromString(
+  //        "string", "file name", Py_file_input, 0, arena)));
+
+  PyArena_Free(arena);
+  arena = 0;
+
+  return result;
+}
 
 } // namespace ranally
 
