@@ -1,4 +1,4 @@
-PROJECT_NAME            = Ranally
+PROJECT_NAME            = ${PROJECT_NAME}
 
 INPUT                   = ${CMAKE_CURRENT_SOURCE_DIR}/Language \
                           ${CMAKE_CURRENT_BINARY_DIR}/Language
