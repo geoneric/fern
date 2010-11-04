@@ -80,6 +80,15 @@ void XmlParserTest::testParse()
   }
 
   {
+    // Operator.
+    xml = algebraParser.parseString(UnicodeString("-a"));
+    tree = xmlParser.parse(xml);
+
+    xml = algebraParser.parseString(UnicodeString("a + b"));
+    tree = xmlParser.parse(xml);
+  }
+
+  {
     // Assignment statement.
     xml = algebraParser.parseString(UnicodeString("a = b"));
     tree = xmlParser.parse(xml);

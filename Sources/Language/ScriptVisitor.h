@@ -15,6 +15,7 @@ class AssignmentVertex;
 class FunctionVertex;
 class IfVertex;
 class NameVertex;
+class OperatorVertex;
 class ScriptVertex;
 class StringVertex;
 template<typename T>
@@ -35,6 +36,7 @@ class ScriptVisitor: private boost::noncopyable,
   public Loki::Visitor<NumberVertex<int>, UnicodeString>,
   public Loki::Visitor<NumberVertex<long long>, UnicodeString>,
   public Loki::Visitor<NumberVertex<double>, UnicodeString>,
+  public Loki::Visitor<OperatorVertex, UnicodeString>,
   public Loki::Visitor<ScriptVertex, UnicodeString>,
   public Loki::Visitor<StringVertex, UnicodeString>,
   public Loki::Visitor<SyntaxVertex, UnicodeString>
@@ -51,6 +53,8 @@ private:
   UnicodeString    indent              (UnicodeString const& statement);
 
   UnicodeString    visitStatements     (StatementVertices const& statements);
+
+  UnicodeString    visitExpressions    (ExpressionVertices const& expressions);
 
 protected:
 
@@ -73,6 +77,8 @@ public:
   UnicodeString    Visit               (NumberVertex<long long>&);
 
   UnicodeString    Visit               (NumberVertex<double>&);
+
+  UnicodeString    Visit               (OperatorVertex&);
 
   UnicodeString    Visit               (ScriptVertex&);
 

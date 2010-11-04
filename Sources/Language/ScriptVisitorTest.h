@@ -38,7 +38,9 @@ public:
 
   void             testVisitNumber     ();
 
-  void             testVisitCall       ();
+  void             testVisitFunction   ();
+
+  void             testVisitOperator   ();
 
   void             testVisitMultipleStatements();
 

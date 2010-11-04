@@ -9,6 +9,7 @@
 #include "IfVertex.h"
 #include "NameVertex.h"
 #include "NumberVertex.h"
+#include "OperatorVertex.h"
 #include "ScriptVertex.h"
 #include "ScriptVisitor.h"
 #include "StatementVertex.h"
@@ -65,6 +66,32 @@ UnicodeString ScriptVisitor::visitStatements(
 
 
 
+UnicodeString ScriptVisitor::visitExpressions(
+  ExpressionVertices const& expressions)
+{
+  UnicodeString result = "(";
+
+  std::vector<UnicodeString> scripts;
+  BOOST_FOREACH(boost::shared_ptr<ranally::ExpressionVertex> expressionVertex,
+    expressions) {
+    scripts.push_back(expressionVertex->Accept(*this));
+  }
+
+  if(!scripts.empty()) {
+    result += scripts[0];
+
+    for(size_t i = 1; i < scripts.size(); ++i) {
+      result += ", " + scripts[i];
+    }
+  }
+
+  result += ")";
+
+  return result;
+}
+
+
+
 UnicodeString ScriptVisitor::Visit(
   AssignmentVertex& vertex)
 {
@@ -88,23 +115,99 @@ UnicodeString ScriptVisitor::Visit(
   FunctionVertex& vertex)
 {
   UnicodeString result = vertex.name();
-  result += "(";
+  result += visitExpressions(vertex.expressions());
+  return result;
+}
 
-  std::vector<UnicodeString> scripts;
-  BOOST_FOREACH(boost::shared_ptr<ranally::ExpressionVertex> expressionVertex,
-    vertex.expressions()) {
-    scripts.push_back(expressionVertex->Accept(*this));
-  }
 
-  if(!scripts.empty()) {
-    result += scripts[0];
 
-    for(size_t i = 1; i < scripts.size(); ++i) {
-      result += ", " + scripts[i];
+UnicodeString ScriptVisitor::Visit(
+  OperatorVertex& vertex)
+{
+  assert(vertex.expressions().size() == 1 || vertex.expressions().size() == 2);
+  UnicodeString result;
+
+  if(vertex.expressions().size() == 1) {
+    // Unary operator.
+    if(vertex.name() == "Invert") {
+      result += "~";
     }
+    else if(vertex.name() == "Not") {
+      result += "!";
+    }
+    else if(vertex.name() == "Add") {
+      result += "+";
+    }
+    else if(vertex.name() == "Sub") {
+      result += "-";
+    }
+    else {
+      // TODO
+      assert(false);
+    }
+
+    result += "(" + vertex.expressions()[0]->Accept(*this) + ")";
+  }
+  else if(vertex.expressions().size() == 2) {
+    // Binary operator.
+    result += "(" + vertex.expressions()[0]->Accept(*this) + ") ";
+
+    if(vertex.name() == "Add") {
+      result += "+";
+    }
+    else if(vertex.name() == "Sub") {
+      result += "-";
+    }
+    else if(vertex.name() == "Mult") {
+      result += "*";
+    }
+    else if(vertex.name() == "Div") {
+      result += "/";
+    }
+    else if(vertex.name() == "Mod") {
+      result += "%";
+    }
+    else if(vertex.name() == "Pow") {
+      result += "**";
+    }
+    else if(vertex.name() == "LShift") {
+      // TODO
+      assert(false);
+      result += "";
+    }
+    else if(vertex.name() == "RShift") {
+      // TODO
+      assert(false);
+      result += "";
+    }
+    else if(vertex.name() == "BitOr") {
+      // TODO
+      assert(false);
+      result += "";
+    }
+    else if(vertex.name() == "BitXor") {
+      // TODO
+      assert(false);
+      result += "";
+    }
+    else if(vertex.name() == "BitAnd") {
+      // TODO
+      assert(false);
+      result += "";
+    }
+    else if(vertex.name() == "FloorDiv") {
+      // TODO
+      assert(false);
+      result += "";
+    }
+    else {
+      // TODO
+      assert(false);
+    }
+
+    result += " (" + vertex.expressions()[1]->Accept(*this) + ")";
   }
 
-  result += ")";
   return result;
 }
 

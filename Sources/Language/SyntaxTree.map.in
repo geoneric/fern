@@ -13,6 +13,7 @@ namespace http://www.jemig.eu/ranally
   include "${CMAKE_CURRENT_SOURCE_DIR}/AssignmentVertex.h";
   include "${CMAKE_CURRENT_SOURCE_DIR}/ExpressionVertex.h";
   include "${CMAKE_CURRENT_SOURCE_DIR}/FunctionVertex.h";
+  include "${CMAKE_CURRENT_SOURCE_DIR}/OperatorVertex.h";
   include "${CMAKE_CURRENT_SOURCE_DIR}/IfVertex.h";
   include "${CMAKE_CURRENT_SOURCE_DIR}/ScriptVertex.h";
 
@@ -21,6 +22,7 @@ namespace http://www.jemig.eu/ranally
   Expression       "boost::shared_ptr<ExpressionVertex>";
   Statement        "boost::shared_ptr<StatementVertex>";
   Function         "boost::shared_ptr<FunctionVertex>";
+  Operator         "boost::shared_ptr<OperatorVertex>";
   Assignment       "boost::shared_ptr<AssignmentVertex>";
   If               "boost::shared_ptr<IfVertex>";
   Targets          "std::vector<boost::shared_ptr<

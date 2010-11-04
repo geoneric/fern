@@ -38,6 +38,7 @@ SET(SOURCES
   IfVertex.cc
   NameVertex.cc
   NumberVertex.cc
+  OperatorVertex.cc
   ScriptVertex.cc
   ScriptVisitor.cc
   StatementVertex.cc
@@ -56,6 +57,7 @@ SET(TEST_SOURCES
   IfVertexTest.cc
   NameVertexTest.cc
   NumberVertexTest.cc
+  OperatorVertexTest.cc
   ScriptVertexTest.cc
   ScriptVisitorTest.cc
   StatementVertexTest.cc

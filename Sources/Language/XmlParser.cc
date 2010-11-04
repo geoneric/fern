@@ -12,6 +12,7 @@
 #include "IfVertex.h"
 #include "NameVertex.h"
 #include "NumberVertex.h"
+#include "OperatorVertex.h"
 #include "StringVertex.h"
 #include "SyntaxVertex.h"
 
@@ -367,6 +368,53 @@ public:
 
 
 
+class Operator_pimpl: public ranally::Operator_pskel
+{
+private:
+  typedef std::vector<boost::shared_ptr<ranally::ExpressionVertex> >
+    ExpressionVertices;
+
+  struct OperatorData
+  {
+    UnicodeString name;
+    ExpressionVertices expressionVertices;
+  };
+
+  std::stack<OperatorData> _dataStack;
+
+public:
+  void pre()
+  {
+    _dataStack.push(OperatorData());
+  }
+
+  void Name(
+    std::string const& name)
+  {
+    assert(!_dataStack.empty());
+    _dataStack.top().name = dev::decodeFromUTF8(name);
+  }
+
+  void Expressions(
+    std::vector<boost::shared_ptr<ranally::ExpressionVertex> > const& vertices)
+  {
+    assert(!_dataStack.empty());
+    assert(_dataStack.top().expressionVertices.empty());
+    _dataStack.top().expressionVertices = vertices;
+  }
+
+  boost::shared_ptr<ranally::OperatorVertex> post_Operator()
+  {
+    assert(!_dataStack.empty());
+    OperatorData result(_dataStack.top());
+    _dataStack.pop();
+    return boost::make_shared<ranally::OperatorVertex>(result.name,
+      result.expressionVertices);
+  }
+};
+
+
+
 class Expression_pimpl: public ranally::Expression_pskel
 {
 private:
@@ -437,6 +485,16 @@ public:
       _dataStack.top().col);
   }
 
+  void Operator(
+    boost::shared_ptr<ranally::OperatorVertex> const& vertex)
+  {
+    assert(!_dataStack.empty());
+    assert(!_dataStack.top().vertex);
+    _dataStack.top().vertex = vertex;
+    _dataStack.top().vertex->setPosition(_dataStack.top().line,
+      _dataStack.top().col);
+  }
+
   boost::shared_ptr<ranally::ExpressionVertex> post_Expression()
   {
     assert(!_dataStack.empty());
@@ -484,7 +542,10 @@ boost::shared_ptr<ScriptVertex> XmlParser::parse(
   Function_pimpl function_p;
   function_p.parsers(string_p, expressions_p);
 
-  expression_p.parsers(string_p, string_p, number_p, function_p,
+  Operator_pimpl operator_p;
+  operator_p.parsers(string_p, expressions_p);
+
+  expression_p.parsers(string_p, string_p, number_p, function_p, operator_p,
     non_negative_integer_p, non_negative_integer_p);
 
   Targets_pimpl targets_p;

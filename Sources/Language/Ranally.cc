@@ -1,6 +1,7 @@
 #include <cassert>
 #include <cstring>
 #include <iostream>
+#include <sstream>
 // #include <boost/program_options.hpp>
 
 #include "dev_UnicodeUtils.h"
@@ -223,13 +224,14 @@ int main(
       UnicodeString xml;
 
       if(argc == 3) {
-        std::string script;
-        // TODO Read all input, instead of a single character.
-        std::cin >> script;
+        // Read script from the standard input stream.
+        std::ostringstream script;
+        script << std::cin.rdbuf();
         xml = ranally::AlgebraParser().parseString(UnicodeString(
-          script.c_str()));
+          script.str().c_str()));
       }
       else if(argc == 4) {
+        // Read script from a file.
         std::string inputFileName(argv[3]);
         xml = ranally::AlgebraParser().parseFile(UnicodeString(
           inputFileName.c_str()));

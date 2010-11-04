@@ -27,7 +27,9 @@ boost::unit_test::test_suite* ScriptVisitorTest::suite()
   suite->add(BOOST_CLASS_TEST_CASE(
     &ScriptVisitorTest::testVisitNumber, instance));
   suite->add(BOOST_CLASS_TEST_CASE(
-    &ScriptVisitorTest::testVisitCall, instance));
+    &ScriptVisitorTest::testVisitFunction, instance));
+  suite->add(BOOST_CLASS_TEST_CASE(
+    &ScriptVisitorTest::testVisitOperator, instance));
   suite->add(BOOST_CLASS_TEST_CASE(
     &ScriptVisitorTest::testVisitMultipleStatements, instance));
   suite->add(BOOST_CLASS_TEST_CASE(
@@ -100,7 +102,7 @@ void ScriptVisitorTest::testVisitNumber()
 
 
 
-void ScriptVisitorTest::testVisitCall()
+void ScriptVisitorTest::testVisitFunction()
 {
   UnicodeString xml;
 
@@ -110,6 +112,26 @@ void ScriptVisitorTest::testVisitCall()
   xml = _algebraParser.parseString(UnicodeString("f(1, \"2\", three, four())"));
   BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) ==
     "f(1, \"2\", three, four())\n");
+}
+
+
+
+void ScriptVisitorTest::testVisitOperator()
+{
+  UnicodeString xml;
+
+  xml = _algebraParser.parseString(UnicodeString("-a"));
+  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "-(a)\n");
+
+  xml = _algebraParser.parseString(UnicodeString("a + b"));
+  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "(a) + (b)\n");
+
+  xml = _algebraParser.parseString(UnicodeString("-(a + b)"));
+  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "-((a) + (b))\n");
+
+  xml = _algebraParser.parseString(UnicodeString("a + b * c + d"));
+  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) ==
+    "((a) + ((b) * (c))) + (d)\n");
 }
 
 

@@ -28,6 +28,10 @@ boost::unit_test::test_suite* AlgebraParserTest::suite()
   suite->add(BOOST_CLASS_TEST_CASE(
     &AlgebraParserTest::testParseCall, instance));
   suite->add(BOOST_CLASS_TEST_CASE(
+    &AlgebraParserTest::testParseUnaryOperator, instance));
+  suite->add(BOOST_CLASS_TEST_CASE(
+    &AlgebraParserTest::testParseBinaryOperator, instance));
+  suite->add(BOOST_CLASS_TEST_CASE(
     &AlgebraParserTest::testParseMultipleStatements, instance));
   suite->add(BOOST_CLASS_TEST_CASE(
     &AlgebraParserTest::testParseIf, instance));
@@ -280,6 +284,69 @@ void AlgebraParserTest::testParseCall()
                   "</Expression>"
                 "</Expressions>"
               "</Function>"
+            "</Expression>"
+          "</Statement>"
+        "</Statements>"
+      "</Ranally>");
+  }
+}
+
+
+
+void AlgebraParserTest::testParseUnaryOperator()
+{
+  ranally::AlgebraParser parser;
+  UnicodeString xml;
+
+  {
+    xml = parser.parseString(UnicodeString("-a"));
+    BOOST_CHECK(xml ==
+      "<?xml version=\"1.0\"?>"
+      "<Ranally>"
+        "<Statements>"
+          "<Statement>"
+            "<Expression line=\"1\" col=\"0\">"
+              "<Operator>"
+                "<Name>Sub</Name>"
+                "<Expressions>"
+                  "<Expression line=\"1\" col=\"1\">"
+                    "<Name>a</Name>"
+                  "</Expression>"
+                "</Expressions>"
+              "</Operator>"
+            "</Expression>"
+          "</Statement>"
+        "</Statements>"
+      "</Ranally>");
+  }
+}
+
+
+
+void AlgebraParserTest::testParseBinaryOperator()
+{
+  ranally::AlgebraParser parser;
+  UnicodeString xml;
+
+  {
+    xml = parser.parseString(UnicodeString("a + b"));
+    BOOST_CHECK(xml ==
+      "<?xml version=\"1.0\"?>"
+      "<Ranally>"
+        "<Statements>"
+          "<Statement>"
+            "<Expression line=\"1\" col=\"0\">"
+              "<Operator>"
+                "<Name>Add</Name>"
+                "<Expressions>"
+                  "<Expression line=\"1\" col=\"0\">"
+                    "<Name>a</Name>"
+                  "</Expression>"
+                  "<Expression line=\"1\" col=\"4\">"
+                    "<Name>b</Name>"
+                  "</Expression>"
+                "</Expressions>"
+              "</Operator>"
             "</Expression>"
           "</Statement>"
         "</Statements>"

@@ -139,6 +139,111 @@ void writeCallNode(
 
 
 
+void writeUnaryOperatorNode(
+  unaryop_ty const unaryOperator,
+  expr_ty const operand,
+  UnicodeString& xml)
+{
+  xml += "<Operator><Name>";
+
+  switch(unaryOperator) {
+    case Invert: {
+      xml += "Invert";
+      break;
+    }
+    case Not: {
+      xml += "Not";
+      break;
+    }
+    case UAdd: {
+      xml += "Add";
+      break;
+    }
+    case USub: {
+      xml += "Sub";
+      break;
+    }
+  }
+
+  xml += "</Name>";
+  xml += "<Expressions>";
+  writeExpressionNode(operand, xml);
+  xml += "</Expressions>";
+  xml += "</Operator>";
+}
+
+
+
+void writeBinaryOperatorNode(
+  expr_ty const leftOperand,
+  operator_ty const binaryOperator,
+  expr_ty const rightOperand,
+  UnicodeString& xml)
+{
+  xml += "<Operator><Name>";
+
+  switch(binaryOperator) {
+    case Add: {
+      xml += "Add";
+      break;
+    }
+    case Sub: {
+      xml += "Sub";
+      break;
+    }
+    case Mult: {
+      xml += "Mult";
+      break;
+    }
+    case Div: {
+      xml += "Div";
+      break;
+    }
+    case Mod: {
+      xml += "Mod";
+      break;
+    }
+    case Pow: {
+      xml += "Pow";
+      break;
+    }
+    case LShift: {
+      xml += "LShift";
+      break;
+    }
+    case RShift: {
+      xml += "RShift";
+      break;
+    }
+    case BitOr: {
+      xml += "BitOr";
+      break;
+    }
+    case BitXor: {
+      xml += "BitXor";
+      break;
+    }
+    case BitAnd: {
+      xml += "BitAnd";
+      break;
+    }
+    case FloorDiv: {
+      xml += "FloorDiv";
+      break;
+    }
+  }
+
+  xml += "</Name>";
+  xml += "<Expressions>";
+  writeExpressionNode(leftOperand, xml);
+  writeExpressionNode(rightOperand, xml);
+  xml += "</Expressions>";
+
+  xml += "</Operator>";
+}
+
+
+
 void writeExpressionNode(
   expr_ty const& expression,
   UnicodeString& xml)
@@ -170,9 +275,18 @@ void writeExpressionNode(
         expression->v.Call.kwargs, xml);
       break;
     }
+    case UnaryOp_kind: {
+      writeUnaryOperatorNode(expression->v.UnaryOp.op,
+        expression->v.UnaryOp.operand, xml);
+      break;
+    }
+    case BinOp_kind: {
+      writeBinaryOperatorNode(expression->v.BinOp.left,
+        expression->v.BinOp.op,
+        expression->v.BinOp.right, xml);
+      break;
+    }
     case BoolOp_kind:
-    case BinOp_kind:
-    case UnaryOp_kind:
     case Lambda_kind:
     case IfExp_kind:
     case Dict_kind:
@@ -403,24 +517,20 @@ UnicodeString AlgebraParser::parseString(
 
 
 UnicodeString AlgebraParser::parseFile(
-         UnicodeString const& /* fileName */)
+  UnicodeString const& fileName)
 {
   PyArena* arena = PyArena_New();
   assert(arena);
 
+  std::string fileNameInUtf8(dev::encodeInUTF8(fileName));
+  FILE* filePointer = fopen(fileNameInUtf8.c_str(), "r");
+
+  // TODO Error handling. What if file does not exist.
+
   UnicodeString result("<?xml version=\"1.0\"?>");
 
-  // // TODO read file and pass contents?
-  // // TODO or can we pass the filename instead? or a FILE pointer.
-
-  // result += pythonAstToXml(PyParser_ASTFromString(
-  //   dev::encodeInUTF8(string).c_str(), "", Py_file_input, 0, arena));
-
-
-
-
-  // UnicodeString result(pythonAstToXml(PyParser_ASTFromString(
-  //        "string", "file name", Py_file_input, 0, arena)));
+  result += pythonAstToXml(PyParser_ASTFromFile(filePointer,
+    fileNameInUtf8.c_str(), Py_file_input, 0, 0, 0, 0, arena));
 
   PyArena_Free(arena);
   arena = 0;

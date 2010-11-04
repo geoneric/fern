@@ -104,6 +104,9 @@
       <xs:element
         name="Function"
         type="ranally:Function"/>
+      <xs:element
+        name="Operator"
+        type="ranally:Operator"/>
     </xs:choice>
     <xs:attribute name="line" type="xs:nonNegativeInteger" use="required"/>
     <xs:attribute name="col" type="xs:nonNegativeInteger" use="required"/>
@@ -124,6 +127,17 @@
   </xs:complexType>
 
   <xs:complexType name="Function">
+    <xs:sequence>
+      <xs:element
+        name="Name"
+        type="xs:string"/>
+      <xs:element
+        name="Expressions"
+        type="ranally:Expressions"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Operator">
     <xs:sequence>
       <xs:element
         name="Name"

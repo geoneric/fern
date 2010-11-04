@@ -34,6 +34,10 @@ public:
 
   void             testParseCall       ();
 
+  void             testParseUnaryOperator();
+
+  void             testParseBinaryOperator();
+
   void             testParseMultipleStatements();
 
   void             testParseIf         ();
