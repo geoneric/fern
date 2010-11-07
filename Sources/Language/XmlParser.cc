@@ -355,10 +355,10 @@ public:
   }
 
   void Integer(
-    int value)
+    long value)
   {
     assert(!_vertex);
-    _vertex = boost::make_shared<ranally::NumberVertex<int> >(value);
+    _vertex = boost::make_shared<ranally::NumberVertex<long> >(value);
   }
 
   void Long(
@@ -588,11 +588,20 @@ XmlParser::~XmlParser()
 boost::shared_ptr<ScriptVertex> XmlParser::parse(
          std::istream& stream) const
 {
+  // Python stores regular integers in a C long. Xsd doesn't have a long parser, but
+  // does have an int parser. Let's make sure a long is of the same size as an int.
+  // Xsd's long parser uses long long, which is good for Pythons long integer type.
+  assert(sizeof(int) == sizeof(long));
+
   xml_schema::int_pimpl int_p;
   xml_schema::non_negative_integer_pimpl non_negative_integer_p;
   xml_schema::long_pimpl long_p;
   xml_schema::double_pimpl double_p;
   xml_schema::string_pimpl string_p;
+
+  // hier verder: Integer is an element with two children:
+  // Size: positive_integer_pimpl
+  // Value: int_pimpl
 
   Number_pimpl number_p;
   number_p.parsers(int_p, long_p, double_p);

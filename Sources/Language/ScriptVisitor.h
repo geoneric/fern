@@ -34,7 +34,7 @@ class ScriptVisitor: private boost::noncopyable,
   public Loki::Visitor<FunctionVertex, UnicodeString>,
   public Loki::Visitor<IfVertex, UnicodeString>,
   public Loki::Visitor<NameVertex, UnicodeString>,
-  public Loki::Visitor<NumberVertex<int>, UnicodeString>,
+  public Loki::Visitor<NumberVertex<long>, UnicodeString>,
   public Loki::Visitor<NumberVertex<long long>, UnicodeString>,
   public Loki::Visitor<NumberVertex<double>, UnicodeString>,
   public Loki::Visitor<OperatorVertex, UnicodeString>,
@@ -74,7 +74,7 @@ public:
 
   UnicodeString    Visit               (NameVertex&);
 
-  UnicodeString    Visit               (NumberVertex<int>&);
+  UnicodeString    Visit               (NumberVertex<long>&);
 
   UnicodeString    Visit               (NumberVertex<long long>&);
 

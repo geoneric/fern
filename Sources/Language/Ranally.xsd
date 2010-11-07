@@ -136,7 +136,7 @@
     <xs:choice>
       <xs:element
         name="Integer"
-        type="xs:int"/>
+        type="ranally:Integer"/>
       <xs:element
         name="Long"
         type="xs:long"/>
@@ -144,6 +144,17 @@
         name="Double"
         type="xs:double"/>
     </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="Integer">
+    <xs:sequence>
+      <xs:element
+        name="Size"
+        type="xs:positiveInteger"/>
+      <xs:element
+        name="Value"
+        type="xs:int"/>
+    </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="Function">

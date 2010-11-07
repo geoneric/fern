@@ -51,17 +51,31 @@ void writeNumberNode(
   // TODO Use types with a known size: int32, int64, float32, float64, etc.
   xml += "<Number>";
 
+  // From the Python docs:
+  //   Plain integers (also just called integers) are implemented using
+  //   long in C, which gives them at least 32 bits of precision (sys.maxint is
+  //   always set to the maximum plain integer value for the current platform,
+  //   the minimum value is -sys.maxint - 1).
   if(PyInt_CheckExact(number)) {
+    // The number object contains a C long value. The size of long is platform
+    // dependent.
     xml += "<Integer>";
+    xml += "<Size>";
+    xml += (boost::format("%1%") % (sizeof(long) * 8)).str().c_str();
+    xml += "</Size>";
+    xml += "<Value>";
     xml += (boost::format("%1%") % PyInt_AsLong(number)).str().c_str();
+    xml += "</Value>";
     xml += "</Integer>";
   }
   else if(PyLong_CheckExact(number)) {
+    // TODO Add size attribute.
     xml += "<Long>";
     xml += (boost::format("%1%") % PyLong_AsLong(number)).str().c_str();
     xml += "</Long>";
   }
   else if(PyFloat_CheckExact(number)) {
+    // TODO Add size attribute.
     xml += "<Double>";
     xml += (boost::format("%1%") % PyFloat_AsDouble(number)).str().c_str();
     xml += "</Double>";
@@ -321,13 +335,15 @@ void writeExpressionNode(
         expression->v.BoolOp.values, xml);
       break;
     }
-    case Lambda_kind:
+    // TODO
+    case Compare_kind:
     case IfExp_kind:
+
+    case Lambda_kind:
     case Dict_kind:
     case ListComp_kind:
     case GeneratorExp_kind:
     case Yield_kind:
-    case Compare_kind:
     case Repr_kind:
     case Attribute_kind:
     case Subscript_kind:
@@ -444,6 +460,7 @@ void writeStatementNodes(
           break;
         }
 
+        // TODO
         case Break_kind:
         case Continue_kind:
         case Assert_kind:

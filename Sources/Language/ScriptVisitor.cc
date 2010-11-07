@@ -250,7 +250,7 @@ UnicodeString ScriptVisitor::Visit(
 
 
 UnicodeString ScriptVisitor::Visit(
-  NumberVertex<int>& vertex)
+  NumberVertex<long>& vertex)
 {
   return UnicodeString((boost::format("%1%") % vertex.value()).str().c_str());
 }

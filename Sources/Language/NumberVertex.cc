@@ -45,7 +45,7 @@ T NumberVertex<T>::value() const
 
 
 
-template class NumberVertex<int>;
+template class NumberVertex<long>;
 template class NumberVertex<long long>;
 template class NumberVertex<double>;
 
