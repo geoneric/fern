@@ -81,10 +81,16 @@ void XmlParserTest::testParse()
 
   {
     // Operator.
+    // Unary.
     xml = algebraParser.parseString(UnicodeString("-a"));
     tree = xmlParser.parse(xml);
 
+    // Binary.
     xml = algebraParser.parseString(UnicodeString("a + b"));
+    tree = xmlParser.parse(xml);
+
+    // Boolean.
+    xml = algebraParser.parseString(UnicodeString("a and b"));
     tree = xmlParser.parse(xml);
   }
 

@@ -557,7 +557,7 @@ boost::shared_ptr<ScriptVertex> XmlParser::parse(
   Statements_pimpl statements_p;
 
   If_pimpl if_p;
-  if_p.parsers(expression_p, statements_p /* , statements_p */);
+  if_p.parsers(expression_p, statements_p);
 
   Statement_pimpl statement_p;
   statement_p.parsers(expression_p, assignment_p, if_p);

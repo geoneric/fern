@@ -38,6 +38,8 @@ public:
 
   void             testParseBinaryOperator();
 
+  void             testParseBooleanOperator();
+
   void             testParseMultipleStatements();
 
   void             testParseIf         ();

@@ -163,6 +163,8 @@ void writeUnaryOperatorNode(
       xml += "Sub";
       break;
     }
+    // Don't add a default clause! We want to hear from the compiler if we're missing
+    // a case.
   }
 
   xml += "</Name>";
@@ -231,6 +233,8 @@ void writeBinaryOperatorNode(
       xml += "FloorDiv";
       break;
     }
+    // Don't add a default clause! We want to hear from the compiler if we're missing
+    // a case.
   }
 
   xml += "</Name>";
@@ -239,6 +243,33 @@ void writeBinaryOperatorNode(
   writeExpressionNode(rightOperand, xml);
   xml += "</Expressions>";
 
+  xml += "</Operator>";
+}
+
+
+
+void writeBooleanOperatorNode(
+  boolop_ty booleanOperator,
+  asdl_seq const* operands,
+  UnicodeString& xml)
+{
+  xml += "<Operator><Name>";
+
+  switch(booleanOperator) {
+    case And: {
+      xml += "And";
+      break;
+    }
+    case Or: {
+      xml += "Or";
+      break;
+    }
+    // Don't add a default clause! We want to hear from the compiler if we're missing
+    // a case.
+  }
+
+  xml += "</Name>";
+  writeExpressionsNode(operands, xml);
   xml += "</Operator>";
 }
 
@@ -282,11 +313,14 @@ void writeExpressionNode(
     }
     case BinOp_kind: {
       writeBinaryOperatorNode(expression->v.BinOp.left,
-        expression->v.BinOp.op,
-        expression->v.BinOp.right, xml);
+        expression->v.BinOp.op, expression->v.BinOp.right, xml);
       break;
     }
-    case BoolOp_kind:
+    case BoolOp_kind: {
+      writeBooleanOperatorNode(expression->v.BoolOp.op,
+        expression->v.BoolOp.values, xml);
+      break;
+    }
     case Lambda_kind:
     case IfExp_kind:
     case Dict_kind:
