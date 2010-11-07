@@ -14,6 +14,7 @@
 #include "ScriptVisitor.h"
 #include "StatementVertex.h"
 #include "StringVertex.h"
+#include "WhileVertex.h"
 
 
 
@@ -285,6 +286,35 @@ UnicodeString ScriptVisitor::Visit(
   // The statements that are part of the true and false blocks are indented
   // by the visitStatements.
   result += "if " + vertex.condition()->Accept(*this) + ":\n";
+  ++_indentLevel;
+  result += visitStatements(vertex.trueStatements());
+  --_indentLevel;
+
+  if(!vertex.falseStatements().empty()) {
+    result += indent("else:\n");
+    ++_indentLevel;
+    result += visitStatements(vertex.falseStatements());
+    --_indentLevel;
+  }
+
+  return result;
+}
+
+
+
+UnicodeString ScriptVisitor::Visit(
+  WhileVertex& vertex)
+{
+  assert(!vertex.trueStatements().empty());
+
+  UnicodeString result;
+
+  // The indent function called in visitStatements of the parent vertex
+  // indents the first line of this while-statement, so we have to indent the
+  // else line ourselves.
+  // The statements that are part of the true and false blocks are indented
+  // by the visitStatements.
+  result += "while " + vertex.condition()->Accept(*this) + ":\n";
   ++_indentLevel;
   result += visitStatements(vertex.trueStatements());
   --_indentLevel;

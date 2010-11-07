@@ -129,6 +129,21 @@ void XmlParserTest::testParse()
   }
 
   {
+    // While statement.
+    xml = algebraParser.parseString(UnicodeString(
+      "while a:\n"
+      "  b"));
+    tree = xmlParser.parse(xml);
+
+    xml = algebraParser.parseString(UnicodeString(
+      "while a:\n"
+      "  b\n"
+      "else:\n"
+      "  c"));
+    tree = xmlParser.parse(xml);
+  }
+
+  {
     // Random string.
     BOOST_CHECK_THROW(xmlParser.parse(UnicodeString("blabla")),
       xml_schema::parsing);

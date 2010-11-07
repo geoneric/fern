@@ -13,6 +13,7 @@
 #include "StatementVertexTest.h"
 #include "StringVertexTest.h"
 #include "SyntaxVertexTest.h"
+#include "WhileVertexTest.h"
 #include "XmlParserTest.h"
 
 
@@ -45,6 +46,7 @@ boost::unit_test::test_suite* init_unit_test_suite(
   test->add(AssignmentVertexTest::suite());
   test->add(StatementVertexTest::suite());
   test->add(IfVertexTest::suite());
+  test->add(WhileVertexTest::suite());
   test->add(ScriptVertexTest::suite());
 
   test->add(XmlParserTest::suite());

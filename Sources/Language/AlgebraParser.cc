@@ -362,13 +362,6 @@ void writeAssignmentNode(
   // When there is more than one target, value should be an iterable.
   // For now we can limit the number of targets to one.
 
-  // expr_ty:
-  //   BoolOp_kind=1, BinOp_kind=2, UnaryOp_kind=3, Lambda_kind=4,
-  //   IfExp_kind=5, Dict_kind=6, ListComp_kind=7, GeneratorExp_kind=8,
-  //   Yield_kind=9, Compare_kind=10, Call_kind=11, Repr_kind=12, Num_kind=13,
-  //   Str_kind=14, Attribute_kind=15, Subscript_kind=16, Name_kind=17,
-  //   List_kind=18, Tuple_kind=19
-
   assert(targets->size == 1); // TODO Error handling.
   expr_ty const target = static_cast<expr_ty const>(asdl_seq_GET(targets, 0));
   assert(target->kind == Name_kind); // TODO Error handling.
@@ -393,6 +386,21 @@ void writeIfNode(
   writeStatementNodes(body, xml);
   writeStatementNodes(orelse, xml);
   xml += "</If>";
+}
+
+
+
+void writeWhileNode(
+  expr_ty const test,
+  asdl_seq const* body,
+  asdl_seq const* orelse,
+  UnicodeString& xml)
+{
+  xml += "<While>";
+  writeExpressionNode(test, xml);
+  writeStatementNodes(body, xml);
+  writeStatementNodes(orelse, xml);
+  xml += "</While>";
 }
 
 
@@ -430,17 +438,26 @@ void writeStatementNodes(
             statement->v.If.orelse, xml);
           break;
         }
+        case While_kind: {
+          writeWhileNode(statement->v.While.test, statement->v.While.body,
+            statement->v.While.orelse, xml);
+          break;
+        }
+
         case Break_kind:
         case Continue_kind:
         case Assert_kind:
+        case AugAssign_kind:
+
+        case Print_kind:
+        case Global_kind:
+        case Pass_kind:
+
         case FunctionDef_kind:
         case ClassDef_kind:
         case Return_kind:
         case Delete_kind:
-        case AugAssign_kind:
-        case Print_kind:
         case For_kind:
-        case While_kind:
         case With_kind:
         case Raise_kind:
         case TryExcept_kind:
@@ -448,8 +465,6 @@ void writeStatementNodes(
         case Import_kind:
         case ImportFrom_kind:
         case Exec_kind:
-        case Global_kind:
-        case Pass_kind:
         {
           bool implemented = false;
           assert(implemented);

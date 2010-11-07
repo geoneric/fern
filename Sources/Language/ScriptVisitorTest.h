@@ -46,6 +46,8 @@ public:
 
   void             testVisitIf         ();
 
+  void             testVisitWhile      ();
+
   static boost::unit_test::test_suite* suite();
 
 };

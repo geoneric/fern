@@ -44,6 +44,8 @@ public:
 
   void             testParseIf         ();
 
+  void             testParseWhile      ();
+
   static boost::unit_test::test_suite* suite();
 
 };

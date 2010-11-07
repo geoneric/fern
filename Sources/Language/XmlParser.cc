@@ -15,6 +15,7 @@
 #include "OperatorVertex.h"
 #include "StringVertex.h"
 #include "SyntaxVertex.h"
+#include "WhileVertex.h"
 
 
 
@@ -168,6 +169,60 @@ public:
 
 
 
+class While_pimpl: public ranally::While_pskel
+{
+private:
+  typedef std::vector<boost::shared_ptr<ranally::StatementVertex> >
+    StatementVertices;
+
+  struct WhileData
+  {
+    boost::shared_ptr<ranally::ExpressionVertex> conditionVertex;
+    StatementVertices trueStatementVertices;
+    StatementVertices falseStatementVertices;
+  };
+
+  std::stack<WhileData> _dataStack;
+
+public:
+  void pre()
+  {
+    _dataStack.push(WhileData());
+  }
+
+  void Expression(
+    boost::shared_ptr<ranally::ExpressionVertex> const& vertex)
+  {
+    assert(!_dataStack.top().conditionVertex);
+    assert(vertex);
+    _dataStack.top().conditionVertex = vertex;
+  }
+
+  void Statements(
+    std::vector<boost::shared_ptr<ranally::StatementVertex> > const& vertices)
+  {
+    if(_dataStack.top().trueStatementVertices.empty()) {
+      assert(!vertices.empty());
+      _dataStack.top().trueStatementVertices = vertices;
+    }
+    else {
+      assert(_dataStack.top().falseStatementVertices.empty());
+      _dataStack.top().falseStatementVertices = vertices;
+    }
+  }
+
+  boost::shared_ptr<ranally::WhileVertex> post_While()
+  {
+    assert(!_dataStack.empty());
+    WhileData result(_dataStack.top());
+    _dataStack.pop();
+    return boost::make_shared<ranally::WhileVertex>(result.conditionVertex,
+      result.trueStatementVertices, result.falseStatementVertices);
+  }
+};
+
+
+
 class Statements_pimpl: public ranally::Statements_pskel
 {
 private:
@@ -231,6 +286,14 @@ public:
 
   void If(
     boost::shared_ptr<ranally::IfVertex> const& vertex)
+  {
+    assert(vertex);
+    assert(!_dataStack.empty());
+    _dataStack.top() = vertex;
+  }
+
+  void While(
+    boost::shared_ptr<ranally::WhileVertex> const& vertex)
   {
     assert(vertex);
     assert(!_dataStack.empty());
@@ -559,8 +622,11 @@ boost::shared_ptr<ScriptVertex> XmlParser::parse(
   If_pimpl if_p;
   if_p.parsers(expression_p, statements_p);
 
+  While_pimpl while_p;
+  while_p.parsers(expression_p, statements_p);
+
   Statement_pimpl statement_p;
-  statement_p.parsers(expression_p, assignment_p, if_p);
+  statement_p.parsers(expression_p, assignment_p, if_p, while_p);
 
   statements_p.parsers(statement_p);
 

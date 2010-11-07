@@ -1,5 +1,5 @@
-#ifndef INCLUDED_RANALLY_IFVERTEX
-#define INCLUDED_RANALLY_IFVERTEX
+#ifndef INCLUDED_RANALLY_WHILEVERTEX
+#define INCLUDED_RANALLY_WHILEVERTEX
 
 #include "ExpressionVertex.h"
 #include "StatementVertex.h"
@@ -14,10 +14,10 @@ namespace ranally {
 
   \sa        .
 */
-class IfVertex: public StatementVertex
+class WhileVertex: public StatementVertex
 {
 
-  friend class IfVertexTest;
+  friend class WhileVertexTest;
 
 private:
 
@@ -33,12 +33,12 @@ public:
 
   LOKI_DEFINE_VISITABLE()
 
-                   IfVertex            (
+                   WhileVertex         (
                         boost::shared_ptr<ExpressionVertex> const& condition,
                         StatementVertices const& trueStatements,
                         StatementVertices const& falseStatements);
 
-  /* virtual */    ~IfVertex           ();
+  /* virtual */    ~WhileVertex        ();
 
   boost::shared_ptr<ranally::ExpressionVertex> const& condition() const;
 

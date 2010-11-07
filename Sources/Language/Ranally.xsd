@@ -40,10 +40,30 @@
       <xs:element
         name="If"
         type="ranally:If"/>
+      <xs:element
+        name="While"
+        type="ranally:While"/>
     </xs:choice>
   </xs:complexType>
 
   <xs:complexType name="If">
+    <xs:sequence>
+      <!-- Condition. -->
+      <xs:element
+        name="Expression"
+        type="ranally:Expression"/>
+      <!-- True block. -->
+      <xs:element
+        name="Statements"
+        type="ranally:Statements"/>
+      <!-- False block. -->
+      <xs:element
+        name="Statements"
+        type="ranally:Statements"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="While">
     <xs:sequence>
       <!-- Condition. -->
       <xs:element

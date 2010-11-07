@@ -15,11 +15,12 @@ class AssignmentVertex;
 class FunctionVertex;
 class IfVertex;
 class NameVertex;
+template<typename T>
+  class NumberVertex;
 class OperatorVertex;
 class ScriptVertex;
 class StringVertex;
-template<typename T>
-  class NumberVertex;
+class WhileVertex;
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -39,7 +40,8 @@ class ScriptVisitor: private boost::noncopyable,
   public Loki::Visitor<OperatorVertex, UnicodeString>,
   public Loki::Visitor<ScriptVertex, UnicodeString>,
   public Loki::Visitor<StringVertex, UnicodeString>,
-  public Loki::Visitor<SyntaxVertex, UnicodeString>
+  public Loki::Visitor<SyntaxVertex, UnicodeString>,
+  public Loki::Visitor<WhileVertex, UnicodeString>
 {
 
   friend class ScriptVisitorTest;
@@ -85,6 +87,8 @@ public:
   UnicodeString    Visit               (StringVertex&);
 
   UnicodeString    Visit               (SyntaxVertex&);
+
+  UnicodeString    Visit               (WhileVertex&);
 
 };
 

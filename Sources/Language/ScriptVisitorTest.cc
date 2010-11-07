@@ -34,6 +34,8 @@ boost::unit_test::test_suite* ScriptVisitorTest::suite()
     &ScriptVisitorTest::testVisitMultipleStatements, instance));
   suite->add(BOOST_CLASS_TEST_CASE(
     &ScriptVisitorTest::testVisitIf, instance));
+  suite->add(BOOST_CLASS_TEST_CASE(
+    &ScriptVisitorTest::testVisitWhile, instance));
 
   return suite;
 }
@@ -198,3 +200,33 @@ void ScriptVisitorTest::testVisitIf()
       "    h\n");
 }
 
+
+
+void ScriptVisitorTest::testVisitWhile()
+{
+  UnicodeString xml;
+
+  xml = _algebraParser.parseString(UnicodeString(
+      "while a:\n"
+      "  b\n"
+      "  c"));
+  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) ==
+      "while a:\n"
+      "  b\n"
+      "  c\n");
+
+  xml = _algebraParser.parseString(UnicodeString(
+      "while a:\n"
+      "  b\n"
+      "  c\n"
+      "else:\n"
+      "  d\n"
+      "  e"));
+  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) ==
+      "while a:\n"
+      "  b\n"
+      "  c\n"
+      "else:\n"
+      "  d\n"
+      "  e\n");
+}

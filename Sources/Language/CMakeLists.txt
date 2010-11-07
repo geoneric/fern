@@ -44,6 +44,7 @@ SET(SOURCES
   StatementVertex.cc
   StringVertex.cc
   SyntaxVertex.cc
+  WhileVertex.cc
   XmlParser.cc
 )
 ADD_LIBRARY(RanallyLanguage
@@ -64,6 +65,7 @@ SET(TEST_SOURCES
   StringVertexTest.cc
   SyntaxVertexTest.cc
   Test.cc
+  WhileVertexTest.cc
   XmlParserTest.cc
 )
 ADD_EXECUTABLE(testRanallyLanguage

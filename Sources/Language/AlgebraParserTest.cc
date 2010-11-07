@@ -37,6 +37,8 @@ boost::unit_test::test_suite* AlgebraParserTest::suite()
     &AlgebraParserTest::testParseMultipleStatements, instance));
   suite->add(BOOST_CLASS_TEST_CASE(
     &AlgebraParserTest::testParseIf, instance));
+  suite->add(BOOST_CLASS_TEST_CASE(
+    &AlgebraParserTest::testParseWhile, instance));
 
   /// suite->add(BOOST_CLASS_TEST_CASE(
   ///   &AlgebraParserTest::testParseFile, instance));
@@ -543,6 +545,76 @@ void AlgebraParserTest::testParseIf()
                 "</Statement>"
               "</Statements>"
             "</If>"
+          "</Statement>"
+        "</Statements>"
+      "</Ranally>");
+  }
+}
+
+
+
+void AlgebraParserTest::testParseWhile()
+{
+  ranally::AlgebraParser parser;
+  UnicodeString xml;
+
+  {
+    xml = parser.parseString(UnicodeString(
+      "while a:\n"
+      "  b"));
+    BOOST_CHECK(xml ==
+      "<?xml version=\"1.0\"?>"
+      "<Ranally>"
+        "<Statements>"
+          "<Statement>"
+            "<While>"
+              "<Expression line=\"1\" col=\"6\">"
+                "<Name>a</Name>"
+              "</Expression>"
+              "<Statements>"
+                "<Statement>"
+                  "<Expression line=\"2\" col=\"2\">"
+                    "<Name>b</Name>"
+                  "</Expression>"
+                "</Statement>"
+              "</Statements>"
+              "<Statements/>"
+            "</While>"
+          "</Statement>"
+        "</Statements>"
+      "</Ranally>");
+  }
+
+  {
+    xml = parser.parseString(UnicodeString(
+      "while a:\n"
+      "  b\n"
+      "else:\n"
+      "  c"));
+    BOOST_CHECK(xml ==
+      "<?xml version=\"1.0\"?>"
+      "<Ranally>"
+        "<Statements>"
+          "<Statement>"
+            "<While>"
+              "<Expression line=\"1\" col=\"6\">"
+                "<Name>a</Name>"
+              "</Expression>"
+              "<Statements>"
+                "<Statement>"
+                  "<Expression line=\"2\" col=\"2\">"
+                    "<Name>b</Name>"
+                  "</Expression>"
+                "</Statement>"
+              "</Statements>"
+              "<Statements>"
+                "<Statement>"
+                  "<Expression line=\"4\" col=\"2\">"
+                    "<Name>c</Name>"
+                  "</Expression>"
+                "</Statement>"
+              "</Statements>"
+            "</While>"
           "</Statement>"
         "</Statements>"
       "</Ranally>");
