@@ -11,3 +11,5 @@ EXTRACT_PRIVATE         = YES
 EXTRACT_STATIC          = YES
 
 EXCLUDE_PATTERNS        = *Test.h *Test.cc
+
+GENERATE_LATEX          = NO
