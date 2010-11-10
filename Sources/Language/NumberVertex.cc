@@ -45,8 +45,15 @@ T NumberVertex<T>::value() const
 
 
 
-template class NumberVertex<long>;
-template class NumberVertex<long long>;
+template class NumberVertex<int8_t>;
+template class NumberVertex<int16_t>;
+template class NumberVertex<int32_t>;
+template class NumberVertex<int64_t>;
+template class NumberVertex<uint8_t>;
+template class NumberVertex<uint16_t>;
+template class NumberVertex<uint32_t>;
+template class NumberVertex<uint64_t>;
+template class NumberVertex<float>;
 template class NumberVertex<double>;
 
 } // namespace ranally

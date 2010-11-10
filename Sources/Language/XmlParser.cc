@@ -343,6 +343,181 @@ public:
 
 
 
+class Integer_pimpl: public ranally::Integer_pskel
+{
+private:
+
+  unsigned long long _size;
+
+  long long        _value;
+
+public:
+  void pre()
+  {
+  }
+
+  // TODO correct type? Can be smaller than this.
+  void Size(
+    unsigned long long size)
+  {
+    _size = size;
+  }
+
+  void Value(
+    // TODO correct type? Should be larger than this (long long).
+    int value)
+  {
+    _value = value;
+  }
+
+  boost::shared_ptr<ranally::ExpressionVertex> post_Integer()
+  {
+    boost::shared_ptr<ranally::ExpressionVertex> result;
+
+    switch(_size) {
+      case 8: {
+        result = boost::make_shared<ranally::NumberVertex<int8_t> >(_value);
+        break;
+      }
+      case 16: {
+        result = boost::make_shared<ranally::NumberVertex<int16_t> >(_value);
+        break;
+      }
+      case 32: {
+        result = boost::make_shared<ranally::NumberVertex<int32_t> >(_value);
+        break;
+      }
+      case 64: {
+        result = boost::make_shared<ranally::NumberVertex<int64_t> >(_value);
+        break;
+      }
+      default: {
+        assert(false);
+        // TODO raise exception
+        break;
+      }
+    }
+
+    return result;
+  }
+};
+
+
+
+class UnsignedInteger_pimpl: public ranally::UnsignedInteger_pskel
+{
+private:
+
+  unsigned long long _size;
+
+  unsigned long long        _value;
+
+public:
+  void pre()
+  {
+  }
+
+  // TODO correct type? Can be smaller than this.
+  void Size(
+    unsigned long long size)
+  {
+    _size = size;
+  }
+
+  void Value(
+    unsigned long long value)
+  {
+    _value = value;
+  }
+
+  boost::shared_ptr<ranally::ExpressionVertex> post_UnsignedInteger()
+  {
+    boost::shared_ptr<ranally::ExpressionVertex> result;
+
+    switch(_size) {
+      case 8: {
+        result = boost::make_shared<ranally::NumberVertex<uint8_t> >(_value);
+        break;
+      }
+      case 16: {
+        result = boost::make_shared<ranally::NumberVertex<uint16_t> >(_value);
+        break;
+      }
+      case 32: {
+        result = boost::make_shared<ranally::NumberVertex<uint32_t> >(_value);
+        break;
+      }
+      case 64: {
+        result = boost::make_shared<ranally::NumberVertex<uint64_t> >(_value);
+        break;
+      }
+      default: {
+        assert(false);
+        // TODO raise exception
+        break;
+      }
+    }
+
+    return result;
+  }
+};
+
+
+
+class Float_pimpl: public ranally::Float_pskel
+{
+private:
+
+  unsigned long long _size;
+
+  double           _value;
+
+public:
+  void pre()
+  {
+  }
+
+  // TODO correct type? Can be smaller than this.
+  void Size(
+    unsigned long long size)
+  {
+    _size = size;
+  }
+
+  void Value(
+    double value)
+  {
+    _value = value;
+  }
+
+  boost::shared_ptr<ranally::ExpressionVertex> post_Float()
+  {
+    boost::shared_ptr<ranally::ExpressionVertex> result;
+
+    switch(_size) {
+      case 32: {
+        assert(sizeof(float) == 4);
+        result = boost::make_shared<ranally::NumberVertex<float> >(_value);
+        break;
+      }
+      case 64: {
+        assert(sizeof(double) == 8);
+        result = boost::make_shared<ranally::NumberVertex<double> >(_value);
+        break;
+      }
+      default: {
+        assert(false);
+        // TODO raise exception
+        break;
+      }
+    }
+
+    return result;
+  }
+};
+
+
+
 class Number_pimpl: public ranally::Number_pskel
 {
 private:
@@ -355,24 +530,24 @@ public:
   }
 
   void Integer(
-    long value)
+    boost::shared_ptr<ranally::ExpressionVertex> const& vertex)
   {
     assert(!_vertex);
-    _vertex = boost::make_shared<ranally::NumberVertex<long> >(value);
+    _vertex = vertex;
   }
 
-  void Long(
-    long long value)
+  void UnsignedInteger(
+    boost::shared_ptr<ranally::ExpressionVertex> const& vertex)
   {
     assert(!_vertex);
-    _vertex = boost::make_shared<ranally::NumberVertex<long long> >(value);
+    _vertex = vertex;
   }
 
-  void Double(
-    double value)
+  void Float(
+    boost::shared_ptr<ranally::ExpressionVertex> const& vertex)
   {
     assert(!_vertex);
-    _vertex = boost::make_shared<ranally::NumberVertex<double> >(value);
+    _vertex = vertex;
   }
 
   boost::shared_ptr<ranally::ExpressionVertex> post_Number()
@@ -593,18 +768,24 @@ boost::shared_ptr<ScriptVertex> XmlParser::parse(
   // Xsd's long parser uses long long, which is good for Pythons long integer type.
   assert(sizeof(int) == sizeof(long));
 
+  xml_schema::positive_integer_pimpl positive_integer_p;
   xml_schema::int_pimpl int_p;
   xml_schema::non_negative_integer_pimpl non_negative_integer_p;
   xml_schema::long_pimpl long_p;
   xml_schema::double_pimpl double_p;
   xml_schema::string_pimpl string_p;
 
-  // hier verder: Integer is an element with two children:
-  // Size: positive_integer_pimpl
-  // Value: int_pimpl
+  Integer_pimpl integer_p;
+  integer_p.parsers(positive_integer_p, int_p);
+
+  UnsignedInteger_pimpl unsigned_integer_p;
+  unsigned_integer_p.parsers(positive_integer_p, non_negative_integer_p);
+
+  Float_pimpl float_p;
+  float_p.parsers(positive_integer_p, double_p);
 
   Number_pimpl number_p;
-  number_p.parsers(int_p, long_p, double_p);
+  number_p.parsers(integer_p, unsigned_integer_p, float_p);
 
   Expression_pimpl expression_p;
 

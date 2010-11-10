@@ -69,16 +69,27 @@ void writeNumberNode(
     xml += "</Integer>";
   }
   else if(PyLong_CheckExact(number)) {
-    // TODO Add size attribute.
-    xml += "<Long>";
-    xml += (boost::format("%1%") % PyLong_AsLong(number)).str().c_str();
-    xml += "</Long>";
+    // TODO Can we assume that the value fits in a long long? Otherwise, handle
+    //      overflow.
+    xml += "<Integer>";
+    xml += "<Size>";
+    xml += (boost::format("%1%") % (sizeof(long long) * 8)).str().c_str();
+    xml += "</Size>";
+    xml += "<Value>";
+    xml += (boost::format("%1%") % PyLong_AsLongLong(number)).str().c_str();
+    xml += "</Value>";
+    xml += "</Integer>";
   }
   else if(PyFloat_CheckExact(number)) {
-    // TODO Add size attribute.
-    xml += "<Double>";
+    // TODO What is the size of a Python float?
+    xml += "<Float>";
+    xml += "<Size>";
+    xml += (boost::format("%1%") % (sizeof(double) * 8)).str().c_str();
+    xml += "</Size>";
+    xml += "<Value>";
     xml += (boost::format("%1%") % PyFloat_AsDouble(number)).str().c_str();
-    xml += "</Double>";
+    xml += "</Value>";
+    xml += "</Float>";
   }
   else {
     // TODO Error handling.
@@ -177,8 +188,8 @@ void writeUnaryOperatorNode(
       xml += "Sub";
       break;
     }
-    // Don't add a default clause! We want to hear from the compiler if we're missing
-    // a case.
+    // Don't add a default clause! We want to hear from the compiler if we're
+    // missing a case.
   }
 
   xml += "</Name>";
@@ -247,8 +258,8 @@ void writeBinaryOperatorNode(
       xml += "FloorDiv";
       break;
     }
-    // Don't add a default clause! We want to hear from the compiler if we're missing
-    // a case.
+    // Don't add a default clause! We want to hear from the compiler if we're
+    // missing a case.
   }
 
   xml += "</Name>";
@@ -256,7 +267,6 @@ void writeBinaryOperatorNode(
   writeExpressionNode(leftOperand, xml);
   writeExpressionNode(rightOperand, xml);
   xml += "</Expressions>";
-
   xml += "</Operator>";
 }
 
@@ -278,8 +288,8 @@ void writeBooleanOperatorNode(
       xml += "Or";
       break;
     }
-    // Don't add a default clause! We want to hear from the compiler if we're missing
-    // a case.
+    // Don't add a default clause! We want to hear from the compiler if we're
+    // missing a case.
   }
 
   xml += "</Name>";
@@ -349,6 +359,7 @@ void writeExpressionNode(
     case Subscript_kind:
     case List_kind:
     case Tuple_kind: {
+      // TODO exception
       bool implemented = false;
       assert(implemented);
       break;

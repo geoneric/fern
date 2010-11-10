@@ -138,11 +138,11 @@
         name="Integer"
         type="ranally:Integer"/>
       <xs:element
-        name="Long"
-        type="xs:long"/>
+        name="UnsignedInteger"
+        type="ranally:UnsignedInteger"/>
       <xs:element
-        name="Double"
-        type="xs:double"/>
+        name="Float"
+        type="ranally:Float"/>
     </xs:choice>
   </xs:complexType>
 
@@ -154,6 +154,28 @@
       <xs:element
         name="Value"
         type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="UnsignedInteger">
+    <xs:sequence>
+      <xs:element
+        name="Size"
+        type="xs:positiveInteger"/>
+      <xs:element
+        name="Value"
+        type="xs:nonNegativeInteger"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Float">
+    <xs:sequence>
+      <xs:element
+        name="Size"
+        type="xs:positiveInteger"/>
+      <xs:element
+        name="Value"
+        type="xs:double"/>
     </xs:sequence>
   </xs:complexType>
 

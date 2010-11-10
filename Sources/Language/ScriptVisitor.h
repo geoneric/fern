@@ -34,8 +34,15 @@ class ScriptVisitor: private boost::noncopyable,
   public Loki::Visitor<FunctionVertex, UnicodeString>,
   public Loki::Visitor<IfVertex, UnicodeString>,
   public Loki::Visitor<NameVertex, UnicodeString>,
-  public Loki::Visitor<NumberVertex<long>, UnicodeString>,
-  public Loki::Visitor<NumberVertex<long long>, UnicodeString>,
+  public Loki::Visitor<NumberVertex<int8_t>, UnicodeString>,
+  public Loki::Visitor<NumberVertex<int16_t>, UnicodeString>,
+  public Loki::Visitor<NumberVertex<int32_t>, UnicodeString>,
+  public Loki::Visitor<NumberVertex<int64_t>, UnicodeString>,
+  public Loki::Visitor<NumberVertex<uint8_t>, UnicodeString>,
+  public Loki::Visitor<NumberVertex<uint16_t>, UnicodeString>,
+  public Loki::Visitor<NumberVertex<uint32_t>, UnicodeString>,
+  public Loki::Visitor<NumberVertex<uint64_t>, UnicodeString>,
+  public Loki::Visitor<NumberVertex<float>, UnicodeString>,
   public Loki::Visitor<NumberVertex<double>, UnicodeString>,
   public Loki::Visitor<OperatorVertex, UnicodeString>,
   public Loki::Visitor<ScriptVertex, UnicodeString>,
@@ -74,9 +81,23 @@ public:
 
   UnicodeString    Visit               (NameVertex&);
 
-  UnicodeString    Visit               (NumberVertex<long>&);
+  UnicodeString    Visit               (NumberVertex<int8_t>&);
 
-  UnicodeString    Visit               (NumberVertex<long long>&);
+  UnicodeString    Visit               (NumberVertex<int16_t>&);
+
+  UnicodeString    Visit               (NumberVertex<int32_t>&);
+
+  UnicodeString    Visit               (NumberVertex<int64_t>&);
+
+  UnicodeString    Visit               (NumberVertex<uint8_t>&);
+
+  UnicodeString    Visit               (NumberVertex<uint16_t>&);
+
+  UnicodeString    Visit               (NumberVertex<uint32_t>&);
+
+  UnicodeString    Visit               (NumberVertex<uint64_t>&);
+
+  UnicodeString    Visit               (NumberVertex<float>&);
 
   UnicodeString    Visit               (NumberVertex<double>&);
 

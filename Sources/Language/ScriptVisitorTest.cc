@@ -100,6 +100,8 @@ void ScriptVisitorTest::testVisitNumber()
 
   xml = _algebraParser.parseString(UnicodeString("5.5"));
   BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "5.5\n");
+
+  // TODO add tests for all numeric types.
 }
 
 

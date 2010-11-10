@@ -20,6 +20,9 @@ namespace http://www.jemig.eu/ranally
 
   Ranally          "boost::shared_ptr<ScriptVertex>";
   Number           "boost::shared_ptr<ExpressionVertex>";
+  Integer          "boost::shared_ptr<ExpressionVertex>";
+  UnsignedInteger  "boost::shared_ptr<ExpressionVertex>";
+  Float            "boost::shared_ptr<ExpressionVertex>";
   Expression       "boost::shared_ptr<ExpressionVertex>";
   Statement        "boost::shared_ptr<StatementVertex>";
   Function         "boost::shared_ptr<FunctionVertex>";

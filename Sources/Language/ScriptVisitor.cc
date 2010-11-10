@@ -250,7 +250,7 @@ UnicodeString ScriptVisitor::Visit(
 
 
 UnicodeString ScriptVisitor::Visit(
-  NumberVertex<long>& vertex)
+  NumberVertex<int8_t>& vertex)
 {
   return UnicodeString((boost::format("%1%") % vertex.value()).str().c_str());
 }
@@ -258,9 +258,69 @@ UnicodeString ScriptVisitor::Visit(
 
 
 UnicodeString ScriptVisitor::Visit(
-  NumberVertex<long long>& vertex)
+  NumberVertex<int16_t>& vertex)
+{
+  return UnicodeString((boost::format("%1%") % vertex.value()).str().c_str());
+}
+
+
+
+UnicodeString ScriptVisitor::Visit(
+  NumberVertex<int32_t>& vertex)
+{
+  return UnicodeString((boost::format("%1%") % vertex.value()).str().c_str());
+}
+
+
+
+UnicodeString ScriptVisitor::Visit(
+  NumberVertex<int64_t>& vertex)
 {
   return UnicodeString((boost::format("%1%L") % vertex.value()).str().c_str());
+}
+
+
+
+UnicodeString ScriptVisitor::Visit(
+  NumberVertex<uint8_t>& vertex)
+{
+  // U?
+  return UnicodeString((boost::format("%1%U") % vertex.value()).str().c_str());
+}
+
+
+
+UnicodeString ScriptVisitor::Visit(
+  NumberVertex<uint16_t>& vertex)
+{
+  // U?
+  return UnicodeString((boost::format("%1%U") % vertex.value()).str().c_str());
+}
+
+
+
+UnicodeString ScriptVisitor::Visit(
+  NumberVertex<uint32_t>& vertex)
+{
+  // U?
+  return UnicodeString((boost::format("%1%U") % vertex.value()).str().c_str());
+}
+
+
+
+UnicodeString ScriptVisitor::Visit(
+  NumberVertex<uint64_t>& vertex)
+{
+  // U?
+  return UnicodeString((boost::format("%1%UL") % vertex.value()).str().c_str());
+}
+
+
+
+UnicodeString ScriptVisitor::Visit(
+  NumberVertex<float>& vertex)
+{
+  return UnicodeString((boost::format("%1%") % vertex.value()).str().c_str());
 }
 
 

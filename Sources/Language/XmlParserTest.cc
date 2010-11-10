@@ -58,12 +58,16 @@ void XmlParserTest::testParse()
   }
 
   {
+    // TODO test all numeric types.
+
     // Numeric expression.
     xml = algebraParser.parseString(UnicodeString("5"));
     tree = xmlParser.parse(xml);
 
     xml = algebraParser.parseString(UnicodeString("5L"));
     tree = xmlParser.parse(xml);
+
+    // TODO test unsigned types.
 
     xml = algebraParser.parseString(UnicodeString("5.5"));
     tree = xmlParser.parse(xml);
