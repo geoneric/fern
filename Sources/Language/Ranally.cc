@@ -8,6 +8,7 @@
 
 #include "AlgebraParser.h"
 #include "Configure.h"
+#include "DotVisitor.h"
 #include "XmlParser.h"
 #include "ScriptVertex.h"
 #include "ScriptVisitor.h"
