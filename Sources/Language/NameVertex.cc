@@ -9,8 +9,7 @@ NameVertex::NameVertex(
   int colId,
   UnicodeString const& name)
 
-  : ExpressionVertex(lineNr, colId),
-    _name(name)
+  : ExpressionVertex(lineNr, colId, name)
 
 {
 }
@@ -19,13 +18,6 @@ NameVertex::NameVertex(
 
 NameVertex::~NameVertex()
 {
-}
-
-
-
-UnicodeString const& NameVertex::name() const
-{
-  return _name;
 }
 
 } // namespace ranally

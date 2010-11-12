@@ -9,7 +9,7 @@ StringVertex::StringVertex(
   int colId,
   UnicodeString const& value)
 
-  : ExpressionVertex(lineNr, colId),
+  : ExpressionVertex(lineNr, colId, "\"" + value + "\""),
     _value(value)
 
 {

@@ -4,9 +4,11 @@
 
 namespace ranally {
 
-ExpressionVertex::ExpressionVertex()
+ExpressionVertex::ExpressionVertex(
+  UnicodeString const& name)
 
-  : StatementVertex()
+  : StatementVertex(),
+    _name(name)
 
 {
 }
@@ -15,9 +17,11 @@ ExpressionVertex::ExpressionVertex()
 
 ExpressionVertex::ExpressionVertex(
   int lineNr,
-  int colId)
+  int colId,
+  UnicodeString const& name)
 
-  : StatementVertex(lineNr, colId)
+  : StatementVertex(lineNr, colId),
+    _name(name)
 
 {
 }
@@ -26,6 +30,13 @@ ExpressionVertex::ExpressionVertex(
 
 ExpressionVertex::~ExpressionVertex()
 {
+}
+
+
+
+UnicodeString const& ExpressionVertex::name()
+{
+  return _name;
 }
 
 } // namespace ranally

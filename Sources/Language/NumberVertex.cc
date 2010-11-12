@@ -1,3 +1,5 @@
+#include <boost/format.hpp>
+
 #include "NumberVertex.h"
 
 
@@ -8,7 +10,7 @@ template<typename T>
 NumberVertex<T>::NumberVertex(
   T value)
 
-  : ExpressionVertex(),
+  : ExpressionVertex(UnicodeString((boost::format("%1%") % value).str().c_str())),
     _value(value)
 
 {
@@ -22,7 +24,8 @@ NumberVertex<T>::NumberVertex(
   int colId,
   T value)
 
-  : ExpressionVertex(lineNr, colId),
+  : ExpressionVertex(lineNr, colId,
+      UnicodeString((boost::format("%1%") % value).str().c_str())),
     _value(value)
 
 {

@@ -20,16 +20,21 @@ class ExpressionVertex: public StatementVertex
 
 private:
 
+  UnicodeString    _name;
+
 protected:
 
-                   ExpressionVertex    ();
+                   ExpressionVertex    (UnicodeString const& name);
 
                    ExpressionVertex    (int lineNr,
-                                        int colId);
+                                        int colId,
+                                        UnicodeString const& name);
 
 public:
 
   virtual          ~ExpressionVertex   ();
+
+  UnicodeString const& name            ();
 
 };
 

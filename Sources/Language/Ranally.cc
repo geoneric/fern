@@ -7,7 +7,7 @@
 #include "dev_UnicodeUtils.h"
 
 #include "AlgebraParser.h"
-#include "Configure.h"
+#include "Ranally/Configure.h"
 #include "DotVisitor.h"
 #include "XmlParser.h"
 #include "ScriptVertex.h"
@@ -191,18 +191,38 @@ int main(
     assert(argc >= 3);
 
     if(std::strcmp(argv[2], "dot") == 0) {
-      if(argc == 3 || std::strcmp(argv[3], "--help") == 0) {
+      if(argc >= 4 && std::strcmp(argv[3], "--help") == 0) {
         showConvertDotHelp();
         return EXIT_SUCCESS;
       }
+
+      ranally::DotVisitor visitor;
+      ranally::AlgebraParser parser;
+      UnicodeString xml;
+
+      if(argc == 3) {
+        // Read script from the standard input stream.
+        std::ostringstream script;
+        script << std::cin.rdbuf();
+        xml = ranally::AlgebraParser().parseString(UnicodeString(
+          script.str().c_str()));
+      }
       else if(argc == 4) {
-        showConvertDotHelp();
-        return EXIT_FAILURE;
+        // Read script from a file.
+        std::string inputFileName(argv[3]);
+        xml = ranally::AlgebraParser().parseFile(UnicodeString(
+          inputFileName.c_str()));
       }
 
-      assert(argc == 5);
+      UnicodeString script = ranally::XmlParser().parse(xml)->Accept(visitor);
 
-      std::cout << "Convert (dot) " << argv[3] << " to " << argv[4] << "\n";
+      if(argc <= 4) {
+        std::cout << dev::encodeInUTF8(script) << std::endl;
+      }
+      else if(argc == 5) {
+        std::cout << dev::encodeInUTF8(script) << std::endl;
+        std::cout << "TODO write to file\n";
+      }
 
       return EXIT_SUCCESS;
     }

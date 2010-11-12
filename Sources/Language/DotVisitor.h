@@ -65,6 +65,9 @@ private:
 
   UnicodeString    visitExpressions    (ExpressionVertices const& expressions);
 
+  template<typename T>
+  UnicodeString    Visit               (NumberVertex<T>&);
+
 protected:
 
 public:

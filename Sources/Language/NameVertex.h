@@ -1,8 +1,6 @@
 #ifndef INCLUDED_RANALLY_NAMEVERTEX
 #define INCLUDED_RANALLY_NAMEVERTEX
 
-#include <unicode/unistr.h>
-
 #include "ExpressionVertex.h"
 
 
@@ -22,8 +20,6 @@ class NameVertex: public ExpressionVertex
 
 private:
 
-  UnicodeString    _name;
-
 protected:
 
 public:
@@ -35,8 +31,6 @@ public:
                                         UnicodeString const& name);
 
   /* virtual */    ~NameVertex         ();
-
-  UnicodeString const& name            () const;
 
 };
 

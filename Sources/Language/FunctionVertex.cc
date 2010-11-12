@@ -8,8 +8,7 @@ FunctionVertex::FunctionVertex(
   UnicodeString const& name,
   ExpressionVertices const& expressions)
 
-  : ExpressionVertex(),
-    _name(name),
+  : ExpressionVertex(name),
     _expressions(expressions)
 
 {
@@ -19,13 +18,6 @@ FunctionVertex::FunctionVertex(
 
 FunctionVertex::~FunctionVertex()
 {
-}
-
-
-
-UnicodeString const& FunctionVertex::name() const
-{
-  return _name;
 }
 
 

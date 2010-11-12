@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <boost/shared_ptr.hpp>
-#include <unicode/unistr.h>
 
 #include "ExpressionVertex.h"
 
@@ -28,8 +27,6 @@ public:
 
 private:
 
-  UnicodeString    _name;
-
   ExpressionVertices _expressions;
 
 protected:
@@ -40,8 +37,6 @@ public:
                                         ExpressionVertices const& expressions);
 
   /* virtual */    ~FunctionVertex     ();
-
-  UnicodeString const& name            () const;
 
   ExpressionVertices const& expressions() const;
 

@@ -8,8 +8,7 @@ OperatorVertex::OperatorVertex(
   UnicodeString const& name,
   ExpressionVertices const& expressions)
 
-  : ExpressionVertex(),
-    _name(name),
+  : ExpressionVertex(name),
     _expressions(expressions)
 
 {
@@ -19,13 +18,6 @@ OperatorVertex::OperatorVertex(
 
 OperatorVertex::~OperatorVertex()
 {
-}
-
-
-
-UnicodeString const& OperatorVertex::name() const
-{
-  return _name;
 }
 
 
