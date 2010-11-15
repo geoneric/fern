@@ -65,19 +65,6 @@ UnicodeString DotVisitor::visitExpressions(
 {
   assert(false);
   return UnicodeString();
-
-  // UnicodeString result;
-
-  // std::vector<UnicodeString> scripts;
-  // BOOST_FOREACH(boost::shared_ptr<ranally::ExpressionVertex> expressionVertex,
-  //   expressions) {
-  //   // result += expressionVertex->Accept(*this);
-
-  //   result += indent(expressionVertex->Accept(*this));
-  //   result += ";\n";
-  // }
-
-  // return result;
 }
 
 
@@ -90,6 +77,11 @@ UnicodeString DotVisitor::Visit(
 
   ExpressionVertices const& expressions = vertex.expressions();
   assert(expressions.size() == 1);
+
+  // http://en.wikipedia.org/wiki/DOT_language
+  // http://userguide.icu-project.org/formatparse/messages
+  // UnicodeString result = MessageFormat::format(
+  //   "{0}
 
   UnicodeString result;
   result += indent(expressions[0]->name());
