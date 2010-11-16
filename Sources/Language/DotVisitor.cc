@@ -4,17 +4,8 @@
 
 // #include "dev_UnicodeUtils.h"
 
-#include "AssignmentVertex.h"
-#include "FunctionVertex.h"
-#include "IfVertex.h"
-#include "NameVertex.h"
-#include "NumberVertex.h"
-#include "OperatorVertex.h"
-#include "ScriptVertex.h"
 #include "DotVisitor.h"
-#include "StatementVertex.h"
-#include "StringVertex.h"
-#include "WhileVertex.h"
+#include "Vertices.h"
 
 
 
@@ -36,94 +27,101 @@ DotVisitor::~DotVisitor()
 
 
 
-UnicodeString DotVisitor::indent(
-  UnicodeString const& statement)
+UnicodeString const& DotVisitor::script() const
 {
-  UnicodeString indentation = std::string(_indentLevel * _tabSize, ' ').c_str();
-  return indentation + statement;
+  return _script;
 }
 
 
 
-UnicodeString DotVisitor::visitStatements(
+// void DotVisitor::indent(
+//   UnicodeString const& statement)
+// {
+//   UnicodeString indentation = std::string(_indentLevel * _tabSize, ' ').c_str();
+//   return indentation + statement;
+// }
+
+
+
+void DotVisitor::visitStatements(
   StatementVertices const& statements)
 {
-  UnicodeString result;
+  // UnicodeString result;
 
-  BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex> statementVertex,
-    statements) {
-    result += statementVertex->Accept(*this);
-  }
-
-  return result;
-}
-
-
-
-UnicodeString DotVisitor::visitExpressions(
-  ExpressionVertices const& expressions)
-{
-  assert(false);
-  return UnicodeString();
-}
-
-
-
-UnicodeString DotVisitor::Visit(
-  AssignmentVertex& vertex)
-{
-  ExpressionVertices const& targets = vertex.targets();
-  assert(targets.size() == 1);
-
-  ExpressionVertices const& expressions = vertex.expressions();
-  assert(expressions.size() == 1);
-
-  // http://en.wikipedia.org/wiki/DOT_language
-  // http://userguide.icu-project.org/formatparse/messages
-  // UnicodeString result = MessageFormat::format(
-  //   "{0}
-
-  UnicodeString result;
-  result += indent(expressions[0]->name());
-  result += " -> ";
-  result += targets[0]->name();
-  result += ";\n";
-
-  // BOOST_FOREACH(boost::shared_ptr<ranally::ExpressionVertex> expressionVertex,
-  //   vertex.expressions()) {
-  //   result += expressionVertex->Accept(*this);
+  // BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex> statementVertex,
+  //   statements) {
+  //   result += statementVertex->Accept(*this);
   // }
 
-  return result;
+  // return result;
 }
 
 
 
-UnicodeString DotVisitor::Visit(
+void DotVisitor::visitExpressions(
+  ExpressionVertices const& expressions)
+{
+  // assert(false);
+  // return UnicodeString();
+}
+
+
+
+void DotVisitor::Visit(
+  AssignmentVertex& vertex)
+{
+  // ExpressionVertices const& targets = vertex.targets();
+  // assert(targets.size() == 1);
+
+  // ExpressionVertices const& expressions = vertex.expressions();
+  // assert(expressions.size() == 1);
+
+  // // http://en.wikipedia.org/wiki/DOT_language
+  // // http://userguide.icu-project.org/formatparse/messages
+  // // UnicodeString result = MessageFormat::format(
+  // //   "{0}
+
+  // UnicodeString result;
+  // result += indent(expressions[0]->name());
+  // result += " -> ";
+  // result += targets[0]->name();
+  // result += ";\n";
+
+  // // BOOST_FOREACH(boost::shared_ptr<ranally::ExpressionVertex> expressionVertex,
+  // //   vertex.expressions()) {
+  // //   result += expressionVertex->Accept(*this);
+  // // }
+
+  // return result;
+}
+
+
+
+void DotVisitor::Visit(
   FunctionVertex& vertex)
 {
-  UnicodeString result;
+  // UnicodeString result;
 
-  if(vertex.expressions().empty()) {
-    result += indent(vertex.name());
-    result += ";\n";
-  }
-  else {
-    BOOST_FOREACH(boost::shared_ptr<ranally::ExpressionVertex> expressionVertex,
-      vertex.expressions()) {
-      result += indent(expressionVertex->name());
-      result += " -> ";
-      result += vertex.name();
-      result += ";\n";
-    }
-  }
+  // if(vertex.expressions().empty()) {
+  //   result += indent(vertex.name());
+  //   result += ";\n";
+  // }
+  // else {
+  //   BOOST_FOREACH(boost::shared_ptr<ranally::ExpressionVertex> expressionVertex,
+  //     vertex.expressions()) {
+  //     result += indent(expressionVertex->name());
+  //     result += " -> ";
+  //     result += vertex.name();
+  //     result += ";\n";
+  //   }
+  // }
 
-  return result;
+  // return result;
 }
 
 
 
-UnicodeString DotVisitor::Visit(
+void DotVisitor::Visit(
   OperatorVertex& vertex)
 {
   // assert(vertex.expressions().size() == 1 || vertex.expressions().size() == 2);
@@ -211,141 +209,140 @@ UnicodeString DotVisitor::Visit(
   // }
 
   // return result;
-  return UnicodeString();
 }
 
 
 
-UnicodeString DotVisitor::Visit(
+void DotVisitor::Visit(
   SyntaxVertex&)
 {
-  assert(false);
-  return UnicodeString();
+  // assert(false);
+  // return UnicodeString();
 }
 
 
 
-UnicodeString DotVisitor::Visit(
+void DotVisitor::Visit(
   ScriptVertex& vertex)
 {
-  _indentLevel = 0;
-  UnicodeString result = "digraph G {\n";
-  ++_indentLevel;
-  result += visitStatements(vertex.statements());
-  --_indentLevel;
-  result += "}\n";
-  assert(_indentLevel == 0);
-  return result; // TODO result.replace("\"", "\\\"");
+  // _indentLevel = 0;
+  // UnicodeString result = "digraph G {\n";
+  // ++_indentLevel;
+  // result += visitStatements(vertex.statements());
+  // --_indentLevel;
+  // result += "}\n";
+  // assert(_indentLevel == 0);
+  // return result; // TODO result.replace("\"", "\\\"");
 }
 
 
 
-UnicodeString DotVisitor::Visit(
+void DotVisitor::Visit(
   StringVertex& vertex)
 {
-  return indent("\"" + vertex.value() + "\";\n");
+  // return indent("\"" + vertex.value() + "\";\n");
 }
 
 
 
-UnicodeString DotVisitor::Visit(
+void DotVisitor::Visit(
   NameVertex& vertex)
 {
-  return indent(vertex.name()) + ";\n";
+  // return indent(vertex.name()) + ";\n";
 }
 
 
 
 template<typename T>
-UnicodeString DotVisitor::Visit(
+void DotVisitor::Visit(
   NumberVertex<T>& vertex)
 {
-  return indent(UnicodeString((boost::format("%1%;\n") % vertex.value()).str().c_str()));
+  // return indent(UnicodeString((boost::format("%1%;\n") % vertex.value()).str().c_str()));
 }
 
 
 
-UnicodeString DotVisitor::Visit(
+void DotVisitor::Visit(
   NumberVertex<int8_t>& vertex)
 {
-  return Visit<int8_t>(vertex);
+  // return Visit<int8_t>(vertex);
 }
 
 
 
-UnicodeString DotVisitor::Visit(
+void DotVisitor::Visit(
   NumberVertex<int16_t>& vertex)
 {
-  return Visit<int16_t>(vertex);
+  // return Visit<int16_t>(vertex);
 }
 
 
 
-UnicodeString DotVisitor::Visit(
+void DotVisitor::Visit(
   NumberVertex<int32_t>& vertex)
 {
-  return Visit<int32_t>(vertex);
+  // return Visit<int32_t>(vertex);
 }
 
 
 
-UnicodeString DotVisitor::Visit(
+void DotVisitor::Visit(
   NumberVertex<int64_t>& vertex)
 {
-  return Visit<int64_t>(vertex);
+  // return Visit<int64_t>(vertex);
 }
 
 
 
-UnicodeString DotVisitor::Visit(
+void DotVisitor::Visit(
   NumberVertex<uint8_t>& vertex)
 {
-  return Visit<uint8_t>(vertex);
+  // return Visit<uint8_t>(vertex);
 }
 
 
 
-UnicodeString DotVisitor::Visit(
+void DotVisitor::Visit(
   NumberVertex<uint16_t>& vertex)
 {
-  return Visit<uint16_t>(vertex);
+  // return Visit<uint16_t>(vertex);
 }
 
 
 
-UnicodeString DotVisitor::Visit(
+void DotVisitor::Visit(
   NumberVertex<uint32_t>& vertex)
 {
-  return Visit<uint32_t>(vertex);
+  // return Visit<uint32_t>(vertex);
 }
 
 
 
-UnicodeString DotVisitor::Visit(
+void DotVisitor::Visit(
   NumberVertex<uint64_t>& vertex)
 {
-  return Visit<uint64_t>(vertex);
+  // return Visit<uint64_t>(vertex);
 }
 
 
 
-UnicodeString DotVisitor::Visit(
+void DotVisitor::Visit(
   NumberVertex<float>& vertex)
 {
-  return Visit<float>(vertex);
+  // return Visit<float>(vertex);
 }
 
 
 
-UnicodeString DotVisitor::Visit(
+void DotVisitor::Visit(
   NumberVertex<double>& vertex)
 {
-  return Visit<double>(vertex);
+  // return Visit<double>(vertex);
 }
 
 
 
-UnicodeString DotVisitor::Visit(
+void DotVisitor::Visit(
   IfVertex& vertex)
 {
   // assert(!vertex.trueStatements().empty());
@@ -370,12 +367,12 @@ UnicodeString DotVisitor::Visit(
   // }
 
   // return result;
-  return UnicodeString();
+  // return UnicodeString();
 }
 
 
 
-UnicodeString DotVisitor::Visit(
+void DotVisitor::Visit(
   WhileVertex& vertex)
 {
   // assert(!vertex.trueStatements().empty());
@@ -400,7 +397,7 @@ UnicodeString DotVisitor::Visit(
   // }
 
   // return result;
-  return UnicodeString();
+  // return UnicodeString();
 }
 
 } // namespace ranally

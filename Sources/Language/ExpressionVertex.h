@@ -34,7 +34,7 @@ public:
 
   virtual          ~ExpressionVertex   ();
 
-  UnicodeString const& name            ();
+  UnicodeString const& name            () const;
 
 };
 

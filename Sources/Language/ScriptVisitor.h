@@ -30,25 +30,25 @@ class WhileVertex;
 */
 class ScriptVisitor: private boost::noncopyable,
   public Loki::BaseVisitor,
-  public Loki::Visitor<AssignmentVertex, UnicodeString>,
-  public Loki::Visitor<FunctionVertex, UnicodeString>,
-  public Loki::Visitor<IfVertex, UnicodeString>,
-  public Loki::Visitor<NameVertex, UnicodeString>,
-  public Loki::Visitor<NumberVertex<int8_t>, UnicodeString>,
-  public Loki::Visitor<NumberVertex<int16_t>, UnicodeString>,
-  public Loki::Visitor<NumberVertex<int32_t>, UnicodeString>,
-  public Loki::Visitor<NumberVertex<int64_t>, UnicodeString>,
-  public Loki::Visitor<NumberVertex<uint8_t>, UnicodeString>,
-  public Loki::Visitor<NumberVertex<uint16_t>, UnicodeString>,
-  public Loki::Visitor<NumberVertex<uint32_t>, UnicodeString>,
-  public Loki::Visitor<NumberVertex<uint64_t>, UnicodeString>,
-  public Loki::Visitor<NumberVertex<float>, UnicodeString>,
-  public Loki::Visitor<NumberVertex<double>, UnicodeString>,
-  public Loki::Visitor<OperatorVertex, UnicodeString>,
-  public Loki::Visitor<ScriptVertex, UnicodeString>,
-  public Loki::Visitor<StringVertex, UnicodeString>,
-  public Loki::Visitor<SyntaxVertex, UnicodeString>,
-  public Loki::Visitor<WhileVertex, UnicodeString>
+  public Loki::Visitor<AssignmentVertex>,
+  public Loki::Visitor<FunctionVertex>,
+  public Loki::Visitor<IfVertex>,
+  public Loki::Visitor<NameVertex>,
+  public Loki::Visitor<NumberVertex<int8_t> >,
+  public Loki::Visitor<NumberVertex<int16_t> >,
+  public Loki::Visitor<NumberVertex<int32_t> >,
+  public Loki::Visitor<NumberVertex<int64_t> >,
+  public Loki::Visitor<NumberVertex<uint8_t> >,
+  public Loki::Visitor<NumberVertex<uint16_t> >,
+  public Loki::Visitor<NumberVertex<uint32_t> >,
+  public Loki::Visitor<NumberVertex<uint64_t> >,
+  public Loki::Visitor<NumberVertex<float> >,
+  public Loki::Visitor<NumberVertex<double> >,
+  public Loki::Visitor<OperatorVertex>,
+  public Loki::Visitor<ScriptVertex>,
+  public Loki::Visitor<StringVertex>,
+  public Loki::Visitor<SyntaxVertex>,
+  public Loki::Visitor<WhileVertex>
 {
 
   friend class ScriptVisitorTest;
@@ -59,11 +59,15 @@ private:
 
   size_t           _indentLevel;
 
-  UnicodeString    indent              (UnicodeString const& statement);
+  UnicodeString    _script;
 
-  UnicodeString    visitStatements     (StatementVertices const& statements);
+  // void             indent              (UnicodeString const& statement);
 
-  UnicodeString    visitExpressions    (ExpressionVertices const& expressions);
+  UnicodeString    indentation         () const;
+
+  void             visitStatements     (StatementVertices const& statements);
+
+  void             visitExpressions    (ExpressionVertices const& expressions);
 
 protected:
 
@@ -73,43 +77,45 @@ public:
 
   /* virtual */    ~ScriptVisitor      ();
 
-  UnicodeString    Visit               (AssignmentVertex&);
+  UnicodeString const& script          () const;
 
-  UnicodeString    Visit               (FunctionVertex&);
+  void             Visit               (AssignmentVertex&);
 
-  UnicodeString    Visit               (IfVertex&);
+  void             Visit               (FunctionVertex&);
 
-  UnicodeString    Visit               (NameVertex&);
+  void             Visit               (IfVertex&);
 
-  UnicodeString    Visit               (NumberVertex<int8_t>&);
+  void             Visit               (NameVertex&);
 
-  UnicodeString    Visit               (NumberVertex<int16_t>&);
+  void             Visit               (NumberVertex<int8_t>&);
 
-  UnicodeString    Visit               (NumberVertex<int32_t>&);
+  void             Visit               (NumberVertex<int16_t>&);
 
-  UnicodeString    Visit               (NumberVertex<int64_t>&);
+  void             Visit               (NumberVertex<int32_t>&);
 
-  UnicodeString    Visit               (NumberVertex<uint8_t>&);
+  void             Visit               (NumberVertex<int64_t>&);
 
-  UnicodeString    Visit               (NumberVertex<uint16_t>&);
+  void             Visit               (NumberVertex<uint8_t>&);
 
-  UnicodeString    Visit               (NumberVertex<uint32_t>&);
+  void             Visit               (NumberVertex<uint16_t>&);
 
-  UnicodeString    Visit               (NumberVertex<uint64_t>&);
+  void             Visit               (NumberVertex<uint32_t>&);
 
-  UnicodeString    Visit               (NumberVertex<float>&);
+  void             Visit               (NumberVertex<uint64_t>&);
 
-  UnicodeString    Visit               (NumberVertex<double>&);
+  void             Visit               (NumberVertex<float>&);
 
-  UnicodeString    Visit               (OperatorVertex&);
+  void             Visit               (NumberVertex<double>&);
 
-  UnicodeString    Visit               (ScriptVertex&);
+  void             Visit               (OperatorVertex&);
 
-  UnicodeString    Visit               (StringVertex&);
+  void             Visit               (ScriptVertex&);
 
-  UnicodeString    Visit               (SyntaxVertex&);
+  void             Visit               (StringVertex&);
 
-  UnicodeString    Visit               (WhileVertex&);
+  void             Visit               (SyntaxVertex&);
+
+  void             Visit               (WhileVertex&);
 
 };
 

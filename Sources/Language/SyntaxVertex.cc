@@ -5,6 +5,9 @@
 namespace ranally {
 
 SyntaxVertex::SyntaxVertex()
+
+  : _successor(0)
+
 {
 }
 
@@ -15,7 +18,8 @@ SyntaxVertex::SyntaxVertex(
   int colId)
 
   : _line(lineNr),
-    _col(colId)
+    _col(colId),
+    _successor(0)
 
 {
 }
@@ -49,6 +53,26 @@ int SyntaxVertex::col() const
 {
   return _col;
 }
+
+
+
+SyntaxVertex* SyntaxVertex::successor()
+{
+  assert(_successor);
+  return _successor;
+}
+
+
+
+void SyntaxVertex::setSuccessor(
+  SyntaxVertex* successor)
+{
+  assert(!_successor);
+  assert(successor);
+  _successor = successor;
+  assert(_successor);
+}
+
 
 } // namespace ranally
 

@@ -53,7 +53,8 @@ void ScriptVisitorTest::testVisitEmptyScript()
   UnicodeString xml;
 
   xml = _algebraParser.parseString(UnicodeString(""));
-  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "");
+  _xmlParser.parse(xml)->Accept(_visitor);
+  BOOST_CHECK(_visitor.script() == "");
 }
 
 
@@ -63,7 +64,8 @@ void ScriptVisitorTest::testVisitName()
   UnicodeString xml;
 
   xml = _algebraParser.parseString(UnicodeString("a"));
-  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "a\n");
+  _xmlParser.parse(xml)->Accept(_visitor);
+  BOOST_CHECK(_visitor.script() == "a\n");
 }
 
 
@@ -73,7 +75,8 @@ void ScriptVisitorTest::testVisitAssignment()
   UnicodeString xml;
 
   xml = _algebraParser.parseString(UnicodeString("a = b"));
-  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "a = b\n");
+  _xmlParser.parse(xml)->Accept(_visitor);
+  BOOST_CHECK(_visitor.script() == "a = b\n");
 }
 
 
@@ -83,7 +86,8 @@ void ScriptVisitorTest::testVisitString()
   UnicodeString xml;
 
   xml = _algebraParser.parseString(UnicodeString("\"five\""));
-  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "\"five\"\n");
+  _xmlParser.parse(xml)->Accept(_visitor);
+  BOOST_CHECK(_visitor.script() == "\"five\"\n");
 }
 
 
@@ -93,13 +97,16 @@ void ScriptVisitorTest::testVisitNumber()
   UnicodeString xml;
 
   xml = _algebraParser.parseString(UnicodeString("5"));
-  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "5\n");
+  _xmlParser.parse(xml)->Accept(_visitor);
+  BOOST_CHECK(_visitor.script() == "5\n");
 
   xml = _algebraParser.parseString(UnicodeString("5L"));
-  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "5L\n");
+  _xmlParser.parse(xml)->Accept(_visitor);
+  BOOST_CHECK(_visitor.script() == "5L\n");
 
   xml = _algebraParser.parseString(UnicodeString("5.5"));
-  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "5.5\n");
+  _xmlParser.parse(xml)->Accept(_visitor);
+  BOOST_CHECK(_visitor.script() == "5.5\n");
 
   // TODO add tests for all numeric types.
 }
@@ -111,10 +118,12 @@ void ScriptVisitorTest::testVisitFunction()
   UnicodeString xml;
 
   xml = _algebraParser.parseString(UnicodeString("f()"));
-  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "f()\n");
+  _xmlParser.parse(xml)->Accept(_visitor);
+  BOOST_CHECK(_visitor.script() == "f()\n");
 
   xml = _algebraParser.parseString(UnicodeString("f(1, \"2\", three, four())"));
-  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) ==
+  _xmlParser.parse(xml)->Accept(_visitor);
+  BOOST_CHECK(_visitor.script() ==
     "f(1, \"2\", three, four())\n");
 }
 
@@ -125,16 +134,20 @@ void ScriptVisitorTest::testVisitOperator()
   UnicodeString xml;
 
   xml = _algebraParser.parseString(UnicodeString("-a"));
-  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "-(a)\n");
+  _xmlParser.parse(xml)->Accept(_visitor);
+  BOOST_CHECK(_visitor.script() == "-(a)\n");
 
   xml = _algebraParser.parseString(UnicodeString("a + b"));
-  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "(a) + (b)\n");
+  _xmlParser.parse(xml)->Accept(_visitor);
+  BOOST_CHECK(_visitor.script() == "(a) + (b)\n");
 
   xml = _algebraParser.parseString(UnicodeString("-(a + b)"));
-  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "-((a) + (b))\n");
+  _xmlParser.parse(xml)->Accept(_visitor);
+  BOOST_CHECK(_visitor.script() == "-((a) + (b))\n");
 
   xml = _algebraParser.parseString(UnicodeString("a + b * c + d"));
-  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) ==
+  _xmlParser.parse(xml)->Accept(_visitor);
+  BOOST_CHECK(_visitor.script() ==
     "((a) + ((b) * (c))) + (d)\n");
 }
 
@@ -145,7 +158,8 @@ void ScriptVisitorTest::testVisitMultipleStatements()
   UnicodeString xml;
 
   xml = _algebraParser.parseString(UnicodeString("a\nb"));
-  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "a\nb\n");
+  _xmlParser.parse(xml)->Accept(_visitor);
+  BOOST_CHECK(_visitor.script() == "a\nb\n");
 }
 
 
@@ -158,7 +172,8 @@ void ScriptVisitorTest::testVisitIf()
       "if a:\n"
       "  b\n"
       "  c"));
-  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) ==
+  _xmlParser.parse(xml)->Accept(_visitor);
+  BOOST_CHECK(_visitor.script() ==
       "if a:\n"
       "  b\n"
       "  c\n");
@@ -170,7 +185,8 @@ void ScriptVisitorTest::testVisitIf()
       "elif d:\n"
       "  e\n"
       "  f\n"));
-  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) ==
+  _xmlParser.parse(xml)->Accept(_visitor);
+  BOOST_CHECK(_visitor.script() ==
       "if a:\n"
       "  b\n"
       "  c\n"
@@ -189,7 +205,8 @@ void ScriptVisitorTest::testVisitIf()
       "else:\n"
       "  g\n"
       "  h\n"));
-  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) ==
+  _xmlParser.parse(xml)->Accept(_visitor);
+  BOOST_CHECK(_visitor.script() ==
       "if a:\n"
       "  b\n"
       "  c\n"
@@ -212,7 +229,8 @@ void ScriptVisitorTest::testVisitWhile()
       "while a:\n"
       "  b\n"
       "  c"));
-  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) ==
+  _xmlParser.parse(xml)->Accept(_visitor);
+  BOOST_CHECK(_visitor.script() ==
       "while a:\n"
       "  b\n"
       "  c\n");
@@ -224,7 +242,8 @@ void ScriptVisitorTest::testVisitWhile()
       "else:\n"
       "  d\n"
       "  e"));
-  BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) ==
+  _xmlParser.parse(xml)->Accept(_visitor);
+  BOOST_CHECK(_visitor.script() ==
       "while a:\n"
       "  b\n"
       "  c\n"

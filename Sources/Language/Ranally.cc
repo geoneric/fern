@@ -214,13 +214,13 @@ int main(
           inputFileName.c_str()));
       }
 
-      UnicodeString script = ranally::XmlParser().parse(xml)->Accept(visitor);
+      ranally::XmlParser().parse(xml)->Accept(visitor);
 
       if(argc <= 4) {
-        std::cout << dev::encodeInUTF8(script) << std::endl;
+        std::cout << dev::encodeInUTF8(visitor.script()) << std::endl;
       }
       else if(argc == 5) {
-        std::cout << dev::encodeInUTF8(script) << std::endl;
+        std::cout << dev::encodeInUTF8(visitor.script()) << std::endl;
         std::cout << "TODO write to file\n";
       }
 
@@ -258,13 +258,13 @@ int main(
           inputFileName.c_str()));
       }
 
-      UnicodeString script = ranally::XmlParser().parse(xml)->Accept(visitor);
+      ranally::XmlParser().parse(xml)->Accept(visitor);
 
       if(argc <= 4) {
-        std::cout << dev::encodeInUTF8(script) << std::endl;
+        std::cout << dev::encodeInUTF8(visitor.script()) << std::endl;
       }
       else if(argc == 5) {
-        std::cout << dev::encodeInUTF8(script) << std::endl;
+        std::cout << dev::encodeInUTF8(visitor.script()) << std::endl;
         std::cout << "TODO write to file\n";
       }
 

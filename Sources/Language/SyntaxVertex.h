@@ -26,7 +26,7 @@ typedef std::vector<boost::shared_ptr<ranally::StatementVertex> >
   \sa        .
 */
 class SyntaxVertex: private boost::noncopyable,
-                    public Loki::BaseVisitable<UnicodeString>
+                    public Loki::BaseVisitable<>
 {
 
   friend class SyntaxVertexTest;
@@ -36,6 +36,9 @@ private:
   int              _line;
 
   int              _col;
+
+  //! The next vertex to process.
+  SyntaxVertex*    _successor;
 
 protected:
 
@@ -56,6 +59,10 @@ public:
   int              line                () const;
 
   int              col                 () const;
+
+  SyntaxVertex*    successor           ();
+
+  void             setSuccessor        (SyntaxVertex* successor);
 
 };
 

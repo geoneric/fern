@@ -45,6 +45,7 @@ SET(SOURCES
   StatementVertex.cc
   StringVertex.cc
   SyntaxVertex.cc
+  ThreadVisitor.cc
   WhileVertex.cc
   XmlParser.cc
 )
@@ -67,6 +68,7 @@ SET(TEST_SOURCES
   StringVertexTest.cc
   SyntaxVertexTest.cc
   Test.cc
+  ThreadVisitorTest.cc
   WhileVertexTest.cc
   XmlParserTest.cc
 )

@@ -34,7 +34,7 @@ ExpressionVertex::~ExpressionVertex()
 
 
 
-UnicodeString const& ExpressionVertex::name()
+UnicodeString const& ExpressionVertex::name() const
 {
   return _name;
 }
