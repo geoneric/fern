@@ -80,43 +80,43 @@ public:
 
   UnicodeString const& script          () const;
 
-  void             Visit               (AssignmentVertex&);
+  // void             Visit               (AssignmentVertex&);
 
-  void             Visit               (FunctionVertex&);
+  // void             Visit               (FunctionVertex&);
 
-  void             Visit               (IfVertex&);
+  // void             Visit               (IfVertex&);
 
-  void             Visit               (NameVertex&);
+  // void             Visit               (NameVertex&);
 
-  void             Visit               (NumberVertex<int8_t>&);
+  // void             Visit               (NumberVertex<int8_t>&);
 
-  void             Visit               (NumberVertex<int16_t>&);
+  // void             Visit               (NumberVertex<int16_t>&);
 
-  void             Visit               (NumberVertex<int32_t>&);
+  // void             Visit               (NumberVertex<int32_t>&);
 
-  void             Visit               (NumberVertex<int64_t>&);
+  // void             Visit               (NumberVertex<int64_t>&);
 
-  void             Visit               (NumberVertex<uint8_t>&);
+  // void             Visit               (NumberVertex<uint8_t>&);
 
-  void             Visit               (NumberVertex<uint16_t>&);
+  // void             Visit               (NumberVertex<uint16_t>&);
 
-  void             Visit               (NumberVertex<uint32_t>&);
+  // void             Visit               (NumberVertex<uint32_t>&);
 
-  void             Visit               (NumberVertex<uint64_t>&);
+  // void             Visit               (NumberVertex<uint64_t>&);
 
-  void             Visit               (NumberVertex<float>&);
+  // void             Visit               (NumberVertex<float>&);
 
-  void             Visit               (NumberVertex<double>&);
+  // void             Visit               (NumberVertex<double>&);
 
-  void             Visit               (OperatorVertex&);
+  // void             Visit               (OperatorVertex&);
 
-  void             Visit               (ScriptVertex&);
+  // void             Visit               (ScriptVertex&);
 
-  void             Visit               (StringVertex&);
+  // void             Visit               (StringVertex&);
 
-  void             Visit               (SyntaxVertex&);
+  // void             Visit               (SyntaxVertex&);
 
-  void             Visit               (WhileVertex&);
+  // void             Visit               (WhileVertex&);
 
 };
 

@@ -62,6 +62,8 @@ public:
 
   SyntaxVertex*    successor           ();
 
+  SyntaxVertex const* successor        () const;
+
   void             setSuccessor        (SyntaxVertex* successor);
 
 };

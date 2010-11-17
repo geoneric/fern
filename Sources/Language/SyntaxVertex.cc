@@ -64,6 +64,14 @@ SyntaxVertex* SyntaxVertex::successor()
 
 
 
+SyntaxVertex const* SyntaxVertex::successor() const
+{
+  assert(_successor);
+  return _successor;
+}
+
+
+
 void SyntaxVertex::setSuccessor(
   SyntaxVertex* successor)
 {

@@ -22,7 +22,7 @@ private:
 
   ranally::AlgebraParser _algebraParser;
   ranally::XmlParser _xmlParser;
-  ranally::DotVisitor _visitor;
+  // ranally::DotVisitor _visitor;
 
 public:
 

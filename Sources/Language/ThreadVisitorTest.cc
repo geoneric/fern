@@ -7,6 +7,9 @@
 
 #include "dev_UnicodeUtils.h"
 
+#include "AssignmentVertex.h"
+#include "FunctionVertex.h"
+#include "OperatorVertex.h"
 #include "ScriptVertex.h"
 
 
@@ -61,42 +64,179 @@ void ThreadVisitorTest::testVisitEmptyScript()
 
 void ThreadVisitorTest::testVisitName()
 {
+  boost::shared_ptr<ranally::ScriptVertex> tree;
+
+  tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("a")));
+  tree->Accept(_visitor);
+
+  ranally::SyntaxVertex const* vertexA = &(*tree->statements()[0]);
+
+  BOOST_CHECK_EQUAL(tree->successor(), vertexA);
+  BOOST_CHECK_EQUAL(vertexA->successor(), &(*tree));
 }
 
 
 
 void ThreadVisitorTest::testVisitAssignment()
 {
+  boost::shared_ptr<ranally::ScriptVertex> tree;
+
+  tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("a = b")));
+  tree->Accept(_visitor);
+
+  ranally::AssignmentVertex const* assignment =
+    dynamic_cast<ranally::AssignmentVertex const*>(&(*tree->statements()[0]));
+  ranally::SyntaxVertex const* vertexA = &(*assignment->targets()[0]);
+  ranally::SyntaxVertex const* vertexB = &(*assignment->expressions()[0]);
+
+  BOOST_CHECK_EQUAL(tree->successor(), vertexB);
+  BOOST_CHECK_EQUAL(vertexB->successor(), vertexA);
+  BOOST_CHECK_EQUAL(vertexA->successor(), assignment);
+  BOOST_CHECK_EQUAL(assignment->successor(), &(*tree));
 }
 
 
 
 void ThreadVisitorTest::testVisitString()
 {
+  boost::shared_ptr<ranally::ScriptVertex> tree;
+
+  tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
+    "\"five\"")));
+  tree->Accept(_visitor);
+
+  ranally::SyntaxVertex const* stringVertex = &(*tree->statements()[0]);
+
+  BOOST_CHECK_EQUAL(tree->successor(), stringVertex);
+  BOOST_CHECK_EQUAL(stringVertex->successor(), &(*tree));
 }
 
 
 
 void ThreadVisitorTest::testVisitNumber()
 {
+  boost::shared_ptr<ranally::ScriptVertex> tree;
+
+  tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("5")));
+  tree->Accept(_visitor);
+
+  ranally::SyntaxVertex const* numberVertex = &(*tree->statements()[0]);
+
+  BOOST_CHECK_EQUAL(tree->successor(), numberVertex);
+  BOOST_CHECK_EQUAL(numberVertex->successor(), &(*tree));
 }
 
 
 
 void ThreadVisitorTest::testVisitFunction()
 {
+  boost::shared_ptr<ranally::ScriptVertex> tree;
+
+  {
+    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("f()")));
+    tree->Accept(_visitor);
+
+    ranally::SyntaxVertex const* functionVertex = &(*tree->statements()[0]);
+
+    BOOST_CHECK_EQUAL(tree->successor(), functionVertex);
+    BOOST_CHECK_EQUAL(functionVertex->successor(), &(*tree));
+  }
+
+  {
+    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
+      "f(1, \"2\", three, four())")));
+    tree->Accept(_visitor);
+
+    ranally::FunctionVertex const* functionVertex =
+      dynamic_cast<ranally::FunctionVertex const*>(&(*tree->statements()[0]));
+    ranally::SyntaxVertex const* vertex1 = &(*functionVertex->expressions()[0]);
+    ranally::SyntaxVertex const* vertex2 = &(*functionVertex->expressions()[1]);
+    ranally::SyntaxVertex const* vertex3 = &(*functionVertex->expressions()[2]);
+    ranally::SyntaxVertex const* vertex4 = &(*functionVertex->expressions()[3]);
+
+    BOOST_CHECK_EQUAL(tree->successor(), vertex1);
+    BOOST_CHECK_EQUAL(vertex1->successor(), vertex2);
+    BOOST_CHECK_EQUAL(vertex2->successor(), vertex3);
+    BOOST_CHECK_EQUAL(vertex3->successor(), vertex4);
+    BOOST_CHECK_EQUAL(vertex4->successor(), functionVertex);
+    BOOST_CHECK_EQUAL(functionVertex->successor(), &(*tree));
+  }
 }
 
 
 
 void ThreadVisitorTest::testVisitOperator()
 {
+  boost::shared_ptr<ranally::ScriptVertex> tree;
+
+  {
+    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("-a")));
+    tree->Accept(_visitor);
+
+    ranally::OperatorVertex const* operatorVertex =
+      dynamic_cast<ranally::OperatorVertex const*>(&(*tree->statements()[0]));
+    ranally::SyntaxVertex const* vertex1 = &(*operatorVertex->expressions()[0]);
+
+    BOOST_CHECK_EQUAL(tree->successor(), vertex1);
+    BOOST_CHECK_EQUAL(vertex1->successor(), operatorVertex);
+    BOOST_CHECK_EQUAL(operatorVertex->successor(), &(*tree));
+  }
+
+  {
+    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("a + b")));
+    tree->Accept(_visitor);
+
+    ranally::OperatorVertex const* operatorVertex =
+      dynamic_cast<ranally::OperatorVertex const*>(&(*tree->statements()[0]));
+    ranally::SyntaxVertex const* vertex1 = &(*operatorVertex->expressions()[0]);
+    ranally::SyntaxVertex const* vertex2 = &(*operatorVertex->expressions()[1]);
+
+    BOOST_CHECK_EQUAL(tree->successor(), vertex1);
+    BOOST_CHECK_EQUAL(vertex1->successor(), vertex2);
+    BOOST_CHECK_EQUAL(vertex2->successor(), operatorVertex);
+    BOOST_CHECK_EQUAL(operatorVertex->successor(), &(*tree));
+  }
+
+  {
+    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
+      "-(a + b)")));
+    tree->Accept(_visitor);
+
+    ranally::OperatorVertex const* operator1Vertex =
+      dynamic_cast<ranally::OperatorVertex const*>(&(*tree->statements()[0]));
+    ranally::OperatorVertex const* operator2Vertex =
+      dynamic_cast<ranally::OperatorVertex const*>(
+        &(*operator1Vertex->expressions()[0]));
+    ranally::SyntaxVertex const* vertex1 =
+      &(*operator2Vertex->expressions()[0]);
+    ranally::SyntaxVertex const* vertex2 =
+      &(*operator2Vertex->expressions()[1]);
+
+    BOOST_CHECK_EQUAL(tree->successor(), vertex1);
+    BOOST_CHECK_EQUAL(vertex1->successor(), vertex2);
+    BOOST_CHECK_EQUAL(vertex2->successor(), operator2Vertex);
+    BOOST_CHECK_EQUAL(operator2Vertex->successor(), operator1Vertex);
+    BOOST_CHECK_EQUAL(operator1Vertex->successor(), &(*tree));
+  }
 }
 
 
 
 void ThreadVisitorTest::testVisitMultipleStatements()
 {
+  boost::shared_ptr<ranally::ScriptVertex> tree;
+
+  tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("a;b;c")));
+  tree->Accept(_visitor);
+
+  ranally::SyntaxVertex const* vertexA = &(*tree->statements()[0]);
+  ranally::SyntaxVertex const* vertexB = &(*tree->statements()[1]);
+  ranally::SyntaxVertex const* vertexC = &(*tree->statements()[2]);
+
+  BOOST_CHECK_EQUAL(tree->successor(), vertexA);
+  BOOST_CHECK_EQUAL(vertexA->successor(), vertexB);
+  BOOST_CHECK_EQUAL(vertexB->successor(), vertexC);
+  BOOST_CHECK_EQUAL(vertexC->successor(), &(*tree));
 }
 
 

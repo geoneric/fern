@@ -1,4 +1,5 @@
 #include <iostream>
+#include <boost/foreach.hpp>
 
 #include "ThreadVisitor.h"
 #include "Vertices.h"
@@ -25,35 +26,72 @@ ThreadVisitor::~ThreadVisitor()
 void ThreadVisitor::visitStatements(
   StatementVertices const& statements)
 {
+  BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex> statementVertex,
+    statements) {
+    statementVertex->Accept(*this);
+  }
 }
 
 
 
-// void ThreadVisitor::visitExpressions(
-//   ExpressionVertices const& expressions)
-// {
-// }
-// 
-// 
-// 
-// void ThreadVisitor::Visit(
-//   AssignmentVertex& vertex)
-// {
-// }
-// 
-// 
-// 
-// void ThreadVisitor::Visit(
-//   FunctionVertex& vertex)
-// {
-// }
-// 
-// 
-// 
-// void ThreadVisitor::Visit(
-//   OperatorVertex& vertex)
-// {
-// }
+void ThreadVisitor::visitExpressions(
+  ExpressionVertices const& expressions)
+{
+  assert(_lastVertex);
+
+  BOOST_FOREACH(boost::shared_ptr<ranally::ExpressionVertex> expressionVertex,
+    expressions) {
+    expressionVertex->Accept(*this);
+  }
+}
+
+
+
+void ThreadVisitor::Visit(
+  AssignmentVertex& vertex)
+{
+  assert(_lastVertex);
+
+  ExpressionVertices const& expressions = vertex.expressions();
+  assert(expressions.size() == 1);
+
+  // _lastVertex->setSuccessor(&(*expressions[0]));
+  expressions[0]->Accept(*this);
+
+  ExpressionVertices const& targets = vertex.targets();
+  assert(targets.size() == 1);
+
+  // _lastVertex->setSuccessor(&(*targets[0]));
+  targets[0]->Accept(*this);
+
+  assert(_lastVertex);
+  _lastVertex->setSuccessor(&vertex);
+  _lastVertex = &vertex;
+}
+
+
+
+void ThreadVisitor::Visit(
+  FunctionVertex& vertex)
+{
+  visitExpressions(vertex.expressions());
+
+  assert(_lastVertex);
+  _lastVertex->setSuccessor(&vertex);
+  _lastVertex = &vertex;
+}
+
+
+
+void ThreadVisitor::Visit(
+  OperatorVertex& vertex)
+{
+  visitExpressions(vertex.expressions());
+
+  assert(_lastVertex);
+  _lastVertex->setSuccessor(&vertex);
+  _lastVertex = &vertex;
+}
 
 
 
@@ -76,109 +114,128 @@ void ThreadVisitor::Visit(
 
 
 
-// void ThreadVisitor::Visit(
-//   StringVertex& vertex)
-// {
-// }
-// 
-// 
-// 
-// void ThreadVisitor::Visit(
-//   NameVertex& vertex)
-// {
-// }
-// 
-// 
-// 
-// template<typename T>
-// void ThreadVisitor::Visit(
-//   NumberVertex<T>& vertex)
-// {
-// }
-// 
-// 
-// 
-// void ThreadVisitor::Visit(
-//   NumberVertex<int8_t>& vertex)
-// {
-// }
-// 
-// 
-// 
-// void ThreadVisitor::Visit(
-//   NumberVertex<int16_t>& vertex)
-// {
-// }
-// 
-// 
-// 
-// void ThreadVisitor::Visit(
-//   NumberVertex<int32_t>& vertex)
-// {
-// }
-// 
-// 
-// 
-// void ThreadVisitor::Visit(
-//   NumberVertex<int64_t>& vertex)
-// {
-// }
-// 
-// 
-// 
-// void ThreadVisitor::Visit(
-//   NumberVertex<uint8_t>& vertex)
-// {
-// }
-// 
-// 
-// 
-// void ThreadVisitor::Visit(
-//   NumberVertex<uint16_t>& vertex)
-// {
-// }
-// 
-// 
-// 
-// void ThreadVisitor::Visit(
-//   NumberVertex<uint32_t>& vertex)
-// {
-// }
-// 
-// 
-// 
-// void ThreadVisitor::Visit(
-//   NumberVertex<uint64_t>& vertex)
-// {
-// }
-// 
-// 
-// 
-// void ThreadVisitor::Visit(
-//   NumberVertex<float>& vertex)
-// {
-// }
-// 
-// 
-// 
-// void ThreadVisitor::Visit(
-//   NumberVertex<double>& vertex)
-// {
-// }
-// 
-// 
-// 
-// void ThreadVisitor::Visit(
-//   IfVertex& vertex)
-// {
-// }
-// 
-// 
-// 
-// void ThreadVisitor::Visit(
-//   WhileVertex& vertex)
-// {
-// }
+void ThreadVisitor::Visit(
+  StringVertex& vertex)
+{
+  assert(_lastVertex);
+  _lastVertex->setSuccessor(&vertex);
+  _lastVertex = &vertex;
+}
+
+
+
+void ThreadVisitor::Visit(
+  NameVertex& vertex)
+{
+  assert(_lastVertex);
+  _lastVertex->setSuccessor(&vertex);
+  _lastVertex = &vertex;
+}
+
+
+
+template<typename T>
+void ThreadVisitor::Visit(
+  NumberVertex<T>& vertex)
+{
+  assert(_lastVertex);
+  _lastVertex->setSuccessor(&vertex);
+  _lastVertex = &vertex;
+}
+
+
+
+void ThreadVisitor::Visit(
+  NumberVertex<int8_t>& vertex)
+{
+  Visit<int8_t>(vertex);
+}
+
+
+
+void ThreadVisitor::Visit(
+  NumberVertex<int16_t>& vertex)
+{
+  Visit<int16_t>(vertex);
+}
+
+
+
+void ThreadVisitor::Visit(
+  NumberVertex<int32_t>& vertex)
+{
+  Visit<int32_t>(vertex);
+}
+
+
+
+void ThreadVisitor::Visit(
+  NumberVertex<int64_t>& vertex)
+{
+  Visit<int64_t>(vertex);
+}
+
+
+
+void ThreadVisitor::Visit(
+  NumberVertex<uint8_t>& vertex)
+{
+  Visit<uint8_t>(vertex);
+}
+
+
+
+void ThreadVisitor::Visit(
+  NumberVertex<uint16_t>& vertex)
+{
+  Visit<uint16_t>(vertex);
+}
+
+
+
+void ThreadVisitor::Visit(
+  NumberVertex<uint32_t>& vertex)
+{
+  Visit<uint32_t>(vertex);
+}
+
+
+
+void ThreadVisitor::Visit(
+  NumberVertex<uint64_t>& vertex)
+{
+  Visit<uint64_t>(vertex);
+}
+
+
+
+void ThreadVisitor::Visit(
+  NumberVertex<float>& vertex)
+{
+  Visit<float>(vertex);
+}
+
+
+
+void ThreadVisitor::Visit(
+  NumberVertex<double>& vertex)
+{
+  Visit<double>(vertex);
+}
+
+
+
+void ThreadVisitor::Visit(
+  IfVertex& vertex)
+{
+}
+
+
+
+void ThreadVisitor::Visit(
+  WhileVertex& vertex)
+{
+}
 
 } // namespace ranally
 
