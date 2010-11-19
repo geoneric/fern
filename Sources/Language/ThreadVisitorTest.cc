@@ -9,6 +9,7 @@
 
 #include "AssignmentVertex.h"
 #include "FunctionVertex.h"
+#include "IfVertex.h"
 #include "OperatorVertex.h"
 #include "ScriptVertex.h"
 
@@ -243,6 +244,126 @@ void ThreadVisitorTest::testVisitMultipleStatements()
 
 void ThreadVisitorTest::testVisitIf()
 {
+  boost::shared_ptr<ranally::ScriptVertex> tree;
+
+  {
+    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
+      "if a:\n"
+      "  b\n"
+      "  c")));
+    tree->Accept(_visitor);
+
+    ranally::IfVertex const* ifVertex =
+      dynamic_cast<ranally::IfVertex const*>(&(*tree->statements()[0]));
+    ranally::SyntaxVertex const* vertexA = &(*ifVertex->condition());
+    ranally::SyntaxVertex const* vertexB = &(*ifVertex->trueStatements()[0]);
+    ranally::SyntaxVertex const* vertexC = &(*ifVertex->trueStatements()[1]);
+
+    BOOST_CHECK_EQUAL(tree->successor(), vertexA);
+    BOOST_CHECK_EQUAL(vertexA->successor(), ifVertex);
+    BOOST_CHECK_EQUAL(ifVertex->successor(0), vertexB);
+    BOOST_CHECK_EQUAL(vertexB->successor(), vertexC);
+    BOOST_CHECK_EQUAL(vertexC->successor(), ifVertex);
+    BOOST_CHECK_EQUAL(ifVertex->successor(1), &(*tree));
+  }
+
+  {
+    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
+      "if a:\n"
+      "  b\n"
+      "  c\n"
+      "elif d:\n"
+      "  e\n"
+      "  f\n")));
+    tree->Accept(_visitor);
+
+    // True block first if.
+    ranally::IfVertex const* if1Vertex =
+      dynamic_cast<ranally::IfVertex const*>(&(*tree->statements()[0]));
+    ranally::SyntaxVertex const* vertexA = &(*if1Vertex->condition());
+    ranally::SyntaxVertex const* vertexB = &(*if1Vertex->trueStatements()[0]);
+    ranally::SyntaxVertex const* vertexC = &(*if1Vertex->trueStatements()[1]);
+
+    // True block second if.
+    ranally::IfVertex const* if2Vertex =
+      dynamic_cast<ranally::IfVertex const*>(&(*if1Vertex->falseStatements()[0]));
+    ranally::SyntaxVertex const* vertexD = &(*if2Vertex->condition());
+    ranally::SyntaxVertex const* vertexE = &(*if2Vertex->trueStatements()[0]);
+    ranally::SyntaxVertex const* vertexF = &(*if2Vertex->trueStatements()[1]);
+
+    // True block first if.
+    BOOST_CHECK_EQUAL(tree->successor(), vertexA);
+    BOOST_CHECK_EQUAL(vertexA->successor(), if1Vertex);
+    BOOST_CHECK_EQUAL(if1Vertex->successor(0), vertexB);
+    BOOST_CHECK_EQUAL(vertexB->successor(), vertexC);
+    BOOST_CHECK_EQUAL(vertexC->successor(), if1Vertex);
+
+    // True block second if.
+    BOOST_CHECK_EQUAL(if1Vertex->successor(1), vertexD);
+    BOOST_CHECK_EQUAL(vertexD->successor(), if2Vertex);
+    BOOST_CHECK_EQUAL(if2Vertex->successor(0), vertexE);
+    BOOST_CHECK_EQUAL(vertexE->successor(), vertexF);
+    BOOST_CHECK_EQUAL(vertexF->successor(), if2Vertex);
+
+    BOOST_CHECK_EQUAL(if2Vertex->successor(1), if1Vertex);
+
+    BOOST_CHECK_EQUAL(if1Vertex->successor(2), &(*tree));
+  }
+
+  {
+    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
+      "if a:\n"
+      "  b\n"
+      "  c\n"
+      "elif d:\n"
+      "  e\n"
+      "  f\n"
+      "else:\n"
+      "  g\n"
+      "  h\n")));
+    tree->Accept(_visitor);
+
+    // True block first if.
+    ranally::IfVertex const* if1Vertex =
+      dynamic_cast<ranally::IfVertex const*>(&(*tree->statements()[0]));
+    ranally::SyntaxVertex const* vertexA = &(*if1Vertex->condition());
+    ranally::SyntaxVertex const* vertexB = &(*if1Vertex->trueStatements()[0]);
+    ranally::SyntaxVertex const* vertexC = &(*if1Vertex->trueStatements()[1]);
+
+    // True block second if.
+    ranally::IfVertex const* if2Vertex =
+      dynamic_cast<ranally::IfVertex const*>(&(*if1Vertex->falseStatements()[0]));
+    ranally::SyntaxVertex const* vertexD = &(*if2Vertex->condition());
+    ranally::SyntaxVertex const* vertexE = &(*if2Vertex->trueStatements()[0]);
+    ranally::SyntaxVertex const* vertexF = &(*if2Vertex->trueStatements()[1]);
+
+    // False block second if.
+    ranally::SyntaxVertex const* vertexG = &(*if2Vertex->falseStatements()[0]);
+    ranally::SyntaxVertex const* vertexH = &(*if2Vertex->falseStatements()[1]);
+
+    // True block first if.
+    BOOST_CHECK_EQUAL(tree->successor(), vertexA);
+    BOOST_CHECK_EQUAL(vertexA->successor(), if1Vertex);
+    BOOST_CHECK_EQUAL(if1Vertex->successor(0), vertexB);
+    BOOST_CHECK_EQUAL(vertexB->successor(), vertexC);
+    BOOST_CHECK_EQUAL(vertexC->successor(), if1Vertex);
+
+    // True block second if.
+    BOOST_CHECK_EQUAL(if1Vertex->successor(1), vertexD);
+    BOOST_CHECK_EQUAL(vertexD->successor(), if2Vertex);
+    BOOST_CHECK_EQUAL(if2Vertex->successor(0), vertexE);
+    BOOST_CHECK_EQUAL(vertexE->successor(), vertexF);
+    BOOST_CHECK_EQUAL(vertexF->successor(), if2Vertex);
+
+    // False block second if.
+    BOOST_CHECK_EQUAL(if2Vertex->successor(1), vertexG);
+    BOOST_CHECK_EQUAL(vertexG->successor(), vertexH);
+    BOOST_CHECK_EQUAL(vertexH->successor(), if2Vertex);
+
+    BOOST_CHECK_EQUAL(if2Vertex->successor(2), if1Vertex);
+
+    BOOST_CHECK_EQUAL(if1Vertex->successor(2), &(*tree));
+  }
 }
 
 

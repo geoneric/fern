@@ -37,8 +37,8 @@ private:
 
   int              _col;
 
-  //! The next vertex to process.
-  SyntaxVertex*    _successor;
+  //! The next vertex/vertices to process.
+  std::vector<SyntaxVertex*> _successors;
 
 protected:
 
@@ -51,6 +51,8 @@ public:
 
   LOKI_DEFINE_VISITABLE()
 
+  typedef std::vector<SyntaxVertex*>::size_type size_type;
+
   virtual          ~SyntaxVertex       ();
 
   void             setPosition         (int lineNr,
@@ -60,11 +62,15 @@ public:
 
   int              col                 () const;
 
-  SyntaxVertex*    successor           ();
-
   SyntaxVertex const* successor        () const;
 
-  void             setSuccessor        (SyntaxVertex* successor);
+  SyntaxVertex*    successor           ();
+
+  SyntaxVertex const* successor        (size_type index) const;
+
+  SyntaxVertex*    successor           (size_type index);
+
+  void             addSuccessor        (SyntaxVertex* successor);
 
 };
 

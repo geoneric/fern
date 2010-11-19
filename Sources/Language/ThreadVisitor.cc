@@ -37,8 +37,6 @@ void ThreadVisitor::visitStatements(
 void ThreadVisitor::visitExpressions(
   ExpressionVertices const& expressions)
 {
-  assert(_lastVertex);
-
   BOOST_FOREACH(boost::shared_ptr<ranally::ExpressionVertex> expressionVertex,
     expressions) {
     expressionVertex->Accept(*this);
@@ -50,22 +48,16 @@ void ThreadVisitor::visitExpressions(
 void ThreadVisitor::Visit(
   AssignmentVertex& vertex)
 {
-  assert(_lastVertex);
-
   ExpressionVertices const& expressions = vertex.expressions();
   assert(expressions.size() == 1);
-
-  // _lastVertex->setSuccessor(&(*expressions[0]));
   expressions[0]->Accept(*this);
 
   ExpressionVertices const& targets = vertex.targets();
   assert(targets.size() == 1);
-
-  // _lastVertex->setSuccessor(&(*targets[0]));
   targets[0]->Accept(*this);
 
   assert(_lastVertex);
-  _lastVertex->setSuccessor(&vertex);
+  _lastVertex->addSuccessor(&vertex);
   _lastVertex = &vertex;
 }
 
@@ -77,7 +69,7 @@ void ThreadVisitor::Visit(
   visitExpressions(vertex.expressions());
 
   assert(_lastVertex);
-  _lastVertex->setSuccessor(&vertex);
+  _lastVertex->addSuccessor(&vertex);
   _lastVertex = &vertex;
 }
 
@@ -89,7 +81,7 @@ void ThreadVisitor::Visit(
   visitExpressions(vertex.expressions());
 
   assert(_lastVertex);
-  _lastVertex->setSuccessor(&vertex);
+  _lastVertex->addSuccessor(&vertex);
   _lastVertex = &vertex;
 }
 
@@ -109,7 +101,7 @@ void ThreadVisitor::Visit(
   _lastVertex = &vertex;
   visitStatements(vertex.statements());
   assert(_lastVertex);
-  _lastVertex->setSuccessor(&vertex);
+  _lastVertex->addSuccessor(&vertex);
 }
 
 
@@ -118,7 +110,7 @@ void ThreadVisitor::Visit(
   StringVertex& vertex)
 {
   assert(_lastVertex);
-  _lastVertex->setSuccessor(&vertex);
+  _lastVertex->addSuccessor(&vertex);
   _lastVertex = &vertex;
 }
 
@@ -128,7 +120,7 @@ void ThreadVisitor::Visit(
   NameVertex& vertex)
 {
   assert(_lastVertex);
-  _lastVertex->setSuccessor(&vertex);
+  _lastVertex->addSuccessor(&vertex);
   _lastVertex = &vertex;
 }
 
@@ -139,7 +131,7 @@ void ThreadVisitor::Visit(
   NumberVertex<T>& vertex)
 {
   assert(_lastVertex);
-  _lastVertex->setSuccessor(&vertex);
+  _lastVertex->addSuccessor(&vertex);
   _lastVertex = &vertex;
 }
 
@@ -228,6 +220,26 @@ void ThreadVisitor::Visit(
 void ThreadVisitor::Visit(
   IfVertex& vertex)
 {
+  // First let the condition thread itself.
+  vertex.condition()->Accept(*this);
+
+  // Now we must get the control.
+  assert(_lastVertex);
+  _lastVertex->addSuccessor(&vertex);
+
+  // Let the true and false block thread themselves.
+  _lastVertex = &vertex;
+  assert(!vertex.trueStatements().empty());
+  visitStatements(vertex.trueStatements());
+  _lastVertex->addSuccessor(&vertex);
+
+  if(!vertex.falseStatements().empty()) {
+    _lastVertex = &vertex;
+    visitStatements(vertex.falseStatements());
+    _lastVertex->addSuccessor(&vertex);
+  }
+
+  _lastVertex = &vertex;
 }
 
 
