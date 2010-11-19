@@ -12,6 +12,15 @@ namespace ranally {
 /*!
   longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 
+  Threading an if-statement results in multiple successor vertices being stored in the
+  base-class' successor collection.
+  - The first successor always points to the first vertex of the true-block's
+    control flow graph.
+  - If there is a false-block, then the second successor points to the first vertex of
+    its control flow graph.
+  - The last successor (the second or third, depending on whether or not a false-block
+    is present) points to the successor of the whole statement.
+
   \sa        .
 */
 class IfVertex: public StatementVertex

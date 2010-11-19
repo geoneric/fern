@@ -245,8 +245,10 @@ void ThreadVisitor::Visit(
 
 
 void ThreadVisitor::Visit(
-  WhileVertex& vertex)
+  WhileVertex& /* vertex */)
 {
+  // TODO
+  assert(false);
 }
 
 } // namespace ranally
