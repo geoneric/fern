@@ -13,3 +13,4 @@ EXTRACT_STATIC          = YES
 EXCLUDE_PATTERNS        = *Test.h *Test.cc
 
 GENERATE_LATEX          = NO
+SORT_MEMBER_DOCS        = NO
