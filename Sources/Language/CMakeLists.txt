@@ -33,6 +33,7 @@ SET(SOURCES
   ${CMAKE_CURRENT_BINARY_DIR}/Ranally-pskel.cxx
   AlgebraParser.cc
   AssignmentVertex.cc
+  Definition.cc
   DotVisitor.cc
   ExpressionVertex.cc
   FunctionVertex.cc
@@ -44,6 +45,7 @@ SET(SOURCES
   ScriptVisitor.cc
   StatementVertex.cc
   StringVertex.cc
+  SymbolTable.cc
   SyntaxVertex.cc
   ThreadVisitor.cc
   WhileVertex.cc
@@ -55,6 +57,7 @@ ADD_LIBRARY(RanallyLanguage
 SET(TEST_SOURCES
   AlgebraParserTest.cc
   AssignmentVertexTest.cc
+  DefinitionTest.cc
   DotVisitorTest.cc
   ExpressionVertexTest.cc
   FunctionVertexTest.cc
@@ -66,6 +69,7 @@ SET(TEST_SOURCES
   ScriptVisitorTest.cc
   StatementVertexTest.cc
   StringVertexTest.cc
+  SymbolTableTest.cc
   SyntaxVertexTest.cc
   Test.cc
   ThreadVisitorTest.cc

@@ -2,6 +2,7 @@
 
 #include "AlgebraParserTest.h"
 #include "AssignmentVertexTest.h"
+#include "DefinitionTest.h"
 #include "DotVisitorTest.h"
 #include "ExpressionVertexTest.h"
 #include "FunctionVertexTest.h"
@@ -13,6 +14,7 @@
 #include "ScriptVisitorTest.h"
 #include "StatementVertexTest.h"
 #include "StringVertexTest.h"
+#include "SymbolTableTest.h"
 #include "SyntaxVertexTest.h"
 #include "ThreadVisitorTest.h"
 #include "WhileVertexTest.h"
@@ -52,6 +54,9 @@ boost::unit_test::test_suite* init_unit_test_suite(
   test->add(ScriptVertexTest::suite());
 
   test->add(XmlParserTest::suite());
+
+  test->add(DefinitionTest::suite());
+  test->add(SymbolTableTest::suite());
 
   test->add(ThreadVisitorTest::suite());
   test->add(DotVisitorTest::suite());
