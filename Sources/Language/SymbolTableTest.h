@@ -18,9 +18,9 @@ private:
 
 public:
 
-                   SymbolTableTest           ();
+                   SymbolTableTest     ();
 
-  void             test                ();
+  void             testScoping         ();
 
   static boost::unit_test::test_suite* suite();
 

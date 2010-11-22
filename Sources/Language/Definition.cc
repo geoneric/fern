@@ -5,6 +5,7 @@
 
 
 namespace ranally {
+namespace language {
 
 Definition::Definition(
   UnicodeString const& name)
@@ -13,6 +14,16 @@ Definition::Definition(
 
 {
   assert(!name.isEmpty());
+}
+
+
+
+Definition::Definition(
+  Definition const& rhs)
+
+  : _name(rhs._name)
+
+{
 }
 
 
@@ -28,5 +39,6 @@ UnicodeString const& Definition::name() const
   return _name;
 }
 
+} // namespace language
 } // namespace ranally
 

@@ -3,21 +3,27 @@
 
 #include <list>
 #include <map>
-#include <stack>
+#include <vector>
 #include <unicode/unistr.h>
 #include <boost/noncopyable.hpp>
 
 
 
 namespace ranally {
+namespace language {
 
 class Definition;
 
-//! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
+//! Datastructure for keeping track of definitions.
 /*!
-  longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
+  The table is able to store multiple definitions of the same name and supports
+  scoping.
 
-  \sa        .
+  Definitions are added to the current scope using addDefinition. Make sure
+  that such a scope exists. After creation of a SymbolTable instance,
+  pushScope() must be called before identifiers can be added. You can make
+  multiple calls to pushScope() in case of nested scopes. Make sure to match
+  each call to pushScope() with a call to popScope().
 */
 class SymbolTable: private boost::noncopyable
 {
@@ -26,15 +32,16 @@ class SymbolTable: private boost::noncopyable
 
 public:
 
+  //! Type for lists of definitions.
   typedef std::list<Definition*> Definitions;
 
 private:
 
-  //! Definitions by identifier name.
+  //! Definitions by name.
   std::map<UnicodeString, Definitions> _definitions;
 
   //! Definitions by scope level.
-  std::stack<Definitions> _scopes;
+  std::vector<Definitions> _scopes;
 
   Definitions const& definitions       (UnicodeString const& name) const;
 
@@ -44,7 +51,8 @@ protected:
 
 public:
 
-  typedef std::stack<Definitions>::size_type size_type;
+  //! Type for scope levels.
+  typedef std::vector<Definitions>::size_type size_type;
 
                    SymbolTable         ();
 
@@ -54,7 +62,13 @@ public:
 
   void             popScope            ();
 
-  void             addDefinition       (Definition* definition);
+  size_type        scopeLevel          () const;
+
+  size_type        scopeLevel          (UnicodeString const& name) const;
+
+  void             addDefinition       (Definition const& definition);
+
+  bool             hasDefinition       (UnicodeString const& name) const;
 
   Definition const& definition         (UnicodeString const& name) const;
 
@@ -62,6 +76,7 @@ public:
 
 };
 
+} // namespace language
 } // namespace ranally
 
 #endif

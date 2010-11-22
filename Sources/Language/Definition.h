@@ -2,11 +2,11 @@
 #define INCLUDED_RANALLY_DEFINITION
 
 #include <unicode/unistr.h>
-#include <boost/noncopyable.hpp>
 
 
 
 namespace ranally {
+namespace language {
 
 //! Definition instances contain information about an identifier.
 /*!
@@ -14,7 +14,7 @@ namespace ranally {
 
   \sa        .
 */
-class Definition: private boost::noncopyable
+class Definition
 {
 
   friend class DefinitionTest;
@@ -29,12 +29,15 @@ public:
 
                    Definition          (UnicodeString const& name);
 
+                   Definition          (Definition const& rhs);
+
   /* virtual */    ~Definition         ();
 
   UnicodeString const& name            () const;
 
 };
 
+} // namespace language
 } // namespace ranally
 
 #endif
