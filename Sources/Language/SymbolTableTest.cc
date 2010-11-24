@@ -85,19 +85,19 @@ void SymbolTableTest::testScoping()
     table.addDefinition(a1);
     BOOST_REQUIRE(table.hasDefinition(name));
 
-    // TODO hier verder
-    // table.pushScope();
-    // BOOST_CHECK_EQUAL(table.scopeLevel(), SymbolTable::size_type(2));
+    table.pushScope();
+    BOOST_CHECK_EQUAL(table.scopeLevel(), SymbolTable::size_type(2));
 
-    // Definition a2(name);
-    // table.addDefinition(a2);
-    // BOOST_REQUIRE(table.hasDefinition(name));
+    Definition a2(name);
+    table.addDefinition(a2);
+    BOOST_REQUIRE(table.hasDefinition(name));
 
-    // // Should reveal the first definition.
-    // table.popScope();
-    // BOOST_REQUIRE(table.hasDefinition(name));
-    // BOOST_CHECK_EQUAL(table.definition(name).scopeLevel(),
-    //   table.scopeLevel());
+    // Should reveal the first definition.
+    table.popScope();
+    BOOST_CHECK_EQUAL(table.scopeLevel(), SymbolTable::size_type(1));
+
+    BOOST_REQUIRE(table.hasDefinition(name));
+    BOOST_CHECK_EQUAL(table.scopeLevel(name), table.scopeLevel());
 
     table.popScope();
     BOOST_REQUIRE(!table.hasDefinition(name));
