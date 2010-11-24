@@ -1,11 +1,12 @@
 #include "SymbolTableTest.h"
 
+#include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
 
-#include "Definition.h"
 #include "SymbolTable.h"
+#include "NameVertex.h"
 
 
 
@@ -30,6 +31,7 @@ SymbolTableTest::SymbolTableTest()
 
 void SymbolTableTest::testScoping()
 {
+  using namespace ranally;
   using namespace ranally::language;
 
   SymbolTable table;
@@ -41,8 +43,8 @@ void SymbolTableTest::testScoping()
     table.pushScope();
     BOOST_CHECK_EQUAL(table.scopeLevel(), SymbolTable::size_type(1));
 
-    Definition a(name);
-    table.addDefinition(a);
+    boost::scoped_ptr<NameVertex> a(new NameVertex(name));
+    table.addDefinition(a.get());
     BOOST_REQUIRE(table.hasDefinition(name));
     BOOST_CHECK_EQUAL(table.scopeLevel(name), table.scopeLevel());
 
@@ -57,15 +59,15 @@ void SymbolTableTest::testScoping()
     table.pushScope();
     BOOST_CHECK_EQUAL(table.scopeLevel(), SymbolTable::size_type(1));
 
-    Definition a1(name);
-    table.addDefinition(a1);
+    boost::scoped_ptr<NameVertex> a1(new NameVertex(name));
+    table.addDefinition(a1.get());
     BOOST_REQUIRE(table.hasDefinition(name));
     BOOST_CHECK_EQUAL(table.scopeLevel(name), table.scopeLevel());
 
     BOOST_CHECK_EQUAL(table.scopeLevel(), SymbolTable::size_type(1));
 
-    Definition a2(name);
-    table.addDefinition(a2);
+    boost::scoped_ptr<NameVertex> a2(new NameVertex(name));
+    table.addDefinition(a2.get());
     BOOST_REQUIRE(table.hasDefinition(name));
     BOOST_CHECK_EQUAL(table.scopeLevel(name), table.scopeLevel());
 
@@ -81,15 +83,15 @@ void SymbolTableTest::testScoping()
     table.pushScope();
     BOOST_CHECK_EQUAL(table.scopeLevel(), SymbolTable::size_type(1));
 
-    Definition a1(name);
-    table.addDefinition(a1);
+    boost::scoped_ptr<NameVertex> a1(new NameVertex(name));
+    table.addDefinition(a1.get());
     BOOST_REQUIRE(table.hasDefinition(name));
 
     table.pushScope();
     BOOST_CHECK_EQUAL(table.scopeLevel(), SymbolTable::size_type(2));
 
-    Definition a2(name);
-    table.addDefinition(a2);
+    boost::scoped_ptr<NameVertex> a2(new NameVertex(name));
+    table.addDefinition(a2.get());
     BOOST_REQUIRE(table.hasDefinition(name));
 
     // Should reveal the first definition.
