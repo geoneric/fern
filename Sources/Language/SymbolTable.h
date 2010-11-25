@@ -10,9 +10,10 @@
 
 
 namespace ranally {
-namespace language {
 
-class Definition;
+class NameVertex;
+
+namespace language {
 
 //! Datastructure for keeping track of definitions.
 /*!
@@ -33,7 +34,7 @@ class SymbolTable: private boost::noncopyable
 public:
 
   //! Type for lists of definitions.
-  typedef std::list<Definition*> Definitions;
+  typedef std::list<NameVertex*> Definitions;
 
 private:
 
@@ -66,13 +67,15 @@ public:
 
   size_type        scopeLevel          (UnicodeString const& name) const;
 
-  void             addDefinition       (Definition const& definition);
+  void             addDefinition       (NameVertex* definition);
 
   bool             hasDefinition       (UnicodeString const& name) const;
 
-  Definition const& definition         (UnicodeString const& name) const;
+  NameVertex const* definition         (UnicodeString const& name) const;
 
-  Definition&      definition          (UnicodeString const& name);
+  NameVertex*      definition          (UnicodeString const& name);
+
+  size_type        size                () const;
 
 };
 

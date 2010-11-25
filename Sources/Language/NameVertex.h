@@ -20,17 +20,26 @@ class NameVertex: public ExpressionVertex
 
 private:
 
+  //! Definition vertex (left side of an assignment).
+  NameVertex*      _definition;
+
 protected:
 
 public:
 
   LOKI_DEFINE_VISITABLE()
 
+                   NameVertex          (UnicodeString const& name);
+
                    NameVertex          (int lineNr,
                                         int colId,
                                         UnicodeString const& name);
 
   /* virtual */    ~NameVertex         ();
+
+  void             setDefinition       (NameVertex* definition);
+
+  NameVertex const* definition         () const;
 
 };
 

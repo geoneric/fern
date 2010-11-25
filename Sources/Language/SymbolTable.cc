@@ -1,9 +1,9 @@
-#include "SymbolTable.h"
-
 #include <algorithm>
 #include <cassert>
 #include <boost/foreach.hpp>
-#include "Definition.h"
+
+#include "SymbolTable.h"
+#include "NameVertex.h"
 
 
 
@@ -54,6 +54,13 @@ SymbolTable::Definitions& SymbolTable::definitions(
 
 
 
+//! Add a scope to the symbol table.
+/*!
+  \sa        popScope().
+
+  All subsequent calls to addDefinition(NameVertex*) will add definitions
+  to this new scope.
+*/
 void SymbolTable::pushScope()
 {
   _scopes.push_back(Definitions());
@@ -61,7 +68,13 @@ void SymbolTable::pushScope()
 
 
 
+//! Remove a scope from the symbol table.
+/*!
+  \warning   pushScope() must have been called first.
+  \sa        pushScope().
 
+  All definitions present in the current scope are removed.
+*/
 void SymbolTable::popScope()
 {
   // For all definitions in the top-most scope, first remove them from the
@@ -69,12 +82,11 @@ void SymbolTable::popScope()
 
   assert(!_scopes.empty());
 
-  BOOST_FOREACH(Definition* definition, _scopes.front()) {
+  BOOST_FOREACH(NameVertex* definition, _scopes.back()) {
     Definitions& definitions(this->definitions(definition->name()));
     assert(std::find(definitions.begin(), definitions.end(), definition) !=
       definitions.end());
     definitions.remove(definition);
-    delete definition;
 
     // Erase the list of definitions for the current name if the list is empty.
     if(definitions.empty()) {
@@ -101,19 +113,24 @@ SymbolTable::size_type SymbolTable::scopeLevel() const
 
 
 
+//! Return the scope level that contains the defintion of \a name.
+/*!
+  \param     name Name to look up scope level for.
+  \return    Scope level.
+*/
 SymbolTable::size_type SymbolTable::scopeLevel(
   UnicodeString const& name) const
 {
   assert(hasDefinition(name));
 
-  // Iterate over each scope level untill we find the level that contains the
+  // Iterate over each scope level until we find the level that contains the
   // requested definition.
   size_type result = _scopes.size();
 
   for(size_type i = 0; i < _scopes.size(); ++i) {
     size_type j = _scopes.size() - 1 - i;
 
-    BOOST_FOREACH(Definition* definition, _scopes[j]) {
+    BOOST_FOREACH(NameVertex* definition, _scopes[j]) {
       if(definition->name() == name) {
         result = j + 1;
         break;
@@ -126,20 +143,19 @@ SymbolTable::size_type SymbolTable::scopeLevel(
 
 
 
-//! Adds a definition to the current scope.
+//! Add a definition to the current scope.
 /*!
   \param     definition Definition to add.
   \warning   pushScope() must be called before definitions can be added to the
              symbol table.
-  \sa        .
 */
 void SymbolTable::addDefinition(
-  Definition const& definition)
+  NameVertex* definition)
 {
   // Add an empty list of definitions if a definition by this name does not
   // already exist.
-  if(!hasDefinition(definition.name())) {
-    _definitions[definition.name()] = Definitions();
+  if(!hasDefinition(definition->name())) {
+    _definitions[definition->name()] = Definitions();
   }
 
   // TODO If the name is already defined, we may want to issue a warning that
@@ -148,16 +164,19 @@ void SymbolTable::addDefinition(
   //      scope).
   //      This warning should be conditional on some warning level.
 
-  // Create a copy on the stack and store the pointer in the list of
-  // definitions for this name.
-  Definitions& definitionsByName(definitions(definition.name()));
-  definitionsByName.insert(definitionsByName.begin(),
-    new Definition(definition));
+  // TODO If the name is already defined in the current scope, this new
+  //      definition should overwrite the previous one. Currently, the new
+  //      definition is added to the collections.
+
+  // Store the pointer in the list of definitions for this name. The
+  // most recent definition is stored at the front of the list.
+  Definitions& definitionsByName(definitions(definition->name()));
+  definitionsByName.insert(definitionsByName.begin(), definition);
 
   // Add the pointer also to the list of definitions present in the current
-  // scope.
+  // scope. The most recent definition is stored at the front of the list.
   assert(!_scopes.empty());
-  Definitions& definitionsByScope(_scopes.front());
+  Definitions& definitionsByScope(_scopes.back());
   definitionsByScope.insert(definitionsByScope.begin(),
     definitionsByName.front());
 }
@@ -172,20 +191,33 @@ bool SymbolTable::hasDefinition(
 
 
 
-Definition const& SymbolTable::definition(
+NameVertex const* SymbolTable::definition(
   UnicodeString const& name) const
 {
   assert(!definitions(name).empty());
-  return *definitions(name).front();
+  return definitions(name).front();
 }
 
 
 
-Definition& SymbolTable::definition(
+NameVertex* SymbolTable::definition(
   UnicodeString const& name)
 {
   assert(!definitions(name).empty());
-  return *definitions(name).front();
+  return definitions(name).front();
+}
+
+
+
+SymbolTable::size_type SymbolTable::size() const
+{
+  size_type result = 0;
+
+  BOOST_FOREACH(Definitions const& definitions, _scopes) {
+    result += definitions.size();
+  }
+
+  return result;
 }
 
 } // namespace language
