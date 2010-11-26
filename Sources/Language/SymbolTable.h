@@ -75,6 +75,8 @@ public:
 
   NameVertex*      definition          (UnicodeString const& name);
 
+  bool             empty               () const;
+
   size_type        size                () const;
 
 };

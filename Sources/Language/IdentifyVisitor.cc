@@ -1,3 +1,4 @@
+#include <iostream>
 #include <boost/foreach.hpp>
 
 #include "IdentifyVisitor.h"
@@ -79,11 +80,19 @@ void IdentifyVisitor::Visit(
   switch(_mode) {
     case Using: {
       // Using a name, connect it to the definition.
-      // TODO
+      assert(!vertex.definition());
+
+      if(_symbolTable.hasDefinition(vertex.name())) {
+        NameVertex* definition = _symbolTable.definition(vertex.name());
+        vertex.setDefinition(definition);
+        definition->addUse(&vertex);
+      }
+
       break;
     }
     case Defining: {
       // Defining a name, add it to the symbol table.
+      assert(!vertex.definition());
       vertex.setDefinition(&vertex);
       _symbolTable.addDefinition(&vertex);
       break;
@@ -104,9 +113,11 @@ void IdentifyVisitor::Visit(
 void IdentifyVisitor::Visit(
   ScriptVertex& vertex)
 {
+  assert(_symbolTable.empty());
   _symbolTable.pushScope();
   visitStatements(vertex.statements());
   _symbolTable.popScope();
+  assert(_symbolTable.empty());
 }
 
 

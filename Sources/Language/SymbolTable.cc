@@ -209,6 +209,13 @@ NameVertex* SymbolTable::definition(
 
 
 
+bool SymbolTable::empty() const
+{
+  return size() == 0;
+}
+
+
+
 SymbolTable::size_type SymbolTable::size() const
 {
   size_type result = 0;

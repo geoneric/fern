@@ -20,8 +20,11 @@ class NameVertex: public ExpressionVertex
 
 private:
 
-  //! Definition vertex (left side of an assignment).
+  //! Definition of the name (left side of an assignment).
   NameVertex*      _definition;
+
+  //! Uses of the name in expressions. Only relevant for definition vertices.
+  std::vector<NameVertex*> _uses;
 
 protected:
 
@@ -40,6 +43,12 @@ public:
   void             setDefinition       (NameVertex* definition);
 
   NameVertex const* definition         () const;
+
+  // NameVertex*      definition          ();
+
+  void             addUse              (NameVertex* vertex);
+
+  std::vector<NameVertex*> const& uses () const;
 
 };
 

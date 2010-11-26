@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <xs:schema
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  targetNamespace="http://www.jemig.eu/ranally"
   xmlns:ranally="http://www.jemig.eu/ranally"
+  targetNamespace="http://www.jemig.eu/ranally"
 >
 <!--
   elementFormDefault="qualified"

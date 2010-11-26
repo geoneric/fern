@@ -30,6 +30,8 @@ public:
 
   void             testVisitEmptyScript();
 
+  void             testVisitName       ();
+
   void             testVisitAssignment ();
 
   static boost::unit_test::test_suite* suite();
