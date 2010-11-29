@@ -6,6 +6,7 @@
 #include <boost/test/unit_test_suite.hpp>
 
 #include "AssignmentVertex.h"
+#include "IfVertex.h"
 #include "FunctionVertex.h"
 #include "NameVertex.h"
 #include "ScriptVertex.h"
@@ -23,6 +24,8 @@ boost::unit_test::test_suite* IdentifyVisitorTest::suite()
     &IdentifyVisitorTest::testVisitName, instance));
   suite->add(BOOST_CLASS_TEST_CASE(
     &IdentifyVisitorTest::testVisitAssignment, instance));
+  suite->add(BOOST_CLASS_TEST_CASE(
+    &IdentifyVisitorTest::testVisitIf, instance));
 
   return suite;
 }
@@ -77,7 +80,8 @@ void IdentifyVisitorTest::testVisitAssignment()
     ranally::NameVertex const* vertexA =
       dynamic_cast<ranally::NameVertex const*>(&(*assignment->targets()[0]));
     ranally::NameVertex const* vertexB =
-      dynamic_cast<ranally::NameVertex const*>(&(*assignment->expressions()[0]));
+      dynamic_cast<ranally::NameVertex const*>(
+        &(*assignment->expressions()[0]));
 
     BOOST_CHECK(!vertexA->definition());
     BOOST_CHECK(vertexA->uses().empty());
@@ -105,12 +109,14 @@ void IdentifyVisitorTest::testVisitAssignment()
     ranally::NameVertex const* vertexA1 =
       dynamic_cast<ranally::NameVertex const*>(&(*assignment1->targets()[0]));
     ranally::NameVertex const* vertexB =
-      dynamic_cast<ranally::NameVertex const*>(&(*assignment1->expressions()[0]));
+      dynamic_cast<ranally::NameVertex const*>(
+        &(*assignment1->expressions()[0]));
 
     ranally::AssignmentVertex const* assignment2 =
       dynamic_cast<ranally::AssignmentVertex const*>(&(*tree->statements()[1]));
     ranally::FunctionVertex const* function =
-      dynamic_cast<ranally::FunctionVertex const*>(&(*assignment2->expressions()[0]));
+      dynamic_cast<ranally::FunctionVertex const*>(
+        &(*assignment2->expressions()[0]));
     ranally::NameVertex const* vertexA2 =
       dynamic_cast<ranally::NameVertex const*>(&(*function->expressions()[0]));
     ranally::NameVertex const* vertexD =
@@ -144,4 +150,60 @@ void IdentifyVisitorTest::testVisitAssignment()
     BOOST_CHECK(vertexA2->uses().empty());
   }
 }
+
+
+
+void IdentifyVisitorTest::testVisitIf()
+{
+  boost::shared_ptr<ranally::ScriptVertex> tree;
+
+  {
+    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
+      "a = b\n"
+      "if True:\n"
+      "  a = c\n"
+      "d = a\n"
+    )));
+
+    ranally::AssignmentVertex const* assignment1 =
+      dynamic_cast<ranally::AssignmentVertex const*>(&(*tree->statements()[0]));
+    ranally::NameVertex const* vertexA1 =
+      dynamic_cast<ranally::NameVertex const*>(&(*assignment1->targets()[0]));
+    // ranally::NameVertex const* vertexB =
+    //   dynamic_cast<ranally::NameVertex const*>(
+    //     &(*assignment1->expressions()[0]));
+
+    ranally::IfVertex const* ifVertex =
+      dynamic_cast<ranally::IfVertex const*>(&(*tree->statements()[1]));
+    ranally::AssignmentVertex const* assignment2 =
+      dynamic_cast<ranally::AssignmentVertex const*>(
+        &(*ifVertex->trueStatements()[0]));
+    ranally::NameVertex const* vertexA2 =
+      dynamic_cast<ranally::NameVertex const*>(&(*assignment2->targets()[0]));
+    // ranally::NameVertex const* vertexC =
+    //   dynamic_cast<ranally::NameVertex const*>(
+    //     &(*assignment2->expressions()[0]));
+
+    ranally::AssignmentVertex const* assignment3 =
+      dynamic_cast<ranally::AssignmentVertex const*>(&(*tree->statements()[2]));
+    // ranally::NameVertex const* vertexD =
+    //   dynamic_cast<ranally::NameVertex const*>(&(*assignment3->targets()[0]));
+    ranally::NameVertex const* vertexA3 =
+      dynamic_cast<ranally::NameVertex const*>(
+        &(*assignment3->expressions()[0]));
+
+    tree->Accept(_visitor);
+
+    BOOST_CHECK_EQUAL(vertexA1->definition(), vertexA1);
+    BOOST_REQUIRE_EQUAL(vertexA1->uses().size(), 1);
+    BOOST_CHECK_EQUAL(vertexA1->uses()[0], vertexA3);
+
+    BOOST_CHECK_EQUAL(vertexA2->definition(), vertexA2);
+    BOOST_REQUIRE_EQUAL(vertexA2->uses().size(), 0);
+
+    BOOST_CHECK_EQUAL(vertexA3->definition(), vertexA1);
+    BOOST_CHECK(vertexA3->uses().empty());
+  }
+}
+
 

@@ -34,6 +34,8 @@ public:
 
   void             testVisitAssignment ();
 
+  void             testVisitIf         ();
+
   static boost::unit_test::test_suite* suite();
 
 };

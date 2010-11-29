@@ -122,6 +122,44 @@ void IdentifyVisitor::Visit(
 
 
 
+void IdentifyVisitor::Visit(
+  IfVertex& vertex)
+{
+  vertex.condition()->Accept(*this);
+
+  assert(!vertex.trueStatements().empty());
+  _symbolTable.pushScope();
+  visitStatements(vertex.trueStatements());
+  _symbolTable.popScope();
+
+  if(!vertex.falseStatements().empty()) {
+    _symbolTable.pushScope();
+    visitStatements(vertex.falseStatements());
+    _symbolTable.popScope();
+  }
+}
+
+
+
+void IdentifyVisitor::Visit(
+  WhileVertex& vertex)
+{
+  vertex.condition()->Accept(*this);
+
+  assert(!vertex.trueStatements().empty());
+  _symbolTable.pushScope();
+  visitStatements(vertex.trueStatements());
+  _symbolTable.popScope();
+
+  if(!vertex.falseStatements().empty()) {
+    _symbolTable.pushScope();
+    visitStatements(vertex.falseStatements());
+    _symbolTable.popScope();
+  }
+}
+
+
+
 SymbolTable const& IdentifyVisitor::symbolTable() const
 {
   return _symbolTable;

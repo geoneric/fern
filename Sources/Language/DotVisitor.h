@@ -29,26 +29,26 @@ class WhileVertex;
   \sa        .
 */
 class DotVisitor: private boost::noncopyable,
-  public Loki::BaseVisitor
-  // public Loki::Visitor<AssignmentVertex>,
-  // public Loki::Visitor<FunctionVertex>,
-  // public Loki::Visitor<IfVertex>,
-  // public Loki::Visitor<NameVertex>,
-  // public Loki::Visitor<NumberVertex<int8_t>>,
-  // public Loki::Visitor<NumberVertex<int16_t>>,
-  // public Loki::Visitor<NumberVertex<int32_t>>,
-  // public Loki::Visitor<NumberVertex<int64_t>>,
-  // public Loki::Visitor<NumberVertex<uint8_t>>,
-  // public Loki::Visitor<NumberVertex<uint16_t>>,
-  // public Loki::Visitor<NumberVertex<uint32_t>>,
-  // public Loki::Visitor<NumberVertex<uint64_t>>,
-  // public Loki::Visitor<NumberVertex<float>>,
-  // public Loki::Visitor<NumberVertex<double>>,
-  // public Loki::Visitor<OperatorVertex>,
-  // public Loki::Visitor<ScriptVertex>,
-  // public Loki::Visitor<StringVertex>,
-  // public Loki::Visitor<SyntaxVertex>,
-  // public Loki::Visitor<WhileVertex>
+  public Loki::BaseVisitor,
+  public Loki::Visitor<AssignmentVertex>,
+  public Loki::Visitor<FunctionVertex>,
+  public Loki::Visitor<IfVertex>,
+  public Loki::Visitor<NameVertex>,
+  public Loki::Visitor<NumberVertex<int8_t>>,
+  public Loki::Visitor<NumberVertex<int16_t>>,
+  public Loki::Visitor<NumberVertex<int32_t>>,
+  public Loki::Visitor<NumberVertex<int64_t>>,
+  public Loki::Visitor<NumberVertex<uint8_t>>,
+  public Loki::Visitor<NumberVertex<uint16_t>>,
+  public Loki::Visitor<NumberVertex<uint32_t>>,
+  public Loki::Visitor<NumberVertex<uint64_t>>,
+  public Loki::Visitor<NumberVertex<float>>,
+  public Loki::Visitor<NumberVertex<double>>,
+  public Loki::Visitor<OperatorVertex>,
+  public Loki::Visitor<ScriptVertex>,
+  public Loki::Visitor<StringVertex>,
+  public Loki::Visitor<SyntaxVertex>,
+  public Loki::Visitor<WhileVertex>
 {
 
   friend class DotVisitorTest;
@@ -80,43 +80,43 @@ public:
 
   UnicodeString const& script          () const;
 
-  // void             Visit               (AssignmentVertex&);
+  void             Visit               (AssignmentVertex&);
 
-  // void             Visit               (FunctionVertex&);
+  void             Visit               (FunctionVertex&);
 
-  // void             Visit               (IfVertex&);
+  void             Visit               (IfVertex&);
 
-  // void             Visit               (NameVertex&);
+  void             Visit               (NameVertex&);
 
-  // void             Visit               (NumberVertex<int8_t>&);
+  void             Visit               (NumberVertex<int8_t>&);
 
-  // void             Visit               (NumberVertex<int16_t>&);
+  void             Visit               (NumberVertex<int16_t>&);
 
-  // void             Visit               (NumberVertex<int32_t>&);
+  void             Visit               (NumberVertex<int32_t>&);
 
-  // void             Visit               (NumberVertex<int64_t>&);
+  void             Visit               (NumberVertex<int64_t>&);
 
-  // void             Visit               (NumberVertex<uint8_t>&);
+  void             Visit               (NumberVertex<uint8_t>&);
 
-  // void             Visit               (NumberVertex<uint16_t>&);
+  void             Visit               (NumberVertex<uint16_t>&);
 
-  // void             Visit               (NumberVertex<uint32_t>&);
+  void             Visit               (NumberVertex<uint32_t>&);
 
-  // void             Visit               (NumberVertex<uint64_t>&);
+  void             Visit               (NumberVertex<uint64_t>&);
 
-  // void             Visit               (NumberVertex<float>&);
+  void             Visit               (NumberVertex<float>&);
 
-  // void             Visit               (NumberVertex<double>&);
+  void             Visit               (NumberVertex<double>&);
 
-  // void             Visit               (OperatorVertex&);
+  void             Visit               (OperatorVertex&);
 
-  // void             Visit               (ScriptVertex&);
+  void             Visit               (ScriptVertex&);
 
-  // void             Visit               (StringVertex&);
+  void             Visit               (StringVertex&);
 
-  // void             Visit               (SyntaxVertex&);
+  void             Visit               (SyntaxVertex&);
 
-  // void             Visit               (WhileVertex&);
+  void             Visit               (WhileVertex&);
 
 };
 
