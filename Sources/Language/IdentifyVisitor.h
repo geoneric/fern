@@ -53,12 +53,12 @@ class IdentifyVisitor: private boost::noncopyable,
 
 private:
 
-  SymbolTable      _symbolTable;
-
   enum Mode {
     Defining,
     Using
   };
+
+  SymbolTable      _symbolTable;
 
   Mode             _mode;
 

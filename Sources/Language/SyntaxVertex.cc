@@ -53,6 +53,13 @@ int SyntaxVertex::col() const
 
 
 
+std::vector<SyntaxVertex*> const& SyntaxVertex::successors() const
+{
+  return _successors;
+}
+
+
+
 //! Return the successor in the control flow graph of this vertex.
 /*!
   \return    Pointer to the successor.

@@ -42,6 +42,8 @@ public:
 
   void             testVisitOperator   ();
 
+  void             testVisitNestedExpression();
+
   void             testVisitMultipleStatements();
 
   void             testVisitIf         ();

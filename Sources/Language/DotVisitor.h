@@ -24,9 +24,8 @@ class WhileVertex;
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
-  longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
-
-  \sa        .
+  The dot graph is mainly useful for debugging purposes. The graph is handy
+  for visualising the syntax-tree.
 */
 class DotVisitor: private boost::noncopyable,
   public Loki::BaseVisitor,
@@ -47,7 +46,6 @@ class DotVisitor: private boost::noncopyable,
   public Loki::Visitor<OperatorVertex>,
   public Loki::Visitor<ScriptVertex>,
   public Loki::Visitor<StringVertex>,
-  public Loki::Visitor<SyntaxVertex>,
   public Loki::Visitor<WhileVertex>
 {
 
@@ -55,17 +53,23 @@ class DotVisitor: private boost::noncopyable,
 
 private:
 
-  size_t           _tabSize;
-
-  size_t           _indentLevel;
+  enum Mode {
+    Declaring,
+    ConnectingAst,
+    ConnectingCfg,
+    ConnectingUses
+  };
 
   UnicodeString    _script;
 
-  // UnicodeString    indent              (UnicodeString const& statement);
+  Mode             _mode;
 
-  void             visitStatements     (StatementVertices const& statements);
+  void             addAstVertex        (SyntaxVertex const& sourceVertex,
+                                        SyntaxVertex const& targetVertex);
 
-  void             visitExpressions    (ExpressionVertices const& expressions);
+  void             addCfgVertices      (SyntaxVertex const& sourceVertex);
+
+  void             addUseVertices      (NameVertex const& vertex);
 
   template<typename T>
   void             Visit               (NumberVertex<T>&);
@@ -113,8 +117,6 @@ public:
   void             Visit               (ScriptVertex&);
 
   void             Visit               (StringVertex&);
-
-  void             Visit               (SyntaxVertex&);
 
   void             Visit               (WhileVertex&);
 

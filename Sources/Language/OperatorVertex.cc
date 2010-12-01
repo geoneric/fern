@@ -9,6 +9,7 @@ OperatorVertex::OperatorVertex(
   ExpressionVertices const& expressions)
 
   : ExpressionVertex(name),
+    _symbol(name),
     _expressions(expressions)
 
 {
@@ -18,6 +19,13 @@ OperatorVertex::OperatorVertex(
 
 OperatorVertex::~OperatorVertex()
 {
+}
+
+
+
+UnicodeString const& OperatorVertex::symbol() const
+{
+  return _symbol;
 }
 
 

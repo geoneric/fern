@@ -37,6 +37,8 @@ boost::unit_test::test_suite* ThreadVisitorTest::suite()
   suite->add(BOOST_CLASS_TEST_CASE(
     &ThreadVisitorTest::testVisitMultipleStatements, instance));
   suite->add(BOOST_CLASS_TEST_CASE(
+    &ThreadVisitorTest::testVisitNestedExpression, instance));
+  suite->add(BOOST_CLASS_TEST_CASE(
     &ThreadVisitorTest::testVisitIf, instance));
   suite->add(BOOST_CLASS_TEST_CASE(
     &ThreadVisitorTest::testVisitWhile, instance));
@@ -238,6 +240,33 @@ void ThreadVisitorTest::testVisitMultipleStatements()
   BOOST_CHECK_EQUAL(vertexA->successor(), vertexB);
   BOOST_CHECK_EQUAL(vertexB->successor(), vertexC);
   BOOST_CHECK_EQUAL(vertexC->successor(), &(*tree));
+}
+
+
+
+void ThreadVisitorTest::testVisitNestedExpression()
+{
+  boost::shared_ptr<ranally::ScriptVertex> tree;
+
+  tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
+    "a = b + c")));
+  tree->Accept(_visitor);
+
+  ranally::AssignmentVertex const* assignment =
+    dynamic_cast<ranally::AssignmentVertex const*>(&(*tree->statements()[0]));
+  ranally::SyntaxVertex const* vertexA = &(*assignment->targets()[0]);
+  ranally::OperatorVertex const* addition =
+    dynamic_cast<ranally::OperatorVertex const*>(
+      &(*assignment->expressions()[0]));
+  ranally::SyntaxVertex const* vertexB = &(*addition->expressions()[0]);
+  ranally::SyntaxVertex const* vertexC = &(*addition->expressions()[1]);
+
+  BOOST_CHECK_EQUAL(tree->successor(), vertexB);
+  BOOST_CHECK_EQUAL(vertexB->successor(), vertexC);
+  BOOST_CHECK_EQUAL(vertexC->successor(), addition);
+  BOOST_CHECK_EQUAL(addition->successor(), vertexA);
+  BOOST_CHECK_EQUAL(vertexA->successor(), assignment);
+  BOOST_CHECK_EQUAL(assignment->successor(), &(*tree));
 }
 
 

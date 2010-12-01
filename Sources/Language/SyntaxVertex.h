@@ -62,6 +62,8 @@ public:
 
   int              col                 () const;
 
+  std::vector<SyntaxVertex*> const& successors() const;
+
   SyntaxVertex const* successor        () const;
 
   SyntaxVertex*    successor           ();

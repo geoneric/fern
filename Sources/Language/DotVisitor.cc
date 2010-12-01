@@ -1,11 +1,8 @@
-// #include <iostream>
-#include <unicode/msgfmt.h>
+#include "DotVisitor.h"
+
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
 
-// #include "dev_UnicodeUtils.h"
-
-#include "DotVisitor.h"
 #include "Vertices.h"
 
 
@@ -14,8 +11,7 @@ namespace ranally {
 
 DotVisitor::DotVisitor()
 
-  : _tabSize(2),
-    _indentLevel(0)
+  : _mode(Declaring)
 
 {
 }
@@ -35,31 +31,52 @@ UnicodeString const& DotVisitor::script() const
 
 
 
-// void DotVisitor::indent(
-//   UnicodeString const& statement)
-// {
-//   UnicodeString indentation = std::string(_indentLevel * _tabSize, ' ').c_str();
-//   return indentation + statement;
-// }
-
-
-
-void DotVisitor::visitStatements(
-  StatementVertices const& statements)
+void DotVisitor::addAstVertex(
+  SyntaxVertex const& sourceVertex,
+  SyntaxVertex const& targetVertex)
 {
-  BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex> statementVertex,
-    statements) {
-    statementVertex->Accept(*this);
+  assert(_mode == ConnectingAst);
+  _script +=
+    UnicodeString((boost::format("\"%1%\"") % &sourceVertex).str().c_str()) +
+    " -> " +
+    (boost::format("\"%1%\"") % &targetVertex).str().c_str() + " ["
+    "];\n";
+}
+
+
+
+void DotVisitor::addCfgVertices(
+  SyntaxVertex const& sourceVertex)
+{
+  assert(_mode == ConnectingCfg);
+  BOOST_FOREACH(SyntaxVertex const* successor, sourceVertex.successors()) {
+    _script +=
+      UnicodeString((boost::format("\"%1%\"") % &sourceVertex).str().c_str()) +
+      " -> " +
+      (boost::format("\"%1%\"") % successor).str().c_str() + " ["
+        "color=red, "
+        "constraint=false, "
+        "style=dashed"
+      "];\n";
   }
 }
 
 
 
-void DotVisitor::visitExpressions(
-  ExpressionVertices const& /* expressions */)
+void DotVisitor::addUseVertices(
+  NameVertex const& vertex)
 {
-  // assert(false);
-  // return UnicodeString();
+  assert(_mode == ConnectingUses);
+  BOOST_FOREACH(NameVertex const* use, vertex.uses()) {
+    _script +=
+      UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+      " -> " +
+      (boost::format("\"%1%\"") % use).str().c_str() + " ["
+        "color=blue, "
+        "constraint=false, "
+        "style=dotted"
+      "];\n";
+  }
 }
 
 
@@ -68,21 +85,31 @@ void DotVisitor::Visit(
   AssignmentVertex& vertex)
 {
   ExpressionVertices const& targets = vertex.targets();
-  assert(targets.size() == 1);
-
   ExpressionVertices const& expressions = vertex.expressions();
-  assert(expressions.size() == 1);
 
-  // http://en.wikipedia.org/wiki/DOT_language
-  // http://userguide.icu-project.org/formatparse/messages
-  // UnicodeString result = MessageFormat::format(
-  //   "{0}
-
-  // UnicodeString result;
-  // result += indent(expressions[0]->name());
-  // result += " -> ";
-  // result += targets[0]->name();
-  // result += ";\n";
+  switch(_mode) {
+    case Declaring: {
+      _script +=
+        UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+        " [label=\"=\"];\n";
+      break;
+    }
+    case ConnectingAst: {
+      assert(expressions.size() == targets.size());
+      for(size_t i = 0; i < expressions.size(); ++i) {
+        addAstVertex(vertex, *vertex.targets()[i]);
+        addAstVertex(vertex, *vertex.expressions()[i]);
+      }
+      break;
+    }
+    case ConnectingCfg: {
+      addCfgVertices(vertex);
+      break;
+    }
+    case ConnectingUses: {
+      break;
+    }
+  }
 
   BOOST_FOREACH(boost::shared_ptr<ranally::ExpressionVertex> expressionVertex,
     vertex.expressions()) {
@@ -98,126 +125,70 @@ void DotVisitor::Visit(
 
 
 void DotVisitor::Visit(
-  FunctionVertex& /* vertex */)
+  FunctionVertex& vertex)
 {
-  // UnicodeString result;
+  switch(_mode) {
+    case Declaring: {
+      _script +=
+        UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+        " [label=\"" + vertex.name() + "\"];\n";
+      break;
+    }
+    case ConnectingAst: {
+      BOOST_FOREACH(boost::shared_ptr<ranally::ExpressionVertex>
+        expressionVertex, vertex.expressions()) {
+        addAstVertex(vertex, *expressionVertex);
+      }
+      break;
+    }
+    case ConnectingCfg: {
+      addCfgVertices(vertex);
+      break;
+    }
+    case ConnectingUses: {
+      break;
+    }
+  }
 
-  // if(vertex.expressions().empty()) {
-  //   result += indent(vertex.name());
-  //   result += ";\n";
-  // }
-  // else {
-  //   BOOST_FOREACH(boost::shared_ptr<ranally::ExpressionVertex> expressionVertex,
-  //     vertex.expressions()) {
-  //     result += indent(expressionVertex->name());
-  //     result += " -> ";
-  //     result += vertex.name();
-  //     result += ";\n";
-  //   }
-  // }
-
-  // return result;
+  BOOST_FOREACH(boost::shared_ptr<ranally::ExpressionVertex>
+    expressionVertex, vertex.expressions()) {
+    expressionVertex->Accept(*this);
+  }
 }
 
 
 
 void DotVisitor::Visit(
-  OperatorVertex& /* vertex */)
+  OperatorVertex& vertex)
 {
-  // assert(vertex.expressions().size() == 1 || vertex.expressions().size() == 2);
-  // UnicodeString result;
+  switch(_mode) {
+    case Declaring: {
+      // TODO Implement symbol member.
+      _script +=
+        UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+        " [label=\"" + vertex.symbol() + "\"];\n";
+      break;
+    }
+    case ConnectingAst: {
+      BOOST_FOREACH(boost::shared_ptr<ranally::ExpressionVertex>
+        expressionVertex, vertex.expressions()) {
+        addAstVertex(vertex, *expressionVertex);
+      }
+      break;
+    }
+    case ConnectingCfg: {
+      addCfgVertices(vertex);
+      break;
+    }
+    case ConnectingUses: {
+      break;
+    }
+  }
 
-  // if(vertex.expressions().size() == 1) {
-  //   // Unary operator.
-  //   if(vertex.name() == "Invert") {
-  //     result += "~";
-  //   }
-  //   else if(vertex.name() == "Not") {
-  //     result += "!";
-  //   }
-  //   else if(vertex.name() == "Add") {
-  //     result += "+";
-  //   }
-  //   else if(vertex.name() == "Sub") {
-  //     result += "-";
-  //   }
-  //   else {
-  //     // TODO
-  //     assert(false);
-  //   }
-
-  //   result += "(" + vertex.expressions()[0]->Accept(*this) + ")";
-  // }
-  // else if(vertex.expressions().size() == 2) {
-  //   // Binary operator.
-  //   result += "(" + vertex.expressions()[0]->Accept(*this) + ") ";
-
-  //   if(vertex.name() == "Add") {
-  //     result += "+";
-  //   }
-  //   else if(vertex.name() == "Sub") {
-  //     result += "-";
-  //   }
-  //   else if(vertex.name() == "Mult") {
-  //     result += "*";
-  //   }
-  //   else if(vertex.name() == "Div") {
-  //     result += "/";
-  //   }
-  //   else if(vertex.name() == "Mod") {
-  //     result += "%";
-  //   }
-  //   else if(vertex.name() == "Pow") {
-  //     result += "**";
-  //   }
-  //   else if(vertex.name() == "LShift") {
-  //     // TODO
-  //     assert(false);
-  //     result += "";
-  //   }
-  //   else if(vertex.name() == "RShift") {
-  //     // TODO
-  //     assert(false);
-  //     result += "";
-  //   }
-  //   else if(vertex.name() == "BitOr") {
-  //     // TODO
-  //     assert(false);
-  //     result += "";
-  //   }
-  //   else if(vertex.name() == "BitXor") {
-  //     // TODO
-  //     assert(false);
-  //     result += "";
-  //   }
-  //   else if(vertex.name() == "BitAnd") {
-  //     // TODO
-  //     assert(false);
-  //     result += "";
-  //   }
-  //   else if(vertex.name() == "FloorDiv") {
-  //     // TODO
-  //     assert(false);
-  //     result += "";
-  //   }
-  //   else {
-  //     // TODO
-  //     assert(false);
-  //   }
-
-  //   result += " (" + vertex.expressions()[1]->Accept(*this) + ")";
-  // }
-
-  // return result;
-}
-
-
-
-void DotVisitor::Visit(
-  SyntaxVertex&)
-{
-  // assert(false);
-  // return UnicodeString();
+  BOOST_FOREACH(boost::shared_ptr<ranally::ExpressionVertex>
+    expressionVertex, vertex.expressions()) {
+    expressionVertex->Accept(*this);
+  }
 }
 
 
@@ -225,22 +196,67 @@ void DotVisitor::Visit(
 void DotVisitor::Visit(
   ScriptVertex& vertex)
 {
-  // _indentLevel = 0;
-  _script = "digraph G {\n";
-  // ++_indentLevel;
-  visitStatements(vertex.statements());
-  // --_indentLevel;
+  _script =
+    "digraph G {\n"
+    "rank=BT;\n"
+    ;
+
+  _mode = Declaring;
+  // TODO Use script name.
+  _script +=
+    UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+    " [label=\"Script\"];\n";
+  BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex> statementVertex,
+    vertex.statements()) {
+    statementVertex->Accept(*this);
+  }
+
+  _mode = ConnectingAst;
+  BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex> statementVertex,
+    vertex.statements()) {
+    addAstVertex(vertex, *statementVertex);
+    statementVertex->Accept(*this);
+  }
+
+  _mode = ConnectingCfg;
+  addCfgVertices(vertex);
+  BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex> statementVertex,
+    vertex.statements()) {
+    statementVertex->Accept(*this);
+  }
+
+  _mode = ConnectingUses;
+  BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex> statementVertex,
+    vertex.statements()) {
+    statementVertex->Accept(*this);
+  }
+
   _script += "}\n";
-  // assert(_indentLevel == 0);
-  // return result; // TODO result.replace("\"", "\\\"");
 }
 
 
 
 void DotVisitor::Visit(
-  StringVertex& /* vertex */)
+  StringVertex& vertex)
 {
-  // return indent("\"" + vertex.value() + "\";\n");
+  switch(_mode) {
+    case Declaring: {
+      _script +=
+        UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+        " [label=\"\\\"" + vertex.value() + "\\\"\", shape=box];\n";
+      break;
+    }
+    case ConnectingAst: {
+      break;
+    }
+    case ConnectingCfg: {
+      addCfgVertices(vertex);
+      break;
+    }
+    case ConnectingUses: {
+      break;
+    }
+  }
 }
 
 
@@ -248,172 +264,220 @@ void DotVisitor::Visit(
 void DotVisitor::Visit(
   NameVertex& vertex)
 {
-  // return indent(vertex.name()) + ";\n";
-
-  // _script += (boost::format(
-  //   "\"%1%\" [label=\"%2%\"];")
-  //     % &vertex
-  //     % dev::encodeInUtf8(vertex.name())
-  //     ).str().c_str();
-
-
-  UErrorCode error = U_ZERO_ERROR;
-  Formattable arguments[] = {
-    UnicodeString((boost::format("%1%") % &vertex).str().c_str()),
-    vertex.name()
-  };
-
-  MessageFormat::format("\"{1}\" [label=\"{2}\"];\n", arguments, 3, _script,
-    error);
+  switch(_mode) {
+    case Declaring: {
+      _script +=
+        UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+        " [label=\"" + vertex.name() + "\"];\n";
+      break;
+    }
+    case ConnectingAst: {
+      break;
+    }
+    case ConnectingCfg: {
+      addCfgVertices(vertex);
+      break;
+    }
+    case ConnectingUses: {
+      addUseVertices(vertex);
+      break;
+    }
+  }
 }
 
 
 
 template<typename T>
 void DotVisitor::Visit(
-  NumberVertex<T>& /* vertex */)
+  NumberVertex<T>& vertex)
 {
-  // return indent(UnicodeString((boost::format("%1%;\n") % vertex.value()).str().c_str()));
+  switch(_mode) {
+    case Declaring: {
+      _script +=
+        UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+        " [label=\"" + (boost::format("%1%") % vertex.value()).str().c_str() +
+        "\", shape=box];\n";
+      break;
+    }
+    case ConnectingAst: {
+      break;
+    }
+    case ConnectingCfg: {
+      addCfgVertices(vertex);
+      break;
+    }
+    case ConnectingUses: {
+      break;
+    }
+  }
 }
 
 
 
 void DotVisitor::Visit(
-  NumberVertex<int8_t>& /* vertex */)
+  NumberVertex<int8_t>& vertex)
 {
-  // return Visit<int8_t>(vertex);
+  return Visit<int8_t>(vertex);
 }
 
 
 
 void DotVisitor::Visit(
-  NumberVertex<int16_t>& /* vertex */)
+  NumberVertex<int16_t>& vertex)
 {
-  // return Visit<int16_t>(vertex);
+  return Visit<int16_t>(vertex);
 }
 
 
 
 void DotVisitor::Visit(
-  NumberVertex<int32_t>& /* vertex */)
+  NumberVertex<int32_t>& vertex)
 {
-  // return Visit<int32_t>(vertex);
+  return Visit<int32_t>(vertex);
 }
 
 
 
 void DotVisitor::Visit(
-  NumberVertex<int64_t>& /* vertex */)
+  NumberVertex<int64_t>& vertex)
 {
-  // return Visit<int64_t>(vertex);
+  return Visit<int64_t>(vertex);
 }
 
 
 
 void DotVisitor::Visit(
-  NumberVertex<uint8_t>& /* vertex */)
+  NumberVertex<uint8_t>& vertex)
 {
-  // return Visit<uint8_t>(vertex);
+  return Visit<uint8_t>(vertex);
 }
 
 
 
 void DotVisitor::Visit(
-  NumberVertex<uint16_t>& /* vertex */)
+  NumberVertex<uint16_t>& vertex)
 {
-  // return Visit<uint16_t>(vertex);
+  return Visit<uint16_t>(vertex);
 }
 
 
 
 void DotVisitor::Visit(
-  NumberVertex<uint32_t>& /* vertex */)
+  NumberVertex<uint32_t>& vertex)
 {
-  // return Visit<uint32_t>(vertex);
+  return Visit<uint32_t>(vertex);
 }
 
 
 
 void DotVisitor::Visit(
-  NumberVertex<uint64_t>& /* vertex */)
+  NumberVertex<uint64_t>& vertex)
 {
-  // return Visit<uint64_t>(vertex);
+  return Visit<uint64_t>(vertex);
 }
 
 
 
 void DotVisitor::Visit(
-  NumberVertex<float>& /* vertex */)
+  NumberVertex<float>& vertex)
 {
-  // return Visit<float>(vertex);
+  return Visit<float>(vertex);
 }
 
 
 
 void DotVisitor::Visit(
-  NumberVertex<double>& /* vertex */)
+  NumberVertex<double>& vertex)
 {
-  // return Visit<double>(vertex);
+  return Visit<double>(vertex);
 }
 
 
 
 void DotVisitor::Visit(
-  IfVertex& /* vertex */)
+  IfVertex& vertex)
 {
-  // assert(!vertex.trueStatements().empty());
+  switch(_mode) {
+    case Declaring: {
+      _script +=
+        UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+        " [label=\"If\", shape=diamond];\n";
+      break;
+    }
+    case ConnectingAst: {
+      addAstVertex(vertex, *vertex.condition());
+      BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex>
+        statementVertex, vertex.trueStatements()) {
+        addAstVertex(vertex, *statementVertex);
+      }
+      BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex>
+        statementVertex, vertex.falseStatements()) {
+        addAstVertex(vertex, *statementVertex);
+      }
+      break;
+    }
+    case ConnectingCfg: {
+      addCfgVertices(vertex);
+      break;
+    }
+    case ConnectingUses: {
+      break;
+    }
+  }
 
-  // UnicodeString result;
-
-  // // The indent function called in visitStatements of the parent vertex
-  // // indents the first line of this if-statement, so we have to indent the
-  // // else line ourselves.
-  // // The statements that are part of the true and false blocks are indented
-  // // by the visitStatements.
-  // result += "if " + vertex.condition()->Accept(*this) + ":\n";
-  // ++_indentLevel;
-  // result += visitStatements(vertex.trueStatements());
-  // --_indentLevel;
-
-  // if(!vertex.falseStatements().empty()) {
-  //   result += indent("else:\n");
-  //   ++_indentLevel;
-  //   result += visitStatements(vertex.falseStatements());
-  //   --_indentLevel;
-  // }
-
-  // return result;
-  // return UnicodeString();
+  vertex.condition()->Accept(*this);
+  BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex>
+    statementVertex, vertex.trueStatements()) {
+    statementVertex->Accept(*this);
+  }
+  BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex>
+    statementVertex, vertex.falseStatements()) {
+    statementVertex->Accept(*this);
+  }
 }
 
 
 
 void DotVisitor::Visit(
-  WhileVertex& /* vertex */)
+  WhileVertex& vertex)
 {
-  // assert(!vertex.trueStatements().empty());
+  switch(_mode) {
+    case Declaring: {
+      _script +=
+        UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+        " [label=\"While\", shape=diamond];\n";
+      break;
+    }
+    case ConnectingAst: {
+      addAstVertex(vertex, *vertex.condition());
+      BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex>
+        statementVertex, vertex.trueStatements()) {
+        addAstVertex(vertex, *statementVertex);
+      }
+      BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex>
+        statementVertex, vertex.falseStatements()) {
+        addAstVertex(vertex, *statementVertex);
+      }
+      break;
+    }
+    case ConnectingCfg: {
+      addCfgVertices(vertex);
+      break;
+    }
+    case ConnectingUses: {
+      break;
+    }
+  }
 
-  // UnicodeString result;
-
-  // // The indent function called in visitStatements of the parent vertex
-  // // indents the first line of this while-statement, so we have to indent the
-  // // else line ourselves.
-  // // The statements that are part of the true and false blocks are indented
-  // // by the visitStatements.
-  // result += "while " + vertex.condition()->Accept(*this) + ":\n";
-  // ++_indentLevel;
-  // result += visitStatements(vertex.trueStatements());
-  // --_indentLevel;
-
-  // if(!vertex.falseStatements().empty()) {
-  //   result += indent("else:\n");
-  //   ++_indentLevel;
-  //   result += visitStatements(vertex.falseStatements());
-  //   --_indentLevel;
-  // }
-
-  // return result;
-  // return UnicodeString();
+  vertex.condition()->Accept(*this);
+  BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex>
+    statementVertex, vertex.trueStatements()) {
+    statementVertex->Accept(*this);
+  }
+  BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex>
+    statementVertex, vertex.falseStatements()) {
+    statementVertex->Accept(*this);
+  }
 }
 
 } // namespace ranally

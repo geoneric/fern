@@ -27,6 +27,8 @@ public:
 
 private:
 
+  UnicodeString    _symbol;
+
   ExpressionVertices _expressions;
 
 protected:
@@ -37,6 +39,8 @@ public:
                                         ExpressionVertices const& expressions);
 
   /* virtual */    ~OperatorVertex     ();
+
+  UnicodeString const& symbol          () const;
 
   ExpressionVertices const& expressions() const;
 
