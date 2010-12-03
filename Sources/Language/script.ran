@@ -5,9 +5,9 @@ d = True
 e = a + b
 f = f(c, d, e / 3.14)
 
-if a:
+if a == d:
   g = 0.5
-elif b:
+elif b < c:
   g = 0.6
 else:
   g = 0.0

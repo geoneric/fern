@@ -40,6 +40,8 @@ public:
 
   void             testParseBooleanOperator();
 
+  void             testParseComparisonOperator();
+
   void             testParseMultipleStatements();
 
   void             testParseIf         ();

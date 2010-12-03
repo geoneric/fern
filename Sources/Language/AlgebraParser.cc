@@ -273,7 +273,7 @@ void writeBinaryOperatorNode(
 
 
 void writeBooleanOperatorNode(
-  boolop_ty booleanOperator,
+  boolop_ty const booleanOperator,
   asdl_seq const* operands,
   UnicodeString& xml)
 {
@@ -295,6 +295,61 @@ void writeBooleanOperatorNode(
   xml += "</Name>";
   writeExpressionsNode(operands, xml);
   xml += "</Operator>";
+}
+
+
+
+void writeComparisonOperatorNode(
+  expr_ty const leftOperand,
+  asdl_int_seq const* operators,
+  asdl_seq const* comparators,
+  UnicodeString& xml)
+{
+  // http://docs.python.org/reference/expressions.html#notin
+  // x < y <= z is equivalent to x < y and y <= z
+
+  assert(operators->size == 1); // TODO
+  assert(operators->size == comparators->size);
+
+  xml += "<Operator><Name>";
+
+  switch(operators->elements[0]) {
+    case Eq: {
+      xml += "Eq";
+      break;
+    }
+    case NotEq: {
+      xml += "NotEq";
+      break;
+    }
+    case Lt: {
+      xml += "Lt";
+      break;
+    }
+    case LtE: {
+      xml += "LtE";
+      break;
+    }
+    case Gt: {
+      xml += "Gt";
+      break;
+    }
+    case GtE: {
+      xml += "GtE";
+      break;
+    }
+    default: {
+      // TODO Exception. Unsupported operator. Is=7, IsNot=8, In=9, NotIn=10
+      assert(false);
+      break;
+    }
+  }
+
+  xml += "</Name><Expressions>";
+  writeExpressionNode(leftOperand, xml);
+  writeExpressionNode(static_cast<expr_ty const>(asdl_seq_GET(comparators, 0)),
+    xml);
+  xml += "</Expressions></Operator>";
 }
 
 
@@ -345,10 +400,12 @@ void writeExpressionNode(
         expression->v.BoolOp.values, xml);
       break;
     }
-    // TODO
-    case Compare_kind:
+    case Compare_kind: {
+      writeComparisonOperatorNode(expression->v.Compare.left,
+        expression->v.Compare.ops, expression->v.Compare.comparators, xml);
+      break;
+    }
     case IfExp_kind:
-
     case Lambda_kind:
     case Dict_kind:
     case ListComp_kind:

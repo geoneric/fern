@@ -34,6 +34,8 @@ boost::unit_test::test_suite* AlgebraParserTest::suite()
   suite->add(BOOST_CLASS_TEST_CASE(
     &AlgebraParserTest::testParseBooleanOperator, instance));
   suite->add(BOOST_CLASS_TEST_CASE(
+    &AlgebraParserTest::testParseComparisonOperator, instance));
+  suite->add(BOOST_CLASS_TEST_CASE(
     &AlgebraParserTest::testParseMultipleStatements, instance));
   suite->add(BOOST_CLASS_TEST_CASE(
     &AlgebraParserTest::testParseIf, instance));
@@ -392,6 +394,39 @@ void AlgebraParserTest::testParseBooleanOperator()
                     "<Name>a</Name>"
                   "</Expression>"
                   "<Expression line=\"1\" col=\"6\">"
+                    "<Name>b</Name>"
+                  "</Expression>"
+                "</Expressions>"
+              "</Operator>"
+            "</Expression>"
+          "</Statement>"
+        "</Statements>"
+      "</Ranally>");
+  }
+}
+
+
+
+void AlgebraParserTest::testParseComparisonOperator()
+{
+  ranally::AlgebraParser parser;
+  UnicodeString xml;
+
+  {
+    xml = parser.parseString(UnicodeString("a <= b"));
+    BOOST_CHECK(xml ==
+      "<?xml version=\"1.0\"?>"
+      "<Ranally>"
+        "<Statements>"
+          "<Statement>"
+            "<Expression line=\"1\" col=\"0\">"
+              "<Operator>"
+                "<Name>LtE</Name>"
+                "<Expressions>"
+                  "<Expression line=\"1\" col=\"0\">"
+                    "<Name>a</Name>"
+                  "</Expression>"
+                  "<Expression line=\"1\" col=\"5\">"
                     "<Name>b</Name>"
                   "</Expression>"
                 "</Expressions>"

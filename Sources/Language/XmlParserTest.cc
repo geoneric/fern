@@ -96,6 +96,10 @@ void XmlParserTest::testParse()
     // Boolean.
     xml = algebraParser.parseString(UnicodeString("a and b"));
     tree = xmlParser.parse(xml);
+
+    // Comparison.
+    xml = algebraParser.parseString(UnicodeString("a == b"));
+    tree = xmlParser.parse(xml);
   }
 
   {
