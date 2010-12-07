@@ -11,7 +11,8 @@ namespace ranally {
 
 DotVisitor::DotVisitor()
 
-  : _mode(Declaring)
+  : _type(Flowgraph),
+    _mode(Declaring)
 
 {
 }
@@ -107,6 +108,29 @@ void DotVisitor::Visit(
       break;
     }
     case ConnectingUses: {
+      break;
+    }
+    case ConnectingFlowgraph: {
+      // hier verder
+      // a = b + c
+      // d = f(a)
+
+      // b -> +
+      // c -> +
+      // + -> f
+      //
+      // Prereq: For each name it must be known what the address is of the
+      //         defining expression.
+      // 1. defining expression of operands -> operator
+      // 2. defining expression of arguments -> functions
+      //
+      //
+      // assert(expressions.size() == targets.size());
+      // for(size_t i = 0; i < expressions.size(); ++i) {
+      //   NameVertex* nameVertex = dynamic_cast<NameVertex*>(targets[i]);
+      //   assert(nameVertex);
+      // }
+
       break;
     }
   }
@@ -211,24 +235,40 @@ void DotVisitor::Visit(
     statementVertex->Accept(*this);
   }
 
-  _mode = ConnectingAst;
-  BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex> statementVertex,
-    vertex.statements()) {
-    addAstVertex(vertex, *statementVertex);
-    statementVertex->Accept(*this);
-  }
+  switch(_type) {
+    case Ast: {
+      _mode = ConnectingAst;
+      BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex> statementVertex,
+        vertex.statements()) {
+        addAstVertex(vertex, *statementVertex);
+        statementVertex->Accept(*this);
+      }
 
-  _mode = ConnectingCfg;
-  addCfgVertices(vertex);
-  BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex> statementVertex,
-    vertex.statements()) {
-    statementVertex->Accept(*this);
-  }
+      _mode = ConnectingCfg;
+      addCfgVertices(vertex);
+      BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex> statementVertex,
+        vertex.statements()) {
+        statementVertex->Accept(*this);
+      }
 
-  _mode = ConnectingUses;
-  BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex> statementVertex,
-    vertex.statements()) {
-    statementVertex->Accept(*this);
+      _mode = ConnectingUses;
+      BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex> statementVertex,
+        vertex.statements()) {
+        statementVertex->Accept(*this);
+      }
+
+      break;
+    }
+    case Flowgraph: {
+      _mode = ConnectingFlowgraph;
+
+      BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex> statementVertex,
+        vertex.statements()) {
+        statementVertex->Accept(*this);
+      }
+
+      break;
+    }
   }
 
   _script += "}\n";

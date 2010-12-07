@@ -448,6 +448,7 @@ void writeAssignmentNode(
 
   assert(targets->size == 1); // TODO Error handling.
   expr_ty const target = static_cast<expr_ty const>(asdl_seq_GET(targets, 0));
+  // We don't support attributeref, subscription and slicing.
   assert(target->kind == Name_kind); // TODO Error handling.
 
   xml += "<Assignment><Targets>";

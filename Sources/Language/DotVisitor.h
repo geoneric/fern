@@ -53,14 +53,22 @@ class DotVisitor: private boost::noncopyable,
 
 private:
 
+  enum Type {
+    Ast,
+    Flowgraph
+  };
+
   enum Mode {
     Declaring,
     ConnectingAst,
     ConnectingCfg,
-    ConnectingUses
+    ConnectingUses,
+    ConnectingFlowgraph
   };
 
   UnicodeString    _script;
+
+  Type             _type;
 
   Mode             _mode;
 

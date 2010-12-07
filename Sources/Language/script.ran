@@ -11,3 +11,6 @@ elif b < c:
   g = 0.6
 else:
   g = 0.0
+
+jesse = func("Kor", "Gwenn")
+mink = func("Kor", "Gwenn")

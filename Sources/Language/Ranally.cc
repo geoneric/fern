@@ -2,7 +2,9 @@
 #include <cstring>
 #include <iostream>
 #include <sstream>
-// #include <boost/program_options.hpp>
+#include <boost/algorithm/string/join.hpp>
+#include <boost/spirit/include/qi.hpp>
+#include <boost/spirit/include/qi_lit.hpp>
 
 #include "dev_UnicodeUtils.h"
 
@@ -55,9 +57,6 @@
 //   The c++ converter is for doing that. Or can we use two convert commands?
 
 
-
-// namespace po = boost::program_options;
-//
 
 namespace {
 
@@ -170,6 +169,68 @@ int main(
   int argc,
   char** argv)
 {
+
+  // ranally
+  //   --help
+  //   --build
+  //   --version
+  //   execute {script}
+  //   convert ranally {-o output} {input}
+  //           dot {-o output} {input}
+  //           cpp
+  //           python
+
+  // {
+  //   // Convert arguments to string.
+  //   std::vector<std::string> strings(argv, argv + argc);
+  //   std::string string = boost::algorithm::join(strings, " ");
+
+  //   std::cout << "parsing: " << string << std::endl;
+
+  //   namespace bs = boost::spirit;
+
+  //   std::string::iterator first(string.begin());
+  //   std::string::iterator last(string.end());
+  //   bool result = bs::qi::phrase_parse(first, last,
+  //     boost::spirit::lit(std::string(argv[0])) >>
+  //     (
+  //       bs::lit(std::string("--help")) |
+  //       bs::lit(std::string("--build")) |
+  //       bs::lit(std::string("--version")) |
+  //       (
+  //         bs::lit(std::string("execute")) >>
+  //         +bs::qi::alnum
+  //       ) |
+  //       (
+  //         bs::lit(std::string("convert")) >>
+  //         (
+  //           (
+  //             bs::lit(std::string("ranally")) >>
+  //             bs::lit(std::string("--output")) >>
+  //             +bs::qi::alnum
+  //           ) |
+  //           (
+  //             bs::lit(std::string("dot")) |
+  //             bs::lit(std::string("--output")) >>
+  //             +bs::qi::alnum
+  //           ) |
+  //           bs::lit(std::string("cpp")) |
+  //           bs::lit(std::string("python"))
+  //         )
+  //       )
+  //     )
+  //     , boost::spirit::ascii::space);
+
+  //   if(!result || first != last) {
+  //     std::cout << "failure parsing!" << std::endl;
+  //     return EXIT_FAILURE;
+  //   }
+  //   else {
+  //     std::cout << "success parsing!" << std::endl;
+  //     return EXIT_SUCCESS;
+  //   }
+  // }
+
   if(argc == 1 || std::strcmp(argv[1], "--help") == 0) {
     // No arguments, or the help option.
     showGeneralHelp();
