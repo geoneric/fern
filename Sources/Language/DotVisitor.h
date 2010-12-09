@@ -63,7 +63,8 @@ private:
     ConnectingAst,
     ConnectingCfg,
     ConnectingUses,
-    ConnectingFlowgraph
+    ConnectingFlowgraph,
+    ConnectingOperationArgument
   };
 
   UnicodeString    _script;
@@ -72,12 +73,19 @@ private:
 
   Mode             _mode;
 
+  SyntaxVertex const* _definition;
+
   void             addAstVertex        (SyntaxVertex const& sourceVertex,
                                         SyntaxVertex const& targetVertex);
 
   void             addCfgVertices      (SyntaxVertex const& sourceVertex);
 
   void             addUseVertices      (NameVertex const& vertex);
+
+  void             addFlowgraphVertex  (SyntaxVertex const& sourceVertex,
+                                        SyntaxVertex const& targetVertex);
+
+  // void             addFlowgraphVertices(NameVertex const& vertex);
 
   template<typename T>
   void             Visit               (NumberVertex<T>&);
