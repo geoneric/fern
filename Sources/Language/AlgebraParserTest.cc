@@ -58,7 +58,7 @@ AlgebraParserTest::AlgebraParserTest()
 
 void AlgebraParserTest::testParseEmptyScript()
 {
-  ranally::AlgebraParser parser;
+  ranally::language::AlgebraParser parser;
 
   {
     UnicodeString xml(parser.parseString(UnicodeString("")));
@@ -74,7 +74,7 @@ void AlgebraParserTest::testParseEmptyScript()
 
 void AlgebraParserTest::testParseName()
 {
-  ranally::AlgebraParser parser;
+  ranally::language::AlgebraParser parser;
 
   {
     UnicodeString xml(parser.parseString(UnicodeString("a")));
@@ -96,7 +96,7 @@ void AlgebraParserTest::testParseName()
 
 void AlgebraParserTest::testParseAssignment()
 {
-  ranally::AlgebraParser parser;
+  ranally::language::AlgebraParser parser;
 
   {
     UnicodeString xml(parser.parseString(UnicodeString("a = b")));
@@ -127,7 +127,7 @@ void AlgebraParserTest::testParseAssignment()
 
 void AlgebraParserTest::testParseString()
 {
-  ranally::AlgebraParser parser;
+  ranally::language::AlgebraParser parser;
 
   {
     UnicodeString xml(parser.parseString(UnicodeString("\"five\"")));
@@ -181,7 +181,7 @@ void AlgebraParserTest::testParseString()
 
 void AlgebraParserTest::testParseNumber()
 {
-  ranally::AlgebraParser parser;
+  ranally::language::AlgebraParser parser;
 
   {
     UnicodeString xml(parser.parseString(UnicodeString("5")));
@@ -248,7 +248,7 @@ void AlgebraParserTest::testParseNumber()
 
 void AlgebraParserTest::testParseCall()
 {
-  ranally::AlgebraParser parser;
+  ranally::language::AlgebraParser parser;
   UnicodeString xml;
 
   {
@@ -313,7 +313,7 @@ void AlgebraParserTest::testParseCall()
 
 void AlgebraParserTest::testParseUnaryOperator()
 {
-  ranally::AlgebraParser parser;
+  ranally::language::AlgebraParser parser;
   UnicodeString xml;
 
   {
@@ -343,7 +343,7 @@ void AlgebraParserTest::testParseUnaryOperator()
 
 void AlgebraParserTest::testParseBinaryOperator()
 {
-  ranally::AlgebraParser parser;
+  ranally::language::AlgebraParser parser;
   UnicodeString xml;
 
   {
@@ -376,7 +376,7 @@ void AlgebraParserTest::testParseBinaryOperator()
 
 void AlgebraParserTest::testParseBooleanOperator()
 {
-  ranally::AlgebraParser parser;
+  ranally::language::AlgebraParser parser;
   UnicodeString xml;
 
   {
@@ -409,7 +409,7 @@ void AlgebraParserTest::testParseBooleanOperator()
 
 void AlgebraParserTest::testParseComparisonOperator()
 {
-  ranally::AlgebraParser parser;
+  ranally::language::AlgebraParser parser;
   UnicodeString xml;
 
   {
@@ -442,7 +442,7 @@ void AlgebraParserTest::testParseComparisonOperator()
 
 void AlgebraParserTest::testParseMultipleStatements()
 {
-  ranally::AlgebraParser parser;
+  ranally::language::AlgebraParser parser;
 
   {
     UnicodeString xml(parser.parseString(UnicodeString("a\nb")));
@@ -469,7 +469,7 @@ void AlgebraParserTest::testParseMultipleStatements()
 
 void AlgebraParserTest::testParseIf()
 {
-  ranally::AlgebraParser parser;
+  ranally::language::AlgebraParser parser;
   UnicodeString xml;
 
   {
@@ -602,7 +602,7 @@ void AlgebraParserTest::testParseIf()
 
 void AlgebraParserTest::testParseWhile()
 {
-  ranally::AlgebraParser parser;
+  ranally::language::AlgebraParser parser;
   UnicodeString xml;
 
   {

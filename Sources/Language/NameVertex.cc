@@ -3,6 +3,7 @@
 
 
 namespace ranally {
+namespace language {
 
 NameVertex::NameVertex(
   UnicodeString const& name)
@@ -82,5 +83,6 @@ std::vector<NameVertex*> const& NameVertex::uses() const
   return _uses;
 }
 
+} // namespace language
 } // namespace ranally
 

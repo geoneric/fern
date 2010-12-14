@@ -56,7 +56,7 @@ ThreadVisitorTest::ThreadVisitorTest()
 
 void ThreadVisitorTest::testVisitEmptyScript()
 {
-  boost::shared_ptr<ranally::ScriptVertex> tree;
+  boost::shared_ptr<ranally::language::ScriptVertex> tree;
 
   tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("")));
   tree->Accept(_visitor);
@@ -67,12 +67,12 @@ void ThreadVisitorTest::testVisitEmptyScript()
 
 void ThreadVisitorTest::testVisitName()
 {
-  boost::shared_ptr<ranally::ScriptVertex> tree;
+  boost::shared_ptr<ranally::language::ScriptVertex> tree;
 
   tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("a")));
   tree->Accept(_visitor);
 
-  ranally::SyntaxVertex const* vertexA = &(*tree->statements()[0]);
+  ranally::language::SyntaxVertex const* vertexA = &(*tree->statements()[0]);
 
   BOOST_CHECK_EQUAL(tree->successor(), vertexA);
   BOOST_CHECK_EQUAL(vertexA->successor(), &(*tree));
@@ -82,15 +82,15 @@ void ThreadVisitorTest::testVisitName()
 
 void ThreadVisitorTest::testVisitAssignment()
 {
-  boost::shared_ptr<ranally::ScriptVertex> tree;
+  boost::shared_ptr<ranally::language::ScriptVertex> tree;
 
   tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("a = b")));
   tree->Accept(_visitor);
 
-  ranally::AssignmentVertex const* assignment =
-    dynamic_cast<ranally::AssignmentVertex const*>(&(*tree->statements()[0]));
-  ranally::SyntaxVertex const* vertexA = &(*assignment->targets()[0]);
-  ranally::SyntaxVertex const* vertexB = &(*assignment->expressions()[0]);
+  ranally::language::AssignmentVertex const* assignment =
+    dynamic_cast<ranally::language::AssignmentVertex const*>(&(*tree->statements()[0]));
+  ranally::language::SyntaxVertex const* vertexA = &(*assignment->targets()[0]);
+  ranally::language::SyntaxVertex const* vertexB = &(*assignment->expressions()[0]);
 
   BOOST_CHECK_EQUAL(tree->successor(), vertexB);
   BOOST_CHECK_EQUAL(vertexB->successor(), vertexA);
@@ -102,13 +102,13 @@ void ThreadVisitorTest::testVisitAssignment()
 
 void ThreadVisitorTest::testVisitString()
 {
-  boost::shared_ptr<ranally::ScriptVertex> tree;
+  boost::shared_ptr<ranally::language::ScriptVertex> tree;
 
   tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
     "\"five\"")));
   tree->Accept(_visitor);
 
-  ranally::SyntaxVertex const* stringVertex = &(*tree->statements()[0]);
+  ranally::language::SyntaxVertex const* stringVertex = &(*tree->statements()[0]);
 
   BOOST_CHECK_EQUAL(tree->successor(), stringVertex);
   BOOST_CHECK_EQUAL(stringVertex->successor(), &(*tree));
@@ -118,12 +118,12 @@ void ThreadVisitorTest::testVisitString()
 
 void ThreadVisitorTest::testVisitNumber()
 {
-  boost::shared_ptr<ranally::ScriptVertex> tree;
+  boost::shared_ptr<ranally::language::ScriptVertex> tree;
 
   tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("5")));
   tree->Accept(_visitor);
 
-  ranally::SyntaxVertex const* numberVertex = &(*tree->statements()[0]);
+  ranally::language::SyntaxVertex const* numberVertex = &(*tree->statements()[0]);
 
   BOOST_CHECK_EQUAL(tree->successor(), numberVertex);
   BOOST_CHECK_EQUAL(numberVertex->successor(), &(*tree));
@@ -133,13 +133,13 @@ void ThreadVisitorTest::testVisitNumber()
 
 void ThreadVisitorTest::testVisitFunction()
 {
-  boost::shared_ptr<ranally::ScriptVertex> tree;
+  boost::shared_ptr<ranally::language::ScriptVertex> tree;
 
   {
     tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("f()")));
     tree->Accept(_visitor);
 
-    ranally::SyntaxVertex const* functionVertex = &(*tree->statements()[0]);
+    ranally::language::SyntaxVertex const* functionVertex = &(*tree->statements()[0]);
 
     BOOST_CHECK_EQUAL(tree->successor(), functionVertex);
     BOOST_CHECK_EQUAL(functionVertex->successor(), &(*tree));
@@ -150,12 +150,12 @@ void ThreadVisitorTest::testVisitFunction()
       "f(1, \"2\", three, four())")));
     tree->Accept(_visitor);
 
-    ranally::FunctionVertex const* functionVertex =
-      dynamic_cast<ranally::FunctionVertex const*>(&(*tree->statements()[0]));
-    ranally::SyntaxVertex const* vertex1 = &(*functionVertex->expressions()[0]);
-    ranally::SyntaxVertex const* vertex2 = &(*functionVertex->expressions()[1]);
-    ranally::SyntaxVertex const* vertex3 = &(*functionVertex->expressions()[2]);
-    ranally::SyntaxVertex const* vertex4 = &(*functionVertex->expressions()[3]);
+    ranally::language::FunctionVertex const* functionVertex =
+      dynamic_cast<ranally::language::FunctionVertex const*>(&(*tree->statements()[0]));
+    ranally::language::SyntaxVertex const* vertex1 = &(*functionVertex->expressions()[0]);
+    ranally::language::SyntaxVertex const* vertex2 = &(*functionVertex->expressions()[1]);
+    ranally::language::SyntaxVertex const* vertex3 = &(*functionVertex->expressions()[2]);
+    ranally::language::SyntaxVertex const* vertex4 = &(*functionVertex->expressions()[3]);
 
     BOOST_CHECK_EQUAL(tree->successor(), vertex1);
     BOOST_CHECK_EQUAL(vertex1->successor(), vertex2);
@@ -170,15 +170,15 @@ void ThreadVisitorTest::testVisitFunction()
 
 void ThreadVisitorTest::testVisitOperator()
 {
-  boost::shared_ptr<ranally::ScriptVertex> tree;
+  boost::shared_ptr<ranally::language::ScriptVertex> tree;
 
   {
     tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("-a")));
     tree->Accept(_visitor);
 
-    ranally::OperatorVertex const* operatorVertex =
-      dynamic_cast<ranally::OperatorVertex const*>(&(*tree->statements()[0]));
-    ranally::SyntaxVertex const* vertex1 = &(*operatorVertex->expressions()[0]);
+    ranally::language::OperatorVertex const* operatorVertex =
+      dynamic_cast<ranally::language::OperatorVertex const*>(&(*tree->statements()[0]));
+    ranally::language::SyntaxVertex const* vertex1 = &(*operatorVertex->expressions()[0]);
 
     BOOST_CHECK_EQUAL(tree->successor(), vertex1);
     BOOST_CHECK_EQUAL(vertex1->successor(), operatorVertex);
@@ -189,10 +189,10 @@ void ThreadVisitorTest::testVisitOperator()
     tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("a + b")));
     tree->Accept(_visitor);
 
-    ranally::OperatorVertex const* operatorVertex =
-      dynamic_cast<ranally::OperatorVertex const*>(&(*tree->statements()[0]));
-    ranally::SyntaxVertex const* vertex1 = &(*operatorVertex->expressions()[0]);
-    ranally::SyntaxVertex const* vertex2 = &(*operatorVertex->expressions()[1]);
+    ranally::language::OperatorVertex const* operatorVertex =
+      dynamic_cast<ranally::language::OperatorVertex const*>(&(*tree->statements()[0]));
+    ranally::language::SyntaxVertex const* vertex1 = &(*operatorVertex->expressions()[0]);
+    ranally::language::SyntaxVertex const* vertex2 = &(*operatorVertex->expressions()[1]);
 
     BOOST_CHECK_EQUAL(tree->successor(), vertex1);
     BOOST_CHECK_EQUAL(vertex1->successor(), vertex2);
@@ -205,14 +205,14 @@ void ThreadVisitorTest::testVisitOperator()
       "-(a + b)")));
     tree->Accept(_visitor);
 
-    ranally::OperatorVertex const* operator1Vertex =
-      dynamic_cast<ranally::OperatorVertex const*>(&(*tree->statements()[0]));
-    ranally::OperatorVertex const* operator2Vertex =
-      dynamic_cast<ranally::OperatorVertex const*>(
+    ranally::language::OperatorVertex const* operator1Vertex =
+      dynamic_cast<ranally::language::OperatorVertex const*>(&(*tree->statements()[0]));
+    ranally::language::OperatorVertex const* operator2Vertex =
+      dynamic_cast<ranally::language::OperatorVertex const*>(
         &(*operator1Vertex->expressions()[0]));
-    ranally::SyntaxVertex const* vertex1 =
+    ranally::language::SyntaxVertex const* vertex1 =
       &(*operator2Vertex->expressions()[0]);
-    ranally::SyntaxVertex const* vertex2 =
+    ranally::language::SyntaxVertex const* vertex2 =
       &(*operator2Vertex->expressions()[1]);
 
     BOOST_CHECK_EQUAL(tree->successor(), vertex1);
@@ -227,14 +227,14 @@ void ThreadVisitorTest::testVisitOperator()
 
 void ThreadVisitorTest::testVisitMultipleStatements()
 {
-  boost::shared_ptr<ranally::ScriptVertex> tree;
+  boost::shared_ptr<ranally::language::ScriptVertex> tree;
 
   tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("a;b;c")));
   tree->Accept(_visitor);
 
-  ranally::SyntaxVertex const* vertexA = &(*tree->statements()[0]);
-  ranally::SyntaxVertex const* vertexB = &(*tree->statements()[1]);
-  ranally::SyntaxVertex const* vertexC = &(*tree->statements()[2]);
+  ranally::language::SyntaxVertex const* vertexA = &(*tree->statements()[0]);
+  ranally::language::SyntaxVertex const* vertexB = &(*tree->statements()[1]);
+  ranally::language::SyntaxVertex const* vertexC = &(*tree->statements()[2]);
 
   BOOST_CHECK_EQUAL(tree->successor(), vertexA);
   BOOST_CHECK_EQUAL(vertexA->successor(), vertexB);
@@ -246,20 +246,20 @@ void ThreadVisitorTest::testVisitMultipleStatements()
 
 void ThreadVisitorTest::testVisitNestedExpression()
 {
-  boost::shared_ptr<ranally::ScriptVertex> tree;
+  boost::shared_ptr<ranally::language::ScriptVertex> tree;
 
   tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
     "a = b + c")));
   tree->Accept(_visitor);
 
-  ranally::AssignmentVertex const* assignment =
-    dynamic_cast<ranally::AssignmentVertex const*>(&(*tree->statements()[0]));
-  ranally::SyntaxVertex const* vertexA = &(*assignment->targets()[0]);
-  ranally::OperatorVertex const* addition =
-    dynamic_cast<ranally::OperatorVertex const*>(
+  ranally::language::AssignmentVertex const* assignment =
+    dynamic_cast<ranally::language::AssignmentVertex const*>(&(*tree->statements()[0]));
+  ranally::language::SyntaxVertex const* vertexA = &(*assignment->targets()[0]);
+  ranally::language::OperatorVertex const* addition =
+    dynamic_cast<ranally::language::OperatorVertex const*>(
       &(*assignment->expressions()[0]));
-  ranally::SyntaxVertex const* vertexB = &(*addition->expressions()[0]);
-  ranally::SyntaxVertex const* vertexC = &(*addition->expressions()[1]);
+  ranally::language::SyntaxVertex const* vertexB = &(*addition->expressions()[0]);
+  ranally::language::SyntaxVertex const* vertexC = &(*addition->expressions()[1]);
 
   BOOST_CHECK_EQUAL(tree->successor(), vertexB);
   BOOST_CHECK_EQUAL(vertexB->successor(), vertexC);
@@ -273,7 +273,7 @@ void ThreadVisitorTest::testVisitNestedExpression()
 
 void ThreadVisitorTest::testVisitIf()
 {
-  boost::shared_ptr<ranally::ScriptVertex> tree;
+  boost::shared_ptr<ranally::language::ScriptVertex> tree;
 
   {
     tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
@@ -282,11 +282,11 @@ void ThreadVisitorTest::testVisitIf()
       "  c")));
     tree->Accept(_visitor);
 
-    ranally::IfVertex const* ifVertex =
-      dynamic_cast<ranally::IfVertex const*>(&(*tree->statements()[0]));
-    ranally::SyntaxVertex const* vertexA = &(*ifVertex->condition());
-    ranally::SyntaxVertex const* vertexB = &(*ifVertex->trueStatements()[0]);
-    ranally::SyntaxVertex const* vertexC = &(*ifVertex->trueStatements()[1]);
+    ranally::language::IfVertex const* ifVertex =
+      dynamic_cast<ranally::language::IfVertex const*>(&(*tree->statements()[0]));
+    ranally::language::SyntaxVertex const* vertexA = &(*ifVertex->condition());
+    ranally::language::SyntaxVertex const* vertexB = &(*ifVertex->trueStatements()[0]);
+    ranally::language::SyntaxVertex const* vertexC = &(*ifVertex->trueStatements()[1]);
 
     BOOST_CHECK_EQUAL(tree->successor(), vertexA);
     BOOST_CHECK_EQUAL(vertexA->successor(), ifVertex);
@@ -307,18 +307,18 @@ void ThreadVisitorTest::testVisitIf()
     tree->Accept(_visitor);
 
     // True block first if.
-    ranally::IfVertex const* if1Vertex =
-      dynamic_cast<ranally::IfVertex const*>(&(*tree->statements()[0]));
-    ranally::SyntaxVertex const* vertexA = &(*if1Vertex->condition());
-    ranally::SyntaxVertex const* vertexB = &(*if1Vertex->trueStatements()[0]);
-    ranally::SyntaxVertex const* vertexC = &(*if1Vertex->trueStatements()[1]);
+    ranally::language::IfVertex const* if1Vertex =
+      dynamic_cast<ranally::language::IfVertex const*>(&(*tree->statements()[0]));
+    ranally::language::SyntaxVertex const* vertexA = &(*if1Vertex->condition());
+    ranally::language::SyntaxVertex const* vertexB = &(*if1Vertex->trueStatements()[0]);
+    ranally::language::SyntaxVertex const* vertexC = &(*if1Vertex->trueStatements()[1]);
 
     // True block second if.
-    ranally::IfVertex const* if2Vertex =
-      dynamic_cast<ranally::IfVertex const*>(&(*if1Vertex->falseStatements()[0]));
-    ranally::SyntaxVertex const* vertexD = &(*if2Vertex->condition());
-    ranally::SyntaxVertex const* vertexE = &(*if2Vertex->trueStatements()[0]);
-    ranally::SyntaxVertex const* vertexF = &(*if2Vertex->trueStatements()[1]);
+    ranally::language::IfVertex const* if2Vertex =
+      dynamic_cast<ranally::language::IfVertex const*>(&(*if1Vertex->falseStatements()[0]));
+    ranally::language::SyntaxVertex const* vertexD = &(*if2Vertex->condition());
+    ranally::language::SyntaxVertex const* vertexE = &(*if2Vertex->trueStatements()[0]);
+    ranally::language::SyntaxVertex const* vertexF = &(*if2Vertex->trueStatements()[1]);
 
     // True block first if.
     BOOST_CHECK_EQUAL(tree->successor(), vertexA);
@@ -353,22 +353,22 @@ void ThreadVisitorTest::testVisitIf()
     tree->Accept(_visitor);
 
     // True block first if.
-    ranally::IfVertex const* if1Vertex =
-      dynamic_cast<ranally::IfVertex const*>(&(*tree->statements()[0]));
-    ranally::SyntaxVertex const* vertexA = &(*if1Vertex->condition());
-    ranally::SyntaxVertex const* vertexB = &(*if1Vertex->trueStatements()[0]);
-    ranally::SyntaxVertex const* vertexC = &(*if1Vertex->trueStatements()[1]);
+    ranally::language::IfVertex const* if1Vertex =
+      dynamic_cast<ranally::language::IfVertex const*>(&(*tree->statements()[0]));
+    ranally::language::SyntaxVertex const* vertexA = &(*if1Vertex->condition());
+    ranally::language::SyntaxVertex const* vertexB = &(*if1Vertex->trueStatements()[0]);
+    ranally::language::SyntaxVertex const* vertexC = &(*if1Vertex->trueStatements()[1]);
 
     // True block second if.
-    ranally::IfVertex const* if2Vertex =
-      dynamic_cast<ranally::IfVertex const*>(&(*if1Vertex->falseStatements()[0]));
-    ranally::SyntaxVertex const* vertexD = &(*if2Vertex->condition());
-    ranally::SyntaxVertex const* vertexE = &(*if2Vertex->trueStatements()[0]);
-    ranally::SyntaxVertex const* vertexF = &(*if2Vertex->trueStatements()[1]);
+    ranally::language::IfVertex const* if2Vertex =
+      dynamic_cast<ranally::language::IfVertex const*>(&(*if1Vertex->falseStatements()[0]));
+    ranally::language::SyntaxVertex const* vertexD = &(*if2Vertex->condition());
+    ranally::language::SyntaxVertex const* vertexE = &(*if2Vertex->trueStatements()[0]);
+    ranally::language::SyntaxVertex const* vertexF = &(*if2Vertex->trueStatements()[1]);
 
     // False block second if.
-    ranally::SyntaxVertex const* vertexG = &(*if2Vertex->falseStatements()[0]);
-    ranally::SyntaxVertex const* vertexH = &(*if2Vertex->falseStatements()[1]);
+    ranally::language::SyntaxVertex const* vertexG = &(*if2Vertex->falseStatements()[0]);
+    ranally::language::SyntaxVertex const* vertexH = &(*if2Vertex->falseStatements()[1]);
 
     // True block first if.
     BOOST_CHECK_EQUAL(tree->successor(), vertexA);

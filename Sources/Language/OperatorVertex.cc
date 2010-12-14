@@ -3,6 +3,7 @@
 
 
 namespace ranally {
+namespace language {
 
 OperatorVertex::OperatorVertex(
   UnicodeString const& name,
@@ -35,5 +36,6 @@ ExpressionVertices const& OperatorVertex::expressions() const
   return _expressions;
 }
 
+} // namespace language
 } // namespace ranally
 

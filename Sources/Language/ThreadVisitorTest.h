@@ -20,9 +20,9 @@ class ThreadVisitorTest
 
 private:
 
-  ranally::AlgebraParser _algebraParser;
-  ranally::XmlParser _xmlParser;
-  ranally::ThreadVisitor _visitor;
+  ranally::language::AlgebraParser _algebraParser;
+  ranally::language::XmlParser _xmlParser;
+  ranally::language::ThreadVisitor _visitor;
 
 public:
 

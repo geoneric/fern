@@ -3,6 +3,7 @@
 
 
 namespace ranally {
+namespace language {
 
 IfVertex::IfVertex(
   boost::shared_ptr<ExpressionVertex> const& condition,
@@ -25,7 +26,7 @@ IfVertex::~IfVertex()
 
 
 
-boost::shared_ptr<ranally::ExpressionVertex> const& IfVertex::condition() const
+boost::shared_ptr<ExpressionVertex> const& IfVertex::condition() const
 {
   return _condition;
 }
@@ -44,5 +45,6 @@ StatementVertices const& IfVertex::falseStatements() const
   return _falseStatements;
 }
 
+} // namespace language
 } // namespace ranally
 

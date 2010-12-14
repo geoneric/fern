@@ -601,6 +601,7 @@ UnicodeString pythonAstToXml(
 
 
 namespace ranally {
+namespace language {
 
 AlgebraParser::AlgebraParser()
 
@@ -673,5 +674,6 @@ UnicodeString AlgebraParser::parseFile(
   return result;
 }
 
+} // namespace language
 } // namespace ranally
 

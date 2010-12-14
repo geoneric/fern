@@ -3,6 +3,7 @@
 
 
 namespace ranally {
+namespace language {
 
 ScriptVertex::ScriptVertex(
   StatementVertices const& statements)
@@ -25,5 +26,6 @@ StatementVertices const& ScriptVertex::statements() const
   return _statements;
 }
 
+} // namespace language
 } // namespace ranally
 

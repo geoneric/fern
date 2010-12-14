@@ -260,27 +260,27 @@ int main(
       }
 
       ranally::DotVisitor dotVisitor;
-      ranally::ThreadVisitor threadVisitor;
+      ranally::language::ThreadVisitor threadVisitor;
       ranally::language::IdentifyVisitor identifyVisitor;
-      ranally::AlgebraParser parser;
+      ranally::language::AlgebraParser parser;
       UnicodeString xml;
 
       if(argc == 3) {
         // Read script from the standard input stream.
         std::ostringstream script;
         script << std::cin.rdbuf();
-        xml = ranally::AlgebraParser().parseString(UnicodeString(
+        xml = ranally::language::AlgebraParser().parseString(UnicodeString(
           script.str().c_str()));
       }
       else if(argc == 4) {
         // Read script from a file.
         std::string inputFileName(argv[3]);
-        xml = ranally::AlgebraParser().parseFile(UnicodeString(
+        xml = ranally::language::AlgebraParser().parseFile(UnicodeString(
           inputFileName.c_str()));
       }
 
-      boost::shared_ptr<ranally::ScriptVertex> tree(
-        ranally::XmlParser().parse(xml));
+      boost::shared_ptr<ranally::language::ScriptVertex> tree(
+        ranally::language::XmlParser().parse(xml));
       tree->Accept(threadVisitor);
       tree->Accept(identifyVisitor);
       tree->Accept(dotVisitor);
@@ -310,24 +310,24 @@ int main(
       }
 
       ranally::ScriptVisitor visitor;
-      ranally::AlgebraParser parser;
+      ranally::language::AlgebraParser parser;
       UnicodeString xml;
 
       if(argc == 3) {
         // Read script from the standard input stream.
         std::ostringstream script;
         script << std::cin.rdbuf();
-        xml = ranally::AlgebraParser().parseString(UnicodeString(
+        xml = ranally::language::AlgebraParser().parseString(UnicodeString(
           script.str().c_str()));
       }
       else if(argc == 4) {
         // Read script from a file.
         std::string inputFileName(argv[3]);
-        xml = ranally::AlgebraParser().parseFile(UnicodeString(
+        xml = ranally::language::AlgebraParser().parseFile(UnicodeString(
           inputFileName.c_str()));
       }
 
-      ranally::XmlParser().parse(xml)->Accept(visitor);
+      ranally::language::XmlParser().parse(xml)->Accept(visitor);
 
       if(argc <= 4) {
         std::cout << dev::encodeInUTF8(visitor.script()) << std::endl;

@@ -22,6 +22,7 @@ ADD_CUSTOM_COMMAND(
   COMMAND
     ${XSD_EXECUTABLE} cxx-parser --xml-parser expat
       --type-map ${CMAKE_CURRENT_BINARY_DIR}/SyntaxTree.map
+      --namespace-map http://www.jemig.eu/ranally=ranally::language
       ${CMAKE_CURRENT_SOURCE_DIR}/Ranally.xsd
   DEPENDS
     ${CMAKE_CURRENT_BINARY_DIR}/SyntaxTree.map

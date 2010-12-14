@@ -7,6 +7,7 @@
 
 
 namespace ranally {
+namespace language {
 
 ThreadVisitor::ThreadVisitor()
 
@@ -26,7 +27,7 @@ ThreadVisitor::~ThreadVisitor()
 void ThreadVisitor::visitStatements(
   StatementVertices const& statements)
 {
-  BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex> statementVertex,
+  BOOST_FOREACH(boost::shared_ptr<StatementVertex> statementVertex,
     statements) {
     statementVertex->Accept(*this);
   }
@@ -37,7 +38,7 @@ void ThreadVisitor::visitStatements(
 void ThreadVisitor::visitExpressions(
   ExpressionVertices const& expressions)
 {
-  BOOST_FOREACH(boost::shared_ptr<ranally::ExpressionVertex> expressionVertex,
+  BOOST_FOREACH(boost::shared_ptr<ExpressionVertex> expressionVertex,
     expressions) {
     expressionVertex->Accept(*this);
   }
@@ -251,5 +252,6 @@ void ThreadVisitor::Visit(
   assert(false);
 }
 
+} // namespace language
 } // namespace ranally
 

@@ -3,6 +3,7 @@
 
 
 namespace ranally {
+namespace language {
 
 ExpressionVertex::ExpressionVertex(
   UnicodeString const& name)
@@ -39,5 +40,6 @@ UnicodeString const& ExpressionVertex::name() const
   return _name;
 }
 
+} // namespace language
 } // namespace ranally
 

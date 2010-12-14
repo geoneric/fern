@@ -3,6 +3,7 @@
 
 
 namespace ranally {
+namespace language {
 
 AssignmentVertex::AssignmentVertex(
   ExpressionVertices const& targets,
@@ -37,5 +38,6 @@ ExpressionVertices const& AssignmentVertex::expressions() const
   return _expressions;
 }
 
+} // namespace language
 } // namespace ranally
 

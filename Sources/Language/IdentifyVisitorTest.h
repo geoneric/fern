@@ -20,8 +20,8 @@ class IdentifyVisitorTest
 
 private:
 
-  ranally::AlgebraParser _algebraParser;
-  ranally::XmlParser _xmlParser;
+  ranally::language::AlgebraParser _algebraParser;
+  ranally::language::XmlParser _xmlParser;
   ranally::language::IdentifyVisitor _visitor;
 
 public:

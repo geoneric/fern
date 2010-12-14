@@ -27,7 +27,7 @@ IdentifyVisitor::~IdentifyVisitor()
 void IdentifyVisitor::visitStatements(
   StatementVertices const& statements)
 {
-  BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex> statementVertex,
+  BOOST_FOREACH(boost::shared_ptr<StatementVertex> statementVertex,
     statements) {
     statementVertex->Accept(*this);
   }
@@ -38,7 +38,7 @@ void IdentifyVisitor::visitStatements(
 void IdentifyVisitor::visitExpressions(
   ExpressionVertices const& expressions)
 {
-  BOOST_FOREACH(boost::shared_ptr<ranally::ExpressionVertex> expressionVertex,
+  BOOST_FOREACH(boost::shared_ptr<ExpressionVertex> expressionVertex,
     expressions) {
     expressionVertex->Accept(*this);
   }

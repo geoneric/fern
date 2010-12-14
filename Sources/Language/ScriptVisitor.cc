@@ -54,9 +54,9 @@ UnicodeString ScriptVisitor::indentation() const
 
 
 void ScriptVisitor::visitStatements(
-  StatementVertices const& statements)
+  language::StatementVertices const& statements)
 {
-  BOOST_FOREACH(boost::shared_ptr<ranally::StatementVertex> statementVertex,
+  BOOST_FOREACH(boost::shared_ptr<language::StatementVertex> statementVertex,
     statements) {
     _script += indentation();
     statementVertex->Accept(*this);
@@ -70,7 +70,7 @@ void ScriptVisitor::visitStatements(
 
 
 void ScriptVisitor::visitExpressions(
-  ExpressionVertices const& expressions)
+  language::ExpressionVertices const& expressions)
 {
   _script += "(";
 
@@ -88,12 +88,12 @@ void ScriptVisitor::visitExpressions(
 
 
 void ScriptVisitor::Visit(
-  AssignmentVertex& vertex)
+  language::AssignmentVertex& vertex)
 {
-  ExpressionVertices const& targets = vertex.targets();
+  language::ExpressionVertices const& targets = vertex.targets();
   assert(targets.size() == 1);
 
-  ExpressionVertices const& expressions = vertex.expressions();
+  language::ExpressionVertices const& expressions = vertex.expressions();
   assert(expressions.size() == 1);
 
   targets[0]->Accept(*this);
@@ -104,7 +104,7 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-  FunctionVertex& vertex)
+  language::FunctionVertex& vertex)
 {
   _script += vertex.name();
   visitExpressions(vertex.expressions());
@@ -113,7 +113,7 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-  OperatorVertex& vertex)
+  language::OperatorVertex& vertex)
 {
   assert(vertex.expressions().size() == 1 || vertex.expressions().size() == 2);
 
@@ -208,7 +208,7 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-  SyntaxVertex&)
+  language::SyntaxVertex&)
 {
   assert(false);
 }
@@ -216,7 +216,7 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-  ScriptVertex& vertex)
+  language::ScriptVertex& vertex)
 {
   _indentLevel = 0;
   _script = UnicodeString();
@@ -227,7 +227,7 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-  StringVertex& vertex)
+  language::StringVertex& vertex)
 {
   _script += "\"" + vertex.value() + "\"";
 }
@@ -235,7 +235,7 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-  NameVertex& vertex)
+  language::NameVertex& vertex)
 {
   _script += vertex.name();
 }
@@ -243,7 +243,7 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-  NumberVertex<int8_t>& vertex)
+  language::NumberVertex<int8_t>& vertex)
 {
   _script += UnicodeString((boost::format("%1%") % vertex.value()).str().c_str());
 }
@@ -251,7 +251,7 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-  NumberVertex<int16_t>& vertex)
+  language::NumberVertex<int16_t>& vertex)
 {
   _script += UnicodeString((boost::format("%1%") % vertex.value()).str().c_str());
 }
@@ -259,7 +259,7 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-  NumberVertex<int32_t>& vertex)
+  language::NumberVertex<int32_t>& vertex)
 {
   _script += UnicodeString((boost::format("%1%") % vertex.value()).str().c_str());
 }
@@ -267,7 +267,7 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-  NumberVertex<int64_t>& vertex)
+  language::NumberVertex<int64_t>& vertex)
 {
   _script += UnicodeString((boost::format("%1%L") % vertex.value()).str().c_str());
 }
@@ -275,7 +275,7 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-  NumberVertex<uint8_t>& vertex)
+  language::NumberVertex<uint8_t>& vertex)
 {
   // U?
   _script += UnicodeString((boost::format("%1%U") % vertex.value()).str().c_str());
@@ -284,7 +284,7 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-  NumberVertex<uint16_t>& vertex)
+  language::NumberVertex<uint16_t>& vertex)
 {
   // U?
   _script += UnicodeString((boost::format("%1%U") % vertex.value()).str().c_str());
@@ -293,7 +293,7 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-  NumberVertex<uint32_t>& vertex)
+  language::NumberVertex<uint32_t>& vertex)
 {
   // U?
   _script += UnicodeString((boost::format("%1%U") % vertex.value()).str().c_str());
@@ -302,7 +302,7 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-  NumberVertex<uint64_t>& vertex)
+  language::NumberVertex<uint64_t>& vertex)
 {
   // U?
   _script += UnicodeString((boost::format("%1%UL") % vertex.value()).str().c_str());
@@ -311,7 +311,7 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-  NumberVertex<float>& vertex)
+  language::NumberVertex<float>& vertex)
 {
   _script += UnicodeString((boost::format("%1%") % vertex.value()).str().c_str());
 }
@@ -319,7 +319,7 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-  NumberVertex<double>& vertex)
+  language::NumberVertex<double>& vertex)
 {
   _script += UnicodeString((boost::format("%1%") % vertex.value()).str().c_str());
 }
@@ -327,7 +327,7 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-  IfVertex& vertex)
+  language::IfVertex& vertex)
 {
   assert(!vertex.trueStatements().empty());
 
@@ -356,7 +356,7 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-  WhileVertex& vertex)
+  language::WhileVertex& vertex)
 {
   assert(!vertex.trueStatements().empty());
 

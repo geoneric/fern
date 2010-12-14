@@ -9,6 +9,7 @@
 
 
 namespace ranally {
+namespace language {
 
 class AssignmentVertex;
 class FunctionVertex;
@@ -113,6 +114,7 @@ public:
 
 };
 
+} // namespace language
 } // namespace ranally
 
 #endif

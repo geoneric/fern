@@ -11,6 +11,8 @@
 
 namespace ranally {
 
+namespace language {
+
 class AssignmentVertex;
 class FunctionVertex;
 class IfVertex;
@@ -22,6 +24,8 @@ class ScriptVertex;
 class StringVertex;
 class WhileVertex;
 
+} // namespace language
+
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
   The dot graph is mainly useful for debugging purposes. The graph is handy
@@ -29,24 +33,24 @@ class WhileVertex;
 */
 class DotVisitor: private boost::noncopyable,
   public Loki::BaseVisitor,
-  public Loki::Visitor<AssignmentVertex>,
-  public Loki::Visitor<FunctionVertex>,
-  public Loki::Visitor<IfVertex>,
-  public Loki::Visitor<NameVertex>,
-  public Loki::Visitor<NumberVertex<int8_t>>,
-  public Loki::Visitor<NumberVertex<int16_t>>,
-  public Loki::Visitor<NumberVertex<int32_t>>,
-  public Loki::Visitor<NumberVertex<int64_t>>,
-  public Loki::Visitor<NumberVertex<uint8_t>>,
-  public Loki::Visitor<NumberVertex<uint16_t>>,
-  public Loki::Visitor<NumberVertex<uint32_t>>,
-  public Loki::Visitor<NumberVertex<uint64_t>>,
-  public Loki::Visitor<NumberVertex<float>>,
-  public Loki::Visitor<NumberVertex<double>>,
-  public Loki::Visitor<OperatorVertex>,
-  public Loki::Visitor<ScriptVertex>,
-  public Loki::Visitor<StringVertex>,
-  public Loki::Visitor<WhileVertex>
+  public Loki::Visitor<language::AssignmentVertex>,
+  public Loki::Visitor<language::FunctionVertex>,
+  public Loki::Visitor<language::IfVertex>,
+  public Loki::Visitor<language::NameVertex>,
+  public Loki::Visitor<language::NumberVertex<int8_t>>,
+  public Loki::Visitor<language::NumberVertex<int16_t>>,
+  public Loki::Visitor<language::NumberVertex<int32_t>>,
+  public Loki::Visitor<language::NumberVertex<int64_t>>,
+  public Loki::Visitor<language::NumberVertex<uint8_t>>,
+  public Loki::Visitor<language::NumberVertex<uint16_t>>,
+  public Loki::Visitor<language::NumberVertex<uint32_t>>,
+  public Loki::Visitor<language::NumberVertex<uint64_t>>,
+  public Loki::Visitor<language::NumberVertex<float>>,
+  public Loki::Visitor<language::NumberVertex<double>>,
+  public Loki::Visitor<language::OperatorVertex>,
+  public Loki::Visitor<language::ScriptVertex>,
+  public Loki::Visitor<language::StringVertex>,
+  public Loki::Visitor<language::WhileVertex>
 {
 
   friend class DotVisitorTest;
@@ -73,22 +77,22 @@ private:
 
   Mode             _mode;
 
-  SyntaxVertex const* _definition;
+  language::SyntaxVertex const* _definition;
 
-  void             addAstVertex        (SyntaxVertex const& sourceVertex,
-                                        SyntaxVertex const& targetVertex);
+  void             addAstVertex        (language::SyntaxVertex const& sourceVertex,
+                                        language::SyntaxVertex const& targetVertex);
 
-  void             addCfgVertices      (SyntaxVertex const& sourceVertex);
+  void             addCfgVertices      (language::SyntaxVertex const& sourceVertex);
 
-  void             addUseVertices      (NameVertex const& vertex);
+  void             addUseVertices      (language::NameVertex const& vertex);
 
-  void             addFlowgraphVertex  (SyntaxVertex const& sourceVertex,
-                                        SyntaxVertex const& targetVertex);
+  void             addFlowgraphVertex  (language::SyntaxVertex const& sourceVertex,
+                                        language::SyntaxVertex const& targetVertex);
 
   // void             addFlowgraphVertices(NameVertex const& vertex);
 
   template<typename T>
-  void             Visit               (NumberVertex<T>&);
+  void             Visit               (language::NumberVertex<T>&);
 
 protected:
 
@@ -100,41 +104,41 @@ public:
 
   UnicodeString const& script          () const;
 
-  void             Visit               (AssignmentVertex&);
+  void             Visit               (language::AssignmentVertex&);
 
-  void             Visit               (FunctionVertex&);
+  void             Visit               (language::FunctionVertex&);
 
-  void             Visit               (IfVertex&);
+  void             Visit               (language::IfVertex&);
 
-  void             Visit               (NameVertex&);
+  void             Visit               (language::NameVertex&);
 
-  void             Visit               (NumberVertex<int8_t>&);
+  void             Visit               (language::NumberVertex<int8_t>&);
 
-  void             Visit               (NumberVertex<int16_t>&);
+  void             Visit               (language::NumberVertex<int16_t>&);
 
-  void             Visit               (NumberVertex<int32_t>&);
+  void             Visit               (language::NumberVertex<int32_t>&);
 
-  void             Visit               (NumberVertex<int64_t>&);
+  void             Visit               (language::NumberVertex<int64_t>&);
 
-  void             Visit               (NumberVertex<uint8_t>&);
+  void             Visit               (language::NumberVertex<uint8_t>&);
 
-  void             Visit               (NumberVertex<uint16_t>&);
+  void             Visit               (language::NumberVertex<uint16_t>&);
 
-  void             Visit               (NumberVertex<uint32_t>&);
+  void             Visit               (language::NumberVertex<uint32_t>&);
 
-  void             Visit               (NumberVertex<uint64_t>&);
+  void             Visit               (language::NumberVertex<uint64_t>&);
 
-  void             Visit               (NumberVertex<float>&);
+  void             Visit               (language::NumberVertex<float>&);
 
-  void             Visit               (NumberVertex<double>&);
+  void             Visit               (language::NumberVertex<double>&);
 
-  void             Visit               (OperatorVertex&);
+  void             Visit               (language::OperatorVertex&);
 
-  void             Visit               (ScriptVertex&);
+  void             Visit               (language::ScriptVertex&);
 
-  void             Visit               (StringVertex&);
+  void             Visit               (language::StringVertex&);
 
-  void             Visit               (WhileVertex&);
+  void             Visit               (language::WhileVertex&);
 
 };
 

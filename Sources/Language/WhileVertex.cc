@@ -3,6 +3,7 @@
 
 
 namespace ranally {
+namespace language {
 
 WhileVertex::WhileVertex(
   boost::shared_ptr<ExpressionVertex> const& condition,
@@ -25,7 +26,7 @@ WhileVertex::~WhileVertex()
 
 
 
-boost::shared_ptr<ranally::ExpressionVertex> const& WhileVertex::condition() const
+boost::shared_ptr<ExpressionVertex> const& WhileVertex::condition() const
 {
   return _condition;
 }
@@ -44,5 +45,6 @@ StatementVertices const& WhileVertex::falseStatements() const
   return _falseStatements;
 }
 
+} // namespace language
 } // namespace ranally
 

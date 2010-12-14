@@ -21,11 +21,11 @@
 
 namespace {
 
-class Ranally_pimpl: public ranally::Ranally_pskel
+class Ranally_pimpl: public ranally::language::Ranally_pskel
 {
 private:
 
-  typedef std::vector<boost::shared_ptr<ranally::StatementVertex> >
+  typedef std::vector<boost::shared_ptr<ranally::language::StatementVertex> >
     StatementVertices;
 
   StatementVertices _statementVertices;
@@ -37,25 +37,25 @@ public:
   }
 
   void Statements(
-    std::vector<boost::shared_ptr<ranally::StatementVertex> > const& vertices)
+    std::vector<boost::shared_ptr<ranally::language::StatementVertex> > const& vertices)
   {
     assert(_statementVertices.empty());
     _statementVertices = vertices;
   }
 
-  boost::shared_ptr<ranally::ScriptVertex> post_Ranally()
+  boost::shared_ptr<ranally::language::ScriptVertex> post_Ranally()
   {
-    return boost::make_shared<ranally::ScriptVertex>(_statementVertices);
+    return boost::make_shared<ranally::language::ScriptVertex>(_statementVertices);
   }
 };
 
 
 
-class Assignment_pimpl: public ranally::Assignment_pskel
+class Assignment_pimpl: public ranally::language::Assignment_pskel
 {
 private:
-  std::vector<boost::shared_ptr<ranally::ExpressionVertex> > _targets;
-  std::vector<boost::shared_ptr<ranally::ExpressionVertex> > _expressions;
+  std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> > _targets;
+  std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> > _expressions;
 
 public:
   void pre()
@@ -65,33 +65,33 @@ public:
   }
 
   void Targets(
-    std::vector<boost::shared_ptr<ranally::ExpressionVertex> > const& vertices)
+    std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> > const& vertices)
   {
     assert(!vertices.empty());
     _targets = vertices;
   }
 
   void Expressions(
-    std::vector<boost::shared_ptr<ranally::ExpressionVertex> > const& vertices)
+    std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> > const& vertices)
   {
     assert(!vertices.empty());
     _expressions = vertices;
   }
 
-  boost::shared_ptr<ranally::AssignmentVertex> post_Assignment()
+  boost::shared_ptr<ranally::language::AssignmentVertex> post_Assignment()
   {
     assert(!_targets.empty() && !_expressions.empty());
-    return boost::make_shared<ranally::AssignmentVertex>(_targets,
+    return boost::make_shared<ranally::language::AssignmentVertex>(_targets,
       _expressions);
   }
 };
 
 
 
-class Targets_pimpl: public ranally::Targets_pskel
+class Targets_pimpl: public ranally::language::Targets_pskel
 {
 private:
-  std::vector<boost::shared_ptr<ranally::ExpressionVertex> > _vertices;
+  std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> > _vertices;
 
 public:
   void pre()
@@ -100,13 +100,13 @@ public:
   }
 
   void Expression(
-    boost::shared_ptr<ranally::ExpressionVertex> const& vertex)
+    boost::shared_ptr<ranally::language::ExpressionVertex> const& vertex)
   {
     assert(vertex);
     _vertices.push_back(vertex);
   }
 
-  std::vector<boost::shared_ptr<ranally::ExpressionVertex> > post_Targets()
+  std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> > post_Targets()
   {
     assert(!_vertices.empty());
     return _vertices;
@@ -115,15 +115,15 @@ public:
 
 
 
-class If_pimpl: public ranally::If_pskel
+class If_pimpl: public ranally::language::If_pskel
 {
 private:
-  typedef std::vector<boost::shared_ptr<ranally::StatementVertex> >
+  typedef std::vector<boost::shared_ptr<ranally::language::StatementVertex> >
     StatementVertices;
 
   struct IfData
   {
-    boost::shared_ptr<ranally::ExpressionVertex> conditionVertex;
+    boost::shared_ptr<ranally::language::ExpressionVertex> conditionVertex;
     StatementVertices trueStatementVertices;
     StatementVertices falseStatementVertices;
   };
@@ -137,7 +137,7 @@ public:
   }
 
   void Expression(
-    boost::shared_ptr<ranally::ExpressionVertex> const& vertex)
+    boost::shared_ptr<ranally::language::ExpressionVertex> const& vertex)
   {
     assert(!_dataStack.top().conditionVertex);
     assert(vertex);
@@ -145,7 +145,7 @@ public:
   }
 
   void Statements(
-    std::vector<boost::shared_ptr<ranally::StatementVertex> > const& vertices)
+    std::vector<boost::shared_ptr<ranally::language::StatementVertex> > const& vertices)
   {
     if(_dataStack.top().trueStatementVertices.empty()) {
       assert(!vertices.empty());
@@ -157,27 +157,27 @@ public:
     }
   }
 
-  boost::shared_ptr<ranally::IfVertex> post_If()
+  boost::shared_ptr<ranally::language::IfVertex> post_If()
   {
     assert(!_dataStack.empty());
     IfData result(_dataStack.top());
     _dataStack.pop();
-    return boost::make_shared<ranally::IfVertex>(result.conditionVertex,
+    return boost::make_shared<ranally::language::IfVertex>(result.conditionVertex,
       result.trueStatementVertices, result.falseStatementVertices);
   }
 };
 
 
 
-class While_pimpl: public ranally::While_pskel
+class While_pimpl: public ranally::language::While_pskel
 {
 private:
-  typedef std::vector<boost::shared_ptr<ranally::StatementVertex> >
+  typedef std::vector<boost::shared_ptr<ranally::language::StatementVertex> >
     StatementVertices;
 
   struct WhileData
   {
-    boost::shared_ptr<ranally::ExpressionVertex> conditionVertex;
+    boost::shared_ptr<ranally::language::ExpressionVertex> conditionVertex;
     StatementVertices trueStatementVertices;
     StatementVertices falseStatementVertices;
   };
@@ -191,7 +191,7 @@ public:
   }
 
   void Expression(
-    boost::shared_ptr<ranally::ExpressionVertex> const& vertex)
+    boost::shared_ptr<ranally::language::ExpressionVertex> const& vertex)
   {
     assert(!_dataStack.top().conditionVertex);
     assert(vertex);
@@ -199,7 +199,7 @@ public:
   }
 
   void Statements(
-    std::vector<boost::shared_ptr<ranally::StatementVertex> > const& vertices)
+    std::vector<boost::shared_ptr<ranally::language::StatementVertex> > const& vertices)
   {
     if(_dataStack.top().trueStatementVertices.empty()) {
       assert(!vertices.empty());
@@ -211,22 +211,22 @@ public:
     }
   }
 
-  boost::shared_ptr<ranally::WhileVertex> post_While()
+  boost::shared_ptr<ranally::language::WhileVertex> post_While()
   {
     assert(!_dataStack.empty());
     WhileData result(_dataStack.top());
     _dataStack.pop();
-    return boost::make_shared<ranally::WhileVertex>(result.conditionVertex,
+    return boost::make_shared<ranally::language::WhileVertex>(result.conditionVertex,
       result.trueStatementVertices, result.falseStatementVertices);
   }
 };
 
 
 
-class Statements_pimpl: public ranally::Statements_pskel
+class Statements_pimpl: public ranally::language::Statements_pskel
 {
 private:
-  typedef std::vector<boost::shared_ptr<ranally::StatementVertex> >
+  typedef std::vector<boost::shared_ptr<ranally::language::StatementVertex> >
     StatementsData;
 
   std::stack<StatementsData> _dataStack;
@@ -238,13 +238,13 @@ public:
   }
 
   void Statement(
-    boost::shared_ptr<ranally::StatementVertex> const& vertex)
+    boost::shared_ptr<ranally::language::StatementVertex> const& vertex)
   {
     assert(vertex);
     _dataStack.top().push_back(vertex);
   }
 
-  std::vector<boost::shared_ptr<ranally::StatementVertex> > post_Statements()
+  std::vector<boost::shared_ptr<ranally::language::StatementVertex> > post_Statements()
   {
     assert(!_dataStack.empty());
     StatementsData result(_dataStack.top());
@@ -255,10 +255,10 @@ public:
 
 
 
-class Statement_pimpl: public ranally::Statement_pskel
+class Statement_pimpl: public ranally::language::Statement_pskel
 {
 private:
-  typedef boost::shared_ptr<ranally::StatementVertex> StatementData;
+  typedef boost::shared_ptr<ranally::language::StatementVertex> StatementData;
 
   std::stack<StatementData> _dataStack;
 
@@ -269,7 +269,7 @@ public:
   }
 
   void Expression(
-    boost::shared_ptr<ranally::ExpressionVertex> const& vertex)
+    boost::shared_ptr<ranally::language::ExpressionVertex> const& vertex)
   {
     assert(vertex);
     assert(!_dataStack.empty());
@@ -277,7 +277,7 @@ public:
   }
 
   void Assignment(
-    boost::shared_ptr<ranally::AssignmentVertex> const& vertex)
+    boost::shared_ptr<ranally::language::AssignmentVertex> const& vertex)
   {
     assert(vertex);
     assert(!_dataStack.empty());
@@ -285,7 +285,7 @@ public:
   }
 
   void If(
-    boost::shared_ptr<ranally::IfVertex> const& vertex)
+    boost::shared_ptr<ranally::language::IfVertex> const& vertex)
   {
     assert(vertex);
     assert(!_dataStack.empty());
@@ -293,14 +293,14 @@ public:
   }
 
   void While(
-    boost::shared_ptr<ranally::WhileVertex> const& vertex)
+    boost::shared_ptr<ranally::language::WhileVertex> const& vertex)
   {
     assert(vertex);
     assert(!_dataStack.empty());
     _dataStack.top() = vertex;
   }
 
-  boost::shared_ptr<ranally::StatementVertex> post_Statement()
+  boost::shared_ptr<ranally::language::StatementVertex> post_Statement()
   {
     assert(!_dataStack.empty());
     StatementData result(_dataStack.top());
@@ -311,10 +311,10 @@ public:
 
 
 
-class Expressions_pimpl: public ranally::Expressions_pskel
+class Expressions_pimpl: public ranally::language::Expressions_pskel
 {
 private:
-  typedef std::vector<boost::shared_ptr<ranally::ExpressionVertex> >
+  typedef std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> >
     ExpressionsData;
 
   std::stack<ExpressionsData> _dataStack;
@@ -326,13 +326,13 @@ public:
   }
 
   void Expression(
-    boost::shared_ptr<ranally::ExpressionVertex> const& vertex)
+    boost::shared_ptr<ranally::language::ExpressionVertex> const& vertex)
   {
     assert(vertex);
     _dataStack.top().push_back(vertex);
   }
 
-  std::vector<boost::shared_ptr<ranally::ExpressionVertex> > post_Expressions()
+  std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> > post_Expressions()
   {
     assert(!_dataStack.empty());
     ExpressionsData result(_dataStack.top());
@@ -343,7 +343,7 @@ public:
 
 
 
-class Integer_pimpl: public ranally::Integer_pskel
+class Integer_pimpl: public ranally::language::Integer_pskel
 {
 private:
 
@@ -370,25 +370,25 @@ public:
     _value = value;
   }
 
-  boost::shared_ptr<ranally::ExpressionVertex> post_Integer()
+  boost::shared_ptr<ranally::language::ExpressionVertex> post_Integer()
   {
-    boost::shared_ptr<ranally::ExpressionVertex> result;
+    boost::shared_ptr<ranally::language::ExpressionVertex> result;
 
     switch(_size) {
       case 8: {
-        result = boost::make_shared<ranally::NumberVertex<int8_t> >(_value);
+        result = boost::make_shared<ranally::language::NumberVertex<int8_t> >(_value);
         break;
       }
       case 16: {
-        result = boost::make_shared<ranally::NumberVertex<int16_t> >(_value);
+        result = boost::make_shared<ranally::language::NumberVertex<int16_t> >(_value);
         break;
       }
       case 32: {
-        result = boost::make_shared<ranally::NumberVertex<int32_t> >(_value);
+        result = boost::make_shared<ranally::language::NumberVertex<int32_t> >(_value);
         break;
       }
       case 64: {
-        result = boost::make_shared<ranally::NumberVertex<int64_t> >(_value);
+        result = boost::make_shared<ranally::language::NumberVertex<int64_t> >(_value);
         break;
       }
       default: {
@@ -404,7 +404,7 @@ public:
 
 
 
-class UnsignedInteger_pimpl: public ranally::UnsignedInteger_pskel
+class UnsignedInteger_pimpl: public ranally::language::UnsignedInteger_pskel
 {
 private:
 
@@ -430,25 +430,25 @@ public:
     _value = value;
   }
 
-  boost::shared_ptr<ranally::ExpressionVertex> post_UnsignedInteger()
+  boost::shared_ptr<ranally::language::ExpressionVertex> post_UnsignedInteger()
   {
-    boost::shared_ptr<ranally::ExpressionVertex> result;
+    boost::shared_ptr<ranally::language::ExpressionVertex> result;
 
     switch(_size) {
       case 8: {
-        result = boost::make_shared<ranally::NumberVertex<uint8_t> >(_value);
+        result = boost::make_shared<ranally::language::NumberVertex<uint8_t> >(_value);
         break;
       }
       case 16: {
-        result = boost::make_shared<ranally::NumberVertex<uint16_t> >(_value);
+        result = boost::make_shared<ranally::language::NumberVertex<uint16_t> >(_value);
         break;
       }
       case 32: {
-        result = boost::make_shared<ranally::NumberVertex<uint32_t> >(_value);
+        result = boost::make_shared<ranally::language::NumberVertex<uint32_t> >(_value);
         break;
       }
       case 64: {
-        result = boost::make_shared<ranally::NumberVertex<uint64_t> >(_value);
+        result = boost::make_shared<ranally::language::NumberVertex<uint64_t> >(_value);
         break;
       }
       default: {
@@ -464,7 +464,7 @@ public:
 
 
 
-class Float_pimpl: public ranally::Float_pskel
+class Float_pimpl: public ranally::language::Float_pskel
 {
 private:
 
@@ -490,19 +490,19 @@ public:
     _value = value;
   }
 
-  boost::shared_ptr<ranally::ExpressionVertex> post_Float()
+  boost::shared_ptr<ranally::language::ExpressionVertex> post_Float()
   {
-    boost::shared_ptr<ranally::ExpressionVertex> result;
+    boost::shared_ptr<ranally::language::ExpressionVertex> result;
 
     switch(_size) {
       case 32: {
         assert(sizeof(float) == 4);
-        result = boost::make_shared<ranally::NumberVertex<float> >(_value);
+        result = boost::make_shared<ranally::language::NumberVertex<float> >(_value);
         break;
       }
       case 64: {
         assert(sizeof(double) == 8);
-        result = boost::make_shared<ranally::NumberVertex<double> >(_value);
+        result = boost::make_shared<ranally::language::NumberVertex<double> >(_value);
         break;
       }
       default: {
@@ -518,10 +518,10 @@ public:
 
 
 
-class Number_pimpl: public ranally::Number_pskel
+class Number_pimpl: public ranally::language::Number_pskel
 {
 private:
-  boost::shared_ptr<ranally::ExpressionVertex> _vertex;
+  boost::shared_ptr<ranally::language::ExpressionVertex> _vertex;
 
 public:
   void pre()
@@ -530,27 +530,27 @@ public:
   }
 
   void Integer(
-    boost::shared_ptr<ranally::ExpressionVertex> const& vertex)
+    boost::shared_ptr<ranally::language::ExpressionVertex> const& vertex)
   {
     assert(!_vertex);
     _vertex = vertex;
   }
 
   void UnsignedInteger(
-    boost::shared_ptr<ranally::ExpressionVertex> const& vertex)
+    boost::shared_ptr<ranally::language::ExpressionVertex> const& vertex)
   {
     assert(!_vertex);
     _vertex = vertex;
   }
 
   void Float(
-    boost::shared_ptr<ranally::ExpressionVertex> const& vertex)
+    boost::shared_ptr<ranally::language::ExpressionVertex> const& vertex)
   {
     assert(!_vertex);
     _vertex = vertex;
   }
 
-  boost::shared_ptr<ranally::ExpressionVertex> post_Number()
+  boost::shared_ptr<ranally::language::ExpressionVertex> post_Number()
   {
     assert(_vertex);
     return _vertex;
@@ -559,10 +559,10 @@ public:
 
 
 
-class Function_pimpl: public ranally::Function_pskel
+class Function_pimpl: public ranally::language::Function_pskel
 {
 private:
-  typedef std::vector<boost::shared_ptr<ranally::ExpressionVertex> >
+  typedef std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> >
     ExpressionVertices;
 
   struct FunctionData
@@ -587,29 +587,29 @@ public:
   }
 
   void Expressions(
-    std::vector<boost::shared_ptr<ranally::ExpressionVertex> > const& vertices)
+    std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> > const& vertices)
   {
     assert(!_dataStack.empty());
     assert(_dataStack.top().expressionVertices.empty());
     _dataStack.top().expressionVertices = vertices;
   }
 
-  boost::shared_ptr<ranally::FunctionVertex> post_Function()
+  boost::shared_ptr<ranally::language::FunctionVertex> post_Function()
   {
     assert(!_dataStack.empty());
     FunctionData result(_dataStack.top());
     _dataStack.pop();
-    return boost::make_shared<ranally::FunctionVertex>(result.name,
+    return boost::make_shared<ranally::language::FunctionVertex>(result.name,
       result.expressionVertices);
   }
 };
 
 
 
-class Operator_pimpl: public ranally::Operator_pskel
+class Operator_pimpl: public ranally::language::Operator_pskel
 {
 private:
-  typedef std::vector<boost::shared_ptr<ranally::ExpressionVertex> >
+  typedef std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> >
     ExpressionVertices;
 
   struct OperatorData
@@ -634,33 +634,33 @@ public:
   }
 
   void Expressions(
-    std::vector<boost::shared_ptr<ranally::ExpressionVertex> > const& vertices)
+    std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> > const& vertices)
   {
     assert(!_dataStack.empty());
     assert(_dataStack.top().expressionVertices.empty());
     _dataStack.top().expressionVertices = vertices;
   }
 
-  boost::shared_ptr<ranally::OperatorVertex> post_Operator()
+  boost::shared_ptr<ranally::language::OperatorVertex> post_Operator()
   {
     assert(!_dataStack.empty());
     OperatorData result(_dataStack.top());
     _dataStack.pop();
-    return boost::make_shared<ranally::OperatorVertex>(result.name,
+    return boost::make_shared<ranally::language::OperatorVertex>(result.name,
       result.expressionVertices);
   }
 };
 
 
 
-class Expression_pimpl: public ranally::Expression_pskel
+class Expression_pimpl: public ranally::language::Expression_pskel
 {
 private:
   struct ExpressionData
   {
     int line;
     int col;
-    boost::shared_ptr<ranally::ExpressionVertex> vertex;
+    boost::shared_ptr<ranally::language::ExpressionVertex> vertex;
   };
 
   std::stack<ExpressionData> _dataStack;
@@ -690,7 +690,7 @@ public:
   {
     assert(!_dataStack.empty());
     assert(!_dataStack.top().vertex);
-    _dataStack.top().vertex = boost::make_shared<ranally::NameVertex>(
+    _dataStack.top().vertex = boost::make_shared<ranally::language::NameVertex>(
       _dataStack.top().line, _dataStack.top().col, dev::decodeFromUTF8(name));
   }
 
@@ -699,12 +699,12 @@ public:
   {
     assert(!_dataStack.empty());
     assert(!_dataStack.top().vertex);
-    _dataStack.top().vertex = boost::make_shared<ranally::StringVertex>(
+    _dataStack.top().vertex = boost::make_shared<ranally::language::StringVertex>(
       _dataStack.top().line, _dataStack.top().col, dev::decodeFromUTF8(string));
   }
 
   void Number(
-    boost::shared_ptr<ranally::ExpressionVertex> const& vertex)
+    boost::shared_ptr<ranally::language::ExpressionVertex> const& vertex)
   {
     assert(!_dataStack.empty());
     assert(!_dataStack.top().vertex);
@@ -714,7 +714,7 @@ public:
   }
 
   void Function(
-    boost::shared_ptr<ranally::FunctionVertex> const& vertex)
+    boost::shared_ptr<ranally::language::FunctionVertex> const& vertex)
   {
     assert(!_dataStack.empty());
     assert(!_dataStack.top().vertex);
@@ -724,7 +724,7 @@ public:
   }
 
   void Operator(
-    boost::shared_ptr<ranally::OperatorVertex> const& vertex)
+    boost::shared_ptr<ranally::language::OperatorVertex> const& vertex)
   {
     assert(!_dataStack.empty());
     assert(!_dataStack.top().vertex);
@@ -733,7 +733,7 @@ public:
       _dataStack.top().col);
   }
 
-  boost::shared_ptr<ranally::ExpressionVertex> post_Expression()
+  boost::shared_ptr<ranally::language::ExpressionVertex> post_Expression()
   {
     assert(!_dataStack.empty());
     ExpressionData result(_dataStack.top());
@@ -747,6 +747,7 @@ public:
 
 
 namespace ranally {
+namespace language {
 
 XmlParser::XmlParser()
 {
@@ -853,5 +854,6 @@ boost::shared_ptr<ScriptVertex> XmlParser::parse(
   return parse(stream);
 }
 
+} // namespace language
 } // namespace ranally
 

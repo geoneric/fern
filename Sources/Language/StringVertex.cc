@@ -3,6 +3,7 @@
 
 
 namespace ranally {
+namespace language {
 
 StringVertex::StringVertex(
   int lineNr,
@@ -28,5 +29,6 @@ UnicodeString const& StringVertex::value() const
   return _value;
 }
 
+} // namespace language
 } // namespace ranally
 

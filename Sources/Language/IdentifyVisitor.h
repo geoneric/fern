@@ -10,6 +10,7 @@
 
 
 namespace ranally {
+namespace language {
 
 class AssignmentVertex;
 class FunctionVertex;
@@ -18,8 +19,6 @@ class NameVertex;
 class OperatorVertex;
 class ScriptVertex;
 class WhileVertex;
-
-namespace language {
 
 //! Class for visitors that connect uses of names with their definitions.
 /*!

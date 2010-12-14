@@ -10,14 +10,13 @@
 
 
 namespace ranally {
+namespace language {
 
 class ExpressionVertex;
 class StatementVertex;
 
-typedef std::vector<boost::shared_ptr<ranally::ExpressionVertex> >
-  ExpressionVertices;
-typedef std::vector<boost::shared_ptr<ranally::StatementVertex> >
-  StatementVertices;
+typedef std::vector<boost::shared_ptr<ExpressionVertex> > ExpressionVertices;
+typedef std::vector<boost::shared_ptr<StatementVertex> > StatementVertices;
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -76,6 +75,7 @@ public:
 
 };
 
+} // namespace language
 } // namespace ranally
 
 #endif

@@ -7,6 +7,7 @@
 
 
 namespace ranally {
+namespace language {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -30,7 +31,7 @@ class IfVertex: public StatementVertex
 
 private:
 
-  boost::shared_ptr<ranally::ExpressionVertex> _condition;
+  boost::shared_ptr<ExpressionVertex> _condition;
 
   StatementVertices _trueStatements;
 
@@ -49,7 +50,7 @@ public:
 
   /* virtual */    ~IfVertex           ();
 
-  boost::shared_ptr<ranally::ExpressionVertex> const& condition() const;
+  boost::shared_ptr<ExpressionVertex> const& condition() const;
 
   StatementVertices const& trueStatements() const;
 
@@ -57,6 +58,7 @@ public:
 
 };
 
+} // namespace language
 } // namespace ranally
 
 #endif
