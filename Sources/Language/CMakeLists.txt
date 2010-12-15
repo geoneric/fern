@@ -42,6 +42,7 @@ SET(SOURCES
   NameVertex.cc
   NumberVertex.cc
   OperatorVertex.cc
+  PurifyVisitor.cc
   ScriptVertex.cc
   ScriptVisitor.cc
   StatementVertex.cc
@@ -66,6 +67,7 @@ SET(TEST_SOURCES
   NameVertexTest.cc
   NumberVertexTest.cc
   OperatorVertexTest.cc
+  PurifyVisitorTest.cc
   ScriptVertexTest.cc
   ScriptVisitorTest.cc
   StatementVertexTest.cc

@@ -10,6 +10,7 @@
 #include "NameVertexTest.h"
 #include "NumberVertexTest.h"
 #include "OperatorVertexTest.h"
+#include "PurifyVisitorTest.h"
 #include "ScriptVertexTest.h"
 #include "ScriptVisitorTest.h"
 #include "StatementVertexTest.h"
@@ -59,6 +60,7 @@ boost::unit_test::test_suite* init_unit_test_suite(
 
   test->add(ThreadVisitorTest::suite());
   test->add(IdentifyVisitorTest::suite());
+  test->add(PurifyVisitorTest::suite());
   test->add(DotVisitorTest::suite());
   test->add(ScriptVisitorTest::suite());
 
