@@ -129,7 +129,7 @@ void DotVisitor::addFlowgraphVertex(
 void DotVisitor::Visit(
   language::AssignmentVertex& vertex)
 {
-  assert(_mode != ConnectingOperationArgument);
+  // assert(_mode != ConnectingOperationArgument);
   language::ExpressionVertices const& targets = vertex.targets();
   language::ExpressionVertices const& expressions = vertex.expressions();
 
@@ -186,16 +186,21 @@ void DotVisitor::Visit(
 
       break;
     }
+    case ConnectingOperationArgument: {
+      break;
+    }
   }
 
-  BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex> expressionVertex,
-    vertex.expressions()) {
-    expressionVertex->Accept(*this);
-  }
+  if(_mode != ConnectingOperationArgument) {
+    BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
+      expressionVertex, vertex.expressions()) {
+      expressionVertex->Accept(*this);
+    }
 
-  BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex> expressionVertex,
-    vertex.targets()) {
-    expressionVertex->Accept(*this);
+    BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
+      expressionVertex, vertex.targets()) {
+      expressionVertex->Accept(*this);
+    }
   }
 }
 
@@ -319,14 +324,14 @@ void DotVisitor::Visit(
 
       _mode = ConnectingCfg;
       addCfgVertices(vertex);
-      BOOST_FOREACH(boost::shared_ptr<language::StatementVertex> statementVertex,
-        vertex.statements()) {
+      BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+        statementVertex, vertex.statements()) {
         statementVertex->Accept(*this);
       }
 
       _mode = ConnectingUses;
-      BOOST_FOREACH(boost::shared_ptr<language::StatementVertex> statementVertex,
-        vertex.statements()) {
+      BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+        statementVertex, vertex.statements()) {
         statementVertex->Accept(*this);
       }
 
@@ -335,8 +340,8 @@ void DotVisitor::Visit(
     case Flowgraph: {
       _mode = ConnectingFlowgraph;
 
-      BOOST_FOREACH(boost::shared_ptr<language::StatementVertex> statementVertex,
-        vertex.statements()) {
+      BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+        statementVertex, vertex.statements()) {
         statementVertex->Accept(*this);
       }
 
@@ -523,7 +528,6 @@ void DotVisitor::Visit(
 void DotVisitor::Visit(
   language::IfVertex& vertex)
 {
-  assert(_mode != ConnectingOperationArgument);
   switch(_mode) {
     case Declaring: {
       _script +=
@@ -552,16 +556,25 @@ void DotVisitor::Visit(
     }
     case ConnectingFlowgraph: {
       addFlowgraphVertex(*vertex.condition(), vertex);
-      // BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
-      //   statementVertex, vertex.trueStatements()) {
-      //   addFlowgraphVertex(*statementVertex, vertex);
-      // }
-      // BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
-      //   statementVertex, vertex.falseStatements()) {
-      //   addFlowgraphVertex(*statementVertex, vertex);
-      // }
+
+      // TODO Turn these statements into a sub graph.
+      //      There is no flow graph connection to a certain expression, but
+      //      just to the sub graph and from the sub graph.
+
+      BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+        statementVertex, vertex.trueStatements()) {
+        addFlowgraphVertex(*statementVertex, vertex);
+      }
+      BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+        statementVertex, vertex.falseStatements()) {
+        addFlowgraphVertex(*statementVertex, vertex);
+      }
+
       break;
     }
+    // case ConnectingOperationArgument: {
+    //   break;
+    // }
   }
 
   vertex.condition()->Accept(*this);
