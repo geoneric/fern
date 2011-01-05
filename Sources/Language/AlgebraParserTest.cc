@@ -90,6 +90,22 @@ void AlgebraParserTest::testParseName()
         "</Statements>"
       "</Ranally>");
   }
+
+  // TODO #if PYTHONVER >= 2.7/3.0?
+  // {
+  //   UnicodeString xml(parser.parseString(UnicodeString("ñ")));
+  //   BOOST_CHECK(xml ==
+  //     "<?xml version=\"1.0\"?>"
+  //     "<Ranally>"
+  //       "<Statements>"
+  //         "<Statement>"
+  //           "<Expression line=\"1\" col=\"0\">"
+  //             "<Name>ñ</Name>"
+  //           "</Expression>"
+  //         "</Statement>"
+  //       "</Statements>"
+  //     "</Ranally>");
+  // }
 }
 
 
@@ -175,6 +191,20 @@ void AlgebraParserTest::testParseString()
   }
 
   // Test handling of Unicode characters.
+  {
+    UnicodeString xml(parser.parseString(UnicodeString("\"mañana\"")));
+    BOOST_CHECK(xml ==
+      "<?xml version=\"1.0\"?>"
+      "<Ranally>"
+        "<Statements>"
+          "<Statement>"
+            "<Expression line=\"1\" col=\"0\">"
+              "<String>mañana</String>"
+            "</Expression>"
+          "</Statement>"
+        "</Statements>"
+      "</Ranally>");
+  }
 }
 
 

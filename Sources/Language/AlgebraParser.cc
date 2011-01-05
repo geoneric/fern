@@ -32,6 +32,7 @@ void writeNameNode(
 {
   assert(PyString_Check(id));
 
+  // TODO Handle Unicode. In modern Python, identifiers are Unicode strings.
   xml += "<Name>";
   xml += PyString_AsString(id);
   xml += "</Name>";
@@ -106,6 +107,7 @@ void writeStringNode(
   UnicodeString& xml)
 {
   // TODO Verify the string is encoded as UTF8.
+  // TODO Only support Unicode strings? Convert on the fly when it's not?
   assert(PyString_Check(string));
 
   if(PyString_Size(string) == 0) {
@@ -570,6 +572,10 @@ void writeStatementNodes(
 UnicodeString pythonAstToXml(
   mod_ty const ast)
 {
+  if(!ast) {
+    // TODO Bubble up parsing error.
+  }
+
   assert(ast);
 
   UnicodeString xml;
@@ -587,6 +593,7 @@ UnicodeString pythonAstToXml(
     // }
     case Interactive_kind:
     case Suite_kind: {
+      // TODO Error message.
       bool implemented = false;
       assert(implemented);
       break;
@@ -632,6 +639,16 @@ AlgebraParser::~AlgebraParser()
 
 
 
+//! Parse the script in \a string and return an XML document.
+/*!
+  \tparam    .
+  \param     .
+  \return    .
+  \exception .
+  \warning   .
+  \sa        .
+  \todo      The Python memory arena is not freed.
+*/
 UnicodeString AlgebraParser::parseString(
   UnicodeString const& string)
 {

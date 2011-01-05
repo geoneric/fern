@@ -22,8 +22,8 @@ class NameVertex;
   Definitions are added to the current scope using addDefinition. Make sure
   that such a scope exists. After creation of a SymbolTable instance,
   pushScope() must be called before identifiers can be added. You can make
-  multiple calls to pushScope() in case of nested scopes. Make sure to match
-  each call to pushScope() with a call to popScope().
+  multiple calls to pushScope() in case of nested scopes. When filling the
+  table, make sure to match each call to pushScope() with a call to popScope().
 */
 class SymbolTable: private boost::noncopyable
 {

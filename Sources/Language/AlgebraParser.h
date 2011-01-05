@@ -10,11 +10,15 @@
 namespace ranally {
 namespace language {
 
-//! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
+//! An AlgebraParser parses a script and converts it to XML.
 /*!
-  longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
+  AlgebraParser instances only perform syntax checks. If the script is
+  syntactically correct, than an XML will be created. This XML has the same
+  semantic content as the original script. It's just easier to post process.
 
-  \sa        .
+  The XML returned conforms to the Ranally.xsd schema.
+
+  \sa        XmlParser
 */
 class AlgebraParser: public dev::PythonClient
 {

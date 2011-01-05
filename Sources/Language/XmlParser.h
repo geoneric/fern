@@ -11,11 +11,14 @@ namespace language {
 
 class ScriptVertex;
 
-//! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
+//! An XmlParser parses an Xml and converts it to a syntax tree.
 /*!
-  longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
+  Apart from Xml validation checks, no semantic checks are performed. The
+  syntax tree has the same semantic content as the Xml.
 
-  \sa        .
+  The parser assumes the Xml passed in conforms to the Ranally.xsd schema.
+
+  \sa        AlgebraParser
 */
 class XmlParser
 {

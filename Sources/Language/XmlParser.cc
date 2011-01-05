@@ -37,7 +37,8 @@ public:
   }
 
   void Statements(
-    std::vector<boost::shared_ptr<ranally::language::StatementVertex> > const& vertices)
+    std::vector<boost::shared_ptr<ranally::language::StatementVertex> > const&
+      vertices)
   {
     assert(_statementVertices.empty());
     _statementVertices = vertices;
@@ -45,7 +46,8 @@ public:
 
   boost::shared_ptr<ranally::language::ScriptVertex> post_Ranally()
   {
-    return boost::make_shared<ranally::language::ScriptVertex>(_statementVertices);
+    return boost::make_shared<ranally::language::ScriptVertex>(
+      _statementVertices);
   }
 };
 
@@ -54,8 +56,10 @@ public:
 class Assignment_pimpl: public ranally::language::Assignment_pskel
 {
 private:
-  std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> > _targets;
-  std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> > _expressions;
+  std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> >
+    _targets;
+  std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> >
+    _expressions;
 
 public:
   void pre()
@@ -65,14 +69,16 @@ public:
   }
 
   void Targets(
-    std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> > const& vertices)
+    std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> > const&
+      vertices)
   {
     assert(!vertices.empty());
     _targets = vertices;
   }
 
   void Expressions(
-    std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> > const& vertices)
+    std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> > const&
+      vertices)
   {
     assert(!vertices.empty());
     _expressions = vertices;
@@ -91,7 +97,8 @@ public:
 class Targets_pimpl: public ranally::language::Targets_pskel
 {
 private:
-  std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> > _vertices;
+  std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> >
+    _vertices;
 
 public:
   void pre()
@@ -106,7 +113,8 @@ public:
     _vertices.push_back(vertex);
   }
 
-  std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> > post_Targets()
+  std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> >
+    post_Targets()
   {
     assert(!_vertices.empty());
     return _vertices;
@@ -145,7 +153,8 @@ public:
   }
 
   void Statements(
-    std::vector<boost::shared_ptr<ranally::language::StatementVertex> > const& vertices)
+    std::vector<boost::shared_ptr<ranally::language::StatementVertex> > const&
+      vertices)
   {
     if(_dataStack.top().trueStatementVertices.empty()) {
       assert(!vertices.empty());
@@ -162,8 +171,9 @@ public:
     assert(!_dataStack.empty());
     IfData result(_dataStack.top());
     _dataStack.pop();
-    return boost::make_shared<ranally::language::IfVertex>(result.conditionVertex,
-      result.trueStatementVertices, result.falseStatementVertices);
+    return boost::make_shared<ranally::language::IfVertex>(
+      result.conditionVertex, result.trueStatementVertices,
+      result.falseStatementVertices);
   }
 };
 
@@ -199,7 +209,8 @@ public:
   }
 
   void Statements(
-    std::vector<boost::shared_ptr<ranally::language::StatementVertex> > const& vertices)
+    std::vector<boost::shared_ptr<ranally::language::StatementVertex> > const&
+      vertices)
   {
     if(_dataStack.top().trueStatementVertices.empty()) {
       assert(!vertices.empty());
@@ -216,8 +227,9 @@ public:
     assert(!_dataStack.empty());
     WhileData result(_dataStack.top());
     _dataStack.pop();
-    return boost::make_shared<ranally::language::WhileVertex>(result.conditionVertex,
-      result.trueStatementVertices, result.falseStatementVertices);
+    return boost::make_shared<ranally::language::WhileVertex>(
+      result.conditionVertex, result.trueStatementVertices,
+        result.falseStatementVertices);
   }
 };
 
@@ -244,7 +256,8 @@ public:
     _dataStack.top().push_back(vertex);
   }
 
-  std::vector<boost::shared_ptr<ranally::language::StatementVertex> > post_Statements()
+  std::vector<boost::shared_ptr<ranally::language::StatementVertex> >
+    post_Statements()
   {
     assert(!_dataStack.empty());
     StatementsData result(_dataStack.top());
@@ -332,7 +345,8 @@ public:
     _dataStack.top().push_back(vertex);
   }
 
-  std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> > post_Expressions()
+  std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> >
+    post_Expressions()
   {
     assert(!_dataStack.empty());
     ExpressionsData result(_dataStack.top());
@@ -376,11 +390,13 @@ public:
 
     switch(_size) {
       case 8: {
-        result = boost::make_shared<ranally::language::NumberVertex<int8_t> >(_value);
+        result = boost::make_shared<ranally::language::NumberVertex<int8_t> >(
+          _value);
         break;
       }
       case 16: {
-        result = boost::make_shared<ranally::language::NumberVertex<int16_t> >(_value);
+        result = boost::make_shared<ranally::language::NumberVertex<int16_t> >(
+          _value);
         break;
       }
       case 32: {
@@ -388,7 +404,8 @@ public:
         break;
       }
       case 64: {
-        result = boost::make_shared<ranally::language::NumberVertex<int64_t> >(_value);
+        result = boost::make_shared<ranally::language::NumberVertex<int64_t> >(
+          _value);
         break;
       }
       default: {
@@ -436,19 +453,23 @@ public:
 
     switch(_size) {
       case 8: {
-        result = boost::make_shared<ranally::language::NumberVertex<uint8_t> >(_value);
+        result = boost::make_shared<ranally::language::NumberVertex<uint8_t> >(
+          _value);
         break;
       }
       case 16: {
-        result = boost::make_shared<ranally::language::NumberVertex<uint16_t> >(_value);
+        result = boost::make_shared<ranally::language::NumberVertex<uint16_t> >(
+          _value);
         break;
       }
       case 32: {
-        result = boost::make_shared<ranally::language::NumberVertex<uint32_t> >(_value);
+        result = boost::make_shared<ranally::language::NumberVertex<uint32_t> >(
+          _value);
         break;
       }
       case 64: {
-        result = boost::make_shared<ranally::language::NumberVertex<uint64_t> >(_value);
+        result = boost::make_shared<ranally::language::NumberVertex<uint64_t> >(
+          _value);
         break;
       }
       default: {
@@ -497,12 +518,14 @@ public:
     switch(_size) {
       case 32: {
         assert(sizeof(float) == 4);
-        result = boost::make_shared<ranally::language::NumberVertex<float> >(_value);
+        result = boost::make_shared<ranally::language::NumberVertex<float> >(
+          _value);
         break;
       }
       case 64: {
         assert(sizeof(double) == 8);
-        result = boost::make_shared<ranally::language::NumberVertex<double> >(_value);
+        result = boost::make_shared<ranally::language::NumberVertex<double> >(
+          _value);
         break;
       }
       default: {
@@ -587,7 +610,8 @@ public:
   }
 
   void Expressions(
-    std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> > const& vertices)
+    std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> > const&
+      vertices)
   {
     assert(!_dataStack.empty());
     assert(_dataStack.top().expressionVertices.empty());
@@ -634,7 +658,8 @@ public:
   }
 
   void Expressions(
-    std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> > const& vertices)
+    std::vector<boost::shared_ptr<ranally::language::ExpressionVertex> > const&
+      vertices)
   {
     assert(!_dataStack.empty());
     assert(_dataStack.top().expressionVertices.empty());
@@ -699,8 +724,10 @@ public:
   {
     assert(!_dataStack.empty());
     assert(!_dataStack.top().vertex);
-    _dataStack.top().vertex = boost::make_shared<ranally::language::StringVertex>(
-      _dataStack.top().line, _dataStack.top().col, dev::decodeFromUTF8(string));
+    _dataStack.top().vertex =
+      boost::make_shared<ranally::language::StringVertex>(
+        _dataStack.top().line, _dataStack.top().col,
+          dev::decodeFromUTF8(string));
   }
 
   void Number(
@@ -749,24 +776,40 @@ public:
 namespace ranally {
 namespace language {
 
+//! Constructor.
+/*!
+*/
 XmlParser::XmlParser()
 {
 }
 
 
 
+//! Destructor.
+/*!
+*/
 XmlParser::~XmlParser()
 {
 }
 
 
 
+//! Parse the Xml in \a stream and return a syntax tree.
+/*!
+  \param     stream Stream with Xml to parse.
+  \return    Root of syntax tree.
+  \exception std::exception In case of a System category error.
+  \exception xml_schema::parsing In case of Xml category error.
+  \warning   .
+  \sa        .
+*/
 boost::shared_ptr<ScriptVertex> XmlParser::parse(
          std::istream& stream) const
 {
-  // Python stores regular integers in a C long. Xsd doesn't have a long parser, but
-  // does have an int parser. Let's make sure a long is of the same size as an int.
-  // Xsd's long parser uses long long, which is good for Pythons long integer type.
+  // Python stores regular integers in a C long. Xsd doesn't have a long
+  // parser, but does have an int parser. Let's make sure a long is of the
+  // same size as an int. Xsd's long parser uses long long, which is good
+  // for Pythons long integer type.
   assert(sizeof(int) == sizeof(long));
 
   xml_schema::positive_integer_pimpl positive_integer_p;
@@ -833,18 +876,12 @@ boost::shared_ptr<ScriptVertex> XmlParser::parse(
 
 
 
-//!
 /*!
-  \tparam    .
-  \param     .
-  \return    .
-  \exception std::exception In case of a System category error.
-  \exception xml_schema::parsing In case of Xml category error.
-  \warning   .
-  \sa        .
+  \overload
+  \param     xml String with Xml to parse.
 */
 boost::shared_ptr<ScriptVertex> XmlParser::parse(
-         UnicodeString const& xml) const
+  UnicodeString const& xml) const
 {
   // Copy string contents in a string stream and work with that.
   std::stringstream stream;

@@ -4,6 +4,11 @@
   xmlns:ranally="http://www.jemig.eu/ranally"
   targetNamespace="http://www.jemig.eu/ranally"
 >
+
+<!--
+  This is a simple schema who'se instances are relatively easy to process.
+-->
+
 <!--
   elementFormDefault="qualified"
 -->
