@@ -9,8 +9,8 @@
 #include "dev_UnicodeUtils.h"
 
 #include "AlgebraParser.h"
+#include "AstDotVisitor.h"
 #include "Ranally/Configure.h"
-#include "DotVisitor.h"
 #include "IdentifyVisitor.h"
 #include "XmlParser.h"
 #include "ScriptVertex.h"
@@ -259,7 +259,7 @@ int main(
         return EXIT_SUCCESS;
       }
 
-      ranally::DotVisitor dotVisitor;
+      ranally::AstDotVisitor astDotVisitor;
       ranally::language::ThreadVisitor threadVisitor;
       ranally::language::IdentifyVisitor identifyVisitor;
       ranally::language::AlgebraParser parser;
@@ -283,13 +283,13 @@ int main(
         ranally::language::XmlParser().parse(xml));
       tree->Accept(threadVisitor);
       tree->Accept(identifyVisitor);
-      tree->Accept(dotVisitor);
+      tree->Accept(astDotVisitor);
 
       if(argc <= 4) {
-        std::cout << dev::encodeInUTF8(dotVisitor.script()) << std::endl;
+        std::cout << dev::encodeInUTF8(astDotVisitor.script()) << std::endl;
       }
       else if(argc == 5) {
-        std::cout << dev::encodeInUTF8(dotVisitor.script()) << std::endl;
+        std::cout << dev::encodeInUTF8(astDotVisitor.script()) << std::endl;
         std::cout << "TODO write to file\n";
       }
 

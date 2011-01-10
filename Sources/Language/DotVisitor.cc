@@ -645,5 +645,29 @@ void DotVisitor::Visit(
   }
 }
 
+
+
+void DotVisitor::setScript(
+  UnicodeString const& string)
+{
+  _script = string;
+}
+
+
+
+void DotVisitor::addScript(
+  UnicodeString const& string)
+{
+  _script += string;
+}
+
+
+
+void DotVisitor::setMode(
+  Mode mode)
+{
+  _mode = mode;
+}
+
 } // namespace ranally
 

@@ -34,6 +34,7 @@ SET(SOURCES
   ${CMAKE_CURRENT_BINARY_DIR}/Ranally-pskel.cxx
   AlgebraParser.cc
   AssignmentVertex.cc
+  AstDotVisitor.cc
   DotVisitor.cc
   ExpressionVertex.cc
   FunctionVertex.cc

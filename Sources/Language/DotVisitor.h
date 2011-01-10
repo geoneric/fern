@@ -55,12 +55,7 @@ class DotVisitor: private boost::noncopyable,
 
   friend class DotVisitorTest;
 
-private:
-
-  enum Type {
-    Ast,
-    Flowgraph
-  };
+protected:
 
   enum Mode {
     Declaring,
@@ -71,6 +66,13 @@ private:
     ConnectingOperationArgument
   };
 
+private:
+
+  enum Type {
+    Ast,
+    Flowgraph
+  };
+
   UnicodeString    _script;
 
   Type             _type;
@@ -79,15 +81,12 @@ private:
 
   language::SyntaxVertex const* _definition;
 
-  void             addAstVertex        (language::SyntaxVertex const& sourceVertex,
-                                        language::SyntaxVertex const& targetVertex);
+  void             addUseVertices      (
+                                  language::NameVertex const& vertex);
 
-  void             addCfgVertices      (language::SyntaxVertex const& sourceVertex);
-
-  void             addUseVertices      (language::NameVertex const& vertex);
-
-  void             addFlowgraphVertex  (language::SyntaxVertex const& sourceVertex,
-                                        language::SyntaxVertex const& targetVertex);
+  void             addFlowgraphVertex  (
+                                  language::SyntaxVertex const& sourceVertex,
+                                  language::SyntaxVertex const& targetVertex);
 
   // void             addFlowgraphVertices(NameVertex const& vertex);
 
@@ -96,49 +95,62 @@ private:
 
 protected:
 
-public:
-
                    DotVisitor          ();
+
+  void             setScript           (UnicodeString const& string);
+
+  void             addScript           (UnicodeString const& string);
+
+  void             setMode             (Mode mode);
+
+  void             addAstVertex        (
+                                  language::SyntaxVertex const& sourceVertex,
+                                  language::SyntaxVertex const& targetVertex);
+
+  void             addCfgVertices      (
+                                  language::SyntaxVertex const& sourceVertex);
+
+public:
 
   /* virtual */    ~DotVisitor         ();
 
   UnicodeString const& script          () const;
 
-  void             Visit               (language::AssignmentVertex&);
+  virtual void     Visit               (language::AssignmentVertex&);
 
-  void             Visit               (language::FunctionVertex&);
+  virtual void     Visit               (language::FunctionVertex&);
 
-  void             Visit               (language::IfVertex&);
+  virtual void     Visit               (language::IfVertex&);
 
-  void             Visit               (language::NameVertex&);
+  virtual void     Visit               (language::NameVertex&);
 
-  void             Visit               (language::NumberVertex<int8_t>&);
+  virtual void     Visit               (language::NumberVertex<int8_t>&);
 
-  void             Visit               (language::NumberVertex<int16_t>&);
+  virtual void     Visit               (language::NumberVertex<int16_t>&);
 
-  void             Visit               (language::NumberVertex<int32_t>&);
+  virtual void     Visit               (language::NumberVertex<int32_t>&);
 
-  void             Visit               (language::NumberVertex<int64_t>&);
+  virtual void     Visit               (language::NumberVertex<int64_t>&);
 
-  void             Visit               (language::NumberVertex<uint8_t>&);
+  virtual void     Visit               (language::NumberVertex<uint8_t>&);
 
-  void             Visit               (language::NumberVertex<uint16_t>&);
+  virtual void     Visit               (language::NumberVertex<uint16_t>&);
 
-  void             Visit               (language::NumberVertex<uint32_t>&);
+  virtual void     Visit               (language::NumberVertex<uint32_t>&);
 
-  void             Visit               (language::NumberVertex<uint64_t>&);
+  virtual void     Visit               (language::NumberVertex<uint64_t>&);
 
-  void             Visit               (language::NumberVertex<float>&);
+  virtual void     Visit               (language::NumberVertex<float>&);
 
-  void             Visit               (language::NumberVertex<double>&);
+  virtual void     Visit               (language::NumberVertex<double>&);
 
-  void             Visit               (language::OperatorVertex&);
+  virtual void     Visit               (language::OperatorVertex&);
 
-  void             Visit               (language::ScriptVertex&);
+  virtual void     Visit               (language::ScriptVertex& vertex);
 
-  void             Visit               (language::StringVertex&);
+  virtual void     Visit               (language::StringVertex&);
 
-  void             Visit               (language::WhileVertex&);
+  virtual void     Visit               (language::WhileVertex&);
 
 };
 
