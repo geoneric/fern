@@ -57,21 +57,21 @@ class DotVisitor: private boost::noncopyable,
 
 protected:
 
-  enum Mode {
-    Declaring,
-    ConnectingAst,
-    ConnectingCfg,
-    ConnectingUses,
-    ConnectingFlowgraph,
-    ConnectingOperationArgument
-  };
-
-private:
-
   enum Type {
     Ast,
     Flowgraph
   };
+
+  enum Mode {
+    Declaring,
+    ConnectingAst,
+    ConnectingCfg,
+    ConnectingUses /// ,
+    /// ConnectingFlowgraph,
+    /// ConnectingOperationArgument
+  };
+
+private:
 
   UnicodeString    _script;
 
@@ -79,7 +79,7 @@ private:
 
   Mode             _mode;
 
-  language::SyntaxVertex const* _definition;
+  /// language::SyntaxVertex const* _definition;
 
   void             addUseVertices      (
                                   language::NameVertex const& vertex);
@@ -95,13 +95,15 @@ private:
 
 protected:
 
-                   DotVisitor          ();
+                   DotVisitor          (Type type);
 
   void             setScript           (UnicodeString const& string);
 
   void             addScript           (UnicodeString const& string);
 
   void             setMode             (Mode mode);
+
+  Mode             mode                () const;
 
   void             addAstVertex        (
                                   language::SyntaxVertex const& sourceVertex,
@@ -146,7 +148,7 @@ public:
 
   virtual void     Visit               (language::OperatorVertex&);
 
-  virtual void     Visit               (language::ScriptVertex& vertex);
+  virtual void     Visit               (language::ScriptVertex& vertex)=0;
 
   virtual void     Visit               (language::StringVertex&);
 

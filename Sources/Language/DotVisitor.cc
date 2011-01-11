@@ -9,11 +9,12 @@
 
 namespace ranally {
 
-DotVisitor::DotVisitor()
+DotVisitor::DotVisitor(
+  Type type)
 
-  : _type(Flowgraph),
-    _mode(Declaring),
-    _definition(0)
+  : _type(type),
+    _mode(Declaring) /// ,
+    /// _definition(0)
 
 {
 }
@@ -51,7 +52,8 @@ void DotVisitor::addCfgVertices(
   language::SyntaxVertex const& sourceVertex)
 {
   assert(_mode == ConnectingCfg);
-  BOOST_FOREACH(language::SyntaxVertex const* successor, sourceVertex.successors()) {
+  BOOST_FOREACH(language::SyntaxVertex const* successor,
+    sourceVertex.successors()) {
     _script +=
       UnicodeString((boost::format("\"%1%\"") % &sourceVertex).str().c_str()) +
       " -> " +
@@ -84,29 +86,32 @@ void DotVisitor::addUseVertices(
 
 
 void DotVisitor::addFlowgraphVertex(
-  language::SyntaxVertex const& sourceVertex,
-  language::SyntaxVertex const& targetVertex)
+  language::SyntaxVertex const& /* sourceVertex */,
+  language::SyntaxVertex const& /* targetVertex */)
 {
-  assert(_mode == ConnectingFlowgraph);
+  /// assert(_mode == ConnectingFlowgraph);
 
-  // In case the operation argument is a NameVertex, We want to connect the
-  // defining location to the target. Let's find the definition. This only
-  // succeeds if the source vertex is a NameVertex and if it has a definition.
-  assert(!_definition);
-  _mode = ConnectingOperationArgument;
-  const_cast<language::SyntaxVertex&>(sourceVertex).Accept(*this);
-  language::SyntaxVertex const* newSourceVertex = _definition
-    ? _definition
-    : &sourceVertex;
+  /// // In case the operation argument is a NameVertex, we want to connect the
+  /// // defining location to the target. Let's find the definition. This only
+  /// // succeeds if the source vertex is a NameVertex and if it has a definition.
+  /// // TODO Can't we depend on preprocessing (clean up) of the tree, instead of
+  /// //      diving in? We may want to show the current state of the tree, whatever
+  /// //      it is, instead of optimizing the plot by finding stuff ourselves.
+  /// assert(!_definition);
+  /// _mode = ConnectingOperationArgument;
+  /// const_cast<language::SyntaxVertex&>(sourceVertex).Accept(*this);
+  /// language::SyntaxVertex const* newSourceVertex = _definition
+  ///   ? _definition
+  ///   : &sourceVertex;
 
-  _script +=
-    UnicodeString((boost::format("\"%1%\"") % newSourceVertex).str().c_str()) +
-    " -> " +
-    (boost::format("\"%1%\"") % &targetVertex).str().c_str() + " ["
-    "];\n";
+  /// _script +=
+  ///   UnicodeString((boost::format("\"%1%\"") % newSourceVertex).str().c_str()) +
+  ///   " -> " +
+  ///   (boost::format("\"%1%\"") % &targetVertex).str().c_str() + " ["
+  ///   "];\n";
 
-  _mode = ConnectingFlowgraph;
-  _definition = 0;
+  /// _mode = ConnectingFlowgraph;
+  /// _definition = 0;
 }
 
 
@@ -157,41 +162,41 @@ void DotVisitor::Visit(
     case ConnectingUses: {
       break;
     }
-    case ConnectingFlowgraph: {
-      assert(expressions.size() == targets.size());
-      for(size_t i = 0; i < expressions.size(); ++i) {
-        addFlowgraphVertex(*vertex.expressions()[i], *vertex.targets()[i]);
-      }
+    /// case ConnectingFlowgraph: {
+    ///   assert(expressions.size() == targets.size());
+    ///   for(size_t i = 0; i < expressions.size(); ++i) {
+    ///     addFlowgraphVertex(*vertex.expressions()[i], *vertex.targets()[i]);
+    ///   }
 
-      // hier verder
-      // a = b + c
-      // d = f(a)
+    ///   // hier verder
+    ///   // a = b + c
+    ///   // d = f(a)
 
-      // b -> +
-      // c -> +
-      // + -> f
-      //
-      // Prereq: For each name it must be known what the address is of the
-      //         defining expression.
-      // 1. defining expression of operands -> operator
-      // 2. defining expression of arguments -> functions
-      //
-      // Connect defining occurrence with use occurrence of identifiers.
-      //
-      // assert(expressions.size() == targets.size());
-      // for(size_t i = 0; i < expressions.size(); ++i) {
-      //   NameVertex* nameVertex = dynamic_cast<NameVertex*>(targets[i]);
-      //   assert(nameVertex);
-      // }
+    ///   // b -> +
+    ///   // c -> +
+    ///   // + -> f
+    ///   //
+    ///   // Prereq: For each name it must be known what the address is of the
+    ///   //         defining expression.
+    ///   // 1. defining expression of operands -> operator
+    ///   // 2. defining expression of arguments -> functions
+    ///   //
+    ///   // Connect defining occurrence with use occurrence of identifiers.
+    ///   //
+    ///   // assert(expressions.size() == targets.size());
+    ///   // for(size_t i = 0; i < expressions.size(); ++i) {
+    ///   //   NameVertex* nameVertex = dynamic_cast<NameVertex*>(targets[i]);
+    ///   //   assert(nameVertex);
+    ///   // }
 
-      break;
-    }
-    case ConnectingOperationArgument: {
-      break;
-    }
+    ///   break;
+    /// }
+    /// case ConnectingOperationArgument: {
+    ///   break;
+    /// }
   }
 
-  if(_mode != ConnectingOperationArgument) {
+  /// if(_mode != ConnectingOperationArgument) {
     BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
       expressionVertex, vertex.expressions()) {
       expressionVertex->Accept(*this);
@@ -201,7 +206,7 @@ void DotVisitor::Visit(
       expressionVertex, vertex.targets()) {
       expressionVertex->Accept(*this);
     }
-  }
+  /// }
 }
 
 
@@ -230,21 +235,21 @@ void DotVisitor::Visit(
     case ConnectingUses: {
       break;
     }
-    case ConnectingFlowgraph: {
-      BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
-        expressionVertex, vertex.expressions()) {
-        addFlowgraphVertex(*expressionVertex, vertex);
-      }
-      break;
-    }
+    /// case ConnectingFlowgraph: {
+    ///   BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
+    ///     expressionVertex, vertex.expressions()) {
+    ///     addFlowgraphVertex(*expressionVertex, vertex);
+    ///   }
+    ///   break;
+    /// }
   }
 
-  if(_mode != ConnectingOperationArgument) {
+  /// if(_mode != ConnectingOperationArgument) {
     BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
       expressionVertex, vertex.expressions()) {
       expressionVertex->Accept(*this);
     }
-  }
+  /// }
 }
 
 
@@ -274,83 +279,84 @@ void DotVisitor::Visit(
     case ConnectingUses: {
       break;
     }
-    case ConnectingFlowgraph: {
-      BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
-        expressionVertex, vertex.expressions()) {
-        addFlowgraphVertex(*expressionVertex, vertex);
-      }
-      break;
-    }
+    /// case ConnectingFlowgraph: {
+    ///   BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
+    ///     expressionVertex, vertex.expressions()) {
+    ///     addFlowgraphVertex(*expressionVertex, vertex);
+    ///   }
+    ///   break;
+    /// }
   }
 
-  if(_mode != ConnectingOperationArgument) {
+  /// if(_mode != ConnectingOperationArgument) {
     BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
       expressionVertex, vertex.expressions()) {
       expressionVertex->Accept(*this);
     }
-  }
+  /// }
 }
 
 
 
-void DotVisitor::Visit(
-  language::ScriptVertex& vertex)
-{
-  _script = UnicodeString((boost::format(
-    "digraph G {\n"
-    "rankdir=%1%;\n"
-    ) % (_type == Ast ? "BT" : "LR")).str().c_str());
-
-  _mode = Declaring;
-  if(_type != Flowgraph) {
-    // TODO Use script name.
-    _script +=
-      UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
-      " [label=\"Script\"];\n";
-  }
-  BOOST_FOREACH(boost::shared_ptr<language::StatementVertex> statementVertex,
-    vertex.statements()) {
-    statementVertex->Accept(*this);
-  }
-
-  switch(_type) {
-    case Ast: {
-      _mode = ConnectingAst;
-      BOOST_FOREACH(boost::shared_ptr<language::StatementVertex> statementVertex,
-        vertex.statements()) {
-        addAstVertex(vertex, *statementVertex);
-        statementVertex->Accept(*this);
-      }
-
-      _mode = ConnectingCfg;
-      addCfgVertices(vertex);
-      BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
-        statementVertex, vertex.statements()) {
-        statementVertex->Accept(*this);
-      }
-
-      _mode = ConnectingUses;
-      BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
-        statementVertex, vertex.statements()) {
-        statementVertex->Accept(*this);
-      }
-
-      break;
-    }
-    case Flowgraph: {
-      _mode = ConnectingFlowgraph;
-
-      BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
-        statementVertex, vertex.statements()) {
-        statementVertex->Accept(*this);
-      }
-
-      break;
-    }
-  }
-
-  _script += "}\n";
-}
+// void DotVisitor::Visit(
+//   language::ScriptVertex& vertex)
+// {
+//   _script = UnicodeString((boost::format(
+//     "digraph G {\n"
+//     "rankdir=%1%;\n"
+//   ) % (_type == Ast ? "BT" : "LR")).str().c_str());
+// 
+//   _mode = Declaring;
+//   if(_type != Flowgraph) {
+//     // TODO Use script name.
+//     _script +=
+//       UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+//       " [label=\"Script\"];\n";
+//   }
+//   BOOST_FOREACH(boost::shared_ptr<language::StatementVertex> statementVertex,
+//     vertex.statements()) {
+//     statementVertex->Accept(*this);
+//   }
+// 
+//   switch(_type) {
+//     case Ast: {
+//       assert(false);
+//       // _mode = ConnectingAst;
+//       // BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+//       //   statementVertex, vertex.statements()) {
+//       //   addAstVertex(vertex, *statementVertex);
+//       //   statementVertex->Accept(*this);
+//       // }
+// 
+//       // _mode = ConnectingCfg;
+//       // addCfgVertices(vertex);
+//       // BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+//       //   statementVertex, vertex.statements()) {
+//       //   statementVertex->Accept(*this);
+//       // }
+// 
+//       // _mode = ConnectingUses;
+//       // BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+//       //   statementVertex, vertex.statements()) {
+//       //   statementVertex->Accept(*this);
+//       // }
+// 
+//       break;
+//     }
+//     case Flowgraph: {
+//       _mode = ConnectingFlowgraph;
+// 
+//       BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+//         statementVertex, vertex.statements()) {
+//         statementVertex->Accept(*this);
+//       }
+// 
+//       break;
+//     }
+//   }
+// 
+//   _script += "}\n";
+// }
 
 
 
@@ -403,16 +409,16 @@ void DotVisitor::Visit(
       addUseVertices(vertex);
       break;
     }
-    case ConnectingFlowgraph: {
-      // addFlowgraphVertices(vertex);
-      break;
-    }
-    case ConnectingOperationArgument: {
-      assert(!_definition);
-      // The vertex.definition() can be 0.
-      _definition = vertex.definition();
-      break;
-    }
+    /// case ConnectingFlowgraph: {
+    ///   // addFlowgraphVertices(vertex);
+    ///   break;
+    /// }
+    /// case ConnectingOperationArgument: {
+    ///   assert(!_definition);
+    ///   // The vertex.definition() can be 0.
+    ///   _definition = vertex.definition();
+    ///   break;
+    /// }
   }
 }
 
@@ -554,24 +560,24 @@ void DotVisitor::Visit(
     case ConnectingUses: {
       break;
     }
-    case ConnectingFlowgraph: {
-      addFlowgraphVertex(*vertex.condition(), vertex);
+    /// case ConnectingFlowgraph: {
+    ///   addFlowgraphVertex(*vertex.condition(), vertex);
 
-      // TODO Turn these statements into a sub graph.
-      //      There is no flow graph connection to a certain expression, but
-      //      just to the sub graph and from the sub graph.
+    ///   // TODO Turn these statements into a sub graph.
+    ///   //      There is no flow graph connection to a certain expression, but
+    ///   //      just to the sub graph and from the sub graph.
 
-      BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
-        statementVertex, vertex.trueStatements()) {
-        addFlowgraphVertex(*statementVertex, vertex);
-      }
-      BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
-        statementVertex, vertex.falseStatements()) {
-        addFlowgraphVertex(*statementVertex, vertex);
-      }
+    ///   BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+    ///     statementVertex, vertex.trueStatements()) {
+    ///     addFlowgraphVertex(*statementVertex, vertex);
+    ///   }
+    ///   BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+    ///     statementVertex, vertex.falseStatements()) {
+    ///     addFlowgraphVertex(*statementVertex, vertex);
+    ///   }
 
-      break;
-    }
+    ///   break;
+    /// }
     // case ConnectingOperationArgument: {
     //   break;
     // }
@@ -593,7 +599,7 @@ void DotVisitor::Visit(
 void DotVisitor::Visit(
   language::WhileVertex& vertex)
 {
-  assert(_mode != ConnectingOperationArgument);
+  /// assert(_mode != ConnectingOperationArgument);
   switch(_mode) {
     case Declaring: {
       _script +=
@@ -620,18 +626,18 @@ void DotVisitor::Visit(
     case ConnectingUses: {
       break;
     }
-    case ConnectingFlowgraph: {
-      addFlowgraphVertex(*vertex.condition(), vertex);
-      // BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
-      //   statementVertex, vertex.trueStatements()) {
-      //   addFlowgraphVertex(*statementVertex, vertex);
-      // }
-      // BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
-      //   statementVertex, vertex.falseStatements()) {
-      //   addFlowgraphVertex(*statementVertex, vertex);
-      // }
-      break;
-    }
+    /// case ConnectingFlowgraph: {
+    ///   addFlowgraphVertex(*vertex.condition(), vertex);
+    ///   // BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+    ///   //   statementVertex, vertex.trueStatements()) {
+    ///   //   addFlowgraphVertex(*statementVertex, vertex);
+    ///   // }
+    ///   // BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+    ///   //   statementVertex, vertex.falseStatements()) {
+    ///   //   addFlowgraphVertex(*statementVertex, vertex);
+    ///   // }
+    ///   break;
+    /// }
   }
 
   vertex.condition()->Accept(*this);
@@ -667,6 +673,13 @@ void DotVisitor::setMode(
   Mode mode)
 {
   _mode = mode;
+}
+
+
+
+DotVisitor::Mode DotVisitor::mode() const
+{
+  return _mode;
 }
 
 } // namespace ranally

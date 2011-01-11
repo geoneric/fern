@@ -3,6 +3,9 @@
 #include <iostream>
 #include <sstream>
 #include <boost/algorithm/string/join.hpp>
+#include <boost/scoped_ptr.hpp>
+#include <boost/spirit/include/phoenix_core.hpp>
+#include <boost/spirit/include/phoenix_operator.hpp>
 #include <boost/spirit/include/qi.hpp>
 #include <boost/spirit/include/qi_lit.hpp>
 
@@ -16,6 +19,59 @@
 #include "ScriptVertex.h"
 #include "ScriptVisitor.h"
 #include "ThreadVisitor.h"
+
+
+
+
+
+
+class Command
+{
+private:
+
+  std::string      _commandLine;
+
+protected:
+
+  Command(
+    std::string commandLine)
+    : _commandLine(commandLine)
+  {
+  }
+
+public:
+
+  virtual int      execute             ()=0;
+
+};
+
+
+
+class ConvertCommand: public Command
+{
+private:
+
+protected:
+
+public:
+
+  ConvertCommand(
+    std::string const& commandLine)
+    : Command(commandLine)
+  {
+  }
+
+  int execute()
+  {
+    return EXIT_SUCCESS;
+  }
+
+};
+
+
+
+
+
 
 
 
@@ -180,14 +236,84 @@ int main(
   //           cpp
   //           python
 
+
+
+
   // {
   //   // Convert arguments to string.
   //   std::vector<std::string> strings(argv, argv + argc);
   //   std::string string = boost::algorithm::join(strings, " ");
 
-  //   std::cout << "parsing: " << string << std::endl;
+  //   namespace bs = boost::spirit;
+  //   namespace bp = boost::phoenix;
+
+  //   std::string option;
+  //   std::string commandName;
+
+  //   std::string::iterator first(string.begin());
+  //   std::string::iterator last(string.end());
+  //   bool result = bs::qi::phrase_parse(first, last,
+  //     boost::spirit::lit(std::string(argv[0])) >>
+  //     (
+  //       bs::lit(std::string("--help"))[bp::ref(option) = "help"] |
+  //       bs::lit(std::string("--build"))[bp::ref(option) = "build"] |
+  //       bs::lit(std::string("--version"))[bp::ref(option) = "version"] |
+  //       (
+  //         bs::lit(std::string("execute"))[bp::ref(commandName) = "execute"] |
+  //         bs::lit(std::string("convert"))[bp::ref(commandName) = "convert"]
+  //       )
+  //     )
+  //     , boost::spirit::ascii::space);
+
+  //   if(!result) {
+  //     std::cerr << "Error while parsing command line\n";
+  //     std::cerr << "See 'ranally --help' for usage information.\n";
+  //     return EXIT_FAILURE;
+  //   }
+  //   else {
+  //     int status = EXIT_SUCCESS;
+
+  //     if(option == "help") {
+  //       showGeneralHelp();
+  //     }
+  //     else if(option == "build") {
+  //       showBuild();
+  //     }
+  //     else if(option == "version") {
+  //       showVersion();
+  //     }
+  //     else {
+  //       assert(option.empty());
+  //       assert(!commandName.empty());
+
+  //       std::string remainder(first, last);
+  //       boost::scoped_ptr<Command> command;
+
+  //       if(commandName == "convert") {
+  //         command.reset(new ConvertCommand(remainder));
+  //       }
+  //       else if(commandName == "execute") {
+  //         // TODO
+  //       }
+  //       else {
+  //         assert(false);
+  //       }
+
+  //       status = command->execute();
+  //     }
+
+  //     return status;
+  //   }
+  // }
+
+
+
+
+  //   std::string command;
 
   //   namespace bs = boost::spirit;
+  //   namespace bp = boost::phoenix;
+  //   using bs::qi::_1;
 
   //   std::string::iterator first(string.begin());
   //   std::string::iterator last(string.end());
@@ -202,7 +328,7 @@ int main(
   //         +bs::qi::alnum
   //       ) |
   //       (
-  //         bs::lit(std::string("convert")) >>
+  //         bs::lit(std::string("convert"))[bp::ref(command) = "convert"] >>
   //         (
   //           (
   //             bs::lit(std::string("ranally")) >>
@@ -210,9 +336,9 @@ int main(
   //             +bs::qi::alnum
   //           ) |
   //           (
-  //             bs::lit(std::string("dot")) |
-  //             bs::lit(std::string("--output")) >>
-  //             +bs::qi::alnum
+  //             bs::lit(std::string("dot")) >>
+  //             -bs::lit(std::string("--output")) >>
+  //             -(+bs::qi::alnum)
   //           ) |
   //           bs::lit(std::string("cpp")) |
   //           bs::lit(std::string("python"))
@@ -227,9 +353,14 @@ int main(
   //   }
   //   else {
   //     std::cout << "success parsing!" << std::endl;
+  //     std::cout << "command: " << command << std::endl;
   //     return EXIT_SUCCESS;
   //   }
   // }
+
+
+
+
 
   if(argc == 1 || std::strcmp(argv[1], "--help") == 0) {
     // No arguments, or the help option.

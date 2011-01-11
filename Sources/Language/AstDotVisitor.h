@@ -30,49 +30,49 @@ public:
 
   /* virtual */    ~AstDotVisitor      ();
 
-  void             Visit               (language::AssignmentVertex& vertex);
+  // void             Visit               (language::AssignmentVertex& vertex);
 
-  void             Visit               (language::FunctionVertex& vertex);
+  // void             Visit               (language::FunctionVertex& vertex);
 
-  void             Visit               (language::IfVertex& vertex);
+  // void             Visit               (language::IfVertex& vertex);
 
-  void             Visit               (language::NameVertex& vertex);
+  // void             Visit               (language::NameVertex& vertex);
 
-  void             Visit               (
-                                  language::NumberVertex<int8_t>& vertex);
+  // void             Visit               (
+  //                                 language::NumberVertex<int8_t>& vertex);
 
-  void             Visit               (
-                                  language::NumberVertex<int16_t>& vertex);
+  // void             Visit               (
+  //                                 language::NumberVertex<int16_t>& vertex);
 
-  void             Visit               (
-                                  language::NumberVertex<int32_t>& vertex);
+  // void             Visit               (
+  //                                 language::NumberVertex<int32_t>& vertex);
 
-  void             Visit               (
-                                  language::NumberVertex<int64_t>& vertex);
+  // void             Visit               (
+  //                                 language::NumberVertex<int64_t>& vertex);
 
-  void             Visit               (
-                                  language::NumberVertex<uint8_t>& vertex);
+  // void             Visit               (
+  //                                 language::NumberVertex<uint8_t>& vertex);
 
-  void             Visit               (
-                                  language::NumberVertex<uint16_t>& vertex);
+  // void             Visit               (
+  //                                 language::NumberVertex<uint16_t>& vertex);
 
-  void             Visit               (
-                                  language::NumberVertex<uint32_t>& vertex);
+  // void             Visit               (
+  //                                 language::NumberVertex<uint32_t>& vertex);
 
-  void             Visit               (
-                                  language::NumberVertex<uint64_t>& vertex);
+  // void             Visit               (
+  //                                 language::NumberVertex<uint64_t>& vertex);
 
-  void             Visit               (language::NumberVertex<float>& vertex);
+  // void             Visit               (language::NumberVertex<float>& vertex);
 
-  void             Visit               (language::NumberVertex<double>& vertex);
+  // void             Visit               (language::NumberVertex<double>& vertex);
 
-  void             Visit               (language::OperatorVertex& vertex);
+  // void             Visit               (language::OperatorVertex& vertex);
 
   void             Visit               (language::ScriptVertex& vertex);
 
-  void             Visit               (language::StringVertex& vertex);
+  // void             Visit               (language::StringVertex& vertex);
 
-  void             Visit               (language::WhileVertex& vertex);
+  // void             Visit               (language::WhileVertex& vertex);
 
 };
 
