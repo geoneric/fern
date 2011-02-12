@@ -1,7 +1,7 @@
 PROJECT_NAME            = ${PROJECT_NAME}
 
-INPUT                   = ${CMAKE_CURRENT_SOURCE_DIR}/Language \
-                          ${CMAKE_CURRENT_BINARY_DIR}/Language
+INPUT                   = ${CMAKE_CURRENT_SOURCE_DIR}/Ranally \
+                          ${CMAKE_CURRENT_BINARY_DIR}/Ranally
 
 ALWAYS_DETAILED_SEC     = YES
 INLINE_INHERITED_MEMB   = YES
