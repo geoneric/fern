@@ -1,12 +1,11 @@
-#include "SymbolTableTest.h"
+#include "Ranally/Language/SymbolTableTest.h"
 
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
-
-#include "SymbolTable.h"
-#include "NameVertex.h"
+#include "Ranally/Language/SymbolTable.h"
+#include "Ranally/Language/NameVertex.h"
 
 
 

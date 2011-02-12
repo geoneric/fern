@@ -1,9 +1,9 @@
-#ifndef INCLUDED_RANALLY_THREADVISITORTEST
-#define INCLUDED_RANALLY_THREADVISITORTEST
+#ifndef INCLUDED_RANALLY_LANGUAGE_THREADVISITORTEST
+#define INCLUDED_RANALLY_LANGUAGE_THREADVISITORTEST
 
-#include "AlgebraParser.h"
-#include "XmlParser.h"
-#include "ThreadVisitor.h"
+#include "Ranally/Language/AlgebraParser.h"
+#include "Ranally/Language/XmlParser.h"
+#include "Ranally/Language/ThreadVisitor.h"
 
 
 

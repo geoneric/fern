@@ -1,7 +1,7 @@
-#ifndef INCLUDED_RANALLY_NAMEVERTEX
-#define INCLUDED_RANALLY_NAMEVERTEX
+#ifndef INCLUDED_RANALLY_LANGUAGE_NAMEVERTEX
+#define INCLUDED_RANALLY_LANGUAGE_NAMEVERTEX
 
-#include "ExpressionVertex.h"
+#include "Ranally/Language/ExpressionVertex.h"
 
 
 

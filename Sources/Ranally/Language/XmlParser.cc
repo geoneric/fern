@@ -1,21 +1,18 @@
-#include "XmlParser.h"
+#include "Ranally/Language/XmlParser.h"
 
 #include <sstream>
 #include <stack>
 #include <boost/make_shared.hpp>
-
 #include "dev_UnicodeUtils.h"
-
 #include "Ranally-pskel.hxx"
-
-#include "FunctionVertex.h"
-#include "IfVertex.h"
-#include "NameVertex.h"
-#include "NumberVertex.h"
-#include "OperatorVertex.h"
-#include "StringVertex.h"
-#include "SyntaxVertex.h"
-#include "WhileVertex.h"
+#include "Ranally/Language/FunctionVertex.h"
+#include "Ranally/Language/IfVertex.h"
+#include "Ranally/Language/NameVertex.h"
+#include "Ranally/Language/NumberVertex.h"
+#include "Ranally/Language/OperatorVertex.h"
+#include "Ranally/Language/StringVertex.h"
+#include "Ranally/Language/SyntaxVertex.h"
+#include "Ranally/Language/WhileVertex.h"
 
 
 

@@ -1,9 +1,9 @@
-#ifndef INCLUDED_RANALLY_SCRIPTVISITORTEST
-#define INCLUDED_RANALLY_SCRIPTVISITORTEST
+#ifndef INCLUDED_RANALLY_LANGUAGE_SCRIPTVISITORTEST
+#define INCLUDED_RANALLY_LANGUAGE_SCRIPTVISITORTEST
 
-#include "AlgebraParser.h"
-#include "XmlParser.h"
-#include "ScriptVisitor.h"
+#include "Ranally/Language/AlgebraParser.h"
+#include "Ranally/Language/XmlParser.h"
+#include "Ranally/Language/ScriptVisitor.h"
 
 
 

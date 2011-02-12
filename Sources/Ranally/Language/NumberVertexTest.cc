@@ -1,4 +1,4 @@
-#include "NumberVertexTest.h"
+#include "Ranally/Language/NumberVertexTest.h"
 
 #include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>

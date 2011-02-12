@@ -1,4 +1,4 @@
-#include "ScriptVertexTest.h"
+#include "Ranally/Language/ScriptVertexTest.h"
 
 #include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>

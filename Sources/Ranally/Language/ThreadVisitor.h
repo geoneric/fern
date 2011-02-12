@@ -1,10 +1,9 @@
-#ifndef INCLUDED_RANALLY_THREADVISITOR
-#define INCLUDED_RANALLY_THREADVISITOR
+#ifndef INCLUDED_RANALLY_LANGUAGE_THREADVISITOR
+#define INCLUDED_RANALLY_LANGUAGE_THREADVISITOR
 
 #include <boost/noncopyable.hpp>
 #include <loki/Visitor.h>
-
-#include "SyntaxVertex.h"
+#include "Ranally/Language/SyntaxVertex.h"
 
 
 

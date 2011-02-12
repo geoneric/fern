@@ -1,9 +1,9 @@
-#ifndef INCLUDED_RANALLY_IDENTIFYVISITORTEST
-#define INCLUDED_RANALLY_IDENTIFYVISITORTEST
+#ifndef INCLUDED_RANALLY_LANGUAGE_IDENTIFYVISITORTEST
+#define INCLUDED_RANALLY_LANGUAGE_IDENTIFYVISITORTEST
 
-#include "AlgebraParser.h"
-#include "XmlParser.h"
-#include "IdentifyVisitor.h"
+#include "Ranally/Language/AlgebraParser.h"
+#include "Ranally/Language/XmlParser.h"
+#include "Ranally/Language/IdentifyVisitor.h"
 
 
 

@@ -1,4 +1,4 @@
-#include "NameVertexTest.h"
+#include "Ranally/Language/NameVertexTest.h"
 
 #include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>

@@ -1,15 +1,14 @@
-#include "IdentifyVisitorTest.h"
+#include "Ranally/Language/IdentifyVisitorTest.h"
 
 #include <iostream>
 #include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
-
-#include "AssignmentVertex.h"
-#include "IfVertex.h"
-#include "FunctionVertex.h"
-#include "NameVertex.h"
-#include "ScriptVertex.h"
+#include "Ranally/Language/AssignmentVertex.h"
+#include "Ranally/Language/IfVertex.h"
+#include "Ranally/Language/FunctionVertex.h"
+#include "Ranally/Language/NameVertex.h"
+#include "Ranally/Language/ScriptVertex.h"
 
 
 

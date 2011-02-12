@@ -1,8 +1,8 @@
+#include "Ranally/Language/ThreadVisitor.h"
+
 #include <iostream>
 #include <boost/foreach.hpp>
-
-#include "ThreadVisitor.h"
-#include "Vertices.h"
+#include "Ranally/Language/Vertices.h"
 
 
 

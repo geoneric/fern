@@ -1,11 +1,10 @@
-#ifndef INCLUDED_RANALLY_DOTVISITOR
-#define INCLUDED_RANALLY_DOTVISITOR
+#ifndef INCLUDED_RANALLY_LANGUAGE_DOTVISITOR
+#define INCLUDED_RANALLY_LANGUAGE_DOTVISITOR
 
 #include <boost/noncopyable.hpp>
 #include <loki/Visitor.h>
 #include <unicode/unistr.h>
-
-#include "SyntaxVertex.h"
+#include "Ranally/Language/SyntaxVertex.h"
 
 
 

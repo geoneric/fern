@@ -1,4 +1,4 @@
-#include "StringVertexTest.h"
+#include "Ranally/Language/StringVertexTest.h"
 
 #include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>

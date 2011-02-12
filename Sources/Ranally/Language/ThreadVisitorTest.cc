@@ -1,17 +1,15 @@
-#include "ThreadVisitorTest.h"
+#include "Ranally/Language/ThreadVisitorTest.h"
 
 #include <iostream>
 #include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
-
 #include "dev_UnicodeUtils.h"
-
-#include "AssignmentVertex.h"
-#include "FunctionVertex.h"
-#include "IfVertex.h"
-#include "OperatorVertex.h"
-#include "ScriptVertex.h"
+#include "Ranally/Language/AssignmentVertex.h"
+#include "Ranally/Language/FunctionVertex.h"
+#include "Ranally/Language/IfVertex.h"
+#include "Ranally/Language/OperatorVertex.h"
+#include "Ranally/Language/ScriptVertex.h"
 
 
 

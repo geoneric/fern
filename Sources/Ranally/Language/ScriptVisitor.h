@@ -1,11 +1,10 @@
-#ifndef INCLUDED_RANALLY_SCRIPTVISITOR
-#define INCLUDED_RANALLY_SCRIPTVISITOR
+#ifndef INCLUDED_RANALLY_LANGUAGE_SCRIPTVISITOR
+#define INCLUDED_RANALLY_LANGUAGE_SCRIPTVISITOR
 
 #include <boost/noncopyable.hpp>
 #include <loki/Visitor.h>
 #include <unicode/unistr.h>
-
-#include "SyntaxVertex.h"
+#include "Ranally/Language/SyntaxVertex.h"
 
 
 

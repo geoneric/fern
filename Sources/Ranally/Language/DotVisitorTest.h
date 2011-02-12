@@ -1,9 +1,9 @@
-#ifndef INCLUDED_RANALLY_DOTVISITORTEST
-#define INCLUDED_RANALLY_DOTVISITORTEST
+#ifndef INCLUDED_RANALLY_LANGUAGE_DOTVISITORTEST
+#define INCLUDED_RANALLY_LANGUAGE_DOTVISITORTEST
 
-#include "AlgebraParser.h"
-#include "XmlParser.h"
-#include "DotVisitor.h"
+#include "Ranally/Language/AlgebraParser.h"
+#include "Ranally/Language/XmlParser.h"
+#include "Ranally/Language/DotVisitor.h"
 
 
 

@@ -1,9 +1,8 @@
-#ifndef INCLUDED_RANALLY_ASTDOTVISITOR
-#define INCLUDED_RANALLY_ASTDOTVISITOR
+#ifndef INCLUDED_RANALLY_LANGUAGE_ASTDOTVISITOR
+#define INCLUDED_RANALLY_LANGUAGE_ASTDOTVISITOR
 
 #include <boost/noncopyable.hpp>
-
-#include "DotVisitor.h"
+#include "Ranally/Language/DotVisitor.h"
 
 
 

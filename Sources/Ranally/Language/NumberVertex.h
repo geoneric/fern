@@ -1,9 +1,8 @@
-#ifndef INCLUDED_RANALLY_NUMBERVERTEX
-#define INCLUDED_RANALLY_NUMBERVERTEX
+#ifndef INCLUDED_RANALLY_LANGUAGE_NUMBERVERTEX
+#define INCLUDED_RANALLY_LANGUAGE_NUMBERVERTEX
 
 #include <unicode/unistr.h>
-
-#include "ExpressionVertex.h"
+#include "Ranally/Language/ExpressionVertex.h"
 
 
 

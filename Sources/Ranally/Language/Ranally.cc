@@ -8,17 +8,15 @@
 #include <boost/spirit/include/phoenix_operator.hpp>
 #include <boost/spirit/include/qi.hpp>
 #include <boost/spirit/include/qi_lit.hpp>
-
 #include "dev_UnicodeUtils.h"
-
-#include "AlgebraParser.h"
-#include "AstDotVisitor.h"
 #include "Ranally/Configure.h"
-#include "IdentifyVisitor.h"
-#include "XmlParser.h"
-#include "ScriptVertex.h"
-#include "ScriptVisitor.h"
-#include "ThreadVisitor.h"
+#include "Ranally/Language/AlgebraParser.h"
+#include "Ranally/Language/AstDotVisitor.h"
+#include "Ranally/Language/IdentifyVisitor.h"
+#include "Ranally/Language/XmlParser.h"
+#include "Ranally/Language/ScriptVertex.h"
+#include "Ranally/Language/ScriptVisitor.h"
+#include "Ranally/Language/ThreadVisitor.h"
 
 
 

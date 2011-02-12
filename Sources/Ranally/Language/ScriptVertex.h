@@ -1,7 +1,7 @@
-#ifndef INCLUDED_RANALLY_SCRIPTVERTEX
-#define INCLUDED_RANALLY_SCRIPTVERTEX
+#ifndef INCLUDED_RANALLY_LANGUAGE_SCRIPTVERTEX
+#define INCLUDED_RANALLY_LANGUAGE_SCRIPTVERTEX
 
-#include "StatementVertex.h"
+#include "Ranally/Language/StatementVertex.h"
 
 
 

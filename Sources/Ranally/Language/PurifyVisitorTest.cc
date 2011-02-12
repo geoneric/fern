@@ -1,4 +1,4 @@
-#include "PurifyVisitorTest.h"
+#include "Ranally/Language/PurifyVisitorTest.h"
 
 #include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>

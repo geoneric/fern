@@ -1,8 +1,8 @@
-#ifndef INCLUDED_RANALLY_ASSIGNMENTVERTEX
-#define INCLUDED_RANALLY_ASSIGNMENTVERTEX
+#ifndef INCLUDED_RANALLY_LANGUAGE_ASSIGNMENTVERTEX
+#define INCLUDED_RANALLY_LANGUAGE_ASSIGNMENTVERTEX
 
-#include "ExpressionVertex.h"
-#include "StatementVertex.h"
+#include "Ranally/Language/ExpressionVertex.h"
+#include "Ranally/Language/StatementVertex.h"
 
 
 

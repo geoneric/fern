@@ -1,9 +1,8 @@
-#include "AstDotVisitor.h"
+#include "Ranally/Language/AstDotVisitor.h"
 
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
-
-#include "Vertices.h"
+#include "Ranally/Language/Vertices.h"
 
 
 

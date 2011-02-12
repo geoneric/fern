@@ -1,4 +1,4 @@
-#include "DefinitionTest.h"
+#include "Ranally/Language/DefinitionTest.h"
 
 #include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>

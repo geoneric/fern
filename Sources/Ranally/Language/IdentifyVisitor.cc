@@ -1,8 +1,8 @@
+#include "Ranally/Language/IdentifyVisitor.h"
+
 #include <iostream>
 #include <boost/foreach.hpp>
-
-#include "IdentifyVisitor.h"
-#include "Vertices.h"
+#include "Ranally/Language/Vertices.h"
 
 
 

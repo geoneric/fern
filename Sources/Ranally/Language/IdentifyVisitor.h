@@ -1,11 +1,10 @@
-#ifndef INCLUDED_RANALLY_IDENTIFYVISITOR
-#define INCLUDED_RANALLY_IDENTIFYVISITOR
+#ifndef INCLUDED_RANALLY_LANGUAGE_IDENTIFYVISITOR
+#define INCLUDED_RANALLY_LANGUAGE_IDENTIFYVISITOR
 
 #include <boost/noncopyable.hpp>
 #include <loki/Visitor.h>
-
-#include "SymbolTable.h"
-#include "SyntaxVertex.h"
+#include "Ranally/Language/SymbolTable.h"
+#include "Ranally/Language/SyntaxVertex.h"
 
 
 

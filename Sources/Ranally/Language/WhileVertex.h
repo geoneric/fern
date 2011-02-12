@@ -1,8 +1,8 @@
-#ifndef INCLUDED_RANALLY_WHILEVERTEX
-#define INCLUDED_RANALLY_WHILEVERTEX
+#ifndef INCLUDED_RANALLY_LANGUAGE_WHILEVERTEX
+#define INCLUDED_RANALLY_LANGUAGE_WHILEVERTEX
 
-#include "ExpressionVertex.h"
-#include "StatementVertex.h"
+#include "Ranally/Language/ExpressionVertex.h"
+#include "Ranally/Language/StatementVertex.h"
 
 
 

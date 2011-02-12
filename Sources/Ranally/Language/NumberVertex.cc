@@ -1,6 +1,6 @@
-#include <boost/format.hpp>
+#include "Ranally/Language/NumberVertex.h"
 
-#include "NumberVertex.h"
+#include <boost/format.hpp>
 
 
 

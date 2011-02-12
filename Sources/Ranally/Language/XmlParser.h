@@ -1,5 +1,5 @@
-#ifndef INCLUDED_RANALLY_XMLPARSER
-#define INCLUDED_RANALLY_XMLPARSER
+#ifndef INCLUDED_RANALLY_LANGUAGE_XMLPARSER
+#define INCLUDED_RANALLY_LANGUAGE_XMLPARSER
 
 #include <unicode/unistr.h>
 #include <boost/shared_ptr.hpp>

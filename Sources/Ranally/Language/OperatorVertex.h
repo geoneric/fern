@@ -1,10 +1,9 @@
-#ifndef INCLUDED_RANALLY_OPERATORVERTEX
-#define INCLUDED_RANALLY_OPERATORVERTEX
+#ifndef INCLUDED_RANALLY_LANGUAGE_OPERATORVERTEX
+#define INCLUDED_RANALLY_LANGUAGE_OPERATORVERTEX
 
 #include <vector>
 #include <boost/shared_ptr.hpp>
-
-#include "ExpressionVertex.h"
+#include "Ranally/Language/ExpressionVertex.h"
 
 
 

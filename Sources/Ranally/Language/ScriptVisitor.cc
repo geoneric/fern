@@ -1,11 +1,8 @@
-// #include <iostream>
+#include "Ranally/Language/ScriptVisitor.h"
+
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
-
-// #include "dev_UnicodeUtils.h"
-
-#include "Vertices.h"
-#include "ScriptVisitor.h"
+#include "Ranally/Language/Vertices.h"
 
 
 

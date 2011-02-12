@@ -1,4 +1,4 @@
-#include "IfVertexTest.h"
+#include "Ranally/Language/IfVertexTest.h"
 
 #include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>

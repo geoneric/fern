@@ -1,4 +1,4 @@
-#include "OperatorVertexTest.h"
+#include "Ranally/Language/OperatorVertexTest.h"
 
 #include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>
