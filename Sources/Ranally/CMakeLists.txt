@@ -1,2 +1,3 @@
+ADD_SUBDIRECTORY(Algorithm)
 ADD_SUBDIRECTORY(Language)
 
