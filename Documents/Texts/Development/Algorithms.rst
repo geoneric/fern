@@ -5,8 +5,8 @@ Algorithms
 Requirements
 ============
 * Algorithms must be fast as hell.
-* Support for different implementations of the same algorithm. For example, to add two ranges, their may be two implementations: one simple one in C++, and one using OpenCL.
-* Have a generic interface that supports many argument types, including user-provided ones.
+* Support for different implementations of the same algorithm. For example, to add two ranges, their may be two implementations: one simple one in C++, and one using OpenCL. This is called lifting in generic programming.
+* Have a generic interface that supports many argument types, including user-provided ones, ranges, values. Data structures representing rasters can be implemented in various ways, including one- and two-dimensional arrays, vectors, etc.
 * Configurable with respect to handling of missing values / no-data.
   * There must be no performance penalty, if the user doesn't want to handle missing values.
 * Configurable with respect to handling of argument domain errors.
@@ -25,10 +25,10 @@ Unary, Binary, NAry.
 
 Design
 ======
-Naive prototype.
 
+.. todo::
 
-
+   For inspiration, check design page in Boost.Geometry library docs.
 
 .. code-block:: c++
 

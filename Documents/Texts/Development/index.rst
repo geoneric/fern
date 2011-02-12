@@ -11,7 +11,9 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   Module organization <ModuleOrganization>
    Language
+   Concepts
    Algorithms
    Terminology
    Todo

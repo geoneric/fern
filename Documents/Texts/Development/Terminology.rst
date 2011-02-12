@@ -9,6 +9,9 @@ Algorithm
 
   See also `Operation`.
 
+Lifting
+  The process by which the differences among multiple, concrete implementations of the same algorithm are abstracted away, producing a generic algorithm.
+
 Missing value
   Special value to denote that the attribute's value is unknown.
 
