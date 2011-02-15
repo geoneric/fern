@@ -9,6 +9,7 @@ Scalar
 InputScalar concept
 -------------------
 
+
 Raster
 ======
 Do we need different concepts of a raster, based on different requirements that algorithms have?
@@ -16,6 +17,8 @@ Do we need different concepts of a raster, based on different requirements that 
 For example, an algorithm adding two rasters just needs a simple and fast way to visit all cells in the raster. This is comparable with the STL's input iterator concept, except that it should work in two dimensions. On the other hand, an algorithm summing the values in some neighborhood around each cell needs a way to visit all cells in the raster as well as a way to visit a group of cells in the neighborhood of each individual cell. So, the answer is yes.
 
 Maybe we can base the Raster concept on the STL's iterator concept, with respect to terminology.
+
+Scalars can be treated as rasters by indirection.
 
 TrivialRaster concept
 ---------------------

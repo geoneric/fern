@@ -38,10 +38,11 @@ Design
      Range2 const& argument2,
      Range3& result)
 
+We need a way to pass policies to the algorithm. For that, it seems most handy if algorithms are functors, instead of free functions?
 
-
-
-
+Tasks of an algorithm:
+* Iterate of a block of cells.
+* Use various policies to handle various aspects (see requirements above).
 
 
 
