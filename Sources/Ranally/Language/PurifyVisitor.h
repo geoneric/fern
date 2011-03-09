@@ -19,15 +19,15 @@ class PurifyVisitor: private boost::noncopyable
 
   friend class PurifyVisitorTest;
 
-private:
-
-protected:
-
 public:
 
                    PurifyVisitor       ();
 
   /* virtual */    ~PurifyVisitor      ();
+
+protected:
+
+private:
 
 };
 

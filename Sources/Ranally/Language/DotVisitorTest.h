@@ -18,12 +18,6 @@ namespace boost {
 class DotVisitorTest
 {
 
-private:
-
-  ranally::language::AlgebraParser _algebraParser;
-  ranally::language::XmlParser _xmlParser;
-  // ranally::language::DotVisitor _visitor;
-
 public:
 
                    DotVisitorTest      ();
@@ -49,6 +43,12 @@ public:
   void             testVisitWhile      ();
 
   static boost::unit_test::test_suite* suite();
+
+private:
+
+  ranally::language::AlgebraParser _algebraParser;
+  ranally::language::XmlParser _xmlParser;
+  // ranally::language::DotVisitor _visitor;
 
 };
 

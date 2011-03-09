@@ -25,16 +25,6 @@ public:
 
   LOKI_DEFINE_VISITABLE()
 
-private:
-
-  UnicodeString    _symbol;
-
-  ExpressionVertices _expressions;
-
-protected:
-
-public:
-
                    OperatorVertex      (UnicodeString const& name,
                                         ExpressionVertices const& expressions);
 
@@ -43,6 +33,14 @@ public:
   UnicodeString const& symbol          () const;
 
   ExpressionVertices const& expressions() const;
+
+protected:
+
+private:
+
+  UnicodeString    _symbol;
+
+  ExpressionVertices _expressions;
 
 };
 

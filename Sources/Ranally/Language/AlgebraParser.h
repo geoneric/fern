@@ -24,13 +24,6 @@ class AlgebraParser: public dev::PythonClient
 
   friend class AlgebraParserTest;
 
-private:
-
-  // UnicodeString    parse               (UnicodeString const& string,
-  //                                       UnicodeString const& fileName);
-
-protected:
-
 public:
 
                    AlgebraParser       ();
@@ -40,6 +33,13 @@ public:
   UnicodeString    parseString         (UnicodeString const& string);
 
   UnicodeString    parseFile           (UnicodeString const& fileName);
+
+protected:
+
+private:
+
+  // UnicodeString    parse               (UnicodeString const& string,
+  //                                       UnicodeString const& fileName);
 
 };
 

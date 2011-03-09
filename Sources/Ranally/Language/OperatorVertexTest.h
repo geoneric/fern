@@ -14,8 +14,6 @@ namespace boost {
 class OperatorVertexTest
 {
 
-private:
-
 public:
 
                    OperatorVertexTest  ();

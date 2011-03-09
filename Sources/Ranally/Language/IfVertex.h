@@ -29,16 +29,6 @@ class IfVertex: public StatementVertex
 
   friend class IfVertexTest;
 
-private:
-
-  boost::shared_ptr<ExpressionVertex> _condition;
-
-  StatementVertices _trueStatements;
-
-  StatementVertices _falseStatements;
-
-protected:
-
 public:
 
   LOKI_DEFINE_VISITABLE()
@@ -55,6 +45,16 @@ public:
   StatementVertices const& trueStatements() const;
 
   StatementVertices const& falseStatements() const;
+
+protected:
+
+private:
+
+  boost::shared_ptr<ExpressionVertex> _condition;
+
+  StatementVertices _trueStatements;
+
+  StatementVertices _falseStatements;
 
 };
 

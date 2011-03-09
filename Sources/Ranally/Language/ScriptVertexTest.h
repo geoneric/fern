@@ -14,8 +14,6 @@ namespace boost {
 class ScriptVertexTest
 {
 
-private:
-
 public:
 
                    ScriptVertexTest    ();

@@ -24,16 +24,6 @@ public:
 
   LOKI_DEFINE_VISITABLE()
 
-private:
-
-  ExpressionVertices _targets;
-
-  ExpressionVertices _expressions;
-
-protected:
-
-public:
-
                    AssignmentVertex    (ExpressionVertices const& targets,
                                         ExpressionVertices const& expressions);
 
@@ -42,6 +32,14 @@ public:
   ExpressionVertices const& targets    () const;
 
   ExpressionVertices const& expressions() const;
+
+protected:
+
+private:
+
+  ExpressionVertices _targets;
+
+  ExpressionVertices _expressions;
 
 };
 

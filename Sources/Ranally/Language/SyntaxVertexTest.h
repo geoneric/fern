@@ -14,8 +14,6 @@ namespace boost {
 class SyntaxVertexTest
 {
 
-private:
-
 public:
 
                    SyntaxVertexTest    ();

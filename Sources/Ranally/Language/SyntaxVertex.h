@@ -30,22 +30,6 @@ class SyntaxVertex: private boost::noncopyable,
 
   friend class SyntaxVertexTest;
 
-private:
-
-  int              _line;
-
-  int              _col;
-
-  //! The next vertex/vertices to process.
-  std::vector<SyntaxVertex*> _successors;
-
-protected:
-
-                   SyntaxVertex        ();
-
-                   SyntaxVertex        (int lineNr,
-                                        int colId);
-
 public:
 
   LOKI_DEFINE_VISITABLE()
@@ -72,6 +56,22 @@ public:
   SyntaxVertex*    successor           (size_type index);
 
   void             addSuccessor        (SyntaxVertex* successor);
+
+protected:
+
+                   SyntaxVertex        ();
+
+                   SyntaxVertex        (int lineNr,
+                                        int colId);
+
+private:
+
+  int              _line;
+
+  int              _col;
+
+  //! The next vertex/vertices to process.
+  std::vector<SyntaxVertex*> _successors;
 
 };
 

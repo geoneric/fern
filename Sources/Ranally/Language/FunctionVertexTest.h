@@ -14,8 +14,6 @@ namespace boost {
 class FunctionVertexTest
 {
 
-private:
-
 public:
 
                    FunctionVertexTest  ();

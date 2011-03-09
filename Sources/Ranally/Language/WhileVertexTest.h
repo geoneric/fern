@@ -14,8 +14,6 @@ namespace boost {
 class WhileVertexTest
 {
 
-private:
-
 public:
 
                    WhileVertexTest     ();

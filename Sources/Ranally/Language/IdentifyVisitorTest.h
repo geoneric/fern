@@ -18,12 +18,6 @@ namespace boost {
 class IdentifyVisitorTest
 {
 
-private:
-
-  ranally::language::AlgebraParser _algebraParser;
-  ranally::language::XmlParser _xmlParser;
-  ranally::language::IdentifyVisitor _visitor;
-
 public:
 
                    IdentifyVisitorTest ();
@@ -37,6 +31,12 @@ public:
   void             testVisitIf         ();
 
   static boost::unit_test::test_suite* suite();
+
+private:
+
+  ranally::language::AlgebraParser _algebraParser;
+  ranally::language::XmlParser _xmlParser;
+  ranally::language::IdentifyVisitor _visitor;
 
 };
 

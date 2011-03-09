@@ -53,20 +53,6 @@ class ThreadVisitor: private boost::noncopyable,
 
   friend class ThreadVisitorTest;
 
-private:
-
-  //! Last vertex processed on the control flow path.
-  SyntaxVertex*    _lastVertex;
-
-  void             visitStatements     (StatementVertices const& statements);
-
-  void             visitExpressions    (ExpressionVertices const& expressions);
-
-  template<typename T>
-  void             Visit               (NumberVertex<T>&);
-
-protected:
-
 public:
 
                    ThreadVisitor       ();
@@ -110,6 +96,20 @@ public:
   void             Visit               (SyntaxVertex&);
 
   void             Visit               (WhileVertex&);
+
+protected:
+
+private:
+
+  //! Last vertex processed on the control flow path.
+  SyntaxVertex*    _lastVertex;
+
+  void             visitStatements     (StatementVertices const& statements);
+
+  void             visitExpressions    (ExpressionVertices const& expressions);
+
+  template<typename T>
+  void             Visit               (NumberVertex<T>&);
 
 };
 

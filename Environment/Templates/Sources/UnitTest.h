@@ -14,8 +14,6 @@ namespace boost {
 class ClassTest
 {
 
-private:
-
 public:
 
                    ClassTest           ();
@@ -23,6 +21,8 @@ public:
   void             test                ();
 
   static boost::unit_test::test_suite* suite();
+
+private:
 
 };
 

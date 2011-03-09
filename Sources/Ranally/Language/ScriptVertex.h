@@ -23,19 +23,17 @@ public:
 
   LOKI_DEFINE_VISITABLE()
 
-private:
-
-  StatementVertices _statements;
-
-protected:
-
-public:
-
                    ScriptVertex        (StatementVertices const& statements);
 
   /* virtual */    ~ScriptVertex       ();
 
   StatementVertices const& statements  () const;
+
+protected:
+
+private:
+
+  StatementVertices _statements;
 
 };
 

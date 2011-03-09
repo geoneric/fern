@@ -14,8 +14,6 @@ namespace boost {
 class SymbolTableTest
 {
 
-private:
-
 public:
 
                    SymbolTableTest     ();

@@ -21,12 +21,6 @@ class NumberVertex: public ExpressionVertex
 
   friend class NumberVertexTest;
 
-private:
-
-  T                _value;
-
-protected:
-
 public:
 
   LOKI_DEFINE_VISITABLE()
@@ -40,6 +34,12 @@ public:
   /* virtual */    ~NumberVertex       ();
 
   T                value               () const;
+
+protected:
+
+private:
+
+  T                _value;
 
 };
 

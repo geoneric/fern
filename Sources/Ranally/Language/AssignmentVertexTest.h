@@ -14,8 +14,6 @@ namespace boost {
 class AssignmentVertexTest
 {
 
-private:
-
 public:
 
                    AssignmentVertexTest();

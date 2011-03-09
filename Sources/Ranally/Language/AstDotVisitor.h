@@ -19,10 +19,6 @@ class AstDotVisitor: public DotVisitor
 
   friend class AstDotVisitorTest;
 
-private:
-
-protected:
-
 public:
 
                    AstDotVisitor       ();
@@ -72,6 +68,10 @@ public:
   // void             Visit               (language::StringVertex& vertex);
 
   // void             Visit               (language::WhileVertex& vertex);
+
+protected:
+
+private:
 
 };
 

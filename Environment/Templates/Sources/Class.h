@@ -18,15 +18,15 @@ class Class: private boost::noncopyable
 
   friend class ClassTest;
 
-private:
-
-protected:
-
 public:
 
                    Class               ();
 
   /* virtual */    ~Class              ();
+
+protected:
+
+private:
 
 };
 

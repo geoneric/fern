@@ -56,24 +56,6 @@ class ScriptVisitor: private boost::noncopyable,
 
   friend class ScriptVisitorTest;
 
-private:
-
-  size_t           _tabSize;
-
-  size_t           _indentLevel;
-
-  UnicodeString    _script;
-
-  // void             indent              (UnicodeString const& statement);
-
-  UnicodeString    indentation         () const;
-
-  void             visitStatements     (language::StatementVertices const& statements);
-
-  void             visitExpressions    (language::ExpressionVertices const& expressions);
-
-protected:
-
 public:
 
                    ScriptVisitor       (size_t tabSize=2);
@@ -119,6 +101,26 @@ public:
   void             Visit               (language::SyntaxVertex&);
 
   void             Visit               (language::WhileVertex&);
+
+protected:
+
+private:
+
+  size_t           _tabSize;
+
+  size_t           _indentLevel;
+
+  UnicodeString    _script;
+
+  // void             indent              (UnicodeString const& statement);
+
+  UnicodeString    indentation         () const;
+
+  void             visitStatements     (
+                             language::StatementVertices const& statements);
+
+  void             visitExpressions    (
+                             language::ExpressionVertices const& expressions);
 
 };
 

@@ -18,12 +18,6 @@ namespace boost {
 class ScriptVisitorTest
 {
 
-private:
-
-  ranally::language::AlgebraParser _algebraParser;
-  ranally::language::XmlParser _xmlParser;
-  ranally::ScriptVisitor _visitor;
-
 public:
 
                    ScriptVisitorTest   ();
@@ -49,6 +43,12 @@ public:
   void             testVisitWhile      ();
 
   static boost::unit_test::test_suite* suite();
+
+private:
+
+  ranally::language::AlgebraParser _algebraParser;
+  ranally::language::XmlParser _xmlParser;
+  ranally::ScriptVisitor _visitor;
 
 };
 

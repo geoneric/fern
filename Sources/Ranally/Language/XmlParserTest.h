@@ -14,8 +14,6 @@ namespace boost {
 class XmlParserTest
 {
 
-private:
-
 public:
 
                    XmlParserTest       ();

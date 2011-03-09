@@ -35,22 +35,6 @@ public:
   //! Type for lists of definitions.
   typedef std::list<NameVertex*> Definitions;
 
-private:
-
-  //! Definitions by name.
-  std::map<UnicodeString, Definitions> _definitions;
-
-  //! Definitions by scope level.
-  std::vector<Definitions> _scopes;
-
-  Definitions const& definitions       (UnicodeString const& name) const;
-
-  Definitions&     definitions         (UnicodeString const& name);
-
-protected:
-
-public:
-
   //! Type for scope levels.
   typedef std::vector<Definitions>::size_type size_type;
 
@@ -77,6 +61,20 @@ public:
   bool             empty               () const;
 
   size_type        size                () const;
+
+protected:
+
+private:
+
+  //! Definitions by name.
+  std::map<UnicodeString, Definitions> _definitions;
+
+  //! Definitions by scope level.
+  std::vector<Definitions> _scopes;
+
+  Definitions const& definitions       (UnicodeString const& name) const;
+
+  Definitions&     definitions         (UnicodeString const& name);
 
 };
 

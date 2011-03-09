@@ -49,23 +49,6 @@ class IdentifyVisitor: private boost::noncopyable,
 
   friend class IdentifyVisitorTest;
 
-private:
-
-  enum Mode {
-    Defining,
-    Using
-  };
-
-  SymbolTable      _symbolTable;
-
-  Mode             _mode;
-
-  void             visitStatements     (StatementVertices const& statements);
-
-  void             visitExpressions    (ExpressionVertices const& expressions);
-
-protected:
-
 public:
 
                    IdentifyVisitor     ();
@@ -87,6 +70,23 @@ public:
   void             Visit               (WhileVertex&);
 
   SymbolTable const& symbolTable       () const;
+
+protected:
+
+private:
+
+  enum Mode {
+    Defining,
+    Using
+  };
+
+  SymbolTable      _symbolTable;
+
+  Mode             _mode;
+
+  void             visitStatements     (StatementVertices const& statements);
+
+  void             visitExpressions    (ExpressionVertices const& expressions);
 
 };
 

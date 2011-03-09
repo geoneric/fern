@@ -14,8 +14,6 @@ namespace boost {
 class StatementVertexTest
 {
 
-private:
-
 public:
 
                    StatementVertexTest ();

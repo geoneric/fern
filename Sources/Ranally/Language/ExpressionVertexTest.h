@@ -14,8 +14,6 @@ namespace boost {
 class ExpressionVertexTest
 {
 
-private:
-
 public:
 
                    ExpressionVertexTest();

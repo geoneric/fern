@@ -18,12 +18,6 @@ namespace boost {
 class ThreadVisitorTest
 {
 
-private:
-
-  ranally::language::AlgebraParser _algebraParser;
-  ranally::language::XmlParser _xmlParser;
-  ranally::language::ThreadVisitor _visitor;
-
 public:
 
                    ThreadVisitorTest   ();
@@ -51,6 +45,12 @@ public:
   void             testVisitWhile      ();
 
   static boost::unit_test::test_suite* suite();
+
+private:
+
+  ranally::language::AlgebraParser _algebraParser;
+  ranally::language::XmlParser _xmlParser;
+  ranally::language::ThreadVisitor _visitor;
 
 };
 

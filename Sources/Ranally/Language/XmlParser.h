@@ -25,10 +25,6 @@ class XmlParser
 
   friend class XmlParserTest;
 
-private:
-
-protected:
-
 public:
 
                    XmlParser           ();
@@ -38,6 +34,10 @@ public:
   boost::shared_ptr<ScriptVertex> parse(UnicodeString const& xml) const;
 
   boost::shared_ptr<ScriptVertex> parse(std::istream& stream) const;
+
+protected:
+
+private:
 
 };
 

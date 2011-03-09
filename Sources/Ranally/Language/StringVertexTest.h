@@ -14,8 +14,6 @@ namespace boost {
 class StringVertexTest
 {
 
-private:
-
 public:
 
                    StringVertexTest    ();

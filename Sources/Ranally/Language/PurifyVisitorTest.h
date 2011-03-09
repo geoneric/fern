@@ -14,8 +14,6 @@ namespace boost {
 class PurifyVisitorTest
 {
 
-private:
-
 public:
 
                    PurifyVisitorTest   ();

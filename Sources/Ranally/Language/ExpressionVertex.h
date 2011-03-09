@@ -19,9 +19,11 @@ class ExpressionVertex: public StatementVertex
 
   friend class ExpressionVertexTest;
 
-private:
+public:
 
-  UnicodeString    _name;
+  virtual          ~ExpressionVertex   ();
+
+  UnicodeString const& name            () const;
 
 protected:
 
@@ -31,11 +33,9 @@ protected:
                                         int colId,
                                         UnicodeString const& name);
 
-public:
+private:
 
-  virtual          ~ExpressionVertex   ();
-
-  UnicodeString const& name            () const;
+  UnicodeString    _name;
 
 };
 

@@ -14,8 +14,6 @@ namespace boost {
 class NameVertexTest
 {
 
-private:
-
 public:
 
                    NameVertexTest      ();

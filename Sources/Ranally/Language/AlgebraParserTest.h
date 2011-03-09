@@ -14,8 +14,6 @@ namespace boost {
 class AlgebraParserTest
 {
 
-private:
-
 public:
 
                    AlgebraParserTest   ();

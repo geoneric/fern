@@ -20,12 +20,6 @@ class StringVertex: public ExpressionVertex
 
   friend class StringVertexTest;
 
-private:
-
-  UnicodeString    _value;
-
-protected:
-
 public:
 
   LOKI_DEFINE_VISITABLE()
@@ -37,6 +31,12 @@ public:
   /* virtual */    ~StringVertex       ();
 
   UnicodeString const& value           () const;
+
+protected:
+
+private:
+
+  UnicodeString    _value;
 
 };
 

@@ -19,16 +19,6 @@ class NameVertex: public ExpressionVertex
 
   friend class NameVertexTest;
 
-private:
-
-  //! Definition of the name (left side of an assignment).
-  NameVertex*      _definition;
-
-  //! Uses of the name in expressions. Only relevant for definition vertices.
-  std::vector<NameVertex*> _uses;
-
-protected:
-
 public:
 
   LOKI_DEFINE_VISITABLE()
@@ -50,6 +40,16 @@ public:
   void             addUse              (NameVertex* vertex);
 
   std::vector<NameVertex*> const& uses () const;
+
+private:
+
+  //! Definition of the name (left side of an assignment).
+  NameVertex*      _definition;
+
+  //! Uses of the name in expressions. Only relevant for definition vertices.
+  std::vector<NameVertex*> _uses;
+
+protected:
 
 };
 

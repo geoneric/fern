@@ -14,8 +14,6 @@ namespace boost {
 class DefinitionTest
 {
 
-private:
-
 public:
 
                    DefinitionTest           ();

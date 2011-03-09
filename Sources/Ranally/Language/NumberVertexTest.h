@@ -14,8 +14,6 @@ namespace boost {
 class NumberVertexTest
 {
 
-private:
-
 public:
 
                    NumberVertexTest    ();

@@ -19,7 +19,11 @@ class StatementVertex: public SyntaxVertex
 
   friend class StatementVertexTest;
 
-private:
+public:
+
+  LOKI_DEFINE_VISITABLE()
+
+  virtual          ~StatementVertex    ();
 
 protected:
 
@@ -28,11 +32,7 @@ protected:
                    StatementVertex     (int lineNr,
                                         int colId);
 
-public:
-
-  LOKI_DEFINE_VISITABLE()
-
-  virtual          ~StatementVertex    ();
+private:
 
 };
 

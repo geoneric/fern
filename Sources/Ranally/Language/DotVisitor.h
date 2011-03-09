@@ -54,63 +54,6 @@ class DotVisitor: private boost::noncopyable,
 
   friend class DotVisitorTest;
 
-protected:
-
-  enum Type {
-    Ast,
-    Flowgraph
-  };
-
-  enum Mode {
-    Declaring,
-    ConnectingAst,
-    ConnectingCfg,
-    ConnectingUses /// ,
-    /// ConnectingFlowgraph,
-    /// ConnectingOperationArgument
-  };
-
-private:
-
-  UnicodeString    _script;
-
-  Type             _type;
-
-  Mode             _mode;
-
-  /// language::SyntaxVertex const* _definition;
-
-  void             addUseVertices      (
-                                  language::NameVertex const& vertex);
-
-  void             addFlowgraphVertex  (
-                                  language::SyntaxVertex const& sourceVertex,
-                                  language::SyntaxVertex const& targetVertex);
-
-  // void             addFlowgraphVertices(NameVertex const& vertex);
-
-  template<typename T>
-  void             Visit               (language::NumberVertex<T>&);
-
-protected:
-
-                   DotVisitor          (Type type);
-
-  void             setScript           (UnicodeString const& string);
-
-  void             addScript           (UnicodeString const& string);
-
-  void             setMode             (Mode mode);
-
-  Mode             mode                () const;
-
-  void             addAstVertex        (
-                                  language::SyntaxVertex const& sourceVertex,
-                                  language::SyntaxVertex const& targetVertex);
-
-  void             addCfgVertices      (
-                                  language::SyntaxVertex const& sourceVertex);
-
 public:
 
   /* virtual */    ~DotVisitor         ();
@@ -152,6 +95,61 @@ public:
   virtual void     Visit               (language::StringVertex&);
 
   virtual void     Visit               (language::WhileVertex&);
+
+protected:
+
+  enum Type {
+    Ast,
+    Flowgraph
+  };
+
+  enum Mode {
+    Declaring,
+    ConnectingAst,
+    ConnectingCfg,
+    ConnectingUses /// ,
+    /// ConnectingFlowgraph,
+    /// ConnectingOperationArgument
+  };
+
+                   DotVisitor          (Type type);
+
+  void             setScript           (UnicodeString const& string);
+
+  void             addScript           (UnicodeString const& string);
+
+  void             setMode             (Mode mode);
+
+  Mode             mode                () const;
+
+  void             addAstVertex        (
+                                  language::SyntaxVertex const& sourceVertex,
+                                  language::SyntaxVertex const& targetVertex);
+
+  void             addCfgVertices      (
+                                  language::SyntaxVertex const& sourceVertex);
+
+private:
+
+  UnicodeString    _script;
+
+  Type             _type;
+
+  Mode             _mode;
+
+  /// language::SyntaxVertex const* _definition;
+
+  void             addUseVertices      (
+                                  language::NameVertex const& vertex);
+
+  void             addFlowgraphVertex  (
+                                  language::SyntaxVertex const& sourceVertex,
+                                  language::SyntaxVertex const& targetVertex);
+
+  // void             addFlowgraphVertices(NameVertex const& vertex);
+
+  template<typename T>
+  void             Visit               (language::NumberVertex<T>&);
 
 };
 

@@ -25,20 +25,18 @@ public:
 
   LOKI_DEFINE_VISITABLE()
 
-private:
-
-  ExpressionVertices _expressions;
-
-protected:
-
-public:
-
                    FunctionVertex      (UnicodeString const& name,
                                         ExpressionVertices const& expressions);
 
   /* virtual */    ~FunctionVertex     ();
 
   ExpressionVertices const& expressions() const;
+
+protected:
+
+private:
+
+  ExpressionVertices _expressions;
 
 };
 
