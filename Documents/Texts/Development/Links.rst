@@ -9,4 +9,5 @@ Generic programming:
 
 Libraries:
 
+* http://www.boost.org/doc/libs/1_45_0/libs/gil/doc/index.html
 * http://hci.iwr.uni-heidelberg.de/vigra
