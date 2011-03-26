@@ -4,6 +4,7 @@
 #include <boost/range/begin.hpp>
 #include <boost/range/end.hpp>
 #include <boost/range/const_iterator.hpp>
+#include "Ranally/DataTraits.h"
 
 
 
@@ -11,151 +12,82 @@ namespace ranally {
 namespace algorithm {
 namespace detail {
 
-// template<
-//   typename Raster>
-// struct RasterTraits
-// {
-//   static bool const isConstant = false;
-// };
-// 
-// template<>
-// struct RasterTraits<int>
-// {
-//   static bool const isConstant = true;
-// };
-
-
-
-template<
-  typename Argument>
-struct ArgumentTraits
-{
-  static bool const isScalar=false;
-};
-
-
-
-template<>
-struct ArgumentTraits<int>
-{
-  static bool const isScalar=true;
-};
-
-
-
-bool const IS_SCALAR = true;
-bool const IS_NOT_SCALAR = false;
-
 template<
   typename Argument1,
   typename Argument2,
-  typename Result,
-  bool argument1IsScalar,
-  bool argument2IsScalar>
-struct Plus
+  typename Result>
+inline void plus(
+  Argument1 const& argument1,
+  IterableTag /* tag1 */,
+  Argument2 const& argument2,
+  ScalarTag /* tag2 */,
+  Result& result)
 {
-};
+  typename boost::range_const_iterator<Argument1>::type argument1It =
+    boost::begin(argument1);
+  typename boost::range_const_iterator<Argument1>::type const end1 =
+    boost::end(argument1);
+  typename boost::range_iterator<Result>::type resultIt =
+    boost::begin(result);
 
-
+  for(; argument1It != end1; ++argument1It, ++resultIt) {
+    *resultIt = *argument1It + argument2;
+  }
+}
 
 template<
   typename Argument1,
   typename Argument2,
   typename Result>
-struct Plus<Argument1, Argument2, Result, IS_SCALAR, IS_SCALAR>
+inline void plus(
+  Argument1 argument1,
+  ScalarTag tag1,
+  Argument2 const& argument2,
+  IterableTag tag2,
+  Result& result)
 {
-  static void calculate(
-    Argument1 const& argument1,
-    Argument2 const& argument2,
-    Result& result)
-  {
-    result = argument1 + argument2;
-  }
-};
-
-
+  // Reorder the arguments and call the other algorithm.
+  plus(argument2, tag2, argument1, tag1, result);
+}
 
 template<
   typename Argument1,
   typename Argument2,
   typename Result>
-struct Plus<Argument1, Argument2, Result, IS_SCALAR, IS_NOT_SCALAR>
+inline void plus(
+  Argument1 argument1,
+  ScalarTag /* tag1 */,
+  Argument2 argument2,
+  ScalarTag /* tag2 */,
+  Result& result)
 {
-  static void calculate(
-    Argument1 const& argument1,
-    Argument2 const& argument2,
-    Result& result)
-  {
-    // typedef typename 
-    typename boost::range_const_iterator<Argument2>::type argument2It =
-      boost::begin(argument2);
-    typename boost::range_const_iterator<Argument2>::type const end2 =
-      boost::end(argument2);
-    typename boost::range_iterator<Result>::type resultIt =
-      boost::begin(result);
-
-    for(; argument2It != end2; ++argument2It, ++resultIt) {
-      *resultIt = argument1 + *argument2It;
-    }
-  }
-};
-
-
+  result = argument1 + argument2;
+}
 
 template<
   typename Argument1,
   typename Argument2,
   typename Result>
-struct Plus<Argument1, Argument2, Result, IS_NOT_SCALAR, IS_SCALAR>
+inline void plus(
+  Argument1 const& argument1,
+  IterableTag /* tag1 */,
+  Argument2 const& argument2,
+  IterableTag /* tag2 */,
+  Result& result)
 {
-  static void calculate(
-    Argument1 const& argument1,
-    Argument2 const& argument2,
-    Result& result)
-  {
-    // typedef typename 
-    typename boost::range_const_iterator<Argument1>::type argument1It =
-      boost::begin(argument1);
-    typename boost::range_const_iterator<Argument1>::type const end1 =
-      boost::end(argument1);
-    typename boost::range_iterator<Result>::type resultIt =
-      boost::begin(result);
+  typename boost::range_const_iterator<Argument1>::type argument1It =
+    boost::begin(argument1);
+  typename boost::range_const_iterator<Argument2>::type argument2It =
+    boost::begin(argument2);
+  typename boost::range_const_iterator<Argument1>::type const end1 =
+    boost::end(argument1);
+  typename boost::range_iterator<Result>::type resultIt =
+    boost::begin(result);
 
-    for(; argument1It != end1; ++argument1It, ++resultIt) {
-      *resultIt = *argument1It + argument2;
-    }
+  for(; argument1It != end1; ++argument1It, ++argument2It, ++resultIt) {
+    *resultIt = *argument1It + *argument2It;
   }
-};
-
-
-
-
-template<
-  typename Argument1,
-  typename Argument2,
-  typename Result>
-struct Plus<Argument1, Argument2, Result, IS_NOT_SCALAR, IS_NOT_SCALAR>
-{
-  static void calculate(
-    Argument1 const& argument1,
-    Argument2 const& argument2,
-    Result& result)
-  {
-    // typedef typename 
-    typename boost::range_const_iterator<Argument1>::type argument1It =
-      boost::begin(argument1);
-    typename boost::range_const_iterator<Argument2>::type argument2It =
-      boost::begin(argument2);
-    typename boost::range_const_iterator<Argument1>::type const end1 =
-      boost::end(argument1);
-    typename boost::range_iterator<Result>::type resultIt =
-      boost::begin(result);
-
-    for(; argument1It != end1; ++argument1It, ++argument2It, ++resultIt) {
-      *resultIt = *argument1It + *argument2It;
-    }
-  }
-};
+}
 
 } // Namespace detail
 
@@ -179,24 +111,9 @@ inline void plus(
   Argument2 const& argument2,
   Result& result)
 {
-  // Switch on argument type:
-  // Scalars
-  //   Use interface of InputScalar concept.
-  // Rasters
-  //   Use interface of InputRaster concept.
-  // Order the arguments: Scalar, Raster, to limit the amount of overloads to
-  // create.
-
-  detail::Plus<Argument1, Argument2, Result,
-    detail::ArgumentTraits<Argument1>::isScalar,
-    detail::ArgumentTraits<Argument2>::isScalar>::calculate(argument1,
-      argument2, result);
-
-  // Iteration must be handled per argument.
-  // We must end up with pieces of code that contain the loop. At that level
-  // we can decide how to iterate (1D array, 2D array, vector, Raster, ...).
-  // Treat scalars and arrays special. The rest must adhere to the Scalar and
-  // Raster concept.
+  typedef typename DataTraits<Argument1>::DataCategory category1;
+  typedef typename DataTraits<Argument2>::DataCategory category2;
+  detail::plus(argument1, category1(), argument2, category2(), result);
 }
 
 } // namespace algorithm
