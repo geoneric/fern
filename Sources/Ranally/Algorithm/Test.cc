@@ -1,4 +1,5 @@
 #include <boost/test/included/unit_test.hpp>
+#include "Ranally/Algorithm/AverageTest.h"
 #include "Ranally/Algorithm/PlusTest.h"
 
 
@@ -20,6 +21,7 @@ boost::unit_test::test_suite* init_unit_test_suite(
   TestSuite* test = new TestSuite(argc, argv);
 
   test->add(PlusTest::suite());
+  test->add(AverageTest::suite());
 
   return test;
 }
