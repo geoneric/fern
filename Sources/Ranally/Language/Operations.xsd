@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<xs:schema
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:ranally="http://www.jemig.eu/ranally"
+  targetNamespace="http://www.jemig.eu/ranally"
+>
+
+  <xs:complexType
+    name="Operations">
+    <xs:sequence
+      minOccurs="0"
+      maxOccurs="unbounded">
+      <xs:element
+        name="Operation"
+        type="ranally:Operation"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType
+    name="Operation">
+    <xs:element
+      name="Name"
+      type="ranally:Name"/>
+    <xs:element
+      name="Description"
+      type="ranally:Description"/>
+    <xs:element
+      name="Parameters"
+      type="ranally:Parameters"/>
+    <xs:element
+      name="Results"
+      type="ranally:Results"/>
+  </xs:complexType>
+
+  <xs:complexType
+    name="Parameters">
+    <xs:sequence
+      minOccurs="0"
+      maxOccurs="unbounded">
+      <xs:element
+        name="Parameter"
+        type="ranally:Parameter"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType
+    name="Results">
+    <xs:sequence
+      minOccurs="0"
+      maxOccurs="unbounded">
+      <xs:element
+        name="Result"
+        type="ranally:Result"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType
+    name="Parameter">
+    <xs:element
+      name="Name"
+      type="ranally:Name"/>
+    <xs:element
+      name="Description"
+      type="ranally:Description"/>
+    <xs:element
+      name="DataTypes"
+      type="ranally:DataTypes"/>
+    <xs:element
+      name="ValueTypes"
+      type="ranally:ValueTypes"/>
+  </xs:complexType>
+
+  <xs:complexType
+    name="Result">
+    <xs:element
+      name="Name"
+      type="ranally:Name"/>
+    <xs:element
+      name="Description"
+      type="ranally:Description"/>
+    <xs:element
+      name="DataType"
+      type="ranally:DataType"/>
+    <xs:element
+      name="ValueType"
+      type="ranally:ValueType"/>
+  </xs:complexType>
+
+  <!-- TODO Name, Description, DataType, ValueType, 
+
+  ValueTypes:
+    UInt8
+    Int8
+    UInt16
+    Int16
+    UInt32
+    Int32
+    UInt64
+    Int64
+    Float32
+    Float64
+    Number (All number types)
+    String
+    All (All value types)
+
+  DataTypes:
+    Number
+    String
+    Raster
+    All (All data types)
+  -->
+
+</xs:schema>

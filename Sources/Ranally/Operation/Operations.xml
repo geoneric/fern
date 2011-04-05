@@ -1,0 +1,57 @@
+<?xml version=\"1.0\"?>
+<Operations>
+  <Operation>
+    <Name>Print</Name>
+    <Description>Print the argument value to the standard output stream.</Description>
+    <Parameters>
+      <Parameter>
+        <Name>value</Name>
+        <Description>Value to print.</Description>
+        <DataTypes>
+          <DataType>All</DataType>
+        </DataTypes>
+        <ValueTypes>
+          <ValueType>All</ValueType>
+        </ValueTypes>
+      </Parameter>
+    </Parameters>
+    <Results/>
+  </Operation>
+  <Operation>
+    <Name>Plus</Name>
+    <Description>Each element in the result will be the sum of the corresponding element in the two arguments.</Description>
+    <Parameters>
+      <Parameter>
+        <Name>parameter1</Name>
+        <Description>First parameter.</Description>
+        <DataTypes>
+          <DataType>Number</DataType>
+          <DataType>Raster</DataType>
+        </DataTypes>
+        <ValueTypes>
+          <ValueType>Numeric</ValueType>
+        </ValueTypes>
+      </Parameter>
+      <Parameter>
+        <Name>parameter2</Name>
+        <Description>Second parameter.</Description>
+        <DataTypes>
+          <DataType>Number</DataType>
+          <DataType>Raster</DataType>
+        </DataTypes>
+        <ValueTypes>
+          <ValueType>Numeric</ValueType>
+        </ValueTypes>
+      </Parameter>
+    </Parameters>
+    <Results>
+      <Result>
+        <Name>result</Name>
+        <Description>Result of adding the two parameters.</Description>
+        <DataType>DependsOnParameters</DataType>
+        <ValueType>DependsOnParameters</ValueType>
+      </Result>
+    </Results>
+  </Operation>
+</Operations>
+
