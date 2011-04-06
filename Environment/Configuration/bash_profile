@@ -7,16 +7,15 @@
 # - RANALLY
 
 # Set branches.
-export DEVENV_BRANCH=1.2
+export DEVENV_BRANCH=trunk
 
 _devEnv="$DEVELOPMENT_ROOT/projects/DevEnv-$DEVENV_BRANCH"
 _personalConfiguration="$_devEnv/configuration/personal/Kor"
 
 # Load common settings and utility functions.
-source "$_personalConfiguration/Profiles/Utils.sh"
-source "$_personalConfiguration/Profiles/common"
-setPcrTeamExternIfNotSetAlready $DEVENV_BRANCH
-setPromptForProject Ranally
+# source "$_personalConfiguration/Profiles/Utils.sh"
+source "$_personalConfiguration/Profiles/common" $1
+# setPcrTeamExternIfNotSetAlready $DEVENV_BRANCH
 
 # Load project settings.
 source "$_personalConfiguration/Profiles/DevEnv"
@@ -34,3 +33,4 @@ unset _devEnv
 unset _personalConfiguration
 
 cd $RANALLY
+setPromptForProject Ranally $BUILD_TYPE
