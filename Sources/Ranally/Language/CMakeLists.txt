@@ -29,7 +29,7 @@ ADD_CUSTOM_COMMAND(
     ${CMAKE_CURRENT_BINARY_DIR}/SyntaxTree.map
     ${CMAKE_CURRENT_SOURCE_DIR}/Ranally.xsd
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-  COMMENT "Generating XML parser ѕkeleton" VERBATIM
+  COMMENT "Generating XML parser ѕkeleton for scripts" VERBATIM
 )
 SET(SOURCES
   ${CMAKE_CURRENT_BINARY_DIR}/Ranally-pskel.cxx

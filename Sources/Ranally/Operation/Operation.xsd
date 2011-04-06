@@ -18,18 +18,20 @@
 
   <xs:complexType
     name="Operation">
+    <xs:sequence>
     <xs:element
       name="Name"
-      type="ranally:Name"/>
+      type="xs:string"/>
     <xs:element
       name="Description"
-      type="ranally:Description"/>
+      type="xs:string"/>
     <xs:element
       name="Parameters"
       type="ranally:Parameters"/>
     <xs:element
       name="Results"
       type="ranally:Results"/>
+    </xs:sequence>
   </xs:complexType>
 
   <xs:complexType
@@ -56,58 +58,72 @@
 
   <xs:complexType
     name="Parameter">
+    <xs:sequence>
     <xs:element
       name="Name"
-      type="ranally:Name"/>
+      type="xs:string"/>
     <xs:element
       name="Description"
-      type="ranally:Description"/>
+      type="xs:string"/>
     <xs:element
       name="DataTypes"
       type="ranally:DataTypes"/>
     <xs:element
       name="ValueTypes"
       type="ranally:ValueTypes"/>
+    </xs:sequence>
   </xs:complexType>
 
   <xs:complexType
     name="Result">
+    <xs:sequence>
     <xs:element
       name="Name"
-      type="ranally:Name"/>
+      type="xs:string"/>
     <xs:element
       name="Description"
-      type="ranally:Description"/>
+      type="xs:string"/>
     <xs:element
       name="DataType"
       type="ranally:DataType"/>
     <xs:element
       name="ValueType"
       type="ranally:ValueType"/>
+    </xs:sequence>
   </xs:complexType>
 
-  <!-- TODO Name, Description, DataType, ValueType, 
+  <xs:complexType
+    name="DataTypes">
+    <xs:sequence
+      maxOccurs="unbounded">
+      <xs:element
+        name="DataType"
+        type="ranally:DataType"/>
+    </xs:sequence>
+  </xs:complexType>
 
-  ValueTypes:
-    UInt8
-    Int8
-    UInt16
-    Int16
-    UInt32
-    Int32
-    UInt64
-    Int64
-    Float32
-    Float64
-    Number (All number types)
-    String
-    All (All value types)
+  <xs:simpleType
+    name="DataType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="Number|StringRaster|All"/>
+    </xs:restriction>
+  </xs:simpleType>
 
-  DataTypes:
-    Number
-    String
-    Raster
-    All (All data types)
-  -->
+  <xs:complexType
+    name="ValueTypes">
+    <xs:sequence
+      maxOccurs="unbounded">
+      <xs:element
+        name="ValueType"
+        type="ranally:ValueType"/>
+    </xs:sequence>
+  </xs:complexType>
 
+  <xs:simpleType
+    name="ValueType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="UInt8|Int8|UInt16|Int16|UInt32|Int32|UInt64|Int64|Float32|Float64|Number|String|All"/>
+    </xs:restriction>
+  </xs:simpleType>
 </xs:schema>
+
