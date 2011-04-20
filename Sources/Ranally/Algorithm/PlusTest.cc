@@ -1,51 +1,11 @@
 #include "Ranally/Algorithm/PlusTest.h"
 
 #include <boost/array.hpp>
-#include <boost/range/algorithm/fill.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
 #include "Ranally/Algorithm/Plus.h"
-
-
-
-namespace {
-
-template<
-  typename ValueType,
-  size_t nrRows,
-  size_t nrCols>
-class Raster
-{
-private:
-
-  boost::array<ValueType, nrRows * nrCols> _cells;
-
-public:
-
-  Raster()
-  {
-  }
-
-  Raster(
-    ValueType initialValue)
-  {
-    boost::range::fill(_cells, initialValue);
-  }
-
-  template<size_t row, size_t col>
-  void set(
-    ValueType value) {
-    _cells[row * nrRows + col] = value;
-  }
-
-  template<size_t row, size_t col>
-  ValueType get() {
-    return _cells[row * nrRows + col];
-  }
-};
-
-} // Anonymous namespace
+#include "Ranally/Raster.h"
 
 
 
@@ -145,17 +105,16 @@ void PlusTest::testArgumentAndResultTypes()
 
   // Raster + Raster -> Raster
   {
-    Raster<int, 1, 2> argument1;
-    argument1.set<0, 0>(3);
-    argument1.set<0, 1>(4);
-    Raster<int, 1, 2> argument2;
-    argument2.set<0, 0>(4);
-    argument2.set<0, 1>(5);
-    Raster<int, 2, 3> result(0);
-    // hier verder
-    // ranally::algorithm::plus(argument1, argument2, result);
-    BOOST_CHECK_EQUAL((result.get<0, 0>()), 7);
-    BOOST_CHECK_EQUAL((result.get<0, 1>()), 8);
+    ranally::Raster<int, 1, 2> argument1;
+    argument1.set(0, 0, 3);
+    argument1.set(0, 1, 4);
+    ranally::Raster<int, 1, 2> argument2;
+    argument2.set(0, 0, 4);
+    argument2.set(0, 1, 5);
+    ranally::Raster<int, 2, 3> result(0);
+    ranally::algorithm::plus(argument1, argument2, result);
+    BOOST_CHECK_EQUAL(result.get(0, 0), 7);
+    BOOST_CHECK_EQUAL(result.get(0, 1), 9);
   }
 
   // // int[1][2] + int -> int[2]
@@ -170,5 +129,4 @@ void PlusTest::testArgumentAndResultTypes()
   //   // BOOST_CHECK_EQUAL(result[1], 8);
   // }
 }
-
 

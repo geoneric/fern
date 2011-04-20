@@ -801,7 +801,7 @@ XmlParser::~XmlParser()
   \sa        .
 */
 boost::shared_ptr<ScriptVertex> XmlParser::parse(
-         std::istream& stream) const
+  std::istream& stream) const
 {
   // Python stores regular integers in a C long. Xsd doesn't have a long
   // parser, but does have an int parser. Let's make sure a long is of the

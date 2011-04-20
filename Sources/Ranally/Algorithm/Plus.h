@@ -17,10 +17,10 @@ template<
   typename Argument2,
   typename Result>
 inline void plus(
+  RangeTag /* tag1 */,
   Argument1 const& argument1,
-  IterableTag /* tag1 */,
-  Argument2 const& argument2,
   ScalarTag /* tag2 */,
+  Argument2 const& argument2,
   Result& result)
 {
   typename boost::range_const_iterator<Argument1>::type argument1It =
@@ -40,14 +40,14 @@ template<
   typename Argument2,
   typename Result>
 inline void plus(
-  Argument1 argument1,
   ScalarTag tag1,
+  Argument1 argument1,
+  RangeTag tag2,
   Argument2 const& argument2,
-  IterableTag tag2,
   Result& result)
 {
   // Reorder the arguments and call the other algorithm.
-  plus(argument2, tag2, argument1, tag1, result);
+  plus(tag2, argument2, tag1, argument1, result);
 }
 
 template<
@@ -55,10 +55,10 @@ template<
   typename Argument2,
   typename Result>
 inline void plus(
-  Argument1 argument1,
   ScalarTag /* tag1 */,
-  Argument2 argument2,
+  Argument1 argument1,
   ScalarTag /* tag2 */,
+  Argument2 argument2,
   Result& result)
 {
   result = argument1 + argument2;
@@ -69,10 +69,10 @@ template<
   typename Argument2,
   typename Result>
 inline void plus(
+  RangeTag /* tag1 */,
   Argument1 const& argument1,
-  IterableTag /* tag1 */,
+  RangeTag /* tag2 */,
   Argument2 const& argument2,
-  IterableTag /* tag2 */,
   Result& result)
 {
   typename boost::range_const_iterator<Argument1>::type argument1It =
@@ -113,7 +113,7 @@ inline void plus(
 {
   typedef typename DataTraits<Argument1>::DataCategory category1;
   typedef typename DataTraits<Argument2>::DataCategory category2;
-  detail::plus(argument1, category1(), argument2, category2(), result);
+  detail::plus(category1(), argument1, category2(), argument2, result);
 }
 
 } // namespace algorithm

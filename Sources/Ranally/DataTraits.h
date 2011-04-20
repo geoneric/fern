@@ -1,21 +1,23 @@
 #ifndef INCLUDED_RANALLY_DATA_TRAITS
 #define INCLUDED_RANALLY_DATA_TRAITS
 
+#include <stdint.h>
+
 
 
 namespace ranally {
 
 struct ScalarTag { };
-struct IterableTag { };
-struct RasterTag: IterableTag { };
+struct RangeTag { };
+struct RasterTag: RangeTag { };
 
 template<
   class Data>
 struct DataTraits
 {
-  // If not specialized below, assume that the category is IterableTag.
+  // If not specialized below, assume that the category is RangeTag.
   // Compiler error otherwise.
-  typedef IterableTag DataCategory;
+  typedef RangeTag DataCategory;
 };
 
 #define SPECIALIZE_DATA_TRAITS_FOR_SCALAR(type) \

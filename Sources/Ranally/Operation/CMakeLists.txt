@@ -39,6 +39,7 @@ ADD_LIBRARY(RanallyOperation
   ${SOURCES}
 )
 SET(TEST_SOURCES
+  PrintTest.cc
   Test.cc
   XmlParserTest.cc
 )
