@@ -1,6 +1,7 @@
 #include "PrintTest.h"
 
 #include <sstream>
+#include <boost/range/iterator_range.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
@@ -30,18 +31,28 @@ PrintTest::PrintTest()
 
 void PrintTest::test()
 {
-  std::stringstream stream;
 
   {
     int scalar = 5;
+    std::stringstream stream;
     ranally::operation::print(scalar, stream);
     BOOST_CHECK_EQUAL(stream.str(), "5\n");
   }
 
   {
+    int array[10] = { 1, 2, 3 };
+    std::stringstream stream;
+    ranally::operation::print(
+      boost::iterator_range<int*>(&array[0], array + 3), stream);
+    BOOST_CHECK_EQUAL(stream.str(), "[1, 2, 3]\n");
+  }
+
+  {
     int array[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-    ranally::operation::print(array, stream);
-    BOOST_CHECK_EQUAL(stream.str(), "[1, 2, 3, ..., 7, 8, 9, 10]\n");
+    std::stringstream stream;
+    ranally::operation::print(
+      boost::iterator_range<int*>(&array[0], array + 10), stream);
+    BOOST_CHECK_EQUAL(stream.str(), "[1, 2, 3, ..., 8, 9, 10]\n");
   }
 
   {
@@ -51,6 +62,7 @@ void PrintTest::test()
         raster.set(r, c, r * raster.nrCols() + c);
       }
     }
+    std::stringstream stream;
 
     ranally::operation::print(raster, stream);
     BOOST_CHECK_EQUAL(stream.str(),

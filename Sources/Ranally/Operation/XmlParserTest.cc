@@ -41,5 +41,30 @@ void XmlParserTest::testParse()
     BOOST_CHECK(operations.empty());
   }
 
+  {
+    xml =
+      "<?xml version=\"1.0\"?>"
+      "<Operations>"
+        "<Operation>"
+          "<Name>Print</Name>"
+          "<Description>Print the argument value to the standard output stream.</Description>"
+          "<Parameters>"
+            "<Parameter>"
+              "<Name>value</Name>"
+              "<Description>Value to print.</Description>"
+              "<DataTypes>"
+                "<DataType>All</DataType>"
+              "</DataTypes>"
+              "<ValueTypes>"
+                "<ValueType>All</ValueType>"
+              "</ValueTypes>"
+            "</Parameter>"
+          "</Parameters>"
+          "<Results/>"
+        "</Operation>"
+      "</Operations>";
+    operations = xmlParser.parse(xml);
+    BOOST_CHECK_EQUAL(operations.size(), 1);
+  }
 }
 

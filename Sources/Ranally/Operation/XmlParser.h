@@ -28,7 +28,10 @@ public:
 
   /* virtual */    ~XmlParser          ();
 
-   std::map<UnicodeString, Operation_pskel> parse(
+  std::map<UnicodeString, Operation_pskel> parse(
+                                        std::istream& stream) const;
+
+  std::map<UnicodeString, Operation_pskel> parse(
                                         UnicodeString const& xml) const;
 
 protected:
