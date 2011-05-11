@@ -1,13 +1,9 @@
 #include <cassert>
 #include <cstring>
 #include <iostream>
+#include <fstream>
 #include <sstream>
-#include <boost/algorithm/string/join.hpp>
 #include <boost/scoped_ptr.hpp>
-#include <boost/spirit/include/phoenix_core.hpp>
-#include <boost/spirit/include/phoenix_operator.hpp>
-#include <boost/spirit/include/qi.hpp>
-#include <boost/spirit/include/qi_lit.hpp>
 #include "dev_UnicodeUtils.h"
 #include "Ranally/Configure.h"
 #include "Ranally/Language/AlgebraParser.h"
@@ -17,12 +13,6 @@
 #include "Ranally/Language/ScriptVertex.h"
 #include "Ranally/Language/ScriptVisitor.h"
 #include "Ranally/Language/ThreadVisitor.h"
-
-
-
-
-
-
 
 
 
@@ -114,10 +104,10 @@ void showConvertDotHelp()
     "\n"
     "Convert the script to a dot graph containing the syntax tree.\n"
     "\n"
-    "  input script        Script to convert (standard input is read if no\n"
-    "                      script arguments are provided)\n"
-    "  output script       File to write result to (standard output is\n"
-    "                      written if this argument is not provided)\n"
+    "  input script        Script to convert or - to read from standard input\n"
+    "  output script       File to write result to\n"
+    "\n"
+    "The result is written to standard output if no output script is provided\n"
     ;
 }
 
@@ -130,10 +120,10 @@ void showConvertRanallyHelp()
     "\n"
     "Convert the script to a ranally script (round-trip).\n"
     "\n"
-    "  input script        Script to convert (standard input is read if no\n"
-    "                      script arguments are provided)\n"
-    "  output script       File to write result to (standard output is\n"
-    "                      written if this argument is not provided)\n"
+    "  input script        Script to convert or - to read from standard input\n"
+    "  output script       File to write result to\n"
+    "\n"
+    "The result is written to standard output if no output script is provided\n"
     ;
 }
 
@@ -176,6 +166,10 @@ private:
 
   std::string      _commandLine;
 
+  int              _argc;
+
+  char**           _argv;
+
 protected:
 
   Command(
@@ -184,9 +178,27 @@ protected:
   {
   }
 
+  Command(
+    int argc,
+    char** argv)
+    : _argc(argc),
+      _argv(argv)
+  {
+  }
+
   std::string const& commandLine() const
   {
     return _commandLine;
+  }
+
+  int argc() const
+  {
+    return _argc;
+  }
+
+  char** argv() const
+  {
+    return _argv;
   }
 
 public:
@@ -211,171 +223,174 @@ public:
   {
   }
 
-  int convertToCpp(
-    std::string const& /* remainder */)
+  ConvertCommand(
+    int argc,
+    char** argv)
+    : Command(argc, argv)
   {
-    int status = EXIT_SUCCESS;
-    std::cout << "Conversion to C++ not supported yet\n";
-    return status;
-  }
-
-  int convertToDot(
-    std::string const& remainder)
-  {
-    namespace bs = boost::spirit;
-    namespace bp = boost::phoenix;
-    using bs::qi::_1;
-
-    // TODO type = ast | flowgraph
-    std::string option;
-    // std::vector<char> outputFileName, inputFileName;
-    std::string commandLine(remainder);
-    std::string::iterator first(commandLine.begin());
-    std::string::iterator last(commandLine.end());
-
-    // text %= bs::qi::alnum;
-    typedef std::string::const_iterator Iterator;
-    typedef bs::ascii::space_type SpaceType;
-    bs::qi::rule<Iterator, std::string(), SpaceType> outputFileName;
-    // outputFileName = bs::lexeme[+bs::qi::alnum[_val += _1]];
-    // outputFileName = (+bs::qi::alnum)[_val += _1];
-
-    // bool result = bs::qi::phrase_parse(first, last,
-    //   bs::lit(std::string("--help"))[bp::ref(option) = "help"] |
-    //   (
-    //     -(
-    //       bs::lit(std::string("--output")) >>
-    //       (+bs::qi::alnum)[_val += _1]
-    //     ) >>
-    //     -(
-    //       (+bs::qi::alnum)[bp::ref(inputFileName) = _1]
-    //     )
-    //   )
-    //   , boost::spirit::ascii::space);
-
-    int status = EXIT_SUCCESS;
-
-    // if(!result) {
-    //   std::cerr << "Error while parsing command line\n";
-    //   std::cerr << "See 'ranally convert dot --help' for usage information.\n";
-    //   status = EXIT_FAILURE;
-    // }
-    // else {
-    //   std::cout << inputFileName << std::endl;
-    //   std::cout << outputFileName << std::endl;
-    //   if(option == "help") {
-    //     showConvertDotHelp();
-    //   }
-    //   else {
-    //     assert(option.empty());
-
-    //     ranally::AstDotVisitor astDotVisitor;
-    //     ranally::language::ThreadVisitor threadVisitor;
-    //     ranally::language::IdentifyVisitor identifyVisitor;
-    //     ranally::language::AlgebraParser parser;
-    //     UnicodeString xml;
-
-    //     if(inputFileName.empty()) {
-    //       // Read script from the standard input stream.
-    //       std::ostringstream script;
-    //       script << std::cin.rdbuf();
-    //       xml = ranally::language::AlgebraParser().parseString(UnicodeString(
-    //         script.str().c_str()));
-    //     }
-    //     else {
-    //       // Read script from a file.
-    //       xml = ranally::language::AlgebraParser().parseFile(UnicodeString(
-    //         inputFileName.c_str()));
-    //     }
-
-    //     boost::shared_ptr<ranally::language::ScriptVertex> tree(
-    //       ranally::language::XmlParser().parse(xml));
-    //     tree->Accept(threadVisitor);
-    //     tree->Accept(identifyVisitor);
-    //     tree->Accept(astDotVisitor);
-
-    //     if(outputFileName.empty()) {
-    //       std::cout << dev::encodeInUTF8(astDotVisitor.script()) << std::endl;
-    //     }
-    //     else {
-    //       std::cout << "TODO write to file\n";
-    //     }
-    //   }
-    // }
-
-    return status;
-  }
-
-  int convertToPython(
-    std::string const& /* remainder */)
-  {
-    int status = EXIT_SUCCESS;
-    std::cout << "Conversion to Python not supported yet\n";
-    return status;
   }
 
   int convertToRanally(
-    std::string const& /* remainder */)
+    int /* argc */,
+    char** /* argv */)
   {
-    int status = EXIT_SUCCESS;
-    return status;
+    std::cout << "Conversion to Ranally script not supported yet\n";
+    return EXIT_SUCCESS;
+  }
+
+  int convertToCpp(
+    int /* argc */,
+    char** /* argv */)
+  {
+    std::cout << "Conversion to C++ not supported yet\n";
+    return EXIT_SUCCESS;
+  }
+
+  int convertToDot(
+    int argc,
+    char** argv)
+  {
+    if(argc == 1 || std::strcmp(argv[1], "--help") == 0) {
+      // No arguments, or the help option.
+      showConvertDotHelp();
+      return EXIT_SUCCESS;
+    }
+    else if(argc > 3) {
+      std::cerr << "Too many arguments.\n";
+      std::cerr << "See 'ranally convert dot --help' for usage information.\n";
+      return EXIT_FAILURE;
+    }
+    else {
+      std::string inputFileName = std::strcmp(argv[1], "-") != 0 ? argv[1] : "";
+      std::string outputFileName = argc == 3 ? argv[2] : "";
+
+      ranally::AstDotVisitor astDotVisitor;
+      ranally::language::ThreadVisitor threadVisitor;
+      ranally::language::IdentifyVisitor identifyVisitor;
+      ranally::language::AlgebraParser parser;
+      UnicodeString xml;
+
+      if(inputFileName.empty()) {
+        // Read script from the standard input stream.
+        std::ostringstream script;
+        script << std::cin.rdbuf();
+        xml = ranally::language::AlgebraParser().parseString(UnicodeString(
+          script.str().c_str()));
+      }
+      else {
+        // Read script from a file.
+        xml = ranally::language::AlgebraParser().parseFile(UnicodeString(
+          inputFileName.c_str()));
+      }
+
+      boost::shared_ptr<ranally::language::ScriptVertex> tree(
+        ranally::language::XmlParser().parse(xml));
+      tree->Accept(threadVisitor);
+      tree->Accept(identifyVisitor);
+      tree->Accept(astDotVisitor);
+
+      std::string result = dev::encodeInUTF8(astDotVisitor.script());
+
+      if(outputFileName.empty()) {
+        std::cout << result;
+      }
+      else {
+        std::ofstream file(outputFileName.c_str());
+        file << result;
+      }
+    }
+
+    return EXIT_SUCCESS;
+  }
+
+  int convertToPython(
+    int /* argc */,
+    char** /* argv */)
+  {
+    std::cout << "Conversion to Python not supported yet\n";
+    return EXIT_SUCCESS;
   }
 
   int execute()
   {
-    namespace bs = boost::spirit;
-    namespace bp = boost::phoenix;
-
-    std::string option, language;
-    std::string commandLine(this->commandLine());
-    std::string::iterator first(commandLine.begin());
-    std::string::iterator last(commandLine.end());
-    bool result = bs::qi::phrase_parse(first, last,
-      bs::lit(std::string("--help"))[bp::ref(option) = "help"] |
-      (
-        bs::lit(std::string("cpp"))[bp::ref(language) = "cpp"] |
-        bs::lit(std::string("dot"))[bp::ref(language) = "dot"] |
-        bs::lit(std::string("python"))[bp::ref(language) = "python"] |
-        bs::lit(std::string("ranally"))[bp::ref(language) = "ranally"]
-      )
-      , boost::spirit::ascii::space);
-
-    int status = EXIT_SUCCESS;
-
-    if(!result) {
-      std::cerr << "Error while parsing command line\n";
-      std::cerr << "See 'ranally convert --help' for usage information.\n";
-      status = EXIT_FAILURE;
+    if(argc() == 1 || std::strcmp(argv()[1], "--help") == 0) {
+      // No arguments, or the help option.
+      showConvertHelp();
+      return EXIT_SUCCESS;
+    }
+    else if(std::strcmp(argv()[1], "ranally") == 0) {
+      return convertToRanally(argc() - 1, argv() + 1);
+    }
+    else if(std::strcmp(argv()[1], "dot") == 0) {
+      return convertToDot(argc() - 1, argv() + 1);
+    }
+    else if(std::strcmp(argv()[1], "c++") == 0) {
+      return convertToCpp(argc() - 1, argv() + 1);
+    }
+    else if(std::strcmp(argv()[1], "python") == 0) {
+      return convertToPython(argc() - 1, argv() + 1);
     }
     else {
-      if(option == "help") {
-        showConvertHelp();
-      }
-      else {
-        assert(option.empty());
-        assert(!language.empty());
-
-        std::string remainder(first, last);
-
-        if(language == "cpp") {
-          status = convertToCpp(remainder);
-        }
-        else if(language == "dot") {
-          status = convertToDot(remainder);
-        }
-        else if(language == "python") {
-          status = convertToPython(remainder);
-        }
-        else if(language == "ranally") {
-          status = convertToRanally(remainder);
-        }
-        else {
-          assert(false);
-        }
-      }
+      std::cerr << "Unknown target language: " << argv()[1] << "\n";
+      std::cerr << "See 'ranally convert --help' for list of languages.\n";
+      return EXIT_FAILURE;
     }
 
-    return status;
+
+
+
+
+    // namespace bs = boost::spirit;
+    // namespace bp = boost::phoenix;
+
+    // std::string option, language;
+    // std::string commandLine(this->commandLine());
+    // std::string::iterator first(commandLine.begin());
+    // std::string::iterator last(commandLine.end());
+    // bool result = bs::qi::phrase_parse(first, last,
+    //   bs::lit(std::string("--help"))[bp::ref(option) = "help"] |
+    //   (
+    //     bs::lit(std::string("cpp"))[bp::ref(language) = "cpp"] |
+    //     bs::lit(std::string("dot"))[bp::ref(language) = "dot"] |
+    //     bs::lit(std::string("python"))[bp::ref(language) = "python"] |
+    //     bs::lit(std::string("ranally"))[bp::ref(language) = "ranally"]
+    //   )
+    //   , boost::spirit::ascii::space);
+
+    // int status = EXIT_SUCCESS;
+
+    // if(!result) {
+    //   std::cerr << "Error while parsing command line\n";
+    //   std::cerr << "See 'ranally convert --help' for usage information.\n";
+    //   status = EXIT_FAILURE;
+    // }
+    // else {
+    //   if(option == "help") {
+    //     showConvertHelp();
+    //   }
+    //   else {
+    //     assert(option.empty());
+    //     assert(!language.empty());
+
+    //     std::string remainder(first, last);
+
+    //     if(language == "cpp") {
+    //       status = convertToCpp(remainder);
+    //     }
+    //     else if(language == "dot") {
+    //       status = convertToDot(remainder);
+    //     }
+    //     else if(language == "python") {
+    //       status = convertToPython(remainder);
+    //     }
+    //     else if(language == "ranally") {
+    //       status = convertToRanally(remainder);
+    //     }
+    //     else {
+    //       assert(false);
+    //     }
+    //   }
+    // }
   }
 
 };
@@ -388,77 +403,123 @@ int main(
   int argc,
   char** argv)
 {
-  if(true) {
-    // Convert arguments to string.
-    std::vector<std::string> strings(argv, argv + argc);
-    std::string string = boost::algorithm::join(strings, " ");
+  if(argc == 1 || std::strcmp(argv[1], "--help") == 0) {
+    // No arguments, or the help option.
+    showGeneralHelp();
+    return EXIT_SUCCESS;
+  }
+  else if(std::strcmp(argv[1], "--version") == 0) {
+    showVersion();
+    return EXIT_SUCCESS;
+  }
+  else if(std::strcmp(argv[1], "--build") == 0) {
+    showBuild();
+    return EXIT_SUCCESS;
+  }
+  else {
+    boost::scoped_ptr<Command> command;
 
-    namespace bs = boost::spirit;
-    namespace bp = boost::phoenix;
-
-    std::string option;
-    std::string commandName;
-    std::string::iterator first(string.begin());
-    std::string::iterator last(string.end());
-    bool result = bs::qi::phrase_parse(first, last,
-      boost::spirit::lit(std::string(argv[0])) >>
-      (
-        bs::lit(std::string("--help"))[bp::ref(option) = "help"] |
-        bs::lit(std::string("--build"))[bp::ref(option) = "build"] |
-        bs::lit(std::string("--version"))[bp::ref(option) = "version"] |
-        (
-          bs::lit(std::string("execute"))[bp::ref(commandName) = "execute"] |
-          bs::lit(std::string("convert"))[bp::ref(commandName) = "convert"]
-        )
-      )
-      , boost::spirit::ascii::space);
-
-    int status = EXIT_SUCCESS;
-
-    if(!result) {
-      std::cerr << "Error while parsing command line\n";
-      std::cerr << "See 'ranally --help' for usage information.\n";
-      status =  EXIT_FAILURE;
+    // A command is given. Find out which one.
+    if(std::strcmp(argv[1], "convert") == 0) {
+      command.reset(new ConvertCommand(argc - 1, argv + 1));
+    }
+    else if(std::strcmp(argv[1], "execute") == 0) {
     }
     else {
-      if(option == "help") {
-        showGeneralHelp();
-      }
-      else if(option == "build") {
-        showBuild();
-      }
-      else if(option == "version") {
-        showVersion();
-      }
-      else {
-        assert(option.empty());
-        assert(!commandName.empty());
-
-        std::string remainder(first, last);
-        boost::scoped_ptr<Command> command;
-
-        if(commandName == "convert") {
-          command.reset(new ConvertCommand(remainder));
-        }
-        else if(commandName == "execute") {
-          // TODO
-        }
-        else {
-          assert(false);
-        }
-
-        try {
-          status = command->execute();
-        }
-        catch(std::exception const& exception) {
-          std::cerr << exception.what() << '\n';
-          status = EXIT_FAILURE;
-        }
-      }
-
-      return status;
+      std::cerr << "Unknown command: " << argv[1] << "\n";
+      std::cerr << "See 'ranally --help' for list of commands.\n";
+      return EXIT_FAILURE;
     }
+
+    assert(command);
+    int status;
+
+    try {
+      status = command->execute();
+    }
+    catch(std::exception const& exception) {
+      std::cerr << exception.what() << '\n';
+      status = EXIT_FAILURE;
+    }
+
+    return status;
   }
+
+
+
+
+
+  // if(true) {
+  //   // Convert arguments to string.
+  //   std::vector<std::string> strings(argv, argv + argc);
+  //   std::string string = boost::algorithm::join(strings, " ");
+
+  //   namespace bs = boost::spirit;
+  //   namespace bp = boost::phoenix;
+
+  //   std::string option;
+  //   std::string commandName;
+  //   std::string::iterator first(string.begin());
+  //   std::string::iterator last(string.end());
+  //   bool result = bs::qi::phrase_parse(first, last,
+  //     boost::spirit::lit(std::string(argv[0])) >>
+  //     (
+  //       bs::lit(std::string("--help"))[bp::ref(option) = "help"] |
+  //       bs::lit(std::string("--build"))[bp::ref(option) = "build"] |
+  //       bs::lit(std::string("--version"))[bp::ref(option) = "version"] |
+  //       (
+  //         bs::lit(std::string("execute"))[bp::ref(commandName) = "execute"] |
+  //         bs::lit(std::string("convert"))[bp::ref(commandName) = "convert"]
+  //       )
+  //     )
+  //     , boost::spirit::ascii::space);
+
+  //   int status = EXIT_SUCCESS;
+
+  //   if(!result) {
+  //     std::cerr << "Error while parsing command line\n";
+  //     std::cerr << "See 'ranally --help' for usage information.\n";
+  //     status =  EXIT_FAILURE;
+  //   }
+  //   else {
+  //     if(option == "help") {
+  //       showGeneralHelp();
+  //     }
+  //     else if(option == "build") {
+  //       showBuild();
+  //     }
+  //     else if(option == "version") {
+  //       showVersion();
+  //     }
+  //     else {
+  //       assert(option.empty());
+  //       assert(!commandName.empty());
+
+  //       std::string remainder(first, last);
+  //       boost::scoped_ptr<Command> command;
+
+  //       if(commandName == "convert") {
+  //         command.reset(new ConvertCommand(remainder));
+  //       }
+  //       else if(commandName == "execute") {
+  //         // TODO
+  //       }
+  //       else {
+  //         assert(false);
+  //       }
+
+  //       try {
+  //         status = command->execute();
+  //       }
+  //       catch(std::exception const& exception) {
+  //         std::cerr << exception.what() << '\n';
+  //         status = EXIT_FAILURE;
+  //       }
+  //     }
+
+  //     return status;
+  //   }
+  // }
 
   //   std::string command;
 
@@ -511,136 +572,134 @@ int main(
 
 
 
+  // if(argc == 1 || std::strcmp(argv[1], "--help") == 0) {
+  //   // No arguments, or the help option.
+  //   showGeneralHelp();
+  //   return EXIT_SUCCESS;
+  // }
+  // else if(std::strcmp(argv[1], "--version") == 0) {
+  //   showVersion();
+  //   return EXIT_SUCCESS;
+  // }
+  // else if(std::strcmp(argv[1], "--build") == 0) {
+  //   showBuild();
+  //   return EXIT_SUCCESS;
+  // }
+  // else if(std::strcmp(argv[1], "convert") == 0) {
+  //   if(argc == 2 || std::strcmp(argv[2], "--help") == 0) {
+  //     // No arguments, or the help option.
+  //     showConvertHelp();
+  //     return EXIT_SUCCESS;
+  //   }
 
+  //   assert(argc >= 3);
 
-  if(argc == 1 || std::strcmp(argv[1], "--help") == 0) {
-    // No arguments, or the help option.
-    showGeneralHelp();
-    return EXIT_SUCCESS;
-  }
-  else if(std::strcmp(argv[1], "--version") == 0) {
-    showVersion();
-    return EXIT_SUCCESS;
-  }
-  else if(std::strcmp(argv[1], "--build") == 0) {
-    showBuild();
-    return EXIT_SUCCESS;
-  }
-  else if(std::strcmp(argv[1], "convert") == 0) {
-    if(argc == 2 || std::strcmp(argv[2], "--help") == 0) {
-      // No arguments, or the help option.
-      showConvertHelp();
-      return EXIT_SUCCESS;
-    }
+  //   if(std::strcmp(argv[2], "dot") == 0) {
+  //     if(argc >= 4 && std::strcmp(argv[3], "--help") == 0) {
+  //       showConvertDotHelp();
+  //       return EXIT_SUCCESS;
+  //     }
 
-    assert(argc >= 3);
+  //     ranally::AstDotVisitor astDotVisitor;
+  //     ranally::language::ThreadVisitor threadVisitor;
+  //     ranally::language::IdentifyVisitor identifyVisitor;
+  //     ranally::language::AlgebraParser parser;
+  //     UnicodeString xml;
 
-    if(std::strcmp(argv[2], "dot") == 0) {
-      if(argc >= 4 && std::strcmp(argv[3], "--help") == 0) {
-        showConvertDotHelp();
-        return EXIT_SUCCESS;
-      }
+  //     if(argc == 3) {
+  //       // Read script from the standard input stream.
+  //       std::ostringstream script;
+  //       script << std::cin.rdbuf();
+  //       xml = ranally::language::AlgebraParser().parseString(UnicodeString(
+  //         script.str().c_str()));
+  //     }
+  //     else if(argc == 4) {
+  //       // Read script from a file.
+  //       std::string inputFileName(argv[3]);
+  //       xml = ranally::language::AlgebraParser().parseFile(UnicodeString(
+  //         inputFileName.c_str()));
+  //     }
 
-      ranally::AstDotVisitor astDotVisitor;
-      ranally::language::ThreadVisitor threadVisitor;
-      ranally::language::IdentifyVisitor identifyVisitor;
-      ranally::language::AlgebraParser parser;
-      UnicodeString xml;
+  //     boost::shared_ptr<ranally::language::ScriptVertex> tree(
+  //       ranally::language::XmlParser().parse(xml));
+  //     tree->Accept(threadVisitor);
+  //     tree->Accept(identifyVisitor);
+  //     tree->Accept(astDotVisitor);
 
-      if(argc == 3) {
-        // Read script from the standard input stream.
-        std::ostringstream script;
-        script << std::cin.rdbuf();
-        xml = ranally::language::AlgebraParser().parseString(UnicodeString(
-          script.str().c_str()));
-      }
-      else if(argc == 4) {
-        // Read script from a file.
-        std::string inputFileName(argv[3]);
-        xml = ranally::language::AlgebraParser().parseFile(UnicodeString(
-          inputFileName.c_str()));
-      }
+  //     if(argc <= 4) {
+  //       std::cout << dev::encodeInUTF8(astDotVisitor.script()) << std::endl;
+  //     }
+  //     else if(argc == 5) {
+  //       std::cout << dev::encodeInUTF8(astDotVisitor.script()) << std::endl;
+  //       std::cout << "TODO write to file\n";
+  //     }
 
-      boost::shared_ptr<ranally::language::ScriptVertex> tree(
-        ranally::language::XmlParser().parse(xml));
-      tree->Accept(threadVisitor);
-      tree->Accept(identifyVisitor);
-      tree->Accept(astDotVisitor);
+  //     return EXIT_SUCCESS;
+  //   }
+  //   else if(std::strcmp(argv[2], "c++") == 0) {
+  //     std::cout << "Convert to c++...\n";
+  //     return EXIT_SUCCESS;
+  //   }
+  //   else if(std::strcmp(argv[2], "python") == 0) {
+  //     std::cout << "Convert to python...\n";
+  //     return EXIT_SUCCESS;
+  //   }
+  //   else if(std::strcmp(argv[2], "ranally") == 0) {
+  //     if(argc >= 4 && std::strcmp(argv[3], "--help") == 0) {
+  //       showConvertRanallyHelp();
+  //       return EXIT_SUCCESS;
+  //     }
 
-      if(argc <= 4) {
-        std::cout << dev::encodeInUTF8(astDotVisitor.script()) << std::endl;
-      }
-      else if(argc == 5) {
-        std::cout << dev::encodeInUTF8(astDotVisitor.script()) << std::endl;
-        std::cout << "TODO write to file\n";
-      }
+  //     ranally::ScriptVisitor visitor;
+  //     ranally::language::AlgebraParser parser;
+  //     UnicodeString xml;
 
-      return EXIT_SUCCESS;
-    }
-    else if(std::strcmp(argv[2], "c++") == 0) {
-      std::cout << "Convert to c++...\n";
-      return EXIT_SUCCESS;
-    }
-    else if(std::strcmp(argv[2], "python") == 0) {
-      std::cout << "Convert to python...\n";
-      return EXIT_SUCCESS;
-    }
-    else if(std::strcmp(argv[2], "ranally") == 0) {
-      if(argc >= 4 && std::strcmp(argv[3], "--help") == 0) {
-        showConvertRanallyHelp();
-        return EXIT_SUCCESS;
-      }
+  //     if(argc == 3) {
+  //       // Read script from the standard input stream.
+  //       std::ostringstream script;
+  //       script << std::cin.rdbuf();
+  //       xml = ranally::language::AlgebraParser().parseString(UnicodeString(
+  //         script.str().c_str()));
+  //     }
+  //     else if(argc == 4) {
+  //       // Read script from a file.
+  //       std::string inputFileName(argv[3]);
+  //       xml = ranally::language::AlgebraParser().parseFile(UnicodeString(
+  //         inputFileName.c_str()));
+  //     }
 
-      ranally::ScriptVisitor visitor;
-      ranally::language::AlgebraParser parser;
-      UnicodeString xml;
+  //     ranally::language::XmlParser().parse(xml)->Accept(visitor);
 
-      if(argc == 3) {
-        // Read script from the standard input stream.
-        std::ostringstream script;
-        script << std::cin.rdbuf();
-        xml = ranally::language::AlgebraParser().parseString(UnicodeString(
-          script.str().c_str()));
-      }
-      else if(argc == 4) {
-        // Read script from a file.
-        std::string inputFileName(argv[3]);
-        xml = ranally::language::AlgebraParser().parseFile(UnicodeString(
-          inputFileName.c_str()));
-      }
+  //     if(argc <= 4) {
+  //       std::cout << dev::encodeInUTF8(visitor.script()) << std::endl;
+  //     }
+  //     else if(argc == 5) {
+  //       std::cout << dev::encodeInUTF8(visitor.script()) << std::endl;
+  //       std::cout << "TODO write to file\n";
+  //     }
 
-      ranally::language::XmlParser().parse(xml)->Accept(visitor);
+  //     return EXIT_SUCCESS;
+  //   }
+  //   else {
+  //     std::cerr << "Unknown target language...\n";
+  //     std::cerr << "Conversion help...\n";
+  //     return EXIT_FAILURE;
+  //   }
+  // }
+  // else if(std::strcmp(argv[1], "execute") == 0) {
+  //   if(argc == 2 || std::strcmp(argv[2], "--help") == 0) {
+  //     // No arguments, or the help option.
+  //     showExecuteHelp();
+  //     return EXIT_SUCCESS;
+  //   }
 
-      if(argc <= 4) {
-        std::cout << dev::encodeInUTF8(visitor.script()) << std::endl;
-      }
-      else if(argc == 5) {
-        std::cout << dev::encodeInUTF8(visitor.script()) << std::endl;
-        std::cout << "TODO write to file\n";
-      }
-
-      return EXIT_SUCCESS;
-    }
-    else {
-      std::cerr << "Unknown target language...\n";
-      std::cerr << "Conversion help...\n";
-      return EXIT_FAILURE;
-    }
-  }
-  else if(std::strcmp(argv[1], "execute") == 0) {
-    if(argc == 2 || std::strcmp(argv[2], "--help") == 0) {
-      // No arguments, or the help option.
-      showExecuteHelp();
-      return EXIT_SUCCESS;
-    }
-
-    std::cout << "Execute script...\n";
-    return EXIT_SUCCESS;
-  }
-  else {
-    std::cout << "Execute script...\n";
-    return EXIT_SUCCESS;
-  }
+  //   std::cout << "Execute script...\n";
+  //   return EXIT_SUCCESS;
+  // }
+  // else {
+  //   std::cout << "Execute script...\n";
+  //   return EXIT_SUCCESS;
+  // }
 
 
 
