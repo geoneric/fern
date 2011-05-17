@@ -75,13 +75,42 @@ AstDotVisitor::~AstDotVisitor()
 
 
 
-// void AstDotVisitor::Visit(
-//   language::FunctionVertex& vertex)
-// {
-// }
-// 
-// 
-// 
+void AstDotVisitor::Visit(
+  language::FunctionVertex& vertex)
+{
+  switch(mode()) {
+    case Declaring: {
+      addScript(
+        UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+        " [label=\"" + vertex.name() + "\"];\n");
+      break;
+    }
+    case ConnectingAst: {
+      BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
+        expressionVertex, vertex.expressions()) {
+        addAstVertex(vertex, *expressionVertex);
+      }
+      break;
+    }
+    case ConnectingCfg: {
+      addCfgVertices(vertex);
+      break;
+    }
+    case ConnectingUses: {
+      break;
+    }
+  }
+
+  /// if(_mode != ConnectingOperationArgument) {
+    BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
+      expressionVertex, vertex.expressions()) {
+      expressionVertex->Accept(*this);
+    }
+  /// }
+}
+
+
+
 // void AstDotVisitor::Visit(
 //   language::IfVertex& vertex)
 // {
@@ -178,7 +207,7 @@ void AstDotVisitor::Visit(
 {
   setScript(UnicodeString(
     "digraph G {\n"
-    "rankdir=BT;\n"
+    "rankdir=TB;\n"
   ));
 
   setMode(Declaring);

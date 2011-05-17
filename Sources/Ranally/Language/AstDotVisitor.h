@@ -1,7 +1,6 @@
 #ifndef INCLUDED_RANALLY_LANGUAGE_ASTDOTVISITOR
 #define INCLUDED_RANALLY_LANGUAGE_ASTDOTVISITOR
 
-#include <boost/noncopyable.hpp>
 #include "Ranally/Language/DotVisitor.h"
 
 
@@ -27,7 +26,7 @@ public:
 
   // void             Visit               (language::AssignmentVertex& vertex);
 
-  // void             Visit               (language::FunctionVertex& vertex);
+  void             Visit               (language::FunctionVertex& vertex);
 
   // void             Visit               (language::IfVertex& vertex);
 

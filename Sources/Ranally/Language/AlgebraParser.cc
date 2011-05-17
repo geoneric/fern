@@ -409,13 +409,16 @@ void writeExpressionNode(
     case IfExp_kind:
     case Lambda_kind:
     case Dict_kind:
-    case ListComp_kind:
+    case DictComp_kind:
     case GeneratorExp_kind:
     case Yield_kind:
     case Repr_kind:
     case Attribute_kind:
     case Subscript_kind:
     case List_kind:
+    case ListComp_kind:
+    case Set_kind:
+    case SetComp_kind:
     case Tuple_kind: {
       // TODO exception
       bool implemented = false;
@@ -677,7 +680,9 @@ UnicodeString AlgebraParser::parseFile(
   std::string fileNameInUtf8(dev::encodeInUTF8(fileName));
   FILE* filePointer = fopen(fileNameInUtf8.c_str(), "r");
 
-  // TODO Error handling. What if file does not exist.
+  if(filePointer == NULL) {
+    throw std::runtime_error(("cannot open file " + fileNameInUtf8).c_str());
+  }
 
   UnicodeString result("<?xml version=\"1.0\"?>");
 
