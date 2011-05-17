@@ -15,6 +15,7 @@ Contents:
    Language
    Concepts
    Algorithms
+   Commandline utilities <CommandlineUtilities>
    Terminology
    Todo
    Links
