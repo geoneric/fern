@@ -88,11 +88,3 @@ TARGET_LINK_LIBRARIES(testRanallyLanguage
   RanallyLanguage
   ${_LINK_LIBRARIES}
 )
-ADD_EXECUTABLE(ranally
-  Ranally.cc
-)
-TARGET_LINK_LIBRARIES(ranally
-  RanallyLanguage
-  ${_LINK_LIBRARIES}
-  # ${BOOST_PROGRAM_OPTIONS_LIBRARY}
-)
