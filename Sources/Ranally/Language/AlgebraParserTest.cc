@@ -39,9 +39,8 @@ boost::unit_test::test_suite* AlgebraParserTest::suite()
     &AlgebraParserTest::testParseIf, instance));
   suite->add(BOOST_CLASS_TEST_CASE(
     &AlgebraParserTest::testParseWhile, instance));
-
-  /// suite->add(BOOST_CLASS_TEST_CASE(
-  ///   &AlgebraParserTest::testParseFile, instance));
+  suite->add(BOOST_CLASS_TEST_CASE(
+    &AlgebraParserTest::testParseFile, instance));
 
   return suite;
 }
@@ -698,9 +697,15 @@ void AlgebraParserTest::testParseWhile()
 
 
 
-/// void AlgebraParserTest::testParseFile()
-/// {
-///   bool testImplemented = false;
-///   BOOST_WARN(testImplemented);
-/// }
+void AlgebraParserTest::testParseFile()
+{
+  ranally::language::AlgebraParser parser;
+  UnicodeString fileName;
+
+  {
+    fileName = "DoesNotExist.ran";
+    BOOST_CHECK_THROW(parser.parseFile(fileName),
+      std::runtime_error);
+  }
+}
 
