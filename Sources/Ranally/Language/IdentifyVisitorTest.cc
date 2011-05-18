@@ -165,28 +165,25 @@ void IdentifyVisitorTest::testVisitIf()
     )));
 
     ranally::language::AssignmentVertex const* assignment1 =
-      dynamic_cast<ranally::language::AssignmentVertex const*>(&(*tree->statements()[0]));
+      dynamic_cast<ranally::language::AssignmentVertex const*>(
+        &(*tree->statements()[0]));
     ranally::language::NameVertex const* vertexA1 =
-      dynamic_cast<ranally::language::NameVertex const*>(&(*assignment1->targets()[0]));
-    // ranally::language::NameVertex const* vertexB =
-    //   dynamic_cast<ranally::language::NameVertex const*>(
-    //     &(*assignment1->expressions()[0]));
+      dynamic_cast<ranally::language::NameVertex const*>(
+        &(*assignment1->targets()[0]));
 
     ranally::language::IfVertex const* ifVertex =
-      dynamic_cast<ranally::language::IfVertex const*>(&(*tree->statements()[1]));
+      dynamic_cast<ranally::language::IfVertex const*>(
+        &(*tree->statements()[1]));
     ranally::language::AssignmentVertex const* assignment2 =
       dynamic_cast<ranally::language::AssignmentVertex const*>(
         &(*ifVertex->trueStatements()[0]));
     ranally::language::NameVertex const* vertexA2 =
-      dynamic_cast<ranally::language::NameVertex const*>(&(*assignment2->targets()[0]));
-    // ranally::language::NameVertex const* vertexC =
-    //   dynamic_cast<ranally::language::NameVertex const*>(
-    //     &(*assignment2->expressions()[0]));
+      dynamic_cast<ranally::language::NameVertex const*>(
+        &(*assignment2->targets()[0]));
 
     ranally::language::AssignmentVertex const* assignment3 =
-      dynamic_cast<ranally::language::AssignmentVertex const*>(&(*tree->statements()[2]));
-    // ranally::language::NameVertex const* vertexD =
-    //   dynamic_cast<ranally::language::NameVertex const*>(&(*assignment3->targets()[0]));
+      dynamic_cast<ranally::language::AssignmentVertex const*>(
+        &(*tree->statements()[2]));
     ranally::language::NameVertex const* vertexA3 =
       dynamic_cast<ranally::language::NameVertex const*>(
         &(*assignment3->expressions()[0]));
@@ -198,7 +195,8 @@ void IdentifyVisitorTest::testVisitIf()
     BOOST_CHECK_EQUAL(vertexA1->uses()[0], vertexA3);
 
     BOOST_CHECK_EQUAL(vertexA2->definition(), vertexA2);
-    BOOST_REQUIRE_EQUAL(vertexA2->uses().size(), 0);
+    BOOST_REQUIRE_EQUAL(vertexA2->uses().size(), 1);
+    BOOST_CHECK_EQUAL(vertexA2->uses()[0], vertexA3);
 
     BOOST_CHECK_EQUAL(vertexA3->definition(), vertexA1);
     BOOST_CHECK(vertexA3->uses().empty());

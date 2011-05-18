@@ -148,6 +148,7 @@ SymbolTable::size_type SymbolTable::scopeLevel(
   \param     definition Definition to add.
   \warning   pushScope() must be called before definitions can be added to the
              symbol table.
+  \todo      If name is already defined in an outer scope, add it to that one.
 */
 void SymbolTable::addDefinition(
   NameVertex* definition)
@@ -167,6 +168,15 @@ void SymbolTable::addDefinition(
   // TODO If the name is already defined in the current scope, this new
   //      definition should overwrite the previous one. Currently, the new
   //      definition is added to the collections.
+
+  // TODO In some cases, the new definition should overwrite the previous one,
+  //      but in other cases, the new definition should just be added to the
+  //      list of definition. This happens when a global identifier is assigned
+  //      to in an if/while script, for example. The value of the identifier
+  //      may be updated, but this depends on the runtime condition. So, if
+  //      multiple definitions with the same name exist in the same scope,
+  //      then they should be treated as possible definitions. They should be
+  //      checked for compatibility (same/convertable types).
 
   // Store the pointer in the list of definitions for this name. The
   // most recent definition is stored at the front of the list.

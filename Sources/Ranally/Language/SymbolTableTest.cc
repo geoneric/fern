@@ -61,6 +61,7 @@ void SymbolTableTest::testScoping()
     boost::scoped_ptr<NameVertex> a1(new NameVertex(name));
     table.addDefinition(a1.get());
     BOOST_REQUIRE(table.hasDefinition(name));
+    BOOST_CHECK_EQUAL(table.definition(name), a1.get());
     BOOST_CHECK_EQUAL(table.scopeLevel(name), table.scopeLevel());
 
     BOOST_CHECK_EQUAL(table.scopeLevel(), SymbolTable::size_type(1));
@@ -68,6 +69,7 @@ void SymbolTableTest::testScoping()
     boost::scoped_ptr<NameVertex> a2(new NameVertex(name));
     table.addDefinition(a2.get());
     BOOST_REQUIRE(table.hasDefinition(name));
+    BOOST_CHECK_EQUAL(table.definition(name), a2.get());
     BOOST_CHECK_EQUAL(table.scopeLevel(name), table.scopeLevel());
 
     // Should remove all definitions of 'a' in the current scope.
