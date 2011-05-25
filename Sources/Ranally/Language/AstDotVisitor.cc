@@ -8,9 +8,11 @@
 
 namespace ranally {
 
-AstDotVisitor::AstDotVisitor()
+AstDotVisitor::AstDotVisitor(
+  int modes)
 
-  : DotVisitor(Ast)
+  : DotVisitor(Ast),
+    _modes(modes)
 
 {
 }
@@ -207,6 +209,7 @@ void AstDotVisitor::Visit(
 {
   setScript(UnicodeString(
     "digraph G {\n"
+    "ordering=out;\n"
     "rankdir=TB;\n"
   ));
 
@@ -228,17 +231,21 @@ void AstDotVisitor::Visit(
     statementVertex->Accept(*this);
   }
 
-  setMode(ConnectingCfg);
-  addCfgVertices(vertex);
-  BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
-    statementVertex, vertex.statements()) {
-    statementVertex->Accept(*this);
+  if(_modes & ConnectingCfg) {
+    setMode(ConnectingCfg);
+    addCfgVertices(vertex);
+    BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+      statementVertex, vertex.statements()) {
+      statementVertex->Accept(*this);
+    }
   }
 
-  setMode(ConnectingUses);
-  BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
-    statementVertex, vertex.statements()) {
-    statementVertex->Accept(*this);
+  if(_modes & ConnectingUses) {
+    setMode(ConnectingUses);
+    BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+      statementVertex, vertex.statements()) {
+      statementVertex->Accept(*this);
+    }
   }
 
   addScript("}\n");

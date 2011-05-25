@@ -56,6 +56,15 @@ class DotVisitor: private boost::noncopyable,
 
 public:
 
+  enum Mode {
+    Declaring=0x1,
+    ConnectingAst=0x2,
+    ConnectingCfg=0x4,
+    ConnectingUses =0x8 /// ,
+    /// ConnectingFlowgraph,
+    /// ConnectingOperationArgument
+  };
+
   /* virtual */    ~DotVisitor         ();
 
   UnicodeString const& script          () const;
@@ -101,15 +110,6 @@ protected:
   enum Type {
     Ast,
     Flowgraph
-  };
-
-  enum Mode {
-    Declaring,
-    ConnectingAst,
-    ConnectingCfg,
-    ConnectingUses /// ,
-    /// ConnectingFlowgraph,
-    /// ConnectingOperationArgument
   };
 
                    DotVisitor          (Type type);

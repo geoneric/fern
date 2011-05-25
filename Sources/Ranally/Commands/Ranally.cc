@@ -61,9 +61,44 @@ void showConvertHelp()
 void showConvertDotHelp()
 {
   std::cout <<
-    "usage: ranally convert dot INPUT_SCRIPT [OUTPUT_SCRIPT]\n"
+    "usage: ranally convert dot [--help] GRAPH_TYPE [ARGS]\n"
     "\n"
-    "Convert the script to a dot graph containing the syntax tree.\n"
+    "Convert the script to a dot graph.\n"
+    "\n"
+    "graph types:\n"
+    "  ast                 Abstract syntax tree\n"
+    "  flowchart           Flowchart\n"
+    "\n"
+    "See 'ranally convert dot GRAPH_TYPE --help' for more information on a\n"
+    "specific graph type.\n"
+    ;
+}
+
+
+
+void showConvertDotAstHelp()
+{
+  std::cout <<
+    "usage: ranally convert dot ast [--help] [--with-cfg] [--with-use]\n"
+    "                               INPUT_SCRIPT OUTPUT_SCRIPT\n"
+    "\n"
+    "Convert the script to a dot graph containing the abstract syntax tree.\n"
+    "\n"
+    "  INPUT_SCRIPT        Script to convert or - to read from standard input\n"
+    "  OUTPUT_SCRIPT       File to write result to\n"
+    "\n"
+    "The result is written to standard output if no output script is provided\n"
+    ;
+}
+
+
+
+void showConvertDotFlowchartHelp()
+{
+  std::cout <<
+    "usage: ranally convert dot flowchart [--help] INPUT_SCRIPT OUTPUT_SCRIPT\n"
+    "\n"
+    "Convert the script to a dot graph containing the flow chart.\n"
     "\n"
     "  INPUT_SCRIPT        Script to convert or - to read from standard input\n"
     "  OUTPUT_SCRIPT       File to write result to\n"
@@ -209,6 +244,113 @@ public:
     return EXIT_SUCCESS;
   }
 
+  int convertToDotAst(
+    int argc,
+    char** argv)
+  {
+    int status = EXIT_FAILURE;
+
+    if(argc == 1 || std::strcmp(argv[1], "--help") == 0) {
+      // No arguments, or the help option.
+      showConvertDotAstHelp();
+      status = EXIT_SUCCESS;
+    }
+    else {
+      int currentArgumentId = 1;
+      int modes = 0x0;
+      while(currentArgumentId < argc) {
+        if(std::strcmp(argv[currentArgumentId], "--with-cfg") == 0) {
+          modes |= ranally::AstDotVisitor::ConnectingCfg;
+          ++currentArgumentId;
+        }
+        else if(std::strcmp(argv[currentArgumentId], "--with-use") == 0) {
+          modes |= ranally::AstDotVisitor::ConnectingUses;
+          ++currentArgumentId;
+        }
+        else {
+          break;
+        }
+      }
+
+      if(currentArgumentId == argc) {
+        std::cerr << "Not enough arguments.\n";
+        showConvertDotAstHelp();
+        status = EXIT_FAILURE;
+      }
+      else if(argc - currentArgumentId > 3) {
+        std::cerr << "Too many arguments.\n";
+        showConvertDotAstHelp();
+        status = EXIT_FAILURE;
+      }
+      else {
+        std::string inputFileName =
+          std::strcmp(argv[currentArgumentId], "-") != 0
+            ? argv[currentArgumentId] : "";
+        ++currentArgumentId;
+        std::string outputFileName = currentArgumentId == argc - 1
+          ? argv[currentArgumentId] : "";
+
+        ranally::AstDotVisitor astDotVisitor(modes);
+        ranally::language::ThreadVisitor threadVisitor;
+        ranally::language::IdentifyVisitor identifyVisitor;
+        ranally::language::AlgebraParser parser;
+        UnicodeString xml;
+
+        if(inputFileName.empty()) {
+          // Read script from the standard input stream.
+          std::ostringstream script;
+          script << std::cin.rdbuf();
+          xml = ranally::language::AlgebraParser().parseString(UnicodeString(
+            script.str().c_str()));
+        }
+        else {
+          // Read script from a file.
+          xml = ranally::language::AlgebraParser().parseFile(UnicodeString(
+            inputFileName.c_str()));
+        }
+
+        boost::shared_ptr<ranally::language::ScriptVertex> tree(
+          ranally::language::XmlParser().parse(xml));
+        tree->Accept(threadVisitor);
+        tree->Accept(identifyVisitor);
+        tree->Accept(astDotVisitor);
+
+        std::string result = dev::encodeInUTF8(astDotVisitor.script());
+
+        if(outputFileName.empty()) {
+          std::cout << result;
+        }
+        else {
+          std::ofstream file(outputFileName.c_str());
+          file << result;
+        }
+
+        status = EXIT_SUCCESS;
+      }
+    }
+
+    return status;
+  }
+
+  int convertToDotFlowchart(
+    int argc,
+    char** argv)
+  {
+    int status = EXIT_FAILURE;
+
+    if(argc == 1 || std::strcmp(argv[1], "--help") == 0) {
+      // No arguments, or the help option.
+      showConvertDotFlowchartHelp();
+      status = EXIT_SUCCESS;
+    }
+    else {
+      std::cout << "Conversion to flow chart not supported yet\n";
+      status = EXIT_SUCCESS;
+    }
+
+    return status;
+  }
+
   int convertToDot(
     int argc,
     char** argv)
@@ -220,51 +362,16 @@ public:
       showConvertDotHelp();
       status = EXIT_SUCCESS;
     }
-    else if(argc > 3) {
-      std::cerr << "Too many arguments.\n";
-      std::cerr << "See 'ranally convert dot --help' for usage information.\n";
-      status = EXIT_FAILURE;
+    else if(std::strcmp(argv[1], "ast") == 0) {
+      status = convertToDotAst(argc - 1, argv + 1);
+    }
+    else if(std::strcmp(argv[1], "flowchart") == 0) {
+      status = convertToDotFlowchart(argc - 1, argv + 1);
     }
     else {
-      std::string inputFileName = std::strcmp(argv[1], "-") != 0 ? argv[1] : "";
-      std::string outputFileName = argc == 3 ? argv[2] : "";
-
-      ranally::AstDotVisitor astDotVisitor;
-      ranally::language::ThreadVisitor threadVisitor;
-      ranally::language::IdentifyVisitor identifyVisitor;
-      ranally::language::AlgebraParser parser;
-      UnicodeString xml;
-
-      if(inputFileName.empty()) {
-        // Read script from the standard input stream.
-        std::ostringstream script;
-        script << std::cin.rdbuf();
-        xml = ranally::language::AlgebraParser().parseString(UnicodeString(
-          script.str().c_str()));
-      }
-      else {
-        // Read script from a file.
-        xml = ranally::language::AlgebraParser().parseFile(UnicodeString(
-          inputFileName.c_str()));
-      }
-
-      boost::shared_ptr<ranally::language::ScriptVertex> tree(
-        ranally::language::XmlParser().parse(xml));
-      tree->Accept(threadVisitor);
-      tree->Accept(identifyVisitor);
-      tree->Accept(astDotVisitor);
-
-      std::string result = dev::encodeInUTF8(astDotVisitor.script());
-
-      if(outputFileName.empty()) {
-        std::cout << result;
-      }
-      else {
-        std::ofstream file(outputFileName.c_str());
-        file << result;
-      }
-
-      status = EXIT_SUCCESS;
+      std::cerr << "Unknown graph type: " << argv[1] << "\n";
+      std::cerr << "See 'ranally convert dot --help' for list of types.\n";
+      status = EXIT_FAILURE;
     }
 
     return status;

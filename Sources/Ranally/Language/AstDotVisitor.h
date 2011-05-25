@@ -20,7 +20,7 @@ class AstDotVisitor: public DotVisitor
 
 public:
 
-                   AstDotVisitor       ();
+                   AstDotVisitor       (int modes=0);
 
   /* virtual */    ~AstDotVisitor      ();
 
@@ -71,6 +71,8 @@ public:
 protected:
 
 private:
+
+  int              _modes;
 
 };
 
