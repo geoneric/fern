@@ -41,6 +41,7 @@ SET(SOURCES
   FunctionVertex.cc
   IdentifyVisitor.cc
   IfVertex.cc
+  FlowgraphDotVisitor.cc
   NameVertex.cc
   NumberVertex.cc
   OperatorVertex.cc

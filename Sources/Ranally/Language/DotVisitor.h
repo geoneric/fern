@@ -56,100 +56,58 @@ class DotVisitor: private boost::noncopyable,
 
 public:
 
-  enum Mode {
-    Declaring=0x1,
-    ConnectingAst=0x2,
-    ConnectingCfg=0x4,
-    ConnectingUses =0x8 /// ,
-    /// ConnectingFlowgraph,
-    /// ConnectingOperationArgument
-  };
-
-  /* virtual */    ~DotVisitor         ();
+  virtual          ~DotVisitor         ();
 
   UnicodeString const& script          () const;
 
-  virtual void     Visit               (language::AssignmentVertex&);
-
-  virtual void     Visit               (language::FunctionVertex&);
-
-  virtual void     Visit               (language::IfVertex&);
-
-  virtual void     Visit               (language::NameVertex&);
-
-  virtual void     Visit               (language::NumberVertex<int8_t>&);
-
-  virtual void     Visit               (language::NumberVertex<int16_t>&);
-
-  virtual void     Visit               (language::NumberVertex<int32_t>&);
-
-  virtual void     Visit               (language::NumberVertex<int64_t>&);
-
-  virtual void     Visit               (language::NumberVertex<uint8_t>&);
-
-  virtual void     Visit               (language::NumberVertex<uint16_t>&);
-
-  virtual void     Visit               (language::NumberVertex<uint32_t>&);
-
-  virtual void     Visit               (language::NumberVertex<uint64_t>&);
-
-  virtual void     Visit               (language::NumberVertex<float>&);
-
-  virtual void     Visit               (language::NumberVertex<double>&);
-
-  virtual void     Visit               (language::OperatorVertex&);
-
-  virtual void     Visit               (language::ScriptVertex& vertex)=0;
-
-  virtual void     Visit               (language::StringVertex&);
-
-  virtual void     Visit               (language::WhileVertex&);
-
 protected:
 
-  enum Type {
-    Ast,
-    Flowgraph
-  };
-
-                   DotVisitor          (Type type);
+                   DotVisitor          ();
 
   void             setScript           (UnicodeString const& string);
 
   void             addScript           (UnicodeString const& string);
 
-  void             setMode             (Mode mode);
+  void             Visit               (
+                                  language::NumberVertex<int8_t>& vertex);
 
-  Mode             mode                () const;
+  void             Visit               (
+                                  language::NumberVertex<int16_t>& vertex);
 
-  void             addAstVertex        (
-                                  language::SyntaxVertex const& sourceVertex,
-                                  language::SyntaxVertex const& targetVertex);
+  void             Visit               (
+                                  language::NumberVertex<int32_t>& vertex);
 
-  void             addCfgVertices      (
-                                  language::SyntaxVertex const& sourceVertex);
+  void             Visit               (
+                                  language::NumberVertex<int64_t>& vertex);
+
+  void             Visit               (
+                                  language::NumberVertex<uint8_t>& vertex);
+
+  void             Visit               (
+                                  language::NumberVertex<uint16_t>& vertex);
+
+  void             Visit               (
+                                  language::NumberVertex<uint32_t>& vertex);
+
+  void             Visit               (
+                                  language::NumberVertex<uint64_t>& vertex);
+
+  void             Visit               (
+                                  language::NumberVertex<float>& vertex);
+
+  void             Visit               (
+                                  language::NumberVertex<double>& vertex);
 
 private:
 
   UnicodeString    _script;
 
-  Type             _type;
-
-  Mode             _mode;
-
   /// language::SyntaxVertex const* _definition;
 
-  void             addUseVertices      (
-                                  language::NameVertex const& vertex);
-
-  void             addFlowgraphVertex  (
-                                  language::SyntaxVertex const& sourceVertex,
-                                  language::SyntaxVertex const& targetVertex);
-
-  // void             addFlowgraphVertices(NameVertex const& vertex);
+  virtual void     Visit               (language::ScriptVertex& vertex)=0;
 
   template<typename T>
-  void             Visit               (language::NumberVertex<T>&);
+  void             Visit               (language::NumberVertex<T>& vertex);
 
 };
 

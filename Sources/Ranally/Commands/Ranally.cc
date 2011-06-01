@@ -8,6 +8,7 @@
 #include "Ranally/Configure.h"
 #include "Ranally/Language/AlgebraParser.h"
 #include "Ranally/Language/AstDotVisitor.h"
+#include "Ranally/Language/FlowgraphDotVisitor.h"
 #include "Ranally/Language/IdentifyVisitor.h"
 #include "Ranally/Language/XmlParser.h"
 #include "Ranally/Language/ScriptVertex.h"
@@ -67,7 +68,7 @@ void showConvertDotHelp()
     "\n"
     "graph types:\n"
     "  ast                 Abstract syntax tree\n"
-    "  flowchart           Flowchart\n"
+    "  flowgraph           Flowgraph\n"
     "\n"
     "See 'ranally convert dot GRAPH_TYPE --help' for more information on a\n"
     "specific graph type.\n"
@@ -93,12 +94,12 @@ void showConvertDotAstHelp()
 
 
 
-void showConvertDotFlowchartHelp()
+void showConvertDotFlowgraphHelp()
 {
   std::cout <<
-    "usage: ranally convert dot flowchart [--help] INPUT_SCRIPT OUTPUT_SCRIPT\n"
+    "usage: ranally convert dot flowgraph [--help] INPUT_SCRIPT OUTPUT_SCRIPT\n"
     "\n"
-    "Convert the script to a dot graph containing the flow chart.\n"
+    "Convert the script to a dot graph containing the flow graph.\n"
     "\n"
     "  INPUT_SCRIPT        Script to convert or - to read from standard input\n"
     "  OUTPUT_SCRIPT       File to write result to\n"
@@ -332,7 +333,7 @@ public:
     return status;
   }
 
-  int convertToDotFlowchart(
+  int convertToDotFlowgraph(
     int argc,
     char** argv)
   {
@@ -340,11 +341,66 @@ public:
 
     if(argc == 1 || std::strcmp(argv[1], "--help") == 0) {
       // No arguments, or the help option.
-      showConvertDotFlowchartHelp();
+      showConvertDotFlowgraphHelp();
       status = EXIT_SUCCESS;
     }
     else {
-      std::cout << "Conversion to flow chart not supported yet\n";
+      int currentArgumentId = 1;
+
+      if(currentArgumentId == argc) {
+        std::cerr << "Not enough arguments.\n";
+        showConvertDotAstHelp();
+        status = EXIT_FAILURE;
+      }
+      else if(argc - currentArgumentId > 3) {
+        std::cerr << "Too many arguments.\n";
+        showConvertDotAstHelp();
+        status = EXIT_FAILURE;
+      }
+      else {
+        std::string inputFileName =
+          std::strcmp(argv[currentArgumentId], "-") != 0
+            ? argv[currentArgumentId] : "";
+        ++currentArgumentId;
+        std::string outputFileName = currentArgumentId == argc - 1
+          ? argv[currentArgumentId] : "";
+
+        ranally::FlowgraphDotVisitor flowgraphDotVisitor;
+        ranally::language::ThreadVisitor threadVisitor;
+        ranally::language::IdentifyVisitor identifyVisitor;
+        ranally::language::AlgebraParser parser;
+        UnicodeString xml;
+
+        if(inputFileName.empty()) {
+          // Read script from the standard input stream.
+          std::ostringstream script;
+          script << std::cin.rdbuf();
+          xml = ranally::language::AlgebraParser().parseString(UnicodeString(
+            script.str().c_str()));
+        }
+        else {
+          // Read script from a file.
+          xml = ranally::language::AlgebraParser().parseFile(UnicodeString(
+            inputFileName.c_str()));
+        }
+
+        boost::shared_ptr<ranally::language::ScriptVertex> tree(
+          ranally::language::XmlParser().parse(xml));
+        tree->Accept(threadVisitor);
+        tree->Accept(identifyVisitor);
+        tree->Accept(flowgraphDotVisitor);
+
+        std::string result = dev::encodeInUTF8(flowgraphDotVisitor.script());
+
+        if(outputFileName.empty()) {
+          std::cout << result;
+        }
+        else {
+          std::ofstream file(outputFileName.c_str());
+          file << result;
+        }
+      }
+
       status = EXIT_SUCCESS;
     }
 
@@ -365,8 +421,8 @@ public:
     else if(std::strcmp(argv[1], "ast") == 0) {
       status = convertToDotAst(argc - 1, argv + 1);
     }
-    else if(std::strcmp(argv[1], "flowchart") == 0) {
-      status = convertToDotFlowchart(argc - 1, argv + 1);
+    else if(std::strcmp(argv[1], "flowgraph") == 0) {
+      status = convertToDotFlowgraph(argc - 1, argv + 1);
     }
     else {
       std::cerr << "Unknown graph type: " << argv[1] << "\n";
