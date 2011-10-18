@@ -1,6 +1,5 @@
-#include "Ranally/Language/AlgebraParser.h"
-
 #include <Python.h> // This one first, to get rid of preprocessor warnings.
+#include "Ranally/Language/AlgebraParser.h"
 #include <cassert>
 #include <iostream>
 #include "Python-ast.h"

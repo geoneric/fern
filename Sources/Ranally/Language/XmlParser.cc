@@ -397,7 +397,8 @@ public:
         break;
       }
       case 32: {
-        result = boost::make_shared<ranally::language::NumberVertex<int32_t> >(_value);
+        result = boost::make_shared<ranally::language::NumberVertex<int32_t> >(
+          _value);
         break;
       }
       case 64: {
@@ -807,7 +808,8 @@ boost::shared_ptr<ScriptVertex> XmlParser::parse(
   // parser, but does have an int parser. Let's make sure a long is of the
   // same size as an int. Xsd's long parser uses long long, which is good
   // for Pythons long integer type.
-  assert(sizeof(int) == sizeof(long));
+  // TODO Use long_p for integer parsing? int is too small I would think.
+  // assert(sizeof(int) == sizeof(long));
 
   xml_schema::positive_integer_pimpl positive_integer_p;
   xml_schema::int_pimpl int_p;
