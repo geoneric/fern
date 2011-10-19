@@ -30,7 +30,7 @@ public:
 
                    AstDotVisitor       (int modes=0);
 
-  /* virtual */    ~AstDotVisitor      ();
+                   ~AstDotVisitor      ();
 
   void             Visit               (language::AssignmentVertex& vertex);
 
@@ -40,6 +40,26 @@ public:
 
   void             Visit               (language::NameVertex& vertex);
 
+  void             Visit               (language::NumberVertex<int8_t>& vertex);
+
+  void             Visit               (language::NumberVertex<int16_t>& vertex);
+
+  void             Visit               (language::NumberVertex<int32_t>& vertex);
+
+  void             Visit               (language::NumberVertex<int64_t>& vertex);
+
+  void             Visit               (language::NumberVertex<uint8_t>& vertex);
+
+  void             Visit               (language::NumberVertex<uint16_t>& vertex);
+
+  void             Visit               (language::NumberVertex<uint32_t>& vertex);
+
+  void             Visit               (language::NumberVertex<uint64_t>& vertex);
+
+  void             Visit               (language::NumberVertex<float>& vertex);
+
+  void             Visit               (language::NumberVertex<double>& vertex);
+
   void             Visit               (language::OperatorVertex& vertex);
 
   void             Visit               (language::ScriptVertex& vertex);
@@ -47,8 +67,6 @@ public:
   void             Visit               (language::StringVertex& vertex);
 
   void             Visit               (language::WhileVertex& vertex);
-
-protected:
 
 private:
 
@@ -69,6 +87,9 @@ private:
 
   void             addUseVertices      (
                                   language::NameVertex const& vertex);
+
+  template<typename T>
+  void             Visit               (language::NumberVertex<T>& vertex);
 
 };
 

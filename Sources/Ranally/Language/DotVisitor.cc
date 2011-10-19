@@ -324,110 +324,110 @@ UnicodeString const& DotVisitor::script() const
 
 
 
-template<typename T>
-void DotVisitor::Visit(
-  language::NumberVertex<T>& vertex)
-{
-  // switch(_mode) {
-  //   case Declaring: {
-  _script +=
-    UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
-    " [label=\"" + (boost::format("%1%") % vertex.value()).str().c_str() +
-    "\", shape=box];\n";
-  //     break;
-  //   }
-  //   case ConnectingAst: {
-  //     break;
-  //   }
-  //   case ConnectingCfg: {
-  //     addCfgVertices(vertex);
-  //     break;
-  //   }
-  //   case ConnectingUses: {
-  //     break;
-  //   }
-  // }
-}
-
-
-
-void DotVisitor::Visit(
-  language::NumberVertex<int8_t>& vertex)
-{
-  return Visit<int8_t>(vertex);
-}
-
-
-
-void DotVisitor::Visit(
-  language::NumberVertex<int16_t>& vertex)
-{
-  return Visit<int16_t>(vertex);
-}
-
-
-
-void DotVisitor::Visit(
-  language::NumberVertex<int32_t>& vertex)
-{
-  return Visit<int32_t>(vertex);
-}
-
-
-
-void DotVisitor::Visit(
-  language::NumberVertex<int64_t>& vertex)
-{
-  return Visit<int64_t>(vertex);
-}
-
-
-
-void DotVisitor::Visit(
-  language::NumberVertex<uint8_t>& vertex)
-{
-  return Visit<uint8_t>(vertex);
-}
-
-
-
-void DotVisitor::Visit(
-  language::NumberVertex<uint16_t>& vertex)
-{
-  return Visit<uint16_t>(vertex);
-}
-
-
-
-void DotVisitor::Visit(
-  language::NumberVertex<uint32_t>& vertex)
-{
-  return Visit<uint32_t>(vertex);
-}
-
-
-
-void DotVisitor::Visit(
-  language::NumberVertex<uint64_t>& vertex)
-{
-  return Visit<uint64_t>(vertex);
-}
-
-
-
-void DotVisitor::Visit(
-  language::NumberVertex<float>& vertex)
-{
-  return Visit<float>(vertex);
-}
-
-
-
-void DotVisitor::Visit(
-  language::NumberVertex<double>& vertex)
-{
-  return Visit<double>(vertex);
-}
+// template<typename T>
+// void DotVisitor::Visit(
+//   language::NumberVertex<T>& vertex)
+// {
+//   // switch(_mode) {
+//   //   case Declaring: {
+//   _script +=
+//     UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+//     " [label=\"" + (boost::format("%1%") % vertex.value()).str().c_str() +
+//     "\", shape=box];\n";
+//   //     break;
+//   //   }
+//   //   case ConnectingAst: {
+//   //     break;
+//   //   }
+//   //   case ConnectingCfg: {
+//   //     addCfgVertices(vertex);
+//   //     break;
+//   //   }
+//   //   case ConnectingUses: {
+//   //     break;
+//   //   }
+//   // }
+// }
+// 
+// 
+// 
+// void DotVisitor::Visit(
+//   language::NumberVertex<int8_t>& vertex)
+// {
+//   return Visit<int8_t>(vertex);
+// }
+// 
+// 
+// 
+// void DotVisitor::Visit(
+//   language::NumberVertex<int16_t>& vertex)
+// {
+//   return Visit<int16_t>(vertex);
+// }
+// 
+// 
+// 
+// void DotVisitor::Visit(
+//   language::NumberVertex<int32_t>& vertex)
+// {
+//   return Visit<int32_t>(vertex);
+// }
+// 
+// 
+// 
+// void DotVisitor::Visit(
+//   language::NumberVertex<int64_t>& vertex)
+// {
+//   return Visit<int64_t>(vertex);
+// }
+// 
+// 
+// 
+// void DotVisitor::Visit(
+//   language::NumberVertex<uint8_t>& vertex)
+// {
+//   return Visit<uint8_t>(vertex);
+// }
+// 
+// 
+// 
+// void DotVisitor::Visit(
+//   language::NumberVertex<uint16_t>& vertex)
+// {
+//   return Visit<uint16_t>(vertex);
+// }
+// 
+// 
+// 
+// void DotVisitor::Visit(
+//   language::NumberVertex<uint32_t>& vertex)
+// {
+//   return Visit<uint32_t>(vertex);
+// }
+// 
+// 
+// 
+// void DotVisitor::Visit(
+//   language::NumberVertex<uint64_t>& vertex)
+// {
+//   return Visit<uint64_t>(vertex);
+// }
+// 
+// 
+// 
+// void DotVisitor::Visit(
+//   language::NumberVertex<float>& vertex)
+// {
+//   return Visit<float>(vertex);
+// }
+// 
+// 
+// 
+// void DotVisitor::Visit(
+//   language::NumberVertex<double>& vertex)
+// {
+//   return Visit<double>(vertex);
+// }
 
 
 

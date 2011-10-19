@@ -68,36 +68,6 @@ protected:
 
   void             addScript           (UnicodeString const& string);
 
-  void             Visit               (
-                                  language::NumberVertex<int8_t>& vertex);
-
-  void             Visit               (
-                                  language::NumberVertex<int16_t>& vertex);
-
-  void             Visit               (
-                                  language::NumberVertex<int32_t>& vertex);
-
-  void             Visit               (
-                                  language::NumberVertex<int64_t>& vertex);
-
-  void             Visit               (
-                                  language::NumberVertex<uint8_t>& vertex);
-
-  void             Visit               (
-                                  language::NumberVertex<uint16_t>& vertex);
-
-  void             Visit               (
-                                  language::NumberVertex<uint32_t>& vertex);
-
-  void             Visit               (
-                                  language::NumberVertex<uint64_t>& vertex);
-
-  void             Visit               (
-                                  language::NumberVertex<float>& vertex);
-
-  void             Visit               (
-                                  language::NumberVertex<double>& vertex);
-
 private:
 
   UnicodeString    _script;
@@ -105,9 +75,6 @@ private:
   /// language::SyntaxVertex const* _definition;
 
   virtual void     Visit               (language::ScriptVertex& vertex)=0;
-
-  template<typename T>
-  void             Visit               (language::NumberVertex<T>& vertex);
 
 };
 

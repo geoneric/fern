@@ -77,6 +77,121 @@ void FlowgraphDotVisitor::addFlowgraphVertex(
 
 
 
+void FlowgraphDotVisitor::Visit(
+  language::AssignmentVertex& vertex)
+{
+}
+
+
+
+void FlowgraphDotVisitor::Visit(
+  language::FunctionVertex& vertex)
+{
+}
+
+
+
+void FlowgraphDotVisitor::Visit(
+  language::IfVertex& vertex)
+{
+}
+
+
+
+void FlowgraphDotVisitor::Visit(
+  language::NameVertex& vertex)
+{
+}
+
+
+
+void FlowgraphDotVisitor::Visit(
+  language::NumberVertex<int8_t>& vertex)
+{
+}
+
+
+
+void FlowgraphDotVisitor::Visit(
+  language::NumberVertex<int16_t>& vertex)
+{
+}
+
+
+
+void FlowgraphDotVisitor::Visit(
+  language::NumberVertex<int32_t>& vertex)
+{
+}
+
+
+
+void FlowgraphDotVisitor::Visit(
+  language::NumberVertex<int64_t>& vertex)
+{
+}
+
+
+
+void FlowgraphDotVisitor::Visit(
+  language::NumberVertex<uint8_t>& vertex)
+{
+}
+
+
+
+void FlowgraphDotVisitor::Visit(
+  language::NumberVertex<uint16_t>& vertex)
+{
+}
+
+
+
+void FlowgraphDotVisitor::Visit(
+  language::NumberVertex<uint32_t>& vertex)
+{
+}
+
+
+
+void FlowgraphDotVisitor::Visit(
+  language::NumberVertex<uint64_t>& vertex)
+{
+}
+
+
+
+void FlowgraphDotVisitor::Visit(
+  language::NumberVertex<float>& vertex)
+{
+}
+
+
+
+void FlowgraphDotVisitor::Visit(
+  language::NumberVertex<double>& vertex)
+{
+}
+
+
+void FlowgraphDotVisitor::Visit(
+  language::OperatorVertex& vertex)
+{
+}
+
+
+
+void FlowgraphDotVisitor::Visit(
+  language::StringVertex& vertex)
+{
+}
+
+
+
+void FlowgraphDotVisitor::Visit(
+  language::WhileVertex& vertex)
+{
+}
 
 
 
