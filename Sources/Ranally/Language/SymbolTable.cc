@@ -1,5 +1,4 @@
 #include "Ranally/Language/SymbolTable.h"
-
 #include <algorithm>
 #include <cassert>
 #include <boost/foreach.hpp>
