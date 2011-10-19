@@ -1,5 +1,4 @@
 #include "Ranally/Language/ScriptVisitor.h"
-
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
 #include "Ranally/Language/Vertices.h"
@@ -266,7 +265,9 @@ void ScriptVisitor::Visit(
 void ScriptVisitor::Visit(
   language::NumberVertex<int64_t>& vertex)
 {
-  _script += UnicodeString((boost::format("%1%L") % vertex.value()).str().c_str());
+  std::string formatString = sizeof(long) == sizeof(int64_t) ? "%1%" : "%1%L";
+  _script += UnicodeString((boost::format(formatString)
+    % vertex.value()).str().c_str());
 }
 
 
@@ -302,7 +303,10 @@ void ScriptVisitor::Visit(
   language::NumberVertex<uint64_t>& vertex)
 {
   // U?
-  _script += UnicodeString((boost::format("%1%UL") % vertex.value()).str().c_str());
+  std::string formatString = sizeof(unsigned long) == sizeof(uint64_t)
+    ? "%1%U" : "%1%UL";
+  _script += UnicodeString((boost::format(formatString)
+    % vertex.value()).str().c_str());
 }
 
 

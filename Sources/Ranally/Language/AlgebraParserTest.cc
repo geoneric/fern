@@ -1,5 +1,5 @@
 #include "Ranally/Language/AlgebraParserTest.h"
-
+#include <boost/format.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
@@ -212,7 +212,7 @@ void AlgebraParserTest::testParseNumber()
 
   {
     UnicodeString xml(parser.parseString(UnicodeString("5")));
-    BOOST_CHECK(xml ==
+    BOOST_CHECK(xml == (boost::format(
       "<?xml version=\"1.0\"?>"
       "<Ranally>"
         "<Statements>"
@@ -220,14 +220,14 @@ void AlgebraParserTest::testParseNumber()
             "<Expression line=\"1\" col=\"0\">"
               "<Number>"
                 "<Integer>"
-                  "<Size>32</Size>"
+                  "<Size>%1%</Size>"
                   "<Value>5</Value>"
                 "</Integer>"
               "</Number>"
             "</Expression>"
           "</Statement>"
         "</Statements>"
-      "</Ranally>");
+      "</Ranally>") % (sizeof(long) * 8)).str().c_str());
   }
 
   {
@@ -298,7 +298,7 @@ void AlgebraParserTest::testParseCall()
 
   {
     xml = parser.parseString(UnicodeString("f(1, \"2\", three, four())"));
-    BOOST_CHECK(xml ==
+    BOOST_CHECK(xml == (boost::format(
       "<?xml version=\"1.0\"?>"
       "<Ranally>"
         "<Statements>"
@@ -310,7 +310,7 @@ void AlgebraParserTest::testParseCall()
                   "<Expression line=\"1\" col=\"2\">"
                     "<Number>"
                       "<Integer>"
-                        "<Size>32</Size>"
+                        "<Size>%1%</Size>"
                         "<Value>1</Value>"
                       "</Integer>"
                     "</Number>"
@@ -332,7 +332,7 @@ void AlgebraParserTest::testParseCall()
             "</Expression>"
           "</Statement>"
         "</Statements>"
-      "</Ranally>");
+      "</Ranally>") % (sizeof(long) * 8)).str().c_str());
   }
 }
 

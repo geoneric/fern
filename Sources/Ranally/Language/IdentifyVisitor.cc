@@ -83,6 +83,8 @@ void IdentifyVisitor::Visit(
       assert(!vertex.definition());
 
       if(_symbolTable.hasDefinition(vertex.name())) {
+        // TODO: A name can have multiple definitions. Search for all
+        //       definitions in the current and previous deeper scopes.
         NameVertex* definition = _symbolTable.definition(vertex.name());
         vertex.setDefinition(definition);
         definition->addUse(&vertex);

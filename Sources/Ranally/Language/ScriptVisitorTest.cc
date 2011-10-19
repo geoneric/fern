@@ -100,7 +100,8 @@ void ScriptVisitorTest::testVisitNumber()
 
   xml = _algebraParser.parseString(UnicodeString("5L"));
   _xmlParser.parse(xml)->Accept(_visitor);
-  BOOST_CHECK(_visitor.script() == "5L\n");
+  BOOST_CHECK(_visitor.script() == (sizeof(long) == sizeof(int64_t)
+    ? "5\n" : "5L\n"));
 
   xml = _algebraParser.parseString(UnicodeString("5.5"));
   _xmlParser.parse(xml)->Accept(_visitor);
