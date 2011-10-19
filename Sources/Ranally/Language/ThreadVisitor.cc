@@ -1,6 +1,4 @@
 #include "Ranally/Language/ThreadVisitor.h"
-
-#include <iostream>
 #include <boost/foreach.hpp>
 #include "Ranally/Language/Vertices.h"
 
