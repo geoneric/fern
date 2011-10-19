@@ -59,7 +59,8 @@ void AstDotVisitor::addCfgVertices(
       " -> " +
       (boost::format("\"%1%\"") % successor).str().c_str() + " ["
         "color=red, "
-        "constraint=false, "
+        // TODO Doesn't work when contraint is false. Bug in Dot.
+        "constraint=true, "
         "style=dashed"
       "];\n"
     );
@@ -78,7 +79,8 @@ void AstDotVisitor::addUseVertices(
       " -> " +
       (boost::format("\"%1%\"") % use).str().c_str() + " ["
         "color=blue, "
-        "constraint=false, "
+        // TODO Doesn't work when contraint is false. Bug in Dot.
+        "constraint=true, "
         "style=dotted"
       "];\n"
     );
@@ -91,12 +93,25 @@ template<typename T>
 void AstDotVisitor::Visit(
   language::NumberVertex<T>& vertex)
 {
-  if(_mode == Declaring) {
-    addScript(
-      UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
-      " [label=\"" + (boost::format("%1%") % vertex.value()).str().c_str() +
-      "\", shape=box];\n"
-    );
+  switch(_mode) {
+    case Declaring: {
+      addScript(
+        UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+        " [label=\"" + (boost::format("%1%") % vertex.value()).str().c_str() +
+        "\", shape=box];\n"
+      );
+      break;
+    }
+    case ConnectingAst: {
+      break;
+    }
+    case ConnectingCfg: {
+      addCfgVertices(vertex);
+      break;
+    }
+    case ConnectingUses: {
+      break;
+    }
   }
 }
 
@@ -204,6 +219,9 @@ void AstDotVisitor::Visit(
       break;
     }
     case ConnectingCfg: {
+      // for(size_t i = 0; i < expressions.size(); ++i) {
+      //   addCfgVertices(*vertex.expressions()[i]);
+      // }
       addCfgVertices(vertex);
       break;
     }
