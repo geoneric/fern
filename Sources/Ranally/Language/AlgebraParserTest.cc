@@ -61,7 +61,7 @@ void AlgebraParserTest::testParseEmptyScript()
     UnicodeString xml(parser.parseString(UnicodeString("")));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
-      "<Ranally>"
+      "<Ranally source=\"&lt;string&gt;\">"
         "<Statements/>"
       "</Ranally>");
   }
@@ -77,7 +77,7 @@ void AlgebraParserTest::testParseName()
     UnicodeString xml(parser.parseString(UnicodeString("a")));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
-      "<Ranally>"
+      "<Ranally source=\"&lt;string&gt;\">"
         "<Statements>"
           "<Statement>"
             "<Expression line=\"1\" col=\"0\">"
@@ -115,7 +115,7 @@ void AlgebraParserTest::testParseAssignment()
     UnicodeString xml(parser.parseString(UnicodeString("a = b")));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
-      "<Ranally>"
+      "<Ranally source=\"&lt;string&gt;\">"
         "<Statements>"
           "<Statement>"
             "<Assignment>"
@@ -146,7 +146,7 @@ void AlgebraParserTest::testParseString()
     UnicodeString xml(parser.parseString(UnicodeString("\"five\"")));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
-      "<Ranally>"
+      "<Ranally source=\"&lt;string&gt;\">"
         "<Statements>"
           "<Statement>"
             "<Expression line=\"1\" col=\"0\">"
@@ -161,7 +161,7 @@ void AlgebraParserTest::testParseString()
     UnicodeString xml(parser.parseString(UnicodeString("\"\"")));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
-      "<Ranally>"
+      "<Ranally source=\"&lt;string&gt;\">"
         "<Statements>"
           "<Statement>"
             "<Expression line=\"1\" col=\"0\">"
@@ -176,7 +176,7 @@ void AlgebraParserTest::testParseString()
     UnicodeString xml(parser.parseString(UnicodeString("\" \"")));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
-      "<Ranally>"
+      "<Ranally source=\"&lt;string&gt;\">"
         "<Statements>"
           "<Statement>"
             "<Expression line=\"1\" col=\"0\">"
@@ -192,7 +192,7 @@ void AlgebraParserTest::testParseString()
     UnicodeString xml(parser.parseString(UnicodeString("\"mañana\"")));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
-      "<Ranally>"
+      "<Ranally source=\"&lt;string&gt;\">"
         "<Statements>"
           "<Statement>"
             "<Expression line=\"1\" col=\"0\">"
@@ -214,7 +214,7 @@ void AlgebraParserTest::testParseNumber()
     UnicodeString xml(parser.parseString(UnicodeString("5")));
     BOOST_CHECK(xml == (boost::format(
       "<?xml version=\"1.0\"?>"
-      "<Ranally>"
+      "<Ranally source=\"&lt;string&gt;\">"
         "<Statements>"
           "<Statement>"
             "<Expression line=\"1\" col=\"0\">"
@@ -234,7 +234,7 @@ void AlgebraParserTest::testParseNumber()
     UnicodeString xml(parser.parseString(UnicodeString("5L")));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
-      "<Ranally>"
+      "<Ranally source=\"&lt;string&gt;\">"
         "<Statements>"
           "<Statement>"
             "<Expression line=\"1\" col=\"0\">"
@@ -254,7 +254,7 @@ void AlgebraParserTest::testParseNumber()
     UnicodeString xml(parser.parseString(UnicodeString("5.5")));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
-      "<Ranally>"
+      "<Ranally source=\"&lt;string&gt;\">"
         "<Statements>"
           "<Statement>"
             "<Expression line=\"1\" col=\"0\">"
@@ -282,7 +282,7 @@ void AlgebraParserTest::testParseCall()
     xml = parser.parseString(UnicodeString("f()"));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
-      "<Ranally>"
+      "<Ranally source=\"&lt;string&gt;\">"
         "<Statements>"
           "<Statement>"
             "<Expression line=\"1\" col=\"0\">"
@@ -300,7 +300,7 @@ void AlgebraParserTest::testParseCall()
     xml = parser.parseString(UnicodeString("f(1, \"2\", three, four())"));
     BOOST_CHECK(xml == (boost::format(
       "<?xml version=\"1.0\"?>"
-      "<Ranally>"
+      "<Ranally source=\"&lt;string&gt;\">"
         "<Statements>"
           "<Statement>"
             "<Expression line=\"1\" col=\"0\">"
@@ -347,7 +347,7 @@ void AlgebraParserTest::testParseUnaryOperator()
     xml = parser.parseString(UnicodeString("-a"));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
-      "<Ranally>"
+      "<Ranally source=\"&lt;string&gt;\">"
         "<Statements>"
           "<Statement>"
             "<Expression line=\"1\" col=\"0\">"
@@ -377,7 +377,7 @@ void AlgebraParserTest::testParseBinaryOperator()
     xml = parser.parseString(UnicodeString("a + b"));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
-      "<Ranally>"
+      "<Ranally source=\"&lt;string&gt;\">"
         "<Statements>"
           "<Statement>"
             "<Expression line=\"1\" col=\"0\">"
@@ -410,7 +410,7 @@ void AlgebraParserTest::testParseBooleanOperator()
     xml = parser.parseString(UnicodeString("a and b"));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
-      "<Ranally>"
+      "<Ranally source=\"&lt;string&gt;\">"
         "<Statements>"
           "<Statement>"
             "<Expression line=\"1\" col=\"0\">"
@@ -443,7 +443,7 @@ void AlgebraParserTest::testParseComparisonOperator()
     xml = parser.parseString(UnicodeString("a <= b"));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
-      "<Ranally>"
+      "<Ranally source=\"&lt;string&gt;\">"
         "<Statements>"
           "<Statement>"
             "<Expression line=\"1\" col=\"0\">"
@@ -475,7 +475,7 @@ void AlgebraParserTest::testParseMultipleStatements()
     UnicodeString xml(parser.parseString(UnicodeString("a\nb")));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
-      "<Ranally>"
+      "<Ranally source=\"&lt;string&gt;\">"
         "<Statements>"
           "<Statement>"
             "<Expression line=\"1\" col=\"0\">"
@@ -505,7 +505,7 @@ void AlgebraParserTest::testParseIf()
       "  b"));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
-      "<Ranally>"
+      "<Ranally source=\"&lt;string&gt;\">"
         "<Statements>"
           "<Statement>"
             "<If>"
@@ -534,7 +534,7 @@ void AlgebraParserTest::testParseIf()
       "  d"));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
-      "<Ranally>"
+      "<Ranally source=\"&lt;string&gt;\">"
         "<Statements>"
           "<Statement>"
             "<If>"
@@ -581,7 +581,7 @@ void AlgebraParserTest::testParseIf()
       "  e"));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
-      "<Ranally>"
+      "<Ranally source=\"&lt;string&gt;\">"
         "<Statements>"
           "<Statement>"
             "<If>"
@@ -638,7 +638,7 @@ void AlgebraParserTest::testParseWhile()
       "  b"));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
-      "<Ranally>"
+      "<Ranally source=\"&lt;string&gt;\">"
         "<Statements>"
           "<Statement>"
             "<While>"
@@ -667,7 +667,7 @@ void AlgebraParserTest::testParseWhile()
       "  c"));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
-      "<Ranally>"
+      "<Ranally source=\"&lt;string&gt;\">"
         "<Statements>"
           "<Statement>"
             "<While>"

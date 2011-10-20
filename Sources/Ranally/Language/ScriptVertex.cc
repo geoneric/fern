@@ -6,9 +6,11 @@ namespace ranally {
 namespace language {
 
 ScriptVertex::ScriptVertex(
+  UnicodeString const& sourceName,
   StatementVertices const& statements)
 
-  : _statements(statements)
+  : _sourceName(sourceName),
+    _statements(statements)
 
 {
 }
@@ -17,6 +19,13 @@ ScriptVertex::ScriptVertex(
 
 ScriptVertex::~ScriptVertex()
 {
+}
+
+
+
+UnicodeString const& ScriptVertex::sourceName() const
+{
+  return _sourceName;
 }
 
 

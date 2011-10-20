@@ -1,6 +1,7 @@
 #include "Ranally/Language/AstDotVisitor.h"
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
+#include "dev_UnicodeUtils.h"
 #include "Ranally/Language/Vertices.h"
 
 
@@ -219,9 +220,6 @@ void AstDotVisitor::Visit(
       break;
     }
     case ConnectingCfg: {
-      // for(size_t i = 0; i < expressions.size(); ++i) {
-      //   addCfgVertices(*vertex.expressions()[i]);
-      // }
       addCfgVertices(vertex);
       break;
     }
@@ -395,10 +393,10 @@ void AstDotVisitor::Visit(
   ));
 
   setMode(Declaring);
-  // TODO Use script name.
   addScript(
     UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
-    " [label=\"Script\"];\n");
+    (boost::format(" [label=\"%1%\"];\n")
+      % dev::encodeInUTF8(vertex.sourceName())).str().c_str());
 
   BOOST_FOREACH(boost::shared_ptr<language::StatementVertex> statementVertex,
     vertex.statements()) {

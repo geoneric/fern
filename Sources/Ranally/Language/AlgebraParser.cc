@@ -571,7 +571,8 @@ void writeStatementNodes(
 
 
 UnicodeString pythonAstToXml(
-  mod_ty const ast)
+  mod_ty const ast,
+  UnicodeString const& sourceName)
 {
   if(!ast) {
     // TODO Bubble up parsing error.
@@ -583,7 +584,8 @@ UnicodeString pythonAstToXml(
 
   switch(ast->kind) {
     case Module_kind: {
-      xml += "<Ranally>";
+      xml += (boost::format("<Ranally source=\"%1%\">")
+        % dev::encodeInUTF8(sourceName)).str().c_str();
       writeStatementNodes(ast->v.Module.body, xml);
       xml += "</Ranally>";
       break;
@@ -659,7 +661,8 @@ UnicodeString AlgebraParser::parseString(
   UnicodeString result("<?xml version=\"1.0\"?>");
 
   result += pythonAstToXml(PyParser_ASTFromString(
-    dev::encodeInUTF8(string).c_str(), "", Py_file_input, 0, arena));
+    dev::encodeInUTF8(string).c_str(), "", Py_file_input, 0, arena),
+    "&lt;string&gt;");
 
   // TODO Memory leak!
   // PyArena_Free(arena);
@@ -686,7 +689,7 @@ UnicodeString AlgebraParser::parseFile(
   UnicodeString result("<?xml version=\"1.0\"?>");
 
   result += pythonAstToXml(PyParser_ASTFromFile(filePointer,
-    fileNameInUtf8.c_str(), Py_file_input, 0, 0, 0, 0, arena));
+    fileNameInUtf8.c_str(), Py_file_input, 0, 0, 0, 0, arena), fileName);
 
   PyArena_Free(arena);
   arena = 0;

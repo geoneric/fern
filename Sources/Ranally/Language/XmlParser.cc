@@ -25,12 +25,20 @@ private:
   typedef std::vector<boost::shared_ptr<ranally::language::StatementVertex> >
     StatementVertices;
 
+  UnicodeString    _sourceName;
+
   StatementVertices _statementVertices;
 
 public:
   void pre()
   {
     _statementVertices.clear();
+  }
+
+  void source(
+    std::string const& sourceName)
+  {
+    _sourceName = dev::decodeFromUTF8(sourceName);
   }
 
   void Statements(
@@ -43,7 +51,7 @@ public:
 
   boost::shared_ptr<ranally::language::ScriptVertex> post_Ranally()
   {
-    return boost::make_shared<ranally::language::ScriptVertex>(
+    return boost::make_shared<ranally::language::ScriptVertex>(_sourceName,
       _statementVertices);
   }
 };
@@ -864,7 +872,7 @@ boost::shared_ptr<ScriptVertex> XmlParser::parse(
   statements_p.parsers(statement_p);
 
   Ranally_pimpl ranally_p;
-  ranally_p.parsers(statements_p);
+  ranally_p.parsers(statements_p, string_p);
 
   xml_schema::document doc_p(ranally_p, "Ranally");
 

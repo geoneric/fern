@@ -16,6 +16,7 @@
         name="Statements"
         type="ranally:Statements"/>
     </xs:sequence>
+    <xs:attribute name="source" type="xs:string" use="required"/>
   </xs:complexType>
 
   <xs:complexType

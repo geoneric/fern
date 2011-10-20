@@ -60,7 +60,7 @@ public:
 
                    ScriptVisitor       (size_t tabSize=2);
 
-  /* virtual */    ~ScriptVisitor      ();
+                   ~ScriptVisitor      ();
 
   UnicodeString const& script          () const;
 
@@ -101,8 +101,6 @@ public:
   void             Visit               (language::SyntaxVertex&);
 
   void             Visit               (language::WhileVertex&);
-
-protected:
 
 private:
 
