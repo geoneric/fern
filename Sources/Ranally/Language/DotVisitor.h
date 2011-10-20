@@ -9,7 +9,6 @@
 
 
 namespace ranally {
-
 namespace language {
 
 class AssignmentVertex;
@@ -24,6 +23,8 @@ class StringVertex;
 class WhileVertex;
 
 } // namespace language
+
+
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
