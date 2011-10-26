@@ -29,7 +29,7 @@ public:
                                         int colId,
                                         UnicodeString const& name);
 
-  /* virtual */    ~NameVertex         ();
+                   ~NameVertex         ();
 
   void             setDefinition       (NameVertex* definition);
 
@@ -48,8 +48,6 @@ private:
 
   //! Uses of the name in expressions. Only relevant for definition vertices.
   std::vector<NameVertex*> _uses;
-
-protected:
 
 };
 

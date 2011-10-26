@@ -203,6 +203,7 @@ void AstDotVisitor::Visit(
 {
   language::ExpressionVertices const& targets = vertex.targets();
   language::ExpressionVertices const& expressions = vertex.expressions();
+  assert(expressions.size() == targets.size());
 
   switch(_mode) {
     case Declaring: {
@@ -212,10 +213,9 @@ void AstDotVisitor::Visit(
       break;
     }
     case ConnectingAst: {
-      assert(expressions.size() == targets.size());
       for(size_t i = 0; i < expressions.size(); ++i) {
-        addAstVertex(vertex, *vertex.targets()[i]);
-        addAstVertex(vertex, *vertex.expressions()[i]);
+        addAstVertex(vertex, *targets[i]);
+        addAstVertex(vertex, *expressions[i]);
       }
       break;
     }
@@ -229,12 +229,12 @@ void AstDotVisitor::Visit(
   }
 
   BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
-    expressionVertex, vertex.expressions()) {
+    expressionVertex, expressions) {
     expressionVertex->Accept(*this);
   }
 
   BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
-    expressionVertex, vertex.targets()) {
+    expressionVertex, targets) {
     expressionVertex->Accept(*this);
   }
 }

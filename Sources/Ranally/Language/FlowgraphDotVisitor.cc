@@ -1,6 +1,7 @@
 #include "FlowgraphDotVisitor.h"
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
+#include "dev_UnicodeUtils.h"
 #include "Ranally/Language/Vertices.h"
 
 
@@ -32,10 +33,40 @@ void FlowgraphDotVisitor::setMode(
 
 
 void FlowgraphDotVisitor::addFlowgraphVertex(
-  language::SyntaxVertex const& /* sourceVertex */,
-  language::SyntaxVertex const& /* targetVertex */)
+  language::NameVertex const& sourceVertex,
+  language::SyntaxVertex const& targetVertex)
 {
-  /// assert(_mode == ConnectingFlowgraph);
+  if(sourceVertex.definition()) {
+    addScript(
+      UnicodeString((boost::format("\"%1%\"") % sourceVertex.definition()).str().c_str()) +
+      " -> " +
+      (boost::format("\"%1%\"") % &targetVertex).str().c_str() + " ["
+      "];\n"
+    );
+  }
+  else {
+    addScript(
+      UnicodeString((boost::format("\"%1%\"") % &sourceVertex).str().c_str()) +
+      " -> " +
+      (boost::format("\"%1%\"") % &targetVertex).str().c_str() + " ["
+      "];\n"
+    );
+  }
+}
+
+
+
+void FlowgraphDotVisitor::addFlowgraphVertex(
+  language::SyntaxVertex const& sourceVertex,
+  language::SyntaxVertex const& targetVertex)
+{
+  assert(_mode == ConnectingFlowgraph);
+
+  if(dynamic_cast<language::NameVertex const*>(&sourceVertex)) {
+    addFlowgraphVertex(dynamic_cast<language::NameVertex const&>(sourceVertex),
+      targetVertex);
+    return;
+  }
 
   /// // In case the operation argument is a NameVertex, we want to connect the
   /// // defining location to the target. Let's find the definition. This only
@@ -58,6 +89,13 @@ void FlowgraphDotVisitor::addFlowgraphVertex(
 
   /// _mode = ConnectingFlowgraph;
   /// _definition = 0;
+
+  addScript(
+    UnicodeString((boost::format("\"%1%\"") % &sourceVertex).str().c_str()) +
+    " -> " +
+    (boost::format("\"%1%\"") % &targetVertex).str().c_str() + " ["
+    "];\n"
+  );
 }
 
 
@@ -78,112 +116,313 @@ void FlowgraphDotVisitor::addFlowgraphVertex(
 
 
 void FlowgraphDotVisitor::Visit(
-  language::AssignmentVertex& /* vertex */)
+  language::AssignmentVertex& vertex)
 {
+  language::ExpressionVertices const& targets = vertex.targets();
+  language::ExpressionVertices const& expressions = vertex.expressions();
+  assert(expressions.size() == targets.size());
+
+  switch(_mode) {
+    case Declaring: {
+      // addScript(
+      //   UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+      //   " [label=\"=\"];\n");
+      break;
+    }
+    case ConnectingFlowgraph: {
+      for(size_t i = 0; i < expressions.size(); ++i) {
+        addFlowgraphVertex(*vertex.expressions()[i], *vertex.targets()[i]);
+      }
+      break;
+    }
+  }
+
+  BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
+    expressionVertex, expressions) {
+    expressionVertex->Accept(*this);
+  }
+
+  BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
+    expressionVertex, targets) {
+    expressionVertex->Accept(*this);
+  }
 }
 
 
 
 void FlowgraphDotVisitor::Visit(
-  language::FunctionVertex& /* vertex */)
+  language::FunctionVertex& vertex)
 {
+  switch(_mode) {
+    case Declaring: {
+      addScript(
+        UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+        " [label=\"" + vertex.name() + "\"];\n"
+      );
+      break;
+    }
+    case ConnectingFlowgraph: {
+      BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
+        expressionVertex, vertex.expressions()) {
+        addFlowgraphVertex(*expressionVertex, vertex);
+      }
+      break;
+    }
+  }
+
+  BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
+    expressionVertex, vertex.expressions()) {
+    expressionVertex->Accept(*this);
+  }
 }
 
 
 
 void FlowgraphDotVisitor::Visit(
-  language::IfVertex& /* vertex */)
+  language::IfVertex& vertex)
 {
+  static size_t ifClusterId = 0;
+  switch(_mode) {
+    case Declaring: {
+      // addScript(
+      //   UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+      //   " [label=\"If\", shape=diamond];\n"
+      // );
+      break;
+    }
+    case ConnectingFlowgraph: {
+      // addScript(UnicodeString((boost::format(
+      //   "subgraph cluster%1% {\n"
+      //   "ordering=out;\n"
+      //   "rankdir=TB;\n"
+      // ) % ifClusterId++).str().c_str()));
+      // addFlowgraphVertex(*vertex.condition(), vertex);
+      // In this code, the if vertex is being connected to the statements in
+      // the branches. These statements are not declared, only the expressions
+      // are.
+      // The if should not be connected itself, but maybe shown as a box around
+      // the expressions, to visualize that the if provides a context to true
+      // and false blocks.
+      // BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+      //   statementVertex, vertex.trueStatements()) {
+      //   addFlowgraphVertex(vertex, *statementVertex);
+      // }
+      // BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+      //   statementVertex, vertex.falseStatements()) {
+      //   addFlowgraphVertex(vertex, *statementVertex);
+      // }
+      break;
+    }
+  }
+
+  vertex.condition()->Accept(*this);
+
+  // TODO start a new cluster for the true and false branches.
+  if(_mode == ConnectingFlowgraph) {
+    addScript(UnicodeString((boost::format(
+      "subgraph cluster%1% {\n"
+      "ordering=out;\n"
+      "rankdir=TB;\n"
+    ) % ifClusterId++).str().c_str()));
+  }
+  BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+    statementVertex, vertex.trueStatements()) {
+    statementVertex->Accept(*this);
+  }
+  if(_mode == ConnectingFlowgraph) {
+    addScript("}\n");
+  }
+
+  // if(_mode == ConnectingFlowgraph) {
+  //   addScript(UnicodeString((boost::format(
+  //     "subgraph cluster%1% {\n"
+  //     "ordering=out;\n"
+  //     "rankdir=TB;\n"
+  //   ) % ifClusterId++).str().c_str()));
+  // }
+  BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+    statementVertex, vertex.falseStatements()) {
+    statementVertex->Accept(*this);
+  }
+  // if(_mode == ConnectingFlowgraph) {
+  //   addScript("}\n");
+  // }
+
+  // if(_mode == ConnectingFlowgraph) {
+  //   addScript("}\n");
+  // }
 }
 
 
 
 void FlowgraphDotVisitor::Visit(
-  language::NameVertex& /* vertex */)
+  language::NameVertex& vertex)
 {
+  switch(_mode) {
+    case Declaring: {
+      // Filter out those identifiers that are defined somewhere else. Declare
+      // only those identifiers that have no definition, or that are part of
+      // the defining expression.
+      if(!vertex.definition() || vertex.definition() == &vertex) {
+        addScript(
+          UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+          " [label=\"" + vertex.name() + "\"];\n"
+        );
+      }
+      break;
+    }
+    case ConnectingFlowgraph: {
+      break;
+    }
+  }
+}
+
+
+
+template<typename T>
+void FlowgraphDotVisitor::Visit(
+  language::NumberVertex<T>& vertex)
+{
+  switch(_mode) {
+    case Declaring: {
+      addScript(
+        UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+        " [label=\"" + (boost::format("%1%") % vertex.value()).str().c_str() +
+        "\", shape=box];\n"
+      );
+      break;
+    }
+    case ConnectingFlowgraph: {
+      break;
+    }
+  }
 }
 
 
 
 void FlowgraphDotVisitor::Visit(
-  language::NumberVertex<int8_t>& /* vertex */)
+  language::NumberVertex<int8_t>& vertex)
 {
+  return Visit<int8_t>(vertex);
 }
 
 
 
 void FlowgraphDotVisitor::Visit(
-  language::NumberVertex<int16_t>& /* vertex */)
+  language::NumberVertex<int16_t>& vertex)
 {
+  return Visit<int16_t>(vertex);
 }
 
 
 
 void FlowgraphDotVisitor::Visit(
-  language::NumberVertex<int32_t>& /* vertex */)
+  language::NumberVertex<int32_t>& vertex)
 {
+  return Visit<int32_t>(vertex);
 }
 
 
 
 void FlowgraphDotVisitor::Visit(
-  language::NumberVertex<int64_t>& /* vertex */)
+  language::NumberVertex<int64_t>& vertex)
 {
+  return Visit<int64_t>(vertex);
 }
 
 
 
 void FlowgraphDotVisitor::Visit(
-  language::NumberVertex<uint8_t>& /* vertex */)
+  language::NumberVertex<uint8_t>& vertex)
 {
+  return Visit<uint8_t>(vertex);
 }
 
 
 
 void FlowgraphDotVisitor::Visit(
-  language::NumberVertex<uint16_t>& /* vertex */)
+  language::NumberVertex<uint16_t>& vertex)
 {
+  return Visit<uint16_t>(vertex);
 }
 
 
 
 void FlowgraphDotVisitor::Visit(
-  language::NumberVertex<uint32_t>& /* vertex */)
+  language::NumberVertex<uint32_t>& vertex)
 {
+  return Visit<uint32_t>(vertex);
 }
 
 
 
 void FlowgraphDotVisitor::Visit(
-  language::NumberVertex<uint64_t>& /* vertex */)
+  language::NumberVertex<uint64_t>& vertex)
 {
+  return Visit<uint64_t>(vertex);
 }
 
 
 
 void FlowgraphDotVisitor::Visit(
-  language::NumberVertex<float>& /* vertex */)
+  language::NumberVertex<float>& vertex)
 {
+  return Visit<float>(vertex);
 }
 
 
 
 void FlowgraphDotVisitor::Visit(
-  language::NumberVertex<double>& /* vertex */)
+  language::NumberVertex<double>& vertex)
 {
+  return Visit<double>(vertex);
 }
 
 
 void FlowgraphDotVisitor::Visit(
-  language::OperatorVertex& /* vertex */)
+  language::OperatorVertex& vertex)
 {
+  switch(_mode) {
+    case Declaring: {
+      // TODO Implement symbol member.
+      addScript(
+        UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+        " [label=\"" + vertex.symbol() + "\"];\n"
+      );
+      break;
+    }
+    case ConnectingFlowgraph: {
+      BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
+        expressionVertex, vertex.expressions()) {
+        addFlowgraphVertex(*expressionVertex, vertex);
+      }
+      break;
+    }
+  }
+
+  BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
+    expressionVertex, vertex.expressions()) {
+    expressionVertex->Accept(*this);
+  }
 }
 
 
 
 void FlowgraphDotVisitor::Visit(
-  language::StringVertex& /* vertex */)
+  language::StringVertex& vertex)
 {
+  switch(_mode) {
+    case Declaring: {
+      addScript(
+        UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+        " [label=\"\\\"" + vertex.value() + "\\\"\", shape=box];\n"
+      );
+      break;
+    }
+    case ConnectingFlowgraph: {
+      break;
+    }
+  }
 }
 
 
@@ -205,22 +444,22 @@ void FlowgraphDotVisitor::Visit(
   ));
 
   setMode(Declaring);
-  // TODO Use script name.
-  addScript(
-    UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
-    " [label=\"Script\"];\n");
+  // addScript(
+  //   UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+  //   (boost::format(" [label=\"%1%\"];\n")
+  //     % dev::encodeInUTF8(vertex.sourceName())).str().c_str());
 
   BOOST_FOREACH(boost::shared_ptr<language::StatementVertex> statementVertex,
     vertex.statements()) {
     statementVertex->Accept(*this);
   }
 
-  // setMode(ConnectingFlowgraph);
-  // BOOST_FOREACH(boost::shared_ptr<language::StatementVertex> statementVertex,
-  //   vertex.statements()) {
-  //   addAstVertex(vertex, *statementVertex);
-  //   statementVertex->Accept(*this);
-  // }
+  setMode(ConnectingFlowgraph);
+  BOOST_FOREACH(boost::shared_ptr<language::StatementVertex> statementVertex,
+    vertex.statements()) {
+    // addFlowgraphVertex(vertex, *statementVertex);
+    statementVertex->Accept(*this);
+  }
 
   addScript("}\n");
 }

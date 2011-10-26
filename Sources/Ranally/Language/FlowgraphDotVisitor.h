@@ -67,8 +67,6 @@ public:
 
   void             Visit               (language::WhileVertex& vertex);
 
-protected:
-
 private:
 
   //! Current mode.
@@ -77,10 +75,17 @@ private:
   void             setMode             (Mode mode);
 
   void             addFlowgraphVertex  (
+                                  language::NameVertex const& sourceVertex,
+                                  language::SyntaxVertex const& targetVertex);
+
+  void             addFlowgraphVertex  (
                                   language::SyntaxVertex const& sourceVertex,
                                   language::SyntaxVertex const& targetVertex);
 
   // void             addFlowgraphVertices(NameVertex const& vertex);
+
+  template<typename T>
+  void             Visit               (language::NumberVertex<T>& vertex);
 
 };
 
