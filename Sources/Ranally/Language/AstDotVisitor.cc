@@ -59,10 +59,10 @@ void AstDotVisitor::addCfgVertices(
       UnicodeString((boost::format("\"%1%\"") % &sourceVertex).str().c_str()) +
       " -> " +
       (boost::format("\"%1%\"") % successor).str().c_str() + " ["
-        "color=red, "
-        // TODO Doesn't work when contraint is false. Bug in Dot.
-        "constraint=true, "
-        "style=dashed"
+        "color=\"/spectral9/2\", "
+        "constraint=false, "
+        "style=dashed, "
+        "penwidth=0.25"
       "];\n"
     );
   }
@@ -79,10 +79,10 @@ void AstDotVisitor::addUseVertices(
       UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
       " -> " +
       (boost::format("\"%1%\"") % use).str().c_str() + " ["
-        "color=blue, "
-        // TODO Doesn't work when contraint is false. Bug in Dot.
-        "constraint=true, "
-        "style=dotted"
+        "color=\"/spectral9/8\", "
+        "constraint=false, "
+        "style=dashed, "
+        "penwidth=0.25"
       "];\n"
     );
   }
@@ -99,7 +99,7 @@ void AstDotVisitor::Visit(
       addScript(
         UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
         " [label=\"" + (boost::format("%1%") % vertex.value()).str().c_str() +
-        "\", shape=box];\n"
+        "\", fontname=courier, shape=box];\n"
       );
       break;
     }
@@ -386,9 +386,12 @@ void AstDotVisitor::Visit(
 void AstDotVisitor::Visit(
   language::ScriptVertex& vertex)
 {
+  // TODO 'ordering=out' is current not supported in combination with
+  // TODO 'constraint=false'. Check again with dot > 2.28.0, when it becomes
+  // TODO available.
   setScript(UnicodeString(
     "digraph G {\n"
-    "ordering=out;\n"
+    "// ordering=out;\n"
     "rankdir=TB;\n"
   ));
 
@@ -439,7 +442,8 @@ void AstDotVisitor::Visit(
     case Declaring: {
       addScript(
         UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
-        " [label=\"\\\"" + vertex.value() + "\\\"\", shape=box];\n"
+        " [label=\"\\\"" + vertex.value() +
+        "\\\"\", fontname=courier, shape=box];\n"
       );
       break;
     }
