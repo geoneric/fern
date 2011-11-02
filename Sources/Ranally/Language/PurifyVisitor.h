@@ -23,9 +23,7 @@ public:
 
                    PurifyVisitor       ();
 
-  /* virtual */    ~PurifyVisitor      ();
-
-protected:
+                   ~PurifyVisitor      ();
 
 private:
 

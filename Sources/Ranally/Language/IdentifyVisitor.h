@@ -53,25 +53,9 @@ public:
 
                    IdentifyVisitor     ();
 
-  /* virtual */    ~IdentifyVisitor    ();
-
-  void             Visit               (AssignmentVertex&);
-
-  void             Visit               (FunctionVertex&);
-
-  void             Visit               (IfVertex&);
-
-  void             Visit               (NameVertex&);
-
-  void             Visit               (OperatorVertex&);
-
-  void             Visit               (ScriptVertex&);
-
-  void             Visit               (WhileVertex&);
+                   ~IdentifyVisitor    ();
 
   SymbolTable const& symbolTable       () const;
-
-protected:
 
 private:
 
@@ -87,6 +71,20 @@ private:
   void             visitStatements     (StatementVertices const& statements);
 
   void             visitExpressions    (ExpressionVertices const& expressions);
+
+  void             Visit               (AssignmentVertex&);
+
+  void             Visit               (FunctionVertex&);
+
+  void             Visit               (IfVertex&);
+
+  void             Visit               (NameVertex&);
+
+  void             Visit               (OperatorVertex&);
+
+  void             Visit               (ScriptVertex&);
+
+  void             Visit               (WhileVertex&);
 
 };
 

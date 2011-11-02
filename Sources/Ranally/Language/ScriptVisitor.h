@@ -64,6 +64,24 @@ public:
 
   UnicodeString const& script          () const;
 
+private:
+
+  size_t           _tabSize;
+
+  size_t           _indentLevel;
+
+  UnicodeString    _script;
+
+  // void             indent              (UnicodeString const& statement);
+
+  UnicodeString    indentation         () const;
+
+  void             visitStatements     (
+                             language::StatementVertices const& statements);
+
+  void             visitExpressions    (
+                             language::ExpressionVertices const& expressions);
+
   void             Visit               (language::AssignmentVertex&);
 
   void             Visit               (language::FunctionVertex&);
@@ -101,24 +119,6 @@ public:
   void             Visit               (language::SyntaxVertex&);
 
   void             Visit               (language::WhileVertex&);
-
-private:
-
-  size_t           _tabSize;
-
-  size_t           _indentLevel;
-
-  UnicodeString    _script;
-
-  // void             indent              (UnicodeString const& statement);
-
-  UnicodeString    indentation         () const;
-
-  void             visitStatements     (
-                             language::StatementVertices const& statements);
-
-  void             visitExpressions    (
-                             language::ExpressionVertices const& expressions);
 
 };
 

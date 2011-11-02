@@ -36,13 +36,16 @@ void FlowgraphDotVisitor::addFlowgraphVertex(
   language::NameVertex const& sourceVertex,
   language::SyntaxVertex const& targetVertex)
 {
-  if(sourceVertex.definition()) {
-    addScript(
-      UnicodeString((boost::format("\"%1%\"") % sourceVertex.definition()).str().c_str()) +
-      " -> " +
-      (boost::format("\"%1%\"") % &targetVertex).str().c_str() + " ["
-      "];\n"
-    );
+  if(!sourceVertex.definitions().empty()) {
+    BOOST_FOREACH(language::NameVertex* definition, sourceVertex.definitions()) {
+      addScript(
+        UnicodeString((boost::format("\"%1%\"")
+          % definition).str().c_str()) +
+        " -> " +
+        (boost::format("\"%1%\"") % &targetVertex).str().c_str() + " ["
+        "];\n"
+      );
+    }
   }
   else {
     addScript(
@@ -157,7 +160,7 @@ void FlowgraphDotVisitor::Visit(
     case Declaring: {
       addScript(
         UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
-        " [label=\"" + vertex.name() + "\"];\n"
+        " [label=\"" + vertex.name() + "\", shape=triangle];\n"
       );
       break;
     }
@@ -184,40 +187,20 @@ void FlowgraphDotVisitor::Visit(
   static size_t ifClusterId = 0;
   switch(_mode) {
     case Declaring: {
-      // addScript(
-      //   UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
-      //   " [label=\"If\", shape=diamond];\n"
-      // );
+      addScript(
+        UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+        " [label=\"If\", shape=diamond];\n"
+      );
       break;
     }
     case ConnectingFlowgraph: {
-      // addScript(UnicodeString((boost::format(
-      //   "subgraph cluster%1% {\n"
-      //   "ordering=out;\n"
-      //   "rankdir=TB;\n"
-      // ) % ifClusterId++).str().c_str()));
-      // addFlowgraphVertex(*vertex.condition(), vertex);
-      // In this code, the if vertex is being connected to the statements in
-      // the branches. These statements are not declared, only the expressions
-      // are.
-      // The if should not be connected itself, but maybe shown as a box around
-      // the expressions, to visualize that the if provides a context to true
-      // and false blocks.
-      // BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
-      //   statementVertex, vertex.trueStatements()) {
-      //   addFlowgraphVertex(vertex, *statementVertex);
-      // }
-      // BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
-      //   statementVertex, vertex.falseStatements()) {
-      //   addFlowgraphVertex(vertex, *statementVertex);
-      // }
       break;
     }
   }
 
   vertex.condition()->Accept(*this);
 
-  // TODO start a new cluster for the true and false branches.
+  // TODO condition -> sub graph
   if(_mode == ConnectingFlowgraph) {
     addScript(UnicodeString((boost::format(
       "subgraph cluster%1% {\n"
@@ -233,24 +216,23 @@ void FlowgraphDotVisitor::Visit(
     addScript("}\n");
   }
 
-  // if(_mode == ConnectingFlowgraph) {
-  //   addScript(UnicodeString((boost::format(
-  //     "subgraph cluster%1% {\n"
-  //     "ordering=out;\n"
-  //     "rankdir=TB;\n"
-  //   ) % ifClusterId++).str().c_str()));
-  // }
-  BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
-    statementVertex, vertex.falseStatements()) {
-    statementVertex->Accept(*this);
+  if(!vertex.falseStatements().empty()) {
+    // TODO condition -> sub graph
+    if(_mode == ConnectingFlowgraph) {
+      addScript(UnicodeString((boost::format(
+        "subgraph cluster%1% {\n"
+        "ordering=out;\n"
+        "rankdir=TB;\n"
+      ) % ifClusterId++).str().c_str()));
+    }
+    BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+      statementVertex, vertex.falseStatements()) {
+      statementVertex->Accept(*this);
+    }
+    if(_mode == ConnectingFlowgraph) {
+      addScript("}\n");
+    }
   }
-  // if(_mode == ConnectingFlowgraph) {
-  //   addScript("}\n");
-  // }
-
-  // if(_mode == ConnectingFlowgraph) {
-  //   addScript("}\n");
-  // }
 }
 
 
@@ -263,7 +245,8 @@ void FlowgraphDotVisitor::Visit(
       // Filter out those identifiers that are defined somewhere else. Declare
       // only those identifiers that have no definition, or that are part of
       // the defining expression.
-      if(!vertex.definition() || vertex.definition() == &vertex) {
+      if(vertex.definitions().empty() || std::find(vertex.definitions().begin(),
+        vertex.definitions().end(), &vertex) != vertex.definitions().end()) {
         addScript(
           UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
           " [label=\"" + vertex.name() + "\"];\n"
@@ -288,7 +271,7 @@ void FlowgraphDotVisitor::Visit(
       addScript(
         UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
         " [label=\"" + (boost::format("%1%") % vertex.value()).str().c_str() +
-        "\", shape=box];\n"
+        "\", fontname=courier, shape=box];\n"
       );
       break;
     }
@@ -387,7 +370,7 @@ void FlowgraphDotVisitor::Visit(
       // TODO Implement symbol member.
       addScript(
         UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
-        " [label=\"" + vertex.symbol() + "\"];\n"
+        " [label=\"" + vertex.symbol() + "\", shape=triangle];\n"
       );
       break;
     }
@@ -415,7 +398,8 @@ void FlowgraphDotVisitor::Visit(
     case Declaring: {
       addScript(
         UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
-        " [label=\"\\\"" + vertex.value() + "\\\"\", shape=box];\n"
+        " [label=\"\\\"" + vertex.value() +
+        "\\\"\", fontname=courier, shape=box];\n"
       );
       break;
     }
@@ -440,7 +424,8 @@ void FlowgraphDotVisitor::Visit(
   setScript(UnicodeString(
     "digraph G {\n"
     "ordering=out;\n"
-    "rankdir=TB;\n"
+    "rankdir=LR;\n"
+    "penwidth=0.25;\n"
   ));
 
   setMode(Declaring);

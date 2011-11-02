@@ -80,13 +80,22 @@ void IdentifyVisitor::Visit(
   switch(_mode) {
     case Using: {
       // Using a name, connect it to the definition.
-      assert(!vertex.definition());
+      assert(vertex.definitions().empty());
 
       if(_symbolTable.hasDefinition(vertex.name())) {
-        // TODO: A name can have multiple definitions. Search for all
-        //       definitions in the current and previous deeper scopes.
+        // TODO: A name can have multiple definitions. Deeper scopes can update
+        //       identifiers in upper scopes, for example in an if-block.
+        //       Search for all definitions in the current and previous deeper
+        //       scopes. Instead of using the most recent definition, we want
+        //       connections with all possible relevant definitions. Only at
+        //       runtime do we know exactly where a identifier is defined. Also,
+        //       depending on the data type, data may be defined partly at one
+        //       location and partly at another.
+        //       Definitions don't overwrite each other, per se. In case of a
+        //       definition in an if-block, it depends on the condition. Also,
+        //       data type is relevant, as described above.
         NameVertex* definition = _symbolTable.definition(vertex.name());
-        vertex.setDefinition(definition);
+        vertex.addDefinition(definition);
         definition->addUse(&vertex);
       }
 
@@ -94,8 +103,8 @@ void IdentifyVisitor::Visit(
     }
     case Defining: {
       // Defining a name, add it to the symbol table.
-      assert(!vertex.definition());
-      vertex.setDefinition(&vertex);
+      assert(vertex.definitions().empty());
+      vertex.addDefinition(&vertex);
       _symbolTable.addDefinition(&vertex);
       break;
     }

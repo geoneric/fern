@@ -21,15 +21,30 @@ class FlowgraphDotVisitor:
 
 public:
 
+                   FlowgraphDotVisitor ();
+
+                   ~FlowgraphDotVisitor();
+
+private:
+
   enum Mode {
     Declaring=0x1,
     ConnectingFlowgraph=0x2
     /// ConnectingOperationArgument=0x4
   };
 
-                   FlowgraphDotVisitor ();
+  //! Current mode.
+  Mode             _mode;
 
-                   ~FlowgraphDotVisitor();
+  void             setMode             (Mode mode);
+
+  void             addFlowgraphVertex  (
+                                  language::NameVertex const& sourceVertex,
+                                  language::SyntaxVertex const& targetVertex);
+
+  void             addFlowgraphVertex  (
+                                  language::SyntaxVertex const& sourceVertex,
+                                  language::SyntaxVertex const& targetVertex);
 
   void             Visit               (language::AssignmentVertex& vertex);
 
@@ -38,6 +53,9 @@ public:
   void             Visit               (language::IfVertex& vertex);
 
   void             Visit               (language::NameVertex& vertex);
+
+  template<typename T>
+  void             Visit               (language::NumberVertex<T>& vertex);
 
   void             Visit               (language::NumberVertex<int8_t>& vertex);
 
@@ -66,26 +84,6 @@ public:
   void             Visit               (language::StringVertex& vertex);
 
   void             Visit               (language::WhileVertex& vertex);
-
-private:
-
-  //! Current mode.
-  Mode             _mode;
-
-  void             setMode             (Mode mode);
-
-  void             addFlowgraphVertex  (
-                                  language::NameVertex const& sourceVertex,
-                                  language::SyntaxVertex const& targetVertex);
-
-  void             addFlowgraphVertex  (
-                                  language::SyntaxVertex const& sourceVertex,
-                                  language::SyntaxVertex const& targetVertex);
-
-  // void             addFlowgraphVertices(NameVertex const& vertex);
-
-  template<typename T>
-  void             Visit               (language::NumberVertex<T>& vertex);
 
 };
 

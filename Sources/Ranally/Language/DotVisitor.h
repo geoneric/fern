@@ -26,9 +26,9 @@ class WhileVertex;
 
 
 
-//! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
+//! Base class for visitors emitting dot graphs.
 /*!
-  The dot graph is mainly useful for debugging purposes. The graph is handy
+  The dot graphs are useful for debugging purposes. The graphs are handy
   for visualising the syntax-tree.
 */
 class DotVisitor: private boost::noncopyable,
@@ -72,8 +72,6 @@ protected:
 private:
 
   UnicodeString    _script;
-
-  /// language::SyntaxVertex const* _definition;
 
   virtual void     Visit               (language::ScriptVertex& vertex)=0;
 
