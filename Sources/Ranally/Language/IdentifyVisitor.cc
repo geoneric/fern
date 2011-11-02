@@ -94,6 +94,8 @@ void IdentifyVisitor::Visit(
         //       Definitions don't overwrite each other, per se. In case of a
         //       definition in an if-block, it depends on the condition. Also,
         //       data type is relevant, as described above.
+        //       A name is available if it is defined in the current or higher
+        //       scope. All current and higher definitions are relevant here.
         NameVertex* definition = _symbolTable.definition(vertex.name());
         vertex.addDefinition(definition);
         definition->addUse(&vertex);
