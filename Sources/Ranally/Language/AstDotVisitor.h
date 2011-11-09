@@ -32,6 +32,26 @@ public:
 
                    ~AstDotVisitor      ();
 
+private:
+
+  //! Current mode.
+  Mode             _mode;
+
+  //! Modes to process.
+  int              _modes;
+
+  void             setMode             (Mode mode);
+
+  void             addAstVertex        (
+                                  language::SyntaxVertex const& sourceVertex,
+                                  language::SyntaxVertex const& targetVertex);
+
+  void             addCfgVertices      (
+                                  language::SyntaxVertex const& sourceVertex);
+
+  void             addUseVertices      (
+                                  language::NameVertex const& vertex);
+
   void             Visit               (language::AssignmentVertex& vertex);
 
   void             Visit               (language::FunctionVertex& vertex);
@@ -39,6 +59,9 @@ public:
   void             Visit               (language::IfVertex& vertex);
 
   void             Visit               (language::NameVertex& vertex);
+
+  template<typename T>
+  void             Visit               (language::NumberVertex<T>& vertex);
 
   void             Visit               (language::NumberVertex<int8_t>& vertex);
 
@@ -74,29 +97,6 @@ public:
   void             Visit               (language::StringVertex& vertex);
 
   void             Visit               (language::WhileVertex& vertex);
-
-private:
-
-  //! Current mode.
-  Mode             _mode;
-
-  //! Modes to process.
-  int              _modes;
-
-  void             setMode             (Mode mode);
-
-  void             addAstVertex        (
-                                  language::SyntaxVertex const& sourceVertex,
-                                  language::SyntaxVertex const& targetVertex);
-
-  void             addCfgVertices      (
-                                  language::SyntaxVertex const& sourceVertex);
-
-  void             addUseVertices      (
-                                  language::NameVertex const& vertex);
-
-  template<typename T>
-  void             Visit               (language::NumberVertex<T>& vertex);
 
 };
 

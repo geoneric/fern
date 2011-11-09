@@ -115,23 +115,7 @@ void ScriptVisitor::Visit(
 
   if(vertex.expressions().size() == 1) {
     // Unary operator.
-    if(vertex.name() == "Invert") {
-      _script += "~";
-    }
-    else if(vertex.name() == "Not") {
-      _script += "!";
-    }
-    else if(vertex.name() == "Add") {
-      _script += "+";
-    }
-    else if(vertex.name() == "Sub") {
-      _script += "-";
-    }
-    else {
-      // TODO
-      assert(false);
-    }
-
+    _script += vertex.symbol();
     _script += "(";
     vertex.expressions()[0]->Accept(*this);
     _script += ")";
@@ -142,58 +126,7 @@ void ScriptVisitor::Visit(
     vertex.expressions()[0]->Accept(*this);
     _script += ") ";
 
-    if(vertex.name() == "Add") {
-      _script += "+";
-    }
-    else if(vertex.name() == "Sub") {
-      _script += "-";
-    }
-    else if(vertex.name() == "Mult") {
-      _script += "*";
-    }
-    else if(vertex.name() == "Div") {
-      _script += "/";
-    }
-    else if(vertex.name() == "Mod") {
-      _script += "%";
-    }
-    else if(vertex.name() == "Pow") {
-      _script += "**";
-    }
-    else if(vertex.name() == "LShift") {
-      // TODO
-      assert(false);
-      _script += "";
-    }
-    else if(vertex.name() == "RShift") {
-      // TODO
-      assert(false);
-      _script += "";
-    }
-    else if(vertex.name() == "BitOr") {
-      // TODO
-      assert(false);
-      _script += "";
-    }
-    else if(vertex.name() == "BitXor") {
-      // TODO
-      assert(false);
-      _script += "";
-    }
-    else if(vertex.name() == "BitAnd") {
-      // TODO
-      assert(false);
-      _script += "";
-    }
-    else if(vertex.name() == "FloorDiv") {
-      // TODO
-      assert(false);
-      _script += "";
-    }
-    else {
-      // TODO
-      assert(false);
-    }
+    _script += vertex.symbol();
 
     _script += " (";
     vertex.expressions()[1]->Accept(*this);

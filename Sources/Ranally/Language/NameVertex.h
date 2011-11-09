@@ -31,9 +31,13 @@ public:
 
                    ~NameVertex         ();
 
-  void             setDefinition       (NameVertex* definition);
+  // void             setDefinition       (NameVertex* definition);
 
-  NameVertex const* definition         () const;
+  // NameVertex const* definition         () const;
+
+  void             addDefinition       (NameVertex* vertex);
+
+  std::vector<NameVertex*> const& definitions() const;
 
   // NameVertex*      definition          ();
 
@@ -43,8 +47,11 @@ public:
 
 private:
 
-  //! Definition of the name (left side of an assignment).
-  NameVertex*      _definition;
+  // //! Definition of the name (left side of an assignment).
+  // NameVertex*      _definition;
+
+  //! Definitions of the name. Only relevant for use vertices.
+  std::vector<NameVertex*> _definitions;
 
   //! Uses of the name in expressions. Only relevant for definition vertices.
   std::vector<NameVertex*> _uses;

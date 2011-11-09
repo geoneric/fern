@@ -246,7 +246,6 @@ void AstDotVisitor::Visit(
 {
   switch(_mode) {
     case Declaring: {
-      // TODO Implement symbol member.
       addScript(
         UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
         " [label=\"" + vertex.symbol() + "\"];\n"

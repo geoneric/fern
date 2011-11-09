@@ -57,12 +57,12 @@ void IdentifyVisitorTest::testVisitName()
     dynamic_cast<ranally::language::NameVertex const*>(
       &(*tree->statements()[0]));
 
-  BOOST_CHECK(!vertexA->definition());
+  BOOST_CHECK(vertexA->definitions().empty());
   BOOST_CHECK(vertexA->uses().empty());
 
   tree->Accept(_visitor);
 
-  BOOST_CHECK(!vertexA->definition());
+  BOOST_CHECK(vertexA->definitions().empty());
   BOOST_CHECK(vertexA->uses().empty());
 }
 
@@ -85,18 +85,19 @@ void IdentifyVisitorTest::testVisitAssignment()
       dynamic_cast<ranally::language::NameVertex const*>(
         &(*assignment->expressions()[0]));
 
-    BOOST_CHECK(!vertexA->definition());
+    BOOST_CHECK(vertexA->definitions().empty());
     BOOST_CHECK(vertexA->uses().empty());
 
-    BOOST_CHECK(!vertexB->definition());
+    BOOST_CHECK(vertexB->definitions().empty());
     BOOST_CHECK(vertexB->uses().empty());
 
     tree->Accept(_visitor);
 
-    BOOST_CHECK_EQUAL(vertexA->definition(), vertexA);
+    BOOST_REQUIRE_EQUAL(vertexA->definitions().size(), 1u);
+    BOOST_CHECK_EQUAL(vertexA->definitions()[0], vertexA);
     BOOST_CHECK(vertexA->uses().empty());
 
-    BOOST_CHECK(!vertexB->definition());
+    BOOST_CHECK(vertexB->definitions().empty());
     BOOST_CHECK(vertexB->uses().empty());
   }
 
@@ -129,31 +130,34 @@ void IdentifyVisitorTest::testVisitAssignment()
       dynamic_cast<ranally::language::NameVertex const*>(
         &(*assignment2->targets()[0]));
 
-    BOOST_CHECK(!vertexA1->definition());
+    BOOST_CHECK(vertexA1->definitions().empty());
     BOOST_CHECK(vertexA1->uses().empty());
 
-    BOOST_CHECK(!vertexB->definition());
+    BOOST_CHECK(vertexB->definitions().empty());
     BOOST_CHECK(vertexB->uses().empty());
 
-    BOOST_CHECK(!vertexD->definition());
+    BOOST_CHECK(vertexD->definitions().empty());
     BOOST_CHECK(vertexD->uses().empty());
 
-    BOOST_CHECK(!vertexA2->definition());
+    BOOST_CHECK(vertexA2->definitions().empty());
     BOOST_CHECK(vertexA2->uses().empty());
 
     tree->Accept(_visitor);
 
-    BOOST_CHECK_EQUAL(vertexA1->definition(), vertexA1);
+    BOOST_REQUIRE_EQUAL(vertexA1->definitions().size(), 1u);
+    BOOST_CHECK_EQUAL(vertexA1->definitions()[0], vertexA1);
     BOOST_REQUIRE_EQUAL(vertexA1->uses().size(), 1u);
     BOOST_CHECK_EQUAL(vertexA1->uses()[0], vertexA2);
 
-    BOOST_CHECK(!vertexB->definition());
+    BOOST_CHECK(vertexB->definitions().empty());
     BOOST_CHECK(vertexB->uses().empty());
 
-    BOOST_CHECK_EQUAL(vertexD->definition(), vertexD);
+    BOOST_REQUIRE_EQUAL(vertexD->definitions().size(), 1u);
+    BOOST_CHECK_EQUAL(vertexD->definitions()[0], vertexD);
     BOOST_CHECK(vertexD->uses().empty());
 
-    BOOST_CHECK_EQUAL(vertexA2->definition(), vertexA1);
+    BOOST_REQUIRE_EQUAL(vertexA2->definitions().size(), 1u);
+    BOOST_CHECK_EQUAL(vertexA2->definitions()[0], vertexA1);
     BOOST_CHECK(vertexA2->uses().empty());
   }
 }
@@ -198,15 +202,19 @@ void IdentifyVisitorTest::testVisitIf()
 
     tree->Accept(_visitor);
 
-    BOOST_CHECK_EQUAL(vertexA1->definition(), vertexA1);
+    BOOST_REQUIRE_EQUAL(vertexA1->definitions().size(), 1u);
+    BOOST_CHECK_EQUAL(vertexA1->definitions()[0], vertexA1);
     BOOST_REQUIRE_EQUAL(vertexA1->uses().size(), 1u);
     BOOST_CHECK_EQUAL(vertexA1->uses()[0], vertexA3);
 
-    BOOST_CHECK_EQUAL(vertexA2->definition(), vertexA2);
+    BOOST_REQUIRE_EQUAL(vertexA2->definitions().size(), 1u);
+    BOOST_CHECK_EQUAL(vertexA2->definitions()[0], vertexA2);
     BOOST_REQUIRE_EQUAL(vertexA2->uses().size(), 1u);
     BOOST_CHECK_EQUAL(vertexA2->uses()[0], vertexA3);
 
-    BOOST_CHECK_EQUAL(vertexA3->definition(), vertexA1);
+    BOOST_REQUIRE_EQUAL(vertexA3->definitions().size(), 2u);
+    BOOST_CHECK_EQUAL(vertexA3->definitions()[0], vertexA1);
+    BOOST_CHECK_EQUAL(vertexA3->definitions()[0], vertexA2);
     BOOST_CHECK(vertexA3->uses().empty());
   }
 }
