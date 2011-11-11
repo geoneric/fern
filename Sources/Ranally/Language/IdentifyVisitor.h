@@ -1,23 +1,13 @@
 #ifndef INCLUDED_RANALLY_LANGUAGE_IDENTIFYVISITOR
 #define INCLUDED_RANALLY_LANGUAGE_IDENTIFYVISITOR
 
-#include <boost/noncopyable.hpp>
-#include <loki/Visitor.h>
 #include "Ranally/Language/SymbolTable.h"
-#include "Ranally/Language/SyntaxVertex.h"
+#include "Ranally/Language/Visitor.h"
 
 
 
 namespace ranally {
 namespace language {
-
-class AssignmentVertex;
-class FunctionVertex;
-class IfVertex;
-class NameVertex;
-class OperatorVertex;
-class ScriptVertex;
-class WhileVertex;
 
 //! Class for visitors that connect uses of names with their definitions.
 /*!
@@ -36,15 +26,8 @@ class WhileVertex;
 
   \sa        SymbolTable, NameVertex
 */
-class IdentifyVisitor: private boost::noncopyable,
-  public Loki::BaseVisitor,
-  public Loki::Visitor<AssignmentVertex>,
-  public Loki::Visitor<FunctionVertex>,
-  public Loki::Visitor<IfVertex>,
-  public Loki::Visitor<NameVertex>,
-  public Loki::Visitor<OperatorVertex>,
-  public Loki::Visitor<ScriptVertex>,
-  public Loki::Visitor<WhileVertex>
+class IdentifyVisitor:
+  public Visitor
 {
 
   friend class IdentifyVisitorTest;
@@ -67,10 +50,6 @@ private:
   SymbolTable      _symbolTable;
 
   Mode             _mode;
-
-  void             visitStatements     (StatementVertices const& statements);
-
-  void             visitExpressions    (ExpressionVertices const& expressions);
 
   void             Visit               (AssignmentVertex&);
 

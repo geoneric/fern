@@ -4,7 +4,6 @@
 #include <vector>
 #include <loki/Visitor.h>
 #include <unicode/unistr.h>
-#include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
 
 
@@ -24,17 +23,21 @@ typedef std::vector<boost::shared_ptr<StatementVertex> > StatementVertices;
 
   \sa        .
 */
-class SyntaxVertex: private boost::noncopyable,
-                    public Loki::BaseVisitable<>
+class SyntaxVertex:
+  public Loki::BaseVisitable<>
 {
 
   friend class SyntaxVertexTest;
+
+private:
+
+  typedef std::vector<SyntaxVertex*> SyntaxVertices;
 
 public:
 
   LOKI_DEFINE_VISITABLE()
 
-  typedef std::vector<SyntaxVertex*>::size_type size_type;
+  typedef SyntaxVertices::size_type size_type;
 
   virtual          ~SyntaxVertex       ();
 
@@ -45,7 +48,7 @@ public:
 
   int              col                 () const;
 
-  std::vector<SyntaxVertex*> const& successors() const;
+  SyntaxVertices const& successors     () const;
 
   SyntaxVertex const* successor        () const;
 
@@ -64,6 +67,8 @@ protected:
                    SyntaxVertex        (int lineNr,
                                         int colId);
 
+                   SyntaxVertex        (SyntaxVertex const& other);
+
 private:
 
   int              _line;
@@ -71,7 +76,7 @@ private:
   int              _col;
 
   //! The next vertex/vertices to process.
-  std::vector<SyntaxVertex*> _successors;
+  SyntaxVertices   _successors;
 
 };
 

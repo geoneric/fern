@@ -48,7 +48,7 @@ private:
 
   ranally::language::AlgebraParser _algebraParser;
   ranally::language::XmlParser _xmlParser;
-  ranally::ScriptVisitor _visitor;
+  ranally::language::ScriptVisitor _visitor;
 
 };
 

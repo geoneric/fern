@@ -1,6 +1,4 @@
 #include "Ranally/Language/IdentifyVisitor.h"
-
-#include <iostream>
 #include <boost/foreach.hpp>
 #include "Ranally/Language/Vertices.h"
 
@@ -11,7 +9,8 @@ namespace language {
 
 IdentifyVisitor::IdentifyVisitor()
 
-  : _mode(Using)
+  : Visitor(),
+    _mode(Using)
 
 {
 }
@@ -20,28 +19,6 @@ IdentifyVisitor::IdentifyVisitor()
 
 IdentifyVisitor::~IdentifyVisitor()
 {
-}
-
-
-
-void IdentifyVisitor::visitStatements(
-  StatementVertices const& statements)
-{
-  BOOST_FOREACH(boost::shared_ptr<StatementVertex> statementVertex,
-    statements) {
-    statementVertex->Accept(*this);
-  }
-}
-
-
-
-void IdentifyVisitor::visitExpressions(
-  ExpressionVertices const& expressions)
-{
-  BOOST_FOREACH(boost::shared_ptr<ExpressionVertex> expressionVertex,
-    expressions) {
-    expressionVertex->Accept(*this);
-  }
 }
 
 

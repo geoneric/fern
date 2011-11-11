@@ -1,7 +1,7 @@
 #ifndef INCLUDED_RANALLY_LANGUAGE_PURIFYVISITOR
 #define INCLUDED_RANALLY_LANGUAGE_PURIFYVISITOR
 
-#include <boost/noncopyable.hpp>
+#include "Ranally/Language/Visitor.h"
 
 
 
@@ -14,7 +14,8 @@ namespace language {
 
   \sa        .
 */
-class PurifyVisitor: private boost::noncopyable
+class PurifyVisitor
+  : public Visitor
 {
 
   friend class PurifyVisitorTest;

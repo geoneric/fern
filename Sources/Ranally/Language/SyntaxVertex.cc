@@ -1,4 +1,5 @@
 #include "Ranally/Language/SyntaxVertex.h"
+#include <boost/foreach.hpp>
 
 
 
@@ -6,6 +7,9 @@ namespace ranally {
 namespace language {
 
 SyntaxVertex::SyntaxVertex()
+
+  : Loki::BaseVisitable<>()
+
 {
 }
 
@@ -15,10 +19,35 @@ SyntaxVertex::SyntaxVertex(
   int lineNr,
   int colId)
 
-  : _line(lineNr),
+  : Loki::BaseVisitable<>(),
+    _line(lineNr),
     _col(colId)
 
 {
+}
+
+
+
+SyntaxVertex::SyntaxVertex(
+  SyntaxVertex const& other)
+
+  : Loki::BaseVisitable<>(),
+    _line(other._line),
+    _col(other._col)
+
+{
+  assert(false);
+  // TODO
+  // std::vector<SyntaxVertex*> _successors;
+
+  // TODO Put boost::shared_ptr<SyntaxVertex> in vector.
+  // TODO Create CopyVisitor.
+
+  // BOOST_FOREACH(SyntaxVertexPtr const& vertex, _successors) {
+  //   // CopyVisitor visitor;
+  //   // visitor.accept(*vertex);
+  //   // _successors.push_back(visitor.vertex());
+  // }
 }
 
 
@@ -54,7 +83,7 @@ int SyntaxVertex::col() const
 
 
 
-std::vector<SyntaxVertex*> const& SyntaxVertex::successors() const
+SyntaxVertex::SyntaxVertices const& SyntaxVertex::successors() const
 {
   return _successors;
 }
@@ -65,7 +94,6 @@ std::vector<SyntaxVertex*> const& SyntaxVertex::successors() const
 /*!
   \return    Pointer to the successor.
   \warning   It is assumed that this vertex has only one successor.
-  \sa        successor(std::vector::size_type index)
 */
 SyntaxVertex const* SyntaxVertex::successor() const
 {

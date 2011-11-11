@@ -9,7 +9,8 @@ namespace language {
 
 ThreadVisitor::ThreadVisitor()
 
-  : _lastVertex(0)
+  : Visitor(),
+    _lastVertex(0)
 
 {
 }
@@ -18,28 +19,6 @@ ThreadVisitor::ThreadVisitor()
 
 ThreadVisitor::~ThreadVisitor()
 {
-}
-
-
-
-void ThreadVisitor::visitStatements(
-  StatementVertices const& statements)
-{
-  BOOST_FOREACH(boost::shared_ptr<StatementVertex> statementVertex,
-    statements) {
-    statementVertex->Accept(*this);
-  }
-}
-
-
-
-void ThreadVisitor::visitExpressions(
-  ExpressionVertices const& expressions)
-{
-  BOOST_FOREACH(boost::shared_ptr<ExpressionVertex> expressionVertex,
-    expressions) {
-    expressionVertex->Accept(*this);
-  }
 }
 
 

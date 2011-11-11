@@ -6,6 +6,9 @@ namespace ranally {
 namespace language {
 
 PurifyVisitor::PurifyVisitor()
+
+  : Visitor()
+
 {
 }
 

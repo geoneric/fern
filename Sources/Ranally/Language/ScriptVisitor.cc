@@ -6,11 +6,13 @@
 
 
 namespace ranally {
+namespace language {
 
 ScriptVisitor::ScriptVisitor(
   size_t tabSize)
 
-  : _tabSize(tabSize),
+  : Visitor(),
+    _tabSize(tabSize),
     _indentLevel(0)
 
 {
@@ -317,5 +319,6 @@ void ScriptVisitor::Visit(
   }
 }
 
+} // namespace language
 } // namespace ranally
 
