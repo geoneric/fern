@@ -3,7 +3,7 @@
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
 // #include "Ranally/Language/CopyVisitor.h"
-#include "Ranally/Language/FunctionVertex.h"
+#include "Ranally/Language/OperationVertex.h"
 #include "Ranally/Language/ScriptVertex.h"
 
 
@@ -18,7 +18,7 @@ boost::unit_test::test_suite* AnnotateVisitorTest::suite()
   suite->add(BOOST_CLASS_TEST_CASE(
     &AnnotateVisitorTest::testVisitNumber, instance));
   suite->add(BOOST_CLASS_TEST_CASE(
-    &AnnotateVisitorTest::testVisitFunction, instance));
+    &AnnotateVisitorTest::testVisitOperation, instance));
 
   return suite;
 }
@@ -76,7 +76,7 @@ void AnnotateVisitorTest::testVisitNumber()
 
 
 
-void AnnotateVisitorTest::testVisitFunction()
+void AnnotateVisitorTest::testVisitOperation()
 {
   namespace rl = ranally::language;
 
@@ -93,8 +93,8 @@ void AnnotateVisitorTest::testVisitFunction()
     boost::shared_ptr<rl::StatementVertex> const& statement(
       tree->statements()[0]);
     BOOST_REQUIRE(statement);
-    rl::FunctionVertex const* functionVertex(
-      dynamic_cast<rl::FunctionVertex*>(statement.get()));
+    rl::OperationVertex const* functionVertex(
+      dynamic_cast<rl::OperationVertex*>(statement.get()));
     BOOST_REQUIRE(functionVertex);
 
     boost::shared_ptr<rl::operation::Requirements> const&

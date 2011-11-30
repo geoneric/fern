@@ -26,7 +26,7 @@ public:
 
   void             testVisitNumber     ();
 
-  void             testVisitFunction   ();
+  void             testVisitOperation  ();
 
   static boost::unit_test::test_suite* suite();
 

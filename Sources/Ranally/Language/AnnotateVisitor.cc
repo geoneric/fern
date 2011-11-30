@@ -1,5 +1,6 @@
 #include "Ranally/Language/AnnotateVisitor.h"
 #include <boost/foreach.hpp>
+#include "dev_UnicodeUtils.h"
 #include "Ranally/Language/Vertices.h"
 
 
@@ -30,8 +31,18 @@ void AnnotateVisitor::Visit(
 
 
 void AnnotateVisitor::Visit(
-  FunctionVertex& /* vertex */)
+  FunctionVertex& vertex)
 {
+  // Figure out what the properties are of the function. Annotate the vertex
+  // with this information.
+  // nrArguments
+  //   Value types per argument.
+  //   Data types per arguments.
+  // nrResults
+  //   Value types per result.
+  //   Data types per result.
+  // TODO
+  // std::cout << dev::encodeInUTF8(vertex.name()) << std::endl;
 }
 
 
