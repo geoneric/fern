@@ -1,5 +1,4 @@
 #include "Ranally/Operation/XmlParser.h"
-
 #include <sstream>
 #include "dev_UnicodeUtils.h"
 
