@@ -24,6 +24,10 @@ public:
 
   void             testVisitEmptyScript();
 
+  void             testVisitNumber     ();
+
+  void             testVisitFunction   ();
+
   static boost::unit_test::test_suite* suite();
 
 private:

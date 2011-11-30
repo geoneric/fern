@@ -1,3 +1,4 @@
+ADD_SUBDIRECTORY(Operation)
 SET(_LINK_LIBRARIES
   ${DEVENV_UTILS_LIBRARY}
   ${DEVENV_UNICODE_UTILS_LIBRARY}
@@ -8,6 +9,7 @@ SET(_LINK_LIBRARIES
   ${BOOST_SYSTEM_LIBRARY}
   ${EXPAT_LIBRARIES}
   ${ICU_LIBRARIES}
+  RanallyLanguageOperation
 )
 INCLUDE_DIRECTORIES(
   ${CMAKE_CURRENT_SOURCE_DIR}/../..
@@ -49,6 +51,7 @@ SET(SOURCES
   FlowgraphDotVisitor.cc
   NameVertex.cc
   NumberVertex.cc
+  OperationVertex.cc
   OperatorVertex.cc
   PurifyVisitor.cc
   ScriptVertex.cc
