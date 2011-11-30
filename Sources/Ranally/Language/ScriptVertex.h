@@ -26,7 +26,7 @@ public:
                    ScriptVertex        (UnicodeString const& sourceName,
                                         StatementVertices const& statements);
 
-                   ScriptVertex        (ScriptVertex const& other);
+  //                  ScriptVertex        (ScriptVertex const& other);
 
                    ~ScriptVertex       ();
 
@@ -42,11 +42,11 @@ private:
 
 };
 
-bool               operator==          (ScriptVertex const& lhs,
-                                        ScriptVertex const& rhs);
-
-bool               operator!=          (ScriptVertex const& lhs,
-                                        ScriptVertex const& rhs);
+// bool               operator==          (ScriptVertex const& lhs,
+//                                         ScriptVertex const& rhs);
+// 
+// bool               operator!=          (ScriptVertex const& lhs,
+//                                         ScriptVertex const& rhs);
 
 } // namespace language
 } // namespace ranally

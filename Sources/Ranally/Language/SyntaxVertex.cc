@@ -1,5 +1,6 @@
 #include "Ranally/Language/SyntaxVertex.h"
 #include <boost/foreach.hpp>
+// #include "Ranally/Language/CopyVisitor.h"
 
 
 
@@ -28,27 +29,24 @@ SyntaxVertex::SyntaxVertex(
 
 
 
-SyntaxVertex::SyntaxVertex(
-  SyntaxVertex const& other)
-
-  : Loki::BaseVisitable<>(),
-    _line(other._line),
-    _col(other._col)
-
-{
-  assert(false);
-  // TODO
-  // std::vector<SyntaxVertex*> _successors;
-
-  // TODO Put boost::shared_ptr<SyntaxVertex> in vector.
-  // TODO Create CopyVisitor.
-
-  // BOOST_FOREACH(SyntaxVertexPtr const& vertex, _successors) {
-  //   // CopyVisitor visitor;
-  //   // visitor.accept(*vertex);
-  //   // _successors.push_back(visitor.vertex());
-  // }
-}
+// SyntaxVertex::SyntaxVertex(
+//   SyntaxVertex const& other)
+// 
+//   : Loki::BaseVisitable<>(other),
+//     _line(other._line),
+//     _col(other._col)
+// 
+// {
+//   // BOOST_FOREACH(SyntaxVertex* vertex, other._successors) {
+//   //   CopyVisitor visitor;
+//   //   vertex->Accept(visitor);
+//   //   _successors.push_back(visitor.vertex());
+//   // }
+// 
+//   CopyVisitor visitor;
+//   other.Accept(visitor);
+//   _successors = visitor.syntaxVertices();
+// }
 
 
 

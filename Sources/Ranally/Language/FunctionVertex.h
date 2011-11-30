@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <boost/shared_ptr.hpp>
-#include "Ranally/Language/ExpressionVertex.h"
+#include "Ranally/Language/OperationVertex.h"
 
 
 
@@ -16,7 +16,8 @@ namespace language {
 
   \sa        .
 */
-class FunctionVertex: public ExpressionVertex
+class FunctionVertex:
+  public OperationVertex
 {
 
   friend class FunctionVertexTest;

@@ -64,7 +64,7 @@ void XmlParserTest::testParse()
         "</Operation>"
       "</Operations>";
     operations = xmlParser.parse(xml);
-    BOOST_CHECK_EQUAL(operations.size(), 1);
+    BOOST_CHECK_EQUAL(operations.size(), 1u);
   }
 }
 

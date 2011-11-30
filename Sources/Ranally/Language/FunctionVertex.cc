@@ -9,7 +9,7 @@ FunctionVertex::FunctionVertex(
   UnicodeString const& name,
   ExpressionVertices const& expressions)
 
-  : ExpressionVertex(name),
+  : OperationVertex(name),
     _expressions(expressions)
 
 {

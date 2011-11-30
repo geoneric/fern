@@ -2,6 +2,7 @@
 #define INCLUDED_RANALLY_LANGUAGE_SYNTAXVERTEX
 
 #include <vector>
+#include <boost/noncopyable.hpp>
 #include <loki/Visitor.h>
 #include <unicode/unistr.h>
 #include <boost/shared_ptr.hpp>
@@ -24,6 +25,7 @@ typedef std::vector<boost::shared_ptr<StatementVertex> > StatementVertices;
   \sa        .
 */
 class SyntaxVertex:
+  private boost::noncopyable,
   public Loki::BaseVisitable<>
 {
 

@@ -20,21 +20,21 @@ ScriptVertex::ScriptVertex(
 
 
 
-ScriptVertex::ScriptVertex(
-  ScriptVertex const& other)
-
-  : SyntaxVertex(other),
-    _sourceName(other._sourceName)
-
-{
-  BOOST_FOREACH(boost::shared_ptr<StatementVertex> const& vertex,
-    _statements) {
-    CopyVisitor visitor;
-    vertex->Accept(visitor);
-    assert(visitor.statements().size() == 1);
-    _statements.push_back(visitor.statements()[0]);
-  }
-}
+// ScriptVertex::ScriptVertex(
+//   ScriptVertex const& other)
+// 
+//   : SyntaxVertex(other),
+//     _sourceName(other._sourceName)
+// 
+// {
+//   BOOST_FOREACH(boost::shared_ptr<StatementVertex> const& vertex,
+//     _statements) {
+//     CopyVisitor visitor;
+//     vertex->Accept(visitor);
+//     assert(visitor.statements().size() == 1);
+//     _statements.push_back(visitor.statements()[0]);
+//   }
+// }
 
 
 
@@ -58,24 +58,24 @@ StatementVertices const& ScriptVertex::statements() const
 
 
 
-bool operator==(
-  ScriptVertex const& lhs,
-  ScriptVertex const& rhs)
-{
-  // EqualityVisitor visitor(&rhs);
-  // lhs.Accept(visitor);
-  // return visitor.equal();
-  return false;
-}
+// bool operator==(
+//   ScriptVertex const& lhs,
+//   ScriptVertex const& rhs)
+// {
+//   // EqualityVisitor visitor(&rhs);
+//   // lhs.Accept(visitor);
+//   // return visitor.equal();
+//   return false;
+// }
 
 
 
-bool operator!=(
-  ScriptVertex const& lhs,
-  ScriptVertex const& rhs)
-{
-  return !(lhs == rhs);
-}
+// bool operator!=(
+//   ScriptVertex const& lhs,
+//   ScriptVertex const& rhs)
+// {
+//   return !(lhs == rhs);
+// }
 
 } // namespace language
 } // namespace ranally

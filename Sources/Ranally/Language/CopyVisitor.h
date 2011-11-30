@@ -26,13 +26,23 @@ public:
 
                    ~CopyVisitor        ();
 
-  StatementVertices const& statements  () const;
+  boost::shared_ptr<ScriptVertex> const& scriptVertex() const;
 
-protected:
+  // SyntaxVertices const& syntaxVertices () const;
+
+  // StatementVertices const& statements  () const;
 
 private:
 
+  boost::shared_ptr<ScriptVertex> _scriptVertex;
+
+  // SyntaxVertices   _syntaxVertices;
+
   StatementVertices _statements;
+
+  boost::shared_ptr<StatementVertex> _statementVertex;
+
+  void             visitStatements     (StatementVertices const& statements);
 
   void             Visit               (AssignmentVertex&);
 
