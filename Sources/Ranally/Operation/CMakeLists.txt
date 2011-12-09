@@ -33,6 +33,10 @@ ADD_CUSTOM_COMMAND(
 )
 SET(SOURCES
   ${CMAKE_CURRENT_BINARY_DIR}/Operation-pskel.cxx
+  Operation.cc
+  Operations.cc
+  Parameter.cc
+  Result.cc
   XmlParser.cc
 )
 ADD_LIBRARY(RanallyOperation

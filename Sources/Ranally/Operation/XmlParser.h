@@ -1,10 +1,9 @@
 #ifndef INCLUDED_RANALLY_OPERATION_XMLPARSER
 #define INCLUDED_RANALLY_OPERATION_XMLPARSER
 
-#include <map>
 #include <unicode/unistr.h>
 #include <boost/noncopyable.hpp>
-#include "Operation-pskel.hxx"
+#include "Ranally/Operation/Operations.h"
 
 
 
@@ -29,11 +28,9 @@ public:
 
                    ~XmlParser          ();
 
-  std::map<UnicodeString, Operation_pskel> parse(
-                                        std::istream& stream) const;
+  OperationsPtr const& parse           (std::istream& stream) const;
 
-  std::map<UnicodeString, Operation_pskel> parse(
-                                        UnicodeString const& xml) const;
+  OperationsPtr const& parse           (UnicodeString const& xml) const;
 
 private:
 

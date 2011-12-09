@@ -1,5 +1,4 @@
 #include "Ranally/Language/XmlParser.h"
-
 #include <sstream>
 #include <stack>
 #include <boost/make_shared.hpp>
@@ -20,16 +19,11 @@ namespace {
 
 class Ranally_pimpl: public ranally::language::Ranally_pskel
 {
-private:
+public:
 
   typedef std::vector<boost::shared_ptr<ranally::language::StatementVertex> >
     StatementVertices;
 
-  UnicodeString    _sourceName;
-
-  StatementVertices _statementVertices;
-
-public:
   void pre()
   {
     _statementVertices.clear();
@@ -42,8 +36,7 @@ public:
   }
 
   void Statements(
-    std::vector<boost::shared_ptr<ranally::language::StatementVertex> > const&
-      vertices)
+    StatementVertices const& vertices)
   {
     assert(_statementVertices.empty());
     _statementVertices = vertices;
@@ -54,6 +47,13 @@ public:
     return boost::make_shared<ranally::language::ScriptVertex>(_sourceName,
       _statementVertices);
   }
+
+private:
+
+  UnicodeString    _sourceName;
+
+  StatementVertices _statementVertices;
+
 };
 
 

@@ -105,7 +105,7 @@
   <xs:simpleType
     name="DataType">
     <xs:restriction base="xs:string">
-      <xs:pattern value="Number|StringRaster|All"/>
+      <xs:pattern value="Number|String|Raster|All"/>
     </xs:restriction>
   </xs:simpleType>
 

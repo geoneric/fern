@@ -1,27 +1,15 @@
 namespace http://www.jemig.eu/ranally
 {
-  # include <boost/shared_ptr.hpp>;
-  # include "${CMAKE_CURRENT_SOURCE_DIR}/AssignmentVertex.h";
-  # include "${CMAKE_CURRENT_SOURCE_DIR}/ExpressionVertex.h";
-  # include "${CMAKE_CURRENT_SOURCE_DIR}/FunctionVertex.h";
-  # include "${CMAKE_CURRENT_SOURCE_DIR}/OperatorVertex.h";
-  # include "${CMAKE_CURRENT_SOURCE_DIR}/IfVertex.h";
-  # include "${CMAKE_CURRENT_SOURCE_DIR}/WhileVertex.h";
-  # include "${CMAKE_CURRENT_SOURCE_DIR}/ScriptVertex.h";
+  include "${CMAKE_CURRENT_SOURCE_DIR}/Operations.h";
+  include "${CMAKE_CURRENT_SOURCE_DIR}/Parameter.h";
+  include "${CMAKE_CURRENT_SOURCE_DIR}/Result.h";
 
-  # Ranally          "boost::shared_ptr<ScriptVertex>";
-  # Number           "boost::shared_ptr<ExpressionVertex>";
-  # Integer          "boost::shared_ptr<ExpressionVertex>";
-  # UnsignedInteger  "boost::shared_ptr<ExpressionVertex>";
-  # Float            "boost::shared_ptr<ExpressionVertex>";
-  # Expression       "boost::shared_ptr<ExpressionVertex>";
-  # Statement        "boost::shared_ptr<StatementVertex>";
-  # Function         "boost::shared_ptr<FunctionVertex>";
-  # Operator         "boost::shared_ptr<OperatorVertex>";
-  # Assignment       "boost::shared_ptr<AssignmentVertex>";
-  # If               "boost::shared_ptr<IfVertex>";
-  # While            "boost::shared_ptr<WhileVertex>";
-  # Targets          "std::vector<boost::shared_ptr<ExpressionVertex> >";
-  # Expressions      "std::vector<boost::shared_ptr<ExpressionVertex> >";
-  # Statements       "std::vector<boost::shared_ptr<StatementVertex> >";
+  Operations         "boost::shared_ptr<Operations>";
+  Operation          "boost::shared_ptr<Operation>";
+  Parameters         "std::vector<Parameter>";
+  Results            "std::vector<Result>";
+  Parameter          "Parameter";
+  Result             "Result";
+  ValueTypes         "std::vector<ValueType>";
+  DataTypes          "std::vector<DataType>";
 }
