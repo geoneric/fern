@@ -1,5 +1,4 @@
 #include "XmlParserTest.h"
-
 #include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
@@ -30,7 +29,7 @@ void XmlParserTest::testParse()
 {
   ranally::operation::XmlParser xmlParser;
   UnicodeString xml;
-  std::map<UnicodeString, ranally::operation::Operation_pskel> operations;
+  ranally::operation::OperationsPtr operations;
 
   {
     // Empty xml.
@@ -38,7 +37,7 @@ void XmlParserTest::testParse()
       "<?xml version=\"1.0\"?>"
       "<Operations/>";
     operations = xmlParser.parse(xml);
-    BOOST_CHECK(operations.empty());
+    BOOST_CHECK(operations->empty());
   }
 
   {
@@ -64,7 +63,7 @@ void XmlParserTest::testParse()
         "</Operation>"
       "</Operations>";
     operations = xmlParser.parse(xml);
-    BOOST_CHECK_EQUAL(operations.size(), 1u);
+    BOOST_CHECK_EQUAL(operations->size(), 1u);
   }
 }
 

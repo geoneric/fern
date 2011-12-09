@@ -28,9 +28,9 @@ public:
 
                    ~XmlParser          ();
 
-  OperationsPtr const& parse           (std::istream& stream) const;
+  OperationsPtr    parse               (std::istream& stream) const;
 
-  OperationsPtr const& parse           (UnicodeString const& xml) const;
+  OperationsPtr    parse               (UnicodeString const& xml) const;
 
 private:
 

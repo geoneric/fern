@@ -32,6 +32,10 @@ public:
 
                    ~Operations         ();
 
+  bool             empty               () const;
+
+  size_t           size                () const;
+
 private:
 
   //! Collection of operations, by name.

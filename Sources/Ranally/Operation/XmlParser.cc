@@ -20,6 +20,8 @@ private:
   typedef std::vector<boost::shared_ptr<ranally::operation::Operation> >
     OperationsData;
 
+  OperationsData   _operations;
+
 public:
 
   void pre()
@@ -34,14 +36,10 @@ public:
     _operations = operations;
   }
 
-  OperationsPtr post_Operations()
+  ranally::operation::OperationsPtr post_Operations()
   {
     return boost::make_shared<ranally::operation::Operations>(_operations);
   }
-
-private:
-
-  OperationsData   _operations;
 
 };
 
@@ -74,17 +72,13 @@ public:
     _dataStack.top().name = dev::decodeFromUTF8(name);
   }
 
-  OperationPtr post_Operation()
+  ranally::operation::OperationPtr post_Operation()
   {
     assert(!_dataStack.empty());
     OperationData result(_dataStack.top());
     _dataStack.pop();
     return boost::make_shared<ranally::operation::Operation>(result.name);
   }
-
-private:
-
-  Operation_      _operation;
 
 };
 
@@ -107,37 +101,37 @@ XmlParser::~XmlParser()
 
 
 
-boost::shared_ptr<Operations> XmlParser::parse(
+OperationsPtr XmlParser::parse(
   std::istream& stream) const
 {
   xml_schema::string_pimpl string_p;
 
-  DataType_pimpl dataType_p;
-  dataType_p.parsers(string_p);
+  // DataType_pimpl dataType_p;
+  // dataType_p.parsers(string_p);
 
-  ValueType_pimpl valueType_p;
-  valueType_p.parsers(string_p);
+  // ValueType_pimpl valueType_p;
+  // valueType_p.parsers(string_p);
 
-  DataTypes_pimpl dataTypes_p;
-  dataTypes_p.parsers(dataType_p);
+  // DataTypes_pimpl dataTypes_p;
+  // dataTypes_p.parsers(dataType_p);
 
-  ValueTypes_pimpl valueTypes_p;
-  valueTypes_p.parsers(valueType_p);
+  // ValueTypes_pimpl valueTypes_p;
+  // valueTypes_p.parsers(valueType_p);
 
-  Parameter_pimpl parameter_p;
-  parameter_p.parsers(string_p, string_p, dataTypes_p, valueTypes_p);
+  // Parameter_pimpl parameter_p;
+  // parameter_p.parsers(string_p, string_p, dataTypes_p, valueTypes_p);
 
-  Parameters_pimpl parameters_p;
-  parameters_p.parsers(parameter_p);
+  // Parameters_pimpl parameters_p;
+  // parameters_p.parsers(parameter_p);
 
-  Result_pimpl result_p;
-  result_p.parsers(string_p, string_p, dataType_p, valueType_p);
+  // Result_pimpl result_p;
+  // result_p.parsers(string_p, string_p, dataType_p, valueType_p);
 
-  Results_pimpl results_p;
-  results_p.parsers(result_p);
+  // Results_pimpl results_p;
+  // results_p.parsers(result_p);
 
   Operation_pimpl operation_p;
-  operation_p.parsers(string_p, string_p, parameters_p, results_p);
+  // operation_p.parsers(string_p, string_p, parameters_p, results_p);
 
   Operations_pimpl operations_p;
   operations_p.parsers(operation_p);
@@ -146,12 +140,12 @@ boost::shared_ptr<Operations> XmlParser::parse(
 
   operations_p.pre();
   doc_p.parse(stream);
-  return operations_p.pos_Operations();
+  return operations_p.post_Operations();
 }
 
 
 
-boost::shared_ptr<Operations> XmlParser::parse(
+OperationsPtr XmlParser::parse(
   UnicodeString const& xml) const
 {
   // Copy string contents in a string stream and work with that.
