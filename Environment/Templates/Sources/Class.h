@@ -13,7 +13,8 @@ namespace ranally {
 
   \sa        .
 */
-class Class: private boost::noncopyable
+class Class:
+  private boost::noncopyable
 {
 
   friend class ClassTest;
