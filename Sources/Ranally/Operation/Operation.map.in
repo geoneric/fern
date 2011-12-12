@@ -1,20 +1,17 @@
 namespace http://www.jemig.eu/ranally
 {
-  include "${CMAKE_CURRENT_SOURCE_DIR}/DataType.h";
-  include "${CMAKE_CURRENT_SOURCE_DIR}/ValueType.h";
   include "${CMAKE_CURRENT_SOURCE_DIR}/Operations.h";
-  # include "${CMAKE_CURRENT_SOURCE_DIR}/Operation.h";
-  # include "${CMAKE_CURRENT_SOURCE_DIR}/Parameter.h";
-  # include "${CMAKE_CURRENT_SOURCE_DIR}/Result.h";
+  include "${CMAKE_CURRENT_SOURCE_DIR}/Parameter.h";
+  include "${CMAKE_CURRENT_SOURCE_DIR}/Result.h";
 
   Operations         "boost::shared_ptr<ranally::operation::Operations>";
   Operation          "boost::shared_ptr<ranally::operation::Operation>";
-  # Parameters         "std::vector<Parameter>";
-  # Results            "std::vector<Result>";
-  # Parameter          "Parameter";
-  # Result             "Result";
-  # ValueTypes         "std::vector<ValueType>";
-  # DataTypes          "std::vector<DataType>";
+  Parameters         "std::vector<ranally::operation::Parameter> const&";
+  Results            "std::vector<ranally::operation::Result> const&";
+  Parameter          "ranally::operation::Parameter";
+  Result             "ranally::operation::Result";
+  ValueTypes         "std::vector<ranally::operation::ValueType> const&";
+  DataTypes          "std::vector<ranally::operation::DataType> const&";
   DataType           "ranally::operation::DataType";
   ValueType          "ranally::operation::ValueType";
 }

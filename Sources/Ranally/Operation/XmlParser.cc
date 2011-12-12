@@ -63,6 +63,7 @@ public:
 
   void pre()
   {
+    assert(_dataStack.empty());
     _dataStack.push(OperationData());
   }
 
@@ -75,10 +76,233 @@ public:
 
   ranally::operation::OperationPtr post_Operation()
   {
+    assert(_dataStack.size() == 1);
     assert(!_dataStack.empty());
     OperationData result(_dataStack.top());
     _dataStack.pop();
     return boost::make_shared<ranally::operation::Operation>(result.name);
+  }
+
+};
+
+
+
+class Parameters_pimpl:
+  public ranally::operation::Parameters_pskel
+{
+
+private:
+
+  std::vector<ranally::operation::Parameter> _parameters;
+
+public:
+
+  void pre()
+  {
+    _parameters.clear();
+  }
+
+  void Parameter(
+    ranally::operation::Parameter const& parameter)
+  {
+    _parameters.push_back(parameter);
+  }
+
+  std::vector<ranally::operation::Parameter> const& post_Parameters()
+  {
+    return _parameters;
+  }
+
+};
+
+
+
+class Parameter_pimpl:
+  public ranally::operation::Parameter_pskel
+{
+
+private:
+
+  struct ParameterData
+  {
+    UnicodeString name;
+    UnicodeString description;
+    std::vector<ranally::operation::DataType> dataTypes;
+    std::vector<ranally::operation::ValueType> valueTypes;
+  };
+
+  std::stack<ParameterData> _dataStack;
+
+public:
+
+  void pre()
+  {
+    assert(_dataStack.empty());
+    _dataStack.push(ParameterData());
+  }
+
+  void Name(
+    std::string const& name)
+  {
+    assert(!_dataStack.empty());
+    _dataStack.top().name = dev::decodeFromUTF8(name);
+  }
+
+  void Description(
+    std::string const& description)
+  {
+    assert(!_dataStack.empty());
+    _dataStack.top().description = dev::decodeFromUTF8(description);
+  }
+
+  void DataTypes(
+    std::vector<ranally::operation::DataType> const& dataTypes)
+  {
+    assert(!_dataStack.empty());
+    _dataStack.top().dataTypes = dataTypes;
+  }
+
+  void ValueTypes(
+    std::vector<ranally::operation::ValueType> const& valueTypes)
+  {
+    assert(!_dataStack.empty());
+    _dataStack.top().valueTypes = valueTypes;
+  }
+
+  ranally::operation::Parameter post_Parameter()
+  {
+    assert(_dataStack.size() == 1);
+    assert(!_dataStack.empty());
+    ParameterData result(_dataStack.top());
+    _dataStack.pop();
+    return ranally::operation::Parameter(result.name, result.description,
+      result.dataTypes, result.valueTypes);
+  }
+
+};
+
+
+
+class Results_pimpl:
+  public ranally::operation::Results_pskel
+{
+
+private:
+
+  std::vector<ranally::operation::Result> _results;
+
+public:
+
+  void pre()
+  {
+    _results.clear();
+  }
+
+  void Result(
+    ranally::operation::Result const& result)
+  {
+    _results.push_back(result);
+  }
+
+  std::vector<ranally::operation::Result> const& post_Results()
+  {
+    return _results;
+  }
+
+};
+
+
+
+class Result_pimpl:
+  public ranally::operation::Result_pskel
+{
+
+private:
+
+  struct ResultData
+  {
+    UnicodeString name;
+    UnicodeString description;
+    ranally::operation::DataType dataType;
+    ranally::operation::ValueType valueType;
+  };
+
+  std::stack<ResultData> _dataStack;
+
+public:
+
+  void pre()
+  {
+    assert(_dataStack.empty());
+    _dataStack.push(ResultData());
+  }
+
+  void Name(
+    std::string const& name)
+  {
+    assert(!_dataStack.empty());
+    _dataStack.top().name = dev::decodeFromUTF8(name);
+  }
+
+  void Description(
+    std::string const& description)
+  {
+    assert(!_dataStack.empty());
+    _dataStack.top().description = dev::decodeFromUTF8(description);
+  }
+
+  void DataType(
+    ranally::operation::DataType const& dataType)
+  {
+    assert(!_dataStack.empty());
+    _dataStack.top().dataType = dataType;
+  }
+
+  void ValueType(
+    ranally::operation::ValueType const& valueType)
+  {
+    assert(!_dataStack.empty());
+    _dataStack.top().valueType = valueType;
+  }
+
+  ranally::operation::Result post_Result()
+  {
+    assert(_dataStack.size() == 1);
+    assert(!_dataStack.empty());
+    ResultData result(_dataStack.top());
+    _dataStack.pop();
+    return ranally::operation::Result(result.name, result.description,
+      result.dataType, result.valueType);
+  }
+
+};
+
+
+
+class DataTypes_pimpl:
+  public ranally::operation::DataTypes_pskel
+{
+
+private:
+
+  std::vector<ranally::operation::DataType> _dataTypes;
+
+public:
+
+  void pre()
+  {
+    _dataTypes.clear();
+  }
+
+  void DataType(
+    ranally::operation::DataType const& dataType)
+  {
+    _dataTypes.push_back(dataType);
+  }
+
+  std::vector<ranally::operation::DataType> const& post_DataTypes()
+  {
+    return _dataTypes;
   }
 
 };
@@ -136,6 +360,36 @@ public:
   {
     assert(_dataType.empty());
     return stringToDataType(_dataType);
+  }
+
+};
+
+
+
+class ValueTypes_pimpl:
+  public ranally::operation::ValueTypes_pskel
+{
+
+private:
+
+  std::vector<ranally::operation::ValueType> _valueTypes;
+
+public:
+
+  void pre()
+  {
+    _valueTypes.clear();
+  }
+
+  void ValueType(
+    ranally::operation::ValueType const& valueType)
+  {
+    _valueTypes.push_back(valueType);
+  }
+
+  std::vector<ranally::operation::ValueType> const& post_ValueTypes()
+  {
+    return _valueTypes;
   }
 
 };
@@ -259,23 +513,23 @@ OperationsPtr XmlParser::parse(
   DataType_pimpl dataType_p;
   ValueType_pimpl valueType_p;
 
-  // DataTypes_pimpl dataTypes_p;
-  // dataTypes_p.parsers(dataType_p);
+  DataTypes_pimpl dataTypes_p;
+  dataTypes_p.parsers(dataType_p);
 
-  // ValueTypes_pimpl valueTypes_p;
-  // valueTypes_p.parsers(valueType_p);
+  ValueTypes_pimpl valueTypes_p;
+  valueTypes_p.parsers(valueType_p);
 
-  // Parameter_pimpl parameter_p;
-  // parameter_p.parsers(string_p, string_p, dataTypes_p, valueTypes_p);
+  Parameter_pimpl parameter_p;
+  parameter_p.parsers(string_p, string_p, dataTypes_p, valueTypes_p);
 
-  // Parameters_pimpl parameters_p;
-  // parameters_p.parsers(parameter_p);
+  Parameters_pimpl parameters_p;
+  parameters_p.parsers(parameter_p);
 
-  // Result_pimpl result_p;
-  // result_p.parsers(string_p, string_p, dataType_p, valueType_p);
+  Result_pimpl result_p;
+  result_p.parsers(string_p, string_p, dataType_p, valueType_p);
 
-  // Results_pimpl results_p;
-  // results_p.parsers(result_p);
+  Results_pimpl results_p;
+  results_p.parsers(result_p);
 
   Operation_pimpl operation_p;
   // operation_p.parsers(string_p, string_p, parameters_p, results_p);

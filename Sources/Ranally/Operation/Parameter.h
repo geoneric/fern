@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <unicode/unistr.h>
-#include <boost/noncopyable.hpp>
 #include <boost/range/algorithm/copy.hpp>
 #include "Ranally/Operation/DataType.h"
 #include "Ranally/Operation/ValueType.h"
@@ -19,19 +18,24 @@ namespace operation {
 
   \sa        .
 */
-class Parameter:
-  private boost::noncopyable
+class Parameter
 {
 
   friend class ParameterTest;
 
 public:
 
-  template<class Range>
+  template<
+    class DataTypes,
+    class ValueTypes>
                    Parameter           (UnicodeString const& name,
                                         UnicodeString const& description,
-                                        Range const& dataTypes,
-                                        Range const& valueTypes);
+                                        DataTypes const& dataTypes,
+                                        ValueTypes const& valueTypes);
+
+                   Parameter           (Parameter const& other);
+
+  Parameter&       operator=           (Parameter const& other);
 
                    ~Parameter          ();
 
@@ -50,19 +54,20 @@ private:
 
 
 template<
-  class Range>
+  class DataTypes,
+  class ValueTypes>
 inline Parameter::Parameter(
   UnicodeString const& name,
   UnicodeString const& description,
-  Range const& dataTypes,
-  Range const& valueTypes)
+  DataTypes const& dataTypes,
+  ValueTypes const& valueTypes)
 
   : _name(name),
     _description(description)
 
 {
-  boost::range::copy(dataTypes, _dataTypes);
-  boost::range::copy(valueTypes, _valueTypes);
+  boost::range::copy(dataTypes, boost::begin(_dataTypes));
+  boost::range::copy(valueTypes, boost::begin(_valueTypes));
 
   assert(!_name.isEmpty());
   assert(!_description.isEmpty());

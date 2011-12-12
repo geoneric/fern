@@ -2,7 +2,6 @@
 #define INCLUDED_RANALLY_OPERATION_RESULT
 
 #include <unicode/unistr.h>
-#include <boost/noncopyable.hpp>
 #include "Ranally/Operation/DataType.h"
 #include "Ranally/Operation/ValueType.h"
 
@@ -17,8 +16,7 @@ namespace operation {
 
   \sa        .
 */
-class Result:
-  private boost::noncopyable
+class Result
 {
 
   friend class ResultTest;
@@ -29,6 +27,10 @@ public:
                                         UnicodeString const& description,
                                         DataType const& dataType,
                                         ValueType const& valueType);
+
+                   Result              (Result const& other);
+
+  Result&          operator=           (Result const& other);
 
                    ~Result             ();
 
