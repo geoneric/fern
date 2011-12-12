@@ -104,8 +104,13 @@
 
   <xs:simpleType
     name="DataType">
+    <!--
+      Whenever changing this list, update code in
+      - DataType.h
+      - XmlParser.cc
+    -->
     <xs:restriction base="xs:string">
-      <xs:pattern value="Number|String|Raster|All"/>
+      <xs:pattern value="Number|String|Raster|Feature|Spatial|All"/>
     </xs:restriction>
   </xs:simpleType>
 
@@ -121,8 +126,13 @@
 
   <xs:simpleType
     name="ValueType">
+    <!--
+      Whenever changing this list, update code in
+      - ValueType.h
+      - XmlParser.cc
+    -->
     <xs:restriction base="xs:string">
-      <xs:pattern value="UInt8|Int8|UInt16|Int16|UInt32|Int32|UInt64|Int64|Float32|Float64|Number|String|All"/>
+      <xs:pattern value="UInt8|Int8|UInt16|Int16|UInt32|Int32|UInt64|Int64|Float32|Float64|String|UnsignedInteger|SignedInteger|Integer|FloatingPoint|Number|All"/>
     </xs:restriction>
   </xs:simpleType>
 </xs:schema>

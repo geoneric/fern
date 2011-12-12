@@ -5,6 +5,7 @@
 #include <boost/make_shared.hpp>
 #include "dev_UnicodeUtils.h"
 #include "Operation-pskel.hxx"
+#include "Ranally/Operation/DataType.h"
 #include "Ranally/Operation/Operations.h"
 
 
@@ -82,6 +83,156 @@ public:
 
 };
 
+
+
+class DataType_pimpl:
+  public ranally::operation::DataType_pskel
+{
+
+private:
+
+  std::string      _dataType;
+
+  static ranally::operation::DataType stringToDataType(
+    std::string const& string)
+  {
+    assert(!string.empty());
+    ranally::operation::DataType dataType = ranally::operation::DT_UNKNOWN;
+
+    if(string == "Number") {
+      dataType = ranally::operation::DT_NUMBER;
+    }
+    else if(string == "String") {
+      dataType = ranally::operation::DT_STRING;
+    }
+    else if(string == "Raster") {
+      dataType = ranally::operation::DT_RASTER;
+    }
+    else if(string == "Feature") {
+      dataType = ranally::operation::DT_FEATURE;
+    }
+    else if(string == "All") {
+      dataType = ranally::operation::DT_ALL;
+    }
+
+    assert(dataType != ranally::operation::DT_UNKNOWN);
+    return dataType;
+  }
+
+public:
+
+  void DataType(
+    std::string const& dataType)
+  {
+    _dataType = dataType;
+  }
+
+  std::string post_string()
+  {
+    return _dataType;
+  }
+
+  ranally::operation::DataType post_DataType()
+  {
+    assert(_dataType.empty());
+    return stringToDataType(_dataType);
+  }
+
+};
+
+
+
+class ValueType_pimpl:
+  public ranally::operation::ValueType_pskel
+{
+
+private:
+
+  std::string      _dataType;
+
+  static ranally::operation::ValueType stringToValueType(
+    std::string const& string)
+  {
+    assert(!string.empty());
+    ranally::operation::ValueType valueType = ranally::operation::VT_UNKNOWN;
+
+    if(string == "UInt8") {
+      valueType = ranally::operation::VT_UINT8;
+    }
+    else if(string == "Int8") {
+      valueType = ranally::operation::VT_INT8;
+    }
+    else if(string == "UInt16") {
+      valueType = ranally::operation::VT_UINT16;
+    }
+    else if(string == "Int16") {
+      valueType = ranally::operation::VT_INT16;
+    }
+    else if(string == "UInt32") {
+      valueType = ranally::operation::VT_UINT32;
+    }
+    else if(string == "Int32") {
+      valueType = ranally::operation::VT_INT32;
+    }
+    else if(string == "UInt64") {
+      valueType = ranally::operation::VT_UINT64;
+    }
+    else if(string == "Int64") {
+      valueType = ranally::operation::VT_INT64;
+    }
+    else if(string == "Float32") {
+      valueType = ranally::operation::VT_FLOAT32;
+    }
+    else if(string == "Float64") {
+      valueType = ranally::operation::VT_FLOAT64;
+    }
+    else if(string == "String") {
+      valueType = ranally::operation::VT_STRING;
+    }
+    else if(string == "UnsignedInteger") {
+      valueType = ranally::operation::VT_UNSIGNED_INTEGER;
+    }
+    else if(string == "SignedInteger") {
+      valueType = ranally::operation::VT_SIGNED_INTEGER;
+    }
+    else if(string == "Integer") {
+      valueType = ranally::operation::VT_INTEGER;
+    }
+    else if(string == "FloatingPoint") {
+      valueType = ranally::operation::VT_FLOATING_POINT;
+    }
+    else if(string == "Number") {
+      valueType = ranally::operation::VT_NUMBER;
+    }
+    else if(string == "All") {
+      valueType = ranally::operation::VT_ALL;
+    }
+
+    assert(valueType != ranally::operation::VT_UNKNOWN);
+    return valueType;
+  }
+
+public:
+
+  void ValueType(
+    std::string const& dataType)
+  {
+    _dataType = dataType;
+  }
+
+  std::string post_string()
+  {
+    return _dataType;
+  }
+
+  ranally::operation::ValueType post_ValueType()
+  {
+    assert(_dataType.empty());
+    return stringToValueType(_dataType);
+  }
+
+};
+
 } // Anonymous namespace
 
 
@@ -105,12 +256,8 @@ OperationsPtr XmlParser::parse(
   std::istream& stream) const
 {
   xml_schema::string_pimpl string_p;
-
-  // DataType_pimpl dataType_p;
-  // dataType_p.parsers(string_p);
-
-  // ValueType_pimpl valueType_p;
-  // valueType_p.parsers(string_p);
+  DataType_pimpl dataType_p;
+  ValueType_pimpl valueType_p;
 
   // DataTypes_pimpl dataTypes_p;
   // dataTypes_p.parsers(dataType_p);

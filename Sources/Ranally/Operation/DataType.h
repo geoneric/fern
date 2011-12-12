@@ -4,7 +4,15 @@
 namespace ranally {
 namespace operation {
 
-typedef int DataType;
+enum DataType {
+  DT_NUMBER=1,
+  DT_STRING=2,
+  DT_RASTER=4,
+  DT_FEATURE=8,
+  DT_SPATIAL=DT_RASTER | DT_FEATURE,
+  DT_ALL=DT_NUMBER | DT_STRING | DT_RASTER | DT_FEATURE,
+  DT_UNKNOWN
+};
 
 } // namespace operation
 } // namespace ranally

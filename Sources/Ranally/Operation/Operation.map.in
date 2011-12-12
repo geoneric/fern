@@ -1,5 +1,7 @@
 namespace http://www.jemig.eu/ranally
 {
+  include "${CMAKE_CURRENT_SOURCE_DIR}/DataType.h";
+  include "${CMAKE_CURRENT_SOURCE_DIR}/ValueType.h";
   include "${CMAKE_CURRENT_SOURCE_DIR}/Operations.h";
   # include "${CMAKE_CURRENT_SOURCE_DIR}/Operation.h";
   # include "${CMAKE_CURRENT_SOURCE_DIR}/Parameter.h";
@@ -13,4 +15,6 @@ namespace http://www.jemig.eu/ranally
   # Result             "Result";
   # ValueTypes         "std::vector<ValueType>";
   # DataTypes          "std::vector<DataType>";
+  DataType           "ranally::operation::DataType";
+  ValueType          "ranally::operation::ValueType";
 }
