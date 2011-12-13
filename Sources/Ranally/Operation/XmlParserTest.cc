@@ -2,6 +2,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
+#include "Operation-pskel.hxx"
 #include "Ranally/Operation/XmlParser.h"
 
 
@@ -62,7 +63,13 @@ void XmlParserTest::testParse()
           "<Results/>"
         "</Operation>"
       "</Operations>";
-    operations = xmlParser.parse(xml);
+
+    try {
+      operations = xmlParser.parse(xml);
+    }
+    catch(xml_schema::parsing const& exception) {
+      std::cout << exception << std::endl;
+    }
     BOOST_CHECK_EQUAL(operations->size(), 1u);
   }
 }

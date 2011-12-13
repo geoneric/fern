@@ -98,7 +98,10 @@
       maxOccurs="unbounded">
       <xs:element
         name="DataType"
+        type="xs:string"/>
+        <!--
         type="ranally:DataType"/>
+        -->
     </xs:sequence>
   </xs:complexType>
 
@@ -110,7 +113,15 @@
       - XmlParser.cc
     -->
     <xs:restriction base="xs:string">
+      <xs:enumeration value="Number"/>
+      <xs:enumeration value="String"/>
+      <xs:enumeration value="Raster"/>
+      <xs:enumeration value="Feature"/>
+      <xs:enumeration value="Spatial"/>
+      <xs:enumeration value="All"/>
+      <!--
       <xs:pattern value="Number|String|Raster|Feature|Spatial|All"/>
+      -->
     </xs:restriction>
   </xs:simpleType>
 
@@ -120,7 +131,10 @@
       maxOccurs="unbounded">
       <xs:element
         name="ValueType"
+        type="xs:string"/>
+        <!--
         type="ranally:ValueType"/>
+        -->
     </xs:sequence>
   </xs:complexType>
 
@@ -132,7 +146,26 @@
       - XmlParser.cc
     -->
     <xs:restriction base="xs:string">
+      <xs:enumeration value="UInt8"/>
+      <xs:enumeration value="Int8"/>
+      <xs:enumeration value="UInt16"/>
+      <xs:enumeration value="Int16"/>
+      <xs:enumeration value="UInt32"/>
+      <xs:enumeration value="Int32"/>
+      <xs:enumeration value="UInt64"/>
+      <xs:enumeration value="Int64"/>
+      <xs:enumeration value="Float32"/>
+      <xs:enumeration value="Float64"/>
+      <xs:enumeration value="String"/>
+      <xs:enumeration value="UnsignedInteger"/>
+      <xs:enumeration value="SignedInteger"/>
+      <xs:enumeration value="Integer"/>
+      <xs:enumeration value="FloatingPoint"/>
+      <xs:enumeration value="Number"/>
+      <xs:enumeration value="All"/>
+    <!--
       <xs:pattern value="UInt8|Int8|UInt16|Int16|UInt32|Int32|UInt64|Int64|Float32|Float64|String|UnsignedInteger|SignedInteger|Integer|FloatingPoint|Number|All"/>
+      -->
     </xs:restriction>
   </xs:simpleType>
 </xs:schema>

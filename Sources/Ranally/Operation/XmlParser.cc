@@ -27,14 +27,13 @@ public:
 
   void pre()
   {
-    _operations.clear();
+    assert(_operations.empty());
   }
 
-  void Operations(
-    OperationsData const& operations)
+  void Operation(
+    ranally::operation::OperationPtr const& operation)
   {
-    assert(_operations.empty());
-    _operations = operations;
+    _operations.push_back(operation);
   }
 
   ranally::operation::OperationsPtr post_Operations()
@@ -55,6 +54,9 @@ private:
   struct OperationData
   {
     UnicodeString name;
+    UnicodeString description;
+    std::vector<ranally::operation::Parameter> parameters;
+    std::vector<ranally::operation::Result> results;
   };
 
   std::stack<OperationData> _dataStack;
@@ -74,13 +76,35 @@ public:
     _dataStack.top().name = dev::decodeFromUTF8(name);
   }
 
+  void Description(
+    std::string const& description)
+  {
+    assert(!_dataStack.empty());
+    _dataStack.top().description = dev::decodeFromUTF8(description);
+  }
+
+  void Parameters(
+    std::vector<ranally::operation::Parameter> const& parameters)
+  {
+    assert(!_dataStack.empty());
+    _dataStack.top().parameters = parameters;
+  }
+
+  void Results(
+    std::vector<ranally::operation::Result> const& results)
+  {
+    assert(!_dataStack.empty());
+    _dataStack.top().results = results;
+  }
+
   ranally::operation::OperationPtr post_Operation()
   {
     assert(_dataStack.size() == 1);
     assert(!_dataStack.empty());
     OperationData result(_dataStack.top());
     _dataStack.pop();
-    return boost::make_shared<ranally::operation::Operation>(result.name);
+    return boost::make_shared<ranally::operation::Operation>(result.name,
+      result.description, result.parameters, result.results);
   }
 
 };
@@ -532,7 +556,7 @@ OperationsPtr XmlParser::parse(
   results_p.parsers(result_p);
 
   Operation_pimpl operation_p;
-  // operation_p.parsers(string_p, string_p, parameters_p, results_p);
+  operation_p.parsers(string_p, string_p, parameters_p, results_p);
 
   Operations_pimpl operations_p;
   operations_p.parsers(operation_p);
