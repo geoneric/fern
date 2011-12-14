@@ -37,6 +37,34 @@ Parameter::~Parameter()
 {
 }
 
+
+
+UnicodeString const& Parameter::name() const
+{
+  return _name;
+}
+
+
+
+UnicodeString const& Parameter::description() const
+{
+  return _description;
+}
+
+
+
+std::vector<DataType> const& Parameter::dataTypes() const
+{
+  return _dataTypes;
+}
+
+
+
+std::vector<ValueType> const& Parameter::valueTypes() const
+{
+  return _valueTypes;
+}
+
 } // namespace operation
 } // namespace ranally
 

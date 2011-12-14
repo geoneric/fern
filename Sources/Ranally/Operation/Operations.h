@@ -36,6 +36,10 @@ public:
 
   size_t           size                () const;
 
+  bool             hasOperation        (UnicodeString const& name) const;
+
+  OperationPtr const& operation        (UnicodeString const& name) const;
+
 private:
 
   //! Collection of operations, by name.

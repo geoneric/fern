@@ -39,6 +39,14 @@ public:
 
                    ~Parameter          ();
 
+  UnicodeString const& name            () const;
+
+  UnicodeString const& description     () const;
+
+  std::vector<DataType> const& dataTypes() const;
+
+  std::vector<ValueType> const& valueTypes() const;
+
 private:
 
   UnicodeString    _name;
@@ -66,7 +74,9 @@ inline Parameter::Parameter(
     _description(description)
 
 {
+  _dataTypes.resize(boost::size(dataTypes));
   boost::range::copy(dataTypes, boost::begin(_dataTypes));
+  _valueTypes.resize(boost::size(valueTypes));
   boost::range::copy(valueTypes, boost::begin(_valueTypes));
 
   assert(!_name.isEmpty());

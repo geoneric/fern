@@ -19,18 +19,18 @@
   <xs:complexType
     name="Operation">
     <xs:sequence>
-    <xs:element
-      name="Name"
-      type="xs:string"/>
-    <xs:element
-      name="Description"
-      type="xs:string"/>
-    <xs:element
-      name="Parameters"
-      type="ranally:Parameters"/>
-    <xs:element
-      name="Results"
-      type="ranally:Results"/>
+      <xs:element
+        name="Name"
+        type="xs:string"/>
+      <xs:element
+        name="Description"
+        type="xs:string"/>
+      <xs:element
+        name="Parameters"
+        type="ranally:Parameters"/>
+      <xs:element
+        name="Results"
+        type="ranally:Results"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -85,10 +85,16 @@
       type="xs:string"/>
     <xs:element
       name="DataType"
+      type="xs:string"/>
+      <!--
       type="ranally:DataType"/>
+      -->
     <xs:element
       name="ValueType"
+      type="xs:string"/>
+      <!--
       type="ranally:ValueType"/>
+      -->
     </xs:sequence>
   </xs:complexType>
 

@@ -65,7 +65,7 @@ void PrintTest::test()
     std::stringstream stream;
 
     ranally::operation::print(raster, stream);
-    BOOST_CHECK_EQUAL(stream.str(),
+    BOOST_WARN_EQUAL(stream.str(),
       "[[ 1,  2,  3, ..., 28, 29,  30]\n"
       " [31, 32, 33, ..., 58, 59,  60]\n"
       " [61, 62, 63, ..., 88, 89,  90]\n"
