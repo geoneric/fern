@@ -7,7 +7,7 @@ ADD_EXECUTABLE(ranally
   Ranally.cc
 )
 ADD_DEPENDENCIES(ranally
-  RanallyOperationXml
+  Operation-xml.h
 )
 TARGET_LINK_LIBRARIES(ranally
   RanallyLanguage

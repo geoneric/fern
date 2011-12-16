@@ -37,13 +37,24 @@ ADD_CUSTOM_COMMAND(
     ${CMAKE_CURRENT_SOURCE_DIR}/Operation.xml
   COMMENT "Generating XML header with operations meta info" VERBATIM
   COMMAND
-    echo "static char const* const xml = \"" >
-      ${CMAKE_CURRENT_BINARY_DIR}/Operation-xml.h
+    echo
+      "namespace ranally {\\n"
+      "namespace operation {\\n"
+      "static char const* const operationsXml = \"\\"
+        > ${CMAKE_CURRENT_BINARY_DIR}/Operation-xml.h
   COMMAND
-    cat ${CMAKE_CURRENT_SOURCE_DIR}/Operation.xml >>
-      ${CMAKE_CURRENT_BINARY_DIR}/Operation-xml.h
+    cat ${CMAKE_CURRENT_SOURCE_DIR}/Operation.xml
+      # Escape quotes.
+      | sed "s/\\\"/\\\\\\\"/g"
+      # Escape new-lines .
+      | sed "s/\$/ \\\\/"
+        >> ${CMAKE_CURRENT_BINARY_DIR}/Operation-xml.h
   COMMAND
-    echo "\"" >> ${CMAKE_CURRENT_BINARY_DIR}/Operation-xml.h
+    echo
+      "\";"
+      "}\\n"
+      "}\\n"
+        >> ${CMAKE_CURRENT_BINARY_DIR}/Operation-xml.h
 )
 SET(SOURCES
   ${CMAKE_CURRENT_BINARY_DIR}/Operation-pskel.cxx
@@ -56,7 +67,7 @@ SET(SOURCES
 ADD_LIBRARY(RanallyOperation
   ${SOURCES}
 )
-ADD_CUSTOM_TARGET(RanallyOperationXml
+ADD_CUSTOM_TARGET(Operation-xml.h
   DEPENDS
     ${CMAKE_CURRENT_BINARY_DIR}/Operation-xml.h
 )

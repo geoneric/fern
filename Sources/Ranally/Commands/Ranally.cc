@@ -507,7 +507,7 @@ public:
 
     {
       ranally::operation::XmlParser xmlParser;
-      operations = xmlParser.parse(xml);
+      operations = xmlParser.parse(ranally::operation::operationsXml);
     }
 
     ranally::language::ThreadVisitor threadVisitor;
