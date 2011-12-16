@@ -1,7 +1,8 @@
-ADD_SUBDIRECTORY(Operation)
+# ADD_SUBDIRECTORY(Operation)
 SET(_LINK_LIBRARIES
   ${DEVENV_UTILS_LIBRARY}
   ${DEVENV_UNICODE_UTILS_LIBRARY}
+  RanallyOperation
   ${PYTHON_LIBRARIES}
   ${BOOST_FILESYSTEM_LIBRARY}
   ${BOOST_PROGRAM_OPTIONS_LIBRARY}
@@ -9,7 +10,6 @@ SET(_LINK_LIBRARIES
   ${BOOST_SYSTEM_LIBRARY}
   ${EXPAT_LIBRARIES}
   ${ICU_LIBRARIES}
-  RanallyLanguageOperation
 )
 INCLUDE_DIRECTORIES(
   ${CMAKE_CURRENT_SOURCE_DIR}/../..
@@ -44,6 +44,7 @@ SET(SOURCES
   AstDotVisitor.cc
   CopyVisitor.cc
   DotVisitor.cc
+  ExecuteVisitor.cc
   ExpressionVertex.cc
   FunctionVertex.cc
   IdentifyVisitor.cc
@@ -61,6 +62,7 @@ SET(SOURCES
   SymbolTable.cc
   SyntaxVertex.cc
   ThreadVisitor.cc
+  ValidateVisitor.cc
   Visitor.cc
   WhileVertex.cc
   XmlParser.cc
@@ -73,6 +75,7 @@ SET(TEST_SOURCES
   AnnotateVisitorTest.cc
   AssignmentVertexTest.cc
   DotVisitorTest.cc
+  ExecuteVisitorTest.cc
   ExpressionVertexTest.cc
   FunctionVertexTest.cc
   IdentifyVisitorTest.cc
@@ -89,6 +92,7 @@ SET(TEST_SOURCES
   SyntaxVertexTest.cc
   Test.cc
   ThreadVisitorTest.cc
+  ValidateVisitorTest.cc
   WhileVertexTest.cc
   XmlParserTest.cc
 )

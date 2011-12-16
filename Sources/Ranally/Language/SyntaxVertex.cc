@@ -9,7 +9,9 @@ namespace language {
 
 SyntaxVertex::SyntaxVertex()
 
-  : Loki::BaseVisitable<>()
+  : Loki::BaseVisitable<>(),
+    _line(0),
+    _col(0)
 
 {
 }

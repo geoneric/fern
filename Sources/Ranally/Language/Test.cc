@@ -3,6 +3,7 @@
 #include "Ranally/Language/AnnotateVisitorTest.h"
 #include "Ranally/Language/AssignmentVertexTest.h"
 #include "Ranally/Language/DotVisitorTest.h"
+#include "Ranally/Language/ExecuteVisitorTest.h"
 #include "Ranally/Language/ExpressionVertexTest.h"
 #include "Ranally/Language/FunctionVertexTest.h"
 #include "Ranally/Language/IdentifyVisitorTest.h"
@@ -18,6 +19,7 @@
 #include "Ranally/Language/SymbolTableTest.h"
 #include "Ranally/Language/SyntaxVertexTest.h"
 #include "Ranally/Language/ThreadVisitorTest.h"
+#include "Ranally/Language/ValidateVisitorTest.h"
 #include "Ranally/Language/WhileVertexTest.h"
 #include "Ranally/Language/XmlParserTest.h"
 
@@ -61,6 +63,9 @@ boost::unit_test::test_suite* init_unit_test_suite(
   test->add(ThreadVisitorTest::suite());
   test->add(AnnotateVisitorTest::suite());
   test->add(IdentifyVisitorTest::suite());
+  test->add(ValidateVisitorTest::suite());
+  test->add(ExecuteVisitorTest::suite());
+
   test->add(PurifyVisitorTest::suite());
   test->add(DotVisitorTest::suite());
   test->add(ScriptVisitorTest::suite());

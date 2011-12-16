@@ -34,8 +34,8 @@ void XmlParserTest::testParse()
   ranally::operation::OperationsPtr operations;
   std::vector<ranally::operation::Parameter> parameters;
   std::vector<ranally::operation::Result> results;
-  std::vector<ranally::operation::DataType> dataTypes;
-  std::vector<ranally::operation::ValueType> valueTypes;
+  ranally::operation::DataTypes dataTypes;
+  ranally::operation::ValueTypes valueTypes;
 
   {
     // Empty xml.
@@ -85,12 +85,10 @@ void XmlParserTest::testParse()
     BOOST_CHECK(parameter.name() == "value");
     BOOST_CHECK(parameter.description() == "Value to print.");
     dataTypes = parameter.dataTypes();
-    BOOST_REQUIRE_EQUAL(dataTypes.size(), 1u);
-    BOOST_REQUIRE_EQUAL(dataTypes[0], ranally::operation::DT_ALL);
+    BOOST_CHECK(dataTypes == ranally::operation::DT_ALL);
 
     valueTypes = parameter.valueTypes();
-    BOOST_REQUIRE_EQUAL(valueTypes.size(), 1u);
-    BOOST_REQUIRE_EQUAL(valueTypes[0], ranally::operation::VT_ALL);
+    BOOST_CHECK(valueTypes == ranally::operation::VT_ALL);
 
     results = operation->results();
     BOOST_CHECK(results.empty());

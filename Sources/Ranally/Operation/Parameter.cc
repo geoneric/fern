@@ -1,9 +1,30 @@
 #include "Ranally/Operation/Parameter.h"
+#include <cassert>
 
 
 
 namespace ranally {
 namespace operation {
+
+Parameter::Parameter(
+  UnicodeString const& name,
+  UnicodeString const& description,
+  DataTypes dataTypes,
+  ValueTypes valueTypes)
+
+  : _name(name),
+    _description(description),
+    _dataTypes(dataTypes),
+    _valueTypes(valueTypes)
+
+{
+  assert(!_name.isEmpty());
+  assert(!_description.isEmpty());
+  assert(_dataTypes != DT_UNKNOWN);
+  assert(_valueTypes != VT_UNKNOWN);
+}
+
+
 
 Parameter::Parameter(
   Parameter const& other)
@@ -53,14 +74,14 @@ UnicodeString const& Parameter::description() const
 
 
 
-std::vector<DataType> const& Parameter::dataTypes() const
+DataTypes Parameter::dataTypes() const
 {
   return _dataTypes;
 }
 
 
 
-std::vector<ValueType> const& Parameter::valueTypes() const
+ValueTypes Parameter::valueTypes() const
 {
   return _valueTypes;
 }

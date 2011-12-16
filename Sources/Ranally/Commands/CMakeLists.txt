@@ -6,8 +6,12 @@ INCLUDE_DIRECTORIES(
 ADD_EXECUTABLE(ranally
   Ranally.cc
 )
+ADD_DEPENDENCIES(ranally
+  RanallyOperationXml
+)
 TARGET_LINK_LIBRARIES(ranally
   RanallyLanguage
+  RanallyOperation
   ${DEVENV_UTILS_LIBRARY}
   ${DEVENV_UNICODE_UTILS_LIBRARY}
   ${PYTHON_LIBRARIES}

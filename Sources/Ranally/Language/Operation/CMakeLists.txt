@@ -3,11 +3,9 @@ INCLUDE_DIRECTORIES(
 )
 SET(SOURCES
   Argument.cc
-  DataTypes.cc
   Parameter.cc
   Requirements.cc
   Result.cc
-  ValueTypes.cc
 )
 ADD_LIBRARY(RanallyLanguageOperation
   ${SOURCES}

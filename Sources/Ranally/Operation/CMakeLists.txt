@@ -20,16 +20,30 @@ ADD_CUSTOM_COMMAND(
   OUTPUT
     ${CMAKE_CURRENT_BINARY_DIR}/Operation-pskel.hxx
     ${CMAKE_CURRENT_BINARY_DIR}/Operation-pskel.cxx
+  DEPENDS
+    ${CMAKE_CURRENT_BINARY_DIR}/Operation.map
+    ${CMAKE_CURRENT_SOURCE_DIR}/Operation.xsd
+  COMMENT "Generating XML parser ѕkeleton for operations" VERBATIM
   COMMAND
     ${XSD_EXECUTABLE} cxx-parser --xml-parser expat
       --type-map ${CMAKE_CURRENT_BINARY_DIR}/Operation.map
       --namespace-map http://www.jemig.eu/ranally=ranally::operation
       ${CMAKE_CURRENT_SOURCE_DIR}/Operation.xsd
+)
+ADD_CUSTOM_COMMAND(
+  OUTPUT
+    ${CMAKE_CURRENT_BINARY_DIR}/Operation-xml.h
   DEPENDS
-    ${CMAKE_CURRENT_BINARY_DIR}/Operation.map
-    ${CMAKE_CURRENT_SOURCE_DIR}/Operation.xsd
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-  COMMENT "Generating XML parser ѕkeleton for operations" VERBATIM
+    ${CMAKE_CURRENT_SOURCE_DIR}/Operation.xml
+  COMMENT "Generating XML header with operations meta info" VERBATIM
+  COMMAND
+    echo "static char const* const xml = \"" >
+      ${CMAKE_CURRENT_BINARY_DIR}/Operation-xml.h
+  COMMAND
+    cat ${CMAKE_CURRENT_SOURCE_DIR}/Operation.xml >>
+      ${CMAKE_CURRENT_BINARY_DIR}/Operation-xml.h
+  COMMAND
+    echo "\"" >> ${CMAKE_CURRENT_BINARY_DIR}/Operation-xml.h
 )
 SET(SOURCES
   ${CMAKE_CURRENT_BINARY_DIR}/Operation-pskel.cxx
@@ -41,6 +55,10 @@ SET(SOURCES
 )
 ADD_LIBRARY(RanallyOperation
   ${SOURCES}
+)
+ADD_CUSTOM_TARGET(RanallyOperationXml
+  DEPENDS
+    ${CMAKE_CURRENT_BINARY_DIR}/Operation-xml.h
 )
 SET(TEST_SOURCES
   PrintTest.cc

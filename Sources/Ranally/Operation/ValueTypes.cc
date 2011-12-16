@@ -1,9 +1,8 @@
-#include "Ranally/Language/Operation/ValueTypes.h"
+#include "Ranally/Operation/ValueTypes.h"
 
 
 
 namespace ranally {
-namespace language {
 namespace operation {
 
 ValueTypes::ValueTypes()
@@ -20,6 +19,5 @@ ValueTypes::~ValueTypes()
 }
 
 } // namespace operation
-} // namespace language
 } // namespace ranally
 

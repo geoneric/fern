@@ -2,7 +2,7 @@
 #define INCLUDED_RANALLY_LANGUAGE_OPERATIONVERTEX
 
 #include "Ranally/Language/ExpressionVertex.h"
-#include "Ranally/Language/Operation/Requirements.h"
+// #include "Ranally/Language/Operation/Requirements.h"
 
 
 
@@ -25,7 +25,7 @@ public:
 
   virtual          ~OperationVertex    ();
 
-  boost::shared_ptr<operation::Requirements> const& requirements() const;
+  // boost::shared_ptr<operation::Requirements> const& requirements() const;
 
 protected:
 
@@ -33,7 +33,7 @@ protected:
 
 private:
 
-  boost::shared_ptr<operation::Requirements> _requirements;
+  // boost::shared_ptr<operation::Requirements> _requirements;
 
 };
 

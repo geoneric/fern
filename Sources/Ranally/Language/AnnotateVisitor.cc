@@ -31,7 +31,7 @@ void AnnotateVisitor::Visit(
 
 
 void AnnotateVisitor::Visit(
-  FunctionVertex& vertex)
+  FunctionVertex& /* vertex */)
 {
   // Figure out what the properties are of the function. Annotate the vertex
   // with this information.

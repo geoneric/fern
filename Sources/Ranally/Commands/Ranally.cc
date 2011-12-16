@@ -7,13 +7,18 @@
 #include "dev_UnicodeUtils.h"
 #include "Ranally/Configure.h"
 #include "Ranally/Language/AlgebraParser.h"
+#include "Ranally/Language/AnnotateVisitor.h"
 #include "Ranally/Language/AstDotVisitor.h"
+#include "Ranally/Language/ExecuteVisitor.h"
 #include "Ranally/Language/FlowgraphDotVisitor.h"
 #include "Ranally/Language/IdentifyVisitor.h"
 #include "Ranally/Language/XmlParser.h"
 #include "Ranally/Language/ScriptVertex.h"
 #include "Ranally/Language/ScriptVisitor.h"
 #include "Ranally/Language/ThreadVisitor.h"
+#include "Ranally/Language/ValidateVisitor.h"
+#include "Ranally/Operation/XmlParser.h"
+#include "Ranally/Operation/Operation-xml.h"
 
 
 
@@ -34,6 +39,19 @@ void showGeneralHelp()
     "  convert             Convert script\n"
     "\n"
     "See 'ranally COMMAND --help' for more information on a specific command.\n"
+    ;
+}
+
+
+
+void showExecuteHelp()
+{
+  std::cout <<
+    "usage: ranally execute [--help] INPUT_SCRIPT\n"
+    "\n"
+    "Execute the script.\n"
+    "\n"
+    "  INPUT_SCRIPT        Script to execute or - to read from standard input\n"
     ;
 }
 
@@ -110,32 +128,19 @@ void showConvertDotFlowgraphHelp()
 
 
 
-void showConvertRanallyHelp()
-{
-  std::cout <<
-    "usage: ranally convert ranally INPUT_SCRIPT [OUTPUT_SCRIPT]\n"
-    "\n"
-    "Convert the script to a ranally script (round-trip).\n"
-    "\n"
-    "  INPUT_SCRIPT        Script to convert or - to read from standard input\n"
-    "  OUTPUT_SCRIPT       File to write result to\n"
-    "\n"
-    "The result is written to standard output if no output script is provided\n"
-    ;
-}
-
-
-
-void showExecuteHelp()
-{
-  std::cout <<
-    "usage: ranally execute script\n"
-    "\n"
-    "Execute the script. The execute command is implied if not provided.\n"
-    "\n"
-    "  script              Script to exectute or - to read from standard input\n"
-    ;
-}
+// void showConvertRanallyHelp()
+// {
+//   std::cout <<
+//     "usage: ranally convert ranally INPUT_SCRIPT [OUTPUT_SCRIPT]\n"
+//     "\n"
+//     "Convert the script to a ranally script (round-trip).\n"
+//     "\n"
+//     "  INPUT_SCRIPT        Script to convert or - to read from standard input\n"
+//     "  OUTPUT_SCRIPT       File to write result to\n"
+//     "\n"
+//     "The result is written to standard output if no output script is provided\n"
+//     ;
+// }
 
 
 
@@ -161,13 +166,10 @@ void showBuild()
 
 class Command
 {
-private:
 
-  std::string      _commandLine;
+public:
 
-  int              _argc;
-
-  char**           _argv;
+  virtual int      execute             ()=0;
 
 protected:
 
@@ -200,19 +202,21 @@ protected:
     return _argv;
   }
 
-public:
+private:
 
-  virtual int      execute             ()=0;
+  std::string      _commandLine;
+
+  int              _argc;
+
+  char**           _argv;
 
 };
 
 
 
-class ConvertCommand: public Command
+class ConvertCommand:
+  public Command
 {
-private:
-
-protected:
 
 public:
 
@@ -470,27 +474,99 @@ public:
 
     return status;
   }
+
 };
 
 
 
-class ExecuteCommand: public Command
+class ExecuteCommand:
+  public Command
 {
+
 public:
 
   ExecuteCommand(
     int argc,
     char** argv)
+
     : Command(argc, argv)
+
   {
+  }
+
+  void execute(
+    UnicodeString const& xml)
+  {
+    boost::shared_ptr<ranally::language::ScriptVertex> tree;
+    ranally::operation::OperationsPtr operations;
+
+    {
+      ranally::language::XmlParser xmlParser;
+      tree = xmlParser.parse(xml);
+    }
+
+    {
+      ranally::operation::XmlParser xmlParser;
+      operations = xmlParser.parse(xml);
+    }
+
+    ranally::language::ThreadVisitor threadVisitor;
+    tree->Accept(threadVisitor);
+
+    ranally::language::IdentifyVisitor identifyVisitor;
+    tree->Accept(identifyVisitor);
+
+    ranally::language::AnnotateVisitor annotateVisitor;
+    tree->Accept(annotateVisitor);
+
+    ranally::language::ValidateVisitor validateVisitor(operations);
+    tree->Accept(validateVisitor);
+
+    ranally::language::ExecuteVisitor executeVisitor;
+    tree->Accept(executeVisitor);
   }
 
   int execute()
   {
-    std::cout << "Execution not implemented yet\n";
-    std::cout << "Do come back later ;-)\n";
-    return EXIT_SUCCESS;
+    int status = EXIT_FAILURE;
+
+    if(argc() == 1 || std::strcmp(argv()[1], "--help") == 0) {
+      // No arguments, or the help option.
+      showExecuteHelp();
+      status = EXIT_SUCCESS;
+    }
+    else if(argc() > 2) {
+      std::cerr << "Too many arguments.\n";
+      showExecuteHelp();
+      status = EXIT_FAILURE;
+    }
+    else {
+      std::string inputFileName = std::strcmp(argv()[1], "-") != 0
+        ? argv()[1]
+        : "";
+
+      UnicodeString xml;
+
+      if(inputFileName.empty()) {
+        // Read script from the standard input stream.
+        std::ostringstream script;
+        script << std::cin.rdbuf();
+        xml = ranally::language::AlgebraParser().parseString(UnicodeString(
+          script.str().c_str()));
+      }
+      else {
+        // Read script from a file.
+        xml = ranally::language::AlgebraParser().parseFile(UnicodeString(
+          inputFileName.c_str()));
+      }
+
+      execute(xml);
+      status = EXIT_SUCCESS;
+    }
+
+    return status;
   }
+
 };
 
 } // Anonymous namespace

@@ -10,8 +10,8 @@ namespace http://www.jemig.eu/ranally
   Results            "std::vector<ranally::operation::Result> const&";
   Parameter          "ranally::operation::Parameter";
   Result             "ranally::operation::Result";
-  ValueTypes         "std::vector<ranally::operation::ValueType> const&";
-  DataTypes          "std::vector<ranally::operation::DataType> const&";
+  DataTypes          "ranally::operation::DataTypes";
+  ValueTypes         "ranally::operation::ValueTypes";
   DataType           "ranally::operation::DataType";
   ValueType          "ranally::operation::ValueType";
 }

@@ -1,9 +1,7 @@
 #ifndef INCLUDED_RANALLY_OPERATION_PARAMETER
 #define INCLUDED_RANALLY_OPERATION_PARAMETER
 
-#include <vector>
 #include <unicode/unistr.h>
-#include <boost/range/algorithm/copy.hpp>
 #include "Ranally/Operation/DataType.h"
 #include "Ranally/Operation/ValueType.h"
 
@@ -25,13 +23,10 @@ class Parameter
 
 public:
 
-  template<
-    class DataTypes,
-    class ValueTypes>
                    Parameter           (UnicodeString const& name,
                                         UnicodeString const& description,
-                                        DataTypes const& dataTypes,
-                                        ValueTypes const& valueTypes);
+                                        DataTypes dataTypes,
+                                        ValueTypes valueTypes);
 
                    Parameter           (Parameter const& other);
 
@@ -43,9 +38,9 @@ public:
 
   UnicodeString const& description     () const;
 
-  std::vector<DataType> const& dataTypes() const;
+  DataTypes        dataTypes           () const;
 
-  std::vector<ValueType> const& valueTypes() const;
+  ValueTypes       valueTypes          () const;
 
 private:
 
@@ -53,37 +48,11 @@ private:
 
   UnicodeString    _description;
 
-  std::vector<DataType> _dataTypes;
+  DataTypes        _dataTypes;
 
-  std::vector<ValueType> _valueTypes;
+  ValueTypes       _valueTypes;
 
 };
-
-
-
-template<
-  class DataTypes,
-  class ValueTypes>
-inline Parameter::Parameter(
-  UnicodeString const& name,
-  UnicodeString const& description,
-  DataTypes const& dataTypes,
-  ValueTypes const& valueTypes)
-
-  : _name(name),
-    _description(description)
-
-{
-  _dataTypes.resize(boost::size(dataTypes));
-  boost::range::copy(dataTypes, boost::begin(_dataTypes));
-  _valueTypes.resize(boost::size(valueTypes));
-  boost::range::copy(valueTypes, boost::begin(_valueTypes));
-
-  assert(!_name.isEmpty());
-  assert(!_description.isEmpty());
-  assert(!_dataTypes.empty());
-  assert(!_valueTypes.empty());
-}
 
 } // namespace operation
 } // namespace ranally

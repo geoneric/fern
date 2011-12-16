@@ -243,8 +243,8 @@ private:
   {
     UnicodeString name;
     UnicodeString description;
-    std::vector<ranally::operation::DataType> dataTypes;
-    std::vector<ranally::operation::ValueType> valueTypes;
+    ranally::operation::DataTypes dataTypes;
+    ranally::operation::ValueTypes valueTypes;
   };
 
   std::stack<ParameterData> _dataStack;
@@ -272,14 +272,14 @@ public:
   }
 
   void DataTypes(
-    std::vector<ranally::operation::DataType> const& dataTypes)
+    ranally::operation::DataTypes const& dataTypes)
   {
     assert(!_dataStack.empty());
     _dataStack.top().dataTypes = dataTypes;
   }
 
   void ValueTypes(
-    std::vector<ranally::operation::ValueType> const& valueTypes)
+    ranally::operation::ValueTypes const& valueTypes)
   {
     assert(!_dataStack.empty());
     _dataStack.top().valueTypes = valueTypes;
@@ -403,13 +403,13 @@ class DataTypes_pimpl:
 
 private:
 
-  std::vector<ranally::operation::DataType> _dataTypes;
+  ranally::operation::DataTypes _dataTypes;
 
 public:
 
   void pre()
   {
-    _dataTypes.clear();
+    _dataTypes = ranally::operation::DT_UNKNOWN;
   }
 
   // void DataType(
@@ -421,10 +421,10 @@ public:
   void DataType(
     std::string const& dataType)
   {
-    _dataTypes.push_back(stringToDataType(dataType));
+    _dataTypes |= stringToDataType(dataType);
   }
 
-  std::vector<ranally::operation::DataType> const& post_DataTypes()
+  ranally::operation::DataTypes post_DataTypes()
   {
     return _dataTypes;
   }
@@ -473,13 +473,13 @@ class ValueTypes_pimpl:
 
 private:
 
-  std::vector<ranally::operation::ValueType> _valueTypes;
+  ranally::operation::ValueTypes _valueTypes;
 
 public:
 
   void pre()
   {
-    _valueTypes.clear();
+    _valueTypes = ranally::operation::VT_UNKNOWN;
   }
 
   // void ValueType(
@@ -491,10 +491,10 @@ public:
   void ValueType(
     std::string const& valueType)
   {
-    _valueTypes.push_back(stringToValueType(valueType));
+    _valueTypes |= stringToValueType(valueType);
   }
 
-  std::vector<ranally::operation::ValueType> const& post_ValueTypes()
+  ranally::operation::ValueTypes post_ValueTypes()
   {
     return _valueTypes;
   }

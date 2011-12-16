@@ -5,6 +5,7 @@ namespace ranally {
 namespace operation {
 
 enum ValueType {
+  VT_UNKNOWN=0,
   VT_UINT8=1,
   VT_INT8=2,
   VT_UINT16=4,
@@ -21,9 +22,10 @@ enum ValueType {
   VT_INTEGER=VT_UNSIGNED_INTEGER | VT_SIGNED_INTEGER,
   VT_FLOATING_POINT=VT_FLOAT32 | VT_FLOAT64,
   VT_NUMBER=VT_INTEGER | VT_FLOATING_POINT,
-  VT_ALL=VT_NUMBER | VT_STRING,
-  VT_UNKNOWN
+  VT_ALL=VT_NUMBER | VT_STRING
 };
+
+typedef unsigned int ValueTypes;
 
 } // namespace operation
 } // namespace ranally
