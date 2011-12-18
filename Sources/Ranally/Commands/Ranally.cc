@@ -516,10 +516,10 @@ public:
     ranally::language::IdentifyVisitor identifyVisitor;
     tree->Accept(identifyVisitor);
 
-    ranally::language::AnnotateVisitor annotateVisitor;
+    ranally::language::AnnotateVisitor annotateVisitor(operations);
     tree->Accept(annotateVisitor);
 
-    ranally::language::ValidateVisitor validateVisitor(operations);
+    ranally::language::ValidateVisitor validateVisitor;
     tree->Accept(validateVisitor);
 
     ranally::language::ExecuteVisitor executeVisitor;

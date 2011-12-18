@@ -7,14 +7,11 @@
 namespace ranally {
 namespace language {
 
-ValidateVisitor::ValidateVisitor(
-  ranally::operation::OperationsPtr const& operations)
+ValidateVisitor::ValidateVisitor()
 
-  : Visitor(),
-    _operations(operations)
+  : Visitor()
 
 {
-  assert(_operations);
 }
 
 
@@ -26,31 +23,33 @@ ValidateVisitor::~ValidateVisitor()
 
 
 void ValidateVisitor::Visit(
-  FunctionVertex& vertex)
+  FunctionVertex& /* vertex */)
 {
-  // Find out if we know about an operation with the same name as this
-  // function's name.
-  if(!_operations->hasOperation(vertex.name())) {
-    throw std::runtime_error(("unknown function: " +
-      dev::encodeInUTF8(vertex.name())).c_str());
-  }
+  // This visitor can assume the tree is fully annotated. Any missing
+  // information must be reported. It means that the information is not
+  // available. The AnnotateVisitor tries its best to find information but
+  // won't report errors. That's the task of the ValidateVisitor. Cool!
+  // // Find out if we know about an operation with the same name as this
+  // // function's name.
+  // if(!_operations->hasOperation(vertex.name())) {
+  //   throw std::runtime_error(("unknown function: " +
+  //     dev::encodeInUTF8(vertex.name())).c_str());
+  // }
 
-  ranally::operation::OperationPtr operation(_operations->operation(
-    vertex.name()));
+  // ranally::operation::OperationPtr operation(_operations->operation(
+  //   vertex.name()));
 
-  // Check if the number of arguments provided equals the required number of
-  // arguments.
-  // ...
+  // // Check if the number of arguments provided equals the required number of
+  // // arguments.
+  // // ...
 
-  // Check if the data type of each provided argument is accepted by the
-  // operation.
-  // ...
+  // // Check if the data type of each provided argument is accepted by the
+  // // operation.
+  // // ...
 
-  // Check if the value type of each provided argument is accepted by the
-  // operation.
-  // ...
-
-
+  // // Check if the value type of each provided argument is accepted by the
+  // // operation.
+  // // ...
 }
 
 } // namespace language

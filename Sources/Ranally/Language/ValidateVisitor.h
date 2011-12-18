@@ -1,7 +1,6 @@
 #ifndef INCLUDED_RANALLY_LANGUAGE_VALIDATEVISITOR
 #define INCLUDED_RANALLY_LANGUAGE_VALIDATEVISITOR
 
-#include "Ranally/Operation/Operations.h"
 #include "Ranally/Language/Visitor.h"
 
 
@@ -23,14 +22,11 @@ class ValidateVisitor:
 
 public:
 
-                   ValidateVisitor     (
-                                  operation::OperationsPtr const& operations);
+                   ValidateVisitor     ();
 
                    ~ValidateVisitor    ();
 
 private:
-
-  operation::OperationsPtr _operations;
 
   void             Visit               (FunctionVertex& vertex);
 

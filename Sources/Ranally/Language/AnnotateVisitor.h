@@ -1,6 +1,7 @@
 #ifndef INCLUDED_RANALLY_LANGUAGE_ANNOTATEVISITOR
 #define INCLUDED_RANALLY_LANGUAGE_ANNOTATEVISITOR
 
+#include "Ranally/Operation/Operations.h"
 #include "Ranally/Language/Visitor.h"
 
 
@@ -29,11 +30,14 @@ class AnnotateVisitor:
 
 public:
 
-                   AnnotateVisitor     ();
+                   AnnotateVisitor     (
+                                  operation::OperationsPtr const& operations);
 
                    ~AnnotateVisitor    ();
 
 private:
+
+  operation::OperationsPtr _operations;
 
   void             Visit               (AssignmentVertex& vertex);
 

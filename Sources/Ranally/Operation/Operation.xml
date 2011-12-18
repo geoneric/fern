@@ -29,7 +29,7 @@
           <DataType>Raster</DataType>
         </DataTypes>
         <ValueTypes>
-          <ValueType>Numeric</ValueType>
+          <ValueType>Number</ValueType>
         </ValueTypes>
       </Parameter>
       <Parameter>
@@ -40,7 +40,7 @@
           <DataType>Raster</DataType>
         </DataTypes>
         <ValueTypes>
-          <ValueType>Numeric</ValueType>
+          <ValueType>Number</ValueType>
         </ValueTypes>
       </Parameter>
     </Parameters>
@@ -48,8 +48,8 @@
       <Result>
         <Name>result</Name>
         <Description>Result of adding the two parameters.</Description>
-        <DataType>DependsOnParameters</DataType>
-        <ValueType>DependsOnParameters</ValueType>
+        <DataType>DependsOnInput</DataType>
+        <ValueType>DependsOnInput</ValueType>
       </Result>
     </Results>
   </Operation>

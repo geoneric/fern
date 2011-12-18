@@ -33,6 +33,9 @@ ranally::operation::DataType stringToDataType(
   else if(string == "All") {
     dataType = ranally::operation::DT_ALL;
   }
+  else if(string == "DependsOnInput") {
+    dataType = ranally::operation::DT_DEPENDS_ON_INPUT;
+  }
 
   assert(dataType != ranally::operation::DT_UNKNOWN);
   return dataType;
@@ -96,6 +99,9 @@ static ranally::operation::ValueType stringToValueType(
   }
   else if(string == "All") {
     valueType = ranally::operation::VT_ALL;
+  }
+  else if(string == "DependsOnInput") {
+    valueType = ranally::operation::VT_DEPENDS_ON_INPUT;
   }
 
   assert(valueType != ranally::operation::VT_UNKNOWN);

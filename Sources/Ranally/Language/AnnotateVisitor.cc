@@ -8,11 +8,14 @@
 namespace ranally {
 namespace language {
 
-AnnotateVisitor::AnnotateVisitor()
+AnnotateVisitor::AnnotateVisitor(
+  ranally::operation::OperationsPtr const& operations)
 
-  : Visitor()
+  : Visitor(),
+    _operations(operations)
 
 {
+  assert(_operations);
 }
 
 
@@ -41,6 +44,10 @@ void AnnotateVisitor::Visit(
   // nrResults
   //   Value types per result.
   //   Data types per result.
+  // It is no problem if the operation is not known. Annotation is optional.
+  // The validating visitor will check if all information required for
+  // execution is present.
+  //
   // TODO
   // std::cout << dev::encodeInUTF8(vertex.name()) << std::endl;
 }
