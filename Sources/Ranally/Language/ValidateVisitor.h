@@ -12,7 +12,12 @@ namespace language {
 /*!
   longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 
-  \sa        .
+  This visitor can assume the tree is fully annotated. Any missing
+  information must be reported. It means that the information is not
+  available. The AnnotateVisitor tries its best to find information but
+  won't report errors. That's the task of the ValidateVisitor.
+
+  \sa        AnnotateVisitor
 */
 class ValidateVisitor:
   public Visitor

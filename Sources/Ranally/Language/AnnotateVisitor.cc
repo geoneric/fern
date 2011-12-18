@@ -34,22 +34,12 @@ void AnnotateVisitor::Visit(
 
 
 void AnnotateVisitor::Visit(
-  FunctionVertex& /* vertex */)
+  FunctionVertex& vertex)
 {
-  // Figure out what the properties are of the function. Annotate the vertex
-  // with this information.
-  // nrArguments
-  //   Value types per argument.
-  //   Data types per arguments.
-  // nrResults
-  //   Value types per result.
-  //   Data types per result.
-  // It is no problem if the operation is not known. Annotation is optional.
-  // The validating visitor will check if all information required for
-  // execution is present.
-  //
-  // TODO
-  // std::cout << dev::encodeInUTF8(vertex.name()) << std::endl;
+  if(_operations->hasOperation(vertex.name())) {
+    assert(!vertex.operation());
+    vertex.setOperation(_operations->operation(vertex.name()));
+  }
 }
 
 

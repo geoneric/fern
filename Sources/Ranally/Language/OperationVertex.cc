@@ -21,11 +21,19 @@ OperationVertex::~OperationVertex()
 
 
 
-// boost::shared_ptr<operation::Requirements> const&
-// OperationVertex::requirements() const
-// {
-//   return _requirements;
-// }
+void OperationVertex::setOperation(
+  operation::OperationPtr const& operation)
+{
+  assert(!_operation);
+  _operation = operation;
+}
+
+
+
+operation::OperationPtr const& OperationVertex::operation() const
+{
+  return _operation;
+}
 
 } // namespace language
 } // namespace ranally

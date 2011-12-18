@@ -1,8 +1,8 @@
 #ifndef INCLUDED_RANALLY_LANGUAGE_OPERATIONVERTEX
 #define INCLUDED_RANALLY_LANGUAGE_OPERATIONVERTEX
 
+#include "Ranally/Operation/Operation.h"
 #include "Ranally/Language/ExpressionVertex.h"
-// #include "Ranally/Language/Operation/Requirements.h"
 
 
 
@@ -25,7 +25,10 @@ public:
 
   virtual          ~OperationVertex    ();
 
-  // boost::shared_ptr<operation::Requirements> const& requirements() const;
+  void             setOperation        (
+                                  operation::OperationPtr const& operation);
+
+  operation::OperationPtr const& operation() const;
 
 protected:
 
@@ -33,7 +36,7 @@ protected:
 
 private:
 
-  // boost::shared_ptr<operation::Requirements> _requirements;
+  operation::OperationPtr _operation;
 
 };
 

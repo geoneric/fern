@@ -20,7 +20,11 @@ namespace language {
   is performed by this visitor. It only annotates the tree. Use a
   ValidateVisitor to perform the actual validation.
 
-  \sa        .
+  For example, in case of a FunctionVertex, it is no problem if the operation
+  is not known. Annotation is optional. The ValidateVisitor will check if all
+  information required for execution is present.
+
+  \sa        ValidateVisitor
 */
 class AnnotateVisitor:
   public Visitor
