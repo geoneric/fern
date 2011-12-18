@@ -249,6 +249,25 @@ public:
     return EXIT_SUCCESS;
   }
 
+  UnicodeString convertToDotAst(
+    UnicodeString const& xml,
+    int modes)
+  {
+    boost::shared_ptr<ranally::language::ScriptVertex> tree(
+      ranally::language::XmlParser().parse(xml));
+
+    ranally::language::ThreadVisitor threadVisitor;
+    tree->Accept(threadVisitor);
+
+    ranally::language::IdentifyVisitor identifyVisitor;
+    tree->Accept(identifyVisitor);
+
+    ranally::AstDotVisitor astDotVisitor(modes);
+    tree->Accept(astDotVisitor);
+
+    return astDotVisitor.script();
+  }
+
   int convertToDotAst(
     int argc,
     char** argv)
@@ -294,40 +313,28 @@ public:
         ++currentArgumentId;
         std::string outputFileName = currentArgumentId == argc - 1
           ? argv[currentArgumentId] : "";
-
-        ranally::AstDotVisitor astDotVisitor(modes);
-        ranally::language::ThreadVisitor threadVisitor;
-        ranally::language::IdentifyVisitor identifyVisitor;
-        ranally::language::AlgebraParser parser;
         UnicodeString xml;
+        ranally::language::AlgebraParser parser;
 
         if(inputFileName.empty()) {
           // Read script from the standard input stream.
           std::ostringstream script;
           script << std::cin.rdbuf();
-          xml = ranally::language::AlgebraParser().parseString(UnicodeString(
-            script.str().c_str()));
+          xml = parser.parseString(UnicodeString(script.str().c_str()));
         }
         else {
           // Read script from a file.
-          xml = ranally::language::AlgebraParser().parseFile(UnicodeString(
-            inputFileName.c_str()));
+          xml = parser.parseFile(UnicodeString(inputFileName.c_str()));
         }
 
-        boost::shared_ptr<ranally::language::ScriptVertex> tree(
-          ranally::language::XmlParser().parse(xml));
-        tree->Accept(threadVisitor);
-        tree->Accept(identifyVisitor);
-        tree->Accept(astDotVisitor);
-
-        std::string result = dev::encodeInUTF8(astDotVisitor.script());
+        std::string dotScript = dev::encodeInUTF8(convertToDotAst(xml, modes));
 
         if(outputFileName.empty()) {
-          std::cout << result;
+          std::cout << dotScript;
         }
         else {
           std::ofstream file(outputFileName.c_str());
-          file << result;
+          file << dotScript;
         }
 
         status = EXIT_SUCCESS;
@@ -335,6 +342,24 @@ public:
     }
 
     return status;
+  }
+
+  UnicodeString convertToDotFlowgraph(
+    UnicodeString const& xml)
+  {
+    boost::shared_ptr<ranally::language::ScriptVertex> tree(
+      ranally::language::XmlParser().parse(xml));
+
+    ranally::language::ThreadVisitor threadVisitor;
+    tree->Accept(threadVisitor);
+
+    ranally::language::IdentifyVisitor identifyVisitor;
+    tree->Accept(identifyVisitor);
+
+    ranally::FlowgraphDotVisitor flowgraphDotVisitor;
+    tree->Accept(flowgraphDotVisitor);
+
+    return flowgraphDotVisitor.script();
   }
 
   int convertToDotFlowgraph(
@@ -368,44 +393,32 @@ public:
         ++currentArgumentId;
         std::string outputFileName = currentArgumentId == argc - 1
           ? argv[currentArgumentId] : "";
-
-        ranally::FlowgraphDotVisitor flowgraphDotVisitor;
-        ranally::language::ThreadVisitor threadVisitor;
-        ranally::language::IdentifyVisitor identifyVisitor;
-        ranally::language::AlgebraParser parser;
         UnicodeString xml;
+        ranally::language::AlgebraParser parser;
 
         if(inputFileName.empty()) {
           // Read script from the standard input stream.
           std::ostringstream script;
           script << std::cin.rdbuf();
-          xml = ranally::language::AlgebraParser().parseString(UnicodeString(
-            script.str().c_str()));
+          xml = parser.parseString(UnicodeString(script.str().c_str()));
         }
         else {
           // Read script from a file.
-          xml = ranally::language::AlgebraParser().parseFile(UnicodeString(
-            inputFileName.c_str()));
+          xml = parser.parseFile(UnicodeString(inputFileName.c_str()));
         }
 
-        boost::shared_ptr<ranally::language::ScriptVertex> tree(
-          ranally::language::XmlParser().parse(xml));
-        tree->Accept(threadVisitor);
-        tree->Accept(identifyVisitor);
-        tree->Accept(flowgraphDotVisitor);
-
-        std::string result = dev::encodeInUTF8(flowgraphDotVisitor.script());
+        std::string dotScript = dev::encodeInUTF8(convertToDotFlowgraph(xml));
 
         if(outputFileName.empty()) {
-          std::cout << result;
+          std::cout << dotScript;
         }
         else {
           std::ofstream file(outputFileName.c_str());
-          file << result;
+          file << dotScript;
         }
-      }
 
-      status = EXIT_SUCCESS;
+        status = EXIT_SUCCESS;
+      }
     }
 
     return status;
@@ -542,22 +555,19 @@ public:
     }
     else {
       std::string inputFileName = std::strcmp(argv()[1], "-") != 0
-        ? argv()[1]
-        : "";
-
+        ? argv()[1] : "";
       UnicodeString xml;
+      ranally::language::AlgebraParser parser;
 
       if(inputFileName.empty()) {
         // Read script from the standard input stream.
         std::ostringstream script;
         script << std::cin.rdbuf();
-        xml = ranally::language::AlgebraParser().parseString(UnicodeString(
-          script.str().c_str()));
+        xml = parser.parseString(UnicodeString(script.str().c_str()));
       }
       else {
         // Read script from a file.
-        xml = ranally::language::AlgebraParser().parseFile(UnicodeString(
-          inputFileName.c_str()));
+        xml = parser.parseFile(UnicodeString(inputFileName.c_str()));
       }
 
       execute(xml);
