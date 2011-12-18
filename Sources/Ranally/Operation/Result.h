@@ -34,6 +34,14 @@ public:
 
                    ~Result             ();
 
+  UnicodeString const& name            () const;
+
+  UnicodeString const& description     () const;
+
+  DataType         dataType            () const;
+
+  ValueType        valueType           () const;
+
 private:
 
   UnicodeString    _name;

@@ -40,6 +40,36 @@ UnicodeString const& ExpressionVertex::name() const
   return _name;
 }
 
+
+
+void ExpressionVertex::setDataType(
+  operation::DataType dataType)
+{
+  _dataType = dataType;
+}
+
+
+
+operation::DataType ExpressionVertex::dataType() const
+{
+  return _dataType;
+}
+
+
+
+void ExpressionVertex::setValueType(
+  operation::ValueType valueType)
+{
+  _valueType = valueType;
+}
+
+
+
+operation::ValueType ExpressionVertex::valueType() const
+{
+  return _valueType;
+}
+
 } // namespace language
 } // namespace ranally
 

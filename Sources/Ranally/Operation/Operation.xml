@@ -25,7 +25,7 @@
         <Name>parameter1</Name>
         <Description>First parameter.</Description>
         <DataTypes>
-          <DataType>Number</DataType>
+          <DataType>Value</DataType>
           <DataType>Raster</DataType>
         </DataTypes>
         <ValueTypes>
@@ -36,7 +36,7 @@
         <Name>parameter2</Name>
         <Description>Second parameter.</Description>
         <DataTypes>
-          <DataType>Number</DataType>
+          <DataType>Value</DataType>
           <DataType>Raster</DataType>
         </DataTypes>
         <ValueTypes>
@@ -48,6 +48,31 @@
       <Result>
         <Name>result</Name>
         <Description>Result of adding the two parameters.</Description>
+        <DataType>DependsOnInput</DataType>
+        <ValueType>DependsOnInput</ValueType>
+      </Result>
+    </Results>
+  </Operation>
+  <Operation>
+    <Name>abs</Name>
+    <Description>Calculate the absolute value of the argument.</Description>
+    <Parameters>
+      <Parameter>
+        <Name>parameter</Name>
+        <Description>Parameter.</Description>
+        <DataTypes>
+          <DataType>Value</DataType>
+          <DataType>Raster</DataType>
+        </DataTypes>
+        <ValueTypes>
+          <ValueType>Number</ValueType>
+        </ValueTypes>
+      </Parameter>
+    </Parameters>
+    <Results>
+      <Result>
+        <Name>result</Name>
+        <Description>The absolute value of the argument.</Description>
         <DataType>DependsOnInput</DataType>
         <ValueType>DependsOnInput</ValueType>
       </Result>

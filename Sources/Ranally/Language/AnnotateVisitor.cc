@@ -59,6 +59,96 @@ void AnnotateVisitor::Visit(
 
 
 void AnnotateVisitor::Visit(
+  NumberVertex<int8_t>& vertex)
+{
+  vertex.setDataType(operation::DT_VALUE);
+  vertex.setValueType(operation::VT_INT8);
+}
+
+
+
+void AnnotateVisitor::Visit(
+  NumberVertex<int16_t>& vertex)
+{
+  vertex.setDataType(operation::DT_VALUE);
+  vertex.setValueType(operation::VT_INT16);
+}
+
+
+
+void AnnotateVisitor::Visit(
+  NumberVertex<int32_t>& vertex)
+{
+  vertex.setDataType(operation::DT_VALUE);
+  vertex.setValueType(operation::VT_INT32);
+}
+
+
+
+void AnnotateVisitor::Visit(
+  NumberVertex<int64_t>& vertex)
+{
+  vertex.setDataType(operation::DT_VALUE);
+  vertex.setValueType(operation::VT_INT64);
+}
+
+
+
+void AnnotateVisitor::Visit(
+  NumberVertex<uint8_t>& vertex)
+{
+  vertex.setDataType(operation::DT_VALUE);
+  vertex.setValueType(operation::VT_UINT8);
+}
+
+
+
+void AnnotateVisitor::Visit(
+  NumberVertex<uint16_t>& vertex)
+{
+  vertex.setDataType(operation::DT_VALUE);
+  vertex.setValueType(operation::VT_UINT16);
+}
+
+
+
+void AnnotateVisitor::Visit(
+  NumberVertex<uint32_t>& vertex)
+{
+  vertex.setDataType(operation::DT_VALUE);
+  vertex.setValueType(operation::VT_UINT32);
+}
+
+
+
+void AnnotateVisitor::Visit(
+  NumberVertex<uint64_t>& vertex)
+{
+  vertex.setDataType(operation::DT_VALUE);
+  vertex.setValueType(operation::VT_UINT64);
+}
+
+
+
+void AnnotateVisitor::Visit(
+  NumberVertex<float>& vertex)
+{
+  vertex.setDataType(operation::DT_VALUE);
+  vertex.setValueType(operation::VT_FLOAT32);
+}
+
+
+
+void AnnotateVisitor::Visit(
+  NumberVertex<double>& vertex)
+{
+  vertex.setDataType(operation::DT_VALUE);
+  vertex.setValueType(operation::VT_FLOAT64);
+}
+
+
+
+void AnnotateVisitor::Visit(
   OperatorVertex& /* vertex */)
 {
 }

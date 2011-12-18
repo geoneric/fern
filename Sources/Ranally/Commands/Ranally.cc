@@ -6,6 +6,8 @@
 #include <boost/scoped_ptr.hpp>
 #include "dev_UnicodeUtils.h"
 #include "Ranally/Configure.h"
+#include "Ranally/Operation/XmlParser.h"
+#include "Ranally/Operation/Operation-xml.h"
 #include "Ranally/Language/AlgebraParser.h"
 #include "Ranally/Language/AnnotateVisitor.h"
 #include "Ranally/Language/AstDotVisitor.h"
@@ -17,8 +19,6 @@
 #include "Ranally/Language/ScriptVisitor.h"
 #include "Ranally/Language/ThreadVisitor.h"
 #include "Ranally/Language/ValidateVisitor.h"
-#include "Ranally/Operation/XmlParser.h"
-#include "Ranally/Operation/Operation-xml.h"
 
 
 
@@ -510,18 +510,11 @@ public:
   void execute(
     UnicodeString const& xml)
   {
-    boost::shared_ptr<ranally::language::ScriptVertex> tree;
-    ranally::operation::OperationsPtr operations;
+    boost::shared_ptr<ranally::language::ScriptVertex> tree(
+      ranally::language::XmlParser().parse(xml));
 
-    {
-      ranally::language::XmlParser xmlParser;
-      tree = xmlParser.parse(xml);
-    }
-
-    {
-      ranally::operation::XmlParser xmlParser;
-      operations = xmlParser.parse(ranally::operation::operationsXml);
-    }
+    ranally::operation::OperationsPtr operations(
+      ranally::operation::XmlParser().parse(ranally::operation::operationsXml));
 
     ranally::language::ThreadVisitor threadVisitor;
     tree->Accept(threadVisitor);

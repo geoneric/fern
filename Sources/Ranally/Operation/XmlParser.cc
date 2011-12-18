@@ -18,17 +18,17 @@ ranally::operation::DataType stringToDataType(
   assert(!string.empty());
   ranally::operation::DataType dataType = ranally::operation::DT_UNKNOWN;
 
-  if(string == "Number") {
-    dataType = ranally::operation::DT_NUMBER;
-  }
-  else if(string == "String") {
-    dataType = ranally::operation::DT_STRING;
+  if(string == "Value") {
+    dataType = ranally::operation::DT_VALUE;
   }
   else if(string == "Raster") {
     dataType = ranally::operation::DT_RASTER;
   }
   else if(string == "Feature") {
     dataType = ranally::operation::DT_FEATURE;
+  }
+  else if(string == "Spatial") {
+    dataType = ranally::operation::DT_SPATIAL;
   }
   else if(string == "All") {
     dataType = ranally::operation::DT_ALL;

@@ -2,7 +2,10 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
-// #include "Ranally/Language/CopyVisitor.h"
+#include "Ranally/Operation/Operation-xml.h"
+#include "Ranally/Operation/Parameter.h"
+#include "Ranally/Operation/Result.h"
+#include "Ranally/Operation/XmlParser.h"
 #include "Ranally/Language/OperationVertex.h"
 #include "Ranally/Language/ScriptVertex.h"
 
@@ -26,6 +29,12 @@ boost::unit_test::test_suite* AnnotateVisitorTest::suite()
 
 
 AnnotateVisitorTest::AnnotateVisitorTest()
+
+  : _algebraParser(),
+    _xmlParser(),
+    _visitor(ranally::operation::XmlParser().parse(
+      ranally::operation::operationsXml))
+
 {
 }
 
@@ -78,6 +87,7 @@ void AnnotateVisitorTest::testVisitNumber()
 
 void AnnotateVisitorTest::testVisitOperation()
 {
+  namespace ro = ranally::operation;
   namespace rl = ranally::language;
 
   {
@@ -97,28 +107,20 @@ void AnnotateVisitorTest::testVisitOperation()
       dynamic_cast<rl::OperationVertex*>(statement.get()));
     BOOST_REQUIRE(functionVertex);
 
-    // TODO
-    // boost::shared_ptr<rl::operation::Requirements> const&
-    //   requirements(functionVertex->requirements());
-    // BOOST_REQUIRE(requirements);
+    ro::OperationPtr const& operation(functionVertex->operation());
+    BOOST_REQUIRE(operation);
 
-    // BOOST_CHECK_EQUAL(requirements->arguments().size(), 1u);
-    // std::vector<rl::operation::Argument> const& arguments(
-    //   requirements->arguments());
-    // rl::operation::Argument const& argument(arguments[0]);
-    // BOOST_CHECK_EQUAL(argument.dataTypes().count(), 1u);
-    // BOOST_CHECK(argument.dataTypes().test(rl::operation::Scalar));
-    // BOOST_CHECK_EQUAL(argument.valueTypes().count(), 1u);
-    // BOOST_CHECK(argument.valueTypes().test(rl::operation::Number));
+    BOOST_CHECK_EQUAL(operation->parameters().size(), 1u);
+    std::vector<ro::Parameter> const& parameters(operation->parameters());
+    ro::Parameter const& parameter(parameters[0]);
+    BOOST_CHECK_EQUAL(parameter.dataTypes(), ro::DT_VALUE | ro::DT_RASTER);
+    BOOST_CHECK_EQUAL(parameter.valueTypes(), ro::VT_NUMBER);
 
-    // BOOST_CHECK_EQUAL(requirements->results().size(), 1u);
-    // std::vector<rl::operation::Result> const& results(
-    //   requirements->results());
-    // rl::operation::Result const& result(results[0]);
-    // BOOST_CHECK_EQUAL(result.dataTypes().count(), 1u);
-    // BOOST_CHECK(result.dataTypes().test(rl::operation::AsArgument));
-    // BOOST_CHECK_EQUAL(result.valueTypes().count(), 1u);
-    // BOOST_CHECK(result.valueTypes().test(rl::operation::Number));
+    BOOST_CHECK_EQUAL(operation->results().size(), 1u);
+    std::vector<ro::Result> const& results(operation->results());
+    ro::Result const& result(results[0]);
+    BOOST_CHECK_EQUAL(result.dataType(), ro::DT_DEPENDS_ON_INPUT);
+    BOOST_CHECK_EQUAL(result.valueType(), ro::VT_DEPENDS_ON_INPUT);
   }
 }
 

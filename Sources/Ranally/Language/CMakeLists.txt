@@ -103,3 +103,6 @@ TARGET_LINK_LIBRARIES(testRanallyLanguage
   RanallyLanguage
   ${_LINK_LIBRARIES}
 )
+ADD_DEPENDENCIES(testRanallyLanguage
+  Operation-xml.h
+)

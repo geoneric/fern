@@ -1,6 +1,8 @@
 #ifndef INCLUDED_RANALLY_LANGUAGE_EXPRESSIONVERTEX
 #define INCLUDED_RANALLY_LANGUAGE_EXPRESSIONVERTEX
 
+#include "Ranally/Operation/DataType.h"
+#include "Ranally/Operation/ValueType.h"
 #include "Ranally/Language/StatementVertex.h"
 
 
@@ -25,6 +27,14 @@ public:
 
   UnicodeString const& name            () const;
 
+  void             setDataType         (operation::DataType dataType);
+
+  operation::DataType dataType         () const;
+
+  void             setValueType        (operation::ValueType valueType);
+
+  operation::ValueType valueType       () const;
+
 protected:
 
                    ExpressionVertex    (UnicodeString const& name);
@@ -35,7 +45,14 @@ protected:
 
 private:
 
+  //! Name of the expression, eg: abs, myDog, 5.
   UnicodeString    _name;
+
+  //! Data type of the expression.
+  operation::DataType _dataType;
+
+  //! Value type of the expression.
+  operation::ValueType _valueType;
 
 };
 

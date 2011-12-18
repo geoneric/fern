@@ -11,7 +11,8 @@ template<typename T>
 NumberVertex<T>::NumberVertex(
   T value)
 
-  : ExpressionVertex(UnicodeString((boost::format("%1%") % value).str().c_str())),
+  : ExpressionVertex(UnicodeString(
+      (boost::format("%1%") % value).str().c_str())),
     _value(value)
 
 {

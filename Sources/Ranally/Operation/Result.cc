@@ -55,6 +55,34 @@ Result::~Result()
 {
 }
 
+
+
+UnicodeString const& Result::name() const
+{
+  return _name;
+}
+
+
+
+UnicodeString const& Result::description() const
+{
+  return _description;
+}
+
+
+
+DataType Result::dataType() const
+{
+  return _dataType;
+}
+
+
+
+ValueType Result::valueType() const
+{
+  return _valueType;
+}
+
 } // namespace operation
 } // namespace ranally
 
