@@ -14,9 +14,12 @@ namespace language {
 /*!
   longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 
+  TODO Make sure expressions support multiple results.
+
   \sa        .
 */
-class ExpressionVertex: public StatementVertex
+class ExpressionVertex:
+  public StatementVertex
 {
 
   friend class ExpressionVertexTest;
@@ -48,10 +51,12 @@ private:
   //! Name of the expression, eg: abs, myDog, 5.
   UnicodeString    _name;
 
-  //! Data type of the expression.
+  // TODO Use a collection of operation::Result's for this(?). Or a tuple.
+
+  //! Data type of the result(s) of the expression.
   operation::DataType _dataType;
 
-  //! Value type of the expression.
+  //! Value type of the result(s) of the expression.
   operation::ValueType _valueType;
 
 };

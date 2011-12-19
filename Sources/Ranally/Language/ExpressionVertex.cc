@@ -9,7 +9,9 @@ ExpressionVertex::ExpressionVertex(
   UnicodeString const& name)
 
   : StatementVertex(),
-    _name(name)
+    _name(name),
+    _dataType(operation::DT_UNKNOWN),
+    _valueType(operation::VT_UNKNOWN)
 
 {
 }
