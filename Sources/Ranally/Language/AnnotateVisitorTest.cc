@@ -113,8 +113,10 @@ void AnnotateVisitorTest::testVisitOperation()
     BOOST_CHECK_EQUAL(operation->parameters().size(), 1u);
     std::vector<ro::Parameter> const& parameters(operation->parameters());
     ro::Parameter const& parameter(parameters[0]);
-    BOOST_CHECK_EQUAL(parameter.dataTypes(), ro::DT_VALUE | ro::DT_RASTER);
-    BOOST_CHECK_EQUAL(parameter.valueTypes(), ro::VT_NUMBER);
+    BOOST_CHECK_EQUAL(parameter.dataTypes(),
+      ro::DataTypes(ro::DT_VALUE | ro::DT_RASTER));
+    BOOST_CHECK_EQUAL(parameter.valueTypes(),
+      ro::ValueTypes(ro::ValueType(ro::VT_NUMBER)));
 
     BOOST_CHECK_EQUAL(operation->results().size(), 1u);
     std::vector<ro::Result> const& results(operation->results());

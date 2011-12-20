@@ -1,6 +1,8 @@
 #ifndef INCLUDED_RANALLY_LANGUAGE_EXPRESSIONVERTEX
 #define INCLUDED_RANALLY_LANGUAGE_EXPRESSIONVERTEX
 
+#include <vector>
+#include <boost/tuple/tuple.hpp>
 #include "Ranally/Operation/DataType.h"
 #include "Ranally/Operation/ValueType.h"
 #include "Ranally/Language/StatementVertex.h"
@@ -30,13 +32,20 @@ public:
 
   UnicodeString const& name            () const;
 
-  void             setDataType         (operation::DataType dataType);
+  // void             setDataType         (operation::DataType dataType);
 
-  operation::DataType dataType         () const;
+  // operation::DataType dataType         () const;
 
-  void             setValueType        (operation::ValueType valueType);
+  // void             setValueType        (operation::ValueType valueType);
 
-  operation::ValueType valueType       () const;
+  // operation::ValueType valueType       () const;
+
+  void             addResult           (operation::DataType dataType,
+                                        operation::ValueType valueType);
+
+  operation::DataType dataType         (size_t index) const;
+
+  operation::ValueType valueType       (size_t index) const;
 
 protected:
 
@@ -51,13 +60,15 @@ private:
   //! Name of the expression, eg: abs, myDog, 5.
   UnicodeString    _name;
 
-  // TODO Use a collection of operation::Result's for this(?). Or a tuple.
+  // //! Data type of the result(s) of the expression.
+  // operation::DataType _dataType;
 
-  //! Data type of the result(s) of the expression.
-  operation::DataType _dataType;
+  // //! Value type of the result(s) of the expression.
+  // operation::ValueType _valueType;
 
-  //! Value type of the result(s) of the expression.
-  operation::ValueType _valueType;
+  typedef boost::tuple<operation::DataType, operation::ValueType> ResultType;
+
+  std::vector<ResultType> _resultTypes;
 
 };
 

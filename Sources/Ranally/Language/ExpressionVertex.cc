@@ -9,9 +9,9 @@ ExpressionVertex::ExpressionVertex(
   UnicodeString const& name)
 
   : StatementVertex(),
-    _name(name),
-    _dataType(operation::DT_UNKNOWN),
-    _valueType(operation::VT_UNKNOWN)
+    _name(name) // ,
+    // _dataType(operation::DT_UNKNOWN),
+    // _valueType(operation::VT_UNKNOWN)
 
 {
 }
@@ -44,32 +44,59 @@ UnicodeString const& ExpressionVertex::name() const
 
 
 
-void ExpressionVertex::setDataType(
-  operation::DataType dataType)
-{
-  _dataType = dataType;
-}
+// void ExpressionVertex::setDataType(
+//   operation::DataType dataType)
+// {
+//   _dataType = dataType;
+// }
+// 
+// 
+// 
+// operation::DataType ExpressionVertex::dataType() const
+// {
+//   return _dataType;
+// }
+// 
+// 
+// 
+// void ExpressionVertex::setValueType(
+//   operation::ValueType valueType)
+// {
+//   _valueType = valueType;
+// }
+// 
+// 
+// 
+// operation::ValueType ExpressionVertex::valueType() const
+// {
+//   return _valueType;
+// }
 
 
 
-operation::DataType ExpressionVertex::dataType() const
-{
-  return _dataType;
-}
-
-
-
-void ExpressionVertex::setValueType(
+void ExpressionVertex::addResult(
+  operation::DataType dataType,
   operation::ValueType valueType)
 {
-  _valueType = valueType;
+  _resultTypes.push_back(boost::make_tuple(dataType, valueType));
 }
 
 
 
-operation::ValueType ExpressionVertex::valueType() const
+operation::DataType ExpressionVertex::dataType(
+  size_t index) const
 {
-  return _valueType;
+  assert(index < _resultTypes.size());
+  return _resultTypes[index].get<0>();
+}
+
+
+
+operation::ValueType ExpressionVertex::valueType(
+  size_t index) const
+{
+  assert(index < _resultTypes.size());
+  return _resultTypes[index].get<1>();
 }
 
 } // namespace language

@@ -2,6 +2,9 @@
 #include <boost/foreach.hpp>
 #include "Ranally/Language/AssignmentVertex.h"
 #include "Ranally/Language/ExpressionVertex.h"
+#include "Ranally/Language/FunctionVertex.h"
+#include "Ranally/Language/OperationVertex.h"
+#include "Ranally/Language/OperatorVertex.h"
 #include "Ranally/Language/ScriptVertex.h"
 #include "Ranally/Language/StatementVertex.h"
 
@@ -61,8 +64,9 @@ void Visitor::Visit(
 
 
 void Visitor::Visit(
-  FunctionVertex& /* vertex */)
+  FunctionVertex& vertex)
 {
+  Visit(dynamic_cast<OperationVertex&>(vertex));
 }
 
 
@@ -152,8 +156,16 @@ void Visitor::Visit(
 
 
 void Visitor::Visit(
-  OperatorVertex& /* vertex */)
+  OperationVertex& /* vertex */)
 {
+}
+
+
+
+void Visitor::Visit(
+  OperatorVertex& vertex)
+{
+  Visit(dynamic_cast<OperationVertex&>(vertex));
 }
 
 

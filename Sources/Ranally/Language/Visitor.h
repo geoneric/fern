@@ -16,6 +16,7 @@ class IfVertex;
 class NameVertex;
 template<typename T>
   class NumberVertex;
+class OperationVertex;
 class OperatorVertex;
 class ScriptVertex;
 class StringVertex;
@@ -101,6 +102,7 @@ private:
 
   virtual void     Visit               (language::NumberVertex<double>& vertex);
 
+  virtual void     Visit               (OperationVertex& vertex);
 
   virtual void     Visit               (OperatorVertex& vertex);
 

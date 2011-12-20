@@ -1,6 +1,7 @@
 #include "Ranally/Language/AnnotateVisitor.h"
 #include <boost/foreach.hpp>
 #include "dev_UnicodeUtils.h"
+#include "Ranally/Operation/Result.h"
 #include "Ranally/Language/Vertices.h"
 
 
@@ -33,19 +34,20 @@ void AnnotateVisitor::Visit(
 
 
 
-void AnnotateVisitor::Visit(
-  FunctionVertex& vertex)
-{
-  if(_operations->hasOperation(vertex.name())) {
-    assert(!vertex.operation());
-    operation::OperationPtr const& operation(
-      _operations->operation(vertex.name()));
-    vertex.setOperation(operation);
-    // An expression can have more than one result.
-    // vertex.setDataType(operation->dataTypes());
-    // vertex.setValueType(operation->valueType());
-  }
-}
+// void AnnotateVisitor::Visit(
+//   FunctionVertex& vertex)
+// {
+//   if(_operations->hasOperation(vertex.name())) {
+//     assert(!vertex.operation());
+//     operation::OperationPtr const& operation(
+//       _operations->operation(vertex.name()));
+//     vertex.setOperation(operation);
+// 
+//     BOOST_FOREACH(operation::Result const& result, operation->results()) {
+//       vertex.addResult(result.dataType(), result.valueType());
+//     }
+//   }
+// }
 
 
 
@@ -70,8 +72,7 @@ void AnnotateVisitor::Visit(
 void AnnotateVisitor::Visit(                                                   \
   NumberVertex<type>& vertex)                                                  \
 {                                                                              \
-  vertex.setDataType(operation::dataType);                                     \
-  vertex.setValueType(operation::valueType);                                   \
+  vertex.addResult(operation::dataType, operation::valueType);                 \
 }
 
 VISIT_NUMBER_VERTEX(int8_t  , DT_VALUE, VT_INT8   )
@@ -90,9 +91,36 @@ VISIT_NUMBER_VERTEX(double  , DT_VALUE, VT_FLOAT64)
 
 
 void AnnotateVisitor::Visit(
-  OperatorVertex& /* vertex */)
+  OperationVertex& vertex)
 {
+  if(_operations->hasOperation(vertex.name())) {
+    assert(!vertex.operation());
+    operation::OperationPtr const& operation(
+      _operations->operation(vertex.name()));
+    vertex.setOperation(operation);
+
+    BOOST_FOREACH(operation::Result const& result, operation->results()) {
+      vertex.addResult(result.dataType(), result.valueType());
+    }
+  }
 }
+
+
+
+// void AnnotateVisitor::Visit(
+//   OperatorVertex& vertex)
+// {
+//   if(_operations->hasOperation(vertex.name())) {
+//     assert(!vertex.operation());
+//     operation::OperationPtr const& operation(
+//       _operations->operation(vertex.name()));
+//     vertex.setOperation(operation);
+// 
+//     BOOST_FOREACH(operation::Result const& result, operation->results()) {
+//       vertex.addResult(result.dataType(), result.valueType());
+//     }
+//   }
+// }
 
 
 
