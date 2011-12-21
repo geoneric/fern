@@ -25,6 +25,8 @@ public:
 
   virtual          ~OperationVertex    ();
 
+  ExpressionVertices const& expressions() const;
+
   void             setOperation        (
                                   operation::OperationPtr const& operation);
 
@@ -32,9 +34,12 @@ public:
 
 protected:
 
-                   OperationVertex     (UnicodeString const& name);
+                   OperationVertex     (UnicodeString const& name,
+                                        ExpressionVertices const& expressions);
 
 private:
+
+  ExpressionVertices _expressions;
 
   operation::OperationPtr _operation;
 

@@ -71,7 +71,8 @@ void Visitor::visitExpressions(
   \param     vertex Vertex to visit.
 
   The default implementation allows the source and target expressions
-  to accept the visitor, in that order.
+  to accept the visitor, in that order. After that it calls
+  Visit(StatementVertex&).
 */
 void Visitor::Visit(
   AssignmentVertex& vertex)
@@ -85,6 +86,8 @@ void Visitor::Visit(
     expressionVertex, vertex.targets()) {
     expressionVertex->Accept(*this);
   }
+
+  Visit(dynamic_cast<StatementVertex&>(vertex));
 }
 
 
@@ -122,7 +125,8 @@ void Visitor::Visit(
   \param     vertex Vertex to visit.
 
   The default implementation allows the condition expression, and the true and
-  false statements to accept the visitor, in that order.
+  false statements to accept the visitor, in that order. After that it calls
+  Visit(StatementVertex&).
 */
 void Visitor::Visit(
   IfVertex& vertex)
@@ -130,6 +134,7 @@ void Visitor::Visit(
   vertex.condition()->Accept(*this);
   visitStatements(vertex.trueStatements());
   visitStatements(vertex.falseStatements());
+  Visit(dynamic_cast<StatementVertex&>(vertex));
 }
 
 
@@ -181,11 +186,13 @@ VISIT_NUMBER_VERTEX(double  )
 /*!
   \param     vertex Vertex to visit.
 
-  The default implementation calls Visit(ExpressionVertex&);
+  The default implementation allows the argument expressions to accept the
+  visitor. After that it calls Visit(ExpressionVertex&);
 */
 void Visitor::Visit(
   OperationVertex& vertex)
 {
+  visitExpressions(vertex.expressions());
   Visit(dynamic_cast<ExpressionVertex&>(vertex));
 }
 
@@ -210,6 +217,7 @@ void Visitor::Visit(
   \param     vertex Vertex to visit.
 
   The default implementation allows the statements to accept the visitor.
+  After that it calls Visit(SyntaxVertex&).
 */
 void Visitor::Visit(
   ScriptVertex& vertex)
@@ -218,6 +226,7 @@ void Visitor::Visit(
     vertex.statements()) {
     statementVertex->Accept(*this);
   }
+  Visit(dynamic_cast<SyntaxVertex&>(vertex));
 }
 
 
@@ -268,7 +277,8 @@ void Visitor::Visit(
   \param     vertex Vertex to visit.
 
   The default implementation allows the condition expression, and the true and
-  false statements to accept the visitor, in that order.
+  false statements to accept the visitor, in that order. After that it calls
+  Visit(StatementVertex&).
 */
 void Visitor::Visit(
   WhileVertex& vertex)
@@ -276,6 +286,7 @@ void Visitor::Visit(
   vertex.condition()->Accept(*this);
   visitStatements(vertex.trueStatements());
   visitStatements(vertex.falseStatements());
+  Visit(dynamic_cast<StatementVertex&>(vertex));
 }
 
 

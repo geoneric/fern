@@ -47,20 +47,6 @@ void AnnotateVisitor::Visit(
 
 
 
-void AnnotateVisitor::Visit(
-  IfVertex& /* vertex */)
-{
-}
-
-
-
-void AnnotateVisitor::Visit(
-  NameVertex& /* vertex */)
-{
-}
-
-
-
 #define VISIT_NUMBER_VERTEX(                                                   \
   type,                                                                        \
   dataType,                                                                    \
@@ -99,21 +85,6 @@ void AnnotateVisitor::Visit(
       vertex.addResultType(result.dataType(), result.valueType());
     }
   }
-}
-
-
-
-void AnnotateVisitor::Visit(
-  ScriptVertex& vertex)
-{
-  visitStatements(vertex.statements());
-}
-
-
-
-void AnnotateVisitor::Visit(
-  WhileVertex& /* vertex */)
-{
 }
 
 } // namespace language

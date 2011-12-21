@@ -65,9 +65,8 @@ OperatorVertex::OperatorVertex(
   UnicodeString const& name,
   ExpressionVertices const& expressions)
 
-  : OperationVertex(name),
-    _symbol(nameToSymbol(name, expressions.size())),
-    _expressions(expressions)
+  : OperationVertex(name, expressions),
+    _symbol(nameToSymbol(name, expressions.size()))
 
 {
 }
@@ -83,13 +82,6 @@ OperatorVertex::~OperatorVertex()
 UnicodeString const& OperatorVertex::symbol() const
 {
   return _symbol;
-}
-
-
-
-ExpressionVertices const& OperatorVertex::expressions() const
-{
-  return _expressions;
 }
 
 } // namespace language

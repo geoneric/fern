@@ -222,83 +222,26 @@ void AstDotVisitor::Visit(
 
 
 
-void AstDotVisitor::Visit(
-  language::NumberVertex<int8_t>& vertex)
-{
-  return Visit<int8_t>(vertex);
+#define VISIT_NUMBER_VERTEX(                                                   \
+  type)                                                                        \
+void AstDotVisitor::Visit(                                                     \
+  language::NumberVertex<type>& vertex)                                        \
+{                                                                              \
+  Visit<type>(vertex); \
 }
 
+VISIT_NUMBER_VERTEX(int8_t  )
+VISIT_NUMBER_VERTEX(int16_t )
+VISIT_NUMBER_VERTEX(int32_t )
+VISIT_NUMBER_VERTEX(int64_t )
+VISIT_NUMBER_VERTEX(uint8_t )
+VISIT_NUMBER_VERTEX(uint16_t)
+VISIT_NUMBER_VERTEX(uint32_t)
+VISIT_NUMBER_VERTEX(uint64_t)
+VISIT_NUMBER_VERTEX(float   )
+VISIT_NUMBER_VERTEX(double  )
 
-
-void AstDotVisitor::Visit(
-  language::NumberVertex<int16_t>& vertex)
-{
-  return Visit<int16_t>(vertex);
-}
-
-
-
-void AstDotVisitor::Visit(
-  language::NumberVertex<int32_t>& vertex)
-{
-  return Visit<int32_t>(vertex);
-}
-
-
-
-void AstDotVisitor::Visit(
-  language::NumberVertex<int64_t>& vertex)
-{
-  return Visit<int64_t>(vertex);
-}
-
-
-
-void AstDotVisitor::Visit(
-  language::NumberVertex<uint8_t>& vertex)
-{
-  return Visit<uint8_t>(vertex);
-}
-
-
-
-void AstDotVisitor::Visit(
-  language::NumberVertex<uint16_t>& vertex)
-{
-  return Visit<uint16_t>(vertex);
-}
-
-
-
-void AstDotVisitor::Visit(
-  language::NumberVertex<uint32_t>& vertex)
-{
-  return Visit<uint32_t>(vertex);
-}
-
-
-
-void AstDotVisitor::Visit(
-  language::NumberVertex<uint64_t>& vertex)
-{
-  return Visit<uint64_t>(vertex);
-}
-
-
-
-void AstDotVisitor::Visit(
-  language::NumberVertex<float>& vertex)
-{
-  return Visit<float>(vertex);
-}
-
-
-
-void AstDotVisitor::Visit(
-  language::NumberVertex<double>& vertex)
-{
-  return Visit<double>(vertex);
-}
+#undef VISIT_NUMBER_VERTEX
 
 
 

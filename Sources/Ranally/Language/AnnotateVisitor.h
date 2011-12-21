@@ -45,10 +45,6 @@ private:
 
   void             Visit               (AssignmentVertex& vertex);
 
-  void             Visit               (IfVertex& vertex);
-
-  void             Visit               (NameVertex& vertex);
-
   void             Visit               (NumberVertex<int8_t>& vertex);
 
   void             Visit               (NumberVertex<int16_t>& vertex);
@@ -70,10 +66,6 @@ private:
   void             Visit               (NumberVertex<double>& vertex);
 
   void             Visit               (OperationVertex& vertex);
-
-  void             Visit               (ScriptVertex& vertex);
-
-  void             Visit               (WhileVertex& vertex);
 
 };
 

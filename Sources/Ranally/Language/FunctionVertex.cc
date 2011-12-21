@@ -9,8 +9,7 @@ FunctionVertex::FunctionVertex(
   UnicodeString const& name,
   ExpressionVertices const& expressions)
 
-  : OperationVertex(name),
-    _expressions(expressions)
+  : OperationVertex(name, expressions)
 
 {
 }
@@ -19,13 +18,6 @@ FunctionVertex::FunctionVertex(
 
 FunctionVertex::~FunctionVertex()
 {
-}
-
-
-
-ExpressionVertices const& FunctionVertex::expressions() const
-{
-  return _expressions;
 }
 
 } // namespace language

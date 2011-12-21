@@ -1,8 +1,6 @@
 #ifndef INCLUDED_RANALLY_LANGUAGE_FUNCTIONVERTEX
 #define INCLUDED_RANALLY_LANGUAGE_FUNCTIONVERTEX
 
-#include <vector>
-#include <boost/shared_ptr.hpp>
 #include "Ranally/Language/OperationVertex.h"
 
 
@@ -29,15 +27,9 @@ public:
                    FunctionVertex      (UnicodeString const& name,
                                         ExpressionVertices const& expressions);
 
-  /* virtual */    ~FunctionVertex     ();
-
-  ExpressionVertices const& expressions() const;
-
-protected:
+                   ~FunctionVertex     ();
 
 private:
-
-  ExpressionVertices _expressions;
 
 };
 

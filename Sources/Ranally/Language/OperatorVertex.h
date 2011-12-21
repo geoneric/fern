@@ -1,8 +1,6 @@
 #ifndef INCLUDED_RANALLY_LANGUAGE_OPERATORVERTEX
 #define INCLUDED_RANALLY_LANGUAGE_OPERATORVERTEX
 
-#include <vector>
-#include <boost/shared_ptr.hpp>
 #include "Ranally/Language/OperationVertex.h"
 
 
@@ -29,19 +27,13 @@ public:
                    OperatorVertex      (UnicodeString const& name,
                                         ExpressionVertices const& expressions);
 
-  /* virtual */    ~OperatorVertex     ();
+                   ~OperatorVertex     ();
 
   UnicodeString const& symbol          () const;
-
-  ExpressionVertices const& expressions() const;
-
-protected:
 
 private:
 
   UnicodeString    _symbol;
-
-  ExpressionVertices _expressions;
 
 };
 
