@@ -262,6 +262,11 @@ public:
     ranally::language::IdentifyVisitor identifyVisitor;
     tree->Accept(identifyVisitor);
 
+    ranally::operation::OperationsPtr operations(
+      ranally::operation::XmlParser().parse(ranally::operation::operationsXml));
+    ranally::language::AnnotateVisitor annotateVisitor(operations);
+    tree->Accept(annotateVisitor);
+
     ranally::AstDotVisitor astDotVisitor(modes);
     tree->Accept(astDotVisitor);
 
@@ -355,6 +360,11 @@ public:
 
     ranally::language::IdentifyVisitor identifyVisitor;
     tree->Accept(identifyVisitor);
+
+    ranally::operation::OperationsPtr operations(
+      ranally::operation::XmlParser().parse(ranally::operation::operationsXml));
+    ranally::language::AnnotateVisitor annotateVisitor(operations);
+    tree->Accept(annotateVisitor);
 
     ranally::FlowgraphDotVisitor flowgraphDotVisitor;
     tree->Accept(flowgraphDotVisitor);
@@ -513,15 +523,14 @@ public:
     boost::shared_ptr<ranally::language::ScriptVertex> tree(
       ranally::language::XmlParser().parse(xml));
 
-    ranally::operation::OperationsPtr operations(
-      ranally::operation::XmlParser().parse(ranally::operation::operationsXml));
-
     ranally::language::ThreadVisitor threadVisitor;
     tree->Accept(threadVisitor);
 
     ranally::language::IdentifyVisitor identifyVisitor;
     tree->Accept(identifyVisitor);
 
+    ranally::operation::OperationsPtr operations(
+      ranally::operation::XmlParser().parse(ranally::operation::operationsXml));
     ranally::language::AnnotateVisitor annotateVisitor(operations);
     tree->Accept(annotateVisitor);
 

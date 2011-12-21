@@ -33,6 +33,13 @@ ExpressionVertices const& AssignmentVertex::targets() const
 
 
 
+ExpressionVertices& AssignmentVertex::targets()
+{
+  return _targets;
+}
+
+
+
 ExpressionVertices const& AssignmentVertex::expressions() const
 {
   return _expressions;

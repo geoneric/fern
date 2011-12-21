@@ -15,7 +15,8 @@ namespace language {
 
   \sa        .
 */
-class AssignmentVertex: public StatementVertex
+class AssignmentVertex:
+  public StatementVertex
 {
 
   friend class AssignmentVertexTest;
@@ -27,13 +28,13 @@ public:
                    AssignmentVertex    (ExpressionVertices const& targets,
                                         ExpressionVertices const& expressions);
 
-  /* virtual */    ~AssignmentVertex   ();
+                   ~AssignmentVertex   ();
 
   ExpressionVertices const& targets    () const;
 
-  ExpressionVertices const& expressions() const;
+  ExpressionVertices& targets          ();
 
-protected:
+  ExpressionVertices const& expressions() const;
 
 private:
 

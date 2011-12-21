@@ -7,6 +7,110 @@
 
 
 namespace ranally {
+namespace {
+
+UnicodeString join(
+  std::vector<UnicodeString> const& strings,
+  UnicodeString const& separator)
+{
+  UnicodeString result;
+
+  if(!strings.empty()) {
+    result += strings.front();
+
+    for(size_t i = 1; i < strings.size(); ++i) {
+      result += separator + strings[i];
+    }
+  }
+
+  return result;
+}
+
+
+
+UnicodeString dataTypesToString(
+  operation::DataTypes const& dataTypes)
+{
+  std::vector<UnicodeString> strings;
+
+  if(dataTypes & operation::DT_UNKNOWN) {
+    strings.push_back("?");
+  }
+  else {
+    if(dataTypes & operation::DT_VALUE) {
+      strings.push_back("val");
+    }
+    if(dataTypes & operation::DT_RASTER) {
+      strings.push_back("rst");
+    }
+    if(dataTypes & operation::DT_FEATURE) {
+      strings.push_back("ftr");
+    }
+    if(dataTypes & operation::DT_DEPENDS_ON_INPUT) {
+      strings.push_back("dep");
+    }
+  }
+
+  assert(!strings.empty());
+  return join(strings, "|");
+}
+
+
+
+UnicodeString valueTypesToString(
+  operation::ValueTypes const& valueTypes)
+{
+  std::vector<UnicodeString> strings;
+
+  if(valueTypes & operation::DT_UNKNOWN) {
+    strings.push_back("?");
+  }
+  else {
+    if(valueTypes & operation::VT_UINT8) {
+      strings.push_back("u8");
+    }
+    if(valueTypes & operation::VT_INT8) {
+      strings.push_back("s8");
+    }
+    if(valueTypes & operation::VT_UINT16) {
+      strings.push_back("u16");
+    }
+    if(valueTypes & operation::VT_INT16) {
+      strings.push_back("s16");
+    }
+    if(valueTypes & operation::VT_UINT32) {
+      strings.push_back("u32");
+    }
+    if(valueTypes & operation::VT_INT32) {
+      strings.push_back("s32");
+    }
+    if(valueTypes & operation::VT_UINT64) {
+      strings.push_back("u64");
+    }
+    if(valueTypes & operation::VT_INT64) {
+      strings.push_back("s64");
+    }
+    if(valueTypes & operation::VT_FLOAT32) {
+      strings.push_back("f32");
+    }
+    if(valueTypes & operation::VT_FLOAT64) {
+      strings.push_back("f64");
+    }
+    if(valueTypes & operation::VT_STRING) {
+      strings.push_back("str");
+    }
+    if(valueTypes & operation::VT_DEPENDS_ON_INPUT) {
+      strings.push_back("dep");
+    }
+  }
+
+  assert(!strings.empty());
+  return join(strings, "|");
+}
+
+} // Anonymous namespace
+
+
 
 AstDotVisitor::AstDotVisitor(
   int modes)
@@ -360,10 +464,28 @@ void AstDotVisitor::Visit(
 {
   switch(_mode) {
     case Declaring: {
+      std::vector<UnicodeString> attributes;
+      UnicodeString label = vertex.name();
+
+      std::vector<language::ExpressionVertex::ResultType> const& resultTypes(
+        vertex.resultTypes());
+      if(!resultTypes.empty()) {
+        assert(resultTypes.size() == 1);
+        UnicodeString dataTypes = dataTypesToString(resultTypes[0].get<0>());
+        UnicodeString valueTypes = valueTypesToString(resultTypes[0].get<1>());
+
+        label += UnicodeString("\\n") +
+          "dt: " + dataTypes + "\\n" +
+          "vt: " + valueTypes;
+      }
+
+      attributes.push_back("label=\"" + label + "\"");
+
       addScript(
         UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
-        " [label=\"" + vertex.name() + "\"];\n"
+        " [" + join(attributes, ", ") + "];\n"
       );
+
       break;
     }
     case ConnectingAst: {

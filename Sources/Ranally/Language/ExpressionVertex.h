@@ -28,6 +28,8 @@ class ExpressionVertex:
 
 public:
 
+  typedef boost::tuple<operation::DataType, operation::ValueType> ResultType;
+
   virtual          ~ExpressionVertex   ();
 
   UnicodeString const& name            () const;
@@ -40,8 +42,13 @@ public:
 
   // operation::ValueType valueType       () const;
 
-  void             addResult           (operation::DataType dataType,
+  void             setResultTypes      (
+                                  std::vector<ResultType> const& resultTypes);
+
+  void             addResultType       (operation::DataType dataType,
                                         operation::ValueType valueType);
+
+  std::vector<ResultType> const& resultTypes() const;
 
   operation::DataType dataType         (size_t index) const;
 
@@ -66,11 +73,13 @@ private:
   // //! Value type of the result(s) of the expression.
   // operation::ValueType _valueType;
 
-  typedef boost::tuple<operation::DataType, operation::ValueType> ResultType;
+  // typedef boost::tuple<operation::DataType, operation::ValueType> ResultType;
 
   std::vector<ResultType> _resultTypes;
 
 };
+
+typedef boost::shared_ptr<ExpressionVertex> ExpressionVertexPtr;
 
 } // namespace language
 } // namespace ranally

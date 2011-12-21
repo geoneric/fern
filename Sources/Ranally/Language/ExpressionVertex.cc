@@ -74,11 +74,27 @@ UnicodeString const& ExpressionVertex::name() const
 
 
 
-void ExpressionVertex::addResult(
+void ExpressionVertex::setResultTypes(
+  std::vector<ResultType> const& resultTypes)
+{
+  _resultTypes = resultTypes;
+}
+
+
+
+void ExpressionVertex::addResultType(
   operation::DataType dataType,
   operation::ValueType valueType)
 {
   _resultTypes.push_back(boost::make_tuple(dataType, valueType));
+}
+
+
+
+std::vector<ExpressionVertex::ResultType> const&
+ExpressionVertex::resultTypes() const
+{
+  return _resultTypes;
 }
 
 

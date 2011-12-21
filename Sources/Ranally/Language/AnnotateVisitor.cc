@@ -28,26 +28,22 @@ AnnotateVisitor::~AnnotateVisitor()
 
 
 void AnnotateVisitor::Visit(
-  AssignmentVertex& /* vertex */)
+  AssignmentVertex& vertex)
 {
+  Visitor::Visit(vertex);
+
+  // Proppagate the result types from the expression to the targets.
+  ExpressionVertices const& expressions(vertex.expressions());
+  ExpressionVertices& targets(vertex.targets());
+  assert(expressions.size() == targets.size());
+
+  for(size_t i = 0; i < expressions.size(); ++i) {
+    ExpressionVertexPtr const& expression(expressions[i]);
+    ExpressionVertexPtr& target(targets[i]);
+    assert(target->resultTypes().empty());
+    target->setResultTypes(expression->resultTypes());
+  }
 }
-
-
-
-// void AnnotateVisitor::Visit(
-//   FunctionVertex& vertex)
-// {
-//   if(_operations->hasOperation(vertex.name())) {
-//     assert(!vertex.operation());
-//     operation::OperationPtr const& operation(
-//       _operations->operation(vertex.name()));
-//     vertex.setOperation(operation);
-// 
-//     BOOST_FOREACH(operation::Result const& result, operation->results()) {
-//       vertex.addResult(result.dataType(), result.valueType());
-//     }
-//   }
-// }
 
 
 
@@ -72,7 +68,7 @@ void AnnotateVisitor::Visit(
 void AnnotateVisitor::Visit(                                                   \
   NumberVertex<type>& vertex)                                                  \
 {                                                                              \
-  vertex.addResult(operation::dataType, operation::valueType);                 \
+  vertex.addResultType(operation::dataType, operation::valueType);             \
 }
 
 VISIT_NUMBER_VERTEX(int8_t  , DT_VALUE, VT_INT8   )
@@ -100,27 +96,10 @@ void AnnotateVisitor::Visit(
     vertex.setOperation(operation);
 
     BOOST_FOREACH(operation::Result const& result, operation->results()) {
-      vertex.addResult(result.dataType(), result.valueType());
+      vertex.addResultType(result.dataType(), result.valueType());
     }
   }
 }
-
-
-
-// void AnnotateVisitor::Visit(
-//   OperatorVertex& vertex)
-// {
-//   if(_operations->hasOperation(vertex.name())) {
-//     assert(!vertex.operation());
-//     operation::OperationPtr const& operation(
-//       _operations->operation(vertex.name()));
-//     vertex.setOperation(operation);
-// 
-//     BOOST_FOREACH(operation::Result const& result, operation->results()) {
-//       vertex.addResult(result.dataType(), result.valueType());
-//     }
-//   }
-// }
 
 
 

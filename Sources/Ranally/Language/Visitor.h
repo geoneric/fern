@@ -22,11 +22,10 @@ class ScriptVertex;
 class StringVertex;
 class WhileVertex;
 
-//! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
+//! Base class for syntax tree visitors.
 /*!
-  longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
-
-  \sa        .
+  This class offers default implementations for the visit functions for all
+  SyntaxVertex specializations.
 */
 class Visitor:
   private boost::noncopyable,
@@ -65,42 +64,39 @@ protected:
 
   virtual void     visitExpressions    (ExpressionVertices const& expressions);
 
-private:
-
   virtual void     Visit               (AssignmentVertex& vertex);
-
-  virtual void     Visit               (FunctionVertex& vertex);
 
   virtual void     Visit               (IfVertex& vertex);
 
+  virtual void     Visit               (WhileVertex& vertex);
+
+private:
+
+  virtual void     Visit               (ExpressionVertex& vertex);
+
+  virtual void     Visit               (FunctionVertex& vertex);
+
   virtual void     Visit               (NameVertex& vertex);
 
-  virtual void     Visit               (language::NumberVertex<int8_t>& vertex);
+  virtual void     Visit               (NumberVertex<int8_t>& vertex);
 
-  virtual void     Visit               (
-                                  language::NumberVertex<int16_t>& vertex);
+  virtual void     Visit               (NumberVertex<int16_t>& vertex);
 
-  virtual void     Visit               (
-                                  language::NumberVertex<int32_t>& vertex);
+  virtual void     Visit               (NumberVertex<int32_t>& vertex);
 
-  virtual void     Visit               (
-                                  language::NumberVertex<int64_t>& vertex);
+  virtual void     Visit               (NumberVertex<int64_t>& vertex);
 
-  virtual void     Visit               (
-                                  language::NumberVertex<uint8_t>& vertex);
+  virtual void     Visit               (NumberVertex<uint8_t>& vertex);
 
-  virtual void     Visit               (
-                                  language::NumberVertex<uint16_t>& vertex);
+  virtual void     Visit               (NumberVertex<uint16_t>& vertex);
 
-  virtual void     Visit               (
-                                  language::NumberVertex<uint32_t>& vertex);
+  virtual void     Visit               (NumberVertex<uint32_t>& vertex);
 
-  virtual void     Visit               (
-                                  language::NumberVertex<uint64_t>& vertex);
+  virtual void     Visit               (NumberVertex<uint64_t>& vertex);
 
-  virtual void     Visit               (language::NumberVertex<float>& vertex);
+  virtual void     Visit               (NumberVertex<float>& vertex);
 
-  virtual void     Visit               (language::NumberVertex<double>& vertex);
+  virtual void     Visit               (NumberVertex<double>& vertex);
 
   virtual void     Visit               (OperationVertex& vertex);
 
@@ -108,9 +104,11 @@ private:
 
   virtual void     Visit               (ScriptVertex& vertex);
 
+  virtual void     Visit               (StatementVertex& vertex);
+
   virtual void     Visit               (StringVertex& vertex);
 
-  virtual void     Visit               (WhileVertex& vertex);
+  virtual void     Visit               (SyntaxVertex& vertex);
 
 };
 
