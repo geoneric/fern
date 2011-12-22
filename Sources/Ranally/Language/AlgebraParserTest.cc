@@ -202,6 +202,11 @@ void AlgebraParserTest::testParseString()
         "</Statements>"
       "</Ranally>");
   }
+
+  {
+    // TODO Test parse error.
+    parser.parseString(UnicodeString("if"));
+  }
 }
 
 
