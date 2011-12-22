@@ -93,6 +93,7 @@ SET(TEST_SOURCES
   Test.cc
   ThreadVisitorTest.cc
   ValidateVisitorTest.cc
+  VisitorTest.cc
   WhileVertexTest.cc
   XmlParserTest.cc
 )

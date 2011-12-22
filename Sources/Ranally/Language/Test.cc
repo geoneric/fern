@@ -20,6 +20,7 @@
 #include "Ranally/Language/SyntaxVertexTest.h"
 #include "Ranally/Language/ThreadVisitorTest.h"
 #include "Ranally/Language/ValidateVisitorTest.h"
+#include "Ranally/Language/VisitorTest.h"
 #include "Ranally/Language/WhileVertexTest.h"
 #include "Ranally/Language/XmlParserTest.h"
 
@@ -60,6 +61,7 @@ boost::unit_test::test_suite* init_unit_test_suite(
 
   test->add(SymbolTableTest::suite());
 
+  test->add(VisitorTest::suite());
   test->add(ThreadVisitorTest::suite());
   test->add(AnnotateVisitorTest::suite());
   test->add(IdentifyVisitorTest::suite());
