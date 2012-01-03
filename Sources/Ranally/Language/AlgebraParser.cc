@@ -666,8 +666,7 @@ UnicodeString AlgebraParser::parseString(
 
   result += pythonAstToXml(ast, "&lt;string&gt;");
 
-  // TODO Memory leak!
-  // PyArena_Free(arena);
+  PyArena_Free(arena);
   arena = 0;
 
   return result;
