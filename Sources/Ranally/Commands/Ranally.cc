@@ -69,6 +69,7 @@ void showConvertHelp()
     "  dot                 Convert script to Dot graph\n"
     "  c++                 Convert script to C++ code\n"
     "  python              Convert script to C++ code for Python extension\n"
+    "  xml                 Convert script to XML\n"
     "\n"
     "See 'ranally convert LANGUAGE --help' for more information on a specific\n"
     "language.\n"
@@ -141,6 +142,22 @@ void showConvertDotFlowgraphHelp()
 //     "The result is written to standard output if no output script is provided\n"
 //     ;
 // }
+
+
+
+void showConvertXmlHelp()
+{
+  std::cout <<
+    "usage: ranally convert xml [--help] INPUT_SCRIPT OUTPUT_SCRIPT\n"
+    "\n"
+    "Convert the script to xml.\n"
+    "\n"
+    "  INPUT_SCRIPT        Script to convert or - to read from standard input\n"
+    "  OUTPUT_SCRIPT       File to write result to\n"
+    "\n"
+    "The result is written to standard output if no output script is provided\n"
+    ;
+}
 
 
 
@@ -468,6 +485,61 @@ public:
     return EXIT_SUCCESS;
   }
 
+  int convertToXml(
+    int argc,
+    char** argv)
+  {
+    int status = EXIT_FAILURE;
+
+    if(argc == 1 || std::strcmp(argv[1], "--help") == 0) {
+      // No arguments, or the help option.
+      showConvertXmlHelp();
+      status = EXIT_SUCCESS;
+    }
+    else {
+      int currentArgumentId = 1;
+
+      if(argc - currentArgumentId > 2) {
+        std::cerr << "Too many arguments.\n";
+        showConvertXmlHelp();
+        status = EXIT_FAILURE;
+      }
+      else {
+        std::string inputFileName =
+          std::strcmp(argv[currentArgumentId], "-") != 0
+            ? argv[currentArgumentId] : "";
+        ++currentArgumentId;
+        std::string outputFileName = currentArgumentId == argc - 1
+          ? argv[currentArgumentId] : "";
+        UnicodeString xml;
+        ranally::language::AlgebraParser parser;
+
+        if(inputFileName.empty()) {
+          // Read script from the standard input stream.
+          std::ostringstream script;
+          script << std::cin.rdbuf();
+          xml = parser.parseString(UnicodeString(script.str().c_str()));
+        }
+        else {
+          // Read script from a file.
+          xml = parser.parseFile(UnicodeString(inputFileName.c_str()));
+        }
+
+        if(outputFileName.empty()) {
+          std::cout << dev::encodeInUTF8(xml);
+        }
+        else {
+          std::ofstream file(outputFileName.c_str());
+          file << dev::encodeInUTF8(xml);
+        }
+
+        status = EXIT_SUCCESS;
+      }
+    }
+
+    return status;
+  }
+
   int execute()
   {
     int status = EXIT_FAILURE;
@@ -488,6 +560,9 @@ public:
     }
     else if(std::strcmp(argv()[1], "python") == 0) {
       status = convertToPython(argc() - 1, argv() + 1);
+    }
+    else if(std::strcmp(argv()[1], "xml") == 0) {
+      status = convertToXml(argc() - 1, argv() + 1);
     }
     else {
       std::cerr << "Unknown target language: " << argv()[1] << "\n";
