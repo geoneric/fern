@@ -11,6 +11,7 @@ ADD_DEPENDENCIES(ranally
 )
 TARGET_LINK_LIBRARIES(ranally
   RanallyLanguage
+  RanallyPython
   RanallyOperation
   ${DEVENV_UTILS_LIBRARY}
   ${DEVENV_UNICODE_UTILS_LIBRARY}
