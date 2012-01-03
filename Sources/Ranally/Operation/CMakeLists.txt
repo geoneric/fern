@@ -83,4 +83,8 @@ TARGET_LINK_LIBRARIES(testRanallyOperation
   RanallyOperation
   ${_LINK_LIBRARIES}
 )
+ADD_CUSTOM_COMMAND(TARGET testRanallyOperation POST_BUILD
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+  COMMAND testRanallyOperation
+)
 

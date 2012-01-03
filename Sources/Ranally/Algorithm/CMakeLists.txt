@@ -9,6 +9,7 @@ SET(TEST_SOURCES
 ADD_EXECUTABLE(testRanallyAlgorithm
   ${TEST_SOURCES}
 )
-# TARGET_LINK_LIBRARIES(testRanallyLanguage
-#   RanallyLanguage
-# )
+ADD_CUSTOM_COMMAND(TARGET testRanallyAlgorithm POST_BUILD
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+  COMMAND testRanallyAlgorithm
+)

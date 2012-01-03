@@ -9,9 +9,9 @@
 
 
 
-//   PyObject* type = PyObject_Type(id);
-//   PyObject* string = PyObject_Str(type);
-//   std::cout << PyString_AsString(string) << std::endl;
+//  PyObject* type = PyObject_Type(id);
+//  PyObject* string = PyObject_Str(type);
+//  std::cout << PyString_AsString(string) << std::endl;
 
 
 
