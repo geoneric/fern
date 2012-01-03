@@ -5,6 +5,7 @@
 #include "Python-ast.h"
 #include <boost/format.hpp>
 #include "dev_UnicodeUtils.h"
+#include "Ranally/Python/Exception.h"
 
 
 
@@ -574,10 +575,6 @@ UnicodeString pythonAstToXml(
   mod_ty const ast,
   UnicodeString const& sourceName)
 {
-  if(!ast) {
-    // TODO Bubble up parsing error.
-  }
-
   assert(ast);
 
   UnicodeString xml;
@@ -660,9 +657,14 @@ UnicodeString AlgebraParser::parseString(
 
   UnicodeString result("<?xml version=\"1.0\"?>");
 
-  result += pythonAstToXml(PyParser_ASTFromString(
-    dev::encodeInUTF8(string).c_str(), "", Py_file_input, 0, arena),
-    "&lt;string&gt;");
+  mod_ty ast = PyParser_ASTFromString(
+    dev::encodeInUTF8(string).c_str(), "", Py_file_input, 0, arena);
+
+  if(!ast) {
+    ranally::python::throwException();
+  }
+
+  result += pythonAstToXml(ast, "&lt;string&gt;");
 
   // TODO Memory leak!
   // PyArena_Free(arena);
@@ -688,8 +690,14 @@ UnicodeString AlgebraParser::parseFile(
 
   UnicodeString result("<?xml version=\"1.0\"?>");
 
-  result += pythonAstToXml(PyParser_ASTFromFile(filePointer,
-    fileNameInUtf8.c_str(), Py_file_input, 0, 0, 0, 0, arena), fileName);
+  mod_ty ast = PyParser_ASTFromFile(filePointer, fileNameInUtf8.c_str(),
+    Py_file_input, 0, 0, 0, 0, arena);
+
+  if(!ast) {
+    ranally::python::throwException();
+  }
+
+  result += pythonAstToXml(ast, fileName);
 
   PyArena_Free(arena);
   arena = 0;

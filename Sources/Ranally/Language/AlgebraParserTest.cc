@@ -204,8 +204,8 @@ void AlgebraParserTest::testParseString()
   }
 
   {
-    // TODO Test parse error.
-    parser.parseString(UnicodeString("if"));
+    BOOST_CHECK_THROW(parser.parseString(UnicodeString("if")),
+      std::runtime_error);
   }
 }
 

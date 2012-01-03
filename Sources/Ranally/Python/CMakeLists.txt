@@ -1,0 +1,36 @@
+# SET(_LINK_LIBRARIES
+#   ${DEVENV_UTILS_LIBRARY}
+#   ${DEVENV_UNICODE_UTILS_LIBRARY}
+#   RanallyOperation
+#   ${PYTHON_LIBRARIES}
+#   ${BOOST_FILESYSTEM_LIBRARY}
+#   ${BOOST_PROGRAM_OPTIONS_LIBRARY}
+#   ${BOOST_REGEX_LIBRARY}
+#   ${BOOST_SYSTEM_LIBRARY}
+#   ${EXPAT_LIBRARIES}
+#   ${ICU_LIBRARIES}
+# )
+INCLUDE_DIRECTORIES(
+  ${CMAKE_CURRENT_SOURCE_DIR}/../..
+#   ${CMAKE_CURRENT_BINARY_DIR}
+#   # Configure.h
+#   ${CMAKE_CURRENT_BINARY_DIR}/../..
+)
+SET(SOURCES
+  BorrowedReference.cc
+  Exception.cc
+  OwnedReference.cc
+  String.cc
+)
+ADD_LIBRARY(RanallyPython
+  ${SOURCES}
+)
+SET(TEST_SOURCES
+)
+# ADD_EXECUTABLE(testRanallyPython
+#   ${TEST_SOURCES}
+# )
+# TARGET_LINK_LIBRARIES(testRanallyPython
+#   RanallyLanguage
+#   ${_LINK_LIBRARIES}
+# )

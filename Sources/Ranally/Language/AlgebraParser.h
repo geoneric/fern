@@ -19,7 +19,8 @@ namespace language {
 
   \sa        XmlParser
 */
-class AlgebraParser: public dev::PythonClient
+class AlgebraParser:
+  public dev::PythonClient
 {
 
   friend class AlgebraParserTest;
@@ -28,13 +29,11 @@ public:
 
                    AlgebraParser       ();
 
-  /* virtual */    ~AlgebraParser      ();
+                   ~AlgebraParser      ();
 
   UnicodeString    parseString         (UnicodeString const& string);
 
   UnicodeString    parseFile           (UnicodeString const& fileName);
-
-protected:
 
 private:
 
