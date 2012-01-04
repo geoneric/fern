@@ -3,6 +3,7 @@ INCLUDE_DIRECTORIES(
 )
 SET(SOURCES
   BorrowedReference.cc
+  Client.cc
   Exception.cc
   OwnedReference.cc
   String.cc

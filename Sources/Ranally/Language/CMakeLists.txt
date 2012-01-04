@@ -1,5 +1,4 @@
 SET(_LINK_LIBRARIES
-  ${DEVENV_UTILS_LIBRARY}
   RanallyOperation
   RanallyPython
   RanallyUtil

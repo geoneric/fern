@@ -2,7 +2,7 @@
 #define INCLUDED_RANALLY_LANGUAGE_ALGEBRAPARSER
 
 #include <unicode/unistr.h>
-#include "dev_PythonClient.h"
+#include "Ranally/Python/Client.h"
 
 
 
@@ -20,7 +20,7 @@ namespace language {
   \sa        XmlParser
 */
 class AlgebraParser:
-  public dev::PythonClient
+  public python::Client
 {
 
   friend class AlgebraParserTest;

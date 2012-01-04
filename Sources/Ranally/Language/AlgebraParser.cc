@@ -612,10 +612,10 @@ namespace language {
 
 AlgebraParser::AlgebraParser()
 
-  : dev::PythonClient()
+  : python::Client()
 
 {
-  assert(dev::PythonClient::isInitialized());
+  assert(python::Client::isInitialized());
 }
 
 
