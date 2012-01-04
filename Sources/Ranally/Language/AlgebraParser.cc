@@ -4,7 +4,7 @@
 #include <iostream>
 #include "Python-ast.h"
 #include <boost/format.hpp>
-#include "dev_UnicodeUtils.h"
+#include "Ranally/Util/String.h"
 #include "Ranally/Python/Exception.h"
 
 
@@ -582,7 +582,7 @@ UnicodeString pythonAstToXml(
   switch(ast->kind) {
     case Module_kind: {
       xml += (boost::format("<Ranally source=\"%1%\">")
-        % dev::encodeInUTF8(sourceName)).str().c_str();
+        % ranally::util::encodeInUTF8(sourceName)).str().c_str();
       writeStatementNodes(ast->v.Module.body, xml);
       xml += "</Ranally>";
       break;
@@ -658,7 +658,7 @@ UnicodeString AlgebraParser::parseString(
   UnicodeString result("<?xml version=\"1.0\"?>");
 
   mod_ty ast = PyParser_ASTFromString(
-    dev::encodeInUTF8(string).c_str(), "", Py_file_input, 0, arena);
+    util::encodeInUTF8(string).c_str(), "", Py_file_input, 0, arena);
 
   if(!ast) {
     ranally::python::throwException();
@@ -680,7 +680,7 @@ UnicodeString AlgebraParser::parseFile(
   PyArena* arena = PyArena_New();
   assert(arena);
 
-  std::string fileNameInUtf8(dev::encodeInUTF8(fileName));
+  std::string fileNameInUtf8(util::encodeInUTF8(fileName));
   FILE* filePointer = fopen(fileNameInUtf8.c_str(), "r");
 
   if(filePointer == NULL) {

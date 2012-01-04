@@ -1,7 +1,7 @@
 #include "FlowgraphDotVisitor.h"
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
-#include "dev_UnicodeUtils.h"
+#include "Ranally/Util/String.h"
 #include "Ranally/Language/Vertices.h"
 
 

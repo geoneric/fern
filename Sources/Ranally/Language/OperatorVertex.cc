@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include <map>
 #include <boost/format.hpp>
-#include "dev_UnicodeUtils.h"
+#include "Ranally/Util/String.h"
 
 
 
@@ -53,7 +53,7 @@ UnicodeString nameToSymbol(
   if(symbols.find(name) == symbols.end()) {
     throw std::runtime_error((boost::format(
       "operator %1% with %2% operands not available")
-      % dev::encodeInUTF8(name) % nrOperands).str().c_str());
+      % util::encodeInUTF8(name) % nrOperands).str().c_str());
   }
 
   return symbols[name];

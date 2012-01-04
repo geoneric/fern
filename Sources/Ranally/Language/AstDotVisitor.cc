@@ -1,7 +1,7 @@
 #include "Ranally/Language/AstDotVisitor.h"
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
-#include "dev_UnicodeUtils.h"
+#include "Ranally/Util/String.h"
 #include "Ranally/Language/Vertices.h"
 
 
@@ -463,7 +463,7 @@ void AstDotVisitor::Visit(
   addScript(
     UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
     (boost::format(" [label=\"%1%\"];\n")
-      % dev::encodeInUTF8(vertex.sourceName())).str().c_str());
+      % util::encodeInUTF8(vertex.sourceName())).str().c_str());
 
   BOOST_FOREACH(boost::shared_ptr<language::StatementVertex> statementVertex,
     vertex.statements()) {

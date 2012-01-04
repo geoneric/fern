@@ -1,6 +1,5 @@
 INCLUDE_DIRECTORIES(
   ${CMAKE_CURRENT_SOURCE_DIR}/../..
-  # Configure.h
   ${CMAKE_CURRENT_BINARY_DIR}/../..
 )
 ADD_EXECUTABLE(ranally
@@ -13,6 +12,7 @@ TARGET_LINK_LIBRARIES(ranally
   RanallyLanguage
   RanallyPython
   RanallyOperation
+  RanallyUtil
   ${DEVENV_UTILS_LIBRARY}
   ${DEVENV_UNICODE_UTILS_LIBRARY}
   ${PYTHON_LIBRARIES}

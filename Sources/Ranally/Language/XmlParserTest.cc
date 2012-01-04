@@ -1,12 +1,11 @@
 #include "Ranally/Language/XmlParserTest.h"
-
 #include <iostream>
 #include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
-#include "dev_UnicodeUtils.h"
-#include "Ranally-pskel.hxx"
+#include "Ranally/Util/String.h"
 #include "Ranally/Language/AlgebraParser.h"
+#include "Ranally/Language/Ranally-pskel.hxx"
 #include "Ranally/Language/XmlParser.h"
 
 

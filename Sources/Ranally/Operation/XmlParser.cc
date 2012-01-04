@@ -3,7 +3,7 @@
 #include <stack>
 #include <vector>
 #include <boost/make_shared.hpp>
-#include "dev_UnicodeUtils.h"
+#include "Ranally/Util/String.h"
 #include "Operation-pskel.hxx"
 #include "Ranally/Operation/DataType.h"
 #include "Ranally/Operation/Operations.h"
@@ -171,14 +171,14 @@ public:
     std::string const& name)
   {
     assert(!_dataStack.empty());
-    _dataStack.top().name = dev::decodeFromUTF8(name);
+    _dataStack.top().name = ranally::util::decodeFromUTF8(name);
   }
 
   void Description(
     std::string const& description)
   {
     assert(!_dataStack.empty());
-    _dataStack.top().description = dev::decodeFromUTF8(description);
+    _dataStack.top().description = ranally::util::decodeFromUTF8(description);
   }
 
   void Parameters(
@@ -267,14 +267,14 @@ public:
     std::string const& name)
   {
     assert(!_dataStack.empty());
-    _dataStack.top().name = dev::decodeFromUTF8(name);
+    _dataStack.top().name = ranally::util::decodeFromUTF8(name);
   }
 
   void Description(
     std::string const& description)
   {
     assert(!_dataStack.empty());
-    _dataStack.top().description = dev::decodeFromUTF8(description);
+    _dataStack.top().description = ranally::util::decodeFromUTF8(description);
   }
 
   void DataTypes(
@@ -363,14 +363,14 @@ public:
     std::string const& name)
   {
     assert(!_dataStack.empty());
-    _dataStack.top().name = dev::decodeFromUTF8(name);
+    _dataStack.top().name = ranally::util::decodeFromUTF8(name);
   }
 
   void Description(
     std::string const& description)
   {
     assert(!_dataStack.empty());
-    _dataStack.top().description = dev::decodeFromUTF8(description);
+    _dataStack.top().description = ranally::util::decodeFromUTF8(description);
   }
 
   void DataType(
@@ -605,7 +605,7 @@ OperationsPtr XmlParser::parse(
   // Copy string contents in a string stream and work with that.
   std::stringstream stream;
   stream.exceptions(std::ifstream::badbit | std::ifstream::failbit);
-  stream << dev::encodeInUTF8(xml); // << std::endl;
+  stream << util::encodeInUTF8(xml); // << std::endl;
 
   return parse(stream);
 }

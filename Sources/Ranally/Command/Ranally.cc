@@ -4,8 +4,8 @@
 #include <fstream>
 #include <sstream>
 #include <boost/scoped_ptr.hpp>
-#include "dev_UnicodeUtils.h"
 #include "Ranally/Configure.h"
+#include "Ranally/Util/String.h"
 #include "Ranally/Operation/XmlParser.h"
 #include "Ranally/Operation/Operation-xml.h"
 #include "Ranally/Language/AlgebraParser.h"
@@ -349,7 +349,8 @@ public:
           xml = parser.parseFile(UnicodeString(inputFileName.c_str()));
         }
 
-        std::string dotScript = dev::encodeInUTF8(convertToDotAst(xml, modes));
+        std::string dotScript = ranally::util::encodeInUTF8(
+          convertToDotAst(xml, modes));
 
         if(outputFileName.empty()) {
           std::cout << dotScript;
@@ -434,7 +435,8 @@ public:
           xml = parser.parseFile(UnicodeString(inputFileName.c_str()));
         }
 
-        std::string dotScript = dev::encodeInUTF8(convertToDotFlowgraph(xml));
+        std::string dotScript = ranally::util::encodeInUTF8(
+          convertToDotFlowgraph(xml));
 
         if(outputFileName.empty()) {
           std::cout << dotScript;
@@ -526,11 +528,11 @@ public:
         }
 
         if(outputFileName.empty()) {
-          std::cout << dev::encodeInUTF8(xml);
+          std::cout << ranally::util::encodeInUTF8(xml);
         }
         else {
           std::ofstream file(outputFileName.c_str());
-          file << dev::encodeInUTF8(xml);
+          file << ranally::util::encodeInUTF8(xml);
         }
 
         status = EXIT_SUCCESS;

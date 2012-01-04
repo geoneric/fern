@@ -1,6 +1,6 @@
 #include "Ranally/Language/AnnotateVisitor.h"
 #include <boost/foreach.hpp>
-#include "dev_UnicodeUtils.h"
+#include "Ranally/Util/String.h"
 #include "Ranally/Operation/Result.h"
 #include "Ranally/Language/Vertices.h"
 

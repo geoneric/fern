@@ -2,13 +2,13 @@
 #include <sstream>
 #include <stack>
 #include <boost/make_shared.hpp>
-#include "dev_UnicodeUtils.h"
-#include "Ranally-pskel.hxx"
+#include "Ranally/Util/String.h"
 #include "Ranally/Language/FunctionVertex.h"
 #include "Ranally/Language/IfVertex.h"
 #include "Ranally/Language/NameVertex.h"
 #include "Ranally/Language/NumberVertex.h"
 #include "Ranally/Language/OperatorVertex.h"
+#include "Ranally/Language/Ranally-pskel.hxx"
 #include "Ranally/Language/StringVertex.h"
 #include "Ranally/Language/SyntaxVertex.h"
 #include "Ranally/Language/WhileVertex.h"
@@ -32,7 +32,7 @@ public:
   void source(
     std::string const& sourceName)
   {
-    _sourceName = dev::decodeFromUTF8(sourceName);
+    _sourceName = ranally::util::decodeFromUTF8(sourceName);
   }
 
   void Statements(
@@ -612,7 +612,7 @@ public:
     std::string const& name)
   {
     assert(!_dataStack.empty());
-    _dataStack.top().name = dev::decodeFromUTF8(name);
+    _dataStack.top().name = ranally::util::decodeFromUTF8(name);
   }
 
   void Expressions(
@@ -660,7 +660,7 @@ public:
     std::string const& name)
   {
     assert(!_dataStack.empty());
-    _dataStack.top().name = dev::decodeFromUTF8(name);
+    _dataStack.top().name = ranally::util::decodeFromUTF8(name);
   }
 
   void Expressions(
@@ -722,7 +722,8 @@ public:
     assert(!_dataStack.empty());
     assert(!_dataStack.top().vertex);
     _dataStack.top().vertex = boost::make_shared<ranally::language::NameVertex>(
-      _dataStack.top().line, _dataStack.top().col, dev::decodeFromUTF8(name));
+      _dataStack.top().line, _dataStack.top().col,
+      ranally::util::decodeFromUTF8(name));
   }
 
   void String(
@@ -733,7 +734,7 @@ public:
     _dataStack.top().vertex =
       boost::make_shared<ranally::language::StringVertex>(
         _dataStack.top().line, _dataStack.top().col,
-          dev::decodeFromUTF8(string));
+        ranally::util::decodeFromUTF8(string));
   }
 
   void Number(
@@ -894,7 +895,7 @@ boost::shared_ptr<ScriptVertex> XmlParser::parse(
   // Copy string contents in a string stream and work with that.
   std::stringstream stream;
   stream.exceptions(std::ifstream::badbit | std::ifstream::failbit);
-  stream << dev::encodeInUTF8(xml); // << std::endl;
+  stream << ranally::util::encodeInUTF8(xml); // << std::endl;
 
   return parse(stream);
 }

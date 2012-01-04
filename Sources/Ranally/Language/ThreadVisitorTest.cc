@@ -1,10 +1,9 @@
 #include "Ranally/Language/ThreadVisitorTest.h"
-
 #include <iostream>
 #include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
-#include "dev_UnicodeUtils.h"
+#include "Ranally/Util/String.h"
 #include "Ranally/Language/AssignmentVertex.h"
 #include "Ranally/Language/FunctionVertex.h"
 #include "Ranally/Language/IfVertex.h"

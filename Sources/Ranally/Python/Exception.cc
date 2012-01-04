@@ -1,6 +1,6 @@
 #include "Ranally/Python/Exception.h"
 #include <stdexcept>
-#include "dev_UnicodeUtils.h"
+#include "Ranally/Util/String.h"
 #include "Ranally/Python/OwnedReference.h"
 #include "Ranally/Python/String.h"
 
@@ -68,7 +68,7 @@ void throwException()
   assert(!message.isEmpty());
   assert(!PyErr_Occurred());
 
-  throw std::runtime_error(dev::encodeInUTF8(message).c_str());
+  throw std::runtime_error(util::encodeInUTF8(message).c_str());
 }
 
 } // namespace python

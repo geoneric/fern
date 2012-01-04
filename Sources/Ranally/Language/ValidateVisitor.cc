@@ -1,6 +1,6 @@
 #include "Ranally/Language/ValidateVisitor.h"
 #include <stdexcept>
-#include "dev_UnicodeUtils.h"
+#include "Ranally/Util/String.h"
 #include "Ranally/Operation/Operation.h"
 #include "Ranally/Language/FunctionVertex.h"
 
@@ -31,7 +31,7 @@ void ValidateVisitor::Visit(
   // function's name.
   if(!vertex.operation()) {
     throw std::runtime_error(("unknown function: " +
-      dev::encodeInUTF8(vertex.name())).c_str());
+      util::encodeInUTF8(vertex.name())).c_str());
   }
 
   // ranally::operation::OperationPtr operation(_operations->operation(

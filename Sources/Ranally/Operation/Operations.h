@@ -8,7 +8,7 @@
 #include <boost/range/end.hpp>
 #include <boost/range/iterator.hpp>
 #include <boost/shared_ptr.hpp>
-#include "dev_UnicodeUtils.h"
+#include "Ranally/Util/String.h"
 #include "Ranally/Operation/Operation.h"
 
 
@@ -70,7 +70,7 @@ inline Operations::Operations(
     if(_operations.find(operation->name()) != _operations.end()) {
       throw std::runtime_error((boost::format(
         "operation %1% already present")
-        % dev::encodeInUTF8(operation->name())).str().c_str());
+        % util::encodeInUTF8(operation->name())).str().c_str());
     }
 
     _operations[operation->name()] = operation;

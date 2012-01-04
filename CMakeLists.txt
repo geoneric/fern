@@ -30,6 +30,7 @@ ADD_SUBDIRECTORY(Sources)
 
 ADD_CUSTOM_TARGET(tests ALL
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+  COMMAND testRanallyUtil
   COMMAND testRanallyAlgorithm
   COMMAND testRanallyOperation
   COMMAND testRanallyLanguage
