@@ -3,6 +3,10 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_CURRENT_BINARY_DIR}/../..
 )
 ADD_EXECUTABLE(ranally
+  Command.cc
+  ConvertCommand.cc
+  DescribeCommand.cc
+  ExecuteCommand.cc
   Ranally.cc
 )
 ADD_DEPENDENCIES(ranally
