@@ -1,8 +1,5 @@
 #include "DescribeCommand.h"
-#include <cstring>
 #include <iostream>
-#include <sstream>
-#include "Ranally/Language/AlgebraParser.h"
 
 
 
@@ -65,19 +62,7 @@ int DescribeCommand::execute()
       std::string inputFileName =
         std::strcmp(argv()[currentArgumentId], "-") != 0
           ? argv()[currentArgumentId] : "";
-      UnicodeString xml;
-      ranally::language::AlgebraParser parser;
-
-      if(inputFileName.empty()) {
-        // Read script from the standard input stream.
-        std::ostringstream script;
-        script << std::cin.rdbuf();
-        xml = parser.parseString(UnicodeString(script.str().c_str()));
-      }
-      else {
-        // Read script from a file.
-        xml = parser.parseFile(UnicodeString(inputFileName.c_str()));
-      }
+      UnicodeString xml = read(inputFileName);
 
       // Validate script.
       // - Thread

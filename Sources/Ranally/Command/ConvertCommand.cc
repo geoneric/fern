@@ -1,11 +1,8 @@
 #include "ConvertCommand.h"
 #include <iostream>
-#include <fstream>
-#include <sstream>
 #include <boost/shared_ptr.hpp>
 #include "Ranally/Operation/XmlParser.h"
 #include "Ranally/Operation/Operation-xml.h"
-#include "Ranally/Language/AlgebraParser.h"
 #include "Ranally/Language/AnnotateVisitor.h"
 #include "Ranally/Language/AstDotVisitor.h"
 #include "Ranally/Language/FlowgraphDotVisitor.h"
@@ -233,31 +230,9 @@ int ConvertCommand::convertToDotAst(
       ++currentArgumentId;
       std::string outputFileName = currentArgumentId == argc - 1
         ? argv[currentArgumentId] : "";
-      UnicodeString xml;
-      ranally::language::AlgebraParser parser;
-
-      if(inputFileName.empty()) {
-        // Read script from the standard input stream.
-        std::ostringstream script;
-        script << std::cin.rdbuf();
-        xml = parser.parseString(UnicodeString(script.str().c_str()));
-      }
-      else {
-        // Read script from a file.
-        xml = parser.parseFile(UnicodeString(inputFileName.c_str()));
-      }
-
-      std::string dotScript = ranally::util::encodeInUTF8(
-        convertToDotAst(xml, modes));
-
-      if(outputFileName.empty()) {
-        std::cout << dotScript;
-      }
-      else {
-        std::ofstream file(outputFileName.c_str());
-        file << dotScript;
-      }
-
+      UnicodeString xml = read(inputFileName);
+      UnicodeString dotScript = convertToDotAst(xml, modes);
+      write(dotScript, outputFileName);
       status = EXIT_SUCCESS;
     }
   }
@@ -323,31 +298,9 @@ int ConvertCommand::convertToDotFlowgraph(
       ++currentArgumentId;
       std::string outputFileName = currentArgumentId == argc - 1
         ? argv[currentArgumentId] : "";
-      UnicodeString xml;
-      ranally::language::AlgebraParser parser;
-
-      if(inputFileName.empty()) {
-        // Read script from the standard input stream.
-        std::ostringstream script;
-        script << std::cin.rdbuf();
-        xml = parser.parseString(UnicodeString(script.str().c_str()));
-      }
-      else {
-        // Read script from a file.
-        xml = parser.parseFile(UnicodeString(inputFileName.c_str()));
-      }
-
-      std::string dotScript = ranally::util::encodeInUTF8(
-        convertToDotFlowgraph(xml));
-
-      if(outputFileName.empty()) {
-        std::cout << dotScript;
-      }
-      else {
-        std::ofstream file(outputFileName.c_str());
-        file << dotScript;
-      }
-
+      UnicodeString xml = read(inputFileName);
+      UnicodeString dotScript = convertToDotFlowgraph(xml);
+      write(dotScript, outputFileName);
       status = EXIT_SUCCESS;
     }
   }
@@ -421,28 +374,8 @@ int ConvertCommand::convertToXml(
       ++currentArgumentId;
       std::string outputFileName = currentArgumentId == argc - 1
         ? argv[currentArgumentId] : "";
-      UnicodeString xml;
-      ranally::language::AlgebraParser parser;
-
-      if(inputFileName.empty()) {
-        // Read script from the standard input stream.
-        std::ostringstream script;
-        script << std::cin.rdbuf();
-        xml = parser.parseString(UnicodeString(script.str().c_str()));
-      }
-      else {
-        // Read script from a file.
-        xml = parser.parseFile(UnicodeString(inputFileName.c_str()));
-      }
-
-      if(outputFileName.empty()) {
-        std::cout << ranally::util::encodeInUTF8(xml);
-      }
-      else {
-        std::ofstream file(outputFileName.c_str());
-        file << ranally::util::encodeInUTF8(xml);
-      }
-
+      UnicodeString xml = read(inputFileName);
+      write(xml, outputFileName);
       status = EXIT_SUCCESS;
     }
   }
