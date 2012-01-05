@@ -1,6 +1,8 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 PROJECT(Ranally)
-
+SET(RANALLY_ORGANISATION_NAME "Kor de Jong Environmental Modelling Software")
+SET(RANALLY_PROJECT_NAME "${CMAKE_PROJECT_NAME}")
+SET(RANALLY_HOMEPAGE "http://www.kdjems.com/ranally")
 SET(RANALLY_MAJOR_VERSION "0")
 SET(RANALLY_MINOR_VERSION "0")
 SET(RANALLY_PATCH_VERSION "0")
@@ -15,7 +17,6 @@ SET(RANALLY_COPYRIGHT "Copyright \(C\) 2010-2012 Kor de Jong")
 
 SET(CMAKE_MODULE_PATH $ENV{CMAKE_MODULE_PATH})
 INCLUDE(Site)
-INCLUDE(UseDevEnv)
 
 INCLUDE(UseBoost)
 INCLUDE(UseExpat)
@@ -24,8 +25,6 @@ INCLUDE(UseLoki)
 INCLUDE(UsePython)
 INCLUDE(UseXsd)
 
-# ADD_SUBDIRECTORY(Tests/Ranally/Algorithms)
-# ADD_SUBDIRECTORY(Tests/Ranally/Operations/Local/Unary)
 ADD_SUBDIRECTORY(Sources)
 
 ADD_CUSTOM_TARGET(tests ALL
@@ -35,3 +34,69 @@ ADD_CUSTOM_TARGET(tests ALL
   COMMAND testRanallyOperation
   COMMAND testRanallyLanguage
 )
+
+
+# Installation stuff below this line. ------------------------------------------
+SET(_LIBRARIES_TO_INSTALL
+  # ${BOOST_SYSTEM_SHARED_LIBRARY}
+  # ${EXPAT_SHARED_LIBRARIES}
+  # ${LOKI_SHARED_LIBRARIES}
+  # ${PYTHON_SHARED_LIBRARIES}
+  # ${ICU_SHARED_LIBRARIES}
+  # ${XSD_SHARED_LIBRARIES}
+)
+CHECK_RPATH_EQUALS("$ORIGIN" ${_LIBRARIES_TO_INSTALL})
+INSTALL_EXTERN_SHARED_LIBRARIES(
+  ${_LIBRARIES_TO_INSTALL}
+)
+
+SET(CPACK_PACKAGE_NAME ${RANALLY_PROJECT_NAME})
+SET(CPACK_PACKAGE_VERSION_MAJOR ${RANALLY_MAJOR_VERSION})
+SET(CPACK_PACKAGE_VERSION_MINOR ${RANALLY_MINOR_VERSION})
+IF(RANALLY_BUILD_STAGE)
+  SET(CPACK_PACKAGE_VERSION_PATCH
+    ${RANALLY_PATCH_VERSION}-${RANALLY_BUILD_STAGE})
+ELSE(RANALLY_BUILD_STAGE)
+  SET(CPACK_PACKAGE_VERSION_PATCH ${RANALLY_PATCH_VERSION})
+ENDIF(RANALLY_BUILD_STAGE)
+
+SET(CPACK_PACKAGE_VENDOR ${RANALLY_ORGANISATION_NAME})
+# SET(CPACK_PACKAGE_FILE_README ...)
+# SET(CPACK_PACKAGE_FILE_WELCOME ...)
+
+SET(CPACK_PACKAGE_EXECUTABLES "ranally" "Ranally")
+
+INCLUDE(DefaultCPackSettings)
+
+IF(CPACK_GENERATOR MATCHES "NSIS")
+  SET(CPACK_NSIS_MENU_LINKS
+    "doc/html/index.html" "Ranally Documentation"
+    ${RANALLY_HOMEPAGE} "Ranally Web Site"
+  )
+
+  # SET(CPACK_NSIS_INSTALLED_ICON_NAME ...
+
+  # # WriteRegStr root_key subkey key_name value
+  # # - Register file type.
+  # # - Register a human readable name for the file type.
+  # SET(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
+  #   WriteRegStr HKCR \\\".ran\\\" \\\"\\\" \\\"Ranally.Script\\\"
+  #   WriteRegStr HKCR \\\"Ranally.Script\\\" \\\"\\\" \\\"Ranally Model Script\\\"
+  #   WriteRegStr HKEY_CLASSES_ROOT \\\"Ranally.Script\\\\shell\\\\open\\\\command\\\" \\\"\\\" '\\\"$INSTDIR\\\\bin\\\\RanallyEditor.exe\\\" \\\"%1\\\"'
+
+  # ")
+
+  # Example for picking the second icon in the exe.
+  # WriteRegStr HKEY_CLASSES_ROOT "Rheno.Document\DefaultIcon" ""
+  #   "$INSTDIR\rheno.exe,1"
+
+  # # Clean up the registry.
+  # SET(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
+  #   DeleteRegKey HKCR \\\".dtkd\\\"
+  #   DeleteRegKey HKCR \\\"Rheno.Data\\\"
+  # ")
+ENDIF(CPACK_GENERATOR MATCHES "NSIS")
+
+# SET(CPACK_RESOURCE_FILE_LICENSE "License.txt")
+
+INCLUDE(CPack)
