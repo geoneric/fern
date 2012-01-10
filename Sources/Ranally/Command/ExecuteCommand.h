@@ -1,7 +1,6 @@
 #ifndef INCLUDED_RANALLY_EXECUTECOMMAND
 #define INCLUDED_RANALLY_EXECUTECOMMAND
 
-#include <unicode/unistr.h>
 #include "Command.h"
 
 

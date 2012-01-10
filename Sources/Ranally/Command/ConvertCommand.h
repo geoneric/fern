@@ -1,7 +1,6 @@
 #ifndef INCLUDED_RANALLY_CONVERTCOMMAND
 #define INCLUDED_RANALLY_CONVERTCOMMAND
 
-#include <unicode/unistr.h>
 #include "Command.h"
 
 

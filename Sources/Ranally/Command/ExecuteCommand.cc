@@ -1,8 +1,6 @@
 #include "ExecuteCommand.h"
-#include <sstream>
 #include "Ranally/Operation/XmlParser.h"
 #include "Ranally/Operation/Operation-xml.h"
-#include "Ranally/Language/AlgebraParser.h"
 #include "Ranally/Language/AnnotateVisitor.h"
 #include "Ranally/Language/ExecuteVisitor.h"
 #include "Ranally/Language/IdentifyVisitor.h"
@@ -91,20 +89,7 @@ int ExecuteCommand::execute()
   else {
     std::string inputFileName = std::strcmp(argv()[1], "-") != 0
       ? argv()[1] : "";
-    UnicodeString xml;
-    ranally::language::AlgebraParser parser;
-
-    if(inputFileName.empty()) {
-      // Read script from the standard input stream.
-      std::ostringstream script;
-      script << std::cin.rdbuf();
-      xml = parser.parseString(UnicodeString(script.str().c_str()));
-    }
-    else {
-      // Read script from a file.
-      xml = parser.parseFile(UnicodeString(inputFileName.c_str()));
-    }
-
+    UnicodeString xml = read(inputFileName);
     execute(xml);
     status = EXIT_SUCCESS;
   }
