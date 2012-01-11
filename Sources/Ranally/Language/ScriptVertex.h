@@ -42,6 +42,8 @@ private:
 
 };
 
+typedef boost::shared_ptr<ScriptVertex> ScriptVertexPtr;
+
 // bool               operator==          (ScriptVertex const& lhs,
 //                                         ScriptVertex const& rhs);
 // 

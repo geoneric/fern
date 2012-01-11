@@ -1,5 +1,6 @@
 #include "DescribeCommand.h"
-#include <iostream>
+#include "Ranally/Language/XmlParser.h"
+#include "Ranally/Interpreter/Interpreter.h"
 
 
 
@@ -41,6 +42,21 @@ DescribeCommand::~DescribeCommand()
 
 
 
+void DescribeCommand::describe(
+  UnicodeString const& xml)
+{
+  boost::shared_ptr<ranally::language::ScriptVertex> tree(
+    ranally::language::XmlParser().parse(xml));
+  ranally::interpreter::Interpreter interpreter;
+  interpreter.validate(tree);
+
+  // TODO describe
+  // ranally::DescribeVisitor describeVisitor(std::cout);
+  // tree->Accept(describeVisitor);
+}
+
+
+
 int DescribeCommand::execute()
 {
   int status = EXIT_FAILURE;
@@ -63,14 +79,8 @@ int DescribeCommand::execute()
         std::strcmp(argv()[currentArgumentId], "-") != 0
           ? argv()[currentArgumentId] : "";
       UnicodeString xml = read(inputFileName);
-
-      // Validate script.
-      // - Thread
-      // - Identify
-      // - Annotate
-      // - Validate
-
-      std::cout << "bla!" << std::endl;
+      describe(xml);
+      status = EXIT_SUCCESS;
     }
   }
 

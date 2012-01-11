@@ -30,6 +30,8 @@ public:
 
 private:
 
+  void             describe            (UnicodeString const& xml);
+
 };
 
 } // namespace ranally

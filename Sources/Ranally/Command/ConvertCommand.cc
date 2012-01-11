@@ -1,15 +1,8 @@
 #include "ConvertCommand.h"
-#include <iostream>
-#include <boost/shared_ptr.hpp>
-#include "Ranally/Operation/XmlParser.h"
-#include "Ranally/Operation/Operation-xml.h"
-#include "Ranally/Language/AnnotateVisitor.h"
 #include "Ranally/Language/AstDotVisitor.h"
 #include "Ranally/Language/FlowgraphDotVisitor.h"
-#include "Ranally/Language/IdentifyVisitor.h"
-#include "Ranally/Language/ScriptVertex.h"
-#include "Ranally/Language/ThreadVisitor.h"
 #include "Ranally/Language/XmlParser.h"
+#include "Ranally/Interpreter/Interpreter.h"
 
 
 
@@ -165,17 +158,8 @@ UnicodeString ConvertCommand::convertToDotAst(
 {
   boost::shared_ptr<ranally::language::ScriptVertex> tree(
     ranally::language::XmlParser().parse(xml));
-
-  ranally::language::ThreadVisitor threadVisitor;
-  tree->Accept(threadVisitor);
-
-  ranally::language::IdentifyVisitor identifyVisitor;
-  tree->Accept(identifyVisitor);
-
-  ranally::operation::OperationsPtr operations(
-    ranally::operation::XmlParser().parse(ranally::operation::operationsXml));
-  ranally::language::AnnotateVisitor annotateVisitor(operations);
-  tree->Accept(annotateVisitor);
+  ranally::interpreter::Interpreter interpreter;
+  interpreter.annotate(tree);
 
   ranally::AstDotVisitor astDotVisitor(modes);
   tree->Accept(astDotVisitor);
@@ -247,17 +231,8 @@ UnicodeString ConvertCommand::convertToDotFlowgraph(
 {
   boost::shared_ptr<ranally::language::ScriptVertex> tree(
     ranally::language::XmlParser().parse(xml));
-
-  ranally::language::ThreadVisitor threadVisitor;
-  tree->Accept(threadVisitor);
-
-  ranally::language::IdentifyVisitor identifyVisitor;
-  tree->Accept(identifyVisitor);
-
-  ranally::operation::OperationsPtr operations(
-    ranally::operation::XmlParser().parse(ranally::operation::operationsXml));
-  ranally::language::AnnotateVisitor annotateVisitor(operations);
-  tree->Accept(annotateVisitor);
+  ranally::interpreter::Interpreter interpreter;
+  interpreter.annotate(tree);
 
   ranally::FlowgraphDotVisitor flowgraphDotVisitor;
   tree->Accept(flowgraphDotVisitor);
