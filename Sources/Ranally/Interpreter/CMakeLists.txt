@@ -18,15 +18,15 @@ ADD_DEPENDENCIES(RanallyInterpreter
   # of these files is included by the interpreter's source (Operation-xml.h).
   RanallyOperation
 )
-# SET(TEST_SOURCES
-#   InterpreterTest.cc
-#   Test.cc
-# )
-# ADD_EXECUTABLE(testRanallyInterpreter
-#   ${TEST_SOURCES}
-# )
-# TARGET_LINK_LIBRARIES(testRanallyInterpreter
-#   RanallyLanguage
-#   RanallyOperation
-#   # ${_LINK_LIBRARIES}
-# )
+SET(TEST_SOURCES
+  InterpreterTest.cc
+  Test.cc
+)
+ADD_EXECUTABLE(testRanallyInterpreter
+  ${TEST_SOURCES}
+)
+TARGET_LINK_LIBRARIES(testRanallyInterpreter
+  RanallyLanguage
+  RanallyOperation
+  # ${_LINK_LIBRARIES}
+)
