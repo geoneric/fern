@@ -1,5 +1,5 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_PURIFYVISITOR
-#define INCLUDED_RANALLY_LANGUAGE_PURIFYVISITOR
+#ifndef INCLUDED_RANALLY_LANGUAGE_OPTIMIZEVISITOR
+#define INCLUDED_RANALLY_LANGUAGE_OPTIMIZEVISITOR
 
 #include "Ranally/Language/Visitor.h"
 
@@ -14,17 +14,17 @@ namespace language {
 
   \sa        .
 */
-class PurifyVisitor
+class OptimizeVisitor
   : public Visitor
 {
 
-  friend class PurifyVisitorTest;
+  friend class OptimizeVisitorTest;
 
 public:
 
-                   PurifyVisitor       ();
+                   OptimizeVisitor     ();
 
-                   ~PurifyVisitor      ();
+                   ~OptimizeVisitor    ();
 
 private:
 

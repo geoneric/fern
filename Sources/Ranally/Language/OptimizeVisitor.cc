@@ -1,11 +1,11 @@
-#include "Ranally/Language/PurifyVisitor.h"
+#include "Ranally/Language/OptimizeVisitor.h"
 
 
 
 namespace ranally {
 namespace language {
 
-PurifyVisitor::PurifyVisitor()
+OptimizeVisitor::OptimizeVisitor()
 
   : Visitor()
 
@@ -14,7 +14,7 @@ PurifyVisitor::PurifyVisitor()
 
 
 
-PurifyVisitor::~PurifyVisitor()
+OptimizeVisitor::~OptimizeVisitor()
 {
 }
 

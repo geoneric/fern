@@ -1,31 +1,30 @@
-#include "Ranally/Language/PurifyVisitorTest.h"
-
+#include "Ranally/Language/OptimizeVisitorTest.h"
 #include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
 
 
 
-boost::unit_test::test_suite* PurifyVisitorTest::suite()
+boost::unit_test::test_suite* OptimizeVisitorTest::suite()
 {
   boost::unit_test::test_suite* suite = BOOST_TEST_SUITE(__FILE__);
-  boost::shared_ptr<PurifyVisitorTest> instance(
-    new PurifyVisitorTest());
+  boost::shared_ptr<OptimizeVisitorTest> instance(
+    new OptimizeVisitorTest());
   suite->add(BOOST_CLASS_TEST_CASE(
-    &PurifyVisitorTest::test, instance));
+    &OptimizeVisitorTest::test, instance));
 
   return suite;
 }
 
 
 
-PurifyVisitorTest::PurifyVisitorTest()
+OptimizeVisitorTest::OptimizeVisitorTest()
 {
 }
 
 
 
-void PurifyVisitorTest::test()
+void OptimizeVisitorTest::test()
 {
   bool testImplemented = false;
   BOOST_WARN(testImplemented);

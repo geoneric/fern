@@ -1,5 +1,5 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_PURIFYVISITORTEST
-#define INCLUDED_RANALLY_LANGUAGE_PURIFYVISITORTEST
+#ifndef INCLUDED_RANALLY_LANGUAGE_OPTIMIZEVISITORTEST
+#define INCLUDED_RANALLY_LANGUAGE_OPTIMIZEVISITORTEST
 
 
 
@@ -11,12 +11,12 @@ namespace boost {
 
 
 
-class PurifyVisitorTest
+class OptimizeVisitorTest
 {
 
 public:
 
-                   PurifyVisitorTest   ();
+                   OptimizeVisitorTest ();
 
   void             test                ();
 

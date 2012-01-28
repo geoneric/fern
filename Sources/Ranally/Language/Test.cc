@@ -11,7 +11,7 @@
 #include "Ranally/Language/NameVertexTest.h"
 #include "Ranally/Language/NumberVertexTest.h"
 #include "Ranally/Language/OperatorVertexTest.h"
-#include "Ranally/Language/PurifyVisitorTest.h"
+#include "Ranally/Language/OptimizeVisitorTest.h"
 #include "Ranally/Language/ScriptVertexTest.h"
 #include "Ranally/Language/ScriptVisitorTest.h"
 #include "Ranally/Language/StatementVertexTest.h"
@@ -66,9 +66,9 @@ boost::unit_test::test_suite* init_unit_test_suite(
   test->add(AnnotateVisitorTest::suite());
   test->add(IdentifyVisitorTest::suite());
   test->add(ValidateVisitorTest::suite());
+  test->add(OptimizeVisitorTest::suite());
   test->add(ExecuteVisitorTest::suite());
 
-  test->add(PurifyVisitorTest::suite());
   test->add(DotVisitorTest::suite());
   test->add(ScriptVisitorTest::suite());
 
