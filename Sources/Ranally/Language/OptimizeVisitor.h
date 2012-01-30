@@ -28,6 +28,8 @@ public:
 
 private:
 
+  void             Visit               (NameVertex& vertex);
+
 };
 
 } // namespace language

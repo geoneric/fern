@@ -2,7 +2,9 @@
 #define INCLUDED_RANALLY_INTERPRETER_INTERPRETER
 
 #include <boost/noncopyable.hpp>
+#include "Ranally/Language/AlgebraParser.h"
 #include "Ranally/Language/ScriptVertex.h"
+#include "Ranally/Language/XmlParser.h"
 
 
 
@@ -27,6 +29,8 @@ public:
 
                    ~Interpreter        ();
 
+  language::ScriptVertexPtr parseString(UnicodeString const& string);
+
   void             annotate            (language::ScriptVertexPtr const& tree);
 
   void             validate            (language::ScriptVertexPtr const& tree);
@@ -34,6 +38,10 @@ public:
   void             execute             (language::ScriptVertexPtr const& tree);
 
 private:
+
+  ranally::language::AlgebraParser _algebraParser;
+
+  ranally::language::XmlParser _xmlParser;
 
 };
 

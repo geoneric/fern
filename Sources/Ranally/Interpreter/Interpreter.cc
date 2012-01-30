@@ -4,6 +4,7 @@
 #include "Ranally/Language/AnnotateVisitor.h"
 #include "Ranally/Language/ExecuteVisitor.h"
 #include "Ranally/Language/IdentifyVisitor.h"
+#include "Ranally/Language/OptimizeVisitor.h"
 #include "Ranally/Language/ScriptVertex.h"
 #include "Ranally/Language/ThreadVisitor.h"
 #include "Ranally/Language/ValidateVisitor.h"
@@ -14,6 +15,10 @@ namespace ranally {
 namespace interpreter {
 
 Interpreter::Interpreter()
+
+  : _algebraParser(),
+    _xmlParser()
+
 {
 }
 
@@ -25,13 +30,30 @@ Interpreter::~Interpreter()
 
 
 
+language::ScriptVertexPtr Interpreter::parseString(
+  UnicodeString const& string)
+{
+  return _xmlParser.parse(_algebraParser.parseString(string));
+}
+
+
+
+//! Annotate the model in \a tree.
+/*!
+  \param     tree Syntax tree containing the model to annotate.
+  \exception .
+
+  This is a top level operation. It is assumed here that \a tree is the
+  result of parsing a script, without further processing.
+
+  The folowing steps are performed:
+  - Threading.
+  - Identification.
+  - Annotation.
+*/
 void Interpreter::annotate(
   language::ScriptVertexPtr const& tree)
 {
-  // - Thread
-  // - Identify
-  // - Annotate
-
   language::ThreadVisitor threadVisitor;
   tree->Accept(threadVisitor);
 
@@ -46,12 +68,23 @@ void Interpreter::annotate(
 
 
 
+//! Validate the model in \a tree.
+/*!
+  \param     tree Syntax tree containing the model to validate.
+  \exception .
+
+  This is a top level operation. It is assumed here that \a tree is the
+  result of parsing a script, without further processing.
+
+  The folowing steps are performed:
+  - Annotation (seee annotate(language::ScriptVertexPtr const&).
+  - Validation.
+*/
 void Interpreter::validate(
   language::ScriptVertexPtr const& tree)
 {
   // - Annotate
   // - Validate
-
   annotate(tree);
   language::ValidateVisitor validateVisitor;
   tree->Accept(validateVisitor);
@@ -59,17 +92,26 @@ void Interpreter::validate(
 
 
 
+//! Execute the model in \a tree.
+/*!
+  \param     tree Syntax tree containing the model to execute.
+  \exception .
+
+  This is a top level operation. It is assumed here that \a tree is the
+  result of parsing a script, without further processing.
+
+  The folowing steps are performed:
+  - Validation (seee validate(language::ScriptVertexPtr const&).
+  - Optimization.
+  - Execution.
+*/
 void Interpreter::execute(
   language::ScriptVertexPtr const& tree)
 {
-  // validate
-  // optimize
-  // execute
   validate(tree);
 
-  // TODO This can be done conditional.
-  // language::OptimizeVisitor optimizeVisitor;
-  // tree->Accept(optimizeVisitor);
+  language::OptimizeVisitor optimizeVisitor;
+  tree->Accept(optimizeVisitor);
 
   language::ExecuteVisitor executeVisitor;
   tree->Accept(executeVisitor);

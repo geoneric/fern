@@ -95,6 +95,7 @@ ADD_EXECUTABLE(testRanallyLanguage
 )
 TARGET_LINK_LIBRARIES(testRanallyLanguage
   RanallyLanguage
+  RanallyInterpreter
   ${_LINK_LIBRARIES}
 )
 ADD_DEPENDENCIES(testRanallyLanguage
