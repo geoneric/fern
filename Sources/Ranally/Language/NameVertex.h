@@ -31,15 +31,9 @@ public:
 
                    ~NameVertex         ();
 
-  // void             setDefinition       (NameVertex* definition);
-
-  // NameVertex const* definition         () const;
-
   void             addDefinition       (NameVertex* vertex);
 
   std::vector<NameVertex*> const& definitions() const;
-
-  // NameVertex*      definition          ();
 
   void             addUse              (NameVertex* vertex);
 
