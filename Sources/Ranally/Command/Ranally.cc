@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 #include <boost/scoped_ptr.hpp>
 #include "Ranally/Configure.h"
 #include "ConvertCommand.h"
