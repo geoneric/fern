@@ -12,6 +12,10 @@
 namespace ranally {
 namespace language {
 
+class ExpressionVertex;
+
+typedef boost::shared_ptr<ExpressionVertex> ExpressionVertexPtr;
+
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
   longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
@@ -54,6 +58,10 @@ public:
 
   operation::ValueType valueType       (size_t index) const;
 
+  void             setValue            (ExpressionVertexPtr const& value);
+
+  ExpressionVertexPtr const& value     () const;
+
 protected:
 
                    ExpressionVertex    (UnicodeString const& name);
@@ -77,9 +85,10 @@ private:
 
   std::vector<ResultType> _resultTypes;
 
-};
+  //! Value of expression, in case this expression is the target of an assignment.
+  ExpressionVertexPtr _value;
 
-typedef boost::shared_ptr<ExpressionVertex> ExpressionVertexPtr;
+};
 
 } // namespace language
 } // namespace ranally

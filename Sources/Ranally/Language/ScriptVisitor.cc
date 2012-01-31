@@ -52,7 +52,7 @@ UnicodeString ScriptVisitor::indentation() const
 
 
 void ScriptVisitor::visitStatements(
-  language::StatementVertices const& statements)
+  language::StatementVertices& statements)
 {
   BOOST_FOREACH(boost::shared_ptr<language::StatementVertex> statementVertex,
     statements) {
@@ -88,15 +88,9 @@ void ScriptVisitor::visitExpressions(
 void ScriptVisitor::Visit(
   language::AssignmentVertex& vertex)
 {
-  language::ExpressionVertices const& targets = vertex.targets();
-  assert(targets.size() == 1);
-
-  language::ExpressionVertices const& expressions = vertex.expressions();
-  assert(expressions.size() == 1);
-
-  targets[0]->Accept(*this);
+  vertex.target()->Accept(*this);
   _script += " = ";
-  expressions[0]->Accept(*this);
+  vertex.expression()->Accept(*this);
 }
 
 

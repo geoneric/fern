@@ -121,10 +121,6 @@ void FlowgraphDotVisitor::addFlowgraphVertex(
 void FlowgraphDotVisitor::Visit(
   language::AssignmentVertex& vertex)
 {
-  language::ExpressionVertices const& targets = vertex.targets();
-  language::ExpressionVertices const& expressions = vertex.expressions();
-  assert(expressions.size() == targets.size());
-
   switch(_mode) {
     case Declaring: {
       // addScript(
@@ -133,22 +129,13 @@ void FlowgraphDotVisitor::Visit(
       break;
     }
     case ConnectingFlowgraph: {
-      for(size_t i = 0; i < expressions.size(); ++i) {
-        addFlowgraphVertex(*vertex.expressions()[i], *vertex.targets()[i]);
-      }
+      addFlowgraphVertex(*vertex.expression(), *vertex.target());
       break;
     }
   }
 
-  BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
-    expressionVertex, expressions) {
-    expressionVertex->Accept(*this);
-  }
-
-  BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
-    expressionVertex, targets) {
-    expressionVertex->Accept(*this);
-  }
+  vertex.expression()->Accept(*this);
+  vertex.target()->Accept(*this);
 }
 
 

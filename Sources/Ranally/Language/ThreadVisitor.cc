@@ -26,13 +26,9 @@ ThreadVisitor::~ThreadVisitor()
 void ThreadVisitor::Visit(
   AssignmentVertex& vertex)
 {
-  ExpressionVertices const& expressions = vertex.expressions();
-  assert(expressions.size() == 1);
-  expressions[0]->Accept(*this);
+  vertex.expression()->Accept(*this);
 
-  ExpressionVertices const& targets = vertex.targets();
-  assert(targets.size() == 1);
-  targets[0]->Accept(*this);
+  vertex.target()->Accept(*this);
 
   assert(_lastVertex);
   _lastVertex->addSuccessor(&vertex);

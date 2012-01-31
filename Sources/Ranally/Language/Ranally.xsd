@@ -84,18 +84,9 @@
 
   <xs:complexType name="Assignment">
     <xs:sequence>
-      <!-- TODO Replace Targets by Expressions. -->
       <xs:element
-        name="Targets"
-        type="ranally:Targets"/>
-      <xs:element
-        name="Expressions"
-        type="ranally:Expressions"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="Targets">
-    <xs:sequence>
+        name="Expression"
+        type="ranally:Expression"/>
       <xs:element
         name="Expression"
         type="ranally:Expression"/>

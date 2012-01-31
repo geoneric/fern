@@ -87,9 +87,9 @@ void ThreadVisitorTest::testVisitAssignment()
   ranally::language::AssignmentVertex const* assignment =
     dynamic_cast<ranally::language::AssignmentVertex const*>(
       &(*tree->statements()[0]));
-  ranally::language::SyntaxVertex const* vertexA = &(*assignment->targets()[0]);
+  ranally::language::SyntaxVertex const* vertexA = &(*assignment->target());
   ranally::language::SyntaxVertex const* vertexB =
-    &(*assignment->expressions()[0]);
+    &(*assignment->expression());
 
   BOOST_CHECK_EQUAL(tree->successor(), vertexB);
   BOOST_CHECK_EQUAL(vertexB->successor(), vertexA);
@@ -266,10 +266,10 @@ void ThreadVisitorTest::testVisitNestedExpression()
   ranally::language::AssignmentVertex const* assignment =
     dynamic_cast<ranally::language::AssignmentVertex const*>(
       &(*tree->statements()[0]));
-  ranally::language::SyntaxVertex const* vertexA = &(*assignment->targets()[0]);
+  ranally::language::SyntaxVertex const* vertexA = &(*assignment->target());
   ranally::language::OperatorVertex const* addition =
     dynamic_cast<ranally::language::OperatorVertex const*>(
-      &(*assignment->expressions()[0]));
+      &(*assignment->expression()));
   ranally::language::SyntaxVertex const* vertexB =
     &(*addition->expressions()[0]);
   ranally::language::SyntaxVertex const* vertexC =

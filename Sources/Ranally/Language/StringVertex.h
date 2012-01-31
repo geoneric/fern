@@ -15,7 +15,8 @@ namespace language {
 
   \sa        .
 */
-class StringVertex: public ExpressionVertex
+class StringVertex:
+  public ExpressionVertex
 {
 
   friend class StringVertexTest;
@@ -28,11 +29,9 @@ public:
                                         int colId,
                                         UnicodeString const& value);
 
-  /* virtual */    ~StringVertex       ();
+                   ~StringVertex       ();
 
   UnicodeString const& value           () const;
-
-protected:
 
 private:
 

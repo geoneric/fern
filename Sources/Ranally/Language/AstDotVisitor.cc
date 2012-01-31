@@ -248,10 +248,6 @@ VISIT_NUMBER_VERTEX(double  )
 void AstDotVisitor::Visit(
   language::AssignmentVertex& vertex)
 {
-  language::ExpressionVertices const& targets = vertex.targets();
-  language::ExpressionVertices const& expressions = vertex.expressions();
-  assert(expressions.size() == targets.size());
-
   switch(_mode) {
     case Declaring: {
       addScript(
@@ -260,10 +256,8 @@ void AstDotVisitor::Visit(
       break;
     }
     case ConnectingAst: {
-      for(size_t i = 0; i < expressions.size(); ++i) {
-        addAstVertex(vertex, *targets[i]);
-        addAstVertex(vertex, *expressions[i]);
-      }
+      addAstVertex(vertex, *vertex.target());
+      addAstVertex(vertex, *vertex.expression());
       break;
     }
     case ConnectingCfg: {
@@ -275,15 +269,8 @@ void AstDotVisitor::Visit(
     }
   }
 
-  BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
-    expressionVertex, expressions) {
-    expressionVertex->Accept(*this);
-  }
-
-  BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
-    expressionVertex, targets) {
-    expressionVertex->Accept(*this);
-  }
+  vertex.expression()->Accept(*this);
+  vertex.target()->Accept(*this);
 }
 
 

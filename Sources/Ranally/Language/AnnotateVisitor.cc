@@ -33,16 +33,10 @@ void AnnotateVisitor::Visit(
   Visitor::Visit(vertex);
 
   // Proppagate the result types from the expression to the targets.
-  ExpressionVertices const& expressions(vertex.expressions());
-  ExpressionVertices& targets(vertex.targets());
-  assert(expressions.size() == targets.size());
-
-  for(size_t i = 0; i < expressions.size(); ++i) {
-    ExpressionVertexPtr const& expression(expressions[i]);
-    ExpressionVertexPtr& target(targets[i]);
-    assert(target->resultTypes().empty());
-    target->setResultTypes(expression->resultTypes());
-  }
+  ExpressionVertex const& expression(*vertex.expression());
+  ExpressionVertex& target(*vertex.target());
+  assert(target.resultTypes().empty());
+  target.setResultTypes(expression.resultTypes());
 }
 
 

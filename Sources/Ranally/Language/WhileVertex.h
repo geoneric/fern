@@ -15,7 +15,8 @@ namespace language {
 
   \sa        .
 */
-class WhileVertex: public StatementVertex
+class WhileVertex:
+  public StatementVertex
 {
 
   friend class WhileVertexTest;
@@ -29,19 +30,21 @@ public:
                         StatementVertices const& trueStatements,
                         StatementVertices const& falseStatements);
 
-  /* virtual */    ~WhileVertex        ();
+                   ~WhileVertex        ();
 
   boost::shared_ptr<ExpressionVertex> const& condition() const;
 
   StatementVertices const& trueStatements() const;
 
+  StatementVertices& trueStatements    ();
+
   StatementVertices const& falseStatements() const;
 
-protected:
+  StatementVertices& falseStatements   ();
 
 private:
 
-  boost::shared_ptr<ExpressionVertex> _condition;
+  ExpressionVertexPtr _condition;
 
   StatementVertices _trueStatements;
 

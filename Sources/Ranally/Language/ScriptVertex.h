@@ -14,7 +14,8 @@ namespace language {
 
   \sa        .
 */
-class ScriptVertex: public SyntaxVertex
+class ScriptVertex:
+  public SyntaxVertex
 {
 
   friend class ScriptVertexTest;
@@ -33,6 +34,8 @@ public:
   UnicodeString const& sourceName      () const;
 
   StatementVertices const& statements  () const;
+
+  StatementVertices& statements        ();
 
 private:
 

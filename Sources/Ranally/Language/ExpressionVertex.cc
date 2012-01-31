@@ -115,6 +115,21 @@ operation::ValueType ExpressionVertex::valueType(
   return _resultTypes[index].get<1>();
 }
 
+
+
+void ExpressionVertex::setValue(
+  ExpressionVertexPtr const& value)
+{
+  _value = value;
+}
+
+
+
+ExpressionVertexPtr const& ExpressionVertex::value() const
+{
+  return _value;
+}
+
 } // namespace language
 } // namespace ranally
 

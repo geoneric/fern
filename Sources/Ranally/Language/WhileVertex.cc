@@ -40,7 +40,21 @@ StatementVertices const& WhileVertex::trueStatements() const
 
 
 
+StatementVertices& WhileVertex::trueStatements()
+{
+  return _trueStatements;
+}
+
+
+
 StatementVertices const& WhileVertex::falseStatements() const
+{
+  return _falseStatements;
+}
+
+
+
+StatementVertices& WhileVertex::falseStatements()
 {
   return _falseStatements;
 }

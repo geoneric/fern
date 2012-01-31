@@ -27,18 +27,14 @@ void IdentifyVisitor::Visit(
   AssignmentVertex& vertex)
 {
   // - Configure visitor, defining names.
-  // - Visit targets.
+  // - Visit target.
   _mode = Defining;
-  ExpressionVertices const& targets = vertex.targets();
-  assert(targets.size() == 1);
-  targets[0]->Accept(*this);
+  vertex.target()->Accept(*this);
 
   // - Configure visitor, using names.
-  // - Visit expressions.
+  // - Visit expression.
   _mode = Using;
-  ExpressionVertices const& expressions = vertex.expressions();
-  assert(expressions.size() == 1);
-  expressions[0]->Accept(*this);
+  vertex.expression()->Accept(*this);
 }
 
 

@@ -14,7 +14,8 @@ namespace language {
 
   \sa        .
 */
-class StatementVertex: public SyntaxVertex
+class StatementVertex:
+  public SyntaxVertex
 {
 
   friend class StatementVertexTest;

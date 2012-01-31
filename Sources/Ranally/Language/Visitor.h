@@ -60,7 +60,7 @@ protected:
 
   virtual          ~Visitor            ();
 
-  virtual void     visitStatements     (StatementVertices const& statements);
+  virtual void     visitStatements     (StatementVertices& statements);
 
   virtual void     visitExpressions    (ExpressionVertices const& expressions);
 

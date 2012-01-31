@@ -14,7 +14,8 @@ namespace language {
 
   \sa        .
 */
-class NameVertex: public ExpressionVertex
+class NameVertex:
+  public ExpressionVertex
 {
 
   friend class NameVertexTest;
@@ -51,6 +52,8 @@ private:
   std::vector<NameVertex*> _uses;
 
 };
+
+typedef boost::shared_ptr<NameVertex> NameVertexPtr;
 
 } // namespace language
 } // namespace ranally

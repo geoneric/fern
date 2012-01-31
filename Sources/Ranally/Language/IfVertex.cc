@@ -40,7 +40,21 @@ StatementVertices const& IfVertex::trueStatements() const
 
 
 
+StatementVertices& IfVertex::trueStatements()
+{
+  return _trueStatements;
+}
+
+
+
 StatementVertices const& IfVertex::falseStatements() const
+{
+  return _falseStatements;
+}
+
+
+
+StatementVertices& IfVertex::falseStatements()
 {
   return _falseStatements;
 }

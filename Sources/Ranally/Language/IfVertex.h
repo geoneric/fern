@@ -24,7 +24,8 @@ namespace language {
 
   \sa        .
 */
-class IfVertex: public StatementVertex
+class IfVertex:
+  public StatementVertex
 {
 
   friend class IfVertexTest;
@@ -44,13 +45,17 @@ public:
 
   StatementVertices const& trueStatements() const;
 
+  StatementVertices& trueStatements    ();
+
   StatementVertices const& falseStatements() const;
+
+  StatementVertices& falseStatements   ();
 
 protected:
 
 private:
 
-  boost::shared_ptr<ExpressionVertex> _condition;
+  ExpressionVertexPtr _condition;
 
   StatementVertices _trueStatements;
 

@@ -41,7 +41,7 @@ Visitor::~Visitor()
   \param     statements Collection with StatementVertex instanceѕ.
 */
 void Visitor::visitStatements(
-  StatementVertices const& statements)
+  StatementVertices& statements)
 {
   BOOST_FOREACH(boost::shared_ptr<StatementVertex> statementVertex,
     statements) {
@@ -77,16 +77,8 @@ void Visitor::visitExpressions(
 void Visitor::Visit(
   AssignmentVertex& vertex)
 {
-  BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
-    expressionVertex, vertex.expressions()) {
-    expressionVertex->Accept(*this);
-  }
-
-  BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
-    expressionVertex, vertex.targets()) {
-    expressionVertex->Accept(*this);
-  }
-
+  vertex.expression()->Accept(*this);
+  vertex.target()->Accept(*this);
   Visit(dynamic_cast<StatementVertex&>(vertex));
 }
 
@@ -222,10 +214,7 @@ void Visitor::Visit(
 void Visitor::Visit(
   ScriptVertex& vertex)
 {
-  BOOST_FOREACH(boost::shared_ptr<language::StatementVertex> statementVertex,
-    vertex.statements()) {
-    statementVertex->Accept(*this);
-  }
+  visitStatements(vertex.statements());
   Visit(dynamic_cast<SyntaxVertex&>(vertex));
 }
 

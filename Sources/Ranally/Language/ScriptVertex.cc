@@ -58,6 +58,13 @@ StatementVertices const& ScriptVertex::statements() const
 
 
 
+StatementVertices& ScriptVertex::statements()
+{
+  return _statements;
+}
+
+
+
 // bool operator==(
 //   ScriptVertex const& lhs,
 //   ScriptVertex const& rhs)

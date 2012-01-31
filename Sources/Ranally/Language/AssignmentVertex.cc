@@ -6,16 +6,19 @@ namespace ranally {
 namespace language {
 
 AssignmentVertex::AssignmentVertex(
-  ExpressionVertices const& targets,
-  ExpressionVertices const& expressions)
+  ExpressionVertexPtr const& target,
+  ExpressionVertexPtr const& expression)
 
   // First (left most) target contains the start position of the assignment
   // statement.
-  : StatementVertex(targets[0]->line(), targets[0]->col()),
-    _targets(targets),
-    _expressions(expressions)
+  : StatementVertex(target->line(), target->col()),
+    _target(target),
+    _expression(expression)
 
 {
+  assert(_target);
+  assert(_expression);
+  _target->setValue(_expression);
 }
 
 
@@ -26,23 +29,32 @@ AssignmentVertex::~AssignmentVertex()
 
 
 
-ExpressionVertices const& AssignmentVertex::targets() const
+ExpressionVertexPtr const& AssignmentVertex::target() const
 {
-  return _targets;
+  return _target;
 }
 
 
 
-ExpressionVertices& AssignmentVertex::targets()
+ExpressionVertexPtr& AssignmentVertex::target()
 {
-  return _targets;
+  return _target;
 }
 
 
 
-ExpressionVertices const& AssignmentVertex::expressions() const
+void AssignmentVertex::setExpression(
+  ExpressionVertexPtr const& expression)
 {
-  return _expressions;
+  assert(expression);
+  _expression = expression;
+}
+
+
+
+ExpressionVertexPtr const& AssignmentVertex::expression() const
+{
+  return _expression;
 }
 
 } // namespace language

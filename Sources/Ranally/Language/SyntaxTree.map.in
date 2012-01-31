@@ -21,7 +21,7 @@ namespace http://www.jemig.eu/ranally
   Assignment       "boost::shared_ptr<AssignmentVertex>";
   If               "boost::shared_ptr<IfVertex>";
   While            "boost::shared_ptr<WhileVertex>";
-  Targets          "std::vector<boost::shared_ptr<ExpressionVertex> >";
+  // Targets          "std::vector<boost::shared_ptr<ExpressionVertex> >";
   Expressions      "std::vector<boost::shared_ptr<ExpressionVertex> >";
   Statements       "std::vector<boost::shared_ptr<StatementVertex> >";
 }

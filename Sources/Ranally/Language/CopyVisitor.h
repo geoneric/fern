@@ -42,7 +42,7 @@ private:
 
   boost::shared_ptr<StatementVertex> _statementVertex;
 
-  void             visitStatements     (StatementVertices const& statements);
+  void             visitStatements     (StatementVertices& statements);
 
   void             Visit               (AssignmentVertex&);
 

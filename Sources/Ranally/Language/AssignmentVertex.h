@@ -25,22 +25,24 @@ public:
 
   LOKI_DEFINE_VISITABLE()
 
-                   AssignmentVertex    (ExpressionVertices const& targets,
-                                        ExpressionVertices const& expressions);
+                   AssignmentVertex    (ExpressionVertexPtr const& target,
+                                        ExpressionVertexPtr const& expression);
 
                    ~AssignmentVertex   ();
 
-  ExpressionVertices const& targets    () const;
+  ExpressionVertexPtr const& target    () const;
 
-  ExpressionVertices& targets          ();
+  ExpressionVertexPtr& target          ();
 
-  ExpressionVertices const& expressions() const;
+  void             setExpression       (ExpressionVertexPtr const& expression);
+
+  ExpressionVertexPtr const& expression() const;
 
 private:
 
-  ExpressionVertices _targets;
+  ExpressionVertexPtr _target;
 
-  ExpressionVertices _expressions;
+  ExpressionVertexPtr _expression;
 
 };
 

@@ -16,7 +16,8 @@ namespace language {
   \sa        .
 */
 template<typename T>
-class NumberVertex: public ExpressionVertex
+class NumberVertex:
+  public ExpressionVertex
 {
 
   friend class NumberVertexTest;

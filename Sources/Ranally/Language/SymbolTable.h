@@ -25,7 +25,8 @@ class NameVertex;
   multiple calls to pushScope() in case of nested scopes. When filling the
   table, make sure to match each call to pushScope() with a call to popScope().
 */
-class SymbolTable: private boost::noncopyable
+class SymbolTable:
+  private boost::noncopyable
 {
 
   friend class SymbolTableTest;

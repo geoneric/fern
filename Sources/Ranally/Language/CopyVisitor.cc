@@ -43,7 +43,7 @@ boost::shared_ptr<ScriptVertex> const& CopyVisitor::scriptVertex() const
 // }
 
 void CopyVisitor::visitStatements(
-  StatementVertices const& statements)
+  StatementVertices& statements)
 {
   assert(_statements.empty());
 

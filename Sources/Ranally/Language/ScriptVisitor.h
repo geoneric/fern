@@ -42,7 +42,7 @@ private:
   UnicodeString    indentation         () const;
 
   void             visitStatements     (
-                             language::StatementVertices const& statements);
+                                  language::StatementVertices& statements);
 
   void             visitExpressions    (
                              language::ExpressionVertices const& expressions);

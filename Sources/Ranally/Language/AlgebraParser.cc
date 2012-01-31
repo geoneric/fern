@@ -455,11 +455,10 @@ void writeAssignmentNode(
   // We don't support attributeref, subscription and slicing.
   assert(target->kind == Name_kind); // TODO Error handling.
 
-  xml += "<Assignment><Targets>";
+  xml += "<Assignment>";
   writeExpressionNode(target, xml);
-  xml += "</Targets><Expressions>";
   writeExpressionNode(value, xml);
-  xml += "</Expressions></Assignment>";
+  xml += "</Assignment>";
 }
 
 
