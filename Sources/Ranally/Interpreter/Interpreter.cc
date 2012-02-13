@@ -4,7 +4,6 @@
 #include "Ranally/Language/AnnotateVisitor.h"
 #include "Ranally/Language/ExecuteVisitor.h"
 #include "Ranally/Language/IdentifyVisitor.h"
-#include "Ranally/Language/OptimizeVisitor.h"
 #include "Ranally/Language/ScriptVertex.h"
 #include "Ranally/Language/ThreadVisitor.h"
 #include "Ranally/Language/ValidateVisitor.h"
@@ -99,17 +98,13 @@ void Interpreter::validate(
   result of parsing a script, without further processing.
 
   The folowing steps are performed:
-  - Validation (seee validate(language::ScriptVertexPtr const&).
-  - Optimization.
+  - Validation (see validate(language::ScriptVertexPtr const&).
   - Execution.
 */
 void Interpreter::execute(
   language::ScriptVertexPtr const& tree)
 {
   validate(tree);
-
-  language::OptimizeVisitor optimizeVisitor;
-  tree->Accept(optimizeVisitor);
 
   language::ExecuteVisitor executeVisitor;
   tree->Accept(executeVisitor);

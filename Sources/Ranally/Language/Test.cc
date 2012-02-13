@@ -66,7 +66,7 @@ boost::unit_test::test_suite* init_unit_test_suite(
   test->add(AnnotateVisitorTest::suite());
   test->add(IdentifyVisitorTest::suite());
   test->add(ValidateVisitorTest::suite());
-  test->add(OptimizeVisitorTest::suite());
+  // test->add(OptimizeVisitorTest::suite());
   test->add(ExecuteVisitorTest::suite());
 
   test->add(DotVisitorTest::suite());

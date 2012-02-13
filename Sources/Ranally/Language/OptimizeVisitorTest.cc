@@ -41,7 +41,6 @@ void OptimizeVisitorTest::testRemoveTemporaryIdentifier()
   // one expression, are removed.
   {
     // This script should be rewritten in the tree as d = 5.
-std::cout << "--------------------------" << std::endl;
     script = UnicodeString(
       "a = 5\n"
       "d = a\n");
@@ -59,10 +58,11 @@ std::cout << "--------------------------" << std::endl;
     );
     tree = _interpreter.parseString(script);
     _interpreter.annotate(tree);
+std::cout << "--------------------------" << std::endl;
     tree->Accept(_optimizeVisitor);
     tree->Accept(_scriptVisitor);
-    std::cout << ranally::util::encodeInUTF8(_scriptVisitor.script()) << std::endl;
-    BOOST_CHECK(_scriptVisitor.script() == UnicodeString("e = 5"));
+std::cout << ranally::util::encodeInUTF8(_scriptVisitor.script()) << std::endl;
+    BOOST_CHECK(_scriptVisitor.script() == UnicodeString("e = 5\n"));
 
     return;
 

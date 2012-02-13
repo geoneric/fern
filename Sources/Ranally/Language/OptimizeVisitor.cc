@@ -2,6 +2,7 @@
 #include "Ranally/Language/AssignmentVertex.h"
 #include "Ranally/Util/String.h"
 #include <boost/range/algorithm/reverse.hpp>
+#include <boost/range/algorithm/sort.hpp>
 
 
 
@@ -55,18 +56,19 @@ void OptimizeVisitor::visitStatements(
 
       boost::range::reverse(statementsToErase);
       for(size_t i = 0; i < statementsToErase.size(); ++i) {
-        statements.erase(statements.begin() + i);
+        statements.erase(statements.begin() + statementsToErase[i]);
       }
 
+      boost::range::sort(superfluousStatementsToErase);
       boost::range::reverse(superfluousStatementsToErase);
       for(size_t i = 0; i < superfluousStatementsToErase.size(); ++i) {
-        _superfluousStatements.erase(_superfluousStatements.begin() + i);
+        _superfluousStatements.erase(_superfluousStatements.begin() +
+          superfluousStatementsToErase[i]);
       }
 
       break;
     }
   }
-
 }
 
 
@@ -82,6 +84,7 @@ void OptimizeVisitor::Visit(
       std::map<ExpressionVertex const*, ExpressionVertexPtr>::iterator it =
         _inlineExpressions.find(vertex.expression().get());
       if(it != _inlineExpressions.end()) {
+std::cout << "inserting " << ranally::util::encodeInUTF8((*it).second->name()) << std::endl;
         // Schedule the defining statement for removal.
         _inlinedExpressions.push_back((*it).second);
         vertex.setExpression((*it).second);
@@ -122,8 +125,8 @@ void OptimizeVisitor::Visit(
 
         // Register the value of the defining expression for inlining at the
         // use location.
-        registerExpressionForInlining(definitions[0]->uses()[0],
-          definitions[0]->value());
+std::cout << "register inlining of " << ranally::util::encodeInUTF8(vertex.name()) << " by " << ranally::util::encodeInUTF8(definitions[0]->value()->name()) << std::endl;
+        registerExpressionForInlining(&vertex, definitions[0]->value());
       }
 
       break;
@@ -139,21 +142,30 @@ void OptimizeVisitor::Visit(
 void OptimizeVisitor::Visit(
   ScriptVertex& vertex)
 {
-  assert(_inlineExpressions.empty());
-  assert(_inlinedExpressions.empty());
-  assert(_superfluousStatements.empty());
+  bool inlinedExpressions;
 
-  // First visit all use locations of name vertices.
-  _mode = Using;
-  Visitor::Visit(vertex);
+  do {
+std::cout << "visit script" << std::endl;
+    assert(_inlineExpressions.empty());
+    assert(_inlinedExpressions.empty());
+    assert(_superfluousStatements.empty());
 
-  // Now visit all defining location of name vertices.
-  _mode = Defining;
-  Visitor::Visit(vertex);
+    // First visit all use locations of name vertices.
+    _mode = Using;
+    Visitor::Visit(vertex);
 
-  assert(_inlineExpressions.empty());
-  assert(_inlinedExpressions.empty());
-  assert(_superfluousStatements.empty());
+    // If expressions have been inlined, then the script will change. We need
+    // to repeat the visit until the script is stable.
+    inlinedExpressions = !_inlinedExpressions.empty();
+
+    // Now visit all defining locations of name vertices.
+    _mode = Defining;
+    Visitor::Visit(vertex);
+
+    assert(_inlineExpressions.empty());
+    assert(_inlinedExpressions.empty());
+    assert(_superfluousStatements.empty());
+  } while(inlinedExpressions);
 }
 
 } // namespace language
