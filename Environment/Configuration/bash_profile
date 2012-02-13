@@ -7,9 +7,9 @@
 # - RANALLY
 
 # Set branches.
-export DEVENV_BRANCH=trunk
+export DEVENV_BRANCH=master
 
-_devEnv="$DEVELOPMENT_ROOT/projects/DevEnv-$DEVENV_BRANCH"
+_devEnv="$DEVELOPMENT_ROOT/projects/DevEnv"
 _personalConfiguration="$_devEnv/configuration/personal/Kor"
 
 # Load common settings and utility functions.
