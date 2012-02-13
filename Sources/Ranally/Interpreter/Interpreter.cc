@@ -83,8 +83,6 @@ void Interpreter::annotate(
 void Interpreter::validate(
   language::ScriptVertexPtr const& tree)
 {
-  // - Annotate
-  // - Validate
   annotate(tree);
   language::ValidateVisitor validateVisitor;
   tree->Accept(validateVisitor);
