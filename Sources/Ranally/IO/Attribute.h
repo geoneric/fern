@@ -2,21 +2,25 @@
 #define INCLUDED_RANALLY_ATTRIBUTE
 
 #include <boost/noncopyable.hpp>
+#include <boost/scoped_ptr.hpp>
 
 
 
 namespace ranally {
 
+class Feature;
+class Value;
+
 //! Class for attribute instances.
 /*!
-  An attribute is a either:
+  An attribute is either:
 
   * An uncertain spatio-temporal description of the attribute's variation in
     values, or a generalization thereof (information about the uncertainty,
     spatial variation, and/or temporal variation is missing). Spatial variation
     can be described in 1D, 2D and 3D. This is simply called the attribute's
-    value.
-  * An uncertain spatio-temporal description of the attribute's geometry (or
+    value, even though the values may well take gigabytes of storage space.
+  * An uncertain spatio-temporal description of the attribute's domain (or
     a generalization thereof), with an attribute attached. This is what makes
     the definition recursive.
 
@@ -57,7 +61,7 @@ namespace ranally {
 
   \sa        .
   \todo      Because of the risk of trying to boil the ocean, we forget about
-             uncertainty in the attribute's spatio-temporal geometry.
+             uncertainty in the attribute's spatio-temporal geometry, for now.
 */
 class Attribute:
   private boost::noncopyable
@@ -67,13 +71,24 @@ class Attribute:
 
 public:
 
-                   Attribute               ();
+                   Attribute           ();
 
-  /* virtual */    ~Attribute              ();
+  /* virtual */    ~Attribute          ();
 
 protected:
 
 private:
+
+  // TODO Is there a data structure that asserts that only one of the
+  //      values for _value and _feature is set? _valueOrFeature
+  //      Or do we allow values at all levels in the hierarchy (aggregates,
+  //      pyramids, ...)?
+
+  //! Feature containing geometry and attribute.
+  boost::scoped_ptr<Feature> _feature;
+
+  //! Attribute's value.
+  boost::scoped_ptr<Value> _value;
 
 };
 

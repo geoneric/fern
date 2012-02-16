@@ -1,5 +1,11 @@
+INCLUDE_DIRECTORIES(
+  ${CMAKE_CURRENT_SOURCE_DIR}/../..
+)
 SET(SOURCES
-  IO.cc
+  Attribute.cc
+  Domain.cc
+  Feature.cc
+  Value.cc
 )
 ADD_LIBRARY(RanallyIO
   ${SOURCES}
