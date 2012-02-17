@@ -34,11 +34,11 @@ class Value:
 
 public:
 
-                   Value               ();
-
-  /* virtual */    ~Value              ();
+  virtual          ~Value              ();
 
 protected:
+
+                   Value               ();
 
 private:
 

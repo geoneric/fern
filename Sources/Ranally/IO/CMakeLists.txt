@@ -5,6 +5,8 @@ SET(SOURCES
   Attribute.cc
   Domain.cc
   Feature.cc
+  RasterAttribute.cc
+  RasterValue.cc
   Value.cc
 )
 ADD_LIBRARY(RanallyIO

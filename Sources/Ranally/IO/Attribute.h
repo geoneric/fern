@@ -9,7 +9,6 @@
 namespace ranally {
 
 class Feature;
-class Value;
 
 //! Class for attribute instances.
 /*!
@@ -71,11 +70,11 @@ class Attribute:
 
 public:
 
-                   Attribute           ();
-
-  /* virtual */    ~Attribute          ();
+  virtual          ~Attribute          ();
 
 protected:
+
+                   Attribute           ();
 
 private:
 
@@ -86,9 +85,6 @@ private:
 
   //! Feature containing geometry and attribute.
   boost::scoped_ptr<Feature> _feature;
-
-  //! Attribute's value.
-  boost::scoped_ptr<Value> _value;
 
 };
 

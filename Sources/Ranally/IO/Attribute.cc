@@ -1,6 +1,5 @@
 #include "Ranally/IO/Attribute.h"
 #include "Ranally/IO/Feature.h"
-#include "Ranally/IO/Value.h"
 
 
 
@@ -8,8 +7,7 @@ namespace ranally {
 
 Attribute::Attribute()
 
-  : _feature(),
-    _value()
+  : _feature()
 
 {
 }
