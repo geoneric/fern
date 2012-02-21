@@ -1,0 +1,17 @@
+CONFIGURE_FILE(
+  ${CMAKE_CURRENT_SOURCE_DIR}/conf.py.in
+  ${CMAKE_CURRENT_SOURCE_DIR}/conf.py
+)
+ADD_CUSTOM_COMMAND(
+  OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/_build/html/index.html
+  COMMAND
+    make -C ${CMAKE_CURRENT_SOURCE_DIR} html
+  DEPENDS
+    ${CMAKE_CURRENT_SOURCE_DIR}/conf.py
+  COMMENT "Generating DataModel documentation" VERBATIM
+)
+ADD_CUSTOM_TARGET(DataModel ALL
+  DEPENDS
+    ${CMAKE_CURRENT_SOURCE_DIR}/_build/html/index.html
+)
+
