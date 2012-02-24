@@ -1,0 +1,35 @@
+#ifndef INCLUDED_RANALLY_IO_HDF5CLIENT
+#define INCLUDED_RANALLY_IO_HDF5CLIENT
+
+#include <boost/noncopyable.hpp>
+
+
+
+namespace ranally {
+namespace io {
+
+//! Class that encapsulates the configuration of the HDF5 library for the HDF5 client.
+/*!
+  In case an error occurs in one of HDF5's C++ API calls, an exception is
+  thrown, instead of a message being printed.
+*/
+class HDF5Client:
+  private boost::noncopyable
+{
+
+  friend class HDF5ClientTest;
+
+public:
+
+                   HDF5Client          ();
+
+                   ~HDF5Client         ();
+
+private:
+
+};
+
+} // namespace io
+} // namespace ranally
+
+#endif

@@ -14,9 +14,8 @@ ADD_LIBRARY(RanallyInterpreter
   ${SOURCES}
 )
 ADD_DEPENDENCIES(RanallyInterpreter
-  # During the build of this target, source files are generated. At least one
-  # of these files is included by the interpreter's source (Operation-xml.h).
-  RanallyOperation
+  # This header is generated in the Operation project.
+  Operation-xml.h
 )
 SET(TEST_SOURCES
   InterpreterTest.cc

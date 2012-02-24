@@ -3,8 +3,13 @@ INCLUDE_DIRECTORIES(
 )
 SET(SOURCES
   Attribute.cc
+  DataSet.cc
+  DataSetDriver.cc
   Domain.cc
   Feature.cc
+  HDF5Client.cc
+  HDF5DataSet.cc
+  HDF5DataSetDriver.cc
   RasterAttribute.cc
   RasterValue.cc
   Value.cc
@@ -12,12 +17,19 @@ SET(SOURCES
 ADD_LIBRARY(RanallyIO
   ${SOURCES}
 )
-# SET(TEST_SOURCES
-#   Test.cc
-# )
-# ADD_EXECUTABLE(testRanallyIO
-#   ${TEST_SOURCES}
-# )
-# TARGET_LINK_LIBRARIES(testRanallyIO
-#   RanallyIO
-# )
+SET(TEST_SOURCES
+  HDF5DataSetDriverTest.cc
+  HDF5DataSetTest.cc
+  Test.cc
+)
+ADD_EXECUTABLE(testRanallyIO
+  ${TEST_SOURCES}
+)
+TARGET_LINK_LIBRARIES(testRanallyIO
+  RanallyIO
+  RanallyUtil
+  ${ICU_LIBRARIES}
+  ${HDF5_LIBRARIES}
+  ${BOOST_FILESYSTEM_LIBRARY}
+  ${BOOST_SYSTEM_LIBRARY}
+)

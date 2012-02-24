@@ -22,6 +22,7 @@ INCLUDE(Site)
 
 INCLUDE(UseBoost)
 INCLUDE(UseExpat)
+INCLUDE(UseHdf5)
 INCLUDE(UseIcu)
 INCLUDE(UseLoki)
 INCLUDE(UsePython)
@@ -36,6 +37,7 @@ ADD_CUSTOM_TARGET(tests ALL
   COMMAND testRanallyAlgorithm
   COMMAND testRanallyOperation
   COMMAND testRanallyLanguage
+  COMMAND testRanallyIO
   COMMAND testRanallyInterpreter
 )
 
