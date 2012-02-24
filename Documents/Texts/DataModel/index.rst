@@ -19,6 +19,8 @@ Contents:
    Introduction
    Ontology
    DataModel
+   ModelingLanguage
+   Examples
 
 
 Indices and tables
