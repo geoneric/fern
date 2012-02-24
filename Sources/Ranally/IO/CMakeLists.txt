@@ -10,12 +10,20 @@ SET(SOURCES
   HDF5Client.cc
   HDF5DataSet.cc
   HDF5DataSetDriver.cc
+  OGRClient.cc
+  OGRDataSet.cc
+  OGRDataSetDriver.cc
+  PointAttribute.cc
+  PointDomain.cc
+  PointFeature.cc
+  PointValue.cc
   PolygonAttribute.cc
   PolygonDomain.cc
   PolygonFeature.cc
   PolygonValue.cc
   RasterAttribute.cc
   RasterValue.cc
+  Util.cc
   Value.cc
 )
 ADD_LIBRARY(RanallyIO
@@ -24,6 +32,7 @@ ADD_LIBRARY(RanallyIO
 SET(TEST_SOURCES
   HDF5DataSetDriverTest.cc
   HDF5DataSetTest.cc
+  OGRDataSetDriverTest.cc
   Test.cc
 )
 ADD_EXECUTABLE(testRanallyIO
@@ -34,6 +43,7 @@ TARGET_LINK_LIBRARIES(testRanallyIO
   RanallyUtil
   ${ICU_LIBRARIES}
   ${HDF5_LIBRARIES}
+  ${GDAL_LIBRARIES}
   ${BOOST_FILESYSTEM_LIBRARY}
   ${BOOST_SYSTEM_LIBRARY}
 )

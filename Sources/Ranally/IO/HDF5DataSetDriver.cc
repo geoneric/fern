@@ -48,16 +48,17 @@ HDF5DataSet* HDF5DataSetDriver::create(
   HDF5DataSet* result = 0;
 
   try {
-    H5::H5File file(ranally::util::encodeInUTF8(name).c_str(), H5F_ACC_TRUNC);
-
-    result = new HDF5DataSet(name);
+    H5::H5File* file = new H5::H5File(
+      ranally::util::encodeInUTF8(name).c_str(), H5F_ACC_TRUNC);
+    file->flush(H5F_SCOPE_GLOBAL);
+    result = new HDF5DataSet(name, file);
   }
   catch(H5::FileIException const&) {
     // TODO Raise exception.
-    assert(result == 0);
-    result = 0;
+    throw std::string("cannot create hdf5 dataset");
   }
 
+  assert(exists(name));
   return result;
 }
 
@@ -72,7 +73,7 @@ void HDF5DataSetDriver::remove(
     }
     catch(...) {
       // TODO Raise exception.
-      throw;
+      throw std::string("cannot remove hdf5 dataset");
     }
   }
 }
@@ -82,7 +83,21 @@ void HDF5DataSetDriver::remove(
 HDF5DataSet* HDF5DataSetDriver::open(
   UnicodeString const& name) const
 {
-  return new HDF5DataSet(name);
+  HDF5DataSet* result = 0;
+
+  try {
+    H5::H5File* file = new H5::H5File(
+      ranally::util::encodeInUTF8(name).c_str(), H5F_ACC_RDONLY);
+
+    result = new HDF5DataSet(name, file);
+  }
+  catch(H5::FileIException const&) {
+    // TODO Raise exception.
+    throw std::string("cannot open hdf5 file");
+  }
+
+  assert(result);
+  return result;
 }
 
 } // namespace io

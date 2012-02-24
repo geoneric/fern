@@ -27,6 +27,8 @@ public:
 
 private:
 
+  // Store values per polygon feature id.
+
   // This class must provide clients with value type information and a template
   // function to get at the collection with correctly typed values. This class
   // itself must not be a template.

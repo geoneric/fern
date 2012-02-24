@@ -15,6 +15,7 @@ PolygonAttribute::PolygonAttribute(
     _values()
 
 {
+  assert(domain);
 }
 
 

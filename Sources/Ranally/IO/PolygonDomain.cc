@@ -4,12 +4,14 @@
 
 namespace ranally {
 
-PolygonDomain::PolygonDomain()
+PolygonDomain::PolygonDomain(
+  PolygonsPtr const& polygons)
 
   : Domain(),
-    _polygons()
+    _polygons(polygons)
 
 {
+  assert(_polygons);
 }
 
 

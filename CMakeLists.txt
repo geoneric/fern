@@ -25,6 +25,7 @@ INCLUDE(UseExpat)
 INCLUDE(UseHdf5)
 INCLUDE(UseIcu)
 INCLUDE(UseLoki)
+INCLUDE(UseGdal)
 INCLUDE(UsePython)
 INCLUDE(UseXsd)
 

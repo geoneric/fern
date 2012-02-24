@@ -1,9 +1,13 @@
 #ifndef INCLUDED_RANALLY_IO_HDF5DATASET
 #define INCLUDED_RANALLY_IO_HDF5DATASET
 
+#include <boost/scoped_ptr.hpp>
 #include "Ranally/IO/DataSet.h"
 
 
+namespace H5 {
+  class H5File;
+} // namespace H5
 
 namespace ranally {
 namespace io {
@@ -22,11 +26,14 @@ class HDF5DataSet:
 
 public:
 
-                   HDF5DataSet         (UnicodeString const& name);
+                   HDF5DataSet         (UnicodeString const& name,
+                                        H5::H5File* file);
 
                    ~HDF5DataSet        ();
 
 private:
+
+  boost::scoped_ptr<H5::H5File> _file;
 
 };
 

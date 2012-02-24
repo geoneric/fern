@@ -7,6 +7,7 @@ ADD_EXECUTABLE(ranally
   ConvertCommand.cc
   DescribeCommand.cc
   ExecuteCommand.cc
+  ImportCommand.cc
   Ranally.cc
 )
 ADD_DEPENDENCIES(ranally

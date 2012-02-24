@@ -21,9 +21,11 @@ class HDF5Client:
 
 public:
 
-                   HDF5Client          ();
+  virtual          ~HDF5Client         ();
 
-                   ~HDF5Client         ();
+protected:
+
+                   HDF5Client          ();
 
 private:
 

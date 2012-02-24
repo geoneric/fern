@@ -1,5 +1,5 @@
-#ifndef INCLUDED_RANALLY_POLYGONDOMAIN
-#define INCLUDED_RANALLY_POLYGONDOMAIN
+#ifndef INCLUDED_RANALLY_POINTDOMAIN
+#define INCLUDED_RANALLY_POINTDOMAIN
 
 #include "Ranally/IO/Domain.h"
 #include "Ranally/IO/Geometry.h"
@@ -14,21 +14,21 @@ namespace ranally {
 
   \sa        .
 */
-class PolygonDomain:
+class PointDomain:
   public Domain
 {
 
-  friend class PolygonDomainTest;
+  friend class PointDomainTest;
 
 public:
 
-                   PolygonDomain       (PolygonsPtr const& polygons);
+                   PointDomain         (PointsPtr const& point);
 
-                   ~PolygonDomain      ();
+                   ~PointDomain        ();
 
 private:
 
-  PolygonsPtr      _polygons;
+  PointsPtr        _points;
 
 };
 
