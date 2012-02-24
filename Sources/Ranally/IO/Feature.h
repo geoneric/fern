@@ -2,14 +2,10 @@
 #define INCLUDED_RANALLY_FEATURE
 
 #include <boost/noncopyable.hpp>
-#include <boost/scoped_ptr.hpp>
 
 
 
 namespace ranally {
-
-class Attribute;
-class Domain;
 
 //! Class for Feature instances combining Domain with an Attribute.
 /*!
@@ -23,17 +19,13 @@ class Feature:
 
 public:
 
-                   Feature             ();
-
-  /* virtual */    ~Feature            ();
+  virtual          ~Feature            ();
 
 protected:
 
+                   Feature             ();
+
 private:
-
-  boost::scoped_ptr<Domain> _domain;
-
-  boost::scoped_ptr<Attribute> _attribute;
 
 };
 

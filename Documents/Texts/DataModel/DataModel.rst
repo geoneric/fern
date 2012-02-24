@@ -47,13 +47,13 @@ Below is a very high level graph of the data model as described in this document
      feature1 -> attribute1 [label="*"];
      attribute1 -> domain1 [label="1"];
      attribute1 -> feature2 [label="?", color="grey60", fontcolor="grey60"];
-     attribute1 -> value1 [label="? (if feature) | 1 (if no feature)"];
+     attribute1 -> value1 [label="? (if feature) | + (if !feature)"];
 
      feature2 -> domain2 [label="1", color="grey60", fontcolor="grey60"];
      feature2 -> attribute2 [label="*", color="grey60", fontcolor="grey60"];
      attribute2 -> domain2 [label="1", color="grey60", fontcolor="grey60"];
      attribute2 -> feature3 [label="?", color="grey90", fontcolor="grey90"];
-     attribute2 -> value2 [label="? (if feature) | 1 (if no feature)", color="grey60", fontcolor="grey60"];
+     attribute2 -> value2 [label="? (if feature) | + (if !feature)", color="grey60", fontcolor="grey60"];
   }
 
 What folows is a description of each of the classes of information that are part of the data model.

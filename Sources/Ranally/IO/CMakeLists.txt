@@ -10,6 +10,10 @@ SET(SOURCES
   HDF5Client.cc
   HDF5DataSet.cc
   HDF5DataSetDriver.cc
+  PolygonAttribute.cc
+  PolygonDomain.cc
+  PolygonFeature.cc
+  PolygonValue.cc
   RasterAttribute.cc
   RasterValue.cc
   Value.cc

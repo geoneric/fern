@@ -21,11 +21,11 @@ class Domain:
 
 public:
 
-                   Domain              ();
-
-  /* virtual */    ~Domain             ();
+  virtual          ~Domain             ();
 
 protected:
+
+                   Domain              ();
 
 private:
 

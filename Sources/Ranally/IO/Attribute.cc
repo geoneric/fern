@@ -8,11 +8,6 @@
 namespace ranally {
 
 Attribute::Attribute()
-
-  : _domain(),
-    _feature(),
-    _value()
-
 {
 }
 
