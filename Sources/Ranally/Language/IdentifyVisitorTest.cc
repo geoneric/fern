@@ -6,6 +6,7 @@
 #include "Ranally/Language/IfVertex.h"
 #include "Ranally/Language/FunctionVertex.h"
 #include "Ranally/Language/NameVertex.h"
+#include "Ranally/Language/OperatorVertex.h"
 #include "Ranally/Language/ScriptVertex.h"
 
 
@@ -23,6 +24,8 @@ boost::unit_test::test_suite* IdentifyVisitorTest::suite()
     &IdentifyVisitorTest::testVisitAssignment, instance));
   suite->add(BOOST_CLASS_TEST_CASE(
     &IdentifyVisitorTest::testVisitIf, instance));
+  suite->add(BOOST_CLASS_TEST_CASE(
+    &IdentifyVisitorTest::testVisitReuseOfIdentifiers, instance));
 
   return suite;
 }
@@ -218,3 +221,104 @@ void IdentifyVisitorTest::testVisitIf()
   }
 }
 
+
+
+void IdentifyVisitorTest::testVisitReuseOfIdentifiers()
+{
+  boost::shared_ptr<ranally::language::ScriptVertex> tree;
+
+  {
+    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
+      "a = \"MyRaster\"\n"
+      "b = abs(a)\n"
+      "c = abs(b)\n"
+      "b = c + b\n"
+    )));
+
+    ranally::language::AssignmentVertex const* assignment1 =
+      dynamic_cast<ranally::language::AssignmentVertex const*>(
+        &(*tree->statements()[0]));
+    ranally::language::NameVertex const* vertexA1 =
+      dynamic_cast<ranally::language::NameVertex const*>(
+        &(*assignment1->target()));
+    BOOST_REQUIRE(assignment1);
+    BOOST_REQUIRE(vertexA1);
+
+    ranally::language::AssignmentVertex const* assignment2 =
+      dynamic_cast<ranally::language::AssignmentVertex const*>(
+        &(*tree->statements()[1]));
+    ranally::language::NameVertex const* vertexB1 =
+      dynamic_cast<ranally::language::NameVertex const*>(
+        &(*assignment2->target()));
+    ranally::language::FunctionVertex const* vertexAbs1 =
+      dynamic_cast<ranally::language::FunctionVertex const*>(
+        &(*assignment2->expression()));
+    ranally::language::NameVertex const* vertexA2 =
+      dynamic_cast<ranally::language::NameVertex const*>(
+        &(*vertexAbs1->expressions()[0]));
+    BOOST_REQUIRE(assignment2);
+    BOOST_REQUIRE(vertexB1);
+    BOOST_REQUIRE(vertexAbs1);
+    BOOST_REQUIRE(vertexA2);
+
+    ranally::language::AssignmentVertex const* assignment3 =
+      dynamic_cast<ranally::language::AssignmentVertex const*>(
+        &(*tree->statements()[2]));
+    ranally::language::NameVertex const* vertexC1 =
+      dynamic_cast<ranally::language::NameVertex const*>(
+        &(*assignment3->target()));
+    ranally::language::FunctionVertex const* vertexAbs2 =
+      dynamic_cast<ranally::language::FunctionVertex const*>(
+        &(*assignment3->expression()));
+    ranally::language::NameVertex const* vertexB2 =
+      dynamic_cast<ranally::language::NameVertex const*>(
+        &(*vertexAbs2->expressions()[0]));
+    BOOST_REQUIRE(assignment3);
+    BOOST_REQUIRE(vertexC1);
+    BOOST_REQUIRE(vertexAbs2);
+    BOOST_REQUIRE(vertexB2);
+
+    ranally::language::AssignmentVertex const* assignment4 =
+      dynamic_cast<ranally::language::AssignmentVertex const*>(
+        &(*tree->statements()[3]));
+    ranally::language::NameVertex const* vertexB4 =
+      dynamic_cast<ranally::language::NameVertex const*>(
+        &(*assignment4->target()));
+    ranally::language::OperatorVertex const* vertexPlus1 =
+      dynamic_cast<ranally::language::OperatorVertex const*>(
+        &(*assignment4->expression()));
+    ranally::language::NameVertex const* vertexC2 =
+      dynamic_cast<ranally::language::NameVertex const*>(
+        &(*vertexPlus1->expressions()[0]));
+    ranally::language::NameVertex const* vertexB3 =
+      dynamic_cast<ranally::language::NameVertex const*>(
+        &(*vertexPlus1->expressions()[1]));
+    BOOST_REQUIRE(assignment4);
+    BOOST_REQUIRE(vertexB4);
+    BOOST_REQUIRE(vertexPlus1);
+    BOOST_REQUIRE(vertexC2);
+    BOOST_REQUIRE(vertexB3);
+
+    tree->Accept(_visitor);
+
+    BOOST_REQUIRE_EQUAL(vertexA1->definitions().size(), 1u);
+    BOOST_CHECK_EQUAL(vertexA1->definitions()[0], vertexA1);
+    BOOST_REQUIRE_EQUAL(vertexA1->uses().size(), 1u);
+    BOOST_CHECK_EQUAL(vertexA1->uses()[0], vertexA2);
+
+    BOOST_REQUIRE_EQUAL(vertexB1->definitions().size(), 1u);
+    BOOST_CHECK_EQUAL(vertexB1->definitions()[0], vertexB1);
+    BOOST_REQUIRE_EQUAL(vertexB1->uses().size(), 2u);
+    BOOST_CHECK_EQUAL(vertexB1->uses()[0], vertexB2);
+    BOOST_CHECK_EQUAL(vertexB1->uses()[1], vertexB3);
+
+    BOOST_REQUIRE_EQUAL(vertexC1->definitions().size(), 1u);
+    BOOST_CHECK_EQUAL(vertexC1->definitions()[0], vertexC1);
+    BOOST_REQUIRE_EQUAL(vertexC1->uses().size(), 1u);
+    BOOST_CHECK_EQUAL(vertexC1->uses()[0], vertexC2);
+
+    BOOST_REQUIRE_EQUAL(vertexB4->definitions().size(), 1u);
+    BOOST_CHECK_EQUAL(vertexB4->definitions()[0], vertexB4);
+    BOOST_REQUIRE_EQUAL(vertexB4->uses().size(), 0u);
+  }
+}

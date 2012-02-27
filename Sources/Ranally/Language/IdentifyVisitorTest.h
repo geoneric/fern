@@ -30,6 +30,8 @@ public:
 
   void             testVisitIf         ();
 
+  void             testVisitReuseOfIdentifiers();
+
   static boost::unit_test::test_suite* suite();
 
 private:
