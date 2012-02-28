@@ -57,3 +57,5 @@ ADD_CUSTOM_TARGET(runTestRanallyIO
 # TODO Make runTestRanallyIO depend on test preprocessing.
 # TODO Update F9 vim binding to make the runTestRanallyIO target.
 
+# Copy PROJECT/Data/Tests/Point.json ${CMAKE_CURRENT_BINARY_DIR}
+
