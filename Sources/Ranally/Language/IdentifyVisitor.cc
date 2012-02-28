@@ -1,6 +1,7 @@
 #include "Ranally/Language/IdentifyVisitor.h"
 #include <boost/foreach.hpp>
 #include "Ranally/Language/Vertices.h"
+#include "Ranally/Util/String.h"
 
 
 
@@ -26,15 +27,19 @@ IdentifyVisitor::~IdentifyVisitor()
 void IdentifyVisitor::Visit(
   AssignmentVertex& vertex)
 {
-  // - Configure visitor, defining names.
-  // - Visit target.
-  _mode = Defining;
-  vertex.target()->Accept(*this);
+  // Order matters. First handle the uses, then the definitions. Otherwise
+  // the use in the expression might be connected to the definition in the same
+  // statement, in a = a + b, for example.
 
   // - Configure visitor, using names.
   // - Visit expression.
   _mode = Using;
   vertex.expression()->Accept(*this);
+
+  // - Configure visitor, defining names.
+  // - Visit target.
+  _mode = Defining;
+  vertex.target()->Accept(*this);
 }
 
 
