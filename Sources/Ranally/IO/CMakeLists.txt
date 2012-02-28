@@ -47,3 +47,13 @@ TARGET_LINK_LIBRARIES(testRanallyIO
   ${BOOST_FILESYSTEM_LIBRARY}
   ${BOOST_SYSTEM_LIBRARY}
 )
+ADD_CUSTOM_TARGET(runTestRanallyIO
+  testRanallyIO
+  DEPENDS testRanallyIO
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+  COMMENT "Running testRanallyIO unit tests" VERBATIM
+)
+# TODO Install test data in ${CMAKE_CURRENT_BINARY_DIR}.
+# TODO Make runTestRanallyIO depend on test preprocessing.
+# TODO Update F9 vim binding to make the runTestRanallyIO target.
+

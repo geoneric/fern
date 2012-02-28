@@ -30,6 +30,8 @@ public:
 
   UnicodeString const& name            () const;
 
+  virtual void     copy                (DataSet const& dataSet)=0;
+
 protected:
 
                    DataSet             (UnicodeString const& name);

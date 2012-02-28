@@ -29,6 +29,8 @@ public:
 
                    ~OGRDataSet         ();
 
+  void             copy                (DataSet const& dataSet);
+
 private:
 
   OGRDataSource*   _dataSource;

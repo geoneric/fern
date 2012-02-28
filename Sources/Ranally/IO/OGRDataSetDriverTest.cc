@@ -105,8 +105,8 @@ void OGRDataSetDriverTest::testRemove()
   // driver.remove(dataSetName);
   // BOOST_CHECK(!driver.exists(dataSetName));
 
-  // // TODO Test remove of read-only file.
-  // // TODO Test remove of non-existing file.
+  // TODO Test remove of read-only file.
+  // TODO Test remove of non-existing file.
 }
 
 
@@ -119,8 +119,10 @@ void OGRDataSetDriverTest::testOpen()
 
   (void)driver.create(dataSetName);
   // BOOST_REQUIRE(driver.exists(dataSetName));
-  // TODO DOn't create shapefiles on the fly in these tests. Create them
-  //      beforehand and then test them.
+  // TODO Don't create shapefiles on the fly in these tests. Create them
+  //      beforehand and then test them. Better yet, create them from the
+  //      CMakeLists.txt file. Find out how to create shapefiles from a
+  //      text representation. CSV, GeoJSON
 
   // boost::scoped_ptr<ranally::io::OGRDataSet> dataSet(driver.open(
   //   dataSetName));

@@ -25,6 +25,14 @@ OGRDataSet::~OGRDataSet()
   OGRDataSource::DestroyDataSource(_dataSource);
 }
 
+
+
+void OGRDataSet::copy(
+  DataSet const& /* dataSet */)
+{
+  assert(false);
+}
+
 } // namespace io
 } // namespace ranally
 

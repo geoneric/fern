@@ -31,6 +31,8 @@ public:
 
                    ~HDF5DataSet        ();
 
+  void             copy                (DataSet const& dataSet);
+
 private:
 
   boost::scoped_ptr<H5::H5File> _file;

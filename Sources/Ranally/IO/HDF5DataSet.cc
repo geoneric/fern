@@ -23,6 +23,14 @@ HDF5DataSet::~HDF5DataSet()
 {
 }
 
+
+
+void HDF5DataSet::copy(
+  DataSet const& dataSet)
+{
+  // TODO Copy stuff from \a dataSet. Don't hog the system.
+}
+
 } // namespace io
 } // namespace ranally
 
