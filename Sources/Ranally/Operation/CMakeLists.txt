@@ -82,4 +82,10 @@ TARGET_LINK_LIBRARIES(testRanallyOperation
 #   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 #   COMMAND testRanallyOperation
 # )
+ADD_CUSTOM_TARGET(runTestRanallyOperation
+  testRanallyOperation
+  DEPENDS testRanallyOperation
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+  COMMENT "Running testRanallyOperation unit tests" VERBATIM
+)
 

@@ -53,9 +53,12 @@ ADD_CUSTOM_TARGET(runTestRanallyIO
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
   COMMENT "Running testRanallyIO unit tests" VERBATIM
 )
-# TODO Install test data in ${CMAKE_CURRENT_BINARY_DIR}.
-# TODO Make runTestRanallyIO depend on test preprocessing.
-# TODO Update F9 vim binding to make the runTestRanallyIO target.
-
-# Copy PROJECT/Data/Tests/Point.json ${CMAKE_CURRENT_BINARY_DIR}
+ADD_CUSTOM_TARGET(copyTestData
+  ${CMAKE_COMMAND} -E copy Point.json ${CMAKE_CURRENT_BINARY_DIR}
+  WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Data/Tests
+  COMMENT "Copying test data" VERBATIM
+)
+ADD_DEPENDENCIES(runTestRanallyIO
+  copyTestData
+)
 

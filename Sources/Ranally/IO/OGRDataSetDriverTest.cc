@@ -45,10 +45,8 @@ OGRDataSetDriverTest::~OGRDataSetDriverTest()
 void OGRDataSetDriverTest::removeTestFiles()
 {
   std::vector<UnicodeString> dataSetNames;
-  dataSetNames.push_back("TestExists.shp");
   dataSetNames.push_back("TestCreate.shp");
   dataSetNames.push_back("TestRemove.shp");
-  dataSetNames.push_back("TestOpen.shp");
   ranally::io::OGRDataSetDriver driver;
 
   BOOST_FOREACH(UnicodeString const& dataSetName, dataSetNames) {
@@ -64,11 +62,17 @@ void OGRDataSetDriverTest::removeTestFiles()
 void OGRDataSetDriverTest::testExists()
 {
   ranally::io::OGRDataSetDriver driver;
-  UnicodeString dataSetName = "TestExists.shp";
-  BOOST_REQUIRE(!driver.exists(dataSetName));
+  UnicodeString dataSetName;
 
-  (void)driver.create(dataSetName);
-  // BOOST_CHECK(driver.exists(dataSetName));
+  {
+    dataSetName = "DoesNotExist";
+    BOOST_REQUIRE(!driver.exists(dataSetName));
+  }
+
+  {
+    dataSetName = "Point.json";
+    BOOST_REQUIRE(driver.exists(dataSetName));
+  }
 }
 
 
@@ -81,6 +85,9 @@ void OGRDataSetDriverTest::testCreate()
 
   boost::scoped_ptr<ranally::io::OGRDataSet> dataSet(driver.create(
     dataSetName));
+  // Since there are no layers in the data set, OGR hasn't written the data set
+  // to file yet.
+  // TODO Add some features.
   // BOOST_CHECK(driver.exists(dataSetName));
   BOOST_CHECK(dataSet);
   BOOST_CHECK(dataSet->name() == dataSetName);
@@ -95,6 +102,7 @@ void OGRDataSetDriverTest::testCreate()
 
 void OGRDataSetDriverTest::testRemove()
 {
+  // TODO
   // ranally::io::OGRDataSetDriver driver;
   // UnicodeString dataSetName = "TestRemove.hdf5";
   // BOOST_REQUIRE(!driver.exists(dataSetName));
@@ -114,20 +122,17 @@ void OGRDataSetDriverTest::testRemove()
 void OGRDataSetDriverTest::testOpen()
 {
   ranally::io::OGRDataSetDriver driver;
-  UnicodeString dataSetName = "TestOpen.shp";
-  BOOST_REQUIRE(!driver.exists(dataSetName));
+  UnicodeString dataSetName;
 
-  (void)driver.create(dataSetName);
-  // BOOST_REQUIRE(driver.exists(dataSetName));
-  // TODO Don't create shapefiles on the fly in these tests. Create them
-  //      beforehand and then test them. Better yet, create them from the
-  //      CMakeLists.txt file. Find out how to create shapefiles from a
-  //      text representation. CSV, GeoJSON
+  {
+    dataSetName = "Point.json";
+    BOOST_REQUIRE(driver.exists(dataSetName));
 
-  // boost::scoped_ptr<ranally::io::OGRDataSet> dataSet(driver.open(
-  //   dataSetName));
-  // BOOST_CHECK(dataSet);
-  // BOOST_CHECK(dataSet->name() == dataSetName);
+    boost::scoped_ptr<ranally::io::OGRDataSet> dataSet(driver.open(
+      dataSetName));
+    BOOST_CHECK(dataSet);
+    BOOST_CHECK(dataSet->name() == dataSetName);
+  }
 
   // TODO Test opening non-existing data set.
   // TODO Test opening read-only data set.
