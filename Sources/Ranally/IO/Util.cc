@@ -23,8 +23,8 @@ enum OpenMode {
 
 
 boost::shared_ptr<DataSet> openDataSet(
-  UnicodeString const& dataSetName,
-  OpenMode openMode)
+  UnicodeString const& /* dataSetName */,
+  OpenMode /* openMode */)
 {
   boost::shared_ptr<DataSet> dataset;
 

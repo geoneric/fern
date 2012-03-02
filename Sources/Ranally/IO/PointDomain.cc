@@ -7,7 +7,7 @@ namespace ranally {
 PointDomain::PointDomain(
   PointsPtr const& points)
 
-  : Domain(),
+  : SpatialDomain(Domain::PointDomain),
     _points(points)
 
 {

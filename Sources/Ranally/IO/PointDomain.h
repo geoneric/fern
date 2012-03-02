@@ -1,8 +1,8 @@
 #ifndef INCLUDED_RANALLY_POINTDOMAIN
 #define INCLUDED_RANALLY_POINTDOMAIN
 
-#include "Ranally/IO/Domain.h"
 #include "Ranally/IO/Geometry.h"
+#include "Ranally/IO/SpatialDomain.h"
 
 
 
@@ -15,7 +15,7 @@ namespace ranally {
   \sa        .
 */
 class PointDomain:
-  public Domain
+  public SpatialDomain
 {
 
   friend class PointDomainTest;

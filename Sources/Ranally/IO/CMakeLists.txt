@@ -13,6 +13,7 @@ SET(SOURCES
   OGRClient.cc
   OGRDataSet.cc
   OGRDataSetDriver.cc
+  OGRFeatureLayer.cc
   PointAttribute.cc
   PointDomain.cc
   PointFeature.cc
@@ -23,6 +24,9 @@ SET(SOURCES
   PolygonValue.cc
   RasterAttribute.cc
   RasterValue.cc
+  SpatialDomain.cc
+  SpatioTemporalDomain.cc
+  TemporalDomain.cc
   Util.cc
   Value.cc
 )

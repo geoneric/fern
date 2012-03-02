@@ -7,7 +7,7 @@ namespace ranally {
 PolygonDomain::PolygonDomain(
   PolygonsPtr const& polygons)
 
-  : Domain(),
+  : SpatialDomain(Domain::PolygonDomain),
     _polygons(polygons)
 
 {

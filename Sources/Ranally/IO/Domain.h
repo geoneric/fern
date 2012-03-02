@@ -21,13 +21,27 @@ class Domain:
 
 public:
 
+  enum Type {
+    PointDomain,
+    PolygonDomain,
+    UnknownDomainType
+  };
+
   virtual          ~Domain             ();
+
+  Type             type                () const;
+
+  virtual bool     isSpatial           () const=0;
+
+  virtual bool     isTemporal          () const=0;
 
 protected:
 
-                   Domain              ();
+                   Domain              (Type type);
 
 private:
+
+  Type             _type;
 
 };
 

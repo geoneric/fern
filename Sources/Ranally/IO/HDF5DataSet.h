@@ -31,11 +31,17 @@ public:
 
                    ~HDF5DataSet        ();
 
+  size_t           nrFeatures          () const;
+
+  Feature*         feature             (size_t i) const;
+
   void             copy                (DataSet const& dataSet);
 
 private:
 
   boost::scoped_ptr<H5::H5File> _file;
+
+  void             copy                (Feature const& feature);
 
 };
 

@@ -4,7 +4,11 @@
 
 namespace ranally {
 
-Domain::Domain()
+Domain::Domain(
+  Type type)
+
+  : _type(type)
+
 {
 }
 
@@ -12,6 +16,13 @@ Domain::Domain()
 
 Domain::~Domain()
 {
+}
+
+
+
+Domain::Type Domain::type() const
+{
+  return _type;
 }
 
 } // namespace ranally

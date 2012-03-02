@@ -1,8 +1,8 @@
 #ifndef INCLUDED_RANALLY_POLYGONDOMAIN
 #define INCLUDED_RANALLY_POLYGONDOMAIN
 
-#include "Ranally/IO/Domain.h"
 #include "Ranally/IO/Geometry.h"
+#include "Ranally/IO/SpatialDomain.h"
 
 
 
@@ -15,7 +15,7 @@ namespace ranally {
   \sa        .
 */
 class PolygonDomain:
-  public Domain
+  public SpatialDomain
 {
 
   friend class PolygonDomainTest;

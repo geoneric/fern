@@ -10,9 +10,13 @@ class OGRDataSource;
 namespace ranally {
 namespace io {
 
-//! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
+class OGRFeatureLayer;
+
+//! Class representing an OGR data set with feature geometries and attributes.
 /*!
-  longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
+  The OGRDataSet class is comparable with the OGRDataSource class as defined
+  in OGR's API. An OGRLayer as used in OGR is what we call a Feature in
+  Ranally.
 
   \sa        .
 */
@@ -29,11 +33,19 @@ public:
 
                    ~OGRDataSet         ();
 
+  size_t           nrFeatures          () const;
+
+  Feature*         feature             (size_t i) const;
+
   void             copy                (DataSet const& dataSet);
 
 private:
 
   OGRDataSource*   _dataSource;
+
+  void             copy                (Feature const& feature);
+
+  Feature*         feature             (OGRFeatureLayer const& layer) const;
 
 };
 

@@ -7,6 +7,9 @@
 
 
 namespace ranally {
+
+class Feature;
+
 namespace io {
 
 //! Abstract base class for data sets.
@@ -30,6 +33,22 @@ public:
 
   UnicodeString const& name            () const;
 
+  //! Return the number of features available in the data set.
+  /*!
+    \return    Number of features.
+  */
+  virtual size_t   nrFeatures          () const=0;
+
+  //! Return feature with id \a i.
+  /*!
+    \return    Feature.
+  */
+  virtual Feature* feature             (size_t i) const=0;
+
+  //! Copy all features from \a dataSet.
+  /*!
+    \param     dataSet Data set to copy.
+  */
   virtual void     copy                (DataSet const& dataSet)=0;
 
 protected:
@@ -40,6 +59,12 @@ private:
 
   //! Name of data set.
   UnicodeString    _name;
+
+  //! Copy \a feature.
+  /*!
+    \param     feature Feature to copy.
+  */
+  virtual void     copy                (Feature const& feature)=0;
 
 };
 
