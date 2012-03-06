@@ -6,6 +6,7 @@
 #include <boost/test/unit_test_suite.hpp>
 #include "Ranally/Util/String.h"
 #include "Ranally/IO/OGRDataSetDriver.h"
+#include "Ranally/IO/PointFeature.h"
 
 
 
@@ -87,8 +88,15 @@ void OGRDataSetDriverTest::testCreate()
     dataSetName));
   // Since there are no layers in the data set, OGR hasn't written the data set
   // to file yet.
-  // TODO Add some features.
-  // BOOST_CHECK(driver.exists(dataSetName));
+  BOOST_CHECK(!driver.exists(dataSetName));
+
+  // Add a feature.
+  ranally::PointDomainPtr domain;
+  ranally::PointFeaturePtr feature(new ranally::PointFeature(domain));
+  dataSet->addFeature(dynamic_cast<ranally::Feature const*>(feature.get()));
+
+  // Now it should work.
+  BOOST_CHECK(driver.exists(dataSetName));
   BOOST_CHECK(dataSet);
   BOOST_CHECK(dataSet->name() == dataSetName);
 

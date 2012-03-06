@@ -28,7 +28,7 @@ class OGRFeatureLayer:
 
 public:
 
-                   OGRFeatureLayer     (OGRLayer* layer);
+                   OGRFeatureLayer     (OGRLayer* const layer);
 
                    ~OGRFeatureLayer    ();
 
@@ -39,7 +39,7 @@ public:
 
 private:
 
-  OGRLayer*        _layer;
+  OGRLayer* const  _layer;
 
   boost::shared_ptr<Domain> _domain;
 

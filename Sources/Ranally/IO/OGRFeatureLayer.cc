@@ -1,6 +1,7 @@
 #include "Ranally/IO/OGRFeatureLayer.h"
 #include "ogrsf_frmts.h"
-#include "Ranally/IO/Domain.h"
+#include "Ranally/IO/PointDomain.h"
+#include "Ranally/IO/PolygonDomain.h"
 
 
 
@@ -11,18 +12,22 @@ namespace {
 Domain::Type domainType(
   OGRwkbGeometryType geometryType)
 {
-  Domain::Type domainType = Domain::UnknownDomainType;
+  Domain::Type domainType;
 
   switch(geometryType) {
     case wkbPoint: {
       domainType = Domain::PointDomain;
     }
+    case wkbPolygon: {
+      domainType = Domain::PolygonDomain;
+    }
+#ifndef NDEBUG
     default: {
       assert(false);
     }
+#endif
   }
 
-  assert(!Domain::UnknownDomainType);
   return domainType;
 }
 
@@ -31,17 +36,25 @@ Domain::Type domainType(
 
 
 OGRFeatureLayer::OGRFeatureLayer(
-  OGRLayer* layer)
+  OGRLayer* const layer)
 
   : _layer(layer)
 
 {
   switch(domainType(_layer->GetGeomType())) {
     case Domain::PointDomain: {
+      PointsPtr points;
+      _domain.reset(new PointDomain(points));
     }
+    case Domain::PolygonDomain: {
+      PolygonsPtr polygons;
+      _domain.reset(new PolygonDomain(polygons));
+    }
+#ifndef NDEBUG
     default: {
       assert(false);
     }
+#endif
   }
 
   assert(_domain);

@@ -2,6 +2,7 @@
 #define INCLUDED_RANALLY_FEATURE
 
 #include <boost/noncopyable.hpp>
+#include "Ranally/IO/Domain.h"
 
 
 
@@ -21,11 +22,15 @@ public:
 
   virtual          ~Feature            ();
 
+  Domain::Type     domainType          () const;
+
 protected:
 
-                   Feature             ();
+                   Feature             (Domain::Type domainType);
 
 private:
+
+  Domain::Type     _domainType;
 
 };
 

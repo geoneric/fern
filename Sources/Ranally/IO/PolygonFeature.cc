@@ -9,7 +9,7 @@ namespace ranally {
 PolygonFeature::PolygonFeature(
   PolygonDomainPtr const& domain)
 
-  : Feature(),
+  : Feature(domain->type()),
     _domain(domain)
 
 {

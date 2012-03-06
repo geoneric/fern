@@ -45,6 +45,12 @@ public:
   */
   virtual Feature* feature             (size_t i) const=0;
 
+  //! Add \a feature to the data set.
+  /*!
+    \param     feature Feature to add to the data set.
+  */
+  virtual void     addFeature          (Feature const* feature)=0;
+
   //! Copy all features from \a dataSet.
   /*!
     \param     dataSet Data set to copy.

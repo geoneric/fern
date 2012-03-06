@@ -9,7 +9,7 @@ namespace ranally {
 PointFeature::PointFeature(
   PointDomainPtr const& domain)
 
-  : Feature(),
+  : Feature(domain->type()),
     _domain(domain)
 
 {

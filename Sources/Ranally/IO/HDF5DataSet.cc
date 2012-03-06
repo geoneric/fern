@@ -45,6 +45,14 @@ Feature* HDF5DataSet::feature(
 
 
 
+void HDF5DataSet::addFeature(
+  Feature const* /* feature */)
+{
+  assert(false);
+}
+
+
+
 void HDF5DataSet::copy(
   DataSet const& dataSet)
 {

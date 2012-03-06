@@ -73,14 +73,41 @@ Feature* OGRDataSet::feature(
     case Domain::PolygonDomain: {
       feature = new PolygonFeature(layer.domain<PolygonDomain>());
     }
-    case Domain::UnknownDomainType:
-    default: {
-      assert(false);
-    }
   }
 
   assert(feature);
   return feature;
+}
+
+
+
+template<>
+void OGRDataSet::addFeature(
+  PointFeature const& /* feature */)
+{
+}
+
+
+
+template<>
+void OGRDataSet::addFeature(
+  PolygonFeature const& /* feature */)
+{
+}
+
+
+
+void OGRDataSet::addFeature(
+  Feature const* feature)
+{
+  switch(feature->domainType()) {
+    case Domain::PointDomain: {
+      addFeature<PointFeature>(dynamic_cast<PointFeature const&>(*feature));
+    }
+    case Domain::PolygonDomain: {
+      addFeature<PolygonFeature>(dynamic_cast<PolygonFeature const&>(*feature));
+    }
+  }
 }
 
 

@@ -37,6 +37,11 @@ public:
 
   Feature*         feature             (size_t i) const;
 
+  void             addFeature          (Feature const* feature);
+
+  template<class Feature>
+  void             addFeature          (Feature const& feature);
+
   void             copy                (DataSet const& dataSet);
 
 private:

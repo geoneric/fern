@@ -23,8 +23,7 @@ public:
 
   enum Type {
     PointDomain,
-    PolygonDomain,
-    UnknownDomainType
+    PolygonDomain
   };
 
   virtual          ~Domain             ();
