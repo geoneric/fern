@@ -1,7 +1,6 @@
 #ifndef INCLUDED_RANALLY_POINTFEATURE
 #define INCLUDED_RANALLY_POINTFEATURE
 
-#include <vector>
 #include "Ranally/IO/Feature.h"
 #include "Ranally/IO/PointPtr.h"
 
@@ -29,11 +28,13 @@ public:
 
   PointDomain const& domain            () const;
 
+  PointAttributes const& attributes    () const;
+
 private:
 
   PointDomainPtr   _domain;
 
-  std::vector<PointAttributePtr> _attributes;
+  PointAttributes  _attributes;
 
 };
 

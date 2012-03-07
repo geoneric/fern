@@ -1,7 +1,6 @@
 #ifndef INCLUDED_RANALLY_POLYGONFEATURE
 #define INCLUDED_RANALLY_POLYGONFEATURE
 
-#include <vector>
 #include "Ranally/IO/Feature.h"
 #include "Ranally/IO/PolygonPtr.h"
 
@@ -29,12 +28,13 @@ public:
 
   PolygonDomain const& domain          () const;
 
+  PolygonAttributes const& attributes  () const;
+
 private:
 
   PolygonDomainPtr _domain;
 
-  // TODO Store attribute by name?
-  std::vector<PolygonAttributePtr> _attributes;
+  PolygonAttributes _attributes;
 
 };
 

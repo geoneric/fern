@@ -10,7 +10,8 @@ PolygonFeature::PolygonFeature(
   PolygonDomainPtr const& domain)
 
   : Feature(domain->type()),
-    _domain(domain)
+    _domain(domain),
+    _attributes()
 
 {
 }
@@ -27,6 +28,13 @@ PolygonDomain const& PolygonFeature::domain() const
 {
   assert(_domain);
   return *_domain;
+}
+
+
+
+PolygonAttributes const& PolygonFeature::attributes() const
+{
+  return _attributes;
 }
 
 } // namespace ranally

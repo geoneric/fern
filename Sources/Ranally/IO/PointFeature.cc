@@ -10,7 +10,8 @@ PointFeature::PointFeature(
   PointDomainPtr const& domain)
 
   : Feature(domain->type()),
-    _domain(domain)
+    _domain(domain),
+    _attributes()
 
 {
 }
@@ -27,6 +28,13 @@ PointDomain const& PointFeature::domain() const
 {
   assert(_domain);
   return *_domain;
+}
+
+
+
+PointAttributes const& PointFeature::attributes() const
+{
+  return _attributes;
 }
 
 } // namespace ranally

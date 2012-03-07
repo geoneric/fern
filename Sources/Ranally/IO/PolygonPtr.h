@@ -1,6 +1,7 @@
 #ifndef INCLUDED_RANALLY_POLYGONPTR
 #define INCLUDED_RANALLY_POLYGONPTR
 
+#include <vector>
 #include <boost/shared_ptr.hpp>
 
 #define DEFINE_SHARED_POINTER_TYPE(                                            \
@@ -14,6 +15,9 @@ DEFINE_SHARED_POINTER_TYPE(PolygonAttribute)
 DEFINE_SHARED_POINTER_TYPE(PolygonDomain)
 DEFINE_SHARED_POINTER_TYPE(PolygonFeature)
 DEFINE_SHARED_POINTER_TYPE(PolygonValue)
+
+typedef std::vector<PolygonAttributePtr> PolygonAttributes;
+typedef std::vector<PolygonValuePtr> PolygonValues;
 
 } // namespace ranally
 

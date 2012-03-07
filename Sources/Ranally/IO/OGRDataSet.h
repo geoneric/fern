@@ -39,9 +39,6 @@ public:
 
   void             addFeature          (Feature const* feature);
 
-  template<class Feature>
-  void             addFeature          (Feature const& feature);
-
   void             copy                (DataSet const& dataSet);
 
 private:
@@ -51,6 +48,9 @@ private:
   void             copy                (Feature const& feature);
 
   Feature*         feature             (OGRFeatureLayer const& layer) const;
+
+  template<class Feature>
+  void             add                 (Feature const& feature);
 
 };
 

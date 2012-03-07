@@ -1,10 +1,13 @@
 #include "Ranally/IO/OGRDataSet.h"
 #include <cassert>
+#include <boost/foreach.hpp>
 #include <boost/scoped_ptr.hpp>
 #include "ogrsf_frmts.h"
 #include "Ranally/IO/OGRFeatureLayer.h"
+#include "Ranally/IO/PointAttribute.h"
 #include "Ranally/IO/PointDomain.h"
 #include "Ranally/IO/PointFeature.h"
+#include "Ranally/IO/PolygonAttribute.h"
 #include "Ranally/IO/PolygonDomain.h"
 #include "Ranally/IO/PolygonFeature.h"
 
@@ -44,7 +47,13 @@ Feature* OGRDataSet::feature(
   size_t i) const
 {
   assert(i < nrFeatures());
-  return feature(OGRFeatureLayer(_dataSource->GetLayer(i)));
+  OGRFeatureLayer layer(_dataSource->GetLayer(i));
+  return feature(layer);
+
+  // Darwin's gcc 4.2.1 doesn't accept this. It thinks the OGRFeatureLayer
+  // has to be copied in the call to feature(...), and OGRFeatureLayer is not
+  // copyable.
+  // return feature(OGRFeatureLayer(_dataSource->GetLayer(i)));
 }
 
 
@@ -82,17 +91,43 @@ Feature* OGRDataSet::feature(
 
 
 template<>
-void OGRDataSet::addFeature(
-  PointFeature const& /* feature */)
+void OGRDataSet::add(
+  PointFeature const& feature)
 {
+  PointDomain const& domain(feature.domain());
+  PointAttributes const& attributes(feature.attributes());
+
+  BOOST_FOREACH(PointAttributePtr const& attribute, attributes) {
+    if(attribute->feature()) {
+      // TODO error/warn
+      assert(false);
+    }
+  }
+
+  // TODO Create a feature layer.
+  // TODO Write each geometry to the feature layer, including the attribute
+  //      values.
 }
 
 
 
 template<>
-void OGRDataSet::addFeature(
-  PolygonFeature const& /* feature */)
+void OGRDataSet::add(
+  PolygonFeature const& feature)
 {
+  PolygonDomain const& domain(feature.domain());
+  PolygonAttributes const& attributes(feature.attributes());
+
+  BOOST_FOREACH(PolygonAttributePtr const& attribute, attributes) {
+    if(attribute->feature()) {
+      // TODO error/warn
+      assert(false);
+    }
+  }
+
+  // TODO Create a feature layer.
+  // TODO Write each geometry to the feature layer, including the attribute
+  //      values.
 }
 
 
@@ -102,10 +137,10 @@ void OGRDataSet::addFeature(
 {
   switch(feature->domainType()) {
     case Domain::PointDomain: {
-      addFeature<PointFeature>(dynamic_cast<PointFeature const&>(*feature));
+      add<PointFeature>(dynamic_cast<PointFeature const&>(*feature));
     }
     case Domain::PolygonDomain: {
-      addFeature<PolygonFeature>(dynamic_cast<PolygonFeature const&>(*feature));
+      add<PolygonFeature>(dynamic_cast<PolygonFeature const&>(*feature));
     }
   }
 }

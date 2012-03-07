@@ -24,5 +24,26 @@ PointAttribute::~PointAttribute()
 {
 }
 
+
+
+PointDomainPtr const& PointAttribute::domain() const
+{
+  return _domain;
+}
+
+
+
+PointFeaturePtr const& PointAttribute::feature() const
+{
+  return _feature;
+}
+
+
+
+PointValues const& PointAttribute::values() const
+{
+  return _values;
+}
+
 } // namespace ranally
 

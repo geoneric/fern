@@ -24,5 +24,26 @@ PolygonAttribute::~PolygonAttribute()
 {
 }
 
+
+
+PolygonDomainPtr const& PolygonAttribute::domain() const
+{
+  return _domain;
+}
+
+
+
+PolygonFeaturePtr const& PolygonAttribute::feature() const
+{
+  return _feature;
+}
+
+
+
+std::vector<PolygonValuePtr> PolygonAttribute::values() const
+{
+  return _values;
+}
+
 } // namespace ranally
 
