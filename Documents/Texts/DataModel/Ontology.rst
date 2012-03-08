@@ -1,6 +1,6 @@
 Model ontology
 ==============
-This section uses the term attribute to mean the collection of values that describe a certain (environmental) phenomenon. For most attributes in environmental models, there is a correspondence between the attribute and some real-world phenomenon, but this is not a requirement. Empirical values are also treated as attributes.
+This section uses the term attribute to mean the collection of values that describe a certain (environmental) phenomenon. For most attributes in environmental models, there is a correspondence between the attribute and some real-world phenomenon, but this is not a requirement. Empirical values are also treated as attributes. (KDJ: Empirical values are tied to the feature earth, or space, for example. *All* attributes are tied to a feature.)
 
 Modellers are interested in attributes, not technicalities. Modellers model concentrations, income, volumes, speeds, directions, etc. The fact that there are things like agents, points, rasters, vectors, single precision floating points, unsigned integers, etc, are an implementation detail that may or may not be relevant to the modeller. It may not matter to him as long as requirements in execution speed, data size, accuracy, etc are met. Since environmental attributes matter more to humans than implementation details, working with attributes results in a cleaner, more correct, design, than working with concepts like rasters and features.
 
@@ -81,6 +81,8 @@ For example, the attribute `speedOfCar` is spatially discrete (each car is at a 
 Given the coordinates of the spatial and/or temporal objects to which a discrete attribute's values are coupled, mobility means that these coordinates change in space and/or time.
 
 Temporal mobility means that the date/times or time periods for which an attribute is defined changes. I don't think this ever happens(?).
+
+KDJ: All features are spatially mobile. A lot of features just don't move within the modelled time period.
 
 Attributes versus functions
 ---------------------------
