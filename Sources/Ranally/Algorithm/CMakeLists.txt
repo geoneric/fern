@@ -17,5 +17,5 @@ ADD_CUSTOM_TARGET(runTestRanallyAlgorithm
   testRanallyAlgorithm
   DEPENDS testRanallyAlgorithm
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-  COMMENT "Running testRanallyAlgorithm unit tests" VERBATIM
+  COMMENT "Running RanallyAlgorithm unit tests" VERBATIM
 )

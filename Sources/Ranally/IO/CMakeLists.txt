@@ -55,7 +55,7 @@ ADD_CUSTOM_TARGET(runTestRanallyIO
   testRanallyIO
   DEPENDS testRanallyIO
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-  COMMENT "Running testRanallyIO unit tests" VERBATIM
+  COMMENT "Running RanallyIO unit tests" VERBATIM
 )
 ADD_CUSTOM_TARGET(copyTestData
   ${CMAKE_COMMAND} -E copy Point.json ${CMAKE_CURRENT_BINARY_DIR}

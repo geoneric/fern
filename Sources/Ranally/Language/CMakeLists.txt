@@ -105,5 +105,5 @@ ADD_CUSTOM_TARGET(runTestRanallyLanguage
   testRanallyLanguage
   DEPENDS testRanallyLanguage
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-  COMMENT "Running testRanallyLanguage unit tests" VERBATIM
+  COMMENT "Running RanallyLanguage unit tests" VERBATIM
 )
