@@ -1,6 +1,7 @@
 #ifndef INCLUDED_RANALLY_FEATURE
 #define INCLUDED_RANALLY_FEATURE
 
+#include <unicode/unistr.h>
 #include <boost/noncopyable.hpp>
 #include "Ranally/IO/Domain.h"
 
@@ -22,13 +23,18 @@ public:
 
   virtual          ~Feature            ();
 
+  UnicodeString const& name            () const;
+
   Domain::Type     domainType          () const;
 
 protected:
 
-                   Feature             (Domain::Type domainType);
+                   Feature             (UnicodeString const& name,
+                                        Domain::Type domainType);
 
 private:
+
+  UnicodeString    _name;
 
   Domain::Type     _domainType;
 

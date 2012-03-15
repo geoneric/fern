@@ -8,8 +8,13 @@
 namespace ranally {
 namespace io {
 
-OGRDataSetDriver::OGRDataSetDriver()
+OGRDataSetDriver::OGRDataSetDriver(
+  UnicodeString const& name)
+
+  : _driver(OGRSFDriverRegistrar::GetRegistrar()->GetDriverByName(
+      util::encodeInUTF8(name).c_str()))
 {
+  assert(_driver);
 }
 
 
@@ -40,12 +45,11 @@ bool OGRDataSetDriver::exists(
 OGRDataSet* OGRDataSetDriver::create(
   UnicodeString const& name) const
 {
-  std::string driverName = "ESRI Shapefile";
-  OGRSFDriver* driver = OGRSFDriverRegistrar::GetRegistrar()->GetDriverByName(
-    driverName.c_str());
-  assert(driver);
+  if(exists(name)) {
+    remove(name);
+  }
 
-  OGRDataSource* dataSource = driver->CreateDataSource(
+  OGRDataSource* dataSource = _driver->CreateDataSource(
     ranally::util::encodeInUTF8(name).c_str(), NULL);
 
   if(!dataSource) {
@@ -64,8 +68,13 @@ OGRDataSet* OGRDataSetDriver::create(
 
 
 void OGRDataSetDriver::remove(
-  UnicodeString const& /* name */) const
+  UnicodeString const& name) const
 {
+  if(_driver->DeleteDataSource(util::encodeInUTF8(name).c_str()) !=
+    OGRERR_NONE) {
+    // TODO Could not remove data source.
+    throw std::string("could not remove data source");
+  }
 }
 
 
@@ -73,7 +82,9 @@ void OGRDataSetDriver::remove(
 OGRDataSet* OGRDataSetDriver::open(
   UnicodeString const& name) const
 {
-  OGRDataSource* dataSource = OGRSFDriverRegistrar::Open(
+  // OGRDataSource* dataSource = OGRSFDriverRegistrar::Open(
+  //   ranally::util::encodeInUTF8(name).c_str(), FALSE);
+  OGRDataSource* dataSource = _driver->Open(
     ranally::util::encodeInUTF8(name).c_str(), FALSE);
 
   if(!dataSource) {

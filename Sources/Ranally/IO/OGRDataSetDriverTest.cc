@@ -6,6 +6,7 @@
 #include <boost/test/unit_test_suite.hpp>
 #include "Ranally/Util/String.h"
 #include "Ranally/IO/OGRDataSetDriver.h"
+#include "Ranally/IO/PointDomain.h"
 #include "Ranally/IO/PointFeature.h"
 
 
@@ -38,7 +39,8 @@ OGRDataSetDriverTest::OGRDataSetDriverTest()
 
 OGRDataSetDriverTest::~OGRDataSetDriverTest()
 {
-  removeTestFiles();
+  // OGRClient is destructed by the time this runs.
+  // removeTestFiles();
 }
 
 
@@ -48,7 +50,7 @@ void OGRDataSetDriverTest::removeTestFiles()
   std::vector<UnicodeString> dataSetNames;
   dataSetNames.push_back("TestCreate.shp");
   dataSetNames.push_back("TestRemove.shp");
-  ranally::io::OGRDataSetDriver driver;
+  ranally::io::OGRDataSetDriver driver("ESRI Shapefile");
 
   BOOST_FOREACH(UnicodeString const& dataSetName, dataSetNames) {
     if(driver.exists(dataSetName)) {
@@ -62,89 +64,144 @@ void OGRDataSetDriverTest::removeTestFiles()
 
 void OGRDataSetDriverTest::testExists()
 {
-  ranally::io::OGRDataSetDriver driver;
+  ranally::io::OGRDataSetDriver driver("GeoJSON");
   UnicodeString dataSetName;
 
-  {
-    dataSetName = "DoesNotExist";
-    BOOST_REQUIRE(!driver.exists(dataSetName));
-  }
-
-  {
-    dataSetName = "Point.json";
-    BOOST_REQUIRE(driver.exists(dataSetName));
-  }
+  BOOST_REQUIRE(!driver.exists("DoesNotExist"));
+  BOOST_REQUIRE( driver.exists("Point.json"));
+  BOOST_REQUIRE( driver.exists("ReadOnlyPoint.json"));
+  BOOST_REQUIRE(!driver.exists("WriteOnlyPoint.json"));
 }
 
 
 
 void OGRDataSetDriverTest::testCreate()
 {
-  ranally::io::OGRDataSetDriver driver;
+  ranally::io::OGRDataSetDriver driver("ESRI Shapefile");
+  boost::scoped_ptr<ranally::io::OGRDataSet> dataSet;
+
+  // Test creation of new data set. ----------------------------------------------
   UnicodeString dataSetName = "TestCreate.shp";
   BOOST_REQUIRE(!driver.exists(dataSetName));
 
-  boost::scoped_ptr<ranally::io::OGRDataSet> dataSet(driver.create(
-    dataSetName));
+  dataSet.reset(driver.create(dataSetName));
   // Since there are no layers in the data set, OGR hasn't written the data set
   // to file yet.
   BOOST_CHECK(!driver.exists(dataSetName));
 
   // Add a feature.
-  ranally::PointDomainPtr domain;
-  ranally::PointFeaturePtr feature(new ranally::PointFeature(domain));
-  dataSet->addFeature(dynamic_cast<ranally::Feature const*>(feature.get()));
+  ranally::PointsPtr points(new ranally::Points);
+  points->push_back(ranally::Point(3.0, 4.0));
+  ranally::PointDomainPtr domain(new ranally::PointDomain(points));;
+  ranally::PointFeaturePtr feature(new ranally::PointFeature("Stations",
+    domain));
+  dataSet->addFeature(feature.get());
 
   // Now it should work.
   BOOST_CHECK(driver.exists(dataSetName));
   BOOST_CHECK(dataSet);
   BOOST_CHECK(dataSet->name() == dataSetName);
 
-  // // TODO Test creation of existing file.
-  // // TODO Test creation of unwritable file.
-  // // TODO Test creation of non existing path.
-  // // TODO Test creation of Unicode path.
+  // Test creation of existing file. ---------------------------------------------
+  BOOST_CHECK(driver.exists(dataSetName));
+
+  dataSet.reset(driver.create(dataSetName));
+  // Since there are no layers in the data set, OGR hasn't written the data set
+  // to file yet. The original data set should have been deleted though.
+  BOOST_CHECK(!driver.exists(dataSetName));
+
+  // The rest of the test would equal the stuff above...
+
+  // Test creation of unwritable file. -------------------------------------------
+  dataSetName = "ReadOnlyDir/TestCreate.shp";
+  BOOST_CHECK(!driver.exists(dataSetName));
+
+  // This succeeds since no feature layer have been created yet.
+  dataSet.reset(driver.create(dataSetName));
+
+  // TODO Exception.
+  BOOST_CHECK_THROW(dataSet->addFeature(feature.get()), std::string);
+
+  // Test creation of non existing path. -----------------------------------------
+  dataSetName = "DoesNotExist/TestCreate.shp";
+  BOOST_CHECK(!driver.exists(dataSetName));
+
+  // This succeeds since no feature layer have been created yet.
+  dataSet.reset(driver.create(dataSetName));
+
+  // TODO Exception.
+  BOOST_CHECK_THROW(dataSet->addFeature(feature.get()), std::string);
+
+  // TODO Test creation of Unicode path.
 }
 
 
 
 void OGRDataSetDriverTest::testRemove()
 {
-  // TODO
-  // ranally::io::OGRDataSetDriver driver;
-  // UnicodeString dataSetName = "TestRemove.hdf5";
-  // BOOST_REQUIRE(!driver.exists(dataSetName));
+  ranally::io::OGRDataSetDriver driver("ESRI Shapefile");
+  boost::scoped_ptr<ranally::io::OGRDataSet> dataSet;
+  UnicodeString dataSetName;
 
-  // (void)driver.create(dataSetName);
-  // BOOST_CHECK(driver.exists(dataSetName));
+  dataSetName = "TestRemove.shp";
+  BOOST_REQUIRE(!driver.exists(dataSetName));
 
-  // driver.remove(dataSetName);
-  // BOOST_CHECK(!driver.exists(dataSetName));
+  dataSet.reset(driver.create(dataSetName));
+  BOOST_CHECK(!driver.exists(dataSetName));
+  ranally::PointsPtr points(new ranally::Points);
+  points->push_back(ranally::Point(3.0, 4.0));
+  ranally::PointDomainPtr domain(new ranally::PointDomain(points));;
+  ranally::PointFeaturePtr feature(new ranally::PointFeature("Stations",
+    domain));
+  dataSet->addFeature(feature.get());
+  BOOST_CHECK(driver.exists(dataSetName));
 
-  // TODO Test remove of read-only file.
-  // TODO Test remove of non-existing file.
+  driver.remove(dataSetName);
+  BOOST_CHECK(!driver.exists(dataSetName));
+
+  {
+    // Test remove of read-only file. --------------------------------------------
+    ranally::io::OGRDataSetDriver driver("GeoJSON");
+    dataSetName = "ReadOnlyPoint.json";
+    BOOST_CHECK(driver.exists(dataSetName));
+    // TODO Read-only file is removed... Report to gdal list?!
+    BOOST_WARN_THROW(driver.remove(dataSetName), std::string);
+
+    // Test remove of non-existing file. -----------------------------------------
+    dataSetName = "DoesNotExist.json";
+    BOOST_CHECK(!driver.exists(dataSetName));
+    BOOST_CHECK_THROW(driver.remove(dataSetName), std::string);
+  }
 }
 
 
 
 void OGRDataSetDriverTest::testOpen()
 {
-  ranally::io::OGRDataSetDriver driver;
+  ranally::io::OGRDataSetDriver driver("GeoJSON");
+  boost::scoped_ptr<ranally::io::OGRDataSet> dataSet;
   UnicodeString dataSetName;
 
-  {
-    dataSetName = "Point.json";
-    BOOST_REQUIRE(driver.exists(dataSetName));
+  dataSetName = "Point.json";
+  BOOST_REQUIRE(driver.exists(dataSetName));
+  dataSet.reset(driver.open(dataSetName));
+  BOOST_CHECK(dataSet);
+  BOOST_CHECK(dataSet->name() == dataSetName);
 
-    boost::scoped_ptr<ranally::io::OGRDataSet> dataSet(driver.open(
-      dataSetName));
-    BOOST_CHECK(dataSet);
-    BOOST_CHECK(dataSet->name() == dataSetName);
-  }
+  // Test opening non-existing data set. -----------------------------------------
+  BOOST_CHECK_THROW(driver.open("DoesNotExist.json"), std::string);
 
-  // TODO Test opening non-existing data set.
-  // TODO Test opening read-only data set.
-  // TODO Test opening write-only data set.
-  // TODO Test opening executable-only data set.
+  // Test opening read-only data set. --------------------------------------------
+  BOOST_CHECK_THROW(driver.open("ReadOnlyPoint.json"), std::string);
+  BOOST_REQUIRE(driver.exists(dataSetName));
+  dataSet.reset(driver.open(dataSetName));
+  BOOST_CHECK(dataSet);
+  BOOST_CHECK(dataSet->name() == dataSetName);
+
+  // Test opening write-only data set. -------------------------------------------
+  BOOST_CHECK_THROW(driver.open("WriteOnlyPoint.json"), std::string);
+
+  // Test opening executable-only data set. --------------------------------------
+  BOOST_CHECK_THROW(driver.open("ExecutableOnlyPoint.json"), std::string);
 }
 

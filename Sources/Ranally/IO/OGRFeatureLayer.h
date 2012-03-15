@@ -1,6 +1,7 @@
 #ifndef INCLUDED_RANALLY_IO_OGRFEATURELAYER
 #define INCLUDED_RANALLY_IO_OGRFEATURELAYER
 
+#include <unicode/unistr.h>
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
 
@@ -31,6 +32,8 @@ public:
                    OGRFeatureLayer     (OGRLayer* const layer);
 
                    ~OGRFeatureLayer    ();
+
+  UnicodeString    name                () const;
 
   Domain const&    domain              () const;
 

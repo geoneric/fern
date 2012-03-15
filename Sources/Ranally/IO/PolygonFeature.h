@@ -22,7 +22,8 @@ class PolygonFeature:
 
 public:
 
-                   PolygonFeature      (PolygonDomainPtr const& domain);
+                   PolygonFeature      (UnicodeString const& name,
+                                        PolygonDomainPtr const& domain);
 
                    ~PolygonFeature     ();
 

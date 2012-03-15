@@ -58,7 +58,24 @@ ADD_CUSTOM_TARGET(runTestRanallyIO
   COMMENT "Running RanallyIO unit tests" VERBATIM
 )
 ADD_CUSTOM_TARGET(copyTestData
-  ${CMAKE_COMMAND} -E copy Point.json ${CMAKE_CURRENT_BINARY_DIR}
+  COMMAND ${CMAKE_COMMAND} -E copy Point.json ${CMAKE_CURRENT_BINARY_DIR}
+
+  COMMAND ${CMAKE_COMMAND} -E copy Point.json
+    ${CMAKE_CURRENT_BINARY_DIR}/ReadOnlyPoint.json
+  COMMAND chmod 444 ${CMAKE_CURRENT_BINARY_DIR}/ReadOnlyPoint.json
+
+  COMMAND ${CMAKE_COMMAND} -E copy Point.json
+    ${CMAKE_CURRENT_BINARY_DIR}/WriteOnlyPoint.json
+  COMMAND chmod 222 ${CMAKE_CURRENT_BINARY_DIR}/WriteOnlyPoint.json
+
+  COMMAND ${CMAKE_COMMAND} -E copy Point.json
+    ${CMAKE_CURRENT_BINARY_DIR}/ExecuteOnlyPoint.json
+  COMMAND chmod 111 ${CMAKE_CURRENT_BINARY_DIR}/ExecuteOnlyPoint.json
+
+  COMMAND ${CMAKE_COMMAND} -E make_directory
+    ${CMAKE_CURRENT_BINARY_DIR}/ReadOnlyDir
+  COMMAND chmod 666 ${CMAKE_CURRENT_BINARY_DIR}/ReadOnlyDir
+
   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Data/Tests
   COMMENT "Copying test data" VERBATIM
 )

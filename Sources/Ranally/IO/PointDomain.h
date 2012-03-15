@@ -26,6 +26,8 @@ public:
 
                    ~PointDomain        ();
 
+  Points const&    points              () const;
+
 private:
 
   PointsPtr        _points;

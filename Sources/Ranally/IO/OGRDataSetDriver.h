@@ -6,6 +6,8 @@
 
 
 
+class OGRSFDriver;
+
 namespace ranally {
 namespace io {
 
@@ -23,7 +25,7 @@ class OGRDataSetDriver:
 
 public:
 
-                   OGRDataSetDriver    ();
+                   OGRDataSetDriver    (UnicodeString const& name);
 
                    ~OGRDataSetDriver   ();
 
@@ -36,6 +38,8 @@ public:
   OGRDataSet*      open                (UnicodeString const& name) const;
 
 private:
+
+  OGRSFDriver*     _driver;
 
 };
 

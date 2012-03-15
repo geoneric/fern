@@ -2,6 +2,7 @@
 #include "ogrsf_frmts.h"
 #include "Ranally/IO/PointDomain.h"
 #include "Ranally/IO/PolygonDomain.h"
+#include "Ranally/Util/String.h"
 
 
 
@@ -64,6 +65,13 @@ OGRFeatureLayer::OGRFeatureLayer(
 
 OGRFeatureLayer::~OGRFeatureLayer()
 {
+}
+
+
+
+UnicodeString OGRFeatureLayer::name() const
+{
+  return util::decodeFromUTF8(_layer->GetName());
 }
 
 

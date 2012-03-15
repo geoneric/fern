@@ -10,6 +10,7 @@
 #include "Ranally/IO/PolygonAttribute.h"
 #include "Ranally/IO/PolygonDomain.h"
 #include "Ranally/IO/PolygonFeature.h"
+#include "Ranally/Util/String.h"
 
 
 
@@ -77,10 +78,10 @@ Feature* OGRDataSet::feature(
 
   switch(layer.domain().type()) {
     case Domain::PointDomain: {
-      feature = new PointFeature(layer.domain<PointDomain>());
+      feature = new PointFeature(layer.name(), layer.domain<PointDomain>());
     }
     case Domain::PolygonDomain: {
-      feature = new PolygonFeature(layer.domain<PolygonDomain>());
+      feature = new PolygonFeature(layer.name(), layer.domain<PolygonDomain>());
     }
   }
 
@@ -104,9 +105,36 @@ void OGRDataSet::add(
     }
   }
 
-  // TODO Create a feature layer.
-  // TODO Write each geometry to the feature layer, including the attribute
-  //      values.
+  Points const& points(domain.points());
+  OGRLayer* ogrLayer = _dataSource->CreateLayer(ranally::util::encodeInUTF8(
+    feature.name()).c_str(), NULL, wkbPoint, NULL);
+
+  if(!ogrLayer) {
+    throw std::string("cannot create ogr feature layer");
+  }
+
+  // TODO Add attributes.
+  assert(attributes.empty());
+
+  OGRPoint ogrPoint;
+
+  BOOST_FOREACH(Point const& point, points) {
+    OGRFeature* ogrFeature = OGRFeature::CreateFeature(ogrLayer->GetLayerDefn());
+    assert(ogrFeature);
+
+    // ogrFeature->SetField(...)
+
+    ogrPoint.setX(point.get<0>());
+    ogrPoint.setY(point.get<1>());
+    ogrFeature->SetGeometry(&ogrPoint);
+
+    if(ogrLayer->CreateFeature(ogrFeature) != OGRERR_NONE) {
+      // TODO
+      assert(false);
+    }
+
+    OGRFeature::DestroyFeature(ogrFeature);
+  }
 }
 
 
@@ -138,9 +166,11 @@ void OGRDataSet::addFeature(
   switch(feature->domainType()) {
     case Domain::PointDomain: {
       add<PointFeature>(dynamic_cast<PointFeature const&>(*feature));
+      break;
     }
     case Domain::PolygonDomain: {
       add<PolygonFeature>(dynamic_cast<PolygonFeature const&>(*feature));
+      break;
     }
   }
 }

@@ -20,5 +20,12 @@ PointDomain::~PointDomain()
 {
 }
 
+
+
+Points const& PointDomain::points() const
+{
+  return *_points;
+}
+
 } // namespace ranally
 

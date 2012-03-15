@@ -5,9 +5,11 @@
 namespace ranally {
 
 Feature::Feature(
+  UnicodeString const& name,
   Domain::Type domainType)
 
-  : _domainType(domainType)
+  : _name(name),
+    _domainType(domainType)
 
 {
 }
@@ -16,6 +18,13 @@ Feature::Feature(
 
 Feature::~Feature()
 {
+}
+
+
+
+UnicodeString const& Feature::name() const
+{
+  return _name;
 }
 
 

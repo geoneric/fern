@@ -22,7 +22,8 @@ class PointFeature:
 
 public:
 
-                   PointFeature        (PointDomainPtr const& domain);
+                   PointFeature        (UnicodeString const& name,
+                                        PointDomainPtr const& domain);
 
                    ~PointFeature       ();
 
