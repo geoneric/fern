@@ -7,9 +7,10 @@
 namespace ranally {
 
 PolygonAttribute::PolygonAttribute(
+  UnicodeString const& name,
   PolygonDomainPtr const& domain)
 
-  : Attribute(),
+  : Attribute(name),
     _domain(domain),
     _feature(),
     _values()

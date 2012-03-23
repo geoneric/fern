@@ -31,6 +31,10 @@ public:
 
   PointAttributes const& attributes    () const;
 
+  bool             exists              (UnicodeString const& name) const;
+
+  void             add                 (PointAttributePtr const& attribute);
+
 private:
 
   PointDomainPtr   _domain;

@@ -1,4 +1,5 @@
 #include "Ranally/IO/OGRClient.h"
+#include "cpl_error.h"
 #include "ogr_api.h"
 
 
@@ -9,6 +10,7 @@ namespace io {
 OGRClient::OGRClient()
 {
   OGRRegisterAll();
+  CPLSetErrorHandler(CPLQuietErrorHandler);
 }
 
 

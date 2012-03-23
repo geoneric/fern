@@ -48,13 +48,18 @@ HDF5DataSet* HDF5DataSetDriver::create(
   HDF5DataSet* result = 0;
 
   try {
+    unsigned int accessMode = H5F_ACC_TRUNC; // | H5F_ACC_RDWR?
+    H5::FileCreatPropList creationProperties = H5::FileCreatPropList::DEFAULT;
+    H5::FileAccPropList accessProperties = H5::FileAccPropList::DEFAULT;
     H5::H5File* file = new H5::H5File(
-      ranally::util::encodeInUTF8(name).c_str(), H5F_ACC_TRUNC);
+      ranally::util::encodeInUTF8(name).c_str(), accessMode,
+      creationProperties, accessProperties);
     file->flush(H5F_SCOPE_GLOBAL);
     result = new HDF5DataSet(name, file);
   }
-  catch(H5::FileIException const&) {
+  catch(H5::FileIException const& exception) {
     // TODO Raise exception.
+    exception.printError(stderr);
     throw std::string("cannot create hdf5 dataset");
   }
 

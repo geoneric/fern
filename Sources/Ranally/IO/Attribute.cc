@@ -7,7 +7,11 @@
 
 namespace ranally {
 
-Attribute::Attribute()
+Attribute::Attribute(
+  UnicodeString const& name)
+
+  : _name(name)
+
 {
 }
 
@@ -15,6 +19,13 @@ Attribute::Attribute()
 
 Attribute::~Attribute()
 {
+}
+
+
+
+UnicodeString const& Attribute::name() const
+{
+  return _name;
 }
 
 } // namespace ranally

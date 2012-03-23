@@ -1,4 +1,5 @@
 #include "Ranally/IO/PointFeature.h"
+#include <boost/foreach.hpp>
 #include "Ranally/IO/PointAttribute.h"
 #include "Ranally/IO/PointDomain.h"
 
@@ -36,6 +37,28 @@ PointDomain const& PointFeature::domain() const
 PointAttributes const& PointFeature::attributes() const
 {
   return _attributes;
+}
+
+
+
+bool PointFeature::exists(
+  UnicodeString const& name) const
+{
+  BOOST_FOREACH(PointAttributePtr const& attribute, _attributes) {
+    if(attribute->name() == name) {
+      return true;
+    }
+  }
+  return false;
+}
+
+
+
+void PointFeature::add(
+  PointAttributePtr const& attribute)
+{
+  assert(!exists(attribute->name()));
+  _attributes.push_back(attribute);
 }
 
 } // namespace ranally

@@ -14,7 +14,9 @@ namespace ranally {
 // TODO What about the coordinate system? How to go about that? Can we pick
 //      one and project all incoming data to that cs?
 
-typedef boost::geometry::model::point<double, 2,
+typedef double Coordinate;
+
+typedef boost::geometry::model::point<Coordinate, 2,
   boost::geometry::cs::cartesian > Point;
 
 namespace detail {

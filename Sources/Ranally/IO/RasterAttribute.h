@@ -23,7 +23,7 @@ class RasterAttribute:
 
 public:
 
-                   RasterAttribute     ();
+                   RasterAttribute     (UnicodeString const& name);
 
                    ~RasterAttribute    ();
 

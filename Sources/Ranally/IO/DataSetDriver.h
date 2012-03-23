@@ -29,6 +29,13 @@ public:
 
   virtual bool     exists              (UnicodeString const& name) const=0;
 
+  //! Create data set \a name.
+  /*!
+    \param     name Name of data set to create.
+    \return    Pointer to new DataSet instance.
+    \exception .
+    \warning   Data set \a name will be truncated if it already exists.
+  */
   virtual DataSet* create              (UnicodeString const& name) const=0;
 
   virtual void     remove              (UnicodeString const& name) const=0;

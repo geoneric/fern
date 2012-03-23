@@ -47,13 +47,13 @@ Below is a very high level graph of the data model as described in this document
      feature1 -> attribute1 [label="*"];
      attribute1 -> domain1 [label="1"];
      attribute1 -> feature2 [label="?", color="grey60", fontcolor="grey60"];
-     attribute1 -> value1 [label="? (if feature) | + (if !feature)"];
+     attribute1 -> value1 [label="?"];
 
      feature2 -> domain2 [label="1", color="grey60", fontcolor="grey60"];
      feature2 -> attribute2 [label="*", color="grey60", fontcolor="grey60"];
      attribute2 -> domain2 [label="1", color="grey60", fontcolor="grey60"];
      attribute2 -> feature3 [label="?", color="grey90", fontcolor="grey90"];
-     attribute2 -> value2 [label="? (if feature) | + (if !feature)", color="grey60", fontcolor="grey60"];
+     attribute2 -> value2 [label="?", color="grey60", fontcolor="grey60"];
   }
 
 What folows is a description of each of the classes of information that are part of the data model.
@@ -108,8 +108,7 @@ An attribute is either, or both:
 * An uncertain spatio-temporal description of the attribute's variation in values, or a generalization thereof (information about the uncertainty, spatial variation, and/or temporal variation is missing). Spatial variation can be described in 1D, 2D and 3D. This is simply called the attribute's value, even though the values may well take gigabytes of storage space.
 * A larger scale feature containing the same attribute. This is what makes the definition recursive.
 
-..
-   Modeling attributes like this generalizes both traditional raster and feature data models in one unifying data model. Rasters are considered values in this model. They are one of the end points of the recursive definition, like scalars. Traditional features are defined using the attribute's geometry and a scalar attribute value.
+Modeling attributes like this generalizes both traditional raster and feature data models in one unifying data model. Rasters are considered values in this model. They are one of the end points of the recursive definition, like scalars. Traditional features are defined using the attribute's geometry and a scalar attribute value.
 
 Value
 -----
@@ -122,12 +121,10 @@ Examples of values are:
 * A regular discretisized collection of values per item in the domain, like a raster in 2D space, or a regular timeseries in time.
 * A probability distribution of a regular discretisized collection of values per item in the domain.
 
-A result of all this is that a raster's values, for example, are stored in the `Attribute`'s `Value`. The polygon describing the raster's extent is stored in the `Feature`'s `Domain`. This extent does not necessarely be a rectangle. For example, imagine a country feature with a national_park sub-feature, with a height attribute, whose values are stored in a raster.
+A result of all this is that a raster's values, for example, are stored in the `Attribute`'s `Value`. The polygon describing the raster's extent is stored in the `Feature`'s `Domain`. This extent does not necessarely have to be a rectangle. For example, imagine a country feature with a national_park sub-feature, with a height attribute, whose values are stored in a raster.
 An example of a (spatio-)temporal attribute is a river feature with a tributary sub-feature, with a discharge attribute, which is measured at regular intervals, except during the winter when all the water is frozen. The begin and end date/times are stored in the `Domain` while the arrays of values are stored in the `Value`.
 
-Discrete value changes are modeled using a Domain, not by a value. Using a domain one can record the positions in space and/or time that an attribute's value changes. TODO No.
-
-TODO: A value can also be a distribution of values, in case there is an error associated with the value.
+Discrete value changes are modeled using a Domain, not by a value. Using a domain one can record the positions in space and/or time that an attribute's value changes.
 
 Recursion
 ---------

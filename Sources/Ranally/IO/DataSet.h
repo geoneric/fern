@@ -45,17 +45,38 @@ public:
   */
   virtual Feature* feature             (size_t i) const=0;
 
+  //! Return feature with name \a name.
+  /*!
+    \return    Feature.
+  */
+  virtual Feature* feature             (UnicodeString const& name) const=0;
+
   //! Add \a feature to the data set.
   /*!
     \param     feature Feature to add to the data set.
   */
-  virtual void     addFeature          (Feature const* feature)=0;
+  virtual void     addFeature          (Feature const& feature)=0;
 
   //! Copy all features from \a dataSet.
   /*!
     \param     dataSet Data set to copy.
   */
   virtual void     copy                (DataSet const& dataSet)=0;
+
+  //! Return whether feature \a name is present.
+  /*!
+    \param     name Name of feature.
+    \return    true or false
+  */
+  virtual bool     exists              (UnicodeString const& name) const=0;
+
+  //! Remove feature \a name.
+  /*!
+    \param     name Name of feature to remove.
+    \warning   It is assumed that feature \a name is present in the data set.
+    \sa        exists(UnicodeString const&)
+  */
+  virtual void     remove              (UnicodeString const& name)=0;
 
 protected:
 

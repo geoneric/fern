@@ -35,15 +35,24 @@ public:
 
   Feature*         feature             (size_t i) const;
 
-  void             addFeature          (Feature const* feature);
+  Feature*         feature             (UnicodeString const& name) const;
+
+  void             addFeature          (Feature const& feature);
 
   void             copy                (DataSet const& dataSet);
+
+  bool             exists              (UnicodeString const& name) const;
+
+  void             remove              (UnicodeString const& name);
 
 private:
 
   boost::scoped_ptr<H5::H5File> _file;
 
   void             copy                (Feature const& feature);
+
+  template<class Feature>
+  void             add                 (Feature const& feature);
 
 };
 

@@ -60,6 +60,41 @@ Feature* OGRDataSet::feature(
 
 
 Feature* OGRDataSet::feature(
+  UnicodeString const& name) const
+{
+  OGRLayer* ogrLayer = _dataSource->GetLayerByName(
+    util::encodeInUTF8(name).c_str());
+  if(!ogrLayer) {
+    // TODO
+    throw std::string("layer does not exist");
+  }
+
+  OGRFeatureLayer layer(ogrLayer);
+  return feature(layer);
+}
+
+
+
+bool OGRDataSet::exists(
+  UnicodeString const& name) const
+{
+  // TODO
+  assert(false);
+  return false;
+}
+
+
+
+void OGRDataSet::remove(
+  UnicodeString const& name)
+{
+  // TODO
+  assert(false);
+}
+
+
+
+Feature* OGRDataSet::feature(
   OGRFeatureLayer const& layer) const
 {
   assert(false);
@@ -105,6 +140,7 @@ void OGRDataSet::add(
     }
   }
 
+  // TODO Remove layer if it already exists?!
   Points const& points(domain.points());
   OGRLayer* ogrLayer = _dataSource->CreateLayer(ranally::util::encodeInUTF8(
     feature.name()).c_str(), NULL, wkbPoint, NULL);
@@ -161,15 +197,15 @@ void OGRDataSet::add(
 
 
 void OGRDataSet::addFeature(
-  Feature const* feature)
+  Feature const& feature)
 {
-  switch(feature->domainType()) {
+  switch(feature.domainType()) {
     case Domain::PointDomain: {
-      add<PointFeature>(dynamic_cast<PointFeature const&>(*feature));
+      add<PointFeature>(dynamic_cast<PointFeature const&>(feature));
       break;
     }
     case Domain::PolygonDomain: {
-      add<PolygonFeature>(dynamic_cast<PolygonFeature const&>(*feature));
+      add<PolygonFeature>(dynamic_cast<PolygonFeature const&>(feature));
       break;
     }
   }

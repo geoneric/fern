@@ -4,9 +4,10 @@
 
 namespace ranally {
 
-RasterAttribute::RasterAttribute()
+RasterAttribute::RasterAttribute(
+  UnicodeString const& name)
 
-  : Attribute(),
+  : Attribute(name),
     _value()
 
 {

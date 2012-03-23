@@ -37,9 +37,15 @@ public:
 
   Feature*         feature             (size_t i) const;
 
-  void             addFeature          (Feature const* feature);
+  Feature*         feature             (UnicodeString const& name) const;
+
+  void             addFeature          (Feature const& feature);
 
   void             copy                (DataSet const& dataSet);
+
+  bool             exists              (UnicodeString const& name) const;
+
+  void             remove              (UnicodeString const& name);
 
 private:
 
