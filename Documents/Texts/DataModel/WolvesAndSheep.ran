@@ -1,0 +1,76 @@
+# vim:syntax=python
+
+# Read the initial area feature (polygon).
+# Area has a grass and countdown attributes.
+area = ...
+
+# Read the initial animal features (points).
+# Sheep and wolves have an energy attribute.
+sheep = ...
+wolves = ...
+
+radius = ...
+sheep_gain_from_food = ...
+wolf_gain_from_food = ...
+
+
+def die(
+        animals):
+    # Get rid of animals with low energy levels.
+    animals = if_then(animals.energy > 0, animals)
+    # or, messier: delete(if_then(animals.energy <= 0, animals))
+    return animals
+
+def reproduce(
+        animals):
+    # Randomly select animals that will reproduce.
+    reproducing_animals = select_random(animals, random())
+    reproducing_animals.energy /= 2
+    baby_animals = copy(reproducing_animals)
+    move(baby_animals, ...)
+    return animals
+
+def eatGrass(
+        sheep,
+        grass):
+    sheep_on_grass = select(sheep, grass)
+    # TODO Energy levels of sheep not on grass should drop too, shouldn't it???
+    #      Compare with energy level of wolves, which drops even if no sheep
+    #      are eaten. sheep.energy -= 1
+    sheep_on_grass.energy -= 1
+    grass = if_then(not sheep_on_grass, grass)
+    sheep_on_grass.energy += sheep_gain_from_food
+
+def eat_sheep(
+        wolves,
+        sheep):
+    wolves.energy -= 1
+    wolves_near_sheep = select_nearby(wolves, sheep, radius)
+    wolves_catching_sheep = select_random(wolves_near_sheep, random())
+    caught_sheep = select_nearby(sheep, wolves_catching_sheep, radius)
+    delete(caught_sheep)
+    wolves_catching_sheep.energy += wolf_gain_from_food
+
+def grow_grass(
+        area):
+    if not area.grass:
+        if area.countdown <= 0:
+            area.grass = True
+            area.countdown = grass_regrowth_time
+        else:
+            area.countdown -= 1
+
+
+
+move(sheep, ...)
+eatGrass(sheep, area.grass)
+sheep = die(sheep)
+sheep = reproduce(sheep)
+
+move(wolves, ...)
+eat_sheep(wolves, sheep)
+wolves = die(wolves)
+wolves = reproduce(wolves)
+
+grow_grass(area)
+
