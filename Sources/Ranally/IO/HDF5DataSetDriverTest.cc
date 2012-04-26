@@ -112,10 +112,10 @@ void HDF5DataSetDriverTest::testCreate()
     BOOST_CHECK_EQUAL(dataSet->nrFeatures(), 1u);
     BOOST_CHECK(dataSet->exists("Stations"));
 
-    // ranally::PointFeaturePtr featureRead(dynamic_cast<ranally::PointFeature*>(
-    //   dataSet->feature("Stations")));
-    // // TODO BOOST_CHECK(*featureRead == featureWritten);
-    // // BOOST_CHECK_EQUAL(featureRead->attributes().size(), 0u);
+    ranally::PointFeaturePtr featureRead(dynamic_cast<ranally::PointFeature*>(
+      dataSet->feature("Stations")));
+    // TODO BOOST_CHECK(*featureRead == featureWritten);
+    // BOOST_CHECK_EQUAL(featureRead->attributes().size(), 0u);
   }
 
   // Add a feature with an attribute.
@@ -130,18 +130,18 @@ void HDF5DataSetDriverTest::testCreate()
 
     dataSet.reset();
     dataSet.reset(driver.create(dataSetName));
-    // dataSet->addFeature(featureWritten);
+    dataSet->addFeature(featureWritten);
 
     dataSet.reset();
-    // dataSet.reset(driver.open(dataSetName));
-    // BOOST_CHECK_EQUAL(dataSet->nrFeatures(), 1u);
-    // BOOST_CHECK(dataSet->exists("Stations"));
+    dataSet.reset(driver.open(dataSetName));
+    BOOST_CHECK_EQUAL(dataSet->nrFeatures(), 1u);
+    BOOST_CHECK(dataSet->exists("Stations"));
 
-    // // ranally::PointFeaturePtr featureRead(dynamic_cast<ranally::PointFeature*>(
-    // //   dataSet->feature("Stations")));
-    // // TODO BOOST_CHECK(*featureRead == featureWritten);
-    // // BOOST_CHECK_EQUAL(featureRead->attributes().size(), 1u);
-    // // BOOST_CHECK(featureRead->exists("Measuring"));
+    ranally::PointFeaturePtr featureRead(dynamic_cast<ranally::PointFeature*>(
+      dataSet->feature("Stations")));
+    // TODO BOOST_CHECK(*featureRead == featureWritten);
+    // BOOST_CHECK_EQUAL(featureRead->attributes().size(), 1u);
+    // BOOST_CHECK(featureRead->exists("Measuring"));
   }
 
 
