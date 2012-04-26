@@ -14,9 +14,8 @@ ADD_LIBRARY(RanallyInterpreter
   ${SOURCES}
 )
 ADD_DEPENDENCIES(RanallyInterpreter
-  # During the build of this target, source files are generated. At least one
-  # of these files is included by the interpreter's source (Operation-xml.h).
-  RanallyOperation
+  # This header is generated in the Operation project.
+  Operation-xml.h
 )
 SET(TEST_SOURCES
   InterpreterTest.cc
@@ -29,4 +28,10 @@ TARGET_LINK_LIBRARIES(testRanallyInterpreter
   RanallyLanguage
   RanallyOperation
   # ${_LINK_LIBRARIES}
+)
+ADD_CUSTOM_TARGET(runTestRanallyInterpreter
+  testRanallyInterpreter
+  DEPENDS testRanallyInterpreter
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+  COMMENT "Running RanallyInterpreter unit tests" VERBATIM
 )

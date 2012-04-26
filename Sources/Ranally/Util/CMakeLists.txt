@@ -18,3 +18,9 @@ ADD_EXECUTABLE(testRanallyUtil
 #   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 #   COMMAND testRanallyPython
 # )
+ADD_CUSTOM_TARGET(runTestRanallyUtil
+  testRanallyUtil
+  DEPENDS testRanallyUtil
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+  COMMENT "Running RanallyUtil unit tests" VERBATIM
+)

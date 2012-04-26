@@ -7,6 +7,7 @@ ADD_EXECUTABLE(ranally
   ConvertCommand.cc
   DescribeCommand.cc
   ExecuteCommand.cc
+  ImportCommand.cc
   Ranally.cc
 )
 ADD_DEPENDENCIES(ranally
@@ -14,6 +15,7 @@ ADD_DEPENDENCIES(ranally
 )
 TARGET_LINK_LIBRARIES(ranally
   RanallyInterpreter
+  RanallyIO
   RanallyLanguage
   RanallyPython
   RanallyOperation
@@ -24,6 +26,7 @@ TARGET_LINK_LIBRARIES(ranally
   ${BOOST_REGEX_LIBRARY}
   ${BOOST_SYSTEM_LIBRARY}
   ${EXPAT_LIBRARIES}
+  ${HDF5_LIBRARIES}
   ${ICU_LIBRARIES}
 )
 INSTALL(

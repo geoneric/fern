@@ -13,3 +13,9 @@ ADD_EXECUTABLE(testRanallyAlgorithm
 #   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 #   COMMAND testRanallyAlgorithm
 # )
+ADD_CUSTOM_TARGET(runTestRanallyAlgorithm
+  testRanallyAlgorithm
+  DEPENDS testRanallyAlgorithm
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+  COMMENT "Running RanallyAlgorithm unit tests" VERBATIM
+)

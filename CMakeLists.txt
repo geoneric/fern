@@ -22,20 +22,19 @@ INCLUDE(Site)
 
 INCLUDE(UseBoost)
 INCLUDE(UseExpat)
+INCLUDE(UseHdf5)
 INCLUDE(UseIcu)
 INCLUDE(UseLoki)
+INCLUDE(UseGdal)
 INCLUDE(UsePython)
 INCLUDE(UseXsd)
 
+ADD_SUBDIRECTORY(Documents)
 ADD_SUBDIRECTORY(Sources)
 
-ADD_CUSTOM_TARGET(tests ALL
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-  COMMAND testRanallyUtil
-  COMMAND testRanallyAlgorithm
-  COMMAND testRanallyOperation
-  COMMAND testRanallyLanguage
-  COMMAND testRanallyInterpreter
+ADD_CUSTOM_TARGET(tests ALL)
+ADD_DEPENDENCIES(tests
+  runTestRanallyUtil runTestRanallyAlgorithm runTestRanallyOperation runTestRanallyLanguage runTestRanallyIO runTestRanallyInterpreter
 )
 
 INCLUDE(InstallRules)
