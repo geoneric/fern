@@ -1,12 +1,14 @@
 Model ontology
 ==============
-This section uses the term attribute to mean the collection of values that describe a certain (environmental) phenomenon. For most attributes in environmental models, there is a correspondence between the attribute and some real-world phenomenon, but this is not a requirement. Empirical values are also treated as attributes. (KDJ: Empirical values are tied to the feature earth, or space, for example. *All* attributes are tied to a feature.)
+This section uses the term attribute to mean the collection of values that describe a certain (environmental) phenomenon, like height, soil class, speed, gravity, distance to a road. All values used in environmental modelling are attribute values.
 
-Modellers are interested in attributes, not technicalities. Modellers model concentrations, income, volumes, speeds, directions, etc. The fact that there are things like agents, points, rasters, vectors, single precision floating points, unsigned integers, etc, are an implementation detail that may or may not be relevant to the modeller. It may not matter to him as long as requirements in execution speed, data size, accuracy, etc are met. Since environmental attributes matter more to humans than implementation details, working with attributes results in a cleaner, more correct, design, than working with concepts like rasters and features.
+A feature is a combination of a spatio-temporal domain with one or more attributes. A feature's domain defines the locations in space and time for the feature's attribute values. All attribute values are coupled to some feature.
 
-Since the purpose of modelling is to translate input attributes to output attributes, the focus is on attributes, not the model. The model is not the goal, the model results are. (Good model results (predictions) may allow the modeller to learn something about the modelled processes, but model results rarely are *that* good ;-) )
+There is always a correspondence between an attribute and some real-world phenomenon. Empirical values are also treated as attributes. Empirical values are tied to the feature earth, or space in general, for example.
 
-That's why I approach data types starting with attribute types. The next sections describe what the differences are between the various kinds of attributes that are used in model studies.
+Modellers are interested in attributes, not technicalities. Modellers model concentrations, income, volumes, speeds, directions, etc. The fact that there are things like agents, points, rasters, vectors, single precision floating points, unsigned integers, etc, are an implementation detail that may or may not be relevant to the modeller. It may not matter to him as long as requirements in execution speed, data size, accuracy, etc are met. Since environmental attributes matter more to humans than implementation details, working with attributes results in a cleaner, more correct, design, than working with concepts like rasters, features, time steps, and Monte Carlo sample numbers.
+
+In the next section, we describe ways to categorize attributes. This will make improve our understanding what attributes are. After we have a better understanding of what attributes are, we move on to the functions that are used to manipulate attributes in a model. Finally, we have something to say about the modelling environment.
 
 Attribute type categorizations
 ------------------------------
@@ -84,14 +86,17 @@ Temporal mobility means that the date/times or time periods for which an attribu
 
 KDJ: All features are spatially mobile. A lot of features just don't move within the modelled time period.
 
+Functions
+---------
+
 Attributes versus functions
----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 An attribute contains values that represent the state of the attribute. Functions calculate attribute values, based on the state of one or more other attributes. In a way, functions are very much like attributes. They just need to perform some calculation before being able to provide the new attribute's state values. Or, the other way around, reading existing attribute values is like executing some identity function that simply returns the attribute's current state values.
 
 *Attributes are very similar to functions. Both are attribute value providers.*
 
 Functions versus models
------------------------
+~~~~~~~~~~~~~~~~~~~~~~~
 A functions accepts input attributes and calculates the state values of output attributes. Models (including model components) do the same thing. The difference between the two is a matter of scale / hierarchy. Whether or not a function or model uses iteration to calculate the result іs of no relevance and can be considered an internal detail.
 
 *Functions are very similar to models. Both are attribute value providers.*

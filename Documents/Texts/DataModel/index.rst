@@ -8,7 +8,7 @@ Welcome to DataModel's documentation!
 
 Abstract
 --------
-This document describes high level concepts we need for the new generation environmental modelling software.
+In this document we describe high level concepts that are needed for a new generation environmental modelling software.
 
 
 Contents:
