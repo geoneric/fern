@@ -1,3 +1,8 @@
+INCLUDE(UseBoost)
+INCLUDE(UseExpat)
+INCLUDE(UseIcu)
+INCLUDE(UseXsd)
+
 SET(_LINK_LIBRARIES
   RanallyUtil
   ${EXPAT_LIBRARIES}
@@ -88,4 +93,5 @@ ADD_CUSTOM_TARGET(runTestRanallyOperation
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
   COMMENT "Running RanallyOperation unit tests" VERBATIM
 )
+ADD_DEPENDENCIES(tests runTestRanallyOperation)
 

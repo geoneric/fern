@@ -22,6 +22,7 @@ Contents:
    FileFormat
    ModelingLanguage
    Examples
+   Glossary
 
 
 Indices and tables

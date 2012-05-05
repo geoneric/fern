@@ -1,17 +1,16 @@
-CONFIGURE_FILE(
-  ${CMAKE_CURRENT_SOURCE_DIR}/conf.py.in
-  ${CMAKE_CURRENT_SOURCE_DIR}/conf.py
+SET(SPHINX_SOURCES
+  DataModel.rst
+  Examples.rst
+  FileFormat.rst
+  Glossary.rst
+  index.rst
+  Introduction.rst
+  ModelingLanguage.rst
+  Ontology.rst
+  WolvesAndSheep.ran
 )
-ADD_CUSTOM_COMMAND(
-  OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/_build/html/index.html
-  COMMAND
-    make -C ${CMAKE_CURRENT_SOURCE_DIR} html
-  DEPENDS
-    ${CMAKE_CURRENT_SOURCE_DIR}/conf.py
-  COMMENT "Generating DataModel documentation" VERBATIM
+SET(SPHINX_TARGET
+  DataModel
 )
-ADD_CUSTOM_TARGET(DataModel ALL
-  DEPENDS
-    ${CMAKE_CURRENT_SOURCE_DIR}/_build/html/index.html
-)
+INCLUDE(SphinxDoc)
 

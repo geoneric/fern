@@ -1,5 +1,7 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+
 PROJECT(Ranally)
+
 SET(RANALLY_ORGANISATION_NAME "Kor de Jong Environmental Modelling Software")
 SET(RANALLY_COPYRIGHT "Copyright \(C\) 2010-2012 Kor de Jong")
 SET(RANALLY_PROJECT_NAME "${CMAKE_PROJECT_NAME}")
@@ -20,21 +22,9 @@ SET(CMAKE_MODULE_PATH
 )
 INCLUDE(Site)
 
-INCLUDE(UseBoost)
-INCLUDE(UseExpat)
-INCLUDE(UseHdf5)
-INCLUDE(UseIcu)
-INCLUDE(UseLoki)
-INCLUDE(UseGdal)
-INCLUDE(UsePython)
-INCLUDE(UseXsd)
-
+ADD_CUSTOM_TARGET(tests ALL)
 ADD_SUBDIRECTORY(Documents)
 ADD_SUBDIRECTORY(Sources)
 
-ADD_CUSTOM_TARGET(tests ALL)
-ADD_DEPENDENCIES(tests
-  runTestRanallyUtil runTestRanallyAlgorithm runTestRanallyOperation runTestRanallyLanguage runTestRanallyIO runTestRanallyInterpreter
-)
-
 INCLUDE(InstallRules)
+

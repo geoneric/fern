@@ -41,7 +41,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'DataModel'
-copyright = u'2012, Kor de Jong'
+copyright = u'2011-${DEV_CURRENT_YEAR}, Kor de Jong'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

@@ -1,4 +1,6 @@
 # vim:syntax=python
+#
+# Syntax is Python, but execution requires a custom interpreter.
 
 # Read the initial area feature (polygon).
 # Area has a grass and countdown attributes.
@@ -14,11 +16,11 @@ sheep_gain_from_food = ...
 wolf_gain_from_food = ...
 
 
+
 def die(
         animals):
     # Get rid of animals with low energy levels.
     animals = if_then(animals.energy > 0, animals)
-    # or, messier: delete(if_then(animals.energy <= 0, animals))
     return animals
 
 def reproduce(
@@ -30,11 +32,11 @@ def reproduce(
     move(baby_animals, ...)
     return animals
 
-def eatGrass(
+def eat_grass(
         sheep,
         grass):
     sheep_on_grass = select(sheep, grass)
-    # TODO Energy levels of sheep not on grass should drop too, shouldn't it???
+    # TODO Energy levels of sheep not on grass should drop too, shouldn't they?
     #      Compare with energy level of wolves, which drops even if no sheep
     #      are eaten. sheep.energy -= 1
     sheep_on_grass.energy -= 1
@@ -63,7 +65,7 @@ def grow_grass(
 
 
 move(sheep, ...)
-eatGrass(sheep, area.grass)
+eat_grass(sheep, area.grass)
 sheep = die(sheep)
 sheep = reproduce(sheep)
 

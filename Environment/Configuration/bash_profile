@@ -10,7 +10,7 @@
 export DEVENV_BRANCH=master
 
 _devEnv="$DEVELOPMENT_ROOT/projects/DevEnv"
-_personalConfiguration="$_devEnv/configuration/personal/Kor"
+_personalConfiguration="$_devEnv/Configuration/personal/Kor"
 
 # Load common settings and utility functions.
 # source "$_personalConfiguration/Profiles/Utils.sh"

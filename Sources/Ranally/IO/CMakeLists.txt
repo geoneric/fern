@@ -1,3 +1,8 @@
+INCLUDE(UseBoost)
+INCLUDE(UseGdal)
+INCLUDE(UseHdf5)
+INCLUDE(UseIcu)
+
 INCLUDE_DIRECTORIES(
   ${CMAKE_CURRENT_SOURCE_DIR}/../..
 )
@@ -82,4 +87,5 @@ ADD_CUSTOM_TARGET(copyTestData
 ADD_DEPENDENCIES(runTestRanallyIO
   copyTestData
 )
+ADD_DEPENDENCIES(tests runTestRanallyIO)
 

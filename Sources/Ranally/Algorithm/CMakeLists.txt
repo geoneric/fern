@@ -1,3 +1,5 @@
+INCLUDE(UseBoost)
+
 INCLUDE_DIRECTORIES(
   ${CMAKE_CURRENT_SOURCE_DIR}/../..
 )
@@ -19,3 +21,5 @@ ADD_CUSTOM_TARGET(runTestRanallyAlgorithm
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
   COMMENT "Running RanallyAlgorithm unit tests" VERBATIM
 )
+ADD_DEPENDENCIES(tests runTestRanallyAlgorithm)
+

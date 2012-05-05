@@ -1,3 +1,10 @@
+INCLUDE(UseBoost)
+INCLUDE(UseExpat)
+INCLUDE(UseIcu)
+INCLUDE(UseLoki)
+INCLUDE(UsePython)
+INCLUDE(UseXsd)
+
 SET(_LINK_LIBRARIES
   RanallyOperation
   RanallyPython
@@ -107,3 +114,5 @@ ADD_CUSTOM_TARGET(runTestRanallyLanguage
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
   COMMENT "Running RanallyLanguage unit tests" VERBATIM
 )
+ADD_DEPENDENCIES(tests runTestRanallyLanguage)
+
