@@ -22,7 +22,7 @@ source "$_personalConfiguration/Profiles/DevEnv"
 
 export RANALLY=$projects/Ranally
 
-export CDPATH=$CDPATH:$RANALLY/Sources
+export CDPATH=$CDPATH:$RANALLY/Sources/Ranally
 
 _baseName=`basename $RANALLY`
 
