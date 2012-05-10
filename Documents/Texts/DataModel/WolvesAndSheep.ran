@@ -20,7 +20,8 @@ wolf_gain_from_food = ...
 def die(
         animals):
     # Get rid of animals with low energy levels.
-    animals = if_then(animals.energy > 0, animals)
+    ### animals = if_then(animals.energy > 0, animals)
+    animals = animals[energy > 0]
     return animals
 
 def reproduce(
