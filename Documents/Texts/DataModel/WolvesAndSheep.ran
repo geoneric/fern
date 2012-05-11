@@ -20,27 +20,23 @@ wolf_gain_from_food = ...
 def die(
         animals):
     # Get rid of animals with low energy levels.
-    ### animals = if_then(animals.energy > 0, animals)
     animals = animals[energy > 0]
     return animals
 
 def reproduce(
         animals):
     # Randomly select animals that will reproduce.
-    reproducing_animals = select_random(animals, random())
+    reproducing_animals = animals.select_random(random())
     reproducing_animals.energy /= 2
-    baby_animals = copy(reproducing_animals)
-    move(baby_animals, ...)
+    baby_animals = reproducing_animals.hatch()
+    baby_animals.move(...)
     return animals
 
 def eat_grass(
         sheep,
         grass):
-    sheep_on_grass = select(sheep, grass)
-    # TODO Energy levels of sheep not on grass should drop too, shouldn't they?
-    #      Compare with energy level of wolves, which drops even if no sheep
-    #      are eaten. sheep.energy -= 1
-    sheep_on_grass.energy -= 1
+    sheep -= 1
+    sheep_on_grass = sheep.select_if(grass)
     grass = if_then(not sheep_on_grass, grass)
     sheep_on_grass.energy += sheep_gain_from_food
 
@@ -48,9 +44,9 @@ def eat_sheep(
         wolves,
         sheep):
     wolves.energy -= 1
-    wolves_near_sheep = select_nearby(wolves, sheep, radius)
-    wolves_catching_sheep = select_random(wolves_near_sheep, random())
-    caught_sheep = select_nearby(sheep, wolves_catching_sheep, radius)
+    wolves_near_sheep = wolves.select_when_nearby(sheep, radius)
+    wolves_catching_sheep = wolves_near_sheep.select_random(random())
+    caught_sheep = sheep.select_when_nearby(wolves_catching_sheep, radius)
     delete(caught_sheep)
     wolves_catching_sheep.energy += wolf_gain_from_food
 
@@ -65,12 +61,12 @@ def grow_grass(
 
 
 
-move(sheep, ...)
+sheep.move(...)
 eat_grass(sheep, area.grass)
 sheep = die(sheep)
 sheep = reproduce(sheep)
 
-move(wolves, ...)
+wolves.move(...)
 eat_sheep(wolves, sheep)
 wolves = die(wolves)
 wolves = reproduce(wolves)
