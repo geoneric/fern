@@ -24,7 +24,6 @@ Contents:
    Examples
    Glossary
 
-
 Indices and tables
 ==================
 
