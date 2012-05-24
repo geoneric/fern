@@ -1,2 +1,3 @@
+ADD_SUBDIRECTORY(Project)
 ADD_SUBDIRECTORY(DataModel)
 
