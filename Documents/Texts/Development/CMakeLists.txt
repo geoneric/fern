@@ -1,0 +1,21 @@
+SET(SPHINX_SOURCES
+  Algorithms.rst
+  CommandlineUtilities.rst
+  Concepts.rst
+  index.rst
+  Language.rst
+  Links.rst
+  ModuleOrganization.rst
+  ScratchPage.rst
+  Terminology.rst
+  Todo.rst
+  Brainstorm.txt
+  CMakeLists.txt
+  Components.txt
+  Introduction.txt
+)
+SET(SPHINX_TARGET
+  Development
+)
+INCLUDE(SphinxDoc)
+
