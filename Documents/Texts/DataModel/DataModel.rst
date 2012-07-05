@@ -1,6 +1,6 @@
 Data model
 ==========
-Below is a very high level graph of the data model as described in this document. It shows a feature at the top. This is a real world object or agent, that has attributes defined over a domain. The domain contains the spatio-temporal coordinates where the feature's attributes are located. An attribute is a property of a feature, like its color or height. Each attribute has a domain (the same one as the one the enclosing feature has), and a value and/or a larger scale sub-feature. The data model is recursive. Small scale features may be defined by larger scale features. For example, the earth feature may have a soil class attribute attached to the national_park sub-feature.
+Below is a very high level graph of the data model as described in this document. It shows a feature at the top. This is a real world object or agent, that has attributes defined over a domain. The domain contains a definition of the spatio-temporal coordinates where the feature's attributes are located. An attribute is a property of a feature, like its color or height. Each attribute has a domain (the same one as the one the enclosing feature has), and a value and/or a larger scale sub-feature. The data model is recursive. Small scale features may be defined by larger scale features. For example, the `earth` feature may have a `soil_class` attribute attached to the `national_park` sub-feature.
 
 .. graphviz::
 
@@ -66,13 +66,15 @@ In space, a feature is some spatial entity that has a position in space, and ass
 
 In time, a feature is a collection of moments in time for which an attribute value is available. Examples of temporal features are temperature per geological era, number of plant species per interglacial, gross income per interbellum, tax rate per government period, etc.
 
+Given that all attributes are spatio-temporal attributes, all features have a spatio-temporal domain, which means that all features are spatio-temporal features.
+
 Examples of spatio-temporal features are the spatial distribution of a plant species in time, speed of cars driving on a highway, etc.
 
-A feature is a phenomenon whose attribute plays a role in the environmental model.
+A feature is a phenomenon whose attributes play a role in the environmental model.
 
 In traditional raster models, features are implicitly present in the model description. Often the feature being modelled is (a part of) the earth, like a continent, or an administrative area. It is the feature's attribute values that are modelled in raster models, and most of the times, these are all attributes of the same feature.
 
-In multi-agent models, features are first class citizens. In fact, agents can be considered to be a specialization (without the recursion) of features as described in this document.
+In multi-agent models, features are first class citizens. In fact, agents can be considered to be a specialization (without the recursion) of features as described in this document. This is, ofcourse, not without a reason. The envisioned moelling environment must be able to handle both traditional rasters and features.
 
 In feature models, like traditional polygon overlay models, the features are the points, lines and polygons. Such features can also be considered to be a specialization (without the recursion and with one attribute containing one value per feature) of features as described in this document.
 
@@ -85,9 +87,9 @@ All kinds of features can be modelled like this:
 * Province per country.
 * Etc, etc, etc.
 
-A feature has exactly one domain.
+A feature has exactly one domain, so it is not possible to model humans by points and volumes in one and the same feature, for example.
 
-A feature has zero or more attributes. All these attributes have values for all spatio-temporal locations in the feature's domain, either directly, or indirectly using a larger scale sub-feature.
+A feature has zero or more attributes. All these attributes have values for all spatio-temporal locations in the feature's domain, either directly, or indirectly using a larger scale sub-feature. Missing values are explicitly marked as such.
 
 Domain
 ------
@@ -117,20 +119,22 @@ A value consists of one or more values describing the variation over a feature's
 Examples of values are:
 
 * A single value per feature-item in the domain.
-* A probability distribution of a value per feature-item in the domain.
 * A regular discretisized collection of values per item in the domain, like a raster in 2D space, or a regular timeseries in time.
-* A probability distribution of a regular discretisized collection of values per item in the domain.
+
+..
+   * A probability distribution of a value per feature-item in the domain.
+   * A probability distribution of a regular discretisized collection of values per item in the domain.
 
 A result of all this is that a raster's values, for example, are stored in the `Attribute`'s `Value`. The polygon describing the raster's extent is stored in the `Feature`'s `Domain`. This extent does not necessarely have to be a rectangle. For example, imagine a country feature with a national_park sub-feature, with a height attribute, whose values are stored in a matrix.
 An example of a (spatio-)temporal attribute is a river feature with a tributary sub-feature, with a discharge attribute, which is measured at regular intervals, except during the winter when all the water is frozen. The begin and end date/times are stored in the `Domain` while the arrays of values are stored in the `Value`.
 
 .. important::
 
-   Discrete value changes are modeled using a Domain, not by a value. Using a domain one can record the positions in space and/or time that an attribute's value changes.
+   Discrete value changes are modeled using a Domain, not by a Value. Using a domain one can record the positions in space and/or time where/when an attribute's value changes.
 
 Recursion
 ---------
-From the graph above, it shows that feature is defined by itself, recursively. Attributes of a small scale feature can be defined by a larger scale feature, if more detailed information is available. Or, a large scale feature, can be aggregated to a smaller scale feature.
+From the graph above, it shows that Feature is defined by itself, so recursively. Attributes of a small scale feature can be defined by larger scale features. This is useful if the same attribute values are used at multiple spatio-temporal scales. The obvious example where this is useful is in visualization, but it can also be done to guide the paralellization of the model run.
 
 Take, for example, the biomass of a forrest. Given that biomass information is available per leave per tree, biomass of the forrest could be modelled using a forrest_biomass feature (see graph below).
 
@@ -193,7 +197,66 @@ Take, for example, the biomass of a forrest. Given that biomass information is a
      leaveAttribute -> leaveValue;
   }
 
-One reason for the data model to be recursive is that it allows us to treat traditional rasters, features and agents in a uniform way. Rasters end up in the attribute's values. Traditional features and agents are a specialization of the features described here.
+Another example is some attribute that needs to be visualized at different spatial scales:
+
+.. graphviz::
+
+   digraph Elevation {
+     ordering="out"
+
+     feature1[
+       label="feature: earth"
+     ]
+     feature1Domain[
+       label="domain: earth"
+     ]
+     feature1Attribute[
+       label="attribute: height"
+     ]
+     feature1Value[
+       label="value: height at 1:1000000000"
+     ]
+
+     feature2[
+       label="feature: earth"
+     ]
+     feature2Domain[
+       label="domain: earth"
+     ]
+     feature2Attribute[
+       label="attribute: height"
+     ]
+     feature2Value[
+       label="value: height at 1:000000"
+     ]
+
+     feature3[
+       label="feature: earth"
+     ]
+     feature3Domain[
+       label="domain: earth"
+     ]
+     feature3Attribute[
+       label="attribute: height"
+     ]
+     feature3Value[
+       label="value: height at 1:000"
+     ]
+
+     feature1 -> feature1Domain;
+     feature1 -> feature1Attribute;
+     feature1Attribute -> feature2;
+     feature1Attribute -> feature1Value;
+
+     feature2 -> feature2Domain;
+     feature2 -> feature2Attribute;
+     feature2Attribute -> feature3;
+     feature2Attribute -> feature2Value;
+
+     feature3 -> feature3Domain;
+     feature3 -> feature3Attribute;
+     feature3Attribute -> feature3Value;
+  }
 
 Misc
 ----
