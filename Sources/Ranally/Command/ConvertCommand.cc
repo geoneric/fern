@@ -152,8 +152,8 @@ int ConvertCommand::convertToCpp(
 
 
 
-UnicodeString ConvertCommand::convertToDotAst(
-  UnicodeString const& xml,
+String ConvertCommand::convertToDotAst(
+  String const& xml,
   int modes)
 {
   boost::shared_ptr<ranally::language::ScriptVertex> tree(
@@ -214,8 +214,8 @@ int ConvertCommand::convertToDotAst(
       ++currentArgumentId;
       std::string outputFileName = currentArgumentId == argc - 1
         ? argv[currentArgumentId] : "";
-      UnicodeString xml = read(inputFileName);
-      UnicodeString dotScript = convertToDotAst(xml, modes);
+      String xml = read(inputFileName);
+      String dotScript = convertToDotAst(xml, modes);
       write(dotScript, outputFileName);
       status = EXIT_SUCCESS;
     }
@@ -226,8 +226,8 @@ int ConvertCommand::convertToDotAst(
 
 
 
-UnicodeString ConvertCommand::convertToDotFlowgraph(
-  UnicodeString const& xml)
+String ConvertCommand::convertToDotFlowgraph(
+  String const& xml)
 {
   boost::shared_ptr<ranally::language::ScriptVertex> tree(
     ranally::language::XmlParser().parse(xml));
@@ -273,8 +273,8 @@ int ConvertCommand::convertToDotFlowgraph(
       ++currentArgumentId;
       std::string outputFileName = currentArgumentId == argc - 1
         ? argv[currentArgumentId] : "";
-      UnicodeString xml = read(inputFileName);
-      UnicodeString dotScript = convertToDotFlowgraph(xml);
+      String xml = read(inputFileName);
+      String dotScript = convertToDotFlowgraph(xml);
       write(dotScript, outputFileName);
       status = EXIT_SUCCESS;
     }
@@ -349,7 +349,7 @@ int ConvertCommand::convertToXml(
       ++currentArgumentId;
       std::string outputFileName = currentArgumentId == argc - 1
         ? argv[currentArgumentId] : "";
-      UnicodeString xml = read(inputFileName);
+      String xml = read(inputFileName);
       write(xml, outputFileName);
       status = EXIT_SUCCESS;
     }

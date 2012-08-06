@@ -4,8 +4,8 @@
 #include <vector>
 #include <boost/noncopyable.hpp>
 #include <loki/Visitor.h>
-#include <unicode/unistr.h>
 #include <boost/shared_ptr.hpp>
+#include "Ranally/Util/String.h"
 
 
 

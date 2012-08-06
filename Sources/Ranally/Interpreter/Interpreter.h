@@ -29,7 +29,7 @@ public:
 
                    ~Interpreter        ();
 
-  language::ScriptVertexPtr parseString(UnicodeString const& string);
+  language::ScriptVertexPtr parseString(String const& string);
 
   void             annotate            (language::ScriptVertexPtr const& tree);
 

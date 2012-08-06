@@ -61,8 +61,8 @@ int ImportCommand::execute()
     status = EXIT_FAILURE;
   }
   else {
-    UnicodeString inputDataSetName = argv()[1];
-    UnicodeString outputDataSetName = argv()[2];
+    String inputDataSetName = argv()[1];
+    String outputDataSetName = argv()[2];
     ranally::io::import(inputDataSetName, outputDataSetName);
     status = EXIT_SUCCESS;
   }

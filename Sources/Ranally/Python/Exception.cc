@@ -10,7 +10,7 @@ namespace ranally {
 namespace python {
 namespace {
 
-UnicodeString formatErrorMessage(
+String formatErrorMessage(
   PyObject* value,
   PyObject* /* traceback */)
 {
@@ -18,14 +18,14 @@ UnicodeString formatErrorMessage(
   assert(value != Py_None);
   OwnedReference valueDescriptionObject = PyObject_Str(value);
   assert(valueDescriptionObject);
-  UnicodeString valueDescription = asUnicodeString(valueDescriptionObject);
+  String valueDescription = asUnicodeString(valueDescriptionObject);
 
   return valueDescription;
 }
 
 
 
-UnicodeString formatSyntaxErrorMessage(
+String formatSyntaxErrorMessage(
   PyObject* value,
   PyObject* traceback)
 {
@@ -54,9 +54,9 @@ void throwException()
 
   // OwnedReference typeNameObject = PyObject_GetAttrString(type, "__name__");
   // assert(typeNameObject);
-  // UnicodeString typeName = asUnicodeString(typeNameObject);
+  // String typeName = asUnicodeString(typeNameObject);
 
-  UnicodeString message;
+  String message;
 
   if(PyErr_GivenExceptionMatches(type, PyExc_SyntaxError)) {
     message = formatSyntaxErrorMessage(value, traceback);
@@ -68,7 +68,7 @@ void throwException()
   assert(!message.isEmpty());
   assert(!PyErr_Occurred());
 
-  throw std::runtime_error(util::encodeInUTF8(message).c_str());
+  throw std::runtime_error(message.encodeInUTF8().c_str());
 }
 
 } // namespace python

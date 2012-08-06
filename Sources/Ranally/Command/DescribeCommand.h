@@ -30,7 +30,7 @@ public:
 
 private:
 
-  void             describe            (UnicodeString const& xml);
+  void             describe            (String const& xml);
 
 };
 

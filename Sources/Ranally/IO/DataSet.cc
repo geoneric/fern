@@ -6,7 +6,7 @@ namespace ranally {
 namespace io {
 
 DataSet::DataSet(
-  UnicodeString const& name)
+  String const& name)
 
   : _name(name)
 
@@ -21,7 +21,7 @@ DataSet::~DataSet()
 
 
 
-UnicodeString const& DataSet::name() const
+String const& DataSet::name() const
 {
   return _name;
 }

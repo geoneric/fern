@@ -40,7 +40,7 @@ ExecuteCommand::~ExecuteCommand()
 
 
 void ExecuteCommand::execute(
-  UnicodeString const& xml)
+  String const& xml)
 {
   boost::shared_ptr<ranally::language::ScriptVertex> tree(
     ranally::language::XmlParser().parse(xml));
@@ -67,7 +67,7 @@ int ExecuteCommand::execute()
   else {
     std::string inputFileName = std::strcmp(argv()[1], "-") != 0
       ? argv()[1] : "";
-    UnicodeString xml = read(inputFileName);
+    String xml = read(inputFileName);
     execute(xml);
     status = EXIT_SUCCESS;
   }

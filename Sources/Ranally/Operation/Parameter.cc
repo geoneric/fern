@@ -7,8 +7,8 @@ namespace ranally {
 namespace operation {
 
 Parameter::Parameter(
-  UnicodeString const& name,
-  UnicodeString const& description,
+  String const& name,
+  String const& description,
   DataTypes dataTypes,
   ValueTypes valueTypes)
 
@@ -60,14 +60,14 @@ Parameter::~Parameter()
 
 
 
-UnicodeString const& Parameter::name() const
+String const& Parameter::name() const
 {
   return _name;
 }
 
 
 
-UnicodeString const& Parameter::description() const
+String const& Parameter::description() const
 {
   return _description;
 }

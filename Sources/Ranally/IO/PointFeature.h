@@ -22,7 +22,7 @@ class PointFeature:
 
 public:
 
-                   PointFeature        (UnicodeString const& name,
+                   PointFeature        (String const& name,
                                         PointDomainPtr const& domain);
 
                    ~PointFeature       ();
@@ -31,7 +31,7 @@ public:
 
   PointAttributes const& attributes    () const;
 
-  bool             exists              (UnicodeString const& name) const;
+  bool             exists              (String const& name) const;
 
   void             add                 (PointAttributePtr const& attribute);
 

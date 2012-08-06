@@ -47,14 +47,14 @@ HDF5DataSetDriverTest::~HDF5DataSetDriverTest()
 
 void HDF5DataSetDriverTest::removeTestFiles()
 {
-  std::vector<UnicodeString> dataSetNames;
+  std::vector<ranally::String> dataSetNames;
   dataSetNames.push_back("TestExists.h5");
   dataSetNames.push_back("TestCreate.h5");
   dataSetNames.push_back("TestRemove.h5");
   dataSetNames.push_back("TestOpen.h5");
   ranally::io::HDF5DataSetDriver driver;
 
-  BOOST_FOREACH(UnicodeString const& dataSetName, dataSetNames) {
+  BOOST_FOREACH(ranally::String const& dataSetName, dataSetNames) {
     if(driver.exists(dataSetName)) {
       driver.remove(dataSetName);
     }
@@ -78,7 +78,7 @@ void HDF5DataSetDriverTest::testExists()
 void HDF5DataSetDriverTest::testCreate()
 {
   ranally::io::HDF5DataSetDriver driver;
-  UnicodeString dataSetName = "TestCreate.h5";
+  ranally::String dataSetName = "TestCreate.h5";
   BOOST_REQUIRE(!driver.exists(dataSetName));
   boost::scoped_ptr<ranally::io::HDF5DataSet> dataSet;
 
@@ -156,7 +156,7 @@ void HDF5DataSetDriverTest::testCreate()
 void HDF5DataSetDriverTest::testRemove()
 {
   ranally::io::HDF5DataSetDriver driver;
-  UnicodeString dataSetName = "TestRemove.h5";
+  ranally::String dataSetName = "TestRemove.h5";
   BOOST_REQUIRE(!driver.exists(dataSetName));
 
   boost::scoped_ptr<ranally::io::HDF5DataSet>(driver.create(dataSetName));
@@ -174,7 +174,7 @@ void HDF5DataSetDriverTest::testRemove()
 void HDF5DataSetDriverTest::testOpen()
 {
   ranally::io::HDF5DataSetDriver driver;
-  UnicodeString dataSetName = "TestOpen.h5";
+  ranally::String dataSetName = "TestOpen.h5";
   BOOST_REQUIRE(!driver.exists(dataSetName));
 
   boost::scoped_ptr<ranally::io::HDF5DataSet>(driver.create(dataSetName));

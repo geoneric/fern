@@ -1,7 +1,6 @@
 #ifndef INCLUDED_RANALLY_LANGUAGE_NUMBERVERTEX
 #define INCLUDED_RANALLY_LANGUAGE_NUMBERVERTEX
 
-#include <unicode/unistr.h>
 #include "Ranally/Language/ExpressionVertex.h"
 
 
@@ -22,6 +21,10 @@ class NumberVertex:
 
   friend class NumberVertexTest;
 
+private:
+
+  T                _value;
+
 public:
 
   LOKI_DEFINE_VISITABLE()
@@ -32,15 +35,9 @@ public:
                                         int colId,
                                         T value);
 
-  /* virtual */    ~NumberVertex       ();
+                   ~NumberVertex       ();
 
   T                value               () const;
-
-protected:
-
-private:
-
-  T                _value;
 
 };
 

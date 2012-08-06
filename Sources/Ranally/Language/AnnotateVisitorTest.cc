@@ -48,7 +48,7 @@ void AnnotateVisitorTest::testVisitEmptyScript()
   // Ast before and after should be the same.
   boost::shared_ptr<rl::ScriptVertex> tree1, tree2;
 
-  tree1 = _xmlParser.parse(_algebraParser.parseString(UnicodeString("")));
+  tree1 = _xmlParser.parse(_algebraParser.parseString(ranally::String("")));
   assert(tree1);
 
   // // Create copy of this empty tree.
@@ -74,7 +74,7 @@ void AnnotateVisitorTest::testVisitNumber()
   namespace rl = ranally::language;
 
   boost::shared_ptr<rl::ScriptVertex> tree =
-    _xmlParser.parse(_algebraParser.parseString(UnicodeString("5")));
+    _xmlParser.parse(_algebraParser.parseString(ranally::String("5")));
   tree->Accept(_visitor);
 
   BOOST_CHECK(tree->sourceName() == "<string>");
@@ -92,7 +92,7 @@ void AnnotateVisitorTest::testVisitOperation()
 
   {
     boost::shared_ptr<rl::ScriptVertex> tree =
-      _xmlParser.parse(_algebraParser.parseString(UnicodeString("abs(a)")));
+      _xmlParser.parse(_algebraParser.parseString(ranally::String("abs(a)")));
     tree->Accept(_visitor);
 
     BOOST_CHECK(tree->sourceName() == "<string>");

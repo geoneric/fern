@@ -6,7 +6,7 @@ namespace ranally {
 namespace language {
 
 ExpressionVertex::ExpressionVertex(
-  UnicodeString const& name)
+  String const& name)
 
   : StatementVertex(),
     _name(name) // ,
@@ -21,7 +21,7 @@ ExpressionVertex::ExpressionVertex(
 ExpressionVertex::ExpressionVertex(
   int lineNr,
   int colId,
-  UnicodeString const& name)
+  String const& name)
 
   : StatementVertex(lineNr, colId),
     _name(name)
@@ -37,7 +37,7 @@ ExpressionVertex::~ExpressionVertex()
 
 
 
-UnicodeString const& ExpressionVertex::name() const
+String const& ExpressionVertex::name() const
 {
   return _name;
 }

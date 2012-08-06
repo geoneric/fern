@@ -47,9 +47,9 @@ DotVisitorTest::DotVisitorTest()
 
 void DotVisitorTest::testVisitEmptyScript()
 {
-  // UnicodeString xml;
+  // ranally::String xml;
 
-  // xml = _algebraParser.parseString(UnicodeString(""));
+  // xml = _algebraParser.parseString(ranally::String(""));
   // BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) ==
   //   "digraph G {\n"
   //   "}\n"
@@ -60,9 +60,9 @@ void DotVisitorTest::testVisitEmptyScript()
 
 void DotVisitorTest::testVisitName()
 {
-  // UnicodeString xml;
+  // ranally::String xml;
 
-  // xml = _algebraParser.parseString(UnicodeString("a"));
+  // xml = _algebraParser.parseString(ranally::String("a"));
   // BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) ==
   //   "digraph G {\n"
   //   "  a;\n"
@@ -74,9 +74,9 @@ void DotVisitorTest::testVisitName()
 
 void DotVisitorTest::testVisitAssignment()
 {
-  // UnicodeString xml;
+  // ranally::String xml;
 
-  // xml = _algebraParser.parseString(UnicodeString("a = b"));
+  // xml = _algebraParser.parseString(ranally::String("a = b"));
   // BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) ==
   //   "digraph G {\n"
   //   "  b -> a;\n"
@@ -88,9 +88,9 @@ void DotVisitorTest::testVisitAssignment()
 
 void DotVisitorTest::testVisitString()
 {
-  // UnicodeString xml;
+  // ranally::String xml;
 
-  // xml = _algebraParser.parseString(UnicodeString("\"five\""));
+  // xml = _algebraParser.parseString(ranally::String("\"five\""));
   // BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) ==
   //   "digraph G {\n"
   //   "  \"five\";\n"
@@ -102,23 +102,23 @@ void DotVisitorTest::testVisitString()
 
 void DotVisitorTest::testVisitNumber()
 {
-  // UnicodeString xml;
+  // ranally::String xml;
 
-  // xml = _algebraParser.parseString(UnicodeString("5"));
+  // xml = _algebraParser.parseString(ranally::String("5"));
   // BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) ==
   //   "digraph G {\n"
   //   "  5;\n"
   //   "}\n"
   // );
 
-  // xml = _algebraParser.parseString(UnicodeString("5L"));
+  // xml = _algebraParser.parseString(ranally::String("5L"));
   // BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) ==
   //   "digraph G {\n"
   //   "  5;\n"
   //   "}\n"
   // );
 
-  // xml = _algebraParser.parseString(UnicodeString("5.5"));
+  // xml = _algebraParser.parseString(ranally::String("5.5"));
   // BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) ==
   //   "digraph G {\n"
   //   "  5.5;\n"
@@ -132,16 +132,16 @@ void DotVisitorTest::testVisitNumber()
 
 void DotVisitorTest::testVisitFunction()
 {
-  // UnicodeString xml;
+  // ranally::String xml;
 
-  // xml = _algebraParser.parseString(UnicodeString("f()"));
+  // xml = _algebraParser.parseString(ranally::String("f()"));
   // BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) ==
   //   "digraph G {\n"
   //   "  f;\n"
   //   "}\n"
   // );
 
-  // xml = _algebraParser.parseString(UnicodeString("f(1, \"2\", three, four())"));
+  // xml = _algebraParser.parseString(ranally::String("f(1, \"2\", three, four())"));
   // BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) ==
   //   "digraph G {\n"
   //   "  1 -> f;\n"
@@ -156,18 +156,18 @@ void DotVisitorTest::testVisitFunction()
 
 void DotVisitorTest::testVisitOperator()
 {
-  // UnicodeString xml;
+  // ranally::String xml;
 
-  // xml = _algebraParser.parseString(UnicodeString("-a"));
+  // xml = _algebraParser.parseString(ranally::String("-a"));
   // BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "-(a)\n");
 
-  // xml = _algebraParser.parseString(UnicodeString("a + b"));
+  // xml = _algebraParser.parseString(ranally::String("a + b"));
   // BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "(a) + (b)\n");
 
-  // xml = _algebraParser.parseString(UnicodeString("-(a + b)"));
+  // xml = _algebraParser.parseString(ranally::String("-(a + b)"));
   // BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "-((a) + (b))\n");
 
-  // xml = _algebraParser.parseString(UnicodeString("a + b * c + d"));
+  // xml = _algebraParser.parseString(ranally::String("a + b * c + d"));
   // BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) ==
   //   "((a) + ((b) * (c))) + (d)\n");
 }
@@ -176,9 +176,9 @@ void DotVisitorTest::testVisitOperator()
 
 void DotVisitorTest::testVisitMultipleStatements()
 {
-  // UnicodeString xml;
+  // ranally::String xml;
 
-  // xml = _algebraParser.parseString(UnicodeString("a\nb"));
+  // xml = _algebraParser.parseString(ranally::String("a\nb"));
   // BOOST_CHECK(_xmlParser.parse(xml)->Accept(_visitor) == "a\nb\n");
 }
 
@@ -186,9 +186,9 @@ void DotVisitorTest::testVisitMultipleStatements()
 
 void DotVisitorTest::testVisitIf()
 {
-  // UnicodeString xml;
+  // ranally::String xml;
 
-  // xml = _algebraParser.parseString(UnicodeString(
+  // xml = _algebraParser.parseString(ranally::String(
   //     "if a:\n"
   //     "  b\n"
   //     "  c"));
@@ -197,7 +197,7 @@ void DotVisitorTest::testVisitIf()
   //     "  b\n"
   //     "  c\n");
 
-  // xml = _algebraParser.parseString(UnicodeString(
+  // xml = _algebraParser.parseString(ranally::String(
   //     "if a:\n"
   //     "  b\n"
   //     "  c\n"
@@ -213,7 +213,7 @@ void DotVisitorTest::testVisitIf()
   //     "    e\n"
   //     "    f\n");
 
-  // xml = _algebraParser.parseString(UnicodeString(
+  // xml = _algebraParser.parseString(ranally::String(
   //     "if a:\n"
   //     "  b\n"
   //     "  c\n"
@@ -240,9 +240,9 @@ void DotVisitorTest::testVisitIf()
 
 void DotVisitorTest::testVisitWhile()
 {
-  // UnicodeString xml;
+  // ranally::String xml;
 
-  // xml = _algebraParser.parseString(UnicodeString(
+  // xml = _algebraParser.parseString(ranally::String(
   //     "while a:\n"
   //     "  b\n"
   //     "  c"));
@@ -251,7 +251,7 @@ void DotVisitorTest::testVisitWhile()
   //     "  b\n"
   //     "  c\n");
 
-  // xml = _algebraParser.parseString(UnicodeString(
+  // xml = _algebraParser.parseString(ranally::String(
   //     "while a:\n"
   //     "  b\n"
   //     "  c\n"

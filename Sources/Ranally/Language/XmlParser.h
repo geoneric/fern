@@ -1,8 +1,8 @@
 #ifndef INCLUDED_RANALLY_LANGUAGE_XMLPARSER
 #define INCLUDED_RANALLY_LANGUAGE_XMLPARSER
 
-#include <unicode/unistr.h>
 #include <boost/shared_ptr.hpp>
+#include "Ranally/Util/String.h"
 
 
 
@@ -25,19 +25,17 @@ class XmlParser
 
   friend class XmlParserTest;
 
+private:
+
 public:
 
                    XmlParser           ();
 
-  /* virtual */    ~XmlParser          ();
+                   ~XmlParser          ();
 
-  boost::shared_ptr<ScriptVertex> parse(UnicodeString const& xml) const;
+  boost::shared_ptr<ScriptVertex> parse(String const& xml) const;
 
   boost::shared_ptr<ScriptVertex> parse(std::istream& stream) const;
-
-protected:
-
-private:
 
 };
 

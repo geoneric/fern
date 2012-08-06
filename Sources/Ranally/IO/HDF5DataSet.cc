@@ -20,7 +20,7 @@ namespace ranally {
 namespace io {
 
 HDF5DataSet::HDF5DataSet(
-  UnicodeString const& name,
+  String const& name,
   H5::H5File* file)
 
   : DataSet(name),
@@ -76,7 +76,7 @@ Feature* HDF5DataSet::feature(
 
 
 Feature* HDF5DataSet::feature(
-  UnicodeString const& name) const
+  String const& name) const
 {
   // TODO hier verder
 
@@ -87,12 +87,12 @@ Feature* HDF5DataSet::feature(
 
 
 bool HDF5DataSet::exists(
-  UnicodeString const& name) const
+  String const& name) const
 {
   // Check whether group with name /name is present.
   H5G_info_t groupInfo;
   herr_t result = H5Gget_info_by_name(_file->getLocId(),
-    ranally::util::encodeInUTF8(name).c_str(), &groupInfo, H5P_DEFAULT);
+    name.encodeInUTF8().c_str(), &groupInfo, H5P_DEFAULT);
   return result >= 0;
 }
 
@@ -109,10 +109,10 @@ bool HDF5DataSet::exists(
   \sa        .
 */
 void HDF5DataSet::remove(
-  UnicodeString const& name)
+  String const& name)
 {
-  herr_t result = H5Ldelete(_file->getLocId(),
-    ranally::util::encodeInUTF8(name).c_str(), H5P_DEFAULT);
+  herr_t result = H5Ldelete(_file->getLocId(), name.encodeInUTF8().c_str(),
+    H5P_DEFAULT);
 
   if(result < 0) {
     // TODO
@@ -135,7 +135,7 @@ void HDF5DataSet::add(
   // Create new feature group at /<feature name>.
   hid_t featureGroupId;
   {
-    std::string featurePathName = ranally::util::encodeInUTF8(feature.name());
+    std::string featurePathName = feature.name().encodeInUTF8();
     featureGroupId = H5Gcreate2(_file->getLocId(),
       featurePathName.c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
     if(featureGroupId < 0) {

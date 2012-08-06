@@ -32,7 +32,7 @@ public:
   void source(
     std::string const& sourceName)
   {
-    _sourceName = ranally::util::decodeFromUTF8(sourceName);
+    _sourceName = ranally::String(sourceName);
   }
 
   void Statements(
@@ -50,7 +50,7 @@ public:
 
 private:
 
-  UnicodeString    _sourceName;
+  ranally::String  _sourceName;
 
   StatementVertices _statementVertices;
 
@@ -602,7 +602,7 @@ private:
 
   struct FunctionData
   {
-    UnicodeString name;
+    ranally::String name;
     ExpressionVertices expressionVertices;
   };
 
@@ -618,7 +618,7 @@ public:
     std::string const& name)
   {
     assert(!_dataStack.empty());
-    _dataStack.top().name = ranally::util::decodeFromUTF8(name);
+    _dataStack.top().name = ranally::String(name);
   }
 
   void Expressions(
@@ -650,7 +650,7 @@ private:
 
   struct OperatorData
   {
-    UnicodeString name;
+    ranally::String name;
     ExpressionVertices expressionVertices;
   };
 
@@ -666,7 +666,7 @@ public:
     std::string const& name)
   {
     assert(!_dataStack.empty());
-    _dataStack.top().name = ranally::util::decodeFromUTF8(name);
+    _dataStack.top().name = ranally::String(name);
   }
 
   void Expressions(
@@ -728,8 +728,7 @@ public:
     assert(!_dataStack.empty());
     assert(!_dataStack.top().vertex);
     _dataStack.top().vertex = boost::make_shared<ranally::language::NameVertex>(
-      _dataStack.top().line, _dataStack.top().col,
-      ranally::util::decodeFromUTF8(name));
+      _dataStack.top().line, _dataStack.top().col, ranally::String(name));
   }
 
   void String(
@@ -739,8 +738,7 @@ public:
     assert(!_dataStack.top().vertex);
     _dataStack.top().vertex =
       boost::make_shared<ranally::language::StringVertex>(
-        _dataStack.top().line, _dataStack.top().col,
-        ranally::util::decodeFromUTF8(string));
+        _dataStack.top().line, _dataStack.top().col, ranally::String(string));
   }
 
   void Number(
@@ -896,12 +894,12 @@ boost::shared_ptr<ScriptVertex> XmlParser::parse(
   \param     xml String with Xml to parse.
 */
 boost::shared_ptr<ScriptVertex> XmlParser::parse(
-  UnicodeString const& xml) const
+  String const& xml) const
 {
   // Copy string contents in a string stream and work with that.
   std::stringstream stream;
   stream.exceptions(std::ifstream::badbit | std::ifstream::failbit);
-  stream << ranally::util::encodeInUTF8(xml); // << std::endl;
+  stream << xml.encodeInUTF8(); // << std::endl;
 
   return parse(stream);
 }

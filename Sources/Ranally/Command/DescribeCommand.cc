@@ -43,7 +43,7 @@ DescribeCommand::~DescribeCommand()
 
 
 void DescribeCommand::describe(
-  UnicodeString const& xml)
+  String const& xml)
 {
   boost::shared_ptr<ranally::language::ScriptVertex> tree(
     ranally::language::XmlParser().parse(xml));
@@ -78,7 +78,7 @@ int DescribeCommand::execute()
       std::string inputFileName =
         std::strcmp(argv()[currentArgumentId], "-") != 0
           ? argv()[currentArgumentId] : "";
-      UnicodeString xml = read(inputFileName);
+      String xml = read(inputFileName);
       describe(xml);
       status = EXIT_SUCCESS;
     }

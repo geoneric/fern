@@ -1,8 +1,8 @@
 #ifndef INCLUDED_RANALLY_ATTRIBUTE
 #define INCLUDED_RANALLY_ATTRIBUTE
 
-#include <unicode/unistr.h>
 #include <boost/noncopyable.hpp>
+#include "Ranally/Util/String.h"
 
 
 
@@ -22,15 +22,15 @@ public:
 
   virtual          ~Attribute          ();
 
-  UnicodeString const& name            () const;
+  String const&    name                () const;
 
 protected:
 
-                   Attribute           (UnicodeString const& name);
+                   Attribute           (String const& name);
 
 private:
 
-  UnicodeString    _name;
+  String           _name;
 
 };
 

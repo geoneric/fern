@@ -18,7 +18,7 @@ namespace ranally {
 namespace io {
 
 OGRDataSet::OGRDataSet(
-  UnicodeString const& name,
+  String const& name,
   OGRDataSource* dataSource)
 
   : DataSet(name),
@@ -60,10 +60,10 @@ Feature* OGRDataSet::feature(
 
 
 Feature* OGRDataSet::feature(
-  UnicodeString const& name) const
+  String const& name) const
 {
   OGRLayer* ogrLayer = _dataSource->GetLayerByName(
-    util::encodeInUTF8(name).c_str());
+    name.encodeInUTF8().c_str());
   if(!ogrLayer) {
     // TODO
     throw std::string("layer does not exist");
@@ -76,7 +76,7 @@ Feature* OGRDataSet::feature(
 
 
 bool OGRDataSet::exists(
-  UnicodeString const& name) const
+  String const& name) const
 {
   // TODO
   assert(false);
@@ -86,7 +86,7 @@ bool OGRDataSet::exists(
 
 
 void OGRDataSet::remove(
-  UnicodeString const& name)
+  String const& name)
 {
   // TODO
   assert(false);
@@ -142,8 +142,8 @@ void OGRDataSet::add(
 
   // TODO Remove layer if it already exists?!
   Points const& points(domain.points());
-  OGRLayer* ogrLayer = _dataSource->CreateLayer(ranally::util::encodeInUTF8(
-    feature.name()).c_str(), NULL, wkbPoint, NULL);
+  OGRLayer* ogrLayer = _dataSource->CreateLayer(
+    feature.name().encodeInUTF8().c_str(), NULL, wkbPoint, NULL);
 
   if(!ogrLayer) {
     throw std::string("cannot create ogr feature layer");

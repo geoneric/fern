@@ -1,7 +1,6 @@
 #ifndef INCLUDED_RANALLY_LANGUAGE_STRINGVERTEX
 #define INCLUDED_RANALLY_LANGUAGE_STRINGVERTEX
 
-#include <unicode/unistr.h>
 #include "Ranally/Language/ExpressionVertex.h"
 
 
@@ -27,15 +26,15 @@ public:
 
                    StringVertex        (int lineNr,
                                         int colId,
-                                        UnicodeString const& value);
+                                        String const& value);
 
                    ~StringVertex       ();
 
-  UnicodeString const& value           () const;
+  String const&    value               () const;
 
 private:
 
-  UnicodeString    _value;
+  String           _value;
 
 };
 

@@ -36,14 +36,14 @@ private:
   int              convertToCpp        (int argc,
                                         char** argv);
 
-  UnicodeString    convertToDotAst     (UnicodeString const& xml,
+  String           convertToDotAst     (String const& xml,
                                         int modes);
 
   int              convertToDotAst     (int argc,
                                         char** argv);
 
-  UnicodeString    convertToDotFlowgraph(
-                                        UnicodeString const& xml);
+  String           convertToDotFlowgraph(
+                                        String const& xml);
 
   int              convertToDotFlowgraph(
                                         int argc,

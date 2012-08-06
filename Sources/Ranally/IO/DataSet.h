@@ -1,8 +1,8 @@
 #ifndef INCLUDED_RANALLY_IO_DATASET
 #define INCLUDED_RANALLY_IO_DATASET
 
-#include <unicode/unistr.h>
 #include <boost/noncopyable.hpp>
+#include "Ranally/Util/String.h"
 
 
 
@@ -31,7 +31,7 @@ public:
 
   virtual          ~DataSet            ();
 
-  UnicodeString const& name            () const;
+  String const&    name                () const;
 
   //! Return the number of features available in the data set.
   /*!
@@ -49,7 +49,7 @@ public:
   /*!
     \return    Feature.
   */
-  virtual Feature* feature             (UnicodeString const& name) const=0;
+  virtual Feature* feature             (String const& name) const=0;
 
   //! Add \a feature to the data set.
   /*!
@@ -68,24 +68,24 @@ public:
     \param     name Name of feature.
     \return    true or false
   */
-  virtual bool     exists              (UnicodeString const& name) const=0;
+  virtual bool     exists              (String const& name) const=0;
 
   //! Remove feature \a name.
   /*!
     \param     name Name of feature to remove.
     \warning   It is assumed that feature \a name is present in the data set.
-    \sa        exists(UnicodeString const&)
+    \sa        exists(String const&)
   */
-  virtual void     remove              (UnicodeString const& name)=0;
+  virtual void     remove              (String const& name)=0;
 
 protected:
 
-                   DataSet             (UnicodeString const& name);
+                   DataSet             (String const& name);
 
 private:
 
   //! Name of data set.
-  UnicodeString    _name;
+  String           _name;
 
   //! Copy \a feature.
   /*!

@@ -8,7 +8,7 @@
 namespace ranally {
 
 PointFeature::PointFeature(
-  UnicodeString const& name,
+  String const& name,
   PointDomainPtr const& domain)
 
   : Feature(name, domain->type()),
@@ -42,7 +42,7 @@ PointAttributes const& PointFeature::attributes() const
 
 
 bool PointFeature::exists(
-  UnicodeString const& name) const
+  String const& name) const
 {
   BOOST_FOREACH(PointAttributePtr const& attribute, _attributes) {
     if(attribute->name() == name) {

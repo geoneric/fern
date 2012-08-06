@@ -1,8 +1,8 @@
 #ifndef INCLUDED_RANALLY_COMMAND
 #define INCLUDED_RANALLY_COMMAND
 
-#include <unicode/unistr.h>
 #include <boost/noncopyable.hpp>
+#include "Ranally/Util/String.h"
 
 
 
@@ -35,9 +35,9 @@ protected:
 
   char**           argv                () const;
 
-  UnicodeString    read                (std::string const& fileName);
+  String           read                (std::string const& fileName);
 
-  void             write               (UnicodeString const& contents,
+  void             write               (String const& contents,
                                         std::string const& fileName);
 
 private:

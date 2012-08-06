@@ -36,7 +36,7 @@ SymbolTable::~SymbolTable()
 
 
 SymbolTable::Definitions const& SymbolTable::definitions(
-  UnicodeString const& name) const
+  String const& name) const
 {
   assert(hasDefinition(name));
   return _definitions.find(name)->second;
@@ -45,7 +45,7 @@ SymbolTable::Definitions const& SymbolTable::definitions(
 
 
 SymbolTable::Definitions& SymbolTable::definitions(
-  UnicodeString const& name)
+  String const& name)
 {
   assert(hasDefinition(name));
   return _definitions.find(name)->second;
@@ -118,7 +118,7 @@ SymbolTable::size_type SymbolTable::scopeLevel() const
   \return    Scope level.
 */
 SymbolTable::size_type SymbolTable::scopeLevel(
-  UnicodeString const& name) const
+  String const& name) const
 {
   assert(hasDefinition(name));
 
@@ -193,7 +193,7 @@ void SymbolTable::addDefinition(
 
 
 bool SymbolTable::hasDefinition(
-  UnicodeString const& name) const
+  String const& name) const
 {
   return _definitions.find(name) != _definitions.end();
 }
@@ -201,7 +201,7 @@ bool SymbolTable::hasDefinition(
 
 
 NameVertex const* SymbolTable::definition(
-  UnicodeString const& name) const
+  String const& name) const
 {
   assert(!definitions(name).empty());
   return definitions(name).front();
@@ -210,7 +210,7 @@ NameVertex const* SymbolTable::definition(
 
 
 NameVertex* SymbolTable::definition(
-  UnicodeString const& name)
+  String const& name)
 {
   assert(!definitions(name).empty());
   return definitions(name).front();

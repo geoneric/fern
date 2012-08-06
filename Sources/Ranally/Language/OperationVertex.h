@@ -34,7 +34,7 @@ public:
 
 protected:
 
-                   OperationVertex     (UnicodeString const& name,
+                   OperationVertex     (String const& name,
                                         ExpressionVertices const& expressions);
 
 private:

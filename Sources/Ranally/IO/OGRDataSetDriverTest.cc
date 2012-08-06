@@ -47,12 +47,12 @@ OGRDataSetDriverTest::~OGRDataSetDriverTest()
 
 void OGRDataSetDriverTest::removeTestFiles()
 {
-  std::vector<UnicodeString> dataSetNames;
+  std::vector<ranally::String> dataSetNames;
   dataSetNames.push_back("TestCreate.shp");
   dataSetNames.push_back("TestRemove.shp");
   ranally::io::OGRDataSetDriver driver("ESRI Shapefile");
 
-  BOOST_FOREACH(UnicodeString const& dataSetName, dataSetNames) {
+  BOOST_FOREACH(ranally::String const& dataSetName, dataSetNames) {
     if(driver.exists(dataSetName)) {
       driver.remove(dataSetName);
     }
@@ -80,7 +80,7 @@ void OGRDataSetDriverTest::testCreate()
   boost::scoped_ptr<ranally::io::OGRDataSet> dataSet;
 
   // Test creation of new data set. --------------------------------------------
-  UnicodeString dataSetName = "TestCreate.shp";
+  ranally::String dataSetName = "TestCreate.shp";
   BOOST_REQUIRE(!driver.exists(dataSetName));
 
   dataSet.reset(driver.create(dataSetName));
@@ -139,7 +139,7 @@ void OGRDataSetDriverTest::testRemove()
 {
   ranally::io::OGRDataSetDriver driver("ESRI Shapefile");
   boost::scoped_ptr<ranally::io::OGRDataSet> dataSet;
-  UnicodeString dataSetName;
+  ranally::String dataSetName;
 
   dataSetName = "TestRemove.shp";
   BOOST_REQUIRE(!driver.exists(dataSetName));
@@ -177,7 +177,7 @@ void OGRDataSetDriverTest::testOpen()
 {
   ranally::io::OGRDataSetDriver driver("GeoJSON");
   boost::scoped_ptr<ranally::io::OGRDataSet> dataSet;
-  UnicodeString dataSetName;
+  ranally::String dataSetName;
 
   dataSetName = "Point.json";
   BOOST_REQUIRE(driver.exists(dataSetName));

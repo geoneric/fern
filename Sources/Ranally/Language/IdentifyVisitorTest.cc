@@ -42,7 +42,7 @@ void IdentifyVisitorTest::testVisitEmptyScript()
 {
   boost::shared_ptr<ranally::language::ScriptVertex> tree;
 
-  tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("")));
+  tree = _xmlParser.parse(_algebraParser.parseString(ranally::String("")));
   tree->Accept(_visitor);
 }
 
@@ -52,7 +52,7 @@ void IdentifyVisitorTest::testVisitName()
 {
   boost::shared_ptr<ranally::language::ScriptVertex> tree;
 
-  tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("a")));
+  tree = _xmlParser.parse(_algebraParser.parseString(ranally::String("a")));
 
   ranally::language::NameVertex const* vertexA =
     dynamic_cast<ranally::language::NameVertex const*>(
@@ -74,7 +74,8 @@ void IdentifyVisitorTest::testVisitAssignment()
   boost::shared_ptr<ranally::language::ScriptVertex> tree;
 
   {
-    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("a = b")));
+    tree = _xmlParser.parse(_algebraParser.parseString(
+      ranally::String("a = b")));
 
     ranally::language::AssignmentVertex const* assignment =
       dynamic_cast<ranally::language::AssignmentVertex const*>(
@@ -103,7 +104,7 @@ void IdentifyVisitorTest::testVisitAssignment()
   }
 
   {
-    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
+    tree = _xmlParser.parse(_algebraParser.parseString(ranally::String(
       "a = b\n"
       "d = f(a)\n"
     )));
@@ -170,7 +171,7 @@ void IdentifyVisitorTest::testVisitIf()
   boost::shared_ptr<ranally::language::ScriptVertex> tree;
 
   {
-    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
+    tree = _xmlParser.parse(_algebraParser.parseString(ranally::String(
       "a = b\n"
       "if True:\n"
       "  a = c\n"
@@ -228,7 +229,7 @@ void IdentifyVisitorTest::testVisitReuseOfIdentifiers()
   boost::shared_ptr<ranally::language::ScriptVertex> tree;
 
   {
-    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
+    tree = _xmlParser.parse(_algebraParser.parseString(ranally::String(
       "a = \"MyRaster\"\n"
       "b = abs(a)\n"
       "c = abs(b)\n"

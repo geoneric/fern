@@ -28,7 +28,7 @@ class OGRDataSet:
 
 public:
 
-                   OGRDataSet          (UnicodeString const& name,
+                   OGRDataSet          (String const& name,
                                         OGRDataSource* dataSource);
 
                    ~OGRDataSet         ();
@@ -37,15 +37,15 @@ public:
 
   Feature*         feature             (size_t i) const;
 
-  Feature*         feature             (UnicodeString const& name) const;
+  Feature*         feature             (String const& name) const;
 
   void             addFeature          (Feature const& feature);
 
   void             copy                (DataSet const& dataSet);
 
-  bool             exists              (UnicodeString const& name) const;
+  bool             exists              (String const& name) const;
 
-  void             remove              (UnicodeString const& name);
+  void             remove              (String const& name);
 
 private:
 

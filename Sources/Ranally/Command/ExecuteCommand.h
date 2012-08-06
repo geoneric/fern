@@ -30,7 +30,7 @@ public:
 
 private:
 
-  void             execute             (UnicodeString const& xml);
+  void             execute             (String const& xml);
 
 };
 

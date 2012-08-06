@@ -20,16 +20,16 @@ class FunctionVertex:
 
   friend class FunctionVertexTest;
 
+private:
+
 public:
 
   LOKI_DEFINE_VISITABLE()
 
-                   FunctionVertex      (UnicodeString const& name,
+                   FunctionVertex      (String const& name,
                                         ExpressionVertices const& expressions);
 
                    ~FunctionVertex     ();
-
-private:
 
 };
 

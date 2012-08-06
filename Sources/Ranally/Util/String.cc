@@ -4,8 +4,7 @@
 
 
 
-namespace ranally {
-namespace util {
+namespace {
 
 //! Encodes a copy of \a string using UTF8 encoding and returns the result.
 /*!
@@ -52,6 +51,61 @@ UnicodeString decodeFromUTF8(
   return UnicodeString(string.c_str(), "UTF-8");
 }
 
-} // namespace util
+} // Anonymous namespace
+
+
+
+namespace ranally {
+
+String::String()
+
+  : UnicodeString()
+
+{
+}
+
+
+
+String::String(
+  char const* string)
+
+  : UnicodeString(decodeFromUTF8(std::string(string)))
+
+{
+}
+
+
+
+String::String(
+  std::string const& string)
+
+  : UnicodeString(decodeFromUTF8(string))
+
+{
+}
+
+
+
+String::String(
+  UnicodeString const& string)
+
+  : UnicodeString(string)
+
+{
+}
+
+
+
+String::~String()
+{
+}
+
+
+
+std::string String::encodeInUTF8() const
+{
+  return ::encodeInUTF8(*this);
+}
+
 } // namespace ranally
 

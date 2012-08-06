@@ -24,11 +24,11 @@ public:
 
   LOKI_DEFINE_VISITABLE()
 
-                   NameVertex          (UnicodeString const& name);
+                   NameVertex          (String const& name);
 
                    NameVertex          (int lineNr,
                                         int colId,
-                                        UnicodeString const& name);
+                                        String const& name);
 
                    ~NameVertex         ();
 

@@ -7,7 +7,7 @@
 namespace ranally {
 
 PointAttribute::PointAttribute(
-  UnicodeString const& name,
+  String const& name,
   PointDomainPtr const& domain)
 
   : Attribute(name),

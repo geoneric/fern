@@ -1,8 +1,8 @@
 #ifndef INCLUDED_RANALLY_LANGUAGE_SCRIPTVISITOR
 #define INCLUDED_RANALLY_LANGUAGE_SCRIPTVISITOR
 
-#include <unicode/unistr.h>
 #include "Ranally/Language/Visitor.h"
+#include "Ranally/Util/String.h"
 
 
 
@@ -27,7 +27,7 @@ public:
 
                    ~ScriptVisitor      ();
 
-  UnicodeString const& script          () const;
+  String const&    script              () const;
 
 private:
 
@@ -35,11 +35,11 @@ private:
 
   size_t           _indentLevel;
 
-  UnicodeString    _script;
+  String           _script;
 
-  // void             indent              (UnicodeString const& statement);
+  // void             indent              (String const& statement);
 
-  UnicodeString    indentation         () const;
+  String           indentation         () const;
 
   void             visitStatements     (
                                   language::StatementVertices& statements);

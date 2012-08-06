@@ -36,7 +36,7 @@ public:
 
   virtual          ~ExpressionVertex   ();
 
-  UnicodeString const& name            () const;
+  String const&    name                () const;
 
   // void             setDataType         (operation::DataType dataType);
 
@@ -64,16 +64,16 @@ public:
 
 protected:
 
-                   ExpressionVertex    (UnicodeString const& name);
+                   ExpressionVertex    (String const& name);
 
                    ExpressionVertex    (int lineNr,
                                         int colId,
-                                        UnicodeString const& name);
+                                        String const& name);
 
 private:
 
   //! Name of the expression, eg: abs, myDog, 5.
-  UnicodeString    _name;
+  String           _name;
 
   // //! Data type of the result(s) of the expression.
   // operation::DataType _dataType;

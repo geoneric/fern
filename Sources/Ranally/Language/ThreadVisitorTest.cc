@@ -55,7 +55,7 @@ void ThreadVisitorTest::testVisitEmptyScript()
 {
   boost::shared_ptr<ranally::language::ScriptVertex> tree;
 
-  tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("")));
+  tree = _xmlParser.parse(_algebraParser.parseString(ranally::String("")));
   tree->Accept(_visitor);
   BOOST_CHECK_EQUAL(tree->successor(), &(*tree));
 }
@@ -66,7 +66,7 @@ void ThreadVisitorTest::testVisitName()
 {
   boost::shared_ptr<ranally::language::ScriptVertex> tree;
 
-  tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("a")));
+  tree = _xmlParser.parse(_algebraParser.parseString(ranally::String("a")));
   tree->Accept(_visitor);
 
   ranally::language::SyntaxVertex const* vertexA = &(*tree->statements()[0]);
@@ -81,7 +81,7 @@ void ThreadVisitorTest::testVisitAssignment()
 {
   boost::shared_ptr<ranally::language::ScriptVertex> tree;
 
-  tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("a = b")));
+  tree = _xmlParser.parse(_algebraParser.parseString(ranally::String("a = b")));
   tree->Accept(_visitor);
 
   ranally::language::AssignmentVertex const* assignment =
@@ -103,7 +103,7 @@ void ThreadVisitorTest::testVisitString()
 {
   boost::shared_ptr<ranally::language::ScriptVertex> tree;
 
-  tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
+  tree = _xmlParser.parse(_algebraParser.parseString(ranally::String(
     "\"five\"")));
   tree->Accept(_visitor);
 
@@ -119,7 +119,7 @@ void ThreadVisitorTest::testVisitNumber()
 {
   boost::shared_ptr<ranally::language::ScriptVertex> tree;
 
-  tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("5")));
+  tree = _xmlParser.parse(_algebraParser.parseString(ranally::String("5")));
   tree->Accept(_visitor);
 
   ranally::language::SyntaxVertex const* numberVertex = &(*tree->statements()[0]);
@@ -135,7 +135,7 @@ void ThreadVisitorTest::testVisitFunction()
   boost::shared_ptr<ranally::language::ScriptVertex> tree;
 
   {
-    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("f()")));
+    tree = _xmlParser.parse(_algebraParser.parseString(ranally::String("f()")));
     tree->Accept(_visitor);
 
     ranally::language::SyntaxVertex const* functionVertex =
@@ -146,7 +146,7 @@ void ThreadVisitorTest::testVisitFunction()
   }
 
   {
-    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
+    tree = _xmlParser.parse(_algebraParser.parseString(ranally::String(
       "f(1, \"2\", three, four())")));
     tree->Accept(_visitor);
 
@@ -178,7 +178,7 @@ void ThreadVisitorTest::testVisitOperator()
   boost::shared_ptr<ranally::language::ScriptVertex> tree;
 
   {
-    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("-a")));
+    tree = _xmlParser.parse(_algebraParser.parseString(ranally::String("-a")));
     tree->Accept(_visitor);
 
     ranally::language::OperatorVertex const* operatorVertex =
@@ -193,7 +193,8 @@ void ThreadVisitorTest::testVisitOperator()
   }
 
   {
-    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("a + b")));
+    tree = _xmlParser.parse(_algebraParser.parseString(
+      ranally::String("a + b")));
     tree->Accept(_visitor);
 
     ranally::language::OperatorVertex const* operatorVertex =
@@ -211,7 +212,7 @@ void ThreadVisitorTest::testVisitOperator()
   }
 
   {
-    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
+    tree = _xmlParser.parse(_algebraParser.parseString(ranally::String(
       "-(a + b)")));
     tree->Accept(_visitor);
 
@@ -240,7 +241,7 @@ void ThreadVisitorTest::testVisitMultipleStatements()
 {
   boost::shared_ptr<ranally::language::ScriptVertex> tree;
 
-  tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("a;b;c")));
+  tree = _xmlParser.parse(_algebraParser.parseString(ranally::String("a;b;c")));
   tree->Accept(_visitor);
 
   ranally::language::SyntaxVertex const* vertexA = &(*tree->statements()[0]);
@@ -259,7 +260,7 @@ void ThreadVisitorTest::testVisitNestedExpression()
 {
   boost::shared_ptr<ranally::language::ScriptVertex> tree;
 
-  tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
+  tree = _xmlParser.parse(_algebraParser.parseString(ranally::String(
     "a = b + c")));
   tree->Accept(_visitor);
 
@@ -290,7 +291,7 @@ void ThreadVisitorTest::testVisitIf()
   boost::shared_ptr<ranally::language::ScriptVertex> tree;
 
   {
-    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
+    tree = _xmlParser.parse(_algebraParser.parseString(ranally::String(
       "if a:\n"
       "  b\n"
       "  c")));
@@ -314,7 +315,7 @@ void ThreadVisitorTest::testVisitIf()
   }
 
   {
-    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
+    tree = _xmlParser.parse(_algebraParser.parseString(ranally::String(
       "if a:\n"
       "  b\n"
       "  c\n"
@@ -364,7 +365,7 @@ void ThreadVisitorTest::testVisitIf()
   }
 
   {
-    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
+    tree = _xmlParser.parse(_algebraParser.parseString(ranally::String(
       "if a:\n"
       "  b\n"
       "  c\n"

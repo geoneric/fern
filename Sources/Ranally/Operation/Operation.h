@@ -2,8 +2,8 @@
 #define INCLUDED_RANALLY_OPERATION_OPERATION
 
 #include <vector>
-#include <unicode/unistr.h>
 #include <boost/shared_ptr.hpp>
+#include "Ranally/Util/String.h"
 
 
 
@@ -27,8 +27,8 @@ class Operation
 public:
 
                    Operation           (
-                                  UnicodeString const& name,
-                                  UnicodeString const& description,
+                                  String const& name,
+                                  String const& description,
                                   std::vector<Parameter> const& parameters,
                                   std::vector<Result> const& results);
 
@@ -38,9 +38,9 @@ public:
 
                    ~Operation          ();
 
-  UnicodeString const& name            () const;
+  String const&    name                () const;
 
-  UnicodeString const& description     () const;
+  String const&    description         () const;
 
   std::vector<Parameter> const& parameters() const;
 
@@ -48,9 +48,9 @@ public:
 
 private:
 
-  UnicodeString    _name;
+  String           _name;
 
-  UnicodeString    _description;
+  String           _description;
 
   std::vector<Parameter> _parameters;
 

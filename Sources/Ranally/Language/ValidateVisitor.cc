@@ -31,7 +31,7 @@ void ValidateVisitor::Visit(
   // function's name.
   if(!vertex.operation()) {
     throw std::runtime_error(("unknown function: " +
-      util::encodeInUTF8(vertex.name())).c_str());
+      vertex.name().encodeInUTF8()).c_str());
   }
 
   // ranally::operation::OperationPtr operation(_operations->operation(

@@ -25,17 +25,17 @@ class OGRDataSetDriver:
 
 public:
 
-                   OGRDataSetDriver    (UnicodeString const& name);
+                   OGRDataSetDriver    (String const& name);
 
                    ~OGRDataSetDriver   ();
 
-  bool             exists              (UnicodeString const& name) const;
+  bool             exists              (String const& name) const;
 
-  OGRDataSet*      create              (UnicodeString const& name) const;
+  OGRDataSet*      create              (String const& name) const;
 
-  void             remove              (UnicodeString const& name) const;
+  void             remove              (String const& name) const;
 
-  OGRDataSet*      open                (UnicodeString const& name) const;
+  OGRDataSet*      open                (String const& name) const;
 
 private:
 

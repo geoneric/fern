@@ -9,11 +9,11 @@
 namespace ranally {
 namespace language {
 
-UnicodeString nameToSymbol(
-  UnicodeString const& name,
+String nameToSymbol(
+  String const& name,
   size_t nrOperands)
 {
-  std::map<UnicodeString, UnicodeString> symbols;
+  std::map<String, String> symbols;
 
   if(nrOperands == 1) {
     // Unary operators.
@@ -53,7 +53,7 @@ UnicodeString nameToSymbol(
   if(symbols.find(name) == symbols.end()) {
     throw std::runtime_error((boost::format(
       "operator %1% with %2% operands not available")
-      % util::encodeInUTF8(name) % nrOperands).str().c_str());
+      % name.encodeInUTF8() % nrOperands).str().c_str());
   }
 
   return symbols[name];
@@ -62,7 +62,7 @@ UnicodeString nameToSymbol(
 
 
 OperatorVertex::OperatorVertex(
-  UnicodeString const& name,
+  String const& name,
   ExpressionVertices const& expressions)
 
   : OperationVertex(name, expressions),
@@ -79,7 +79,7 @@ OperatorVertex::~OperatorVertex()
 
 
 
-UnicodeString const& OperatorVertex::symbol() const
+String const& OperatorVertex::symbol() const
 {
   return _symbol;
 }

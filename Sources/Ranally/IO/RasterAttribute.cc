@@ -5,7 +5,7 @@
 namespace ranally {
 
 RasterAttribute::RasterAttribute(
-  UnicodeString const& name)
+  String const& name)
 
   : Attribute(name),
     _value()

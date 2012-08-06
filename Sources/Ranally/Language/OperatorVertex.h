@@ -24,16 +24,16 @@ public:
 
   LOKI_DEFINE_VISITABLE()
 
-                   OperatorVertex      (UnicodeString const& name,
+                   OperatorVertex      (String const& name,
                                         ExpressionVertices const& expressions);
 
                    ~OperatorVertex     ();
 
-  UnicodeString const& symbol          () const;
+  String const&    symbol              () const;
 
 private:
 
-  UnicodeString    _symbol;
+  String           _symbol;
 
 };
 

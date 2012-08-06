@@ -26,12 +26,12 @@ HDF5DataSetDriver::~HDF5DataSetDriver()
 
 
 bool HDF5DataSetDriver::exists(
-  UnicodeString const& name) const
+  String const& name) const
 {
   bool result = false;
 
   try {
-    result = H5::H5File::isHdf5(ranally::util::encodeInUTF8(name).c_str());
+    result = H5::H5File::isHdf5(name.encodeInUTF8().c_str());
   }
   catch(H5::FileIException const&) {
     result = false;
@@ -43,7 +43,7 @@ bool HDF5DataSetDriver::exists(
 
 
 HDF5DataSet* HDF5DataSetDriver::create(
-  UnicodeString const& name) const
+  String const& name) const
 {
   HDF5DataSet* result = 0;
 
@@ -51,8 +51,7 @@ HDF5DataSet* HDF5DataSetDriver::create(
     unsigned int accessMode = H5F_ACC_TRUNC; // | H5F_ACC_RDWR?
     H5::FileCreatPropList creationProperties = H5::FileCreatPropList::DEFAULT;
     H5::FileAccPropList accessProperties = H5::FileAccPropList::DEFAULT;
-    H5::H5File* file = new H5::H5File(
-      ranally::util::encodeInUTF8(name).c_str(), accessMode,
+    H5::H5File* file = new H5::H5File(name.encodeInUTF8().c_str(), accessMode,
       creationProperties, accessProperties);
     file->flush(H5F_SCOPE_GLOBAL);
     result = new HDF5DataSet(name, file);
@@ -70,11 +69,11 @@ HDF5DataSet* HDF5DataSetDriver::create(
 
 
 void HDF5DataSetDriver::remove(
-  UnicodeString const& name) const
+  String const& name) const
 {
   if(exists(name)) {
     try {
-      boost::filesystem::remove(ranally::util::encodeInUTF8(name).c_str());
+      boost::filesystem::remove(name.encodeInUTF8().c_str());
     }
     catch(...) {
       // TODO Raise exception.
@@ -86,13 +85,13 @@ void HDF5DataSetDriver::remove(
 
 
 HDF5DataSet* HDF5DataSetDriver::open(
-  UnicodeString const& name) const
+  String const& name) const
 {
   HDF5DataSet* result = 0;
 
   try {
-    H5::H5File* file = new H5::H5File(
-      ranally::util::encodeInUTF8(name).c_str(), H5F_ACC_RDONLY);
+    H5::H5File* file = new H5::H5File(name.encodeInUTF8().c_str(),
+      H5F_ACC_RDONLY);
 
     result = new HDF5DataSet(name, file);
   }

@@ -8,7 +8,7 @@ namespace ranally {
 namespace language {
 
 ScriptVertex::ScriptVertex(
-  UnicodeString const& sourceName,
+  String const& sourceName,
   StatementVertices const& statements)
 
   : SyntaxVertex(),
@@ -44,7 +44,7 @@ ScriptVertex::~ScriptVertex()
 
 
 
-UnicodeString const& ScriptVertex::sourceName() const
+String const& ScriptVertex::sourceName() const
 {
   return _sourceName;
 }

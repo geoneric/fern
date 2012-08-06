@@ -2,7 +2,6 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include "Ranally/Util/String.h"
 #include "Ranally/Language/AlgebraParser.h"
 
 
@@ -48,21 +47,21 @@ char** Command::argv() const
 
   In case \a fileName is empty, the script is read from standard input.
 */
-UnicodeString Command::read(
+ranally::String Command::read(
   std::string const& fileName)
 {
-  UnicodeString xml;
+  ranally::String xml;
   ranally::language::AlgebraParser parser;
 
   if(fileName.empty()) {
     // Read script from the standard input stream.
     std::ostringstream script;
     script << std::cin.rdbuf();
-    xml = parser.parseString(UnicodeString(script.str().c_str()));
+    xml = parser.parseString(ranally::String(script.str()));
   }
   else {
     // Read script from a file.
-    xml = parser.parseFile(UnicodeString(fileName.c_str()));
+    xml = parser.parseFile(ranally::String(fileName));
   }
 
   return xml;
@@ -79,15 +78,15 @@ UnicodeString Command::read(
   encoded in UTF8.
 */
 void Command::write(
-  UnicodeString const& contents,
+  ranally::String const& contents,
   std::string const& fileName)
 {
   if(fileName.empty()) {
-    std::cout << ranally::util::encodeInUTF8(contents);
+    std::cout << contents.encodeInUTF8();
   }
   else {
     std::ofstream file(fileName.c_str());
-    file << ranally::util::encodeInUTF8(contents);
+    file << contents.encodeInUTF8();
   }
 }
 

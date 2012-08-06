@@ -58,7 +58,7 @@ void AlgebraParserTest::testParseEmptyScript()
   ranally::language::AlgebraParser parser;
 
   {
-    UnicodeString xml(parser.parseString(UnicodeString("")));
+    ranally::String xml(parser.parseString(ranally::String("")));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
       "<Ranally source=\"&lt;string&gt;\">"
@@ -74,7 +74,7 @@ void AlgebraParserTest::testParseName()
   ranally::language::AlgebraParser parser;
 
   {
-    UnicodeString xml(parser.parseString(UnicodeString("a")));
+    ranally::String xml(parser.parseString(ranally::String("a")));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
       "<Ranally source=\"&lt;string&gt;\">"
@@ -90,7 +90,7 @@ void AlgebraParserTest::testParseName()
 
   // TODO #if PYTHONVER >= 2.7/3.0?
   // {
-  //   UnicodeString xml(parser.parseString(UnicodeString("ñ")));
+  //   ranally::String xml(parser.parseString(ranally::String("ñ")));
   //   BOOST_CHECK(xml ==
   //     "<?xml version=\"1.0\"?>"
   //     "<Ranally>"
@@ -112,7 +112,7 @@ void AlgebraParserTest::testParseAssignment()
   ranally::language::AlgebraParser parser;
 
   {
-    UnicodeString xml(parser.parseString(UnicodeString("a = b")));
+    ranally::String xml(parser.parseString(ranally::String("a = b")));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
       "<Ranally source=\"&lt;string&gt;\">"
@@ -139,7 +139,7 @@ void AlgebraParserTest::testParseString()
   ranally::language::AlgebraParser parser;
 
   {
-    UnicodeString xml(parser.parseString(UnicodeString("\"five\"")));
+    ranally::String xml(parser.parseString(ranally::String("\"five\"")));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
       "<Ranally source=\"&lt;string&gt;\">"
@@ -154,7 +154,7 @@ void AlgebraParserTest::testParseString()
   }
 
   {
-    UnicodeString xml(parser.parseString(UnicodeString("\"\"")));
+    ranally::String xml(parser.parseString(ranally::String("\"\"")));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
       "<Ranally source=\"&lt;string&gt;\">"
@@ -169,7 +169,7 @@ void AlgebraParserTest::testParseString()
   }
 
   {
-    UnicodeString xml(parser.parseString(UnicodeString("\" \"")));
+    ranally::String xml(parser.parseString(ranally::String("\" \"")));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
       "<Ranally source=\"&lt;string&gt;\">"
@@ -185,7 +185,7 @@ void AlgebraParserTest::testParseString()
 
   // Test handling of Unicode characters.
   {
-    UnicodeString xml(parser.parseString(UnicodeString("\"mañana\"")));
+    ranally::String xml(parser.parseString(ranally::String("\"mañana\"")));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
       "<Ranally source=\"&lt;string&gt;\">"
@@ -200,7 +200,7 @@ void AlgebraParserTest::testParseString()
   }
 
   {
-    BOOST_CHECK_THROW(parser.parseString(UnicodeString("if")),
+    BOOST_CHECK_THROW(parser.parseString(ranally::String("if")),
       std::runtime_error);
   }
 }
@@ -212,7 +212,7 @@ void AlgebraParserTest::testParseNumber()
   ranally::language::AlgebraParser parser;
 
   {
-    UnicodeString xml(parser.parseString(UnicodeString("5")));
+    ranally::String xml(parser.parseString(ranally::String("5")));
     BOOST_CHECK(xml == (boost::format(
       "<?xml version=\"1.0\"?>"
       "<Ranally source=\"&lt;string&gt;\">"
@@ -232,7 +232,7 @@ void AlgebraParserTest::testParseNumber()
   }
 
   {
-    UnicodeString xml(parser.parseString(UnicodeString("5L")));
+    ranally::String xml(parser.parseString(ranally::String("5L")));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
       "<Ranally source=\"&lt;string&gt;\">"
@@ -252,7 +252,7 @@ void AlgebraParserTest::testParseNumber()
   }
 
   {
-    UnicodeString xml(parser.parseString(UnicodeString("5.5")));
+    ranally::String xml(parser.parseString(ranally::String("5.5")));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
       "<Ranally source=\"&lt;string&gt;\">"
@@ -277,10 +277,10 @@ void AlgebraParserTest::testParseNumber()
 void AlgebraParserTest::testParseCall()
 {
   ranally::language::AlgebraParser parser;
-  UnicodeString xml;
+  ranally::String xml;
 
   {
-    xml = parser.parseString(UnicodeString("f()"));
+    xml = parser.parseString(ranally::String("f()"));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
       "<Ranally source=\"&lt;string&gt;\">"
@@ -298,7 +298,7 @@ void AlgebraParserTest::testParseCall()
   }
 
   {
-    xml = parser.parseString(UnicodeString("f(1, \"2\", three, four())"));
+    xml = parser.parseString(ranally::String("f(1, \"2\", three, four())"));
     BOOST_CHECK(xml == (boost::format(
       "<?xml version=\"1.0\"?>"
       "<Ranally source=\"&lt;string&gt;\">"
@@ -342,10 +342,10 @@ void AlgebraParserTest::testParseCall()
 void AlgebraParserTest::testParseUnaryOperator()
 {
   ranally::language::AlgebraParser parser;
-  UnicodeString xml;
+  ranally::String xml;
 
   {
-    xml = parser.parseString(UnicodeString("-a"));
+    xml = parser.parseString(ranally::String("-a"));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
       "<Ranally source=\"&lt;string&gt;\">"
@@ -372,10 +372,10 @@ void AlgebraParserTest::testParseUnaryOperator()
 void AlgebraParserTest::testParseBinaryOperator()
 {
   ranally::language::AlgebraParser parser;
-  UnicodeString xml;
+  ranally::String xml;
 
   {
-    xml = parser.parseString(UnicodeString("a + b"));
+    xml = parser.parseString(ranally::String("a + b"));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
       "<Ranally source=\"&lt;string&gt;\">"
@@ -405,10 +405,10 @@ void AlgebraParserTest::testParseBinaryOperator()
 void AlgebraParserTest::testParseBooleanOperator()
 {
   ranally::language::AlgebraParser parser;
-  UnicodeString xml;
+  ranally::String xml;
 
   {
-    xml = parser.parseString(UnicodeString("a and b"));
+    xml = parser.parseString(ranally::String("a and b"));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
       "<Ranally source=\"&lt;string&gt;\">"
@@ -438,10 +438,10 @@ void AlgebraParserTest::testParseBooleanOperator()
 void AlgebraParserTest::testParseComparisonOperator()
 {
   ranally::language::AlgebraParser parser;
-  UnicodeString xml;
+  ranally::String xml;
 
   {
-    xml = parser.parseString(UnicodeString("a <= b"));
+    xml = parser.parseString(ranally::String("a <= b"));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
       "<Ranally source=\"&lt;string&gt;\">"
@@ -473,7 +473,7 @@ void AlgebraParserTest::testParseMultipleStatements()
   ranally::language::AlgebraParser parser;
 
   {
-    UnicodeString xml(parser.parseString(UnicodeString("a\nb")));
+    ranally::String xml(parser.parseString(ranally::String("a\nb")));
     BOOST_CHECK(xml ==
       "<?xml version=\"1.0\"?>"
       "<Ranally source=\"&lt;string&gt;\">"
@@ -498,10 +498,10 @@ void AlgebraParserTest::testParseMultipleStatements()
 void AlgebraParserTest::testParseIf()
 {
   ranally::language::AlgebraParser parser;
-  UnicodeString xml;
+  ranally::String xml;
 
   {
-    xml = parser.parseString(UnicodeString(
+    xml = parser.parseString(ranally::String(
       "if a:\n"
       "  b"));
     BOOST_CHECK(xml ==
@@ -528,7 +528,7 @@ void AlgebraParserTest::testParseIf()
   }
 
   {
-    xml = parser.parseString(UnicodeString(
+    xml = parser.parseString(ranally::String(
       "if a:\n"
       "  b\n"
       "elif(c):\n"
@@ -573,7 +573,7 @@ void AlgebraParserTest::testParseIf()
   }
 
   {
-    xml = parser.parseString(UnicodeString(
+    xml = parser.parseString(ranally::String(
       "if a:\n"
       "  b\n"
       "elif c:\n"
@@ -631,10 +631,10 @@ void AlgebraParserTest::testParseIf()
 void AlgebraParserTest::testParseWhile()
 {
   ranally::language::AlgebraParser parser;
-  UnicodeString xml;
+  ranally::String xml;
 
   {
-    xml = parser.parseString(UnicodeString(
+    xml = parser.parseString(ranally::String(
       "while a:\n"
       "  b"));
     BOOST_CHECK(xml ==
@@ -661,7 +661,7 @@ void AlgebraParserTest::testParseWhile()
   }
 
   {
-    xml = parser.parseString(UnicodeString(
+    xml = parser.parseString(ranally::String(
       "while a:\n"
       "  b\n"
       "else:\n"
@@ -701,7 +701,7 @@ void AlgebraParserTest::testParseWhile()
 void AlgebraParserTest::testParseFile()
 {
   ranally::language::AlgebraParser parser;
-  UnicodeString fileName;
+  ranally::String fileName;
 
   {
     fileName = "DoesNotExist.ran";

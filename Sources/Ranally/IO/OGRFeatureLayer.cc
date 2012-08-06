@@ -69,9 +69,9 @@ OGRFeatureLayer::~OGRFeatureLayer()
 
 
 
-UnicodeString OGRFeatureLayer::name() const
+String OGRFeatureLayer::name() const
 {
-  return util::decodeFromUTF8(_layer->GetName());
+  return String(_layer->GetName());
 }
 
 

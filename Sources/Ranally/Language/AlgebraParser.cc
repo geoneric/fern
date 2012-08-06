@@ -4,7 +4,6 @@
 #include <iostream>
 #include "Python-ast.h"
 #include <boost/format.hpp>
-#include "Ranally/Util/String.h"
 #include "Ranally/Python/Exception.h"
 
 
@@ -18,16 +17,16 @@
 namespace {
 
 void               writeExpressionNode (expr_ty const& expression,
-                                        UnicodeString& xml);
+                                        ranally::String& xml);
 void               writeStatementNodes (asdl_seq const* statements,
-                                        UnicodeString& xml);
+                                        ranally::String& xml);
 
 
 
 void writeNameNode(
   identifier const id,
   expr_context_ty const& /* context */,
-  UnicodeString& xml)
+  ranally::String& xml)
 {
   assert(PyString_Check(id));
 
@@ -45,7 +44,7 @@ void writeNameNode(
 
 void writeNumberNode(
   object const& number,
-  UnicodeString& xml)
+  ranally::String& xml)
 {
   // TODO Handle all numeric types.
   // TODO Use types with a known size: int32, int64, float32, float64, etc.
@@ -103,7 +102,7 @@ void writeNumberNode(
 
 void writeStringNode(
   string const string,
-  UnicodeString& xml)
+  ranally::String& xml)
 {
   // TODO Verify the string is encoded as UTF8.
   // TODO Only support Unicode strings? Convert on the fly when it's not?
@@ -123,7 +122,7 @@ void writeStringNode(
 
 void writeExpressionsNode(
   asdl_seq const* expressions,
-  UnicodeString& xml)
+  ranally::String& xml)
 {
   if(expressions == 0) {
     xml += "<Expressions/>";
@@ -150,7 +149,7 @@ void writeCallNode(
   asdl_seq const* keywords,
   expr_ty const starargs,
   expr_ty const kwargs,
-  UnicodeString& xml)
+  ranally::String& xml)
 {
   assert(keywords == 0 || keywords->size == 0); // TODO Support keywords.
   assert(starargs == 0); // TODO
@@ -168,7 +167,7 @@ void writeCallNode(
 void writeUnaryOperatorNode(
   unaryop_ty const unaryOperator,
   expr_ty const operand,
-  UnicodeString& xml)
+  ranally::String& xml)
 {
   xml += "<Operator><Name>";
 
@@ -206,7 +205,7 @@ void writeBinaryOperatorNode(
   expr_ty const leftOperand,
   operator_ty const binaryOperator,
   expr_ty const rightOperand,
-  UnicodeString& xml)
+  ranally::String& xml)
 {
   xml += "<Operator><Name>";
 
@@ -276,7 +275,7 @@ void writeBinaryOperatorNode(
 void writeBooleanOperatorNode(
   boolop_ty const booleanOperator,
   asdl_seq const* operands,
-  UnicodeString& xml)
+  ranally::String& xml)
 {
   xml += "<Operator><Name>";
 
@@ -304,7 +303,7 @@ void writeComparisonOperatorNode(
   expr_ty const leftOperand,
   asdl_int_seq const* operators,
   asdl_seq const* comparators,
-  UnicodeString& xml)
+  ranally::String& xml)
 {
   // http://docs.python.org/reference/expressions.html#notin
   // x < y <= z is equivalent to x < y and y <= z
@@ -357,7 +356,7 @@ void writeComparisonOperatorNode(
 
 void writeExpressionNode(
   expr_ty const& expression,
-  UnicodeString& xml)
+  ranally::String& xml)
 {
   assert(expression);
 
@@ -444,7 +443,7 @@ void writeExpressionNode(
 void writeAssignmentNode(
   asdl_seq const* targets,
   expr_ty const& value,
-  UnicodeString& xml)
+  ranally::String& xml)
 {
   // Copy the value expression to one or more targets.
   // When there is more than one target, value should be an iterable.
@@ -467,7 +466,7 @@ void writeIfNode(
   expr_ty const test,
   asdl_seq const* body,
   asdl_seq const* orelse,
-  UnicodeString& xml)
+  ranally::String& xml)
 {
   xml += "<If>";
   writeExpressionNode(test, xml);
@@ -482,7 +481,7 @@ void writeWhileNode(
   expr_ty const test,
   asdl_seq const* body,
   asdl_seq const* orelse,
-  UnicodeString& xml)
+  ranally::String& xml)
 {
   xml += "<While>";
   writeExpressionNode(test, xml);
@@ -495,7 +494,7 @@ void writeWhileNode(
 
 void writeStatementNodes(
   asdl_seq const* statements,
-  UnicodeString& xml)
+  ranally::String& xml)
 {
   if(!statements || statements->size == 0) {
     xml += "<Statements/>";
@@ -570,18 +569,18 @@ void writeStatementNodes(
 
 
 
-UnicodeString pythonAstToXml(
+ranally::String pythonAstToXml(
   mod_ty const ast,
-  UnicodeString const& sourceName)
+  ranally::String const& sourceName)
 {
   assert(ast);
 
-  UnicodeString xml;
+  ranally::String xml;
 
   switch(ast->kind) {
     case Module_kind: {
       xml += (boost::format("<Ranally source=\"%1%\">")
-        % ranally::util::encodeInUTF8(sourceName)).str().c_str();
+        % sourceName.encodeInUTF8()).str().c_str();
       writeStatementNodes(ast->v.Module.body, xml);
       xml += "</Ranally>";
       break;
@@ -625,15 +624,15 @@ AlgebraParser::~AlgebraParser()
 
 
 
-// UnicodeString AlgebraParser::parse(
-//   UnicodeString const& string,
-//   UnicodeString const& fileName)
+// String AlgebraParser::parse(
+//   String const& string,
+//   String const& fileName)
 // {
 //   // struct _node* PyParser_SimpleParseStringFlagsFilename(const char *str, const char *filename, int start, int flags)
 // 
 //   // struct _node* node = PyParser_SimpleParseStringFlagsFilename("string", "filename", 0, 0);
 // 
-//   return UnicodeString(string + fileName);
+//   return String(string + fileName);
 // }
 
 
@@ -648,16 +647,16 @@ AlgebraParser::~AlgebraParser()
   \sa        .
   \todo      The Python memory arena is not freed.
 */
-UnicodeString AlgebraParser::parseString(
-  UnicodeString const& string)
+String AlgebraParser::parseString(
+  String const& string)
 {
   PyArena* arena = PyArena_New();
   assert(arena);
 
-  UnicodeString result("<?xml version=\"1.0\"?>");
+  String result("<?xml version=\"1.0\"?>");
 
   mod_ty ast = PyParser_ASTFromString(
-    util::encodeInUTF8(string).c_str(), "", Py_file_input, 0, arena);
+    string.encodeInUTF8().c_str(), "", Py_file_input, 0, arena);
 
   if(!ast) {
     ranally::python::throwException();
@@ -673,20 +672,20 @@ UnicodeString AlgebraParser::parseString(
 
 
 
-UnicodeString AlgebraParser::parseFile(
-  UnicodeString const& fileName)
+String AlgebraParser::parseFile(
+  String const& fileName)
 {
   PyArena* arena = PyArena_New();
   assert(arena);
 
-  std::string fileNameInUtf8(util::encodeInUTF8(fileName));
+  std::string fileNameInUtf8(fileName.encodeInUTF8());
   FILE* filePointer = fopen(fileNameInUtf8.c_str(), "r");
 
   if(filePointer == NULL) {
     throw std::runtime_error(("cannot open file " + fileNameInUtf8).c_str());
   }
 
-  UnicodeString result("<?xml version=\"1.0\"?>");
+  String result("<?xml version=\"1.0\"?>");
 
   mod_ty ast = PyParser_ASTFromFile(filePointer, fileNameInUtf8.c_str(),
     Py_file_input, 0, 0, 0, 0, arena);

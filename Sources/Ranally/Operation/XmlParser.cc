@@ -151,8 +151,8 @@ private:
 
   struct OperationData
   {
-    UnicodeString name;
-    UnicodeString description;
+    ranally::String name;
+    ranally::String description;
     std::vector<ranally::operation::Parameter> parameters;
     std::vector<ranally::operation::Result> results;
   };
@@ -171,14 +171,14 @@ public:
     std::string const& name)
   {
     assert(!_dataStack.empty());
-    _dataStack.top().name = ranally::util::decodeFromUTF8(name);
+    _dataStack.top().name = ranally::String(name);
   }
 
   void Description(
     std::string const& description)
   {
     assert(!_dataStack.empty());
-    _dataStack.top().description = ranally::util::decodeFromUTF8(description);
+    _dataStack.top().description = ranally::String(description);
   }
 
   void Parameters(
@@ -247,8 +247,8 @@ private:
 
   struct ParameterData
   {
-    UnicodeString name;
-    UnicodeString description;
+    ranally::String name;
+    ranally::String description;
     ranally::operation::DataTypes dataTypes;
     ranally::operation::ValueTypes valueTypes;
   };
@@ -267,14 +267,14 @@ public:
     std::string const& name)
   {
     assert(!_dataStack.empty());
-    _dataStack.top().name = ranally::util::decodeFromUTF8(name);
+    _dataStack.top().name = ranally::String(name);
   }
 
   void Description(
     std::string const& description)
   {
     assert(!_dataStack.empty());
-    _dataStack.top().description = ranally::util::decodeFromUTF8(description);
+    _dataStack.top().description = ranally::String(description);
   }
 
   void DataTypes(
@@ -343,8 +343,8 @@ private:
 
   struct ResultData
   {
-    UnicodeString name;
-    UnicodeString description;
+    ranally::String name;
+    ranally::String description;
     ranally::operation::DataType dataType;
     ranally::operation::ValueType valueType;
   };
@@ -363,14 +363,14 @@ public:
     std::string const& name)
   {
     assert(!_dataStack.empty());
-    _dataStack.top().name = ranally::util::decodeFromUTF8(name);
+    _dataStack.top().name = ranally::String(name);
   }
 
   void Description(
     std::string const& description)
   {
     assert(!_dataStack.empty());
-    _dataStack.top().description = ranally::util::decodeFromUTF8(description);
+    _dataStack.top().description = ranally::String(description);
   }
 
   void DataType(
@@ -600,12 +600,12 @@ OperationsPtr XmlParser::parse(
 
 
 OperationsPtr XmlParser::parse(
-  UnicodeString const& xml) const
+  String const& xml) const
 {
   // Copy string contents in a string stream and work with that.
   std::stringstream stream;
   stream.exceptions(std::ifstream::badbit | std::ifstream::failbit);
-  stream << util::encodeInUTF8(xml); // << std::endl;
+  stream << xml.encodeInUTF8(); // << std::endl;
 
   return parse(stream);
 }

@@ -34,7 +34,7 @@ void SymbolTableTest::testScoping()
   using namespace ranally::language;
 
   SymbolTable table;
-  UnicodeString name("a");
+  ranally::String name("a");
   BOOST_CHECK_EQUAL(table.scopeLevel(), SymbolTable::size_type(0));
 
   // Add and remove one definition for 'a'.

@@ -27,13 +27,13 @@ public:
 
                    ~HDF5DataSetDriver  ();
 
-  bool             exists              (UnicodeString const& name) const;
+  bool             exists              (String const& name) const;
 
-  HDF5DataSet*     create              (UnicodeString const& name) const;
+  HDF5DataSet*     create              (String const& name) const;
 
-  void             remove              (UnicodeString const& name) const;
+  void             remove              (String const& name) const;
 
-  HDF5DataSet*     open                (UnicodeString const& name) const;
+  HDF5DataSet*     open                (String const& name) const;
 
 private:
 

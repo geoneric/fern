@@ -36,14 +36,14 @@ public:
 
   size_t           size                () const;
 
-  bool             hasOperation        (UnicodeString const& name) const;
+  bool             hasOperation        (String const& name) const;
 
-  OperationPtr const& operation        (UnicodeString const& name) const;
+  OperationPtr const& operation        (String const& name) const;
 
 private:
 
   //! Collection of operations, by name.
-  std::map<UnicodeString, OperationPtr> _operations;
+  std::map<String, OperationPtr> _operations;
 
 };
 
@@ -70,7 +70,7 @@ inline Operations::Operations(
     if(_operations.find(operation->name()) != _operations.end()) {
       throw std::runtime_error((boost::format(
         "operation %1% already present")
-        % util::encodeInUTF8(operation->name())).str().c_str());
+        % operation->name().encodeInUTF8()).str().c_str());
     }
 
     _operations[operation->name()] = operation;

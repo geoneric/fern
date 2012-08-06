@@ -7,7 +7,7 @@
 namespace ranally {
 
 PolygonFeature::PolygonFeature(
-  UnicodeString const& name,
+  String const& name,
   PolygonDomainPtr const& domain)
 
   : Feature(name, domain->type()),

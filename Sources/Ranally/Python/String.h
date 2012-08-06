@@ -2,14 +2,14 @@
 #define INCLUDED_RANALLY_PYTHON_STRING
 
 #include <Python.h>
-#include <unicode/unistr.h>
+#include "Ranally/Util/String.h"
 
 
 
 namespace ranally {
 namespace python {
 
-UnicodeString      asUnicodeString     (PyObject* object);
+String             asUnicodeString     (PyObject* object);
 
 } // namespace python
 } // namespace ranally

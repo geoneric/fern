@@ -26,7 +26,7 @@ size_t Operations::size() const
 
 
 bool Operations::hasOperation(
-  UnicodeString const& name) const
+  String const& name) const
 {
   return _operations.find(name) != _operations.end();
 }
@@ -34,9 +34,9 @@ bool Operations::hasOperation(
 
 
 OperationPtr const& Operations::operation(
-  UnicodeString const& name) const
+  String const& name) const
 {
-  std::map<UnicodeString, OperationPtr>::const_iterator it =
+  std::map<String, OperationPtr>::const_iterator it =
     _operations.find(name);
   assert(it != _operations.end());
   return (*it).second;

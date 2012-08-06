@@ -24,14 +24,14 @@ public:
 
   LOKI_DEFINE_VISITABLE()
 
-                   ScriptVertex        (UnicodeString const& sourceName,
+                   ScriptVertex        (String const& sourceName,
                                         StatementVertices const& statements);
 
   //                  ScriptVertex        (ScriptVertex const& other);
 
                    ~ScriptVertex       ();
 
-  UnicodeString const& sourceName      () const;
+  String const&    sourceName          () const;
 
   StatementVertices const& statements  () const;
 
@@ -39,7 +39,7 @@ public:
 
 private:
 
-  UnicodeString    _sourceName;
+  String           _sourceName;
 
   StatementVertices _statements;
 

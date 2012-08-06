@@ -1,9 +1,9 @@
 #ifndef INCLUDED_RANALLY_OPERATION_PARAMETER
 #define INCLUDED_RANALLY_OPERATION_PARAMETER
 
-#include <unicode/unistr.h>
 #include "Ranally/Operation/DataType.h"
 #include "Ranally/Operation/ValueType.h"
+#include "Ranally/Util/String.h"
 
 
 
@@ -23,8 +23,8 @@ class Parameter
 
 public:
 
-                   Parameter           (UnicodeString const& name,
-                                        UnicodeString const& description,
+                   Parameter           (String const& name,
+                                        String const& description,
                                         DataTypes dataTypes,
                                         ValueTypes valueTypes);
 
@@ -34,9 +34,9 @@ public:
 
                    ~Parameter          ();
 
-  UnicodeString const& name            () const;
+  String const&    name                () const;
 
-  UnicodeString const& description     () const;
+  String const&    description         () const;
 
   DataTypes        dataTypes           () const;
 
@@ -44,9 +44,9 @@ public:
 
 private:
 
-  UnicodeString    _name;
+  String           _name;
 
-  UnicodeString    _description;
+  String           _description;
 
   DataTypes        _dataTypes;
 

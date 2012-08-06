@@ -1,9 +1,9 @@
 #ifndef INCLUDED_RANALLY_OPERATION_RESULT
 #define INCLUDED_RANALLY_OPERATION_RESULT
 
-#include <unicode/unistr.h>
 #include "Ranally/Operation/DataType.h"
 #include "Ranally/Operation/ValueType.h"
+#include "Ranally/Util/String.h"
 
 
 
@@ -23,8 +23,8 @@ class Result
 
 public:
 
-                   Result              (UnicodeString const& name,
-                                        UnicodeString const& description,
+                   Result              (String const& name,
+                                        String const& description,
                                         DataType const& dataType,
                                         ValueType const& valueType);
 
@@ -34,9 +34,9 @@ public:
 
                    ~Result             ();
 
-  UnicodeString const& name            () const;
+  String const&    name                () const;
 
-  UnicodeString const& description     () const;
+  String const&    description         () const;
 
   DataType         dataType            () const;
 
@@ -44,9 +44,9 @@ public:
 
 private:
 
-  UnicodeString    _name;
+  String           _name;
 
-  UnicodeString    _description;
+  String           _description;
 
   DataType         _dataType;
 

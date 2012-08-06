@@ -6,7 +6,7 @@ namespace ranally {
 namespace language {
 
 OperationVertex::OperationVertex(
-  UnicodeString const& name,
+  String const& name,
   ExpressionVertices const& expressions)
 
   : ExpressionVertex(name),

@@ -4,8 +4,8 @@
 #include <list>
 #include <map>
 #include <vector>
-#include <unicode/unistr.h>
 #include <boost/noncopyable.hpp>
+#include "Ranally/Util/String.h"
 
 
 
@@ -49,15 +49,15 @@ public:
 
   size_type        scopeLevel          () const;
 
-  size_type        scopeLevel          (UnicodeString const& name) const;
+  size_type        scopeLevel          (String const& name) const;
 
   void             addDefinition       (NameVertex* definition);
 
-  bool             hasDefinition       (UnicodeString const& name) const;
+  bool             hasDefinition       (String const& name) const;
 
-  NameVertex const* definition         (UnicodeString const& name) const;
+  NameVertex const* definition         (String const& name) const;
 
-  NameVertex*      definition          (UnicodeString const& name);
+  NameVertex*      definition          (String const& name);
 
   bool             empty               () const;
 
@@ -68,14 +68,14 @@ protected:
 private:
 
   //! Definitions by name.
-  std::map<UnicodeString, Definitions> _definitions;
+  std::map<String, Definitions> _definitions;
 
   //! Definitions by scope level.
   std::vector<Definitions> _scopes;
 
-  Definitions const& definitions       (UnicodeString const& name) const;
+  Definitions const& definitions       (String const& name) const;
 
-  Definitions&     definitions         (UnicodeString const& name);
+  Definitions&     definitions         (String const& name);
 
 };
 

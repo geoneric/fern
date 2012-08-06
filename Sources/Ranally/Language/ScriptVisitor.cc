@@ -26,27 +26,27 @@ ScriptVisitor::~ScriptVisitor()
 
 
 
-UnicodeString const& ScriptVisitor::script() const
+String const& ScriptVisitor::script() const
 {
   return _script;
 }
 
 
 
-// UnicodeString ScriptVisitor::indent(
-//   UnicodeString const& statement)
+// String ScriptVisitor::indent(
+//   String const& statement)
 // {
 //   // Only the first line of multi-line statements (if-statement) is indented
 //   // here.
-//   UnicodeString indentation = std::string(_indentLevel * _tabSize, ' ').c_str();
+//   String indentation = std::string(_indentLevel * _tabSize, ' ').c_str();
 //   return indentation + statement;
 // }
 
 
 
-UnicodeString ScriptVisitor::indentation() const
+String ScriptVisitor::indentation() const
 {
-  return UnicodeString(std::string(_indentLevel * _tabSize, ' ').c_str());
+  return String(std::string(_indentLevel * _tabSize, ' '));
 }
 
 
@@ -144,7 +144,7 @@ void ScriptVisitor::Visit(
   language::ScriptVertex& vertex)
 {
   _indentLevel = 0;
-  _script = UnicodeString();
+  _script = String();
   visitStatements(vertex.statements());
   assert(_indentLevel == 0);
 }
@@ -170,7 +170,7 @@ void ScriptVisitor::Visit(
 void ScriptVisitor::Visit(
   language::NumberVertex<int8_t>& vertex)
 {
-  _script += UnicodeString((boost::format("%1%") % vertex.value()).str().c_str());
+  _script += String((boost::format("%1%") % vertex.value()).str());
 }
 
 
@@ -178,7 +178,7 @@ void ScriptVisitor::Visit(
 void ScriptVisitor::Visit(
   language::NumberVertex<int16_t>& vertex)
 {
-  _script += UnicodeString((boost::format("%1%") % vertex.value()).str().c_str());
+  _script += String((boost::format("%1%") % vertex.value()).str());
 }
 
 
@@ -186,7 +186,7 @@ void ScriptVisitor::Visit(
 void ScriptVisitor::Visit(
   language::NumberVertex<int32_t>& vertex)
 {
-  _script += UnicodeString((boost::format("%1%") % vertex.value()).str().c_str());
+  _script += String((boost::format("%1%") % vertex.value()).str());
 }
 
 
@@ -195,8 +195,7 @@ void ScriptVisitor::Visit(
   language::NumberVertex<int64_t>& vertex)
 {
   std::string formatString = sizeof(long) == sizeof(int64_t) ? "%1%" : "%1%L";
-  _script += UnicodeString((boost::format(formatString)
-    % vertex.value()).str().c_str());
+  _script += String((boost::format(formatString) % vertex.value()).str());
 }
 
 
@@ -205,7 +204,7 @@ void ScriptVisitor::Visit(
   language::NumberVertex<uint8_t>& vertex)
 {
   // U?
-  _script += UnicodeString((boost::format("%1%U") % vertex.value()).str().c_str());
+  _script += String((boost::format("%1%U") % vertex.value()).str());
 }
 
 
@@ -214,7 +213,7 @@ void ScriptVisitor::Visit(
   language::NumberVertex<uint16_t>& vertex)
 {
   // U?
-  _script += UnicodeString((boost::format("%1%U") % vertex.value()).str().c_str());
+  _script += String((boost::format("%1%U") % vertex.value()).str());
 }
 
 
@@ -223,7 +222,7 @@ void ScriptVisitor::Visit(
   language::NumberVertex<uint32_t>& vertex)
 {
   // U?
-  _script += UnicodeString((boost::format("%1%U") % vertex.value()).str().c_str());
+  _script += String((boost::format("%1%U") % vertex.value()).str());
 }
 
 
@@ -234,8 +233,7 @@ void ScriptVisitor::Visit(
   // U?
   std::string formatString = sizeof(unsigned long) == sizeof(uint64_t)
     ? "%1%U" : "%1%UL";
-  _script += UnicodeString((boost::format(formatString)
-    % vertex.value()).str().c_str());
+  _script += String((boost::format(formatString) % vertex.value()).str());
 }
 
 
@@ -243,7 +241,7 @@ void ScriptVisitor::Visit(
 void ScriptVisitor::Visit(
   language::NumberVertex<float>& vertex)
 {
-  _script += UnicodeString((boost::format("%1%") % vertex.value()).str().c_str());
+  _script += String((boost::format("%1%") % vertex.value()).str());
 }
 
 
@@ -251,7 +249,7 @@ void ScriptVisitor::Visit(
 void ScriptVisitor::Visit(
   language::NumberVertex<double>& vertex)
 {
-  _script += UnicodeString((boost::format("%1%") % vertex.value()).str().c_str());
+  _script += String((boost::format("%1%") % vertex.value()).str());
 }
 
 
@@ -290,7 +288,7 @@ void ScriptVisitor::Visit(
 {
   assert(!vertex.trueStatements().empty());
 
-  UnicodeString result;
+  String result;
 
   // The indent function called in visitStatements of the parent vertex
   // indents the first line of this while-statement, so we have to indent the

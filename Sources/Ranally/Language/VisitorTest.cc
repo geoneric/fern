@@ -77,7 +77,7 @@ void VisitorTest::testCountVerticesVisitor()
   // Empty script.
   {
     // Only script vertex.
-    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("")));
+    tree = _xmlParser.parse(_algebraParser.parseString(ranally::String("")));
     assert(tree);
     tree->Accept(visitor);
     BOOST_CHECK_EQUAL(visitor.nrVertices(), 1u);
@@ -85,7 +85,7 @@ void VisitorTest::testCountVerticesVisitor()
 
   // Name.
   {
-    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("a")));
+    tree = _xmlParser.parse(_algebraParser.parseString(ranally::String("a")));
     assert(tree);
     tree->Accept(visitor);
     BOOST_CHECK_EQUAL(visitor.nrVertices(), 2u);
@@ -93,7 +93,7 @@ void VisitorTest::testCountVerticesVisitor()
 
   // Number.
   {
-    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString("5")));
+    tree = _xmlParser.parse(_algebraParser.parseString(ranally::String("5")));
     assert(tree);
     tree->Accept(visitor);
     BOOST_CHECK_EQUAL(visitor.nrVertices(), 2u);
@@ -101,7 +101,7 @@ void VisitorTest::testCountVerticesVisitor()
 
   // String.
   {
-    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
+    tree = _xmlParser.parse(_algebraParser.parseString(ranally::String(
       "\"five\"")));
     assert(tree);
     tree->Accept(visitor);
@@ -110,7 +110,7 @@ void VisitorTest::testCountVerticesVisitor()
 
   // Operator.
   {
-    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
+    tree = _xmlParser.parse(_algebraParser.parseString(ranally::String(
       "a + b")));
     assert(tree);
     tree->Accept(visitor);
@@ -119,7 +119,7 @@ void VisitorTest::testCountVerticesVisitor()
 
   // Function.
   {
-    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
+    tree = _xmlParser.parse(_algebraParser.parseString(ranally::String(
       "f(a, b)")));
     assert(tree);
     tree->Accept(visitor);
@@ -128,7 +128,7 @@ void VisitorTest::testCountVerticesVisitor()
 
   // Assignment.
   {
-    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
+    tree = _xmlParser.parse(_algebraParser.parseString(ranally::String(
       "c = f(a, b)")));
     assert(tree);
     tree->Accept(visitor);
@@ -137,7 +137,7 @@ void VisitorTest::testCountVerticesVisitor()
 
   // If.
   {
-    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
+    tree = _xmlParser.parse(_algebraParser.parseString(ranally::String(
       "if a > b:\n"
       "  c = d\n"
       "else:\n"
@@ -149,7 +149,7 @@ void VisitorTest::testCountVerticesVisitor()
 
   // While.
   {
-    tree = _xmlParser.parse(_algebraParser.parseString(UnicodeString(
+    tree = _xmlParser.parse(_algebraParser.parseString(ranally::String(
       "while a > b:\n"
       "  c = c + d\n"
       "else:\n"

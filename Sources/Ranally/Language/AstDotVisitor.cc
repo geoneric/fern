@@ -9,11 +9,11 @@
 namespace ranally {
 namespace {
 
-UnicodeString join(
-  std::vector<UnicodeString> const& strings,
-  UnicodeString const& separator)
+String join(
+  std::vector<String> const& strings,
+  String const& separator)
 {
-  UnicodeString result;
+  String result;
 
   if(!strings.empty()) {
     result += strings.front();
@@ -28,10 +28,10 @@ UnicodeString join(
 
 
 
-UnicodeString dataTypesToString(
+String dataTypesToString(
   operation::DataTypes const& dataTypes)
 {
-  std::vector<UnicodeString> strings;
+  std::vector<String> strings;
 
   if(dataTypes & operation::DT_UNKNOWN) {
     strings.push_back("?");
@@ -57,10 +57,10 @@ UnicodeString dataTypesToString(
 
 
 
-UnicodeString valueTypesToString(
+String valueTypesToString(
   operation::ValueTypes const& valueTypes)
 {
-  std::vector<UnicodeString> strings;
+  std::vector<String> strings;
 
   if(valueTypes & operation::DT_UNKNOWN) {
     strings.push_back("?");
@@ -144,9 +144,8 @@ void AstDotVisitor::addAstVertex(
 {
   assert(_mode == ConnectingAst);
   addScript(
-    UnicodeString((boost::format("\"%1%\"") % &sourceVertex).str().c_str()) +
-    " -> " +
-    (boost::format("\"%1%\"") % &targetVertex).str().c_str() + " ["
+    String((boost::format("\"%1%\"") % &sourceVertex).str()) + " -> " +
+    String((boost::format("\"%1%\"") % &targetVertex).str()) + " ["
     "];\n"
   );
 }
@@ -160,9 +159,8 @@ void AstDotVisitor::addCfgVertices(
   BOOST_FOREACH(language::SyntaxVertex const* successor,
     sourceVertex.successors()) {
     addScript(
-      UnicodeString((boost::format("\"%1%\"") % &sourceVertex).str().c_str()) +
-      " -> " +
-      (boost::format("\"%1%\"") % successor).str().c_str() + " ["
+      String((boost::format("\"%1%\"") % &sourceVertex).str()) + " -> " +
+      String((boost::format("\"%1%\"") % successor).str()) + " ["
         "color=\"/spectral9/2\", "
         "constraint=false, "
         "style=dashed, "
@@ -180,9 +178,8 @@ void AstDotVisitor::addUseVertices(
   assert(_mode == ConnectingUses);
   BOOST_FOREACH(language::NameVertex const* use, vertex.uses()) {
     addScript(
-      UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
-      " -> " +
-      (boost::format("\"%1%\"") % use).str().c_str() + " ["
+      String((boost::format("\"%1%\"") % &vertex).str()) + " -> " +
+      String((boost::format("\"%1%\"") % use).str()) + " ["
         "color=\"/spectral9/8\", "
         "constraint=false, "
         "style=dashed, "
@@ -201,8 +198,8 @@ void AstDotVisitor::Visit(
   switch(_mode) {
     case Declaring: {
       addScript(
-        UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
-        " [label=\"" + (boost::format("%1%") % vertex.value()).str().c_str() +
+        String((boost::format("\"%1%\"") % &vertex).str()) +
+        " [label=\"" + String((boost::format("%1%") % vertex.value()).str()) +
         "\", fontname=courier, shape=box];\n"
       );
       break;
@@ -251,7 +248,7 @@ void AstDotVisitor::Visit(
   switch(_mode) {
     case Declaring: {
       addScript(
-        UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+        String((boost::format("\"%1%\"") % &vertex).str()) +
         " [label=\"=\"];\n");
       break;
     }
@@ -281,7 +278,7 @@ void AstDotVisitor::Visit(
   switch(_mode) {
     case Declaring: {
       addScript(
-        UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+        String((boost::format("\"%1%\"") % &vertex).str()) +
         " [label=\"" + vertex.symbol() + "\"];\n"
       );
       break;
@@ -316,7 +313,7 @@ void AstDotVisitor::Visit(
   switch(_mode) {
     case Declaring: {
       addScript(
-        UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+        String((boost::format("\"%1%\"") % &vertex).str()) +
         " [label=\"" + vertex.name() + "\"];\n");
       break;
     }
@@ -350,7 +347,7 @@ void AstDotVisitor::Visit(
   switch(_mode) {
     case Declaring: {
       addScript(
-        UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+        String((boost::format("\"%1%\"") % &vertex).str()) +
         " [label=\"If\", shape=diamond];\n"
       );
       break;
@@ -394,17 +391,17 @@ void AstDotVisitor::Visit(
 {
   switch(_mode) {
     case Declaring: {
-      std::vector<UnicodeString> attributes;
-      UnicodeString label = vertex.name();
+      std::vector<String> attributes;
+      String label = vertex.name();
 
       std::vector<language::ExpressionVertex::ResultType> const& resultTypes(
         vertex.resultTypes());
       if(!resultTypes.empty()) {
         assert(resultTypes.size() == 1);
-        UnicodeString dataTypes = dataTypesToString(resultTypes[0].get<0>());
-        UnicodeString valueTypes = valueTypesToString(resultTypes[0].get<1>());
+        String dataTypes = dataTypesToString(resultTypes[0].get<0>());
+        String valueTypes = valueTypesToString(resultTypes[0].get<1>());
 
-        label += UnicodeString("\\n") +
+        label += String("\\n") +
           "dt: " + dataTypes + "\\n" +
           "vt: " + valueTypes;
       }
@@ -412,8 +409,8 @@ void AstDotVisitor::Visit(
       attributes.push_back("label=\"" + label + "\"");
 
       addScript(
-        UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
-        " [" + join(attributes, ", ") + "];\n"
+        String((boost::format("\"%1%\"") % &vertex).str()) + " [" +
+        join(attributes, ", ") + "];\n"
       );
 
       break;
@@ -440,7 +437,7 @@ void AstDotVisitor::Visit(
   // TODO 'ordering=out' is current not supported in combination with
   // TODO 'constraint=false'. Check again with dot > 2.28.0, when it becomes
   // TODO available.
-  setScript(UnicodeString(
+  setScript(String(
     "digraph G {\n"
     "// ordering=out;\n"
     "rankdir=TB;\n"
@@ -448,9 +445,10 @@ void AstDotVisitor::Visit(
 
   setMode(Declaring);
   addScript(
-    UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
-    (boost::format(" [label=\"%1%\"];\n")
-      % util::encodeInUTF8(vertex.sourceName())).str().c_str());
+    String((boost::format("\"%1%\"") % &vertex).str()) +
+    String((boost::format(" [label=\"%1%\"];\n")
+      % vertex.sourceName().encodeInUTF8()).str())
+  );
 
   BOOST_FOREACH(boost::shared_ptr<language::StatementVertex> statementVertex,
     vertex.statements()) {
@@ -492,7 +490,7 @@ void AstDotVisitor::Visit(
   switch(_mode) {
     case Declaring: {
       addScript(
-        UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+        String((boost::format("\"%1%\"") % &vertex).str()) +
         " [label=\"\\\"" + vertex.value() +
         "\\\"\", fontname=courier, shape=box];\n"
       );
@@ -519,7 +517,7 @@ void AstDotVisitor::Visit(
   switch(_mode) {
     case Declaring: {
       addScript(
-        UnicodeString((boost::format("\"%1%\"") % &vertex).str().c_str()) +
+        String((boost::format("\"%1%\"") % &vertex).str()) +
         " [label=\"While\", shape=diamond];\n"
       );
       break;

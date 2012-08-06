@@ -2,7 +2,7 @@
 #define INCLUDED_RANALLY_LANGUAGE_DOTVISITOR
 
 #include "Ranally/Language/Visitor.h"
-#include <unicode/unistr.h>
+#include "Ranally/Util/String.h"
 
 
 
@@ -31,19 +31,19 @@ public:
 
   virtual          ~DotVisitor         ();
 
-  UnicodeString const& script          () const;
+  String const&    script              () const;
 
 protected:
 
                    DotVisitor          ();
 
-  void             setScript           (UnicodeString const& string);
+  void             setScript           (String const& string);
 
-  void             addScript           (UnicodeString const& string);
+  void             addScript           (String const& string);
 
 private:
 
-  UnicodeString    _script;
+  String           _script;
 
   virtual void     Visit               (language::ScriptVertex& vertex)=0;
 

@@ -1,8 +1,8 @@
 #ifndef INCLUDED_RANALLY_LANGUAGE_ALGEBRAPARSER
 #define INCLUDED_RANALLY_LANGUAGE_ALGEBRAPARSER
 
-#include <unicode/unistr.h>
 #include "Ranally/Python/Client.h"
+#include "Ranally/Util/String.h"
 
 
 
@@ -31,14 +31,14 @@ public:
 
                    ~AlgebraParser      ();
 
-  UnicodeString    parseString         (UnicodeString const& string);
+  String           parseString         (String const& string);
 
-  UnicodeString    parseFile           (UnicodeString const& fileName);
+  String           parseFile           (String const& fileName);
 
 private:
 
-  // UnicodeString    parse               (UnicodeString const& string,
-  //                                       UnicodeString const& fileName);
+  // String           parse               (String const& string,
+  //                                       String const& fileName);
 
 };
 

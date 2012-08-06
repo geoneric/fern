@@ -7,8 +7,8 @@ namespace ranally {
 namespace operation {
 
 Result::Result(
-  UnicodeString const& name,
-  UnicodeString const& description,
+  String const& name,
+  String const& description,
   DataType const& dataType,
   ValueType const& valueType)
 
@@ -57,14 +57,14 @@ Result::~Result()
 
 
 
-UnicodeString const& Result::name() const
+String const& Result::name() const
 {
   return _name;
 }
 
 
 
-UnicodeString const& Result::description() const
+String const& Result::description() const
 {
   return _description;
 }

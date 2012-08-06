@@ -22,7 +22,7 @@ DotVisitor::~DotVisitor()
 
 
 
-UnicodeString const& DotVisitor::script() const
+String const& DotVisitor::script() const
 {
   return _script;
 }
@@ -30,7 +30,7 @@ UnicodeString const& DotVisitor::script() const
 
 
 void DotVisitor::setScript(
-  UnicodeString const& string)
+  String const& string)
 {
   _script = string;
 }
@@ -38,7 +38,7 @@ void DotVisitor::setScript(
 
 
 void DotVisitor::addScript(
-  UnicodeString const& string)
+  String const& string)
 {
   _script += string;
 }

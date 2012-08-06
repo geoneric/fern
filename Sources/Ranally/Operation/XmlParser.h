@@ -1,9 +1,9 @@
 #ifndef INCLUDED_RANALLY_OPERATION_XMLPARSER
 #define INCLUDED_RANALLY_OPERATION_XMLPARSER
 
-#include <unicode/unistr.h>
 #include <boost/noncopyable.hpp>
 #include "Ranally/Operation/Operations.h"
+#include "Ranally/Util/String.h"
 
 
 
@@ -30,7 +30,7 @@ public:
 
   OperationsPtr    parse               (std::istream& stream) const;
 
-  OperationsPtr    parse               (UnicodeString const& xml) const;
+  OperationsPtr    parse               (String const& xml) const;
 
 private:
 

@@ -30,7 +30,7 @@ Interpreter::~Interpreter()
 
 
 language::ScriptVertexPtr Interpreter::parseString(
-  UnicodeString const& string)
+  String const& string)
 {
   return _xmlParser.parse(_algebraParser.parseString(string));
 }

@@ -23,7 +23,7 @@ enum OpenMode {
 
 
 boost::shared_ptr<DataSet> openDataSet(
-  UnicodeString const& /* dataSetName */,
+  String const& /* dataSetName */,
   OpenMode /* openMode */)
 {
   boost::shared_ptr<DataSet> dataset;
@@ -37,8 +37,8 @@ boost::shared_ptr<DataSet> openDataSet(
 
 
 void import(
-  UnicodeString const& inputDataSetName,
-  UnicodeString const& outputDataSetName)
+  String const& inputDataSetName,
+  String const& outputDataSetName)
 {
   boost::shared_ptr<DataSet> inputDataSet = openDataSet(inputDataSetName, Read);
   HDF5DataSetDriver hdf5Driver;

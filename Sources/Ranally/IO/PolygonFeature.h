@@ -22,7 +22,7 @@ class PolygonFeature:
 
 public:
 
-                   PolygonFeature      (UnicodeString const& name,
+                   PolygonFeature      (String const& name,
                                         PolygonDomainPtr const& domain);
 
                    ~PolygonFeature     ();

@@ -30,7 +30,7 @@ XmlParserTest::XmlParserTest()
 void XmlParserTest::testParse()
 {
   ranally::operation::XmlParser xmlParser;
-  UnicodeString xml;
+  ranally::String xml;
   ranally::operation::OperationsPtr operations;
   std::vector<ranally::operation::Parameter> parameters;
   std::vector<ranally::operation::Result> results;

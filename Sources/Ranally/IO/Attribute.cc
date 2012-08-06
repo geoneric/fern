@@ -8,7 +8,7 @@
 namespace ranally {
 
 Attribute::Attribute(
-  UnicodeString const& name)
+  String const& name)
 
   : _name(name)
 
@@ -23,7 +23,7 @@ Attribute::~Attribute()
 
 
 
-UnicodeString const& Attribute::name() const
+String const& Attribute::name() const
 {
   return _name;
 }

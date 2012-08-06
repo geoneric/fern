@@ -8,8 +8,8 @@ namespace ranally {
 namespace operation {
 
 Operation::Operation(
-  UnicodeString const& name,
-  UnicodeString const& description,
+  String const& name,
+  String const& description,
   std::vector<Parameter> const& parameters,
   std::vector<Result> const& results)
 
@@ -59,14 +59,14 @@ Operation::~Operation()
 
 
 
-UnicodeString const& Operation::name() const
+String const& Operation::name() const
 {
   return _name;
 }
 
 
 
-UnicodeString const& Operation::description() const
+String const& Operation::description() const
 {
   return _description;
 }
