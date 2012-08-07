@@ -37,15 +37,6 @@ public:
 
 //! Output operator for String's.
 /*!
-  \param     .
-  \return    .
-  \exception .
-  \warning   .
-  \sa        .
-  \todo      Why doesn't this work when this operator is in the global
-             namespace? (Not sure if we want that, but I prefer not to know
-             about the boost::test_tools::tt_detail stuff.)
-
   The operator in this namespace makes it possible to write
   \code
   BOOST_CHECK_EQUAL(unicodeString1, unicodeString2);
