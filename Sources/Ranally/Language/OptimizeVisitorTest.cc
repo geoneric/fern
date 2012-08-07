@@ -48,7 +48,7 @@ void OptimizeVisitorTest::testRemoveTemporaryIdentifier()
     _interpreter.annotate(tree);
     tree->Accept(_optimizeVisitor);
     tree->Accept(_scriptVisitor);
-    BOOST_CHECK(_scriptVisitor.script() == ranally::String("d = 5\n"));
+    BOOST_CHECK_EQUAL(_scriptVisitor.script(), ranally::String("d = 5\n"));
 
     // This script should be rewritten in the tree as e = 5.
     script = ranally::String(
@@ -62,7 +62,7 @@ std::cout << "--------------------------" << std::endl;
     tree->Accept(_optimizeVisitor);
     tree->Accept(_scriptVisitor);
 std::cout << _scriptVisitor.script().encodeInUTF8() << std::endl;
-    BOOST_CHECK(_scriptVisitor.script() == ranally::String("e = 5\n"));
+    BOOST_CHECK_EQUAL(_scriptVisitor.script(), ranally::String("e = 5\n"));
 
     return;
 
@@ -75,7 +75,7 @@ std::cout << _scriptVisitor.script().encodeInUTF8() << std::endl;
     tree->Accept(_optimizeVisitor);
     tree->Accept(_scriptVisitor);
     std::cout << _scriptVisitor.script().encodeInUTF8() << std::endl;
-    BOOST_CHECK(_scriptVisitor.script() == ranally::String("d = f(5)"));
+    BOOST_CHECK_EQUAL(_scriptVisitor.script(), ranally::String("d = f(5)"));
   }
 
   // Make sure that temporary identifiers which are only used as input to
@@ -90,7 +90,7 @@ std::cout << _scriptVisitor.script().encodeInUTF8() << std::endl;
     _interpreter.annotate(tree);
     tree->Accept(_optimizeVisitor);
     tree->Accept(_scriptVisitor);
-    BOOST_CHECK(_scriptVisitor.script() == script);
+    BOOST_CHECK_EQUAL(_scriptVisitor.script(), script);
   }
 }
 

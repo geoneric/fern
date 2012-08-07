@@ -1,7 +1,6 @@
 #include "Ranally/Language/OperatorVertex.h"
 #include <stdexcept>
 #include <map>
-#include <boost/format.hpp>
 #include "Ranally/Util/String.h"
 
 

@@ -51,7 +51,7 @@ void ScriptVisitorTest::testVisitEmptyScript()
 
   xml = _algebraParser.parseString(ranally::String(""));
   _xmlParser.parse(xml)->Accept(_visitor);
-  BOOST_CHECK(_visitor.script() == "");
+  BOOST_CHECK_EQUAL(_visitor.script(), ranally::String(""));
 }
 
 
@@ -62,7 +62,7 @@ void ScriptVisitorTest::testVisitName()
 
   xml = _algebraParser.parseString(ranally::String("a"));
   _xmlParser.parse(xml)->Accept(_visitor);
-  BOOST_CHECK(_visitor.script() == "a\n");
+  BOOST_CHECK_EQUAL(_visitor.script(), ranally::String("a\n"));
 }
 
 
@@ -73,7 +73,7 @@ void ScriptVisitorTest::testVisitAssignment()
 
   xml = _algebraParser.parseString(ranally::String("a = b"));
   _xmlParser.parse(xml)->Accept(_visitor);
-  BOOST_CHECK(_visitor.script() == "a = b\n");
+  BOOST_CHECK_EQUAL(_visitor.script(), ranally::String("a = b\n"));
 }
 
 
@@ -84,7 +84,7 @@ void ScriptVisitorTest::testVisitString()
 
   xml = _algebraParser.parseString(ranally::String("\"five\""));
   _xmlParser.parse(xml)->Accept(_visitor);
-  BOOST_CHECK(_visitor.script() == "\"five\"\n");
+  BOOST_CHECK_EQUAL(_visitor.script(), ranally::String("\"five\"\n"));
 }
 
 
@@ -95,16 +95,16 @@ void ScriptVisitorTest::testVisitNumber()
 
   xml = _algebraParser.parseString(ranally::String("5"));
   _xmlParser.parse(xml)->Accept(_visitor);
-  BOOST_CHECK(_visitor.script() == "5\n");
+  BOOST_CHECK_EQUAL(_visitor.script(), ranally::String("5\n"));
 
   xml = _algebraParser.parseString(ranally::String("5L"));
   _xmlParser.parse(xml)->Accept(_visitor);
-  BOOST_CHECK(_visitor.script() == (sizeof(long) == sizeof(int64_t)
-    ? "5\n" : "5L\n"));
+  BOOST_CHECK_EQUAL(_visitor.script(), ranally::String(
+    sizeof(long) == sizeof(int64_t) ? "5\n" : "5L\n"));
 
   xml = _algebraParser.parseString(ranally::String("5.5"));
   _xmlParser.parse(xml)->Accept(_visitor);
-  BOOST_CHECK(_visitor.script() == "5.5\n");
+  BOOST_CHECK_EQUAL(_visitor.script(), ranally::String("5.5\n"));
 
   // TODO add tests for all numeric types.
 }
@@ -117,13 +117,13 @@ void ScriptVisitorTest::testVisitFunction()
 
   xml = _algebraParser.parseString(ranally::String("f()"));
   _xmlParser.parse(xml)->Accept(_visitor);
-  BOOST_CHECK(_visitor.script() == "f()\n");
+  BOOST_CHECK_EQUAL(_visitor.script(), ranally::String("f()\n"));
 
   xml = _algebraParser.parseString(
     ranally::String("f(1, \"2\", three, four())"));
   _xmlParser.parse(xml)->Accept(_visitor);
-  BOOST_CHECK(_visitor.script() ==
-    "f(1, \"2\", three, four())\n");
+  BOOST_CHECK_EQUAL(_visitor.script(), ranally::String(
+    "f(1, \"2\", three, four())\n"));
 }
 
 
@@ -134,20 +134,20 @@ void ScriptVisitorTest::testVisitOperator()
 
   xml = _algebraParser.parseString(ranally::String("-a"));
   _xmlParser.parse(xml)->Accept(_visitor);
-  BOOST_CHECK(_visitor.script() == "-(a)\n");
+  BOOST_CHECK_EQUAL(_visitor.script(), ranally::String("-(a)\n"));
 
   xml = _algebraParser.parseString(ranally::String("a + b"));
   _xmlParser.parse(xml)->Accept(_visitor);
-  BOOST_CHECK(_visitor.script() == "(a) + (b)\n");
+  BOOST_CHECK_EQUAL(_visitor.script(), ranally::String("(a) + (b)\n"));
 
   xml = _algebraParser.parseString(ranally::String("-(a + b)"));
   _xmlParser.parse(xml)->Accept(_visitor);
-  BOOST_CHECK(_visitor.script() == "-((a) + (b))\n");
+  BOOST_CHECK_EQUAL(_visitor.script(), ranally::String("-((a) + (b))\n"));
 
   xml = _algebraParser.parseString(ranally::String("a + b * c + d"));
   _xmlParser.parse(xml)->Accept(_visitor);
-  BOOST_CHECK(_visitor.script() ==
-    "((a) + ((b) * (c))) + (d)\n");
+  BOOST_CHECK_EQUAL(_visitor.script(), ranally::String(
+    "((a) + ((b) * (c))) + (d)\n"));
 }
 
 
@@ -158,7 +158,7 @@ void ScriptVisitorTest::testVisitMultipleStatements()
 
   xml = _algebraParser.parseString(ranally::String("a\nb"));
   _xmlParser.parse(xml)->Accept(_visitor);
-  BOOST_CHECK(_visitor.script() == "a\nb\n");
+  BOOST_CHECK_EQUAL(_visitor.script(), ranally::String("a\nb\n"));
 }
 
 
@@ -172,10 +172,10 @@ void ScriptVisitorTest::testVisitIf()
       "  b\n"
       "  c"));
   _xmlParser.parse(xml)->Accept(_visitor);
-  BOOST_CHECK(_visitor.script() ==
+  BOOST_CHECK_EQUAL(_visitor.script(), ranally::String(
       "if a:\n"
       "  b\n"
-      "  c\n");
+      "  c\n"));
 
   xml = _algebraParser.parseString(ranally::String(
       "if a:\n"
@@ -185,14 +185,14 @@ void ScriptVisitorTest::testVisitIf()
       "  e\n"
       "  f\n"));
   _xmlParser.parse(xml)->Accept(_visitor);
-  BOOST_CHECK(_visitor.script() ==
+  BOOST_CHECK_EQUAL(_visitor.script(), ranally::String(
       "if a:\n"
       "  b\n"
       "  c\n"
       "else:\n"
       "  if d:\n"
       "    e\n"
-      "    f\n");
+      "    f\n"));
 
   xml = _algebraParser.parseString(ranally::String(
       "if a:\n"
@@ -205,7 +205,7 @@ void ScriptVisitorTest::testVisitIf()
       "  g\n"
       "  h\n"));
   _xmlParser.parse(xml)->Accept(_visitor);
-  BOOST_CHECK(_visitor.script() ==
+  BOOST_CHECK_EQUAL(_visitor.script(), ranally::String(
       "if a:\n"
       "  b\n"
       "  c\n"
@@ -215,7 +215,7 @@ void ScriptVisitorTest::testVisitIf()
       "    f\n"
       "  else:\n"
       "    g\n"
-      "    h\n");
+      "    h\n"));
 }
 
 
@@ -229,10 +229,10 @@ void ScriptVisitorTest::testVisitWhile()
       "  b\n"
       "  c"));
   _xmlParser.parse(xml)->Accept(_visitor);
-  BOOST_CHECK(_visitor.script() ==
+  BOOST_CHECK_EQUAL(_visitor.script(), ranally::String(
       "while a:\n"
       "  b\n"
-      "  c\n");
+      "  c\n"));
 
   xml = _algebraParser.parseString(ranally::String(
       "while a:\n"
@@ -242,11 +242,11 @@ void ScriptVisitorTest::testVisitWhile()
       "  d\n"
       "  e"));
   _xmlParser.parse(xml)->Accept(_visitor);
-  BOOST_CHECK(_visitor.script() ==
+  BOOST_CHECK_EQUAL(_visitor.script(), ranally::String(
       "while a:\n"
       "  b\n"
       "  c\n"
       "else:\n"
       "  d\n"
-      "  e\n");
+      "  e\n"));
 }

@@ -61,7 +61,7 @@ void AnnotateVisitorTest::testVisitEmptyScript()
   // // Both trees should be equal.
   // BOOST_CHECK(*tree1 == *tree2);
 
-  BOOST_CHECK(tree1->sourceName() == "<string>");
+  BOOST_CHECK_EQUAL(tree1->sourceName(), ranally::String("<string>"));
   BOOST_CHECK_EQUAL(tree1->line(), 0);
   BOOST_CHECK_EQUAL(tree1->col(), 0);
   BOOST_CHECK(tree1->statements().empty());
@@ -77,7 +77,7 @@ void AnnotateVisitorTest::testVisitNumber()
     _xmlParser.parse(_algebraParser.parseString(ranally::String("5")));
   tree->Accept(_visitor);
 
-  BOOST_CHECK(tree->sourceName() == "<string>");
+  BOOST_CHECK_EQUAL(tree->sourceName(), ranally::String("<string>"));
   BOOST_CHECK_EQUAL(tree->line(), 0);
   BOOST_CHECK_EQUAL(tree->col(), 0);
   BOOST_CHECK_EQUAL(tree->statements().size(), 1u);
@@ -95,7 +95,7 @@ void AnnotateVisitorTest::testVisitOperation()
       _xmlParser.parse(_algebraParser.parseString(ranally::String("abs(a)")));
     tree->Accept(_visitor);
 
-    BOOST_CHECK(tree->sourceName() == "<string>");
+    BOOST_CHECK_EQUAL(tree->sourceName(), ranally::String("<string>"));
     BOOST_CHECK_EQUAL(tree->line(), 0);
     BOOST_CHECK_EQUAL(tree->col(), 0);
 

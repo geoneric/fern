@@ -108,11 +108,11 @@ TARGET_LINK_LIBRARIES(testRanallyLanguage
 ADD_DEPENDENCIES(testRanallyLanguage
   Operation-xml.h
 )
-ADD_CUSTOM_TARGET(runTestRanallyLanguage
+ADD_CUSTOM_TARGET(runTestLanguage
   testRanallyLanguage
   DEPENDS testRanallyLanguage
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
   COMMENT "Running RanallyLanguage unit tests" VERBATIM
 )
-ADD_DEPENDENCIES(tests runTestRanallyLanguage)
+ADD_DEPENDENCIES(tests runTestLanguage)
 

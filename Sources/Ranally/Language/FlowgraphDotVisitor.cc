@@ -1,6 +1,5 @@
 #include "FlowgraphDotVisitor.h"
 #include <boost/foreach.hpp>
-#include <boost/format.hpp>
 #include "Ranally/Util/String.h"
 #include "Ranally/Language/Vertices.h"
 
@@ -39,16 +38,16 @@ void FlowgraphDotVisitor::addFlowgraphVertex(
   if(!sourceVertex.definitions().empty()) {
     BOOST_FOREACH(language::NameVertex* definition, sourceVertex.definitions()) {
       addScript(
-        String((boost::format("\"%1%\"") % definition).str()) + " -> " +
-        String((boost::format("\"%1%\"") % &targetVertex).str()) + " ["
+        String(boost::format("\"%1%\"") % definition) + " -> " +
+        String(boost::format("\"%1%\"") % &targetVertex) + " ["
         "];\n"
       );
     }
   }
   else {
     addScript(
-      String((boost::format("\"%1%\"") % &sourceVertex).str()) + " -> " +
-      String((boost::format("\"%1%\"") % &targetVertex).str()) + " ["
+      String(boost::format("\"%1%\"") % &sourceVertex) + " -> " +
+      String(boost::format("\"%1%\"") % &targetVertex) + " ["
       "];\n"
     );
   }
@@ -82,16 +81,16 @@ void FlowgraphDotVisitor::addFlowgraphVertex(
   ///   : &sourceVertex;
 
   /// _script +=
-  ///   String((boost::format("\"%1%\"") % newSourceVertex).str()) + " -> " +
-  ///   String((boost::format("\"%1%\"") % &targetVertex).str()) + " ["
+  ///   String(boost::format("\"%1%\"") % newSourceVertex) + " -> " +
+  ///   String(boost::format("\"%1%\"") % &targetVertex) + " ["
   ///   "];\n";
 
   /// _mode = ConnectingFlowgraph;
   /// _definition = 0;
 
   addScript(
-    String((boost::format("\"%1%\"") % &sourceVertex).str()) + " -> " +
-    String((boost::format("\"%1%\"") % &targetVertex).str()) + " ["
+    String(boost::format("\"%1%\"") % &sourceVertex) + " -> " +
+    String(boost::format("\"%1%\"") % &targetVertex) + " ["
     "];\n"
   );
 }
@@ -104,8 +103,8 @@ void FlowgraphDotVisitor::addFlowgraphVertex(
 //   assert(_mode == ConnectingFlowgraph);
 //   BOOST_FOREACH(NameVertex const* use, vertex.uses()) {
 //     _script +=
-//       String((boost::format("\"%1%\"") % &vertex).str()) + " -> " +
-//       String((boost::format("\"%1%\"") % use).str()) + " ["
+//       String(boost::format("\"%1%\"") % &vertex) + " -> " +
+//       String(boost::format("\"%1%\"") % use) + " ["
 //       "];\n";
 //   }
 // }
@@ -118,7 +117,7 @@ void FlowgraphDotVisitor::Visit(
   switch(_mode) {
     case Declaring: {
       // addScript(
-      //   String((boost::format("\"%1%\"") % &vertex).str()) +
+      //   String(boost::format("\"%1%\"") % &vertex) +
       //   " [label=\"=\"];\n");
       break;
     }
@@ -140,7 +139,7 @@ void FlowgraphDotVisitor::Visit(
   switch(_mode) {
     case Declaring: {
       addScript(
-        String((boost::format("\"%1%\"") % &vertex).str()) +
+        String(boost::format("\"%1%\"") % &vertex) +
         " [label=\"" + vertex.name() + "\", shape=triangle];\n"
       );
       break;
@@ -169,7 +168,7 @@ void FlowgraphDotVisitor::Visit(
   switch(_mode) {
     case Declaring: {
       addScript(
-        String((boost::format("\"%1%\"") % &vertex).str()) +
+        String(boost::format("\"%1%\"") % &vertex) +
         " [label=\"If\", shape=diamond];\n"
       );
       break;
@@ -183,11 +182,11 @@ void FlowgraphDotVisitor::Visit(
 
   // TODO condition -> sub graph
   if(_mode == ConnectingFlowgraph) {
-    addScript(String((boost::format(
+    addScript(String(boost::format(
       "subgraph cluster%1% {\n"
       "ordering=out;\n"
       "rankdir=TB;\n"
-    ) % ifClusterId++).str()));
+    ) % ifClusterId++));
   }
   BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
     statementVertex, vertex.trueStatements()) {
@@ -200,11 +199,11 @@ void FlowgraphDotVisitor::Visit(
   if(!vertex.falseStatements().empty()) {
     // TODO condition -> sub graph
     if(_mode == ConnectingFlowgraph) {
-      addScript(String((boost::format(
+      addScript(String(boost::format(
         "subgraph cluster%1% {\n"
         "ordering=out;\n"
         "rankdir=TB;\n"
-      ) % ifClusterId++).str()));
+      ) % ifClusterId++));
     }
     BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
       statementVertex, vertex.falseStatements()) {
@@ -229,7 +228,7 @@ void FlowgraphDotVisitor::Visit(
       if(vertex.definitions().empty() || std::find(vertex.definitions().begin(),
         vertex.definitions().end(), &vertex) != vertex.definitions().end()) {
         addScript(
-          String((boost::format("\"%1%\"") % &vertex).str()) +
+          String(boost::format("\"%1%\"") % &vertex) +
           " [label=\"" + vertex.name() + "\"];\n"
         );
       }
@@ -250,8 +249,8 @@ void FlowgraphDotVisitor::Visit(
   switch(_mode) {
     case Declaring: {
       addScript(
-        String((boost::format("\"%1%\"") % &vertex).str()) +
-        " [label=\"" + String((boost::format("%1%") % vertex.value()).str()) +
+        String(boost::format("\"%1%\"") % &vertex) +
+        " [label=\"" + String(boost::format("%1%") % vertex.value()) +
         "\", fontname=courier, shape=box];\n"
       );
       break;
@@ -350,7 +349,7 @@ void FlowgraphDotVisitor::Visit(
     case Declaring: {
       // TODO Implement symbol member.
       addScript(
-        String((boost::format("\"%1%\"") % &vertex).str()) +
+        String(boost::format("\"%1%\"") % &vertex) +
         " [label=\"" + vertex.symbol() + "\", shape=triangle];\n"
       );
       break;
@@ -378,7 +377,7 @@ void FlowgraphDotVisitor::Visit(
   switch(_mode) {
     case Declaring: {
       addScript(
-        String((boost::format("\"%1%\"") % &vertex).str()) +
+        String(boost::format("\"%1%\"") % &vertex) +
         " [label=\"\\\"" + vertex.value() +
         "\\\"\", fontname=courier, shape=box];\n"
       );
@@ -411,9 +410,9 @@ void FlowgraphDotVisitor::Visit(
 
   setMode(Declaring);
   // addScript(
-  //   String((boost::format("\"%1%\"") % &vertex).str()) +
-  //   String((boost::format(" [label=\"%1%\"];\n"))
-  //     % dev::encodeInUTF8(vertex.sourceName())).str().c_str());
+  //   String(boost::format("\"%1%\"") % &vertex) +
+  //   String(boost::format(" [label=\"%1%\"];\n"))
+  //     % vertex.sourceName().encodeInUTF8());
 
   BOOST_FOREACH(boost::shared_ptr<language::StatementVertex> statementVertex,
     vertex.statements()) {

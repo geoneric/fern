@@ -96,6 +96,16 @@ String::String(
 
 
 
+String::String(
+  boost::format const& format)
+
+  : UnicodeString(decodeFromUTF8(format.str()))
+
+{
+}
+
+
+
 String::~String()
 {
 }

@@ -1,6 +1,5 @@
 #include "Ranally/Language/AstDotVisitor.h"
 #include <boost/foreach.hpp>
-#include <boost/format.hpp>
 #include "Ranally/Util/String.h"
 #include "Ranally/Language/Vertices.h"
 
@@ -144,8 +143,8 @@ void AstDotVisitor::addAstVertex(
 {
   assert(_mode == ConnectingAst);
   addScript(
-    String((boost::format("\"%1%\"") % &sourceVertex).str()) + " -> " +
-    String((boost::format("\"%1%\"") % &targetVertex).str()) + " ["
+    String(boost::format("\"%1%\"") % &sourceVertex) + " -> " +
+    String(boost::format("\"%1%\"") % &targetVertex) + " ["
     "];\n"
   );
 }
@@ -159,8 +158,8 @@ void AstDotVisitor::addCfgVertices(
   BOOST_FOREACH(language::SyntaxVertex const* successor,
     sourceVertex.successors()) {
     addScript(
-      String((boost::format("\"%1%\"") % &sourceVertex).str()) + " -> " +
-      String((boost::format("\"%1%\"") % successor).str()) + " ["
+      String(boost::format("\"%1%\"") % &sourceVertex) + " -> " +
+      String(boost::format("\"%1%\"") % successor) + " ["
         "color=\"/spectral9/2\", "
         "constraint=false, "
         "style=dashed, "
@@ -178,8 +177,8 @@ void AstDotVisitor::addUseVertices(
   assert(_mode == ConnectingUses);
   BOOST_FOREACH(language::NameVertex const* use, vertex.uses()) {
     addScript(
-      String((boost::format("\"%1%\"") % &vertex).str()) + " -> " +
-      String((boost::format("\"%1%\"") % use).str()) + " ["
+      String(boost::format("\"%1%\"") % &vertex) + " -> " +
+      String(boost::format("\"%1%\"") % use) + " ["
         "color=\"/spectral9/8\", "
         "constraint=false, "
         "style=dashed, "
@@ -198,8 +197,8 @@ void AstDotVisitor::Visit(
   switch(_mode) {
     case Declaring: {
       addScript(
-        String((boost::format("\"%1%\"") % &vertex).str()) +
-        " [label=\"" + String((boost::format("%1%") % vertex.value()).str()) +
+        String(boost::format("\"%1%\"") % &vertex) +
+        " [label=\"" + String(boost::format("%1%") % vertex.value()) +
         "\", fontname=courier, shape=box];\n"
       );
       break;
@@ -248,7 +247,7 @@ void AstDotVisitor::Visit(
   switch(_mode) {
     case Declaring: {
       addScript(
-        String((boost::format("\"%1%\"") % &vertex).str()) +
+        String(boost::format("\"%1%\"") % &vertex) +
         " [label=\"=\"];\n");
       break;
     }
@@ -278,7 +277,7 @@ void AstDotVisitor::Visit(
   switch(_mode) {
     case Declaring: {
       addScript(
-        String((boost::format("\"%1%\"") % &vertex).str()) +
+        String(boost::format("\"%1%\"") % &vertex) +
         " [label=\"" + vertex.symbol() + "\"];\n"
       );
       break;
@@ -313,7 +312,7 @@ void AstDotVisitor::Visit(
   switch(_mode) {
     case Declaring: {
       addScript(
-        String((boost::format("\"%1%\"") % &vertex).str()) +
+        String(boost::format("\"%1%\"") % &vertex) +
         " [label=\"" + vertex.name() + "\"];\n");
       break;
     }
@@ -347,7 +346,7 @@ void AstDotVisitor::Visit(
   switch(_mode) {
     case Declaring: {
       addScript(
-        String((boost::format("\"%1%\"") % &vertex).str()) +
+        String(boost::format("\"%1%\"") % &vertex) +
         " [label=\"If\", shape=diamond];\n"
       );
       break;
@@ -409,7 +408,7 @@ void AstDotVisitor::Visit(
       attributes.push_back("label=\"" + label + "\"");
 
       addScript(
-        String((boost::format("\"%1%\"") % &vertex).str()) + " [" +
+        String(boost::format("\"%1%\"") % &vertex) + " [" +
         join(attributes, ", ") + "];\n"
       );
 
@@ -445,9 +444,9 @@ void AstDotVisitor::Visit(
 
   setMode(Declaring);
   addScript(
-    String((boost::format("\"%1%\"") % &vertex).str()) +
-    String((boost::format(" [label=\"%1%\"];\n")
-      % vertex.sourceName().encodeInUTF8()).str())
+    String(boost::format("\"%1%\"") % &vertex) +
+    String(boost::format(" [label=\"%1%\"];\n")
+      % vertex.sourceName().encodeInUTF8())
   );
 
   BOOST_FOREACH(boost::shared_ptr<language::StatementVertex> statementVertex,
@@ -490,7 +489,7 @@ void AstDotVisitor::Visit(
   switch(_mode) {
     case Declaring: {
       addScript(
-        String((boost::format("\"%1%\"") % &vertex).str()) +
+        String(boost::format("\"%1%\"") % &vertex) +
         " [label=\"\\\"" + vertex.value() +
         "\\\"\", fontname=courier, shape=box];\n"
       );
@@ -517,7 +516,7 @@ void AstDotVisitor::Visit(
   switch(_mode) {
     case Declaring: {
       addScript(
-        String((boost::format("\"%1%\"") % &vertex).str()) +
+        String(boost::format("\"%1%\"") % &vertex) +
         " [label=\"While\", shape=diamond];\n"
       );
       break;

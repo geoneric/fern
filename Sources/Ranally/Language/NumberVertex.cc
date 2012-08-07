@@ -1,5 +1,4 @@
 #include "Ranally/Language/NumberVertex.h"
-#include <boost/format.hpp>
 
 
 
@@ -10,7 +9,7 @@ template<typename T>
 NumberVertex<T>::NumberVertex(
   T value)
 
-  : ExpressionVertex(String((boost::format("%1%") % value).str())),
+  : ExpressionVertex(String(boost::format("%1%") % value)),
     _value(value)
 
 {
@@ -24,8 +23,7 @@ NumberVertex<T>::NumberVertex(
   int colId,
   T value)
 
-  : ExpressionVertex(lineNr, colId,
-      String((boost::format("%1%") % value).str())),
+  : ExpressionVertex(lineNr, colId, String(boost::format("%1%") % value)),
     _value(value)
 
 {
