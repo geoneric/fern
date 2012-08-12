@@ -1,6 +1,7 @@
 #ifndef INCLUDED_RANALLY_LANGUAGE_NAMEVERTEX
 #define INCLUDED_RANALLY_LANGUAGE_NAMEVERTEX
 
+#include <boost/foreach.hpp>
 #include "Ranally/Language/ExpressionVertex.h"
 
 
@@ -54,6 +55,31 @@ private:
 };
 
 typedef boost::shared_ptr<NameVertex> NameVertexPtr;
+
+inline std::ostream& operator<<(
+  std::ostream& stream,
+  NameVertex const& vertex)
+{
+  stream << "name: " << vertex.name().encodeInUTF8() << "\n";
+
+  if(!vertex.definitions().empty()) {
+    stream << "definitions:\n";
+
+    BOOST_FOREACH(NameVertex const* definition, vertex.definitions()) {
+      stream << *definition;
+    }
+  }
+
+  if(!vertex.uses().empty()) {
+    stream << "uses:\n";
+
+    BOOST_FOREACH(NameVertex const* use, vertex.uses()) {
+      stream << *use;
+    }
+  }
+
+  return stream;
+}
 
 } // namespace language
 } // namespace ranally

@@ -4,14 +4,13 @@
 #include <vector>
 #include <boost/shared_ptr.hpp>
 #include "Ranally/Util/String.h"
+#include "Ranally/Operation/Parameter.h"
+#include "Ranally/Operation/Result.h"
 
 
 
 namespace ranally {
 namespace operation {
-
-class Parameter;
-class Result;
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!

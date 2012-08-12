@@ -20,8 +20,6 @@ class FunctionVertex:
 
   friend class FunctionVertexTest;
 
-private:
-
 public:
 
   LOKI_DEFINE_VISITABLE()
@@ -30,6 +28,8 @@ public:
                                         ExpressionVertices const& expressions);
 
                    ~FunctionVertex     ();
+
+private:
 
 };
 
