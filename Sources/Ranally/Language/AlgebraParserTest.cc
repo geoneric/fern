@@ -24,6 +24,8 @@ boost::unit_test::test_suite* AlgebraParserTest::suite()
     &AlgebraParserTest::testParseNumber, instance));
   suite->add(BOOST_CLASS_TEST_CASE(
     &AlgebraParserTest::testParseCall, instance));
+  // suite->add(BOOST_CLASS_TEST_CASE(
+  //   &AlgebraParserTest::testParsePrint, instance));
   suite->add(BOOST_CLASS_TEST_CASE(
     &AlgebraParserTest::testParseUnaryOperator, instance));
   suite->add(BOOST_CLASS_TEST_CASE(
@@ -335,6 +337,72 @@ void AlgebraParserTest::testParseCall()
       "</Ranally>") % (sizeof(long) * 8)));
   }
 }
+
+
+
+// void AlgebraParserTest::testParsePrint()
+// {
+//   ranally::language::AlgebraParser parser;
+//   ranally::String xml;
+// 
+//   {
+//     xml = parser.parseString(ranally::String("print"));
+//     BOOST_CHECK_EQUAL(xml, ranally::String(
+//       "<?xml version=\"1.0\"?>"
+//       "<Ranally source=\"&lt;string&gt;\">"
+//         "<Statements>"
+//           "<Statement>"
+//             "<Expression line=\"1\" col=\"0\">"
+//               "<Function>"
+//                 "<Name>print</Name>"
+//                 "<Expressions/>"
+//               "</Function>"
+//             "</Expression>"
+//           "</Statement>"
+//         "</Statements>"
+//       "</Ranally>"));
+//   }
+// 
+//   // {
+//   //   xml = parser.parseString(ranally::String("print(1, \"2\", three, four())"));
+//   //   BOOST_CHECK_EQUAL(xml, ranally::String(boost::format(
+//   //     "<?xml version=\"1.0\"?>"
+//   //     "<Ranally source=\"&lt;string&gt;\">"
+//   //       "<Statements>"
+//   //         "<Statement>"
+//   //           "<Expression line=\"1\" col=\"0\">"
+//   //             "<Function>"
+//   //               "<Name>f</Name>"
+//   //               "<Expressions>"
+//   //                 "<Expression line=\"1\" col=\"6\">"
+//   //                   "<Number>"
+//   //                     "<Integer>"
+//   //                       "<Size>%1%</Size>"
+//   //                       "<Value>1</Value>"
+//   //                     "</Integer>"
+//   //                   "</Number>"
+//   //                 "</Expression>"
+//   //                 "<Expression line=\"1\" col=\"9\">"
+//   //                   "<String>2</String>"
+//   //                 "</Expression>"
+//   //                 "<Expression line=\"1\" col=\"14\">"
+//   //                   "<Name>three</Name>"
+//   //                 "</Expression>"
+//   //                 "<Expression line=\"1\" col=\"21\">"
+//   //                   "<Function>"
+//   //                     "<Name>four</Name>"
+//   //                     "<Expressions/>"
+//   //                   "</Function>"
+//   //                 "</Expression>"
+//   //               "</Expressions>"
+//   //             "</Function>"
+//   //           "</Expression>"
+//   //         "</Statement>"
+//   //       "</Statements>"
+//   //     "</Ranally>") % (sizeof(long) * 8)));
+//   // }
+// }
+
 
 
 

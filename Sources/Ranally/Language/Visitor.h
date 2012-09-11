@@ -68,6 +68,8 @@ protected:
 
   virtual void     Visit               (IfVertex& vertex);
 
+  virtual void     Visit               (FunctionVertex& vertex);
+
   virtual void     Visit               (ScriptVertex& vertex);
 
   virtual void     Visit               (WhileVertex& vertex);
@@ -75,8 +77,6 @@ protected:
 private:
 
   virtual void     Visit               (ExpressionVertex& vertex);
-
-  virtual void     Visit               (FunctionVertex& vertex);
 
   virtual void     Visit               (NameVertex& vertex);
 

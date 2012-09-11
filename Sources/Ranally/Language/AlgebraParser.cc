@@ -353,6 +353,17 @@ void writeComparisonOperatorNode(
 
 
 
+void throwUnsupportedExpressionKind(
+  ranally::String const& kind)
+{
+  // TODO exception
+  std::cout << kind.encodeInUTF8() << std::endl;
+  bool supportedExpressionKind = false;
+  assert(supportedExpressionKind);
+}
+
+
+
 void writeExpressionNode(
   expr_ty const& expression,
   ranally::String& xml)
@@ -404,23 +415,60 @@ void writeExpressionNode(
         expression->v.Compare.ops, expression->v.Compare.comparators, xml);
       break;
     }
-    case IfExp_kind:
-    case Lambda_kind:
-    case Dict_kind:
-    case DictComp_kind:
-    case GeneratorExp_kind:
-    case Yield_kind:
-    case Repr_kind:
-    case Attribute_kind:
-    case Subscript_kind:
-    case List_kind:
-    case ListComp_kind:
-    case Set_kind:
-    case SetComp_kind:
+    case IfExp_kind: {
+      throwUnsupportedExpressionKind("if");
+      break;
+    }
+    case Lambda_kind: {
+      throwUnsupportedExpressionKind("lambda");
+      break;
+    }
+    case Dict_kind: {
+      throwUnsupportedExpressionKind("dictionary");
+      break;
+    }
+    case DictComp_kind: {
+      throwUnsupportedExpressionKind("dictionary comprehension");
+      break;
+    }
+    case GeneratorExp_kind: {
+      throwUnsupportedExpressionKind("generator");
+      break;
+    }
+    case Yield_kind: {
+      throwUnsupportedExpressionKind("yield");
+      break;
+    }
+    case Repr_kind: {
+      throwUnsupportedExpressionKind("repr");
+      break;
+    }
+    case Attribute_kind: {
+      throwUnsupportedExpressionKind("attribute");
+      break;
+    }
+    case Subscript_kind: {
+      throwUnsupportedExpressionKind("subscript");
+      break;
+    }
+    case List_kind: {
+      throwUnsupportedExpressionKind("list");
+      break;
+    }
+    case ListComp_kind: {
+      throwUnsupportedExpressionKind("list comprehension");
+      break;
+    }
+    case Set_kind: {
+      throwUnsupportedExpressionKind("set");
+      break;
+    }
+    case SetComp_kind: {
+      throwUnsupportedExpressionKind("set comprehension");
+      break;
+    }
     case Tuple_kind: {
-      // TODO exception
-      bool implemented = false;
-      assert(implemented);
+      throwUnsupportedExpressionKind("tuple");
       break;
     }
   }
@@ -491,6 +539,29 @@ void writeWhileNode(
 
 
 
+// void writePrintFunctionNode(
+//   expr_ty const dest,
+//   asdl_seq const* values,
+//   ranally::String& xml)
+// {
+//   // assert(!values || values->size == 0); // built-in print specific.
+//   // assert(values->size == 1);
+//   // 1-based linenumber.
+//   // 0-based column id.
+//   xml += (boost::format("<Expression line=\"%1%\" col=\"%2%\">")
+//     % expression->lineno
+//     % expression->col_offset);
+//   xml += "<Function>";
+//   xml += "<Name>";
+//   xml += "print";
+//   xml += "</Name>";
+//   writeExpressionsNode(values, xml);
+//   xml += "</Function>";
+//   xml += "</Expression>";
+// }
+
+
+
 void writeStatementNodes(
   asdl_seq const* statements,
   ranally::String& xml)
@@ -529,6 +600,11 @@ void writeStatementNodes(
             statement->v.While.orelse, xml);
           break;
         }
+        case Print_kind: // {
+        //   writePrintFunctionNode(statement->v.Print.dest,
+        //     statement->v.Print.values, xml);
+        //   break;
+        // }
 
         // TODO
         case Break_kind:
@@ -536,7 +612,6 @@ void writeStatementNodes(
         case Assert_kind:
         case AugAssign_kind:
 
-        case Print_kind:
         case Global_kind:
         case Pass_kind:
 

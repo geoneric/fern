@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <Operations>
   <Operation>
-    <Name>Print</Name>
+    <Name>debug</Name>
     <Description>Print the argument value to the standard output stream.</Description>
     <Parameters>
       <Parameter>

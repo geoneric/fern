@@ -105,7 +105,6 @@ void Interpreter::execute(
   language::ScriptVertexPtr const& tree)
 {
   validate(tree);
-
   language::ExecuteVisitor executeVisitor;
   tree->Accept(executeVisitor);
 }

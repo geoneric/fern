@@ -1,4 +1,7 @@
 ADD_SUBDIRECTORY(Project)
-ADD_SUBDIRECTORY(DataModel)
+IF(NOT APPLE)
+  # TODO Issue calling dot.
+  ADD_SUBDIRECTORY(DataModel)
+ENDIF()
 ADD_SUBDIRECTORY(Development)
 

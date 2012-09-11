@@ -40,6 +40,9 @@ void IdentifyVisitor::Visit(
   // - Visit target.
   _mode = Defining;
   vertex.target()->Accept(*this);
+
+  // Reset mode! Only in assignments is the mode temporarely set to defining.
+  _mode = Using;
 }
 
 

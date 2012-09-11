@@ -33,6 +33,8 @@ public:
 
 private:
 
+  void             Visit               (NameVertex& vertex);
+
   void             Visit               (FunctionVertex& vertex);
 
 };
