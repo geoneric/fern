@@ -4,27 +4,28 @@
 #include <stdint.h>
 
 
-
 namespace ranally {
 
 struct ScalarTag { };
 struct RangeTag { };
 struct RasterTag: RangeTag { };
 
+
 template<
-  class Data>
+    class Data>
 struct DataTraits
 {
-  // If not specialized below, assume that the category is RangeTag.
-  // Compiler error otherwise.
-  typedef RangeTag DataCategory;
+    // If not specialized below, assume that the category is RangeTag.
+    // Compiler error otherwise.
+    typedef RangeTag DataCategory;
 };
+
 
 #define SPECIALIZE_DATA_TRAITS_FOR_SCALAR(type) \
 template<> \
 struct DataTraits<type> \
 { \
-  typedef ScalarTag DataCategory; \
+    typedef ScalarTag DataCategory; \
 };
 
 SPECIALIZE_DATA_TRAITS_FOR_SCALAR(int8_t)
