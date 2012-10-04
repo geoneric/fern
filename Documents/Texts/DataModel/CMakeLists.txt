@@ -13,4 +13,3 @@ SET(SPHINX_TARGET
   DataModel
 )
 INCLUDE(SphinxDoc)
-

@@ -10,9 +10,9 @@ One way to deal with this is to use `.property` notation on a feature, where `pr
 .. code-block:: python
 
    forest = ...
-   forestBiomass = forest.biomass
-   treeBiomass = forest.tree.biomass
-   leaveBiomass = forest.tree.leave.biomass
+   forest_biomass = forest.biomass
+   tree_biomass = forest.tree.biomass
+   leave_biomass = forest.tree.leave.biomass
 
 Selecting feature-items
 -----------------------

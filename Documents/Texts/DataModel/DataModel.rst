@@ -64,7 +64,7 @@ A feature is a combination of a domain with zero or more associated attributes.
 
 In space, a feature is some spatial entity that has a position in space, and associated attributes. Examples of such features are houses, roads, cities, rivers, boats, planes, continents, etc.
 
-In time, a feature is a collection of moments in time for which an attribute value is available. Examples of temporal features are temperature per geological era, number of plant species per interglacial, gross income per interbellum, tax rate per government period, etc.
+In time, a feature is a collection of moments in time for which an attribute value is available. This can be one or more periods in time, or one or more moments in time. Examples of temporal features are average temperature per geological era, number of animal species going extinct per mass extinction event, number of plant species per interglacial, gross income per interbellum, tax rate per government period, etc.
 
 Given that all attributes are spatio-temporal attributes, all features have a spatio-temporal domain, which means that all features are spatio-temporal features.
 
@@ -74,7 +74,7 @@ A feature is a phenomenon whose attributes play a role in the environmental mode
 
 In traditional raster models, features are implicitly present in the model description. Often the feature being modelled is (a part of) the earth, like a continent, or an administrative area. It is the feature's attribute values that are modelled in raster models, and most of the times, these are all attributes of the same feature.
 
-In multi-agent models, features are first class citizens. In fact, agents can be considered to be a specialization (without the recursion) of features as described in this document. This is, ofcourse, not without a reason. The envisioned moelling environment must be able to handle both traditional rasters and features.
+In multi-agent models, features are first class citizens. In fact, agents can be considered to be a specialization (without the recursion) of features as described in this document. This is, ofcourse, not without a reason. The envisioned modelling environment must be able to handle both traditional rasters and features.
 
 In feature models, like traditional polygon overlay models, the features are the points, lines and polygons. Such features can also be considered to be a specialization (without the recursion and with one attribute containing one value per feature) of features as described in this document.
 
