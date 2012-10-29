@@ -2,9 +2,9 @@
 
 
 namespace boost {
-  namespace unit_test {
-    class test_suite;
-  }
+    namespace unit_test {
+        class test_suite;
+    }
 }
 
 
@@ -16,36 +16,36 @@ public:
 
                    AlgebraParserTest   ();
 
-  void             testParseEmptyScript();
+    void           testParseEmptyScript();
 
-  void             testParseName       ();
+    void           testParseName       ();
 
-  void             testParseAssignment ();
+    void           testParseAssignment ();
 
-  void             testParseFile       ();
+    void           testParseFile       ();
 
-  void             testParseString     ();
+    void           testParseString     ();
 
-  void             testParseNumber     ();
+    void           testParseNumber     ();
 
-  void             testParseCall       ();
+    void           testParseCall       ();
 
-  // void             testParsePrint      ();
+    // void           testParsePrint      ();
 
-  void             testParseUnaryOperator();
+    void           testParseUnaryOperator();
 
-  void             testParseBinaryOperator();
+    void           testParseBinaryOperator();
 
-  void             testParseBooleanOperator();
+    void           testParseBooleanOperator();
 
-  void             testParseComparisonOperator();
+    void           testParseComparisonOperator();
 
-  void             testParseMultipleStatements();
+    void           testParseMultipleStatements();
 
-  void             testParseIf         ();
+    void           testParseIf         ();
 
-  void             testParseWhile      ();
+    void           testParseWhile      ();
 
-  static boost::unit_test::test_suite* suite();
+    static boost::unit_test::test_suite* suite();
 
 };

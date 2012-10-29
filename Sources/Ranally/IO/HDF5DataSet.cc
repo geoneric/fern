@@ -70,7 +70,7 @@ Feature* HDF5DataSet::feature(
 
 
 Feature* HDF5DataSet::feature(
-  String const& name) const
+  String const& /* name */) const
 {
     // TODO hier verder
 

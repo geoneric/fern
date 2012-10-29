@@ -1,5 +1,4 @@
 #pragma once
-#include <boost/noncopyable.hpp>
 #include "Ranally/IO/Domain.h"
 #include "Ranally/Util/String.h"
 
@@ -10,13 +9,16 @@ namespace ranally {
 /*!
   \sa        .
 */
-class Feature:
-    private boost::noncopyable
+class Feature
 {
 
     friend class FeatureTest;
 
 public:
+
+                   Feature             (Feature const&)=delete;
+
+    Feature&       operator=           (Feature const&)=delete;
 
     virtual        ~Feature            ();
 

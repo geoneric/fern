@@ -1,5 +1,4 @@
 #pragma once
-#include <boost/noncopyable.hpp>
 #include "Ranally/Util/String.h"
 
 
@@ -11,13 +10,16 @@ namespace ranally {
 
   \sa        .
 */
-class Command:
-    private boost::noncopyable
+class Command
 {
 
     friend class CommandTest;
 
 public:
+
+                   Command             (Command const&)=delete;
+
+    Command&       operator=           (Command const&)=delete;
 
     virtual        ~Command            ();
 

@@ -1,7 +1,6 @@
 #pragma once
 #include <map>
 #include <boost/format.hpp>
-#include <boost/noncopyable.hpp>
 #include <boost/range/begin.hpp>
 #include <boost/range/end.hpp>
 #include <boost/range/iterator.hpp>
@@ -16,13 +15,16 @@ namespace operation {
 //! Class for storing information about individual operations.
 /*!
 */
-class Operations:
-    private boost::noncopyable
+class Operations
 {
 
     friend class OperationsTest;
 
 public:
+
+                   Operations          (Operations const&)=delete;
+
+    Operations&    operator=           (Operations const&)=delete;
 
     template<class Range>
                    Operations          (Range const& operations);
@@ -35,7 +37,7 @@ public:
 
     bool           hasOperation        (String const& name) const;
 
-    OperationPtr const& operation        (String const& name) const;
+    OperationPtr const& operation      (String const& name) const;
 
 private:
 

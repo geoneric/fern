@@ -2,17 +2,15 @@
 #include "Ranally/Language/Vertices.h"
 
 
-
 namespace ranally {
 namespace language {
 
 ExecuteVisitor::ExecuteVisitor()
 
-  : Visitor()
+    : Visitor()
 
 {
 }
-
 
 
 ExecuteVisitor::~ExecuteVisitor()
@@ -20,16 +18,14 @@ ExecuteVisitor::~ExecuteVisitor()
 }
 
 
-
 void ExecuteVisitor::Visit(
-  OperationVertex& vertex)
+    OperationVertex& vertex)
 {
-  // TODO Execute operation, given the arguments.
-  // 
+    // TODO Execute operation, given the arguments.
+    // 
 
-  std::cout << "execute: " << vertex.name() << std::endl;
+    std::cout << "execute: " << vertex.name() << std::endl;
 }
 
 } // namespace language
 } // namespace ranally
-

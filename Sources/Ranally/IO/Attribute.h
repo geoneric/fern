@@ -1,5 +1,4 @@
 #pragma once
-#include <boost/noncopyable.hpp>
 #include "Ranally/Util/String.h"
 
 
@@ -9,13 +8,16 @@ namespace ranally {
 /*!
   \sa        .
 */
-class Attribute:
-    private boost::noncopyable
+class Attribute
 {
 
     friend class AttributeTest;
 
 public:
+
+                   Attribute           (Attribute const&)=delete;
+
+    Attribute&     operator=           (Attribute const&)=delete;
 
     virtual        ~Attribute          ();
 

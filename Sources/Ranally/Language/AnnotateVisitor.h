@@ -25,10 +25,10 @@ namespace language {
   \sa        ValidateVisitor
 */
 class AnnotateVisitor:
-  public Visitor
+    public Visitor
 {
 
-  friend class AnnotateVisitorTest;
+    friend class AnnotateVisitorTest;
 
 public:
 
@@ -39,31 +39,31 @@ public:
 
 private:
 
-  operation::OperationsPtr _operations;
+    operation::OperationsPtr _operations;
 
-  void             Visit               (AssignmentVertex& vertex);
+    void           Visit               (AssignmentVertex& vertex);
 
-  void             Visit               (NumberVertex<int8_t>& vertex);
+    void           Visit               (NumberVertex<int8_t>& vertex);
 
-  void             Visit               (NumberVertex<int16_t>& vertex);
+    void           Visit               (NumberVertex<int16_t>& vertex);
 
-  void             Visit               (NumberVertex<int32_t>& vertex);
+    void           Visit               (NumberVertex<int32_t>& vertex);
 
-  void             Visit               (NumberVertex<int64_t>& vertex);
+    void           Visit               (NumberVertex<int64_t>& vertex);
 
-  void             Visit               (NumberVertex<uint8_t>& vertex);
+    void           Visit               (NumberVertex<uint8_t>& vertex);
 
-  void             Visit               (NumberVertex<uint16_t>& vertex);
+    void           Visit               (NumberVertex<uint16_t>& vertex);
 
-  void             Visit               (NumberVertex<uint32_t>& vertex);
+    void           Visit               (NumberVertex<uint32_t>& vertex);
 
-  void             Visit               (NumberVertex<uint64_t>& vertex);
+    void           Visit               (NumberVertex<uint64_t>& vertex);
 
-  void             Visit               (NumberVertex<float>& vertex);
+    void           Visit               (NumberVertex<float>& vertex);
 
-  void             Visit               (NumberVertex<double>& vertex);
+    void           Visit               (NumberVertex<double>& vertex);
 
-  void             Visit               (OperationVertex& vertex);
+    void           Visit               (OperationVertex& vertex);
 
 };
 

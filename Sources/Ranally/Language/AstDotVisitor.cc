@@ -4,123 +4,118 @@
 #include "Ranally/Language/Vertices.h"
 
 
-
 namespace ranally {
 namespace {
 
 String join(
-  std::vector<String> const& strings,
-  String const& separator)
+    std::vector<String> const& strings,
+    String const& separator)
 {
-  String result;
+    String result;
 
-  if(!strings.empty()) {
-    result += strings.front();
+    if(!strings.empty()) {
+        result += strings.front();
 
-    for(size_t i = 1; i < strings.size(); ++i) {
-      result += separator + strings[i];
+        for(size_t i = 1; i < strings.size(); ++i) {
+            result += separator + strings[i];
+        }
     }
-  }
 
-  return result;
+    return result;
 }
-
 
 
 String dataTypesToString(
-  operation::DataTypes const& dataTypes)
+    operation::DataTypes const& dataTypes)
 {
-  std::vector<String> strings;
+    std::vector<String> strings;
 
-  if(dataTypes & operation::DT_UNKNOWN) {
-    strings.push_back("?");
-  }
-  else {
-    if(dataTypes & operation::DT_VALUE) {
-      strings.push_back("val");
+    if(dataTypes & operation::DT_UNKNOWN) {
+        strings.push_back("?");
     }
-    if(dataTypes & operation::DT_RASTER) {
-      strings.push_back("rst");
+    else {
+        if(dataTypes & operation::DT_VALUE) {
+            strings.push_back("val");
+        }
+        if(dataTypes & operation::DT_RASTER) {
+            strings.push_back("rst");
+        }
+        if(dataTypes & operation::DT_FEATURE) {
+            strings.push_back("ftr");
+        }
+        if(dataTypes & operation::DT_DEPENDS_ON_INPUT) {
+            strings.push_back("dep");
+        }
     }
-    if(dataTypes & operation::DT_FEATURE) {
-      strings.push_back("ftr");
-    }
-    if(dataTypes & operation::DT_DEPENDS_ON_INPUT) {
-      strings.push_back("dep");
-    }
-  }
 
-  assert(!strings.empty());
-  return join(strings, "|");
+    assert(!strings.empty());
+    return join(strings, "|");
 }
 
 
-
 String valueTypesToString(
-  operation::ValueTypes const& valueTypes)
+    operation::ValueTypes const& valueTypes)
 {
-  std::vector<String> strings;
+    std::vector<String> strings;
 
-  if(valueTypes & operation::DT_UNKNOWN) {
-    strings.push_back("?");
-  }
-  else {
-    if(valueTypes & operation::VT_UINT8) {
-      strings.push_back("u8");
+    if(valueTypes & operation::DT_UNKNOWN) {
+        strings.push_back("?");
     }
-    if(valueTypes & operation::VT_INT8) {
-      strings.push_back("s8");
+    else {
+        if(valueTypes & operation::VT_UINT8) {
+            strings.push_back("u8");
+        }
+        if(valueTypes & operation::VT_INT8) {
+            strings.push_back("s8");
+        }
+        if(valueTypes & operation::VT_UINT16) {
+            strings.push_back("u16");
+        }
+        if(valueTypes & operation::VT_INT16) {
+            strings.push_back("s16");
+        }
+        if(valueTypes & operation::VT_UINT32) {
+            strings.push_back("u32");
+        }
+        if(valueTypes & operation::VT_INT32) {
+            strings.push_back("s32");
+        }
+        if(valueTypes & operation::VT_UINT64) {
+            strings.push_back("u64");
+        }
+        if(valueTypes & operation::VT_INT64) {
+            strings.push_back("s64");
+        }
+        if(valueTypes & operation::VT_FLOAT32) {
+            strings.push_back("f32");
+        }
+        if(valueTypes & operation::VT_FLOAT64) {
+            strings.push_back("f64");
+        }
+        if(valueTypes & operation::VT_STRING) {
+            strings.push_back("str");
+        }
+        if(valueTypes & operation::VT_DEPENDS_ON_INPUT) {
+            strings.push_back("dep");
+        }
     }
-    if(valueTypes & operation::VT_UINT16) {
-      strings.push_back("u16");
-    }
-    if(valueTypes & operation::VT_INT16) {
-      strings.push_back("s16");
-    }
-    if(valueTypes & operation::VT_UINT32) {
-      strings.push_back("u32");
-    }
-    if(valueTypes & operation::VT_INT32) {
-      strings.push_back("s32");
-    }
-    if(valueTypes & operation::VT_UINT64) {
-      strings.push_back("u64");
-    }
-    if(valueTypes & operation::VT_INT64) {
-      strings.push_back("s64");
-    }
-    if(valueTypes & operation::VT_FLOAT32) {
-      strings.push_back("f32");
-    }
-    if(valueTypes & operation::VT_FLOAT64) {
-      strings.push_back("f64");
-    }
-    if(valueTypes & operation::VT_STRING) {
-      strings.push_back("str");
-    }
-    if(valueTypes & operation::VT_DEPENDS_ON_INPUT) {
-      strings.push_back("dep");
-    }
-  }
 
-  assert(!strings.empty());
-  return join(strings, "|");
+    assert(!strings.empty());
+    return join(strings, "|");
 }
 
 } // Anonymous namespace
 
 
-
 AstDotVisitor::AstDotVisitor(
-  int modes)
+    int modes)
 
-  : DotVisitor(),
-    _mode(Declaring),
-    _modes(modes)
+    : DotVisitor(),
+      _mode(Declaring),
+      _modes(modes)
 
 {
 }
-
 
 
 AstDotVisitor::~AstDotVisitor()
@@ -128,102 +123,96 @@ AstDotVisitor::~AstDotVisitor()
 }
 
 
-
 void AstDotVisitor::setMode(
-  Mode mode)
+    Mode mode)
 {
-  _mode = mode;
+    _mode = mode;
 }
-
 
 
 void AstDotVisitor::addAstVertex(
-  language::SyntaxVertex const& sourceVertex,
-  language::SyntaxVertex const& targetVertex)
+    language::SyntaxVertex const& sourceVertex,
+    language::SyntaxVertex const& targetVertex)
 {
-  assert(_mode == ConnectingAst);
-  addScript(
-    String(boost::format("\"%1%\"") % &sourceVertex) + " -> " +
-    String(boost::format("\"%1%\"") % &targetVertex) + " ["
-    "];\n"
-  );
+    assert(_mode == ConnectingAst);
+    addScript(
+        String(boost::format("\"%1%\"") % &sourceVertex) + " -> " +
+        String(boost::format("\"%1%\"") % &targetVertex) + " ["
+        "];\n"
+    );
 }
-
 
 
 void AstDotVisitor::addCfgVertices(
-  language::SyntaxVertex const& sourceVertex)
+    language::SyntaxVertex const& sourceVertex)
 {
-  assert(_mode == ConnectingCfg);
-  BOOST_FOREACH(language::SyntaxVertex const* successor,
-    sourceVertex.successors()) {
-    addScript(
-      String(boost::format("\"%1%\"") % &sourceVertex) + " -> " +
-      String(boost::format("\"%1%\"") % successor) + " ["
-        "color=\"/spectral9/2\", "
-        "constraint=false, "
-        "style=dashed, "
-        "penwidth=0.25"
-      "];\n"
-    );
-  }
+    assert(_mode == ConnectingCfg);
+    BOOST_FOREACH(language::SyntaxVertex const* successor,
+        sourceVertex.successors()) {
+        addScript(
+            String(boost::format("\"%1%\"") % &sourceVertex) + " -> " +
+            String(boost::format("\"%1%\"") % successor) + " ["
+                "color=\"/spectral9/2\", "
+                "constraint=false, "
+                "style=dashed, "
+                "penwidth=0.25"
+            "];\n"
+        );
+    }
 }
-
 
 
 void AstDotVisitor::addUseVertices(
-  language::NameVertex const& vertex)
+    language::NameVertex const& vertex)
 {
-  assert(_mode == ConnectingUses);
-  BOOST_FOREACH(language::NameVertex const* use, vertex.uses()) {
-    addScript(
-      String(boost::format("\"%1%\"") % &vertex) + " -> " +
-      String(boost::format("\"%1%\"") % use) + " ["
-        "color=\"/spectral9/8\", "
-        "constraint=false, "
-        "style=dashed, "
-        "penwidth=0.25"
-      "];\n"
-    );
-  }
+    assert(_mode == ConnectingUses);
+    BOOST_FOREACH(language::NameVertex const* use, vertex.uses()) {
+        addScript(
+            String(boost::format("\"%1%\"") % &vertex) + " -> " +
+            String(boost::format("\"%1%\"") % use) + " ["
+              "color=\"/spectral9/8\", "
+              "constraint=false, "
+              "style=dashed, "
+              "penwidth=0.25"
+            "];\n"
+        );
+    }
 }
-
 
 
 template<typename T>
 void AstDotVisitor::Visit(
-  language::NumberVertex<T>& vertex)
+    language::NumberVertex<T>& vertex)
 {
-  switch(_mode) {
-    case Declaring: {
-      addScript(
-        String(boost::format("\"%1%\"") % &vertex) +
-        " [label=\"" + String(boost::format("%1%") % vertex.value()) +
-        "\", fontname=courier, shape=box];\n"
-      );
-      break;
+    switch(_mode) {
+        case Declaring: {
+            addScript(
+                String(boost::format("\"%1%\"") % &vertex) +
+                " [label=\"" + String(boost::format("%1%") % vertex.value()) +
+                "\", fontname=courier, shape=box];\n"
+            );
+            break;
+        }
+        case ConnectingAst: {
+            break;
+        }
+        case ConnectingCfg: {
+            addCfgVertices(vertex);
+            break;
+        }
+        case ConnectingUses: {
+            break;
+        }
     }
-    case ConnectingAst: {
-      break;
-    }
-    case ConnectingCfg: {
-      addCfgVertices(vertex);
-      break;
-    }
-    case ConnectingUses: {
-      break;
-    }
-  }
 }
 
 
-
 #define VISIT_NUMBER_VERTEX(                                                   \
-  type)                                                                        \
+    type)                                                                      \
 void AstDotVisitor::Visit(                                                     \
-  language::NumberVertex<type>& vertex)                                        \
+    language::NumberVertex<type>& vertex)                                      \
 {                                                                              \
-  Visit<type>(vertex); \
+    Visit<type>(vertex);                                                       \
 }
 
 VISIT_NUMBER_VERTEX(int8_t  )
@@ -240,318 +229,309 @@ VISIT_NUMBER_VERTEX(double  )
 #undef VISIT_NUMBER_VERTEX
 
 
-
 void AstDotVisitor::Visit(
-  language::AssignmentVertex& vertex)
+    language::AssignmentVertex& vertex)
 {
-  switch(_mode) {
-    case Declaring: {
-      addScript(
-        String(boost::format("\"%1%\"") % &vertex) +
-        " [label=\"=\"];\n");
-      break;
+    switch(_mode) {
+        case Declaring: {
+            addScript(
+                String(boost::format("\"%1%\"") % &vertex) +
+                " [label=\"=\"];\n");
+            break;
+        }
+        case ConnectingAst: {
+            addAstVertex(vertex, *vertex.target());
+            addAstVertex(vertex, *vertex.expression());
+            break;
+        }
+        case ConnectingCfg: {
+            addCfgVertices(vertex);
+            break;
+        }
+        case ConnectingUses: {
+            break;
+        }
     }
-    case ConnectingAst: {
-      addAstVertex(vertex, *vertex.target());
-      addAstVertex(vertex, *vertex.expression());
-      break;
-    }
-    case ConnectingCfg: {
-      addCfgVertices(vertex);
-      break;
-    }
-    case ConnectingUses: {
-      break;
-    }
-  }
 
-  vertex.expression()->Accept(*this);
-  vertex.target()->Accept(*this);
+    vertex.expression()->Accept(*this);
+    vertex.target()->Accept(*this);
 }
 
 
-
 void AstDotVisitor::Visit(
-  language::OperatorVertex& vertex)
+    language::OperatorVertex& vertex)
 {
-  switch(_mode) {
-    case Declaring: {
-      addScript(
-        String(boost::format("\"%1%\"") % &vertex) +
-        " [label=\"" + vertex.symbol() + "\"];\n"
-      );
-      break;
+    switch(_mode) {
+        case Declaring: {
+            addScript(
+                String(boost::format("\"%1%\"") % &vertex) +
+                " [label=\"" + vertex.symbol() + "\"];\n"
+            );
+            break;
+        }
+        case ConnectingAst: {
+            BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
+                expressionVertex, vertex.expressions()) {
+                addAstVertex(vertex, *expressionVertex);
+            }
+            break;
+        }
+        case ConnectingCfg: {
+            addCfgVertices(vertex);
+            break;
+        }
+        case ConnectingUses: {
+            break;
+        }
     }
-    case ConnectingAst: {
-      BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
+
+    BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
         expressionVertex, vertex.expressions()) {
-        addAstVertex(vertex, *expressionVertex);
-      }
-      break;
+        expressionVertex->Accept(*this);
     }
-    case ConnectingCfg: {
-      addCfgVertices(vertex);
-      break;
-    }
-    case ConnectingUses: {
-      break;
-    }
-  }
-
-  BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
-    expressionVertex, vertex.expressions()) {
-    expressionVertex->Accept(*this);
-  }
 }
 
 
-
 void AstDotVisitor::Visit(
-  language::FunctionVertex& vertex)
+    language::FunctionVertex& vertex)
 {
-  switch(_mode) {
-    case Declaring: {
-      addScript(
-        String(boost::format("\"%1%\"") % &vertex) +
-        " [label=\"" + vertex.name() + "\"];\n");
-      break;
+    switch(_mode) {
+        case Declaring: {
+            addScript(
+                String(boost::format("\"%1%\"") % &vertex) +
+                " [label=\"" + vertex.name() + "\"];\n");
+            break;
+        }
+        case ConnectingAst: {
+            BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
+                expressionVertex, vertex.expressions()) {
+                addAstVertex(vertex, *expressionVertex);
+            }
+            break;
+        }
+        case ConnectingCfg: {
+            addCfgVertices(vertex);
+            break;
+        }
+        case ConnectingUses: {
+            break;
+        }
     }
-    case ConnectingAst: {
-      BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
+
+    BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
         expressionVertex, vertex.expressions()) {
-        addAstVertex(vertex, *expressionVertex);
-      }
-      break;
+        expressionVertex->Accept(*this);
     }
-    case ConnectingCfg: {
-      addCfgVertices(vertex);
-      break;
-    }
-    case ConnectingUses: {
-      break;
-    }
-  }
-
-  BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
-    expressionVertex, vertex.expressions()) {
-    expressionVertex->Accept(*this);
-  }
 }
 
 
-
 void AstDotVisitor::Visit(
-  language::IfVertex& vertex)
+    language::IfVertex& vertex)
 {
-  switch(_mode) {
-    case Declaring: {
-      addScript(
-        String(boost::format("\"%1%\"") % &vertex) +
-        " [label=\"If\", shape=diamond];\n"
-      );
-      break;
+    switch(_mode) {
+        case Declaring: {
+            addScript(
+                String(boost::format("\"%1%\"") % &vertex) +
+                " [label=\"If\", shape=diamond];\n"
+            );
+            break;
+        }
+        case ConnectingAst: {
+            addAstVertex(vertex, *vertex.condition());
+            BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+                statementVertex, vertex.trueStatements()) {
+                addAstVertex(vertex, *statementVertex);
+            }
+            BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+                statementVertex, vertex.falseStatements()) {
+                addAstVertex(vertex, *statementVertex);
+            }
+            break;
+        }
+        case ConnectingCfg: {
+            addCfgVertices(vertex);
+            break;
+        }
+        case ConnectingUses: {
+            break;
+        }
     }
-    case ConnectingAst: {
-      addAstVertex(vertex, *vertex.condition());
-      BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
-        statementVertex, vertex.trueStatements()) {
-        addAstVertex(vertex, *statementVertex);
-      }
-      BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
-        statementVertex, vertex.falseStatements()) {
-        addAstVertex(vertex, *statementVertex);
-      }
-      break;
-    }
-    case ConnectingCfg: {
-      addCfgVertices(vertex);
-      break;
-    }
-    case ConnectingUses: {
-      break;
-    }
-  }
 
-  vertex.condition()->Accept(*this);
-  BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
-    statementVertex, vertex.trueStatements()) {
-    statementVertex->Accept(*this);
-  }
-  BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
-    statementVertex, vertex.falseStatements()) {
-    statementVertex->Accept(*this);
-  }
-}
-
-
-
-void AstDotVisitor::Visit(
-  language::NameVertex& vertex)
-{
-  switch(_mode) {
-    case Declaring: {
-      std::vector<String> attributes;
-      String label = vertex.name();
-
-      std::vector<language::ExpressionVertex::ResultType> const& resultTypes(
-        vertex.resultTypes());
-      if(!resultTypes.empty()) {
-        assert(resultTypes.size() == 1);
-        String dataTypes = dataTypesToString(resultTypes[0].get<0>());
-        String valueTypes = valueTypesToString(resultTypes[0].get<1>());
-
-        label += String("\\n") +
-          "dt: " + dataTypes + "\\n" +
-          "vt: " + valueTypes;
-      }
-
-      attributes.push_back("label=\"" + label + "\"");
-
-      addScript(
-        String(boost::format("\"%1%\"") % &vertex) + " [" +
-        join(attributes, ", ") + "];\n"
-      );
-
-      break;
-    }
-    case ConnectingAst: {
-      break;
-    }
-    case ConnectingCfg: {
-      addCfgVertices(vertex);
-      break;
-    }
-    case ConnectingUses: {
-      addUseVertices(vertex);
-      break;
-    }
-  }
-}
-
-
-
-void AstDotVisitor::Visit(
-  language::ScriptVertex& vertex)
-{
-  // TODO 'ordering=out' is current not supported in combination with
-  // TODO 'constraint=false'. Check again with dot > 2.28.0, when it becomes
-  // TODO available.
-  setScript(String(
-    "digraph G {\n"
-    "// ordering=out;\n"
-    "rankdir=TB;\n"
-  ));
-
-  setMode(Declaring);
-  addScript(
-    String(boost::format("\"%1%\"") % &vertex) +
-    String(boost::format(" [label=\"%1%\"];\n")
-      % vertex.sourceName().encodeInUTF8())
-  );
-
-  BOOST_FOREACH(boost::shared_ptr<language::StatementVertex> statementVertex,
-    vertex.statements()) {
-    statementVertex->Accept(*this);
-  }
-
-  setMode(ConnectingAst);
-  BOOST_FOREACH(boost::shared_ptr<language::StatementVertex> statementVertex,
-    vertex.statements()) {
-    addAstVertex(vertex, *statementVertex);
-    statementVertex->Accept(*this);
-  }
-
-  if(_modes & ConnectingCfg) {
-    setMode(ConnectingCfg);
-    addCfgVertices(vertex);
+    vertex.condition()->Accept(*this);
     BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
-      statementVertex, vertex.statements()) {
-      statementVertex->Accept(*this);
-    }
-  }
-
-  if(_modes & ConnectingUses) {
-    setMode(ConnectingUses);
-    BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
-      statementVertex, vertex.statements()) {
-      statementVertex->Accept(*this);
-    }
-  }
-
-  addScript("}\n");
-}
-
-
-
-void AstDotVisitor::Visit(
-  language::StringVertex& vertex)
-{
-  switch(_mode) {
-    case Declaring: {
-      addScript(
-        String(boost::format("\"%1%\"") % &vertex) +
-        " [label=\"\\\"" + vertex.value() +
-        "\\\"\", fontname=courier, shape=box];\n"
-      );
-      break;
-    }
-    case ConnectingAst: {
-      break;
-    }
-    case ConnectingCfg: {
-      addCfgVertices(vertex);
-      break;
-    }
-    case ConnectingUses: {
-      break;
-    }
-  }
-}
-
-
-
-void AstDotVisitor::Visit(
-  language::WhileVertex& vertex)
-{
-  switch(_mode) {
-    case Declaring: {
-      addScript(
-        String(boost::format("\"%1%\"") % &vertex) +
-        " [label=\"While\", shape=diamond];\n"
-      );
-      break;
-    }
-    case ConnectingAst: {
-      addAstVertex(vertex, *vertex.condition());
-      BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
         statementVertex, vertex.trueStatements()) {
-        addAstVertex(vertex, *statementVertex);
-      }
-      BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+        statementVertex->Accept(*this);
+    }
+    BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
         statementVertex, vertex.falseStatements()) {
-        addAstVertex(vertex, *statementVertex);
-      }
-      break;
+        statementVertex->Accept(*this);
     }
-    case ConnectingCfg: {
-      addCfgVertices(vertex);
-      break;
-    }
-    case ConnectingUses: {
-      break;
-    }
-  }
+}
 
-  vertex.condition()->Accept(*this);
-  BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
-    statementVertex, vertex.trueStatements()) {
-    statementVertex->Accept(*this);
-  }
-  BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
-    statementVertex, vertex.falseStatements()) {
-    statementVertex->Accept(*this);
-  }
+
+void AstDotVisitor::Visit(
+    language::NameVertex& vertex)
+{
+    switch(_mode) {
+        case Declaring: {
+            std::vector<String> attributes;
+            String label = vertex.name();
+
+            std::vector<language::ExpressionVertex::ResultType> const&
+                resultTypes(vertex.resultTypes());
+            if(!resultTypes.empty()) {
+                assert(resultTypes.size() == 1);
+                String dataTypes = dataTypesToString(resultTypes[0].get<0>());
+                String valueTypes = valueTypesToString(resultTypes[0].get<1>());
+
+                label += String("\\n") +
+                    "dt: " + dataTypes + "\\n" +
+                    "vt: " + valueTypes;
+            }
+
+            attributes.push_back("label=\"" + label + "\"");
+
+            addScript(
+                String(boost::format("\"%1%\"") % &vertex) + " [" +
+                join(attributes, ", ") + "];\n"
+            );
+
+            break;
+        }
+        case ConnectingAst: {
+            break;
+        }
+        case ConnectingCfg: {
+            addCfgVertices(vertex);
+            break;
+        }
+        case ConnectingUses: {
+            addUseVertices(vertex);
+            break;
+        }
+    }
+}
+
+
+void AstDotVisitor::Visit(
+    language::ScriptVertex& vertex)
+{
+    // TODO 'ordering=out' is current not supported in combination with
+    // TODO 'constraint=false'. Check again with dot > 2.28.0, when it becomes
+    // TODO available.
+    setScript(String(
+        "digraph G {\n"
+        "// ordering=out;\n"
+        "rankdir=TB;\n"
+    ));
+
+    setMode(Declaring);
+    addScript(
+        String(boost::format("\"%1%\"") % &vertex) +
+        String(boost::format(" [label=\"%1%\"];\n")
+            % vertex.sourceName().encodeInUTF8())
+    );
+
+    BOOST_FOREACH(boost::shared_ptr<language::StatementVertex> statementVertex,
+        vertex.statements()) {
+        statementVertex->Accept(*this);
+    }
+
+    setMode(ConnectingAst);
+    BOOST_FOREACH(boost::shared_ptr<language::StatementVertex> statementVertex,
+        vertex.statements()) {
+        addAstVertex(vertex, *statementVertex);
+        statementVertex->Accept(*this);
+    }
+
+    if(_modes & ConnectingCfg) {
+        setMode(ConnectingCfg);
+        addCfgVertices(vertex);
+        BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+          statementVertex, vertex.statements()) {
+          statementVertex->Accept(*this);
+        }
+    }
+
+    if(_modes & ConnectingUses) {
+        setMode(ConnectingUses);
+        BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+            statementVertex, vertex.statements()) {
+            statementVertex->Accept(*this);
+        }
+    }
+
+    addScript("}\n");
+}
+
+
+void AstDotVisitor::Visit(
+    language::StringVertex& vertex)
+{
+    switch(_mode) {
+        case Declaring: {
+            addScript(
+                String(boost::format("\"%1%\"") % &vertex) +
+                " [label=\"\\\"" + vertex.value() +
+                "\\\"\", fontname=courier, shape=box];\n"
+            );
+            break;
+        }
+        case ConnectingAst: {
+            break;
+        }
+        case ConnectingCfg: {
+            addCfgVertices(vertex);
+            break;
+        }
+        case ConnectingUses: {
+            break;
+        }
+    }
+}
+
+
+void AstDotVisitor::Visit(
+    language::WhileVertex& vertex)
+{
+    switch(_mode) {
+        case Declaring: {
+            addScript(
+                String(boost::format("\"%1%\"") % &vertex) +
+                " [label=\"While\", shape=diamond];\n"
+            );
+            break;
+        }
+        case ConnectingAst: {
+            addAstVertex(vertex, *vertex.condition());
+            BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+                statementVertex, vertex.trueStatements()) {
+                addAstVertex(vertex, *statementVertex);
+            }
+            BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+                statementVertex, vertex.falseStatements()) {
+                addAstVertex(vertex, *statementVertex);
+            }
+            break;
+        }
+        case ConnectingCfg: {
+            addCfgVertices(vertex);
+            break;
+        }
+        case ConnectingUses: {
+            break;
+        }
+    }
+
+    vertex.condition()->Accept(*this);
+    BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+        statementVertex, vertex.trueStatements()) {
+        statementVertex->Accept(*this);
+    }
+    BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+        statementVertex, vertex.falseStatements()) {
+        statementVertex->Accept(*this);
+    }
 }
 
 } // namespace ranally
-

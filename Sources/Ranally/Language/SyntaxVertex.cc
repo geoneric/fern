@@ -11,7 +11,8 @@ SyntaxVertex::SyntaxVertex()
 
   : Loki::BaseVisitable<>(),
     _line(0),
-    _col(0)
+    _col(0),
+    _successors()
 
 {
 }
@@ -24,7 +25,8 @@ SyntaxVertex::SyntaxVertex(
 
   : Loki::BaseVisitable<>(),
     _line(lineNr),
-    _col(colId)
+    _col(colId),
+    _successors()
 
 {
 }

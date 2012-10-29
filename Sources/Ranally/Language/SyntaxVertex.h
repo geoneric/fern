@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include <boost/noncopyable.hpp>
 #include <loki/Visitor.h>
 #include <boost/shared_ptr.hpp>
 #include "Ranally/Util/String.h"
@@ -22,7 +21,6 @@ typedef std::vector<boost::shared_ptr<StatementVertex> > StatementVertices;
   \sa        .
 */
 class SyntaxVertex:
-  private boost::noncopyable,
   public Loki::BaseVisitable<>
 {
 
@@ -37,6 +35,10 @@ public:
   LOKI_DEFINE_VISITABLE()
 
   typedef SyntaxVertices::size_type size_type;
+
+                   SyntaxVertex        (SyntaxVertex const&)=delete;
+
+  SyntaxVertex&    operator=           (SyntaxVertex const&)=delete;
 
   virtual          ~SyntaxVertex       ();
 
@@ -65,8 +67,6 @@ protected:
 
                    SyntaxVertex        (int lineNr,
                                         int colId);
-
-                   SyntaxVertex        (SyntaxVertex const& other);
 
 private:
 

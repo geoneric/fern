@@ -12,14 +12,14 @@ namespace language {
   \sa        .
 */
 class FunctionVertex:
-  public OperationVertex
+    public OperationVertex
 {
 
-  friend class FunctionVertexTest;
+    friend class FunctionVertexTest;
 
 public:
 
-  LOKI_DEFINE_VISITABLE()
+    LOKI_DEFINE_VISITABLE()
 
                    FunctionVertex      (String const& name,
                                         ExpressionVertices const& expressions);

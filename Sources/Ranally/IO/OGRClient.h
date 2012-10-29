@@ -1,5 +1,4 @@
 #pragma once
-#include <boost/noncopyable.hpp>
 
 
 namespace ranally {
@@ -11,13 +10,16 @@ namespace io {
 
   \sa        .
 */
-class OGRClient:
-    private boost::noncopyable
+class OGRClient
 {
 
     friend class OGRClientTest;
 
 public:
+
+                   OGRClient           (OGRClient const&)=delete;
+
+    OGRClient&     operator=           (OGRClient const&)=delete;
 
     virtual        ~OGRClient          ();
 

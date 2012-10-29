@@ -22,42 +22,42 @@ typedef boost::shared_ptr<ExpressionVertex> ExpressionVertexPtr;
   \sa        .
 */
 class ExpressionVertex:
-  public StatementVertex
+    public StatementVertex
 {
 
-  friend class ExpressionVertexTest;
+    friend class ExpressionVertexTest;
 
 public:
 
-  typedef boost::tuple<operation::DataType, operation::ValueType> ResultType;
+    typedef boost::tuple<operation::DataType, operation::ValueType> ResultType;
 
-  virtual          ~ExpressionVertex   ();
+    virtual        ~ExpressionVertex   ();
 
-  String const&    name                () const;
+    String const&  name                () const;
 
-  // void             setDataType         (operation::DataType dataType);
+    // void           setDataType         (operation::DataType dataType);
 
-  // operation::DataType dataType         () const;
+    // operation::DataType dataType         () const;
 
-  // void             setValueType        (operation::ValueType valueType);
+    // void           setValueType        (operation::ValueType valueType);
 
-  // operation::ValueType valueType       () const;
+    // operation::ValueType valueType       () const;
 
-  void             setResultTypes      (
+    void           setResultTypes      (
                                   std::vector<ResultType> const& resultTypes);
 
-  void             addResultType       (operation::DataType dataType,
+    void           addResultType       (operation::DataType dataType,
                                         operation::ValueType valueType);
 
-  std::vector<ResultType> const& resultTypes() const;
+    std::vector<ResultType> const& resultTypes() const;
 
-  operation::DataType dataType         (size_t index) const;
+    operation::DataType dataType       (size_t index) const;
 
-  operation::ValueType valueType       (size_t index) const;
+    operation::ValueType valueType     (size_t index) const;
 
-  void             setValue            (ExpressionVertexPtr const& value);
+    void           setValue            (ExpressionVertexPtr const& value);
 
-  ExpressionVertexPtr const& value     () const;
+    ExpressionVertexPtr const& value   () const;
 
 protected:
 
@@ -69,21 +69,21 @@ protected:
 
 private:
 
-  //! Name of the expression, eg: abs, myDog, 5.
-  String           _name;
+    //! Name of the expression, eg: abs, myDog, 5.
+    String         _name;
 
-  // //! Data type of the result(s) of the expression.
-  // operation::DataType _dataType;
+    // //! Data type of the result(s) of the expression.
+    // operation::DataType _dataType;
 
-  // //! Value type of the result(s) of the expression.
-  // operation::ValueType _valueType;
+    // //! Value type of the result(s) of the expression.
+    // operation::ValueType _valueType;
 
-  // typedef boost::tuple<operation::DataType, operation::ValueType> ResultType;
+    // typedef boost::tuple<operation::DataType, operation::ValueType> ResultType;
 
-  std::vector<ResultType> _resultTypes;
+    std::vector<ResultType> _resultTypes;
 
-  //! Value of expression, in case this expression is the target of an assignment.
-  ExpressionVertexPtr _value;
+    //! Value of expression, in case this expression is the target of an assignment.
+    ExpressionVertexPtr _value;
 
 };
 

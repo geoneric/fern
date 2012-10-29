@@ -1,5 +1,4 @@
 #pragma once
-#include <boost/noncopyable.hpp>
 #include "Ranally/Util/String.h"
 
 
@@ -18,13 +17,16 @@ namespace io {
 
   \sa        .
 */
-class DataSet:
-    private boost::noncopyable
+class DataSet
 {
 
     friend class DataSetTest;
 
 public:
+
+                   DataSet             (DataSet const&)=delete;
+
+    DataSet&       operator=           (DataSet const&)=delete;
 
     virtual        ~DataSet            ();
 

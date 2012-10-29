@@ -3,7 +3,6 @@
 #include "Ranally/Language/StatementVertex.h"
 
 
-
 namespace ranally {
 namespace language {
 
@@ -14,33 +13,33 @@ namespace language {
   \sa        .
 */
 class AssignmentVertex:
-  public StatementVertex
+    public StatementVertex
 {
 
-  friend class AssignmentVertexTest;
+    friend class AssignmentVertexTest;
 
 public:
 
-  LOKI_DEFINE_VISITABLE()
+    LOKI_DEFINE_VISITABLE()
 
                    AssignmentVertex    (ExpressionVertexPtr const& target,
                                         ExpressionVertexPtr const& expression);
 
                    ~AssignmentVertex   ();
 
-  ExpressionVertexPtr const& target    () const;
+    ExpressionVertexPtr const& target  () const;
 
-  ExpressionVertexPtr& target          ();
+    ExpressionVertexPtr& target        ();
 
-  void             setExpression       (ExpressionVertexPtr const& expression);
+    void           setExpression       (ExpressionVertexPtr const& expression);
 
-  ExpressionVertexPtr const& expression() const;
+    ExpressionVertexPtr const& expression() const;
 
 private:
 
-  ExpressionVertexPtr _target;
+    ExpressionVertexPtr _target;
 
-  ExpressionVertexPtr _expression;
+    ExpressionVertexPtr _expression;
 
 };
 

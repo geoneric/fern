@@ -1,5 +1,4 @@
 #pragma once
-#include <boost/noncopyable.hpp>
 #include "Ranally/Operation/Operations.h"
 #include "Ranally/Util/String.h"
 
@@ -13,8 +12,7 @@ namespace operation {
 
   \sa        .
 */
-class XmlParser:
-    private boost::noncopyable
+class XmlParser
 {
 
     friend class XmlParserTest;
@@ -22,6 +20,10 @@ class XmlParser:
 public:
 
                    XmlParser           ();
+
+                   XmlParser           (XmlParser const&)=delete;
+
+    XmlParser&     operator=           (XmlParser const&)=delete;
 
                    ~XmlParser          ();
 

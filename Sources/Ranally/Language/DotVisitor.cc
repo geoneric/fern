@@ -4,16 +4,14 @@
 #include "Ranally/Language/Vertices.h"
 
 
-
 namespace ranally {
 
 DotVisitor::DotVisitor()
 
-  : Visitor()
+    : Visitor()
 
 {
 }
-
 
 
 DotVisitor::~DotVisitor()
@@ -21,27 +19,23 @@ DotVisitor::~DotVisitor()
 }
 
 
-
 String const& DotVisitor::script() const
 {
-  return _script;
+    return _script;
 }
-
 
 
 void DotVisitor::setScript(
-  String const& string)
+    String const& string)
 {
-  _script = string;
+    _script = string;
 }
-
 
 
 void DotVisitor::addScript(
-  String const& string)
+    String const& string)
 {
-  _script += string;
+    _script += string;
 }
 
 } // namespace ranally
-

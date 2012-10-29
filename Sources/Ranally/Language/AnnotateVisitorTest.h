@@ -4,13 +4,11 @@
 #include "Ranally/Language/AnnotateVisitor.h"
 
 
-
 namespace boost {
-  namespace unit_test {
-    class test_suite;
-  }
+    namespace unit_test {
+        class test_suite;
+    }
 }
-
 
 
 class AnnotateVisitorTest
@@ -20,13 +18,13 @@ public:
 
                    AnnotateVisitorTest ();
 
-  void             testVisitEmptyScript();
+    void           testVisitEmptyScript();
 
-  void             testVisitNumber     ();
+    void           testVisitNumber     ();
 
-  void             testVisitOperation  ();
+    void           testVisitOperation  ();
 
-  static boost::unit_test::test_suite* suite();
+    static boost::unit_test::test_suite* suite();
 
 private:
 

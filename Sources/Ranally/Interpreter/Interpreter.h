@@ -1,5 +1,4 @@
 #pragma once
-#include <boost/noncopyable.hpp>
 #include "Ranally/Language/AlgebraParser.h"
 #include "Ranally/Language/ScriptVertex.h"
 #include "Ranally/Language/XmlParser.h"
@@ -14,8 +13,7 @@ namespace interpreter {
 
   \sa        .
 */
-class Interpreter:
-    private boost::noncopyable
+class Interpreter
 {
 
     friend class InterpreterTest;
@@ -23,6 +21,10 @@ class Interpreter:
 public:
 
                    Interpreter         ();
+
+                   Interpreter         (Interpreter const&)=delete;
+
+    Interpreter&   operator=           (Interpreter const&)=delete;
 
                    ~Interpreter        ();
 

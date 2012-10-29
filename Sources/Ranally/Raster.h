@@ -35,11 +35,13 @@ public:
     }
 
     Raster()
+        : _cells()
     {
     }
 
     Raster(
         ValueType initialValue)
+        : _cells()
     {
         boost::range::fill(_cells, initialValue);
     }

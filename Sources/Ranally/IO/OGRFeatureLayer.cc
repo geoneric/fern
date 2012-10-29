@@ -37,7 +37,8 @@ Domain::Type domainType(
 OGRFeatureLayer::OGRFeatureLayer(
     OGRLayer* const layer)
 
-    : _layer(layer)
+    : _layer(layer),
+      _domain()
 
 {
     switch(domainType(_layer->GetGeomType())) {

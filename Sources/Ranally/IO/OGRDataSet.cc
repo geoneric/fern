@@ -70,7 +70,7 @@ Feature* OGRDataSet::feature(
 
 
 bool OGRDataSet::exists(
-    String const& name) const
+    String const& /* name */) const
 {
     // TODO
     assert(false);
@@ -79,7 +79,7 @@ bool OGRDataSet::exists(
 
 
 void OGRDataSet::remove(
-    String const& name)
+    String const& /* name */)
 {
     // TODO
     assert(false);
@@ -172,7 +172,7 @@ template<>
 void OGRDataSet::add(
     PolygonFeature const& feature)
 {
-    PolygonDomain const& domain(feature.domain());
+    // PolygonDomain const& domain(feature.domain());
     PolygonAttributes const& attributes(feature.attributes());
 
     BOOST_FOREACH(PolygonAttributePtr const& attribute, attributes) {

@@ -1,5 +1,4 @@
 #pragma once
-#include <boost/noncopyable.hpp>
 #include "Ranally/Util/String.h"
 
 
@@ -14,13 +13,16 @@ class DataSet;
 
   \sa        .
 */
-class DataSetDriver:
-    private boost::noncopyable
+class DataSetDriver
 {
 
     friend class DataSetDriverTest;
 
 public:
+
+                   DataSetDriver       (DataSetDriver const&)=delete;
+
+    DataSetDriver& operator=           (DataSetDriver const&)=delete;
 
     virtual        ~DataSetDriver      ();
 

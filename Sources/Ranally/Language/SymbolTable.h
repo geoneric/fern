@@ -2,7 +2,6 @@
 #include <list>
 #include <map>
 #include <vector>
-#include <boost/noncopyable.hpp>
 #include "Ranally/Util/String.h"
 
 
@@ -22,8 +21,7 @@ class NameVertex;
   multiple calls to pushScope() in case of nested scopes. When filling the
   table, make sure to match each call to pushScope() with a call to popScope().
 */
-class SymbolTable:
-  private boost::noncopyable
+class SymbolTable
 {
 
   friend class SymbolTableTest;
@@ -37,6 +35,10 @@ public:
   typedef std::vector<Definitions>::size_type size_type;
 
                    SymbolTable         ();
+
+                   SymbolTable         (SymbolTable const&)=delete;
+
+  SymbolTable&     operator=           (SymbolTable const&)=delete;
 
                    ~SymbolTable        ();
 

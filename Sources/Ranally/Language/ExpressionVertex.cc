@@ -1,34 +1,31 @@
 #include "Ranally/Language/ExpressionVertex.h"
 
 
-
 namespace ranally {
 namespace language {
 
 ExpressionVertex::ExpressionVertex(
-  String const& name)
+    String const& name)
 
-  : StatementVertex(),
-    _name(name) // ,
-    // _dataType(operation::DT_UNKNOWN),
-    // _valueType(operation::VT_UNKNOWN)
+    : StatementVertex(),
+      _name(name) // ,
+      // _dataType(operation::DT_UNKNOWN),
+      // _valueType(operation::VT_UNKNOWN)
 
 {
 }
-
 
 
 ExpressionVertex::ExpressionVertex(
-  int lineNr,
-  int colId,
-  String const& name)
+    int lineNr,
+    int colId,
+    String const& name)
 
-  : StatementVertex(lineNr, colId),
-    _name(name)
+    : StatementVertex(lineNr, colId),
+      _name(name)
 
 {
 }
-
 
 
 ExpressionVertex::~ExpressionVertex()
@@ -36,12 +33,10 @@ ExpressionVertex::~ExpressionVertex()
 }
 
 
-
 String const& ExpressionVertex::name() const
 {
-  return _name;
+    return _name;
 }
-
 
 
 // void ExpressionVertex::setDataType(
@@ -73,63 +68,55 @@ String const& ExpressionVertex::name() const
 // }
 
 
-
 void ExpressionVertex::setResultTypes(
-  std::vector<ResultType> const& resultTypes)
+    std::vector<ResultType> const& resultTypes)
 {
-  _resultTypes = resultTypes;
+    _resultTypes = resultTypes;
 }
-
 
 
 void ExpressionVertex::addResultType(
-  operation::DataType dataType,
-  operation::ValueType valueType)
+    operation::DataType dataType,
+    operation::ValueType valueType)
 {
-  _resultTypes.push_back(boost::make_tuple(dataType, valueType));
+    _resultTypes.push_back(boost::make_tuple(dataType, valueType));
 }
-
 
 
 std::vector<ExpressionVertex::ResultType> const&
 ExpressionVertex::resultTypes() const
 {
-  return _resultTypes;
+    return _resultTypes;
 }
-
 
 
 operation::DataType ExpressionVertex::dataType(
   size_t index) const
 {
-  assert(index < _resultTypes.size());
-  return _resultTypes[index].get<0>();
+    assert(index < _resultTypes.size());
+    return _resultTypes[index].get<0>();
 }
-
 
 
 operation::ValueType ExpressionVertex::valueType(
-  size_t index) const
+    size_t index) const
 {
-  assert(index < _resultTypes.size());
-  return _resultTypes[index].get<1>();
+    assert(index < _resultTypes.size());
+    return _resultTypes[index].get<1>();
 }
-
 
 
 void ExpressionVertex::setValue(
-  ExpressionVertexPtr const& value)
+    ExpressionVertexPtr const& value)
 {
-  _value = value;
+    _value = value;
 }
-
 
 
 ExpressionVertexPtr const& ExpressionVertex::value() const
 {
-  return _value;
+    return _value;
 }
 
 } // namespace language
 } // namespace ranally
-

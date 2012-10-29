@@ -1,5 +1,4 @@
 #pragma once
-#include <boost/noncopyable.hpp>
 #include <loki/Visitor.h>
 #include "Ranally/Language/SyntaxVertex.h"
 
@@ -25,7 +24,6 @@ class WhileVertex;
   SyntaxVertex specializations.
 */
 class Visitor:
-  private boost::noncopyable,
   public Loki::BaseVisitor,
   public Loki::Visitor<AssignmentVertex>,
   public Loki::Visitor<FunctionVertex>,
@@ -54,6 +52,10 @@ public:
 protected:
 
                    Visitor             ();
+
+                   Visitor             (Visitor const&)=delete;
+
+  Visitor&         operator=           (Visitor const&)=delete;
 
   virtual          ~Visitor            ();
 

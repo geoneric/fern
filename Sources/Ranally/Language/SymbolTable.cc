@@ -14,6 +14,10 @@ namespace language {
   \warning   Call pushScope before adding definitions.
 */
 SymbolTable::SymbolTable()
+
+    : _definitions(),
+      _scopes()
+
 {
 }
 

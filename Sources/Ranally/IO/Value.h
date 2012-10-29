@@ -1,5 +1,4 @@
 #pragma once
-#include <boost/noncopyable.hpp>
 
 
 namespace ranally {
@@ -8,13 +7,16 @@ namespace ranally {
 /*!
   \sa        .
 */
-class Value:
-    private boost::noncopyable
+class Value
 {
 
     friend class ValueTest;
 
 public:
+
+                   Value               (Value const&)=delete;
+
+    Value&         operator=           (Value const&)=delete;
 
     virtual        ~Value              ();
 

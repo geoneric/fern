@@ -1,5 +1,4 @@
 #pragma once
-#include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
 #include "Ranally/Util/String.h"
 
@@ -18,13 +17,16 @@ namespace io {
 
   \sa        .
 */
-class OGRFeatureLayer:
-    private boost::noncopyable
+class OGRFeatureLayer
 {
 
     friend class OGRFeatureLayerTest;
 
 public:
+
+                   OGRFeatureLayer     (OGRFeatureLayer const&)=delete;
+
+    OGRFeatureLayer& operator=         (OGRFeatureLayer const&)=delete;
 
                    OGRFeatureLayer     (OGRLayer* const layer);
 

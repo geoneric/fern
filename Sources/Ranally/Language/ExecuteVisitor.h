@@ -12,10 +12,10 @@ namespace language {
   \sa        .
 */
 class ExecuteVisitor:
-  public Visitor
+    public Visitor
 {
 
-  friend class ExecuteVisitorTest;
+    friend class ExecuteVisitorTest;
 
 public:
 
@@ -25,7 +25,7 @@ public:
 
 private:
 
-  void             Visit               (OperationVertex& vertex);
+    void           Visit               (OperationVertex& vertex);
 
 };
 

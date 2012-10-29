@@ -7,10 +7,9 @@ namespace ranally {
 namespace language {
 
 template<typename T>
-  class NumberVertex;
+    class NumberVertex;
 
 } // namespace language
-
 
 
 //! Base class for visitors emitting dot graphs.
@@ -19,30 +18,30 @@ template<typename T>
   for visualising the syntax-tree.
 */
 class DotVisitor:
-  public language::Visitor
+    public language::Visitor
 {
 
-  friend class DotVisitorTest;
+    friend class DotVisitorTest;
 
 public:
 
-  virtual          ~DotVisitor         ();
+    virtual        ~DotVisitor         ();
 
-  String const&    script              () const;
+    String const&  script              () const;
 
 protected:
 
                    DotVisitor          ();
 
-  void             setScript           (String const& string);
+    void           setScript           (String const& string);
 
-  void             addScript           (String const& string);
+    void           addScript           (String const& string);
 
 private:
 
-  String           _script;
+    String         _script;
 
-  virtual void     Visit               (language::ScriptVertex& vertex)=0;
+    virtual void   Visit               (language::ScriptVertex& vertex)=0;
 
 };
 

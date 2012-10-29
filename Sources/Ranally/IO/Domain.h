@@ -1,5 +1,4 @@
 #pragma once
-#include <boost/noncopyable.hpp>
 
 
 namespace ranally {
@@ -10,8 +9,7 @@ namespace ranally {
 
   \sa        .
 */
-class Domain:
-    private boost::noncopyable
+class Domain
 {
 
     friend class DomainTest;
@@ -22,6 +20,10 @@ public:
         PointDomain,
         PolygonDomain
     };
+
+                   Domain              (Domain const&)=delete;
+
+    Domain&        operator=           (Domain const&)=delete;
 
     virtual        ~Domain             ();
 

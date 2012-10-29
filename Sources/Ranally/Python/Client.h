@@ -1,5 +1,4 @@
 #pragma once
-#include <boost/noncopyable.hpp>
 #include <cstring>
 
 
@@ -17,13 +16,16 @@ namespace python {
   Unfortunately, not all memory will be freed.
   - http://bugs.python.org/issue1445210
 */
-class Client:
-    private boost::noncopyable
+class Client
 {
 
     friend class PythonClientTest;
 
 public:
+
+                   Client              (Client const&)=delete;
+
+    Client&        operator=           (Client const&)=delete;
 
     virtual        ~Client             ();
 

@@ -3,17 +3,15 @@
 #include "Ranally/Language/Vertices.h"
 
 
-
 namespace ranally {
 namespace language {
 
 CopyVisitor::CopyVisitor()
 
-  : Visitor()
+    : Visitor()
 
 {
 }
-
 
 
 CopyVisitor::~CopyVisitor()
@@ -21,13 +19,11 @@ CopyVisitor::~CopyVisitor()
 }
 
 
-
 boost::shared_ptr<ScriptVertex> const& CopyVisitor::scriptVertex() const
 {
-  assert(_scriptVertex);
-  return _scriptVertex;
+    assert(_scriptVertex);
+    return _scriptVertex;
 }
-
 
 
 // SyntaxVertices const& CopyVisitor::syntaxVertices() const
@@ -36,86 +32,78 @@ boost::shared_ptr<ScriptVertex> const& CopyVisitor::scriptVertex() const
 // }
 
 
-
 // StatementVertices const& CopyVisitor::statements() const
 // {
 //   return _statements;
 // }
 
+
 void CopyVisitor::visitStatements(
-  StatementVertices& statements)
+    StatementVertices& statements)
 {
-  assert(_statements.empty());
+    assert(_statements.empty());
 
-  BOOST_FOREACH(boost::shared_ptr<StatementVertex> const& statement,
-    statements) {
-    CopyVisitor visitor;
-    statement->Accept(visitor);
-    assert(_statementVertex);
-    _statements.push_back(visitor._statementVertex);
-  }
+    BOOST_FOREACH(boost::shared_ptr<StatementVertex> const& statement,
+            statements) {
+        CopyVisitor visitor;
+        statement->Accept(visitor);
+        assert(_statementVertex);
+        _statements.push_back(visitor._statementVertex);
+    }
 
-  assert(_statements.size() == statements.size());
+    assert(_statements.size() == statements.size());
 }
 
 
-
 void CopyVisitor::Visit(
-  AssignmentVertex& /* vertex */)
+    AssignmentVertex& /* vertex */)
 {
-  assert(false);
+    assert(false);
 }
 
 
-
 void CopyVisitor::Visit(
-  FunctionVertex& /* vertex */)
+    FunctionVertex& /* vertex */)
 {
-  assert(false);
+    assert(false);
 }
 
 
-
 void CopyVisitor::Visit(
-  IfVertex& /* vertex */)
+    IfVertex& /* vertex */)
 {
-  assert(false);
+    assert(false);
 }
 
 
-
 void CopyVisitor::Visit(
-  NameVertex& /* vertex */)
+    NameVertex& /* vertex */)
 {
-  assert(false);
+    assert(false);
 }
 
 
-
 void CopyVisitor::Visit(
-  OperatorVertex& /* vertex */)
+    OperatorVertex& /* vertex */)
 {
-  assert(false);
+    assert(false);
 }
 
 
-
 void CopyVisitor::Visit(
-  ScriptVertex& vertex)
+    ScriptVertex& vertex)
 {
-  assert(!_scriptVertex);
-  visitStatements(vertex.statements());
-  _scriptVertex.reset(new ScriptVertex(vertex.sourceName(), _statements));
+    assert(!_scriptVertex);
+    visitStatements(vertex.statements());
+    _scriptVertex.reset(new ScriptVertex(vertex.sourceName(), _statements));
 }
 
 
-
 void CopyVisitor::Visit(
-  WhileVertex& /* vertex */)
+    WhileVertex& /* vertex */)
 {
-  assert(false);
+    assert(false);
 }
 
 } // namespace language
 } // namespace ranally
-

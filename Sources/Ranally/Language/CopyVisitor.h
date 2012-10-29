@@ -2,7 +2,6 @@
 #include "Ranally/Language/Visitor.h"
 
 
-
 namespace ranally {
 namespace language {
 
@@ -13,10 +12,10 @@ namespace language {
   \sa        .
 */
 class CopyVisitor:
-  public Visitor
+    public Visitor
 {
 
-  friend class CopyVisitorTest;
+    friend class CopyVisitorTest;
 
 public:
 
@@ -24,37 +23,37 @@ public:
 
                    ~CopyVisitor        ();
 
-  boost::shared_ptr<ScriptVertex> const& scriptVertex() const;
+    boost::shared_ptr<ScriptVertex> const& scriptVertex() const;
 
-  // SyntaxVertices const& syntaxVertices () const;
+    // SyntaxVertices const& syntaxVertices () const;
 
-  // StatementVertices const& statements  () const;
+    // StatementVertices const& statements  () const;
 
 private:
 
-  boost::shared_ptr<ScriptVertex> _scriptVertex;
+    boost::shared_ptr<ScriptVertex> _scriptVertex;
 
-  // SyntaxVertices   _syntaxVertices;
+    // SyntaxVertices   _syntaxVertices;
 
-  StatementVertices _statements;
+    StatementVertices _statements;
 
-  boost::shared_ptr<StatementVertex> _statementVertex;
+    boost::shared_ptr<StatementVertex> _statementVertex;
 
-  void             visitStatements     (StatementVertices& statements);
+    void           visitStatements     (StatementVertices& statements);
 
-  void             Visit               (AssignmentVertex&);
+    void           Visit               (AssignmentVertex&);
 
-  void             Visit               (FunctionVertex&);
+    void           Visit               (FunctionVertex&);
 
-  void             Visit               (IfVertex&);
+    void           Visit               (IfVertex&);
 
-  void             Visit               (NameVertex&);
+    void           Visit               (NameVertex&);
 
-  void             Visit               (OperatorVertex&);
+    void           Visit               (OperatorVertex&);
 
-  void             Visit               (ScriptVertex&);
+    void           Visit               (ScriptVertex&);
 
-  void             Visit               (WhileVertex&);
+    void           Visit               (WhileVertex&);
 
 };
 
