@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_IO_OGRFEATURELAYER
-#define INCLUDED_RANALLY_IO_OGRFEATURELAYER
-
+#pragma once
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
 #include "Ranally/Util/String.h"
@@ -58,5 +56,3 @@ boost::shared_ptr<Domain> OGRFeatureLayer::domain() const
 
 } // namespace io
 } // namespace ranally
-
-#endif

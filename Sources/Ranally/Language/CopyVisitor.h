@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_COPYVISITOR
-#define INCLUDED_RANALLY_LANGUAGE_COPYVISITOR
-
+#pragma once
 #include "Ranally/Language/Visitor.h"
 
 
@@ -62,5 +60,3 @@ private:
 
 } // namespace language
 } // namespace ranally
-
-#endif

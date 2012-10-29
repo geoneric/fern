@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_EXECUTEVISITORTEST
-#define INCLUDED_RANALLY_LANGUAGE_EXECUTEVISITORTEST
-
+#pragma once
 
 
 namespace boost {
@@ -25,5 +23,3 @@ public:
 private:
 
 };
-
-#endif

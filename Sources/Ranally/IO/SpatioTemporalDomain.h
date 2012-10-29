@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_IO_SPATIOTEMPORALDOMAIN
-#define INCLUDED_RANALLY_IO_SPATIOTEMPORALDOMAIN
-
+#pragma once
 #include "Ranally/IO/Domain.h"
 
 
@@ -36,5 +34,3 @@ private:
 };
 
 } // namespace ranally
-
-#endif

@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_IO_HDF5DATASET
-#define INCLUDED_RANALLY_IO_HDF5DATASET
-
+#pragma once
 #include <boost/scoped_ptr.hpp>
 #include "Ranally/IO/DataSet.h"
 
@@ -59,5 +57,3 @@ private:
 
 } // namespace io
 } // namespace ranally
-
-#endif

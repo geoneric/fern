@@ -1,23 +1,20 @@
-#ifndef INCLUDED_RANALLY_EXECUTECOMMAND
-#define INCLUDED_RANALLY_EXECUTECOMMAND
-
+#pragma once
 #include "Command.h"
-
 
 
 namespace ranally {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
-  longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
+    longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 
-  \sa        .
+    \sa        .
 */
 class ExecuteCommand:
-  public Command
+    public Command
 {
 
-  friend class ExecuteCommandTest;
+    friend class ExecuteCommandTest;
 
 public:
 
@@ -26,14 +23,12 @@ public:
 
                    ~ExecuteCommand     ();
 
-  int              execute             ();
+    int            execute             ();
 
 private:
 
-  void             execute             (String const& xml);
+    void           execute             (String const& xml);
 
 };
 
 } // namespace ranally
-
-#endif

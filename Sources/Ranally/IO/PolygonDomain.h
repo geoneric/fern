@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_POLYGONDOMAIN
-#define INCLUDED_RANALLY_POLYGONDOMAIN
-
+#pragma once
 #include "Ranally/IO/Geometry.h"
 #include "Ranally/IO/SpatialDomain.h"
 
@@ -33,5 +31,3 @@ private:
 };
 
 } // namespace ranally
-
-#endif

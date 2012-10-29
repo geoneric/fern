@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_POINTVALUE
-#define INCLUDED_RANALLY_POINTVALUE
-
+#pragma once
 #include "Ranally/IO/Value.h"
 
 
@@ -32,5 +30,3 @@ private:
 };
 
 } // namespace ranally
-
-#endif

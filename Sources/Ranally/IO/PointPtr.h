@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_POINTPTR
-#define INCLUDED_RANALLY_POINTPTR
-
+#pragma once
 #include <vector>
 #include <boost/shared_ptr.hpp>
 
@@ -22,5 +20,3 @@ typedef std::vector<PointValuePtr> PointValues;
 } // namespace ranally
 
 #undef DEFINE_SHARED_POINTER_TYPE
-
-#endif

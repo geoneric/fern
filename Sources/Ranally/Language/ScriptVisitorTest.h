@@ -1,10 +1,7 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_SCRIPTVISITORTEST
-#define INCLUDED_RANALLY_LANGUAGE_SCRIPTVISITORTEST
-
+#pragma once
 #include "Ranally/Language/AlgebraParser.h"
 #include "Ranally/Language/XmlParser.h"
 #include "Ranally/Language/ScriptVisitor.h"
-
 
 
 namespace boost {
@@ -51,5 +48,3 @@ private:
   ranally::language::ScriptVisitor _visitor;
 
 };
-
-#endif

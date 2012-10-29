@@ -1,9 +1,6 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_OPERATIONVERTEX
-#define INCLUDED_RANALLY_LANGUAGE_OPERATIONVERTEX
-
+#pragma once
 #include "Ranally/Operation/Operation.h"
 #include "Ranally/Language/ExpressionVertex.h"
-
 
 
 namespace ranally {
@@ -47,5 +44,3 @@ private:
 
 } // namespace language
 } // namespace ranally
-
-#endif

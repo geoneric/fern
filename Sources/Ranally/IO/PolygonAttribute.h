@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_POLYGONATTRIBUTE
-#define INCLUDED_RANALLY_POLYGONATTRIBUTE
-
+#pragma once
 #include "Ranally/IO/Attribute.h"
 #include "Ranally/IO/PolygonPtr.h"
 
@@ -44,5 +42,3 @@ private:
 };
 
 } // namespace ranally
-
-#endif

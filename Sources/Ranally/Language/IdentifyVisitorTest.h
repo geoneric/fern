@@ -1,10 +1,7 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_IDENTIFYVISITORTEST
-#define INCLUDED_RANALLY_LANGUAGE_IDENTIFYVISITORTEST
-
+#pragma once
 #include "Ranally/Language/AlgebraParser.h"
 #include "Ranally/Language/XmlParser.h"
 #include "Ranally/Language/IdentifyVisitor.h"
-
 
 
 namespace boost {
@@ -41,5 +38,3 @@ private:
   ranally::language::IdentifyVisitor _visitor;
 
 };
-
-#endif

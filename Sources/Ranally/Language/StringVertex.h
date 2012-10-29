@@ -1,8 +1,5 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_STRINGVERTEX
-#define INCLUDED_RANALLY_LANGUAGE_STRINGVERTEX
-
+#pragma once
 #include "Ranally/Language/ExpressionVertex.h"
-
 
 
 namespace ranally {
@@ -40,5 +37,3 @@ private:
 
 } // namespace language
 } // namespace ranally
-
-#endif

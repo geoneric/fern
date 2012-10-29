@@ -1,9 +1,6 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_OPERATION_ARGUMENT
-#define INCLUDED_RANALLY_LANGUAGE_OPERATION_ARGUMENT
-
+#pragma once
 #include <boost/noncopyable.hpp>
 #include "Ranally/Language/Operation/Parameter.h"
-
 
 
 namespace ranally {
@@ -37,5 +34,3 @@ private:
 } // namespace operation
 } // namespace language
 } // namespace ranally
-
-#endif

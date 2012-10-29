@@ -1,10 +1,7 @@
-#ifndef INCLUDED_RANALLY_OPERATION_PARAMETER
-#define INCLUDED_RANALLY_OPERATION_PARAMETER
-
+#pragma once
 #include "Ranally/Operation/DataType.h"
 #include "Ranally/Operation/ValueType.h"
 #include "Ranally/Util/String.h"
-
 
 
 namespace ranally {
@@ -56,5 +53,3 @@ private:
 
 } // namespace operation
 } // namespace ranally
-
-#endif

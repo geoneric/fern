@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_RASTERVALUE
-#define INCLUDED_RANALLY_RASTERVALUE
-
+#pragma once
 #include "Ranally/IO/Value.h"
 
 
@@ -35,5 +33,3 @@ private:
 };
 
 } // namespace ranally
-
-#endif

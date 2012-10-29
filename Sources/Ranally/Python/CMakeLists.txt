@@ -3,25 +3,25 @@ INCLUDE(UseIcu)
 INCLUDE(UsePython)
 
 INCLUDE_DIRECTORIES(
-  ${CMAKE_CURRENT_SOURCE_DIR}/../..
+    ${CMAKE_CURRENT_SOURCE_DIR}/../..
 )
 SET(SOURCES
-  BorrowedReference.cc
-  Client.cc
-  Exception.cc
-  OwnedReference.cc
-  String.cc
+    BorrowedReference.cc
+    Client.cc
+    Exception.cc
+    OwnedReference.cc
+    String.cc
 )
 ADD_LIBRARY(RanallyPython
-  ${SOURCES}
+    ${SOURCES}
 )
 # SET(TEST_SOURCES
-#   Test.cc
+#     Test.cc
 # )
 # ADD_EXECUTABLE(testRanallyPython
-#   ${TEST_SOURCES}
+#     ${TEST_SOURCES}
 # )
 # ADD_CUSTOM_COMMAND(TARGET testRanallyPython POST_BUILD
-#   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-#   COMMAND testRanallyPython
+#     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+#     COMMAND testRanallyPython
 # )

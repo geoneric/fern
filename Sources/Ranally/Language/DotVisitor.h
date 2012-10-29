@@ -1,9 +1,6 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_DOTVISITOR
-#define INCLUDED_RANALLY_LANGUAGE_DOTVISITOR
-
+#pragma once
 #include "Ranally/Language/Visitor.h"
 #include "Ranally/Util/String.h"
-
 
 
 namespace ranally {
@@ -50,5 +47,3 @@ private:
 };
 
 } // namespace ranally
-
-#endif

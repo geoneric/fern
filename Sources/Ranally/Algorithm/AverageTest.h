@@ -1,14 +1,11 @@
-#ifndef INCLUDED_RANALLY_ALGORITHM_AVERAGETEST
-#define INCLUDED_RANALLY_ALGORITHM_AVERAGETEST
-
+#pragma once
 
 
 namespace boost {
-  namespace unit_test {
-    class test_suite;
-  }
+    namespace unit_test {
+        class test_suite;
+    }
 }
-
 
 
 class AverageTest
@@ -25,5 +22,3 @@ public:
 private:
 
 };
-
-#endif

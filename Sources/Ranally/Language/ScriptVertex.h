@@ -1,8 +1,5 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_SCRIPTVERTEX
-#define INCLUDED_RANALLY_LANGUAGE_SCRIPTVERTEX
-
+#pragma once
 #include "Ranally/Language/StatementVertex.h"
-
 
 
 namespace ranally {
@@ -55,5 +52,3 @@ typedef boost::shared_ptr<ScriptVertex> ScriptVertexPtr;
 
 } // namespace language
 } // namespace ranally
-
-#endif

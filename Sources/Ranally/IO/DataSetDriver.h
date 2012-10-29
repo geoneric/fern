@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_IO_DATASETDRIVER
-#define INCLUDED_RANALLY_IO_DATASETDRIVER
-
+#pragma once
 #include <boost/noncopyable.hpp>
 #include "Ranally/Util/String.h"
 
@@ -52,5 +50,3 @@ private:
 
 } // namespace io
 } // namespace ranally
-
-#endif

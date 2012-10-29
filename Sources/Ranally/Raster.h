@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_RASTER
-#define INCLUDED_RANALLY_RASTER
-
+#pragma once
 #include <boost/array.hpp>
 #include <boost/range/algorithm/fill.hpp>
 #include "Ranally/DataTraits.h"
@@ -121,5 +119,3 @@ struct range_mutable_iterator<ranally::Raster<ValueType, nrRows, nrCols> >
 };
 
 } // namespace boost
-
-#endif

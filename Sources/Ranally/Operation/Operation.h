@@ -1,12 +1,9 @@
-#ifndef INCLUDED_RANALLY_OPERATION_OPERATION
-#define INCLUDED_RANALLY_OPERATION_OPERATION
-
+#pragma once
 #include <vector>
 #include <boost/shared_ptr.hpp>
 #include "Ranally/Util/String.h"
 #include "Ranally/Operation/Parameter.h"
 #include "Ranally/Operation/Result.h"
-
 
 
 namespace ranally {
@@ -63,5 +60,3 @@ typedef boost::shared_ptr<Operation> OperationPtr;
 
 } // namespace operation
 } // namespace ranally
-
-#endif

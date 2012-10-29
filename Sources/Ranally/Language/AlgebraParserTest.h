@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_ALGEBRAPARSERTEST
-#define INCLUDED_RANALLY_LANGUAGE_ALGEBRAPARSERTEST
-
+#pragma once
 
 
 namespace boost {
@@ -51,5 +49,3 @@ public:
   static boost::unit_test::test_suite* suite();
 
 };
-
-#endif

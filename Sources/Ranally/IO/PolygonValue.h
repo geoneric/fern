@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_POLYGONVALUE
-#define INCLUDED_RANALLY_POLYGONVALUE
-
+#pragma once
 #include "Ranally/IO/Value.h"
 
 
@@ -40,5 +38,3 @@ private:
 };
 
 } // namespace ranally
-
-#endif

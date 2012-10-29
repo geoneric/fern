@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_IO_OGRDATASETDRIVERTEST
-#define INCLUDED_RANALLY_IO_OGRDATASETDRIVERTEST
-
+#pragma once
 
 
 namespace boost {
@@ -37,5 +35,3 @@ private:
   void             removeTestFiles     ();
 
 };
-
-#endif

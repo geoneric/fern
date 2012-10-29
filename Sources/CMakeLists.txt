@@ -1,11 +1,10 @@
 CONFIGURE_FILE(
-  ${CMAKE_CURRENT_SOURCE_DIR}/Configure.h.in
-  ${CMAKE_CURRENT_BINARY_DIR}/Ranally/Configure.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/Configure.h.in
+    ${CMAKE_CURRENT_BINARY_DIR}/Ranally/Configure.h
 )
 
 IF(DOXYGEN_FOUND)
-  INCLUDE(DoxygenDoc)
+    INCLUDE(DoxygenDoc)
 ENDIF()
 
 ADD_SUBDIRECTORY(Ranally)
-

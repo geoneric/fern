@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_OPERATION_XMLPARSER
-#define INCLUDED_RANALLY_OPERATION_XMLPARSER
-
+#pragma once
 #include <boost/noncopyable.hpp>
 #include "Ranally/Operation/Operations.h"
 #include "Ranally/Util/String.h"
@@ -38,5 +36,3 @@ private:
 
 } // namespace operation
 } // namespace ranally
-
-#endif

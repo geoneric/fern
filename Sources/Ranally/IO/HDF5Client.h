@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_IO_HDF5CLIENT
-#define INCLUDED_RANALLY_IO_HDF5CLIENT
-
+#pragma once
 #include <boost/noncopyable.hpp>
 
 
@@ -33,5 +31,3 @@ private:
 
 } // namespace io
 } // namespace ranally
-
-#endif

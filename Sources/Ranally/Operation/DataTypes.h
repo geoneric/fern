@@ -1,9 +1,6 @@
-#ifndef INCLUDED_RANALLY_OPERATION_DATATYPES
-#define INCLUDED_RANALLY_OPERATION_DATATYPES
-
+#pragma once
 #include <bitset>
 #include "Ranally/Operation/DataType.h"
-
 
 
 namespace ranally {
@@ -33,5 +30,3 @@ private:
 
 } // namespace operation
 } // namespace ranally
-
-#endif

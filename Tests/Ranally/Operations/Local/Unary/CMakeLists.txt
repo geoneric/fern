@@ -5,18 +5,18 @@ INCLUDE(Site)
 INCLUDE(UseBoost)
 
 INCLUDE_DIRECTORIES(
-  ../../../../../Sources/C++
+    ../../../../../Sources/C++
 )
 SET(TEST_SOURCES
-  UnarySameTest.cc
-  PlusTest.cc
-  Test.cc
+    UnarySameTest.cc
+    PlusTest.cc
+    Test.cc
 )
 ADD_EXECUTABLE(testRanally
-  ${TEST_SOURCES}
+    ${TEST_SOURCES}
 )
 TARGET_LINK_LIBRARIES(testRanally
-  ${BOOST_UNIT_TEST_FRAMEWORK_LIBRARY}
+    ${BOOST_UNIT_TEST_FRAMEWORK_LIBRARY}
 )
 CONFIGURE_TEST(testRanally)
 ADD_TEST(testRanally ${EXECUTABLE_OUTPUT_PATH}/testRanally)

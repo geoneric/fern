@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_POINTFEATURE
-#define INCLUDED_RANALLY_POINTFEATURE
-
+#pragma once
 #include "Ranally/IO/Feature.h"
 #include "Ranally/IO/PointPtr.h"
 
@@ -44,5 +42,3 @@ private:
 };
 
 } // namespace ranally
-
-#endif

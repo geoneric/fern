@@ -1,9 +1,6 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_XMLPARSER
-#define INCLUDED_RANALLY_LANGUAGE_XMLPARSER
-
+#pragma once
 #include <boost/shared_ptr.hpp>
 #include "Ranally/Util/String.h"
-
 
 
 namespace ranally {
@@ -41,5 +38,3 @@ public:
 
 } // namespace language
 } // namespace ranally
-
-#endif

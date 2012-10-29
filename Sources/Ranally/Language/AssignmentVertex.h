@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_ASSIGNMENTVERTEX
-#define INCLUDED_RANALLY_LANGUAGE_ASSIGNMENTVERTEX
-
+#pragma once
 #include "Ranally/Language/ExpressionVertex.h"
 #include "Ranally/Language/StatementVertex.h"
 
@@ -48,5 +46,3 @@ private:
 
 } // namespace language
 } // namespace ranally
-
-#endif

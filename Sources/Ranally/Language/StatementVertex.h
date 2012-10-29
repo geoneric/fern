@@ -1,8 +1,5 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_STATEMENTVERTEX
-#define INCLUDED_RANALLY_LANGUAGE_STATEMENTVERTEX
-
+#pragma once
 #include "Ranally/Language/SyntaxVertex.h"
-
 
 
 namespace ranally {
@@ -39,5 +36,3 @@ private:
 
 } // namespace language
 } // namespace ranally
-
-#endif

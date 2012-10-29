@@ -1,9 +1,6 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_WHILEVERTEX
-#define INCLUDED_RANALLY_LANGUAGE_WHILEVERTEX
-
+#pragma once
 #include "Ranally/Language/ExpressionVertex.h"
 #include "Ranally/Language/StatementVertex.h"
-
 
 
 namespace ranally {
@@ -54,5 +51,3 @@ private:
 
 } // namespace language
 } // namespace ranally
-
-#endif

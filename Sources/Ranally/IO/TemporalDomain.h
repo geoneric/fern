@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_IO_TEMPORALDOMAIN
-#define INCLUDED_RANALLY_IO_TEMPORALDOMAIN
-
+#pragma once
 #include "Ranally/IO/Domain.h"
 
 
@@ -36,5 +34,3 @@ private:
 };
 
 } // namespace ranally
-
-#endif

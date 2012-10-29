@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_IO_HDF5DATASETDRIVER
-#define INCLUDED_RANALLY_IO_HDF5DATASETDRIVER
-
+#pragma once
 #include "Ranally/IO/DataSetDriver.h"
 #include "Ranally/IO/HDF5DataSet.h"
 
@@ -41,5 +39,3 @@ private:
 
 } // namespace io
 } // namespace ranally
-
-#endif

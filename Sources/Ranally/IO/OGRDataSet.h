@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_IO_OGRDATASET
-#define INCLUDED_RANALLY_IO_OGRDATASET
-
+#pragma once
 #include "Ranally/IO/DataSet.h"
 
 
@@ -62,5 +60,3 @@ private:
 
 } // namespace io
 } // namespace ranally
-
-#endif

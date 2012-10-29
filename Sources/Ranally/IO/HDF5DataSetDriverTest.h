@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_IO_HDF5DATASETDRIVERTEST
-#define INCLUDED_RANALLY_IO_HDF5DATASETDRIVERTEST
-
+#pragma once
 
 
 namespace boost {
@@ -35,5 +33,3 @@ private:
   void             removeTestFiles     ();
 
 };
-
-#endif

@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_IO_OGRCLIENT
-#define INCLUDED_RANALLY_IO_OGRCLIENT
-
+#pragma once
 #include <boost/noncopyable.hpp>
 
 
@@ -34,5 +32,3 @@ private:
 
 } // namespace io
 } // namespace ranally
-
-#endif

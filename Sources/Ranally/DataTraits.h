@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_DATA_TRAITS
-#define INCLUDED_RANALLY_DATA_TRAITS
-
+#pragma once
 #include <stdint.h>
 
 
@@ -42,5 +40,3 @@ SPECIALIZE_DATA_TRAITS_FOR_SCALAR(double)
 #undef SPECIALIZE_DATA_TRAITS_FOR_SCALAR
 
 } // namespace ranally
-
-#endif

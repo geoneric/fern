@@ -1,8 +1,5 @@
-#ifndef INCLUDED_RANALLY_PYTHON_OWNEDREFERENCE
-#define INCLUDED_RANALLY_PYTHON_OWNEDREFERENCE
-
+#pragma once
 #include <Python.h>
-
 
 
 namespace ranally {
@@ -51,5 +48,3 @@ private:
 
 } // namespace python
 } // namespace ranally
-
-#endif

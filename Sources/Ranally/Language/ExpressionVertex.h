@@ -1,12 +1,9 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_EXPRESSIONVERTEX
-#define INCLUDED_RANALLY_LANGUAGE_EXPRESSIONVERTEX
-
+#pragma once
 #include <vector>
 #include <boost/tuple/tuple.hpp>
 #include "Ranally/Operation/DataType.h"
 #include "Ranally/Operation/ValueType.h"
 #include "Ranally/Language/StatementVertex.h"
-
 
 
 namespace ranally {
@@ -92,5 +89,3 @@ private:
 
 } // namespace language
 } // namespace ranally
-
-#endif

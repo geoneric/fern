@@ -5,17 +5,15 @@
 #include "Ranally/Util/String.h"
 
 
-
 boost::unit_test::test_suite* StringTest::suite()
 {
-  boost::unit_test::test_suite* suite = BOOST_TEST_SUITE(__FILE__);
-  boost::shared_ptr<StringTest> instance(new StringTest());
-  suite->add(BOOST_CLASS_TEST_CASE(
-    &StringTest::testEncodeInUTF8, instance));
+    boost::unit_test::test_suite* suite = BOOST_TEST_SUITE(__FILE__);
+    boost::shared_ptr<StringTest> instance(new StringTest());
+    suite->add(BOOST_CLASS_TEST_CASE(
+        &StringTest::testEncodeInUTF8, instance));
 
-  return suite;
+    return suite;
 }
-
 
 
 StringTest::StringTest()
@@ -23,8 +21,6 @@ StringTest::StringTest()
 }
 
 
-
 void StringTest::testEncodeInUTF8()
 {
 }
-

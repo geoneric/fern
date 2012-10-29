@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_IO_UTIL
-#define INCLUDED_RANALLY_IO_UTIL
-
+#pragma once
 #include "Ranally/Util/String.h"
 
 
@@ -13,5 +11,3 @@ void               import              (String const& inputDataSetName,
 
 } // namespace io
 } // namespace ranally
-
-#endif

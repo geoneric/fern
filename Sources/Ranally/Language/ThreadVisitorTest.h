@@ -1,10 +1,7 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_THREADVISITORTEST
-#define INCLUDED_RANALLY_LANGUAGE_THREADVISITORTEST
-
+#pragma once
 #include "Ranally/Language/AlgebraParser.h"
 #include "Ranally/Language/XmlParser.h"
 #include "Ranally/Language/ThreadVisitor.h"
-
 
 
 namespace boost {
@@ -53,5 +50,3 @@ private:
   ranally::language::ThreadVisitor _visitor;
 
 };
-
-#endif

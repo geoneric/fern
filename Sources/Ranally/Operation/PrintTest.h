@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_OPERATION_PRINTTEST
-#define INCLUDED_RANALLY_OPERATION_PRINTTEST
-
+#pragma once
 
 
 namespace boost {
@@ -25,5 +23,3 @@ public:
 private:
 
 };
-
-#endif

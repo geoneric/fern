@@ -1,11 +1,10 @@
 SET(SPHINX_SOURCES
-  index.rst
-  Introduction.rst
-  MicroCharter.rst
-  UserStories.rst
+    index.rst
+    Introduction.rst
+    MicroCharter.rst
+    UserStories.rst
 )
 SET(SPHINX_TARGET
-  Project
+    Project
 )
 INCLUDE(SphinxDoc)
-

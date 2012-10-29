@@ -1,12 +1,9 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_SYNTAXVERTEX
-#define INCLUDED_RANALLY_LANGUAGE_SYNTAXVERTEX
-
+#pragma once
 #include <vector>
 #include <boost/noncopyable.hpp>
 #include <loki/Visitor.h>
 #include <boost/shared_ptr.hpp>
 #include "Ranally/Util/String.h"
-
 
 
 namespace ranally {
@@ -84,5 +81,3 @@ private:
 
 } // namespace language
 } // namespace ranally
-
-#endif

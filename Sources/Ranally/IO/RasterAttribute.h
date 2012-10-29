@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_RASTERATTRIBUTE
-#define INCLUDED_RANALLY_RASTERATTRIBUTE
-
+#pragma once
 #include <boost/scoped_ptr.hpp>
 #include "Ranally/IO/Attribute.h"
 #include "Ranally/IO/RasterValue.h"
@@ -35,5 +33,3 @@ private:
 };
 
 } // namespace ranally
-
-#endif

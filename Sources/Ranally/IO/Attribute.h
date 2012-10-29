@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_ATTRIBUTE
-#define INCLUDED_RANALLY_ATTRIBUTE
-
+#pragma once
 #include <boost/noncopyable.hpp>
 #include "Ranally/Util/String.h"
 
@@ -35,5 +33,3 @@ private:
 };
 
 } // namespace ranally
-
-#endif

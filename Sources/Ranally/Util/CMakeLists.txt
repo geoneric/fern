@@ -2,30 +2,29 @@ INCLUDE(UseBoost)
 INCLUDE(UseIcu)
 
 INCLUDE_DIRECTORIES(
-  ${CMAKE_CURRENT_SOURCE_DIR}/../..
+    ${CMAKE_CURRENT_SOURCE_DIR}/../..
 )
 SET(SOURCES
-  String.cc
+    String.cc
 )
 ADD_LIBRARY(RanallyUtil
-  ${SOURCES}
+    ${SOURCES}
 )
 SET(TEST_SOURCES
-  StringTest.cc
-  Test.cc
+    StringTest.cc
+    Test.cc
 )
 ADD_EXECUTABLE(testRanallyUtil
-  ${TEST_SOURCES}
+    ${TEST_SOURCES}
 )
 # ADD_CUSTOM_COMMAND(TARGET testRanallyPython POST_BUILD
-#   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-#   COMMAND testRanallyPython
+#     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+#     COMMAND testRanallyPython
 # )
 ADD_CUSTOM_TARGET(runTestRanallyUtil
-  testRanallyUtil
-  DEPENDS testRanallyUtil
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-  COMMENT "Running RanallyUtil unit tests" VERBATIM
+    testRanallyUtil
+    DEPENDS testRanallyUtil
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMENT "Running RanallyUtil unit tests" VERBATIM
 )
 ADD_DEPENDENCIES(tests runTestRanallyUtil)
-

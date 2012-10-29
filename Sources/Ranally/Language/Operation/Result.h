@@ -1,8 +1,5 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_OPERATION_RESULT
-#define INCLUDED_RANALLY_LANGUAGE_OPERATION_RESULT
-
+#pragma once
 #include "Ranally/Language/Operation/Parameter.h"
-
 
 
 namespace ranally {
@@ -36,5 +33,3 @@ private:
 } // namespace operation
 } // namespace language
 } // namespace ranally
-
-#endif

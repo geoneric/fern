@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_GEOMETRY
-#define INCLUDED_RANALLY_GEOMETRY
-
+#pragma once
 #include <vector>
 #include <boost/geometry/core/cs.hpp>
 #include <boost/geometry/geometries/point.hpp>
@@ -39,5 +37,3 @@ typedef boost::shared_ptr<Points> PointsPtr;
 typedef boost::shared_ptr<Polygons> PolygonsPtr;
 
 } // namespace ranally
-
-#endif

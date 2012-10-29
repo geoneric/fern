@@ -1,9 +1,6 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_NAMEVERTEX
-#define INCLUDED_RANALLY_LANGUAGE_NAMEVERTEX
-
+#pragma once
 #include <boost/foreach.hpp>
 #include "Ranally/Language/ExpressionVertex.h"
-
 
 
 namespace ranally {
@@ -83,5 +80,3 @@ inline std::ostream& operator<<(
 
 } // namespace language
 } // namespace ranally
-
-#endif

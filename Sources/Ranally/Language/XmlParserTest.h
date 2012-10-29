@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_XMLPARSERTEST
-#define INCLUDED_RANALLY_LANGUAGE_XMLPARSERTEST
-
+#pragma once
 
 
 namespace boost {
@@ -23,5 +21,3 @@ public:
   static boost::unit_test::test_suite* suite();
 
 };
-
-#endif

@@ -1,8 +1,5 @@
-#ifndef INCLUDED_RANALLY_ASTDOTVISITOR
-#define INCLUDED_RANALLY_ASTDOTVISITOR
-
+#pragma once
 #include "Ranally/Language/DotVisitor.h"
-
 
 
 namespace ranally {
@@ -101,5 +98,3 @@ private:
 };
 
 } // namespace ranally
-
-#endif

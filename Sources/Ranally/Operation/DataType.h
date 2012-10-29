@@ -1,5 +1,5 @@
-#ifndef INCLUDED_RANALLY_OPERATION_DATATYPE
-#define INCLUDED_RANALLY_OPERATION_DATATYPE
+#pragma once
+
 
 namespace ranally {
 namespace operation {
@@ -31,5 +31,3 @@ typedef unsigned int DataTypes;
 
 } // namespace operation
 } // namespace ranally
-
-#endif

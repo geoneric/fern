@@ -1,19 +1,14 @@
-#ifndef INCLUDED_RANALLY_UTIL_STRING
-#define INCLUDED_RANALLY_UTIL_STRING
-
+#pragma once
 #include <iostream>
 #include <boost/format.hpp>
 #include <unicode/unistr.h>
 
 
-
 namespace ranally {
 
 class String:
-  public UnicodeString
+    public UnicodeString
 {
-
-private:
 
 public:
 
@@ -31,26 +26,25 @@ public:
 
   std::string      encodeInUTF8        () const;
 
-};
+private:
 
+};
 
 
 //! Output operator for String's.
 /*!
-  The operator in this namespace makes it possible to write
-  \code
-  BOOST_CHECK_EQUAL(unicodeString1, unicodeString2);
-  \endcode
-  and get a print of the strings when the test fails.
+    The operator in this namespace makes it possible to write
+    \code
+    BOOST_CHECK_EQUAL(unicodeString1, unicodeString2);
+    \endcode
+    and get a print of the strings when the test fails.
 */
 inline std::ostream& operator<<(
-  std::ostream& stream,
-  String const& string)
+    std::ostream& stream,
+    String const& string)
 {
-  stream << string.encodeInUTF8();
-  return stream;
+    stream << string.encodeInUTF8();
+    return stream;
 }
 
 } // namespace ranally
-
-#endif

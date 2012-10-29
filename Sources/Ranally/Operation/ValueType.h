@@ -1,5 +1,5 @@
-#ifndef INCLUDED_RANALLY_OPERATION_VALUETYPE
-#define INCLUDED_RANALLY_OPERATION_VALUETYPE
+#pragma once
+
 
 namespace ranally {
 namespace operation {
@@ -48,5 +48,3 @@ typedef unsigned int ValueTypes;
 
 } // namespace operation
 } // namespace ranally
-
-#endif

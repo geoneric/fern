@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_OPERATION_VALUETYPES
-#define INCLUDED_RANALLY_OPERATION_VALUETYPES
-
+#pragma once
 #include <bitset>
 #include "Ranally/Operation/ValueType.h"
 
@@ -33,5 +31,3 @@ private:
 
 } // namespace operation
 } // namespace ranally
-
-#endif

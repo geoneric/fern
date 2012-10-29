@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_OPERATION_OPERATIONS
-#define INCLUDED_RANALLY_OPERATION_OPERATIONS
-
+#pragma once
 #include <map>
 #include <boost/format.hpp>
 #include <boost/noncopyable.hpp>
@@ -10,7 +8,6 @@
 #include <boost/shared_ptr.hpp>
 #include "Ranally/Util/String.h"
 #include "Ranally/Operation/Operation.h"
-
 
 
 namespace ranally {
@@ -83,5 +80,3 @@ typedef boost::shared_ptr<Operations> OperationsPtr;
 
 } // namespace operation
 } // namespace ranally
-
-#endif

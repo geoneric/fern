@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_VALUE
-#define INCLUDED_RANALLY_VALUE
-
+#pragma once
 #include <boost/noncopyable.hpp>
 
 
@@ -30,5 +28,3 @@ private:
 };
 
 } // namespace ranally
-
-#endif

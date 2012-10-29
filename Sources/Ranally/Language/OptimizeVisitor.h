@@ -1,10 +1,7 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_OPTIMIZEVISITOR
-#define INCLUDED_RANALLY_LANGUAGE_OPTIMIZEVISITOR
-
+#pragma once
 #include <map>
 #include "Ranally/Language/NameVertex.h"
 #include "Ranally/Language/Visitor.h"
-
 
 
 namespace ranally {
@@ -65,5 +62,3 @@ private:
 
 } // namespace language
 } // namespace ranally
-
-#endif

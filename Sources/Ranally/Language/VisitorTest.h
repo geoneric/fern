@@ -1,9 +1,6 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_VISITORTEST
-#define INCLUDED_RANALLY_LANGUAGE_VISITORTEST
-
+#pragma once
 #include "Ranally/Language/AlgebraParser.h"
 #include "Ranally/Language/XmlParser.h"
-
 
 
 namespace boost {
@@ -31,5 +28,3 @@ private:
   ranally::language::XmlParser _xmlParser;
 
 };
-
-#endif

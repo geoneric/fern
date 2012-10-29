@@ -1,9 +1,6 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_IDENTIFYVISITOR
-#define INCLUDED_RANALLY_LANGUAGE_IDENTIFYVISITOR
-
+#pragma once
 #include "Ranally/Language/SymbolTable.h"
 #include "Ranally/Language/Visitor.h"
-
 
 
 namespace ranally {
@@ -69,5 +66,3 @@ private:
 
 } // namespace language
 } // namespace ranally
-
-#endif

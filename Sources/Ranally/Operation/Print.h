@@ -1,11 +1,8 @@
-#ifndef INCLUDED_RANALLY_OPERATION_PRINT
-#define INCLUDED_RANALLY_OPERATION_PRINT
-
+#pragma once
 #include <boost/range/begin.hpp>
 #include <boost/range/end.hpp>
 #include <boost/range/distance.hpp>
 #include "Ranally/DataTraits.h"
-
 
 
 namespace ranally {
@@ -88,5 +85,3 @@ inline void print(
 
 } // namespace operation
 } // namespace ranally
-
-#endif

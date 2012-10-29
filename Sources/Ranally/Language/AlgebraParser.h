@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_ALGEBRAPARSER
-#define INCLUDED_RANALLY_LANGUAGE_ALGEBRAPARSER
-
+#pragma once
 #include "Ranally/Python/Client.h"
 #include "Ranally/Util/String.h"
 
@@ -44,5 +42,3 @@ private:
 
 } // namespace language
 } // namespace ranally
-
-#endif

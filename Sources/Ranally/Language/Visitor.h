@@ -1,10 +1,7 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_VISITOR
-#define INCLUDED_RANALLY_LANGUAGE_VISITOR
-
+#pragma once
 #include <boost/noncopyable.hpp>
 #include <loki/Visitor.h>
 #include "Ranally/Language/SyntaxVertex.h"
-
 
 
 namespace ranally {
@@ -114,5 +111,3 @@ private:
 
 } // namespace language
 } // namespace ranally
-
-#endif

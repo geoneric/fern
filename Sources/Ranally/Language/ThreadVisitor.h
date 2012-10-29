@@ -1,8 +1,5 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_THREADVISITOR
-#define INCLUDED_RANALLY_LANGUAGE_THREADVISITOR
-
+#pragma once
 #include "Ranally/Language/Visitor.h"
-
 
 
 namespace ranally {
@@ -77,5 +74,3 @@ private:
 
 } // namespace language
 } // namespace ranally
-
-#endif

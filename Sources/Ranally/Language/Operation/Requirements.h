@@ -1,11 +1,8 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_OPERATION_REQUIREMENTS
-#define INCLUDED_RANALLY_LANGUAGE_OPERATION_REQUIREMENTS
-
+#pragma once
 #include <vector>
 #include <boost/noncopyable.hpp>
 #include "Ranally/Language/Operation/Argument.h"
 #include "Ranally/Language/Operation/Result.h"
-
 
 
 namespace ranally {
@@ -45,5 +42,3 @@ private:
 } // namespace operation
 } // namespace language
 } // namespace ranally
-
-#endif

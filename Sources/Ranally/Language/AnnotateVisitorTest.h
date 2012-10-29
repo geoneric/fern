@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_ANNOTATEVISITORTEST
-#define INCLUDED_RANALLY_LANGUAGE_ANNOTATEVISITORTEST
-
+#pragma once
 #include "Ranally/Language/AlgebraParser.h"
 #include "Ranally/Language/XmlParser.h"
 #include "Ranally/Language/AnnotateVisitor.h"
@@ -37,5 +35,3 @@ private:
   ranally::language::AnnotateVisitor _visitor;
 
 };
-
-#endif

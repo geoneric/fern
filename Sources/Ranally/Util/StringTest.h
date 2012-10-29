@@ -1,20 +1,15 @@
-#ifndef INCLUDED_RANALLY_UTIL_STRINGTEST
-#define INCLUDED_RANALLY_UTIL_STRINGTEST
-
+#pragma once
 
 
 namespace boost {
-  namespace unit_test {
-    class test_suite;
-  }
+    namespace unit_test {
+        class test_suite;
+    }
 }
-
 
 
 class StringTest
 {
-
-private:
 
 public:
 
@@ -24,6 +19,6 @@ public:
 
   static boost::unit_test::test_suite* suite();
 
-};
+private:
 
-#endif
+};

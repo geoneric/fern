@@ -1,9 +1,6 @@
-#ifndef INCLUDED_RANALLY_PYTHON_CLIENT
-#define INCLUDED_RANALLY_PYTHON_CLIENT
-
+#pragma once
 #include <boost/noncopyable.hpp>
 #include <cstring>
-
 
 
 namespace ranally {
@@ -48,5 +45,3 @@ private:
 
 } // namespace python
 } // namespace ranally
-
-#endif

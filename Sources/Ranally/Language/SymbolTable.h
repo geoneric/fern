@@ -1,12 +1,9 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_SYMBOLTABLE
-#define INCLUDED_RANALLY_LANGUAGE_SYMBOLTABLE
-
+#pragma once
 #include <list>
 #include <map>
 #include <vector>
 #include <boost/noncopyable.hpp>
 #include "Ranally/Util/String.h"
-
 
 
 namespace ranally {
@@ -81,5 +78,3 @@ private:
 
 } // namespace language
 } // namespace ranally
-
-#endif

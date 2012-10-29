@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_SPATIALDOMAIN
-#define INCLUDED_RANALLY_SPATIALDOMAIN
-
+#pragma once
 #include "Ranally/IO/Domain.h"
 
 
@@ -36,5 +34,3 @@ private:
 };
 
 } // namespace ranally
-
-#endif

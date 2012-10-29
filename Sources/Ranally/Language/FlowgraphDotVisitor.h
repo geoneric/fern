@@ -1,8 +1,5 @@
-#ifndef INCLUDED_RANALLY_FLOWGRAPHDOTVISITOR
-#define INCLUDED_RANALLY_FLOWGRAPHDOTVISITOR
-
+#pragma once
 #include "Ranally/Language/DotVisitor.h"
-
 
 
 namespace ranally {
@@ -95,5 +92,3 @@ private:
 };
 
 } // namespace ranally
-
-#endif

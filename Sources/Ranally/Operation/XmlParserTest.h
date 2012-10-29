@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_OPERATION_XMLPARSERTEST
-#define INCLUDED_RANALLY_OPERATION_XMLPARSERTEST
-
+#pragma once
 
 
 namespace boost {
@@ -25,5 +23,3 @@ public:
 private:
 
 };
-
-#endif

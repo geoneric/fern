@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_PYTHON_EXCEPTION
-#define INCLUDED_RANALLY_PYTHON_EXCEPTION
-
+#pragma once
 
 
 namespace ranally {
@@ -10,5 +8,3 @@ void               throwException      ();
 
 } // namespace python
 } // namespace ranally
-
-#endif

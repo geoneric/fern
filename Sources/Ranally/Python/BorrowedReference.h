@@ -1,8 +1,5 @@
-#ifndef INCLUDED_RANALLY_PYTHON_BORROWEDREFERENCE
-#define INCLUDED_RANALLY_PYTHON_BORROWEDREFERENCE
-
+#pragma once
 #include <Python.h>
-
 
 
 namespace ranally {
@@ -64,5 +61,3 @@ inline BorrowedReference::operator T*()
 
 } // namespace python
 } // namespace ranally
-
-#endif

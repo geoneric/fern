@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_IO_HDF5DATASETTEST
-#define INCLUDED_RANALLY_IO_HDF5DATASETTEST
-
+#pragma once
 
 
 namespace boost {
@@ -25,5 +23,3 @@ public:
 private:
 
 };
-
-#endif

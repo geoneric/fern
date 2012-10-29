@@ -1,10 +1,7 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_OPTIMIZEVISITORTEST
-#define INCLUDED_RANALLY_LANGUAGE_OPTIMIZEVISITORTEST
-
+#pragma once
 #include "Ranally/Interpreter/Interpreter.h"
 #include "Ranally/Language/OptimizeVisitor.h"
 #include "Ranally/Language/ScriptVisitor.h"
-
 
 
 namespace boost {
@@ -31,5 +28,3 @@ public:
   ranally::language::OptimizeVisitor _optimizeVisitor;
 
 };
-
-#endif

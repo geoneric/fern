@@ -1,23 +1,20 @@
-#ifndef INCLUDED_RANALLY_CONVERTCOMMAND
-#define INCLUDED_RANALLY_CONVERTCOMMAND
-
+#pragma once
 #include "Command.h"
-
 
 
 namespace ranally {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
-  longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
+    longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 
-  \sa        .
+    \sa        .
 */
 class ConvertCommand:
-  public Command
+    public Command
 {
 
-  friend class ConvertCommandTest;
+    friend class ConvertCommandTest;
 
 public:
 
@@ -26,40 +23,38 @@ public:
 
                    ~ConvertCommand     ();
 
-  int              execute             ();
+    int            execute             ();
 
 private:
 
-  int              convertToRanally    (int argc,
+    int            convertToRanally    (int argc,
                                         char** argv);
 
-  int              convertToCpp        (int argc,
+    int            convertToCpp        (int argc,
                                         char** argv);
 
-  String           convertToDotAst     (String const& xml,
+    String         convertToDotAst     (String const& xml,
                                         int modes);
 
-  int              convertToDotAst     (int argc,
+    int            convertToDotAst     (int argc,
                                         char** argv);
 
-  String           convertToDotFlowgraph(
+    String         convertToDotFlowgraph(
                                         String const& xml);
 
-  int              convertToDotFlowgraph(
+    int            convertToDotFlowgraph(
                                         int argc,
                                         char** argv);
 
-  int              convertToDot        (int argc,
+    int            convertToDot        (int argc,
                                         char** argv);
 
-  int              convertToPython     (int argc,
+    int            convertToPython     (int argc,
                                         char** argv);
 
-  int              convertToXml        (int argc,
+    int            convertToXml        (int argc,
                                         char** argv);
 
 };
 
 } // namespace ranally
-
-#endif

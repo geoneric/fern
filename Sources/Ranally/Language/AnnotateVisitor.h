@@ -1,6 +1,4 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_ANNOTATEVISITOR
-#define INCLUDED_RANALLY_LANGUAGE_ANNOTATEVISITOR
-
+#pragma once
 #include "Ranally/Operation/Operations.h"
 #include "Ranally/Language/Visitor.h"
 
@@ -71,5 +69,3 @@ private:
 
 } // namespace language
 } // namespace ranally
-
-#endif

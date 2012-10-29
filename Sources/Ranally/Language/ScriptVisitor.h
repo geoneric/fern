@@ -1,9 +1,6 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_SCRIPTVISITOR
-#define INCLUDED_RANALLY_LANGUAGE_SCRIPTVISITOR
-
+#pragma once
 #include "Ranally/Language/Visitor.h"
 #include "Ranally/Util/String.h"
-
 
 
 namespace ranally {
@@ -89,5 +86,3 @@ private:
 
 } // namespace language
 } // namespace ranally
-
-#endif

@@ -1,10 +1,7 @@
-#ifndef INCLUDED_RANALLY_LANGUAGE_DOTVISITORTEST
-#define INCLUDED_RANALLY_LANGUAGE_DOTVISITORTEST
-
+#pragma once
 #include "Ranally/Language/AlgebraParser.h"
 #include "Ranally/Language/XmlParser.h"
 #include "Ranally/Language/DotVisitor.h"
-
 
 
 namespace boost {
@@ -51,5 +48,3 @@ private:
   // ranally::language::DotVisitor _visitor;
 
 };
-
-#endif
