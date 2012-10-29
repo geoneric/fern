@@ -2,35 +2,33 @@
 #include <cassert>
 
 
-
 namespace ranally {
 namespace operation {
 
 Result::Result(
-  String const& name,
-  String const& description,
-  DataType const& dataType,
-  ValueType const& valueType)
+    String const& name,
+    String const& description,
+    DataType const& dataType,
+    ValueType const& valueType)
 
-  : _name(name),
-    _description(description),
-    _dataType(dataType),
-    _valueType(valueType)
+    : _name(name),
+      _description(description),
+      _dataType(dataType),
+      _valueType(valueType)
 
 {
-  assert(!_name.isEmpty());
-  assert(!_description.isEmpty());
+    assert(!_name.isEmpty());
+    assert(!_description.isEmpty());
 }
 
 
-
 Result::Result(
-  Result const& other)
+    Result const& other)
 
-  : _name(other._name),
-    _description(other._description),
-    _dataType(other._dataType),
-    _valueType(other._valueType)
+    : _name(other._name),
+      _description(other._description),
+      _dataType(other._dataType),
+      _valueType(other._valueType)
 
 {
 }
@@ -39,16 +37,15 @@ Result::Result(
 Result& Result::operator=(
   Result const& other)
 {
-  if(&other != this) {
-    _name = other._name;
-    _description = other._description;
-    _dataType = other._dataType;
-    _valueType = other._valueType;
-  }
+    if(&other != this) {
+        _name = other._name;
+        _description = other._description;
+        _dataType = other._dataType;
+        _valueType = other._valueType;
+    }
 
-  return *this;
+    return *this;
 }
-
 
 
 Result::~Result()
@@ -56,33 +53,28 @@ Result::~Result()
 }
 
 
-
 String const& Result::name() const
 {
-  return _name;
+    return _name;
 }
-
 
 
 String const& Result::description() const
 {
-  return _description;
+    return _description;
 }
-
 
 
 DataType Result::dataType() const
 {
-  return _dataType;
+    return _dataType;
 }
-
 
 
 ValueType Result::valueType() const
 {
-  return _valueType;
+    return _valueType;
 }
 
 } // namespace operation
 } // namespace ranally
-

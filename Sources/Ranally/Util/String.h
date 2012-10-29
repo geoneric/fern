@@ -22,9 +22,9 @@ public:
 
                    String              (boost::format const& format);
 
-  virtual          ~String             ();
+    virtual        ~String             ();
 
-  std::string      encodeInUTF8        () const;
+    std::string    encodeInUTF8        () const;
 
 private:
 
@@ -33,11 +33,11 @@ private:
 
 //! Output operator for String's.
 /*!
-    The operator in this namespace makes it possible to write
-    \code
-    BOOST_CHECK_EQUAL(unicodeString1, unicodeString2);
-    \endcode
-    and get a print of the strings when the test fails.
+  The operator in this namespace makes it possible to write
+  \code
+  BOOST_CHECK_EQUAL(unicodeString1, unicodeString2);
+  \endcode
+  and get a print of the strings when the test fails.
 */
 inline std::ostream& operator<<(
     std::ostream& stream,

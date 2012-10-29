@@ -15,7 +15,7 @@ namespace python {
 class BorrowedReference
 {
 
-  friend class BorrowedReferenceTest;
+    friend class BorrowedReferenceTest;
 
 public:
 
@@ -27,23 +27,22 @@ public:
 
                    ~BorrowedReference  ();
 
-  BorrowedReference& operator=         (PyObject* object);
+    BorrowedReference& operator=       (PyObject* object);
 
                    operator bool       () const;
 
-  PyObject**       operator&           ();
+    PyObject**     operator&           ();
 
                    operator PyObject*  ();
 
-  template<class T>
+    template<class T>
                    operator T*         ();
 
 private:
 
-  PyObject*        _object;
+    PyObject*        _object;
 
 };
-
 
 
 //! Return the layered Python object cast to \a T*
@@ -55,8 +54,8 @@ private:
 template<class T>
 inline BorrowedReference::operator T*()
 {
-  assert(_object);
-  return (T*)_object;
+    assert(_object);
+    return (T*)_object;
 }
 
 } // namespace python

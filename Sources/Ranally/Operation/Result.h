@@ -16,7 +16,7 @@ namespace operation {
 class Result
 {
 
-  friend class ResultTest;
+    friend class ResultTest;
 
 public:
 
@@ -27,27 +27,27 @@ public:
 
                    Result              (Result const& other);
 
-  Result&          operator=           (Result const& other);
+    Result&        operator=           (Result const& other);
 
                    ~Result             ();
 
-  String const&    name                () const;
+    String const&  name                () const;
 
-  String const&    description         () const;
+    String const&  description         () const;
 
-  DataType         dataType            () const;
+    DataType       dataType            () const;
 
-  ValueType        valueType           () const;
+    ValueType      valueType           () const;
 
 private:
 
-  String           _name;
+    String         _name;
 
-  String           _description;
+    String         _description;
 
-  DataType         _dataType;
+    DataType       _dataType;
 
-  ValueType        _valueType;
+    ValueType      _valueType;
 
 };
 

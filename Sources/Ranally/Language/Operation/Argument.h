@@ -14,10 +14,10 @@ namespace operation {
   \sa        .
 */
 class Argument:
-  public Parameter
+    public Parameter
 {
 
-  friend class ArgumentTest;
+    friend class ArgumentTest;
 
 public:
 

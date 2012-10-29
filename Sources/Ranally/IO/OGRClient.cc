@@ -3,23 +3,20 @@
 #include "ogr_api.h"
 
 
-
 namespace ranally {
 namespace io {
 
 OGRClient::OGRClient()
 {
-  OGRRegisterAll();
-  CPLSetErrorHandler(CPLQuietErrorHandler);
+    OGRRegisterAll();
+    CPLSetErrorHandler(CPLQuietErrorHandler);
 }
-
 
 
 OGRClient::~OGRClient()
 {
-  OGRCleanupAll();
+    OGRCleanupAll();
 }
 
 } // namespace io
 } // namespace ranally
-

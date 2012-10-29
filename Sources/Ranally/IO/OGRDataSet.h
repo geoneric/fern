@@ -2,7 +2,6 @@
 #include "Ranally/IO/DataSet.h"
 
 
-
 class OGRDataSource;
 
 namespace ranally {
@@ -19,10 +18,10 @@ class OGRFeatureLayer;
   \sa        .
 */
 class OGRDataSet:
-  public DataSet
+    public DataSet
 {
 
-  friend class OGRDataSetTest;
+    friend class OGRDataSetTest;
 
 public:
 
@@ -31,30 +30,30 @@ public:
 
                    ~OGRDataSet         ();
 
-  size_t           nrFeatures          () const;
+    size_t         nrFeatures          () const;
 
-  Feature*         feature             (size_t i) const;
+    Feature*       feature             (size_t i) const;
 
-  Feature*         feature             (String const& name) const;
+    Feature*       feature             (String const& name) const;
 
-  void             addFeature          (Feature const& feature);
+    void           addFeature          (Feature const& feature);
 
-  void             copy                (DataSet const& dataSet);
+    void           copy                (DataSet const& dataSet);
 
-  bool             exists              (String const& name) const;
+    bool           exists              (String const& name) const;
 
-  void             remove              (String const& name);
+    void           remove              (String const& name);
 
 private:
 
-  OGRDataSource*   _dataSource;
+    OGRDataSource* _dataSource;
 
-  void             copy                (Feature const& feature);
+    void           copy                (Feature const& feature);
 
-  Feature*         feature             (OGRFeatureLayer const& layer) const;
+    Feature*       feature             (OGRFeatureLayer const& layer) const;
 
-  template<class Feature>
-  void             add                 (Feature const& feature);
+    template<class Feature>
+    void           add                 (Feature const& feature);
 
 };
 

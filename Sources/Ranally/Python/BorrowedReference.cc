@@ -1,7 +1,6 @@
 #include "Ranally/Python/BorrowedReference.h"
 
 
-
 namespace ranally {
 namespace python {
 
@@ -11,11 +10,10 @@ namespace python {
 */
 BorrowedReference::BorrowedReference()
 
-  : _object(NULL)
+    : _object(NULL)
 
 {
 }
-
 
 
 //! Construct an instance based on \a object passed in.
@@ -23,13 +21,12 @@ BorrowedReference::BorrowedReference()
   \param     object Object to layer in the instance.
 */
 BorrowedReference::BorrowedReference(
-  PyObject* object)
+    PyObject* object)
 
-  : _object(object)
+    : _object(object)
 
 {
 }
-
 
 
 // //! Copy construct an instance based on \a other passed in.
@@ -39,34 +36,31 @@ BorrowedReference::BorrowedReference(
 //   The reference count of the previous and new layered objects are not changed.
 // */
 // BorrowedReference::BorrowedReference(
-//   BorrowedReference const& other)
-// 
-//   : _object(other._object)
+//     BorrowedReference const& other)
+//
+//     : _object(other._object)
 // 
 // {
 // }
-
 
 
 // BorrowedReference& BorrowedReference::operator=(
-//   PyObject* object)
+//     PyObject* object)
 // {
 // 
-//   // Discard of the current _object. We borrowed it.
-//   _object = object;
-//   return *this;
+//     // Discard of the current _object. We borrowed it.
+//     _object = object;
+//     return *this;
 // }
-
 
 
 //! Destruct instance.
 /*!
-  The reference count of the layered object is not changed.
+   The reference count of the layered object is not changed.
 */
 BorrowedReference::~BorrowedReference()
 {
 }
-
 
 
 // //! Return whether the layered object is not NULL.
@@ -75,9 +69,8 @@ BorrowedReference::~BorrowedReference()
 // */
 // BorrowedReference::operator bool() const
 // {
-//   return _object != NULL;
+//     return _object != NULL;
 // }
-
 
 
 //! Return the address of the (pointer to) the layered object.
@@ -90,10 +83,9 @@ BorrowedReference::~BorrowedReference()
 */
 PyObject** BorrowedReference::operator&()
 {
-  assert(_object == NULL);
-  return &_object;
+    assert(_object == NULL);
+    return &_object;
 }
-
 
 
 //! Return the layered Python object.
@@ -102,9 +94,8 @@ PyObject** BorrowedReference::operator&()
 */
 BorrowedReference::operator PyObject*()
 {
-  return _object;
+    return _object;
 }
 
 } // namespace python
 } // namespace ranally
-

@@ -2,7 +2,6 @@
 #include <boost/noncopyable.hpp>
 
 
-
 namespace ranally {
 namespace io {
 
@@ -13,14 +12,14 @@ namespace io {
   \sa        .
 */
 class OGRClient:
-  private boost::noncopyable
+    private boost::noncopyable
 {
 
-  friend class OGRClientTest;
+    friend class OGRClientTest;
 
 public:
 
-  virtual          ~OGRClient          ();
+    virtual        ~OGRClient          ();
 
 protected:
 

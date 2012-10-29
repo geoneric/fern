@@ -8,7 +8,6 @@ namespace boost {
 }
 
 
-
 class HDF5DataSetTest
 {
 
@@ -16,9 +15,9 @@ public:
 
                    HDF5DataSetTest     ();
 
-  void             test                ();
+    void           test                ();
 
-  static boost::unit_test::test_suite* suite();
+    static boost::unit_test::test_suite* suite();
 
 private:
 

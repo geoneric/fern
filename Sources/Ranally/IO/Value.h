@@ -2,7 +2,6 @@
 #include <boost/noncopyable.hpp>
 
 
-
 namespace ranally {
 
 //! A value is a property of an attribute's domain.
@@ -10,14 +9,14 @@ namespace ranally {
   \sa        .
 */
 class Value:
-  private boost::noncopyable
+    private boost::noncopyable
 {
 
-  friend class ValueTest;
+    friend class ValueTest;
 
 public:
 
-  virtual          ~Value              ();
+    virtual        ~Value              ();
 
 protected:
 

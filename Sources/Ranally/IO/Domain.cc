@@ -1,17 +1,15 @@
 #include "Ranally/IO/Domain.h"
 
 
-
 namespace ranally {
 
 Domain::Domain(
-  Type type)
+    Type type)
 
-  : _type(type)
+    : _type(type)
 
 {
 }
-
 
 
 Domain::~Domain()
@@ -19,11 +17,9 @@ Domain::~Domain()
 }
 
 
-
 Domain::Type Domain::type() const
 {
-  return _type;
+    return _type;
 }
 
 } // namespace ranally
-

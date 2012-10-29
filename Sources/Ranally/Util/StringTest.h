@@ -15,9 +15,9 @@ public:
 
                    StringTest          ();
 
-  void             testEncodeInUTF8    ();
+    void           testEncodeInUTF8    ();
 
-  static boost::unit_test::test_suite* suite();
+    static boost::unit_test::test_suite* suite();
 
 private:
 

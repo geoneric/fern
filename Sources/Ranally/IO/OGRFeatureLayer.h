@@ -4,7 +4,6 @@
 #include "Ranally/Util/String.h"
 
 
-
 class OGRLayer;
 
 namespace ranally {
@@ -20,10 +19,10 @@ namespace io {
   \sa        .
 */
 class OGRFeatureLayer:
-  private boost::noncopyable
+    private boost::noncopyable
 {
 
-  friend class OGRFeatureLayerTest;
+    friend class OGRFeatureLayerTest;
 
 public:
 
@@ -31,27 +30,26 @@ public:
 
                    ~OGRFeatureLayer    ();
 
-  String           name                () const;
+    String         name                () const;
 
-  Domain const&    domain              () const;
+    Domain const&  domain              () const;
 
-  template<class Domain>
-  boost::shared_ptr<Domain> domain     () const;
+    template<class Domain>
+    boost::shared_ptr<Domain> domain   () const;
 
 private:
 
-  OGRLayer* const  _layer;
+    OGRLayer* const  _layer;
 
-  boost::shared_ptr<Domain> _domain;
+    boost::shared_ptr<Domain> _domain;
 
 };
-
 
 
 template<class Domain>
 boost::shared_ptr<Domain> OGRFeatureLayer::domain() const
 {
-  return boost::dynamic_pointer_cast<Domain>(_domain);
+    return boost::dynamic_pointer_cast<Domain>(_domain);
 }
 
 } // namespace io

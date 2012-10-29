@@ -16,7 +16,7 @@ namespace python {
 class OwnedReference
 {
 
-  friend class OwnedReferenceTest;
+    friend class OwnedReferenceTest;
 
 public:
 
@@ -28,21 +28,21 @@ public:
 
                    ~OwnedReference     ();
 
-  OwnedReference&  operator=           (PyObject* object);
+    OwnedReference& operator=          (PyObject* object);
 
                    operator bool       () const;
 
-  PyObject**       operator&           ();
+    PyObject**     operator&           ();
 
                    operator PyObject*  ();
 
-  void             incRef              ();
+    void           incRef              ();
 
 private:
 
-  PyObject*        _object;
+    PyObject*        _object;
 
-  void             decRef              ();
+    void           decRef              ();
 
 };
 

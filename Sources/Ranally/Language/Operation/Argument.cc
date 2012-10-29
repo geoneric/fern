@@ -1,18 +1,16 @@
 #include "Ranally/Language/Operation/Argument.h"
 
 
-
 namespace ranally {
 namespace language {
 namespace operation {
 
 Argument::Argument()
 
-  : Parameter()
+    : Parameter()
 
 {
 }
-
 
 
 Argument::~Argument()
@@ -22,4 +20,3 @@ Argument::~Argument()
 } // namespace operation
 } // namespace language
 } // namespace ranally
-

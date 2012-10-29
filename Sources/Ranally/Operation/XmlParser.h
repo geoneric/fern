@@ -4,7 +4,6 @@
 #include "Ranally/Util/String.h"
 
 
-
 namespace ranally {
 namespace operation {
 
@@ -15,10 +14,10 @@ namespace operation {
   \sa        .
 */
 class XmlParser:
-  private boost::noncopyable
+    private boost::noncopyable
 {
 
-  friend class XmlParserTest;
+    friend class XmlParserTest;
 
 public:
 
@@ -26,9 +25,9 @@ public:
 
                    ~XmlParser          ();
 
-  OperationsPtr    parse               (std::istream& stream) const;
+    OperationsPtr  parse               (std::istream& stream) const;
 
-  OperationsPtr    parse               (String const& xml) const;
+    OperationsPtr  parse               (String const& xml) const;
 
 private:
 

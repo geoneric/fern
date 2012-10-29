@@ -2,7 +2,6 @@
 #include <boost/noncopyable.hpp>
 
 
-
 namespace ranally {
 namespace io {
 
@@ -12,14 +11,14 @@ namespace io {
   thrown, instead of a message being printed.
 */
 class HDF5Client:
-  private boost::noncopyable
+    private boost::noncopyable
 {
 
-  friend class HDF5ClientTest;
+    friend class HDF5ClientTest;
 
 public:
 
-  virtual          ~HDF5Client         ();
+    virtual        ~HDF5Client         ();
 
 protected:
 

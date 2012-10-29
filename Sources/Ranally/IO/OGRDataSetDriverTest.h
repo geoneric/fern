@@ -8,7 +8,6 @@ namespace boost {
 }
 
 
-
 class OGRDataSetDriverTest
 {
 
@@ -18,20 +17,20 @@ public:
 
                    ~OGRDataSetDriverTest();
 
-  void             test                ();
+    void           test                ();
 
-  void             testExists          ();
+    void           testExists          ();
 
-  void             testCreate          ();
+    void           testCreate          ();
 
-  void             testRemove          ();
+    void           testRemove          ();
 
-  void             testOpen            ();
+    void           testOpen            ();
 
-  static boost::unit_test::test_suite* suite();
+    static boost::unit_test::test_suite* suite();
 
 private:
 
-  void             removeTestFiles     ();
+    void           removeTestFiles     ();
 
 };

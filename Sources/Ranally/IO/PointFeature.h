@@ -3,7 +3,6 @@
 #include "Ranally/IO/PointPtr.h"
 
 
-
 namespace ranally {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
@@ -13,10 +12,10 @@ namespace ranally {
   \sa        .
 */
 class PointFeature:
-  public Feature
+    public Feature
 {
 
-  friend class PointFeatureTest;
+    friend class PointFeatureTest;
 
 public:
 
@@ -25,19 +24,19 @@ public:
 
                    ~PointFeature       ();
 
-  PointDomain const& domain            () const;
+    PointDomain const& domain          () const;
 
-  PointAttributes const& attributes    () const;
+    PointAttributes const& attributes  () const;
 
-  bool             exists              (String const& name) const;
+    bool           exists              (String const& name) const;
 
-  void             add                 (PointAttributePtr const& attribute);
+    void           add                 (PointAttributePtr const& attribute);
 
 private:
 
-  PointDomainPtr   _domain;
+    PointDomainPtr   _domain;
 
-  PointAttributes  _attributes;
+    PointAttributes  _attributes;
 
 };
 

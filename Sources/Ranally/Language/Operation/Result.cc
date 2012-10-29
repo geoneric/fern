@@ -1,18 +1,16 @@
 #include "Ranally/Language/Operation/Result.h"
 
 
-
 namespace ranally {
 namespace language {
 namespace operation {
 
 Result::Result()
 
-  : Parameter()
+    : Parameter()
 
 {
 }
-
 
 
 Result::~Result()
@@ -22,4 +20,3 @@ Result::~Result()
 } // namespace operation
 } // namespace language
 } // namespace ranally
-

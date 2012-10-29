@@ -37,10 +37,10 @@ char** Command::argv() const
 
 //! Read script from \a fileName.
 /*!
-    \param     fileName Name of file to read script from.
-    \exception .
+  \param     fileName Name of file to read script from.
+  \exception .
 
-    In case \a fileName is empty, the script is read from standard input.
+  In case \a fileName is empty, the script is read from standard input.
 */
 ranally::String Command::read(
     std::string const& fileName)
@@ -66,11 +66,11 @@ ranally::String Command::read(
 
 //! Write \a contents to a file with name \a fileName.
 /*!
-    \param     fileName Name of file to write \a contents to.
-    \exception .
+  \param     fileName Name of file to write \a contents to.
+  \exception .
 
-    In case \a fileName is empty, the \a contents are written to standard
-    output, encoded in UTF8.
+  In case \a fileName is empty, the \a contents are written to standard
+  output, encoded in UTF8.
 */
 void Command::write(
     ranally::String const& contents,

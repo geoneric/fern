@@ -7,8 +7,8 @@ namespace {
 
 //! Encodes a copy of \a string using UTF8 encoding and returns the result.
 /*!
-    \param     string Unicode string to encode.
-    \return    A copy of \a string encoded in UTF8.
+  \param     string Unicode string to encode.
+  \return    A copy of \a string encoded in UTF8.
 */
 std::string encodeInUTF8(
     UnicodeString const& string)
@@ -41,8 +41,8 @@ std::string encodeInUTF8(
 
 //! Decodes \a string from UTF8 encoding and returns the result.
 /*!
-    \param     string Array of Unicode characters encoded in UTF8.
-    \return    Unicode string
+  \param     string Array of Unicode characters encoded in UTF8.
+  \return    Unicode string
 */
 UnicodeString decodeFromUTF8(
     std::string const& string)

@@ -4,7 +4,6 @@
 #include "Ranally/IO/RasterValue.h"
 
 
-
 namespace ranally {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
@@ -14,10 +13,10 @@ namespace ranally {
   \sa        .
 */
 class RasterAttribute:
-  public Attribute
+    public Attribute
 {
 
-  friend class RasterAttributeTest;
+    friend class RasterAttributeTest;
 
 public:
 
@@ -27,8 +26,8 @@ public:
 
 private:
 
-  //! Value.
-  boost::scoped_ptr<RasterValue> _value;
+    //! Value.
+    boost::scoped_ptr<RasterValue> _value;
 
 };
 

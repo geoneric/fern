@@ -1,16 +1,15 @@
 #include "Ranally/Operation/DataTypes.h"
 
 
-
 namespace ranally {
 namespace operation {
 
 DataTypes::DataTypes()
 
-  : std::bitset<NrDataTypes>()
+    : std::bitset<NrDataTypes>()
+
 {
 }
-
 
 
 DataTypes::~DataTypes()
@@ -19,4 +18,3 @@ DataTypes::~DataTypes()
 
 } // namespace operation
 } // namespace ranally
-

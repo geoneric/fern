@@ -15,28 +15,26 @@ namespace operation {
   \sa        .
 */
 class Parameter:
-  private boost::noncopyable
+    private boost::noncopyable
 {
 
-  friend class ParameterTest;
+    friend class ParameterTest;
 
 public:
 
                    Parameter           ();
 
-  virtual          ~Parameter          ();
+    virtual        ~Parameter          ();
 
-  ValueTypes       valueTypes          () const;
+    ValueTypes     valueTypes          () const;
 
-  DataTypes        dataTypes           () const;
-
-protected:
+    DataTypes      dataTypes           () const;
 
 private:
 
-  ValueTypes       _valueTypes;
+    ValueTypes     _valueTypes;
 
-  DataTypes        _dataTypes;
+    DataTypes      _dataTypes;
 
 };
 

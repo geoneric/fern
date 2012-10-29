@@ -16,10 +16,10 @@ namespace operation {
   \sa        .
 */
 class Requirements:
-  private boost::noncopyable
+    private boost::noncopyable
 {
 
-  friend class RequirementsTest;
+    friend class RequirementsTest;
 
 public:
 
@@ -27,15 +27,15 @@ public:
 
                    ~Requirements       ();
 
-  std::vector<Argument> const& arguments();
+    std::vector<Argument> const& arguments();
 
-  std::vector<Result> const& results   ();
+    std::vector<Result> const& results ();
 
 private:
 
-  std::vector<Argument> _arguments;
+    std::vector<Argument> _arguments;
 
-  std::vector<Result> _results;
+    std::vector<Result> _results;
 
 };
 

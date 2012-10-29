@@ -3,7 +3,6 @@
 #include "Ranally/IO/PolygonPtr.h"
 
 
-
 namespace ranally {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
@@ -13,10 +12,10 @@ namespace ranally {
   \sa        .
 */
 class PolygonFeature:
-  public Feature
+    public Feature
 {
 
-  friend class PolygonFeatureTest;
+    friend class PolygonFeatureTest;
 
 public:
 
@@ -25,15 +24,15 @@ public:
 
                    ~PolygonFeature     ();
 
-  PolygonDomain const& domain          () const;
+    PolygonDomain const& domain          () const;
 
-  PolygonAttributes const& attributes  () const;
+    PolygonAttributes const& attributes  () const;
 
 private:
 
-  PolygonDomainPtr _domain;
+    PolygonDomainPtr _domain;
 
-  PolygonAttributes _attributes;
+    PolygonAttributes _attributes;
 
 };
 

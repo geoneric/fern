@@ -3,7 +3,6 @@
 #include "Ranally/Util/String.h"
 
 
-
 namespace ranally {
 namespace language {
 
@@ -18,10 +17,10 @@ namespace language {
   \sa        XmlParser
 */
 class AlgebraParser:
-  public python::Client
+    public python::Client
 {
 
-  friend class AlgebraParserTest;
+    friend class AlgebraParserTest;
 
 public:
 
@@ -29,13 +28,13 @@ public:
 
                    ~AlgebraParser      ();
 
-  String           parseString         (String const& string);
+    String         parseString         (String const& string);
 
-  String           parseFile           (String const& fileName);
+    String         parseFile           (String const& fileName);
 
 private:
 
-  // String           parse               (String const& string,
+  //   String         parse               (String const& string,
   //                                       String const& fileName);
 
 };

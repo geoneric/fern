@@ -3,7 +3,6 @@
 #include "Ranally/IO/SpatialDomain.h"
 
 
-
 namespace ranally {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
@@ -13,10 +12,10 @@ namespace ranally {
   \sa        .
 */
 class PointDomain:
-  public SpatialDomain
+    public SpatialDomain
 {
 
-  friend class PointDomainTest;
+    friend class PointDomainTest;
 
 public:
 
@@ -24,11 +23,11 @@ public:
 
                    ~PointDomain        ();
 
-  Points const&    points              () const;
+    Points const&  points              () const;
 
 private:
 
-  PointsPtr        _points;
+    PointsPtr      _points;
 
 };
 

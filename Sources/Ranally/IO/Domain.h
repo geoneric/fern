@@ -2,7 +2,6 @@
 #include <boost/noncopyable.hpp>
 
 
-
 namespace ranally {
 
 //! A Domain positions a Feature's Attribute in the spatio-temporal coordinate space.
@@ -12,25 +11,25 @@ namespace ranally {
   \sa        .
 */
 class Domain:
-  private boost::noncopyable
+    private boost::noncopyable
 {
 
-  friend class DomainTest;
+    friend class DomainTest;
 
 public:
 
-  enum Type {
-    PointDomain,
-    PolygonDomain
-  };
+    enum Type {
+        PointDomain,
+        PolygonDomain
+    };
 
-  virtual          ~Domain             ();
+    virtual        ~Domain             ();
 
-  Type             type                () const;
+    Type           type                () const;
 
-  virtual bool     isSpatial           () const=0;
+    virtual bool   isSpatial           () const=0;
 
-  virtual bool     isTemporal          () const=0;
+    virtual bool   isTemporal          () const=0;
 
 protected:
 

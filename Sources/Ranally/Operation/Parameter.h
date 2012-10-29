@@ -16,7 +16,7 @@ namespace operation {
 class Parameter
 {
 
-  friend class ParameterTest;
+    friend class ParameterTest;
 
 public:
 
@@ -27,27 +27,27 @@ public:
 
                    Parameter           (Parameter const& other);
 
-  Parameter&       operator=           (Parameter const& other);
+    Parameter&     operator=           (Parameter const& other);
 
                    ~Parameter          ();
 
-  String const&    name                () const;
+    String const&  name                () const;
 
-  String const&    description         () const;
+    String const&  description         () const;
 
-  DataTypes        dataTypes           () const;
+    DataTypes      dataTypes           () const;
 
-  ValueTypes       valueTypes          () const;
+    ValueTypes     valueTypes          () const;
 
 private:
 
-  String           _name;
+    String         _name;
 
-  String           _description;
+    String         _description;
 
-  DataTypes        _dataTypes;
+    DataTypes      _dataTypes;
 
-  ValueTypes       _valueTypes;
+    ValueTypes     _valueTypes;
 
 };
 

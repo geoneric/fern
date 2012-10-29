@@ -1,16 +1,14 @@
 #include "Ranally/IO/PolygonValue.h"
 
 
-
 namespace ranally {
 
 PolygonValue::PolygonValue()
 
-  : Value()
+    : Value()
 
 {
 }
-
 
 
 PolygonValue::~PolygonValue()
@@ -18,4 +16,3 @@ PolygonValue::~PolygonValue()
 }
 
 } // namespace ranally
-

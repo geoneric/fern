@@ -3,7 +3,6 @@
 #include "Ranally/Util/String.h"
 
 
-
 namespace ranally {
 
 //! Class for Attribute instances.
@@ -11,16 +10,16 @@ namespace ranally {
   \sa        .
 */
 class Attribute:
-  private boost::noncopyable
+    private boost::noncopyable
 {
 
-  friend class AttributeTest;
+    friend class AttributeTest;
 
 public:
 
-  virtual          ~Attribute          ();
+    virtual        ~Attribute          ();
 
-  String const&    name                () const;
+    String const&  name                () const;
 
 protected:
 
@@ -28,7 +27,7 @@ protected:
 
 private:
 
-  String           _name;
+    String         _name;
 
 };
 

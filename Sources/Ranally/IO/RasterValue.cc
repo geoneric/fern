@@ -1,16 +1,14 @@
 #include "Ranally/IO/RasterValue.h"
 
 
-
 namespace ranally {
 
 RasterValue::RasterValue()
 
-  : Value()
+    : Value()
 
 {
 }
-
 
 
 RasterValue::~RasterValue()
@@ -18,4 +16,3 @@ RasterValue::~RasterValue()
 }
 
 } // namespace ranally
-

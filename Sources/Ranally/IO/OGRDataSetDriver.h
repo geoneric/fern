@@ -3,7 +3,6 @@
 #include "Ranally/IO/OGRDataSet.h"
 
 
-
 class OGRSFDriver;
 
 namespace ranally {
@@ -16,10 +15,10 @@ namespace io {
   \sa        .
 */
 class OGRDataSetDriver:
-  public DataSetDriver
+    public DataSetDriver
 {
 
-  friend class OGRDataSetDriverTest;
+    friend class OGRDataSetDriverTest;
 
 public:
 
@@ -27,17 +26,17 @@ public:
 
                    ~OGRDataSetDriver   ();
 
-  bool             exists              (String const& name) const;
+    bool           exists              (String const& name) const;
 
-  OGRDataSet*      create              (String const& name) const;
+    OGRDataSet*    create              (String const& name) const;
 
-  void             remove              (String const& name) const;
+    void           remove              (String const& name) const;
 
-  OGRDataSet*      open                (String const& name) const;
+    OGRDataSet*    open                (String const& name) const;
 
 private:
 
-  OGRSFDriver*     _driver;
+    OGRSFDriver*     _driver;
 
 };
 

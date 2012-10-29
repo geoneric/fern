@@ -17,33 +17,32 @@ namespace operation {
 /*!
 */
 class Operations:
-  private boost::noncopyable
+    private boost::noncopyable
 {
 
-  friend class OperationsTest;
+    friend class OperationsTest;
 
 public:
 
-  template<class Range>
+    template<class Range>
                    Operations          (Range const& operations);
 
                    ~Operations         ();
 
-  bool             empty               () const;
+    bool           empty               () const;
 
-  size_t           size                () const;
+    size_t         size                () const;
 
-  bool             hasOperation        (String const& name) const;
+    bool           hasOperation        (String const& name) const;
 
-  OperationPtr const& operation        (String const& name) const;
+    OperationPtr const& operation        (String const& name) const;
 
 private:
 
-  //! Collection of operations, by name.
-  std::map<String, OperationPtr> _operations;
+    //! Collection of operations, by name.
+    std::map<String, OperationPtr> _operations;
 
 };
-
 
 
 //! Construct an Operations instance.
@@ -54,26 +53,25 @@ private:
              instances with the same name.
 */
 template<
-  class Range>
+    class Range>
 inline Operations::Operations(
-  Range const& operations)
+    Range const& operations)
 {
-  typedef typename boost::range_iterator<Range const>::type Iterator;
-  Iterator end = boost::end(operations);
+    typedef typename boost::range_iterator<Range const>::type Iterator;
+    Iterator end = boost::end(operations);
 
-  for(Iterator it = boost::begin(operations); it != end; ++it) {
-    OperationPtr const& operation(*it);
+    for(Iterator it = boost::begin(operations); it != end; ++it) {
+        OperationPtr const& operation(*it);
 
-    if(_operations.find(operation->name()) != _operations.end()) {
-      throw std::runtime_error((boost::format(
-        "operation %1% already present")
-        % operation->name().encodeInUTF8()).str().c_str());
+        if(_operations.find(operation->name()) != _operations.end()) {
+            throw std::runtime_error((boost::format(
+                "operation %1% already present")
+                % operation->name().encodeInUTF8()).str().c_str());
+        }
+
+        _operations[operation->name()] = operation;
     }
-
-    _operations[operation->name()] = operation;
-  }
 }
-
 
 
 typedef boost::shared_ptr<Operations> OperationsPtr;

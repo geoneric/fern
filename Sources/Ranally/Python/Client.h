@@ -18,16 +18,16 @@ namespace python {
   - http://bugs.python.org/issue1445210
 */
 class Client:
-  private boost::noncopyable
+    private boost::noncopyable
 {
 
-  friend class PythonClientTest;
+    friend class PythonClientTest;
 
 public:
 
-  virtual          ~Client             ();
+    virtual        ~Client             ();
 
-  bool             isInitialized       () const;
+    bool           isInitialized       () const;
 
 protected:
 
@@ -35,11 +35,11 @@ protected:
 
 private:
 
-  //! Number of times Python is initialized without being terminated.
-  static unsigned short _count;
+    //! Number of times Python is initialized without being terminated.
+    static unsigned short _count;
 
-  //! Whether initialization of the Python library succeeded.
-  bool             _initialized;
+    //! Whether initialization of the Python library succeeded.
+    bool             _initialized;
 
 };
 

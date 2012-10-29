@@ -18,7 +18,7 @@ namespace operation {
 class Operation
 {
 
-  friend class OperationTest;
+    friend class OperationTest;
 
 public:
 
@@ -30,30 +30,29 @@ public:
 
                    Operation           (Operation const& other);
 
-  Operation&       operator=           (Operation const& other);
+    Operation&     operator=           (Operation const& other);
 
                    ~Operation          ();
 
-  String const&    name                () const;
+    String const&  name                () const;
 
-  String const&    description         () const;
+    String const&  description         () const;
 
-  std::vector<Parameter> const& parameters() const;
+    std::vector<Parameter> const& parameters() const;
 
-  std::vector<Result> const& results   () const;
+    std::vector<Result> const& results   () const;
 
 private:
 
-  String           _name;
+    String         _name;
 
-  String           _description;
+    String         _description;
 
-  std::vector<Parameter> _parameters;
+    std::vector<Parameter> _parameters;
 
-  std::vector<Result> _results;
+    std::vector<Result> _results;
 
 };
-
 
 
 typedef boost::shared_ptr<Operation> OperationPtr;

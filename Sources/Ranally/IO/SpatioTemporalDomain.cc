@@ -1,17 +1,15 @@
 #include "SpatioTemporalDomain.h"
 
 
-
 namespace ranally {
 
 SpatioTemporalDomain::SpatioTemporalDomain(
-  Type type)
+    Type type)
 
-  : Domain(type)
+    : Domain(type)
 
 {
 }
-
 
 
 SpatioTemporalDomain::~SpatioTemporalDomain()
@@ -19,18 +17,15 @@ SpatioTemporalDomain::~SpatioTemporalDomain()
 }
 
 
-
 bool SpatioTemporalDomain::isSpatial() const
 {
-  return true;
+    return true;
 }
-
 
 
 bool SpatioTemporalDomain::isTemporal() const
 {
-  return true;
+    return true;
 }
 
 } // namespace ranally
-

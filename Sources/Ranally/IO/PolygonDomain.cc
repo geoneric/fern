@@ -1,19 +1,17 @@
 #include "Ranally/IO/PolygonDomain.h"
 
 
-
 namespace ranally {
 
 PolygonDomain::PolygonDomain(
-  PolygonsPtr const& polygons)
+    PolygonsPtr const& polygons)
 
-  : SpatialDomain(Domain::PolygonDomain),
-    _polygons(polygons)
+    : SpatialDomain(Domain::PolygonDomain),
+      _polygons(polygons)
 
 {
-  assert(_polygons);
+    assert(_polygons);
 }
-
 
 
 PolygonDomain::~PolygonDomain()
@@ -21,4 +19,3 @@ PolygonDomain::~PolygonDomain()
 }
 
 } // namespace ranally
-

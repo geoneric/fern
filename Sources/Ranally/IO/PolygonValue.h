@@ -2,7 +2,6 @@
 #include "Ranally/IO/Value.h"
 
 
-
 namespace ranally {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
@@ -12,10 +11,10 @@ namespace ranally {
   \sa        .
 */
 class PolygonValue:
-  public Value
+    public Value
 {
 
-  friend class PolygonValueTest;
+    friend class PolygonValueTest;
 
 public:
 
@@ -25,15 +24,15 @@ public:
 
 private:
 
-  // Store values per polygon feature id.
+    // Store values per polygon feature id.
 
-  // This class must provide clients with value type information and a template
-  // function to get at the collection with correctly typed values. This class
-  // itself must not be a template.
-  // Values should probably be stored in arrays, one array per PolygonValue
-  // instance. A second array should contain the feature-id's and should be
-  // shared between multiple PolygonValue instances. This array may be passed
-  // on from the PolygonDomain(?).
+    // This class must provide clients with value type information and a
+    // template function to get at the collection with correctly typed values.
+    // This class itself must not be a template.
+    // Values should probably be stored in arrays, one array per PolygonValue
+    // instance. A second array should contain the feature-id's and should be
+    // shared between multiple PolygonValue instances. This array may be passed
+    // on from the PolygonDomain(?).
 
 };
 

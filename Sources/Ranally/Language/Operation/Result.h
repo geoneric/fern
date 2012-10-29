@@ -13,18 +13,16 @@ namespace operation {
   \sa        .
 */
 class Result:
-  public Parameter
+    public Parameter
 {
 
-  friend class ResultTest;
+    friend class ResultTest;
 
 public:
 
                    Result              ();
 
                    ~Result             ();
-
-protected:
 
 private:
 

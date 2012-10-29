@@ -1,5 +1,4 @@
-#ifndef INCLUDED_RANALLY_CONFIGURE
-#define INCLUDED_RANALLY_CONFIGURE
+#pragma once
 
 #define RANALLY_BUILD_TYPE "${CMAKE_BUILD_TYPE}"
 #define RANALLY_SYSTEM "${CMAKE_SYSTEM}"
@@ -17,5 +16,3 @@
 namespace ranally {
 
 } // namespace ranally
-
-#endif

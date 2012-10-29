@@ -4,17 +4,15 @@
 #include "Ranally/IO/Value.h"
 
 
-
 namespace ranally {
 
 Attribute::Attribute(
-  String const& name)
+    String const& name)
 
-  : _name(name)
+    : _name(name)
 
 {
 }
-
 
 
 Attribute::~Attribute()
@@ -22,11 +20,9 @@ Attribute::~Attribute()
 }
 
 
-
 String const& Attribute::name() const
 {
-  return _name;
+    return _name;
 }
 
 } // namespace ranally
-

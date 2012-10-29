@@ -6,17 +6,15 @@
 #include "Ranally/IO/HDF5DataSet.h"
 
 
-
 namespace ranally {
 namespace io {
 
 HDF5DataSetDriver::HDF5DataSetDriver()
 
-  : DataSetDriver()
+    : DataSetDriver()
 
 {
 }
-
 
 
 HDF5DataSetDriver::~HDF5DataSetDriver()
@@ -24,86 +22,82 @@ HDF5DataSetDriver::~HDF5DataSetDriver()
 }
 
 
-
 bool HDF5DataSetDriver::exists(
-  String const& name) const
+    String const& name) const
 {
-  bool result = false;
+    bool result = false;
 
-  try {
-    result = H5::H5File::isHdf5(name.encodeInUTF8().c_str());
-  }
-  catch(H5::FileIException const&) {
-    result = false;
-  }
+    try {
+        result = H5::H5File::isHdf5(name.encodeInUTF8().c_str());
+    }
+    catch(H5::FileIException const&) {
+        result = false;
+    }
 
-  return result;
+    return result;
 }
-
 
 
 HDF5DataSet* HDF5DataSetDriver::create(
-  String const& name) const
+    String const& name) const
 {
-  HDF5DataSet* result = 0;
+    HDF5DataSet* result = 0;
 
-  try {
-    unsigned int accessMode = H5F_ACC_TRUNC; // | H5F_ACC_RDWR?
-    H5::FileCreatPropList creationProperties = H5::FileCreatPropList::DEFAULT;
-    H5::FileAccPropList accessProperties = H5::FileAccPropList::DEFAULT;
-    H5::H5File* file = new H5::H5File(name.encodeInUTF8().c_str(), accessMode,
-      creationProperties, accessProperties);
-    file->flush(H5F_SCOPE_GLOBAL);
-    result = new HDF5DataSet(name, file);
-  }
-  catch(H5::FileIException const& exception) {
-    // TODO Raise exception.
-    exception.printError(stderr);
-    throw std::string("cannot create hdf5 dataset");
-  }
+    try {
+        unsigned int accessMode = H5F_ACC_TRUNC; // | H5F_ACC_RDWR?
+        H5::FileCreatPropList creationProperties =
+            H5::FileCreatPropList::DEFAULT;
+        H5::FileAccPropList accessProperties = H5::FileAccPropList::DEFAULT;
+        H5::H5File* file = new H5::H5File(name.encodeInUTF8().c_str(),
+            accessMode, creationProperties, accessProperties);
+        file->flush(H5F_SCOPE_GLOBAL);
+        result = new HDF5DataSet(name, file);
+    }
+    catch(H5::FileIException const& exception) {
+        // TODO Raise exception.
+        exception.printError(stderr);
+        throw std::string("cannot create hdf5 dataset");
+    }
 
-  assert(exists(name));
-  return result;
+    assert(exists(name));
+    return result;
 }
-
 
 
 void HDF5DataSetDriver::remove(
-  String const& name) const
+    String const& name) const
 {
-  if(exists(name)) {
-    try {
-      boost::filesystem::remove(name.encodeInUTF8().c_str());
+    if(exists(name)) {
+        try {
+            boost::filesystem::remove(name.encodeInUTF8().c_str());
+        }
+        catch(...) {
+            // TODO Raise exception.
+            throw std::string("cannot remove hdf5 dataset");
+        }
     }
-    catch(...) {
-      // TODO Raise exception.
-      throw std::string("cannot remove hdf5 dataset");
-    }
-  }
 }
 
 
-
 HDF5DataSet* HDF5DataSetDriver::open(
-  String const& name) const
+    String const& name) const
 {
-  HDF5DataSet* result = 0;
+    HDF5DataSet* result = 0;
 
-  try {
-    H5::H5File* file = new H5::H5File(name.encodeInUTF8().c_str(),
-      H5F_ACC_RDONLY);
+    try {
+        H5::H5File* file = new H5::H5File(name.encodeInUTF8().c_str(),
+            H5F_ACC_RDONLY);
 
-    result = new HDF5DataSet(name, file);
-  }
-  catch(H5::FileIException const&) {
-    // TODO Raise exception.
-    throw std::string("cannot open hdf5 file");
-  }
+        result = new HDF5DataSet(name, file);
+    }
+    catch(H5::FileIException const&) {
+        // TODO Raise exception.
+        throw std::string("cannot open hdf5 file");
+    }
 
-  assert(result);
-  return result;
+    assert(result);
+    return result;
 }
 
 } // namespace io
 } // namespace ranally
-

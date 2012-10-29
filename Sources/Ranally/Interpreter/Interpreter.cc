@@ -35,16 +35,16 @@ language::ScriptVertexPtr Interpreter::parseString(
 
 //! Annotate the model in \a tree.
 /*!
-    \param     tree Syntax tree containing the model to annotate.
-    \exception .
+  \param     tree Syntax tree containing the model to annotate.
+  \exception .
 
-    This is a top level operation. It is assumed here that \a tree is the
-    result of parsing a script, without further processing.
+  This is a top level operation. It is assumed here that \a tree is the
+  result of parsing a script, without further processing.
 
-    The folowing steps are performed:
-    - Threading.
-    - Identification.
-    - Annotation.
+  The folowing steps are performed:
+  - Threading.
+  - Identification.
+  - Annotation.
 */
 void Interpreter::annotate(
     language::ScriptVertexPtr const& tree)
@@ -64,15 +64,15 @@ void Interpreter::annotate(
 
 //! Validate the model in \a tree.
 /*!
-    \param     tree Syntax tree containing the model to validate.
-    \exception .
+  \param     tree Syntax tree containing the model to validate.
+  \exception .
 
-    This is a top level operation. It is assumed here that \a tree is the
-    result of parsing a script, without further processing.
+  This is a top level operation. It is assumed here that \a tree is the
+  result of parsing a script, without further processing.
 
-    The folowing steps are performed:
-    - Annotation (seee annotate(language::ScriptVertexPtr const&).
-    - Validation.
+  The folowing steps are performed:
+  - Annotation (seee annotate(language::ScriptVertexPtr const&).
+  - Validation.
 */
 void Interpreter::validate(
     language::ScriptVertexPtr const& tree)
@@ -85,15 +85,15 @@ void Interpreter::validate(
 
 //! Execute the model in \a tree.
 /*!
-    \param     tree Syntax tree containing the model to execute.
-    \exception .
+  \param     tree Syntax tree containing the model to execute.
+  \exception .
 
-    This is a top level operation. It is assumed here that \a tree is the
-    result of parsing a script, without further processing.
+  This is a top level operation. It is assumed here that \a tree is the
+  result of parsing a script, without further processing.
 
-    The folowing steps are performed:
-    - Validation (see validate(language::ScriptVertexPtr const&).
-    - Execution.
+  The folowing steps are performed:
+  - Validation (see validate(language::ScriptVertexPtr const&).
+  - Execution.
 */
 void Interpreter::execute(
     language::ScriptVertexPtr const& tree)

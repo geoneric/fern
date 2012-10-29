@@ -2,7 +2,6 @@
 #include "Ranally/Util/String.h"
 
 
-
 namespace ranally {
 namespace io {
 

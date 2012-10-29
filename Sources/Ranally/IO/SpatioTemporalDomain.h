@@ -2,7 +2,6 @@
 #include "Ranally/IO/Domain.h"
 
 
-
 namespace ranally {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
@@ -12,18 +11,18 @@ namespace ranally {
   \sa        .
 */
 class SpatioTemporalDomain:
-  public Domain
+    public Domain
 {
 
-  friend class SpatioTemporalDomainTest;
+    friend class SpatioTemporalDomainTest;
 
 public:
 
-  virtual          ~SpatioTemporalDomain();
+    virtual        ~SpatioTemporalDomain();
 
-  bool             isSpatial           () const;
+    bool           isSpatial           () const;
 
-  bool             isTemporal          () const;
+    bool           isTemporal          () const;
 
 protected:
 

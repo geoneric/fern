@@ -3,7 +3,6 @@
 #include "Ranally/Operation/ValueType.h"
 
 
-
 namespace ranally {
 namespace operation {
 
@@ -14,10 +13,10 @@ namespace operation {
   \sa        .
 */
 class ValueTypes:
-  public std::bitset<NrValueTypes>
+    public std::bitset<NrValueTypes>
 {
 
-  friend class ValueTypesTest;
+    friend class ValueTypesTest;
 
 public:
 

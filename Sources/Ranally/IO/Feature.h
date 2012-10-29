@@ -4,7 +4,6 @@
 #include "Ranally/Util/String.h"
 
 
-
 namespace ranally {
 
 //! Class for Feature instances combining Domain with an Attribute.
@@ -12,18 +11,18 @@ namespace ranally {
   \sa        .
 */
 class Feature:
-  private boost::noncopyable
+    private boost::noncopyable
 {
 
-  friend class FeatureTest;
+    friend class FeatureTest;
 
 public:
 
-  virtual          ~Feature            ();
+    virtual        ~Feature            ();
 
-  String const&    name                () const;
+    String const&  name                () const;
 
-  Domain::Type     domainType          () const;
+    Domain::Type   domainType          () const;
 
 protected:
 
@@ -32,9 +31,9 @@ protected:
 
 private:
 
-  String           _name;
+    String         _name;
 
-  Domain::Type     _domainType;
+    Domain::Type   _domainType;
 
 };
 

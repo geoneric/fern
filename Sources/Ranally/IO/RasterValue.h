@@ -2,7 +2,6 @@
 #include "Ranally/IO/Value.h"
 
 
-
 namespace ranally {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
@@ -17,10 +16,10 @@ namespace ranally {
   \sa        .
 */
 class RasterValue:
-  public Value
+    public Value
 {
 
-  friend class RasterValueTest;
+    friend class RasterValueTest;
 
 public:
 

@@ -92,15 +92,6 @@ inline void plus(
 } // namespace detail
 
 
-//!
-/*!
-    \tparam    .
-    \param     .
-    \return    .
-    \exception .
-    \warning   .
-    \sa        .
-*/
 template<
     typename Argument1,
     typename Argument2,

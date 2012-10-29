@@ -3,9 +3,8 @@
 #include "Ranally/IO/DataSet.h"
 
 
-
 namespace H5 {
-  class H5File;
+    class H5File;
 } // namespace H5
 
 namespace ranally {
@@ -18,10 +17,10 @@ namespace io {
   \sa        HDF5DataSetDriver
 */
 class HDF5DataSet:
-  public DataSet
+    public DataSet
 {
 
-  friend class HDF5DataSetTest;
+    friend class HDF5DataSetTest;
 
 public:
 
@@ -30,28 +29,28 @@ public:
 
                    ~HDF5DataSet        ();
 
-  size_t           nrFeatures          () const;
+    size_t         nrFeatures          () const;
 
-  Feature*         feature             (size_t i) const;
+    Feature*       feature             (size_t i) const;
 
-  Feature*         feature             (String const& name) const;
+    Feature*       feature             (String const& name) const;
 
-  void             addFeature          (Feature const& feature);
+    void           addFeature          (Feature const& feature);
 
-  void             copy                (DataSet const& dataSet);
+    void           copy                (DataSet const& dataSet);
 
-  bool             exists              (String const& name) const;
+    bool           exists              (String const& name) const;
 
-  void             remove              (String const& name);
+    void           remove              (String const& name);
 
 private:
 
-  boost::scoped_ptr<H5::H5File> _file;
+    boost::scoped_ptr<H5::H5File> _file;
 
-  void             copy                (Feature const& feature);
+    void           copy                (Feature const& feature);
 
-  template<class Feature>
-  void             add                 (Feature const& feature);
+    template<class Feature>
+    void           add                 (Feature const& feature);
 
 };
 

@@ -1,7 +1,6 @@
 #include "Ranally/Python/OwnedReference.h"
 
 
-
 namespace ranally {
 namespace python {
 
@@ -11,11 +10,10 @@ namespace python {
 */
 OwnedReference::OwnedReference()
 
-  : _object(NULL)
+    : _object(NULL)
 
 {
 }
-
 
 
 //! Construct an instance based on \a object passed in.
@@ -31,13 +29,12 @@ OwnedReference::OwnedReference()
   instance.
 */
 OwnedReference::OwnedReference(
-  PyObject* object)
+    PyObject* object)
 
-  : _object(object)
+    : _object(object)
 
 {
 }
-
 
 
 // //! Copy construct an instance based on \a other passed in.
@@ -47,17 +44,16 @@ OwnedReference::OwnedReference(
 //   The reference count of the new layered object is incremented.
 // */
 // OwnedReference::OwnedReference(
-//   OwnedReference const& other)
+//     OwnedReference const& other)
 // 
-//   : _object(other._object)
+//     : _object(other._object)
 // 
 // {
-//   assert(false);
-//   if(_object != NULL) {
-//     incRef();
-//   }
+//     assert(false);
+//     if(_object != NULL) {
+//         incRef();
+//     }
 // }
-
 
 
 //! Assign \a object to the instance.
@@ -71,22 +67,21 @@ OwnedReference::OwnedReference(
   changed.
 */
 OwnedReference& OwnedReference::operator=(
-  PyObject* object)
+    PyObject* object)
 {
-  if(_object == object) {
-    // incRef();
-  }
-  else {
-    if(_object != NULL) {
-      decRef();
+    if(_object == object) {
+        // incRef();
+    }
+    else {
+        if(_object != NULL) {
+            decRef();
+        }
+
+        _object = object;
     }
 
-    _object = object;
-  }
-
-  return *this;
+    return *this;
 }
-
 
 
 //! Destruct instance.
@@ -95,18 +90,16 @@ OwnedReference& OwnedReference::operator=(
 */
 OwnedReference::~OwnedReference()
 {
-  if(_object != NULL) {
-    decRef();
-  }
+    if(_object != NULL) {
+        decRef();
+    }
 }
-
 
 
 // OwnedReference::operator bool() const
 // {
-//   return _object != NULL;
+//     return _object != NULL;
 // }
-
 
 
 //! Return the address of the (pointer to) the layered object.
@@ -119,10 +112,9 @@ OwnedReference::~OwnedReference()
 */
 PyObject** OwnedReference::operator&()
 {
-  assert(_object == NULL);
-  return &_object;
+    assert(_object == NULL);
+    return &_object;
 }
-
 
 
 //! Return the layered Python object.
@@ -131,25 +123,22 @@ PyObject** OwnedReference::operator&()
 */
 OwnedReference::operator PyObject*()
 {
-  return _object;
+    return _object;
 }
-
 
 
 void OwnedReference::incRef()
 {
-  assert(_object != NULL);
-  Py_INCREF(_object);
+    assert(_object != NULL);
+    Py_INCREF(_object);
 }
-
 
 
 void OwnedReference::decRef()
 {
-  assert(_object != NULL);
-  Py_DECREF(_object);
+    assert(_object != NULL);
+    Py_DECREF(_object);
 }
 
 } // namespace python
 } // namespace ranally
-

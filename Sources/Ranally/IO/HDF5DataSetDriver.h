@@ -3,7 +3,6 @@
 #include "Ranally/IO/HDF5DataSet.h"
 
 
-
 namespace ranally {
 namespace io {
 
@@ -14,10 +13,10 @@ namespace io {
   \sa        HDF5DataSet
 */
 class HDF5DataSetDriver:
-  public DataSetDriver
+    public DataSetDriver
 {
 
-  friend class HDF5DataSetDriverTest;
+    friend class HDF5DataSetDriverTest;
 
 public:
 
@@ -25,13 +24,13 @@ public:
 
                    ~HDF5DataSetDriver  ();
 
-  bool             exists              (String const& name) const;
+    bool           exists              (String const& name) const;
 
-  HDF5DataSet*     create              (String const& name) const;
+    HDF5DataSet*   create              (String const& name) const;
 
-  void             remove              (String const& name) const;
+    void           remove              (String const& name) const;
 
-  HDF5DataSet*     open                (String const& name) const;
+    HDF5DataSet*   open                (String const& name) const;
 
 private:
 

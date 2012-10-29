@@ -13,10 +13,10 @@ namespace operation {
   \sa        .
 */
 class DataTypes:
-  public std::bitset<NrDataTypes>
+    public std::bitset<NrDataTypes>
 {
 
-  friend class DataTypesTest;
+    friend class DataTypesTest;
 
 public:
 

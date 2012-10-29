@@ -1,16 +1,14 @@
 #include "Ranally/IO/PointValue.h"
 
 
-
 namespace ranally {
 
 PointValue::PointValue()
 
-  : Value()
+    : Value()
 
 {
 }
-
 
 
 PointValue::~PointValue()
@@ -18,4 +16,3 @@ PointValue::~PointValue()
 }
 
 } // namespace ranally
-

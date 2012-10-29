@@ -4,20 +4,18 @@
 #include "Ranally/IO/PointDomain.h"
 
 
-
 namespace ranally {
 
 PointFeature::PointFeature(
-  String const& name,
-  PointDomainPtr const& domain)
+    String const& name,
+    PointDomainPtr const& domain)
 
-  : Feature(name, domain->type()),
-    _domain(domain),
-    _attributes()
+    : Feature(name, domain->type()),
+      _domain(domain),
+      _attributes()
 
 {
 }
-
 
 
 PointFeature::~PointFeature()
@@ -25,41 +23,36 @@ PointFeature::~PointFeature()
 }
 
 
-
 PointDomain const& PointFeature::domain() const
 {
-  assert(_domain);
-  return *_domain;
+    assert(_domain);
+    return *_domain;
 }
-
 
 
 PointAttributes const& PointFeature::attributes() const
 {
-  return _attributes;
+    return _attributes;
 }
-
 
 
 bool PointFeature::exists(
-  String const& name) const
+    String const& name) const
 {
-  BOOST_FOREACH(PointAttributePtr const& attribute, _attributes) {
-    if(attribute->name() == name) {
-      return true;
+    BOOST_FOREACH(PointAttributePtr const& attribute, _attributes) {
+        if(attribute->name() == name) {
+            return true;
+        }
     }
-  }
-  return false;
+    return false;
 }
-
 
 
 void PointFeature::add(
-  PointAttributePtr const& attribute)
+    PointAttributePtr const& attribute)
 {
-  assert(!exists(attribute->name()));
-  _attributes.push_back(attribute);
+    assert(!exists(attribute->name()));
+    _attributes.push_back(attribute);
 }
 
 } // namespace ranally
-
