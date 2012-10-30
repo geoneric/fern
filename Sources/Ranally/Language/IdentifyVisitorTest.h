@@ -5,11 +5,10 @@
 
 
 namespace boost {
-  namespace unit_test {
-    class test_suite;
-  }
+    namespace unit_test {
+        class test_suite;
+    }
 }
-
 
 
 class IdentifyVisitorTest
@@ -19,17 +18,17 @@ public:
 
                    IdentifyVisitorTest ();
 
-  void             testVisitEmptyScript();
+    void           testVisitEmptyScript();
 
-  void             testVisitName       ();
+    void           testVisitName       ();
 
-  void             testVisitAssignment ();
+    void           testVisitAssignment ();
 
-  void             testVisitIf         ();
+    void           testVisitIf         ();
 
-  void             testVisitReuseOfIdentifiers();
+    void           testVisitReuseOfIdentifiers();
 
-  static boost::unit_test::test_suite* suite();
+    static boost::unit_test::test_suite* suite();
 
 private:
 

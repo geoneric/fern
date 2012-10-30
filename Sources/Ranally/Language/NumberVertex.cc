@@ -1,34 +1,31 @@
 #include "Ranally/Language/NumberVertex.h"
 
 
-
 namespace ranally {
 namespace language {
 
 template<typename T>
 NumberVertex<T>::NumberVertex(
-  T value)
+    T value)
 
-  : ExpressionVertex(String(boost::format("%1%") % value)),
-    _value(value)
+    : ExpressionVertex(String(boost::format("%1%") % value)),
+      _value(value)
 
 {
 }
-
 
 
 template<typename T>
 NumberVertex<T>::NumberVertex(
-  int lineNr,
-  int colId,
-  T value)
+    int lineNr,
+    int colId,
+    T value)
 
-  : ExpressionVertex(lineNr, colId, String(boost::format("%1%") % value)),
-    _value(value)
+    : ExpressionVertex(lineNr, colId, String(boost::format("%1%") % value)),
+      _value(value)
 
 {
 }
-
 
 
 template<typename T>
@@ -41,9 +38,8 @@ NumberVertex<T>::~NumberVertex()
 template<typename T>
 T NumberVertex<T>::value() const
 {
-  return _value;
+    return _value;
 }
-
 
 
 template class NumberVertex<int8_t>;
@@ -59,4 +55,3 @@ template class NumberVertex<double>;
 
 } // namespace language
 } // namespace ranally
-

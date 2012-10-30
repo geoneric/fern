@@ -12,25 +12,25 @@ namespace language {
   \sa        .
 */
 class OperatorVertex:
-  public OperationVertex
+    public OperationVertex
 {
 
-  friend class OperatorVertexTest;
+    friend class OperatorVertexTest;
 
 public:
 
-  LOKI_DEFINE_VISITABLE()
+    LOKI_DEFINE_VISITABLE()
 
                    OperatorVertex      (String const& name,
                                         ExpressionVertices const& expressions);
 
                    ~OperatorVertex     ();
 
-  String const&    symbol              () const;
+    String const&  symbol              () const;
 
 private:
 
-  String           _symbol;
+    String           _symbol;
 
 };
 

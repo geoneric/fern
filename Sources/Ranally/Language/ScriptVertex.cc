@@ -3,21 +3,19 @@
 #include "Ranally/Language/CopyVisitor.h"
 
 
-
 namespace ranally {
 namespace language {
 
 ScriptVertex::ScriptVertex(
-  String const& sourceName,
-  StatementVertices const& statements)
+    String const& sourceName,
+    StatementVertices const& statements)
 
-  : SyntaxVertex(),
-    _sourceName(sourceName),
-    _statements(statements)
+    : SyntaxVertex(),
+      _sourceName(sourceName),
+      _statements(statements)
 
 {
 }
-
 
 
 // ScriptVertex::ScriptVertex(
@@ -37,32 +35,27 @@ ScriptVertex::ScriptVertex(
 // }
 
 
-
 ScriptVertex::~ScriptVertex()
 {
 }
 
 
-
 String const& ScriptVertex::sourceName() const
 {
-  return _sourceName;
+    return _sourceName;
 }
-
 
 
 StatementVertices const& ScriptVertex::statements() const
 {
-  return _statements;
+    return _statements;
 }
-
 
 
 StatementVertices& ScriptVertex::statements()
 {
-  return _statements;
+    return _statements;
 }
-
 
 
 // bool operator==(
@@ -86,4 +79,3 @@ StatementVertices& ScriptVertex::statements()
 
 } // namespace language
 } // namespace ranally
-

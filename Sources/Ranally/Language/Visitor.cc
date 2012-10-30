@@ -14,7 +14,6 @@
 #include "Ranally/Language/WhileVertex.h"
 
 
-
 namespace ranally {
 namespace language {
 
@@ -26,7 +25,6 @@ Visitor::Visitor()
 }
 
 
-
 //! Destruct an instance.
 /*!
 */
@@ -35,20 +33,18 @@ Visitor::~Visitor()
 }
 
 
-
 //! Allow all \a statements to accept the visitor.
 /*!
   \param     statements Collection with StatementVertex instanceѕ.
 */
 void Visitor::visitStatements(
-  StatementVertices& statements)
+    StatementVertices& statements)
 {
-  BOOST_FOREACH(boost::shared_ptr<StatementVertex> statementVertex,
-    statements) {
-    statementVertex->Accept(*this);
-  }
+    BOOST_FOREACH(boost::shared_ptr<StatementVertex> statementVertex,
+        statements) {
+        statementVertex->Accept(*this);
+    }
 }
-
 
 
 //! Allow all \a expressions to accept the visitor.
@@ -58,12 +54,11 @@ void Visitor::visitStatements(
 void Visitor::visitExpressions(
   ExpressionVertices const& expressions)
 {
-  BOOST_FOREACH(boost::shared_ptr<ExpressionVertex> expressionVertex,
-    expressions) {
-    expressionVertex->Accept(*this);
-  }
+    BOOST_FOREACH(boost::shared_ptr<ExpressionVertex> expressionVertex,
+        expressions) {
+        expressionVertex->Accept(*this);
+    }
 }
-
 
 
 //! Visit an AssignmentVertex instance.
@@ -75,13 +70,12 @@ void Visitor::visitExpressions(
   Visit(StatementVertex&).
 */
 void Visitor::Visit(
-  AssignmentVertex& vertex)
+    AssignmentVertex& vertex)
 {
-  vertex.expression()->Accept(*this);
-  vertex.target()->Accept(*this);
-  Visit(dynamic_cast<StatementVertex&>(vertex));
+    vertex.expression()->Accept(*this);
+    vertex.target()->Accept(*this);
+    Visit(dynamic_cast<StatementVertex&>(vertex));
 }
-
 
 
 //! Visit an ExpressionVertex instance.
@@ -91,11 +85,10 @@ void Visitor::Visit(
   The default implementation calls Visit(StatementVertex&);
 */
 void Visitor::Visit(
-  ExpressionVertex& vertex)
+    ExpressionVertex& vertex)
 {
-  Visit(dynamic_cast<StatementVertex&>(vertex));
+    Visit(dynamic_cast<StatementVertex&>(vertex));
 }
-
 
 
 //! Visit an FunctionVertex instance.
@@ -105,11 +98,10 @@ void Visitor::Visit(
   The default implementation calls Visit(OperationVertex&);
 */
 void Visitor::Visit(
-  FunctionVertex& vertex)
+    FunctionVertex& vertex)
 {
-  Visit(dynamic_cast<OperationVertex&>(vertex));
+    Visit(dynamic_cast<OperationVertex&>(vertex));
 }
-
 
 
 //! Visit an IfVertex instance.
@@ -121,14 +113,13 @@ void Visitor::Visit(
   Visit(StatementVertex&).
 */
 void Visitor::Visit(
-  IfVertex& vertex)
+    IfVertex& vertex)
 {
-  vertex.condition()->Accept(*this);
-  visitStatements(vertex.trueStatements());
-  visitStatements(vertex.falseStatements());
-  Visit(dynamic_cast<StatementVertex&>(vertex));
+    vertex.condition()->Accept(*this);
+    visitStatements(vertex.trueStatements());
+    visitStatements(vertex.falseStatements());
+    Visit(dynamic_cast<StatementVertex&>(vertex));
 }
-
 
 
 //! Visit a NameVertex instance.
@@ -138,11 +129,10 @@ void Visitor::Visit(
   The default implementation calls Visit(ExpressionVertex&);
 */
 void Visitor::Visit(
-  NameVertex& vertex)
+    NameVertex& vertex)
 {
-  Visit(dynamic_cast<ExpressionVertex&>(vertex));
+    Visit(dynamic_cast<ExpressionVertex&>(vertex));
 }
-
 
 
 //! Visit a NumberVertex instance.
@@ -152,11 +142,11 @@ void Visitor::Visit(
   The default implementation calls Visit(ExpressionVertex&);
 */
 #define VISIT_NUMBER_VERTEX(                                                   \
-  type)                                                                        \
+    type)                                                                      \
 void Visitor::Visit(                                                           \
-  NumberVertex<type>& vertex)                                                  \
+    NumberVertex<type>& vertex)                                                \
 {                                                                              \
-  Visit(dynamic_cast<ExpressionVertex&>(vertex));                              \
+    Visit(dynamic_cast<ExpressionVertex&>(vertex));                            \
 }
 
 VISIT_NUMBER_VERTEX(int8_t  )
@@ -173,7 +163,6 @@ VISIT_NUMBER_VERTEX(double  )
 #undef VISIT_NUMBER_VERTEX
 
 
-
 //! Visit an OperationVertex instance.
 /*!
   \param     vertex Vertex to visit.
@@ -182,12 +171,11 @@ VISIT_NUMBER_VERTEX(double  )
   visitor. After that it calls Visit(ExpressionVertex&);
 */
 void Visitor::Visit(
-  OperationVertex& vertex)
+    OperationVertex& vertex)
 {
-  visitExpressions(vertex.expressions());
-  Visit(dynamic_cast<ExpressionVertex&>(vertex));
+    visitExpressions(vertex.expressions());
+    Visit(dynamic_cast<ExpressionVertex&>(vertex));
 }
-
 
 
 //! Visit an OperatorVertex instance.
@@ -197,11 +185,10 @@ void Visitor::Visit(
   The default implementation calls Visit(OperationVertex&);
 */
 void Visitor::Visit(
-  OperatorVertex& vertex)
+    OperatorVertex& vertex)
 {
-  Visit(dynamic_cast<OperationVertex&>(vertex));
+    Visit(dynamic_cast<OperationVertex&>(vertex));
 }
-
 
 
 //! Visit a ScriptVertex instance.
@@ -212,12 +199,11 @@ void Visitor::Visit(
   After that it calls Visit(SyntaxVertex&).
 */
 void Visitor::Visit(
-  ScriptVertex& vertex)
+    ScriptVertex& vertex)
 {
-  visitStatements(vertex.statements());
-  Visit(dynamic_cast<SyntaxVertex&>(vertex));
+    visitStatements(vertex.statements());
+    Visit(dynamic_cast<SyntaxVertex&>(vertex));
 }
-
 
 
 //! Visit a StatementVertex instance.
@@ -227,11 +213,10 @@ void Visitor::Visit(
   The default implementation calls Visit(SyntaxVertex&);
 */
 void Visitor::Visit(
-  StatementVertex& vertex)
+    StatementVertex& vertex)
 {
-  Visit(dynamic_cast<SyntaxVertex&>(vertex));
+    Visit(dynamic_cast<SyntaxVertex&>(vertex));
 }
-
 
 
 //! Visit a StringVertex instance.
@@ -241,11 +226,10 @@ void Visitor::Visit(
   The default implementation calls Visit(ExpressionVertex&);
 */
 void Visitor::Visit(
-  StringVertex& vertex)
+    StringVertex& vertex)
 {
-  Visit(dynamic_cast<ExpressionVertex&>(vertex));
+    Visit(dynamic_cast<ExpressionVertex&>(vertex));
 }
-
 
 
 //! Visit a SyntaxVertex instance.
@@ -255,10 +239,9 @@ void Visitor::Visit(
   The default implementation does nothing.
 */
 void Visitor::Visit(
-  SyntaxVertex& /* vertex */)
+    SyntaxVertex& /* vertex */)
 {
 }
-
 
 
 //! Visit a WhileVertex instance.
@@ -270,15 +253,13 @@ void Visitor::Visit(
   Visit(StatementVertex&).
 */
 void Visitor::Visit(
-  WhileVertex& vertex)
+    WhileVertex& vertex)
 {
-  vertex.condition()->Accept(*this);
-  visitStatements(vertex.trueStatements());
-  visitStatements(vertex.falseStatements());
-  Visit(dynamic_cast<StatementVertex&>(vertex));
+    vertex.condition()->Accept(*this);
+    visitStatements(vertex.trueStatements());
+    visitStatements(vertex.falseStatements());
+    Visit(dynamic_cast<StatementVertex&>(vertex));
 }
-
 
 } // namespace language
 } // namespace ranally
-

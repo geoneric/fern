@@ -1,28 +1,25 @@
 #include "Ranally/Language/StatementVertex.h"
 
 
-
 namespace ranally {
 namespace language {
 
 StatementVertex::StatementVertex()
 
-  : SyntaxVertex()
+    : SyntaxVertex()
 
 {
 }
-
 
 
 StatementVertex::StatementVertex(
-  int lineNr,
-  int colId)
+    int lineNr,
+    int colId)
 
-  : SyntaxVertex(lineNr, colId)
+    : SyntaxVertex(lineNr, colId)
 
 {
 }
-
 
 
 StatementVertex::~StatementVertex()
@@ -31,4 +28,3 @@ StatementVertex::~StatementVertex()
 
 } // namespace language
 } // namespace ranally
-

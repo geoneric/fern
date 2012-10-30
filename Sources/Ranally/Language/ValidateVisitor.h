@@ -17,10 +17,10 @@ namespace language {
   \sa        AnnotateVisitor
 */
 class ValidateVisitor:
-  public Visitor
+    public Visitor
 {
 
-  friend class ValidateVisitorTest;
+    friend class ValidateVisitorTest;
 
 public:
 
@@ -30,9 +30,9 @@ public:
 
 private:
 
-  void             Visit               (NameVertex& vertex);
+    void           Visit               (NameVertex& vertex);
 
-  void             Visit               (FunctionVertex& vertex);
+    void           Visit               (FunctionVertex& vertex);
 
 };
 

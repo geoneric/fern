@@ -12,14 +12,14 @@ namespace language {
   \sa        .
 */
 class ScriptVertex:
-  public SyntaxVertex
+    public SyntaxVertex
 {
 
-  friend class ScriptVertexTest;
+    friend class ScriptVertexTest;
 
 public:
 
-  LOKI_DEFINE_VISITABLE()
+    LOKI_DEFINE_VISITABLE()
 
                    ScriptVertex        (String const& sourceName,
                                         StatementVertices const& statements);
@@ -28,17 +28,17 @@ public:
 
                    ~ScriptVertex       ();
 
-  String const&    sourceName          () const;
+    String const&  sourceName          () const;
 
-  StatementVertices const& statements  () const;
+    StatementVertices const& statements  () const;
 
-  StatementVertices& statements        ();
+    StatementVertices& statements        ();
 
 private:
 
-  String           _sourceName;
+    String         _sourceName;
 
-  StatementVertices _statements;
+    StatementVertices _statements;
 
 };
 

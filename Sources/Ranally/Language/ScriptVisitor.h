@@ -13,10 +13,10 @@ namespace language {
   \sa        .
 */
 class ScriptVisitor
-  : public Visitor
+    : public Visitor
 {
 
-  friend class ScriptVisitorTest;
+    friend class ScriptVisitorTest;
 
 public:
 
@@ -24,63 +24,63 @@ public:
 
                    ~ScriptVisitor      ();
 
-  String const&    script              () const;
+    String const&  script              () const;
 
 private:
 
-  size_t           _tabSize;
+    size_t         _tabSize;
 
-  size_t           _indentLevel;
+    size_t         _indentLevel;
 
-  String           _script;
+    String         _script;
 
-  // void             indent              (String const& statement);
+    // void           indent              (String const& statement);
 
-  String           indentation         () const;
+    String         indentation         () const;
 
-  void             visitStatements     (
+    void           visitStatements     (
                                   language::StatementVertices& statements);
 
-  void             visitExpressions    (
+    void           visitExpressions    (
                              language::ExpressionVertices const& expressions);
 
-  void             Visit               (language::AssignmentVertex&);
+    void           Visit               (language::AssignmentVertex&);
 
-  void             Visit               (language::FunctionVertex&);
+    void           Visit               (language::FunctionVertex&);
 
-  void             Visit               (language::IfVertex&);
+    void           Visit               (language::IfVertex&);
 
-  void             Visit               (language::NameVertex&);
+    void           Visit               (language::NameVertex&);
 
-  void             Visit               (language::NumberVertex<int8_t>&);
+    void           Visit               (language::NumberVertex<int8_t>&);
 
-  void             Visit               (language::NumberVertex<int16_t>&);
+    void           Visit               (language::NumberVertex<int16_t>&);
 
-  void             Visit               (language::NumberVertex<int32_t>&);
+    void           Visit               (language::NumberVertex<int32_t>&);
 
-  void             Visit               (language::NumberVertex<int64_t>&);
+    void           Visit               (language::NumberVertex<int64_t>&);
 
-  void             Visit               (language::NumberVertex<uint8_t>&);
+    void           Visit               (language::NumberVertex<uint8_t>&);
 
-  void             Visit               (language::NumberVertex<uint16_t>&);
+    void           Visit               (language::NumberVertex<uint16_t>&);
 
-  void             Visit               (language::NumberVertex<uint32_t>&);
+    void           Visit               (language::NumberVertex<uint32_t>&);
 
-  void             Visit               (language::NumberVertex<uint64_t>&);
+    void           Visit               (language::NumberVertex<uint64_t>&);
 
-  void             Visit               (language::NumberVertex<float>&);
+    void           Visit               (language::NumberVertex<float>&);
 
-  void             Visit               (language::NumberVertex<double>&);
+    void           Visit               (language::NumberVertex<double>&);
 
-  void             Visit               (language::OperatorVertex&);
+    void           Visit               (language::OperatorVertex&);
 
-  void             Visit               (language::ScriptVertex&);
+    void           Visit               (language::ScriptVertex&);
 
-  void             Visit               (language::StringVertex&);
+    void           Visit               (language::StringVertex&);
 
-  void             Visit               (language::SyntaxVertex&);
+    void           Visit               (language::SyntaxVertex&);
 
-  void             Visit               (language::WhileVertex&);
+    void           Visit               (language::WhileVertex&);
 
 };
 

@@ -5,11 +5,10 @@
 
 
 namespace boost {
-  namespace unit_test {
-    class test_suite;
-  }
+    namespace unit_test {
+        class test_suite;
+    }
 }
-
 
 
 class OptimizeVisitorTest
@@ -19,12 +18,12 @@ public:
 
                    OptimizeVisitorTest ();
 
-  void             testRemoveTemporaryIdentifier();
+    void           testRemoveTemporaryIdentifier();
 
-  static boost::unit_test::test_suite* suite();
+    static boost::unit_test::test_suite* suite();
 
-  ranally::interpreter::Interpreter _interpreter;
-  ranally::language::ScriptVisitor _scriptVisitor;
-  ranally::language::OptimizeVisitor _optimizeVisitor;
+    ranally::interpreter::Interpreter _interpreter;
+    ranally::language::ScriptVisitor _scriptVisitor;
+    ranally::language::OptimizeVisitor _optimizeVisitor;
 
 };

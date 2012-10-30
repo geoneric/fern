@@ -1,38 +1,34 @@
 #include "Ranally/Language/NameVertex.h"
 
 
-
 namespace ranally {
 namespace language {
 
 NameVertex::NameVertex(
-  String const& name)
+    String const& name)
 
-  : ExpressionVertex(name) // ,
-    // _definition(0)
+    : ExpressionVertex(name) // ,
+      // _definition(0)
 
 {
 }
-
 
 
 NameVertex::NameVertex(
-  int lineNr,
-  int colId,
-  String const& name)
+    int lineNr,
+    int colId,
+    String const& name)
 
-  : ExpressionVertex(lineNr, colId, name) // ,
-    // _definition(0)
+    : ExpressionVertex(lineNr, colId, name) // ,
+      // _definition(0)
 
 {
 }
-
 
 
 NameVertex::~NameVertex()
 {
 }
-
 
 
 // void NameVertex::setDefinition(
@@ -58,35 +54,31 @@ NameVertex::~NameVertex()
 // }
 
 
-
 void NameVertex::addDefinition(
-  NameVertex* vertex)
+    NameVertex* vertex)
 {
-  _definitions.push_back(vertex);
+    _definitions.push_back(vertex);
 }
-
 
 
 std::vector<NameVertex*> const& NameVertex::definitions() const
 {
-  return _definitions;
+    return _definitions;
 }
-
 
 
 void NameVertex::addUse(
-  NameVertex* vertex)
+    NameVertex* vertex)
 {
-  // Either the definition vertex is not set yet, or it is equal to this.
-  // assert(!_definition || _definition == this);
-  assert(_definitions.empty() ||
-    (_definitions.size() == 1 && _definitions[0] == this));
-  assert(vertex);
-  assert(vertex != this);
-  assert(name() == vertex->name());
-  _uses.push_back(vertex);
+    // Either the definition vertex is not set yet, or it is equal to this.
+    // assert(!_definition || _definition == this);
+    assert(_definitions.empty() ||
+        (_definitions.size() == 1 && _definitions[0] == this));
+    assert(vertex);
+    assert(vertex != this);
+    assert(name() == vertex->name());
+    _uses.push_back(vertex);
 }
-
 
 
 //! Return the collection of vertices that represent uses of this name.
@@ -97,9 +89,8 @@ void NameVertex::addUse(
 */
 std::vector<NameVertex*> const& NameVertex::uses() const
 {
-  return _uses;
+    return _uses;
 }
 
 } // namespace language
 } // namespace ranally
-

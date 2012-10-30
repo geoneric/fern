@@ -22,41 +22,39 @@ namespace language {
   \sa        .
 */
 class IfVertex:
-  public StatementVertex
+    public StatementVertex
 {
 
-  friend class IfVertexTest;
+    friend class IfVertexTest;
 
 public:
 
-  LOKI_DEFINE_VISITABLE()
+    LOKI_DEFINE_VISITABLE()
 
                    IfVertex            (
                         boost::shared_ptr<ExpressionVertex> const& condition,
                         StatementVertices const& trueStatements,
                         StatementVertices const& falseStatements);
 
-  /* virtual */    ~IfVertex           ();
+                   ~IfVertex           ();
 
-  boost::shared_ptr<ExpressionVertex> const& condition() const;
+    boost::shared_ptr<ExpressionVertex> const& condition() const;
 
-  StatementVertices const& trueStatements() const;
+    StatementVertices const& trueStatements() const;
 
-  StatementVertices& trueStatements    ();
+    StatementVertices& trueStatements  ();
 
-  StatementVertices const& falseStatements() const;
+    StatementVertices const& falseStatements() const;
 
-  StatementVertices& falseStatements   ();
-
-protected:
+    StatementVertices& falseStatements ();
 
 private:
 
-  ExpressionVertexPtr _condition;
+    ExpressionVertexPtr _condition;
 
-  StatementVertices _trueStatements;
+    StatementVertices _trueStatements;
 
-  StatementVertices _falseStatements;
+    StatementVertices _falseStatements;
 
 };
 

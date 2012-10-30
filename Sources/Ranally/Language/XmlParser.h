@@ -20,9 +20,7 @@ class ScriptVertex;
 class XmlParser
 {
 
-  friend class XmlParserTest;
-
-private:
+    friend class XmlParserTest;
 
 public:
 
@@ -30,9 +28,9 @@ public:
 
                    ~XmlParser          ();
 
-  boost::shared_ptr<ScriptVertex> parse(String const& xml) const;
+    boost::shared_ptr<ScriptVertex> parse(String const& xml) const;
 
-  boost::shared_ptr<ScriptVertex> parse(std::istream& stream) const;
+    boost::shared_ptr<ScriptVertex> parse(std::istream& stream) const;
 
 };
 

@@ -24,10 +24,10 @@ namespace language {
   \sa        SymbolTable, NameVertex
 */
 class IdentifyVisitor:
-  public Visitor
+    public Visitor
 {
 
-  friend class IdentifyVisitorTest;
+    friend class IdentifyVisitorTest;
 
 public:
 
@@ -35,32 +35,32 @@ public:
 
                    ~IdentifyVisitor    ();
 
-  SymbolTable const& symbolTable       () const;
+    SymbolTable const& symbolTable     () const;
 
 private:
 
-  enum Mode {
-    Defining,
-    Using
-  };
+    enum Mode {
+        Defining,
+        Using
+    };
 
-  SymbolTable      _symbolTable;
+    SymbolTable    _symbolTable;
 
-  Mode             _mode;
+    Mode           _mode;
 
-  void             Visit               (AssignmentVertex&);
+    void           Visit               (AssignmentVertex&);
 
-  void             Visit               (FunctionVertex&);
+    void           Visit               (FunctionVertex&);
 
-  void             Visit               (IfVertex&);
+    void           Visit               (IfVertex&);
 
-  void             Visit               (NameVertex&);
+    void           Visit               (NameVertex&);
 
-  void             Visit               (OperatorVertex&);
+    void           Visit               (OperatorVertex&);
 
-  void             Visit               (ScriptVertex&);
+    void           Visit               (ScriptVertex&);
 
-  void             Visit               (WhileVertex&);
+    void           Visit               (WhileVertex&);
 
 };
 

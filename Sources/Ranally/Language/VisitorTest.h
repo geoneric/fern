@@ -4,11 +4,10 @@
 
 
 namespace boost {
-  namespace unit_test {
-    class test_suite;
-  }
+    namespace unit_test {
+        class test_suite;
+    }
 }
-
 
 
 class VisitorTest
@@ -18,9 +17,9 @@ public:
 
                    VisitorTest         ();
 
-  void             testCountVerticesVisitor();
+    void           testCountVerticesVisitor();
 
-  static boost::unit_test::test_suite* suite();
+    static boost::unit_test::test_suite* suite();
 
 private:
 

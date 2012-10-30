@@ -2,11 +2,10 @@
 
 
 namespace boost {
-  namespace unit_test {
-    class test_suite;
-  }
+    namespace unit_test {
+        class test_suite;
+    }
 }
-
 
 
 class XmlParserTest
@@ -16,8 +15,8 @@ public:
 
                    XmlParserTest       ();
 
-  void             testParse           ();
+    void           testParse           ();
 
-  static boost::unit_test::test_suite* suite();
+    static boost::unit_test::test_suite* suite();
 
 };

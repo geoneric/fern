@@ -25,53 +25,51 @@
 #include "Ranally/Language/XmlParserTest.h"
 
 
-
 boost::unit_test::test_suite* init_unit_test_suite(
-         int argc,
-         char** const argv) {
+    int argc,
+    char** const argv) {
 
-  struct TestSuite: public boost::unit_test::test_suite
-  {
-    TestSuite(
-         int& /* argc */,
-         char** /* argv */)
-      : boost::unit_test::test_suite("Master test suite")
+    struct TestSuite: public boost::unit_test::test_suite
     {
-    }
-  };
+        TestSuite(
+            int& /* argc */,
+            char** /* argv */)
+            : boost::unit_test::test_suite("Master test suite")
+        {
+        }
+    };
 
-  TestSuite* test = new TestSuite(argc, argv);
+    TestSuite* test = new TestSuite(argc, argv);
 
-  test->add(AlgebraParserTest::suite());
+    test->add(AlgebraParserTest::suite());
 
-  test->add(SyntaxVertexTest::suite());
-  test->add(NameVertexTest::suite());
-  test->add(NumberVertexTest::suite());
-  test->add(StringVertexTest::suite());
-  test->add(ExpressionVertexTest::suite());
-  test->add(FunctionVertexTest::suite());
-  test->add(OperatorVertexTest::suite());
-  test->add(AssignmentVertexTest::suite());
-  test->add(StatementVertexTest::suite());
-  test->add(IfVertexTest::suite());
-  test->add(WhileVertexTest::suite());
-  test->add(ScriptVertexTest::suite());
+    test->add(SyntaxVertexTest::suite());
+    test->add(NameVertexTest::suite());
+    test->add(NumberVertexTest::suite());
+    test->add(StringVertexTest::suite());
+    test->add(ExpressionVertexTest::suite());
+    test->add(FunctionVertexTest::suite());
+    test->add(OperatorVertexTest::suite());
+    test->add(AssignmentVertexTest::suite());
+    test->add(StatementVertexTest::suite());
+    test->add(IfVertexTest::suite());
+    test->add(WhileVertexTest::suite());
+    test->add(ScriptVertexTest::suite());
 
-  test->add(XmlParserTest::suite());
+    test->add(XmlParserTest::suite());
 
-  test->add(SymbolTableTest::suite());
+    test->add(SymbolTableTest::suite());
 
-  test->add(VisitorTest::suite());
-  test->add(ThreadVisitorTest::suite());
-  test->add(AnnotateVisitorTest::suite());
-  test->add(IdentifyVisitorTest::suite());
-  test->add(ValidateVisitorTest::suite());
-  // test->add(OptimizeVisitorTest::suite());
-  test->add(ExecuteVisitorTest::suite());
+    test->add(VisitorTest::suite());
+    test->add(ThreadVisitorTest::suite());
+    test->add(AnnotateVisitorTest::suite());
+    test->add(IdentifyVisitorTest::suite());
+    test->add(ValidateVisitorTest::suite());
+    // test->add(OptimizeVisitorTest::suite());
+    test->add(ExecuteVisitorTest::suite());
 
-  test->add(DotVisitorTest::suite());
-  test->add(ScriptVisitorTest::suite());
+    test->add(DotVisitorTest::suite());
+    test->add(ScriptVisitorTest::suite());
 
-  return test;
+    return test;
 }
-

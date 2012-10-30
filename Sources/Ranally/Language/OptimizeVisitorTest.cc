@@ -5,92 +5,88 @@
 #include "Ranally/Util/String.h"
 
 
-
 boost::unit_test::test_suite* OptimizeVisitorTest::suite()
 {
-  boost::unit_test::test_suite* suite = BOOST_TEST_SUITE(__FILE__);
-  boost::shared_ptr<OptimizeVisitorTest> instance(
-    new OptimizeVisitorTest());
-  suite->add(BOOST_CLASS_TEST_CASE(
-    &OptimizeVisitorTest::testRemoveTemporaryIdentifier, instance));
+    boost::unit_test::test_suite* suite = BOOST_TEST_SUITE(__FILE__);
+    boost::shared_ptr<OptimizeVisitorTest> instance(
+        new OptimizeVisitorTest());
+    suite->add(BOOST_CLASS_TEST_CASE(
+        &OptimizeVisitorTest::testRemoveTemporaryIdentifier, instance));
 
-  return suite;
+    return suite;
 }
-
 
 
 OptimizeVisitorTest::OptimizeVisitorTest()
 
-  : _interpreter(),
-    _scriptVisitor(),
-    _optimizeVisitor()
+    : _interpreter(),
+      _scriptVisitor(),
+      _optimizeVisitor()
 
 {
 }
-
 
 
 void OptimizeVisitorTest::testRemoveTemporaryIdentifier()
 {
-  namespace rl = ranally::language;
+    namespace rl = ranally::language;
 
-  boost::shared_ptr<rl::ScriptVertex> tree;
-  ranally::String script;
+    boost::shared_ptr<rl::ScriptVertex> tree;
+    ranally::String script;
 
-  // Make sure that temporary identifiers which are only used as input to
-  // one expression, are removed.
-  {
-    // This script should be rewritten in the tree as d = 5.
-    script = ranally::String(
-      "a = 5\n"
-      "d = a\n");
-    tree = _interpreter.parseString(script);
-    _interpreter.annotate(tree);
-    tree->Accept(_optimizeVisitor);
-    tree->Accept(_scriptVisitor);
-    BOOST_CHECK_EQUAL(_scriptVisitor.script(), ranally::String("d = 5\n"));
+    // Make sure that temporary identifiers which are only used as input to
+    // one expression, are removed.
+    {
+        // This script should be rewritten in the tree as d = 5.
+        script = ranally::String(
+            "a = 5\n"
+            "d = a\n");
+        tree = _interpreter.parseString(script);
+        _interpreter.annotate(tree);
+        tree->Accept(_optimizeVisitor);
+        tree->Accept(_scriptVisitor);
+        BOOST_CHECK_EQUAL(_scriptVisitor.script(), ranally::String("d = 5\n"));
 
-    // This script should be rewritten in the tree as e = 5.
-    script = ranally::String(
-      "a = 5\n"
-      "d = a\n"
-      "e = d\n"
-    );
-    tree = _interpreter.parseString(script);
-    _interpreter.annotate(tree);
+        // This script should be rewritten in the tree as e = 5.
+        script = ranally::String(
+            "a = 5\n"
+            "d = a\n"
+            "e = d\n"
+        );
+        tree = _interpreter.parseString(script);
+        _interpreter.annotate(tree);
 std::cout << "--------------------------" << std::endl;
-    tree->Accept(_optimizeVisitor);
-    tree->Accept(_scriptVisitor);
+        tree->Accept(_optimizeVisitor);
+        tree->Accept(_scriptVisitor);
 std::cout << _scriptVisitor.script().encodeInUTF8() << std::endl;
-    BOOST_CHECK_EQUAL(_scriptVisitor.script(), ranally::String("e = 5\n"));
+        BOOST_CHECK_EQUAL(_scriptVisitor.script(), ranally::String("e = 5\n"));
 
-    return;
+        return;
 
-    // This script should be rewritten in the tree as d = f(5).
-    script = ranally::String(
-      "a = 5\n"
-      "d = f(a)\n");
-    tree = _interpreter.parseString(script);
-    _interpreter.annotate(tree);
-    tree->Accept(_optimizeVisitor);
-    tree->Accept(_scriptVisitor);
-    std::cout << _scriptVisitor.script().encodeInUTF8() << std::endl;
-    BOOST_CHECK_EQUAL(_scriptVisitor.script(), ranally::String("d = f(5)"));
-  }
+        // This script should be rewritten in the tree as d = f(5).
+        script = ranally::String(
+            "a = 5\n"
+            "d = f(a)\n");
+        tree = _interpreter.parseString(script);
+        _interpreter.annotate(tree);
+        tree->Accept(_optimizeVisitor);
+        tree->Accept(_scriptVisitor);
+        std::cout << _scriptVisitor.script().encodeInUTF8() << std::endl;
+        BOOST_CHECK_EQUAL(_scriptVisitor.script(), ranally::String("d = f(5)"));
+    }
 
-  // Make sure that temporary identifiers which are only used as input to
-  // more than one expression, are removed.
-  {
-    // This script should not be rewritten.
-    script = ranally::String(
-      "a = 5\n"
-      "d = f(a)\n"
-      "e = g(a)\n");
-    tree = _interpreter.parseString(script);
-    _interpreter.annotate(tree);
-    tree->Accept(_optimizeVisitor);
-    tree->Accept(_scriptVisitor);
-    BOOST_CHECK_EQUAL(_scriptVisitor.script(), script);
-  }
+    // Make sure that temporary identifiers which are only used as input to
+    // more than one expression, are removed.
+    {
+        // This script should not be rewritten.
+        script = ranally::String(
+            "a = 5\n"
+            "d = f(a)\n"
+            "e = g(a)\n");
+        tree = _interpreter.parseString(script);
+        _interpreter.annotate(tree);
+        tree->Accept(_optimizeVisitor);
+        tree->Accept(_scriptVisitor);
+        BOOST_CHECK_EQUAL(_scriptVisitor.script(), script);
+    }
 }
-

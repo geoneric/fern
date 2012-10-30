@@ -13,18 +13,18 @@ namespace language {
 */
 template<typename T>
 class NumberVertex:
-  public ExpressionVertex
+    public ExpressionVertex
 {
 
-  friend class NumberVertexTest;
+    friend class NumberVertexTest;
 
 private:
 
-  T                _value;
+    T              _value;
 
 public:
 
-  LOKI_DEFINE_VISITABLE()
+    LOKI_DEFINE_VISITABLE()
 
                    NumberVertex        (T value);
 
@@ -34,7 +34,7 @@ public:
 
                    ~NumberVertex       ();
 
-  T                value               () const;
+    T              value               () const;
 
 };
 

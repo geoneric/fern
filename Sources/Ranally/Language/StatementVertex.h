@@ -12,16 +12,16 @@ namespace language {
   \sa        .
 */
 class StatementVertex:
-  public SyntaxVertex
+    public SyntaxVertex
 {
 
-  friend class StatementVertexTest;
+    friend class StatementVertexTest;
 
 public:
 
-  LOKI_DEFINE_VISITABLE()
+    LOKI_DEFINE_VISITABLE()
 
-  virtual          ~StatementVertex    ();
+    virtual        ~StatementVertex    ();
 
 protected:
 

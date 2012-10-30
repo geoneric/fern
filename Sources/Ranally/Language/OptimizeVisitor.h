@@ -20,10 +20,10 @@ namespace language {
   \sa        .
 */
 class OptimizeVisitor
-  : public Visitor
+    : public Visitor
 {
 
-  friend class OptimizeVisitorTest;
+    friend class OptimizeVisitorTest;
 
 public:
 
@@ -33,30 +33,30 @@ public:
 
 private:
 
-  enum Mode {
-    Defining,
-    Using
-  };
+    enum Mode {
+        Defining,
+        Using
+    };
 
-  Mode             _mode;
+    Mode           _mode;
 
-  std::map<ExpressionVertex const*, ExpressionVertexPtr> _inlineExpressions;
+    std::map<ExpressionVertex const*, ExpressionVertexPtr> _inlineExpressions;
 
-  std::vector<ExpressionVertexPtr> _inlinedExpressions;
+    std::vector<ExpressionVertexPtr> _inlinedExpressions;
 
-  std::vector<StatementVertex*> _superfluousStatements;
+    std::vector<StatementVertex*> _superfluousStatements;
 
-  void             registerExpressionForInlining(
+    void           registerExpressionForInlining(
                                         ExpressionVertex const* use,
                                         ExpressionVertexPtr const& expression);
 
-  void             visitStatements     (StatementVertices& statements);
+    void           visitStatements     (StatementVertices& statements);
 
-  void             Visit               (AssignmentVertex& vertex);
+    void           Visit               (AssignmentVertex& vertex);
 
-  void             Visit               (NameVertex& vertex);
+    void           Visit               (NameVertex& vertex);
 
-  void             Visit               (ScriptVertex& vertex);
+    void           Visit               (ScriptVertex& vertex);
 
 };
 

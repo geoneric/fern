@@ -21,45 +21,45 @@ typedef std::vector<boost::shared_ptr<StatementVertex> > StatementVertices;
   \sa        .
 */
 class SyntaxVertex:
-  public Loki::BaseVisitable<>
+    public Loki::BaseVisitable<>
 {
 
-  friend class SyntaxVertexTest;
+    friend class SyntaxVertexTest;
 
 private:
 
-  typedef std::vector<SyntaxVertex*> SyntaxVertices;
+    typedef std::vector<SyntaxVertex*> SyntaxVertices;
 
 public:
 
-  LOKI_DEFINE_VISITABLE()
+    LOKI_DEFINE_VISITABLE()
 
-  typedef SyntaxVertices::size_type size_type;
+    typedef SyntaxVertices::size_type size_type;
 
                    SyntaxVertex        (SyntaxVertex const&)=delete;
 
-  SyntaxVertex&    operator=           (SyntaxVertex const&)=delete;
+    SyntaxVertex&  operator=           (SyntaxVertex const&)=delete;
 
-  virtual          ~SyntaxVertex       ();
+    virtual        ~SyntaxVertex       ();
 
-  void             setPosition         (int lineNr,
+    void           setPosition         (int lineNr,
                                         int colId);
 
-  int              line                () const;
+    int            line                () const;
 
-  int              col                 () const;
+    int            col                 () const;
 
-  SyntaxVertices const& successors     () const;
+    SyntaxVertices const& successors   () const;
 
-  SyntaxVertex const* successor        () const;
+    SyntaxVertex const* successor      () const;
 
-  SyntaxVertex*    successor           ();
+    SyntaxVertex*  successor           ();
 
-  SyntaxVertex const* successor        (size_type index) const;
+    SyntaxVertex const* successor      (size_type index) const;
 
-  SyntaxVertex*    successor           (size_type index);
+    SyntaxVertex*  successor           (size_type index);
 
-  void             addSuccessor        (SyntaxVertex* successor);
+    void           addSuccessor        (SyntaxVertex* successor);
 
 protected:
 
@@ -70,12 +70,12 @@ protected:
 
 private:
 
-  int              _line;
+    int            _line;
 
-  int              _col;
+    int            _col;
 
-  //! The next vertex/vertices to process.
-  SyntaxVertices   _successors;
+    //! The next vertex/vertices to process.
+    SyntaxVertices   _successors;
 
 };
 

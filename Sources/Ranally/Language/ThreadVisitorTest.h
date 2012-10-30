@@ -5,11 +5,10 @@
 
 
 namespace boost {
-  namespace unit_test {
-    class test_suite;
-  }
+    namespace unit_test {
+        class test_suite;
+    }
 }
-
 
 
 class ThreadVisitorTest
@@ -19,34 +18,34 @@ public:
 
                    ThreadVisitorTest   ();
 
-  void             testVisitEmptyScript();
+    void           testVisitEmptyScript();
 
-  void             testVisitName       ();
+    void           testVisitName       ();
 
-  void             testVisitAssignment ();
+    void           testVisitAssignment ();
 
-  void             testVisitString     ();
+    void           testVisitString     ();
 
-  void             testVisitNumber     ();
+    void           testVisitNumber     ();
 
-  void             testVisitFunction   ();
+    void           testVisitFunction   ();
 
-  void             testVisitOperator   ();
+    void           testVisitOperator   ();
 
-  void             testVisitNestedExpression();
+    void           testVisitNestedExpression();
 
-  void             testVisitMultipleStatements();
+    void           testVisitMultipleStatements();
 
-  void             testVisitIf         ();
+    void           testVisitIf         ();
 
-  void             testVisitWhile      ();
+    void           testVisitWhile      ();
 
-  static boost::unit_test::test_suite* suite();
+    static boost::unit_test::test_suite* suite();
 
 private:
 
-  ranally::language::AlgebraParser _algebraParser;
-  ranally::language::XmlParser _xmlParser;
-  ranally::language::ThreadVisitor _visitor;
+    ranally::language::AlgebraParser _algebraParser;
+    ranally::language::XmlParser _xmlParser;
+    ranally::language::ThreadVisitor _visitor;
 
 };

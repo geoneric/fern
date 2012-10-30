@@ -24,57 +24,55 @@ class NameVertex;
 class SymbolTable
 {
 
-  friend class SymbolTableTest;
+    friend class SymbolTableTest;
 
 public:
 
-  //! Type for lists of definitions.
-  typedef std::list<NameVertex*> Definitions;
+    //! Type for lists of definitions.
+    typedef std::list<NameVertex*> Definitions;
 
-  //! Type for scope levels.
-  typedef std::vector<Definitions>::size_type size_type;
+    //! Type for scope levels.
+    typedef std::vector<Definitions>::size_type size_type;
 
                    SymbolTable         ();
 
                    SymbolTable         (SymbolTable const&)=delete;
 
-  SymbolTable&     operator=           (SymbolTable const&)=delete;
+    SymbolTable&   operator=           (SymbolTable const&)=delete;
 
                    ~SymbolTable        ();
 
-  void             pushScope           ();
+    void           pushScope           ();
 
-  void             popScope            ();
+    void           popScope            ();
 
-  size_type        scopeLevel          () const;
+    size_type      scopeLevel          () const;
 
-  size_type        scopeLevel          (String const& name) const;
+    size_type      scopeLevel          (String const& name) const;
 
-  void             addDefinition       (NameVertex* definition);
+    void           addDefinition       (NameVertex* definition);
 
-  bool             hasDefinition       (String const& name) const;
+    bool           hasDefinition       (String const& name) const;
 
-  NameVertex const* definition         (String const& name) const;
+    NameVertex const* definition       (String const& name) const;
 
-  NameVertex*      definition          (String const& name);
+    NameVertex*    definition          (String const& name);
 
-  bool             empty               () const;
+    bool           empty               () const;
 
-  size_type        size                () const;
-
-protected:
+    size_type      size                () const;
 
 private:
 
-  //! Definitions by name.
-  std::map<String, Definitions> _definitions;
+    //! Definitions by name.
+    std::map<String, Definitions> _definitions;
 
-  //! Definitions by scope level.
-  std::vector<Definitions> _scopes;
+    //! Definitions by scope level.
+    std::vector<Definitions> _scopes;
 
-  Definitions const& definitions       (String const& name) const;
+    Definitions const& definitions     (String const& name) const;
 
-  Definitions&     definitions         (String const& name);
+    Definitions&   definitions         (String const& name);
 
 };
 

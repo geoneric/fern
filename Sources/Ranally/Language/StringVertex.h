@@ -12,14 +12,14 @@ namespace language {
   \sa        .
 */
 class StringVertex:
-  public ExpressionVertex
+    public ExpressionVertex
 {
 
-  friend class StringVertexTest;
+    friend class StringVertexTest;
 
 public:
 
-  LOKI_DEFINE_VISITABLE()
+    LOKI_DEFINE_VISITABLE()
 
                    StringVertex        (int lineNr,
                                         int colId,
@@ -27,11 +27,11 @@ public:
 
                    ~StringVertex       ();
 
-  String const&    value               () const;
+    String const&  value               () const;
 
 private:
 
-  String           _value;
+    String         _value;
 
 };
 

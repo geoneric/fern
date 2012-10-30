@@ -2,11 +2,10 @@
 
 
 namespace boost {
-  namespace unit_test {
-    class test_suite;
-  }
+    namespace unit_test {
+        class test_suite;
+    }
 }
-
 
 
 class SymbolTableTest
@@ -16,8 +15,8 @@ public:
 
                    SymbolTableTest     ();
 
-  void             testScoping         ();
+    void           testScoping         ();
 
-  static boost::unit_test::test_suite* suite();
+    static boost::unit_test::test_suite* suite();
 
 };

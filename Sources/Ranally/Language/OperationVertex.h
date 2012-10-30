@@ -13,21 +13,21 @@ namespace language {
   \sa        .
 */
 class OperationVertex:
-  public ExpressionVertex
+    public ExpressionVertex
 {
 
-  friend class OperationVertexTest;
+    friend class OperationVertexTest;
 
 public:
 
-  virtual          ~OperationVertex    ();
+    virtual        ~OperationVertex    ();
 
-  ExpressionVertices const& expressions() const;
+    ExpressionVertices const& expressions() const;
 
-  void             setOperation        (
-                                  operation::OperationPtr const& operation);
+    void           setOperation        (
+                                    operation::OperationPtr const& operation);
 
-  operation::OperationPtr const& operation() const;
+    operation::OperationPtr const& operation() const;
 
 protected:
 
@@ -36,9 +36,9 @@ protected:
 
 private:
 
-  ExpressionVertices _expressions;
+    ExpressionVertices _expressions;
 
-  operation::OperationPtr _operation;
+    operation::OperationPtr _operation;
 
 };
 
