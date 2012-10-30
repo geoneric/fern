@@ -1,15 +1,16 @@
 SET(SPHINX_SOURCES
-  DataModel.rst
-  Examples.rst
-  FileFormat.rst
-  Glossary.rst
-  index.rst
-  Introduction.rst
-  ModelingLanguage.rst
-  Ontology.rst
-  WolvesAndSheep.ran
+    DataModel.rst
+    Examples.rst
+    FileFormat.rst
+    Glossary.rst
+    Heatbugs.ran
+    index.rst
+    Introduction.rst
+    ModelingLanguage.rst
+    Ontology.rst
+    WolvesAndSheep.ran
 )
 SET(SPHINX_TARGET
-  DataModel
+    DataModel
 )
 INCLUDE(SphinxDoc)

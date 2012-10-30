@@ -1,0 +1,183 @@
+### patches-own
+### [
+###   temp             ;; short for "temperature"
+### ]
+
+# Read the initial area feature (polygon).
+# Area has temp attribute.
+area = ...
+
+### globals [ color-by-unhappiness? ]
+### 
+### turtles-own
+### [
+###   ideal-temp       ;; The temperature I want to be at
+###   output-heat      ;; How much heat I emit per time step
+###   unhappiness      ;; The magnitude of the difference between my ideal
+###                    ;;   temperature and the actual current temperature here
+### ]
+### 
+
+# Read the initial bugs features (points).
+# Bugs have these attributes:
+#   ideal_temp : The temperature they want to be at.
+#   output_heat: How much heat they emit per time step.
+#   unhappiness: The magnitude of the difference between they ideal temperature
+#                and the actual current local temperature.
+# KDJ: does ideal_temp change per individual??? Otherwise make it a constant.
+bugs = ...
+
+### to setup
+###   clear-all
+###   set color-by-unhappiness? false
+### 
+###   ;; creating the bugs the following way ensures that we won't
+###   ;; wind up with more than one bug on a patch
+###   ask n-of bug-count patches [
+###     sprout 1 [
+###       set ideal-temp  min-ideal-temp  + random (max-ideal-temp  - min-ideal-temp)
+###       set output-heat min-output-heat + random (max-output-heat - min-output-heat)
+###       set unhappiness abs (ideal-temp - temp)
+###       color-by-ideal-temp
+###       face one-of neighbors
+###       set size 2  ;; easier to see
+###     ]
+###   ]
+###   ;; plot the initial state of the system
+###   reset-ticks
+### end
+
+### to color-by-ideal-temp
+###   ;; when scaling the color of turtles, adjust the value
+###   ;; range by this amount to avoid turtles being too dark or too light.
+###   let range-adjustment ( max-ideal-temp - min-ideal-temp ) / 2
+###   set color scale-color lime ideal-temp ( min-ideal-temp - range-adjustment )
+###                                         ( max-ideal-temp + range-adjustment )
+### end
+
+### to color-by-unhappiness [ max-unhappiness ]
+###   set color scale-color blue unhappiness  max-unhappiness 0
+### end
+
+### to go
+###   if not any? turtles [ stop ]
+###   ;; diffuse heat through world
+###   diffuse temp diffusion-rate
+###   ;; The world retains a percentage of its heat each cycle.
+###   ;; (The Swarm and Repast versions have 1.0 meaning no
+###   ;; evaporation and 0.0 meaning complete evaporation;
+###   ;; we reverse the scale to better match the name.)
+###   ask patches [ set temp temp * (1 - evaporation-rate) ]
+###   ;; agentsets in NetLogo are always in random order, so
+###   ;; "ask turtles" automatically shuffles the order of execution
+###   ;; each time.
+###   ask turtles [ step ]
+###   recolor-turtles
+###   recolor-patches
+###   tick
+### end
+
+diffusion_rate = ...
+evaporation_rate = ...
+area.temp = diffuse(area.temp, diffusion_rate)
+area.temp *= (1 - evaporation_rate)
+
+# to step  ;; turtle procedure
+#   ;; my unhappiness is the magnitude or absolute value of the difference
+#   ;; between by ideal temperature and the temperature of this patch
+#   set unhappiness abs (ideal-temp - temp)
+#   ;; if unhappy and not at the hottest neighbor,
+#   ;; then move to an open neighbor
+#   if unhappiness > 0
+#     [ ifelse random-float 100 < random-move-chance
+#         [ bug-move one-of neighbors ]
+#         [ bug-move best-patch ] ]
+#   set temp temp + output-heat
+# end
+
+random_move_chance = ...
+
+bugs.unhappiness = abs(bugs.ideal_temp - area.temp)
+unhappy_bugs = bugs[unhappiness > 0]
+moving_unhappy_bugs = random_select(bugs, random_move_chance)
+# TODO move bugs
+area.temp += bugs.output_heat
+
+# to recolor-turtles
+#   if color-by-unhappiness?
+#   [
+#     let max-unhappiness max [unhappiness] of turtles
+#     ask turtles [ color-by-unhappiness max-unhappiness ]
+#   ]
+# end
+
+# to recolor-patches
+#   ;; hotter patches will be red verging on white;
+#   ;; cooler patches will be black
+#   ask patches [ set pcolor scale-color red temp 0 150 ]
+# end
+
+# ;; find the hottest or coolest location next to me; also
+# ;; take my current patch into consideration
+# to-report best-patch  ;; turtle procedure
+#   ifelse temp < ideal-temp
+#     [ let winner max-one-of neighbors [temp]
+#       ifelse [temp] of winner > temp
+#         [ report winner ]
+#         [ report patch-here ] ]
+#     [ let winner min-one-of neighbors [temp]
+#       ifelse [temp] of winner < temp
+#         [ report winner ]
+#         [ report patch-here ] ]
+# end
+
+# to bug-move [target]  ;; turtle procedure
+#   ;; if we're already there, there's nothing to do
+#   if target = patch-here [ stop ]
+#   ;; move to the target patch (if it is not already occupied)
+#   if not any? turtles-on target [
+#     face target
+#     move-to target
+#     stop
+#   ]
+#   set target one-of neighbors with [not any? turtles-here]
+#   if target != nobody [ move-to target ]
+#   ;; The code above is a bit different from the original Heatbugs
+#   ;; model in Swarm.  In the NetLogo version, the bug will always
+#   ;; find an empty patch if one is available.
+#   ;; In the Swarm version, the bug picks a random
+#   ;; nearby patch, checks to see if it is occupied, and if it is,
+#   ;; picks again.  If after 10 tries it hasn't found an empty
+#   ;; patch, it gives up and stays where it is.  Since each try
+#   ;; is random and independent, even if there is an available
+#   ;; empty patch the bug will not always find it.  Presumably
+#   ;; the Swarm version is coded that way because there is no
+#   ;; concise equivalent in Swarm/Objective C to NetLogo's
+#   ;; 'one-of neighbors with [not any? turtles-here]'.
+#   ;; If you want to match the Swarm version exactly, remove the
+#   ;; last two lines of code above and replace them with this:
+#   ; let tries 0
+#   ; while [tries <= 9]
+#   ;   [ set tries tries + 1
+#   ;     set target one-of neighbors
+#   ;     if not any? turtles-on target [
+#   ;       move-to target
+#   ;       stop
+#   ;     ]
+#   ;   ]
+# end
+
+# ;;; the following procedures support the two extra buttons
+# ;;; in the interface
+
+# ;; remove all heat from the world
+# to deep-freeze
+#   ask patches [ set temp 0 ]
+# end
+
+# ;; add max-output-heat to all locations in the world, heating it evenly
+# to heat-up
+#   ask patches [ set temp temp + max-output-heat ]
+# end
+
+# vim:syntax=python
