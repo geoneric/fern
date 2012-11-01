@@ -2,7 +2,6 @@
 
 
 namespace ranally {
-namespace operation {
 
 Operations::~Operations()
 {
@@ -37,5 +36,4 @@ OperationPtr const& Operations::operation(
     return (*it).second;
 }
 
-} // namespace operation
 } // namespace ranally

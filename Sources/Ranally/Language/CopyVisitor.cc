@@ -4,7 +4,6 @@
 
 
 namespace ranally {
-namespace language {
 
 CopyVisitor::CopyVisitor()
 
@@ -105,5 +104,4 @@ void CopyVisitor::Visit(
     assert(false);
 }
 
-} // namespace language
 } // namespace ranally

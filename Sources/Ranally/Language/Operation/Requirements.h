@@ -6,8 +6,6 @@
 
 
 namespace ranally {
-namespace language {
-namespace operation {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -39,6 +37,4 @@ private:
 
 };
 
-} // namespace operation
-} // namespace language
 } // namespace ranally

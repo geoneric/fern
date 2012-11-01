@@ -2,7 +2,6 @@
 
 
 namespace ranally {
-namespace operation {
 
 ValueTypes::ValueTypes()
 
@@ -16,5 +15,4 @@ ValueTypes::~ValueTypes()
 {
 }
 
-} // namespace operation
 } // namespace ranally

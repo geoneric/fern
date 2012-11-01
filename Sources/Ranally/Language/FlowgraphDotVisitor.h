@@ -36,17 +36,16 @@ private:
     void           setMode             (Mode mode);
 
     void           addFlowgraphVertex  (NameVertex const& sourceVertex,
-                                  language::SyntaxVertex const& targetVertex);
+                                        SyntaxVertex const& targetVertex);
 
-    void           addFlowgraphVertex  (
-                                  language::SyntaxVertex const& sourceVertex,
-                                  language::SyntaxVertex const& targetVertex);
+    void           addFlowgraphVertex  (SyntaxVertex const& sourceVertex,
+                                        SyntaxVertex const& targetVertex);
 
-    void           Visit               (language::AssignmentVertex& vertex);
+    void           Visit               (AssignmentVertex& vertex);
 
     void           Visit               (FunctionVertex& vertex);
 
-    void           Visit               (language::IfVertex& vertex);
+    void           Visit               (IfVertex& vertex);
 
     void           Visit               (NameVertex& vertex);
 
@@ -75,11 +74,11 @@ private:
 
     void           Visit               (OperatorVertex& vertex);
 
-    void           Visit               (language::ScriptVertex& vertex);
+    void           Visit               (ScriptVertex& vertex);
 
     void           Visit               (StringVertex& vertex);
 
-    void           Visit               (language::WhileVertex& vertex);
+    void           Visit               (WhileVertex& vertex);
 
 };
 

@@ -5,7 +5,6 @@
 
 
 namespace ranally {
-namespace language {
 
 IdentifyVisitor::IdentifyVisitor()
 
@@ -153,5 +152,4 @@ SymbolTable const& IdentifyVisitor::symbolTable() const
     return _symbolTable;
 }
 
-} // namespace language
 } // namespace ranally

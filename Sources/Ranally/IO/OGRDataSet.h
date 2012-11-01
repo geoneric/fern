@@ -5,7 +5,6 @@
 class OGRDataSource;
 
 namespace ranally {
-namespace io {
 
 class OGRFeatureLayer;
 
@@ -57,5 +56,4 @@ private:
 
 };
 
-} // namespace io
 } // namespace ranally

@@ -9,13 +9,13 @@
 namespace {
 
 class CountVerticesVisitor:
-    public ranally::language::Visitor
+    public ranally::Visitor
 {
 
 public:
 
     CountVerticesVisitor()
-        : ranally::language::Visitor(),
+        : ranally::Visitor(),
           _nrVertices(0u)
     {
     }
@@ -30,14 +30,14 @@ private:
     size_t           _nrVertices;
 
     void Visit(
-        ranally::language::ScriptVertex& vertex)
+        ranally::ScriptVertex& vertex)
     {
         _nrVertices = 0u;
-        ranally::language::Visitor::Visit(vertex);
+        ranally::Visitor::Visit(vertex);
     }
 
     void Visit(
-        ranally::language::SyntaxVertex& /* vertex */)
+        ranally::SyntaxVertex& /* vertex */)
     {
         ++_nrVertices;
     }
@@ -66,9 +66,8 @@ VisitorTest::VisitorTest()
 
 void VisitorTest::testCountVerticesVisitor()
 {
-    namespace rl = ranally::language;
     CountVerticesVisitor visitor;
-    boost::shared_ptr<rl::ScriptVertex> tree;
+    boost::shared_ptr<ranally::ScriptVertex> tree;
 
     // Empty script.
     {

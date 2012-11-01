@@ -6,7 +6,6 @@
 
 
 namespace ranally {
-namespace operation {
 namespace detail {
 
 template<
@@ -80,5 +79,4 @@ inline void print(
     detail::print(category(), argument, stream);
 }
 
-} // namespace operation
 } // namespace ranally

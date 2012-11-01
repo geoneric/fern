@@ -11,7 +11,7 @@ namespace ranally {
   for visualising the syntax-tree.
 */
 class DotVisitor:
-    public language::Visitor
+    public Visitor
 {
 
     friend class DotVisitorTest;
@@ -34,7 +34,7 @@ private:
 
     String         _script;
 
-    virtual void   Visit               (language::ScriptVertex& vertex)=0;
+    virtual void   Visit               (ScriptVertex& vertex)=0;
 
 };
 

@@ -4,7 +4,6 @@
 
 
 namespace ranally {
-namespace language {
 
 SyntaxVertex::SyntaxVertex()
 
@@ -140,5 +139,4 @@ void SyntaxVertex::addSuccessor(
     _successors.push_back(successor);
 }
 
-} // namespace language
 } // namespace ranally

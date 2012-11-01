@@ -14,7 +14,6 @@
 
 
 namespace ranally {
-namespace io {
 
 OGRDataSet::OGRDataSet(
     String const& name,
@@ -220,5 +219,4 @@ void OGRDataSet::copy(
 {
 }
 
-} // namespace io
 } // namespace ranally

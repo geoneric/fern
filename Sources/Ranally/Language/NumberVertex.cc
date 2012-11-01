@@ -7,7 +7,7 @@ template<typename T>
 NumberVertex<T>::NumberVertex(
     T value)
 
-    : language::ExpressionVertex(String(boost::format("%1%") % value)),
+    : ExpressionVertex(String(boost::format("%1%") % value)),
       _value(value)
 
 {
@@ -20,7 +20,7 @@ NumberVertex<T>::NumberVertex(
     int colId,
     T value)
 
-    : language::ExpressionVertex(lineNr, colId, String(boost::format("%1%") % value)),
+    : ExpressionVertex(lineNr, colId, String(boost::format("%1%") % value)),
       _value(value)
 
 {

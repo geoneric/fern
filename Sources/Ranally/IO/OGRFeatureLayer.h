@@ -9,8 +9,6 @@ namespace ranally {
 
 class Domain;
 
-namespace io {
-
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
   longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
@@ -54,5 +52,4 @@ boost::shared_ptr<Domain> OGRFeatureLayer::domain() const
     return boost::dynamic_pointer_cast<Domain>(_domain);
 }
 
-} // namespace io
 } // namespace ranally

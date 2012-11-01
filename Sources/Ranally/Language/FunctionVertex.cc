@@ -5,7 +5,7 @@ namespace ranally {
 
 FunctionVertex::FunctionVertex(
     String const& name,
-    language::ExpressionVertices const& expressions)
+    ExpressionVertices const& expressions)
 
     : OperationVertex(name, expressions)
 

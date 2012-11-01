@@ -23,7 +23,8 @@ public:
 
 private:
 
-  ranally::language::AlgebraParser _algebraParser;
-  ranally::language::XmlParser _xmlParser;
+  ranally::AlgebraParser _algebraParser;
+
+  ranally::XmlParser _xmlParser;
 
 };

@@ -4,7 +4,6 @@
 
 
 namespace ranally {
-namespace language {
 
 ScriptVisitor::ScriptVisitor(
     size_t tabSize)
@@ -45,9 +44,9 @@ String ScriptVisitor::indentation() const
 
 
 void ScriptVisitor::visitStatements(
-    language::StatementVertices& statements)
+    StatementVertices& statements)
 {
-    BOOST_FOREACH(boost::shared_ptr<language::StatementVertex> statementVertex,
+    BOOST_FOREACH(boost::shared_ptr<StatementVertex> statementVertex,
         statements) {
         _script += indentation();
         statementVertex->Accept(*this);
@@ -60,7 +59,7 @@ void ScriptVisitor::visitStatements(
 
 
 void ScriptVisitor::visitExpressions(
-    language::ExpressionVertices const& expressions)
+    ExpressionVertices const& expressions)
 {
     _script += "(";
 
@@ -77,7 +76,7 @@ void ScriptVisitor::visitExpressions(
 
 
 void ScriptVisitor::Visit(
-    language::AssignmentVertex& vertex)
+    AssignmentVertex& vertex)
 {
     vertex.target()->Accept(*this);
     _script += " = ";
@@ -122,14 +121,14 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-    language::SyntaxVertex&)
+    SyntaxVertex&)
 {
     assert(false);
 }
 
 
 void ScriptVisitor::Visit(
-    language::ScriptVertex& vertex)
+    ScriptVertex& vertex)
 {
     _indentLevel = 0;
     _script = String();
@@ -230,7 +229,7 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-    language::IfVertex& vertex)
+    IfVertex& vertex)
 {
     assert(!vertex.trueStatements().empty());
 
@@ -258,7 +257,7 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-    language::WhileVertex& vertex)
+    WhileVertex& vertex)
 {
     assert(!vertex.trueStatements().empty());
 
@@ -285,5 +284,4 @@ void ScriptVisitor::Visit(
     }
 }
 
-} // namespace language
 } // namespace ranally

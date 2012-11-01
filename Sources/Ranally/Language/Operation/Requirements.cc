@@ -2,8 +2,6 @@
 
 
 namespace ranally {
-namespace language {
-namespace operation {
 
 Requirements::Requirements()
 {
@@ -26,6 +24,4 @@ std::vector<Result> const& Requirements::results()
     return _results;
 }
 
-} // namespace operation
-} // namespace language
 } // namespace ranally

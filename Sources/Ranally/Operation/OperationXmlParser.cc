@@ -1,4 +1,4 @@
-#include "Ranally/Operation/XmlParser.h"
+#include "Ranally/Operation/OperationXmlParser.h"
 #include <sstream>
 #include <stack>
 #include <vector>
@@ -11,109 +11,109 @@
 
 namespace {
 
-ranally::operation::DataType stringToDataType(
+ranally::DataType stringToDataType(
     std::string const& string)
 {
     assert(!string.empty());
-    ranally::operation::DataType dataType = ranally::operation::DT_UNKNOWN;
+    ranally::DataType dataType = ranally::DT_UNKNOWN;
 
     if(string == "Value") {
-        dataType = ranally::operation::DT_VALUE;
+        dataType = ranally::DT_VALUE;
     }
     else if(string == "Raster") {
-        dataType = ranally::operation::DT_RASTER;
+        dataType = ranally::DT_RASTER;
     }
     else if(string == "Feature") {
-        dataType = ranally::operation::DT_FEATURE;
+        dataType = ranally::DT_FEATURE;
     }
     else if(string == "Spatial") {
-        dataType = ranally::operation::DT_SPATIAL;
+        dataType = ranally::DT_SPATIAL;
     }
     else if(string == "All") {
-        dataType = ranally::operation::DT_ALL;
+        dataType = ranally::DT_ALL;
     }
     else if(string == "DependsOnInput") {
-        dataType = ranally::operation::DT_DEPENDS_ON_INPUT;
+        dataType = ranally::DT_DEPENDS_ON_INPUT;
     }
 
-    assert(dataType != ranally::operation::DT_UNKNOWN);
+    assert(dataType != ranally::DT_UNKNOWN);
     return dataType;
 }
 
 
-static ranally::operation::ValueType stringToValueType(
+static ranally::ValueType stringToValueType(
     std::string const& string)
 {
     assert(!string.empty());
-    ranally::operation::ValueType valueType = ranally::operation::VT_UNKNOWN;
+    ranally::ValueType valueType = ranally::VT_UNKNOWN;
 
     if(string == "UInt8") {
-        valueType = ranally::operation::VT_UINT8;
+        valueType = ranally::VT_UINT8;
     }
     else if(string == "Int8") {
-        valueType = ranally::operation::VT_INT8;
+        valueType = ranally::VT_INT8;
     }
     else if(string == "UInt16") {
-        valueType = ranally::operation::VT_UINT16;
+        valueType = ranally::VT_UINT16;
     }
     else if(string == "Int16") {
-        valueType = ranally::operation::VT_INT16;
+        valueType = ranally::VT_INT16;
     }
     else if(string == "UInt32") {
-        valueType = ranally::operation::VT_UINT32;
+        valueType = ranally::VT_UINT32;
     }
     else if(string == "Int32") {
-        valueType = ranally::operation::VT_INT32;
+        valueType = ranally::VT_INT32;
     }
     else if(string == "UInt64") {
-        valueType = ranally::operation::VT_UINT64;
+        valueType = ranally::VT_UINT64;
     }
     else if(string == "Int64") {
-        valueType = ranally::operation::VT_INT64;
+        valueType = ranally::VT_INT64;
     }
     else if(string == "Float32") {
-        valueType = ranally::operation::VT_FLOAT32;
+        valueType = ranally::VT_FLOAT32;
     }
     else if(string == "Float64") {
-        valueType = ranally::operation::VT_FLOAT64;
+        valueType = ranally::VT_FLOAT64;
     }
     else if(string == "String") {
-        valueType = ranally::operation::VT_STRING;
+        valueType = ranally::VT_STRING;
     }
     else if(string == "UnsignedInteger") {
-        valueType = ranally::operation::VT_UNSIGNED_INTEGER;
+        valueType = ranally::VT_UNSIGNED_INTEGER;
     }
     else if(string == "SignedInteger") {
-        valueType = ranally::operation::VT_SIGNED_INTEGER;
+        valueType = ranally::VT_SIGNED_INTEGER;
     }
     else if(string == "Integer") {
-        valueType = ranally::operation::VT_INTEGER;
+        valueType = ranally::VT_INTEGER;
     }
     else if(string == "FloatingPoint") {
-        valueType = ranally::operation::VT_FLOATING_POINT;
+        valueType = ranally::VT_FLOATING_POINT;
     }
     else if(string == "Number") {
-        valueType = ranally::operation::VT_NUMBER;
+        valueType = ranally::VT_NUMBER;
     }
     else if(string == "All") {
-        valueType = ranally::operation::VT_ALL;
+        valueType = ranally::VT_ALL;
     }
     else if(string == "DependsOnInput") {
-        valueType = ranally::operation::VT_DEPENDS_ON_INPUT;
+        valueType = ranally::VT_DEPENDS_ON_INPUT;
     }
 
-    assert(valueType != ranally::operation::VT_UNKNOWN);
+    assert(valueType != ranally::VT_UNKNOWN);
     return valueType;
 }
 
 
 class Operations_pimpl:
-    public ranally::operation::Operations_pskel
+    public ranally::Operations_pskel
 {
 
 private:
 
-    typedef std::vector<boost::shared_ptr<ranally::operation::Operation> >
+    typedef std::vector<boost::shared_ptr<ranally::Operation> >
         OperationsData;
 
     OperationsData   _operations;
@@ -126,21 +126,21 @@ public:
     }
 
     void Operation(
-        ranally::operation::OperationPtr const& operation)
+        ranally::OperationPtr const& operation)
     {
         _operations.push_back(operation);
     }
 
-    ranally::operation::OperationsPtr post_Operations()
+    ranally::OperationsPtr post_Operations()
     {
-        return boost::make_shared<ranally::operation::Operations>(_operations);
+        return boost::make_shared<ranally::Operations>(_operations);
     }
 
 };
 
 
 class Operation_pimpl:
-    public ranally::operation::Operation_pskel
+    public ranally::Operation_pskel
 {
 
 private:
@@ -149,8 +149,8 @@ private:
     {
         ranally::String name;
         ranally::String description;
-        std::vector<ranally::operation::Parameter> parameters;
-        std::vector<ranally::operation::Result> results;
+        std::vector<ranally::Parameter> parameters;
+        std::vector<ranally::Result> results;
     };
 
     std::stack<OperationData> _dataStack;
@@ -178,26 +178,26 @@ public:
     }
 
     void Parameters(
-        std::vector<ranally::operation::Parameter> const& parameters)
+        std::vector<ranally::Parameter> const& parameters)
     {
         assert(!_dataStack.empty());
         _dataStack.top().parameters = parameters;
     }
 
     void Results(
-        std::vector<ranally::operation::Result> const& results)
+        std::vector<ranally::Result> const& results)
     {
         assert(!_dataStack.empty());
         _dataStack.top().results = results;
     }
 
-    ranally::operation::OperationPtr post_Operation()
+    ranally::OperationPtr post_Operation()
     {
         assert(_dataStack.size() == 1);
         assert(!_dataStack.empty());
         OperationData result(_dataStack.top());
         _dataStack.pop();
-        return boost::make_shared<ranally::operation::Operation>(result.name,
+        return boost::make_shared<ranally::Operation>(result.name,
             result.description, result.parameters, result.results);
     }
 
@@ -205,12 +205,12 @@ public:
 
 
 class Parameters_pimpl:
-    public ranally::operation::Parameters_pskel
+    public ranally::Parameters_pskel
 {
 
 private:
 
-    std::vector<ranally::operation::Parameter> _parameters;
+    std::vector<ranally::Parameter> _parameters;
 
 public:
 
@@ -220,12 +220,12 @@ public:
     }
 
     void Parameter(
-        ranally::operation::Parameter const& parameter)
+        ranally::Parameter const& parameter)
     {
         _parameters.push_back(parameter);
     }
 
-    std::vector<ranally::operation::Parameter> const& post_Parameters()
+    std::vector<ranally::Parameter> const& post_Parameters()
     {
         return _parameters;
     }
@@ -234,7 +234,7 @@ public:
 
 
 class Parameter_pimpl:
-    public ranally::operation::Parameter_pskel
+    public ranally::Parameter_pskel
 {
 
 private:
@@ -243,8 +243,8 @@ private:
     {
         ranally::String name;
         ranally::String description;
-        ranally::operation::DataTypes dataTypes;
-        ranally::operation::ValueTypes valueTypes;
+        ranally::DataTypes dataTypes;
+        ranally::ValueTypes valueTypes;
     };
 
     std::stack<ParameterData> _dataStack;
@@ -272,26 +272,26 @@ public:
     }
 
     void DataTypes(
-        ranally::operation::DataTypes const& dataTypes)
+        ranally::DataTypes const& dataTypes)
     {
         assert(!_dataStack.empty());
         _dataStack.top().dataTypes = dataTypes;
     }
 
     void ValueTypes(
-        ranally::operation::ValueTypes const& valueTypes)
+        ranally::ValueTypes const& valueTypes)
     {
         assert(!_dataStack.empty());
         _dataStack.top().valueTypes = valueTypes;
     }
 
-    ranally::operation::Parameter post_Parameter()
+    ranally::Parameter post_Parameter()
     {
         assert(_dataStack.size() == 1);
         assert(!_dataStack.empty());
         ParameterData result(_dataStack.top());
         _dataStack.pop();
-        return ranally::operation::Parameter(result.name, result.description,
+        return ranally::Parameter(result.name, result.description,
             result.dataTypes, result.valueTypes);
     }
 
@@ -299,12 +299,12 @@ public:
 
 
 class Results_pimpl:
-    public ranally::operation::Results_pskel
+    public ranally::Results_pskel
 {
 
 private:
 
-    std::vector<ranally::operation::Result> _results;
+    std::vector<ranally::Result> _results;
 
 public:
 
@@ -314,12 +314,12 @@ public:
     }
 
     void Result(
-        ranally::operation::Result const& result)
+        ranally::Result const& result)
     {
         _results.push_back(result);
     }
 
-    std::vector<ranally::operation::Result> const& post_Results()
+    std::vector<ranally::Result> const& post_Results()
     {
         return _results;
     }
@@ -328,7 +328,7 @@ public:
 
 
 class Result_pimpl:
-    public ranally::operation::Result_pskel
+    public ranally::Result_pskel
 {
 
 private:
@@ -337,8 +337,8 @@ private:
     {
         ranally::String name;
         ranally::String description;
-        ranally::operation::DataType dataType;
-        ranally::operation::ValueType valueType;
+        ranally::DataType dataType;
+        ranally::ValueType valueType;
     };
 
     std::stack<ResultData> _dataStack;
@@ -366,7 +366,7 @@ public:
     }
 
     void DataType(
-        // ranally::operation::DataType const& dataType)
+        // ranally::DataType const& dataType)
         std::string const& dataType)
     {
         assert(!_dataStack.empty());
@@ -374,20 +374,20 @@ public:
     }
 
     void ValueType(
-        // ranally::operation::ValueType const& valueType)
+        // ranally::ValueType const& valueType)
         std::string const& valueType)
     {
         assert(!_dataStack.empty());
         _dataStack.top().valueType = stringToValueType(valueType);
     }
 
-    ranally::operation::Result post_Result()
+    ranally::Result post_Result()
     {
         assert(_dataStack.size() == 1);
         assert(!_dataStack.empty());
         ResultData result(_dataStack.top());
         _dataStack.pop();
-        return ranally::operation::Result(result.name, result.description,
+        return ranally::Result(result.name, result.description,
           result.dataType, result.valueType);
     }
 
@@ -395,22 +395,22 @@ public:
 
 
 class DataTypes_pimpl:
-    public ranally::operation::DataTypes_pskel
+    public ranally::DataTypes_pskel
 {
 
 private:
 
-    ranally::operation::DataTypes _dataTypes;
+    ranally::DataTypes _dataTypes;
 
 public:
 
     void pre()
     {
-        _dataTypes = ranally::operation::DT_UNKNOWN;
+        _dataTypes = ranally::DT_UNKNOWN;
     }
 
     // void DataType(
-    //     ranally::operation::DataType const& dataType)
+    //     ranally::DataType const& dataType)
     // {
     //     _dataTypes.push_back(dataType);
     // }
@@ -421,7 +421,7 @@ public:
         _dataTypes |= stringToDataType(dataType);
     }
 
-    ranally::operation::DataTypes post_DataTypes()
+    ranally::DataTypes post_DataTypes()
     {
         return _dataTypes;
     }
@@ -430,7 +430,7 @@ public:
 
 
 // class DataType_pimpl:
-//     public ranally::operation::DataType_pskel
+//     public ranally::DataType_pskel
 // {
 // 
 // private:
@@ -452,7 +452,7 @@ public:
 //         return _dataType;
 //     }
 // 
-//     ranally::operation::DataType post_DataType()
+//     ranally::DataType post_DataType()
 //     {
 //         assert(false);
 //         assert(_dataType.empty());
@@ -463,22 +463,22 @@ public:
 
 
 class ValueTypes_pimpl:
-    public ranally::operation::ValueTypes_pskel
+    public ranally::ValueTypes_pskel
 {
 
 private:
 
-    ranally::operation::ValueTypes _valueTypes;
+    ranally::ValueTypes _valueTypes;
 
 public:
 
     void pre()
     {
-        _valueTypes = ranally::operation::VT_UNKNOWN;
+        _valueTypes = ranally::VT_UNKNOWN;
     }
 
     // void ValueType(
-    //     ranally::operation::ValueType const& valueType)
+    //     ranally::ValueType const& valueType)
     // {
     //     _valueTypes.push_back(valueType);
     // }
@@ -489,7 +489,7 @@ public:
         _valueTypes |= stringToValueType(valueType);
     }
 
-    ranally::operation::ValueTypes post_ValueTypes()
+    ranally::ValueTypes post_ValueTypes()
     {
         return _valueTypes;
     }
@@ -498,7 +498,7 @@ public:
 
 
 // class ValueType_pimpl:
-//     public ranally::operation::ValueType_pskel
+//     public ranally::ValueType_pskel
 // {
 // 
 // private:
@@ -518,7 +518,7 @@ public:
 //         return _dataType;
 //     }
 // 
-//     ranally::operation::ValueType post_ValueType()
+//     ranally::ValueType post_ValueType()
 //     {
 //         assert(_dataType.empty());
 //         return stringToValueType(_dataType);
@@ -530,21 +530,20 @@ public:
 
 
 namespace ranally {
-namespace operation {
 
-XmlParser::XmlParser()
+OperationXmlParser::OperationXmlParser()
 {
 }
 
 
 
-XmlParser::~XmlParser()
+OperationXmlParser::~OperationXmlParser()
 {
 }
 
 
 
-OperationsPtr XmlParser::parse(
+OperationsPtr OperationXmlParser::parse(
   std::istream& stream) const
 {
     xml_schema::string_pimpl string_p;
@@ -585,7 +584,7 @@ OperationsPtr XmlParser::parse(
 }
 
 
-OperationsPtr XmlParser::parse(
+OperationsPtr OperationXmlParser::parse(
     String const& xml) const
 {
     // Copy string contents in a string stream and work with that.
@@ -596,5 +595,4 @@ OperationsPtr XmlParser::parse(
     return parse(stream);
 }
 
-} // namespace operation
 } // namespace ranally

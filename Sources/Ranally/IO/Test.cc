@@ -12,8 +12,8 @@ boost::unit_test::test_suite* init_unit_test_suite(
 
     struct TestSuite:
         public boost::unit_test::test_suite,
-        ranally::io::OGRClient,
-        ranally::io::HDF5Client
+        ranally::OGRClient,
+        ranally::HDF5Client
     {
         TestSuite(
             int& /* argc */,

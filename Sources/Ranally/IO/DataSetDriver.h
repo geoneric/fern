@@ -3,7 +3,6 @@
 
 
 namespace ranally {
-namespace io {
 
 class DataSet;
 
@@ -49,5 +48,4 @@ private:
 
 };
 
-} // namespace io
 } // namespace ranally

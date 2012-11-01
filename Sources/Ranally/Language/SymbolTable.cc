@@ -6,7 +6,6 @@
 
 
 namespace ranally {
-namespace language {
 
 //! Construct an empty symbol table.
 /*!
@@ -227,5 +226,4 @@ SymbolTable::size_type SymbolTable::size() const
     return result;
 }
 
-} // namespace language
 } // namespace ranally

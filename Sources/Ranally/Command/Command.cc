@@ -46,7 +46,7 @@ ranally::String Command::read(
     std::string const& fileName)
 {
     ranally::String xml;
-    ranally::language::AlgebraParser parser;
+    ranally::AlgebraParser parser;
 
     if(fileName.empty()) {
         // Read script from the standard input stream.

@@ -6,7 +6,6 @@
 
 
 namespace ranally {
-namespace io {
 namespace {
 
 Domain::Type domainType(
@@ -78,5 +77,4 @@ Domain const& OGRFeatureLayer::domain() const
     return *_domain;
 }
 
-} // namespace io
 } // namespace ranally

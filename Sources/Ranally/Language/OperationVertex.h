@@ -12,7 +12,7 @@ namespace ranally {
   \sa        .
 */
 class OperationVertex:
-    public language::ExpressionVertex
+    public ExpressionVertex
 {
 
     friend class OperationVertexTest;
@@ -21,23 +21,22 @@ public:
 
     virtual        ~OperationVertex    ();
 
-    language::ExpressionVertices const& expressions() const;
+    ExpressionVertices const& expressions() const;
 
-    void           setOperation        (
-                                    operation::OperationPtr const& operation);
+    void           setOperation        (OperationPtr const& operation);
 
-    operation::OperationPtr const& operation() const;
+    OperationPtr const& operation      () const;
 
 protected:
 
                    OperationVertex     (String const& name,
-                                        language::ExpressionVertices const& expressions);
+                                        ExpressionVertices const& expressions);
 
 private:
 
-    language::ExpressionVertices _expressions;
+    ExpressionVertices _expressions;
 
-    operation::OperationPtr _operation;
+    OperationPtr   _operation;
 
 };
 

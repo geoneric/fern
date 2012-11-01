@@ -3,7 +3,6 @@
 
 
 namespace ranally {
-namespace operation {
 
 Result::Result(
     String const& name,
@@ -76,5 +75,4 @@ ValueType Result::valueType() const
     return _valueType;
 }
 
-} // namespace operation
 } // namespace ranally

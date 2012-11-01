@@ -29,9 +29,7 @@ OptimizeVisitorTest::OptimizeVisitorTest()
 
 void OptimizeVisitorTest::testRemoveTemporaryIdentifier()
 {
-    namespace rl = ranally::language;
-
-    boost::shared_ptr<rl::ScriptVertex> tree;
+    boost::shared_ptr<ranally::ScriptVertex> tree;
     ranally::String script;
 
     // Make sure that temporary identifiers which are only used as input to

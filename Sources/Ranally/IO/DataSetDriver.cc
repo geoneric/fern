@@ -2,7 +2,6 @@
 
 
 namespace ranally {
-namespace io {
 
 DataSetDriver::DataSetDriver()
 {
@@ -13,5 +12,4 @@ DataSetDriver::~DataSetDriver()
 {
 }
 
-} // namespace io
 } // namespace ranally

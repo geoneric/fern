@@ -4,7 +4,6 @@
 
 
 namespace ranally {
-namespace language {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -38,17 +37,15 @@ private:
 
     String         indentation         () const;
 
-    void           visitStatements     (
-                                  language::StatementVertices& statements);
+    void           visitStatements     (StatementVertices& statements);
 
-    void           visitExpressions    (
-                             language::ExpressionVertices const& expressions);
+    void           visitExpressions    (ExpressionVertices const& expressions);
 
-    void           Visit               (language::AssignmentVertex&);
+    void           Visit               (AssignmentVertex&);
 
     void           Visit               (FunctionVertex&);
 
-    void           Visit               (language::IfVertex&);
+    void           Visit               (IfVertex&);
 
     void           Visit               (NameVertex&);
 
@@ -74,15 +71,14 @@ private:
 
     void           Visit               (OperatorVertex&);
 
-    void           Visit               (language::ScriptVertex&);
+    void           Visit               (ScriptVertex&);
 
     void           Visit               (StringVertex&);
 
-    void           Visit               (language::SyntaxVertex&);
+    void           Visit               (SyntaxVertex&);
 
-    void           Visit               (language::WhileVertex&);
+    void           Visit               (WhileVertex&);
 
 };
 
-} // namespace language
 } // namespace ranally

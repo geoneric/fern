@@ -33,10 +33,10 @@ TARGET_LINK_LIBRARIES(testRanallyInterpreter
     RanallyOperation
     # ${_LINK_LIBRARIES}
 )
-ADD_CUSTOM_TARGET(runTestRanallyInterpreter
+ADD_CUSTOM_TARGET(runTestInterpreter
     testRanallyInterpreter
     DEPENDS testRanallyInterpreter
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "Running RanallyInterpreter unit tests" VERBATIM
 )
-ADD_DEPENDENCIES(tests runTestRanallyInterpreter)
+ADD_DEPENDENCIES(tests runTestInterpreter)

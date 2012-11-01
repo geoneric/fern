@@ -1,5 +1,5 @@
 #include "Ranally/Interpreter/Interpreter.h"
-#include "Ranally/Operation/XmlParser.h"
+#include "Ranally/Operation/OperationXmlParser.h"
 #include "Ranally/Operation/Operation-xml.h"
 #include "Ranally/Language/AnnotateVisitor.h"
 #include "Ranally/Language/ExecuteVisitor.h"
@@ -10,7 +10,6 @@
 
 
 namespace ranally {
-namespace interpreter {
 
 Interpreter::Interpreter()
 
@@ -26,7 +25,7 @@ Interpreter::~Interpreter()
 }
 
 
-language::ScriptVertexPtr Interpreter::parseString(
+ScriptVertexPtr Interpreter::parseString(
     String const& string)
 {
     return _xmlParser.parse(_algebraParser.parseString(string));
@@ -47,17 +46,16 @@ language::ScriptVertexPtr Interpreter::parseString(
   - Annotation.
 */
 void Interpreter::annotate(
-    language::ScriptVertexPtr const& tree)
+    ScriptVertexPtr const& tree)
 {
-    language::ThreadVisitor threadVisitor;
+    ThreadVisitor threadVisitor;
     tree->Accept(threadVisitor);
 
-    language::IdentifyVisitor identifyVisitor;
+    IdentifyVisitor identifyVisitor;
     tree->Accept(identifyVisitor);
 
-    operation::OperationsPtr operations(operation::XmlParser().parse(
-        operation::operationsXml));
-    language::AnnotateVisitor annotateVisitor(operations);
+    OperationsPtr operations(OperationXmlParser().parse(operationsXml));
+    AnnotateVisitor annotateVisitor(operations);
     tree->Accept(annotateVisitor);
 }
 
@@ -71,14 +69,14 @@ void Interpreter::annotate(
   result of parsing a script, without further processing.
 
   The folowing steps are performed:
-  - Annotation (seee annotate(language::ScriptVertexPtr const&).
+  - Annotation (seee annotate(ScriptVertexPtr const&).
   - Validation.
 */
 void Interpreter::validate(
-    language::ScriptVertexPtr const& tree)
+    ScriptVertexPtr const& tree)
 {
     annotate(tree);
-    language::ValidateVisitor validateVisitor;
+    ValidateVisitor validateVisitor;
     tree->Accept(validateVisitor);
 }
 
@@ -92,16 +90,15 @@ void Interpreter::validate(
   result of parsing a script, without further processing.
 
   The folowing steps are performed:
-  - Validation (see validate(language::ScriptVertexPtr const&).
+  - Validation (see validate(ScriptVertexPtr const&).
   - Execution.
 */
 void Interpreter::execute(
-    language::ScriptVertexPtr const& tree)
+    ScriptVertexPtr const& tree)
 {
     validate(tree);
-    language::ExecuteVisitor executeVisitor;
+    ExecuteVisitor executeVisitor;
     tree->Accept(executeVisitor);
 }
 
-} // namespace interpreter
 } // namespace ranally

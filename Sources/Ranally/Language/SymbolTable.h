@@ -9,8 +9,6 @@ namespace ranally {
 
 class NameVertex;
 
-namespace language {
-
 //! Datastructure for keeping track of definitions.
 /*!
   The table is able to store multiple definitions of the same name and supports
@@ -77,5 +75,4 @@ private:
 
 };
 
-} // namespace language
 } // namespace ranally

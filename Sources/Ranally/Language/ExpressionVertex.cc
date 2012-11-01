@@ -2,15 +2,14 @@
 
 
 namespace ranally {
-namespace language {
 
 ExpressionVertex::ExpressionVertex(
     String const& name)
 
     : StatementVertex(),
       _name(name) // ,
-      // _dataType(operation::DT_UNKNOWN),
-      // _valueType(operation::VT_UNKNOWN)
+      // _dataType(DT_UNKNOWN),
+      // _valueType(VT_UNKNOWN)
 
 {
 }
@@ -40,14 +39,14 @@ String const& ExpressionVertex::name() const
 
 
 // void ExpressionVertex::setDataType(
-//   operation::DataType dataType)
+//   DataType dataType)
 // {
 //   _dataType = dataType;
 // }
 // 
 // 
 // 
-// operation::DataType ExpressionVertex::dataType() const
+// DataType ExpressionVertex::dataType() const
 // {
 //   return _dataType;
 // }
@@ -55,14 +54,14 @@ String const& ExpressionVertex::name() const
 // 
 // 
 // void ExpressionVertex::setValueType(
-//   operation::ValueType valueType)
+//   ValueType valueType)
 // {
 //   _valueType = valueType;
 // }
 // 
 // 
 // 
-// operation::ValueType ExpressionVertex::valueType() const
+// ValueType ExpressionVertex::valueType() const
 // {
 //   return _valueType;
 // }
@@ -76,8 +75,8 @@ void ExpressionVertex::setResultTypes(
 
 
 void ExpressionVertex::addResultType(
-    operation::DataType dataType,
-    operation::ValueType valueType)
+    DataType dataType,
+    ValueType valueType)
 {
     _resultTypes.push_back(boost::make_tuple(dataType, valueType));
 }
@@ -90,7 +89,7 @@ ExpressionVertex::resultTypes() const
 }
 
 
-operation::DataType ExpressionVertex::dataType(
+DataType ExpressionVertex::dataType(
   size_t index) const
 {
     assert(index < _resultTypes.size());
@@ -98,7 +97,7 @@ operation::DataType ExpressionVertex::dataType(
 }
 
 
-operation::ValueType ExpressionVertex::valueType(
+ValueType ExpressionVertex::valueType(
     size_t index) const
 {
     assert(index < _resultTypes.size());
@@ -118,5 +117,4 @@ ExpressionVertexPtr const& ExpressionVertex::value() const
     return _value;
 }
 
-} // namespace language
 } // namespace ranally

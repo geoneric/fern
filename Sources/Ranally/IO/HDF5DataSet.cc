@@ -16,7 +16,6 @@
 
 
 namespace ranally {
-namespace io {
 
 HDF5DataSet::HDF5DataSet(
     String const& name,
@@ -246,5 +245,4 @@ void HDF5DataSet::copy(
 {
 }
 
-} // namespace io
 } // namespace ranally

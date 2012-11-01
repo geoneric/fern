@@ -46,7 +46,7 @@ void OGRDataSetDriverTest::removeTestFiles()
     std::vector<ranally::String> dataSetNames;
     dataSetNames.push_back("TestCreate.shp");
     dataSetNames.push_back("TestRemove.shp");
-    ranally::io::OGRDataSetDriver driver("ESRI Shapefile");
+    ranally::OGRDataSetDriver driver("ESRI Shapefile");
 
     BOOST_FOREACH(ranally::String const& dataSetName, dataSetNames) {
         if(driver.exists(dataSetName)) {
@@ -59,7 +59,7 @@ void OGRDataSetDriverTest::removeTestFiles()
 
 void OGRDataSetDriverTest::testExists()
 {
-    ranally::io::OGRDataSetDriver driver("GeoJSON");
+    ranally::OGRDataSetDriver driver("GeoJSON");
 
     BOOST_REQUIRE(!driver.exists("DoesNotExist"));
     BOOST_REQUIRE( driver.exists("Point.json"));
@@ -70,8 +70,8 @@ void OGRDataSetDriverTest::testExists()
 
 void OGRDataSetDriverTest::testCreate()
 {
-    ranally::io::OGRDataSetDriver driver("ESRI Shapefile");
-    boost::scoped_ptr<ranally::io::OGRDataSet> dataSet;
+    ranally::OGRDataSetDriver driver("ESRI Shapefile");
+    boost::scoped_ptr<ranally::OGRDataSet> dataSet;
 
     // Test creation of new data set. ------------------------------------------
     ranally::String dataSetName = "TestCreate.shp";
@@ -130,8 +130,8 @@ void OGRDataSetDriverTest::testCreate()
 
 void OGRDataSetDriverTest::testRemove()
 {
-    ranally::io::OGRDataSetDriver driver("ESRI Shapefile");
-    boost::scoped_ptr<ranally::io::OGRDataSet> dataSet;
+    ranally::OGRDataSetDriver driver("ESRI Shapefile");
+    boost::scoped_ptr<ranally::OGRDataSet> dataSet;
     ranally::String dataSetName;
 
     dataSetName = "TestRemove.shp";
@@ -151,7 +151,7 @@ void OGRDataSetDriverTest::testRemove()
 
     {
         // Test remove of read-only file. --------------------------------------
-        ranally::io::OGRDataSetDriver driver("GeoJSON");
+        ranally::OGRDataSetDriver driver("GeoJSON");
         dataSetName = "ReadOnlyPoint.json";
         BOOST_CHECK(driver.exists(dataSetName));
         // TODO Read-only file is removed... Report to gdal list?!
@@ -167,8 +167,8 @@ void OGRDataSetDriverTest::testRemove()
 
 void OGRDataSetDriverTest::testOpen()
 {
-    ranally::io::OGRDataSetDriver driver("GeoJSON");
-    boost::scoped_ptr<ranally::io::OGRDataSet> dataSet;
+    ranally::OGRDataSetDriver driver("GeoJSON");
+    boost::scoped_ptr<ranally::OGRDataSet> dataSet;
     ranally::String dataSetName;
 
     dataSetName = "Point.json";

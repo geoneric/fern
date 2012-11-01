@@ -5,7 +5,7 @@
 #include "Ranally/Operation/Operation-xml.h"
 #include "Ranally/Operation/Parameter.h"
 #include "Ranally/Operation/Result.h"
-#include "Ranally/Operation/XmlParser.h"
+#include "Ranally/Operation/OperationXmlParser.h"
 #include "Ranally/Language/OperationVertex.h"
 #include "Ranally/Language/ScriptVertex.h"
 
@@ -30,8 +30,8 @@ AnnotateVisitorTest::AnnotateVisitorTest()
 
     : _algebraParser(),
       _xmlParser(),
-      _visitor(ranally::operation::XmlParser().parse(
-        ranally::operation::operationsXml))
+      _visitor(ranally::OperationXmlParser().parse(
+        ranally::operationsXml))
 
 {
 }
@@ -39,17 +39,15 @@ AnnotateVisitorTest::AnnotateVisitorTest()
 
 void AnnotateVisitorTest::testVisitEmptyScript()
 {
-    namespace rl = ranally::language;
-
     // Parse empty script.
     // Ast before and after should be the same.
-    boost::shared_ptr<rl::ScriptVertex> tree1, tree2;
+    boost::shared_ptr<ranally::ScriptVertex> tree1, tree2;
 
     tree1 = _xmlParser.parse(_algebraParser.parseString(ranally::String("")));
     assert(tree1);
 
     // // Create copy of this empty tree.
-    // rl::CopyVisitor copyVisitor;
+    // ranally::CopyVisitor copyVisitor;
     // tree1->Accept(copyVisitor);
     // tree2 = copyVisitor.scriptVertex();
 
@@ -67,9 +65,7 @@ void AnnotateVisitorTest::testVisitEmptyScript()
 
 void AnnotateVisitorTest::testVisitNumber()
 {
-    namespace rl = ranally::language;
-
-    boost::shared_ptr<rl::ScriptVertex> tree =
+    boost::shared_ptr<ranally::ScriptVertex> tree =
         _xmlParser.parse(_algebraParser.parseString(ranally::String("5")));
     tree->Accept(_visitor);
 
@@ -82,11 +78,8 @@ void AnnotateVisitorTest::testVisitNumber()
 
 void AnnotateVisitorTest::testVisitOperation()
 {
-    namespace ro = ranally::operation;
-    namespace rl = ranally::language;
-
     {
-        boost::shared_ptr<rl::ScriptVertex> tree =
+        boost::shared_ptr<ranally::ScriptVertex> tree =
             _xmlParser.parse(_algebraParser.parseString(
                 ranally::String("abs(a)")));
         tree->Accept(_visitor);
@@ -96,28 +89,29 @@ void AnnotateVisitorTest::testVisitOperation()
         BOOST_CHECK_EQUAL(tree->col(), 0);
 
         BOOST_REQUIRE_EQUAL(tree->statements().size(), 1u);
-        boost::shared_ptr<rl::StatementVertex> const& statement(
+        boost::shared_ptr<ranally::StatementVertex> const& statement(
             tree->statements()[0]);
         BOOST_REQUIRE(statement);
         ranally::OperationVertex const* functionVertex(
             dynamic_cast<ranally::OperationVertex*>(statement.get()));
         BOOST_REQUIRE(functionVertex);
 
-        ro::OperationPtr const& operation(functionVertex->operation());
+        ranally::OperationPtr const& operation(functionVertex->operation());
         BOOST_REQUIRE(operation);
 
         BOOST_CHECK_EQUAL(operation->parameters().size(), 1u);
-        std::vector<ro::Parameter> const& parameters(operation->parameters());
-        ro::Parameter const& parameter(parameters[0]);
+        std::vector<ranally::Parameter> const& parameters(
+            operation->parameters());
+        ranally::Parameter const& parameter(parameters[0]);
         BOOST_CHECK_EQUAL(parameter.dataTypes(),
-            ro::DataTypes(ro::DT_VALUE | ro::DT_RASTER));
+            ranally::DataTypes(ranally::DT_VALUE | ranally::DT_RASTER));
         BOOST_CHECK_EQUAL(parameter.valueTypes(),
-            ro::ValueTypes(ro::ValueType(ro::VT_NUMBER)));
+            ranally::ValueTypes(ranally::ValueType(ranally::VT_NUMBER)));
 
         BOOST_CHECK_EQUAL(operation->results().size(), 1u);
-        std::vector<ro::Result> const& results(operation->results());
-        ro::Result const& result(results[0]);
-        BOOST_CHECK_EQUAL(result.dataType(), ro::DT_DEPENDS_ON_INPUT);
-        BOOST_CHECK_EQUAL(result.valueType(), ro::VT_DEPENDS_ON_INPUT);
+        std::vector<ranally::Result> const& results(operation->results());
+        ranally::Result const& result(results[0]);
+        BOOST_CHECK_EQUAL(result.dataType(), ranally::DT_DEPENDS_ON_INPUT);
+        BOOST_CHECK_EQUAL(result.valueType(), ranally::VT_DEPENDS_ON_INPUT);
     }
 }

@@ -5,7 +5,6 @@
 
 
 namespace ranally {
-namespace language {
 
 //! Class for visitors that annotate the syntax tree.
 /*!
@@ -32,14 +31,13 @@ class AnnotateVisitor:
 
 public:
 
-                   AnnotateVisitor     (
-                                  operation::OperationsPtr const& operations);
+                   AnnotateVisitor     (OperationsPtr const& operations);
 
                    ~AnnotateVisitor    ();
 
 private:
 
-    operation::OperationsPtr _operations;
+    OperationsPtr  _operations;
 
     void           Visit               (AssignmentVertex& vertex);
 
@@ -67,5 +65,4 @@ private:
 
 };
 
-} // namespace language
 } // namespace ranally

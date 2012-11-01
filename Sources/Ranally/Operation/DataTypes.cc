@@ -2,7 +2,6 @@
 
 
 namespace ranally {
-namespace operation {
 
 DataTypes::DataTypes()
 
@@ -16,5 +15,4 @@ DataTypes::~DataTypes()
 {
 }
 
-} // namespace operation
 } // namespace ranally

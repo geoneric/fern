@@ -2,7 +2,6 @@
 
 
 namespace ranally {
-namespace operation {
 
 enum ValueType {
     //! Unknown value type.
@@ -46,5 +45,4 @@ enum ValueType {
 
 typedef unsigned int ValueTypes;
 
-} // namespace operation
 } // namespace ranally

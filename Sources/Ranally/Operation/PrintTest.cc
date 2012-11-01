@@ -30,14 +30,14 @@ void PrintTest::test()
     {
         int scalar = 5;
         std::stringstream stream;
-        ranally::operation::print(scalar, stream);
+        ranally::print(scalar, stream);
         BOOST_CHECK_EQUAL(stream.str(), "5\n");
     }
 
     {
         int array[10] = { 1, 2, 3 };
         std::stringstream stream;
-        ranally::operation::print(
+        ranally::print(
             boost::iterator_range<int*>(&array[0], array + 3), stream);
         BOOST_CHECK_EQUAL(stream.str(), "[1, 2, 3]\n");
     }
@@ -45,7 +45,7 @@ void PrintTest::test()
     {
         int array[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
         std::stringstream stream;
-        ranally::operation::print(
+        ranally::print(
             boost::iterator_range<int*>(&array[0], array + 10), stream);
         BOOST_CHECK_EQUAL(stream.str(), "[1, 2, 3, ..., 8, 9, 10]\n");
     }
@@ -59,7 +59,7 @@ void PrintTest::test()
         }
         std::stringstream stream;
 
-        ranally::operation::print(raster, stream);
+        ranally::print(raster, stream);
         BOOST_WARN_EQUAL(stream.str(),
             "[[ 1,  2,  3, ..., 28, 29,  30]\n"
             " [31, 32, 33, ..., 58, 59,  60]\n"

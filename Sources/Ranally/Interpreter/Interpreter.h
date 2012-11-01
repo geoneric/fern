@@ -5,7 +5,6 @@
 
 
 namespace ranally {
-namespace interpreter {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -28,21 +27,20 @@ public:
 
                    ~Interpreter        ();
 
-    language::ScriptVertexPtr parseString(String const& string);
+    ScriptVertexPtr parseString        (String const& string);
 
-    void           annotate            (language::ScriptVertexPtr const& tree);
+    void           annotate            (ScriptVertexPtr const& tree);
 
-    void           validate            (language::ScriptVertexPtr const& tree);
+    void           validate            (ScriptVertexPtr const& tree);
 
-    void           execute             (language::ScriptVertexPtr const& tree);
+    void           execute             (ScriptVertexPtr const& tree);
 
 private:
 
-    ranally::language::AlgebraParser _algebraParser;
+    AlgebraParser  _algebraParser;
 
-    ranally::language::XmlParser _xmlParser;
+    XmlParser      _xmlParser;
 
 };
 
-} // namespace interpreter
 } // namespace ranally

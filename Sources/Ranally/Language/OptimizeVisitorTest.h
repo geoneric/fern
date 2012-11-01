@@ -22,8 +22,12 @@ public:
 
     static boost::unit_test::test_suite* suite();
 
-    ranally::interpreter::Interpreter _interpreter;
-    ranally::language::ScriptVisitor _scriptVisitor;
-    ranally::language::OptimizeVisitor _optimizeVisitor;
+private:
+
+    ranally::Interpreter _interpreter;
+
+    ranally::ScriptVisitor _scriptVisitor;
+
+    ranally::OptimizeVisitor _optimizeVisitor;
 
 };

@@ -28,10 +28,10 @@ XmlParserTest::XmlParserTest()
 
 void XmlParserTest::testParse()
 {
-    ranally::language::AlgebraParser algebraParser;
-    ranally::language::XmlParser xmlParser;
+    ranally::AlgebraParser algebraParser;
+    ranally::XmlParser xmlParser;
     ranally::String xml;
-    boost::shared_ptr<ranally::language::SyntaxVertex> tree;
+    boost::shared_ptr<ranally::SyntaxVertex> tree;
 
     {
         // Empty xml.

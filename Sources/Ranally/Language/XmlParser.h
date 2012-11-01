@@ -4,7 +4,6 @@
 
 
 namespace ranally {
-namespace language {
 
 class ScriptVertex;
 
@@ -34,5 +33,4 @@ public:
 
 };
 
-} // namespace language
 } // namespace ranally

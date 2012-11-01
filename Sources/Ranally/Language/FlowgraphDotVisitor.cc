@@ -29,7 +29,7 @@ void FlowgraphDotVisitor::setMode(
 
 void FlowgraphDotVisitor::addFlowgraphVertex(
     NameVertex const& sourceVertex,
-    language::SyntaxVertex const& targetVertex)
+    SyntaxVertex const& targetVertex)
 {
     if(!sourceVertex.definitions().empty()) {
         BOOST_FOREACH(NameVertex* definition,
@@ -52,8 +52,8 @@ void FlowgraphDotVisitor::addFlowgraphVertex(
 
 
 void FlowgraphDotVisitor::addFlowgraphVertex(
-    language::SyntaxVertex const& sourceVertex,
-    language::SyntaxVertex const& targetVertex)
+    SyntaxVertex const& sourceVertex,
+    SyntaxVertex const& targetVertex)
 {
     assert(_mode == ConnectingFlowgraph);
 
@@ -71,8 +71,8 @@ void FlowgraphDotVisitor::addFlowgraphVertex(
     /// //      it is, instead of optimizing the plot by finding stuff ourselves.
     /// assert(!_definition);
     /// _mode = ConnectingOperationArgument;
-    /// const_cast<language::SyntaxVertex&>(sourceVertex).Accept(*this);
-    /// language::SyntaxVertex const* newSourceVertex = _definition
+    /// const_cast<SyntaxVertex&>(sourceVertex).Accept(*this);
+    /// SyntaxVertex const* newSourceVertex = _definition
     ///   ? _definition
     ///   : &sourceVertex;
 
@@ -106,7 +106,7 @@ void FlowgraphDotVisitor::addFlowgraphVertex(
 
 
 void FlowgraphDotVisitor::Visit(
-    language::AssignmentVertex& vertex)
+    AssignmentVertex& vertex)
 {
     switch(_mode) {
         case Declaring: {
@@ -138,7 +138,7 @@ void FlowgraphDotVisitor::Visit(
             break;
         }
         case ConnectingFlowgraph: {
-            BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
+            BOOST_FOREACH(boost::shared_ptr<ExpressionVertex>
                 expressionVertex, vertex.expressions()) {
                 addFlowgraphVertex(*expressionVertex, vertex);
             }
@@ -146,7 +146,7 @@ void FlowgraphDotVisitor::Visit(
         }
     }
 
-    BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
+    BOOST_FOREACH(boost::shared_ptr<ExpressionVertex>
         expressionVertex, vertex.expressions()) {
         expressionVertex->Accept(*this);
     }
@@ -154,7 +154,7 @@ void FlowgraphDotVisitor::Visit(
 
 
 void FlowgraphDotVisitor::Visit(
-    language::IfVertex& vertex)
+    IfVertex& vertex)
 {
     static size_t ifClusterId = 0;
     switch(_mode) {
@@ -180,7 +180,7 @@ void FlowgraphDotVisitor::Visit(
             "rankdir=TB;\n"
         ) % ifClusterId++));
     }
-    BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+    BOOST_FOREACH(boost::shared_ptr<StatementVertex>
         statementVertex, vertex.trueStatements()) {
         statementVertex->Accept(*this);
     }
@@ -197,7 +197,7 @@ void FlowgraphDotVisitor::Visit(
                 "rankdir=TB;\n"
             ) % ifClusterId++));
         }
-        BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+        BOOST_FOREACH(boost::shared_ptr<StatementVertex>
             statementVertex, vertex.falseStatements()) {
             statementVertex->Accept(*this);
         }
@@ -337,7 +337,7 @@ void FlowgraphDotVisitor::Visit(
             break;
         }
         case ConnectingFlowgraph: {
-            BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
+            BOOST_FOREACH(boost::shared_ptr<ExpressionVertex>
                 expressionVertex, vertex.expressions()) {
                 addFlowgraphVertex(*expressionVertex, vertex);
             }
@@ -345,7 +345,7 @@ void FlowgraphDotVisitor::Visit(
         }
     }
 
-    BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
+    BOOST_FOREACH(boost::shared_ptr<ExpressionVertex>
         expressionVertex, vertex.expressions()) {
         expressionVertex->Accept(*this);
     }
@@ -372,13 +372,13 @@ void FlowgraphDotVisitor::Visit(
 
 
 void FlowgraphDotVisitor::Visit(
-    language::WhileVertex& /* vertex */)
+    WhileVertex& /* vertex */)
 {
 }
 
 
 void FlowgraphDotVisitor::Visit(
-    language::ScriptVertex& vertex)
+    ScriptVertex& vertex)
 {
     setScript(String(
         "digraph G {\n"
@@ -393,13 +393,13 @@ void FlowgraphDotVisitor::Visit(
     //   String(boost::format(" [label=\"%1%\"];\n"))
     //     % vertex.sourceName().encodeInUTF8());
 
-    BOOST_FOREACH(boost::shared_ptr<language::StatementVertex> statementVertex,
+    BOOST_FOREACH(boost::shared_ptr<StatementVertex> statementVertex,
         vertex.statements()) {
         statementVertex->Accept(*this);
     }
 
     setMode(ConnectingFlowgraph);
-    BOOST_FOREACH(boost::shared_ptr<language::StatementVertex> statementVertex,
+    BOOST_FOREACH(boost::shared_ptr<StatementVertex> statementVertex,
         vertex.statements()) {
         // addFlowgraphVertex(vertex, *statementVertex);
         statementVertex->Accept(*this);

@@ -2,7 +2,6 @@
 
 
 namespace ranally {
-namespace io {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -31,5 +30,4 @@ private:
 
 };
 
-} // namespace io
 } // namespace ranally

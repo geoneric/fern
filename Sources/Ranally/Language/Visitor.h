@@ -5,19 +5,16 @@
 
 namespace ranally {
 
+class AssignmentVertex;
 class FunctionVertex;
+class IfVertex;
 class NameVertex;
 template<typename T>
     class NumberVertex;
 class OperationVertex;
 class OperatorVertex;
-class StringVertex;
-
-namespace language {
-
-class AssignmentVertex;
-class IfVertex;
 class ScriptVertex;
+class StringVertex;
 class WhileVertex;
 
 
@@ -114,5 +111,4 @@ private:
 
 };
 
-} // namespace language
 } // namespace ranally

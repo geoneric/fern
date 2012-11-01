@@ -4,7 +4,6 @@
 
 
 namespace ranally {
-namespace language {
 
 ScriptVertex::ScriptVertex(
     String const& sourceName,
@@ -77,5 +76,4 @@ StatementVertices& ScriptVertex::statements()
 //   return !(lhs == rhs);
 // }
 
-} // namespace language
 } // namespace ranally

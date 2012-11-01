@@ -3,7 +3,6 @@
 
 
 namespace ranally {
-namespace operation {
 
 Parameter::Parameter(
     String const& name,
@@ -78,5 +77,4 @@ ValueTypes Parameter::valueTypes() const
     return _valueTypes;
 }
 
-} // namespace operation
 } // namespace ranally

@@ -6,7 +6,6 @@
 
 
 namespace ranally {
-namespace language {
 
 ValidateVisitor::ValidateVisitor()
 
@@ -46,7 +45,7 @@ void ValidateVisitor::Visit(
             vertex.name().encodeInUTF8()).c_str());
     }
 
-    ranally::operation::Operation const& operation(*vertex.operation());
+    ranally::Operation const& operation(*vertex.operation());
 
     // Check if the number of arguments provided equals the required number of
     // arguments.
@@ -79,5 +78,4 @@ void ValidateVisitor::Visit(
     // // ...
 }
 
-} // namespace language
 } // namespace ranally

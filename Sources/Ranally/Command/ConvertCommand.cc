@@ -145,9 +145,9 @@ String ConvertCommand::convertToDotAst(
     String const& xml,
     int modes)
 {
-    boost::shared_ptr<ranally::language::ScriptVertex> tree(
-        ranally::language::XmlParser().parse(xml));
-    ranally::interpreter::Interpreter interpreter;
+    boost::shared_ptr<ranally::ScriptVertex> tree(
+        ranally::XmlParser().parse(xml));
+    ranally::Interpreter interpreter;
     interpreter.annotate(tree);
 
     ranally::AstDotVisitor astDotVisitor(modes);
@@ -216,9 +216,9 @@ int ConvertCommand::convertToDotAst(
 String ConvertCommand::convertToDotFlowgraph(
     String const& xml)
 {
-    boost::shared_ptr<ranally::language::ScriptVertex> tree(
-        ranally::language::XmlParser().parse(xml));
-    ranally::interpreter::Interpreter interpreter;
+    boost::shared_ptr<ranally::ScriptVertex> tree(
+        ranally::XmlParser().parse(xml));
+    ranally::Interpreter interpreter;
     interpreter.annotate(tree);
 
     ranally::FlowgraphDotVisitor flowgraphDotVisitor;

@@ -26,24 +26,24 @@ String join(
 
 
 String dataTypesToString(
-    operation::DataTypes const& dataTypes)
+    DataTypes const& dataTypes)
 {
     std::vector<String> strings;
 
-    if(dataTypes & operation::DT_UNKNOWN) {
+    if(dataTypes & DT_UNKNOWN) {
         strings.push_back("?");
     }
     else {
-        if(dataTypes & operation::DT_VALUE) {
+        if(dataTypes & DT_VALUE) {
             strings.push_back("val");
         }
-        if(dataTypes & operation::DT_RASTER) {
+        if(dataTypes & DT_RASTER) {
             strings.push_back("rst");
         }
-        if(dataTypes & operation::DT_FEATURE) {
+        if(dataTypes & DT_FEATURE) {
             strings.push_back("ftr");
         }
-        if(dataTypes & operation::DT_DEPENDS_ON_INPUT) {
+        if(dataTypes & DT_DEPENDS_ON_INPUT) {
             strings.push_back("dep");
         }
     }
@@ -54,48 +54,48 @@ String dataTypesToString(
 
 
 String valueTypesToString(
-    operation::ValueTypes const& valueTypes)
+    ValueTypes const& valueTypes)
 {
     std::vector<String> strings;
 
-    if(valueTypes & operation::DT_UNKNOWN) {
+    if(valueTypes & DT_UNKNOWN) {
         strings.push_back("?");
     }
     else {
-        if(valueTypes & operation::VT_UINT8) {
+        if(valueTypes & VT_UINT8) {
             strings.push_back("u8");
         }
-        if(valueTypes & operation::VT_INT8) {
+        if(valueTypes & VT_INT8) {
             strings.push_back("s8");
         }
-        if(valueTypes & operation::VT_UINT16) {
+        if(valueTypes & VT_UINT16) {
             strings.push_back("u16");
         }
-        if(valueTypes & operation::VT_INT16) {
+        if(valueTypes & VT_INT16) {
             strings.push_back("s16");
         }
-        if(valueTypes & operation::VT_UINT32) {
+        if(valueTypes & VT_UINT32) {
             strings.push_back("u32");
         }
-        if(valueTypes & operation::VT_INT32) {
+        if(valueTypes & VT_INT32) {
             strings.push_back("s32");
         }
-        if(valueTypes & operation::VT_UINT64) {
+        if(valueTypes & VT_UINT64) {
             strings.push_back("u64");
         }
-        if(valueTypes & operation::VT_INT64) {
+        if(valueTypes & VT_INT64) {
             strings.push_back("s64");
         }
-        if(valueTypes & operation::VT_FLOAT32) {
+        if(valueTypes & VT_FLOAT32) {
             strings.push_back("f32");
         }
-        if(valueTypes & operation::VT_FLOAT64) {
+        if(valueTypes & VT_FLOAT64) {
             strings.push_back("f64");
         }
-        if(valueTypes & operation::VT_STRING) {
+        if(valueTypes & VT_STRING) {
             strings.push_back("str");
         }
-        if(valueTypes & operation::VT_DEPENDS_ON_INPUT) {
+        if(valueTypes & VT_DEPENDS_ON_INPUT) {
             strings.push_back("dep");
         }
     }
@@ -131,8 +131,8 @@ void AstDotVisitor::setMode(
 
 
 void AstDotVisitor::addAstVertex(
-    language::SyntaxVertex const& sourceVertex,
-    language::SyntaxVertex const& targetVertex)
+    SyntaxVertex const& sourceVertex,
+    SyntaxVertex const& targetVertex)
 {
     assert(_mode == ConnectingAst);
     addScript(
@@ -144,10 +144,10 @@ void AstDotVisitor::addAstVertex(
 
 
 void AstDotVisitor::addCfgVertices(
-    language::SyntaxVertex const& sourceVertex)
+    SyntaxVertex const& sourceVertex)
 {
     assert(_mode == ConnectingCfg);
-    BOOST_FOREACH(language::SyntaxVertex const* successor,
+    BOOST_FOREACH(SyntaxVertex const* successor,
         sourceVertex.successors()) {
         addScript(
             String(boost::format("\"%1%\"") % &sourceVertex) + " -> " +
@@ -230,7 +230,7 @@ VISIT_NUMBER_VERTEX(double  )
 
 
 void AstDotVisitor::Visit(
-    language::AssignmentVertex& vertex)
+    AssignmentVertex& vertex)
 {
     switch(_mode) {
         case Declaring: {
@@ -270,7 +270,7 @@ void AstDotVisitor::Visit(
             break;
         }
         case ConnectingAst: {
-            BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
+            BOOST_FOREACH(boost::shared_ptr<ExpressionVertex>
                 expressionVertex, vertex.expressions()) {
                 addAstVertex(vertex, *expressionVertex);
             }
@@ -285,7 +285,7 @@ void AstDotVisitor::Visit(
         }
     }
 
-    BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
+    BOOST_FOREACH(boost::shared_ptr<ExpressionVertex>
         expressionVertex, vertex.expressions()) {
         expressionVertex->Accept(*this);
     }
@@ -303,7 +303,7 @@ void AstDotVisitor::Visit(
             break;
         }
         case ConnectingAst: {
-            BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
+            BOOST_FOREACH(boost::shared_ptr<ExpressionVertex>
                 expressionVertex, vertex.expressions()) {
                 addAstVertex(vertex, *expressionVertex);
             }
@@ -318,7 +318,7 @@ void AstDotVisitor::Visit(
         }
     }
 
-    BOOST_FOREACH(boost::shared_ptr<language::ExpressionVertex>
+    BOOST_FOREACH(boost::shared_ptr<ExpressionVertex>
         expressionVertex, vertex.expressions()) {
         expressionVertex->Accept(*this);
     }
@@ -326,7 +326,7 @@ void AstDotVisitor::Visit(
 
 
 void AstDotVisitor::Visit(
-    language::IfVertex& vertex)
+    IfVertex& vertex)
 {
     switch(_mode) {
         case Declaring: {
@@ -338,11 +338,11 @@ void AstDotVisitor::Visit(
         }
         case ConnectingAst: {
             addAstVertex(vertex, *vertex.condition());
-            BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+            BOOST_FOREACH(boost::shared_ptr<StatementVertex>
                 statementVertex, vertex.trueStatements()) {
                 addAstVertex(vertex, *statementVertex);
             }
-            BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+            BOOST_FOREACH(boost::shared_ptr<StatementVertex>
                 statementVertex, vertex.falseStatements()) {
                 addAstVertex(vertex, *statementVertex);
             }
@@ -358,11 +358,11 @@ void AstDotVisitor::Visit(
     }
 
     vertex.condition()->Accept(*this);
-    BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+    BOOST_FOREACH(boost::shared_ptr<StatementVertex>
         statementVertex, vertex.trueStatements()) {
         statementVertex->Accept(*this);
     }
-    BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+    BOOST_FOREACH(boost::shared_ptr<StatementVertex>
         statementVertex, vertex.falseStatements()) {
         statementVertex->Accept(*this);
     }
@@ -377,7 +377,7 @@ void AstDotVisitor::Visit(
             std::vector<String> attributes;
             String label = vertex.name();
 
-            std::vector<language::ExpressionVertex::ResultType> const&
+            std::vector<ExpressionVertex::ResultType> const&
                 resultTypes(vertex.resultTypes());
             if(!resultTypes.empty()) {
                 assert(resultTypes.size() == 1);
@@ -414,7 +414,7 @@ void AstDotVisitor::Visit(
 
 
 void AstDotVisitor::Visit(
-    language::ScriptVertex& vertex)
+    ScriptVertex& vertex)
 {
     // TODO 'ordering=out' is current not supported in combination with
     // TODO 'constraint=false'. Check again with dot > 2.28.0, when it becomes
@@ -432,13 +432,13 @@ void AstDotVisitor::Visit(
             % vertex.sourceName().encodeInUTF8())
     );
 
-    BOOST_FOREACH(boost::shared_ptr<language::StatementVertex> statementVertex,
+    BOOST_FOREACH(boost::shared_ptr<StatementVertex> statementVertex,
         vertex.statements()) {
         statementVertex->Accept(*this);
     }
 
     setMode(ConnectingAst);
-    BOOST_FOREACH(boost::shared_ptr<language::StatementVertex> statementVertex,
+    BOOST_FOREACH(boost::shared_ptr<StatementVertex> statementVertex,
         vertex.statements()) {
         addAstVertex(vertex, *statementVertex);
         statementVertex->Accept(*this);
@@ -447,7 +447,7 @@ void AstDotVisitor::Visit(
     if(_modes & ConnectingCfg) {
         setMode(ConnectingCfg);
         addCfgVertices(vertex);
-        BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+        BOOST_FOREACH(boost::shared_ptr<StatementVertex>
           statementVertex, vertex.statements()) {
           statementVertex->Accept(*this);
         }
@@ -455,7 +455,7 @@ void AstDotVisitor::Visit(
 
     if(_modes & ConnectingUses) {
         setMode(ConnectingUses);
-        BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+        BOOST_FOREACH(boost::shared_ptr<StatementVertex>
             statementVertex, vertex.statements()) {
             statementVertex->Accept(*this);
         }
@@ -492,7 +492,7 @@ void AstDotVisitor::Visit(
 
 
 void AstDotVisitor::Visit(
-    language::WhileVertex& vertex)
+    WhileVertex& vertex)
 {
     switch(_mode) {
         case Declaring: {
@@ -504,11 +504,11 @@ void AstDotVisitor::Visit(
         }
         case ConnectingAst: {
             addAstVertex(vertex, *vertex.condition());
-            BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+            BOOST_FOREACH(boost::shared_ptr<StatementVertex>
                 statementVertex, vertex.trueStatements()) {
                 addAstVertex(vertex, *statementVertex);
             }
-            BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+            BOOST_FOREACH(boost::shared_ptr<StatementVertex>
                 statementVertex, vertex.falseStatements()) {
                 addAstVertex(vertex, *statementVertex);
             }
@@ -524,11 +524,11 @@ void AstDotVisitor::Visit(
     }
 
     vertex.condition()->Accept(*this);
-    BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+    BOOST_FOREACH(boost::shared_ptr<StatementVertex>
         statementVertex, vertex.trueStatements()) {
         statementVertex->Accept(*this);
     }
-    BOOST_FOREACH(boost::shared_ptr<language::StatementVertex>
+    BOOST_FOREACH(boost::shared_ptr<StatementVertex>
         statementVertex, vertex.falseStatements()) {
         statementVertex->Accept(*this);
     }

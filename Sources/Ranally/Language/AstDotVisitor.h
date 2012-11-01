@@ -39,20 +39,18 @@ private:
 
     void           setMode             (Mode mode);
 
-    void           addAstVertex        (
-                                  language::SyntaxVertex const& sourceVertex,
-                                  language::SyntaxVertex const& targetVertex);
+    void           addAstVertex        (SyntaxVertex const& sourceVertex,
+                                        SyntaxVertex const& targetVertex);
 
-    void           addCfgVertices      (
-                                  language::SyntaxVertex const& sourceVertex);
+    void           addCfgVertices      (SyntaxVertex const& sourceVertex);
 
     void           addUseVertices      (NameVertex const& vertex);
 
-    void           Visit               (language::AssignmentVertex& vertex);
+    void           Visit               (AssignmentVertex& vertex);
 
     void           Visit               (FunctionVertex& vertex);
 
-    void           Visit               (language::IfVertex& vertex);
+    void           Visit               (IfVertex& vertex);
 
     void           Visit               (NameVertex& vertex);
 
@@ -81,11 +79,11 @@ private:
 
     void           Visit               (OperatorVertex& vertex);
 
-    void           Visit               (language::ScriptVertex& vertex);
+    void           Visit               (ScriptVertex& vertex);
 
     void           Visit               (StringVertex& vertex);
 
-    void           Visit               (language::WhileVertex& vertex);
+    void           Visit               (WhileVertex& vertex);
 
 };
 

@@ -2,7 +2,6 @@
 
 
 namespace ranally {
-namespace io {
 
 //! Class that encapsulates the configuration of the HDF5 library for the HDF5 client.
 /*!
@@ -30,5 +29,4 @@ private:
 
 };
 
-} // namespace io
 } // namespace ranally

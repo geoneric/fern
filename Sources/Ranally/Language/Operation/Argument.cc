@@ -2,8 +2,6 @@
 
 
 namespace ranally {
-namespace language {
-namespace operation {
 
 Argument::Argument()
 
@@ -17,6 +15,4 @@ Argument::~Argument()
 {
 }
 
-} // namespace operation
-} // namespace language
 } // namespace ranally

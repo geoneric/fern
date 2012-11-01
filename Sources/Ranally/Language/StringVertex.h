@@ -11,7 +11,7 @@ namespace ranally {
   \sa        .
 */
 class StringVertex:
-    public language::ExpressionVertex
+    public ExpressionVertex
 {
 
     friend class StringVertexTest;

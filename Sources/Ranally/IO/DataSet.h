@@ -6,8 +6,6 @@ namespace ranally {
 
 class Feature;
 
-namespace io {
-
 //! Abstract base class for data sets.
 /*!
   A data set is a format specific instance containing information about the
@@ -94,5 +92,4 @@ private:
 
 };
 
-} // namespace io
 } // namespace ranally

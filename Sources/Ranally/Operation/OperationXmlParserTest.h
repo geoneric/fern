@@ -8,12 +8,12 @@ namespace boost {
 }
 
 
-class XmlParserTest
+class OperationXmlParserTest
 {
 
 public:
 
-                   XmlParserTest       ();
+                   OperationXmlParserTest       ();
 
     void           testParse           ();
 

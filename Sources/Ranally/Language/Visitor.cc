@@ -15,7 +15,6 @@
 
 
 namespace ranally {
-namespace language {
 
 //! Default construct an instance.
 /*!
@@ -261,5 +260,4 @@ void Visitor::Visit(
     Visit(dynamic_cast<StatementVertex&>(vertex));
 }
 
-} // namespace language
 } // namespace ranally

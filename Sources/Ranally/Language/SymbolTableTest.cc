@@ -27,7 +27,6 @@ SymbolTableTest::SymbolTableTest()
 void SymbolTableTest::testScoping()
 {
     using namespace ranally;
-    using namespace ranally::language;
 
     SymbolTable table;
     ranally::String name("a");

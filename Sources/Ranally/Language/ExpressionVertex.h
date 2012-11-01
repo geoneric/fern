@@ -7,7 +7,6 @@
 
 
 namespace ranally {
-namespace language {
 
 class ExpressionVertex;
 
@@ -29,7 +28,7 @@ class ExpressionVertex:
 
 public:
 
-    typedef boost::tuple<operation::DataType, operation::ValueType> ResultType;
+    typedef boost::tuple<DataType, ValueType> ResultType;
 
     virtual        ~ExpressionVertex   ();
 
@@ -46,14 +45,14 @@ public:
     void           setResultTypes      (
                                   std::vector<ResultType> const& resultTypes);
 
-    void           addResultType       (operation::DataType dataType,
-                                        operation::ValueType valueType);
+    void           addResultType       (DataType dataType,
+                                        ValueType valueType);
 
     std::vector<ResultType> const& resultTypes() const;
 
-    operation::DataType dataType       (size_t index) const;
+    DataType       dataType            (size_t index) const;
 
-    operation::ValueType valueType     (size_t index) const;
+    ValueType      valueType           (size_t index) const;
 
     void           setValue            (ExpressionVertexPtr const& value);
 
@@ -87,5 +86,4 @@ private:
 
 };
 
-} // namespace language
 } // namespace ranally

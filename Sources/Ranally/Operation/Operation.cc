@@ -4,7 +4,6 @@
 
 
 namespace ranally {
-namespace operation {
 
 Operation::Operation(
     String const& name,
@@ -77,5 +76,4 @@ std::vector<Result> const& Operation::results() const
     return _results;
 }
 
-} // namespace operation
 } // namespace ranally

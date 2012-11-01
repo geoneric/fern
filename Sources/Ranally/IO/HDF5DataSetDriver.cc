@@ -7,7 +7,6 @@
 
 
 namespace ranally {
-namespace io {
 
 HDF5DataSetDriver::HDF5DataSetDriver()
 
@@ -99,5 +98,4 @@ HDF5DataSet* HDF5DataSetDriver::open(
     return result;
 }
 
-} // namespace io
 } // namespace ranally

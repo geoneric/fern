@@ -4,7 +4,6 @@
 
 
 namespace ranally {
-namespace language {
 
 //! An AlgebraParser parses a script and converts it to XML.
 /*!
@@ -39,5 +38,4 @@ private:
 
 };
 
-} // namespace language
 } // namespace ranally

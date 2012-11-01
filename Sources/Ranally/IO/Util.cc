@@ -4,7 +4,6 @@
 
 
 namespace ranally {
-namespace io {
 namespace {
 
 //! Opening modes for data sets.
@@ -45,5 +44,4 @@ void import(
     outputDataSet->copy(*inputDataSet);
 }
 
-} // namespace io
 } // namespace ranally

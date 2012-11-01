@@ -59,7 +59,7 @@ String nameToSymbol(
 
 OperatorVertex::OperatorVertex(
     String const& name,
-    language::ExpressionVertices const& expressions)
+    ExpressionVertices const& expressions)
 
     : OperationVertex(name, expressions),
       _symbol(nameToSymbol(name, expressions.size()))

@@ -3,10 +3,8 @@
 
 
 namespace ranally {
-namespace io {
 
 void               import              (String const& inputDataSetName,
                                         String const& outputDataSetName);
 
-} // namespace io
 } // namespace ranally

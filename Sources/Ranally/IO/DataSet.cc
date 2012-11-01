@@ -2,7 +2,6 @@
 
 
 namespace ranally {
-namespace io {
 
 DataSet::DataSet(
     String const& name)
@@ -23,5 +22,4 @@ String const& DataSet::name() const
     return _name;
 }
 
-} // namespace io
 } // namespace ranally

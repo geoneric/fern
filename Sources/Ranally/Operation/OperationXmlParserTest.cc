@@ -1,38 +1,38 @@
-#include "XmlParserTest.h"
+#include "OperationXmlParserTest.h"
 #include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
 #include "Ranally/Operation/Parameter.h"
 #include "Ranally/Operation/Result.h"
-#include "Ranally/Operation/XmlParser.h"
+#include "Ranally/Operation/OperationXmlParser.h"
 
 
-boost::unit_test::test_suite* XmlParserTest::suite()
+boost::unit_test::test_suite* OperationXmlParserTest::suite()
 {
     boost::unit_test::test_suite* suite = BOOST_TEST_SUITE(__FILE__);
-    boost::shared_ptr<XmlParserTest> instance(
-        new XmlParserTest());
+    boost::shared_ptr<OperationXmlParserTest> instance(
+        new OperationXmlParserTest());
     suite->add(BOOST_CLASS_TEST_CASE(
-        &XmlParserTest::testParse, instance));
+        &OperationXmlParserTest::testParse, instance));
 
     return suite;
 }
 
 
-XmlParserTest::XmlParserTest()
+OperationXmlParserTest::OperationXmlParserTest()
 {
 }
 
 
-void XmlParserTest::testParse()
+void OperationXmlParserTest::testParse()
 {
-    ranally::operation::XmlParser xmlParser;
+    ranally::OperationXmlParser xmlParser;
     ranally::String xml;
-    ranally::operation::OperationsPtr operations;
-    std::vector<ranally::operation::Parameter> parameters;
-    std::vector<ranally::operation::Result> results;
-    ranally::operation::DataTypes dataTypes;
-    ranally::operation::ValueTypes valueTypes;
+    ranally::OperationsPtr operations;
+    std::vector<ranally::Parameter> parameters;
+    std::vector<ranally::Result> results;
+    ranally::DataTypes dataTypes;
+    ranally::ValueTypes valueTypes;
 
     {
         // Empty xml.
@@ -70,7 +70,7 @@ void XmlParserTest::testParse()
         BOOST_CHECK_EQUAL(operations->size(), 1u);
         BOOST_REQUIRE(operations->hasOperation("print"));
 
-        ranally::operation::OperationPtr const& operation(
+        ranally::OperationPtr const& operation(
             operations->operation("print"));
         BOOST_CHECK(operation->name() == "print");
         BOOST_CHECK(operation->description() ==
@@ -78,14 +78,14 @@ void XmlParserTest::testParse()
 
         parameters = operation->parameters();
         BOOST_CHECK_EQUAL(parameters.size(), 1u);
-        ranally::operation::Parameter parameter = parameters[0];
+        ranally::Parameter parameter = parameters[0];
         BOOST_CHECK(parameter.name() == "value");
         BOOST_CHECK(parameter.description() == "Value to print.");
         dataTypes = parameter.dataTypes();
-        BOOST_CHECK(dataTypes == ranally::operation::DT_ALL);
+        BOOST_CHECK(dataTypes == ranally::DT_ALL);
 
         valueTypes = parameter.valueTypes();
-        BOOST_CHECK(valueTypes == ranally::operation::VT_ALL);
+        BOOST_CHECK(valueTypes == ranally::VT_ALL);
 
         results = operation->results();
         BOOST_CHECK(results.empty());

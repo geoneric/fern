@@ -4,7 +4,6 @@
 
 
 namespace ranally {
-namespace io {
 
 OGRClient::OGRClient()
 {
@@ -18,5 +17,4 @@ OGRClient::~OGRClient()
     OGRCleanupAll();
 }
 
-} // namespace io
 } // namespace ranally

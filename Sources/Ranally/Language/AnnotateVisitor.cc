@@ -6,10 +6,9 @@
 
 
 namespace ranally {
-namespace language {
 
 AnnotateVisitor::AnnotateVisitor(
-    ranally::operation::OperationsPtr const& operations)
+    ranally::OperationsPtr const& operations)
 
     : Visitor(),
       _operations(operations)
@@ -44,7 +43,7 @@ void AnnotateVisitor::Visit(
 void AnnotateVisitor::Visit(                                                   \
     NumberVertex<type>& vertex)                                                \
 {                                                                              \
-    vertex.addResultType(operation::dataType, operation::valueType);           \
+    vertex.addResultType(dataType, valueType);                                 \
 }
 
 VISIT_NUMBER_VERTEX(int8_t  , DT_VALUE, VT_INT8   )
@@ -66,15 +65,13 @@ void AnnotateVisitor::Visit(
 {
     if(_operations->hasOperation(vertex.name())) {
         assert(!vertex.operation());
-        operation::OperationPtr const& operation(
-            _operations->operation(vertex.name()));
+        OperationPtr const& operation(_operations->operation(vertex.name()));
         vertex.setOperation(operation);
 
-        BOOST_FOREACH(operation::Result const& result, operation->results()) {
+        BOOST_FOREACH(Result const& result, operation->results()) {
             vertex.addResultType(result.dataType(), result.valueType());
         }
     }
 }
 
-} // namespace language
 } // namespace ranally

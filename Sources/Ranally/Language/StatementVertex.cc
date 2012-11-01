@@ -2,7 +2,6 @@
 
 
 namespace ranally {
-namespace language {
 
 StatementVertex::StatementVertex()
 
@@ -26,5 +25,4 @@ StatementVertex::~StatementVertex()
 {
 }
 
-} // namespace language
 } // namespace ranally

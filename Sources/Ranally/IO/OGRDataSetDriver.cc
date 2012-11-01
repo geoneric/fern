@@ -5,7 +5,6 @@
 
 
 namespace ranally {
-namespace io {
 
 OGRDataSetDriver::OGRDataSetDriver(
     String const& name)
@@ -89,5 +88,4 @@ OGRDataSet* OGRDataSetDriver::open(
     return new OGRDataSet(name, dataSource);
 }
 
-} // namespace io
 } // namespace ranally

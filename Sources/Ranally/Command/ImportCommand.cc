@@ -59,7 +59,7 @@ int ImportCommand::execute()
     else {
         String inputDataSetName = argv()[1];
         String outputDataSetName = argv()[2];
-        ranally::io::import(inputDataSetName, outputDataSetName);
+        ranally::import(inputDataSetName, outputDataSetName);
         status = EXIT_SUCCESS;
     }
 

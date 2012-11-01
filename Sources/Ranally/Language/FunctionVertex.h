@@ -21,7 +21,7 @@ public:
     LOKI_DEFINE_VISITABLE()
 
                    FunctionVertex      (String const& name,
-                                        language::ExpressionVertices const& expressions);
+                                        ExpressionVertices const& expressions);
 
                    ~FunctionVertex     ();
 

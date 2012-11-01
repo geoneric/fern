@@ -2,8 +2,6 @@
 
 
 namespace ranally {
-namespace language {
-namespace operation {
 
 Result::Result()
 
@@ -17,6 +15,4 @@ Result::~Result()
 {
 }
 
-} // namespace operation
-} // namespace language
 } // namespace ranally

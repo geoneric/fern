@@ -6,7 +6,6 @@
 
 
 namespace ranally {
-namespace language {
 
 OptimizeVisitor::OptimizeVisitor()
 
@@ -161,5 +160,4 @@ std::cout << "visit script" << std::endl;
     } while(inlinedExpressions);
 }
 
-} // namespace language
 } // namespace ranally

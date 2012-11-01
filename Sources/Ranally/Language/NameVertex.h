@@ -12,7 +12,7 @@ namespace ranally {
   \sa        .
 */
 class NameVertex:
-    public language::ExpressionVertex
+    public ExpressionVertex
 {
 
     friend class NameVertexTest;

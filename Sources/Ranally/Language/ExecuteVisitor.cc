@@ -3,7 +3,6 @@
 
 
 namespace ranally {
-namespace language {
 
 ExecuteVisitor::ExecuteVisitor()
 
@@ -27,5 +26,4 @@ void ExecuteVisitor::Visit(
     std::cout << "execute: " << vertex.name() << std::endl;
 }
 
-} // namespace language
 } // namespace ranally

@@ -12,7 +12,7 @@ namespace ranally {
 */
 template<typename T>
 class NumberVertex:
-    public language::ExpressionVertex
+    public ExpressionVertex
 {
 
     friend class NumberVertexTest;

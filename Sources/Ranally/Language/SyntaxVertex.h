@@ -6,7 +6,6 @@
 
 
 namespace ranally {
-namespace language {
 
 class ExpressionVertex;
 class StatementVertex;
@@ -79,5 +78,4 @@ private:
 
 };
 
-} // namespace language
 } // namespace ranally

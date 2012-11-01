@@ -2,8 +2,6 @@
 
 
 namespace ranally {
-namespace language {
-namespace operation {
 
 Parameter::Parameter()
 {
@@ -26,6 +24,4 @@ DataTypes Parameter::dataTypes() const
     return _dataTypes;
 }
 
-} // namespace operation
-} // namespace language
 } // namespace ranally

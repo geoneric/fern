@@ -27,7 +27,7 @@ ADD_CUSTOM_COMMAND(
     COMMAND
         ${XSD_EXECUTABLE} cxx-parser --xml-parser expat
             --type-map ${CMAKE_CURRENT_BINARY_DIR}/Operation.map
-            --namespace-map http://www.jemig.eu/ranally=ranally::operation
+            --namespace-map http://www.jemig.eu/ranally=ranally
             ${CMAKE_CURRENT_SOURCE_DIR}/Operation.xsd
 )
 ADD_CUSTOM_COMMAND(
@@ -39,7 +39,6 @@ ADD_CUSTOM_COMMAND(
     COMMAND
         echo
             "namespace ranally {\\n"
-            "namespace operation {\\n"
             "static char const* const operationsXml = \"\\"
                 > ${CMAKE_CURRENT_BINARY_DIR}/Operation-xml.h
     COMMAND
@@ -53,7 +52,6 @@ ADD_CUSTOM_COMMAND(
         echo
             "\";"
             "}\\n"
-            "}\\n"
                 >> ${CMAKE_CURRENT_BINARY_DIR}/Operation-xml.h
 )
 SET(SOURCES
@@ -62,7 +60,7 @@ SET(SOURCES
     Operations.cc
     Parameter.cc
     Result.cc
-    XmlParser.cc
+    OperationXmlParser.cc
 )
 ADD_LIBRARY(RanallyOperation
     ${SOURCES}
@@ -74,7 +72,7 @@ ADD_CUSTOM_TARGET(Operation-xml.h
 SET(TEST_SOURCES
     PrintTest.cc
     Test.cc
-    XmlParserTest.cc
+    OperationXmlParserTest.cc
 )
 ADD_EXECUTABLE(testRanallyOperation
     ${TEST_SOURCES}

@@ -6,7 +6,7 @@ namespace ranally {
 NameVertex::NameVertex(
     String const& name)
 
-    : language::ExpressionVertex(name) // ,
+    : ExpressionVertex(name) // ,
       // _definition(0)
 
 {
@@ -18,7 +18,7 @@ NameVertex::NameVertex(
     int colId,
     String const& name)
 
-    : language::ExpressionVertex(lineNr, colId, name) // ,
+    : ExpressionVertex(lineNr, colId, name) // ,
       // _definition(0)
 
 {

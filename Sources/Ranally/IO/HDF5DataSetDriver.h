@@ -4,7 +4,6 @@
 
 
 namespace ranally {
-namespace io {
 
 //! Data set driver for HDF5 data sets.
 /*!
@@ -36,5 +35,4 @@ private:
 
 };
 
-} // namespace io
 } // namespace ranally

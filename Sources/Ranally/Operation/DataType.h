@@ -2,7 +2,6 @@
 
 
 namespace ranally {
-namespace operation {
 
 enum DataType {
     //! Unknown data type.
@@ -29,5 +28,4 @@ enum DataType {
 
 typedef unsigned int DataTypes;
 
-} // namespace operation
 } // namespace ranally

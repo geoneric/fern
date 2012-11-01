@@ -8,7 +8,6 @@ namespace H5 {
 } // namespace H5
 
 namespace ranally {
-namespace io {
 
 //! Class for HDF5 data sets.
 /*!
@@ -54,5 +53,4 @@ private:
 
 };
 
-} // namespace io
 } // namespace ranally

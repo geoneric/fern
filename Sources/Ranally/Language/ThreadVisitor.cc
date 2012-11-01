@@ -4,7 +4,6 @@
 
 
 namespace ranally {
-namespace language {
 
 ThreadVisitor::ThreadVisitor()
 
@@ -203,5 +202,4 @@ void ThreadVisitor::Visit(
     assert(false);
 }
 
-} // namespace language
 } // namespace ranally

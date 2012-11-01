@@ -42,8 +42,10 @@ public:
 
 private:
 
-    ranally::language::AlgebraParser _algebraParser;
-    ranally::language::XmlParser _xmlParser;
-    // ranally::language::DotVisitor _visitor;
+    ranally::AlgebraParser _algebraParser;
+
+    ranally::XmlParser _xmlParser;
+
+    // ranally::DotVisitor _visitor;
 
 };

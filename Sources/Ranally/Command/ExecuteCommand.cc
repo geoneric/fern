@@ -38,9 +38,9 @@ ExecuteCommand::~ExecuteCommand()
 void ExecuteCommand::execute(
     String const& xml)
 {
-    boost::shared_ptr<ranally::language::ScriptVertex> tree(
-        ranally::language::XmlParser().parse(xml));
-    ranally::interpreter::Interpreter interpreter;
+    boost::shared_ptr<ranally::ScriptVertex> tree(
+        ranally::XmlParser().parse(xml));
+    ranally::Interpreter interpreter;
     interpreter.execute(tree);
 }
 

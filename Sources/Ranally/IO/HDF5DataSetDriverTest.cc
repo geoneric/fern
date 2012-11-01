@@ -48,7 +48,7 @@ void HDF5DataSetDriverTest::removeTestFiles()
     dataSetNames.push_back("TestCreate.h5");
     dataSetNames.push_back("TestRemove.h5");
     dataSetNames.push_back("TestOpen.h5");
-    ranally::io::HDF5DataSetDriver driver;
+    ranally::HDF5DataSetDriver driver;
 
     BOOST_FOREACH(ranally::String const& dataSetName, dataSetNames) {
         if(driver.exists(dataSetName)) {
@@ -61,10 +61,10 @@ void HDF5DataSetDriverTest::removeTestFiles()
 
 void HDF5DataSetDriverTest::testExists()
 {
-    ranally::io::HDF5DataSetDriver driver;
+    ranally::HDF5DataSetDriver driver;
 
     BOOST_REQUIRE(!driver.exists("TestExists.h5"));
-    boost::scoped_ptr<ranally::io::HDF5DataSet>(driver.create("TestExists.h5"));
+    boost::scoped_ptr<ranally::HDF5DataSet>(driver.create("TestExists.h5"));
     BOOST_CHECK(driver.exists("TestExists.h5"));
 }
 
@@ -74,10 +74,10 @@ void HDF5DataSetDriverTest::testCreate()
     // TODO Crashes.
     return;
 
-    ranally::io::HDF5DataSetDriver driver;
+    ranally::HDF5DataSetDriver driver;
     ranally::String dataSetName = "TestCreate.h5";
     BOOST_REQUIRE(!driver.exists(dataSetName));
-    boost::scoped_ptr<ranally::io::HDF5DataSet> dataSet;
+    boost::scoped_ptr<ranally::HDF5DataSet> dataSet;
 
     // Create empty data set.
     {
@@ -151,11 +151,11 @@ void HDF5DataSetDriverTest::testCreate()
 
 void HDF5DataSetDriverTest::testRemove()
 {
-    ranally::io::HDF5DataSetDriver driver;
+    ranally::HDF5DataSetDriver driver;
     ranally::String dataSetName = "TestRemove.h5";
     BOOST_REQUIRE(!driver.exists(dataSetName));
 
-    boost::scoped_ptr<ranally::io::HDF5DataSet>(driver.create(dataSetName));
+    boost::scoped_ptr<ranally::HDF5DataSet>(driver.create(dataSetName));
     BOOST_CHECK(driver.exists(dataSetName));
 
     driver.remove(dataSetName);
@@ -168,14 +168,14 @@ void HDF5DataSetDriverTest::testRemove()
 
 void HDF5DataSetDriverTest::testOpen()
 {
-    ranally::io::HDF5DataSetDriver driver;
+    ranally::HDF5DataSetDriver driver;
     ranally::String dataSetName = "TestOpen.h5";
     BOOST_REQUIRE(!driver.exists(dataSetName));
 
-    boost::scoped_ptr<ranally::io::HDF5DataSet>(driver.create(dataSetName));
+    boost::scoped_ptr<ranally::HDF5DataSet>(driver.create(dataSetName));
     BOOST_REQUIRE(driver.exists(dataSetName));
 
-    boost::scoped_ptr<ranally::io::HDF5DataSet> dataSet(driver.open(
+    boost::scoped_ptr<ranally::HDF5DataSet> dataSet(driver.open(
       dataSetName));
     BOOST_CHECK(dataSet);
     BOOST_CHECK(dataSet->name() == dataSetName);

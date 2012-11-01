@@ -663,7 +663,6 @@ ranally::String pythonAstToXml(
 
 
 namespace ranally {
-namespace language {
 
 AlgebraParser::AlgebraParser()
 
@@ -756,5 +755,4 @@ String AlgebraParser::parseFile(
     return result;
 }
 
-} // namespace language
 } // namespace ranally

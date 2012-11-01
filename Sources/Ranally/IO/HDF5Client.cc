@@ -3,7 +3,6 @@
 
 
 namespace ranally {
-namespace io {
 
 HDF5Client::HDF5Client()
 {
@@ -18,5 +17,4 @@ HDF5Client::~HDF5Client()
     // H5close();
 }
 
-} // namespace io
 } // namespace ranally

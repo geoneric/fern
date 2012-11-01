@@ -10,7 +10,6 @@
 
 
 namespace ranally {
-namespace operation {
 
 //! Class for storing information about individual operations.
 /*!
@@ -78,5 +77,4 @@ inline Operations::Operations(
 
 typedef boost::shared_ptr<Operations> OperationsPtr;
 
-} // namespace operation
 } // namespace ranally

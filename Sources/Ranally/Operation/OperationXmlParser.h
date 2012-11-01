@@ -4,7 +4,6 @@
 
 
 namespace ranally {
-namespace operation {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -12,20 +11,20 @@ namespace operation {
 
   \sa        .
 */
-class XmlParser
+class OperationXmlParser
 {
 
-    friend class XmlParserTest;
+    friend class OperationXmlParserTest;
 
 public:
 
-                   XmlParser           ();
+                   OperationXmlParser  ();
 
-                   XmlParser           (XmlParser const&)=delete;
+                   OperationXmlParser  (OperationXmlParser const&)=delete;
 
-    XmlParser&     operator=           (XmlParser const&)=delete;
+    OperationXmlParser&     operator=  (OperationXmlParser const&)=delete;
 
-                   ~XmlParser          ();
+                   ~OperationXmlParser ();
 
     OperationsPtr  parse               (std::istream& stream) const;
 
@@ -35,5 +34,4 @@ private:
 
 };
 
-} // namespace operation
 } // namespace ranally
