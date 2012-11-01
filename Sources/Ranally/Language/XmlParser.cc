@@ -410,23 +410,23 @@ public:
 
         switch(_size) {
             case 8: {
-                result = boost::make_shared<ranally::language::NumberVertex<
-                    int8_t> >(_value);
+                result = boost::make_shared<ranally::NumberVertex<int8_t> >(
+                    _value);
                 break;
             }
             case 16: {
-                result = boost::make_shared<ranally::language::NumberVertex<
-                    int16_t> >(_value);
+                result = boost::make_shared<ranally::NumberVertex<int16_t> >(
+                    _value);
                 break;
             }
             case 32: {
-                result = boost::make_shared<ranally::language::NumberVertex<
-                    int32_t> >(_value);
+                result = boost::make_shared<ranally::NumberVertex<int32_t> >(
+                    _value);
                 break;
             }
             case 64: {
-                result = boost::make_shared<ranally::language::NumberVertex<
-                    int64_t> >(_value);
+                result = boost::make_shared<ranally::NumberVertex<int64_t> >(
+                    _value);
                 break;
             }
             default: {
@@ -478,23 +478,23 @@ public:
 
         switch(_size) {
             case 8: {
-                result = boost::make_shared<ranally::language::NumberVertex<
-                    uint8_t> >(_value);
+                result = boost::make_shared<ranally::NumberVertex<uint8_t> >(
+                    _value);
                 break;
             }
             case 16: {
-                result = boost::make_shared<ranally::language::NumberVertex<
-                    uint16_t> >(_value);
+                result = boost::make_shared<ranally::NumberVertex<uint16_t> >(
+                    _value);
                 break;
             }
             case 32: {
-                result = boost::make_shared<ranally::language::NumberVertex<
-                    uint32_t> >(_value);
+                result = boost::make_shared<ranally::NumberVertex<uint32_t> >(
+                    _value);
                 break;
             }
             case 64: {
-                result = boost::make_shared<ranally::language::NumberVertex<
-                    uint64_t> >(_value);
+                result = boost::make_shared<ranally::NumberVertex<uint64_t> >(
+                    _value);
                 break;
             }
             default: {
@@ -547,14 +547,14 @@ public:
         switch(_size) {
             case 32: {
                 assert(sizeof(float) == 4);
-                result = boost::make_shared<ranally::language::NumberVertex<
-                    float> >(_value);
+                result = boost::make_shared<ranally::NumberVertex<float> >(
+                    _value);
                 break;
             }
             case 64: {
                 assert(sizeof(double) == 8);
-                result = boost::make_shared<ranally::language::NumberVertex<
-                    double> >(_value);
+                result = boost::make_shared<ranally::NumberVertex<double> >(
+                    _value);
                 break;
             }
             default: {
@@ -648,12 +648,12 @@ public:
         _dataStack.top().expressionVertices = vertices;
     }
 
-    boost::shared_ptr<ranally::language::FunctionVertex> post_Function()
+    boost::shared_ptr<ranally::FunctionVertex> post_Function()
     {
         assert(!_dataStack.empty());
         FunctionData result(_dataStack.top());
         _dataStack.pop();
-        return boost::make_shared<ranally::language::FunctionVertex>(
+        return boost::make_shared<ranally::FunctionVertex>(
             result.name, result.expressionVertices);
     }
 
@@ -700,12 +700,12 @@ public:
         _dataStack.top().expressionVertices = vertices;
     }
 
-    boost::shared_ptr<ranally::language::OperatorVertex> post_Operator()
+    boost::shared_ptr<ranally::OperatorVertex> post_Operator()
     {
         assert(!_dataStack.empty());
         OperatorData result(_dataStack.top());
         _dataStack.pop();
-        return boost::make_shared<ranally::language::OperatorVertex>(
+        return boost::make_shared<ranally::OperatorVertex>(
             result.name, result.expressionVertices);
     }
 
@@ -755,8 +755,8 @@ public:
         assert(!_dataStack.empty());
         assert(!_dataStack.top().vertex);
         _dataStack.top().vertex = boost::make_shared<
-            ranally::language::NameVertex>(_dataStack.top().line,
-                _dataStack.top().col, ranally::String(name));
+            ranally::NameVertex>(_dataStack.top().line, _dataStack.top().col,
+            ranally::String(name));
     }
 
     void String(
@@ -765,7 +765,7 @@ public:
         assert(!_dataStack.empty());
         assert(!_dataStack.top().vertex);
         _dataStack.top().vertex = boost::make_shared<
-            ranally::language::StringVertex>(_dataStack.top().line,
+            ranally::StringVertex>(_dataStack.top().line,
                 _dataStack.top().col, ranally::String(string));
     }
 
@@ -780,7 +780,7 @@ public:
     }
 
     void Function(
-        boost::shared_ptr<ranally::language::FunctionVertex> const& vertex)
+        boost::shared_ptr<ranally::FunctionVertex> const& vertex)
     {
         assert(!_dataStack.empty());
         assert(!_dataStack.top().vertex);
@@ -790,7 +790,7 @@ public:
     }
 
     void Operator(
-        boost::shared_ptr<ranally::language::OperatorVertex> const& vertex)
+        boost::shared_ptr<ranally::OperatorVertex> const& vertex)
     {
         assert(!_dataStack.empty());
         assert(!_dataStack.top().vertex);

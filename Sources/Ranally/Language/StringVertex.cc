@@ -2,14 +2,13 @@
 
 
 namespace ranally {
-namespace language {
 
 StringVertex::StringVertex(
     int lineNr,
     int colId,
     String const& value)
 
-    : ExpressionVertex(lineNr, colId, "\"" + value + "\""),
+    : language::ExpressionVertex(lineNr, colId, "\"" + value + "\""),
       _value(value)
 
 {
@@ -26,5 +25,4 @@ String const& StringVertex::value() const
     return _value;
 }
 
-} // namespace language
 } // namespace ranally

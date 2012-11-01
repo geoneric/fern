@@ -163,10 +163,10 @@ void AstDotVisitor::addCfgVertices(
 
 
 void AstDotVisitor::addUseVertices(
-    language::NameVertex const& vertex)
+    NameVertex const& vertex)
 {
     assert(_mode == ConnectingUses);
-    BOOST_FOREACH(language::NameVertex const* use, vertex.uses()) {
+    BOOST_FOREACH(NameVertex const* use, vertex.uses()) {
         addScript(
             String(boost::format("\"%1%\"") % &vertex) + " -> " +
             String(boost::format("\"%1%\"") % use) + " ["
@@ -182,7 +182,7 @@ void AstDotVisitor::addUseVertices(
 
 template<typename T>
 void AstDotVisitor::Visit(
-    language::NumberVertex<T>& vertex)
+    NumberVertex<T>& vertex)
 {
     switch(_mode) {
         case Declaring: {
@@ -210,7 +210,7 @@ void AstDotVisitor::Visit(
 #define VISIT_NUMBER_VERTEX(                                                   \
     type)                                                                      \
 void AstDotVisitor::Visit(                                                     \
-    language::NumberVertex<type>& vertex)                                      \
+    NumberVertex<type>& vertex)                                      \
 {                                                                              \
     Visit<type>(vertex);                                                       \
 }
@@ -259,7 +259,7 @@ void AstDotVisitor::Visit(
 
 
 void AstDotVisitor::Visit(
-    language::OperatorVertex& vertex)
+    OperatorVertex& vertex)
 {
     switch(_mode) {
         case Declaring: {
@@ -293,7 +293,7 @@ void AstDotVisitor::Visit(
 
 
 void AstDotVisitor::Visit(
-    language::FunctionVertex& vertex)
+    FunctionVertex& vertex)
 {
     switch(_mode) {
         case Declaring: {
@@ -370,7 +370,7 @@ void AstDotVisitor::Visit(
 
 
 void AstDotVisitor::Visit(
-    language::NameVertex& vertex)
+    NameVertex& vertex)
 {
     switch(_mode) {
         case Declaring: {
@@ -466,7 +466,7 @@ void AstDotVisitor::Visit(
 
 
 void AstDotVisitor::Visit(
-    language::StringVertex& vertex)
+    StringVertex& vertex)
 {
     switch(_mode) {
         case Declaring: {

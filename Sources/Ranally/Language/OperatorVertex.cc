@@ -5,7 +5,6 @@
 
 
 namespace ranally {
-namespace language {
 
 String nameToSymbol(
     String const& name,
@@ -60,7 +59,7 @@ String nameToSymbol(
 
 OperatorVertex::OperatorVertex(
     String const& name,
-    ExpressionVertices const& expressions)
+    language::ExpressionVertices const& expressions)
 
     : OperationVertex(name, expressions),
       _symbol(nameToSymbol(name, expressions.size()))
@@ -79,5 +78,4 @@ String const& OperatorVertex::symbol() const
     return _symbol;
 }
 
-} // namespace language
 } // namespace ranally

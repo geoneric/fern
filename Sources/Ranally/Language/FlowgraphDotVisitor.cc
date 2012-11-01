@@ -28,11 +28,11 @@ void FlowgraphDotVisitor::setMode(
 
 
 void FlowgraphDotVisitor::addFlowgraphVertex(
-    language::NameVertex const& sourceVertex,
+    NameVertex const& sourceVertex,
     language::SyntaxVertex const& targetVertex)
 {
     if(!sourceVertex.definitions().empty()) {
-        BOOST_FOREACH(language::NameVertex* definition,
+        BOOST_FOREACH(NameVertex* definition,
                 sourceVertex.definitions()) {
             addScript(
                 String(boost::format("\"%1%\"") % definition) + " -> " +
@@ -57,8 +57,8 @@ void FlowgraphDotVisitor::addFlowgraphVertex(
 {
     assert(_mode == ConnectingFlowgraph);
 
-    if(dynamic_cast<language::NameVertex const*>(&sourceVertex)) {
-        addFlowgraphVertex(dynamic_cast<language::NameVertex const&>(
+    if(dynamic_cast<NameVertex const*>(&sourceVertex)) {
+        addFlowgraphVertex(dynamic_cast<NameVertex const&>(
             sourceVertex), targetVertex);
         return;
     }
@@ -127,7 +127,7 @@ void FlowgraphDotVisitor::Visit(
 
 
 void FlowgraphDotVisitor::Visit(
-    language::FunctionVertex& vertex)
+    FunctionVertex& vertex)
 {
     switch(_mode) {
         case Declaring: {
@@ -209,7 +209,7 @@ void FlowgraphDotVisitor::Visit(
 
 
 void FlowgraphDotVisitor::Visit(
-    language::NameVertex& vertex)
+    NameVertex& vertex)
 {
     switch(_mode) {
         case Declaring: {
@@ -236,7 +236,7 @@ void FlowgraphDotVisitor::Visit(
 
 template<typename T>
 void FlowgraphDotVisitor::Visit(
-    language::NumberVertex<T>& vertex)
+    NumberVertex<T>& vertex)
 {
     switch(_mode) {
         case Declaring: {
@@ -255,77 +255,77 @@ void FlowgraphDotVisitor::Visit(
 
 
 void FlowgraphDotVisitor::Visit(
-    language::NumberVertex<int8_t>& vertex)
+    NumberVertex<int8_t>& vertex)
 {
     return Visit<int8_t>(vertex);
 }
 
 
 void FlowgraphDotVisitor::Visit(
-    language::NumberVertex<int16_t>& vertex)
+    NumberVertex<int16_t>& vertex)
 {
     return Visit<int16_t>(vertex);
 }
 
 
 void FlowgraphDotVisitor::Visit(
-    language::NumberVertex<int32_t>& vertex)
+    NumberVertex<int32_t>& vertex)
 {
     return Visit<int32_t>(vertex);
 }
 
 
 void FlowgraphDotVisitor::Visit(
-    language::NumberVertex<int64_t>& vertex)
+    NumberVertex<int64_t>& vertex)
 {
     return Visit<int64_t>(vertex);
 }
 
 
 void FlowgraphDotVisitor::Visit(
-    language::NumberVertex<uint8_t>& vertex)
+    NumberVertex<uint8_t>& vertex)
 {
     return Visit<uint8_t>(vertex);
 }
 
 
 void FlowgraphDotVisitor::Visit(
-    language::NumberVertex<uint16_t>& vertex)
+    NumberVertex<uint16_t>& vertex)
 {
     return Visit<uint16_t>(vertex);
 }
 
 
 void FlowgraphDotVisitor::Visit(
-    language::NumberVertex<uint32_t>& vertex)
+    NumberVertex<uint32_t>& vertex)
 {
     return Visit<uint32_t>(vertex);
 }
 
 
 void FlowgraphDotVisitor::Visit(
-    language::NumberVertex<uint64_t>& vertex)
+    NumberVertex<uint64_t>& vertex)
 {
     return Visit<uint64_t>(vertex);
 }
 
 
 void FlowgraphDotVisitor::Visit(
-    language::NumberVertex<float>& vertex)
+    NumberVertex<float>& vertex)
 {
     return Visit<float>(vertex);
 }
 
 
 void FlowgraphDotVisitor::Visit(
-    language::NumberVertex<double>& vertex)
+    NumberVertex<double>& vertex)
 {
     return Visit<double>(vertex);
 }
 
 
 void FlowgraphDotVisitor::Visit(
-    language::OperatorVertex& vertex)
+    OperatorVertex& vertex)
 {
     switch(_mode) {
         case Declaring: {
@@ -353,7 +353,7 @@ void FlowgraphDotVisitor::Visit(
 
 
 void FlowgraphDotVisitor::Visit(
-    language::StringVertex& vertex)
+    StringVertex& vertex)
 {
     switch(_mode) {
         case Declaring: {

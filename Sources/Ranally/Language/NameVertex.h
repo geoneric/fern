@@ -4,7 +4,6 @@
 
 
 namespace ranally {
-namespace language {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -13,7 +12,7 @@ namespace language {
   \sa        .
 */
 class NameVertex:
-    public ExpressionVertex
+    public language::ExpressionVertex
 {
 
     friend class NameVertexTest;
@@ -78,5 +77,4 @@ inline std::ostream& operator<<(
     return stream;
 }
 
-} // namespace language
 } // namespace ranally

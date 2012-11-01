@@ -20,7 +20,7 @@ class ScriptVisitor
 
 public:
 
-                   ScriptVisitor       (size_t tabSize=2);
+                   ScriptVisitor       (size_t tabSize=4);
 
                    ~ScriptVisitor      ();
 
@@ -46,37 +46,37 @@ private:
 
     void           Visit               (language::AssignmentVertex&);
 
-    void           Visit               (language::FunctionVertex&);
+    void           Visit               (FunctionVertex&);
 
     void           Visit               (language::IfVertex&);
 
-    void           Visit               (language::NameVertex&);
+    void           Visit               (NameVertex&);
 
-    void           Visit               (language::NumberVertex<int8_t>&);
+    void           Visit               (NumberVertex<int8_t>&);
 
-    void           Visit               (language::NumberVertex<int16_t>&);
+    void           Visit               (NumberVertex<int16_t>&);
 
-    void           Visit               (language::NumberVertex<int32_t>&);
+    void           Visit               (NumberVertex<int32_t>&);
 
-    void           Visit               (language::NumberVertex<int64_t>&);
+    void           Visit               (NumberVertex<int64_t>&);
 
-    void           Visit               (language::NumberVertex<uint8_t>&);
+    void           Visit               (NumberVertex<uint8_t>&);
 
-    void           Visit               (language::NumberVertex<uint16_t>&);
+    void           Visit               (NumberVertex<uint16_t>&);
 
-    void           Visit               (language::NumberVertex<uint32_t>&);
+    void           Visit               (NumberVertex<uint32_t>&);
 
-    void           Visit               (language::NumberVertex<uint64_t>&);
+    void           Visit               (NumberVertex<uint64_t>&);
 
-    void           Visit               (language::NumberVertex<float>&);
+    void           Visit               (NumberVertex<float>&);
 
-    void           Visit               (language::NumberVertex<double>&);
+    void           Visit               (NumberVertex<double>&);
 
-    void           Visit               (language::OperatorVertex&);
+    void           Visit               (OperatorVertex&);
 
     void           Visit               (language::ScriptVertex&);
 
-    void           Visit               (language::StringVertex&);
+    void           Visit               (StringVertex&);
 
     void           Visit               (language::SyntaxVertex&);
 

@@ -6,9 +6,10 @@
 
 
 namespace ranally {
-namespace language {
 
 class NameVertex;
+
+namespace language {
 
 //! Datastructure for keeping track of definitions.
 /*!

@@ -2,13 +2,12 @@
 
 
 namespace ranally {
-namespace language {
 
 template<typename T>
 NumberVertex<T>::NumberVertex(
     T value)
 
-    : ExpressionVertex(String(boost::format("%1%") % value)),
+    : language::ExpressionVertex(String(boost::format("%1%") % value)),
       _value(value)
 
 {
@@ -21,7 +20,7 @@ NumberVertex<T>::NumberVertex(
     int colId,
     T value)
 
-    : ExpressionVertex(lineNr, colId, String(boost::format("%1%") % value)),
+    : language::ExpressionVertex(lineNr, colId, String(boost::format("%1%") % value)),
       _value(value)
 
 {
@@ -53,5 +52,4 @@ template class NumberVertex<uint64_t>;
 template class NumberVertex<float>;
 template class NumberVertex<double>;
 
-} // namespace language
 } // namespace ranally

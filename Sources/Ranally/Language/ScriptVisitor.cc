@@ -86,7 +86,7 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-    language::FunctionVertex& vertex)
+    FunctionVertex& vertex)
 {
     _script += vertex.name();
     visitExpressions(vertex.expressions());
@@ -94,7 +94,7 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-    language::OperatorVertex& vertex)
+    OperatorVertex& vertex)
 {
     assert(vertex.expressions().size() == 1 ||
         vertex.expressions().size() == 2);
@@ -139,42 +139,42 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-    language::StringVertex& vertex)
+    StringVertex& vertex)
 {
     _script += "\"" + vertex.value() + "\"";
 }
 
 
 void ScriptVisitor::Visit(
-    language::NameVertex& vertex)
+    NameVertex& vertex)
 {
     _script += vertex.name();
 }
 
 
 void ScriptVisitor::Visit(
-    language::NumberVertex<int8_t>& vertex)
+    NumberVertex<int8_t>& vertex)
 {
     _script += String(boost::format("%1%") % vertex.value());
 }
 
 
 void ScriptVisitor::Visit(
-    language::NumberVertex<int16_t>& vertex)
+    NumberVertex<int16_t>& vertex)
 {
     _script += String(boost::format("%1%") % vertex.value());
 }
 
 
 void ScriptVisitor::Visit(
-    language::NumberVertex<int32_t>& vertex)
+    NumberVertex<int32_t>& vertex)
 {
     _script += String(boost::format("%1%") % vertex.value());
 }
 
 
 void ScriptVisitor::Visit(
-    language::NumberVertex<int64_t>& vertex)
+    NumberVertex<int64_t>& vertex)
 {
     std::string formatString = sizeof(long) == sizeof(int64_t) ? "%1%" : "%1%L";
     _script += String(boost::format(formatString) % vertex.value());
@@ -182,7 +182,7 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-    language::NumberVertex<uint8_t>& vertex)
+    NumberVertex<uint8_t>& vertex)
 {
     // U?
     _script += String(boost::format("%1%U") % vertex.value());
@@ -190,7 +190,7 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-    language::NumberVertex<uint16_t>& vertex)
+    NumberVertex<uint16_t>& vertex)
 {
     // U?
     _script += String(boost::format("%1%U") % vertex.value());
@@ -198,7 +198,7 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-    language::NumberVertex<uint32_t>& vertex)
+    NumberVertex<uint32_t>& vertex)
 {
     // U?
     _script += String(boost::format("%1%U") % vertex.value());
@@ -206,7 +206,7 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-    language::NumberVertex<uint64_t>& vertex)
+    NumberVertex<uint64_t>& vertex)
 {
     // U?
     std::string formatString = sizeof(unsigned long) == sizeof(uint64_t)
@@ -216,14 +216,14 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-    language::NumberVertex<float>& vertex)
+    NumberVertex<float>& vertex)
 {
     _script += String(boost::format("%1%") % vertex.value());
 }
 
 
 void ScriptVisitor::Visit(
-    language::NumberVertex<double>& vertex)
+    NumberVertex<double>& vertex)
 {
     _script += String(boost::format("%1%") % vertex.value());
 }

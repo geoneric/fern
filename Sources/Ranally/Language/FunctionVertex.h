@@ -3,7 +3,6 @@
 
 
 namespace ranally {
-namespace language {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -22,7 +21,7 @@ public:
     LOKI_DEFINE_VISITABLE()
 
                    FunctionVertex      (String const& name,
-                                        ExpressionVertices const& expressions);
+                                        language::ExpressionVertices const& expressions);
 
                    ~FunctionVertex     ();
 
@@ -30,5 +29,4 @@ private:
 
 };
 
-} // namespace language
 } // namespace ranally

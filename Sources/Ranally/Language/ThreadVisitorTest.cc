@@ -146,8 +146,8 @@ void ThreadVisitorTest::testVisitFunction()
             "f(1, \"2\", three, four())")));
         tree->Accept(_visitor);
 
-        ranally::language::FunctionVertex const* functionVertex =
-            dynamic_cast<ranally::language::FunctionVertex const*>(
+        ranally::FunctionVertex const* functionVertex =
+            dynamic_cast<ranally::FunctionVertex const*>(
                 &(*tree->statements()[0]));
         ranally::language::SyntaxVertex const* vertex1 =
             &(*functionVertex->expressions()[0]);
@@ -177,8 +177,8 @@ void ThreadVisitorTest::testVisitOperator()
             ranally::String("-a")));
         tree->Accept(_visitor);
 
-        ranally::language::OperatorVertex const* operatorVertex =
-            dynamic_cast<ranally::language::OperatorVertex const*>(
+        ranally::OperatorVertex const* operatorVertex =
+            dynamic_cast<ranally::OperatorVertex const*>(
                 &(*tree->statements()[0]));
         ranally::language::SyntaxVertex const* vertex1 =
             &(*operatorVertex->expressions()[0]);
@@ -193,8 +193,8 @@ void ThreadVisitorTest::testVisitOperator()
             ranally::String("a + b")));
         tree->Accept(_visitor);
 
-        ranally::language::OperatorVertex const* operatorVertex =
-            dynamic_cast<ranally::language::OperatorVertex const*>(
+        ranally::OperatorVertex const* operatorVertex =
+            dynamic_cast<ranally::OperatorVertex const*>(
                 &(*tree->statements()[0]));
         ranally::language::SyntaxVertex const* vertex1 =
             &(*operatorVertex->expressions()[0]);
@@ -212,11 +212,11 @@ void ThreadVisitorTest::testVisitOperator()
             "-(a + b)")));
         tree->Accept(_visitor);
 
-        ranally::language::OperatorVertex const* operator1Vertex =
-            dynamic_cast<ranally::language::OperatorVertex const*>(
+        ranally::OperatorVertex const* operator1Vertex =
+            dynamic_cast<ranally::OperatorVertex const*>(
                 &(*tree->statements()[0]));
-        ranally::language::OperatorVertex const* operator2Vertex =
-            dynamic_cast<ranally::language::OperatorVertex const*>(
+        ranally::OperatorVertex const* operator2Vertex =
+            dynamic_cast<ranally::OperatorVertex const*>(
                 &(*operator1Vertex->expressions()[0]));
         ranally::language::SyntaxVertex const* vertex1 =
             &(*operator2Vertex->expressions()[0]);
@@ -263,8 +263,8 @@ void ThreadVisitorTest::testVisitNestedExpression()
         dynamic_cast<ranally::language::AssignmentVertex const*>(
             &(*tree->statements()[0]));
     ranally::language::SyntaxVertex const* vertexA = &(*assignment->target());
-    ranally::language::OperatorVertex const* addition =
-        dynamic_cast<ranally::language::OperatorVertex const*>(
+    ranally::OperatorVertex const* addition =
+        dynamic_cast<ranally::OperatorVertex const*>(
             &(*assignment->expression()));
     ranally::language::SyntaxVertex const* vertexB =
         &(*addition->expressions()[0]);

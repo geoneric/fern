@@ -2,12 +2,11 @@
 
 
 namespace ranally {
-namespace language {
 
 NameVertex::NameVertex(
     String const& name)
 
-    : ExpressionVertex(name) // ,
+    : language::ExpressionVertex(name) // ,
       // _definition(0)
 
 {
@@ -19,7 +18,7 @@ NameVertex::NameVertex(
     int colId,
     String const& name)
 
-    : ExpressionVertex(lineNr, colId, name) // ,
+    : language::ExpressionVertex(lineNr, colId, name) // ,
       // _definition(0)
 
 {
@@ -92,5 +91,4 @@ std::vector<NameVertex*> const& NameVertex::uses() const
     return _uses;
 }
 
-} // namespace language
 } // namespace ranally

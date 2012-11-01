@@ -4,18 +4,20 @@
 
 
 namespace ranally {
-namespace language {
 
-class AssignmentVertex;
 class FunctionVertex;
-class IfVertex;
 class NameVertex;
 template<typename T>
     class NumberVertex;
 class OperationVertex;
 class OperatorVertex;
-class ScriptVertex;
 class StringVertex;
+
+namespace language {
+
+class AssignmentVertex;
+class IfVertex;
+class ScriptVertex;
 class WhileVertex;
 
 
@@ -30,16 +32,16 @@ class Visitor:
     public Loki::Visitor<FunctionVertex>,
     public Loki::Visitor<IfVertex>,
     public Loki::Visitor<NameVertex>,
-    public Loki::Visitor<language::NumberVertex<int8_t> >,
-    public Loki::Visitor<language::NumberVertex<int16_t> >,
-    public Loki::Visitor<language::NumberVertex<int32_t> >,
-    public Loki::Visitor<language::NumberVertex<int64_t> >,
-    public Loki::Visitor<language::NumberVertex<uint8_t> >,
-    public Loki::Visitor<language::NumberVertex<uint16_t> >,
-    public Loki::Visitor<language::NumberVertex<uint32_t> >,
-    public Loki::Visitor<language::NumberVertex<uint64_t> >,
-    public Loki::Visitor<language::NumberVertex<float> >,
-    public Loki::Visitor<language::NumberVertex<double> >,
+    public Loki::Visitor<NumberVertex<int8_t> >,
+    public Loki::Visitor<NumberVertex<int16_t> >,
+    public Loki::Visitor<NumberVertex<int32_t> >,
+    public Loki::Visitor<NumberVertex<int64_t> >,
+    public Loki::Visitor<NumberVertex<uint8_t> >,
+    public Loki::Visitor<NumberVertex<uint16_t> >,
+    public Loki::Visitor<NumberVertex<uint32_t> >,
+    public Loki::Visitor<NumberVertex<uint64_t> >,
+    public Loki::Visitor<NumberVertex<float> >,
+    public Loki::Visitor<NumberVertex<double> >,
     public Loki::Visitor<OperatorVertex>,
     public Loki::Visitor<ScriptVertex>,
     public Loki::Visitor<StringVertex>,

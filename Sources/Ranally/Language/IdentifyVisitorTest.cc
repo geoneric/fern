@@ -50,8 +50,8 @@ void IdentifyVisitorTest::testVisitName()
 
     tree = _xmlParser.parse(_algebraParser.parseString(ranally::String("a")));
 
-    ranally::language::NameVertex const* vertexA =
-        dynamic_cast<ranally::language::NameVertex const*>(
+    ranally::NameVertex const* vertexA =
+        dynamic_cast<ranally::NameVertex const*>(
             &(*tree->statements()[0]));
 
     BOOST_CHECK(vertexA->definitions().empty());
@@ -75,11 +75,11 @@ void IdentifyVisitorTest::testVisitAssignment()
         ranally::language::AssignmentVertex const* assignment =
             dynamic_cast<ranally::language::AssignmentVertex const*>(
                 &(*tree->statements()[0]));
-        ranally::language::NameVertex const* vertexA =
-            dynamic_cast<ranally::language::NameVertex const*>(
+        ranally::NameVertex const* vertexA =
+            dynamic_cast<ranally::NameVertex const*>(
                 &(*assignment->target()));
-        ranally::language::NameVertex const* vertexB =
-            dynamic_cast<ranally::language::NameVertex const*>(
+        ranally::NameVertex const* vertexB =
+            dynamic_cast<ranally::NameVertex const*>(
                 &(*assignment->expression()));
 
         BOOST_CHECK(vertexA->definitions().empty());
@@ -107,24 +107,24 @@ void IdentifyVisitorTest::testVisitAssignment()
         ranally::language::AssignmentVertex const* assignment1 =
             dynamic_cast<ranally::language::AssignmentVertex const*>(
                 &(*tree->statements()[0]));
-        ranally::language::NameVertex const* vertexA1 =
-            dynamic_cast<ranally::language::NameVertex const*>(
+        ranally::NameVertex const* vertexA1 =
+            dynamic_cast<ranally::NameVertex const*>(
                 &(*assignment1->target()));
-        ranally::language::NameVertex const* vertexB =
-            dynamic_cast<ranally::language::NameVertex const*>(
+        ranally::NameVertex const* vertexB =
+            dynamic_cast<ranally::NameVertex const*>(
                 &(*assignment1->expression()));
 
         ranally::language::AssignmentVertex const* assignment2 =
             dynamic_cast<ranally::language::AssignmentVertex const*>(
                 &(*tree->statements()[1]));
-        ranally::language::FunctionVertex const* function =
-            dynamic_cast<ranally::language::FunctionVertex const*>(
+        ranally::FunctionVertex const* function =
+            dynamic_cast<ranally::FunctionVertex const*>(
                 &(*assignment2->expression()));
-        ranally::language::NameVertex const* vertexA2 =
-            dynamic_cast<ranally::language::NameVertex const*>(
+        ranally::NameVertex const* vertexA2 =
+            dynamic_cast<ranally::NameVertex const*>(
                 &(*function->expressions()[0]));
-        ranally::language::NameVertex const* vertexD =
-            dynamic_cast<ranally::language::NameVertex const*>(
+        ranally::NameVertex const* vertexD =
+            dynamic_cast<ranally::NameVertex const*>(
                 &(*assignment2->target()));
 
         BOOST_CHECK(vertexA1->definitions().empty());
@@ -175,8 +175,8 @@ void IdentifyVisitorTest::testVisitIf()
         ranally::language::AssignmentVertex const* assignment1 =
             dynamic_cast<ranally::language::AssignmentVertex const*>(
                 &(*tree->statements()[0]));
-        ranally::language::NameVertex const* vertexA1 =
-            dynamic_cast<ranally::language::NameVertex const*>(
+        ranally::NameVertex const* vertexA1 =
+            dynamic_cast<ranally::NameVertex const*>(
                 &(*assignment1->target()));
 
         ranally::language::IfVertex const* ifVertex =
@@ -185,15 +185,15 @@ void IdentifyVisitorTest::testVisitIf()
         ranally::language::AssignmentVertex const* assignment2 =
             dynamic_cast<ranally::language::AssignmentVertex const*>(
                 &(*ifVertex->trueStatements()[0]));
-        ranally::language::NameVertex const* vertexA2 =
-            dynamic_cast<ranally::language::NameVertex const*>(
+        ranally::NameVertex const* vertexA2 =
+            dynamic_cast<ranally::NameVertex const*>(
                 &(*assignment2->target()));
 
         ranally::language::AssignmentVertex const* assignment3 =
             dynamic_cast<ranally::language::AssignmentVertex const*>(
                 &(*tree->statements()[2]));
-        ranally::language::NameVertex const* vertexA3 =
-            dynamic_cast<ranally::language::NameVertex const*>(
+        ranally::NameVertex const* vertexA3 =
+            dynamic_cast<ranally::NameVertex const*>(
                 &(*assignment3->expression()));
 
         tree->Accept(_visitor);
@@ -232,8 +232,8 @@ void IdentifyVisitorTest::testVisitReuseOfIdentifiers()
         ranally::language::AssignmentVertex const* assignment1 =
             dynamic_cast<ranally::language::AssignmentVertex const*>(
                 &(*tree->statements()[0]));
-        ranally::language::NameVertex const* vertexA1 =
-            dynamic_cast<ranally::language::NameVertex const*>(
+        ranally::NameVertex const* vertexA1 =
+            dynamic_cast<ranally::NameVertex const*>(
                 &(*assignment1->target()));
         BOOST_REQUIRE(assignment1);
         BOOST_REQUIRE(vertexA1);
@@ -241,14 +241,14 @@ void IdentifyVisitorTest::testVisitReuseOfIdentifiers()
         ranally::language::AssignmentVertex const* assignment2 =
             dynamic_cast<ranally::language::AssignmentVertex const*>(
                 &(*tree->statements()[1]));
-        ranally::language::NameVertex const* vertexB1 =
-            dynamic_cast<ranally::language::NameVertex const*>(
+        ranally::NameVertex const* vertexB1 =
+            dynamic_cast<ranally::NameVertex const*>(
                 &(*assignment2->target()));
-        ranally::language::FunctionVertex const* vertexAbs1 =
-            dynamic_cast<ranally::language::FunctionVertex const*>(
+        ranally::FunctionVertex const* vertexAbs1 =
+            dynamic_cast<ranally::FunctionVertex const*>(
                 &(*assignment2->expression()));
-        ranally::language::NameVertex const* vertexA2 =
-            dynamic_cast<ranally::language::NameVertex const*>(
+        ranally::NameVertex const* vertexA2 =
+            dynamic_cast<ranally::NameVertex const*>(
                 &(*vertexAbs1->expressions()[0]));
         BOOST_REQUIRE(assignment2);
         BOOST_REQUIRE(vertexB1);
@@ -258,14 +258,14 @@ void IdentifyVisitorTest::testVisitReuseOfIdentifiers()
         ranally::language::AssignmentVertex const* assignment3 =
             dynamic_cast<ranally::language::AssignmentVertex const*>(
                 &(*tree->statements()[2]));
-        ranally::language::NameVertex const* vertexC1 =
-            dynamic_cast<ranally::language::NameVertex const*>(
+        ranally::NameVertex const* vertexC1 =
+            dynamic_cast<ranally::NameVertex const*>(
                 &(*assignment3->target()));
-        ranally::language::FunctionVertex const* vertexAbs2 =
-            dynamic_cast<ranally::language::FunctionVertex const*>(
+        ranally::FunctionVertex const* vertexAbs2 =
+            dynamic_cast<ranally::FunctionVertex const*>(
                 &(*assignment3->expression()));
-        ranally::language::NameVertex const* vertexB2 =
-            dynamic_cast<ranally::language::NameVertex const*>(
+        ranally::NameVertex const* vertexB2 =
+            dynamic_cast<ranally::NameVertex const*>(
                 &(*vertexAbs2->expressions()[0]));
         BOOST_REQUIRE(assignment3);
         BOOST_REQUIRE(vertexC1);
@@ -275,17 +275,17 @@ void IdentifyVisitorTest::testVisitReuseOfIdentifiers()
         ranally::language::AssignmentVertex const* assignment4 =
             dynamic_cast<ranally::language::AssignmentVertex const*>(
                 &(*tree->statements()[3]));
-        ranally::language::NameVertex const* vertexB4 =
-            dynamic_cast<ranally::language::NameVertex const*>(
+        ranally::NameVertex const* vertexB4 =
+            dynamic_cast<ranally::NameVertex const*>(
                 &(*assignment4->target()));
-        ranally::language::OperatorVertex const* vertexPlus1 =
-            dynamic_cast<ranally::language::OperatorVertex const*>(
+        ranally::OperatorVertex const* vertexPlus1 =
+            dynamic_cast<ranally::OperatorVertex const*>(
                 &(*assignment4->expression()));
-        ranally::language::NameVertex const* vertexC2 =
-            dynamic_cast<ranally::language::NameVertex const*>(
+        ranally::NameVertex const* vertexC2 =
+            dynamic_cast<ranally::NameVertex const*>(
                 &(*vertexPlus1->expressions()[0]));
-        ranally::language::NameVertex const* vertexB3 =
-            dynamic_cast<ranally::language::NameVertex const*>(
+        ranally::NameVertex const* vertexB3 =
+            dynamic_cast<ranally::NameVertex const*>(
                 &(*vertexPlus1->expressions()[1]));
         BOOST_REQUIRE(assignment4);
         BOOST_REQUIRE(vertexB4);

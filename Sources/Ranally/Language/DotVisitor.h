@@ -4,13 +4,6 @@
 
 
 namespace ranally {
-namespace language {
-
-template<typename T>
-    class NumberVertex;
-
-} // namespace language
-
 
 //! Base class for visitors emitting dot graphs.
 /*!

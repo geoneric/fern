@@ -99,8 +99,8 @@ void AnnotateVisitorTest::testVisitOperation()
         boost::shared_ptr<rl::StatementVertex> const& statement(
             tree->statements()[0]);
         BOOST_REQUIRE(statement);
-        rl::OperationVertex const* functionVertex(
-            dynamic_cast<rl::OperationVertex*>(statement.get()));
+        ranally::OperationVertex const* functionVertex(
+            dynamic_cast<ranally::OperationVertex*>(statement.get()));
         BOOST_REQUIRE(functionVertex);
 
         ro::OperationPtr const& operation(functionVertex->operation());

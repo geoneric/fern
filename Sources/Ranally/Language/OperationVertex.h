@@ -4,7 +4,6 @@
 
 
 namespace ranally {
-namespace language {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -13,7 +12,7 @@ namespace language {
   \sa        .
 */
 class OperationVertex:
-    public ExpressionVertex
+    public language::ExpressionVertex
 {
 
     friend class OperationVertexTest;
@@ -22,7 +21,7 @@ public:
 
     virtual        ~OperationVertex    ();
 
-    ExpressionVertices const& expressions() const;
+    language::ExpressionVertices const& expressions() const;
 
     void           setOperation        (
                                     operation::OperationPtr const& operation);
@@ -32,15 +31,14 @@ public:
 protected:
 
                    OperationVertex     (String const& name,
-                                        ExpressionVertices const& expressions);
+                                        language::ExpressionVertices const& expressions);
 
 private:
 
-    ExpressionVertices _expressions;
+    language::ExpressionVertices _expressions;
 
     operation::OperationPtr _operation;
 
 };
 
-} // namespace language
 } // namespace ranally
