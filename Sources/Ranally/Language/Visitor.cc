@@ -1,5 +1,4 @@
 #include "Ranally/Language/Visitor.h"
-#include <boost/foreach.hpp>
 #include "Ranally/Language/AssignmentVertex.h"
 #include "Ranally/Language/ExpressionVertex.h"
 #include "Ranally/Language/FunctionVertex.h"
@@ -39,8 +38,7 @@ Visitor::~Visitor()
 void Visitor::visitStatements(
     StatementVertices& statements)
 {
-    BOOST_FOREACH(boost::shared_ptr<StatementVertex> statementVertex,
-        statements) {
+    for(auto statementVertex: statements) {
         statementVertex->Accept(*this);
     }
 }
@@ -53,8 +51,7 @@ void Visitor::visitStatements(
 void Visitor::visitExpressions(
   ExpressionVertices const& expressions)
 {
-    BOOST_FOREACH(boost::shared_ptr<ExpressionVertex> expressionVertex,
-        expressions) {
+    for(auto expressionVertex: expressions) {
         expressionVertex->Accept(*this);
     }
 }

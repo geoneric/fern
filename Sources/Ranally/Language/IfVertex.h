@@ -31,13 +31,13 @@ public:
     LOKI_DEFINE_VISITABLE()
 
                    IfVertex            (
-                        boost::shared_ptr<ExpressionVertex> const& condition,
+                        std::shared_ptr<ExpressionVertex> const& condition,
                         StatementVertices const& trueStatements,
                         StatementVertices const& falseStatements);
 
                    ~IfVertex           ();
 
-    boost::shared_ptr<ExpressionVertex> const& condition() const;
+    std::shared_ptr<ExpressionVertex> const& condition() const;
 
     StatementVertices const& trueStatements() const;
 

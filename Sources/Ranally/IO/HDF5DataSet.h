@@ -1,5 +1,5 @@
 #pragma once
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 #include "Ranally/IO/DataSet.h"
 
 
@@ -44,7 +44,7 @@ public:
 
 private:
 
-    boost::scoped_ptr<H5::H5File> _file;
+    std::unique_ptr<H5::H5File> _file;
 
     void           copy                (Feature const& feature);
 

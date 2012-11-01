@@ -1,5 +1,4 @@
 #include "Ranally/Language/IdentifyVisitor.h"
-#include <boost/foreach.hpp>
 #include "Ranally/Language/Vertices.h"
 #include "Ranally/Util/String.h"
 

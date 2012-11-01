@@ -1,5 +1,4 @@
 #include "Ranally/Language/ScriptVisitor.h"
-#include <boost/foreach.hpp>
 #include "Ranally/Language/Vertices.h"
 
 
@@ -46,8 +45,7 @@ String ScriptVisitor::indentation() const
 void ScriptVisitor::visitStatements(
     StatementVertices& statements)
 {
-    BOOST_FOREACH(boost::shared_ptr<StatementVertex> statementVertex,
-        statements) {
+    for(auto statementVertex: statements) {
         _script += indentation();
         statementVertex->Accept(*this);
 

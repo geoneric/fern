@@ -1,5 +1,4 @@
 #include "VisitorTest.h"
-#include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
 #include "Ranally/Language/ScriptVertex.h"
@@ -67,7 +66,7 @@ VisitorTest::VisitorTest()
 void VisitorTest::testCountVerticesVisitor()
 {
     CountVerticesVisitor visitor;
-    boost::shared_ptr<ranally::ScriptVertex> tree;
+    std::shared_ptr<ranally::ScriptVertex> tree;
 
     // Empty script.
     {

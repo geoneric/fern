@@ -1,5 +1,4 @@
 #include "Ranally/Language/IdentifyVisitorTest.h"
-#include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
 #include "Ranally/Language/AssignmentVertex.h"
@@ -37,7 +36,7 @@ IdentifyVisitorTest::IdentifyVisitorTest()
 
 void IdentifyVisitorTest::testVisitEmptyScript()
 {
-    boost::shared_ptr<ranally::ScriptVertex> tree;
+    std::shared_ptr<ranally::ScriptVertex> tree;
 
     tree = _xmlParser.parse(_algebraParser.parseString(ranally::String("")));
     tree->Accept(_visitor);
@@ -46,7 +45,7 @@ void IdentifyVisitorTest::testVisitEmptyScript()
 
 void IdentifyVisitorTest::testVisitName()
 {
-    boost::shared_ptr<ranally::ScriptVertex> tree;
+    std::shared_ptr<ranally::ScriptVertex> tree;
 
     tree = _xmlParser.parse(_algebraParser.parseString(ranally::String("a")));
 
@@ -66,7 +65,7 @@ void IdentifyVisitorTest::testVisitName()
 
 void IdentifyVisitorTest::testVisitAssignment()
 {
-    boost::shared_ptr<ranally::ScriptVertex> tree;
+    std::shared_ptr<ranally::ScriptVertex> tree;
 
     {
         tree = _xmlParser.parse(_algebraParser.parseString(
@@ -162,7 +161,7 @@ void IdentifyVisitorTest::testVisitAssignment()
 
 void IdentifyVisitorTest::testVisitIf()
 {
-    boost::shared_ptr<ranally::ScriptVertex> tree;
+    std::shared_ptr<ranally::ScriptVertex> tree;
 
     {
         tree = _xmlParser.parse(_algebraParser.parseString(ranally::String(
@@ -219,7 +218,7 @@ void IdentifyVisitorTest::testVisitIf()
 
 void IdentifyVisitorTest::testVisitReuseOfIdentifiers()
 {
-    boost::shared_ptr<ranally::ScriptVertex> tree;
+    std::shared_ptr<ranally::ScriptVertex> tree;
 
     {
         tree = _xmlParser.parse(_algebraParser.parseString(ranally::String(

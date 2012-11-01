@@ -1,7 +1,7 @@
 #pragma once
+#include <memory>
 #include <vector>
 #include <loki/Visitor.h>
-#include <boost/shared_ptr.hpp>
 #include "Ranally/Util/String.h"
 
 
@@ -10,8 +10,8 @@ namespace ranally {
 class ExpressionVertex;
 class StatementVertex;
 
-typedef std::vector<boost::shared_ptr<ExpressionVertex> > ExpressionVertices;
-typedef std::vector<boost::shared_ptr<StatementVertex> > StatementVertices;
+typedef std::vector<std::shared_ptr<ExpressionVertex> > ExpressionVertices;
+typedef std::vector<std::shared_ptr<StatementVertex> > StatementVertices;
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!

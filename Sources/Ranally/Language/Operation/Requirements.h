@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include <boost/noncopyable.hpp>
 #include "Ranally/Language/Operation/Argument.h"
 #include "Ranally/Language/Operation/Result.h"
 
@@ -13,8 +12,7 @@ namespace ranally {
 
   \sa        .
 */
-class Requirements:
-    private boost::noncopyable
+class Requirements
 {
 
     friend class RequirementsTest;
@@ -22,6 +20,10 @@ class Requirements:
 public:
 
                    Requirements        ();
+
+                   Requirements        (Requirements const&)=delete;
+
+    Requirements&  operator=           (Requirements const&)=delete;
 
                    ~Requirements       ();
 

@@ -1,5 +1,4 @@
 #include "Ranally/Language/OptimizeVisitorTest.h"
-#include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
 #include "Ranally/Util/String.h"
@@ -29,7 +28,7 @@ OptimizeVisitorTest::OptimizeVisitorTest()
 
 void OptimizeVisitorTest::testRemoveTemporaryIdentifier()
 {
-    boost::shared_ptr<ranally::ScriptVertex> tree;
+    std::shared_ptr<ranally::ScriptVertex> tree;
     ranally::String script;
 
     // Make sure that temporary identifiers which are only used as input to

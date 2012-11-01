@@ -1,5 +1,5 @@
 #pragma once
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 #include "Ranally/IO/Attribute.h"
 #include "Ranally/IO/RasterValue.h"
 
@@ -27,7 +27,7 @@ public:
 private:
 
     //! Value.
-    boost::scoped_ptr<RasterValue> _value;
+    std::unique_ptr<RasterValue> _value;
 
 };
 

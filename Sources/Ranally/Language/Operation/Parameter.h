@@ -1,5 +1,4 @@
 #pragma once
-#include <boost/noncopyable.hpp>
 #include "Ranally/Language/Operation/DataTypes.h"
 #include "Ranally/Language/Operation/ValueTypes.h"
 
@@ -12,8 +11,7 @@ namespace ranally {
 
   \sa        .
 */
-class Parameter:
-    private boost::noncopyable
+class Parameter
 {
 
     friend class ParameterTest;
@@ -21,6 +19,10 @@ class Parameter:
 public:
 
                    Parameter           ();
+
+                   Parameter           (Parameter const&)=delete;
+
+    Parameter&     operator=           (Parameter const&)=delete;
 
     virtual        ~Parameter          ();
 

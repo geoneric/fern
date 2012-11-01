@@ -1,6 +1,5 @@
 #include "OGRDataSetDriverTest.h"
-#include <boost/foreach.hpp>
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 #include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
@@ -48,7 +47,7 @@ void OGRDataSetDriverTest::removeTestFiles()
     dataSetNames.push_back("TestRemove.shp");
     ranally::OGRDataSetDriver driver("ESRI Shapefile");
 
-    BOOST_FOREACH(ranally::String const& dataSetName, dataSetNames) {
+    for(auto dataSetName: dataSetNames) {
         if(driver.exists(dataSetName)) {
             driver.remove(dataSetName);
         }
@@ -71,7 +70,7 @@ void OGRDataSetDriverTest::testExists()
 void OGRDataSetDriverTest::testCreate()
 {
     ranally::OGRDataSetDriver driver("ESRI Shapefile");
-    boost::scoped_ptr<ranally::OGRDataSet> dataSet;
+    std::unique_ptr<ranally::OGRDataSet> dataSet;
 
     // Test creation of new data set. ------------------------------------------
     ranally::String dataSetName = "TestCreate.shp";
@@ -131,7 +130,7 @@ void OGRDataSetDriverTest::testCreate()
 void OGRDataSetDriverTest::testRemove()
 {
     ranally::OGRDataSetDriver driver("ESRI Shapefile");
-    boost::scoped_ptr<ranally::OGRDataSet> dataSet;
+    std::unique_ptr<ranally::OGRDataSet> dataSet;
     ranally::String dataSetName;
 
     dataSetName = "TestRemove.shp";
@@ -168,7 +167,7 @@ void OGRDataSetDriverTest::testRemove()
 void OGRDataSetDriverTest::testOpen()
 {
     ranally::OGRDataSetDriver driver("GeoJSON");
-    boost::scoped_ptr<ranally::OGRDataSet> dataSet;
+    std::unique_ptr<ranally::OGRDataSet> dataSet;
     ranally::String dataSetName;
 
     dataSetName = "Point.json";

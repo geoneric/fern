@@ -1,4 +1,5 @@
 #include "Ranally/IO/HDF5DataSet.h"
+#include <memory>
 #include <boost/multi_array.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/type_traits.hpp>
@@ -233,7 +234,7 @@ void HDF5DataSet::copy(
     DataSet const& dataSet)
 {
     for(size_t i = 0; i < dataSet.nrFeatures(); ++i) {
-        boost::scoped_ptr<Feature> feature(dataSet.feature(i));
+        std::unique_ptr<Feature> feature(dataSet.feature(i));
         assert(feature);
         copy(*feature);
     }

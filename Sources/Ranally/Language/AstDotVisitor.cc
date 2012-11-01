@@ -1,5 +1,4 @@
 #include "Ranally/Language/AstDotVisitor.h"
-#include <boost/foreach.hpp>
 #include "Ranally/Util/String.h"
 #include "Ranally/Language/Vertices.h"
 
@@ -147,8 +146,7 @@ void AstDotVisitor::addCfgVertices(
     SyntaxVertex const& sourceVertex)
 {
     assert(_mode == ConnectingCfg);
-    BOOST_FOREACH(SyntaxVertex const* successor,
-        sourceVertex.successors()) {
+    for(auto successor: sourceVertex.successors()) {
         addScript(
             String(boost::format("\"%1%\"") % &sourceVertex) + " -> " +
             String(boost::format("\"%1%\"") % successor) + " ["
@@ -166,7 +164,7 @@ void AstDotVisitor::addUseVertices(
     NameVertex const& vertex)
 {
     assert(_mode == ConnectingUses);
-    BOOST_FOREACH(NameVertex const* use, vertex.uses()) {
+    for(auto use: vertex.uses()) {
         addScript(
             String(boost::format("\"%1%\"") % &vertex) + " -> " +
             String(boost::format("\"%1%\"") % use) + " ["
@@ -270,8 +268,7 @@ void AstDotVisitor::Visit(
             break;
         }
         case ConnectingAst: {
-            BOOST_FOREACH(boost::shared_ptr<ExpressionVertex>
-                expressionVertex, vertex.expressions()) {
+            for(auto expressionVertex: vertex.expressions()) {
                 addAstVertex(vertex, *expressionVertex);
             }
             break;
@@ -285,8 +282,7 @@ void AstDotVisitor::Visit(
         }
     }
 
-    BOOST_FOREACH(boost::shared_ptr<ExpressionVertex>
-        expressionVertex, vertex.expressions()) {
+    for(auto expressionVertex: vertex.expressions()) {
         expressionVertex->Accept(*this);
     }
 }
@@ -303,8 +299,7 @@ void AstDotVisitor::Visit(
             break;
         }
         case ConnectingAst: {
-            BOOST_FOREACH(boost::shared_ptr<ExpressionVertex>
-                expressionVertex, vertex.expressions()) {
+            for(auto expressionVertex: vertex.expressions()) {
                 addAstVertex(vertex, *expressionVertex);
             }
             break;
@@ -318,8 +313,7 @@ void AstDotVisitor::Visit(
         }
     }
 
-    BOOST_FOREACH(boost::shared_ptr<ExpressionVertex>
-        expressionVertex, vertex.expressions()) {
+    for(auto expressionVertex: vertex.expressions()) {
         expressionVertex->Accept(*this);
     }
 }
@@ -338,12 +332,10 @@ void AstDotVisitor::Visit(
         }
         case ConnectingAst: {
             addAstVertex(vertex, *vertex.condition());
-            BOOST_FOREACH(boost::shared_ptr<StatementVertex>
-                statementVertex, vertex.trueStatements()) {
+            for(auto statementVertex: vertex.trueStatements()) {
                 addAstVertex(vertex, *statementVertex);
             }
-            BOOST_FOREACH(boost::shared_ptr<StatementVertex>
-                statementVertex, vertex.falseStatements()) {
+            for(auto statementVertex: vertex.falseStatements()) {
                 addAstVertex(vertex, *statementVertex);
             }
             break;
@@ -358,12 +350,10 @@ void AstDotVisitor::Visit(
     }
 
     vertex.condition()->Accept(*this);
-    BOOST_FOREACH(boost::shared_ptr<StatementVertex>
-        statementVertex, vertex.trueStatements()) {
+    for(auto statementVertex: vertex.trueStatements()) {
         statementVertex->Accept(*this);
     }
-    BOOST_FOREACH(boost::shared_ptr<StatementVertex>
-        statementVertex, vertex.falseStatements()) {
+    for(auto statementVertex: vertex.falseStatements()) {
         statementVertex->Accept(*this);
     }
 }
@@ -432,14 +422,12 @@ void AstDotVisitor::Visit(
             % vertex.sourceName().encodeInUTF8())
     );
 
-    BOOST_FOREACH(boost::shared_ptr<StatementVertex> statementVertex,
-        vertex.statements()) {
+    for(auto statementVertex: vertex.statements()) {
         statementVertex->Accept(*this);
     }
 
     setMode(ConnectingAst);
-    BOOST_FOREACH(boost::shared_ptr<StatementVertex> statementVertex,
-        vertex.statements()) {
+    for(auto statementVertex: vertex.statements()) {
         addAstVertex(vertex, *statementVertex);
         statementVertex->Accept(*this);
     }
@@ -447,16 +435,14 @@ void AstDotVisitor::Visit(
     if(_modes & ConnectingCfg) {
         setMode(ConnectingCfg);
         addCfgVertices(vertex);
-        BOOST_FOREACH(boost::shared_ptr<StatementVertex>
-          statementVertex, vertex.statements()) {
+        for(auto statementVertex: vertex.statements()) {
           statementVertex->Accept(*this);
         }
     }
 
     if(_modes & ConnectingUses) {
         setMode(ConnectingUses);
-        BOOST_FOREACH(boost::shared_ptr<StatementVertex>
-            statementVertex, vertex.statements()) {
+        for(auto statementVertex: vertex.statements()) {
             statementVertex->Accept(*this);
         }
     }
@@ -504,12 +490,10 @@ void AstDotVisitor::Visit(
         }
         case ConnectingAst: {
             addAstVertex(vertex, *vertex.condition());
-            BOOST_FOREACH(boost::shared_ptr<StatementVertex>
-                statementVertex, vertex.trueStatements()) {
+            for(auto statementVertex: vertex.trueStatements()) {
                 addAstVertex(vertex, *statementVertex);
             }
-            BOOST_FOREACH(boost::shared_ptr<StatementVertex>
-                statementVertex, vertex.falseStatements()) {
+            for(auto statementVertex: vertex.falseStatements()) {
                 addAstVertex(vertex, *statementVertex);
             }
             break;
@@ -524,12 +508,10 @@ void AstDotVisitor::Visit(
     }
 
     vertex.condition()->Accept(*this);
-    BOOST_FOREACH(boost::shared_ptr<StatementVertex>
-        statementVertex, vertex.trueStatements()) {
+    for(auto statementVertex: vertex.trueStatements()) {
         statementVertex->Accept(*this);
     }
-    BOOST_FOREACH(boost::shared_ptr<StatementVertex>
-        statementVertex, vertex.falseStatements()) {
+    for(auto statementVertex: vertex.falseStatements()) {
         statementVertex->Accept(*this);
     }
 }

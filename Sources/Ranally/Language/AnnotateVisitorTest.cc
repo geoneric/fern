@@ -1,5 +1,4 @@
 #include "Ranally/Language/AnnotateVisitorTest.h"
-#include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
 #include "Ranally/Operation/Operation-xml.h"
@@ -41,7 +40,7 @@ void AnnotateVisitorTest::testVisitEmptyScript()
 {
     // Parse empty script.
     // Ast before and after should be the same.
-    boost::shared_ptr<ranally::ScriptVertex> tree1, tree2;
+    std::shared_ptr<ranally::ScriptVertex> tree1, tree2;
 
     tree1 = _xmlParser.parse(_algebraParser.parseString(ranally::String("")));
     assert(tree1);
@@ -65,7 +64,7 @@ void AnnotateVisitorTest::testVisitEmptyScript()
 
 void AnnotateVisitorTest::testVisitNumber()
 {
-    boost::shared_ptr<ranally::ScriptVertex> tree =
+    std::shared_ptr<ranally::ScriptVertex> tree =
         _xmlParser.parse(_algebraParser.parseString(ranally::String("5")));
     tree->Accept(_visitor);
 
@@ -79,7 +78,7 @@ void AnnotateVisitorTest::testVisitNumber()
 void AnnotateVisitorTest::testVisitOperation()
 {
     {
-        boost::shared_ptr<ranally::ScriptVertex> tree =
+        std::shared_ptr<ranally::ScriptVertex> tree =
             _xmlParser.parse(_algebraParser.parseString(
                 ranally::String("abs(a)")));
         tree->Accept(_visitor);
@@ -89,7 +88,7 @@ void AnnotateVisitorTest::testVisitOperation()
         BOOST_CHECK_EQUAL(tree->col(), 0);
 
         BOOST_REQUIRE_EQUAL(tree->statements().size(), 1u);
-        boost::shared_ptr<ranally::StatementVertex> const& statement(
+        std::shared_ptr<ranally::StatementVertex> const& statement(
             tree->statements()[0]);
         BOOST_REQUIRE(statement);
         ranally::OperationVertex const* functionVertex(

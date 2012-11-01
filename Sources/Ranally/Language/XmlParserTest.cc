@@ -1,6 +1,5 @@
 #include "Ranally/Language/XmlParserTest.h"
 #include <iostream>
-#include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
 #include "Ranally/Util/String.h"
@@ -31,7 +30,7 @@ void XmlParserTest::testParse()
     ranally::AlgebraParser algebraParser;
     ranally::XmlParser xmlParser;
     ranally::String xml;
-    boost::shared_ptr<ranally::SyntaxVertex> tree;
+    std::shared_ptr<ranally::SyntaxVertex> tree;
 
     {
         // Empty xml.

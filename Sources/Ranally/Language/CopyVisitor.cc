@@ -1,5 +1,4 @@
 #include "Ranally/Language/CopyVisitor.h"
-#include <boost/foreach.hpp>
 #include "Ranally/Language/Vertices.h"
 
 
@@ -18,7 +17,7 @@ CopyVisitor::~CopyVisitor()
 }
 
 
-boost::shared_ptr<ScriptVertex> const& CopyVisitor::scriptVertex() const
+std::shared_ptr<ScriptVertex> const& CopyVisitor::scriptVertex() const
 {
     assert(_scriptVertex);
     return _scriptVertex;
@@ -42,8 +41,7 @@ void CopyVisitor::visitStatements(
 {
     assert(_statements.empty());
 
-    BOOST_FOREACH(boost::shared_ptr<StatementVertex> const& statement,
-            statements) {
+    for(auto statement: statements) {
         CopyVisitor visitor;
         statement->Accept(visitor);
         assert(_statementVertex);

@@ -22,13 +22,13 @@ public:
     LOKI_DEFINE_VISITABLE()
 
                    WhileVertex         (
-                        boost::shared_ptr<ExpressionVertex> const& condition,
+                        std::shared_ptr<ExpressionVertex> const& condition,
                         StatementVertices const& trueStatements,
                         StatementVertices const& falseStatements);
 
                    ~WhileVertex        ();
 
-    boost::shared_ptr<ExpressionVertex> const& condition() const;
+    std::shared_ptr<ExpressionVertex> const& condition() const;
 
     StatementVertices const& trueStatements() const;
 

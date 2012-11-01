@@ -1,6 +1,4 @@
 #include "Ranally/Language/SymbolTableTest.h"
-#include <boost/scoped_ptr.hpp>
-#include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
 #include "Ranally/Language/SymbolTable.h"
@@ -37,7 +35,7 @@ void SymbolTableTest::testScoping()
         table.pushScope();
         BOOST_CHECK_EQUAL(table.scopeLevel(), SymbolTable::size_type(1));
 
-        boost::scoped_ptr<NameVertex> a(new NameVertex(name));
+        std::unique_ptr<NameVertex> a(new NameVertex(name));
         table.addDefinition(a.get());
         BOOST_REQUIRE(table.hasDefinition(name));
         BOOST_CHECK_EQUAL(table.scopeLevel(name), table.scopeLevel());
@@ -53,7 +51,7 @@ void SymbolTableTest::testScoping()
         table.pushScope();
         BOOST_CHECK_EQUAL(table.scopeLevel(), SymbolTable::size_type(1));
 
-        boost::scoped_ptr<NameVertex> a1(new NameVertex(name));
+        std::unique_ptr<NameVertex> a1(new NameVertex(name));
         table.addDefinition(a1.get());
         BOOST_REQUIRE(table.hasDefinition(name));
         BOOST_CHECK_EQUAL(table.definition(name), a1.get());
@@ -61,7 +59,7 @@ void SymbolTableTest::testScoping()
 
         BOOST_CHECK_EQUAL(table.scopeLevel(), SymbolTable::size_type(1));
 
-        boost::scoped_ptr<NameVertex> a2(new NameVertex(name));
+        std::unique_ptr<NameVertex> a2(new NameVertex(name));
         table.addDefinition(a2.get());
         BOOST_REQUIRE(table.hasDefinition(name));
         BOOST_CHECK_EQUAL(table.definition(name), a2.get());
@@ -79,14 +77,14 @@ void SymbolTableTest::testScoping()
         table.pushScope();
         BOOST_CHECK_EQUAL(table.scopeLevel(), SymbolTable::size_type(1));
 
-        boost::scoped_ptr<NameVertex> a1(new NameVertex(name));
+        std::unique_ptr<NameVertex> a1(new NameVertex(name));
         table.addDefinition(a1.get());
         BOOST_REQUIRE(table.hasDefinition(name));
 
         table.pushScope();
         BOOST_CHECK_EQUAL(table.scopeLevel(), SymbolTable::size_type(2));
 
-        boost::scoped_ptr<NameVertex> a2(new NameVertex(name));
+        std::unique_ptr<NameVertex> a2(new NameVertex(name));
         table.addDefinition(a2.get());
         BOOST_REQUIRE(table.hasDefinition(name));
 

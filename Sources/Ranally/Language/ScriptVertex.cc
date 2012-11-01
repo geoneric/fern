@@ -1,5 +1,4 @@
 #include "Ranally/Language/ScriptVertex.h"
-#include <boost/foreach.hpp>
 #include "Ranally/Language/CopyVisitor.h"
 
 
@@ -24,7 +23,7 @@ ScriptVertex::ScriptVertex(
 //     _sourceName(other._sourceName)
 // 
 // {
-//   BOOST_FOREACH(boost::shared_ptr<StatementVertex> const& vertex,
+//   BOOST_FOREACH(std::shared_ptr<StatementVertex> const& vertex,
 //     _statements) {
 //     CopyVisitor visitor;
 //     vertex->Accept(visitor);

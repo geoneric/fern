@@ -1,5 +1,4 @@
 #include "Ranally/Language/AnnotateVisitor.h"
-#include <boost/foreach.hpp>
 #include "Ranally/Util/String.h"
 #include "Ranally/Operation/Result.h"
 #include "Ranally/Language/Vertices.h"
@@ -68,7 +67,7 @@ void AnnotateVisitor::Visit(
         OperationPtr const& operation(_operations->operation(vertex.name()));
         vertex.setOperation(operation);
 
-        BOOST_FOREACH(Result const& result, operation->results()) {
+        for(auto result: operation->results()) {
             vertex.addResultType(result.dataType(), result.valueType());
         }
     }

@@ -1,5 +1,4 @@
 #pragma once
-#include <boost/foreach.hpp>
 #include "Ranally/Language/ExpressionVertex.h"
 
 
@@ -50,7 +49,7 @@ private:
 
 };
 
-typedef boost::shared_ptr<NameVertex> NameVertexPtr;
+typedef std::shared_ptr<NameVertex> NameVertexPtr;
 
 inline std::ostream& operator<<(
     std::ostream& stream,
@@ -61,7 +60,7 @@ inline std::ostream& operator<<(
     if(!vertex.definitions().empty()) {
         stream << "definitions:\n";
 
-        BOOST_FOREACH(NameVertex const* definition, vertex.definitions()) {
+        for(auto definition: vertex.definitions()) {
             stream << *definition;
         }
     }
@@ -69,7 +68,7 @@ inline std::ostream& operator<<(
     if(!vertex.uses().empty()) {
         stream << "uses:\n";
 
-        BOOST_FOREACH(NameVertex const* use, vertex.uses()) {
+        for(auto use: vertex.uses()) {
             stream << *use;
         }
     }

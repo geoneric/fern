@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstring>
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 #include "Ranally/Configure.h"
 #include "ConvertCommand.h"
 #include "DescribeCommand.h"
@@ -70,7 +70,7 @@ int main(
         status = EXIT_SUCCESS;
     }
     else {
-        boost::scoped_ptr<ranally::Command> command;
+        std::unique_ptr<ranally::Command> command;
 
         // A command may be given. Find out which one.
         if(std::strcmp(argv[1], "convert") == 0) {

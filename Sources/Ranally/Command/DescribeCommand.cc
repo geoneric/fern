@@ -40,7 +40,7 @@ DescribeCommand::~DescribeCommand()
 void DescribeCommand::describe(
     String const& xml)
 {
-    boost::shared_ptr<ranally::ScriptVertex> tree(
+    std::shared_ptr<ranally::ScriptVertex> tree(
         ranally::XmlParser().parse(xml));
     ranally::Interpreter interpreter;
     interpreter.validate(tree);

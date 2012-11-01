@@ -1,5 +1,4 @@
 #include "Ranally/IO/PointFeature.h"
-#include <boost/foreach.hpp>
 #include "Ranally/IO/PointAttribute.h"
 #include "Ranally/IO/PointDomain.h"
 
@@ -39,7 +38,7 @@ PointAttributes const& PointFeature::attributes() const
 bool PointFeature::exists(
     String const& name) const
 {
-    BOOST_FOREACH(PointAttributePtr const& attribute, _attributes) {
+    for(auto attribute: _attributes) {
         if(attribute->name() == name) {
             return true;
         }

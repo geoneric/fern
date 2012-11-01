@@ -1,5 +1,5 @@
 #pragma once
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "Ranally/Util/String.h"
 
 
@@ -27,9 +27,9 @@ public:
 
                    ~XmlParser          ();
 
-    boost::shared_ptr<ScriptVertex> parse(String const& xml) const;
+    std::shared_ptr<ScriptVertex> parse(String const& xml) const;
 
-    boost::shared_ptr<ScriptVertex> parse(std::istream& stream) const;
+    std::shared_ptr<ScriptVertex> parse(std::istream& stream) const;
 
 };
 

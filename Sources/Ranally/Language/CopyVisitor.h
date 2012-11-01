@@ -22,7 +22,7 @@ public:
 
                    ~CopyVisitor        ();
 
-    boost::shared_ptr<ScriptVertex> const& scriptVertex() const;
+    std::shared_ptr<ScriptVertex> const& scriptVertex() const;
 
     // SyntaxVertices const& syntaxVertices () const;
 
@@ -30,13 +30,13 @@ public:
 
 private:
 
-    boost::shared_ptr<ScriptVertex> _scriptVertex;
+    std::shared_ptr<ScriptVertex> _scriptVertex;
 
     // SyntaxVertices   _syntaxVertices;
 
     StatementVertices _statements;
 
-    boost::shared_ptr<StatementVertex> _statementVertex;
+    std::shared_ptr<StatementVertex> _statementVertex;
 
     void           visitStatements     (StatementVertices& statements);
 

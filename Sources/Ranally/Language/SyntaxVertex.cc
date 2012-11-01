@@ -1,5 +1,4 @@
 #include "Ranally/Language/SyntaxVertex.h"
-#include <boost/foreach.hpp>
 // #include "Ranally/Language/CopyVisitor.h"
 
 

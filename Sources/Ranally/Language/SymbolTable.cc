@@ -1,7 +1,6 @@
 #include "Ranally/Language/SymbolTable.h"
 #include <algorithm>
 #include <cassert>
-#include <boost/foreach.hpp>
 #include "Ranally/Language/NameVertex.h"
 
 
@@ -78,7 +77,7 @@ void SymbolTable::popScope()
 
     assert(!_scopes.empty());
 
-    BOOST_FOREACH(NameVertex* definition, _scopes.back()) {
+    for(auto definition: _scopes.back()) {
         Definitions& definitions(this->definitions(definition->name()));
         assert(std::find(definitions.begin(), definitions.end(), definition) !=
             definitions.end());
@@ -125,7 +124,7 @@ SymbolTable::size_type SymbolTable::scopeLevel(
     for(size_type i = 0; i < _scopes.size(); ++i) {
         size_type j = _scopes.size() - 1 - i;
 
-        BOOST_FOREACH(NameVertex* definition, _scopes[j]) {
+        for(auto definition: _scopes[j]) {
             if(definition->name() == name) {
                 result = j + 1;
                 break;
@@ -219,7 +218,7 @@ SymbolTable::size_type SymbolTable::size() const
 {
     size_type result = 0;
 
-    BOOST_FOREACH(Definitions const& definitions, _scopes) {
+    for(auto definitions: _scopes) {
         result += definitions.size();
     }
 

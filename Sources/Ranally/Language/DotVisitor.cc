@@ -1,6 +1,4 @@
 #include "Ranally/Language/DotVisitor.h"
-#include <boost/foreach.hpp>
-#include <boost/format.hpp>
 #include "Ranally/Language/Vertices.h"
 
 

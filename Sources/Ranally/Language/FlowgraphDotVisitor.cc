@@ -1,5 +1,4 @@
 #include "FlowgraphDotVisitor.h"
-#include <boost/foreach.hpp>
 #include "Ranally/Util/String.h"
 #include "Ranally/Language/Vertices.h"
 
@@ -32,8 +31,7 @@ void FlowgraphDotVisitor::addFlowgraphVertex(
     SyntaxVertex const& targetVertex)
 {
     if(!sourceVertex.definitions().empty()) {
-        BOOST_FOREACH(NameVertex* definition,
-                sourceVertex.definitions()) {
+        for(auto definition: sourceVertex.definitions()) {
             addScript(
                 String(boost::format("\"%1%\"") % definition) + " -> " +
                 String(boost::format("\"%1%\"") % &targetVertex) + " ["
@@ -138,16 +136,14 @@ void FlowgraphDotVisitor::Visit(
             break;
         }
         case ConnectingFlowgraph: {
-            BOOST_FOREACH(boost::shared_ptr<ExpressionVertex>
-                expressionVertex, vertex.expressions()) {
+            for(auto expressionVertex: vertex.expressions()) {
                 addFlowgraphVertex(*expressionVertex, vertex);
             }
             break;
         }
     }
 
-    BOOST_FOREACH(boost::shared_ptr<ExpressionVertex>
-        expressionVertex, vertex.expressions()) {
+    for(auto expressionVertex: vertex.expressions()) {
         expressionVertex->Accept(*this);
     }
 }
@@ -180,8 +176,7 @@ void FlowgraphDotVisitor::Visit(
             "rankdir=TB;\n"
         ) % ifClusterId++));
     }
-    BOOST_FOREACH(boost::shared_ptr<StatementVertex>
-        statementVertex, vertex.trueStatements()) {
+    for(auto statementVertex: vertex.trueStatements()) {
         statementVertex->Accept(*this);
     }
     if(_mode == ConnectingFlowgraph) {
@@ -197,8 +192,7 @@ void FlowgraphDotVisitor::Visit(
                 "rankdir=TB;\n"
             ) % ifClusterId++));
         }
-        BOOST_FOREACH(boost::shared_ptr<StatementVertex>
-            statementVertex, vertex.falseStatements()) {
+        for(auto statementVertex: vertex.falseStatements()) {
             statementVertex->Accept(*this);
         }
         if(_mode == ConnectingFlowgraph) {
@@ -337,16 +331,14 @@ void FlowgraphDotVisitor::Visit(
             break;
         }
         case ConnectingFlowgraph: {
-            BOOST_FOREACH(boost::shared_ptr<ExpressionVertex>
-                expressionVertex, vertex.expressions()) {
+            for(auto expressionVertex: vertex.expressions()) {
                 addFlowgraphVertex(*expressionVertex, vertex);
             }
             break;
         }
     }
 
-    BOOST_FOREACH(boost::shared_ptr<ExpressionVertex>
-        expressionVertex, vertex.expressions()) {
+    for(auto expressionVertex: vertex.expressions()) {
         expressionVertex->Accept(*this);
     }
 }
@@ -393,14 +385,12 @@ void FlowgraphDotVisitor::Visit(
     //   String(boost::format(" [label=\"%1%\"];\n"))
     //     % vertex.sourceName().encodeInUTF8());
 
-    BOOST_FOREACH(boost::shared_ptr<StatementVertex> statementVertex,
-        vertex.statements()) {
+    for(auto statementVertex: vertex.statements()) {
         statementVertex->Accept(*this);
     }
 
     setMode(ConnectingFlowgraph);
-    BOOST_FOREACH(boost::shared_ptr<StatementVertex> statementVertex,
-        vertex.statements()) {
+    for(auto statementVertex: vertex.statements()) {
         // addFlowgraphVertex(vertex, *statementVertex);
         statementVertex->Accept(*this);
     }

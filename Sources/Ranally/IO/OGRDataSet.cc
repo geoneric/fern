@@ -1,7 +1,6 @@
 #include "Ranally/IO/OGRDataSet.h"
 #include <cassert>
-#include <boost/foreach.hpp>
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 #include "ogrsf_frmts.h"
 #include "Ranally/IO/OGRFeatureLayer.h"
 #include "Ranally/IO/PointAttribute.h"
@@ -125,7 +124,7 @@ void OGRDataSet::add(
     PointDomain const& domain(feature.domain());
     PointAttributes const& attributes(feature.attributes());
 
-    BOOST_FOREACH(PointAttributePtr const& attribute, attributes) {
+    for(auto attribute: attributes) {
         if(attribute->feature()) {
             // TODO error/warn
             assert(false);
@@ -146,7 +145,7 @@ void OGRDataSet::add(
 
     OGRPoint ogrPoint;
 
-    BOOST_FOREACH(Point const& point, points) {
+    for(auto point: points) {
         OGRFeature* ogrFeature = OGRFeature::CreateFeature(
             ogrLayer->GetLayerDefn());
         assert(ogrFeature);
@@ -174,7 +173,7 @@ void OGRDataSet::add(
     // PolygonDomain const& domain(feature.domain());
     PolygonAttributes const& attributes(feature.attributes());
 
-    BOOST_FOREACH(PolygonAttributePtr const& attribute, attributes) {
+    for(auto attribute: attributes) {
         if(attribute->feature()) {
             // TODO error/warn
             assert(false);
@@ -207,7 +206,7 @@ void OGRDataSet::copy(
     DataSet const& dataSet)
 {
     for(size_t i = 0; i < dataSet.nrFeatures(); ++i) {
-        boost::scoped_ptr<Feature> feature(dataSet.feature(i));
+        std::unique_ptr<Feature> feature(dataSet.feature(i));
         assert(feature);
         copy(*feature);
     }
