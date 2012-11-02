@@ -5,18 +5,13 @@ INCLUDE(UseLoki)
 INCLUDE(UsePython)
 INCLUDE(UseXsd)
 
-SET(_LINK_LIBRARIES
-    RanallyOperation
-    RanallyPython
-    RanallyUtil
-    ${PYTHON_LIBRARIES}
-    ${EXPAT_LIBRARIES}
-    ${ICU_LIBRARIES}
-)
 INCLUDE_DIRECTORIES(
     ${CMAKE_CURRENT_SOURCE_DIR}/../..
     ${CMAKE_CURRENT_BINARY_DIR}/../..
 )
+
+ADD_SUBDIRECTORY(Tests)
+
 CONFIGURE_FILE(
     ${CMAKE_CURRENT_SOURCE_DIR}/SyntaxTree.map.in
     ${CMAKE_CURRENT_BINARY_DIR}/SyntaxTree.map
@@ -70,48 +65,11 @@ SET(SOURCES
 ADD_LIBRARY(RanallyLanguage
     ${SOURCES}
 )
-SET(TEST_SOURCES
-    AlgebraParserTest.cc
-    AnnotateVisitorTest.cc
-    AssignmentVertexTest.cc
-    DotVisitorTest.cc
-    ExecuteVisitorTest.cc
-    ExpressionVertexTest.cc
-    FunctionVertexTest.cc
-    IdentifyVisitorTest.cc
-    IfVertexTest.cc
-    NameVertexTest.cc
-    NumberVertexTest.cc
-    OperatorVertexTest.cc
-    OptimizeVisitorTest.cc
-    ScriptVertexTest.cc
-    ScriptVisitorTest.cc
-    StatementVertexTest.cc
-    StringVertexTest.cc
-    SymbolTableTest.cc
-    SyntaxVertexTest.cc
-    Test.cc
-    ThreadVisitorTest.cc
-    ValidateVisitorTest.cc
-    VisitorTest.cc
-    WhileVertexTest.cc
-    XmlParserTest.cc
+TARGET_LINK_LIBRARIES(RanallyLanguage
+    RanallyOperation
+    RanallyPython
+    RanallyUtil
+    ${EXPAT_LIBRARIES}
+    ${PYTHON_LIBRARIES}
+    ${ICU_LIBRARIES}
 )
-ADD_EXECUTABLE(testRanallyLanguage
-    ${TEST_SOURCES}
-)
-TARGET_LINK_LIBRARIES(testRanallyLanguage
-    RanallyInterpreter
-    RanallyLanguage
-    ${_LINK_LIBRARIES}
-)
-ADD_DEPENDENCIES(testRanallyLanguage
-    Operation-xml.h
-)
-ADD_CUSTOM_TARGET(runTestLanguage
-    testRanallyLanguage
-    DEPENDS testRanallyLanguage
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    COMMENT "Running RanallyLanguage unit tests" VERBATIM
-)
-ADD_DEPENDENCIES(tests runTestLanguage)
