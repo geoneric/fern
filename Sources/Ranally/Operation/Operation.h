@@ -1,6 +1,6 @@
 #pragma once
+#include <memory>
 #include <vector>
-#include <boost/shared_ptr.hpp>
 #include "Ranally/Util/String.h"
 #include "Ranally/Operation/Parameter.h"
 #include "Ranally/Operation/Result.h"
@@ -54,6 +54,6 @@ private:
 };
 
 
-typedef boost::shared_ptr<Operation> OperationPtr;
+typedef std::shared_ptr<Operation> OperationPtr;
 
 } // namespace ranally

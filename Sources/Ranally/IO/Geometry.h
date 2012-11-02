@@ -1,9 +1,9 @@
 #pragma once
+#include <memory>
 #include <vector>
 #include <boost/geometry/core/cs.hpp>
 #include <boost/geometry/geometries/point.hpp>
 #include <boost/geometry/geometries/polygon.hpp>
-#include <boost/shared_ptr.hpp>
 
 
 namespace ranally {
@@ -31,8 +31,8 @@ typedef std::vector<Point> Points;
 
 typedef std::vector<Polygon> Polygons;
 
-typedef boost::shared_ptr<Points> PointsPtr;
+typedef std::shared_ptr<Points> PointsPtr;
 
-typedef boost::shared_ptr<Polygons> PolygonsPtr;
+typedef std::shared_ptr<Polygons> PolygonsPtr;
 
 } // namespace ranally

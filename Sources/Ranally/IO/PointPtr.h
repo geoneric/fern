@@ -1,6 +1,6 @@
 #pragma once
+#include <memory>
 #include <vector>
-#include <boost/shared_ptr.hpp>
 
 
 namespace ranally {
@@ -8,7 +8,7 @@ namespace ranally {
 #define DEFINE_SHARED_POINTER_TYPE(                                            \
     className)                                                                 \
     class className;                                                           \
-    typedef boost::shared_ptr<className> className##Ptr;
+    typedef std::shared_ptr<className> className##Ptr;
 
 DEFINE_SHARED_POINTER_TYPE(PointAttribute)
 DEFINE_SHARED_POINTER_TYPE(PointDomain)

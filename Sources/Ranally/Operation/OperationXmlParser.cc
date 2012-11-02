@@ -1,8 +1,8 @@
 #include "Ranally/Operation/OperationXmlParser.h"
+#include <memory>
 #include <sstream>
 #include <stack>
 #include <vector>
-#include <boost/make_shared.hpp>
 #include "Ranally/Util/String.h"
 #include "Operation-pskel.hxx"
 #include "Ranally/Operation/DataType.h"
@@ -113,8 +113,7 @@ class Operations_pimpl:
 
 private:
 
-    typedef std::vector<boost::shared_ptr<ranally::Operation> >
-        OperationsData;
+    typedef std::vector<std::shared_ptr<ranally::Operation> > OperationsData;
 
     OperationsData   _operations;
 
@@ -133,7 +132,7 @@ public:
 
     ranally::OperationsPtr post_Operations()
     {
-        return boost::make_shared<ranally::Operations>(_operations);
+        return ranally::OperationsPtr(new ranally::Operations(_operations));
     }
 
 };
@@ -197,8 +196,8 @@ public:
         assert(!_dataStack.empty());
         OperationData result(_dataStack.top());
         _dataStack.pop();
-        return boost::make_shared<ranally::Operation>(result.name,
-            result.description, result.parameters, result.results);
+        return ranally::OperationPtr(new ranally::Operation(result.name,
+            result.description, result.parameters, result.results));
     }
 
 };

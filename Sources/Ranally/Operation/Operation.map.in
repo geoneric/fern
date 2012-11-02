@@ -4,8 +4,8 @@ namespace http://www.jemig.eu/ranally
     include "${CMAKE_CURRENT_SOURCE_DIR}/Parameter.h";
     include "${CMAKE_CURRENT_SOURCE_DIR}/Result.h";
 
-    Operations         "boost::shared_ptr<ranally::Operations>";
-    Operation          "boost::shared_ptr<ranally::Operation>";
+    Operations         "std::shared_ptr<ranally::Operations>";
+    Operation          "std::shared_ptr<ranally::Operation>";
     Parameters         "std::vector<ranally::Parameter> const&";
     Results            "std::vector<ranally::Result> const&";
     Parameter          "ranally::Parameter";

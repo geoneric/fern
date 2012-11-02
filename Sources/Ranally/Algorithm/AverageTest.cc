@@ -1,5 +1,4 @@
 #include "AverageTest.h"
-#include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
 #include "Ranally/Algorithm/Average.h"

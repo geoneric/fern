@@ -1,5 +1,5 @@
 #pragma once
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "Ranally/Util/String.h"
 
 
@@ -35,21 +35,21 @@ public:
     Domain const&  domain              () const;
 
     template<class Domain>
-    boost::shared_ptr<Domain> domain   () const;
+    std::shared_ptr<Domain> domain     () const;
 
 private:
 
     OGRLayer* const  _layer;
 
-    boost::shared_ptr<Domain> _domain;
+    std::shared_ptr<Domain> _domain;
 
 };
 
 
 template<class Domain>
-boost::shared_ptr<Domain> OGRFeatureLayer::domain() const
+std::shared_ptr<Domain> OGRFeatureLayer::domain() const
 {
-    return boost::dynamic_pointer_cast<Domain>(_domain);
+    return std::dynamic_pointer_cast<Domain>(_domain);
 }
 
 } // namespace ranally

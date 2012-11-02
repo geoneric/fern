@@ -1,7 +1,6 @@
 #include "PrintTest.h"
 #include <sstream>
 #include <boost/range/iterator_range.hpp>
-#include <boost/shared_ptr.hpp>
 #include <boost/test/test_tools.hpp>
 #include <boost/test/unit_test_suite.hpp>
 #include "Ranally/Raster.h"

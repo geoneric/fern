@@ -1,5 +1,5 @@
 #include "Ranally/IO/Util.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "Ranally/IO/HDF5DataSetDriver.h"
 
 
@@ -19,11 +19,11 @@ enum OpenMode {
 };
 
 
-boost::shared_ptr<DataSet> openDataSet(
+std::shared_ptr<DataSet> openDataSet(
     String const& /* dataSetName */,
     OpenMode /* openMode */)
 {
-    boost::shared_ptr<DataSet> dataset;
+    std::shared_ptr<DataSet> dataset;
 
     assert(dataset);
     return dataset;
@@ -36,10 +36,9 @@ void import(
     String const& inputDataSetName,
     String const& outputDataSetName)
 {
-    boost::shared_ptr<DataSet> inputDataSet = openDataSet(inputDataSetName,
-        Read);
+    std::shared_ptr<DataSet> inputDataSet = openDataSet(inputDataSetName, Read);
     HDF5DataSetDriver hdf5Driver;
-    boost::shared_ptr<DataSet> outputDataSet(hdf5Driver.create(
+    std::shared_ptr<DataSet> outputDataSet(hdf5Driver.create(
         outputDataSetName));
     outputDataSet->copy(*inputDataSet);
 }

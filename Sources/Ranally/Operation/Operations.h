@@ -1,10 +1,10 @@
 #pragma once
 #include <map>
+#include <memory>
 #include <boost/format.hpp>
 #include <boost/range/begin.hpp>
 #include <boost/range/end.hpp>
 #include <boost/range/iterator.hpp>
-#include <boost/shared_ptr.hpp>
 #include "Ranally/Util/String.h"
 #include "Ranally/Operation/Operation.h"
 
@@ -75,6 +75,6 @@ inline Operations::Operations(
 }
 
 
-typedef boost::shared_ptr<Operations> OperationsPtr;
+typedef std::shared_ptr<Operations> OperationsPtr;
 
 } // namespace ranally
