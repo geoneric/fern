@@ -1,29 +1,13 @@
-#include "Ranally/Algorithm/PlusTest.h"
+#define BOOST_TEST_MODULE ranally algorithm
+#include <boost/test/included/unit_test.hpp>
 #include <boost/array.hpp>
-#include <boost/test/test_tools.hpp>
-#include <boost/test/unit_test_suite.hpp>
 #include "Ranally/Algorithm/Plus.h"
 #include "Ranally/Raster.h"
 
 
-boost::unit_test::test_suite* PlusTest::suite()
-{
-    boost::unit_test::test_suite* suite = BOOST_TEST_SUITE(__FILE__);
-    boost::shared_ptr<PlusTest> instance(
-        new PlusTest());
-    suite->add(BOOST_CLASS_TEST_CASE(
-        &PlusTest::testArgumentAndResultTypes, instance));
+BOOST_AUTO_TEST_SUITE(plus)
 
-    return suite;
-}
-
-
-PlusTest::PlusTest()
-{
-}
-
-
-void PlusTest::testArgumentAndResultTypes()
+BOOST_AUTO_TEST_CASE(argument_and_result_types)
 {
     // int + int -> int
     {
@@ -124,3 +108,5 @@ void PlusTest::testArgumentAndResultTypes()
     //     // BOOST_CHECK_EQUAL(result[1], 8);
     // }
 }
+
+BOOST_AUTO_TEST_SUITE_END()
