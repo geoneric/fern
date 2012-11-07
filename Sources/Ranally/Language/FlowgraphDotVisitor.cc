@@ -14,11 +14,6 @@ FlowgraphDotVisitor::FlowgraphDotVisitor()
 }
 
 
-FlowgraphDotVisitor::~FlowgraphDotVisitor()
-{
-}
-
-
 void FlowgraphDotVisitor::setMode(
     Mode mode)
 {

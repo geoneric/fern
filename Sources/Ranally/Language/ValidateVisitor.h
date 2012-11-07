@@ -23,9 +23,17 @@ class ValidateVisitor:
 
 public:
 
-                   ValidateVisitor     ();
+                   ValidateVisitor     ()=default;
 
-                   ~ValidateVisitor    ();
+                   ~ValidateVisitor    ()=default;
+
+                   ValidateVisitor     (ValidateVisitor&&)=delete;
+
+    ValidateVisitor& operator=         (ValidateVisitor&&)=delete;
+
+                   ValidateVisitor     (ValidateVisitor const&)=delete;
+
+    ValidateVisitor& operator=         (ValidateVisitor const&)=delete;
 
 private:
 

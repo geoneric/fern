@@ -10,9 +10,4 @@ DataTypes::DataTypes()
 {
 }
 
-
-DataTypes::~DataTypes()
-{
-}
-
 } // namespace ranally

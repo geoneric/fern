@@ -33,13 +33,21 @@ public:
     //! Type for scope levels.
     typedef std::vector<Definitions>::size_type size_type;
 
-                   SymbolTable         ();
+    //! Construct an empty symbol table.
+    /*!
+      \warning   Call pushScope before adding definitions.
+    */
+                   SymbolTable         ()=default;
+
+                   ~SymbolTable        ();
+
+                   SymbolTable         (SymbolTable&&)=delete;
+
+    SymbolTable&   operator=           (SymbolTable&&)=delete;
 
                    SymbolTable         (SymbolTable const&)=delete;
 
     SymbolTable&   operator=           (SymbolTable const&)=delete;
-
-                   ~SymbolTable        ();
 
     void           pushScope           ();
 

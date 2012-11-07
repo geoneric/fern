@@ -827,22 +827,6 @@ private:
 
 namespace ranally {
 
-//! Constructor.
-/*!
-*/
-XmlParser::XmlParser()
-{
-}
-
-
-//! Destructor.
-/*!
-*/
-XmlParser::~XmlParser()
-{
-}
-
-
 //! Parse the Xml in \a stream and return a syntax tree.
 /*!
   \param     stream Stream with Xml to parse.

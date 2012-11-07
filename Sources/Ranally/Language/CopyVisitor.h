@@ -18,9 +18,17 @@ class CopyVisitor:
 
 public:
 
-                   CopyVisitor         ();
+                   CopyVisitor         ()=default;
 
-                   ~CopyVisitor        ();
+                   ~CopyVisitor        ()=default;
+
+                   CopyVisitor         (CopyVisitor&&)=delete;
+
+    CopyVisitor&   operator=           (CopyVisitor&&)=delete;
+
+                   CopyVisitor         (CopyVisitor const&)=delete;
+
+    CopyVisitor&   operator=           (CopyVisitor const&)=delete;
 
     std::shared_ptr<ScriptVertex> const& scriptVertex() const;
 

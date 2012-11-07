@@ -3,11 +3,6 @@
 
 namespace ranally {
 
-Operations::~Operations()
-{
-}
-
-
 bool Operations::empty() const
 {
     return _operations.empty();

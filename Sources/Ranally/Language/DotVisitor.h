@@ -18,13 +18,21 @@ class DotVisitor:
 
 public:
 
-    virtual        ~DotVisitor         ();
+    virtual        ~DotVisitor         ()=default;
+
+                   DotVisitor          (DotVisitor&&)=delete;
+
+    DotVisitor&    operator=           (DotVisitor&&)=delete;
+
+                   DotVisitor          (DotVisitor const&)=delete;
+
+    DotVisitor&    operator=           (DotVisitor const&)=delete;
 
     String const&  script              () const;
 
 protected:
 
-                   DotVisitor          ();
+                   DotVisitor          ()=default;
 
     void           setScript           (String const& string);
 

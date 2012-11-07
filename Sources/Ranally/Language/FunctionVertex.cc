@@ -12,9 +12,4 @@ FunctionVertex::FunctionVertex(
 {
 }
 
-
-FunctionVertex::~FunctionVertex()
-{
-}
-
 } // namespace ranally

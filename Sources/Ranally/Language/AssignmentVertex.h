@@ -24,7 +24,15 @@ public:
                    AssignmentVertex    (ExpressionVertexPtr const& target,
                                         ExpressionVertexPtr const& expression);
 
-                   ~AssignmentVertex   ();
+                   ~AssignmentVertex   ()=default;
+
+                   AssignmentVertex    (AssignmentVertex&&)=delete;
+
+    AssignmentVertex& operator=        (AssignmentVertex&&)=delete;
+
+                   AssignmentVertex    (AssignmentVertex const&)=delete;
+
+    AssignmentVertex& operator=        (AssignmentVertex const&)=delete;
 
     ExpressionVertexPtr const& target  () const;
 

@@ -12,7 +12,7 @@ class String:
 
 public:
 
-                   String              ();
+                   String              ()=default;
 
                    String              (char const* string);
 
@@ -22,7 +22,15 @@ public:
 
                    String              (boost::format const& format);
 
-    virtual        ~String             ();
+                   String              (String&&)=default;
+
+    String&        operator=           (String&&)=default;
+
+                   String              (String const&)=default;
+
+    String&        operator=           (String const&)=default;
+
+    virtual        ~String             ()=default;
 
     std::string    encodeInUTF8        () const;
 

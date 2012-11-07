@@ -20,7 +20,15 @@ public:
 
                    FlowgraphDotVisitor ();
 
-                   ~FlowgraphDotVisitor();
+                   ~FlowgraphDotVisitor()=default;
+
+                   FlowgraphDotVisitor (FlowgraphDotVisitor&&)=delete;
+
+    FlowgraphDotVisitor& operator=     (FlowgraphDotVisitor&&)=delete;
+
+                   FlowgraphDotVisitor (FlowgraphDotVisitor const&)=delete;
+
+    FlowgraphDotVisitor& operator=     (FlowgraphDotVisitor const&)=delete;
 
 private:
 

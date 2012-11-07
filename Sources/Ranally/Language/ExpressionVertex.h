@@ -30,7 +30,15 @@ public:
 
     typedef boost::tuple<DataType, ValueType> ResultType;
 
-    virtual        ~ExpressionVertex   ();
+    virtual        ~ExpressionVertex   ()=default;
+
+                   ExpressionVertex    (ExpressionVertex&&)=delete;
+
+    ExpressionVertex& operator=        (ExpressionVertex&&)=delete;
+
+                   ExpressionVertex    (ExpressionVertex const&)=delete;
+
+    ExpressionVertex& operator=        (ExpressionVertex const&)=delete;
 
     String const&  name                () const;
 

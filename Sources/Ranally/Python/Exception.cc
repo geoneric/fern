@@ -15,7 +15,7 @@ String formatErrorMessage(
 {
     assert(value);
     assert(value != Py_None);
-    OwnedReference valueDescriptionObject = PyObject_Str(value);
+    OwnedReference valueDescriptionObject(PyObject_Str(value));
     assert(valueDescriptionObject);
     String valueDescription = asUnicodeString(valueDescriptionObject);
 

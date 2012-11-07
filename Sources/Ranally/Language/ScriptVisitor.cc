@@ -15,11 +15,6 @@ ScriptVisitor::ScriptVisitor(
 }
 
 
-ScriptVisitor::~ScriptVisitor()
-{
-}
-
-
 String const& ScriptVisitor::script() const
 {
     return _script;

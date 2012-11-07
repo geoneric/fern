@@ -54,15 +54,6 @@ BorrowedReference::BorrowedReference(
 // }
 
 
-//! Destruct instance.
-/*!
-   The reference count of the layered object is not changed.
-*/
-BorrowedReference::~BorrowedReference()
-{
-}
-
-
 // //! Return whether the layered object is not NULL.
 // /*!
 //   \return    true or false

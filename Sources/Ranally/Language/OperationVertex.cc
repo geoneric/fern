@@ -14,11 +14,6 @@ OperationVertex::OperationVertex(
 }
 
 
-OperationVertex::~OperationVertex()
-{
-}
-
-
 ExpressionVertices const& OperationVertex::expressions() const
 {
     return _expressions;

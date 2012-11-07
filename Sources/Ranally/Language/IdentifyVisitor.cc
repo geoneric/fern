@@ -14,11 +14,6 @@ IdentifyVisitor::IdentifyVisitor()
 }
 
 
-IdentifyVisitor::~IdentifyVisitor()
-{
-}
-
-
 void IdentifyVisitor::Visit(
     AssignmentVertex& vertex)
 {

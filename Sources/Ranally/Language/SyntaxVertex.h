@@ -35,11 +35,15 @@ public:
 
     typedef SyntaxVertices::size_type size_type;
 
+    virtual        ~SyntaxVertex       ()=default;
+
+                   SyntaxVertex        (SyntaxVertex&&)=delete;
+
+    SyntaxVertex&  operator=           (SyntaxVertex&&)=delete;
+
                    SyntaxVertex        (SyntaxVertex const&)=delete;
 
     SyntaxVertex&  operator=           (SyntaxVertex const&)=delete;
-
-    virtual        ~SyntaxVertex       ();
 
     void           setPosition         (int lineNr,
                                         int colId);

@@ -1,30 +1,12 @@
-#include "PrintTest.h"
-#include <sstream>
-#include <boost/range/iterator_range.hpp>
-#include <boost/test/test_tools.hpp>
-#include <boost/test/unit_test_suite.hpp>
+#define BOOST_TEST_MODULE ranally language
+#include <boost/test/included/unit_test.hpp>
 #include "Ranally/Raster.h"
 #include "Ranally/Operation/Print.h"
 
 
-boost::unit_test::test_suite* PrintTest::suite()
-{
-    boost::unit_test::test_suite* suite = BOOST_TEST_SUITE(__FILE__);
-    boost::shared_ptr<PrintTest> instance(
-        new PrintTest());
-    suite->add(BOOST_CLASS_TEST_CASE(
-        &PrintTest::test, instance));
+BOOST_AUTO_TEST_SUITE(algebra_parser)
 
-    return suite;
-}
-
-
-PrintTest::PrintTest()
-{
-}
-
-
-void PrintTest::test()
+BOOST_AUTO_TEST_CASE(print)
 {
     {
         int scalar = 5;
@@ -68,3 +50,5 @@ void PrintTest::test()
         );
     }
 }
+
+BOOST_AUTO_TEST_SUITE_END()

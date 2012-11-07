@@ -17,11 +17,6 @@ AnnotateVisitor::AnnotateVisitor(
 }
 
 
-AnnotateVisitor::~AnnotateVisitor()
-{
-}
-
-
 void AnnotateVisitor::Visit(
     AssignmentVertex& vertex)
 {

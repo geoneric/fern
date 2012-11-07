@@ -117,11 +117,6 @@ AstDotVisitor::AstDotVisitor(
 }
 
 
-AstDotVisitor::~AstDotVisitor()
-{
-}
-
-
 void AstDotVisitor::setMode(
     Mode mode)
 {

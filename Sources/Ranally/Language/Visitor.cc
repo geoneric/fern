@@ -15,22 +15,6 @@
 
 namespace ranally {
 
-//! Default construct an instance.
-/*!
-*/
-Visitor::Visitor()
-{
-}
-
-
-//! Destruct an instance.
-/*!
-*/
-Visitor::~Visitor()
-{
-}
-
-
 //! Allow all \a statements to accept the visitor.
 /*!
   \param     statements Collection with StatementVertex instanceѕ.

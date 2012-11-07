@@ -24,11 +24,15 @@ public:
                                         DataTypes dataTypes,
                                         ValueTypes valueTypes);
 
+                   ~Parameter          ();
+
+                   Parameter           (Parameter&& other);
+
+    Parameter&     operator=           (Parameter&& other);
+
                    Parameter           (Parameter const& other);
 
     Parameter&     operator=           (Parameter const& other);
-
-                   ~Parameter          ();
 
     String const&  name                () const;
 

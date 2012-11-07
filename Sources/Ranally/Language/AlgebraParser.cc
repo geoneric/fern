@@ -673,11 +673,6 @@ AlgebraParser::AlgebraParser()
 }
 
 
-AlgebraParser::~AlgebraParser()
-{
-}
-
-
 // String AlgebraParser::parse(
 //   String const& string,
 //   String const& fileName)

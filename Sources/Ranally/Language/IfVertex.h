@@ -35,7 +35,15 @@ public:
                         StatementVertices const& trueStatements,
                         StatementVertices const& falseStatements);
 
-                   ~IfVertex           ();
+                   ~IfVertex           ()=default;
+
+                   IfVertex            (IfVertex&&)=delete;
+
+    IfVertex&      operator=           (IfVertex&&)=delete;
+
+                   IfVertex            (IfVertex const&)=delete;
+
+    IfVertex&      operator=           (IfVertex const&)=delete;
 
     std::shared_ptr<ExpressionVertex> const& condition() const;
 

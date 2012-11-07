@@ -27,11 +27,6 @@ ExpressionVertex::ExpressionVertex(
 }
 
 
-ExpressionVertex::~ExpressionVertex()
-{
-}
-
-
 String const& ExpressionVertex::name() const
 {
     return _name;

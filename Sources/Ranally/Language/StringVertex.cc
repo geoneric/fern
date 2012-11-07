@@ -15,11 +15,6 @@ StringVertex::StringVertex(
 }
 
 
-StringVertex::~StringVertex()
-{
-}
-
-
 String const& StringVertex::value() const
 {
     return _value;

@@ -17,11 +17,6 @@ IfVertex::IfVertex(
 }
 
 
-IfVertex::~IfVertex()
-{
-}
-
-
 std::shared_ptr<ExpressionVertex> const& IfVertex::condition() const
 {
     return _condition;

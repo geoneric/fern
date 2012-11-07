@@ -20,11 +20,6 @@ AssignmentVertex::AssignmentVertex(
 }
 
 
-AssignmentVertex::~AssignmentVertex()
-{
-}
-
-
 ExpressionVertexPtr const& AssignmentVertex::target() const
 {
     return _target;

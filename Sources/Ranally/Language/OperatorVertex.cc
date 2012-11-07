@@ -68,11 +68,6 @@ OperatorVertex::OperatorVertex(
 }
 
 
-OperatorVertex::~OperatorVertex()
-{
-}
-
-
 String const& OperatorVertex::symbol() const
 {
     return _symbol;

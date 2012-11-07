@@ -51,13 +51,17 @@ public:
 
 protected:
 
-                   Visitor             ();
+                   Visitor             ()=default;
+
+    virtual        ~Visitor            ()=default;
+
+                   Visitor             (Visitor&&)=delete;
+
+    Visitor&       operator=           (Visitor&&)=delete;
 
                    Visitor             (Visitor const&)=delete;
 
     Visitor&       operator=           (Visitor const&)=delete;
-
-    virtual        ~Visitor            ();
 
     virtual void   visitStatements     (StatementVertices& statements);
 

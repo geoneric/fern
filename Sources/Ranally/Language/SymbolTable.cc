@@ -6,19 +6,6 @@
 
 namespace ranally {
 
-//! Construct an empty symbol table.
-/*!
-  \warning   Call pushScope before adding definitions.
-*/
-SymbolTable::SymbolTable()
-
-    : _definitions(),
-      _scopes()
-
-{
-}
-
-
 //! Destruct a symbol table.
 /*!
   All definitions in all scopes are removed.

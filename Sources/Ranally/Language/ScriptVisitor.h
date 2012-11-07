@@ -21,7 +21,15 @@ public:
 
                    ScriptVisitor       (size_t tabSize=4);
 
-                   ~ScriptVisitor      ();
+                   ~ScriptVisitor      ()=default;
+
+                   ScriptVisitor       (ScriptVisitor&&)=delete;
+
+    ScriptVisitor& operator=           (ScriptVisitor&&)=delete;
+
+                   ScriptVisitor       (ScriptVisitor const&)=delete;
+
+    ScriptVisitor& operator=           (ScriptVisitor const&)=delete;
 
     String const&  script              () const;
 

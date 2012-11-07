@@ -19,7 +19,15 @@ class OperationVertex:
 
 public:
 
-    virtual        ~OperationVertex    ();
+    virtual        ~OperationVertex    ()=default;
+
+                   OperationVertex     (OperationVertex&&)=delete;
+
+    OperationVertex& operator=         (OperationVertex&&)=delete;
+
+                   OperationVertex     (OperationVertex const&)=delete;
+
+    OperationVertex& operator=         (OperationVertex const&)=delete;
 
     ExpressionVertices const& expressions() const;
 

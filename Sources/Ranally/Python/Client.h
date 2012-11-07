@@ -23,6 +23,10 @@ class Client
 
 public:
 
+                   Client              (Client&&)=delete;
+
+    Client&        operator=           (Client&&)=delete;
+
                    Client              (Client const&)=delete;
 
     Client&        operator=           (Client const&)=delete;

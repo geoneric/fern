@@ -55,14 +55,6 @@ UnicodeString decodeFromUTF8(
 
 namespace ranally {
 
-String::String()
-
-    : UnicodeString()
-
-{
-}
-
-
 String::String(
     char const* string)
 
@@ -95,11 +87,6 @@ String::String(
 
     : UnicodeString(decodeFromUTF8(format.str()))
 
-{
-}
-
-
-String::~String()
 {
 }
 

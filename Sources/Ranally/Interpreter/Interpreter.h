@@ -21,11 +21,15 @@ public:
 
                    Interpreter         ();
 
+                   ~Interpreter        ()=default;
+
+                   Interpreter         (Interpreter&&)=delete;
+
+    Interpreter&   operator=           (Interpreter&&)=delete;
+
                    Interpreter         (Interpreter const&)=delete;
 
     Interpreter&   operator=           (Interpreter const&)=delete;
-
-                   ~Interpreter        ();
 
     ScriptVertexPtr parseString        (String const& string);
 

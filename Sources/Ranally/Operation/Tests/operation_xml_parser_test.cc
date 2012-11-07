@@ -1,29 +1,13 @@
-#include "OperationXmlParserTest.h"
-#include <boost/test/test_tools.hpp>
-#include <boost/test/unit_test_suite.hpp>
+#define BOOST_TEST_MODULE ranally operation
+#include <boost/test/included/unit_test.hpp>
 #include "Ranally/Operation/Parameter.h"
 #include "Ranally/Operation/Result.h"
 #include "Ranally/Operation/OperationXmlParser.h"
 
 
-boost::unit_test::test_suite* OperationXmlParserTest::suite()
-{
-    boost::unit_test::test_suite* suite = BOOST_TEST_SUITE(__FILE__);
-    boost::shared_ptr<OperationXmlParserTest> instance(
-        new OperationXmlParserTest());
-    suite->add(BOOST_CLASS_TEST_CASE(
-        &OperationXmlParserTest::testParse, instance));
+BOOST_AUTO_TEST_SUITE(operation_xml_parser)
 
-    return suite;
-}
-
-
-OperationXmlParserTest::OperationXmlParserTest()
-{
-}
-
-
-void OperationXmlParserTest::testParse()
+BOOST_AUTO_TEST_CASE(parse)
 {
     ranally::OperationXmlParser xmlParser;
     ranally::String xml;
@@ -90,3 +74,5 @@ void OperationXmlParserTest::testParse()
         BOOST_CHECK(results.empty());
     }
 }
+
+BOOST_AUTO_TEST_SUITE_END()

@@ -4,19 +4,6 @@
 
 namespace ranally {
 
-DotVisitor::DotVisitor()
-
-    : Visitor()
-
-{
-}
-
-
-DotVisitor::~DotVisitor()
-{
-}
-
-
 String const& DotVisitor::script() const
 {
     return _script;

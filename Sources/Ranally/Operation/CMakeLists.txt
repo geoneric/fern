@@ -3,15 +3,13 @@ INCLUDE(UseExpat)
 INCLUDE(UseIcu)
 INCLUDE(UseXsd)
 
-SET(_LINK_LIBRARIES
-    RanallyUtil
-    ${EXPAT_LIBRARIES}
-    ${ICU_LIBRARIES}
-)
 INCLUDE_DIRECTORIES(
     ${CMAKE_CURRENT_SOURCE_DIR}/../..
     ${CMAKE_CURRENT_BINARY_DIR}
 )
+
+ADD_SUBDIRECTORY(Tests)
+
 CONFIGURE_FILE(
     ${CMAKE_CURRENT_SOURCE_DIR}/Operation.map.in
     ${CMAKE_CURRENT_BINARY_DIR}/Operation.map
@@ -65,30 +63,12 @@ SET(SOURCES
 ADD_LIBRARY(RanallyOperation
     ${SOURCES}
 )
+TARGET_LINK_LIBRARIES(RanallyOperation
+    RanallyUtil
+    ${EXPAT_LIBRARIES}
+    ${ICU_LIBRARIES}
+)
 ADD_CUSTOM_TARGET(Operation-xml.h
     DEPENDS
         ${CMAKE_CURRENT_BINARY_DIR}/Operation-xml.h
 )
-SET(TEST_SOURCES
-    PrintTest.cc
-    Test.cc
-    OperationXmlParserTest.cc
-)
-ADD_EXECUTABLE(testRanallyOperation
-    ${TEST_SOURCES}
-)
-TARGET_LINK_LIBRARIES(testRanallyOperation
-    RanallyOperation
-    ${_LINK_LIBRARIES}
-)
-# ADD_CUSTOM_COMMAND(TARGET testRanallyOperation POST_BUILD
-#     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-#     COMMAND testRanallyOperation
-# )
-ADD_CUSTOM_TARGET(runTestRanallyOperation
-    testRanallyOperation
-    DEPENDS testRanallyOperation
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    COMMENT "Running RanallyOperation unit tests" VERBATIM
-)
-ADD_DEPENDENCIES(tests runTestRanallyOperation)

@@ -1,0 +1,16 @@
+SET(TEST_NAMES
+    operation_xml_parser_test
+    print_test
+)
+
+MACRO(ADD_UNIT_TEST NAME)
+    ADD_EXECUTABLE(${NAME} ${NAME})
+    TARGET_LINK_LIBRARIES(${NAME}
+        RanallyOperation
+    )
+    ADD_TEST(NAME ${NAME} COMMAND ${NAME})
+ENDMACRO()
+
+FOREACH(NAME ${TEST_NAMES})
+    ADD_UNIT_TEST(${NAME})
+ENDFOREACH()

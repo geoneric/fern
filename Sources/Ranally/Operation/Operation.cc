@@ -48,11 +48,6 @@ Operation& Operation::operator=(
 }
 
 
-Operation::~Operation()
-{
-}
-
-
 String const& Operation::name() const
 {
     return _name;

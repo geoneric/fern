@@ -27,11 +27,15 @@ public:
                                   std::vector<Parameter> const& parameters,
                                   std::vector<Result> const& results);
 
+                   ~Operation          ()=default;
+
+                   Operation           (Operation&& other);
+
+    Operation&     operator=           (Operation&& other);
+
                    Operation           (Operation const& other);
 
     Operation&     operator=           (Operation const& other);
-
-                   ~Operation          ();
 
     String const&  name                () const;
 

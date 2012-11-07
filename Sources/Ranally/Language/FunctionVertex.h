@@ -23,7 +23,15 @@ public:
                    FunctionVertex      (String const& name,
                                         ExpressionVertices const& expressions);
 
-                   ~FunctionVertex     ();
+                   ~FunctionVertex     ()=default;
+
+                   FunctionVertex      (FunctionVertex&&)=delete;
+
+    FunctionVertex& operator=          (FunctionVertex&&)=delete;
+
+                   FunctionVertex      (FunctionVertex const&)=delete;
+
+    FunctionVertex& operator=          (FunctionVertex const&)=delete;
 
 private:
 

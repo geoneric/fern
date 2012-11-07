@@ -18,9 +18,17 @@ class ExecuteVisitor:
 
 public:
 
-                   ExecuteVisitor      ();
+                   ExecuteVisitor      ()=default;
 
-                   ~ExecuteVisitor     ();
+                   ~ExecuteVisitor     ()=default;
+
+                   ExecuteVisitor      (ExecuteVisitor&&)=delete;
+
+    ExecuteVisitor& operator=          (ExecuteVisitor&&)=delete;
+
+                   ExecuteVisitor      (ExecuteVisitor const&)=delete;
+
+    ExecuteVisitor& operator=          (ExecuteVisitor const&)=delete;
 
 private:
 

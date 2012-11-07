@@ -15,13 +15,3 @@ SET(SOURCES
 ADD_LIBRARY(RanallyPython
     ${SOURCES}
 )
-# SET(TEST_SOURCES
-#     Test.cc
-# )
-# ADD_EXECUTABLE(testRanallyPython
-#     ${TEST_SOURCES}
-# )
-# ADD_CUSTOM_COMMAND(TARGET testRanallyPython POST_BUILD
-#     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-#     COMMAND testRanallyPython
-# )

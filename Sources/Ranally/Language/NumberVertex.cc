@@ -28,13 +28,6 @@ NumberVertex<T>::NumberVertex(
 
 
 template<typename T>
-NumberVertex<T>::~NumberVertex()
-{
-}
-
-
-
-template<typename T>
 T NumberVertex<T>::value() const
 {
     return _value;

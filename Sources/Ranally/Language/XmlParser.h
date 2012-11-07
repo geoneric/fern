@@ -23,9 +23,17 @@ class XmlParser
 
 public:
 
-                   XmlParser           ();
+                   XmlParser           ()=default;
 
-                   ~XmlParser          ();
+                   ~XmlParser          ()=default;
+
+                   XmlParser           (XmlParser&&)=delete;
+
+    XmlParser&     operator=           (XmlParser&&)=delete;
+
+                   XmlParser           (XmlParser const&)=delete;
+
+    XmlParser&     operator=           (XmlParser const&)=delete;
 
     std::shared_ptr<ScriptVertex> parse(String const& xml) const;
 

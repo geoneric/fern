@@ -28,7 +28,15 @@ public:
 
                    OptimizeVisitor     ();
 
-                   ~OptimizeVisitor    ();
+                   ~OptimizeVisitor    ()=default;
+
+                   OptimizeVisitor     (OptimizeVisitor&&)=delete;
+
+    OptimizeVisitor& operator=         (OptimizeVisitor&&)=delete;
+
+                   OptimizeVisitor     (OptimizeVisitor const&)=delete;
+
+    OptimizeVisitor& operator=         (OptimizeVisitor const&)=delete;
 
 private:
 

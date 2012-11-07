@@ -27,7 +27,15 @@ public:
 
                    AstDotVisitor       (int modes=0);
 
-                   ~AstDotVisitor      ();
+                   ~AstDotVisitor      ()=default;
+
+                   AstDotVisitor       (AstDotVisitor&&)=delete;
+
+    AstDotVisitor& operator=           (AstDotVisitor&&)=delete;
+
+                   AstDotVisitor       (AstDotVisitor const&)=delete;
+
+    AstDotVisitor& operator=           (AstDotVisitor const&)=delete;
 
 private:
 

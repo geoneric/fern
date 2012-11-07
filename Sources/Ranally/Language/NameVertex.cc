@@ -25,11 +25,6 @@ NameVertex::NameVertex(
 }
 
 
-NameVertex::~NameVertex()
-{
-}
-
-
 // void NameVertex::setDefinition(
 //   NameVertex* definition)
 // {

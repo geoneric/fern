@@ -17,11 +17,6 @@ WhileVertex::WhileVertex(
 }
 
 
-WhileVertex::~WhileVertex()
-{
-}
-
-
 std::shared_ptr<ExpressionVertex> const& WhileVertex::condition() const
 {
     return _condition;

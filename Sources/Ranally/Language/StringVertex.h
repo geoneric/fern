@@ -24,7 +24,15 @@ public:
                                         int colId,
                                         String const& value);
 
-                   ~StringVertex       ();
+                   ~StringVertex       ()=default;
+
+                   StringVertex        (StringVertex&&)=delete;
+
+    StringVertex&  operator=           (StringVertex&&)=delete;
+
+                   StringVertex        (StringVertex const&)=delete;
+
+    StringVertex&  operator=           (StringVertex const&)=delete;
 
     String const&  value               () const;
 

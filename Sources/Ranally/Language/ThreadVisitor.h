@@ -21,7 +21,15 @@ public:
 
                    ThreadVisitor       ();
 
-                   ~ThreadVisitor      ();
+                   ~ThreadVisitor      ()=default;
+
+                   ThreadVisitor       (ThreadVisitor&&)=delete;
+
+    ThreadVisitor& operator=           (ThreadVisitor&&)=delete;
+
+                   ThreadVisitor       (ThreadVisitor const&)=delete;
+
+    ThreadVisitor& operator=           (ThreadVisitor const&)=delete;
 
 private:
 

@@ -24,11 +24,17 @@ public:
 
                    OwnedReference      (PyObject* object);
 
-                   OwnedReference      (OwnedReference const& other);
+    OwnedReference& operator=          (PyObject* object);
+
+                   OwnedReference      (OwnedReference&&)=delete;
+
+    OwnedReference& operator=          (OwnedReference&&)=delete;
+
+                   OwnedReference      (OwnedReference const&)=delete;
+
+    OwnedReference& operator=          (OwnedReference const&)=delete;
 
                    ~OwnedReference     ();
-
-    OwnedReference& operator=          (PyObject* object);
 
                    operator bool       () const;
 

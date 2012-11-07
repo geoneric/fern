@@ -25,7 +25,15 @@ public:
 
   //                  ScriptVertex        (ScriptVertex const& other);
 
-                   ~ScriptVertex       ();
+                   ~ScriptVertex       ()=default;
+
+                   ScriptVertex        (ScriptVertex&&)=delete;
+
+    ScriptVertex&  operator=           (ScriptVertex&&)=delete;
+
+                   ScriptVertex        (ScriptVertex const&)=delete;
+
+    ScriptVertex&  operator=           (ScriptVertex const&)=delete;
 
     String const&  sourceName          () const;
 

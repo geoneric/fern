@@ -33,11 +33,6 @@ ScriptVertex::ScriptVertex(
 // }
 
 
-ScriptVertex::~ScriptVertex()
-{
-}
-
-
 String const& ScriptVertex::sourceName() const
 {
     return _sourceName;

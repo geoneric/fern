@@ -10,9 +10,4 @@ ValueTypes::ValueTypes()
 {
 }
 
-
-ValueTypes::~ValueTypes()
-{
-}
-
 } // namespace ranally

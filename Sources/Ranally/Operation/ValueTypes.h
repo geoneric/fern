@@ -21,7 +21,15 @@ public:
 
                    ValueTypes          ();
 
-                   ~ValueTypes         ();
+                   ~ValueTypes         ()=default;
+
+                   ValueTypes          (ValueTypes&&)=delete;
+
+    ValueTypes&    operator=           (ValueTypes&&)=delete;
+
+                   ValueTypes          (ValueTypes const&)=delete;
+
+    ValueTypes&    operator=           (ValueTypes const&)=delete;
 
 private:
 

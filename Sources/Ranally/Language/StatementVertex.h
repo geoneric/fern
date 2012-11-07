@@ -20,11 +20,19 @@ public:
 
     LOKI_DEFINE_VISITABLE()
 
-    virtual        ~StatementVertex    ();
+    virtual        ~StatementVertex    ()=default;
+
+                   StatementVertex     (StatementVertex&&)=delete;
+
+    StatementVertex& operator=         (StatementVertex&&)=delete;
+
+                   StatementVertex     (StatementVertex const&)=delete;
+
+    StatementVertex& operator=         (StatementVertex const&)=delete;
 
 protected:
 
-                   StatementVertex     ();
+                   StatementVertex     ()=default;
 
                    StatementVertex     (int lineNr,
                                         int colId);

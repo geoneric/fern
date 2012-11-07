@@ -9,13 +9,9 @@ namespace ranally {
 
 OptimizeVisitor::OptimizeVisitor()
 
-    : Visitor()
+    : Visitor(),
+      _mode(Defining)
 
-{
-}
-
-
-OptimizeVisitor::~OptimizeVisitor()
 {
 }
 

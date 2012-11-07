@@ -32,7 +32,15 @@ public:
 
                    IdentifyVisitor     ();
 
-                   ~IdentifyVisitor    ();
+                   ~IdentifyVisitor    ()=default;
+
+                   IdentifyVisitor     (IdentifyVisitor&&)=delete;
+
+    IdentifyVisitor& operator=         (IdentifyVisitor&&)=delete;
+
+                   IdentifyVisitor     (IdentifyVisitor const&)=delete;
+
+    IdentifyVisitor& operator=         (IdentifyVisitor const&)=delete;
 
     SymbolTable const& symbolTable     () const;
 

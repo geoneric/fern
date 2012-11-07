@@ -21,7 +21,15 @@ public:
 
                    DataTypes           ();
 
-                   ~DataTypes          ();
+                   ~DataTypes          ()=default;
+
+                   DataTypes           (DataTypes&&)=delete;
+
+    DataTypes&     operator=           (DataTypes&&)=delete;
+
+                   DataTypes           (DataTypes const&)=delete;
+
+    DataTypes&     operator=           (DataTypes const&)=delete;
 
 private:
 

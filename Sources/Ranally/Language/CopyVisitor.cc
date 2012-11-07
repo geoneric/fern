@@ -4,19 +4,6 @@
 
 namespace ranally {
 
-CopyVisitor::CopyVisitor()
-
-    : Visitor()
-
-{
-}
-
-
-CopyVisitor::~CopyVisitor()
-{
-}
-
-
 std::shared_ptr<ScriptVertex> const& CopyVisitor::scriptVertex() const
 {
     assert(_scriptVertex);

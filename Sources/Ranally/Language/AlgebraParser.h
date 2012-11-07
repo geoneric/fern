@@ -25,7 +25,15 @@ public:
 
                    AlgebraParser       ();
 
-                   ~AlgebraParser      ();
+                   ~AlgebraParser      ()=default;
+
+                   AlgebraParser       (AlgebraParser&&)=delete;
+
+    AlgebraParser& operator=           (AlgebraParser&&)=delete;
+
+                   AlgebraParser       (AlgebraParser const&)=delete;
+
+    AlgebraParser& operator=           (AlgebraParser const&)=delete;
 
     String         parseString         (String const& string);
 

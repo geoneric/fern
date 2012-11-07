@@ -26,7 +26,15 @@ public:
                         StatementVertices const& trueStatements,
                         StatementVertices const& falseStatements);
 
-                   ~WhileVertex        ();
+                   ~WhileVertex        ()=default;
+
+                   WhileVertex         (WhileVertex&&)=delete;
+
+    WhileVertex&   operator=           (WhileVertex&&)=delete;
+
+                   WhileVertex         (WhileVertex const&)=delete;
+
+    WhileVertex&   operator=           (WhileVertex const&)=delete;
 
     std::shared_ptr<ExpressionVertex> const& condition() const;
 

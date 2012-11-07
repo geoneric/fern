@@ -23,11 +23,21 @@ public:
 
                    BorrowedReference   (PyObject* object);
 
+    BorrowedReference& operator=       (PyObject* object);
+
+                   BorrowedReference   (BorrowedReference&&)=delete;
+
+    BorrowedReference& operator=       (BorrowedReference&&)=delete;
+
                    BorrowedReference   (BorrowedReference const& other);
 
-                   ~BorrowedReference  ();
+    BorrowedReference& operator=       (BorrowedReference const&)=delete;
 
-    BorrowedReference& operator=       (PyObject* object);
+    //! Destruct instance.
+    /*!
+       The reference count of the layered object is not changed.
+    */
+                   ~BorrowedReference  ()=default;
 
                    operator bool       () const;
 

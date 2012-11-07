@@ -20,11 +20,6 @@ Interpreter::Interpreter()
 }
 
 
-Interpreter::~Interpreter()
-{
-}
-
-
 ScriptVertexPtr Interpreter::parseString(
     String const& string)
 {

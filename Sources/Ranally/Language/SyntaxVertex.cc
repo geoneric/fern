@@ -49,12 +49,6 @@ SyntaxVertex::SyntaxVertex(
 
 
 
-SyntaxVertex::~SyntaxVertex()
-{
-    // The vertices from the control flow graph are for use only.
-}
-
-
 void SyntaxVertex::setPosition(
     int lineNr,
     int colId)

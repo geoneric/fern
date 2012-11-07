@@ -7,19 +7,6 @@
 
 namespace ranally {
 
-ValidateVisitor::ValidateVisitor()
-
-    : Visitor()
-
-{
-}
-
-
-ValidateVisitor::~ValidateVisitor()
-{
-}
-
-
 void ValidateVisitor::Visit(
     NameVertex& vertex)
 {

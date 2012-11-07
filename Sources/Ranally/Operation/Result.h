@@ -24,11 +24,15 @@ public:
                                         DataType const& dataType,
                                         ValueType const& valueType);
 
+                   ~Result             ()=default;
+
+                   Result              (Result&& other);
+
+    Result&        operator=           (Result&& other);
+
                    Result              (Result const& other);
 
     Result&        operator=           (Result const& other);
-
-                   ~Result             ();
 
     String const&  name                () const;
 

@@ -47,11 +47,6 @@ Result& Result::operator=(
 }
 
 
-Result::~Result()
-{
-}
-
-
 String const& Result::name() const
 {
     return _name;

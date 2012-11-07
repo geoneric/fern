@@ -4,19 +4,6 @@
 
 namespace ranally {
 
-ExecuteVisitor::ExecuteVisitor()
-
-    : Visitor()
-
-{
-}
-
-
-ExecuteVisitor::~ExecuteVisitor()
-{
-}
-
-
 void ExecuteVisitor::Visit(
     OperationVertex& vertex)
 {

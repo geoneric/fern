@@ -23,7 +23,15 @@ public:
                    OperatorVertex      (String const& name,
                                         ExpressionVertices const& expressions);
 
-                   ~OperatorVertex     ();
+                   ~OperatorVertex     ()=default;
+
+                   OperatorVertex      (OperatorVertex&&)=delete;
+
+    OperatorVertex& operator=          (OperatorVertex&&)=delete;
+
+                   OperatorVertex      (OperatorVertex const&)=delete;
+
+    OperatorVertex& operator=          (OperatorVertex const&)=delete;
 
     String const&  symbol              () const;
 

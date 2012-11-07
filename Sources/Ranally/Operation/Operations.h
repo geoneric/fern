@@ -21,14 +21,18 @@ class Operations
 
 public:
 
-                   Operations          (Operations const&)=delete;
-
-    Operations&    operator=           (Operations const&)=delete;
-
     template<class Range>
                    Operations          (Range const& operations);
 
-                   ~Operations         ();
+                   ~Operations         ()=default;
+
+                   Operations          (Operations&&)=delete;
+
+    Operations&    operator=           (Operations&&)=delete;
+
+                   Operations          (Operations const&)=delete;
+
+    Operations&    operator=           (Operations const&)=delete;
 
     bool           empty               () const;
 

@@ -33,7 +33,15 @@ public:
 
                    AnnotateVisitor     (OperationsPtr const& operations);
 
-                   ~AnnotateVisitor    ();
+                   ~AnnotateVisitor    ()=default;
+
+                   AnnotateVisitor     (AnnotateVisitor&&)=delete;
+
+    AnnotateVisitor& operator=         (AnnotateVisitor&&)=delete;
+
+                   AnnotateVisitor     (AnnotateVisitor const&)=delete;
+
+    AnnotateVisitor& operator=         (AnnotateVisitor const&)=delete;
 
 private:
 

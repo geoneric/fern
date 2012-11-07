@@ -26,7 +26,15 @@ public:
                                         int colId,
                                         String const& name);
 
-                   ~NameVertex         ();
+                   ~NameVertex         ()=default;
+
+                   NameVertex          (NameVertex&&)=delete;
+
+    NameVertex&    operator=           (NameVertex&&)=delete;
+
+                   NameVertex          (NameVertex const&)=delete;
+
+    NameVertex&    operator=           (NameVertex const&)=delete;
 
     void           addDefinition       (NameVertex* vertex);
 

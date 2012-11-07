@@ -13,11 +13,6 @@ ThreadVisitor::ThreadVisitor()
 }
 
 
-ThreadVisitor::~ThreadVisitor()
-{
-}
-
-
 void ThreadVisitor::Visit(
     AssignmentVertex& vertex)
 {

@@ -31,7 +31,15 @@ public:
                                         int colId,
                                         T value);
 
-                   ~NumberVertex       ();
+                   ~NumberVertex       ()=default;
+
+                   NumberVertex        (NumberVertex&&)=delete;
+
+    NumberVertex&  operator=           (NumberVertex&&)=delete;
+
+                   NumberVertex        (NumberVertex const&)=delete;
+
+    NumberVertex&  operator=           (NumberVertex const&)=delete;
 
     T              value               () const;
 
