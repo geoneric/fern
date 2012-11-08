@@ -21,7 +21,15 @@ public:
                    ConvertCommand      (int argc,
                                         char** argv);
 
-                   ~ConvertCommand     ();
+                   ~ConvertCommand     ()=default;
+
+                   ConvertCommand      (ConvertCommand&&)=delete;
+
+    ConvertCommand& operator=          (ConvertCommand&&)=delete;
+
+                   ConvertCommand      (ConvertCommand const&)=delete;
+
+    ConvertCommand& operator=          (ConvertCommand const&)=delete;
 
     int            execute             ();
 

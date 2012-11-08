@@ -32,11 +32,6 @@ DescribeCommand::DescribeCommand(
 }
 
 
-DescribeCommand::~DescribeCommand()
-{
-}
-
-
 void DescribeCommand::describe(
     String const& xml)
 {

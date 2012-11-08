@@ -30,11 +30,6 @@ ExecuteCommand::ExecuteCommand(
 }
 
 
-ExecuteCommand::~ExecuteCommand()
-{
-}
-
-
 void ExecuteCommand::execute(
     String const& xml)
 {

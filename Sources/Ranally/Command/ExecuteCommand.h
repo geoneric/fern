@@ -21,7 +21,15 @@ public:
                    ExecuteCommand      (int argc,
                                         char** argv);
 
-                   ~ExecuteCommand     ();
+                   ~ExecuteCommand     ()=default;
+
+                   ExecuteCommand      (ExecuteCommand&&)=delete;
+
+    ExecuteCommand& operator=          (ExecuteCommand&&)=delete;
+
+                   ExecuteCommand      (ExecuteCommand const&)=delete;
+
+    ExecuteCommand& operator=          (ExecuteCommand const&)=delete;
 
     int            execute             ();
 

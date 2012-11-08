@@ -118,11 +118,6 @@ ConvertCommand::ConvertCommand(
 }
 
 
-ConvertCommand::~ConvertCommand()
-{
-}
-
-
 int ConvertCommand::convertToRanally(
     int /* argc */,
     char** /* argv */)

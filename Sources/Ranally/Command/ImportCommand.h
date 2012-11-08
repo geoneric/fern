@@ -21,7 +21,15 @@ public:
                    ImportCommand       (int argc,
                                         char** argv);
 
-                   ~ImportCommand      ();
+                   ~ImportCommand      ()=default;
+
+                   ImportCommand       (ImportCommand&&)=delete;
+
+    ImportCommand& operator=           (ImportCommand&&)=delete;
+
+                   ImportCommand       (ImportCommand const&)=delete;
+
+    ImportCommand& operator=           (ImportCommand const&)=delete;
 
     int            execute             ();
 

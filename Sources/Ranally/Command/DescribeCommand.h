@@ -21,7 +21,15 @@ public:
                    DescribeCommand     (int argc,
                                         char** argv);
 
-                   ~DescribeCommand    ();
+                   DescribeCommand     (DescribeCommand&&)=delete;
+
+    DescribeCommand& operator=         (DescribeCommand&&)=delete;
+
+                   DescribeCommand     (DescribeCommand const&)=delete;
+
+    DescribeCommand& operator=         (DescribeCommand const&)=delete;
+
+                   ~DescribeCommand    ()=default;
 
     int            execute             ();
 

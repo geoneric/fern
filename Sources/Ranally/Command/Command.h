@@ -17,11 +17,15 @@ class Command
 
 public:
 
+                   Command             (Command&&)=delete;
+
+    Command&       operator=           (Command&&)=delete;
+
                    Command             (Command const&)=delete;
 
     Command&       operator=           (Command const&)=delete;
 
-    virtual        ~Command            ();
+    virtual        ~Command            ()=default;
 
     virtual int    execute             ()=0;
 

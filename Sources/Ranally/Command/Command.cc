@@ -18,11 +18,6 @@ Command::Command(
 }
 
 
-Command::~Command()
-{
-}
-
-
 int Command::argc() const
 {
     return _argc;

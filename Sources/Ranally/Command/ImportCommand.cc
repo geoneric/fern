@@ -32,11 +32,6 @@ ImportCommand::ImportCommand(
 }
 
 
-ImportCommand::~ImportCommand()
-{
-}
-
-
 int ImportCommand::execute()
 {
     int status = EXIT_FAILURE;
