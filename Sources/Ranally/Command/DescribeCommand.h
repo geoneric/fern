@@ -29,7 +29,7 @@ public:
 
     DescribeCommand& operator=         (DescribeCommand const&)=delete;
 
-                   ~DescribeCommand    ()=default;
+                   ~DescribeCommand    () noexcept(true) =default;
 
     int            execute             ();
 

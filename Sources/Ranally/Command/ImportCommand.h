@@ -21,7 +21,7 @@ public:
                    ImportCommand       (int argc,
                                         char** argv);
 
-                   ~ImportCommand      ()=default;
+                   ~ImportCommand      () noexcept(true) =default;
 
                    ImportCommand       (ImportCommand&&)=delete;
 
