@@ -30,7 +30,7 @@ public:
 
     String&        operator=           (String const&)=default;
 
-    virtual        ~String             ()=default;
+                   ~String             ()=default;
 
     std::string    encodeInUTF8        () const;
 
