@@ -659,11 +659,47 @@ ranally::String pythonAstToXml(
     return xml;
 }
 
+
+//! A small class to make creation and deletion of PyArena's easier.
+/*!
+    Whenever the SmartArena goes out of scope, the layered PyArena pointer
+    is freed.
+*/
+class SmartArena
+{
+
+public:
+
+    SmartArena()
+        : _arena(PyArena_New())
+    {
+        assert(_arena);
+    }
+
+    ~SmartArena()
+    {
+        PyArena_Free(_arena);
+    }
+
+    PyArena* arena()
+    {
+        return _arena;
+    }
+
+private:
+
+    PyArena* _arena;
+
+};
+
 } // Anonymous namespace
 
 
 namespace ranally {
 
+//! Construct an AlgebraParser instance.
+/*!
+*/
 AlgebraParser::AlgebraParser()
 
     : python::Client()
@@ -673,58 +709,43 @@ AlgebraParser::AlgebraParser()
 }
 
 
-// String AlgebraParser::parse(
-//   String const& string,
-//   String const& fileName)
-// {
-//   // struct _node* PyParser_SimpleParseStringFlagsFilename(const char *str, const char *filename, int start, int flags)
-// 
-//   // struct _node* node = PyParser_SimpleParseStringFlagsFilename("string", "filename", 0, 0);
-// 
-//   return String(string + fileName);
-// }
-
-
 //! Parse the script in \a string and return an XML document.
 /*!
-  \tparam    .
-  \param     .
-  \return    .
+  \param     string String containing the script to parse.
+  \return    String containing the script as an XML.
   \exception .
   \warning   .
   \sa        .
-  \todo      The Python memory arena is not freed.
 */
 String AlgebraParser::parseString(
     String const& string)
 {
-    PyArena* arena = PyArena_New();
-    assert(arena);
-
-    String result("<?xml version=\"1.0\"?>");
-
+    SmartArena smart_arena;
     mod_ty ast = PyParser_ASTFromString(
-        string.encodeInUTF8().c_str(), "", Py_file_input, 0, arena);
+        string.encodeInUTF8().c_str(), "", Py_file_input, 0,
+        smart_arena.arena());
 
     if(!ast) {
         ranally::python::throwException();
     }
 
-    result += pythonAstToXml(ast, "&lt;string&gt;");
-
-    PyArena_Free(arena);
-    arena = 0;
-
-    return result;
+    return String("<?xml version=\"1.0\"?>") + pythonAstToXml(ast,
+        "&lt;string&gt;");
 }
 
 
+//! Parse the script in file \a fileName and return an XML document.
+/*!
+  \param     fileName Name of file containing the script to parse.
+  \return    String containing the script as an XML.
+  \exception .
+  \warning   .
+  \sa        .
+*/
 String AlgebraParser::parseFile(
     String const& fileName)
 {
-    PyArena* arena = PyArena_New();
-    assert(arena);
-
+    SmartArena smart_arena;
     std::string fileNameInUtf8(fileName.encodeInUTF8());
     FILE* filePointer = fopen(fileNameInUtf8.c_str(), "r");
 
@@ -733,21 +754,14 @@ String AlgebraParser::parseFile(
             ("cannot open file " + fileNameInUtf8).c_str());
     }
 
-    String result("<?xml version=\"1.0\"?>");
-
     mod_ty ast = PyParser_ASTFromFile(filePointer, fileNameInUtf8.c_str(),
-        Py_file_input, 0, 0, 0, 0, arena);
+        Py_file_input, 0, 0, 0, 0, smart_arena.arena());
 
     if(!ast) {
         ranally::python::throwException();
     }
 
-    result += pythonAstToXml(ast, fileName);
-
-    PyArena_Free(arena);
-    arena = 0;
-
-    return result;
+    return String("<?xml version=\"1.0\"?>") + pythonAstToXml(ast, fileName);
 }
 
 } // namespace ranally

@@ -14,6 +14,9 @@ namespace ranally {
   The XML returned conforms to the Ranally.xsd schema.
 
   \sa        XmlParser
+  \todo      The arena used by the parse functions could be a member variable.
+             Currently the arena is created whenever a parse function is
+             called. What makes more sense?
 */
 class AlgebraParser:
     public python::Client
@@ -40,9 +43,6 @@ public:
     String         parseFile           (String const& fileName);
 
 private:
-
-  //   String         parse               (String const& string,
-  //                                       String const& fileName);
 
 };
 
