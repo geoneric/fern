@@ -833,8 +833,6 @@ namespace ranally {
   \return    Root of syntax tree.
   \exception std::exception In case of a System category error.
   \exception xml_schema::parsing In case of Xml category error.
-  \warning   .
-  \sa        .
 */
 std::shared_ptr<ScriptVertex> XmlParser::parse(
     std::istream& stream) const

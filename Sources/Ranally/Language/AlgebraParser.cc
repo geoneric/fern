@@ -681,6 +681,14 @@ public:
         PyArena_Free(_arena);
     }
 
+    SmartArena(SmartArena&&)=delete;
+
+    SmartArena& operator=(SmartArena&&)=delete;
+
+    SmartArena(SmartArena&)=delete;
+
+    SmartArena& operator=(SmartArena&)=delete;
+
     PyArena* arena()
     {
         return _arena;

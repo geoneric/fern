@@ -7,12 +7,12 @@ namespace ranally {
 
 class ScriptVertex;
 
-//! An XmlParser parses an Xml and converts it to a syntax tree.
+//! An XmlParser parses an XML document and converts it to a syntax tree.
 /*!
-  Apart from Xml validation checks, no semantic checks are performed. The
-  syntax tree has the same semantic content as the Xml.
+  Apart from XML validation checks, no semantic checks are performed. The
+  syntax tree has the same semantic content as the XML.
 
-  The parser assumes the Xml passed in conforms to the Ranally.xsd schema.
+  The parser assumes the XML passed in conforms to the Ranally.xsd schema.
 
   \sa        AlgebraParser
 */
@@ -35,9 +35,9 @@ public:
 
     XmlParser&     operator=           (XmlParser const&)=delete;
 
-    std::shared_ptr<ScriptVertex> parse(String const& xml) const;
-
     std::shared_ptr<ScriptVertex> parse(std::istream& stream) const;
+
+    std::shared_ptr<ScriptVertex> parse(String const& xml) const;
 
 };
 
