@@ -1,6 +1,6 @@
 #include "Ranally/IO/Util.h"
 #include <memory>
-#include "Ranally/IO/HDF5DataSetDriver.h"
+#include "Ranally/IO/HDF5DatasetDriver.h"
 
 
 namespace ranally {
@@ -19,11 +19,11 @@ enum OpenMode {
 };
 
 
-std::shared_ptr<DataSet> openDataSet(
+std::shared_ptr<Dataset> openDataset(
     String const& /* dataSetName */,
     OpenMode /* openMode */)
 {
-    std::shared_ptr<DataSet> dataset;
+    std::shared_ptr<Dataset> dataset;
 
     assert(dataset);
     return dataset;
@@ -33,14 +33,14 @@ std::shared_ptr<DataSet> openDataSet(
 
 
 void import(
-    String const& inputDataSetName,
-    String const& outputDataSetName)
+    String const& inputDatasetName,
+    String const& outputDatasetName)
 {
-    std::shared_ptr<DataSet> inputDataSet = openDataSet(inputDataSetName, Read);
-    HDF5DataSetDriver hdf5Driver;
-    std::shared_ptr<DataSet> outputDataSet(hdf5Driver.create(
-        outputDataSetName));
-    outputDataSet->copy(*inputDataSet);
+    std::shared_ptr<Dataset> inputDataset = openDataset(inputDatasetName, Read);
+    HDF5DatasetDriver hdf5Driver;
+    std::shared_ptr<Dataset> outputDataset(hdf5Driver.create(
+        outputDatasetName));
+    outputDataset->copy(*inputDataset);
 }
 
 } // namespace ranally

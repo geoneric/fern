@@ -1,9 +1,9 @@
-#include "Ranally/IO/DataSet.h"
+#include "Ranally/IO/Dataset.h"
 
 
 namespace ranally {
 
-DataSet::DataSet(
+Dataset::Dataset(
     String const& name)
 
     : _name(name)
@@ -12,12 +12,12 @@ DataSet::DataSet(
 }
 
 
-DataSet::~DataSet()
+Dataset::~Dataset()
 {
 }
 
 
-String const& DataSet::name() const
+String const& Dataset::name() const
 {
     return _name;
 }

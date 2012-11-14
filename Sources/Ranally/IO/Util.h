@@ -4,7 +4,7 @@
 
 namespace ranally {
 
-void               import              (String const& inputDataSetName,
-                                        String const& outputDataSetName);
+void               import              (String const& inputDatasetName,
+                                        String const& outputDatasetName);
 
 } // namespace ranally

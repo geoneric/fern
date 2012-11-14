@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "Ranally/IO/DataSet.h"
+#include "Ranally/IO/Dataset.h"
 
 
 namespace H5 {
@@ -13,20 +13,20 @@ namespace ranally {
 /*!
   HDF5 data sets represent data sets stored using the HDF5 library.
 
-  \sa        HDF5DataSetDriver
+  \sa        HDF5DatasetDriver
 */
-class HDF5DataSet:
-    public DataSet
+class HDF5Dataset:
+    public Dataset
 {
 
-    friend class HDF5DataSetTest;
+    friend class HDF5DatasetTest;
 
 public:
 
-                   HDF5DataSet         (String const& name,
+                   HDF5Dataset         (String const& name,
                                         H5::H5File* file);
 
-                   ~HDF5DataSet        ();
+                   ~HDF5Dataset        ();
 
     size_t         nrFeatures          () const;
 
@@ -36,7 +36,7 @@ public:
 
     void           addFeature          (Feature const& feature);
 
-    void           copy                (DataSet const& dataSet);
+    void           copy                (Dataset const& dataSet);
 
     bool           exists              (String const& name) const;
 

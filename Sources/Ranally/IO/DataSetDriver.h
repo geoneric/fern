@@ -4,7 +4,7 @@
 
 namespace ranally {
 
-class DataSet;
+class Dataset;
 
 //! Abstract base class for data set drivers.
 /*!
@@ -12,37 +12,37 @@ class DataSet;
 
   \sa        .
 */
-class DataSetDriver
+class DatasetDriver
 {
 
-    friend class DataSetDriverTest;
+    friend class DatasetDriverTest;
 
 public:
 
-                   DataSetDriver       (DataSetDriver const&)=delete;
+                   DatasetDriver       (DatasetDriver const&)=delete;
 
-    DataSetDriver& operator=           (DataSetDriver const&)=delete;
+    DatasetDriver& operator=           (DatasetDriver const&)=delete;
 
-    virtual        ~DataSetDriver      ();
+    virtual        ~DatasetDriver      ();
 
     virtual bool   exists              (String const& name) const=0;
 
     //! Create data set \a name.
     /*!
       \param     name Name of data set to create.
-      \return    Pointer to new DataSet instance.
+      \return    Pointer to new Dataset instance.
       \exception .
       \warning   Data set \a name will be truncated if it already exists.
     */
-    virtual DataSet* create            (String const& name) const=0;
+    virtual Dataset* create            (String const& name) const=0;
 
     virtual void   remove              (String const& name) const=0;
 
-    virtual DataSet* open              (String const& name) const=0;
+    virtual Dataset* open              (String const& name) const=0;
 
 protected:
 
-                   DataSetDriver       ();
+                   DatasetDriver       ();
 
 private:
 

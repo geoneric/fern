@@ -1,4 +1,4 @@
-#include "Ranally/IO/HDF5DataSet.h"
+#include "Ranally/IO/HDF5Dataset.h"
 #include <memory>
 #include <boost/multi_array.hpp>
 #include <boost/static_assert.hpp>
@@ -18,11 +18,11 @@
 
 namespace ranally {
 
-HDF5DataSet::HDF5DataSet(
+HDF5Dataset::HDF5Dataset(
     String const& name,
     H5::H5File* file)
 
-    : DataSet(name),
+    : Dataset(name),
       _file(file)
 
 {
@@ -30,7 +30,7 @@ HDF5DataSet::HDF5DataSet(
 }
 
 
-HDF5DataSet::~HDF5DataSet()
+HDF5Dataset::~HDF5Dataset()
 {
 }
 
@@ -46,7 +46,7 @@ herr_t incrementNrFeatures(
 }
 
 
-size_t HDF5DataSet::nrFeatures() const
+size_t HDF5Dataset::nrFeatures() const
 {
     size_t nrFeatures = 0;
     herr_t result = H5Literate(_file->getLocId(), H5_INDEX_NAME, H5_ITER_NATIVE,
@@ -60,7 +60,7 @@ size_t HDF5DataSet::nrFeatures() const
 }
 
 
-Feature* HDF5DataSet::feature(
+Feature* HDF5Dataset::feature(
     size_t /* i */) const
 {
     // TODO
@@ -69,7 +69,7 @@ Feature* HDF5DataSet::feature(
 }
 
 
-Feature* HDF5DataSet::feature(
+Feature* HDF5Dataset::feature(
   String const& /* name */) const
 {
     // TODO hier verder
@@ -79,7 +79,7 @@ Feature* HDF5DataSet::feature(
 }
 
 
-bool HDF5DataSet::exists(
+bool HDF5Dataset::exists(
     String const& name) const
 {
     // Check whether group with name /name is present.
@@ -100,7 +100,7 @@ bool HDF5DataSet::exists(
              Use h5repack to copy the file to a smaller version.
   \sa        .
 */
-void HDF5DataSet::remove(
+void HDF5Dataset::remove(
     String const& name)
 {
     herr_t result = H5Ldelete(_file->getLocId(), name.encodeInUTF8().c_str(),
@@ -115,7 +115,7 @@ void HDF5DataSet::remove(
 
 
 template<>
-void HDF5DataSet::add(
+void HDF5Dataset::add(
     PointFeature const& feature)
 {
     // Remove feature group if it already exists.
@@ -207,14 +207,14 @@ void HDF5DataSet::add(
 
 
 template<>
-void HDF5DataSet::add(
+void HDF5Dataset::add(
     PolygonFeature const& /* feature */)
 {
     // TODO
 }
 
 
-void HDF5DataSet::addFeature(
+void HDF5Dataset::addFeature(
     Feature const& feature)
 {
     switch(feature.domainType()) {
@@ -230,8 +230,8 @@ void HDF5DataSet::addFeature(
 }
 
 
-void HDF5DataSet::copy(
-    DataSet const& dataSet)
+void HDF5Dataset::copy(
+    Dataset const& dataSet)
 {
     for(size_t i = 0; i < dataSet.nrFeatures(); ++i) {
         std::unique_ptr<Feature> feature(dataSet.feature(i));
@@ -241,7 +241,7 @@ void HDF5DataSet::copy(
 }
 
 
-void HDF5DataSet::copy(
+void HDF5Dataset::copy(
     Feature const& /* feature */)
 {
 }

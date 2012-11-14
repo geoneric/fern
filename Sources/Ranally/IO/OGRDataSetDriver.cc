@@ -1,4 +1,4 @@
-#include "Ranally/IO/OGRDataSetDriver.h"
+#include "Ranally/IO/OGRDatasetDriver.h"
 #include <cassert>
 #include "ogrsf_frmts.h"
 #include "Ranally/Util/String.h"
@@ -6,7 +6,7 @@
 
 namespace ranally {
 
-OGRDataSetDriver::OGRDataSetDriver(
+OGRDatasetDriver::OGRDatasetDriver(
     String const& name)
 
     : _driver(OGRSFDriverRegistrar::GetRegistrar()->GetDriverByName(
@@ -16,12 +16,12 @@ OGRDataSetDriver::OGRDataSetDriver(
 }
 
 
-OGRDataSetDriver::~OGRDataSetDriver()
+OGRDatasetDriver::~OGRDatasetDriver()
 {
 }
 
 
-bool OGRDataSetDriver::exists(
+bool OGRDatasetDriver::exists(
     String const& name) const
 {
     bool result = false;
@@ -37,7 +37,7 @@ bool OGRDataSetDriver::exists(
 }
 
 
-OGRDataSet* OGRDataSetDriver::create(
+OGRDataset* OGRDatasetDriver::create(
     String const& name) const
 {
     if(exists(name)) {
@@ -57,11 +57,11 @@ OGRDataSet* OGRDataSetDriver::create(
     // dataSource->SyncToDisk();
 
     // assert(exists(name));
-    return new OGRDataSet(name, dataSource);
+    return new OGRDataset(name, dataSource);
 }
 
 
-void OGRDataSetDriver::remove(
+void OGRDatasetDriver::remove(
     String const& name) const
 {
     if(_driver->DeleteDataSource(name.encodeInUTF8().c_str()) !=
@@ -72,7 +72,7 @@ void OGRDataSetDriver::remove(
 }
 
 
-OGRDataSet* OGRDataSetDriver::open(
+OGRDataset* OGRDatasetDriver::open(
     String const& name) const
 {
     // OGRDataSource* dataSource = OGRSFDriverRegistrar::Open(
@@ -85,7 +85,7 @@ OGRDataSet* OGRDataSetDriver::open(
         throw std::string("cannot open ogr data source");
     }
 
-    return new OGRDataSet(name, dataSource);
+    return new OGRDataset(name, dataSource);
 }
 
 } // namespace ranally

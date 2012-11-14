@@ -1,14 +1,14 @@
-#include "Ranally/IO/DataSetDriver.h"
+#include "Ranally/IO/DatasetDriver.h"
 
 
 namespace ranally {
 
-DataSetDriver::DataSetDriver()
+DatasetDriver::DatasetDriver()
 {
 }
 
 
-DataSetDriver::~DataSetDriver()
+DatasetDriver::~DatasetDriver()
 {
 }
 

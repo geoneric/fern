@@ -1,4 +1,4 @@
-#include "Ranally/IO/OGRDataSet.h"
+#include "Ranally/IO/OGRDataset.h"
 #include <cassert>
 #include <memory>
 #include "ogrsf_frmts.h"
@@ -14,11 +14,11 @@
 
 namespace ranally {
 
-OGRDataSet::OGRDataSet(
+OGRDataset::OGRDataset(
     String const& name,
     OGRDataSource* dataSource)
 
-    : DataSet(name),
+    : Dataset(name),
       _dataSource(dataSource)
 
 {
@@ -26,19 +26,19 @@ OGRDataSet::OGRDataSet(
 }
 
 
-OGRDataSet::~OGRDataSet()
+OGRDataset::~OGRDataset()
 {
     OGRDataSource::DestroyDataSource(_dataSource);
 }
 
 
-size_t OGRDataSet::nrFeatures() const
+size_t OGRDataset::nrFeatures() const
 {
     return static_cast<size_t>(_dataSource->GetLayerCount());
 }
 
 
-Feature* OGRDataSet::feature(
+Feature* OGRDataset::feature(
     size_t i) const
 {
     assert(i < nrFeatures());
@@ -52,7 +52,7 @@ Feature* OGRDataSet::feature(
 }
 
 
-Feature* OGRDataSet::feature(
+Feature* OGRDataset::feature(
     String const& name) const
 {
     OGRLayer* ogrLayer = _dataSource->GetLayerByName(
@@ -67,7 +67,7 @@ Feature* OGRDataSet::feature(
 }
 
 
-bool OGRDataSet::exists(
+bool OGRDataset::exists(
     String const& /* name */) const
 {
     // TODO
@@ -76,7 +76,7 @@ bool OGRDataSet::exists(
 }
 
 
-void OGRDataSet::remove(
+void OGRDataset::remove(
     String const& /* name */)
 {
     // TODO
@@ -84,7 +84,7 @@ void OGRDataSet::remove(
 }
 
 
-Feature* OGRDataSet::feature(
+Feature* OGRDataset::feature(
     OGRFeatureLayer const& layer) const
 {
     assert(false);
@@ -118,7 +118,7 @@ Feature* OGRDataSet::feature(
 
 
 template<>
-void OGRDataSet::add(
+void OGRDataset::add(
     PointFeature const& feature)
 {
     PointDomain const& domain(feature.domain());
@@ -167,7 +167,7 @@ void OGRDataSet::add(
 
 
 template<>
-void OGRDataSet::add(
+void OGRDataset::add(
     PolygonFeature const& feature)
 {
     // PolygonDomain const& domain(feature.domain());
@@ -186,7 +186,7 @@ void OGRDataSet::add(
 }
 
 
-void OGRDataSet::addFeature(
+void OGRDataset::addFeature(
     Feature const& feature)
 {
     switch(feature.domainType()) {
@@ -202,8 +202,8 @@ void OGRDataSet::addFeature(
 }
 
 
-void OGRDataSet::copy(
-    DataSet const& dataSet)
+void OGRDataset::copy(
+    Dataset const& dataSet)
 {
     for(size_t i = 0; i < dataSet.nrFeatures(); ++i) {
         std::unique_ptr<Feature> feature(dataSet.feature(i));
@@ -213,7 +213,7 @@ void OGRDataSet::copy(
 }
 
 
-void OGRDataSet::copy(
+void OGRDataset::copy(
     Feature const& /* feature */)
 {
 }

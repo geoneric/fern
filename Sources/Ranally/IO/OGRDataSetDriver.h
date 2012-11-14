@@ -1,6 +1,6 @@
 #pragma once
-#include "Ranally/IO/DataSetDriver.h"
-#include "Ranally/IO/OGRDataSet.h"
+#include "Ranally/IO/DatasetDriver.h"
+#include "Ranally/IO/OGRDataset.h"
 
 
 class OGRSFDriver;
@@ -13,25 +13,25 @@ namespace ranally {
 
   \sa        .
 */
-class OGRDataSetDriver:
-    public DataSetDriver
+class OGRDatasetDriver:
+    public DatasetDriver
 {
 
-    friend class OGRDataSetDriverTest;
+    friend class OGRDatasetDriverTest;
 
 public:
 
-                   OGRDataSetDriver    (String const& name);
+                   OGRDatasetDriver    (String const& name);
 
-                   ~OGRDataSetDriver   ();
+                   ~OGRDatasetDriver   ();
 
     bool           exists              (String const& name) const;
 
-    OGRDataSet*    create              (String const& name) const;
+    OGRDataset*    create              (String const& name) const;
 
     void           remove              (String const& name) const;
 
-    OGRDataSet*    open                (String const& name) const;
+    OGRDataset*    open                (String const& name) const;
 
 private:
 

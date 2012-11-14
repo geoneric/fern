@@ -1,27 +1,27 @@
-#include "Ranally/IO/HDF5DataSetDriver.h"
+#include "Ranally/IO/HDF5DatasetDriver.h"
 #include <cassert>
 #include <boost/filesystem.hpp>
 #include <H5Cpp.h>
 #include "Ranally/Util/String.h"
-#include "Ranally/IO/HDF5DataSet.h"
+#include "Ranally/IO/HDF5Dataset.h"
 
 
 namespace ranally {
 
-HDF5DataSetDriver::HDF5DataSetDriver()
+HDF5DatasetDriver::HDF5DatasetDriver()
 
-    : DataSetDriver()
+    : DatasetDriver()
 
 {
 }
 
 
-HDF5DataSetDriver::~HDF5DataSetDriver()
+HDF5DatasetDriver::~HDF5DatasetDriver()
 {
 }
 
 
-bool HDF5DataSetDriver::exists(
+bool HDF5DatasetDriver::exists(
     String const& name) const
 {
     bool result = false;
@@ -37,10 +37,10 @@ bool HDF5DataSetDriver::exists(
 }
 
 
-HDF5DataSet* HDF5DataSetDriver::create(
+HDF5Dataset* HDF5DatasetDriver::create(
     String const& name) const
 {
-    HDF5DataSet* result = 0;
+    HDF5Dataset* result = 0;
 
     try {
         unsigned int accessMode = H5F_ACC_TRUNC; // | H5F_ACC_RDWR?
@@ -50,7 +50,7 @@ HDF5DataSet* HDF5DataSetDriver::create(
         H5::H5File* file = new H5::H5File(name.encodeInUTF8().c_str(),
             accessMode, creationProperties, accessProperties);
         file->flush(H5F_SCOPE_GLOBAL);
-        result = new HDF5DataSet(name, file);
+        result = new HDF5Dataset(name, file);
     }
     catch(H5::FileIException const& exception) {
         // TODO Raise exception.
@@ -63,7 +63,7 @@ HDF5DataSet* HDF5DataSetDriver::create(
 }
 
 
-void HDF5DataSetDriver::remove(
+void HDF5DatasetDriver::remove(
     String const& name) const
 {
     if(exists(name)) {
@@ -78,16 +78,16 @@ void HDF5DataSetDriver::remove(
 }
 
 
-HDF5DataSet* HDF5DataSetDriver::open(
+HDF5Dataset* HDF5DatasetDriver::open(
     String const& name) const
 {
-    HDF5DataSet* result = 0;
+    HDF5Dataset* result = 0;
 
     try {
         H5::H5File* file = new H5::H5File(name.encodeInUTF8().c_str(),
             H5F_ACC_RDONLY);
 
-        result = new HDF5DataSet(name, file);
+        result = new HDF5Dataset(name, file);
     }
     catch(H5::FileIException const&) {
         // TODO Raise exception.

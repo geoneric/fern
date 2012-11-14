@@ -1,52 +1,20 @@
-#include "Ranally/IO/HDF5DataSetDriverTest.h"
-#include <memory>
-#include <boost/test/test_tools.hpp>
-#include <boost/test/unit_test_suite.hpp>
+#define BOOST_TEST_MODULE ranally io
+#include <boost/test/included/unit_test.hpp>
 #include "Ranally/Util/String.h"
-#include "Ranally/IO/HDF5DataSetDriver.h"
+#include "Ranally/IO/HDF5DatasetDriver.h"
 #include "Ranally/IO/PointAttribute.h"
 #include "Ranally/IO/PointDomain.h"
 #include "Ranally/IO/PointFeature.h"
 
 
-boost::unit_test::test_suite* HDF5DataSetDriverTest::suite()
-{
-    boost::unit_test::test_suite* suite = BOOST_TEST_SUITE(__FILE__);
-    boost::shared_ptr<HDF5DataSetDriverTest> instance(
-        new HDF5DataSetDriverTest());
-    suite->add(BOOST_CLASS_TEST_CASE(
-        &HDF5DataSetDriverTest::testExists, instance));
-    suite->add(BOOST_CLASS_TEST_CASE(
-        &HDF5DataSetDriverTest::testCreate, instance));
-    suite->add(BOOST_CLASS_TEST_CASE(
-        &HDF5DataSetDriverTest::testRemove, instance));
-    suite->add(BOOST_CLASS_TEST_CASE(
-        &HDF5DataSetDriverTest::testOpen, instance));
-
-    return suite;
-}
-
-
-HDF5DataSetDriverTest::HDF5DataSetDriverTest()
-{
-    removeTestFiles();
-}
-
-
-HDF5DataSetDriverTest::~HDF5DataSetDriverTest()
-{
-    // removeTestFiles();
-}
-
-
-void HDF5DataSetDriverTest::removeTestFiles()
+void removeTestFiles()
 {
     std::vector<ranally::String> dataSetNames;
     dataSetNames.push_back("TestExists.h5");
     dataSetNames.push_back("TestCreate.h5");
     dataSetNames.push_back("TestRemove.h5");
     dataSetNames.push_back("TestOpen.h5");
-    ranally::HDF5DataSetDriver driver;
+    ranally::HDF5DatasetDriver driver;
 
     for(auto dataSetName: dataSetNames) {
         if(driver.exists(dataSetName)) {
@@ -57,25 +25,27 @@ void HDF5DataSetDriverTest::removeTestFiles()
 }
 
 
-void HDF5DataSetDriverTest::testExists()
+BOOST_AUTO_TEST_SUITE(hdf5_dataset_driver)
+
+BOOST_AUTO_TEST_CASE(exists)
 {
-    ranally::HDF5DataSetDriver driver;
+    ranally::HDF5DatasetDriver driver;
 
     BOOST_REQUIRE(!driver.exists("TestExists.h5"));
-    std::unique_ptr<ranally::HDF5DataSet>(driver.create("TestExists.h5"));
+    std::unique_ptr<ranally::HDF5Dataset>(driver.create("TestExists.h5"));
     BOOST_CHECK(driver.exists("TestExists.h5"));
 }
 
 
-void HDF5DataSetDriverTest::testCreate()
+BOOST_AUTO_TEST_CASE(create)
 {
     // TODO Crashes.
     return;
 
-    ranally::HDF5DataSetDriver driver;
+    ranally::HDF5DatasetDriver driver;
     ranally::String dataSetName = "TestCreate.h5";
     BOOST_REQUIRE(!driver.exists(dataSetName));
-    std::unique_ptr<ranally::HDF5DataSet> dataSet;
+    std::unique_ptr<ranally::HDF5Dataset> dataSet;
 
     // Create empty data set.
     {
@@ -147,13 +117,13 @@ void HDF5DataSetDriverTest::testCreate()
 }
 
 
-void HDF5DataSetDriverTest::testRemove()
+BOOST_AUTO_TEST_CASE(remove)
 {
-    ranally::HDF5DataSetDriver driver;
+    ranally::HDF5DatasetDriver driver;
     ranally::String dataSetName = "TestRemove.h5";
     BOOST_REQUIRE(!driver.exists(dataSetName));
 
-    std::unique_ptr<ranally::HDF5DataSet>(driver.create(dataSetName));
+    std::unique_ptr<ranally::HDF5Dataset>(driver.create(dataSetName));
     BOOST_CHECK(driver.exists(dataSetName));
 
     driver.remove(dataSetName);
@@ -164,16 +134,16 @@ void HDF5DataSetDriverTest::testRemove()
 }
 
 
-void HDF5DataSetDriverTest::testOpen()
+BOOST_AUTO_TEST_CASE(open)
 {
-    ranally::HDF5DataSetDriver driver;
+    ranally::HDF5DatasetDriver driver;
     ranally::String dataSetName = "TestOpen.h5";
     BOOST_REQUIRE(!driver.exists(dataSetName));
 
-    std::unique_ptr<ranally::HDF5DataSet>(driver.create(dataSetName));
+    std::unique_ptr<ranally::HDF5Dataset>(driver.create(dataSetName));
     BOOST_REQUIRE(driver.exists(dataSetName));
 
-    std::unique_ptr<ranally::HDF5DataSet> dataSet(driver.open(
+    std::unique_ptr<ranally::HDF5Dataset> dataSet(driver.open(
       dataSetName));
     BOOST_CHECK(dataSet);
     BOOST_CHECK(dataSet->name() == dataSetName);
@@ -183,3 +153,5 @@ void HDF5DataSetDriverTest::testOpen()
     // TODO Test opening write-only data set.
     // TODO Test opening executable-only data set.
 }
+
+BOOST_AUTO_TEST_SUITE_END()

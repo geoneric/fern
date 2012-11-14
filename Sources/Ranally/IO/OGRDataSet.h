@@ -1,5 +1,5 @@
 #pragma once
-#include "Ranally/IO/DataSet.h"
+#include "Ranally/IO/Dataset.h"
 
 
 class OGRDataSource;
@@ -10,24 +10,24 @@ class OGRFeatureLayer;
 
 //! Class representing an OGR data set with feature geometries and attributes.
 /*!
-  The OGRDataSet class is comparable with the OGRDataSource class as defined
+  The OGRDataset class is comparable with the OGRDataSource class as defined
   in OGR's API. An OGRLayer as used in OGR is what we call a Feature in
   Ranally.
 
   \sa        .
 */
-class OGRDataSet:
-    public DataSet
+class OGRDataset:
+    public Dataset
 {
 
-    friend class OGRDataSetTest;
+    friend class OGRDatasetTest;
 
 public:
 
-                   OGRDataSet          (String const& name,
+                   OGRDataset          (String const& name,
                                         OGRDataSource* dataSource);
 
-                   ~OGRDataSet         ();
+                   ~OGRDataset         ();
 
     size_t         nrFeatures          () const;
 
@@ -37,7 +37,7 @@ public:
 
     void           addFeature          (Feature const& feature);
 
-    void           copy                (DataSet const& dataSet);
+    void           copy                (Dataset const& dataSet);
 
     bool           exists              (String const& name) const;
 

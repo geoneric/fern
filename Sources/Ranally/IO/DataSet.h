@@ -15,18 +15,18 @@ class Feature;
 
   \sa        .
 */
-class DataSet
+class Dataset
 {
 
-    friend class DataSetTest;
+    friend class DatasetTest;
 
 public:
 
-                   DataSet             (DataSet const&)=delete;
+                   Dataset             (Dataset const&)=delete;
 
-    DataSet&       operator=           (DataSet const&)=delete;
+    Dataset&       operator=           (Dataset const&)=delete;
 
-    virtual        ~DataSet            ();
+    virtual        ~Dataset            ();
 
     String const&  name                () const;
 
@@ -58,7 +58,7 @@ public:
     /*!
       \param     dataSet Data set to copy.
     */
-    virtual void   copy                (DataSet const& dataSet)=0;
+    virtual void   copy                (Dataset const& dataSet)=0;
 
     //! Return whether feature \a name is present.
     /*!
@@ -77,7 +77,7 @@ public:
 
 protected:
 
-                   DataSet             (String const& name);
+                   Dataset             (String const& name);
 
 private:
 

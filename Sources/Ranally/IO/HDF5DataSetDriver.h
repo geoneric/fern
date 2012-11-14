@@ -1,6 +1,6 @@
 #pragma once
-#include "Ranally/IO/DataSetDriver.h"
-#include "Ranally/IO/HDF5DataSet.h"
+#include "Ranally/IO/DatasetDriver.h"
+#include "Ranally/IO/HDF5Dataset.h"
 
 
 namespace ranally {
@@ -9,27 +9,27 @@ namespace ranally {
 /*!
   This driver performs I/O on HDF5 data sets.
 
-  \sa        HDF5DataSet
+  \sa        HDF5Dataset
 */
-class HDF5DataSetDriver:
-    public DataSetDriver
+class HDF5DatasetDriver:
+    public DatasetDriver
 {
 
-    friend class HDF5DataSetDriverTest;
+    friend class HDF5DatasetDriverTest;
 
 public:
 
-                   HDF5DataSetDriver   ();
+                   HDF5DatasetDriver   ();
 
-                   ~HDF5DataSetDriver  ();
+                   ~HDF5DatasetDriver  ();
 
     bool           exists              (String const& name) const;
 
-    HDF5DataSet*   create              (String const& name) const;
+    HDF5Dataset*   create              (String const& name) const;
 
     void           remove              (String const& name) const;
 
-    HDF5DataSet*   open                (String const& name) const;
+    HDF5Dataset*   open                (String const& name) const;
 
 private:
 

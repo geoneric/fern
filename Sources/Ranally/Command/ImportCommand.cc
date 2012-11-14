@@ -52,9 +52,9 @@ int ImportCommand::execute()
         status = EXIT_FAILURE;
     }
     else {
-        String inputDataSetName = argv()[1];
-        String outputDataSetName = argv()[2];
-        ranally::import(inputDataSetName, outputDataSetName);
+        String inputDatasetName = argv()[1];
+        String outputDatasetName = argv()[2];
+        ranally::import(inputDatasetName, outputDatasetName);
         status = EXIT_SUCCESS;
     }
 
