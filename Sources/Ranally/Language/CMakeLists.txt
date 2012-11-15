@@ -1,6 +1,5 @@
 INCLUDE(UseBoost)
 INCLUDE(UseExpat)
-INCLUDE(UseIcu)
 INCLUDE(UseLoki)
 INCLUDE(UsePython)
 SET(XSD_ROOT ${PCRTEAM_PLATFORM})
@@ -72,5 +71,4 @@ TARGET_LINK_LIBRARIES(RanallyLanguage
     RanallyUtil
     ${EXPAT_LIBRARIES}
     ${PYTHON_LIBRARIES}
-    ${ICU_LIBRARIES}
 )

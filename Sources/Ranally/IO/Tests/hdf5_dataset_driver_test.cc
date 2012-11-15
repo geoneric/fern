@@ -1,6 +1,7 @@
 #define BOOST_TEST_MODULE ranally io
 #include <boost/test/included/unit_test.hpp>
 #include "Ranally/Util/String.h"
+#include "Ranally/IO/HDF5Client.h"
 #include "Ranally/IO/HDF5DatasetDriver.h"
 #include "Ranally/IO/PointAttribute.h"
 #include "Ranally/IO/PointDomain.h"
@@ -25,7 +26,22 @@ void removeTestFiles()
 }
 
 
-BOOST_AUTO_TEST_SUITE(hdf5_dataset_driver)
+class Support:
+    public ranally::HDF5Client
+{
+
+public:
+
+    Support()
+        : ranally::HDF5Client()
+    {
+        removeTestFiles();
+    }
+
+};
+
+
+BOOST_FIXTURE_TEST_SUITE(hdf5_dataset_driver, Support)
 
 BOOST_AUTO_TEST_CASE(exists)
 {

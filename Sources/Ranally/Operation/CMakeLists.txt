@@ -1,6 +1,5 @@
 INCLUDE(UseBoost)
 INCLUDE(UseExpat)
-INCLUDE(UseIcu)
 SET(XSD_ROOT ${PCRTEAM_PLATFORM})
 INCLUDE(UseXsd)
 
@@ -67,7 +66,6 @@ ADD_LIBRARY(RanallyOperation
 TARGET_LINK_LIBRARIES(RanallyOperation
     RanallyUtil
     ${EXPAT_LIBRARIES}
-    ${ICU_LIBRARIES}
 )
 ADD_CUSTOM_TARGET(Operation-xml.h
     DEPENDS

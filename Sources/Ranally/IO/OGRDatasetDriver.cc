@@ -11,6 +11,7 @@ OGRDatasetDriver::OGRDatasetDriver(
 
     : _driver(OGRSFDriverRegistrar::GetRegistrar()->GetDriverByName(
           name.encodeInUTF8().c_str()))
+
 {
     assert(_driver);
 }
