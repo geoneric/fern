@@ -1,0 +1,13 @@
+# These are run in the project's root.
+# SET(CTEST_CUSTOM_PRE_TEST "${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/Data/Tests/Point.json ${CMAKE_CURRENT_BINARY_DIR}/Sources/Ranally/IO/Tests")
+# SET(CTEST_CUSTOM_PRE_TEST "${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/Data/Tests/Point.json ${CMAKE_CURRENT_BINARY_DIR}/Sources/Ranally/IO/Tests/ReadOnlyPoint.json")
+# SET(CTEST_CUSTOM_PRE_TEST "chmod 444 ${CMAKE_CURRENT_BINARY_DIR}/Sources/Ranally/IO/Tests/ReadOnlyPoint.json")
+# SET(CTEST_CUSTOM_PRE_TEST "${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/Data/Tests/Point.json ${CMAKE_CURRENT_BINARY_DIR}/Sources/Ranally/IO/Tests/WriteOnlyPoint.json")
+# SET(CTEST_CUSTOM_PRE_TEST "chmod 222 ${CMAKE_CURRENT_BINARY_DIR}/Sources/Ranally/IO/Tests/WriteOnlyPoint.json")
+# SET(CTEST_CUSTOM_PRE_TEST "${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/Data/Tests/Point.json ${CMAKE_CURRENT_BINARY_DIR}/Sources/Ranally/IO/Tests/ExecuteOnlyPoint.json")
+# SET(CTEST_CUSTOM_PRE_TEST "chmod 111 ${CMAKE_CURRENT_BINARY_DIR}/Sources/Ranally/IO/Tests/ExecuteOnlyPoint.json")
+# SET(CTEST_CUSTOM_PRE_TEST "${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/Sources/Ranally/IO/Tests/ReadOnlyDir")
+# SET(CTEST_CUSTOM_PRE_TEST "chmod 666 ${CMAKE_CURRENT_BINARY_DIR}/Sources/Ranally/IO/Tests/ReadOnlyDir")
+
+SET(CTEST_CUSTOM_PRE_TEST "bash test_run_prolog.sh")
+SET(CTEST_CUSTOM_POST_TEST "bash test_run_epilog.sh")
