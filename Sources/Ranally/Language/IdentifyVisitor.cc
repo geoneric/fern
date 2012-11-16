@@ -8,7 +8,7 @@ namespace ranally {
 IdentifyVisitor::IdentifyVisitor()
 
     : Visitor(),
-      _mode(Using)
+      _mode(Mode::Using)
 
 {
 }
@@ -23,16 +23,16 @@ void IdentifyVisitor::Visit(
 
     // - Configure visitor, using names.
     // - Visit expression.
-    _mode = Using;
+    _mode = Mode::Using;
     vertex.expression()->Accept(*this);
 
     // - Configure visitor, defining names.
     // - Visit target.
-    _mode = Defining;
+    _mode = Mode::Defining;
     vertex.target()->Accept(*this);
 
     // Reset mode! Only in assignments is the mode temporarely set to defining.
-    _mode = Using;
+    _mode = Mode::Using;
 }
 
 
@@ -47,7 +47,7 @@ void IdentifyVisitor::Visit(
     NameVertex& vertex)
 {
     switch(_mode) {
-        case Using: {
+        case Mode::Using: {
             // Using a name, connect it to the definition.
             assert(vertex.definitions().empty());
 
@@ -76,7 +76,7 @@ void IdentifyVisitor::Visit(
 
             break;
         }
-        case Defining: {
+        case Mode::Defining: {
             // Defining a name, add it to the symbol table.
             assert(vertex.definitions().empty());
             vertex.addDefinition(&vertex);

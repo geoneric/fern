@@ -19,10 +19,10 @@ class AstDotVisitor:
 public:
 
     enum Mode {
-      Declaring=0x1,
-      ConnectingAst=0x2,
-      ConnectingCfg=0x4,
-      ConnectingUses=0x8
+        Declaring=0x1,
+        ConnectingAst=0x2,
+        ConnectingCfg=0x4,
+        ConnectingUses=0x8
     };
 
                    AstDotVisitor       (int modes=0);

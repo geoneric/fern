@@ -8,7 +8,7 @@ ExpressionVertex::ExpressionVertex(
 
     : StatementVertex(),
       _name(name) // ,
-      // _dataType(DT_UNKNOWN),
+      // _dataType(DataType::DT_UNKNOWN),
       // _valueType(VT_UNKNOWN)
 
 {

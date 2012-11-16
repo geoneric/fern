@@ -15,28 +15,28 @@ ranally::DataType stringToDataType(
     std::string const& string)
 {
     assert(!string.empty());
-    ranally::DataType dataType = ranally::DT_UNKNOWN;
+    ranally::DataType dataType = ranally::DataType::DT_UNKNOWN;
 
     if(string == "Value") {
-        dataType = ranally::DT_VALUE;
+        dataType = ranally::DataType::DT_VALUE;
     }
     else if(string == "Raster") {
-        dataType = ranally::DT_RASTER;
+        dataType = ranally::DataType::DT_RASTER;
     }
     else if(string == "Feature") {
-        dataType = ranally::DT_FEATURE;
+        dataType = ranally::DataType::DT_FEATURE;
     }
     else if(string == "Spatial") {
-        dataType = ranally::DT_SPATIAL;
+        dataType = ranally::DataType::DT_SPATIAL;
     }
     else if(string == "All") {
-        dataType = ranally::DT_ALL;
+        dataType = ranally::DataType::DT_ALL;
     }
     else if(string == "DependsOnInput") {
-        dataType = ranally::DT_DEPENDS_ON_INPUT;
+        dataType = ranally::DataType::DT_DEPENDS_ON_INPUT;
     }
 
-    assert(dataType != ranally::DT_UNKNOWN);
+    assert(dataType != ranally::DataType::DT_UNKNOWN);
     return dataType;
 }
 
@@ -405,7 +405,7 @@ public:
 
     void pre()
     {
-        _dataTypes = ranally::DT_UNKNOWN;
+        _dataTypes = ranally::DataType::DT_UNKNOWN;
     }
 
     // void DataType(

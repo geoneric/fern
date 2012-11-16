@@ -4,6 +4,7 @@
 namespace ranally {
 
 enum DataType {
+
     //! Unknown data type.
     DT_UNKNOWN=0,
 
@@ -24,6 +25,7 @@ enum DataType {
 
     //! Data type depends on data type of input.
     DT_DEPENDS_ON_INPUT=8
+
 };
 
 typedef unsigned int DataTypes;

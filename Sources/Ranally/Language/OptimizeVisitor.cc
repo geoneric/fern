@@ -10,7 +10,7 @@ namespace ranally {
 OptimizeVisitor::OptimizeVisitor()
 
     : Visitor(),
-      _mode(Defining)
+      _mode(Mode::Defining)
 
 {
 }
@@ -30,10 +30,10 @@ void OptimizeVisitor::visitStatements(
     Visitor::visitStatements(statements);
 
     switch(_mode) {
-        case Using: {
+        case Mode::Using: {
             break;
         }
-        case Defining: {
+        case Mode::Defining: {
             std::vector<size_t> statementsToErase, superfluousStatementsToErase;
 
             for(size_t i = 0; i < statements.size(); ++i) {
@@ -68,7 +68,7 @@ void OptimizeVisitor::Visit(
 {
     // Inline the defining expression, if possible.
     switch(_mode) {
-        case Using: {
+        case Mode::Using: {
             vertex.expression()->Accept(*this);
 
             std::map<ExpressionVertex const*, ExpressionVertexPtr>::iterator
@@ -83,7 +83,7 @@ std::cout << "inserting " << (*it).second->name().encodeInUTF8() << std::endl;
 
             break;
         }
-        case Defining: {
+        case Mode::Defining: {
             vertex.target()->Accept(*this);
 
             std::vector<ExpressionVertexPtr>::iterator it = std::find(
@@ -104,7 +104,7 @@ void OptimizeVisitor::Visit(
     NameVertex& vertex)
 {
     switch(_mode) {
-        case Using: {
+        case Mode::Using: {
             std::vector<NameVertex*> const& definitions(vertex.definitions());
 
             if(definitions.size() == 1 && definitions[0]->uses().size() == 1) {
@@ -120,7 +120,7 @@ std::cout << "register inlining of " << vertex.name().encodeInUTF8() << " by " <
 
             break;
         }
-        case Defining: {
+        case Mode::Defining: {
             break;
         }
     }
@@ -139,7 +139,7 @@ std::cout << "visit script" << std::endl;
         assert(_superfluousStatements.empty());
 
         // First visit all use locations of name vertices.
-        _mode = Using;
+        _mode = Mode::Using;
         Visitor::Visit(vertex);
 
         // If expressions have been inlined, then the script will
@@ -147,7 +147,7 @@ std::cout << "visit script" << std::endl;
         inlinedExpressions = !_inlinedExpressions.empty();
 
         // Now visit all defining locations of name vertices.
-        _mode = Defining;
+        _mode = Mode::Defining;
         Visitor::Visit(vertex);
 
         assert(_inlineExpressions.empty());

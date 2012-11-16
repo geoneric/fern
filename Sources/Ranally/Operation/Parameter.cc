@@ -18,7 +18,7 @@ Parameter::Parameter(
 {
     assert(!_name.isEmpty());
     assert(!_description.isEmpty());
-    assert(_dataTypes != DT_UNKNOWN);
+    assert(_dataTypes != DataType::DT_UNKNOWN);
     assert(_valueTypes != VT_UNKNOWN);
 }
 

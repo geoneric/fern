@@ -39,7 +39,7 @@ protected:
 
 private:
 
-  Type             _type;
+    Type           _type;
 
 };
 

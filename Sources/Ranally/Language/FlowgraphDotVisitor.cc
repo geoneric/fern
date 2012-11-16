@@ -8,7 +8,7 @@ namespace ranally {
 FlowgraphDotVisitor::FlowgraphDotVisitor()
 
     : DotVisitor(),
-      _mode(Declaring)
+      _mode(Mode::Declaring)
 
 {
 }
@@ -48,7 +48,7 @@ void FlowgraphDotVisitor::addFlowgraphVertex(
     SyntaxVertex const& sourceVertex,
     SyntaxVertex const& targetVertex)
 {
-    assert(_mode == ConnectingFlowgraph);
+    assert(_mode == Mode::ConnectingFlowgraph);
 
     if(dynamic_cast<NameVertex const*>(&sourceVertex)) {
         addFlowgraphVertex(dynamic_cast<NameVertex const&>(
@@ -74,7 +74,7 @@ void FlowgraphDotVisitor::addFlowgraphVertex(
     ///   String(boost::format("\"%1%\"") % &targetVertex) + " ["
     ///   "];\n";
 
-    /// _mode = ConnectingFlowgraph;
+    /// _mode = Mode::ConnectingFlowgraph;
     /// _definition = 0;
 
     addScript(
@@ -88,7 +88,7 @@ void FlowgraphDotVisitor::addFlowgraphVertex(
 // void FlowgraphDotVisitor::addFlowgraphVertices(
 //   NameVertex const& vertex)
 // {
-//   assert(_mode == ConnectingFlowgraph);
+//   assert(_mode == Mode::ConnectingFlowgraph);
 //   BOOST_FOREACH(NameVertex const* use, vertex.uses()) {
 //     _script +=
 //       String(boost::format("\"%1%\"") % &vertex) + " -> " +
@@ -102,13 +102,13 @@ void FlowgraphDotVisitor::Visit(
     AssignmentVertex& vertex)
 {
     switch(_mode) {
-        case Declaring: {
+        case Mode::Declaring: {
             // addScript(
             //   String(boost::format("\"%1%\"") % &vertex) +
             //   " [label=\"=\"];\n");
             break;
         }
-        case ConnectingFlowgraph: {
+        case Mode::ConnectingFlowgraph: {
             addFlowgraphVertex(*vertex.expression(), *vertex.target());
             break;
         }
@@ -123,14 +123,14 @@ void FlowgraphDotVisitor::Visit(
     FunctionVertex& vertex)
 {
     switch(_mode) {
-        case Declaring: {
+        case Mode::Declaring: {
             addScript(
                 String(boost::format("\"%1%\"") % &vertex) +
                 " [label=\"" + vertex.name() + "\", shape=triangle];\n"
             );
             break;
         }
-        case ConnectingFlowgraph: {
+        case Mode::ConnectingFlowgraph: {
             for(auto expressionVertex: vertex.expressions()) {
                 addFlowgraphVertex(*expressionVertex, vertex);
             }
@@ -149,14 +149,14 @@ void FlowgraphDotVisitor::Visit(
 {
     static size_t ifClusterId = 0;
     switch(_mode) {
-        case Declaring: {
+        case Mode::Declaring: {
             addScript(
                 String(boost::format("\"%1%\"") % &vertex) +
                 " [label=\"If\", shape=diamond];\n"
             );
             break;
         }
-        case ConnectingFlowgraph: {
+        case Mode::ConnectingFlowgraph: {
             break;
         }
     }
@@ -164,7 +164,7 @@ void FlowgraphDotVisitor::Visit(
     vertex.condition()->Accept(*this);
 
     // TODO condition -> sub graph
-    if(_mode == ConnectingFlowgraph) {
+    if(_mode == Mode::ConnectingFlowgraph) {
         addScript(String(boost::format(
             "subgraph cluster%1% {\n"
             "ordering=out;\n"
@@ -174,13 +174,13 @@ void FlowgraphDotVisitor::Visit(
     for(auto statementVertex: vertex.trueStatements()) {
         statementVertex->Accept(*this);
     }
-    if(_mode == ConnectingFlowgraph) {
+    if(_mode == Mode::ConnectingFlowgraph) {
         addScript("}\n");
     }
 
     if(!vertex.falseStatements().empty()) {
         // TODO condition -> sub graph
-        if(_mode == ConnectingFlowgraph) {
+        if(_mode == Mode::ConnectingFlowgraph) {
             addScript(String(boost::format(
                 "subgraph cluster%1% {\n"
                 "ordering=out;\n"
@@ -190,7 +190,7 @@ void FlowgraphDotVisitor::Visit(
         for(auto statementVertex: vertex.falseStatements()) {
             statementVertex->Accept(*this);
         }
-        if(_mode == ConnectingFlowgraph) {
+        if(_mode == Mode::ConnectingFlowgraph) {
             addScript("}\n");
         }
     }
@@ -201,7 +201,7 @@ void FlowgraphDotVisitor::Visit(
     NameVertex& vertex)
 {
     switch(_mode) {
-        case Declaring: {
+        case Mode::Declaring: {
             // Filter out those identifiers that are defined somewhere
             // else. Declare only those identifiers that have no definition,
             // or that are part of the defining expression.
@@ -216,7 +216,7 @@ void FlowgraphDotVisitor::Visit(
             }
             break;
         }
-        case ConnectingFlowgraph: {
+        case Mode::ConnectingFlowgraph: {
             break;
         }
     }
@@ -228,7 +228,7 @@ void FlowgraphDotVisitor::Visit(
     NumberVertex<T>& vertex)
 {
     switch(_mode) {
-        case Declaring: {
+        case Mode::Declaring: {
             addScript(
                 String(boost::format("\"%1%\"") % &vertex) +
                 " [label=\"" + String(boost::format("%1%") % vertex.value()) +
@@ -236,7 +236,7 @@ void FlowgraphDotVisitor::Visit(
             );
             break;
         }
-        case ConnectingFlowgraph: {
+        case Mode::ConnectingFlowgraph: {
             break;
         }
     }
@@ -317,7 +317,7 @@ void FlowgraphDotVisitor::Visit(
     OperatorVertex& vertex)
 {
     switch(_mode) {
-        case Declaring: {
+        case Mode::Declaring: {
             // TODO Implement symbol member.
             addScript(
                 String(boost::format("\"%1%\"") % &vertex) +
@@ -325,7 +325,7 @@ void FlowgraphDotVisitor::Visit(
             );
             break;
         }
-        case ConnectingFlowgraph: {
+        case Mode::ConnectingFlowgraph: {
             for(auto expressionVertex: vertex.expressions()) {
                 addFlowgraphVertex(*expressionVertex, vertex);
             }
@@ -343,7 +343,7 @@ void FlowgraphDotVisitor::Visit(
     StringVertex& vertex)
 {
     switch(_mode) {
-        case Declaring: {
+        case Mode::Declaring: {
             addScript(
                 String(boost::format("\"%1%\"") % &vertex) +
                 " [label=\"\\\"" + vertex.value() +
@@ -351,7 +351,7 @@ void FlowgraphDotVisitor::Visit(
             );
             break;
         }
-        case ConnectingFlowgraph: {
+        case Mode::ConnectingFlowgraph: {
             break;
         }
     }
@@ -374,7 +374,7 @@ void FlowgraphDotVisitor::Visit(
         "penwidth=0.25;\n"
     ));
 
-    setMode(Declaring);
+    setMode(Mode::Declaring);
     // addScript(
     //   String(boost::format("\"%1%\"") % &vertex) +
     //   String(boost::format(" [label=\"%1%\"];\n"))
@@ -384,7 +384,7 @@ void FlowgraphDotVisitor::Visit(
         statementVertex->Accept(*this);
     }
 
-    setMode(ConnectingFlowgraph);
+    setMode(Mode::ConnectingFlowgraph);
     for(auto statementVertex: vertex.statements()) {
         // addFlowgraphVertex(vertex, *statementVertex);
         statementVertex->Accept(*this);
