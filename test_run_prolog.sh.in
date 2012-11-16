@@ -1,9 +1,17 @@
-${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/Data/Tests/Point.json ${CMAKE_CURRENT_BINARY_DIR}/Sources/Ranally/IO/Tests
-${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/Data/Tests/Point.json ${CMAKE_CURRENT_BINARY_DIR}/Sources/Ranally/IO/Tests/ReadOnlyPoint.json
-chmod 444 ${CMAKE_CURRENT_BINARY_DIR}/Sources/Ranally/IO/Tests/ReadOnlyPoint.json
-${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/Data/Tests/Point.json ${CMAKE_CURRENT_BINARY_DIR}/Sources/Ranally/IO/Tests/WriteOnlyPoint.json
-chmod 222 ${CMAKE_CURRENT_BINARY_DIR}/Sources/Ranally/IO/Tests/WriteOnlyPoint.json
-${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/Data/Tests/Point.json ${CMAKE_CURRENT_BINARY_DIR}/Sources/Ranally/IO/Tests/ExecuteOnlyPoint.json
-chmod 111 ${CMAKE_CURRENT_BINARY_DIR}/Sources/Ranally/IO/Tests/ExecuteOnlyPoint.json
-${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/Sources/Ranally/IO/Tests/ReadOnlyDir
-chmod 666 ${CMAKE_CURRENT_BINARY_DIR}/Sources/Ranally/IO/Tests/ReadOnlyDir
+test_data_dir="${PROJECT_SOURCE_DIR}/Data/Tests"
+io_test_dir="${CMAKE_CURRENT_BINARY_DIR}/Sources/Ranally/IO/Tests"
+cmake="${CMAKE_COMMAND}"
+
+$cmake -E copy $test_data_dir/Point.json $io_test_dir
+
+$cmake -E copy $test_data_dir/Point.json $io_test_dir/ReadOnlyPoint.json
+chmod 444 $io_test_dir/ReadOnlyPoint.json
+
+$cmake -E copy $test_data_dir/Point.json $io_test_dir/WriteOnlyPoint.json
+chmod 222 $io_test_dir/WriteOnlyPoint.json
+
+$cmake -E copy $test_data_dir/Point.json $io_test_dir/ExecuteOnlyPoint.json
+chmod 111 $io_test_dir/ExecuteOnlyPoint.json
+
+$cmake -E make_directory $io_test_dir/ReadOnlyDir
+chmod 666 $io_test_dir/ReadOnlyDir
