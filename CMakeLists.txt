@@ -3,7 +3,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 PROJECT(Ranally)
 
 SET(RANALLY_ORGANISATION_NAME "Kor de Jong Environmental Modeling Software")
-SET(RANALLY_COPYRIGHT "Copyright \(C\) 2010-2012 Kor de Jong")
+SET(RANALLY_COPYRIGHT "Copyright \(C\) 2010-2013 Kor de Jong")
 SET(RANALLY_PROJECT_NAME "${CMAKE_PROJECT_NAME}")
 SET(RANALLY_HOMEPAGE "http://www.kdjems.com/ranally")
 SET(RANALLY_MAJOR_VERSION "0")
@@ -32,21 +32,29 @@ CONFIGURE_FILE(
     ${CMAKE_CURRENT_BINARY_DIR}/test_run_epilog.sh
 )
 
+# TODO Get rid of dependency on Site.cmake. We only use it for compiler
+#      settings.
 SET(CMAKE_MODULE_PATH
     $ENV{CMAKE_MODULE_PATH}
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 INCLUDE(Site)
 
-SET(CMAKE_PREFIX_PATH
-    $ENV{PCRTEAM_PLATFORM}
-    $ENV{PCRTEAM_PLATFORM}/python-2.7.3
-)
+IF(DEFINED ENV{PCRTEAM_PLATFORM})
+    # Configure search path to find packages.
+    SET(CMAKE_PREFIX_PATH
+        ${CMAKE_PREFIX_PATH}
+        $ENV{PCRTEAM_PLATFORM}
+        $ENV{PCRTEAM_PLATFORM}/python-2.7.3
+    )
+ENDIF()
 
+# Configure packages.
 SET(Boost_USE_STATIC_LIBS OFF)
 SET(Boost_USE_STATIC_RUNTIME OFF)
 SET(HDF5_USE_STATIC_LIBRARIES OFF)
 
+# Find packages.
 FIND_PACKAGE(Boost REQUIRED
     COMPONENTS filesystem system)
 FIND_PACKAGE(EXPAT REQUIRED)
@@ -58,7 +66,9 @@ FIND_PACKAGE(Loki REQUIRED)
 FIND_PACKAGE(PythonLibs REQUIRED)
 FIND_PACKAGE(XSD REQUIRED)
 
+# Configure project.
 INCLUDE_DIRECTORIES(
+    SYSTEM
     ${Boost_INCLUDE_DIRS}
     ${EXPAT_INCLUDE_DIRS}
     ${GDAL_INCLUDE_DIRS}
