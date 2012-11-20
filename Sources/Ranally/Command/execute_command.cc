@@ -1,6 +1,6 @@
-#include "ExecuteCommand.h"
+#include "Ranally/Command/execute_command.h"
 #include "Ranally/Language/XmlParser.h"
-#include "Ranally/Interpreter/Interpreter.h"
+#include "Ranally/Interpreter/interpreter.h"
 
 
 namespace ranally {

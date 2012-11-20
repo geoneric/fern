@@ -2,10 +2,10 @@
 #include <cstring>
 #include <memory>
 #include "Ranally/Configure.h"
-#include "ConvertCommand.h"
-#include "DescribeCommand.h"
-#include "ExecuteCommand.h"
-#include "ImportCommand.h"
+#include "Ranally/Command/convert_command.h"
+#include "Ranally/Command/describe_command.h"
+#include "Ranally/Command/execute_command.h"
+#include "Ranally/Command/import_command.h"
 
 
 namespace ranally {

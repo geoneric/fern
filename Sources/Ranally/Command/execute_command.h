@@ -1,5 +1,5 @@
 #pragma once
-#include "Command.h"
+#include "Ranally/Command/command.h"
 
 
 namespace ranally {

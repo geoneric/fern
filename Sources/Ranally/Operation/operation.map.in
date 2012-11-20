@@ -1,8 +1,8 @@
 namespace http://www.jemig.eu/ranally
 {
-    include "${CMAKE_CURRENT_SOURCE_DIR}/Operations.h";
-    include "${CMAKE_CURRENT_SOURCE_DIR}/Parameter.h";
-    include "${CMAKE_CURRENT_SOURCE_DIR}/Result.h";
+    include "${CMAKE_CURRENT_SOURCE_DIR}/operations.h";
+    include "${CMAKE_CURRENT_SOURCE_DIR}/parameter.h";
+    include "${CMAKE_CURRENT_SOURCE_DIR}/result.h";
 
     Operations         "std::shared_ptr<ranally::Operations>";
     Operation          "std::shared_ptr<ranally::Operation>";

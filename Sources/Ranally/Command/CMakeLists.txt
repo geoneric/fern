@@ -1,14 +1,10 @@
-INCLUDE_DIRECTORIES(
-    ${CMAKE_CURRENT_SOURCE_DIR}/../..
-    ${CMAKE_CURRENT_BINARY_DIR}/../..
-)
 ADD_EXECUTABLE(ranally
-    Command
-    ConvertCommand
-    DescribeCommand
-    ExecuteCommand
-    ImportCommand
-    Ranally
+    command
+    convert_command
+    describe_command
+    execute_command
+    import_command
+    ranally
 )
 ADD_DEPENDENCIES(ranally
     Operation-xml.h

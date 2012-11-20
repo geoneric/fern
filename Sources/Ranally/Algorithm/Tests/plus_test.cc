@@ -1,8 +1,8 @@
 #define BOOST_TEST_MODULE ranally algorithm
 #include <boost/test/included/unit_test.hpp>
 #include <array>
-#include "Ranally/Algorithm/Plus.h"
-#include "Ranally/Raster.h"
+#include "Ranally/Algorithm/plus.h"
+#include "Ranally/raster.h"
 
 
 BOOST_AUTO_TEST_SUITE(plus)

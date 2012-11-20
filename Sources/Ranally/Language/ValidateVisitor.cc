@@ -1,7 +1,7 @@
 #include "Ranally/Language/ValidateVisitor.h"
 #include <stdexcept>
 #include "Ranally/Util/string.h"
-#include "Ranally/Operation/Operation.h"
+#include "Ranally/Operation/operation.h"
 #include "Ranally/Language/Vertices.h"
 
 

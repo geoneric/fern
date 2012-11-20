@@ -1,6 +1,6 @@
 #pragma once
 #include <bitset>
-#include "Ranally/Operation/DataType.h"
+#include "Ranally/Operation/data_types.h"
 
 
 namespace ranally {

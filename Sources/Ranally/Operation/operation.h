@@ -2,8 +2,8 @@
 #include <memory>
 #include <vector>
 #include "Ranally/Util/string.h"
-#include "Ranally/Operation/Parameter.h"
-#include "Ranally/Operation/Result.h"
+#include "Ranally/Operation/parameter.h"
+#include "Ranally/Operation/result.h"
 
 
 namespace ranally {

@@ -1,12 +1,12 @@
-#include "Ranally/Operation/OperationXmlParser.h"
+#include "Ranally/Operation/operation_xml_parser.h"
 #include <memory>
 #include <sstream>
 #include <stack>
 #include <vector>
 #include "Ranally/Util/string.h"
-#include "Operation-pskel.hxx"
-#include "Ranally/Operation/DataType.h"
-#include "Ranally/Operation/Operations.h"
+#include "Ranally/Operation/operation-pskel.hxx"
+#include "Ranally/Operation/data_type.h"
+#include "Ranally/Operation/operations.h"
 
 
 namespace {

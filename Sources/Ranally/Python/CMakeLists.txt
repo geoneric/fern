@@ -1,6 +1,3 @@
-INCLUDE_DIRECTORIES(
-    ${CMAKE_CURRENT_SOURCE_DIR}/../..
-)
 SET(SOURCES
     borrowed_reference
     client

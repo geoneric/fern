@@ -1,4 +1,4 @@
-#include "ImportCommand.h"
+#include "Ranally/Command/import_command.h"
 #include <cstring>
 #include <iostream>
 #include "Ranally/IO/Util.h"

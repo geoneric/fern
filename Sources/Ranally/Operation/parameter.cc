@@ -1,4 +1,4 @@
-#include "Ranally/Operation/Parameter.h"
+#include "Ranally/Operation/parameter.h"
 #include <cassert>
 
 

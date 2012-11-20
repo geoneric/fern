@@ -1,6 +1,6 @@
-#include "Ranally/Operation/Operation.h"
-#include "Ranally/Operation/Parameter.h"
-#include "Ranally/Operation/Result.h"
+#include "Ranally/Operation/operation.h"
+#include "Ranally/Operation/parameter.h"
+#include "Ranally/Operation/result.h"
 
 
 namespace ranally {

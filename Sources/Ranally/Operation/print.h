@@ -2,7 +2,7 @@
 #include <boost/range/begin.hpp>
 #include <boost/range/end.hpp>
 #include <boost/range/distance.hpp>
-#include "Ranally/DataTraits.h"
+#include "Ranally/data_traits.h"
 
 
 namespace ranally {

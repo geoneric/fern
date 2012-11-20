@@ -1,5 +1,5 @@
 #pragma once
-#include "Ranally/DataTraits.h"
+#include "Ranally/data_traits.h"
 
 
 namespace ranally {

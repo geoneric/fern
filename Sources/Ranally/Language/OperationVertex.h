@@ -1,5 +1,5 @@
 #pragma once
-#include "Ranally/Operation/Operation.h"
+#include "Ranally/Operation/operation.h"
 #include "Ranally/Language/ExpressionVertex.h"
 
 

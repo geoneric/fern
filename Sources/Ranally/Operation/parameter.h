@@ -1,6 +1,6 @@
 #pragma once
-#include "Ranally/Operation/DataType.h"
-#include "Ranally/Operation/ValueType.h"
+#include "Ranally/Operation/data_type.h"
+#include "Ranally/Operation/value_type.h"
 #include "Ranally/Util/string.h"
 
 

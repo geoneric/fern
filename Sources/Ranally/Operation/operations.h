@@ -6,7 +6,7 @@
 #include <boost/range/end.hpp>
 #include <boost/range/iterator.hpp>
 #include "Ranally/Util/string.h"
-#include "Ranally/Operation/Operation.h"
+#include "Ranally/Operation/operation.h"
 
 
 namespace ranally {
