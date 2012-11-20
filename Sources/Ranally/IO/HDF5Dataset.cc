@@ -1,12 +1,11 @@
 #include "Ranally/IO/HDF5Dataset.h"
 #include <memory>
+#include <type_traits>
 #include <boost/multi_array.hpp>
-#include <boost/static_assert.hpp>
-#include <boost/type_traits.hpp>
-#include <H5Cpp.h>
+#include <cpp/H5Cpp.h>
 #include <hdf5.h>
 #include <hdf5_hl.h>
-#include "Ranally/Util/String.h"
+#include "Ranally/Util/string.h"
 #include "Ranally/IO/Feature.h"
 #include "Ranally/IO/PointAttribute.h"
 #include "Ranally/IO/PointDomain.h"
@@ -168,8 +167,10 @@ void HDF5Dataset::add(
             coordinates[i][1] = point.get<1>();
         }
 
-        BOOST_STATIC_ASSERT(boost::is_floating_point<Coordinate>::value);
-        BOOST_STATIC_ASSERT(sizeof(Coordinate) == 8);
+        static_assert(std::is_floating_point<Coordinate>::value,
+            "Coordinate must be a floating point type");
+        static_assert(sizeof(Coordinate) == 8,
+            "Size of Coordinate must be 8 bytes");
         // hid_t dataSetId = H5Dcreate2(featureGroupId, domainPathName.c_str(),
         //     H5T_IEEE_F64LE, dataSpaceId, H5P_DEFAULT, H5P_DEFAULT,
         //     H5P_DEFAULT);

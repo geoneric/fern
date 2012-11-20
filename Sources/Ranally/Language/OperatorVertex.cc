@@ -1,7 +1,7 @@
 #include "Ranally/Language/OperatorVertex.h"
 #include <stdexcept>
 #include <map>
-#include "Ranally/Util/String.h"
+#include "Ranally/Util/string.h"
 
 
 namespace ranally {

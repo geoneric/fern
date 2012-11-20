@@ -1,5 +1,3 @@
-INCLUDE(UseBoost)
-
 INCLUDE_DIRECTORIES(
     ${CMAKE_CURRENT_SOURCE_DIR}/../..
     ${CMAKE_CURRENT_BINARY_DIR}/../..
@@ -8,7 +6,7 @@ INCLUDE_DIRECTORIES(
 ADD_SUBDIRECTORY(Tests)
 
 SET(SOURCES
-    Interpreter.cc
+    Interpreter
 )
 ADD_LIBRARY(RanallyInterpreter
     ${SOURCES}

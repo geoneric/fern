@@ -1,6 +1,6 @@
 #define BOOST_TEST_MODULE ranally io
 #include <boost/test/included/unit_test.hpp>
-#include "Ranally/Util/String.h"
+#include "Ranally/Util/string.h"
 #include "Ranally/IO/HDF5Client.h"
 #include "Ranally/IO/HDF5DatasetDriver.h"
 #include "Ranally/IO/PointAttribute.h"

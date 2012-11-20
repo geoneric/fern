@@ -1,8 +1,8 @@
-#include "Ranally/Python/Exception.h"
+#include "Ranally/Python/exception.h"
 #include <stdexcept>
-#include "Ranally/Util/String.h"
-#include "Ranally/Python/OwnedReference.h"
-#include "Ranally/Python/String.h"
+#include "Ranally/Util/string.h"
+#include "Ranally/Python/owned_reference.h"
+#include "Ranally/Python/string.h"
 
 
 namespace ranally {

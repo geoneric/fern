@@ -1,8 +1,3 @@
-INCLUDE(UseBoost)
-INCLUDE(UseGdal)
-INCLUDE(UseHdf5)
-INCLUDE(UseIcu)
-
 INCLUDE_DIRECTORIES(
     ${CMAKE_CURRENT_SOURCE_DIR}/../..
 )
@@ -10,33 +5,33 @@ INCLUDE_DIRECTORIES(
 ADD_SUBDIRECTORY(Tests)
 
 SET(SOURCES
-    Attribute.cc
-    Dataset.cc
-    DatasetDriver.cc
-    Domain.cc
-    Feature.cc
-    HDF5Client.cc
-    HDF5Dataset.cc
-    HDF5DatasetDriver.cc
-    OGRClient.cc
-    OGRDataset.cc
-    OGRDatasetDriver.cc
-    OGRFeatureLayer.cc
-    PointAttribute.cc
-    PointDomain.cc
-    PointFeature.cc
-    PointValue.cc
-    PolygonAttribute.cc
-    PolygonDomain.cc
-    PolygonFeature.cc
-    PolygonValue.cc
-    RasterAttribute.cc
-    RasterValue.cc
-    SpatialDomain.cc
-    SpatioTemporalDomain.cc
-    TemporalDomain.cc
-    Util.cc
-    Value.cc
+    Attribute
+    Dataset
+    DatasetDriver
+    Domain
+    Feature
+    HDF5Client
+    HDF5Dataset
+    HDF5DatasetDriver
+    OGRClient
+    OGRDataset
+    OGRDatasetDriver
+    OGRFeatureLayer
+    PointAttribute
+    PointDomain
+    PointFeature
+    PointValue
+    PolygonAttribute
+    PolygonDomain
+    PolygonFeature
+    PolygonValue
+    RasterAttribute
+    RasterValue
+    SpatialDomain
+    SpatioTemporalDomain
+    TemporalDomain
+    Util
+    Value
 )
 ADD_LIBRARY(RanallyIO
     ${SOURCES}
@@ -45,6 +40,6 @@ TARGET_LINK_LIBRARIES(RanallyIO
     RanallyUtil
     ${HDF5_LIBRARIES}
     ${GDAL_LIBRARIES}
-    ${BOOST_FILESYSTEM_LIBRARY}
-    ${BOOST_SYSTEM_LIBRARY}
+    ${Boost_FILESYSTEM_LIBRARY}
+    ${Boost_SYSTEM_LIBRARY}
 )

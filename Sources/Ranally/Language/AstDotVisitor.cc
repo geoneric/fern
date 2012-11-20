@@ -1,5 +1,5 @@
 #include "Ranally/Language/AstDotVisitor.h"
-#include "Ranally/Util/String.h"
+#include "Ranally/Util/string.h"
 #include "Ranally/Language/Vertices.h"
 
 
@@ -366,8 +366,10 @@ void AstDotVisitor::Visit(
                 resultTypes(vertex.resultTypes());
             if(!resultTypes.empty()) {
                 assert(resultTypes.size() == 1);
-                String dataTypes = dataTypesToString(resultTypes[0].get<0>());
-                String valueTypes = valueTypesToString(resultTypes[0].get<1>());
+                String dataTypes = dataTypesToString(std::get<0>(
+                    resultTypes[0]));
+                String valueTypes = valueTypesToString(std::get<1>(
+                    resultTypes[0]));
 
                 label += String("\\n") +
                     "dt: " + dataTypes + "\\n" +

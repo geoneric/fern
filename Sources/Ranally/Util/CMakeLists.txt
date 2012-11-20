@@ -1,6 +1,3 @@
-INCLUDE(UseBoost)
-INCLUDE(UseIcu)
-
 INCLUDE_DIRECTORIES(
     ${CMAKE_CURRENT_SOURCE_DIR}/../..
 )
@@ -8,7 +5,7 @@ INCLUDE_DIRECTORIES(
 ADD_SUBDIRECTORY(Tests)
 
 SET(SOURCES
-    String.cc
+    string
 )
 ADD_LIBRARY(RanallyUtil
     ${SOURCES}

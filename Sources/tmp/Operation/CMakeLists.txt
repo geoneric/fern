@@ -2,10 +2,10 @@ INCLUDE_DIRECTORIES(
     ${CMAKE_CURRENT_SOURCE_DIR}/../../..
 )
 SET(SOURCES
-    Argument.cc
-    Parameter.cc
-    Requirements.cc
-    Result.cc
+    Argument
+    Parameter
+    Requirements
+    Result
 )
 ADD_LIBRARY(RanallyLanguageOperation
     ${SOURCES}

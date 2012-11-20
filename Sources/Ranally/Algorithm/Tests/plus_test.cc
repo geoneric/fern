@@ -1,6 +1,6 @@
 #define BOOST_TEST_MODULE ranally algorithm
 #include <boost/test/included/unit_test.hpp>
-#include <boost/array.hpp>
+#include <array>
 #include "Ranally/Algorithm/Plus.h"
 #include "Ranally/Raster.h"
 
@@ -48,10 +48,10 @@ BOOST_AUTO_TEST_CASE(argument_and_result_types)
         BOOST_CHECK_EQUAL(result[1], 9);
     }
 
-    // int + boost::array<int, 2> -> int[2]
+    // int + std::array<int, 2> -> int[2]
     {
         int argument1 = 3;
-        boost::array<int, 2> argument2;
+        std::array<int, 2> argument2;
         argument2[0] = 4;
         argument2[1] = 5;
         int result[2] = {0, 0};
@@ -60,10 +60,10 @@ BOOST_AUTO_TEST_CASE(argument_and_result_types)
         BOOST_CHECK_EQUAL(result[1], 8);
     }
 
-    // int[2] + boost::array<int, 2> -> std::vector<int>(2, 0)
+    // int[2] + std::array<int, 2> -> std::vector<int>(2, 0)
     {
         int argument1[2] = {3, 4};
-        boost::array<int, 2> argument2;
+        std::array<int, 2> argument2;
         argument2[0] = 4;
         argument2[1] = 5;
         std::vector<int> result(2, 0);
@@ -72,7 +72,7 @@ BOOST_AUTO_TEST_CASE(argument_and_result_types)
         BOOST_CHECK_EQUAL(result[1], 9);
     }
 
-    // int[2] + int -> boost::array<int, 2>
+    // int[2] + int -> std::array<int, 2>
     {
         int argument1[2] = {3, 4};
         int argument2 = 4;

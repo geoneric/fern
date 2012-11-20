@@ -9,7 +9,7 @@
 #include "Ranally/IO/PolygonAttribute.h"
 #include "Ranally/IO/PolygonDomain.h"
 #include "Ranally/IO/PolygonFeature.h"
-#include "Ranally/Util/String.h"
+#include "Ranally/Util/string.h"
 
 
 namespace ranally {

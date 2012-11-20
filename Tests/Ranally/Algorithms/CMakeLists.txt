@@ -8,9 +8,9 @@ INCLUDE_DIRECTORIES(
     ../../../Sources/C++
 )
 SET(TEST_SOURCES
-    BinarySameTest.cc
-    PlusTest.cc
-    Test.cc
+    BinarySameTest
+    PlusTest
+    Test
 )
 ADD_EXECUTABLE(testRanally
     ${TEST_SOURCES}

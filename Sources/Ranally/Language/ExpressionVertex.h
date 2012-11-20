@@ -1,6 +1,6 @@
 #pragma once
+#include <tuple>
 #include <vector>
-#include <boost/tuple/tuple.hpp>
 #include "Ranally/Operation/DataType.h"
 #include "Ranally/Operation/ValueType.h"
 #include "Ranally/Language/StatementVertex.h"
@@ -28,7 +28,7 @@ class ExpressionVertex:
 
 public:
 
-    typedef boost::tuple<DataType, ValueType> ResultType;
+    typedef std::tuple<DataType, ValueType> ResultType;
 
     virtual        ~ExpressionVertex   ()=default;
 

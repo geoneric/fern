@@ -1,6 +1,6 @@
 #pragma once
-#include <boost/array.hpp>
-#include <boost/range/algorithm/fill.hpp>
+#include <algorithm>
+#include <array>
 #include "Ranally/DataTraits.h"
 
 
@@ -14,7 +14,7 @@ class Raster
 {
 private:
 
-    typedef boost::array<ValueType, nrRows_ * nrCols_> Array;
+    typedef std::array<ValueType, nrRows_ * nrCols_> Array;
 
     Array            _cells;
 
@@ -43,7 +43,7 @@ public:
         ValueType initialValue)
         : _cells()
     {
-        boost::range::fill(_cells, initialValue);
+        std::fill(_cells.begin(), _cells.end(), initialValue);
     }
 
     void set(

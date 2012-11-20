@@ -1,6 +1,6 @@
-#include "Ranally/Util/String.h"
+#include "Ranally/Util/string.h"
+#include <memory>
 #include <unicode/ustring.h>
-#include <boost/scoped_array.hpp>
 
 
 namespace {
@@ -20,7 +20,7 @@ std::string encodeInUTF8(
         // UTF-8.
         unsigned int nrCodePoints = string.countChar32();
         unsigned int maxNrBytesNeeded = 4 * nrCodePoints;
-        boost::scoped_array<char> encodedString(new char[maxNrBytesNeeded]);
+        std::unique_ptr<char> encodedString(new char[maxNrBytesNeeded]);
 
         // Convert UnicodeString encoded in UTF-16 to UTF-8.
         UErrorCode status = U_ZERO_ERROR;

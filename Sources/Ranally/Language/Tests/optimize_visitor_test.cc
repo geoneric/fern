@@ -3,7 +3,7 @@
 #include "Ranally/Interpreter/Interpreter.h"
 #include "Ranally/Language/OptimizeVisitor.h"
 #include "Ranally/Language/ScriptVisitor.h"
-#include "Ranally/Util/String.h"
+#include "Ranally/Util/string.h"
 
 
 class Support

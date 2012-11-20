@@ -2,7 +2,7 @@
 #include "ogrsf_frmts.h"
 #include "Ranally/IO/PointDomain.h"
 #include "Ranally/IO/PolygonDomain.h"
-#include "Ranally/Util/String.h"
+#include "Ranally/Util/string.h"
 
 
 namespace ranally {

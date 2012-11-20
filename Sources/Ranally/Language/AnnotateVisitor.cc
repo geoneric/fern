@@ -1,5 +1,5 @@
 #include "Ranally/Language/AnnotateVisitor.h"
-#include "Ranally/Util/String.h"
+#include "Ranally/Util/string.h"
 #include "Ranally/Operation/Result.h"
 #include "Ranally/Language/Vertices.h"
 

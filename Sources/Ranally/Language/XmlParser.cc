@@ -1,7 +1,7 @@
 #include "Ranally/Language/XmlParser.h"
 #include <sstream>
 #include <stack>
-#include "Ranally/Util/String.h"
+#include "Ranally/Util/string.h"
 #include "Ranally/Language/FunctionVertex.h"
 #include "Ranally/Language/IfVertex.h"
 #include "Ranally/Language/NameVertex.h"

@@ -1,7 +1,7 @@
 #pragma once
 #include "Ranally/Operation/DataType.h"
 #include "Ranally/Operation/ValueType.h"
-#include "Ranally/Util/String.h"
+#include "Ranally/Util/string.h"
 
 
 namespace ranally {

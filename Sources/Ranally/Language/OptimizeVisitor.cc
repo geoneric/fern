@@ -1,8 +1,7 @@
 #include "Ranally/Language/OptimizeVisitor.h"
 #include "Ranally/Language/AssignmentVertex.h"
-#include "Ranally/Util/String.h"
-#include <boost/range/algorithm/reverse.hpp>
-#include <boost/range/algorithm/sort.hpp>
+#include "Ranally/Util/string.h"
+#include <algorithm>
 
 
 namespace ranally {
@@ -45,13 +44,15 @@ void OptimizeVisitor::visitStatements(
                 }
             }
 
-            boost::range::reverse(statementsToErase);
+            std::reverse(statementsToErase.begin(), statementsToErase.end());
             for(size_t i = 0; i < statementsToErase.size(); ++i) {
                 statements.erase(statements.begin() + statementsToErase[i]);
             }
 
-            boost::range::sort(superfluousStatementsToErase);
-            boost::range::reverse(superfluousStatementsToErase);
+            std::sort(superfluousStatementsToErase.begin(),
+                superfluousStatementsToErase.end());
+            std::reverse(superfluousStatementsToErase.begin(),
+                superfluousStatementsToErase.end());
             for(size_t i = 0; i < superfluousStatementsToErase.size(); ++i) {
                 _superfluousStatements.erase(_superfluousStatements.begin() +
                     superfluousStatementsToErase[i]);

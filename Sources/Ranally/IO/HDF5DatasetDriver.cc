@@ -1,8 +1,8 @@
 #include "Ranally/IO/HDF5DatasetDriver.h"
 #include <cassert>
 #include <boost/filesystem.hpp>
-#include <H5Cpp.h>
-#include "Ranally/Util/String.h"
+#include <cpp/H5Cpp.h>
+#include "Ranally/Util/string.h"
 #include "Ranally/IO/HDF5Dataset.h"
 
 

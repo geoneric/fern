@@ -1,6 +1,6 @@
 #define BOOST_TEST_MODULE ranally io
 #include <boost/test/included/unit_test.hpp>
-#include "Ranally/Util/String.h"
+#include "Ranally/Util/string.h"
 #include "Ranally/IO/OGRClient.h"
 #include "Ranally/IO/OGRDatasetDriver.h"
 #include "Ranally/IO/PointDomain.h"

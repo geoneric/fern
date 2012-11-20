@@ -1,10 +1,3 @@
-INCLUDE(UseBoost)
-INCLUDE(UseExpat)
-INCLUDE(UseLoki)
-INCLUDE(UsePython)
-SET(XSD_ROOT ${PCRTEAM_PLATFORM})
-INCLUDE(UseXsd)
-
 INCLUDE_DIRECTORIES(
     ${CMAKE_CURRENT_SOURCE_DIR}/../..
     ${CMAKE_CURRENT_BINARY_DIR}/../..
@@ -33,34 +26,34 @@ ADD_CUSTOM_COMMAND(
 )
 SET(SOURCES
     ${CMAKE_CURRENT_BINARY_DIR}/Ranally-pskel.cxx
-    AlgebraParser.cc
-    AnnotateVisitor.cc
-    AssignmentVertex.cc
-    AstDotVisitor.cc
-    CopyVisitor.cc
-    DotVisitor.cc
-    ExecuteVisitor.cc
-    ExpressionVertex.cc
-    FunctionVertex.cc
-    IdentifyVisitor.cc
-    IfVertex.cc
-    FlowgraphDotVisitor.cc
-    NameVertex.cc
-    NumberVertex.cc
-    OperationVertex.cc
-    OperatorVertex.cc
-    OptimizeVisitor.cc
-    ScriptVertex.cc
-    ScriptVisitor.cc
-    StatementVertex.cc
-    StringVertex.cc
-    SymbolTable.cc
-    SyntaxVertex.cc
-    ThreadVisitor.cc
-    ValidateVisitor.cc
-    Visitor.cc
-    WhileVertex.cc
-    XmlParser.cc
+    AlgebraParser
+    AnnotateVisitor
+    AssignmentVertex
+    AstDotVisitor
+    CopyVisitor
+    DotVisitor
+    ExecuteVisitor
+    ExpressionVertex
+    FunctionVertex
+    IdentifyVisitor
+    IfVertex
+    FlowgraphDotVisitor
+    NameVertex
+    NumberVertex
+    OperationVertex
+    OperatorVertex
+    OptimizeVisitor
+    ScriptVertex
+    ScriptVisitor
+    StatementVertex
+    StringVertex
+    SymbolTable
+    SyntaxVertex
+    ThreadVisitor
+    ValidateVisitor
+    Visitor
+    WhileVertex
+    XmlParser
 )
 ADD_LIBRARY(RanallyLanguage
     ${SOURCES}
@@ -69,6 +62,6 @@ TARGET_LINK_LIBRARIES(RanallyLanguage
     RanallyOperation
     RanallyPython
     RanallyUtil
-    ${EXPAT_LIBRARIES}
+    ${EXPAT_LIBRARY}
     ${PYTHON_LIBRARIES}
 )

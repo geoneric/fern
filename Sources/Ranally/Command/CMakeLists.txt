@@ -1,16 +1,14 @@
-INCLUDE(UseBoost)
-
 INCLUDE_DIRECTORIES(
     ${CMAKE_CURRENT_SOURCE_DIR}/../..
     ${CMAKE_CURRENT_BINARY_DIR}/../..
 )
 ADD_EXECUTABLE(ranally
-    Command.cc
-    ConvertCommand.cc
-    DescribeCommand.cc
-    ExecuteCommand.cc
-    ImportCommand.cc
-    Ranally.cc
+    Command
+    ConvertCommand
+    DescribeCommand
+    ExecuteCommand
+    ImportCommand
+    Ranally
 )
 ADD_DEPENDENCIES(ranally
     Operation-xml.h

@@ -1,6 +1,6 @@
 SET(TEST_SOURCES
-  ExampleCodeTest.cc
-  Test.cc
+  ExampleCodeTest
+  Test
 )
 ADD_EXECUTABLE(testExampleCode
   ${TEST_SOURCES}

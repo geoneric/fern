@@ -2,7 +2,7 @@
 #include <memory>
 #include <vector>
 #include <loki/Visitor.h>
-#include "Ranally/Util/String.h"
+#include "Ranally/Util/string.h"
 
 
 namespace ranally {

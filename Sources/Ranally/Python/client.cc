@@ -1,5 +1,5 @@
 #include <Python.h>
-#include "Ranally/Python/Client.h"
+#include "Ranally/Python/client.h"
 
 
 namespace ranally {

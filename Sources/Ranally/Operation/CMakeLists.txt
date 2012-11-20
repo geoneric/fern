@@ -1,8 +1,3 @@
-INCLUDE(UseBoost)
-INCLUDE(UseExpat)
-SET(XSD_ROOT ${PCRTEAM_PLATFORM})
-INCLUDE(UseXsd)
-
 INCLUDE_DIRECTORIES(
     ${CMAKE_CURRENT_SOURCE_DIR}/../..
     ${CMAKE_CURRENT_BINARY_DIR}
@@ -54,18 +49,18 @@ ADD_CUSTOM_COMMAND(
 )
 SET(SOURCES
     ${CMAKE_CURRENT_BINARY_DIR}/Operation-pskel.cxx
-    Operation.cc
-    Operations.cc
-    Parameter.cc
-    Result.cc
-    OperationXmlParser.cc
+    Operation
+    Operations
+    Parameter
+    Result
+    OperationXmlParser
 )
 ADD_LIBRARY(RanallyOperation
     ${SOURCES}
 )
 TARGET_LINK_LIBRARIES(RanallyOperation
     RanallyUtil
-    ${EXPAT_LIBRARIES}
+    ${EXPAT_LIBRARY}
 )
 ADD_CUSTOM_TARGET(Operation-xml.h
     DEPENDS

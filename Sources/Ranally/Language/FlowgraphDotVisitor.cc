@@ -1,5 +1,5 @@
 #include "FlowgraphDotVisitor.h"
-#include "Ranally/Util/String.h"
+#include "Ranally/Util/string.h"
 #include "Ranally/Language/Vertices.h"
 
 
