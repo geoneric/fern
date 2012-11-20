@@ -113,7 +113,7 @@ class Operations_pimpl:
 
 private:
 
-    typedef std::vector<std::shared_ptr<ranally::Operation> > OperationsData;
+    typedef std::vector<std::shared_ptr<ranally::Operation>> OperationsData;
 
     OperationsData   _operations;
 

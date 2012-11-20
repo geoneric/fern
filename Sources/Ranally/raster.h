@@ -90,7 +90,7 @@ template<
     typename ValueType,
     size_t nrRows,
     size_t nrCols>
-struct DataTraits<Raster<ValueType, nrRows, nrCols> >
+struct DataTraits<Raster<ValueType, nrRows, nrCols>>
 {
     typedef RasterTag DataCategory;
 };
@@ -104,7 +104,7 @@ template<
     typename ValueType,
     size_t nrRows,
     size_t nrCols>
-struct range_const_iterator<ranally::Raster<ValueType, nrRows, nrCols> >
+struct range_const_iterator<ranally::Raster<ValueType, nrRows, nrCols>>
 {
     typedef typename ranally::Raster<ValueType, nrRows, nrCols>::const_iterator
         type;
@@ -115,7 +115,7 @@ template<
     typename ValueType,
     size_t nrRows,
     size_t nrCols>
-struct range_mutable_iterator<ranally::Raster<ValueType, nrRows, nrCols> >
+struct range_mutable_iterator<ranally::Raster<ValueType, nrRows, nrCols>>
 {
     typedef typename ranally::Raster<ValueType, nrRows, nrCols>::iterator type;
 };

@@ -21,7 +21,7 @@ namespace http://www.jemig.eu/ranally
     Assignment       "std::shared_ptr<AssignmentVertex>";
     If               "std::shared_ptr<IfVertex>";
     While            "std::shared_ptr<WhileVertex>";
-    // Targets          "std::vector<std::shared_ptr<ExpressionVertex> >";
-    Expressions      "std::vector<std::shared_ptr<ExpressionVertex> >";
-    Statements       "std::vector<std::shared_ptr<StatementVertex> >";
+    // Targets          "std::vector<std::shared_ptr<ExpressionVertex>>";
+    Expressions      "std::vector<std::shared_ptr<ExpressionVertex>>";
+    Statements       "std::vector<std::shared_ptr<StatementVertex>>";
 }

@@ -96,4 +96,66 @@ std::string String::encodeInUTF8() const
     return ::encodeInUTF8(*this);
 }
 
+
+bool String::isEmpty() const
+{
+    return UnicodeString::isEmpty();
+}
+
+
+bool String::operator<(
+    String const& string) const
+{
+    return UnicodeString::operator<(string);
+}
+
+
+bool String::operator==(
+    String const& string) const
+{
+    return UnicodeString::operator==(string);
+}
+
+
+String& String::operator+=(
+    String const& string)
+{
+    UnicodeString::operator+=(string);
+    return *this;
+}
+
+
+bool String::endsWith(
+    String const& string) const
+{
+    return UnicodeString::endsWith(string);
+}
+
+
+String operator+(
+    String const& lhs,
+    String const& rhs)
+{
+    String string(lhs);
+    string += rhs;
+    return string;
+}
+
+
+//! Output operator for String's.
+/*!
+  The operator in this namespace makes it possible to write
+  \code
+  BOOST_CHECK_EQUAL(unicodeString1, unicodeString2);
+  \endcode
+  and get a print of the strings when the test fails.
+*/
+std::ostream& operator<<(
+    std::ostream& stream,
+    String const& string)
+{
+    stream << string.encodeInUTF8();
+    return stream;
+}
+
 } // namespace ranally

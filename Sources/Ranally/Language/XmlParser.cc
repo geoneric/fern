@@ -21,7 +21,7 @@ class Ranally_pimpl:
 
 public:
 
-    typedef std::vector<std::shared_ptr<ranally::StatementVertex> >
+    typedef std::vector<std::shared_ptr<ranally::StatementVertex>>
         StatementVertices;
 
     void pre()
@@ -69,7 +69,7 @@ public:
     }
 
     // void Targets(
-    //   std::vector<std::shared_ptr<ranally::ExpressionVertex> > const&
+    //   std::vector<std::shared_ptr<ranally::ExpressionVertex>> const&
     //     vertices)
     // {
     //   assert(!vertices.empty());
@@ -92,7 +92,7 @@ public:
 
 private:
 
-    std::vector<std::shared_ptr<ranally::ExpressionVertex> >
+    std::vector<std::shared_ptr<ranally::ExpressionVertex>>
         _expressions;
 
 };
@@ -101,7 +101,7 @@ private:
 // class Targets_pimpl: public ranally::Targets_pskel
 // {
 // private:
-//   std::vector<std::shared_ptr<ranally::ExpressionVertex> >
+//   std::vector<std::shared_ptr<ranally::ExpressionVertex>>
 //     _vertices;
 // 
 // public:
@@ -117,7 +117,7 @@ private:
 //     _vertices.push_back(vertex);
 //   }
 // 
-//   std::vector<std::shared_ptr<ranally::ExpressionVertex> >
+//   std::vector<std::shared_ptr<ranally::ExpressionVertex>>
 //     post_Targets()
 //   {
 //     assert(!_vertices.empty());
@@ -145,7 +145,7 @@ public:
     }
 
     void Statements(
-        std::vector<std::shared_ptr<ranally::StatementVertex> >
+        std::vector<std::shared_ptr<ranally::StatementVertex>>
             const& vertices)
     {
         if(_dataStack.top().trueStatementVertices.empty()) {
@@ -170,7 +170,7 @@ public:
 
 private:
 
-    typedef std::vector<std::shared_ptr<ranally::StatementVertex> >
+    typedef std::vector<std::shared_ptr<ranally::StatementVertex>>
         StatementVertices;
 
     struct IfData
@@ -205,7 +205,7 @@ public:
     }
 
     void Statements(
-        std::vector<std::shared_ptr<ranally::StatementVertex> >
+        std::vector<std::shared_ptr<ranally::StatementVertex>>
             const& vertices)
     {
         if(_dataStack.top().trueStatementVertices.empty()) {
@@ -230,7 +230,7 @@ public:
 
 private:
 
-    typedef std::vector<std::shared_ptr<ranally::StatementVertex> >
+    typedef std::vector<std::shared_ptr<ranally::StatementVertex>>
         StatementVertices;
 
     struct WhileData
@@ -263,7 +263,7 @@ public:
         _dataStack.top().push_back(vertex);
     }
 
-    std::vector<std::shared_ptr<ranally::StatementVertex> >
+    std::vector<std::shared_ptr<ranally::StatementVertex>>
         post_Statements()
     {
         assert(!_dataStack.empty());
@@ -274,7 +274,7 @@ public:
 
 private:
 
-    typedef std::vector<std::shared_ptr<ranally::StatementVertex> >
+    typedef std::vector<std::shared_ptr<ranally::StatementVertex>>
         StatementsData;
 
     std::stack<StatementsData> _dataStack;
@@ -360,7 +360,7 @@ public:
         _dataStack.top().push_back(vertex);
     }
 
-    std::vector<std::shared_ptr<ranally::ExpressionVertex> >
+    std::vector<std::shared_ptr<ranally::ExpressionVertex>>
         post_Expressions()
     {
         assert(!_dataStack.empty());
@@ -371,7 +371,7 @@ public:
 
 private:
 
-    typedef std::vector<std::shared_ptr<ranally::ExpressionVertex> >
+    typedef std::vector<std::shared_ptr<ranally::ExpressionVertex>>
         ExpressionsData;
 
     std::stack<ExpressionsData> _dataStack;
@@ -639,7 +639,7 @@ public:
     }
 
     void Expressions(
-        std::vector<std::shared_ptr<ranally::ExpressionVertex> >
+        std::vector<std::shared_ptr<ranally::ExpressionVertex>>
             const& vertices)
     {
         assert(!_dataStack.empty());
@@ -659,7 +659,7 @@ public:
 
 private:
 
-    typedef std::vector<std::shared_ptr<ranally::ExpressionVertex> >
+    typedef std::vector<std::shared_ptr<ranally::ExpressionVertex>>
         ExpressionVertices;
 
     struct FunctionData
@@ -692,7 +692,7 @@ public:
     }
 
     void Expressions(
-        std::vector<std::shared_ptr<ranally::ExpressionVertex> >
+        std::vector<std::shared_ptr<ranally::ExpressionVertex>>
             const& vertices)
     {
         assert(!_dataStack.empty());
@@ -712,7 +712,7 @@ public:
 
 private:
 
-    typedef std::vector<std::shared_ptr<ranally::ExpressionVertex> >
+    typedef std::vector<std::shared_ptr<ranally::ExpressionVertex>>
         ExpressionVertices;
 
     struct OperatorData

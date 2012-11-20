@@ -6,8 +6,14 @@
 
 namespace ranally {
 
+//! Unicode string class.
+/*!
+*/
+// This class privately inherits from UnicodeString so we can keep track of
+// the methods that are actually used. If necessary we may want to move to
+// another string base type (C++ Unicode string type?!).
 class String:
-    public UnicodeString
+    private UnicodeString
 {
 
 public:
@@ -32,27 +38,27 @@ public:
 
                    ~String             ()=default;
 
+    bool           operator<           (String const& string) const;
+
+    bool           operator==          (String const& string) const;
+
+    String&        operator+=          (String const& string);
+
     std::string    encodeInUTF8        () const;
+
+    bool           isEmpty             () const;
+
+    bool           endsWith            (String const& string) const;
 
 private:
 
 };
 
 
-//! Output operator for String's.
-/*!
-  The operator in this namespace makes it possible to write
-  \code
-  BOOST_CHECK_EQUAL(unicodeString1, unicodeString2);
-  \endcode
-  and get a print of the strings when the test fails.
-*/
-inline std::ostream& operator<<(
-    std::ostream& stream,
-    String const& string)
-{
-    stream << string.encodeInUTF8();
-    return stream;
-}
+String             operator+           (String const& lhs,
+                                        String const& rhs);
+
+std::ostream&      operator<<          (std::ostream& stream,
+                                        String const& string);
 
 } // namespace ranally
