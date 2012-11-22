@@ -1,4 +1,0 @@
-- Local: use only local values.
-- Focal: use values from an area defined by a kernel.
-- Zonal: use values from an area defined by a nominal data set.
-- Global: use values from the whole data set.
