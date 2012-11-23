@@ -1,4 +1,4 @@
-ADD_SUBDIRECTORY(tests)
+ADD_SUBDIRECTORY(test)
 
 CONFIGURE_FILE(
     ${CMAKE_CURRENT_SOURCE_DIR}/syntax_tree.map.in

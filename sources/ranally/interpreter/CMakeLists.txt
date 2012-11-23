@@ -1,4 +1,4 @@
-ADD_SUBDIRECTORY(tests)
+ADD_SUBDIRECTORY(test)
 
 SET(SOURCES
     interpreter
