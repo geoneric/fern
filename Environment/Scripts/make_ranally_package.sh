@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -e
-set -x
 
 # Where to build targets.
 build_root=$1
@@ -108,5 +107,6 @@ function install_projects() {
 
 build_projects
 install_projects
+mkdir $install_prefix/lib
 fixup.py $install_prefix $external_prefix
-# verify_ranally_installation.py $install_prefix
+verify_ranally_installation.py $install_prefix
