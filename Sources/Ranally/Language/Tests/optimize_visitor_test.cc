@@ -1,8 +1,8 @@
 #define BOOST_TEST_MODULE ranally language
 #include <boost/test/included/unit_test.hpp>
 #include "Ranally/Interpreter/Interpreter.h"
-#include "Ranally/Language/OptimizeVisitor.h"
-#include "Ranally/Language/ScriptVisitor.h"
+#include "Ranally/Language/optimize_visitor.h"
+#include "Ranally/Language/script_visitor.h"
 #include "Ranally/Util/string.h"
 
 

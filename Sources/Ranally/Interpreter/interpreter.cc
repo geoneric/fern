@@ -1,12 +1,12 @@
 #include "Ranally/Interpreter/interpreter.h"
 #include "Ranally/Operation/operation_xml_parser.h"
 #include "Ranally/Operation/operation-xml.h"
-#include "Ranally/Language/AnnotateVisitor.h"
-#include "Ranally/Language/ExecuteVisitor.h"
-#include "Ranally/Language/IdentifyVisitor.h"
-#include "Ranally/Language/ScriptVertex.h"
-#include "Ranally/Language/ThreadVisitor.h"
-#include "Ranally/Language/ValidateVisitor.h"
+#include "Ranally/Language/annotate_visitor.h"
+#include "Ranally/Language/execute_visitor.h"
+#include "Ranally/Language/identify_visitor.h"
+#include "Ranally/Language/script_vertex.h"
+#include "Ranally/Language/thread_visitor.h"
+#include "Ranally/Language/validate_visitor.h"
 
 
 namespace ranally {

@@ -1,9 +1,9 @@
 #define BOOST_TEST_MODULE ranally language
 #include <boost/test/included/unit_test.hpp>
 #include "Ranally/Util/string.h"
-#include "Ranally/Language/AlgebraParser.h"
-#include "Ranally/Language/Ranally-pskel.hxx"
-#include "Ranally/Language/XmlParser.h"
+#include "Ranally/Language/algebra_parser.h"
+#include "Ranally/Language/ranally-pskel.hxx"
+#include "Ranally/Language/xml_parser.h"
 
 
 BOOST_AUTO_TEST_SUITE(xml_parser)

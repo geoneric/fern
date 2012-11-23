@@ -1,33 +1,33 @@
 ADD_SUBDIRECTORY(Tests)
 
 SET(SOURCES
-    Attribute
-    Dataset
-    DatasetDriver
-    Domain
-    Feature
-    HDF5Client
-    HDF5Dataset
-    HDF5DatasetDriver
-    OGRClient
-    OGRDataset
-    OGRDatasetDriver
-    OGRFeatureLayer
-    PointAttribute
-    PointDomain
-    PointFeature
-    PointValue
-    PolygonAttribute
-    PolygonDomain
-    PolygonFeature
-    PolygonValue
-    RasterAttribute
-    RasterValue
-    SpatialDomain
-    SpatioTemporalDomain
-    TemporalDomain
-    Util
-    Value
+    attribute
+    dataset
+    dataset_driver
+    domain
+    feature
+    hdf5_client
+    hdf5_dataset
+    hdf5_dataset_driver
+    ogr_client
+    ogr_dataset
+    ogr_dataset_driver
+    ogr_feature_layer
+    point_attribute
+    point_domain
+    point_feature
+    point_value
+    polygon_attribute
+    polygon_domain
+    polygon_feature
+    polygon_value
+    raster_attribute
+    raster_value
+    spatial_domain
+    spatio_temporal_domain
+    temporal_domain
+    util
+    value
 )
 ADD_LIBRARY(RanallyIO
     ${SOURCES}

@@ -1,10 +1,10 @@
 #define BOOST_TEST_MODULE ranally io
 #include <boost/test/included/unit_test.hpp>
 #include "Ranally/Util/string.h"
-#include "Ranally/IO/OGRClient.h"
-#include "Ranally/IO/OGRDatasetDriver.h"
-#include "Ranally/IO/PointDomain.h"
-#include "Ranally/IO/PointFeature.h"
+#include "Ranally/IO/ogr_client.h"
+#include "Ranally/IO/ogr_dataset_driver.h"
+#include "Ranally/IO/point_domain.h"
+#include "Ranally/IO/point_feature.h"
 
 
 void removeTestFiles()

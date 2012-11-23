@@ -4,11 +4,11 @@
 #include "Ranally/Operation/parameter.h"
 #include "Ranally/Operation/result.h"
 #include "Ranally/Operation/operation_xml_parser.h"
-#include "Ranally/Language/AlgebraParser.h"
-#include "Ranally/Language/AnnotateVisitor.h"
-#include "Ranally/Language/OperationVertex.h"
-#include "Ranally/Language/ScriptVertex.h"
-#include "Ranally/Language/XmlParser.h"
+#include "Ranally/Language/algebra_parser.h"
+#include "Ranally/Language/annotate_visitor.h"
+#include "Ranally/Language/operation_vertex.h"
+#include "Ranally/Language/script_vertex.h"
+#include "Ranally/Language/xml_parser.h"
 
 
 class Support

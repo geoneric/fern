@@ -1,7 +1,7 @@
 #include "Ranally/Command/import_command.h"
 #include <cstring>
 #include <iostream>
-#include "Ranally/IO/Util.h"
+#include "Ranally/IO/util.h"
 
 
 namespace ranally {

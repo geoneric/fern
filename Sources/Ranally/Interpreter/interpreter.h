@@ -1,7 +1,7 @@
 #pragma once
-#include "Ranally/Language/AlgebraParser.h"
-#include "Ranally/Language/ScriptVertex.h"
-#include "Ranally/Language/XmlParser.h"
+#include "Ranally/Language/algebra_parser.h"
+#include "Ranally/Language/script_vertex.h"
+#include "Ranally/Language/xml_parser.h"
 
 
 namespace ranally {

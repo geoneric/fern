@@ -1,0 +1,11 @@
+#pragma once
+#include "Ranally/Language/assignment_vertex.h"
+#include "Ranally/Language/function_vertex.h"
+#include "Ranally/Language/if_vertex.h"
+#include "Ranally/Language/name_vertex.h"
+#include "Ranally/Language/number_vertex.h"
+#include "Ranally/Language/operator_vertex.h"
+#include "Ranally/Language/script_vertex.h"
+#include "Ranally/Language/statement_vertex.h"
+#include "Ranally/Language/string_vertex.h"
+#include "Ranally/Language/while_vertex.h"

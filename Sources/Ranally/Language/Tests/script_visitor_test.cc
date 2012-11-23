@@ -1,10 +1,10 @@
 #define BOOST_TEST_MODULE ranally language
 #include <boost/test/included/unit_test.hpp>
 #include "Ranally/Util/string.h"
-#include "Ranally/Language/AlgebraParser.h"
-#include "Ranally/Language/ScriptVertex.h"
-#include "Ranally/Language/ScriptVisitor.h"
-#include "Ranally/Language/XmlParser.h"
+#include "Ranally/Language/algebra_parser.h"
+#include "Ranally/Language/script_vertex.h"
+#include "Ranally/Language/script_visitor.h"
+#include "Ranally/Language/xml_parser.h"
 
 
 class Support
