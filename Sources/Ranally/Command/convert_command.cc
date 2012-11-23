@@ -1,7 +1,7 @@
 #include "Ranally/Command/convert_command.h"
-#include "Ranally/Language/AstDotVisitor.h"
-#include "Ranally/Language/FlowgraphDotVisitor.h"
-#include "Ranally/Language/XmlParser.h"
+#include "Ranally/Language/ast_dot_visitor.h"
+#include "Ranally/Language/flowgraph_dot_visitor.h"
+#include "Ranally/Language/xml_parser.h"
 #include "Ranally/Interpreter/interpreter.h"
 
 

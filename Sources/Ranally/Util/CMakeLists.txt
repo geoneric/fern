@@ -1,4 +1,4 @@
-ADD_SUBDIRECTORY(Tests)
+ADD_SUBDIRECTORY(tests)
 
 SET(SOURCES
     string

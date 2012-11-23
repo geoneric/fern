@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include "Ranally/Language/AlgebraParser.h"
+#include "Ranally/Language/algebra_parser.h"
 
 
 namespace ranally {
