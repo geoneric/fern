@@ -1,0 +1,80 @@
+#include "ranally/io/ogr_feature_layer.h"
+#include "ogrsf_frmts.h"
+#include "ranally/io/point_domain.h"
+#include "ranally/io/polygon_domain.h"
+#include "ranally/util/string.h"
+
+
+namespace ranally {
+namespace {
+
+Domain::Type domainType(
+    OGRwkbGeometryType geometryType)
+{
+    Domain::Type domainType;
+
+    switch(geometryType) {
+        case wkbPoint: {
+            domainType = Domain::PointDomain;
+        }
+        case wkbPolygon: {
+            domainType = Domain::PolygonDomain;
+        }
+#ifndef NDEBUG
+        default: {
+            assert(false);
+        }
+#endif
+    }
+
+    return domainType;
+}
+
+} // Anonymous namespace.
+
+
+OGRFeatureLayer::OGRFeatureLayer(
+    OGRLayer* const layer)
+
+    : _layer(layer),
+      _domain()
+
+{
+    switch(domainType(_layer->GetGeomType())) {
+        case Domain::PointDomain: {
+            PointsPtr points;
+            _domain.reset(new PointDomain(points));
+        }
+        case Domain::PolygonDomain: {
+            PolygonsPtr polygons;
+            _domain.reset(new PolygonDomain(polygons));
+        }
+#ifndef NDEBUG
+        default: {
+            assert(false);
+        }
+#endif
+    }
+
+    assert(_domain);
+}
+
+
+OGRFeatureLayer::~OGRFeatureLayer()
+{
+}
+
+
+String OGRFeatureLayer::name() const
+{
+    return String(_layer->GetName());
+}
+
+
+Domain const& OGRFeatureLayer::domain() const
+{
+    assert(_domain);
+    return *_domain;
+}
+
+} // namespace ranally
