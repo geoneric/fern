@@ -1,4 +1,4 @@
-#include "ranally/IO/hdf5_dataset_driver.h"
+#include "ranally/io/hdf5_dataset_driver.h"
 #include <cassert>
 #include <boost/filesystem.hpp>
 #include <cpp/H5Cpp.h>

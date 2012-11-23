@@ -1,11 +1,11 @@
 #define BOOST_TEST_MODULE ranally io
 #include <boost/test/included/unit_test.hpp>
-#include "Ranally/Util/string.h"
-#include "Ranally/IO/hdf5_client.h"
-#include "Ranally/IO/hdf5_dataset_driver.h"
-#include "Ranally/IO/point_attribute.h"
-#include "Ranally/IO/point_domain.h"
-#include "Ranally/IO/point_feature.h"
+#include "ranally/util/string.h"
+#include "ranally/io/hdf5_client.h"
+#include "ranally/io/hdf5_dataset_driver.h"
+#include "ranally/io/point_attribute.h"
+#include "ranally/io/point_domain.h"
+#include "ranally/io/point_feature.h"
 
 
 void removeTestFiles()

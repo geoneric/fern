@@ -1,9 +1,9 @@
 #define BOOST_TEST_MODULE ranally language
 #include <boost/test/included/unit_test.hpp>
-#include "Ranally/Language/algebra_parser.h"
-#include "Ranally/Language/script_vertex.h"
-#include "Ranally/Language/visitor.h"
-#include "Ranally/Language/xml_parser.h"
+#include "ranally/language/algebra_parser.h"
+#include "ranally/language/script_vertex.h"
+#include "ranally/language/visitor.h"
+#include "ranally/language/xml_parser.h"
 
 
 class CountVerticesVisitor:

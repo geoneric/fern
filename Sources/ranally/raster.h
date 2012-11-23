@@ -1,7 +1,7 @@
 #pragma once
 #include <algorithm>
 #include <array>
-#include "Ranally/data_traits.h"
+#include "ranally/data_traits.h"
 
 
 namespace ranally {

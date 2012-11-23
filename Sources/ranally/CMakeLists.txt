@@ -1,3 +1,8 @@
+CONFIGURE_FILE(
+    ${CMAKE_CURRENT_SOURCE_DIR}/configure.h.in
+    ${CMAKE_CURRENT_BINARY_DIR}/configure.h
+)
+
 ADD_SUBDIRECTORY(algorithm)
 ADD_SUBDIRECTORY(command)
 ADD_SUBDIRECTORY(interpreter)

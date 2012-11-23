@@ -1,7 +1,7 @@
 #define BOOST_TEST_MODULE ranally language
 #include <boost/test/included/unit_test.hpp>
-#include "Ranally/raster.h"
-#include "Ranally/Operation/print.h"
+#include "ranally/raster.h"
+#include "ranally/operation/print.h"
 
 
 BOOST_AUTO_TEST_SUITE(algebra_parser)

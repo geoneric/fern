@@ -1,8 +1,8 @@
 #define BOOST_TEST_MODULE ranally operation
 #include <boost/test/included/unit_test.hpp>
-#include "Ranally/Operation/parameter.h"
-#include "Ranally/Operation/result.h"
-#include "Ranally/Operation/operation_xml_parser.h"
+#include "ranally/operation/parameter.h"
+#include "ranally/operation/result.h"
+#include "ranally/operation/operation_xml_parser.h"
 
 
 BOOST_AUTO_TEST_SUITE(operation_xml_parser)

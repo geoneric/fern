@@ -1,7 +1,7 @@
 #define BOOST_TEST_MODULE ranally language
 #include <boost/test/included/unit_test.hpp>
-#include "Ranally/Language/name_vertex.h"
-#include "Ranally/Language/symbol_table.h"
+#include "ranally/language/name_vertex.h"
+#include "ranally/language/symbol_table.h"
 
 
 BOOST_AUTO_TEST_SUITE(symbol_table)
