@@ -1,5 +1,5 @@
 #include "ranally/language/ast_dot_visitor.h"
-#include "ranally/util/string.h"
+#include "ranally/core/string.h"
 #include "ranally/language/vertices.h"
 
 

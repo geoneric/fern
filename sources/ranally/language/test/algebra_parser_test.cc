@@ -1,6 +1,7 @@
 #define BOOST_TEST_MODULE ranally language
 #include <boost/test/included/unit_test.hpp>
-#include "ranally/util/string.h"
+#include "ranally/core/exception.h"
+#include "ranally/core/string.h"
 #include "ranally/language/algebra_parser.h"
 
 
@@ -151,7 +152,7 @@ BOOST_AUTO_TEST_CASE(parse_string)
 
     {
         BOOST_CHECK_THROW(parser.parseString(ranally::String("if")),
-            std::runtime_error);
+            ranally::ParseError);
     }
 }
 
@@ -705,12 +706,11 @@ BOOST_AUTO_TEST_CASE(parse_while)
 BOOST_AUTO_TEST_CASE(parse_file)
 {
     ranally::AlgebraParser parser;
-    ranally::String fileName;
+    ranally::String filename;
 
     {
-      fileName = "DoesNotExist.ran";
-      BOOST_CHECK_THROW(parser.parseFile(fileName),
-        std::runtime_error);
+        filename = "DoesNotExist.ran";
+        BOOST_CHECK_THROW(parser.parseFile(filename), ranally::FileOpenError);
     }
 }
 

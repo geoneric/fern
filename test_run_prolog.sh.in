@@ -1,5 +1,5 @@
 test_data_dir="${PROJECT_SOURCE_DIR}/Data/Tests"
-io_test_dir="${CMAKE_CURRENT_BINARY_DIR}/Sources/Ranally/IO/Tests"
+io_test_dir="${CMAKE_CURRENT_BINARY_DIR}/sources/ranally/io/test"
 cmake="${CMAKE_COMMAND}"
 
 $cmake -E copy $test_data_dir/Point.json $io_test_dir

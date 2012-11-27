@@ -1,6 +1,6 @@
 #pragma once
 #include <Python.h>
-#include "ranally/util/string.h"
+#include "ranally/core/string.h"
 
 
 namespace ranally {

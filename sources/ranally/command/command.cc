@@ -30,20 +30,20 @@ char** Command::argv() const
 }
 
 
-//! Read script from \a fileName.
+//! Read script from \a filename.
 /*!
-  \param     fileName Name of file to read script from.
+  \param     filename Name of file to read script from.
   \exception .
 
-  In case \a fileName is empty, the script is read from standard input.
+  In case \a filename is empty, the script is read from standard input.
 */
 ranally::String Command::read(
-    std::string const& fileName)
+    std::string const& filename)
 {
     ranally::String xml;
     ranally::AlgebraParser parser;
 
-    if(fileName.empty()) {
+    if(filename.empty()) {
         // Read script from the standard input stream.
         std::ostringstream script;
         script << std::cin.rdbuf();
@@ -51,7 +51,7 @@ ranally::String Command::read(
     }
     else {
         // Read script from a file.
-        xml = parser.parseFile(ranally::String(fileName));
+        xml = parser.parseFile(ranally::String(filename));
     }
 
     return xml;
@@ -59,23 +59,23 @@ ranally::String Command::read(
 
 
 
-//! Write \a contents to a file with name \a fileName.
+//! Write \a contents to a file with name \a filename.
 /*!
-  \param     fileName Name of file to write \a contents to.
+  \param     filename Name of file to write \a contents to.
   \exception .
 
-  In case \a fileName is empty, the \a contents are written to standard
+  In case \a filename is empty, the \a contents are written to standard
   output, encoded in UTF8.
 */
 void Command::write(
     ranally::String const& contents,
-    std::string const& fileName)
+    std::string const& filename)
 {
-    if(fileName.empty()) {
+    if(filename.empty()) {
         std::cout << contents.encodeInUTF8();
     }
     else {
-        std::ofstream file(fileName.c_str());
+        std::ofstream file(filename.c_str());
         file << contents.encodeInUTF8();
     }
 }

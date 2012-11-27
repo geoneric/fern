@@ -1,7 +1,7 @@
 #include "ranally/language/xml_parser.h"
 #include <sstream>
 #include <stack>
-#include "ranally/util/string.h"
+#include "ranally/core/string.h"
 #include "ranally/language/function_vertex.h"
 #include "ranally/language/if_vertex.h"
 #include "ranally/language/name_vertex.h"

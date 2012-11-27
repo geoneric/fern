@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include <vector>
-#include "ranally/util/string.h"
+#include "ranally/core/string.h"
 #include "ranally/operation/parameter.h"
 #include "ranally/operation/result.h"
 

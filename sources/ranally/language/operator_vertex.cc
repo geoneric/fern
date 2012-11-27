@@ -1,7 +1,7 @@
 #include "ranally/language/operator_vertex.h"
-#include <stdexcept>
 #include <map>
-#include "ranally/util/string.h"
+#include <stdexcept>
+#include "ranally/core/string.h"
 
 
 namespace ranally {

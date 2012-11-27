@@ -1,7 +1,7 @@
 #include "ranally/io/ogr_dataset_driver.h"
 #include <cassert>
 #include "ogrsf_frmts.h"
-#include "ranally/util/string.h"
+#include "ranally/core/string.h"
 
 
 namespace ranally {

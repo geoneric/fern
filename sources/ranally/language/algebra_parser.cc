@@ -3,6 +3,7 @@
 #include <cassert>
 #include <iostream>
 #include "Python-ast.h"
+#include "ranally/core/exception.h"
 #include "ranally/python/exception.h"
 
 
@@ -345,10 +346,8 @@ void writeComparisonOperatorNode(
 void throwUnsupportedExpressionKind(
     ranally::String const& kind)
 {
-    // TODO exception
-    std::cout << kind.encodeInUTF8() << std::endl;
-    bool supportedExpressionKind = false;
-    assert(supportedExpressionKind);
+    BOOST_THROW_EXCEPTION(ranally::UnsupportedExpressionError()
+        << ranally::ExceptionExpressionKind(kind));
 }
 
 
@@ -734,7 +733,8 @@ String AlgebraParser::parseString(
         smart_arena.arena());
 
     if(!ast) {
-        ranally::python::throwException();
+        BOOST_THROW_EXCEPTION(ranally::ParseError()
+            << ranally::ExceptionErrorMessage(python::error_message()));
     }
 
     return String("<?xml version=\"1.0\"?>") + pythonAstToXml(ast,
@@ -742,34 +742,37 @@ String AlgebraParser::parseString(
 }
 
 
-//! Parse the script in file \a fileName and return an XML document.
+//! Parse the script in file \a filename and return an XML document.
 /*!
-  \param     fileName Name of file containing the script to parse.
+  \param     filename Name of file containing the script to parse.
   \return    String containing the script as an XML.
   \exception .
   \warning   .
   \sa        .
 */
 String AlgebraParser::parseFile(
-    String const& fileName)
+    String const& filename)
 {
     SmartArena smart_arena;
-    std::string fileNameInUtf8(fileName.encodeInUTF8());
+    std::string fileNameInUtf8(filename.encodeInUTF8());
     FILE* filePointer = fopen(fileNameInUtf8.c_str(), "r");
 
     if(filePointer == NULL) {
-        throw std::runtime_error(
-            ("cannot open file " + fileNameInUtf8).c_str());
+        BOOST_THROW_EXCEPTION(FileOpenError()
+            << boost::errinfo_errno(errno)
+            << ExceptionFilename(filename));
     }
 
     mod_ty ast = PyParser_ASTFromFile(filePointer, fileNameInUtf8.c_str(),
         Py_file_input, 0, 0, 0, 0, smart_arena.arena());
 
     if(!ast) {
-        ranally::python::throwException();
+        BOOST_THROW_EXCEPTION(ranally::ParseError()
+            << ranally::ExceptionFilename(filename)
+            << ranally::ExceptionErrorMessage(python::error_message()));
     }
 
-    return String("<?xml version=\"1.0\"?>") + pythonAstToXml(ast, fileName);
+    return String("<?xml version=\"1.0\"?>") + pythonAstToXml(ast, filename);
 }
 
 } // namespace ranally

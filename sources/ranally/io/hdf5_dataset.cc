@@ -5,7 +5,7 @@
 #include <cpp/H5Cpp.h>
 #include <hdf5.h>
 #include <hdf5_hl.h>
-#include "ranally/util/string.h"
+#include "ranally/core/string.h"
 #include "ranally/io/feature.h"
 #include "ranally/io/point_attribute.h"
 #include "ranally/io/point_domain.h"

@@ -1,6 +1,4 @@
 #include "ranally/python/exception.h"
-#include <stdexcept>
-#include "ranally/util/string.h"
 #include "ranally/python/owned_reference.h"
 #include "ranally/python/string.h"
 
@@ -35,7 +33,7 @@ String formatSyntaxErrorMessage(
 } // Anonymous namespace
 
 
-void throwException()
+String error_message()
 {
     assert(PyErr_Occurred());
 
@@ -65,7 +63,7 @@ void throwException()
     assert(!message.isEmpty());
     assert(!PyErr_Occurred());
 
-    throw std::runtime_error(message.encodeInUTF8().c_str());
+    return message;
 }
 
 } // namespace python

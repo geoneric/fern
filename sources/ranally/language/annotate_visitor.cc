@@ -1,5 +1,5 @@
 #include "ranally/language/annotate_visitor.h"
-#include "ranally/util/string.h"
+#include "ranally/core/string.h"
 #include "ranally/operation/result.h"
 #include "ranally/language/vertices.h"
 

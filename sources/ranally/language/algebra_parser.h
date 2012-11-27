@@ -1,6 +1,6 @@
 #pragma once
+#include "ranally/core/string.h"
 #include "ranally/python/client.h"
-#include "ranally/util/string.h"
 
 
 namespace ranally {
@@ -40,7 +40,7 @@ public:
 
     String         parseString         (String const& string);
 
-    String         parseFile           (String const& fileName);
+    String         parseFile           (String const& filename);
 
 private:
 

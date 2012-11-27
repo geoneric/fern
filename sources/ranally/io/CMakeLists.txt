@@ -33,7 +33,7 @@ ADD_LIBRARY(RanallyIO
     ${SOURCES}
 )
 TARGET_LINK_LIBRARIES(RanallyIO
-    RanallyUtil
+    RanallyCore
     ${HDF5_LIBRARIES}
     ${GDAL_LIBRARIES}
     ${Boost_FILESYSTEM_LIBRARY}

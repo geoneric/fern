@@ -1,6 +1,6 @@
 #include "ranally/language/validate_visitor.h"
 #include <stdexcept>
-#include "ranally/util/string.h"
+#include "ranally/core/string.h"
 #include "ranally/operation/operation.h"
 #include "ranally/language/vertices.h"
 

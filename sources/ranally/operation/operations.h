@@ -5,7 +5,7 @@
 #include <boost/range/begin.hpp>
 #include <boost/range/end.hpp>
 #include <boost/range/iterator.hpp>
-#include "ranally/util/string.h"
+#include "ranally/core/string.h"
 #include "ranally/operation/operation.h"
 
 

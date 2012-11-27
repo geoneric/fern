@@ -54,7 +54,7 @@ ADD_LIBRARY(RanallyOperation
     ${SOURCES}
 )
 TARGET_LINK_LIBRARIES(RanallyOperation
-    RanallyUtil
+    RanallyCore
     ${EXPAT_LIBRARY}
 )
 ADD_CUSTOM_TARGET(operation-xml.h

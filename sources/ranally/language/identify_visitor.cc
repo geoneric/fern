@@ -1,6 +1,6 @@
 #include "ranally/language/identify_visitor.h"
+#include "ranally/core/string.h"
 #include "ranally/language/vertices.h"
-#include "ranally/util/string.h"
 
 
 namespace ranally {

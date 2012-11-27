@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "ranally/util/string.h"
+#include "ranally/core/string.h"
 
 
 class OGRLayer;

@@ -2,7 +2,7 @@
 #include <cassert>
 #include <boost/filesystem.hpp>
 #include <cpp/H5Cpp.h>
-#include "ranally/util/string.h"
+#include "ranally/core/string.h"
 #include "ranally/io/hdf5_dataset.h"
 
 

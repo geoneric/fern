@@ -2,6 +2,7 @@
 #include <cassert>
 #include <memory>
 #include "ogrsf_frmts.h"
+#include "ranally/core/string.h"
 #include "ranally/io/ogr_feature_layer.h"
 #include "ranally/io/point_attribute.h"
 #include "ranally/io/point_domain.h"
@@ -9,7 +10,6 @@
 #include "ranally/io/polygon_attribute.h"
 #include "ranally/io/polygon_domain.h"
 #include "ranally/io/polygon_feature.h"
-#include "ranally/util/string.h"
 
 
 namespace ranally {

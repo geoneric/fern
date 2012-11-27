@@ -15,7 +15,7 @@ TARGET_LINK_LIBRARIES(ranally
     RanallyLanguage
     RanallyPython
     RanallyOperation
-    RanallyUtil
+    RanallyCore
 )
 INSTALL(
     TARGETS ranally

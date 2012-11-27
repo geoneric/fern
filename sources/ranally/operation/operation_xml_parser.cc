@@ -3,7 +3,7 @@
 #include <sstream>
 #include <stack>
 #include <vector>
-#include "ranally/util/string.h"
+#include "ranally/core/string.h"
 #include "ranally/operation/operation-pskel.hxx"
 #include "ranally/operation/data_type.h"
 #include "ranally/operation/operations.h"

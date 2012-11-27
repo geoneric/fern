@@ -56,7 +56,7 @@ ADD_LIBRARY(RanallyLanguage
 TARGET_LINK_LIBRARIES(RanallyLanguage
     RanallyOperation
     RanallyPython
-    RanallyUtil
+    RanallyCore
     ${EXPAT_LIBRARY}
     ${PYTHON_LIBRARIES}
 )

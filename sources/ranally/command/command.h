@@ -1,5 +1,5 @@
 #pragma once
-#include "ranally/util/string.h"
+#include "ranally/core/string.h"
 
 
 namespace ranally {
@@ -38,10 +38,10 @@ protected:
 
     char**         argv                () const;
 
-    String         read                (std::string const& fileName);
+    String         read                (std::string const& filename);
 
     void           write               (String const& contents,
-                                        std::string const& fileName);
+                                        std::string const& filename);
 
 private:
 

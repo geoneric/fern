@@ -2,7 +2,7 @@
 #include <list>
 #include <map>
 #include <vector>
-#include "ranally/util/string.h"
+#include "ranally/core/string.h"
 
 
 namespace ranally {

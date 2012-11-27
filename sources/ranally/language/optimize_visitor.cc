@@ -1,7 +1,7 @@
 #include "ranally/language/optimize_visitor.h"
-#include "ranally/language/assignment_vertex.h"
-#include "ranally/util/string.h"
 #include <algorithm>
+#include "ranally/core/string.h"
+#include "ranally/language/assignment_vertex.h"
 
 
 namespace ranally {

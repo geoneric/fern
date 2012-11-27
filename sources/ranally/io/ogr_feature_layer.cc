@@ -1,8 +1,8 @@
 #include "ranally/io/ogr_feature_layer.h"
 #include "ogrsf_frmts.h"
+#include "ranally/core/string.h"
 #include "ranally/io/point_domain.h"
 #include "ranally/io/polygon_domain.h"
-#include "ranally/util/string.h"
 
 
 namespace ranally {
