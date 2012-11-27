@@ -346,8 +346,8 @@ void writeComparisonOperatorNode(
 void throwUnsupportedExpressionKind(
     ranally::String const& kind)
 {
-    BOOST_THROW_EXCEPTION(ranally::UnsupportedExpressionError()
-        << ranally::ExceptionExpressionKind(kind));
+    BOOST_THROW_EXCEPTION(ranally::detail::UnsupportedExpressionError()
+        << ranally::detail::ExceptionExpressionKind(kind));
 }
 
 
@@ -733,8 +733,8 @@ String AlgebraParser::parseString(
         smart_arena.arena());
 
     if(!ast) {
-        BOOST_THROW_EXCEPTION(ranally::ParseError()
-            << ranally::ExceptionErrorMessage(python::error_message()));
+        BOOST_THROW_EXCEPTION(detail::ParseError()
+            << detail::ExceptionMessage(python::error_message()));
     }
 
     return String("<?xml version=\"1.0\"?>") + pythonAstToXml(ast,
@@ -754,22 +754,22 @@ String AlgebraParser::parseFile(
     String const& filename)
 {
     SmartArena smart_arena;
-    std::string fileNameInUtf8(filename.encodeInUTF8());
-    FILE* filePointer = fopen(fileNameInUtf8.c_str(), "r");
+    std::string filenameInUtf8(filename.encodeInUTF8());
+    FILE* filePointer = fopen(filenameInUtf8.c_str(), "r");
 
     if(filePointer == NULL) {
-        BOOST_THROW_EXCEPTION(FileOpenError()
+        BOOST_THROW_EXCEPTION(detail::FileOpenError()
             << boost::errinfo_errno(errno)
-            << ExceptionFilename(filename));
+            << detail::ExceptionFilename(filename));
     }
 
-    mod_ty ast = PyParser_ASTFromFile(filePointer, fileNameInUtf8.c_str(),
+    mod_ty ast = PyParser_ASTFromFile(filePointer, filenameInUtf8.c_str(),
         Py_file_input, 0, 0, 0, 0, smart_arena.arena());
 
     if(!ast) {
-        BOOST_THROW_EXCEPTION(ranally::ParseError()
-            << ranally::ExceptionFilename(filename)
-            << ranally::ExceptionErrorMessage(python::error_message()));
+        BOOST_THROW_EXCEPTION(detail::ParseError()
+            << detail::ExceptionFilename(filename)
+            << detail::ExceptionMessage(python::error_message()));
     }
 
     return String("<?xml version=\"1.0\"?>") + pythonAstToXml(ast, filename);

@@ -1,6 +1,7 @@
 ADD_SUBDIRECTORY(test)
 
 SET(SOURCES
+    exception
     messages
     string
 )

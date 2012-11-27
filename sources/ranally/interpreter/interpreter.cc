@@ -1,4 +1,5 @@
 #include "ranally/interpreter/interpreter.h"
+#include "ranally/core/exception.h"
 #include "ranally/operation/operation_xml_parser.h"
 #include "ranally/operation/operation-xml.h"
 #include "ranally/language/annotate_visitor.h"
@@ -20,10 +21,38 @@ Interpreter::Interpreter()
 }
 
 
+//!
+/*!
+  \tparam    .
+  \param     .
+  \return    .
+  \exception ParseError
+  \warning   .
+  \sa        .
+*/
 ScriptVertexPtr Interpreter::parseString(
     String const& string)
 {
-    return _xmlParser.parse(_algebraParser.parseString(string));
+    ScriptVertexPtr script_vertex;
+    try {
+        script_vertex = _xmlParser.parse(_algebraParser.parseString(string));
+    }
+    catch(detail::ParseError const& exception) {
+        String const* exception_filename = boost::get_error_info<
+            detail::ExceptionFilename>(exception);
+        String const* exception_message = boost::get_error_info<
+            detail::ExceptionMessage>(exception);
+        assert(exception_message);
+
+        if(!exception_filename) {
+            throw ParseError(*exception_message);
+        }
+        else {
+            throw ParseError(*exception_filename, *exception_message);
+        }
+    }
+
+    return script_vertex;
 }
 
 

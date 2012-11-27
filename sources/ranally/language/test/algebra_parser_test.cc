@@ -152,7 +152,7 @@ BOOST_AUTO_TEST_CASE(parse_string)
 
     {
         BOOST_CHECK_THROW(parser.parseString(ranally::String("if")),
-            ranally::ParseError);
+            ranally::detail::ParseError);
     }
 }
 
@@ -710,7 +710,8 @@ BOOST_AUTO_TEST_CASE(parse_file)
 
     {
         filename = "DoesNotExist.ran";
-        BOOST_CHECK_THROW(parser.parseFile(filename), ranally::FileOpenError);
+        BOOST_CHECK_THROW(parser.parseFile(filename),
+            ranally::detail::FileOpenError);
     }
 }
 
