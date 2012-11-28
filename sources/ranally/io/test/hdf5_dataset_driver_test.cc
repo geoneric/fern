@@ -11,10 +11,10 @@
 void remove_test_files()
 {
     std::vector<ranally::String> dataset_names;
-    dataset_names.push_back("TestExists.h5");
-    dataset_names.push_back("TestCreate.h5");
-    dataset_names.push_back("TestRemove.h5");
-    dataset_names.push_back("TestOpen.h5");
+    dataset_names.push_back("test_exists.h5");
+    dataset_names.push_back("test_create.h5");
+    dataset_names.push_back("test_remove.h5");
+    dataset_names.push_back("test_open.h5");
     ranally::HDF5DatasetDriver driver;
 
     for(auto dataset_name: dataset_names) {
@@ -47,9 +47,9 @@ BOOST_AUTO_TEST_CASE(exists)
 {
     ranally::HDF5DatasetDriver driver;
 
-    BOOST_REQUIRE(!driver.exists("TestExists.h5"));
-    std::unique_ptr<ranally::HDF5Dataset>(driver.create("TestExists.h5"));
-    BOOST_CHECK(driver.exists("TestExists.h5"));
+    BOOST_REQUIRE(!driver.exists("test_exists.h5"));
+    std::unique_ptr<ranally::HDF5Dataset>(driver.create("test_exists.h5"));
+    BOOST_CHECK(driver.exists("test_exists.h5"));
 }
 
 
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(create)
     return;
 
     ranally::HDF5DatasetDriver driver;
-    ranally::String dataset_name = "TestCreate.h5";
+    ranally::String dataset_name = "test_create.h5";
     BOOST_REQUIRE(!driver.exists(dataset_name));
     std::unique_ptr<ranally::HDF5Dataset> dataset;
 
@@ -136,7 +136,7 @@ BOOST_AUTO_TEST_CASE(create)
 BOOST_AUTO_TEST_CASE(remove)
 {
     ranally::HDF5DatasetDriver driver;
-    ranally::String dataset_name = "TestRemove.h5";
+    ranally::String dataset_name = "test_remove.h5";
     BOOST_REQUIRE(!driver.exists(dataset_name));
 
     std::unique_ptr<ranally::HDF5Dataset>(driver.create(dataset_name));
@@ -153,7 +153,7 @@ BOOST_AUTO_TEST_CASE(remove)
 BOOST_AUTO_TEST_CASE(open)
 {
     ranally::HDF5DatasetDriver driver;
-    ranally::String dataset_name = "TestOpen.h5";
+    ranally::String dataset_name = "test_open.h5";
     BOOST_REQUIRE(!driver.exists(dataset_name));
 
     std::unique_ptr<ranally::HDF5Dataset>(driver.create(dataset_name));
