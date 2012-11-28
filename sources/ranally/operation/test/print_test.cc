@@ -33,9 +33,9 @@ BOOST_AUTO_TEST_CASE(print)
 
     {
         ranally::Raster<int, 20, 30> raster;
-        for(size_t r = 0; r < raster.nrRows(); ++r) {
-            for(size_t c = 0; c < raster.nrCols(); ++c) {
-                raster.set(r, c, r * raster.nrCols() + c);
+        for(size_t r = 0; r < raster.nr_rows(); ++r) {
+            for(size_t c = 0; c < raster.nr_cols(); ++c) {
+                raster.set(r, c, r * raster.nr_cols() + c);
             }
         }
         std::stringstream stream;

@@ -8,13 +8,13 @@ namespace ranally {
 
 template<
     typename ValueType,
-    size_t nrRows_,
-    size_t nrCols_>
+    size_t nr_rows_,
+    size_t nr_cols_>
 class Raster
 {
 private:
 
-    typedef std::array<ValueType, nrRows_ * nrCols_> Array;
+    typedef std::array<ValueType, nr_rows_ * nr_cols_> Array;
 
     Array            _cells;
 
@@ -24,14 +24,14 @@ public:
 
     typedef typename Array::const_iterator const_iterator;
 
-    static size_t nrRows()
+    static size_t nr_rows()
     {
-        return nrRows_;
+        return nr_rows_;
     }
 
-    static size_t nrCols()
+    static size_t nr_cols()
     {
-        return nrCols_;
+        return nr_cols_;
     }
 
     Raster()
@@ -40,27 +40,27 @@ public:
     }
 
     Raster(
-        ValueType initialValue)
+        ValueType initial_value)
         : _cells()
     {
-        std::fill(_cells.begin(), _cells.end(), initialValue);
+        std::fill(_cells.begin(), _cells.end(), initial_value);
     }
 
     void set(
         size_t row,
         size_t col,
         ValueType value) {
-        assert(row < nrRows_);
-        assert(col < nrCols_);
-        _cells[row * nrRows_ + col] = value;
+        assert(row < nr_rows_);
+        assert(col < nr_cols_);
+        _cells[row * nr_rows_ + col] = value;
     }
 
     ValueType get(
         size_t row,
         size_t col) {
-        assert(row < nrRows_);
-        assert(col < nrCols_);
-        return _cells[row * nrRows_ + col];
+        assert(row < nr_rows_);
+        assert(col < nr_cols_);
+        return _cells[row * nr_rows_ + col];
     }
 
     iterator begin()
@@ -88,9 +88,9 @@ public:
 
 template<
     typename ValueType,
-    size_t nrRows,
-    size_t nrCols>
-struct DataTraits<Raster<ValueType, nrRows, nrCols>>
+    size_t nr_rows,
+    size_t nr_cols>
+struct DataTraits<Raster<ValueType, nr_rows, nr_cols>>
 {
     typedef RasterTag DataCategory;
 };
@@ -102,22 +102,23 @@ namespace boost {
 
 template<
     typename ValueType,
-    size_t nrRows,
-    size_t nrCols>
-struct range_const_iterator<ranally::Raster<ValueType, nrRows, nrCols>>
+    size_t nr_rows,
+    size_t nr_cols>
+struct range_const_iterator<ranally::Raster<ValueType, nr_rows, nr_cols>>
 {
-    typedef typename ranally::Raster<ValueType, nrRows, nrCols>::const_iterator
-        type;
+    typedef typename
+        ranally::Raster<ValueType, nr_rows, nr_cols>::const_iterator type;
 };
 
 
 template<
     typename ValueType,
-    size_t nrRows,
-    size_t nrCols>
-struct range_mutable_iterator<ranally::Raster<ValueType, nrRows, nrCols>>
+    size_t nr_rows,
+    size_t nr_cols>
+struct range_mutable_iterator<ranally::Raster<ValueType, nr_rows, nr_cols>>
 {
-    typedef typename ranally::Raster<ValueType, nrRows, nrCols>::iterator type;
+    typedef typename
+        ranally::Raster<ValueType, nr_rows, nr_cols>::iterator type;
 };
 
 } // namespace boost
