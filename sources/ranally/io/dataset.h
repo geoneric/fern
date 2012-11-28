@@ -34,7 +34,7 @@ public:
     /*!
       \return    Number of features.
     */
-    virtual size_t nrFeatures          () const=0;
+    virtual size_t nr_features         () const=0;
 
     //! Return feature with id \a i.
     /*!
@@ -52,13 +52,13 @@ public:
     /*!
       \param     feature Feature to add to the data set.
     */
-    virtual void   addFeature          (Feature const& feature)=0;
+    virtual void   add_feature         (Feature const& feature)=0;
 
-    //! Copy all features from \a dataSet.
+    //! Copy all features from \a dataset.
     /*!
-      \param     dataSet Data set to copy.
+      \param     dataset Data set to copy.
     */
-    virtual void   copy                (Dataset const& dataSet)=0;
+    virtual void   copy                (Dataset const& dataset)=0;
 
     //! Return whether feature \a name is present.
     /*!

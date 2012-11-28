@@ -21,8 +21,8 @@ public:
 
                    Parameter           (String const& name,
                                         String const& description,
-                                        DataTypes dataTypes,
-                                        ValueTypes valueTypes);
+                                        DataTypes data_types,
+                                        ValueTypes value_types);
 
                    ~Parameter          ();
 
@@ -38,9 +38,9 @@ public:
 
     String const&  description         () const;
 
-    DataTypes      dataTypes           () const;
+    DataTypes      data_types          () const;
 
-    ValueTypes     valueTypes          () const;
+    ValueTypes     value_types         () const;
 
 private:
 
@@ -48,9 +48,9 @@ private:
 
     String         _description;
 
-    DataTypes      _dataTypes;
+    DataTypes      _data_types;
 
-    ValueTypes     _valueTypes;
+    ValueTypes     _value_types;
 
 };
 

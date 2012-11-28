@@ -50,13 +50,13 @@ SET(SOURCES
     while_vertex
     xml_parser
 )
-ADD_LIBRARY(RanallyLanguage
+ADD_LIBRARY(ranally_language
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(RanallyLanguage
-    RanallyOperation
-    RanallyPython
-    RanallyCore
+TARGET_LINK_LIBRARIES(ranally_language
+    ranally_operation
+    ranally_python
+    ranally_core
     ${EXPAT_LIBRARY}
     ${PYTHON_LIBRARIES}
 )

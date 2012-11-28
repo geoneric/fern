@@ -8,8 +8,8 @@ ExpressionVertex::ExpressionVertex(
 
     : StatementVertex(),
       _name(name) // ,
-      // _dataType(DataType::DT_UNKNOWN),
-      // _valueType(VT_UNKNOWN)
+      // _data_type(DataType::DT_UNKNOWN),
+      // _value_type(VT_UNKNOWN)
 
 {
 }
@@ -34,31 +34,31 @@ String const& ExpressionVertex::name() const
 
 
 // void ExpressionVertex::setDataType(
-//   DataType dataType)
+//   DataType data_type)
 // {
-//   _dataType = dataType;
+//   _data_type = data_type;
 // }
 // 
 // 
 // 
-// DataType ExpressionVertex::dataType() const
+// DataType ExpressionVertex::data_type() const
 // {
-//   return _dataType;
+//   return _data_type;
 // }
 // 
 // 
 // 
 // void ExpressionVertex::setValueType(
-//   ValueType valueType)
+//   ValueType value_type)
 // {
-//   _valueType = valueType;
+//   _value_type = value_type;
 // }
 // 
 // 
 // 
-// ValueType ExpressionVertex::valueType() const
+// ValueType ExpressionVertex::value_type() const
 // {
-//   return _valueType;
+//   return _value_type;
 // }
 
 
@@ -70,10 +70,10 @@ void ExpressionVertex::setResultTypes(
 
 
 void ExpressionVertex::addResultType(
-    DataType dataType,
-    ValueType valueType)
+    DataType data_type,
+    ValueType value_type)
 {
-    _resultTypes.push_back(std::make_tuple(dataType, valueType));
+    _resultTypes.push_back(std::make_tuple(data_type, value_type));
 }
 
 
@@ -84,7 +84,7 @@ ExpressionVertex::resultTypes() const
 }
 
 
-DataType ExpressionVertex::dataType(
+DataType ExpressionVertex::data_type(
   size_t index) const
 {
     assert(index < _resultTypes.size());
@@ -92,7 +92,7 @@ DataType ExpressionVertex::dataType(
 }
 
 
-ValueType ExpressionVertex::valueType(
+ValueType ExpressionVertex::value_type(
     size_t index) const
 {
     assert(index < _resultTypes.size());

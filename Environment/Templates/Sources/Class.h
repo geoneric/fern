@@ -1,8 +1,4 @@
-#ifndef INCLUDED_RANALLY_CLASS
-#define INCLUDED_RANALLY_CLASS
-
-#include <boost/noncopyable.hpp>
-
+#pragma once
 
 
 namespace ranally {
@@ -13,17 +9,24 @@ namespace ranally {
 
   \sa        .
 */
-class Class:
-  private boost::noncopyable
+class Class
 {
 
-  friend class ClassTest;
+    friend class ClassTest;
 
 public:
 
-                   Class               ();
+                   Class               ()=default;
 
-  /* virtual */    ~Class              ();
+                   Class               (Class const&)=delete;
+
+    Class&         operator=           (Class const&)=delete;
+
+                   Class               (Class&&)=delete;
+
+    Class&         operator=           (Class&&)=delete;
+
+                   ~Class              ()=default;
 
 protected:
 

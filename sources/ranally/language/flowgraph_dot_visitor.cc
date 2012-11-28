@@ -378,7 +378,7 @@ void FlowgraphDotVisitor::Visit(
     // addScript(
     //   String(boost::format("\"%1%\"") % &vertex) +
     //   String(boost::format(" [label=\"%1%\"];\n"))
-    //     % vertex.sourceName().encodeInUTF8());
+    //     % vertex.sourceName().encode_in_utf8());
 
     for(auto statementVertex: vertex.statements()) {
         statementVertex->Accept(*this);

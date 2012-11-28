@@ -31,19 +31,21 @@ public:
 
     Interpreter&   operator=           (Interpreter const&)=delete;
 
-    ScriptVertexPtr parseString        (String const& string);
+    ScriptVertexPtr parse_string       (String const& string) const;
 
-    void           annotate            (ScriptVertexPtr const& tree);
+    ScriptVertexPtr parse_file         (String const& filename) const;
 
-    void           validate            (ScriptVertexPtr const& tree);
+    void           annotate            (ScriptVertexPtr const& tree) const;
 
-    void           execute             (ScriptVertexPtr const& tree);
+    void           validate            (ScriptVertexPtr const& tree) const;
+
+    void           execute             (ScriptVertexPtr const& tree) const;
 
 private:
 
-    AlgebraParser  _algebraParser;
+    AlgebraParser  _algebra_parser;
 
-    XmlParser      _xmlParser;
+    XmlParser      _xml_parser;
 
 };
 

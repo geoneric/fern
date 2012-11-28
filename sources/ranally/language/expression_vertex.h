@@ -42,25 +42,25 @@ public:
 
     String const&  name                () const;
 
-    // void           setDataType         (operation::DataType dataType);
+    // void           setDataType         (operation::DataType data_type);
 
-    // operation::DataType dataType         () const;
+    // operation::DataType data_type         () const;
 
-    // void           setValueType        (operation::ValueType valueType);
+    // void           setValueType        (operation::ValueType value_type);
 
-    // operation::ValueType valueType       () const;
+    // operation::ValueType value_type       () const;
 
     void           setResultTypes      (
                                   std::vector<ResultType> const& resultTypes);
 
-    void           addResultType       (DataType dataType,
-                                        ValueType valueType);
+    void           addResultType       (DataType data_type,
+                                        ValueType value_type);
 
     std::vector<ResultType> const& resultTypes() const;
 
-    DataType       dataType            (size_t index) const;
+    DataType       data_type           (size_t index) const;
 
-    ValueType      valueType           (size_t index) const;
+    ValueType      value_type          (size_t index) const;
 
     void           setValue            (ExpressionVertexPtr const& value);
 
@@ -80,10 +80,10 @@ private:
     String         _name;
 
     // //! Data type of the result(s) of the expression.
-    // operation::DataType _dataType;
+    // operation::DataType _data_type;
 
     // //! Value type of the result(s) of the expression.
-    // operation::ValueType _valueType;
+    // operation::ValueType _value_type;
 
     // typedef boost::tuple<operation::DataType, operation::ValueType> ResultType;
 

@@ -1,14 +1,13 @@
 #include "ranally/command/convert_command.h"
+#include "ranally/core/exception.h"
 #include "ranally/language/ast_dot_visitor.h"
 #include "ranally/language/flowgraph_dot_visitor.h"
-#include "ranally/language/xml_parser.h"
-#include "ranally/interpreter/interpreter.h"
 
 
 namespace ranally {
 namespace {
 
-void showConvertHelp()
+void show_convert_help()
 {
     std::cout <<
         "usage: ranally convert [--help] LANGUAGE [ARGS]\n"
@@ -28,7 +27,7 @@ void showConvertHelp()
 }
 
 
-void showConvertDotHelp()
+void show_convert_dot_help()
 {
     std::cout <<
         "usage: ranally convert dot [--help] GRAPH_TYPE [ARGS]\n"
@@ -45,7 +44,7 @@ void showConvertDotHelp()
 }
 
 
-void showConvertDotAstHelp()
+void show_convert_dot_ast_help()
 {
     std::cout <<
         "usage: ranally convert dot ast [--help] [--with-cfg] [--with-use]\n"
@@ -61,7 +60,7 @@ void showConvertDotAstHelp()
 }
 
 
-void showConvertDotFlowgraphHelp()
+void show_convert_dot_flowgraph_help()
 {
     std::cout <<
         "usage: ranally convert dot flowgraph [--help] INPUT_SCRIPT OUTPUT_SCRIPT\n"
@@ -76,7 +75,7 @@ void showConvertDotFlowgraphHelp()
 }
 
 
-// void showConvertRanallyHelp()
+// void show_convert_ranally_help()
 // {
 //     std::cout <<
 //         "usage: ranally convert ranally INPUT_SCRIPT [OUTPUT_SCRIPT]\n"
@@ -91,7 +90,7 @@ void showConvertDotFlowgraphHelp()
 // }
 
 
-void showConvertXmlHelp()
+void show_convert_xml_help()
 {
     std::cout <<
         "usage: ranally convert xml [--help] INPUT_SCRIPT OUTPUT_SCRIPT\n"
@@ -118,88 +117,88 @@ ConvertCommand::ConvertCommand(
 }
 
 
-int ConvertCommand::convertToRanally(
+ConvertCommand::~ConvertCommand() noexcept(true) =default;
+
+
+int ConvertCommand::convert_to_ranally(
     int /* argc */,
-    char** /* argv */)
+    char** /* argv */) const
 {
     std::cout << "Conversion to Ranally script not supported yet\n";
     return EXIT_SUCCESS;
 }
 
 
-int ConvertCommand::convertToCpp(
+int ConvertCommand::convert_to_cpp(
     int /* argc */,
-    char** /* argv */)
+    char** /* argv */) const
 {
     std::cout << "Conversion to C++ not supported yet\n";
     return EXIT_SUCCESS;
 }
 
 
-String ConvertCommand::convertToDotAst(
-    String const& xml,
-    int modes)
+String ConvertCommand::convert_to_dot_ast(
+    std::shared_ptr<ScriptVertex> const& tree,
+    int modes) const
 {
-    std::shared_ptr<ranally::ScriptVertex> tree(
-        ranally::XmlParser().parse(xml));
-    ranally::Interpreter interpreter;
-    interpreter.annotate(tree);
+    interpreter().annotate(tree);
 
-    ranally::AstDotVisitor astDotVisitor(modes);
-    tree->Accept(astDotVisitor);
+    AstDotVisitor ast_dot_visitor(modes);
+    tree->Accept(ast_dot_visitor);
 
-    return astDotVisitor.script();
+    return ast_dot_visitor.script();
 }
 
 
-int ConvertCommand::convertToDotAst(
+int ConvertCommand::convert_to_dot_ast(
     int argc,
-    char** argv)
+    char** argv) const
 {
     int status = EXIT_FAILURE;
 
     if(argc == 1 || std::strcmp(argv[1], "--help") == 0) {
         // No arguments, or the help option.
-        showConvertDotAstHelp();
+        show_convert_dot_ast_help();
         status = EXIT_SUCCESS;
     }
     else {
-        int currentArgumentId = 1;
+        int current_argument_id = 1;
         int modes = 0x0;
-        while(currentArgumentId < argc) {
-            if(std::strcmp(argv[currentArgumentId], "--with-cfg") == 0) {
-                modes |= ranally::AstDotVisitor::ConnectingCfg;
-                ++currentArgumentId;
+        while(current_argument_id < argc) {
+            if(std::strcmp(argv[current_argument_id], "--with-cfg") == 0) {
+                modes |= AstDotVisitor::ConnectingCfg;
+                ++current_argument_id;
             }
-          else if(std::strcmp(argv[currentArgumentId], "--with-use") == 0) {
-              modes |= ranally::AstDotVisitor::ConnectingUses;
-              ++currentArgumentId;
+          else if(std::strcmp(argv[current_argument_id], "--with-use") == 0) {
+              modes |= AstDotVisitor::ConnectingUses;
+              ++current_argument_id;
           }
           else {
               break;
           }
         }
 
-        if(currentArgumentId == argc) {
+        if(current_argument_id == argc) {
             std::cerr << "Not enough arguments.\n";
-            showConvertDotAstHelp();
+            show_convert_dot_ast_help();
             status = EXIT_FAILURE;
         }
-        else if(argc - currentArgumentId > 3) {
+        else if(argc - current_argument_id > 3) {
             std::cerr << "Too many arguments.\n";
-            showConvertDotAstHelp();
+            show_convert_dot_ast_help();
             status = EXIT_FAILURE;
         }
         else {
-            std::string inputFileName =
-                std::strcmp(argv[currentArgumentId], "-") != 0
-                    ? argv[currentArgumentId] : "";
-            ++currentArgumentId;
-            std::string outputFileName = currentArgumentId == argc - 1
-                ? argv[currentArgumentId] : "";
-            String xml = read(inputFileName);
-            String dotScript = convertToDotAst(xml, modes);
-            write(dotScript, outputFileName);
+            std::string input_filename =
+                std::strcmp(argv[current_argument_id], "-") != 0
+                    ? argv[current_argument_id] : "";
+            ++current_argument_id;
+            std::string output_filename = current_argument_id == argc - 1
+                ? argv[current_argument_id] : "";
+            ScriptVertexPtr tree(interpreter().parse_file(input_filename));
+            String dot_script = convert_to_dot_ast(tree, modes);
+            write(dot_script, output_filename);
             status = EXIT_SUCCESS;
         }
     }
@@ -208,55 +207,52 @@ int ConvertCommand::convertToDotAst(
 }
 
 
-String ConvertCommand::convertToDotFlowgraph(
-    String const& xml)
+String ConvertCommand::convert_to_dot_flowgraph(
+    ScriptVertexPtr const& tree) const
 {
-    std::shared_ptr<ranally::ScriptVertex> tree(
-        ranally::XmlParser().parse(xml));
-    ranally::Interpreter interpreter;
-    interpreter.annotate(tree);
+    interpreter().annotate(tree);
 
-    ranally::FlowgraphDotVisitor flowgraphDotVisitor;
-    tree->Accept(flowgraphDotVisitor);
+    FlowgraphDotVisitor flowgraph_dot_visitor;
+    tree->Accept(flowgraph_dot_visitor);
 
-    return flowgraphDotVisitor.script();
+    return flowgraph_dot_visitor.script();
 }
 
 
-int ConvertCommand::convertToDotFlowgraph(
+int ConvertCommand::convert_to_dot_flowgraph(
     int argc,
-    char** argv)
+    char** argv) const
 {
     int status = EXIT_FAILURE;
 
     if(argc == 1 || std::strcmp(argv[1], "--help") == 0) {
         // No arguments, or the help option.
-        showConvertDotFlowgraphHelp();
+        show_convert_dot_flowgraph_help();
         status = EXIT_SUCCESS;
     }
     else {
-        int currentArgumentId = 1;
+        int current_argument_id = 1;
 
-        if(currentArgumentId == argc) {
+        if(current_argument_id == argc) {
             std::cerr << "Not enough arguments.\n";
-            showConvertDotAstHelp();
+            show_convert_dot_ast_help();
             status = EXIT_FAILURE;
         }
-        else if(argc - currentArgumentId > 3) {
+        else if(argc - current_argument_id > 3) {
             std::cerr << "Too many arguments.\n";
-            showConvertDotAstHelp();
+            show_convert_dot_ast_help();
             status = EXIT_FAILURE;
         }
         else {
-            std::string inputFileName =
-                std::strcmp(argv[currentArgumentId], "-") != 0
-                    ? argv[currentArgumentId] : "";
-            ++currentArgumentId;
-            std::string outputFileName = currentArgumentId == argc - 1
-                ? argv[currentArgumentId] : "";
-            String xml = read(inputFileName);
-            String dotScript = convertToDotFlowgraph(xml);
-            write(dotScript, outputFileName);
+            std::string input_filename =
+                std::strcmp(argv[current_argument_id], "-") != 0
+                    ? argv[current_argument_id] : "";
+            ++current_argument_id;
+            std::string output_filename = current_argument_id == argc - 1
+                ? argv[current_argument_id] : "";
+            ScriptVertexPtr tree(interpreter().parse_file(input_filename));
+            String dot_script = convert_to_dot_flowgraph(tree);
+            write(dot_script, output_filename);
             status = EXIT_SUCCESS;
         }
     }
@@ -265,22 +261,22 @@ int ConvertCommand::convertToDotFlowgraph(
 }
 
 
-int ConvertCommand::convertToDot(
+int ConvertCommand::convert_to_dot(
     int argc,
-    char** argv)
+    char** argv) const
 {
     int status = EXIT_FAILURE;
 
     if(argc == 1 || std::strcmp(argv[1], "--help") == 0) {
         // No arguments, or the help option.
-        showConvertDotHelp();
+        show_convert_dot_help();
         status = EXIT_SUCCESS;
     }
     else if(std::strcmp(argv[1], "ast") == 0) {
-        status = convertToDotAst(argc - 1, argv + 1);
+        status = convert_to_dot_ast(argc - 1, argv + 1);
     }
     else if(std::strcmp(argv[1], "flowgraph") == 0) {
-        status = convertToDotFlowgraph(argc - 1, argv + 1);
+        status = convert_to_dot_flowgraph(argc - 1, argv + 1);
     }
     else {
         std::cerr << "Unknown graph type: " << argv[1] << "\n";
@@ -292,43 +288,44 @@ int ConvertCommand::convertToDot(
 }
 
 
-int ConvertCommand::convertToPython(
+int ConvertCommand::convert_to_python(
     int /* argc */,
-    char** /* argv */)
+    char** /* argv */) const
 {
     std::cout << "Conversion to Python not supported yet\n";
     return EXIT_SUCCESS;
 }
 
 
-int ConvertCommand::convertToXml(
+int ConvertCommand::convert_to_xml(
     int argc,
-    char** argv)
+    char** argv) const
 {
     int status = EXIT_FAILURE;
 
     if(argc == 1 || std::strcmp(argv[1], "--help") == 0) {
         // No arguments, or the help option.
-        showConvertXmlHelp();
+        show_convert_xml_help();
         status = EXIT_SUCCESS;
     }
     else {
-        int currentArgumentId = 1;
+        int current_argument_id = 1;
 
-        if(argc - currentArgumentId > 2) {
+        if(argc - current_argument_id > 2) {
             std::cerr << "Too many arguments.\n";
-            showConvertXmlHelp();
+            show_convert_xml_help();
             status = EXIT_FAILURE;
         }
         else {
-            std::string inputFileName =
-                std::strcmp(argv[currentArgumentId], "-") != 0
-                    ? argv[currentArgumentId] : "";
-            ++currentArgumentId;
-            std::string outputFileName = currentArgumentId == argc - 1
-                ? argv[currentArgumentId] : "";
-            String xml = read(inputFileName);
-            write(xml, outputFileName);
+            std::string input_filename =
+                std::strcmp(argv[current_argument_id], "-") != 0
+                    ? argv[current_argument_id] : "";
+            ++current_argument_id;
+            std::string output_filename = current_argument_id == argc - 1
+                ? argv[current_argument_id] : "";
+            // String xml = read(input_filename);
+            // write(xml, output_filename);
+            std::cout << "TODO make XML visitor" << std::endl;
             status = EXIT_SUCCESS;
         }
     }
@@ -337,33 +334,43 @@ int ConvertCommand::convertToXml(
 }
 
 
-int ConvertCommand::execute()
+int ConvertCommand::execute() const
 {
     int status = EXIT_FAILURE;
 
-    if(argc() == 1 || std::strcmp(argv()[1], "--help") == 0) {
-        // No arguments, or the help option.
-        showConvertHelp();
-        status = EXIT_SUCCESS;
+    try {
+        if(argc() == 1 || std::strcmp(argv()[1], "--help") == 0) {
+            // No arguments, or the help option.
+            show_convert_help();
+            status = EXIT_SUCCESS;
+        }
+        else if(std::strcmp(argv()[1], "ranally") == 0) {
+            status = convert_to_ranally(argc() - 1, argv() + 1);
+        }
+        else if(std::strcmp(argv()[1], "dot") == 0) {
+            status = convert_to_dot(argc() - 1, argv() + 1);
+        }
+        else if(std::strcmp(argv()[1], "c++") == 0) {
+            status = convert_to_cpp(argc() - 1, argv() + 1);
+        }
+        else if(std::strcmp(argv()[1], "python") == 0) {
+            status = convert_to_python(argc() - 1, argv() + 1);
+        }
+        else if(std::strcmp(argv()[1], "xml") == 0) {
+            status = convert_to_xml(argc() - 1, argv() + 1);
+        }
+        else {
+            std::cerr << "Unknown target language: " << argv()[1] << "\n";
+            std::cerr << "See 'ranally convert --help' for list of languages.\n";
+            status = EXIT_FAILURE;
+        }
     }
-    else if(std::strcmp(argv()[1], "ranally") == 0) {
-        status = convertToRanally(argc() - 1, argv() + 1);
+    catch(Exception const& exception) {
+        std::cerr << exception.message() << "\n";
+        status = EXIT_FAILURE;
     }
-    else if(std::strcmp(argv()[1], "dot") == 0) {
-        status = convertToDot(argc() - 1, argv() + 1);
-    }
-    else if(std::strcmp(argv()[1], "c++") == 0) {
-        status = convertToCpp(argc() - 1, argv() + 1);
-    }
-    else if(std::strcmp(argv()[1], "python") == 0) {
-        status = convertToPython(argc() - 1, argv() + 1);
-    }
-    else if(std::strcmp(argv()[1], "xml") == 0) {
-        status = convertToXml(argc() - 1, argv() + 1);
-    }
-    else {
-        std::cerr << "Unknown target language: " << argv()[1] << "\n";
-        std::cerr << "See 'ranally convert --help' for list of languages.\n";
+    catch(std::exception const& exception) {
+        std::cerr << exception.what() << "\n";
         status = EXIT_FAILURE;
     }
 

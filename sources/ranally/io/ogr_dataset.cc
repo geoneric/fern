@@ -16,53 +16,53 @@ namespace ranally {
 
 OGRDataset::OGRDataset(
     String const& name,
-    OGRDataSource* dataSource)
+    OGRDataSource* data_source)
 
     : Dataset(name),
-      _dataSource(dataSource)
+      _data_source(data_source)
 
 {
-    assert(_dataSource);
+    assert(_data_source);
 }
 
 
 OGRDataset::~OGRDataset()
 {
-    OGRDataSource::DestroyDataSource(_dataSource);
+    OGRDataSource::DestroyDataSource(_data_source);
 }
 
 
-size_t OGRDataset::nrFeatures() const
+size_t OGRDataset::nr_features() const
 {
-    return static_cast<size_t>(_dataSource->GetLayerCount());
+    return static_cast<size_t>(_data_source->GetLayerCount());
 }
 
 
 Feature* OGRDataset::feature(
     size_t i) const
 {
-    assert(i < nrFeatures());
-    OGRFeatureLayer layer(_dataSource->GetLayer(i));
+    assert(i < nr_features());
+    OGRFeatureLayer layer(_data_source->GetLayer(i));
     return feature(layer);
 
     // Darwin's gcc 4.2.1 doesn't accept this. It thinks the OGRFeatureLayer
     // has to be copied in the call to feature(...), and OGRFeatureLayer is not
     // copyable.
-    // return feature(OGRFeatureLayer(_dataSource->GetLayer(i)));
+    // return feature(OGRFeatureLayer(_data_source->GetLayer(i)));
 }
 
 
 Feature* OGRDataset::feature(
     String const& name) const
 {
-    OGRLayer* ogrLayer = _dataSource->GetLayerByName(
-        name.encodeInUTF8().c_str());
-    if(!ogrLayer) {
+    OGRLayer* ogr_layer = _data_source->GetLayerByName(
+        name.encode_in_utf8().c_str());
+    if(!ogr_layer) {
         // TODO
         throw std::string("layer does not exist");
     }
 
-    OGRFeatureLayer layer(ogrLayer);
+    OGRFeatureLayer layer(ogr_layer);
     return feature(layer);
 }
 
@@ -133,35 +133,35 @@ void OGRDataset::add(
 
     // TODO Remove layer if it already exists?!
     Points const& points(domain.points());
-    OGRLayer* ogrLayer = _dataSource->CreateLayer(
-        feature.name().encodeInUTF8().c_str(), NULL, wkbPoint, NULL);
+    OGRLayer* ogr_layer = _data_source->CreateLayer(
+        feature.name().encode_in_utf8().c_str(), NULL, wkbPoint, NULL);
 
-    if(!ogrLayer) {
+    if(!ogr_layer) {
         throw std::string("cannot create ogr feature layer");
     }
 
     // TODO Add attributes.
     assert(attributes.empty());
 
-    OGRPoint ogrPoint;
+    OGRPoint ogr_point;
 
     for(auto point: points) {
-        OGRFeature* ogrFeature = OGRFeature::CreateFeature(
-            ogrLayer->GetLayerDefn());
-        assert(ogrFeature);
+        OGRFeature* ogr_feature = OGRFeature::CreateFeature(
+            ogr_layer->GetLayerDefn());
+        assert(ogr_feature);
 
-        // ogrFeature->SetField(...)
+        // ogr_feature->SetField(...)
 
-        ogrPoint.setX(point.get<0>());
-        ogrPoint.setY(point.get<1>());
-        ogrFeature->SetGeometry(&ogrPoint);
+        ogr_point.setX(point.get<0>());
+        ogr_point.setY(point.get<1>());
+        ogr_feature->SetGeometry(&ogr_point);
 
-        if(ogrLayer->CreateFeature(ogrFeature) != OGRERR_NONE) {
+        if(ogr_layer->CreateFeature(ogr_feature) != OGRERR_NONE) {
             // TODO
             assert(false);
         }
 
-        OGRFeature::DestroyFeature(ogrFeature);
+        OGRFeature::DestroyFeature(ogr_feature);
     }
 }
 
@@ -186,10 +186,10 @@ void OGRDataset::add(
 }
 
 
-void OGRDataset::addFeature(
+void OGRDataset::add_feature(
     Feature const& feature)
 {
-    switch(feature.domainType()) {
+    switch(feature.domain_type()) {
         case Domain::PointDomain: {
             add<PointFeature>(dynamic_cast<PointFeature const&>(feature));
             break;
@@ -203,10 +203,10 @@ void OGRDataset::addFeature(
 
 
 void OGRDataset::copy(
-    Dataset const& dataSet)
+    Dataset const& dataset)
 {
-    for(size_t i = 0; i < dataSet.nrFeatures(); ++i) {
-        std::unique_ptr<Feature> feature(dataSet.feature(i));
+    for(size_t i = 0; i < dataset.nr_features(); ++i) {
+        std::unique_ptr<Feature> feature(dataset.feature(i));
         assert(feature);
         copy(*feature);
     }

@@ -24,25 +24,25 @@ String join(
 }
 
 
-String dataTypesToString(
-    DataTypes const& dataTypes)
+String data_typesToString(
+    DataTypes const& data_types)
 {
     std::vector<String> strings;
 
-    if(dataTypes & DataType::DT_UNKNOWN) {
+    if(data_types & DataType::DT_UNKNOWN) {
         strings.push_back("?");
     }
     else {
-        if(dataTypes & DataType::DT_VALUE) {
+        if(data_types & DataType::DT_VALUE) {
             strings.push_back("val");
         }
-        if(dataTypes & DataType::DT_RASTER) {
+        if(data_types & DataType::DT_RASTER) {
             strings.push_back("rst");
         }
-        if(dataTypes & DataType::DT_FEATURE) {
+        if(data_types & DataType::DT_FEATURE) {
             strings.push_back("ftr");
         }
-        if(dataTypes & DataType::DT_DEPENDS_ON_INPUT) {
+        if(data_types & DataType::DT_DEPENDS_ON_INPUT) {
             strings.push_back("dep");
         }
     }
@@ -52,49 +52,49 @@ String dataTypesToString(
 }
 
 
-String valueTypesToString(
-    ValueTypes const& valueTypes)
+String value_typesToString(
+    ValueTypes const& value_types)
 {
     std::vector<String> strings;
 
-    if(valueTypes & DataType::DT_UNKNOWN) {
+    if(value_types & DataType::DT_UNKNOWN) {
         strings.push_back("?");
     }
     else {
-        if(valueTypes & VT_UINT8) {
+        if(value_types & VT_UINT8) {
             strings.push_back("u8");
         }
-        if(valueTypes & VT_INT8) {
+        if(value_types & VT_INT8) {
             strings.push_back("s8");
         }
-        if(valueTypes & VT_UINT16) {
+        if(value_types & VT_UINT16) {
             strings.push_back("u16");
         }
-        if(valueTypes & VT_INT16) {
+        if(value_types & VT_INT16) {
             strings.push_back("s16");
         }
-        if(valueTypes & VT_UINT32) {
+        if(value_types & VT_UINT32) {
             strings.push_back("u32");
         }
-        if(valueTypes & VT_INT32) {
+        if(value_types & VT_INT32) {
             strings.push_back("s32");
         }
-        if(valueTypes & VT_UINT64) {
+        if(value_types & VT_UINT64) {
             strings.push_back("u64");
         }
-        if(valueTypes & VT_INT64) {
+        if(value_types & VT_INT64) {
             strings.push_back("s64");
         }
-        if(valueTypes & VT_FLOAT32) {
+        if(value_types & VT_FLOAT32) {
             strings.push_back("f32");
         }
-        if(valueTypes & VT_FLOAT64) {
+        if(value_types & VT_FLOAT64) {
             strings.push_back("f64");
         }
-        if(valueTypes & VT_STRING) {
+        if(value_types & VT_STRING) {
             strings.push_back("str");
         }
-        if(valueTypes & VT_DEPENDS_ON_INPUT) {
+        if(value_types & VT_DEPENDS_ON_INPUT) {
             strings.push_back("dep");
         }
     }
@@ -366,14 +366,14 @@ void AstDotVisitor::Visit(
                 resultTypes(vertex.resultTypes());
             if(!resultTypes.empty()) {
                 assert(resultTypes.size() == 1);
-                String dataTypes = dataTypesToString(std::get<0>(
+                String data_types = data_typesToString(std::get<0>(
                     resultTypes[0]));
-                String valueTypes = valueTypesToString(std::get<1>(
+                String value_types = value_typesToString(std::get<1>(
                     resultTypes[0]));
 
                 label += String("\\n") +
-                    "dt: " + dataTypes + "\\n" +
-                    "vt: " + valueTypes;
+                    "dt: " + data_types + "\\n" +
+                    "vt: " + value_types;
             }
 
             attributes.push_back("label=\"" + label + "\"");
@@ -416,7 +416,7 @@ void AstDotVisitor::Visit(
     addScript(
         String(boost::format("\"%1%\"") % &vertex) +
         String(boost::format(" [label=\"%1%\"];\n")
-            % vertex.sourceName().encodeInUTF8())
+            % vertex.sourceName().encode_in_utf8())
     );
 
     for(auto statementVertex: vertex.statements()) {

@@ -5,9 +5,9 @@ SET(SOURCES
     messages
     string
 )
-ADD_LIBRARY(RanallyCore
+ADD_LIBRARY(ranally_core
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(RanallyCore
+TARGET_LINK_LIBRARIES(ranally_core
     ${ICU_LIBRARIES}
 )

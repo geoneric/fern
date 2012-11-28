@@ -75,7 +75,7 @@ void OptimizeVisitor::Visit(
             std::map<ExpressionVertex const*, ExpressionVertexPtr>::iterator
                 it = _inlineExpressions.find(vertex.expression().get());
             if(it != _inlineExpressions.end()) {
-std::cout << "inserting " << (*it).second->name().encodeInUTF8() << std::endl;
+std::cout << "inserting " << (*it).second->name().encode_in_utf8() << std::endl;
                 // Schedule the defining statement for removal.
                 _inlinedExpressions.push_back((*it).second);
                 vertex.setExpression((*it).second);
@@ -115,7 +115,7 @@ void OptimizeVisitor::Visit(
 
                 // Register the value of the defining expression for
                 // inlining at the use location.
-std::cout << "register inlining of " << vertex.name().encodeInUTF8() << " by " << definitions[0]->value()->name().encodeInUTF8() << std::endl;
+std::cout << "register inlining of " << vertex.name().encode_in_utf8() << " by " << definitions[0]->value()->name().encode_in_utf8() << std::endl;
                 registerExpressionForInlining(&vertex, definitions[0]->value());
             }
 

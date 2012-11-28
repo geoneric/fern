@@ -50,7 +50,7 @@ String nameToSymbol(
     if(symbols.find(name) == symbols.end()) {
         throw std::runtime_error((boost::format(
             "operator %1% with %2% operands not available")
-            % name.encodeInUTF8() % nrOperands).str().c_str());
+            % name.encode_in_utf8() % nrOperands).str().c_str());
     }
 
     return symbols[name];

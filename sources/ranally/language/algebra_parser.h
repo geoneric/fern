@@ -38,9 +38,9 @@ public:
 
     AlgebraParser& operator=           (AlgebraParser const&)=delete;
 
-    String         parseString         (String const& string);
+    String         parseString         (String const& string) const;
 
-    String         parseFile           (String const& filename);
+    String         parseFile           (String const& filename) const;
 
 private:
 

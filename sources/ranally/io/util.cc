@@ -19,9 +19,9 @@ enum OpenMode {
 };
 
 
-std::shared_ptr<Dataset> openDataset(
-    String const& /* dataSetName */,
-    OpenMode /* openMode */)
+std::shared_ptr<Dataset> open_dataset(
+    String const& /* dataset_name */,
+    OpenMode /* open_mode */)
 {
     std::shared_ptr<Dataset> dataset;
 
@@ -33,14 +33,15 @@ std::shared_ptr<Dataset> openDataset(
 
 
 void import(
-    String const& inputDatasetName,
-    String const& outputDatasetName)
+    String const& input_dataset_name,
+    String const& output_dataset_name)
 {
-    std::shared_ptr<Dataset> inputDataset = openDataset(inputDatasetName, Read);
-    HDF5DatasetDriver hdf5Driver;
-    std::shared_ptr<Dataset> outputDataset(hdf5Driver.create(
-        outputDatasetName));
-    outputDataset->copy(*inputDataset);
+    std::shared_ptr<Dataset> input_dataset = open_dataset(input_dataset_name,
+        Read);
+    HDF5DatasetDriver hdf5_driver;
+    std::shared_ptr<Dataset> output_dataset(hdf5_driver.create(
+        output_dataset_name));
+    output_dataset->copy(*input_dataset);
 }
 
 } // namespace ranally

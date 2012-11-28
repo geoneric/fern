@@ -29,9 +29,9 @@ public:
 
     Type           type                () const;
 
-    virtual bool   isSpatial           () const=0;
+    virtual bool   is_spatial          () const=0;
 
-    virtual bool   isTemporal          () const=0;
+    virtual bool   is_temporal         () const=0;
 
 protected:
 

@@ -14,8 +14,8 @@ BOOST_AUTO_TEST_CASE(parse)
     ranally::OperationsPtr operations;
     std::vector<ranally::Parameter> parameters;
     std::vector<ranally::Result> results;
-    ranally::DataTypes dataTypes;
-    ranally::ValueTypes valueTypes;
+    ranally::DataTypes data_types;
+    ranally::ValueTypes value_types;
 
     {
         // Empty xml.
@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE(parse)
 
         operations = xmlParser.parse(xml);
         BOOST_CHECK_EQUAL(operations->size(), 1u);
-        BOOST_REQUIRE(operations->hasOperation("print"));
+        BOOST_REQUIRE(operations->has_operation("print"));
 
         ranally::OperationPtr const& operation(
             operations->operation("print"));
@@ -64,11 +64,11 @@ BOOST_AUTO_TEST_CASE(parse)
         ranally::Parameter parameter = parameters[0];
         BOOST_CHECK(parameter.name() == "value");
         BOOST_CHECK(parameter.description() == "Value to print.");
-        dataTypes = parameter.dataTypes();
-        BOOST_CHECK(dataTypes == ranally::DT_ALL);
+        data_types = parameter.data_types();
+        BOOST_CHECK(data_types == ranally::DT_ALL);
 
-        valueTypes = parameter.valueTypes();
-        BOOST_CHECK(valueTypes == ranally::VT_ALL);
+        value_types = parameter.value_types();
+        BOOST_CHECK(value_types == ranally::VT_ALL);
 
         results = operation->results();
         BOOST_CHECK(results.empty());

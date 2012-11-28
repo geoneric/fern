@@ -4,7 +4,7 @@
 namespace ranally {
 namespace python {
 
-String asUnicodeString(
+String as_unicode_string(
     PyObject* object)
 {
     // TODO What do we know about the encoding of the input string? Use it to

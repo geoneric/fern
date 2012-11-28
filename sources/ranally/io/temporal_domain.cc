@@ -17,13 +17,13 @@ TemporalDomain::~TemporalDomain()
 }
 
 
-bool TemporalDomain::isSpatial() const
+bool TemporalDomain::is_spatial() const
 {
     return false;
 }
 
 
-bool TemporalDomain::isTemporal() const
+bool TemporalDomain::is_temporal() const
 {
     return true;
 }

@@ -34,7 +34,7 @@ HDF5Dataset::~HDF5Dataset()
 }
 
 
-herr_t incrementNrFeatures(
+herr_t increment_nr_features(
     hid_t /* loc_id */,
     char const* /* name */,
     H5L_info_t const* /* info */,
@@ -45,17 +45,17 @@ herr_t incrementNrFeatures(
 }
 
 
-size_t HDF5Dataset::nrFeatures() const
+size_t HDF5Dataset::nr_features() const
 {
-    size_t nrFeatures = 0;
+    size_t nr_features = 0;
     herr_t result = H5Literate(_file->getLocId(), H5_INDEX_NAME, H5_ITER_NATIVE,
-        NULL, incrementNrFeatures, &nrFeatures);
+        NULL, increment_nr_features, &nr_features);
     if(result < 0) {
         // TODO
         H5Eprint1(stdout);
         throw std::string("error while iterating over group's links");
     }
-    return nrFeatures;
+    return nr_features;
 }
 
 
@@ -82,9 +82,9 @@ bool HDF5Dataset::exists(
     String const& name) const
 {
     // Check whether group with name /name is present.
-    H5G_info_t groupInfo;
+    H5G_info_t group_info;
     herr_t result = H5Gget_info_by_name(_file->getLocId(),
-      name.encodeInUTF8().c_str(), &groupInfo, H5P_DEFAULT);
+      name.encode_in_utf8().c_str(), &group_info, H5P_DEFAULT);
     return result >= 0;
 }
 
@@ -102,7 +102,7 @@ bool HDF5Dataset::exists(
 void HDF5Dataset::remove(
     String const& name)
 {
-    herr_t result = H5Ldelete(_file->getLocId(), name.encodeInUTF8().c_str(),
+    herr_t result = H5Ldelete(_file->getLocId(), name.encode_in_utf8().c_str(),
         H5P_DEFAULT);
 
     if(result < 0) {
@@ -123,35 +123,35 @@ void HDF5Dataset::add(
     }
 
     // Create new feature group at /<feature name>.
-    hid_t featureGroupId;
+    hid_t feature_group_id;
     {
-        std::string featurePathName = feature.name().encodeInUTF8();
-        featureGroupId = H5Gcreate2(_file->getLocId(),
-          featurePathName.c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
-        if(featureGroupId < 0) {
+        std::string feature_pathname = feature.name().encode_in_utf8();
+        feature_group_id = H5Gcreate2(_file->getLocId(),
+          feature_pathname.c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+        if(feature_group_id < 0) {
           // TODO
           throw std::string("error while creating group for feature");
         }
     }
-    assert(featureGroupId >= 0);
+    assert(feature_group_id >= 0);
 
     // Create domain data set at /<feature name>/__domain__.
     // The domain of a point feature contains the coordinates of points that
     // need to be written to the data set. The domain consists of a 2D matrix,
-    // of dimensions nrPoints x nrCoordinates:
+    // of dimensions nr_points x nr_coordinates:
     // x1  | y1
     // x2  | y2
     // ... | ...
     // xn  | yn
     {
-        std::string domainPathName = "__domain__";
+        std::string domain_pathname = "__domain__";
         PointDomain const& domain(feature.domain());
-        size_t const nrDimensions = 2;
-        size_t const nrCoordinates = 2;
-        size_t const nrPoints = domain.points().size();
-        hsize_t dimensions[nrDimensions];
-        dimensions[0] = nrPoints;
-        dimensions[1] = nrCoordinates;
+        size_t const nr_dimensions = 2;
+        size_t const nr_coordinates = 2;
+        size_t const nr_points = domain.points().size();
+        hsize_t dimensions[nr_dimensions];
+        dimensions[0] = nr_points;
+        dimensions[1] = nr_coordinates;
         // hid_t dataSpaceId = H5Screate_simple(2, dimensions, NULL);
         // if(dataSpaceId < 0) {
         //     // TODO
@@ -160,8 +160,9 @@ void HDF5Dataset::add(
 
         // Create buffer with the coordinates.
         boost::multi_array<Coordinate, 2> coordinates(
-            boost::extents[nrPoints][nrCoordinates], boost::c_storage_order());
-        for(size_t i = 0; i < nrPoints; ++i) {
+            boost::extents[nr_points][nr_coordinates],
+            boost::c_storage_order());
+        for(size_t i = 0; i < nr_points; ++i) {
             Point const& point(domain.points()[i]);
             coordinates[i][0] = point.get<0>();
             coordinates[i][1] = point.get<1>();
@@ -171,12 +172,12 @@ void HDF5Dataset::add(
             "Coordinate must be a floating point type");
         static_assert(sizeof(Coordinate) == 8,
             "Size of Coordinate must be 8 bytes");
-        // hid_t dataSetId = H5Dcreate2(featureGroupId, domainPathName.c_str(),
+        // hid_t dataSetId = H5Dcreate2(feature_group_id, domain_pathname.c_str(),
         //     H5T_IEEE_F64LE, dataSpaceId, H5P_DEFAULT, H5P_DEFAULT,
         //     H5P_DEFAULT);
 
-        herr_t result = H5LTmake_dataset_double(featureGroupId,
-            domainPathName.c_str(), nrDimensions, dimensions,
+        herr_t result = H5LTmake_dataset_double(feature_group_id,
+            domain_pathname.c_str(), nr_dimensions, dimensions,
             coordinates.data());
         if(result < 0) {
             // TODO
@@ -186,10 +187,10 @@ void HDF5Dataset::add(
 
     // // Create attributes at /<feature name>/<attribute name>.
     // {
-    //     std::string attributePathName = ranally::util::encodeInUTF8(feature.name());
-    //     hid_t featureGroupId = H5Gcreate2(_file->getLocId(),
-    //         featurePathName.c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
-    //     if(featureGroupId < 0) {
+    //     std::string attributePathName = ranally::util::encode_in_utf8(feature.name());
+    //     hid_t feature_group_id = H5Gcreate2(_file->getLocId(),
+    //         feature_pathname.c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+    //     if(feature_group_id < 0) {
     //         // TODO
     //         throw std::string("error while creating group for feature");
     //     }
@@ -199,7 +200,7 @@ void HDF5Dataset::add(
     // - Create value for each attribute at
     //   /<feature name>/<attribute name>/__value__.
 
-    herr_t result = H5Gclose(featureGroupId);
+    herr_t result = H5Gclose(feature_group_id);
     if(result < 0) {
         // TODO
         throw std::string("error while closing group for feature");
@@ -215,10 +216,10 @@ void HDF5Dataset::add(
 }
 
 
-void HDF5Dataset::addFeature(
+void HDF5Dataset::add_feature(
     Feature const& feature)
 {
-    switch(feature.domainType()) {
+    switch(feature.domain_type()) {
         case Domain::PointDomain: {
             add<PointFeature>(dynamic_cast<PointFeature const&>(feature));
             break;
@@ -234,7 +235,7 @@ void HDF5Dataset::addFeature(
 void HDF5Dataset::copy(
     Dataset const& dataSet)
 {
-    for(size_t i = 0; i < dataSet.nrFeatures(); ++i) {
+    for(size_t i = 0; i < dataSet.nr_features(); ++i) {
         std::unique_ptr<Feature> feature(dataSet.feature(i));
         assert(feature);
         copy(*feature);

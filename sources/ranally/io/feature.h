@@ -24,18 +24,18 @@ public:
 
     String const&  name                () const;
 
-    Domain::Type   domainType          () const;
+    Domain::Type   domain_type         () const;
 
 protected:
 
                    Feature             (String const& name,
-                                        Domain::Type domainType);
+                                        Domain::Type domain_type);
 
 private:
 
     String         _name;
 
-    Domain::Type   _domainType;
+    Domain::Type   _domain_type;
 
 };
 

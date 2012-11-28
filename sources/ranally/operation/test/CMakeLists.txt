@@ -6,7 +6,7 @@ SET(TEST_NAMES
 MACRO(ADD_UNIT_TEST NAME)
     ADD_EXECUTABLE(${NAME} ${NAME})
     TARGET_LINK_LIBRARIES(${NAME}
-        RanallyOperation
+        ranally_operation
     )
     ADD_TEST(NAME ${NAME} COMMAND ${NAME})
 ENDMACRO()

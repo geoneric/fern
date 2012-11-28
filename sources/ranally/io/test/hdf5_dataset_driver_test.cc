@@ -8,20 +8,20 @@
 #include "ranally/io/point_feature.h"
 
 
-void removeTestFiles()
+void remove_test_files()
 {
-    std::vector<ranally::String> dataSetNames;
-    dataSetNames.push_back("TestExists.h5");
-    dataSetNames.push_back("TestCreate.h5");
-    dataSetNames.push_back("TestRemove.h5");
-    dataSetNames.push_back("TestOpen.h5");
+    std::vector<ranally::String> dataset_names;
+    dataset_names.push_back("TestExists.h5");
+    dataset_names.push_back("TestCreate.h5");
+    dataset_names.push_back("TestRemove.h5");
+    dataset_names.push_back("TestOpen.h5");
     ranally::HDF5DatasetDriver driver;
 
-    for(auto dataSetName: dataSetNames) {
-        if(driver.exists(dataSetName)) {
-            driver.remove(dataSetName);
+    for(auto dataset_name: dataset_names) {
+        if(driver.exists(dataset_name)) {
+            driver.remove(dataset_name);
         }
-        assert(!driver.exists(dataSetName));
+        assert(!driver.exists(dataset_name));
     }
 }
 
@@ -35,7 +35,7 @@ public:
     Support()
         : ranally::HDF5Client()
     {
-        removeTestFiles();
+        remove_test_files();
     }
 
 };
@@ -59,22 +59,22 @@ BOOST_AUTO_TEST_CASE(create)
     return;
 
     ranally::HDF5DatasetDriver driver;
-    ranally::String dataSetName = "TestCreate.h5";
-    BOOST_REQUIRE(!driver.exists(dataSetName));
-    std::unique_ptr<ranally::HDF5Dataset> dataSet;
+    ranally::String dataset_name = "TestCreate.h5";
+    BOOST_REQUIRE(!driver.exists(dataset_name));
+    std::unique_ptr<ranally::HDF5Dataset> dataset;
 
     // Create empty data set.
     {
-        dataSet.reset();
-        dataSet.reset(driver.create(dataSetName));
-        BOOST_CHECK(driver.exists(dataSetName));
+        dataset.reset();
+        dataset.reset(driver.create(dataset_name));
+        BOOST_CHECK(driver.exists(dataset_name));
 
-        dataSet.reset();
-        dataSet.reset(driver.open(dataSetName));
+        dataset.reset();
+        dataset.reset(driver.open(dataset_name));
 
-        BOOST_CHECK(dataSet);
-        BOOST_CHECK(dataSet->name() == dataSetName);
-        BOOST_CHECK_EQUAL(dataSet->nrFeatures(), 0u);
+        BOOST_CHECK(dataset);
+        BOOST_CHECK(dataset->name() == dataset_name);
+        BOOST_CHECK_EQUAL(dataset->nr_features(), 0u);
     }
 
     // Create a data set with a feature without attributes.
@@ -82,21 +82,21 @@ BOOST_AUTO_TEST_CASE(create)
         ranally::PointsPtr points(new ranally::Points);
         points->push_back(ranally::Point(3.0, 4.0));
         ranally::PointDomainPtr domain(new ranally::PointDomain(points));
-        ranally::PointFeature featureWritten("Stations", domain);
+        ranally::PointFeature feature_written("Stations", domain);
 
-        dataSet.reset();
-        dataSet.reset(driver.create(dataSetName));
-        dataSet->addFeature(featureWritten);
+        dataset.reset();
+        dataset.reset(driver.create(dataset_name));
+        dataset->add_feature(feature_written);
 
-        dataSet.reset();
-        dataSet.reset(driver.open(dataSetName));
-        BOOST_CHECK_EQUAL(dataSet->nrFeatures(), 1u);
-        BOOST_CHECK(dataSet->exists("Stations"));
+        dataset.reset();
+        dataset.reset(driver.open(dataset_name));
+        BOOST_CHECK_EQUAL(dataset->nr_features(), 1u);
+        BOOST_CHECK(dataset->exists("Stations"));
 
-        ranally::PointFeaturePtr featureRead(
-            dynamic_cast<ranally::PointFeature*>(dataSet->feature("Stations")));
-        // TODO BOOST_CHECK(*featureRead == featureWritten);
-        // BOOST_CHECK_EQUAL(featureRead->attributes().size(), 0u);
+        ranally::PointFeaturePtr feature_read(
+            dynamic_cast<ranally::PointFeature*>(dataset->feature("Stations")));
+        // TODO BOOST_CHECK(*feature_read == feature_written);
+        // BOOST_CHECK_EQUAL(feature_read->attributes().size(), 0u);
     }
 
     // Add a feature with an attribute.
@@ -106,23 +106,23 @@ BOOST_AUTO_TEST_CASE(create)
         ranally::PointDomainPtr domain(new ranally::PointDomain(points));;
         ranally::PointAttributePtr attribute(new ranally::PointAttribute(
           "Measuring", domain));
-        ranally::PointFeature featureWritten("Stations", domain);
-        featureWritten.add(attribute);
+        ranally::PointFeature feature_written("Stations", domain);
+        feature_written.add(attribute);
 
-        dataSet.reset();
-        dataSet.reset(driver.create(dataSetName));
-        dataSet->addFeature(featureWritten);
+        dataset.reset();
+        dataset.reset(driver.create(dataset_name));
+        dataset->add_feature(feature_written);
 
-        dataSet.reset();
-        dataSet.reset(driver.open(dataSetName));
-        BOOST_CHECK_EQUAL(dataSet->nrFeatures(), 1u);
-        BOOST_CHECK(dataSet->exists("Stations"));
+        dataset.reset();
+        dataset.reset(driver.open(dataset_name));
+        BOOST_CHECK_EQUAL(dataset->nr_features(), 1u);
+        BOOST_CHECK(dataset->exists("Stations"));
 
-        ranally::PointFeaturePtr featureRead(
-            dynamic_cast<ranally::PointFeature*>(dataSet->feature("Stations")));
-        // TODO BOOST_CHECK(*featureRead == featureWritten);
-        // BOOST_CHECK_EQUAL(featureRead->attributes().size(), 1u);
-        // BOOST_CHECK(featureRead->exists("Measuring"));
+        ranally::PointFeaturePtr feature_read(
+            dynamic_cast<ranally::PointFeature*>(dataset->feature("Stations")));
+        // TODO BOOST_CHECK(*feature_read == feature_written);
+        // BOOST_CHECK_EQUAL(feature_read->attributes().size(), 1u);
+        // BOOST_CHECK(feature_read->exists("Measuring"));
     }
 
 
@@ -136,14 +136,14 @@ BOOST_AUTO_TEST_CASE(create)
 BOOST_AUTO_TEST_CASE(remove)
 {
     ranally::HDF5DatasetDriver driver;
-    ranally::String dataSetName = "TestRemove.h5";
-    BOOST_REQUIRE(!driver.exists(dataSetName));
+    ranally::String dataset_name = "TestRemove.h5";
+    BOOST_REQUIRE(!driver.exists(dataset_name));
 
-    std::unique_ptr<ranally::HDF5Dataset>(driver.create(dataSetName));
-    BOOST_CHECK(driver.exists(dataSetName));
+    std::unique_ptr<ranally::HDF5Dataset>(driver.create(dataset_name));
+    BOOST_CHECK(driver.exists(dataset_name));
 
-    driver.remove(dataSetName);
-    BOOST_CHECK(!driver.exists(dataSetName));
+    driver.remove(dataset_name);
+    BOOST_CHECK(!driver.exists(dataset_name));
 
     // TODO Test remove of read-only file.
     // TODO Test remove of non-existing file.
@@ -153,16 +153,16 @@ BOOST_AUTO_TEST_CASE(remove)
 BOOST_AUTO_TEST_CASE(open)
 {
     ranally::HDF5DatasetDriver driver;
-    ranally::String dataSetName = "TestOpen.h5";
-    BOOST_REQUIRE(!driver.exists(dataSetName));
+    ranally::String dataset_name = "TestOpen.h5";
+    BOOST_REQUIRE(!driver.exists(dataset_name));
 
-    std::unique_ptr<ranally::HDF5Dataset>(driver.create(dataSetName));
-    BOOST_REQUIRE(driver.exists(dataSetName));
+    std::unique_ptr<ranally::HDF5Dataset>(driver.create(dataset_name));
+    BOOST_REQUIRE(driver.exists(dataset_name));
 
-    std::unique_ptr<ranally::HDF5Dataset> dataSet(driver.open(
-      dataSetName));
-    BOOST_CHECK(dataSet);
-    BOOST_CHECK(dataSet->name() == dataSetName);
+    std::unique_ptr<ranally::HDF5Dataset> dataset(driver.open(
+      dataset_name));
+    BOOST_CHECK(dataset);
+    BOOST_CHECK(dataset->name() == dataset_name);
 
     // TODO Test opening non-existing data set.
     // TODO Test opening read-only data set.

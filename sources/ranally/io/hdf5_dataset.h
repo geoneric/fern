@@ -28,15 +28,15 @@ public:
 
                    ~HDF5Dataset        ();
 
-    size_t         nrFeatures          () const;
+    size_t         nr_features         () const;
 
     Feature*       feature             (size_t i) const;
 
     Feature*       feature             (String const& name) const;
 
-    void           addFeature          (Feature const& feature);
+    void           add_feature         (Feature const& feature);
 
-    void           copy                (Dataset const& dataSet);
+    void           copy                (Dataset const& dataset);
 
     bool           exists              (String const& name) const;
 

@@ -918,7 +918,7 @@ std::shared_ptr<ScriptVertex> XmlParser::parse(
     // Copy string contents in a string stream and work with that.
     std::stringstream stream;
     stream.exceptions(std::ifstream::badbit | std::ifstream::failbit);
-    stream << xml.encodeInUTF8(); // << std::endl;
+    stream << xml.encode_in_utf8(); // << std::endl;
 
     return parse(stream);
 }

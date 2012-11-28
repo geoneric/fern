@@ -21,7 +21,7 @@ public:
                    ExecuteCommand      (int argc,
                                         char** argv);
 
-                   ~ExecuteCommand     () noexcept(true) =default;
+                   ~ExecuteCommand     () noexcept(true); // =default;
 
                    ExecuteCommand      (ExecuteCommand&&)=delete;
 
@@ -31,11 +31,11 @@ public:
 
     ExecuteCommand& operator=          (ExecuteCommand const&)=delete;
 
-    int            execute             ();
+    int            execute             () const;
 
 private:
 
-    void           execute             (String const& xml);
+    void           execute             (ScriptVertexPtr const& tree) const;
 
 };
 

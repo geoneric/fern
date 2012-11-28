@@ -44,7 +44,7 @@ void ScriptVisitor::visitStatements(
         _script += indentation();
         statementVertex->Accept(*this);
 
-        if(!_script.endsWith("\n")) {
+        if(!_script.ends_with("\n")) {
             _script += "\n";
         }
     }

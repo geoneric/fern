@@ -20,15 +20,15 @@ inline void plus(
     Argument2 const& argument2,
     Result& result)
 {
-    typename boost::range_const_iterator<Argument1>::type argument1It =
+    typename boost::range_const_iterator<Argument1>::type argument1_it =
         boost::begin(argument1);
     typename boost::range_const_iterator<Argument1>::type const end1 =
         boost::end(argument1);
-    typename boost::range_iterator<Result>::type resultIt =
+    typename boost::range_iterator<Result>::type result_it =
         boost::begin(result);
 
-    for(; argument1It != end1; ++argument1It, ++resultIt) {
-        *resultIt = *argument1It + argument2;
+    for(; argument1_it != end1; ++argument1_it, ++result_it) {
+        *result_it = *argument1_it + argument2;
     }
 }
 
@@ -75,17 +75,17 @@ inline void plus(
     Argument2 const& argument2,
     Result& result)
 {
-  typename boost::range_const_iterator<Argument1>::type argument1It =
+  typename boost::range_const_iterator<Argument1>::type argument1_it =
       boost::begin(argument1);
-  typename boost::range_const_iterator<Argument2>::type argument2It =
+  typename boost::range_const_iterator<Argument2>::type argument2_it =
       boost::begin(argument2);
   typename boost::range_const_iterator<Argument1>::type const end1 =
       boost::end(argument1);
-  typename boost::range_iterator<Result>::type resultIt =
+  typename boost::range_iterator<Result>::type result_it =
       boost::begin(result);
 
-  for(; argument1It != end1; ++argument1It, ++argument2It, ++resultIt) {
-      *resultIt = *argument1It + *argument2It;
+  for(; argument1_it != end1; ++argument1_it, ++argument2_it, ++result_it) {
+      *result_it = *argument1_it + *argument2_it;
   }
 }
 

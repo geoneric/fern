@@ -1,12 +1,10 @@
 #include "ranally/command/execute_command.h"
-#include "ranally/language/xml_parser.h"
-#include "ranally/interpreter/interpreter.h"
 
 
 namespace ranally {
 namespace {
 
-void showExecuteHelp()
+void show_execute_help()
 {
     std::cout <<
         "usage: ranally execute [--help] INPUT_SCRIPT\n"
@@ -30,35 +28,35 @@ ExecuteCommand::ExecuteCommand(
 }
 
 
+ExecuteCommand::~ExecuteCommand() noexcept(true) =default;
+
+
 void ExecuteCommand::execute(
-    String const& xml)
+    ScriptVertexPtr const& tree) const
 {
-    std::shared_ptr<ranally::ScriptVertex> tree(
-        ranally::XmlParser().parse(xml));
-    ranally::Interpreter interpreter;
-    interpreter.execute(tree);
+    interpreter().execute(tree);
 }
 
 
-int ExecuteCommand::execute()
+int ExecuteCommand::execute() const
 {
     int status = EXIT_FAILURE;
 
     if(argc() == 1 || std::strcmp(argv()[1], "--help") == 0) {
         // No arguments, or the help option.
-        showExecuteHelp();
+        show_execute_help();
         status = EXIT_SUCCESS;
     }
     else if(argc() > 2) {
         std::cerr << "Too many arguments.\n";
-        showExecuteHelp();
+        show_execute_help();
         status = EXIT_FAILURE;
     }
     else {
-        std::string inputFileName = std::strcmp(argv()[1], "-") != 0
+        std::string input_filename = std::strcmp(argv()[1], "-") != 0
             ? argv()[1] : "";
-        String xml = read(inputFileName);
-        execute(xml);
+        ScriptVertexPtr tree(interpreter().parse_file(input_filename));
+        execute(tree);
         status = EXIT_SUCCESS;
     }
 

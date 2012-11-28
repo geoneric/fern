@@ -6,7 +6,7 @@
 namespace ranally {
 namespace python {
 
-String             asUnicodeString     (PyObject* object);
+String             as_unicode_string   (PyObject* object);
 
 } // namespace python
 } // namespace ranally

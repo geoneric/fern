@@ -15,7 +15,7 @@ size_t Operations::size() const
 }
 
 
-bool Operations::hasOperation(
+bool Operations::has_operation(
     String const& name) const
 {
     return _operations.find(name) != _operations.end();

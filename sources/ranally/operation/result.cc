@@ -7,17 +7,17 @@ namespace ranally {
 Result::Result(
     String const& name,
     String const& description,
-    DataType const& dataType,
-    ValueType const& valueType)
+    DataType const& data_type,
+    ValueType const& value_type)
 
     : _name(name),
       _description(description),
-      _dataType(dataType),
-      _valueType(valueType)
+      _data_type(data_type),
+      _value_type(value_type)
 
 {
-    assert(!_name.isEmpty());
-    assert(!_description.isEmpty());
+    assert(!_name.is_empty());
+    assert(!_description.is_empty());
 }
 
 
@@ -26,8 +26,8 @@ Result::Result(
 
     : _name(other._name),
       _description(other._description),
-      _dataType(other._dataType),
-      _valueType(other._valueType)
+      _data_type(other._data_type),
+      _value_type(other._value_type)
 
 {
 }
@@ -39,8 +39,8 @@ Result& Result::operator=(
     if(&other != this) {
         _name = other._name;
         _description = other._description;
-        _dataType = other._dataType;
-        _valueType = other._valueType;
+        _data_type = other._data_type;
+        _value_type = other._value_type;
     }
 
     return *this;
@@ -59,15 +59,15 @@ String const& Result::description() const
 }
 
 
-DataType Result::dataType() const
+DataType Result::data_type() const
 {
-    return _dataType;
+    return _data_type;
 }
 
 
-ValueType Result::valueType() const
+ValueType Result::value_type() const
 {
-    return _valueType;
+    return _value_type;
 }
 
 } // namespace ranally

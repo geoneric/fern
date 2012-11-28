@@ -21,7 +21,7 @@ public:
                    ImportCommand       (int argc,
                                         char** argv);
 
-                   ~ImportCommand      () noexcept(true) =default;
+                   ~ImportCommand      () noexcept(true); // =default;
 
                    ImportCommand       (ImportCommand&&)=delete;
 
@@ -31,7 +31,7 @@ public:
 
     ImportCommand& operator=           (ImportCommand const&)=delete;
 
-    int            execute             ();
+    int            execute             () const;
 
 private:
 

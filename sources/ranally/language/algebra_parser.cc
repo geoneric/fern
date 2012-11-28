@@ -637,7 +637,7 @@ ranally::String pythonAstToXml(
     switch(ast->kind) {
         case Module_kind: {
             xml += (boost::format("<Ranally source=\"%1%\">")
-                % sourceName.encodeInUTF8()).str().c_str();
+                % sourceName.encode_in_utf8()).str().c_str();
             writeStatementNodes(ast->v.Module.body, xml);
             xml += "</Ranally>";
             break;
@@ -712,7 +712,7 @@ AlgebraParser::AlgebraParser()
     : python::Client()
 
 {
-    assert(python::Client::isInitialized());
+    assert(python::Client::is_initialized());
 }
 
 
@@ -725,11 +725,11 @@ AlgebraParser::AlgebraParser()
   \sa        .
 */
 String AlgebraParser::parseString(
-    String const& string)
+    String const& string) const
 {
     SmartArena smart_arena;
     mod_ty ast = PyParser_ASTFromString(
-        string.encodeInUTF8().c_str(), "", Py_file_input, 0,
+        string.encode_in_utf8().c_str(), "", Py_file_input, 0,
         smart_arena.arena());
 
     if(!ast) {
@@ -751,10 +751,10 @@ String AlgebraParser::parseString(
   \sa        .
 */
 String AlgebraParser::parseFile(
-    String const& filename)
+    String const& filename) const
 {
     SmartArena smart_arena;
-    std::string filenameInUtf8(filename.encodeInUTF8());
+    std::string filenameInUtf8(filename.encode_in_utf8());
     FILE* filePointer = fopen(filenameInUtf8.c_str(), "r");
 
     if(filePointer == NULL) {

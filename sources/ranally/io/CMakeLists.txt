@@ -29,11 +29,11 @@ SET(SOURCES
     util
     value
 )
-ADD_LIBRARY(RanallyIO
+ADD_LIBRARY(ranally_io
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(RanallyIO
-    RanallyCore
+TARGET_LINK_LIBRARIES(ranally_io
+    ranally_core
     ${HDF5_LIBRARIES}
     ${GDAL_LIBRARIES}
     ${Boost_FILESYSTEM_LIBRARY}

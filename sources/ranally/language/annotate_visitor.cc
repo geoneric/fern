@@ -32,12 +32,12 @@ void AnnotateVisitor::Visit(
 
 #define VISIT_NUMBER_VERTEX(                                                   \
     type,                                                                      \
-    dataType,                                                                  \
-    valueType)                                                                 \
+    data_type,                                                                 \
+    value_type)                                                                \
 void AnnotateVisitor::Visit(                                                   \
     NumberVertex<type>& vertex)                                                \
 {                                                                              \
-    vertex.addResultType(dataType, valueType);                                 \
+    vertex.addResultType(data_type, value_type);                               \
 }
 
 VISIT_NUMBER_VERTEX(int8_t  , DataType::DT_VALUE, VT_INT8   )
@@ -57,13 +57,13 @@ VISIT_NUMBER_VERTEX(double  , DataType::DT_VALUE, VT_FLOAT64)
 void AnnotateVisitor::Visit(
     OperationVertex& vertex)
 {
-    if(_operations->hasOperation(vertex.name())) {
+    if(_operations->has_operation(vertex.name())) {
         assert(!vertex.operation());
         OperationPtr const& operation(_operations->operation(vertex.name()));
         vertex.setOperation(operation);
 
         for(auto result: operation->results()) {
-            vertex.addResultType(result.dataType(), result.valueType());
+            vertex.addResultType(result.data_type(), result.value_type());
         }
     }
 }

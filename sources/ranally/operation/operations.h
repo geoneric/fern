@@ -38,7 +38,7 @@ public:
 
     size_t         size                () const;
 
-    bool           hasOperation        (String const& name) const;
+    bool           has_operation       (String const& name) const;
 
     OperationPtr const& operation      (String const& name) const;
 
@@ -71,7 +71,7 @@ inline Operations::Operations(
         if(_operations.find(operation->name()) != _operations.end()) {
             throw std::runtime_error((boost::format(
                 "operation %1% already present")
-                % operation->name().encodeInUTF8()).str().c_str());
+                % operation->name().encode_in_utf8()).str().c_str());
         }
 
         _operations[operation->name()] = operation;

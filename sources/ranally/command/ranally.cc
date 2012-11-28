@@ -10,7 +10,7 @@
 
 namespace ranally {
 
-void showGeneralHelp()
+void show_general_help()
 {
     std::cout <<
         "usage: ranally [--help] [--build] [--version] [COMMAND] [ARGS]\n"
@@ -30,7 +30,7 @@ void showGeneralHelp()
 }
 
 
-void showVersion()
+void show_version()
 {
     std::cout << "ranally " << RANALLY_VERSION << "-" << RANALLY_BUILD_STAGE
         << "\n";
@@ -38,7 +38,7 @@ void showVersion()
 }
 
 
-void showBuild()
+void show_build()
 {
     std::cout << RANALLY_BUILD_TYPE << " build (" << __DATE__ << ")\n"
         << RANALLY_ARCHITECTURE << ", "
@@ -58,15 +58,15 @@ int main(
 
     if(argc == 1 || std::strcmp(argv[1], "--help") == 0) {
         // No arguments, or the help option.
-        ranally::showGeneralHelp();
+        ranally::show_general_help();
         status = EXIT_SUCCESS;
     }
     else if(std::strcmp(argv[1], "--version") == 0) {
-        ranally::showVersion();
+        ranally::show_version();
         status = EXIT_SUCCESS;
     }
     else if(std::strcmp(argv[1], "--build") == 0) {
-        ranally::showBuild();
+        ranally::show_build();
         status = EXIT_SUCCESS;
     }
     else {
@@ -86,7 +86,7 @@ int main(
             command.reset(new ranally::ImportCommand(argc - 1, argv + 1));
         }
         else {
-            ranally::showGeneralHelp();
+            ranally::show_general_help();
             status = EXIT_FAILURE;
         }
 

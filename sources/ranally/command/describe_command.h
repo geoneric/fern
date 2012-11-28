@@ -29,13 +29,13 @@ public:
 
     DescribeCommand& operator=         (DescribeCommand const&)=delete;
 
-                   ~DescribeCommand    () noexcept(true) =default;
+                   ~DescribeCommand    () noexcept(true); // =default;
 
-    int            execute             ();
+    int            execute             () const;
 
 private:
 
-    void           describe            (String const& xml);
+    void           describe            (ScriptVertexPtr const& tree) const;
 
 };
 

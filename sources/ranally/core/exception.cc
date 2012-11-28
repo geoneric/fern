@@ -64,14 +64,14 @@ String ParseError::message() const
 {
     String message_;
 
-    if(_filename.isEmpty()) {
-        message_ = boost::format(Exception::message().encodeInUTF8())
-            % _message.encodeInUTF8();
+    if(_filename.is_empty()) {
+        message_ = boost::format(Exception::message().encode_in_utf8())
+            % _message.encode_in_utf8();
     }
     else {
-        message_ = boost::format(Exception::message().encodeInUTF8())
-            % _filename.encodeInUTF8()
-            % _message.encodeInUTF8();
+        message_ = boost::format(Exception::message().encode_in_utf8())
+            % _filename.encode_in_utf8()
+            % _message.encode_in_utf8();
     }
 
     return message_;

@@ -5,6 +5,6 @@ SET(SOURCES
     owned_reference
     string
 )
-ADD_LIBRARY(RanallyPython
+ADD_LIBRARY(ranally_python
     ${SOURCES}
 )

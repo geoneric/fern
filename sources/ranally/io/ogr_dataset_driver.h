@@ -35,7 +35,7 @@ public:
 
 private:
 
-    OGRSFDriver*     _driver;
+    OGRSFDriver*   _driver;
 
 };
 

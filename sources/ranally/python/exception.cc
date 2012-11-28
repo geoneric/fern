@@ -7,27 +7,27 @@ namespace ranally {
 namespace python {
 namespace {
 
-String formatErrorMessage(
+String format_error_message(
     PyObject* value,
     PyObject* /* traceback */)
 {
     assert(value);
     assert(value != Py_None);
-    OwnedReference valueDescriptionObject(PyObject_Str(value));
-    assert(valueDescriptionObject);
-    String valueDescription = asUnicodeString(valueDescriptionObject);
+    OwnedReference value_description_object(PyObject_Str(value));
+    assert(value_description_object);
+    String valueDescription = as_unicode_string(value_description_object);
 
     return valueDescription;
 }
 
 
-String formatSyntaxErrorMessage(
+String format_syntax_error_message(
     PyObject* value,
     PyObject* traceback)
 {
     // TODO Unpack the filename, lineno, offset and text attributes and format
     //      a nice error message.
-    return formatErrorMessage(value, traceback);
+    return format_error_message(value, traceback);
 }
 
 } // Anonymous namespace
@@ -49,18 +49,18 @@ String error_message()
 
     // OwnedReference typeNameObject = PyObject_GetAttrString(type, "__name__");
     // assert(typeNameObject);
-    // String typeName = asUnicodeString(typeNameObject);
+    // String typeName = as_unicode_string(typeNameObject);
 
     String message;
 
     if(PyErr_GivenExceptionMatches(type, PyExc_SyntaxError)) {
-        message = formatSyntaxErrorMessage(value, traceback);
+        message = format_syntax_error_message(value, traceback);
     }
     else {
-        message = formatErrorMessage(value, traceback);
+        message = format_error_message(value, traceback);
     }
 
-    assert(!message.isEmpty());
+    assert(!message.is_empty());
     assert(!PyErr_Occurred());
 
     return message;

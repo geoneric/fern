@@ -14,7 +14,7 @@ void ValidateVisitor::Visit(
         // TODO Add to unit tests.
         throw std::runtime_error((boost::format(
             "%1%: undefined identifier")
-                % vertex.name().encodeInUTF8()
+                % vertex.name().encode_in_utf8()
             ).str().c_str());
     }
 }
@@ -29,7 +29,7 @@ void ValidateVisitor::Visit(
     // function's name.
     if(!vertex.operation()) {
         throw std::runtime_error(("unknown function: " +
-            vertex.name().encodeInUTF8()).c_str());
+            vertex.name().encode_in_utf8()).c_str());
     }
 
     ranally::Operation const& operation(*vertex.operation());
@@ -41,7 +41,7 @@ void ValidateVisitor::Visit(
         throw std::runtime_error((boost::format(
             // <operation>: <description>: <details>
             "%1%: not enough arguments: %2% argument(s) required")
-                % vertex.name().encodeInUTF8()
+                % vertex.name().encode_in_utf8()
                 % operation.parameters().size()
             ).str().c_str());
     }
@@ -49,7 +49,7 @@ void ValidateVisitor::Visit(
         // TODO Add to unit tests.
         throw std::runtime_error((boost::format(
             "%1%: too many arguments: %2% argument(s) required")
-                % vertex.name().encodeInUTF8()
+                % vertex.name().encode_in_utf8()
                 % operation.parameters().size()
           ).str().c_str());
     }

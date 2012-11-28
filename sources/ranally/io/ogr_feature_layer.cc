@@ -8,17 +8,17 @@
 namespace ranally {
 namespace {
 
-Domain::Type domainType(
+Domain::Type domain_type(
     OGRwkbGeometryType geometryType)
 {
-    Domain::Type domainType;
+    Domain::Type domain_type;
 
     switch(geometryType) {
         case wkbPoint: {
-            domainType = Domain::PointDomain;
+            domain_type = Domain::PointDomain;
         }
         case wkbPolygon: {
-            domainType = Domain::PolygonDomain;
+            domain_type = Domain::PolygonDomain;
         }
 #ifndef NDEBUG
         default: {
@@ -27,7 +27,7 @@ Domain::Type domainType(
 #endif
     }
 
-    return domainType;
+    return domain_type;
 }
 
 } // Anonymous namespace.
@@ -40,7 +40,7 @@ OGRFeatureLayer::OGRFeatureLayer(
       _domain()
 
 {
-    switch(domainType(_layer->GetGeomType())) {
+    switch(domain_type(_layer->GetGeomType())) {
         case Domain::PointDomain: {
             PointsPtr points;
             _domain.reset(new PointDomain(points));

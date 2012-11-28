@@ -19,6 +19,10 @@ public:
 
     HDF5Client&    operator=           (HDF5Client const&)=delete;
 
+                   HDF5Client          (HDF5Client&&)=delete;
+
+    HDF5Client&    operator=           (HDF5Client&&)=delete;
+
     virtual        ~HDF5Client         ();
 
 protected:

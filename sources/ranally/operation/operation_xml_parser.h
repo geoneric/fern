@@ -24,11 +24,11 @@ public:
 
                    OperationXmlParser  (OperationXmlParser&&)=delete;
 
-    OperationXmlParser&     operator=  (OperationXmlParser&&)=delete;
+    OperationXmlParser& operator=      (OperationXmlParser&&)=delete;
 
                    OperationXmlParser  (OperationXmlParser const&)=delete;
 
-    OperationXmlParser&     operator=  (OperationXmlParser const&)=delete;
+    OperationXmlParser& operator=      (OperationXmlParser const&)=delete;
 
     OperationsPtr  parse               (std::istream& stream) const;
 

@@ -8,7 +8,7 @@ Feature::Feature(
     Domain::Type domainType)
 
     : _name(name),
-      _domainType(domainType)
+      _domain_type(domainType)
 
 {
 }
@@ -25,9 +25,9 @@ String const& Feature::name() const
 }
 
 
-Domain::Type Feature::domainType() const
+Domain::Type Feature::domain_type() const
 {
-    return _domainType;
+    return _domain_type;
 }
 
 } // namespace ranally

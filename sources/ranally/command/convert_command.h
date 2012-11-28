@@ -21,7 +21,7 @@ public:
                    ConvertCommand      (int argc,
                                         char** argv);
 
-                   ~ConvertCommand     () noexcept(true) =default;
+                   ~ConvertCommand     () noexcept(true); // =default;
 
                    ConvertCommand      (ConvertCommand&&)=delete;
 
@@ -31,37 +31,37 @@ public:
 
     ConvertCommand& operator=          (ConvertCommand const&)=delete;
 
-    int            execute             ();
+    int            execute             () const;
 
 private:
 
-    int            convertToRanally    (int argc,
-                                        char** argv);
+    int            convert_to_ranally  (int argc,
+                                        char** argv) const;
 
-    int            convertToCpp        (int argc,
-                                        char** argv);
+    int            convert_to_cpp      (int argc,
+                                        char** argv) const;
 
-    String         convertToDotAst     (String const& xml,
-                                        int modes);
+    String         convert_to_dot_ast  (ScriptVertexPtr const& tree,
+                                        int modes) const;
 
-    int            convertToDotAst     (int argc,
-                                        char** argv);
+    int            convert_to_dot_ast  (int argc,
+                                        char** argv) const;
 
-    String         convertToDotFlowgraph(
-                                        String const& xml);
+    String         convert_to_dot_flowgraph(
+                                        ScriptVertexPtr const& tree) const;
 
-    int            convertToDotFlowgraph(
+    int            convert_to_dot_flowgraph(
                                         int argc,
-                                        char** argv);
+                                        char** argv) const;
 
-    int            convertToDot        (int argc,
-                                        char** argv);
+    int            convert_to_dot      (int argc,
+                                        char** argv) const;
 
-    int            convertToPython     (int argc,
-                                        char** argv);
+    int            convert_to_python   (int argc,
+                                        char** argv) const;
 
-    int            convertToXml        (int argc,
-                                        char** argv);
+    int            convert_to_xml      (int argc,
+                                        char** argv) const;
 
 };
 

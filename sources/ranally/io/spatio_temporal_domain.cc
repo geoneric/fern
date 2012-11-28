@@ -17,13 +17,13 @@ SpatioTemporalDomain::~SpatioTemporalDomain()
 }
 
 
-bool SpatioTemporalDomain::isSpatial() const
+bool SpatioTemporalDomain::is_spatial() const
 {
     return true;
 }
 
 
-bool SpatioTemporalDomain::isTemporal() const
+bool SpatioTemporalDomain::is_temporal() const
 {
     return true;
 }

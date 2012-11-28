@@ -17,8 +17,8 @@ Operation::Operation(
       _results(results)
 
 {
-    assert(!name.isEmpty());
-    assert(!description.isEmpty());
+    assert(!name.is_empty());
+    assert(!description.is_empty());
 }
 
 

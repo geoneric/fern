@@ -25,7 +25,7 @@ OwnedReference::OwnedReference()
   PyNumber_, PySequence_ or PyMapping_).
 
   In case you are passing in an object whose reference count doesn't reflect
-  that the reference is owned by us, then call incRef() after constructing the
+  that the reference is owned by us, then call inc_ref() after constructing the
   instance.
 */
 OwnedReference::OwnedReference(
@@ -51,7 +51,7 @@ OwnedReference::OwnedReference(
 // {
 //     assert(false);
 //     if(_object != NULL) {
-//         incRef();
+//         inc_ref();
 //     }
 // }
 
@@ -70,11 +70,11 @@ OwnedReference& OwnedReference::operator=(
     PyObject* object)
 {
     if(_object == object) {
-        // incRef();
+        // inc_ref();
     }
     else {
         if(_object != NULL) {
-            decRef();
+            dec_ref();
         }
 
         _object = object;
@@ -91,7 +91,7 @@ OwnedReference& OwnedReference::operator=(
 OwnedReference::~OwnedReference()
 {
     if(_object != NULL) {
-        decRef();
+        dec_ref();
     }
 }
 
@@ -127,14 +127,14 @@ OwnedReference::operator PyObject*()
 }
 
 
-void OwnedReference::incRef()
+void OwnedReference::inc_ref()
 {
     assert(_object != NULL);
     Py_INCREF(_object);
 }
 
 
-void OwnedReference::decRef()
+void OwnedReference::dec_ref()
 {
     assert(_object != NULL);
     Py_DECREF(_object);

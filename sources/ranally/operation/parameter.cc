@@ -7,19 +7,19 @@ namespace ranally {
 Parameter::Parameter(
     String const& name,
     String const& description,
-    DataTypes dataTypes,
-    ValueTypes valueTypes)
+    DataTypes data_types,
+    ValueTypes value_types)
 
     : _name(name),
       _description(description),
-      _dataTypes(dataTypes),
-      _valueTypes(valueTypes)
+      _data_types(data_types),
+      _value_types(value_types)
 
 {
-    assert(!_name.isEmpty());
-    assert(!_description.isEmpty());
-    assert(_dataTypes != DataType::DT_UNKNOWN);
-    assert(_valueTypes != VT_UNKNOWN);
+    assert(!_name.is_empty());
+    assert(!_description.is_empty());
+    assert(_data_types != DataType::DT_UNKNOWN);
+    assert(_value_types != VT_UNKNOWN);
 }
 
 
@@ -28,8 +28,8 @@ Parameter::Parameter(
 
     : _name(other._name),
       _description(other._description),
-      _dataTypes(other._dataTypes),
-      _valueTypes(other._valueTypes)
+      _data_types(other._data_types),
+      _value_types(other._value_types)
 
 {
 }
@@ -41,8 +41,8 @@ Parameter& Parameter::operator=(
     if(&other != this) {
         _name = other._name;
         _description = other._description;
-        _dataTypes = other._dataTypes;
-        _valueTypes = other._valueTypes;
+        _data_types = other._data_types;
+        _value_types = other._value_types;
     }
 
     return *this;
@@ -66,15 +66,15 @@ String const& Parameter::description() const
 }
 
 
-DataTypes Parameter::dataTypes() const
+DataTypes Parameter::data_types() const
 {
-    return _dataTypes;
+    return _data_types;
 }
 
 
-ValueTypes Parameter::valueTypes() const
+ValueTypes Parameter::value_types() const
 {
-    return _valueTypes;
+    return _value_types;
 }
 
 } // namespace ranally

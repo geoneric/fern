@@ -1,5 +1,6 @@
 #pragma once
 #include "ranally/core/string.h"
+#include "ranally/interpreter/interpreter.h"
 
 
 namespace ranally {
@@ -27,7 +28,7 @@ public:
 
     virtual        ~Command            ()=default;
 
-    virtual int    execute             ()=0;
+    virtual int    execute             () const=0;
 
 protected:
 
@@ -38,16 +39,18 @@ protected:
 
     char**         argv                () const;
 
-    String         read                (std::string const& filename);
+    Interpreter const& interpreter     () const;
 
     void           write               (String const& contents,
-                                        std::string const& filename);
+                                        std::string const& filename) const;
 
 private:
 
     int            _argc;
 
     char**         _argv;
+
+    Interpreter    _interpreter;
 
 };
 

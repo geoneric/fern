@@ -27,7 +27,7 @@ bool HDF5DatasetDriver::exists(
     bool result = false;
 
     try {
-        result = H5::H5File::isHdf5(name.encodeInUTF8().c_str());
+        result = H5::H5File::isHdf5(name.encode_in_utf8().c_str());
     }
     catch(H5::FileIException const&) {
         result = false;
@@ -44,11 +44,11 @@ HDF5Dataset* HDF5DatasetDriver::create(
 
     try {
         unsigned int accessMode = H5F_ACC_TRUNC; // | H5F_ACC_RDWR?
-        H5::FileCreatPropList creationProperties =
+        H5::FileCreatPropList creation_properties =
             H5::FileCreatPropList::DEFAULT;
-        H5::FileAccPropList accessProperties = H5::FileAccPropList::DEFAULT;
-        H5::H5File* file = new H5::H5File(name.encodeInUTF8().c_str(),
-            accessMode, creationProperties, accessProperties);
+        H5::FileAccPropList access_properties = H5::FileAccPropList::DEFAULT;
+        H5::H5File* file = new H5::H5File(name.encode_in_utf8().c_str(),
+            accessMode, creation_properties, access_properties);
         file->flush(H5F_SCOPE_GLOBAL);
         result = new HDF5Dataset(name, file);
     }
@@ -68,7 +68,7 @@ void HDF5DatasetDriver::remove(
 {
     if(exists(name)) {
         try {
-            boost::filesystem::remove(name.encodeInUTF8().c_str());
+            boost::filesystem::remove(name.encode_in_utf8().c_str());
         }
         catch(...) {
             // TODO Raise exception.
@@ -84,7 +84,7 @@ HDF5Dataset* HDF5DatasetDriver::open(
     HDF5Dataset* result = 0;
 
     try {
-        H5::H5File* file = new H5::H5File(name.encodeInUTF8().c_str(),
+        H5::H5File* file = new H5::H5File(name.encode_in_utf8().c_str(),
             H5F_ACC_RDONLY);
 
         result = new HDF5Dataset(name, file);

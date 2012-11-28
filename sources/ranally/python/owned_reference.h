@@ -42,13 +42,13 @@ public:
 
                    operator PyObject*  ();
 
-    void           incRef              ();
+    void           inc_ref             ();
 
 private:
 
     PyObject*        _object;
 
-    void           decRef              ();
+    void           dec_ref             ();
 
 };
 

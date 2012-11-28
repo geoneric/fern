@@ -21,8 +21,8 @@ public:
 
                    Result              (String const& name,
                                         String const& description,
-                                        DataType const& dataType,
-                                        ValueType const& valueType);
+                                        DataType const& data_type,
+                                        ValueType const& value_type);
 
                    ~Result             ()=default;
 
@@ -38,9 +38,9 @@ public:
 
     String const&  description         () const;
 
-    DataType       dataType            () const;
+    DataType       data_type           () const;
 
-    ValueType      valueType           () const;
+    ValueType      value_type          () const;
 
 private:
 
@@ -48,9 +48,9 @@ private:
 
     String         _description;
 
-    DataType       _dataType;
+    DataType       _data_type;
 
-    ValueType      _valueType;
+    ValueType      _value_type;
 
 };
 

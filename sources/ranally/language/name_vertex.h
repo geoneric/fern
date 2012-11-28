@@ -63,7 +63,7 @@ inline std::ostream& operator<<(
     std::ostream& stream,
     NameVertex const& vertex)
 {
-    stream << "name: " << vertex.name().encodeInUTF8() << "\n";
+    stream << "name: " << vertex.name().encode_in_utf8() << "\n";
 
     if(!vertex.definitions().empty()) {
         stream << "definitions:\n";

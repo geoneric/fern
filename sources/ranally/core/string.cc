@@ -10,7 +10,7 @@ namespace {
   \param     string Unicode string to encode.
   \return    A copy of \a string encoded in UTF8.
 */
-std::string encodeInUTF8(
+std::string encode_in_utf8(
     UnicodeString const& string)
 {
     std::string result;
@@ -91,13 +91,13 @@ String::String(
 }
 
 
-std::string String::encodeInUTF8() const
+std::string String::encode_in_utf8() const
 {
-    return ::encodeInUTF8(*this);
+    return ::encode_in_utf8(*this);
 }
 
 
-bool String::isEmpty() const
+bool String::is_empty() const
 {
     return UnicodeString::isEmpty();
 }
@@ -125,7 +125,7 @@ String& String::operator+=(
 }
 
 
-bool String::endsWith(
+bool String::ends_with(
     String const& string) const
 {
     return UnicodeString::endsWith(string);
@@ -154,7 +154,7 @@ std::ostream& operator<<(
     std::ostream& stream,
     String const& string)
 {
-    stream << string.encodeInUTF8();
+    stream << string.encode_in_utf8();
     return stream;
 }
 

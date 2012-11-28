@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE(remove_temporary_identifier)
 std::cout << "--------------------------" << std::endl;
         tree->Accept(_optimizeVisitor);
         tree->Accept(_scriptVisitor);
-std::cout << _scriptVisitor.script().encodeInUTF8() << std::endl;
+std::cout << _scriptVisitor.script().encode_in_utf8() << std::endl;
         BOOST_CHECK_EQUAL(_scriptVisitor.script(), ranally::String("e = 5\n"));
 
         return;
@@ -73,7 +73,7 @@ std::cout << _scriptVisitor.script().encodeInUTF8() << std::endl;
         _interpreter.annotate(tree);
         tree->Accept(_optimizeVisitor);
         tree->Accept(_scriptVisitor);
-        std::cout << _scriptVisitor.script().encodeInUTF8() << std::endl;
+        std::cout << _scriptVisitor.script().encode_in_utf8() << std::endl;
         BOOST_CHECK_EQUAL(_scriptVisitor.script(), ranally::String("d = f(5)"));
     }
 

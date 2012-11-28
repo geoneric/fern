@@ -20,9 +20,9 @@ public:
 
     virtual        ~TemporalDomain     ();
 
-    bool           isSpatial           () const;
+    bool           is_spatial          () const;
 
-    bool           isTemporal          () const;
+    bool           is_temporal         () const;
 
 protected:
 

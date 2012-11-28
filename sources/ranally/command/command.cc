@@ -1,7 +1,5 @@
 #include "ranally/command/command.h"
-#include <iostream>
 #include <fstream>
-#include <sstream>
 #include "ranally/language/algebra_parser.h"
 
 
@@ -12,7 +10,8 @@ Command::Command(
     char** argv)
 
     : _argc(argc),
-      _argv(argv)
+      _argv(argv),
+      _interpreter()
 
 {
 }
@@ -30,33 +29,38 @@ char** Command::argv() const
 }
 
 
-//! Read script from \a filename.
-/*!
-  \param     filename Name of file to read script from.
-  \exception .
-
-  In case \a filename is empty, the script is read from standard input.
-*/
-ranally::String Command::read(
-    std::string const& filename)
+Interpreter const& Command::interpreter() const
 {
-    ranally::String xml;
-    ranally::AlgebraParser parser;
-
-    if(filename.empty()) {
-        // Read script from the standard input stream.
-        std::ostringstream script;
-        script << std::cin.rdbuf();
-        xml = parser.parseString(ranally::String(script.str()));
-    }
-    else {
-        // Read script from a file.
-        xml = parser.parseFile(ranally::String(filename));
-    }
-
-    return xml;
+    return _interpreter;
 }
 
+
+// //! Read script from \a filename.
+// /*!
+//   \param     filename Name of file to read script from.
+//   \exception .
+// 
+//   In case \a filename is empty, the script is read from standard input.
+// */
+// ranally::String Command::read(
+//     std::string const& filename)
+// {
+//     ranally::String xml;
+//     ranally::AlgebraParser parser;
+// 
+//     if(filename.empty()) {
+//         // Read script from the standard input stream.
+//         std::ostringstream script;
+//         script << std::cin.rdbuf();
+//         xml = parser.parseString(ranally::String(script.str()));
+//     }
+//     else {
+//         // Read script from a file.
+//         xml = parser.parseFile(ranally::String(filename));
+//     }
+// 
+//     return xml;
+// }
 
 
 //! Write \a contents to a file with name \a filename.
@@ -69,14 +73,14 @@ ranally::String Command::read(
 */
 void Command::write(
     ranally::String const& contents,
-    std::string const& filename)
+    std::string const& filename) const
 {
     if(filename.empty()) {
-        std::cout << contents.encodeInUTF8();
+        std::cout << contents.encode_in_utf8();
     }
     else {
         std::ofstream file(filename.c_str());
-        file << contents.encodeInUTF8();
+        file << contents.encode_in_utf8();
     }
 }
 

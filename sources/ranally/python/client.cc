@@ -48,7 +48,7 @@ Client::~Client()
   Since there currently is not a way to check whether initialization of the
   Python API failed (see Client()), this method always returns true.
 */
-bool Client::isInitialized() const
+bool Client::is_initialized() const
 {
     return _initialized;
 }

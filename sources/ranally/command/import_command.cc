@@ -7,7 +7,7 @@
 namespace ranally {
 namespace {
 
-void showImportHelp()
+void show_import_help()
 {
     std::cout <<
         "usage: ranally import INPUT_DATA_SET OUTPUT_DATA_SET\n"
@@ -32,29 +32,32 @@ ImportCommand::ImportCommand(
 }
 
 
-int ImportCommand::execute()
+ImportCommand::~ImportCommand() noexcept(true) =default;
+
+
+int ImportCommand::execute() const
 {
     int status = EXIT_FAILURE;
 
     if(argc() == 1 || std::strcmp(argv()[1], "--help") == 0) {
         // No arguments, or the help option.
-        showImportHelp();
+        show_import_help();
         status = EXIT_SUCCESS;
     }
     else if(argc() == 2) {
         std::cerr << "Not enough arguments.\n";
-        showImportHelp();
+        show_import_help();
         status = EXIT_FAILURE;
     }
     else if(argc() > 3) {
         std::cerr << "Too many arguments.\n";
-        showImportHelp();
+        show_import_help();
         status = EXIT_FAILURE;
     }
     else {
-        String inputDatasetName = argv()[1];
-        String outputDatasetName = argv()[2];
-        ranally::import(inputDatasetName, outputDatasetName);
+        String input_dataset_name = argv()[1];
+        String output_dataset_name = argv()[2];
+        import(input_dataset_name, output_dataset_name);
         status = EXIT_SUCCESS;
     }
 

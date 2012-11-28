@@ -30,7 +30,7 @@ public:
 
     virtual        ~Client             ();
 
-    bool           isInitialized       () const;
+    bool           is_initialized      () const;
 
 protected:
 

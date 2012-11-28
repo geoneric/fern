@@ -50,11 +50,11 @@ SET(SOURCES
     result
     operation_xml_parser
 )
-ADD_LIBRARY(RanallyOperation
+ADD_LIBRARY(ranally_operation
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(RanallyOperation
-    RanallyCore
+TARGET_LINK_LIBRARIES(ranally_operation
+    ranally_core
     ${EXPAT_LIBRARY}
 )
 ADD_CUSTOM_TARGET(operation-xml.h

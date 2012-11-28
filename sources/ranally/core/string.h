@@ -44,11 +44,11 @@ public:
 
     String&        operator+=          (String const& string);
 
-    std::string    encodeInUTF8        () const;
+    std::string    encode_in_utf8      () const;
 
-    bool           isEmpty             () const;
+    bool           is_empty            () const;
 
-    bool           endsWith            (String const& string) const;
+    bool           ends_with           (String const& string) const;
 
 private:
 
