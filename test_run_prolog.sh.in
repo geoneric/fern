@@ -1,4 +1,4 @@
-test_data_dir="${PROJECT_SOURCE_DIR}/Data/Tests"
+test_data_dir="${PROJECT_SOURCE_DIR}/data/tests"
 io_test_dir="${CMAKE_CURRENT_BINARY_DIR}/sources/ranally/io/test"
 cmake="${CMAKE_COMMAND}"
 
