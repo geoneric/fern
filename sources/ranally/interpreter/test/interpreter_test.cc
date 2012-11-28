@@ -1,13 +1,26 @@
-#define BOOST_TEST_MODULE ranally language
+#define BOOST_TEST_MODULE ranally interpreter
 #include <boost/test/included/unit_test.hpp>
+#include "ranally/core/exception.h"
+#include "ranally/interpreter/interpreter.h"
 
 
-BOOST_AUTO_TEST_SUITE(syntax_vertex)
+BOOST_AUTO_TEST_SUITE(interpreter)
 
-BOOST_AUTO_TEST_CASE(dummy)
+BOOST_AUTO_TEST_CASE(parse_string)
 {
-    bool test_implemented = false;
-    BOOST_WARN(test_implemented);
+    ranally::Interpreter interpreter;
+
+    ranally::ScriptVertexPtr vertex = interpreter.parse_string("a = b + c");
+
+    try {
+        interpreter.parse_string("a = b c");
+    }
+    catch(ranally::ParseError const& exception) {
+        ranally::String message = exception.message();
+        BOOST_CHECK_EQUAL(message,
+            "Error while parsing: invalid syntax\n"
+            "1:7: a = b c");
+    }
 }
 
 BOOST_AUTO_TEST_SUITE_END()
