@@ -14,18 +14,18 @@ NameVertex::NameVertex(
 
 
 NameVertex::NameVertex(
-    int lineNr,
-    int colId,
+    int line_nr,
+    int col_id,
     String const& name)
 
-    : ExpressionVertex(lineNr, colId, name) // ,
+    : ExpressionVertex(line_nr, col_id, name) // ,
       // _definition(0)
 
 {
 }
 
 
-// void NameVertex::setDefinition(
+// void NameVertex::set_definition(
 //   NameVertex* definition)
 // {
 //   assert(!_definition);
@@ -48,7 +48,7 @@ NameVertex::NameVertex(
 // }
 
 
-void NameVertex::addDefinition(
+void NameVertex::add_definition(
     NameVertex* vertex)
 {
     _definitions.push_back(vertex);
@@ -61,7 +61,7 @@ std::vector<NameVertex*> const& NameVertex::definitions() const
 }
 
 
-void NameVertex::addUse(
+void NameVertex::add_use(
     NameVertex* vertex)
 {
     // Either the definition vertex is not set yet, or it is equal to this.

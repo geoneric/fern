@@ -5,13 +5,13 @@ namespace ranally {
 
 WhileVertex::WhileVertex(
     std::shared_ptr<ExpressionVertex> const& condition,
-    StatementVertices const& trueStatements,
-    StatementVertices const& falseStatements)
+    StatementVertices const& true_statements,
+    StatementVertices const& false_statements)
 
     : StatementVertex(),
       _condition(condition),
-      _trueStatements(trueStatements),
-      _falseStatements(falseStatements)
+      _true_statements(true_statements),
+      _false_statements(false_statements)
 
 {
 }
@@ -23,27 +23,27 @@ std::shared_ptr<ExpressionVertex> const& WhileVertex::condition() const
 }
 
 
-StatementVertices const& WhileVertex::trueStatements() const
+StatementVertices const& WhileVertex::true_statements() const
 {
-    return _trueStatements;
+    return _true_statements;
 }
 
 
-StatementVertices& WhileVertex::trueStatements()
+StatementVertices& WhileVertex::true_statements()
 {
-    return _trueStatements;
+    return _true_statements;
 }
 
 
-StatementVertices const& WhileVertex::falseStatements() const
+StatementVertices const& WhileVertex::false_statements() const
 {
-    return _falseStatements;
+    return _false_statements;
 }
 
 
-StatementVertices& WhileVertex::falseStatements()
+StatementVertices& WhileVertex::false_statements()
 {
-    return _falseStatements;
+    return _false_statements;
 }
 
 } // namespace ranally

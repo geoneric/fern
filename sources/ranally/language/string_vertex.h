@@ -20,8 +20,8 @@ public:
 
     LOKI_DEFINE_VISITABLE()
 
-                   StringVertex        (int lineNr,
-                                        int colId,
+                   StringVertex        (int line_nr,
+                                        int col_id,
                                         String const& value);
 
                    ~StringVertex       ()=default;

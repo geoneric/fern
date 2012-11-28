@@ -63,9 +63,9 @@ protected:
 
     Visitor&       operator=           (Visitor const&)=delete;
 
-    virtual void   visitStatements     (StatementVertices& statements);
+    virtual void   visit_statements    (StatementVertices& statements);
 
-    virtual void   visitExpressions    (ExpressionVertices const& expressions);
+    virtual void   visit_expressions   (ExpressionVertices const& expressions);
 
     virtual void   Visit               (AssignmentVertex& vertex);
 

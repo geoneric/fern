@@ -6,20 +6,20 @@
 
 namespace ranally {
 
-String nameToSymbol(
+String name_to_symbol(
     String const& name,
-    size_t nrOperands)
+    size_t nr_operands)
 {
     std::map<String, String> symbols;
 
-    if(nrOperands == 1) {
+    if(nr_operands == 1) {
         // Unary operators.
         symbols["Invert"] = "~";
         symbols["Not"] = "!";
         symbols["Add"] = "+";
         symbols["Sub"] = "-";
     }
-    else if(nrOperands == 2) {
+    else if(nr_operands == 2) {
         // Binary operators.
         symbols["Add"] = "+";
         symbols["Sub"] = "-";
@@ -50,7 +50,7 @@ String nameToSymbol(
     if(symbols.find(name) == symbols.end()) {
         throw std::runtime_error((boost::format(
             "operator %1% with %2% operands not available")
-            % name.encode_in_utf8() % nrOperands).str().c_str());
+            % name.encode_in_utf8() % nr_operands).str().c_str());
     }
 
     return symbols[name];
@@ -62,7 +62,7 @@ OperatorVertex::OperatorVertex(
     ExpressionVertices const& expressions)
 
     : OperationVertex(name, expressions),
-      _symbol(nameToSymbol(name, expressions.size()))
+      _symbol(name_to_symbol(name, expressions.size()))
 
 {
 }

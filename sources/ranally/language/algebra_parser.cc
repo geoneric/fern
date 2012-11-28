@@ -14,13 +14,15 @@
 
 namespace {
 
-void               writeExpressionNode (expr_ty const& expression,
+void               write_expression_node(
+                                        expr_ty const& expression,
                                         ranally::String& xml);
-void               writeStatementNodes (asdl_seq const* statements,
+void               write_statement_nodes(
+                                        asdl_seq const* statements,
                                         ranally::String& xml);
 
 
-void writeNameNode(
+void write_name_node(
     identifier const id,
     expr_context_ty const& /* context */,
     ranally::String& xml)
@@ -38,7 +40,7 @@ void writeNameNode(
 }
 
 
-void writeNumberNode(
+void write_number_node(
     object const& number,
     ranally::String& xml)
 {
@@ -95,7 +97,7 @@ void writeNumberNode(
 }
 
 
-void writeStringNode(
+void write_string_node(
     string const string,
     ranally::String& xml)
 {
@@ -114,7 +116,7 @@ void writeStringNode(
 }
 
 
-void writeExpressionsNode(
+void write_expressions_node(
     asdl_seq const* expressions,
     ranally::String& xml)
 {
@@ -128,7 +130,7 @@ void writeExpressionsNode(
         for(int i = 0; i < expressions->size; ++i) {
             expr_ty const expression = static_cast<expr_ty const>(
                 asdl_seq_GET(expressions, i));
-            writeExpressionNode(expression, xml);
+            write_expression_node(expression, xml);
         }
 
         xml += "</Expressions>";
@@ -136,7 +138,7 @@ void writeExpressionsNode(
 }
 
 
-void writeCallNode(
+void write_call_node(
     expr_ty const function,
     asdl_seq const* arguments,
     asdl_seq const* keywords,
@@ -150,13 +152,13 @@ void writeCallNode(
 
     xml += "<Function>";
     assert(function->kind == Name_kind);
-    writeNameNode(function->v.Name.id, function->v.Name.ctx, xml);
-    writeExpressionsNode(arguments, xml);
+    write_name_node(function->v.Name.id, function->v.Name.ctx, xml);
+    write_expressions_node(arguments, xml);
     xml += "</Function>";
 }
 
 
-void writeUnaryOperatorNode(
+void write_unary_operator_node(
     unaryop_ty const unaryOperator,
     expr_ty const operand,
     ranally::String& xml)
@@ -186,21 +188,21 @@ void writeUnaryOperatorNode(
 
     xml += "</Name>";
     xml += "<Expressions>";
-    writeExpressionNode(operand, xml);
+    write_expression_node(operand, xml);
     xml += "</Expressions>";
     xml += "</Operator>";
 }
 
 
-void writeBinaryOperatorNode(
-    expr_ty const leftOperand,
-    operator_ty const binaryOperator,
-    expr_ty const rightOperand,
+void write_binary_operator_node(
+    expr_ty const left_operand,
+    operator_ty const binary_operator,
+    expr_ty const right_operand,
     ranally::String& xml)
 {
     xml += "<Operator><Name>";
 
-    switch(binaryOperator) {
+    switch(binary_operator) {
         case Add: {
             xml += "Add";
             break;
@@ -255,21 +257,21 @@ void writeBinaryOperatorNode(
 
     xml += "</Name>";
     xml += "<Expressions>";
-    writeExpressionNode(leftOperand, xml);
-    writeExpressionNode(rightOperand, xml);
+    write_expression_node(left_operand, xml);
+    write_expression_node(right_operand, xml);
     xml += "</Expressions>";
     xml += "</Operator>";
 }
 
 
-void writeBooleanOperatorNode(
-    boolop_ty const booleanOperator,
+void write_boolean_operator_node(
+    boolop_ty const boolean_operator,
     asdl_seq const* operands,
     ranally::String& xml)
 {
     xml += "<Operator><Name>";
 
-    switch(booleanOperator) {
+    switch(boolean_operator) {
         case And: {
             xml += "And";
             break;
@@ -283,13 +285,13 @@ void writeBooleanOperatorNode(
     }
 
     xml += "</Name>";
-    writeExpressionsNode(operands, xml);
+    write_expressions_node(operands, xml);
     xml += "</Operator>";
 }
 
 
-void writeComparisonOperatorNode(
-    expr_ty const leftOperand,
+void write_comparison_operator_node(
+    expr_ty const left_operand,
     asdl_int_seq const* operators,
     asdl_seq const* comparators,
     ranally::String& xml)
@@ -336,14 +338,14 @@ void writeComparisonOperatorNode(
     }
 
     xml += "</Name><Expressions>";
-    writeExpressionNode(leftOperand, xml);
-    writeExpressionNode(static_cast<expr_ty const>(
+    write_expression_node(left_operand, xml);
+    write_expression_node(static_cast<expr_ty const>(
         asdl_seq_GET(comparators, 0)), xml);
     xml += "</Expressions></Operator>";
 }
 
 
-void throwUnsupportedExpressionKind(
+void throw_unsupported_expression_kind(
     ranally::String const& kind)
 {
     BOOST_THROW_EXCEPTION(ranally::detail::UnsupportedExpressionError()
@@ -351,7 +353,7 @@ void throwUnsupportedExpressionKind(
 }
 
 
-void writeExpressionNode(
+void write_expression_node(
     expr_ty const& expression,
     ranally::String& xml)
 {
@@ -365,98 +367,98 @@ void writeExpressionNode(
 
     switch(expression->kind) {
         case Name_kind: {
-            writeNameNode(expression->v.Name.id, expression->v.Name.ctx, xml);
+            write_name_node(expression->v.Name.id, expression->v.Name.ctx, xml);
             break;
         }
         case Num_kind: {
-            writeNumberNode(expression->v.Num.n, xml);
+            write_number_node(expression->v.Num.n, xml);
             break;
         }
         case Str_kind: {
-            writeStringNode(expression->v.Str.s, xml);
+            write_string_node(expression->v.Str.s, xml);
             break;
         }
         case Call_kind: {
-            writeCallNode(expression->v.Call.func, expression->v.Call.args,
+            write_call_node(expression->v.Call.func, expression->v.Call.args,
                 expression->v.Call.keywords, expression->v.Call.starargs,
                 expression->v.Call.kwargs, xml);
             break;
         }
         case UnaryOp_kind: {
-            writeUnaryOperatorNode(expression->v.UnaryOp.op,
+            write_unary_operator_node(expression->v.UnaryOp.op,
                 expression->v.UnaryOp.operand, xml);
             break;
         }
         case BinOp_kind: {
-            writeBinaryOperatorNode(expression->v.BinOp.left,
+            write_binary_operator_node(expression->v.BinOp.left,
                 expression->v.BinOp.op, expression->v.BinOp.right, xml);
             break;
         }
         case BoolOp_kind: {
-            writeBooleanOperatorNode(expression->v.BoolOp.op,
+            write_boolean_operator_node(expression->v.BoolOp.op,
                 expression->v.BoolOp.values, xml);
             break;
         }
         case Compare_kind: {
-            writeComparisonOperatorNode(expression->v.Compare.left,
+            write_comparison_operator_node(expression->v.Compare.left,
                 expression->v.Compare.ops, expression->v.Compare.comparators,
                 xml);
             break;
         }
         case IfExp_kind: {
-            throwUnsupportedExpressionKind("if");
+            throw_unsupported_expression_kind("if");
             break;
         }
         case Lambda_kind: {
-            throwUnsupportedExpressionKind("lambda");
+            throw_unsupported_expression_kind("lambda");
             break;
         }
         case Dict_kind: {
-            throwUnsupportedExpressionKind("dictionary");
+            throw_unsupported_expression_kind("dictionary");
             break;
         }
         case DictComp_kind: {
-            throwUnsupportedExpressionKind("dictionary comprehension");
+            throw_unsupported_expression_kind("dictionary comprehension");
             break;
         }
         case GeneratorExp_kind: {
-            throwUnsupportedExpressionKind("generator");
+            throw_unsupported_expression_kind("generator");
             break;
         }
         case Yield_kind: {
-            throwUnsupportedExpressionKind("yield");
+            throw_unsupported_expression_kind("yield");
             break;
         }
         case Repr_kind: {
-            throwUnsupportedExpressionKind("repr");
+            throw_unsupported_expression_kind("repr");
             break;
         }
         case Attribute_kind: {
-            throwUnsupportedExpressionKind("attribute");
+            throw_unsupported_expression_kind("attribute");
             break;
         }
         case Subscript_kind: {
-            throwUnsupportedExpressionKind("subscript");
+            throw_unsupported_expression_kind("subscript");
             break;
         }
         case List_kind: {
-            throwUnsupportedExpressionKind("list");
+            throw_unsupported_expression_kind("list");
             break;
         }
         case ListComp_kind: {
-            throwUnsupportedExpressionKind("list comprehension");
+            throw_unsupported_expression_kind("list comprehension");
             break;
         }
         case Set_kind: {
-            throwUnsupportedExpressionKind("set");
+            throw_unsupported_expression_kind("set");
             break;
         }
         case SetComp_kind: {
-            throwUnsupportedExpressionKind("set comprehension");
+            throw_unsupported_expression_kind("set comprehension");
             break;
         }
         case Tuple_kind: {
-            throwUnsupportedExpressionKind("tuple");
+            throw_unsupported_expression_kind("tuple");
             break;
         }
     }
@@ -474,7 +476,7 @@ void writeExpressionNode(
   \warning   .
   \sa        .
 */
-void writeAssignmentNode(
+void write_assignment_node(
     asdl_seq const* targets,
     expr_ty const& value,
     ranally::String& xml)
@@ -489,36 +491,36 @@ void writeAssignmentNode(
     assert(target->kind == Name_kind); // TODO Error handling.
 
     xml += "<Assignment>";
-    writeExpressionNode(target, xml);
-    writeExpressionNode(value, xml);
+    write_expression_node(target, xml);
+    write_expression_node(value, xml);
     xml += "</Assignment>";
 }
 
 
-void writeIfNode(
+void write_if_node(
     expr_ty const test,
     asdl_seq const* body,
     asdl_seq const* orelse,
     ranally::String& xml)
 {
     xml += "<If>";
-    writeExpressionNode(test, xml);
-    writeStatementNodes(body, xml);
-    writeStatementNodes(orelse, xml);
+    write_expression_node(test, xml);
+    write_statement_nodes(body, xml);
+    write_statement_nodes(orelse, xml);
     xml += "</If>";
 }
 
 
-void writeWhileNode(
+void write_while_node(
     expr_ty const test,
     asdl_seq const* body,
     asdl_seq const* orelse,
     ranally::String& xml)
 {
     xml += "<While>";
-    writeExpressionNode(test, xml);
-    writeStatementNodes(body, xml);
-    writeStatementNodes(orelse, xml);
+    write_expression_node(test, xml);
+    write_statement_nodes(body, xml);
+    write_statement_nodes(orelse, xml);
     xml += "</While>";
 }
 
@@ -539,13 +541,13 @@ void writeWhileNode(
 //     xml += "<Name>";
 //     xml += "print";
 //     xml += "</Name>";
-//     writeExpressionsNode(values, xml);
+//     write_expressions_node(values, xml);
 //     xml += "</Function>";
 //     xml += "</Expression>";
 // }
 
 
-void writeStatementNodes(
+void write_statement_nodes(
     asdl_seq const* statements,
     ranally::String& xml)
 {
@@ -565,21 +567,21 @@ void writeStatementNodes(
 
             switch(statement->kind) {
                 case Expr_kind: {
-                    writeExpressionNode(statement->v.Expr.value, xml);
+                    write_expression_node(statement->v.Expr.value, xml);
                     break;
                 }
                 case Assign_kind: {
-                    writeAssignmentNode(statement->v.Assign.targets,
+                    write_assignment_node(statement->v.Assign.targets,
                         statement->v.Assign.value, xml);
                     break;
                 }
                 case If_kind: {
-                    writeIfNode(statement->v.If.test, statement->v.If.body,
+                    write_if_node(statement->v.If.test, statement->v.If.body,
                         statement->v.If.orelse, xml);
                     break;
                 }
                 case While_kind: {
-                    writeWhileNode(statement->v.While.test,
+                    write_while_node(statement->v.While.test,
                         statement->v.While.body, statement->v.While.orelse,
                         xml);
                     break;
@@ -626,9 +628,9 @@ void writeStatementNodes(
 }
 
 
-ranally::String pythonAstToXml(
+ranally::String python_ast_to_xml(
     mod_ty const ast,
-    ranally::String const& sourceName)
+    ranally::String const& source_name)
 {
     assert(ast);
 
@@ -637,13 +639,13 @@ ranally::String pythonAstToXml(
     switch(ast->kind) {
         case Module_kind: {
             xml += (boost::format("<Ranally source=\"%1%\">")
-                % sourceName.encode_in_utf8()).str().c_str();
-            writeStatementNodes(ast->v.Module.body, xml);
+                % source_name.encode_in_utf8()).str().c_str();
+            write_statement_nodes(ast->v.Module.body, xml);
             xml += "</Ranally>";
             break;
         }
         case Expression_kind: // {
-        //   writeExpressionNode(ast->v.Expression.body, xml);
+        //   write_expression_node(ast->v.Expression.body, xml);
         //   break;
         // }
         case Interactive_kind:
@@ -724,7 +726,7 @@ AlgebraParser::AlgebraParser()
   \warning   .
   \sa        .
 */
-String AlgebraParser::parseString(
+String AlgebraParser::parse_string(
     String const& string) const
 {
     SmartArena smart_arena;
@@ -737,7 +739,7 @@ String AlgebraParser::parseString(
             << detail::ExceptionMessage(python::error_message()));
     }
 
-    return String("<?xml version=\"1.0\"?>") + pythonAstToXml(ast,
+    return String("<?xml version=\"1.0\"?>") + python_ast_to_xml(ast,
         "&lt;string&gt;");
 }
 
@@ -750,20 +752,20 @@ String AlgebraParser::parseString(
   \warning   .
   \sa        .
 */
-String AlgebraParser::parseFile(
+String AlgebraParser::parse_file(
     String const& filename) const
 {
     SmartArena smart_arena;
-    std::string filenameInUtf8(filename.encode_in_utf8());
-    FILE* filePointer = fopen(filenameInUtf8.c_str(), "r");
+    std::string filename_in_utf8(filename.encode_in_utf8());
+    FILE* file_pointer = fopen(filename_in_utf8.c_str(), "r");
 
-    if(filePointer == NULL) {
+    if(file_pointer == NULL) {
         BOOST_THROW_EXCEPTION(detail::FileOpenError()
             << boost::errinfo_errno(errno)
             << detail::ExceptionFilename(filename));
     }
 
-    mod_ty ast = PyParser_ASTFromFile(filePointer, filenameInUtf8.c_str(),
+    mod_ty ast = PyParser_ASTFromFile(file_pointer, filename_in_utf8.c_str(),
         Py_file_input, 0, 0, 0, 0, smart_arena.arena());
 
     if(!ast) {
@@ -772,7 +774,7 @@ String AlgebraParser::parseFile(
             << detail::ExceptionMessage(python::error_message()));
     }
 
-    return String("<?xml version=\"1.0\"?>") + pythonAstToXml(ast, filename);
+    return String("<?xml version=\"1.0\"?>") + python_ast_to_xml(ast, filename);
 }
 
 } // namespace ranally

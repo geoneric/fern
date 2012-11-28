@@ -16,11 +16,11 @@ NumberVertex<T>::NumberVertex(
 
 template<typename T>
 NumberVertex<T>::NumberVertex(
-    int lineNr,
-    int colId,
+    int line_nr,
+    int col_id,
     T value)
 
-    : ExpressionVertex(lineNr, colId, String(boost::format("%1%") % value)),
+    : ExpressionVertex(line_nr, col_id, String(boost::format("%1%") % value)),
       _value(value)
 
 {

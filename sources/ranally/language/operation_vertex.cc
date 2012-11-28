@@ -20,7 +20,7 @@ ExpressionVertices const& OperationVertex::expressions() const
 }
 
 
-void OperationVertex::setOperation(
+void OperationVertex::set_operation(
     OperationPtr const& operation)
 {
     assert(!_operation);

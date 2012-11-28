@@ -17,17 +17,17 @@ class Support
 public:
 
     Support()
-        : _algebraParser(),
-          _xmlParser(),
-          _visitor(ranally::OperationXmlParser().parse(ranally::operationsXml))
+        : _algebra_parser(),
+          _xml_parser(),
+          _visitor(ranally::OperationXmlParser().parse(ranally::operations_xml))
     {
     }
 
 protected:
 
-    ranally::AlgebraParser _algebraParser;
+    ranally::AlgebraParser _algebra_parser;
 
-    ranally::XmlParser _xmlParser;
+    ranally::XmlParser _xml_parser;
 
     ranally::AnnotateVisitor _visitor;
 };
@@ -41,7 +41,8 @@ BOOST_AUTO_TEST_CASE(visit_empty_script)
     // Ast before and after should be the same.
     std::shared_ptr<ranally::ScriptVertex> tree1, tree2;
 
-    tree1 = _xmlParser.parse(_algebraParser.parseString(ranally::String("")));
+    tree1 = _xml_parser.parse(_algebra_parser.parse_string(
+        ranally::String("")));
     assert(tree1);
 
     // // Create copy of this empty tree.
@@ -54,7 +55,7 @@ BOOST_AUTO_TEST_CASE(visit_empty_script)
     // // Both trees should be equal.
     // BOOST_CHECK(*tree1 == *tree2);
 
-    BOOST_CHECK_EQUAL(tree1->sourceName(), ranally::String("<string>"));
+    BOOST_CHECK_EQUAL(tree1->source_name(), ranally::String("<string>"));
     BOOST_CHECK_EQUAL(tree1->line(), 0);
     BOOST_CHECK_EQUAL(tree1->col(), 0);
     BOOST_CHECK(tree1->statements().empty());
@@ -64,10 +65,10 @@ BOOST_AUTO_TEST_CASE(visit_empty_script)
 BOOST_AUTO_TEST_CASE(visit_number)
 {
     std::shared_ptr<ranally::ScriptVertex> tree =
-        _xmlParser.parse(_algebraParser.parseString(ranally::String("5")));
+        _xml_parser.parse(_algebra_parser.parse_string(ranally::String("5")));
     tree->Accept(_visitor);
 
-    BOOST_CHECK_EQUAL(tree->sourceName(), ranally::String("<string>"));
+    BOOST_CHECK_EQUAL(tree->source_name(), ranally::String("<string>"));
     BOOST_CHECK_EQUAL(tree->line(), 0);
     BOOST_CHECK_EQUAL(tree->col(), 0);
     BOOST_CHECK_EQUAL(tree->statements().size(), 1u);
@@ -78,11 +79,11 @@ BOOST_AUTO_TEST_CASE(visit_operation)
 {
     {
         std::shared_ptr<ranally::ScriptVertex> tree =
-            _xmlParser.parse(_algebraParser.parseString(
+            _xml_parser.parse(_algebra_parser.parse_string(
                 ranally::String("abs(a)")));
         tree->Accept(_visitor);
 
-        BOOST_CHECK_EQUAL(tree->sourceName(), ranally::String("<string>"));
+        BOOST_CHECK_EQUAL(tree->source_name(), ranally::String("<string>"));
         BOOST_CHECK_EQUAL(tree->line(), 0);
         BOOST_CHECK_EQUAL(tree->col(), 0);
 
@@ -90,11 +91,11 @@ BOOST_AUTO_TEST_CASE(visit_operation)
         std::shared_ptr<ranally::StatementVertex> const& statement(
             tree->statements()[0]);
         BOOST_REQUIRE(statement);
-        ranally::OperationVertex const* functionVertex(
+        ranally::OperationVertex const* function_vertex(
             dynamic_cast<ranally::OperationVertex*>(statement.get()));
-        BOOST_REQUIRE(functionVertex);
+        BOOST_REQUIRE(function_vertex);
 
-        ranally::OperationPtr const& operation(functionVertex->operation());
+        ranally::OperationPtr const& operation(function_vertex->operation());
         BOOST_REQUIRE(operation);
 
         BOOST_CHECK_EQUAL(operation->parameters().size(), 1u);

@@ -13,10 +13,10 @@ namespace ranally {
   base-class' successor collection.
   - The first successor always points to the first vertex of the true-block's
     control flow graph.
-  - If there is a false-block, then the second successor points to the first vertex of
-    its control flow graph.
-  - The last successor (the second or third, depending on whether or not a false-block
-    is present) points to the successor of the whole statement.
+  - If there is a false-block, then the second successor points to the first
+    vertex of its control flow graph.
+  - The last successor (the second or third, depending on whether or not a
+    false-block is present) points to the successor of the whole statement.
 
   \sa        .
 */
@@ -32,8 +32,8 @@ public:
 
                    IfVertex            (
                         std::shared_ptr<ExpressionVertex> const& condition,
-                        StatementVertices const& trueStatements,
-                        StatementVertices const& falseStatements);
+                        StatementVertices const& true_statements,
+                        StatementVertices const& false_statements);
 
                    ~IfVertex           ()=default;
 
@@ -47,21 +47,21 @@ public:
 
     std::shared_ptr<ExpressionVertex> const& condition() const;
 
-    StatementVertices const& trueStatements() const;
+    StatementVertices const& true_statements() const;
 
-    StatementVertices& trueStatements  ();
+    StatementVertices& true_statements ();
 
-    StatementVertices const& falseStatements() const;
+    StatementVertices const& false_statements() const;
 
-    StatementVertices& falseStatements ();
+    StatementVertices& false_statements();
 
 private:
 
     ExpressionVertexPtr _condition;
 
-    StatementVertices _trueStatements;
+    StatementVertices _true_statements;
 
-    StatementVertices _falseStatements;
+    StatementVertices _false_statements;
 
 };
 

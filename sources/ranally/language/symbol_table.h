@@ -14,11 +14,12 @@ class NameVertex;
   The table is able to store multiple definitions of the same name and supports
   scoping.
 
-  Definitions are added to the current scope using addDefinition. Make sure
+  Definitions are added to the current scope using add_definition. Make sure
   that such a scope exists. After creation of a SymbolTable instance,
-  pushScope() must be called before identifiers can be added. You can make
-  multiple calls to pushScope() in case of nested scopes. When filling the
-  table, make sure to match each call to pushScope() with a call to popScope().
+  push_scope() must be called before identifiers can be added. You can make
+  multiple calls to push_scope() in case of nested scopes. When filling the
+  table, make sure to match each call to push_scope() with a call to
+  pop_scope().
 */
 class SymbolTable
 {
@@ -35,7 +36,7 @@ public:
 
     //! Construct an empty symbol table.
     /*!
-      \warning   Call pushScope before adding definitions.
+      \warning   Call push_scope before adding definitions.
     */
                    SymbolTable         ()=default;
 
@@ -49,17 +50,17 @@ public:
 
     SymbolTable&   operator=           (SymbolTable const&)=delete;
 
-    void           pushScope           ();
+    void           push_scope          ();
 
-    void           popScope            ();
+    void           pop_scope           ();
 
-    size_type      scopeLevel          () const;
+    size_type      scope_level         () const;
 
-    size_type      scopeLevel          (String const& name) const;
+    size_type      scope_level         (String const& name) const;
 
-    void           addDefinition       (NameVertex* definition);
+    void           add_definition      (NameVertex* definition);
 
-    bool           hasDefinition       (String const& name) const;
+    bool           has_definition      (String const& name) const;
 
     NameVertex const* definition       (String const& name) const;
 

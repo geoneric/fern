@@ -10,126 +10,126 @@ BOOST_AUTO_TEST_SUITE(xml_parser)
 
 BOOST_AUTO_TEST_CASE(parse)
 {
-    ranally::AlgebraParser algebraParser;
-    ranally::XmlParser xmlParser;
+    ranally::AlgebraParser algebra_parser;
+    ranally::XmlParser xml_parser;
     ranally::String xml;
     std::shared_ptr<ranally::SyntaxVertex> tree;
 
     {
         // Empty xml.
-        xml = algebraParser.parseString(ranally::String(""));
-        tree = xmlParser.parse(xml);
+        xml = algebra_parser.parse_string(ranally::String(""));
+        tree = xml_parser.parse(xml);
     }
 
     {
         // Name expression.
-        xml = algebraParser.parseString(ranally::String("a"));
-        tree = xmlParser.parse(xml);
+        xml = algebra_parser.parse_string(ranally::String("a"));
+        tree = xml_parser.parse(xml);
     }
 
     {
         // String expression.
-        xml = algebraParser.parseString(ranally::String("\"five\""));
-        tree = xmlParser.parse(xml);
+        xml = algebra_parser.parse_string(ranally::String("\"five\""));
+        tree = xml_parser.parse(xml);
     }
 
     {
         // TODO test all numeric types.
 
         // Numeric expression.
-        xml = algebraParser.parseString(ranally::String("5"));
-        tree = xmlParser.parse(xml);
+        xml = algebra_parser.parse_string(ranally::String("5"));
+        tree = xml_parser.parse(xml);
 
-        xml = algebraParser.parseString(ranally::String("5L"));
-        tree = xmlParser.parse(xml);
+        xml = algebra_parser.parse_string(ranally::String("5L"));
+        tree = xml_parser.parse(xml);
 
         // TODO test unsigned types.
 
-        xml = algebraParser.parseString(ranally::String("5.5"));
-        tree = xmlParser.parse(xml);
+        xml = algebra_parser.parse_string(ranally::String("5.5"));
+        tree = xml_parser.parse(xml);
     }
 
     {
         // Function call.
-        xml = algebraParser.parseString(ranally::String("f()"));
-        tree = xmlParser.parse(xml);
+        xml = algebra_parser.parse_string(ranally::String("f()"));
+        tree = xml_parser.parse(xml);
 
-        xml = algebraParser.parseString(ranally::String(
+        xml = algebra_parser.parse_string(ranally::String(
             "f(1, \"2\", three, four())"));
-        tree = xmlParser.parse(xml);
+        tree = xml_parser.parse(xml);
     }
 
     {
         // Operator.
         // Unary.
-        xml = algebraParser.parseString(ranally::String("-a"));
-        tree = xmlParser.parse(xml);
+        xml = algebra_parser.parse_string(ranally::String("-a"));
+        tree = xml_parser.parse(xml);
 
         // Binary.
-        xml = algebraParser.parseString(ranally::String("a + b"));
-        tree = xmlParser.parse(xml);
+        xml = algebra_parser.parse_string(ranally::String("a + b"));
+        tree = xml_parser.parse(xml);
 
         // Boolean.
-        xml = algebraParser.parseString(ranally::String("a and b"));
-        tree = xmlParser.parse(xml);
+        xml = algebra_parser.parse_string(ranally::String("a and b"));
+        tree = xml_parser.parse(xml);
 
         // Comparison.
-        xml = algebraParser.parseString(ranally::String("a == b"));
-        tree = xmlParser.parse(xml);
+        xml = algebra_parser.parse_string(ranally::String("a == b"));
+        tree = xml_parser.parse(xml);
     }
 
     {
         // Assignment statement.
-        xml = algebraParser.parseString(ranally::String("a = b"));
-        tree = xmlParser.parse(xml);
+        xml = algebra_parser.parse_string(ranally::String("a = b"));
+        tree = xml_parser.parse(xml);
     }
 
     {
         // Multiple statements.
-        xml = algebraParser.parseString(ranally::String("a\nb"));
-        tree = xmlParser.parse(xml);
+        xml = algebra_parser.parse_string(ranally::String("a\nb"));
+        tree = xml_parser.parse(xml);
     }
 
     {
         // If statement.
-        xml = algebraParser.parseString(ranally::String(
+        xml = algebra_parser.parse_string(ranally::String(
             "if a:\n"
             "    b"));
-        tree = xmlParser.parse(xml);
+        tree = xml_parser.parse(xml);
 
-        xml = algebraParser.parseString(ranally::String(
+        xml = algebra_parser.parse_string(ranally::String(
             "if a:\n"
             "    b\n"
             "else:\n"
             "    c"));
-        tree = xmlParser.parse(xml);
+        tree = xml_parser.parse(xml);
 
-        xml = algebraParser.parseString(ranally::String(
+        xml = algebra_parser.parse_string(ranally::String(
             "if a:\n"
             "    b\n"
             "elif c:\n"
             "    d"));
-        tree = xmlParser.parse(xml);
+        tree = xml_parser.parse(xml);
     }
 
     {
         // While statement.
-        xml = algebraParser.parseString(ranally::String(
+        xml = algebra_parser.parse_string(ranally::String(
             "while a:\n"
             "    b"));
-        tree = xmlParser.parse(xml);
+        tree = xml_parser.parse(xml);
 
-        xml = algebraParser.parseString(ranally::String(
+        xml = algebra_parser.parse_string(ranally::String(
             "while a:\n"
             "    b\n"
             "else:\n"
             "    c"));
-        tree = xmlParser.parse(xml);
+        tree = xml_parser.parse(xml);
     }
 
     {
         // Random string.
-        BOOST_CHECK_THROW(xmlParser.parse(ranally::String("blabla")),
+        BOOST_CHECK_THROW(xml_parser.parse(ranally::String("blabla")),
             xml_schema::parsing);
 
         // Attribute value missing.
@@ -140,7 +140,7 @@ BOOST_AUTO_TEST_CASE(parse)
                 "<Name>a</Name>"
               "</Expression>"
             "</Ranally>";
-        BOOST_CHECK_THROW(xmlParser.parse(xml), xml_schema::parsing);
+        BOOST_CHECK_THROW(xml_parser.parse(xml), xml_schema::parsing);
 
         // Attribute value out of range.
         xml =
@@ -150,7 +150,7 @@ BOOST_AUTO_TEST_CASE(parse)
                 "<Name>a</Name>"
               "</Expression>"
             "</Ranally>";
-        BOOST_CHECK_THROW(xmlParser.parse(xml), xml_schema::parsing);
+        BOOST_CHECK_THROW(xml_parser.parse(xml), xml_schema::parsing);
     }
 }
 

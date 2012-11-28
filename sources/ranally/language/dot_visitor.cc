@@ -10,14 +10,14 @@ String const& DotVisitor::script() const
 }
 
 
-void DotVisitor::setScript(
+void DotVisitor::set_script(
     String const& string)
 {
     _script = string;
 }
 
 
-void DotVisitor::addScript(
+void DotVisitor::add_script(
     String const& string)
 {
     _script += string;

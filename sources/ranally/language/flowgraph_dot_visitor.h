@@ -41,13 +41,13 @@ private:
     //! Current mode.
     Mode           _mode;
 
-    void           setMode             (Mode mode);
+    void           set_mode            (Mode mode);
 
-    void           addFlowgraphVertex  (NameVertex const& sourceVertex,
-                                        SyntaxVertex const& targetVertex);
+    void           add_flowgraph_vertex(NameVertex const& source_vertex,
+                                        SyntaxVertex const& target_vertex);
 
-    void           addFlowgraphVertex  (SyntaxVertex const& sourceVertex,
-                                        SyntaxVertex const& targetVertex);
+    void           add_flowgraph_vertex(SyntaxVertex const& source_vertex,
+                                        SyntaxVertex const& target_vertex);
 
     void           Visit               (AssignmentVertex& vertex);
 

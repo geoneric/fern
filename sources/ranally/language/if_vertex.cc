@@ -5,13 +5,13 @@ namespace ranally {
 
 IfVertex::IfVertex(
     std::shared_ptr<ExpressionVertex> const& condition,
-    StatementVertices const& trueStatements,
-    StatementVertices const& falseStatements)
+    StatementVertices const& true_statements,
+    StatementVertices const& false_statements)
 
     : StatementVertex(),
       _condition(condition),
-      _trueStatements(trueStatements),
-      _falseStatements(falseStatements)
+      _true_statements(true_statements),
+      _false_statements(false_statements)
 
 {
 }
@@ -23,27 +23,27 @@ std::shared_ptr<ExpressionVertex> const& IfVertex::condition() const
 }
 
 
-StatementVertices const& IfVertex::trueStatements() const
+StatementVertices const& IfVertex::true_statements() const
 {
-    return _trueStatements;
+    return _true_statements;
 }
 
 
-StatementVertices& IfVertex::trueStatements()
+StatementVertices& IfVertex::true_statements()
 {
-    return _trueStatements;
+    return _true_statements;
 }
 
 
-StatementVertices const& IfVertex::falseStatements() const
+StatementVertices const& IfVertex::false_statements() const
 {
-    return _falseStatements;
+    return _false_statements;
 }
 
 
-StatementVertices& IfVertex::falseStatements()
+StatementVertices& IfVertex::false_statements()
 {
-    return _falseStatements;
+    return _false_statements;
 }
 
 } // namespace ranally

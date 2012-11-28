@@ -38,7 +38,7 @@ public:
 
     ExpressionVertexPtr& target        ();
 
-    void           setExpression       (ExpressionVertexPtr const& expression);
+    void           set_expression      (ExpressionVertexPtr const& expression);
 
     ExpressionVertexPtr const& expression() const;
 

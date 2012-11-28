@@ -42,27 +42,27 @@ public:
 
     String const&  name                () const;
 
-    // void           setDataType         (operation::DataType data_type);
+    // void           set_data_type    (operation::DataType data_type);
 
     // operation::DataType data_type         () const;
 
-    // void           setValueType        (operation::ValueType value_type);
+    // void           set_value_type   (operation::ValueType value_type);
 
     // operation::ValueType value_type       () const;
 
-    void           setResultTypes      (
-                                  std::vector<ResultType> const& resultTypes);
+    void           set_result_types    (
+                                  std::vector<ResultType> const& result_types);
 
-    void           addResultType       (DataType data_type,
+    void           add_result_type     (DataType data_type,
                                         ValueType value_type);
 
-    std::vector<ResultType> const& resultTypes() const;
+    std::vector<ResultType> const& result_types() const;
 
     DataType       data_type           (size_t index) const;
 
     ValueType      value_type          (size_t index) const;
 
-    void           setValue            (ExpressionVertexPtr const& value);
+    void           set_value           (ExpressionVertexPtr const& value);
 
     ExpressionVertexPtr const& value   () const;
 
@@ -70,8 +70,8 @@ protected:
 
                    ExpressionVertex    (String const& name);
 
-                   ExpressionVertex    (int lineNr,
-                                        int colId,
+                   ExpressionVertex    (int line_nr,
+                                        int col_id,
                                         String const& name);
 
 private:
@@ -87,7 +87,7 @@ private:
 
     // typedef boost::tuple<operation::DataType, operation::ValueType> ResultType;
 
-    std::vector<ResultType> _resultTypes;
+    std::vector<ResultType> _result_types;
 
     //! Value of expression, in case this expression is the target of an assignment.
     ExpressionVertexPtr _value;

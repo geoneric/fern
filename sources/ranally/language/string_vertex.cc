@@ -4,11 +4,11 @@
 namespace ranally {
 
 StringVertex::StringVertex(
-    int lineNr,
-    int colId,
+    int line_nr,
+    int col_id,
     String const& value)
 
-    : ExpressionVertex(lineNr, colId, "\"" + value + "\""),
+    : ExpressionVertex(line_nr, col_id, "\"" + value + "\""),
       _value(value)
 
 {

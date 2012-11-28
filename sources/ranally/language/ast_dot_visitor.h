@@ -45,14 +45,14 @@ private:
     //! Modes to process.
     int            _modes;
 
-    void           setMode             (Mode mode);
+    void           set_mode            (Mode mode);
 
-    void           addAstVertex        (SyntaxVertex const& sourceVertex,
+    void           add_ast_vertex      (SyntaxVertex const& sourceVertex,
                                         SyntaxVertex const& targetVertex);
 
-    void           addCfgVertices      (SyntaxVertex const& sourceVertex);
+    void           add_cfg_vertices    (SyntaxVertex const& sourceVertex);
 
-    void           addUseVertices      (NameVertex const& vertex);
+    void           add_use_vertices    (NameVertex const& vertex);
 
     void           Visit               (AssignmentVertex& vertex);
 

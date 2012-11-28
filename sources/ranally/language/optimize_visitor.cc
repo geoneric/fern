@@ -15,47 +15,49 @@ OptimizeVisitor::OptimizeVisitor()
 }
 
 
-void OptimizeVisitor::registerExpressionForInlining(
+void OptimizeVisitor::register_expression_for_inlining(
     ExpressionVertex const* use,
     ExpressionVertexPtr const& expression)
 {
-    _inlineExpressions[use] = expression;
+    _inline_expressions[use] = expression;
 }
 
 
-void OptimizeVisitor::visitStatements(
+void OptimizeVisitor::visit_statements(
     StatementVertices& statements)
 {
-    Visitor::visitStatements(statements);
+    Visitor::visit_statements(statements);
 
     switch(_mode) {
         case Mode::Using: {
             break;
         }
         case Mode::Defining: {
-            std::vector<size_t> statementsToErase, superfluousStatementsToErase;
+            std::vector<size_t> statements_to_erase,
+                superfluous_statements_to_erase;
 
             for(size_t i = 0; i < statements.size(); ++i) {
-                for(size_t j = 0; j < _superfluousStatements.size(); ++j) {
-                    if(_superfluousStatements[j] == statements[i].get()) {
-                        statementsToErase.push_back(i);
-                        superfluousStatementsToErase.push_back(j);
+                for(size_t j = 0; j < _superfluous_statements.size(); ++j) {
+                    if(_superfluous_statements[j] == statements[i].get()) {
+                        statements_to_erase.push_back(i);
+                        superfluous_statements_to_erase.push_back(j);
                     }
                 }
             }
 
-            std::reverse(statementsToErase.begin(), statementsToErase.end());
-            for(size_t i = 0; i < statementsToErase.size(); ++i) {
-                statements.erase(statements.begin() + statementsToErase[i]);
+            std::reverse(statements_to_erase.begin(),
+                statements_to_erase.end());
+            for(size_t i = 0; i < statements_to_erase.size(); ++i) {
+                statements.erase(statements.begin() + statements_to_erase[i]);
             }
 
-            std::sort(superfluousStatementsToErase.begin(),
-                superfluousStatementsToErase.end());
-            std::reverse(superfluousStatementsToErase.begin(),
-                superfluousStatementsToErase.end());
-            for(size_t i = 0; i < superfluousStatementsToErase.size(); ++i) {
-                _superfluousStatements.erase(_superfluousStatements.begin() +
-                    superfluousStatementsToErase[i]);
+            std::sort(superfluous_statements_to_erase.begin(),
+                superfluous_statements_to_erase.end());
+            std::reverse(superfluous_statements_to_erase.begin(),
+                superfluous_statements_to_erase.end());
+            for(size_t i = 0; i < superfluous_statements_to_erase.size(); ++i) {
+                _superfluous_statements.erase(_superfluous_statements.begin() +
+                    superfluous_statements_to_erase[i]);
             }
 
             break;
@@ -73,13 +75,13 @@ void OptimizeVisitor::Visit(
             vertex.expression()->Accept(*this);
 
             std::map<ExpressionVertex const*, ExpressionVertexPtr>::iterator
-                it = _inlineExpressions.find(vertex.expression().get());
-            if(it != _inlineExpressions.end()) {
+                it = _inline_expressions.find(vertex.expression().get());
+            if(it != _inline_expressions.end()) {
 std::cout << "inserting " << (*it).second->name().encode_in_utf8() << std::endl;
                 // Schedule the defining statement for removal.
-                _inlinedExpressions.push_back((*it).second);
-                vertex.setExpression((*it).second);
-                _inlineExpressions.erase(it);
+                _inlined_expressions.push_back((*it).second);
+                vertex.set_expression((*it).second);
+                _inline_expressions.erase(it);
             }
 
             break;
@@ -88,11 +90,11 @@ std::cout << "inserting " << (*it).second->name().encode_in_utf8() << std::endl;
             vertex.target()->Accept(*this);
 
             std::vector<ExpressionVertexPtr>::iterator it = std::find(
-                _inlinedExpressions.begin(), _inlinedExpressions.end(),
+                _inlined_expressions.begin(), _inlined_expressions.end(),
                     vertex.expression());
-            if(it != _inlinedExpressions.end()) {
-                _superfluousStatements.push_back(&vertex);
-                _inlinedExpressions.erase(it);
+            if(it != _inlined_expressions.end()) {
+                _superfluous_statements.push_back(&vertex);
+                _inlined_expressions.erase(it);
             }
 
             break;
@@ -116,7 +118,8 @@ void OptimizeVisitor::Visit(
                 // Register the value of the defining expression for
                 // inlining at the use location.
 std::cout << "register inlining of " << vertex.name().encode_in_utf8() << " by " << definitions[0]->value()->name().encode_in_utf8() << std::endl;
-                registerExpressionForInlining(&vertex, definitions[0]->value());
+                register_expression_for_inlining(&vertex,
+                    definitions[0]->value());
             }
 
             break;
@@ -131,13 +134,13 @@ std::cout << "register inlining of " << vertex.name().encode_in_utf8() << " by "
 void OptimizeVisitor::Visit(
     ScriptVertex& vertex)
 {
-    bool inlinedExpressions;
+    bool inlined_expressions;
 
     do {
 std::cout << "visit script" << std::endl;
-        assert(_inlineExpressions.empty());
-        assert(_inlinedExpressions.empty());
-        assert(_superfluousStatements.empty());
+        assert(_inline_expressions.empty());
+        assert(_inlined_expressions.empty());
+        assert(_superfluous_statements.empty());
 
         // First visit all use locations of name vertices.
         _mode = Mode::Using;
@@ -145,16 +148,16 @@ std::cout << "visit script" << std::endl;
 
         // If expressions have been inlined, then the script will
         // change. We need to repeat the visit until the script is stable.
-        inlinedExpressions = !_inlinedExpressions.empty();
+        inlined_expressions = !_inlined_expressions.empty();
 
         // Now visit all defining locations of name vertices.
         _mode = Mode::Defining;
         Visitor::Visit(vertex);
 
-        assert(_inlineExpressions.empty());
-        assert(_inlinedExpressions.empty());
-        assert(_superfluousStatements.empty());
-    } while(inlinedExpressions);
+        assert(_inline_expressions.empty());
+        assert(_inlined_expressions.empty());
+        assert(_superfluous_statements.empty());
+    } while(inlined_expressions);
 }
 
 } // namespace ranally

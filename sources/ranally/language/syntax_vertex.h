@@ -45,8 +45,8 @@ public:
 
     SyntaxVertex&  operator=           (SyntaxVertex const&)=delete;
 
-    void           setPosition         (int lineNr,
-                                        int colId);
+    void           set_position        (int line_nr,
+                                        int col_id);
 
     int            line                () const;
 
@@ -62,14 +62,14 @@ public:
 
     SyntaxVertex*  successor           (size_type index);
 
-    void           addSuccessor        (SyntaxVertex* successor);
+    void           add_successor       (SyntaxVertex* successor);
 
 protected:
 
                    SyntaxVertex        ();
 
-                   SyntaxVertex        (int lineNr,
-                                        int colId);
+                   SyntaxVertex        (int line_nr,
+                                        int col_id);
 
 private:
 
@@ -78,7 +78,7 @@ private:
     int            _col;
 
     //! The next vertex/vertices to process.
-    SyntaxVertices   _successors;
+    SyntaxVertices _successors;
 
 };
 

@@ -5,11 +5,11 @@
 namespace ranally {
 
 ScriptVertex::ScriptVertex(
-    String const& sourceName,
+    String const& source_name,
     StatementVertices const& statements)
 
     : SyntaxVertex(),
-      _sourceName(sourceName),
+      _source_name(source_name),
       _statements(statements)
 
 {
@@ -20,7 +20,7 @@ ScriptVertex::ScriptVertex(
 //   ScriptVertex const& other)
 // 
 //   : SyntaxVertex(other),
-//     _sourceName(other._sourceName)
+//     _source_name(other._source_name)
 // 
 // {
 //   BOOST_FOREACH(std::shared_ptr<StatementVertex> const& vertex,
@@ -33,9 +33,9 @@ ScriptVertex::ScriptVertex(
 // }
 
 
-String const& ScriptVertex::sourceName() const
+String const& ScriptVertex::source_name() const
 {
-    return _sourceName;
+    return _source_name;
 }
 
 

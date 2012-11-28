@@ -34,7 +34,7 @@ public:
 private:
 
     //! Last vertex processed on the control flow path.
-    SyntaxVertex*  _lastVertex;
+    SyntaxVertex*  _last_vertex;
 
     void           Visit               (AssignmentVertex& vertex);
 

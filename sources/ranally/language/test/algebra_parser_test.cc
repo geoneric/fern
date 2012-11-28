@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_CASE(parse_empty_script)
     ranally::AlgebraParser parser;
 
     {
-        ranally::String xml(parser.parseString(ranally::String("")));
+        ranally::String xml(parser.parse_string(ranally::String("")));
         BOOST_CHECK_EQUAL(xml, ranally::String(
             "<?xml version=\"1.0\"?>"
             "<Ranally source=\"&lt;string&gt;\">"
@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_CASE(parse_name)
     ranally::AlgebraParser parser;
 
     {
-        ranally::String xml(parser.parseString(ranally::String("a")));
+        ranally::String xml(parser.parse_string(ranally::String("a")));
         BOOST_CHECK_EQUAL(xml, ranally::String(
           "<?xml version=\"1.0\"?>"
           "<Ranally source=\"&lt;string&gt;\">"
@@ -43,7 +43,7 @@ BOOST_AUTO_TEST_CASE(parse_name)
 
     // TODO #if PYTHONVER >= 2.7/3.0?
     // {
-    //     ranally::String xml(parser.parseString(ranally::String("ñ")));
+    //     ranally::String xml(parser.parse_string(ranally::String("ñ")));
     //     BOOST_CHECK_EQUAL(xml, ranally::String(
     //       "<?xml version=\"1.0\"?>"
     //       "<Ranally>"
@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_CASE(parse_assignment)
     ranally::AlgebraParser parser;
 
     {
-        ranally::String xml(parser.parseString(ranally::String("a = b")));
+        ranally::String xml(parser.parse_string(ranally::String("a = b")));
         BOOST_CHECK_EQUAL(xml, ranally::String(
             "<?xml version=\"1.0\"?>"
             "<Ranally source=\"&lt;string&gt;\">"
@@ -90,7 +90,7 @@ BOOST_AUTO_TEST_CASE(parse_string)
     ranally::AlgebraParser parser;
 
     {
-        ranally::String xml(parser.parseString(ranally::String("\"five\"")));
+        ranally::String xml(parser.parse_string(ranally::String("\"five\"")));
         BOOST_CHECK_EQUAL(xml, ranally::String(
             "<?xml version=\"1.0\"?>"
             "<Ranally source=\"&lt;string&gt;\">"
@@ -105,7 +105,7 @@ BOOST_AUTO_TEST_CASE(parse_string)
     }
 
     {
-        ranally::String xml(parser.parseString(ranally::String("\"\"")));
+        ranally::String xml(parser.parse_string(ranally::String("\"\"")));
         BOOST_CHECK_EQUAL(xml, ranally::String(
             "<?xml version=\"1.0\"?>"
             "<Ranally source=\"&lt;string&gt;\">"
@@ -120,7 +120,7 @@ BOOST_AUTO_TEST_CASE(parse_string)
     }
 
     {
-        ranally::String xml(parser.parseString(ranally::String("\" \"")));
+        ranally::String xml(parser.parse_string(ranally::String("\" \"")));
         BOOST_CHECK_EQUAL(xml, ranally::String(
             "<?xml version=\"1.0\"?>"
             "<Ranally source=\"&lt;string&gt;\">"
@@ -136,7 +136,7 @@ BOOST_AUTO_TEST_CASE(parse_string)
 
     // Test handling of Unicode characters.
     {
-        ranally::String xml(parser.parseString(ranally::String("\"mañana\"")));
+        ranally::String xml(parser.parse_string(ranally::String("\"mañana\"")));
         BOOST_CHECK_EQUAL(xml, ranally::String(
             "<?xml version=\"1.0\"?>"
             "<Ranally source=\"&lt;string&gt;\">"
@@ -151,7 +151,7 @@ BOOST_AUTO_TEST_CASE(parse_string)
     }
 
     {
-        BOOST_CHECK_THROW(parser.parseString(ranally::String("if")),
+        BOOST_CHECK_THROW(parser.parse_string(ranally::String("if")),
             ranally::detail::ParseError);
     }
 }
@@ -162,7 +162,7 @@ BOOST_AUTO_TEST_CASE(parse_number)
     ranally::AlgebraParser parser;
 
     {
-        ranally::String xml(parser.parseString(ranally::String("5")));
+        ranally::String xml(parser.parse_string(ranally::String("5")));
         BOOST_CHECK_EQUAL(xml, ranally::String(boost::format(
             "<?xml version=\"1.0\"?>"
             "<Ranally source=\"&lt;string&gt;\">"
@@ -182,7 +182,7 @@ BOOST_AUTO_TEST_CASE(parse_number)
     }
 
     {
-        ranally::String xml(parser.parseString(ranally::String("5L")));
+        ranally::String xml(parser.parse_string(ranally::String("5L")));
         BOOST_CHECK_EQUAL(xml, ranally::String(
             "<?xml version=\"1.0\"?>"
             "<Ranally source=\"&lt;string&gt;\">"
@@ -202,7 +202,7 @@ BOOST_AUTO_TEST_CASE(parse_number)
     }
 
     {
-        ranally::String xml(parser.parseString(ranally::String("5.5")));
+        ranally::String xml(parser.parse_string(ranally::String("5.5")));
         BOOST_CHECK_EQUAL(xml, ranally::String(
             "<?xml version=\"1.0\"?>"
             "<Ranally source=\"&lt;string&gt;\">"
@@ -229,7 +229,7 @@ BOOST_AUTO_TEST_CASE(parse_call)
     ranally::String xml;
 
     {
-        xml = parser.parseString(ranally::String("f()"));
+        xml = parser.parse_string(ranally::String("f()"));
         BOOST_CHECK_EQUAL(xml, ranally::String(
             "<?xml version=\"1.0\"?>"
             "<Ranally source=\"&lt;string&gt;\">"
@@ -247,7 +247,7 @@ BOOST_AUTO_TEST_CASE(parse_call)
     }
 
     {
-        xml = parser.parseString(ranally::String("f(1, \"2\", three, four())"));
+        xml = parser.parse_string(ranally::String("f(1, \"2\", three, four())"));
         BOOST_CHECK_EQUAL(xml, ranally::String(boost::format(
             "<?xml version=\"1.0\"?>"
             "<Ranally source=\"&lt;string&gt;\">"
@@ -293,7 +293,7 @@ BOOST_AUTO_TEST_CASE(parse_call)
 //   ranally::String xml;
 // 
 //   {
-//     xml = parser.parseString(ranally::String("print"));
+//     xml = parser.parse_string(ranally::String("print"));
 //     BOOST_CHECK_EQUAL(xml, ranally::String(
 //       "<?xml version=\"1.0\"?>"
 //       "<Ranally source=\"&lt;string&gt;\">"
@@ -311,7 +311,7 @@ BOOST_AUTO_TEST_CASE(parse_call)
 //   }
 // 
 //   // {
-//   //   xml = parser.parseString(ranally::String("print(1, \"2\", three, four())"));
+//   //   xml = parser.parse_string(ranally::String("print(1, \"2\", three, four())"));
 //   //   BOOST_CHECK_EQUAL(xml, ranally::String(boost::format(
 //   //     "<?xml version=\"1.0\"?>"
 //   //     "<Ranally source=\"&lt;string&gt;\">"
@@ -357,7 +357,7 @@ BOOST_AUTO_TEST_CASE(parse_unary_operator)
     ranally::String xml;
 
     {
-        xml = parser.parseString(ranally::String("-a"));
+        xml = parser.parse_string(ranally::String("-a"));
         BOOST_CHECK_EQUAL(xml, ranally::String(
             "<?xml version=\"1.0\"?>"
             "<Ranally source=\"&lt;string&gt;\">"
@@ -386,7 +386,7 @@ BOOST_AUTO_TEST_CASE(parse_binary_operator)
     ranally::String xml;
 
     {
-        xml = parser.parseString(ranally::String("a + b"));
+        xml = parser.parse_string(ranally::String("a + b"));
         BOOST_CHECK_EQUAL(xml, ranally::String(
             "<?xml version=\"1.0\"?>"
             "<Ranally source=\"&lt;string&gt;\">"
@@ -418,7 +418,7 @@ BOOST_AUTO_TEST_CASE(parse_boolean_operator)
     ranally::String xml;
 
     {
-        xml = parser.parseString(ranally::String("a and b"));
+        xml = parser.parse_string(ranally::String("a and b"));
         BOOST_CHECK_EQUAL(xml, ranally::String(
             "<?xml version=\"1.0\"?>"
             "<Ranally source=\"&lt;string&gt;\">"
@@ -450,7 +450,7 @@ BOOST_AUTO_TEST_CASE(parse_comparison_operator)
     ranally::String xml;
 
     {
-        xml = parser.parseString(ranally::String("a <= b"));
+        xml = parser.parse_string(ranally::String("a <= b"));
         BOOST_CHECK_EQUAL(xml, ranally::String(
             "<?xml version=\"1.0\"?>"
             "<Ranally source=\"&lt;string&gt;\">"
@@ -481,7 +481,7 @@ BOOST_AUTO_TEST_CASE(parse_multiple_statements)
     ranally::AlgebraParser parser;
 
     {
-        ranally::String xml(parser.parseString(ranally::String("a\nb")));
+        ranally::String xml(parser.parse_string(ranally::String("a\nb")));
         BOOST_CHECK_EQUAL(xml, ranally::String(
             "<?xml version=\"1.0\"?>"
             "<Ranally source=\"&lt;string&gt;\">"
@@ -508,7 +508,7 @@ BOOST_AUTO_TEST_CASE(parse_if)
     ranally::String xml;
 
     {
-        xml = parser.parseString(ranally::String(
+        xml = parser.parse_string(ranally::String(
             "if a:\n"
             "  b"));
         BOOST_CHECK_EQUAL(xml, ranally::String(
@@ -535,7 +535,7 @@ BOOST_AUTO_TEST_CASE(parse_if)
     }
 
     {
-        xml = parser.parseString(ranally::String(
+        xml = parser.parse_string(ranally::String(
             "if a:\n"
             "  b\n"
             "elif(c):\n"
@@ -580,7 +580,7 @@ BOOST_AUTO_TEST_CASE(parse_if)
     }
 
     {
-        xml = parser.parseString(ranally::String(
+        xml = parser.parse_string(ranally::String(
             "if a:\n"
             "  b\n"
             "elif c:\n"
@@ -640,7 +640,7 @@ BOOST_AUTO_TEST_CASE(parse_while)
     ranally::String xml;
 
     {
-        xml = parser.parseString(ranally::String(
+        xml = parser.parse_string(ranally::String(
             "while a:\n"
             "  b"));
         BOOST_CHECK_EQUAL(xml, ranally::String(
@@ -667,7 +667,7 @@ BOOST_AUTO_TEST_CASE(parse_while)
     }
 
     {
-        xml = parser.parseString(ranally::String(
+        xml = parser.parse_string(ranally::String(
             "while a:\n"
             "  b\n"
             "else:\n"
@@ -710,7 +710,7 @@ BOOST_AUTO_TEST_CASE(parse_file)
 
     {
         filename = "DoesNotExist.ran";
-        BOOST_CHECK_THROW(parser.parseFile(filename),
+        BOOST_CHECK_THROW(parser.parse_file(filename),
             ranally::detail::FileOpenError);
     }
 }

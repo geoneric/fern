@@ -25,8 +25,8 @@ void AnnotateVisitor::Visit(
     // Proppagate the result types from the expression to the targets.
     ExpressionVertex const& expression(*vertex.expression());
     ExpressionVertex& target(*vertex.target());
-    assert(target.resultTypes().empty());
-    target.setResultTypes(expression.resultTypes());
+    assert(target.result_types().empty());
+    target.set_result_types(expression.result_types());
 }
 
 
@@ -37,7 +37,7 @@ void AnnotateVisitor::Visit(
 void AnnotateVisitor::Visit(                                                   \
     NumberVertex<type>& vertex)                                                \
 {                                                                              \
-    vertex.addResultType(data_type, value_type);                               \
+    vertex.add_result_type(data_type, value_type);                             \
 }
 
 VISIT_NUMBER_VERTEX(int8_t  , DataType::DT_VALUE, VT_INT8   )
@@ -60,10 +60,10 @@ void AnnotateVisitor::Visit(
     if(_operations->has_operation(vertex.name())) {
         assert(!vertex.operation());
         OperationPtr const& operation(_operations->operation(vertex.name()));
-        vertex.setOperation(operation);
+        vertex.set_operation(operation);
 
         for(auto result: operation->results()) {
-            vertex.addResultType(result.data_type(), result.value_type());
+            vertex.add_result_type(result.data_type(), result.value_type());
         }
     }
 }

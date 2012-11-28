@@ -31,7 +31,7 @@ public:
 
     ExpressionVertices const& expressions() const;
 
-    void           setOperation        (OperationPtr const& operation);
+    void           set_operation       (OperationPtr const& operation);
 
     OperationPtr const& operation      () const;
 

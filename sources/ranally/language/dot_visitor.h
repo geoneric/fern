@@ -34,9 +34,9 @@ protected:
 
                    DotVisitor          ()=default;
 
-    void           setScript           (String const& string);
+    void           set_script          (String const& string);
 
-    void           addScript           (String const& string);
+    void           add_script          (String const& string);
 
 private:
 

@@ -47,17 +47,17 @@ private:
 
     Mode           _mode;
 
-    std::map<ExpressionVertex const*, ExpressionVertexPtr> _inlineExpressions;
+    std::map<ExpressionVertex const*, ExpressionVertexPtr> _inline_expressions;
 
-    std::vector<ExpressionVertexPtr> _inlinedExpressions;
+    std::vector<ExpressionVertexPtr> _inlined_expressions;
 
-    std::vector<StatementVertex*> _superfluousStatements;
+    std::vector<StatementVertex*> _superfluous_statements;
 
-    void           registerExpressionForInlining(
+    void           register_expression_for_inlining(
                                         ExpressionVertex const* use,
                                         ExpressionVertexPtr const& expression);
 
-    void           visitStatements     (StatementVertices& statements);
+    void           visit_statements    (StatementVertices& statements);
 
     void           Visit               (AssignmentVertex& vertex);
 

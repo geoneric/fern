@@ -36,7 +36,7 @@ ScriptVertexPtr Interpreter::parse_string(
 {
     ScriptVertexPtr script_vertex;
     try {
-        script_vertex = _xml_parser.parse(_algebra_parser.parseString(string));
+        script_vertex = _xml_parser.parse(_algebra_parser.parse_string(string));
     }
     catch(detail::ParseError const& exception) {
         String const* exception_message = boost::get_error_info<
@@ -71,7 +71,7 @@ ScriptVertexPtr Interpreter::parse_file(
     else {
         try {
             // Read script from a file.
-            script_vertex = _xml_parser.parse(_algebra_parser.parseFile(
+            script_vertex = _xml_parser.parse(_algebra_parser.parse_file(
                 filename));
         }
         catch(detail::ParseError const& exception) {
@@ -111,7 +111,7 @@ void Interpreter::annotate(
     IdentifyVisitor identify_visitor;
     tree->Accept(identify_visitor);
 
-    OperationsPtr operations(OperationXmlParser().parse(operationsXml));
+    OperationsPtr operations(OperationXmlParser().parse(operations_xml));
     AnnotateVisitor annotate_visitor(operations);
     tree->Accept(annotate_visitor);
 }

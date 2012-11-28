@@ -24,7 +24,7 @@ String join(
 }
 
 
-String data_typesToString(
+String data_types_to_string(
     DataTypes const& data_types)
 {
     std::vector<String> strings;
@@ -52,7 +52,7 @@ String data_typesToString(
 }
 
 
-String value_typesToString(
+String value_types_to_string(
     ValueTypes const& value_types)
 {
     std::vector<String> strings;
@@ -117,33 +117,33 @@ AstDotVisitor::AstDotVisitor(
 }
 
 
-void AstDotVisitor::setMode(
+void AstDotVisitor::set_mode(
     Mode mode)
 {
     _mode = mode;
 }
 
 
-void AstDotVisitor::addAstVertex(
-    SyntaxVertex const& sourceVertex,
-    SyntaxVertex const& targetVertex)
+void AstDotVisitor::add_ast_vertex(
+    SyntaxVertex const& source_vertex,
+    SyntaxVertex const& target_vertex)
 {
     assert(_mode == Mode::ConnectingAst);
-    addScript(
-        String(boost::format("\"%1%\"") % &sourceVertex) + " -> " +
-        String(boost::format("\"%1%\"") % &targetVertex) + " ["
+    add_script(
+        String(boost::format("\"%1%\"") % &source_vertex) + " -> " +
+        String(boost::format("\"%1%\"") % &target_vertex) + " ["
         "];\n"
     );
 }
 
 
-void AstDotVisitor::addCfgVertices(
-    SyntaxVertex const& sourceVertex)
+void AstDotVisitor::add_cfg_vertices(
+    SyntaxVertex const& source_vertex)
 {
     assert(_mode == Mode::ConnectingCfg);
-    for(auto successor: sourceVertex.successors()) {
-        addScript(
-            String(boost::format("\"%1%\"") % &sourceVertex) + " -> " +
+    for(auto successor: source_vertex.successors()) {
+        add_script(
+            String(boost::format("\"%1%\"") % &source_vertex) + " -> " +
             String(boost::format("\"%1%\"") % successor) + " ["
                 "color=\"/spectral9/2\", "
                 "constraint=false, "
@@ -155,12 +155,12 @@ void AstDotVisitor::addCfgVertices(
 }
 
 
-void AstDotVisitor::addUseVertices(
+void AstDotVisitor::add_use_vertices(
     NameVertex const& vertex)
 {
     assert(_mode == Mode::ConnectingUses);
     for(auto use: vertex.uses()) {
-        addScript(
+        add_script(
             String(boost::format("\"%1%\"") % &vertex) + " -> " +
             String(boost::format("\"%1%\"") % use) + " ["
               "color=\"/spectral9/8\", "
@@ -179,7 +179,7 @@ void AstDotVisitor::Visit(
 {
     switch(_mode) {
         case Mode::Declaring: {
-            addScript(
+            add_script(
                 String(boost::format("\"%1%\"") % &vertex) +
                 " [label=\"" + String(boost::format("%1%") % vertex.value()) +
                 "\", fontname=courier, shape=box];\n"
@@ -190,7 +190,7 @@ void AstDotVisitor::Visit(
             break;
         }
         case Mode::ConnectingCfg: {
-            addCfgVertices(vertex);
+            add_cfg_vertices(vertex);
             break;
         }
         case Mode::ConnectingUses: {
@@ -227,18 +227,18 @@ void AstDotVisitor::Visit(
 {
     switch(_mode) {
         case Mode::Declaring: {
-            addScript(
+            add_script(
                 String(boost::format("\"%1%\"") % &vertex) +
                 " [label=\"=\"];\n");
             break;
         }
         case Mode::ConnectingAst: {
-            addAstVertex(vertex, *vertex.target());
-            addAstVertex(vertex, *vertex.expression());
+            add_ast_vertex(vertex, *vertex.target());
+            add_ast_vertex(vertex, *vertex.expression());
             break;
         }
         case Mode::ConnectingCfg: {
-            addCfgVertices(vertex);
+            add_cfg_vertices(vertex);
             break;
         }
         case Mode::ConnectingUses: {
@@ -256,20 +256,20 @@ void AstDotVisitor::Visit(
 {
     switch(_mode) {
         case Mode::Declaring: {
-            addScript(
+            add_script(
                 String(boost::format("\"%1%\"") % &vertex) +
                 " [label=\"" + vertex.symbol() + "\"];\n"
             );
             break;
         }
         case Mode::ConnectingAst: {
-            for(auto expressionVertex: vertex.expressions()) {
-                addAstVertex(vertex, *expressionVertex);
+            for(auto expression_vertex: vertex.expressions()) {
+                add_ast_vertex(vertex, *expression_vertex);
             }
             break;
         }
         case Mode::ConnectingCfg: {
-            addCfgVertices(vertex);
+            add_cfg_vertices(vertex);
             break;
         }
         case Mode::ConnectingUses: {
@@ -277,8 +277,8 @@ void AstDotVisitor::Visit(
         }
     }
 
-    for(auto expressionVertex: vertex.expressions()) {
-        expressionVertex->Accept(*this);
+    for(auto expression_vertex: vertex.expressions()) {
+        expression_vertex->Accept(*this);
     }
 }
 
@@ -288,19 +288,19 @@ void AstDotVisitor::Visit(
 {
     switch(_mode) {
         case Mode::Declaring: {
-            addScript(
+            add_script(
                 String(boost::format("\"%1%\"") % &vertex) +
                 " [label=\"" + vertex.name() + "\"];\n");
             break;
         }
         case Mode::ConnectingAst: {
-            for(auto expressionVertex: vertex.expressions()) {
-                addAstVertex(vertex, *expressionVertex);
+            for(auto expression_vertex: vertex.expressions()) {
+                add_ast_vertex(vertex, *expression_vertex);
             }
             break;
         }
         case Mode::ConnectingCfg: {
-            addCfgVertices(vertex);
+            add_cfg_vertices(vertex);
             break;
         }
         case Mode::ConnectingUses: {
@@ -308,8 +308,8 @@ void AstDotVisitor::Visit(
         }
     }
 
-    for(auto expressionVertex: vertex.expressions()) {
-        expressionVertex->Accept(*this);
+    for(auto expression_vertex: vertex.expressions()) {
+        expression_vertex->Accept(*this);
     }
 }
 
@@ -319,24 +319,24 @@ void AstDotVisitor::Visit(
 {
     switch(_mode) {
         case Mode::Declaring: {
-            addScript(
+            add_script(
                 String(boost::format("\"%1%\"") % &vertex) +
                 " [label=\"If\", shape=diamond];\n"
             );
             break;
         }
         case Mode::ConnectingAst: {
-            addAstVertex(vertex, *vertex.condition());
-            for(auto statementVertex: vertex.trueStatements()) {
-                addAstVertex(vertex, *statementVertex);
+            add_ast_vertex(vertex, *vertex.condition());
+            for(auto statement_vertex: vertex.true_statements()) {
+                add_ast_vertex(vertex, *statement_vertex);
             }
-            for(auto statementVertex: vertex.falseStatements()) {
-                addAstVertex(vertex, *statementVertex);
+            for(auto statement_vertex: vertex.false_statements()) {
+                add_ast_vertex(vertex, *statement_vertex);
             }
             break;
         }
         case Mode::ConnectingCfg: {
-            addCfgVertices(vertex);
+            add_cfg_vertices(vertex);
             break;
         }
         case Mode::ConnectingUses: {
@@ -345,11 +345,11 @@ void AstDotVisitor::Visit(
     }
 
     vertex.condition()->Accept(*this);
-    for(auto statementVertex: vertex.trueStatements()) {
-        statementVertex->Accept(*this);
+    for(auto statement_vertex: vertex.true_statements()) {
+        statement_vertex->Accept(*this);
     }
-    for(auto statementVertex: vertex.falseStatements()) {
-        statementVertex->Accept(*this);
+    for(auto statement_vertex: vertex.false_statements()) {
+        statement_vertex->Accept(*this);
     }
 }
 
@@ -363,13 +363,13 @@ void AstDotVisitor::Visit(
             String label = vertex.name();
 
             std::vector<ExpressionVertex::ResultType> const&
-                resultTypes(vertex.resultTypes());
-            if(!resultTypes.empty()) {
-                assert(resultTypes.size() == 1);
-                String data_types = data_typesToString(std::get<0>(
-                    resultTypes[0]));
-                String value_types = value_typesToString(std::get<1>(
-                    resultTypes[0]));
+                result_types(vertex.result_types());
+            if(!result_types.empty()) {
+                assert(result_types.size() == 1);
+                String data_types = data_types_to_string(std::get<0>(
+                    result_types[0]));
+                String value_types = value_types_to_string(std::get<1>(
+                    result_types[0]));
 
                 label += String("\\n") +
                     "dt: " + data_types + "\\n" +
@@ -378,7 +378,7 @@ void AstDotVisitor::Visit(
 
             attributes.push_back("label=\"" + label + "\"");
 
-            addScript(
+            add_script(
                 String(boost::format("\"%1%\"") % &vertex) + " [" +
                 join(attributes, ", ") + "];\n"
             );
@@ -389,11 +389,11 @@ void AstDotVisitor::Visit(
             break;
         }
         case Mode::ConnectingCfg: {
-            addCfgVertices(vertex);
+            add_cfg_vertices(vertex);
             break;
         }
         case Mode::ConnectingUses: {
-            addUseVertices(vertex);
+            add_use_vertices(vertex);
             break;
         }
     }
@@ -406,45 +406,45 @@ void AstDotVisitor::Visit(
     // TODO 'ordering=out' is current not supported in combination with
     // TODO 'constraint=false'. Check again with dot > 2.28.0, when it becomes
     // TODO available.
-    setScript(String(
+    set_script(String(
         "digraph G {\n"
         "// ordering=out;\n"
         "rankdir=TB;\n"
     ));
 
-    setMode(Mode::Declaring);
-    addScript(
+    set_mode(Mode::Declaring);
+    add_script(
         String(boost::format("\"%1%\"") % &vertex) +
         String(boost::format(" [label=\"%1%\"];\n")
-            % vertex.sourceName().encode_in_utf8())
+            % vertex.source_name().encode_in_utf8())
     );
 
-    for(auto statementVertex: vertex.statements()) {
-        statementVertex->Accept(*this);
+    for(auto statement_vertex: vertex.statements()) {
+        statement_vertex->Accept(*this);
     }
 
-    setMode(Mode::ConnectingAst);
-    for(auto statementVertex: vertex.statements()) {
-        addAstVertex(vertex, *statementVertex);
-        statementVertex->Accept(*this);
+    set_mode(Mode::ConnectingAst);
+    for(auto statement_vertex: vertex.statements()) {
+        add_ast_vertex(vertex, *statement_vertex);
+        statement_vertex->Accept(*this);
     }
 
     if(_modes & Mode::ConnectingCfg) {
-        setMode(Mode::ConnectingCfg);
-        addCfgVertices(vertex);
-        for(auto statementVertex: vertex.statements()) {
-          statementVertex->Accept(*this);
+        set_mode(Mode::ConnectingCfg);
+        add_cfg_vertices(vertex);
+        for(auto statement_vertex: vertex.statements()) {
+          statement_vertex->Accept(*this);
         }
     }
 
     if(_modes & Mode::ConnectingUses) {
-        setMode(Mode::ConnectingUses);
-        for(auto statementVertex: vertex.statements()) {
-            statementVertex->Accept(*this);
+        set_mode(Mode::ConnectingUses);
+        for(auto statement_vertex: vertex.statements()) {
+            statement_vertex->Accept(*this);
         }
     }
 
-    addScript("}\n");
+    add_script("}\n");
 }
 
 
@@ -453,7 +453,7 @@ void AstDotVisitor::Visit(
 {
     switch(_mode) {
         case Mode::Declaring: {
-            addScript(
+            add_script(
                 String(boost::format("\"%1%\"") % &vertex) +
                 " [label=\"\\\"" + vertex.value() +
                 "\\\"\", fontname=courier, shape=box];\n"
@@ -464,7 +464,7 @@ void AstDotVisitor::Visit(
             break;
         }
         case Mode::ConnectingCfg: {
-            addCfgVertices(vertex);
+            add_cfg_vertices(vertex);
             break;
         }
         case Mode::ConnectingUses: {
@@ -479,24 +479,24 @@ void AstDotVisitor::Visit(
 {
     switch(_mode) {
         case Mode::Declaring: {
-            addScript(
+            add_script(
                 String(boost::format("\"%1%\"") % &vertex) +
                 " [label=\"While\", shape=diamond];\n"
             );
             break;
         }
         case Mode::ConnectingAst: {
-            addAstVertex(vertex, *vertex.condition());
-            for(auto statementVertex: vertex.trueStatements()) {
-                addAstVertex(vertex, *statementVertex);
+            add_ast_vertex(vertex, *vertex.condition());
+            for(auto statement_vertex: vertex.true_statements()) {
+                add_ast_vertex(vertex, *statement_vertex);
             }
-            for(auto statementVertex: vertex.falseStatements()) {
-                addAstVertex(vertex, *statementVertex);
+            for(auto statement_vertex: vertex.false_statements()) {
+                add_ast_vertex(vertex, *statement_vertex);
             }
             break;
         }
         case Mode::ConnectingCfg: {
-            addCfgVertices(vertex);
+            add_cfg_vertices(vertex);
             break;
         }
         case Mode::ConnectingUses: {
@@ -505,11 +505,11 @@ void AstDotVisitor::Visit(
     }
 
     vertex.condition()->Accept(*this);
-    for(auto statementVertex: vertex.trueStatements()) {
-        statementVertex->Accept(*this);
+    for(auto statement_vertex: vertex.true_statements()) {
+        statement_vertex->Accept(*this);
     }
-    for(auto statementVertex: vertex.falseStatements()) {
-        statementVertex->Accept(*this);
+    for(auto statement_vertex: vertex.false_statements()) {
+        statement_vertex->Accept(*this);
     }
 }
 

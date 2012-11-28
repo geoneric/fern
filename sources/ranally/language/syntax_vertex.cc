@@ -16,12 +16,12 @@ SyntaxVertex::SyntaxVertex()
 
 
 SyntaxVertex::SyntaxVertex(
-    int lineNr,
-    int colId)
+    int line_nr,
+    int col_id)
 
     : Loki::BaseVisitable<>(),
-      _line(lineNr),
-      _col(colId),
+      _line(line_nr),
+      _col(col_id),
       _successors()
 
 {
@@ -44,17 +44,17 @@ SyntaxVertex::SyntaxVertex(
 // 
 //   CopyVisitor visitor;
 //   other.Accept(visitor);
-//   _successors = visitor.syntaxVertices();
+//   _successors = visitor.syntax_vertices();
 // }
 
 
 
-void SyntaxVertex::setPosition(
-    int lineNr,
-    int colId)
+void SyntaxVertex::set_position(
+    int line_nr,
+    int col_id)
 {
-    _line = lineNr;
-    _col = colId;
+    _line = line_nr;
+    _col = col_id;
 }
 
 
@@ -125,7 +125,7 @@ SyntaxVertex* SyntaxVertex::successor(
   \param     successor Successor to set.
   \sa        setSuccessor(SyntaxVertex*)
 */
-void SyntaxVertex::addSuccessor(
+void SyntaxVertex::add_successor(
     SyntaxVertex* successor)
 {
     assert(successor);

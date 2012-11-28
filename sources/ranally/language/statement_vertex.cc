@@ -4,10 +4,10 @@
 namespace ranally {
 
 StatementVertex::StatementVertex(
-    int lineNr,
-    int colId)
+    int line_nr,
+    int col_id)
 
-    : SyntaxVertex(lineNr, colId)
+    : SyntaxVertex(line_nr, col_id)
 
 {
 }

@@ -42,7 +42,7 @@ public:
 
     IdentifyVisitor& operator=         (IdentifyVisitor const&)=delete;
 
-    SymbolTable const& symbolTable     () const;
+    SymbolTable const& symbol_table    () const;
 
 private:
 
@@ -51,7 +51,7 @@ private:
         Using
     };
 
-    SymbolTable    _symbolTable;
+    SymbolTable    _symbol_table;
 
     Mode           _mode;
 

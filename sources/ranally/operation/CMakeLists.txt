@@ -27,7 +27,7 @@ ADD_CUSTOM_COMMAND(
     COMMAND
         echo
             "namespace ranally {\\n"
-            "static char const* const operationsXml = \"\\"
+            "static char const* const operations_xml = \"\\"
                 > ${CMAKE_CURRENT_BINARY_DIR}/operation-xml.h
     COMMAND
         cat ${CMAKE_CURRENT_SOURCE_DIR}/operation.xml

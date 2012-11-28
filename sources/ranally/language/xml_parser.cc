@@ -26,33 +26,33 @@ public:
 
     void pre()
     {
-        _statementVertices.clear();
+        _statement_vertices.clear();
     }
 
     void source(
         std::string const& sourceName)
     {
-        _sourceName = ranally::String(sourceName);
+        _source_name = ranally::String(sourceName);
     }
 
     void Statements(
         StatementVertices const& vertices)
     {
-        assert(_statementVertices.empty());
-        _statementVertices = vertices;
+        assert(_statement_vertices.empty());
+        _statement_vertices = vertices;
     }
 
     std::shared_ptr<ranally::ScriptVertex> post_Ranally()
     {
         return std::shared_ptr<ranally::ScriptVertex>(new ranally::ScriptVertex(
-            _sourceName, _statementVertices));
+            _source_name, _statement_vertices));
     }
 
 private:
 
-    ranally::String  _sourceName;
+    ranally::String  _source_name;
 
-    StatementVertices _statementVertices;
+    StatementVertices _statement_vertices;
 
 };
 
@@ -133,39 +133,39 @@ public:
 
     void pre()
     {
-        _dataStack.push(IfData());
+        _data_stack.push(IfData());
     }
 
     void Expression(
         std::shared_ptr<ranally::ExpressionVertex> const& vertex)
     {
-        assert(!_dataStack.top().conditionVertex);
+        assert(!_data_stack.top().condition_vertex);
         assert(vertex);
-        _dataStack.top().conditionVertex = vertex;
+        _data_stack.top().condition_vertex = vertex;
     }
 
     void Statements(
         std::vector<std::shared_ptr<ranally::StatementVertex>>
             const& vertices)
     {
-        if(_dataStack.top().trueStatementVertices.empty()) {
+        if(_data_stack.top().true_statement_vertices.empty()) {
             assert(!vertices.empty());
-            _dataStack.top().trueStatementVertices = vertices;
+            _data_stack.top().true_statement_vertices = vertices;
         }
         else {
-            assert(_dataStack.top().falseStatementVertices.empty());
-            _dataStack.top().falseStatementVertices = vertices;
+            assert(_data_stack.top().false_statement_vertices.empty());
+            _data_stack.top().false_statement_vertices = vertices;
         }
     }
 
     std::shared_ptr<ranally::IfVertex> post_If()
     {
-        assert(!_dataStack.empty());
-        IfData result(_dataStack.top());
-        _dataStack.pop();
+        assert(!_data_stack.empty());
+        IfData result(_data_stack.top());
+        _data_stack.pop();
         return std::shared_ptr<ranally::IfVertex>(new ranally::IfVertex(
-            result.conditionVertex, result.trueStatementVertices,
-            result.falseStatementVertices));
+            result.condition_vertex, result.true_statement_vertices,
+            result.false_statement_vertices));
     }
 
 private:
@@ -175,12 +175,12 @@ private:
 
     struct IfData
     {
-        std::shared_ptr<ranally::ExpressionVertex> conditionVertex;
-        StatementVertices trueStatementVertices;
-        StatementVertices falseStatementVertices;
+        std::shared_ptr<ranally::ExpressionVertex> condition_vertex;
+        StatementVertices true_statement_vertices;
+        StatementVertices false_statement_vertices;
     };
 
-    std::stack<IfData> _dataStack;
+    std::stack<IfData> _data_stack;
 
 };
 
@@ -193,39 +193,39 @@ public:
 
     void pre()
     {
-        _dataStack.push(WhileData());
+        _data_stack.push(WhileData());
     }
 
     void Expression(
         std::shared_ptr<ranally::ExpressionVertex> const& vertex)
     {
-        assert(!_dataStack.top().conditionVertex);
+        assert(!_data_stack.top().condition_vertex);
         assert(vertex);
-        _dataStack.top().conditionVertex = vertex;
+        _data_stack.top().condition_vertex = vertex;
     }
 
     void Statements(
         std::vector<std::shared_ptr<ranally::StatementVertex>>
             const& vertices)
     {
-        if(_dataStack.top().trueStatementVertices.empty()) {
+        if(_data_stack.top().true_statement_vertices.empty()) {
             assert(!vertices.empty());
-            _dataStack.top().trueStatementVertices = vertices;
+            _data_stack.top().true_statement_vertices = vertices;
         }
         else {
-            assert(_dataStack.top().falseStatementVertices.empty());
-            _dataStack.top().falseStatementVertices = vertices;
+            assert(_data_stack.top().false_statement_vertices.empty());
+            _data_stack.top().false_statement_vertices = vertices;
         }
     }
 
     std::shared_ptr<ranally::WhileVertex> post_While()
     {
-        assert(!_dataStack.empty());
-        WhileData result(_dataStack.top());
-        _dataStack.pop();
+        assert(!_data_stack.empty());
+        WhileData result(_data_stack.top());
+        _data_stack.pop();
         return std::shared_ptr<ranally::WhileVertex>(new ranally::WhileVertex(
-            result.conditionVertex, result.trueStatementVertices,
-                result.falseStatementVertices));
+            result.condition_vertex, result.true_statement_vertices,
+                result.false_statement_vertices));
     }
 
 private:
@@ -235,12 +235,12 @@ private:
 
     struct WhileData
     {
-        std::shared_ptr<ranally::ExpressionVertex> conditionVertex;
-        StatementVertices trueStatementVertices;
-        StatementVertices falseStatementVertices;
+        std::shared_ptr<ranally::ExpressionVertex> condition_vertex;
+        StatementVertices true_statement_vertices;
+        StatementVertices false_statement_vertices;
     };
 
-    std::stack<WhileData> _dataStack;
+    std::stack<WhileData> _data_stack;
 
 };
 
@@ -253,22 +253,22 @@ public:
 
     void pre()
     {
-        _dataStack.push(StatementsData());
+        _data_stack.push(StatementsData());
     }
 
     void Statement(
         std::shared_ptr<ranally::StatementVertex> const& vertex)
     {
         assert(vertex);
-        _dataStack.top().push_back(vertex);
+        _data_stack.top().push_back(vertex);
     }
 
     std::vector<std::shared_ptr<ranally::StatementVertex>>
         post_Statements()
     {
-        assert(!_dataStack.empty());
-        StatementsData result(_dataStack.top());
-        _dataStack.pop();
+        assert(!_data_stack.empty());
+        StatementsData result(_data_stack.top());
+        _data_stack.pop();
         return result;
     }
 
@@ -277,7 +277,7 @@ private:
     typedef std::vector<std::shared_ptr<ranally::StatementVertex>>
         StatementsData;
 
-    std::stack<StatementsData> _dataStack;
+    std::stack<StatementsData> _data_stack;
 
 };
 
@@ -290,46 +290,46 @@ public:
 
     void pre()
     {
-        _dataStack.push(StatementData());
+        _data_stack.push(StatementData());
     }
 
     void Expression(
         std::shared_ptr<ranally::ExpressionVertex> const& vertex)
     {
         assert(vertex);
-        assert(!_dataStack.empty());
-        _dataStack.top() = vertex;
+        assert(!_data_stack.empty());
+        _data_stack.top() = vertex;
     }
 
     void Assignment(
         std::shared_ptr<ranally::AssignmentVertex> const& vertex)
     {
         assert(vertex);
-        assert(!_dataStack.empty());
-        _dataStack.top() = vertex;
+        assert(!_data_stack.empty());
+        _data_stack.top() = vertex;
     }
 
     void If(
         std::shared_ptr<ranally::IfVertex> const& vertex)
     {
         assert(vertex);
-        assert(!_dataStack.empty());
-        _dataStack.top() = vertex;
+        assert(!_data_stack.empty());
+        _data_stack.top() = vertex;
     }
 
     void While(
         std::shared_ptr<ranally::WhileVertex> const& vertex)
     {
         assert(vertex);
-        assert(!_dataStack.empty());
-        _dataStack.top() = vertex;
+        assert(!_data_stack.empty());
+        _data_stack.top() = vertex;
     }
 
     std::shared_ptr<ranally::StatementVertex> post_Statement()
     {
-        assert(!_dataStack.empty());
-        StatementData result(_dataStack.top());
-        _dataStack.pop();
+        assert(!_data_stack.empty());
+        StatementData result(_data_stack.top());
+        _data_stack.pop();
         return result;
     }
 
@@ -337,7 +337,7 @@ private:
 
     typedef std::shared_ptr<ranally::StatementVertex> StatementData;
 
-    std::stack<StatementData> _dataStack;
+    std::stack<StatementData> _data_stack;
 
 };
 
@@ -350,22 +350,22 @@ public:
 
     void pre()
     {
-        _dataStack.push(ExpressionsData());
+        _data_stack.push(ExpressionsData());
     }
 
     void Expression(
         std::shared_ptr<ranally::ExpressionVertex> const& vertex)
     {
         assert(vertex);
-        _dataStack.top().push_back(vertex);
+        _data_stack.top().push_back(vertex);
     }
 
     std::vector<std::shared_ptr<ranally::ExpressionVertex>>
         post_Expressions()
     {
-        assert(!_dataStack.empty());
-        ExpressionsData result(_dataStack.top());
-        _dataStack.pop();
+        assert(!_data_stack.empty());
+        ExpressionsData result(_data_stack.top());
+        _data_stack.pop();
         return result;
     }
 
@@ -374,7 +374,7 @@ private:
     typedef std::vector<std::shared_ptr<ranally::ExpressionVertex>>
         ExpressionsData;
 
-    std::stack<ExpressionsData> _dataStack;
+    std::stack<ExpressionsData> _data_stack;
 
 };
 
@@ -628,33 +628,33 @@ public:
 
     void pre()
     {
-        _dataStack.push(FunctionData());
+        _data_stack.push(FunctionData());
     }
 
     void Name(
         std::string const& name)
     {
-        assert(!_dataStack.empty());
-        _dataStack.top().name = ranally::String(name);
+        assert(!_data_stack.empty());
+        _data_stack.top().name = ranally::String(name);
     }
 
     void Expressions(
         std::vector<std::shared_ptr<ranally::ExpressionVertex>>
             const& vertices)
     {
-        assert(!_dataStack.empty());
-        assert(_dataStack.top().expressionVertices.empty());
-        _dataStack.top().expressionVertices = vertices;
+        assert(!_data_stack.empty());
+        assert(_data_stack.top().expression_vertices.empty());
+        _data_stack.top().expression_vertices = vertices;
     }
 
     std::shared_ptr<ranally::FunctionVertex> post_Function()
     {
-        assert(!_dataStack.empty());
-        FunctionData result(_dataStack.top());
-        _dataStack.pop();
+        assert(!_data_stack.empty());
+        FunctionData result(_data_stack.top());
+        _data_stack.pop();
         return std::shared_ptr<ranally::FunctionVertex>(
             new ranally::FunctionVertex(result.name,
-                result.expressionVertices));
+                result.expression_vertices));
     }
 
 private:
@@ -665,10 +665,10 @@ private:
     struct FunctionData
     {
         ranally::String name;
-        ExpressionVertices expressionVertices;
+        ExpressionVertices expression_vertices;
     };
 
-    std::stack<FunctionData> _dataStack;
+    std::stack<FunctionData> _data_stack;
 
 };
 
@@ -681,33 +681,33 @@ public:
 
     void pre()
     {
-        _dataStack.push(OperatorData());
+        _data_stack.push(OperatorData());
     }
 
     void Name(
         std::string const& name)
     {
-        assert(!_dataStack.empty());
-        _dataStack.top().name = ranally::String(name);
+        assert(!_data_stack.empty());
+        _data_stack.top().name = ranally::String(name);
     }
 
     void Expressions(
         std::vector<std::shared_ptr<ranally::ExpressionVertex>>
             const& vertices)
     {
-        assert(!_dataStack.empty());
-        assert(_dataStack.top().expressionVertices.empty());
-        _dataStack.top().expressionVertices = vertices;
+        assert(!_data_stack.empty());
+        assert(_data_stack.top().expression_vertices.empty());
+        _data_stack.top().expression_vertices = vertices;
     }
 
     std::shared_ptr<ranally::OperatorVertex> post_Operator()
     {
-        assert(!_dataStack.empty());
-        OperatorData result(_dataStack.top());
-        _dataStack.pop();
+        assert(!_data_stack.empty());
+        OperatorData result(_data_stack.top());
+        _data_stack.pop();
         return std::shared_ptr<ranally::OperatorVertex>(
             new ranally::OperatorVertex(result.name,
-                result.expressionVertices));
+                result.expression_vertices));
     }
 
 private:
@@ -718,10 +718,10 @@ private:
     struct OperatorData
     {
         ranally::String name;
-        ExpressionVertices expressionVertices;
+        ExpressionVertices expression_vertices;
     };
 
-    std::stack<OperatorData> _dataStack;
+    std::stack<OperatorData> _data_stack;
 
 };
 
@@ -734,78 +734,78 @@ public:
 
     void pre()
     {
-        _dataStack.push(ExpressionData());
+        _data_stack.push(ExpressionData());
     }
 
     void line(
         unsigned long long line)
     {
-        assert(!_dataStack.empty());
-        _dataStack.top().line = line;
+        assert(!_data_stack.empty());
+        _data_stack.top().line = line;
     }
 
     void col(
         unsigned long long col)
     {
-        assert(!_dataStack.empty());
-        _dataStack.top().col = col;
+        assert(!_data_stack.empty());
+        _data_stack.top().col = col;
     }
 
     void Name(
         std::string const& name)
     {
-        assert(!_dataStack.empty());
-        assert(!_dataStack.top().vertex);
-        _dataStack.top().vertex = std::shared_ptr<ranally::NameVertex>(
-            new ranally::NameVertex(_dataStack.top().line,
-                _dataStack.top().col, ranally::String(name)));
+        assert(!_data_stack.empty());
+        assert(!_data_stack.top().vertex);
+        _data_stack.top().vertex = std::shared_ptr<ranally::NameVertex>(
+            new ranally::NameVertex(_data_stack.top().line,
+                _data_stack.top().col, ranally::String(name)));
     }
 
     void String(
         std::string const& string)
     {
-        assert(!_dataStack.empty());
-        assert(!_dataStack.top().vertex);
-        _dataStack.top().vertex = std::shared_ptr<ranally::StringVertex>(
-            new ranally::StringVertex(_dataStack.top().line,
-                _dataStack.top().col, ranally::String(string)));
+        assert(!_data_stack.empty());
+        assert(!_data_stack.top().vertex);
+        _data_stack.top().vertex = std::shared_ptr<ranally::StringVertex>(
+            new ranally::StringVertex(_data_stack.top().line,
+                _data_stack.top().col, ranally::String(string)));
     }
 
     void Number(
         std::shared_ptr<ranally::ExpressionVertex> const& vertex)
     {
-        assert(!_dataStack.empty());
-        assert(!_dataStack.top().vertex);
-        _dataStack.top().vertex = vertex;
-        _dataStack.top().vertex->setPosition(_dataStack.top().line,
-            _dataStack.top().col);
+        assert(!_data_stack.empty());
+        assert(!_data_stack.top().vertex);
+        _data_stack.top().vertex = vertex;
+        _data_stack.top().vertex->set_position(_data_stack.top().line,
+            _data_stack.top().col);
     }
 
     void Function(
         std::shared_ptr<ranally::FunctionVertex> const& vertex)
     {
-        assert(!_dataStack.empty());
-        assert(!_dataStack.top().vertex);
-        _dataStack.top().vertex = vertex;
-        _dataStack.top().vertex->setPosition(_dataStack.top().line,
-            _dataStack.top().col);
+        assert(!_data_stack.empty());
+        assert(!_data_stack.top().vertex);
+        _data_stack.top().vertex = vertex;
+        _data_stack.top().vertex->set_position(_data_stack.top().line,
+            _data_stack.top().col);
     }
 
     void Operator(
         std::shared_ptr<ranally::OperatorVertex> const& vertex)
     {
-        assert(!_dataStack.empty());
-        assert(!_dataStack.top().vertex);
-        _dataStack.top().vertex = vertex;
-        _dataStack.top().vertex->setPosition(_dataStack.top().line,
-            _dataStack.top().col);
+        assert(!_data_stack.empty());
+        assert(!_data_stack.top().vertex);
+        _data_stack.top().vertex = vertex;
+        _data_stack.top().vertex->set_position(_data_stack.top().line,
+            _data_stack.top().col);
     }
 
     std::shared_ptr<ranally::ExpressionVertex> post_Expression()
     {
-        assert(!_dataStack.empty());
-        ExpressionData result(_dataStack.top());
-        _dataStack.pop();
+        assert(!_data_stack.empty());
+        ExpressionData result(_data_stack.top());
+        _data_stack.pop();
         return result.vertex;
     }
 
@@ -818,7 +818,7 @@ private:
       std::shared_ptr<ranally::ExpressionVertex> vertex;
   };
 
-  std::stack<ExpressionData> _dataStack;
+  std::stack<ExpressionData> _data_stack;
 
 };
 

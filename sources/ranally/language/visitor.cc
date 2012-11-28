@@ -19,7 +19,7 @@ namespace ranally {
 /*!
   \param     statements Collection with StatementVertex instanceѕ.
 */
-void Visitor::visitStatements(
+void Visitor::visit_statements(
     StatementVertices& statements)
 {
     for(auto statementVertex: statements) {
@@ -32,7 +32,7 @@ void Visitor::visitStatements(
 /*!
   \param     expressions Collection with ExpressionVertex instanceѕ.
 */
-void Visitor::visitExpressions(
+void Visitor::visit_expressions(
   ExpressionVertices const& expressions)
 {
     for(auto expressionVertex: expressions) {
@@ -96,8 +96,8 @@ void Visitor::Visit(
     IfVertex& vertex)
 {
     vertex.condition()->Accept(*this);
-    visitStatements(vertex.trueStatements());
-    visitStatements(vertex.falseStatements());
+    visit_statements(vertex.true_statements());
+    visit_statements(vertex.false_statements());
     Visit(dynamic_cast<StatementVertex&>(vertex));
 }
 
@@ -153,7 +153,7 @@ VISIT_NUMBER_VERTEX(double  )
 void Visitor::Visit(
     OperationVertex& vertex)
 {
-    visitExpressions(vertex.expressions());
+    visit_expressions(vertex.expressions());
     Visit(dynamic_cast<ExpressionVertex&>(vertex));
 }
 
@@ -181,7 +181,7 @@ void Visitor::Visit(
 void Visitor::Visit(
     ScriptVertex& vertex)
 {
-    visitStatements(vertex.statements());
+    visit_statements(vertex.statements());
     Visit(dynamic_cast<SyntaxVertex&>(vertex));
 }
 
@@ -236,8 +236,8 @@ void Visitor::Visit(
     WhileVertex& vertex)
 {
     vertex.condition()->Accept(*this);
-    visitStatements(vertex.trueStatements());
-    visitStatements(vertex.falseStatements());
+    visit_statements(vertex.true_statements());
+    visit_statements(vertex.false_statements());
     Visit(dynamic_cast<StatementVertex&>(vertex));
 }
 

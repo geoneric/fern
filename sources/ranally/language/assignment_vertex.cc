@@ -16,7 +16,7 @@ AssignmentVertex::AssignmentVertex(
 {
     assert(_target);
     assert(_expression);
-    _target->setValue(_expression);
+    _target->set_value(_expression);
 }
 
 
@@ -32,7 +32,7 @@ ExpressionVertexPtr& AssignmentVertex::target()
 }
 
 
-void AssignmentVertex::setExpression(
+void AssignmentVertex::set_expression(
     ExpressionVertexPtr const& expression)
 {
     assert(expression);

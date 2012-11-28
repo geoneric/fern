@@ -16,11 +16,11 @@ ExpressionVertex::ExpressionVertex(
 
 
 ExpressionVertex::ExpressionVertex(
-    int lineNr,
-    int colId,
+    int line_nr,
+    int col_id,
     String const& name)
 
-    : StatementVertex(lineNr, colId),
+    : StatementVertex(line_nr, col_id),
       _name(name)
 
 {
@@ -33,7 +33,7 @@ String const& ExpressionVertex::name() const
 }
 
 
-// void ExpressionVertex::setDataType(
+// void ExpressionVertex::set_data_type(
 //   DataType data_type)
 // {
 //   _data_type = data_type;
@@ -48,7 +48,7 @@ String const& ExpressionVertex::name() const
 // 
 // 
 // 
-// void ExpressionVertex::setValueType(
+// void ExpressionVertex::set_value_type(
 //   ValueType value_type)
 // {
 //   _value_type = value_type;
@@ -62,45 +62,45 @@ String const& ExpressionVertex::name() const
 // }
 
 
-void ExpressionVertex::setResultTypes(
-    std::vector<ResultType> const& resultTypes)
+void ExpressionVertex::set_result_types(
+    std::vector<ResultType> const& result_types)
 {
-    _resultTypes = resultTypes;
+    _result_types = result_types;
 }
 
 
-void ExpressionVertex::addResultType(
+void ExpressionVertex::add_result_type(
     DataType data_type,
     ValueType value_type)
 {
-    _resultTypes.push_back(std::make_tuple(data_type, value_type));
+    _result_types.push_back(std::make_tuple(data_type, value_type));
 }
 
 
 std::vector<ExpressionVertex::ResultType> const&
-ExpressionVertex::resultTypes() const
+ExpressionVertex::result_types() const
 {
-    return _resultTypes;
+    return _result_types;
 }
 
 
 DataType ExpressionVertex::data_type(
   size_t index) const
 {
-    assert(index < _resultTypes.size());
-    return std::get<0>(_resultTypes[index]);
+    assert(index < _result_types.size());
+    return std::get<0>(_result_types[index]);
 }
 
 
 ValueType ExpressionVertex::value_type(
     size_t index) const
 {
-    assert(index < _resultTypes.size());
-    return std::get<1>(_resultTypes[index]);
+    assert(index < _result_types.size());
+    return std::get<1>(_result_types[index]);
 }
 
 
-void ExpressionVertex::setValue(
+void ExpressionVertex::set_value(
     ExpressionVertexPtr const& value)
 {
     _value = value;

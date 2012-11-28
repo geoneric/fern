@@ -20,7 +20,7 @@ public:
 
     LOKI_DEFINE_VISITABLE()
 
-                   ScriptVertex        (String const& sourceName,
+                   ScriptVertex        (String const& source_name,
                                         StatementVertices const& statements);
 
   //                  ScriptVertex        (ScriptVertex const& other);
@@ -35,7 +35,7 @@ public:
 
     ScriptVertex&  operator=           (ScriptVertex const&)=delete;
 
-    String const&  sourceName          () const;
+    String const&  source_name         () const;
 
     StatementVertices const& statements  () const;
 
@@ -43,7 +43,7 @@ public:
 
 private:
 
-    String         _sourceName;
+    String         _source_name;
 
     StatementVertices _statements;
 

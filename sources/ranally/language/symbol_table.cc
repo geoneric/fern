@@ -13,7 +13,7 @@ namespace ranally {
 SymbolTable::~SymbolTable()
 {
     while(!_scopes.empty()) {
-        popScope();
+        pop_scope();
     }
 
     assert(_scopes.empty());
@@ -24,7 +24,7 @@ SymbolTable::~SymbolTable()
 SymbolTable::Definitions const& SymbolTable::definitions(
     String const& name) const
 {
-    assert(hasDefinition(name));
+    assert(has_definition(name));
     return _definitions.find(name)->second;
 }
 
@@ -32,19 +32,19 @@ SymbolTable::Definitions const& SymbolTable::definitions(
 SymbolTable::Definitions& SymbolTable::definitions(
     String const& name)
 {
-    assert(hasDefinition(name));
+    assert(has_definition(name));
     return _definitions.find(name)->second;
 }
 
 
 //! Add a scope to the symbol table.
 /*!
-  \sa        popScope().
+  \sa        pop_scope().
 
-  All subsequent calls to addDefinition(NameVertex*) will add definitions
+  All subsequent calls to add_definition(NameVertex*) will add definitions
   to this new scope.
 */
-void SymbolTable::pushScope()
+void SymbolTable::push_scope()
 {
     _scopes.push_back(Definitions());
 }
@@ -52,12 +52,12 @@ void SymbolTable::pushScope()
 
 //! Remove a scope from the symbol table.
 /*!
-  \warning   pushScope() must have been called first.
-  \sa        pushScope().
+  \warning   push_scope() must have been called first.
+  \sa        push_scope().
 
   All definitions present in the current scope are removed.
 */
-void SymbolTable::popScope()
+void SymbolTable::pop_scope()
 {
     // For all definitions in the top-most scope, first remove them from the
     // definitions map. After that they can be removed from the scope stack.
@@ -86,9 +86,9 @@ void SymbolTable::popScope()
   \return    The 0-based scope level.
 
   Normally, this function will return a value larger than zero. Only when no
-  scopes are pushed (using pushScope()) will this function return zero.
+  scopes are pushed (using push_scope()) will this function return zero.
 */
-SymbolTable::size_type SymbolTable::scopeLevel() const
+SymbolTable::size_type SymbolTable::scope_level() const
 {
     return _scopes.size();
 }
@@ -99,10 +99,10 @@ SymbolTable::size_type SymbolTable::scopeLevel() const
   \param     name Name to look up scope level for.
   \return    Scope level.
 */
-SymbolTable::size_type SymbolTable::scopeLevel(
+SymbolTable::size_type SymbolTable::scope_level(
     String const& name) const
 {
-    assert(hasDefinition(name));
+    assert(has_definition(name));
 
     // Iterate over each scope level until we find the level that contains the
     // requested definition.
@@ -126,16 +126,16 @@ SymbolTable::size_type SymbolTable::scopeLevel(
 //! Add a definition to the current scope.
 /*!
   \param     definition Definition to add.
-  \warning   pushScope() must be called before definitions can be added to the
+  \warning   push_scope() must be called before definitions can be added to the
              symbol table.
   \todo      If name is already defined in an outer scope, add it to that one.
 */
-void SymbolTable::addDefinition(
+void SymbolTable::add_definition(
     NameVertex* definition)
 {
     // Add an empty list of definitions if a definition by this name does not
     // already exist.
-    if(!hasDefinition(definition->name())) {
+    if(!has_definition(definition->name())) {
         _definitions[definition->name()] = Definitions();
     }
 
@@ -160,19 +160,19 @@ void SymbolTable::addDefinition(
 
     // Store the pointer in the list of definitions for this name. The
     // most recent definition is stored at the front of the list.
-    Definitions& definitionsByName(definitions(definition->name()));
-    definitionsByName.insert(definitionsByName.begin(), definition);
+    Definitions& definitions_by_name(definitions(definition->name()));
+    definitions_by_name.insert(definitions_by_name.begin(), definition);
 
     // Add the pointer also to the list of definitions present in the current
     // scope. The most recent definition is stored at the front of the list.
     assert(!_scopes.empty());
-    Definitions& definitionsByScope(_scopes.back());
-    definitionsByScope.insert(definitionsByScope.begin(),
-        definitionsByName.front());
+    Definitions& definitions_by_scope(_scopes.back());
+    definitions_by_scope.insert(definitions_by_scope.begin(),
+        definitions_by_name.front());
 }
 
 
-bool SymbolTable::hasDefinition(
+bool SymbolTable::has_definition(
     String const& name) const
 {
     return _definitions.find(name) != _definitions.end();

@@ -36,11 +36,11 @@ public:
 
     NameVertex&    operator=           (NameVertex const&)=delete;
 
-    void           addDefinition       (NameVertex* vertex);
+    void           add_definition      (NameVertex* vertex);
 
     std::vector<NameVertex*> const& definitions() const;
 
-    void           addUse              (NameVertex* vertex);
+    void           add_use             (NameVertex* vertex);
 
     std::vector<NameVertex*> const& uses () const;
 

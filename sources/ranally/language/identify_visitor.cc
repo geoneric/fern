@@ -39,7 +39,7 @@ void IdentifyVisitor::Visit(
 void IdentifyVisitor::Visit(
     FunctionVertex& vertex)
 {
-    visitExpressions(vertex.expressions());
+    visit_expressions(vertex.expressions());
 }
 
 
@@ -51,7 +51,7 @@ void IdentifyVisitor::Visit(
             // Using a name, connect it to the definition.
             assert(vertex.definitions().empty());
 
-            if(_symbolTable.hasDefinition(vertex.name())) {
+            if(_symbol_table.has_definition(vertex.name())) {
                 // TODO: A name can have multiple definitions. Deeper
                 // scopes can update identifiers in upper scopes, for
                 // example in an if-block.
@@ -69,9 +69,10 @@ void IdentifyVisitor::Visit(
                 // A name is available if it is defined in the current
                 // or higher scope. All current and higher definitions are
                 // relevant here.
-                NameVertex* definition = _symbolTable.definition(vertex.name());
-                vertex.addDefinition(definition);
-                definition->addUse(&vertex);
+                NameVertex* definition =
+                    _symbol_table.definition(vertex.name());
+                vertex.add_definition(definition);
+                definition->add_use(&vertex);
             }
 
             break;
@@ -79,8 +80,8 @@ void IdentifyVisitor::Visit(
         case Mode::Defining: {
             // Defining a name, add it to the symbol table.
             assert(vertex.definitions().empty());
-            vertex.addDefinition(&vertex);
-            _symbolTable.addDefinition(&vertex);
+            vertex.add_definition(&vertex);
+            _symbol_table.add_definition(&vertex);
             break;
         }
     }
@@ -90,18 +91,18 @@ void IdentifyVisitor::Visit(
 void IdentifyVisitor::Visit(
     OperatorVertex& vertex)
 {
-    visitExpressions(vertex.expressions());
+    visit_expressions(vertex.expressions());
 }
 
 
 void IdentifyVisitor::Visit(
     ScriptVertex& vertex)
 {
-    assert(_symbolTable.empty());
-    _symbolTable.pushScope();
-    visitStatements(vertex.statements());
-    _symbolTable.popScope();
-    assert(_symbolTable.empty());
+    assert(_symbol_table.empty());
+    _symbol_table.push_scope();
+    visit_statements(vertex.statements());
+    _symbol_table.pop_scope();
+    assert(_symbol_table.empty());
 }
 
 
@@ -110,15 +111,15 @@ void IdentifyVisitor::Visit(
 {
     vertex.condition()->Accept(*this);
 
-    assert(!vertex.trueStatements().empty());
-    _symbolTable.pushScope();
-    visitStatements(vertex.trueStatements());
-    _symbolTable.popScope();
+    assert(!vertex.true_statements().empty());
+    _symbol_table.push_scope();
+    visit_statements(vertex.true_statements());
+    _symbol_table.pop_scope();
 
-    if(!vertex.falseStatements().empty()) {
-        _symbolTable.pushScope();
-        visitStatements(vertex.falseStatements());
-        _symbolTable.popScope();
+    if(!vertex.false_statements().empty()) {
+        _symbol_table.push_scope();
+        visit_statements(vertex.false_statements());
+        _symbol_table.pop_scope();
     }
 }
 
@@ -128,22 +129,22 @@ void IdentifyVisitor::Visit(
 {
     vertex.condition()->Accept(*this);
 
-    assert(!vertex.trueStatements().empty());
-    _symbolTable.pushScope();
-    visitStatements(vertex.trueStatements());
-    _symbolTable.popScope();
+    assert(!vertex.true_statements().empty());
+    _symbol_table.push_scope();
+    visit_statements(vertex.true_statements());
+    _symbol_table.pop_scope();
 
-    if(!vertex.falseStatements().empty()) {
-        _symbolTable.pushScope();
-        visitStatements(vertex.falseStatements());
-        _symbolTable.popScope();
+    if(!vertex.false_statements().empty()) {
+        _symbol_table.push_scope();
+        visit_statements(vertex.false_statements());
+        _symbol_table.pop_scope();
     }
 }
 
 
-SymbolTable const& IdentifyVisitor::symbolTable() const
+SymbolTable const& IdentifyVisitor::symbol_table() const
 {
-    return _symbolTable;
+    return _symbol_table;
 }
 
 } // namespace ranally

@@ -13,8 +13,8 @@ public:
 
     Support()
         : _interpreter(),
-          _scriptVisitor(),
-          _optimizeVisitor()
+          _script_visitor(),
+          _optimize_visitor()
     {
     }
 
@@ -22,9 +22,9 @@ protected:
 
     ranally::Interpreter _interpreter;
 
-    ranally::ScriptVisitor _scriptVisitor;
+    ranally::ScriptVisitor _script_visitor;
 
-    ranally::OptimizeVisitor _optimizeVisitor;
+    ranally::OptimizeVisitor _optimize_visitor;
 };
 
 
@@ -43,11 +43,11 @@ BOOST_AUTO_TEST_CASE(remove_temporary_identifier)
         script = ranally::String(
             "a = 5\n"
             "d = a\n");
-        tree = _interpreter.parseString(script);
+        tree = _interpreter.parse_string(script);
         _interpreter.annotate(tree);
-        tree->Accept(_optimizeVisitor);
-        tree->Accept(_scriptVisitor);
-        BOOST_CHECK_EQUAL(_scriptVisitor.script(), ranally::String("d = 5\n"));
+        tree->Accept(_optimize_visitor);
+        tree->Accept(_script_visitor);
+        BOOST_CHECK_EQUAL(_script_visitor.script(), ranally::String("d = 5\n"));
 
         // This script should be rewritten in the tree as e = 5.
         script = ranally::String(
@@ -55,13 +55,13 @@ BOOST_AUTO_TEST_CASE(remove_temporary_identifier)
             "d = a\n"
             "e = d\n"
         );
-        tree = _interpreter.parseString(script);
+        tree = _interpreter.parse_string(script);
         _interpreter.annotate(tree);
 std::cout << "--------------------------" << std::endl;
-        tree->Accept(_optimizeVisitor);
-        tree->Accept(_scriptVisitor);
-std::cout << _scriptVisitor.script().encode_in_utf8() << std::endl;
-        BOOST_CHECK_EQUAL(_scriptVisitor.script(), ranally::String("e = 5\n"));
+        tree->Accept(_optimize_visitor);
+        tree->Accept(_script_visitor);
+std::cout << _script_visitor.script().encode_in_utf8() << std::endl;
+        BOOST_CHECK_EQUAL(_script_visitor.script(), ranally::String("e = 5\n"));
 
         return;
 
@@ -69,12 +69,13 @@ std::cout << _scriptVisitor.script().encode_in_utf8() << std::endl;
         script = ranally::String(
             "a = 5\n"
             "d = f(a)\n");
-        tree = _interpreter.parseString(script);
+        tree = _interpreter.parse_string(script);
         _interpreter.annotate(tree);
-        tree->Accept(_optimizeVisitor);
-        tree->Accept(_scriptVisitor);
-        std::cout << _scriptVisitor.script().encode_in_utf8() << std::endl;
-        BOOST_CHECK_EQUAL(_scriptVisitor.script(), ranally::String("d = f(5)"));
+        tree->Accept(_optimize_visitor);
+        tree->Accept(_script_visitor);
+        std::cout << _script_visitor.script().encode_in_utf8() << std::endl;
+        BOOST_CHECK_EQUAL(_script_visitor.script(), ranally::String(
+            "d = f(5)"));
     }
 
     // Make sure that temporary identifiers which are only used as input to
@@ -85,11 +86,11 @@ std::cout << _scriptVisitor.script().encode_in_utf8() << std::endl;
             "a = 5\n"
             "d = f(a)\n"
             "e = g(a)\n");
-        tree = _interpreter.parseString(script);
+        tree = _interpreter.parse_string(script);
         _interpreter.annotate(tree);
-        tree->Accept(_optimizeVisitor);
-        tree->Accept(_scriptVisitor);
-        BOOST_CHECK_EQUAL(_scriptVisitor.script(), script);
+        tree->Accept(_optimize_visitor);
+        tree->Accept(_script_visitor);
+        BOOST_CHECK_EQUAL(_script_visitor.script(), script);
     }
 }
 

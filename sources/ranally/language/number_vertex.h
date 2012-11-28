@@ -27,8 +27,8 @@ public:
 
                    NumberVertex        (T value);
 
-                   NumberVertex        (int lineNr,
-                                        int colId,
+                   NumberVertex        (int line_nr,
+                                        int col_id,
                                         T value);
 
                    ~NumberVertex       ()=default;

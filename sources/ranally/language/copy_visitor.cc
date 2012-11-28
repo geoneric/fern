@@ -4,10 +4,10 @@
 
 namespace ranally {
 
-std::shared_ptr<ScriptVertex> const& CopyVisitor::scriptVertex() const
+std::shared_ptr<ScriptVertex> const& CopyVisitor::script_vertex() const
 {
-    assert(_scriptVertex);
-    return _scriptVertex;
+    assert(_script_vertex);
+    return _script_vertex;
 }
 
 
@@ -23,7 +23,7 @@ std::shared_ptr<ScriptVertex> const& CopyVisitor::scriptVertex() const
 // }
 
 
-void CopyVisitor::visitStatements(
+void CopyVisitor::visit_statements(
     StatementVertices& statements)
 {
     assert(_statements.empty());
@@ -31,8 +31,8 @@ void CopyVisitor::visitStatements(
     for(auto statement: statements) {
         CopyVisitor visitor;
         statement->Accept(visitor);
-        assert(_statementVertex);
-        _statements.push_back(visitor._statementVertex);
+        assert(_statement_vertex);
+        _statements.push_back(visitor._statement_vertex);
     }
 
     assert(_statements.size() == statements.size());
@@ -77,9 +77,9 @@ void CopyVisitor::Visit(
 void CopyVisitor::Visit(
     ScriptVertex& vertex)
 {
-    assert(!_scriptVertex);
-    visitStatements(vertex.statements());
-    _scriptVertex.reset(new ScriptVertex(vertex.sourceName(), _statements));
+    assert(!_script_vertex);
+    visit_statements(vertex.statements());
+    _script_vertex.reset(new ScriptVertex(vertex.source_name(), _statements));
 }
 
 

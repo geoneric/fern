@@ -14,45 +14,45 @@ FlowgraphDotVisitor::FlowgraphDotVisitor()
 }
 
 
-void FlowgraphDotVisitor::setMode(
+void FlowgraphDotVisitor::set_mode(
     Mode mode)
 {
     _mode = mode;
 }
 
 
-void FlowgraphDotVisitor::addFlowgraphVertex(
-    NameVertex const& sourceVertex,
-    SyntaxVertex const& targetVertex)
+void FlowgraphDotVisitor::add_flowgraph_vertex(
+    NameVertex const& source_vertex,
+    SyntaxVertex const& target_vertex)
 {
-    if(!sourceVertex.definitions().empty()) {
-        for(auto definition: sourceVertex.definitions()) {
-            addScript(
+    if(!source_vertex.definitions().empty()) {
+        for(auto definition: source_vertex.definitions()) {
+            add_script(
                 String(boost::format("\"%1%\"") % definition) + " -> " +
-                String(boost::format("\"%1%\"") % &targetVertex) + " ["
+                String(boost::format("\"%1%\"") % &target_vertex) + " ["
                 "];\n"
             );
         }
     }
     else {
-        addScript(
-            String(boost::format("\"%1%\"") % &sourceVertex) + " -> " +
-            String(boost::format("\"%1%\"") % &targetVertex) + " ["
+        add_script(
+            String(boost::format("\"%1%\"") % &source_vertex) + " -> " +
+            String(boost::format("\"%1%\"") % &target_vertex) + " ["
             "];\n"
         );
     }
 }
 
 
-void FlowgraphDotVisitor::addFlowgraphVertex(
-    SyntaxVertex const& sourceVertex,
-    SyntaxVertex const& targetVertex)
+void FlowgraphDotVisitor::add_flowgraph_vertex(
+    SyntaxVertex const& source_vertex,
+    SyntaxVertex const& target_vertex)
 {
     assert(_mode == Mode::ConnectingFlowgraph);
 
-    if(dynamic_cast<NameVertex const*>(&sourceVertex)) {
-        addFlowgraphVertex(dynamic_cast<NameVertex const&>(
-            sourceVertex), targetVertex);
+    if(dynamic_cast<NameVertex const*>(&source_vertex)) {
+        add_flowgraph_vertex(dynamic_cast<NameVertex const&>(
+            source_vertex), target_vertex);
         return;
     }
 
@@ -64,22 +64,22 @@ void FlowgraphDotVisitor::addFlowgraphVertex(
     /// //      it is, instead of optimizing the plot by finding stuff ourselves.
     /// assert(!_definition);
     /// _mode = ConnectingOperationArgument;
-    /// const_cast<SyntaxVertex&>(sourceVertex).Accept(*this);
-    /// SyntaxVertex const* newSourceVertex = _definition
+    /// const_cast<SyntaxVertex&>(source_vertex).Accept(*this);
+    /// SyntaxVertex const* new_source_vertex = _definition
     ///   ? _definition
-    ///   : &sourceVertex;
+    ///   : &source_vertex;
 
     /// _script +=
-    ///   String(boost::format("\"%1%\"") % newSourceVertex) + " -> " +
-    ///   String(boost::format("\"%1%\"") % &targetVertex) + " ["
+    ///   String(boost::format("\"%1%\"") % new_source_vertex) + " -> " +
+    ///   String(boost::format("\"%1%\"") % &target_vertex) + " ["
     ///   "];\n";
 
     /// _mode = Mode::ConnectingFlowgraph;
     /// _definition = 0;
 
-    addScript(
-        String(boost::format("\"%1%\"") % &sourceVertex) + " -> " +
-        String(boost::format("\"%1%\"") % &targetVertex) + " ["
+    add_script(
+        String(boost::format("\"%1%\"") % &source_vertex) + " -> " +
+        String(boost::format("\"%1%\"") % &target_vertex) + " ["
         "];\n"
     );
 }
@@ -103,13 +103,13 @@ void FlowgraphDotVisitor::Visit(
 {
     switch(_mode) {
         case Mode::Declaring: {
-            // addScript(
+            // add_script(
             //   String(boost::format("\"%1%\"") % &vertex) +
             //   " [label=\"=\"];\n");
             break;
         }
         case Mode::ConnectingFlowgraph: {
-            addFlowgraphVertex(*vertex.expression(), *vertex.target());
+            add_flowgraph_vertex(*vertex.expression(), *vertex.target());
             break;
         }
     }
@@ -124,22 +124,22 @@ void FlowgraphDotVisitor::Visit(
 {
     switch(_mode) {
         case Mode::Declaring: {
-            addScript(
+            add_script(
                 String(boost::format("\"%1%\"") % &vertex) +
                 " [label=\"" + vertex.name() + "\", shape=triangle];\n"
             );
             break;
         }
         case Mode::ConnectingFlowgraph: {
-            for(auto expressionVertex: vertex.expressions()) {
-                addFlowgraphVertex(*expressionVertex, vertex);
+            for(auto expression_vertex: vertex.expressions()) {
+                add_flowgraph_vertex(*expression_vertex, vertex);
             }
             break;
         }
     }
 
-    for(auto expressionVertex: vertex.expressions()) {
-        expressionVertex->Accept(*this);
+    for(auto expression_vertex: vertex.expressions()) {
+        expression_vertex->Accept(*this);
     }
 }
 
@@ -147,10 +147,10 @@ void FlowgraphDotVisitor::Visit(
 void FlowgraphDotVisitor::Visit(
     IfVertex& vertex)
 {
-    static size_t ifClusterId = 0;
+    static size_t if_cluster_id = 0;
     switch(_mode) {
         case Mode::Declaring: {
-            addScript(
+            add_script(
                 String(boost::format("\"%1%\"") % &vertex) +
                 " [label=\"If\", shape=diamond];\n"
             );
@@ -165,33 +165,33 @@ void FlowgraphDotVisitor::Visit(
 
     // TODO condition -> sub graph
     if(_mode == Mode::ConnectingFlowgraph) {
-        addScript(String(boost::format(
+        add_script(String(boost::format(
             "subgraph cluster%1% {\n"
             "ordering=out;\n"
             "rankdir=TB;\n"
-        ) % ifClusterId++));
+        ) % if_cluster_id++));
     }
-    for(auto statementVertex: vertex.trueStatements()) {
-        statementVertex->Accept(*this);
+    for(auto statement_vertex: vertex.true_statements()) {
+        statement_vertex->Accept(*this);
     }
     if(_mode == Mode::ConnectingFlowgraph) {
-        addScript("}\n");
+        add_script("}\n");
     }
 
-    if(!vertex.falseStatements().empty()) {
+    if(!vertex.false_statements().empty()) {
         // TODO condition -> sub graph
         if(_mode == Mode::ConnectingFlowgraph) {
-            addScript(String(boost::format(
+            add_script(String(boost::format(
                 "subgraph cluster%1% {\n"
                 "ordering=out;\n"
                 "rankdir=TB;\n"
-            ) % ifClusterId++));
+            ) % if_cluster_id++));
         }
-        for(auto statementVertex: vertex.falseStatements()) {
-            statementVertex->Accept(*this);
+        for(auto statement_vertex: vertex.false_statements()) {
+            statement_vertex->Accept(*this);
         }
         if(_mode == Mode::ConnectingFlowgraph) {
-            addScript("}\n");
+            add_script("}\n");
         }
     }
 }
@@ -209,7 +209,7 @@ void FlowgraphDotVisitor::Visit(
                     std::find(vertex.definitions().begin(),
                         vertex.definitions().end(), &vertex) !=
                     vertex.definitions().end()) {
-                addScript(
+                add_script(
                     String(boost::format("\"%1%\"") % &vertex) +
                     " [label=\"" + vertex.name() + "\"];\n"
                 );
@@ -229,7 +229,7 @@ void FlowgraphDotVisitor::Visit(
 {
     switch(_mode) {
         case Mode::Declaring: {
-            addScript(
+            add_script(
                 String(boost::format("\"%1%\"") % &vertex) +
                 " [label=\"" + String(boost::format("%1%") % vertex.value()) +
                 "\", fontname=courier, shape=box];\n"
@@ -319,22 +319,22 @@ void FlowgraphDotVisitor::Visit(
     switch(_mode) {
         case Mode::Declaring: {
             // TODO Implement symbol member.
-            addScript(
+            add_script(
                 String(boost::format("\"%1%\"") % &vertex) +
                 " [label=\"" + vertex.symbol() + "\", shape=triangle];\n"
             );
             break;
         }
         case Mode::ConnectingFlowgraph: {
-            for(auto expressionVertex: vertex.expressions()) {
-                addFlowgraphVertex(*expressionVertex, vertex);
+            for(auto expression_vertex: vertex.expressions()) {
+                add_flowgraph_vertex(*expression_vertex, vertex);
             }
             break;
         }
     }
 
-    for(auto expressionVertex: vertex.expressions()) {
-        expressionVertex->Accept(*this);
+    for(auto expression_vertex: vertex.expressions()) {
+        expression_vertex->Accept(*this);
     }
 }
 
@@ -344,7 +344,7 @@ void FlowgraphDotVisitor::Visit(
 {
     switch(_mode) {
         case Mode::Declaring: {
-            addScript(
+            add_script(
                 String(boost::format("\"%1%\"") % &vertex) +
                 " [label=\"\\\"" + vertex.value() +
                 "\\\"\", fontname=courier, shape=box];\n"
@@ -367,30 +367,30 @@ void FlowgraphDotVisitor::Visit(
 void FlowgraphDotVisitor::Visit(
     ScriptVertex& vertex)
 {
-    setScript(String(
+    set_script(String(
         "digraph G {\n"
         "ordering=out;\n"
         "rankdir=LR;\n"
         "penwidth=0.25;\n"
     ));
 
-    setMode(Mode::Declaring);
-    // addScript(
+    set_mode(Mode::Declaring);
+    // add_script(
     //   String(boost::format("\"%1%\"") % &vertex) +
     //   String(boost::format(" [label=\"%1%\"];\n"))
     //     % vertex.sourceName().encode_in_utf8());
 
-    for(auto statementVertex: vertex.statements()) {
-        statementVertex->Accept(*this);
+    for(auto statement_vertex: vertex.statements()) {
+        statement_vertex->Accept(*this);
     }
 
-    setMode(Mode::ConnectingFlowgraph);
-    for(auto statementVertex: vertex.statements()) {
-        // addFlowgraphVertex(vertex, *statementVertex);
-        statementVertex->Accept(*this);
+    set_mode(Mode::ConnectingFlowgraph);
+    for(auto statement_vertex: vertex.statements()) {
+        // add_flowgraph_vertex(vertex, *statement_vertex);
+        statement_vertex->Accept(*this);
     }
 
-    addScript("}\n");
+    add_script("}\n");
 }
 
 } // namespace ranally

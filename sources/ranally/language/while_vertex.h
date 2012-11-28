@@ -23,8 +23,8 @@ public:
 
                    WhileVertex         (
                         std::shared_ptr<ExpressionVertex> const& condition,
-                        StatementVertices const& trueStatements,
-                        StatementVertices const& falseStatements);
+                        StatementVertices const& true_statements,
+                        StatementVertices const& false_statements);
 
                    ~WhileVertex        ()=default;
 
@@ -38,21 +38,21 @@ public:
 
     std::shared_ptr<ExpressionVertex> const& condition() const;
 
-    StatementVertices const& trueStatements() const;
+    StatementVertices const& true_statements() const;
 
-    StatementVertices& trueStatements    ();
+    StatementVertices& true_statements ();
 
-    StatementVertices const& falseStatements() const;
+    StatementVertices const& false_statements() const;
 
-    StatementVertices& falseStatements   ();
+    StatementVertices& false_statements();
 
 private:
 
     ExpressionVertexPtr _condition;
 
-    StatementVertices _trueStatements;
+    StatementVertices _true_statements;
 
-    StatementVertices _falseStatements;
+    StatementVertices _false_statements;
 
 };
 

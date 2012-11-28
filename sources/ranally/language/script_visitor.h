@@ -19,7 +19,7 @@ class ScriptVisitor
 
 public:
 
-                   ScriptVisitor       (size_t tabSize=4);
+                   ScriptVisitor       (size_t tab_size=4);
 
                    ~ScriptVisitor      ()=default;
 
@@ -35,9 +35,9 @@ public:
 
 private:
 
-    size_t         _tabSize;
+    size_t         _tab_size;
 
-    size_t         _indentLevel;
+    size_t         _indent_level;
 
     String         _script;
 
@@ -45,9 +45,9 @@ private:
 
     String         indentation         () const;
 
-    void           visitStatements     (StatementVertices& statements);
+    void           visit_statements    (StatementVertices& statements);
 
-    void           visitExpressions    (ExpressionVertices const& expressions);
+    void           visit_expressions   (ExpressionVertices const& expressions);
 
     void           Visit               (AssignmentVertex&);
 
