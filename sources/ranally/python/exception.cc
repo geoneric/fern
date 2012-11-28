@@ -1,4 +1,5 @@
 #include "ranally/python/exception.h"
+#include "ranally/core/exception.h"
 #include "ranally/python/owned_reference.h"
 #include "ranally/python/string.h"
 
@@ -7,7 +8,7 @@ namespace ranally {
 namespace python {
 namespace {
 
-String format_error_message(
+void throw_error(
     PyObject* value,
     PyObject* /* traceback */)
 {
@@ -15,25 +16,67 @@ String format_error_message(
     assert(value != Py_None);
     OwnedReference value_description_object(PyObject_Str(value));
     assert(value_description_object);
-    String valueDescription = as_unicode_string(value_description_object);
+    String value_description = as_unicode_string(value_description_object);
 
-    return valueDescription;
+    BOOST_THROW_EXCEPTION(detail::ParseError()
+        << detail::ExceptionMessage(value_description)
+    );
 }
 
 
-String format_syntax_error_message(
+void throw_syntax_error(
     PyObject* value,
-    PyObject* traceback)
+    PyObject* /* traceback */)
 {
-    // TODO Unpack the filename, lineno, offset and text attributes and format
-    //      a nice error message.
-    return format_error_message(value, traceback);
+    assert(value);
+
+    // (<error message>, (<source name>, <line>, <col>, <statement>))
+    assert(PySequence_Check(value));
+    assert(PySequence_Length(value) == 2);
+
+    OwnedReference message_object(PySequence_GetItem(value, 0));
+    String message = as_unicode_string(message_object);
+
+    OwnedReference details_object(PySequence_GetItem(value, 1));
+    // (<source name>, <line>, <col>, <statement>)
+    assert(PySequence_Check(details_object));
+    assert(PySequence_Length(details_object) == 4);
+
+    OwnedReference source_object(PySequence_GetItem(details_object, 0));
+    String source_name = as_unicode_string(source_object);
+
+    OwnedReference line_nr_object(PySequence_GetItem(details_object, 1));
+    assert(PyInt_Check((PyObject*)line_nr_object));
+    long line_nr = PyInt_AsLong(line_nr_object);
+    assert(!PyErr_Occurred());
+
+    OwnedReference col_nr_object(PySequence_GetItem(details_object, 2));
+    assert(PyInt_Check((PyObject*)col_nr_object));
+    long col_nr = PyInt_AsLong(col_nr_object);
+    assert(!PyErr_Occurred());
+
+    OwnedReference statement_object(PySequence_GetItem(details_object, 3));
+    String statement = as_unicode_string(statement_object).strip("\n");
+
+    detail::ParseError exception;
+    exception
+        << detail::ExceptionMessage(message)
+        << detail::ExceptionStatement(statement)
+        << detail::ExceptionLineNr(line_nr)
+        << detail::ExceptionColNr(col_nr)
+        ;
+
+    if(!source_name.is_empty()) {
+        exception << detail::ExceptionFilename(source_name);
+    }
+
+    BOOST_THROW_EXCEPTION(exception);
 }
 
 } // Anonymous namespace
 
 
-String error_message()
+void throw_exception()
 {
     assert(PyErr_Occurred());
 
@@ -51,19 +94,15 @@ String error_message()
     // assert(typeNameObject);
     // String typeName = as_unicode_string(typeNameObject);
 
-    String message;
-
     if(PyErr_GivenExceptionMatches(type, PyExc_SyntaxError)) {
-        message = format_syntax_error_message(value, traceback);
+        throw_syntax_error(value, traceback);
     }
     else {
-        message = format_error_message(value, traceback);
+        assert(false);
+        throw_error(value, traceback);
     }
 
-    assert(!message.is_empty());
     assert(!PyErr_Occurred());
-
-    return message;
 }
 
 } // namespace python

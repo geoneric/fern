@@ -5,7 +5,7 @@
 namespace ranally {
 namespace python {
 
-String             error_message       ();
+void               throw_exception     ();
 
 } // namespace python
 } // namespace ranally

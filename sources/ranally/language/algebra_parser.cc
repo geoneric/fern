@@ -735,8 +735,7 @@ String AlgebraParser::parse_string(
         smart_arena.arena());
 
     if(!ast) {
-        BOOST_THROW_EXCEPTION(detail::ParseError()
-            << detail::ExceptionMessage(python::error_message()));
+        python::throw_exception();
     }
 
     return String("<?xml version=\"1.0\"?>") + python_ast_to_xml(ast,
@@ -769,9 +768,7 @@ String AlgebraParser::parse_file(
         Py_file_input, 0, 0, 0, 0, smart_arena.arena());
 
     if(!ast) {
-        BOOST_THROW_EXCEPTION(detail::ParseError()
-            << detail::ExceptionFilename(filename)
-            << detail::ExceptionMessage(python::error_message()));
+        python::throw_exception();
     }
 
     return String("<?xml version=\"1.0\"?>") + python_ast_to_xml(ast, filename);

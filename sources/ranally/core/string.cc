@@ -132,6 +132,19 @@ bool String::ends_with(
 }
 
 
+String& String::strip(
+    String const& characters_to_strip)
+{
+    if(characters_to_strip.is_empty()) {
+        UnicodeString::trim();
+    else {
+        // TODO Iterator over characters_to_strip.
+        UnicodeString::trim();
+    }
+    return *this;
+}
+
+
 String operator+(
     String const& lhs,
     String const& rhs)

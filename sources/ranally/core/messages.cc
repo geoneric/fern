@@ -8,9 +8,9 @@ Messages::Messages()
     insert(std::make_pair(MessageId::UNKNOWN_ERROR,
         "Sorry, unknown error"));
     insert(std::make_pair(MessageId::ERROR_PARSING,
-        "Error while parsing: %1%"));
+        "Error while parsing: %1%\n%2%:%3%: %4%"));
     insert(std::make_pair(MessageId::ERROR_PARSING_FILE,
-        "Error while parsing file %1%: %2%"));
+        "Error while parsing file %1%: %2%\n%3%:%4%: %5%"));
 }
 
 

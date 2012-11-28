@@ -50,9 +50,15 @@ class ParseError:
 {
 public:
 
-                   ParseError          (String const& message);
+                   ParseError          (long line_nr,
+                                        long col_nr,
+                                        String statement,
+                                        String const& message);
 
                    ParseError          (String const& filename,
+                                        long line_nr,
+                                        long col_nr,
+                                        String statement,
                                         String const& message);
 
                    ParseError          (ParseError const&)=default;
@@ -71,6 +77,12 @@ private:
 
     String         _filename;
 
+    long           _line_nr;
+
+    long           _col_nr;
+
+    String         _statement;
+
     String         _message;
 
 };
@@ -85,9 +97,12 @@ namespace detail {
 // used in the core of the code.
 // typedef boost::error_info<struct tag_message_id, MessageId> ExceptionMessageId;
 typedef boost::error_info<struct tag_filename, String> ExceptionFilename;
-typedef boost::error_info<struct tag_filename, String> ExceptionMessage;
+typedef boost::error_info<struct tag_message, String> ExceptionMessage;
 typedef boost::error_info<struct tag_expression_kind, String>
     ExceptionExpressionKind;
+typedef boost::error_info<struct tag_statement, String> ExceptionStatement;
+typedef boost::error_info<struct tag_line_nr, long> ExceptionLineNr;
+typedef boost::error_info<struct tag_col_nr, long> ExceptionColNr;
 
 // Low leven exception classes.
 struct Exception:

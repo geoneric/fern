@@ -39,10 +39,23 @@ ScriptVertexPtr Interpreter::parse_string(
         script_vertex = _xml_parser.parse(_algebra_parser.parse_string(string));
     }
     catch(detail::ParseError const& exception) {
-        String const* exception_message = boost::get_error_info<
+        String const* message = boost::get_error_info<
             detail::ExceptionMessage>(exception);
-        assert(exception_message);
-        throw ParseError(*exception_message);
+        assert(message);
+
+        long const* line_nr = boost::get_error_info<
+            detail::ExceptionLineNr>(exception);
+        assert(line_nr);
+
+        long const* col_nr = boost::get_error_info<
+            detail::ExceptionColNr>(exception);
+        assert(col_nr);
+
+        String const* statement = boost::get_error_info<
+            detail::ExceptionStatement>(exception);
+        assert(statement);
+
+        throw ParseError(*line_nr, *col_nr, *statement, *message);
     }
 
     return script_vertex;
@@ -78,10 +91,25 @@ ScriptVertexPtr Interpreter::parse_file(
             String const* exception_filename = boost::get_error_info<
                 detail::ExceptionFilename>(exception);
             assert(exception_filename);
-            String const* exception_message = boost::get_error_info<
+
+            String const* message = boost::get_error_info<
                 detail::ExceptionMessage>(exception);
-            assert(exception_message);
-            throw ParseError(*exception_filename, *exception_message);
+            assert(message);
+
+            long const* line_nr = boost::get_error_info<
+                detail::ExceptionLineNr>(exception);
+            assert(line_nr);
+
+            long const* col_nr = boost::get_error_info<
+                detail::ExceptionColNr>(exception);
+            assert(col_nr);
+
+            String const* statement = boost::get_error_info<
+                detail::ExceptionStatement>(exception);
+            assert(statement);
+
+            throw ParseError(*exception_filename, *line_nr, *col_nr, *statement,
+                *message);
         }
     }
 
