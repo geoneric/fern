@@ -137,6 +137,7 @@ String& String::strip(
 {
     if(characters_to_strip.is_empty()) {
         UnicodeString::trim();
+    }
     else {
         // TODO Iterator over characters_to_strip.
         UnicodeString::trim();
