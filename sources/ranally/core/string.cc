@@ -132,15 +132,55 @@ bool String::ends_with(
 }
 
 
-String& String::strip(
-    String const& characters_to_strip)
+String& String::strip_begin(
+    String const& characters)
 {
-    if(characters_to_strip.is_empty()) {
+    int32_t index = 0;
+
+    while(index < length() && characters.indexOf(charAt(index)) != -1) {
+        ++index;
+    }
+
+    assert(index >= 0);
+    assert(index <= length());
+    remove(0, index);
+
+    return *this;
+}
+
+
+String& String::strip_end(
+    String const& characters)
+{
+    int32_t index = length() - 1;
+
+    while(index >= 0 && characters.indexOf(charAt(index)) != -1) {
+        --index;
+    }
+
+    assert(index >= 0);
+    assert(index < length());
+    remove(index + 1, length());
+
+    return *this;
+}
+
+
+//! Trim characters from the start and end of the string.
+/*!
+  \param     characters String with characters to trim. If empty, whitespace
+             characters are trimmed.
+  \return    Reference to this.
+*/
+String& String::strip(
+    String const& characters)
+{
+    if(characters.is_empty()) {
         UnicodeString::trim();
     }
     else {
-        // TODO Iterator over characters_to_strip.
-        UnicodeString::trim();
+        strip_begin(characters);
+        strip_end(characters);
     }
     return *this;
 }

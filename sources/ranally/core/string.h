@@ -50,9 +50,13 @@ public:
 
     bool           ends_with           (String const& string) const;
 
-    String&        strip               (String const& characters_to_strip);
+    String&        strip               (String const& characters=String());
 
 private:
+
+    String&        strip_begin         (String const& characters);
+
+    String&        strip_end           (String const& characters);
 
 };
 
