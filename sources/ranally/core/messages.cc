@@ -11,6 +11,8 @@ Messages::Messages()
         "Error while parsing: %1%\n%2%:%3%: %4%"));
     insert(std::make_pair(MessageId::ERROR_PARSING_FILE,
         "Error while parsing file %1%: %2%\n%3%:%4%: %5%"));
+    insert(std::make_pair(MessageId::IO_ERROR,
+        "IO error while handling file %1%: %2%"));
 }
 
 

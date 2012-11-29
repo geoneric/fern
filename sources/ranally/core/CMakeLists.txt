@@ -2,7 +2,9 @@ ADD_SUBDIRECTORY(test)
 
 SET(SOURCES
     exception
+    io_error
     messages
+    parse_error
     string
 )
 ADD_LIBRARY(ranally_core

@@ -1,6 +1,7 @@
 #include "ranally/interpreter/interpreter.h"
 #include <sstream>
-#include "ranally/core/exception.h"
+#include "ranally/core/io_error.h"
+#include "ranally/core/parse_error.h"
 #include "ranally/operation/operation_xml_parser.h"
 #include "ranally/operation/operation-xml.h"
 #include "ranally/language/annotate_visitor.h"
@@ -27,7 +28,7 @@ Interpreter::Interpreter()
   \tparam    .
   \param     .
   \return    .
-  \exception ParseError
+  \exception ParseError In case \a string cannot be parsed.
   \warning   .
   \sa        .
 */
@@ -65,7 +66,8 @@ ScriptVertexPtr Interpreter::parse_string(
 //! Read script from \a filename.
 /*!
   \param     filename Name of file to read script from.
-  \exception ParseError
+  \exception IOError In case \a filename cannot be opened.
+  \exception ParseError In case \a filename cannot be parsed.
 
   In case \a filename is empty, the script is read from standard input.
 */
@@ -87,10 +89,21 @@ ScriptVertexPtr Interpreter::parse_file(
             script_vertex = _xml_parser.parse(_algebra_parser.parse_file(
                 filename));
         }
-        catch(detail::ParseError const& exception) {
-            String const* exception_filename = boost::get_error_info<
+        catch(detail::IOError const& exception) {
+            String const* filename = boost::get_error_info<
                 detail::ExceptionFilename>(exception);
-            assert(exception_filename);
+            assert(filename);
+
+            int const* errno_ = boost::get_error_info<boost::errinfo_errno>(
+                exception);
+            assert(errno_);
+
+            throw IOError(*filename, *errno_);
+        }
+        catch(detail::ParseError const& exception) {
+            String const* filename = boost::get_error_info<
+                detail::ExceptionFilename>(exception);
+            assert(filename);
 
             String const* message = boost::get_error_info<
                 detail::ExceptionMessage>(exception);
@@ -108,7 +121,7 @@ ScriptVertexPtr Interpreter::parse_file(
                 detail::ExceptionStatement>(exception);
             assert(statement);
 
-            throw ParseError(*exception_filename, *line_nr, *col_nr, *statement,
+            throw ParseError(*filename, *line_nr, *col_nr, *statement,
                 *message);
         }
     }
