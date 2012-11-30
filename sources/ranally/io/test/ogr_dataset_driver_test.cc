@@ -1,5 +1,5 @@
 #define BOOST_TEST_MODULE ranally io
-#include <boost/test/included/unit_test.hpp>
+#include <boost/test/unit_test.hpp>
 #include "ranally/core/string.h"
 #include "ranally/io/ogr_client.h"
 #include "ranally/io/ogr_dataset_driver.h"

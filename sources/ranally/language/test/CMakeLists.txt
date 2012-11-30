@@ -31,6 +31,7 @@ MACRO(ADD_UNIT_TEST NAME)
     TARGET_LINK_LIBRARIES(${NAME}
         ranally_interpreter
         ranally_language
+        ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
     ADD_TEST(NAME ${NAME} COMMAND ${NAME})
 ENDMACRO()

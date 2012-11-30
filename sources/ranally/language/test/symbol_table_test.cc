@@ -1,5 +1,5 @@
 #define BOOST_TEST_MODULE ranally language
-#include <boost/test/included/unit_test.hpp>
+#include <boost/test/unit_test.hpp>
 #include "ranally/language/name_vertex.h"
 #include "ranally/language/symbol_table.h"
 

@@ -1,5 +1,5 @@
 #define BOOST_TEST_MODULE ranally operation
-#include <boost/test/included/unit_test.hpp>
+#include <boost/test/unit_test.hpp>
 #include "ranally/operation/parameter.h"
 #include "ranally/operation/result.h"
 #include "ranally/operation/operation_xml_parser.h"

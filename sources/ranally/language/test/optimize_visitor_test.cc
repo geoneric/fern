@@ -1,5 +1,5 @@
 #define BOOST_TEST_MODULE ranally language
-#include <boost/test/included/unit_test.hpp>
+#include <boost/test/unit_test.hpp>
 #include "ranally/core/string.h"
 #include "ranally/interpreter/Interpreter.h"
 #include "ranally/language/optimize_visitor.h"

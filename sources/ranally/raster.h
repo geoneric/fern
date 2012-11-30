@@ -1,6 +1,7 @@
 #pragma once
 #include <algorithm>
 #include <array>
+#include <boost/range/iterator.hpp>
 #include "ranally/data_traits.h"
 
 
