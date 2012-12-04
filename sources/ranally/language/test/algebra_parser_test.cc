@@ -715,4 +715,34 @@ BOOST_AUTO_TEST_CASE(parse_file)
     }
 }
 
+
+BOOST_AUTO_TEST_CASE(parse_slice)
+{
+    ranally::AlgebraParser parser;
+    ranally::String xml;
+
+    {
+        xml = parser.parse_string(ranally::String(
+            "a[b]"));
+        BOOST_CHECK_EQUAL(xml, ranally::String(
+            "<?xml version=\"1.0\"?>"
+            "<Ranally source=\"&lt;string&gt;\">"
+              "<Statements>"
+                "<Statement>"
+                  "<Expression line=\"1\" col=\"0\">"
+                    "<Subscript>"
+                      "<Expression line=\"1\" col=\"0\">"
+                        "<Name>a</Name>"
+                      "</Expression>"
+                      "<Expression line=\"1\" col=\"2\">"
+                        "<Name>b</Name>"
+                      "</Expression>"
+                    "</Subscript>"
+                  "</Expression>"
+                "</Statement>"
+              "</Statements>"
+            "</Ranally>"));
+    }
+}
+
 BOOST_AUTO_TEST_SUITE_END()

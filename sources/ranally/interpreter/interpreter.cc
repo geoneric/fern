@@ -2,6 +2,7 @@
 #include <sstream>
 #include "ranally/core/io_error.h"
 #include "ranally/core/parse_error.h"
+#include "ranally/core/validate_error.h"
 #include "ranally/operation/operation_xml_parser.h"
 #include "ranally/operation/operation-xml.h"
 #include "ranally/language/annotate_visitor.h"
@@ -36,13 +37,15 @@ ScriptVertexPtr Interpreter::parse_string(
     String const& string) const
 {
     ScriptVertexPtr script_vertex;
+
     try {
-        script_vertex = _xml_parser.parse(_algebra_parser.parse_string(string));
+        script_vertex = _xml_parser.parse_string(_algebra_parser.parse_string(
+            string));
     }
     catch(detail::ParseError const& exception) {
-        String const* message = boost::get_error_info<
-            detail::ExceptionMessage>(exception);
-        assert(message);
+        String const* source_name = boost::get_error_info<
+            detail::ExceptionSourceName>(exception);
+        assert(source_name);
 
         long const* line_nr = boost::get_error_info<
             detail::ExceptionLineNr>(exception);
@@ -54,9 +57,18 @@ ScriptVertexPtr Interpreter::parse_string(
 
         String const* statement = boost::get_error_info<
             detail::ExceptionStatement>(exception);
-        assert(statement);
 
-        throw ParseError(*line_nr, *col_nr, *statement, *message);
+        String const* message = boost::get_error_info<
+            detail::ExceptionMessage>(exception);
+        assert(message);
+
+        if(!statement) {
+            throw ParseError(*source_name, *line_nr, *col_nr, *message);
+        }
+        else {
+            throw ParseError(*source_name, *line_nr, *col_nr, *statement,
+                *message);
+        }
     }
 
     return script_vertex;
@@ -76,54 +88,79 @@ ScriptVertexPtr Interpreter::parse_file(
 {
     ScriptVertexPtr script_vertex;
 
-    if(filename.is_empty()) {
-        // Read script from the standard input stream.
-        // Exception are handled by parse_string(...).
-        std::ostringstream stream;
-        stream << std::cin.rdbuf();
-        script_vertex = parse_string(stream.str());
-    }
-    else {
-        try {
+    try {
+        if(filename.is_empty()) {
+            // Read script from the standard input stream.
+            // Exceptions are handled by parse_string(...).
+            std::ostringstream stream;
+            stream << std::cin.rdbuf();
+            script_vertex = parse_string(stream.str());
+        }
+        else {
             // Read script from a file.
-            script_vertex = _xml_parser.parse(_algebra_parser.parse_file(
+            script_vertex = _xml_parser.parse_string(_algebra_parser.parse_file(
                 filename));
         }
-        catch(detail::IOError const& exception) {
-            String const* filename = boost::get_error_info<
-                detail::ExceptionFilename>(exception);
-            assert(filename);
+    }
+    catch(detail::IOError const& exception) {
+        String const* source_name = boost::get_error_info<
+            detail::ExceptionSourceName>(exception);
+        assert(source_name);
 
-            int const* errno_ = boost::get_error_info<boost::errinfo_errno>(
-                exception);
-            assert(errno_);
+        int const* errno_ = boost::get_error_info<boost::errinfo_errno>(
+            exception);
+        assert(errno_);
 
-            throw IOError(*filename, *errno_);
+        throw IOError(*source_name, *errno_);
+    }
+    catch(detail::ParseError const& exception) {
+        String const* source_name = boost::get_error_info<
+            detail::ExceptionSourceName>(exception);
+        assert(source_name);
+
+        long const* line_nr = boost::get_error_info<
+            detail::ExceptionLineNr>(exception);
+        assert(line_nr);
+
+        long const* col_nr = boost::get_error_info<
+            detail::ExceptionColNr>(exception);
+        assert(col_nr);
+
+        String const* statement = boost::get_error_info<
+            detail::ExceptionStatement>(exception);
+
+        String const* message = boost::get_error_info<
+            detail::ExceptionMessage>(exception);
+        assert(message);
+
+        if(!statement) {
+            throw ParseError(*source_name, *line_nr, *col_nr, *message);
         }
-        catch(detail::ParseError const& exception) {
-            String const* filename = boost::get_error_info<
-                detail::ExceptionFilename>(exception);
-            assert(filename);
-
-            String const* message = boost::get_error_info<
-                detail::ExceptionMessage>(exception);
-            assert(message);
-
-            long const* line_nr = boost::get_error_info<
-                detail::ExceptionLineNr>(exception);
-            assert(line_nr);
-
-            long const* col_nr = boost::get_error_info<
-                detail::ExceptionColNr>(exception);
-            assert(col_nr);
-
-            String const* statement = boost::get_error_info<
-                detail::ExceptionStatement>(exception);
-            assert(statement);
-
-            throw ParseError(*filename, *line_nr, *col_nr, *statement,
+        else {
+            throw ParseError(*source_name, *line_nr, *col_nr, *statement,
                 *message);
         }
+    }
+    catch(detail::UnsupportedExpressionError const& exception) {
+        String const* source_name = boost::get_error_info<
+            detail::ExceptionSourceName>(exception);
+        assert(source_name);
+
+        long const* line_nr = boost::get_error_info<
+            detail::ExceptionLineNr>(exception);
+        assert(line_nr);
+
+        long const* col_nr = boost::get_error_info<
+            detail::ExceptionColNr>(exception);
+        assert(col_nr);
+
+        String const* expression = boost::get_error_info<
+            detail::ExceptionExpressionKind>(exception);
+        assert(expression);
+
+        throw ParseError(*source_name, *line_nr, *col_nr,
+            Exception::messages().format_message(
+                MessageId::UNSUPPORTED_EXPRESSION, *expression));
     }
 
     return script_vertex;
@@ -167,15 +204,61 @@ void Interpreter::annotate(
   result of parsing a script, without further processing.
 
   The folowing steps are performed:
-  - Annotation (see annotate(ScriptVertexPtr const&).
+  - Annotation (see annotate(ScriptVertexPtr const&)).
   - Validation.
 */
 void Interpreter::validate(
     ScriptVertexPtr const& tree) const
 {
-    annotate(tree);
-    ValidateVisitor validate_visitor;
-    tree->Accept(validate_visitor);
+    try {
+        annotate(tree);
+        ValidateVisitor validate_visitor;
+        tree->Accept(validate_visitor);
+    }
+    catch(detail::UndefinedIdentifier const& exception) {
+        String const& source_name = tree->source_name();
+
+        String const* identifier_name = boost::get_error_info<
+            detail::ExceptionIdentifier>(exception);
+        assert(identifier_name);
+
+        long const* line_nr = boost::get_error_info<
+            detail::ExceptionLineNr>(exception);
+        assert(line_nr);
+
+        long const* col_nr = boost::get_error_info<
+            detail::ExceptionColNr>(exception);
+        assert(col_nr);
+
+        throw ValidateError(source_name, *line_nr, *col_nr,
+            Exception::messages().format_message(
+                MessageId::UNDEFINED_IDENTIFIER, *identifier_name));
+    }
+
+    // catch(detail::ValidateError const& exception) {
+    //     String const& source_name = tree->source_name();
+
+    //     String const* function_name = boost::get_error_info<
+    //         detail::ExceptionIdentifier>(exception);
+
+    //     size_t const* required_nr_arguments = boost::get_error_info<
+    //         detail::ExceptionRequiredNrArguments>(exception);
+
+    //     size_t const* provided_nr_arguments = boost::get_error_info<
+    //         detail::ExceptionProvidedNrArguments>(exception);
+
+    //     long const* line_nr = boost::get_error_info<
+    //         detail::ExceptionLineNr>(exception);
+    //     assert(line_nr);
+
+    //     long const* col_nr = boost::get_error_info<
+    //         detail::ExceptionColNr>(exception);
+    //     assert(col_nr);
+
+    //     if(
+
+    //     // throw ValidateError(source_name, *line_nr, *col_nr, *message);
+    // }
 }
 
 
@@ -188,7 +271,7 @@ void Interpreter::validate(
   result of parsing a script, without further processing.
 
   The folowing steps are performed:
-  - Validation (see validate(ScriptVertexPtr const&).
+  - Validation (see validate(ScriptVertexPtr const&)).
   - Execution.
 */
 void Interpreter::execute(

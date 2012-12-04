@@ -63,4 +63,13 @@ BOOST_AUTO_TEST_CASE(strip)
     BOOST_CHECK_EQUAL(string, "a");
 }
 
+
+BOOST_AUTO_TEST_CASE(replace)
+{
+    ranally::String string;
+
+    string = ranally::String("<string>").replace("<", "&lt;");
+    BOOST_CHECK_EQUAL(string, "&lt;string>");
+}
+
 BOOST_AUTO_TEST_SUITE_END()

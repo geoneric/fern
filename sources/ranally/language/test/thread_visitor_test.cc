@@ -41,7 +41,8 @@ BOOST_AUTO_TEST_CASE(visit_empty_script)
 {
     std::shared_ptr<ranally::ScriptVertex> tree;
 
-    tree = _xml_parser.parse(_algebra_parser.parse_string(ranally::String("")));
+    tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+        ranally::String("")));
     tree->Accept(_visitor);
     BOOST_CHECK_EQUAL(tree->successor(), &(*tree));
 }
@@ -51,8 +52,8 @@ BOOST_AUTO_TEST_CASE(visit_name)
 {
     std::shared_ptr<ranally::ScriptVertex> tree;
 
-    tree = _xml_parser.parse(_algebra_parser.parse_string(ranally::String(
-        "a")));
+    tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+        ranally::String("a")));
     tree->Accept(_visitor);
 
     ranally::SyntaxVertex const* vertex_a = &(*tree->statements()[0]);
@@ -66,7 +67,7 @@ BOOST_AUTO_TEST_CASE(visit_assignment)
 {
     std::shared_ptr<ranally::ScriptVertex> tree;
 
-    tree = _xml_parser.parse(_algebra_parser.parse_string(
+    tree = _xml_parser.parse_string(_algebra_parser.parse_string(
         ranally::String("a = b")));
     tree->Accept(_visitor);
 
@@ -88,8 +89,8 @@ BOOST_AUTO_TEST_CASE(visit_string)
 {
     std::shared_ptr<ranally::ScriptVertex> tree;
 
-    tree = _xml_parser.parse(_algebra_parser.parse_string(ranally::String(
-        "\"five\"")));
+    tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+        ranally::String("\"five\"")));
     tree->Accept(_visitor);
 
     ranally::SyntaxVertex const* string_vertex =
@@ -104,8 +105,8 @@ BOOST_AUTO_TEST_CASE(visit_number)
 {
     std::shared_ptr<ranally::ScriptVertex> tree;
 
-    tree = _xml_parser.parse(_algebra_parser.parse_string(ranally::String(
-        "5")));
+    tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+        ranally::String("5")));
     tree->Accept(_visitor);
 
     ranally::SyntaxVertex const* number_vertex = &(*tree->statements()[0]);
@@ -120,7 +121,7 @@ BOOST_AUTO_TEST_CASE(visit_function)
     std::shared_ptr<ranally::ScriptVertex> tree;
 
     {
-        tree = _xml_parser.parse(_algebra_parser.parse_string(
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
             ranally::String("f()")));
         tree->Accept(_visitor);
 
@@ -132,8 +133,8 @@ BOOST_AUTO_TEST_CASE(visit_function)
     }
 
     {
-        tree = _xml_parser.parse(_algebra_parser.parse_string(ranally::String(
-            "f(1, \"2\", three, four())")));
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            ranally::String("f(1, \"2\", three, four())")));
         tree->Accept(_visitor);
 
         ranally::FunctionVertex const* function_vertex =
@@ -163,7 +164,7 @@ BOOST_AUTO_TEST_CASE(visit_operator)
     std::shared_ptr<ranally::ScriptVertex> tree;
 
     {
-        tree = _xml_parser.parse(_algebra_parser.parse_string(
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
             ranally::String("-a")));
         tree->Accept(_visitor);
 
@@ -179,7 +180,7 @@ BOOST_AUTO_TEST_CASE(visit_operator)
     }
 
     {
-        tree = _xml_parser.parse(_algebra_parser.parse_string(
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
             ranally::String("a + b")));
         tree->Accept(_visitor);
 
@@ -198,8 +199,8 @@ BOOST_AUTO_TEST_CASE(visit_operator)
     }
 
     {
-        tree = _xml_parser.parse(_algebra_parser.parse_string(ranally::String(
-            "-(a + b)")));
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            ranally::String("-(a + b)")));
         tree->Accept(_visitor);
 
         ranally::OperatorVertex const* operator1_vertex =
@@ -226,8 +227,8 @@ BOOST_AUTO_TEST_CASE(visit_multiple_statement)
 {
     std::shared_ptr<ranally::ScriptVertex> tree;
 
-    tree = _xml_parser.parse(_algebra_parser.parse_string(ranally::String(
-        "a;b;c")));
+    tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+        ranally::String("a;b;c")));
     tree->Accept(_visitor);
 
     ranally::SyntaxVertex const* vertex_a = &(*tree->statements()[0]);
@@ -245,8 +246,8 @@ BOOST_AUTO_TEST_CASE(visit_nested_expressions)
 {
     std::shared_ptr<ranally::ScriptVertex> tree;
 
-    tree = _xml_parser.parse(_algebra_parser.parse_string(ranally::String(
-        "a = b + c")));
+    tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+        ranally::String("a = b + c")));
     tree->Accept(_visitor);
 
     ranally::AssignmentVertex const* assignment =
@@ -275,10 +276,11 @@ BOOST_AUTO_TEST_CASE(visit_if)
     std::shared_ptr<ranally::ScriptVertex> tree;
 
     {
-        tree = _xml_parser.parse(_algebra_parser.parse_string(ranally::String(
-            "if a:\n"
-            "    b\n"
-            "    c")));
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            ranally::String(
+                "if a:\n"
+                "    b\n"
+                "    c")));
         tree->Accept(_visitor);
 
         ranally::IfVertex const* if_vertex =
@@ -300,13 +302,14 @@ BOOST_AUTO_TEST_CASE(visit_if)
     }
 
     {
-        tree = _xml_parser.parse(_algebra_parser.parse_string(ranally::String(
-            "if a:\n"
-            "    b\n"
-            "    c\n"
-            "elif d:\n"
-            "    e\n"
-            "    f\n")));
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            ranally::String(
+                "if a:\n"
+                "    b\n"
+                "    c\n"
+                "elif d:\n"
+                "    e\n"
+                "    f\n")));
         tree->Accept(_visitor);
 
         // True block first if.
@@ -351,16 +354,17 @@ BOOST_AUTO_TEST_CASE(visit_if)
     }
 
     {
-        tree = _xml_parser.parse(_algebra_parser.parse_string(ranally::String(
-            "if a:\n"
-            "    b\n"
-            "    c\n"
-            "elif d:\n"
-            "    e\n"
-            "    f\n"
-            "else:\n"
-            "    g\n"
-            "    h\n")));
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            ranally::String(
+                "if a:\n"
+                "    b\n"
+                "    c\n"
+                "elif d:\n"
+                "    e\n"
+                "    f\n"
+                "else:\n"
+                "    g\n"
+                "    h\n")));
         tree->Accept(_visitor);
 
         // True block first if.

@@ -16,7 +16,7 @@ class Exception:
 {
 public:
 
-                   Exception           ();
+                   Exception           ()=delete;
 
                    Exception           (MessageId message_id);
 
@@ -32,9 +32,9 @@ public:
 
     virtual String message             () const;
 
-protected:
-
     static Messages const& messages    ();
+
+protected:
 
 private:
 
@@ -53,11 +53,18 @@ namespace detail {
 // Exception information that is added to the low level exception instances
 // used in the core of the code.
 // typedef boost::error_info<struct tag_message_id, MessageId> ExceptionMessageId;
-typedef boost::error_info<struct tag_filename, String> ExceptionFilename;
+typedef boost::error_info<struct tag_source_name, String> ExceptionSourceName;
 typedef boost::error_info<struct tag_message, String> ExceptionMessage;
 typedef boost::error_info<struct tag_expression_kind, String>
     ExceptionExpressionKind;
 typedef boost::error_info<struct tag_statement, String> ExceptionStatement;
+typedef boost::error_info<struct tag_identifier, String> ExceptionIdentifier;
+typedef boost::error_info<struct tag_function_name, String>
+    ExceptionFunction;
+typedef boost::error_info<struct tag_required_nr_arguments, size_t>
+    ExceptionRequiredNrArguments;
+typedef boost::error_info<struct tag_provided_nr_arguments, size_t>
+    ExceptionProvidedNrArguments;
 typedef boost::error_info<struct tag_line_nr, long> ExceptionLineNr;
 typedef boost::error_info<struct tag_col_nr, long> ExceptionColNr;
 
@@ -69,9 +76,13 @@ struct Exception:
 // Exception types.
 struct ParseError: public virtual Exception { };
 struct UnsupportedExpressionError: public virtual Exception { };
+
+struct ValidateError: public virtual Exception { };
+struct UndefinedIdentifier: public virtual ValidateError { };
+
 struct IOError: public virtual Exception { };
 struct FileOpenError: public virtual IOError { };
-// struct ValidateError: public virtual Exception { };
+
 // struct ExecuteError: public virtual Exception { };
 // struct RangeError: public virtual Exception { };
 // struct DomainError: public virtual Exception { };

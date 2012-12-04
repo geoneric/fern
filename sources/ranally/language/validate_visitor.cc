@@ -1,5 +1,5 @@
 #include "ranally/language/validate_visitor.h"
-#include <stdexcept>
+#include "ranally/core/exception.h"
 #include "ranally/core/string.h"
 #include "ranally/operation/operation.h"
 #include "ranally/language/vertices.h"
@@ -11,11 +11,11 @@ void ValidateVisitor::Visit(
     NameVertex& vertex)
 {
     if(vertex.definitions().empty()) {
-        // TODO Add to unit tests.
-        throw std::runtime_error((boost::format(
-            "%1%: undefined identifier")
-                % vertex.name().encode_in_utf8()
-            ).str().c_str());
+        BOOST_THROW_EXCEPTION(detail::UndefinedIdentifier()
+            << detail::ExceptionIdentifier(vertex.name())
+            << detail::ExceptionLineNr(vertex.line())
+            << detail::ExceptionColNr(vertex.col())
+        );
     }
 }
 
@@ -28,30 +28,29 @@ void ValidateVisitor::Visit(
     // Find out if we know about an operation with the same name as this
     // function's name.
     if(!vertex.operation()) {
-        throw std::runtime_error(("unknown function: " +
-            vertex.name().encode_in_utf8()).c_str());
+        // TODO Add to unit tests.
+        BOOST_THROW_EXCEPTION(detail::ValidateError()
+            << detail::ExceptionFunction(vertex.name())
+            << detail::ExceptionLineNr(vertex.line())
+            << detail::ExceptionColNr(vertex.col())
+        );
     }
 
     ranally::Operation const& operation(*vertex.operation());
 
     // Check if the number of arguments provided equals the required number of
     // arguments.
-    if(vertex.expressions().size() < operation.parameters().size()) {
+    if(vertex.expressions().size() != operation.parameters().size()) {
         // TODO Add to unit tests.
-        throw std::runtime_error((boost::format(
-            // <operation>: <description>: <details>
-            "%1%: not enough arguments: %2% argument(s) required")
-                % vertex.name().encode_in_utf8()
-                % operation.parameters().size()
-            ).str().c_str());
-    }
-    else if(vertex.expressions().size() > operation.parameters().size()) {
-        // TODO Add to unit tests.
-        throw std::runtime_error((boost::format(
-            "%1%: too many arguments: %2% argument(s) required")
-                % vertex.name().encode_in_utf8()
-                % operation.parameters().size()
-          ).str().c_str());
+        BOOST_THROW_EXCEPTION(detail::ValidateError()
+            << detail::ExceptionFunction(vertex.name())
+            << detail::ExceptionRequiredNrArguments(
+                operation.parameters().size())
+            << detail::ExceptionProvidedNrArguments(
+                vertex.expressions().size())
+            << detail::ExceptionLineNr(vertex.line())
+            << detail::ExceptionColNr(vertex.col())
+        );
     }
 
     // TODO

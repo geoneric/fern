@@ -1,20 +1,20 @@
 #pragma once
-#include "ranally/core/exception.h"
+#include "ranally/core/script_error.h"
 
 
 namespace ranally {
 
 class ParseError:
-    public Exception
+    public ScriptError
 {
 public:
 
-                   ParseError          (long line_nr,
+                   ParseError          (String const& source_name,
+                                        long line_nr,
                                         long col_nr,
-                                        String statement,
                                         String const& message);
 
-                   ParseError          (String const& filename,
+                   ParseError          (String const& source_name,
                                         long line_nr,
                                         long col_nr,
                                         String statement,
@@ -33,12 +33,6 @@ public:
     String         message             () const;
 
 private:
-
-    String         _filename;
-
-    long           _line_nr;
-
-    long           _col_nr;
 
     String         _statement;
 

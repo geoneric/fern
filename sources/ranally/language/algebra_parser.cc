@@ -345,11 +345,55 @@ void write_comparison_operator_node(
 }
 
 
+void write_slice_node(
+    slice_ty const slice,
+    ranally::String& xml)
+{
+    // TODO Raise exception.
+    assert(slice->kind == Index_kind);
+
+    switch(slice->kind) {
+        case Ellipsis_kind: {
+            break;
+        }
+        case Slice_kind: {
+            break;
+        }
+        case ExtSlice_kind: {
+            break;
+        }
+        case Index_kind: {
+            write_expression_node(slice->v.Index.value, xml);
+            break;
+        }
+    }
+}
+
+
+void write_subscript_node(
+    expr_ty const expression,
+    slice_ty const slice,
+    expr_context_ty const /* context */,
+    ranally::String& xml)
+{
+    // expression is the expression being subscripted.
+    xml += "<Subscript>";
+    write_expression_node(expression, xml);
+    write_slice_node(slice, xml);
+    xml += "</Subscript>";
+}
+
+
 void throw_unsupported_expression_kind(
+    long line_nr,
+    long col_nr,
     ranally::String const& kind)
 {
     BOOST_THROW_EXCEPTION(ranally::detail::UnsupportedExpressionError()
-        << ranally::detail::ExceptionExpressionKind(kind));
+        << ranally::detail::ExceptionExpressionKind(kind)
+        << ranally::detail::ExceptionLineNr(line_nr)
+        << ranally::detail::ExceptionColNr(col_nr)
+    );
 }
 
 
@@ -361,9 +405,11 @@ void write_expression_node(
 
     // 1-based linenumber.
     // 0-based column id.
+    long line_nr = expression->lineno;
+    long col_nr = expression->col_offset;
     xml += (boost::format("<Expression line=\"%1%\" col=\"%2%\">")
-        % expression->lineno
-        % expression->col_offset).str().c_str();
+        % line_nr
+        % col_nr).str().c_str();
 
     switch(expression->kind) {
         case Name_kind: {
@@ -405,60 +451,62 @@ void write_expression_node(
                 xml);
             break;
         }
+        case Subscript_kind: {
+            write_subscript_node(expression->v.Subscript.value,
+                expression->v.Subscript.slice, expression->v.Subscript.ctx,
+                xml);
+            break;
+        }
         case IfExp_kind: {
-            throw_unsupported_expression_kind("if");
+            throw_unsupported_expression_kind(line_nr, col_nr, "if");
             break;
         }
         case Lambda_kind: {
-            throw_unsupported_expression_kind("lambda");
+            throw_unsupported_expression_kind(line_nr, col_nr, "lambda");
             break;
         }
         case Dict_kind: {
-            throw_unsupported_expression_kind("dictionary");
+            throw_unsupported_expression_kind(line_nr, col_nr, "dictionary");
             break;
         }
         case DictComp_kind: {
-            throw_unsupported_expression_kind("dictionary comprehension");
+            throw_unsupported_expression_kind(line_nr, col_nr, "dictionary comprehension");
             break;
         }
         case GeneratorExp_kind: {
-            throw_unsupported_expression_kind("generator");
+            throw_unsupported_expression_kind(line_nr, col_nr, "generator");
             break;
         }
         case Yield_kind: {
-            throw_unsupported_expression_kind("yield");
+            throw_unsupported_expression_kind(line_nr, col_nr, "yield");
             break;
         }
         case Repr_kind: {
-            throw_unsupported_expression_kind("repr");
+            throw_unsupported_expression_kind(line_nr, col_nr, "repr");
             break;
         }
         case Attribute_kind: {
-            throw_unsupported_expression_kind("attribute");
-            break;
-        }
-        case Subscript_kind: {
-            throw_unsupported_expression_kind("subscript");
+            throw_unsupported_expression_kind(line_nr, col_nr, "attribute");
             break;
         }
         case List_kind: {
-            throw_unsupported_expression_kind("list");
+            throw_unsupported_expression_kind(line_nr, col_nr, "list");
             break;
         }
         case ListComp_kind: {
-            throw_unsupported_expression_kind("list comprehension");
+            throw_unsupported_expression_kind(line_nr, col_nr, "list comprehension");
             break;
         }
         case Set_kind: {
-            throw_unsupported_expression_kind("set");
+            throw_unsupported_expression_kind(line_nr, col_nr, "set");
             break;
         }
         case SetComp_kind: {
-            throw_unsupported_expression_kind("set comprehension");
+            throw_unsupported_expression_kind(line_nr, col_nr, "set comprehension");
             break;
         }
         case Tuple_kind: {
-            throw_unsupported_expression_kind("tuple");
+            throw_unsupported_expression_kind(line_nr, col_nr, "tuple");
             break;
         }
     }
@@ -628,6 +676,20 @@ void write_statement_nodes(
 }
 
 
+// <string> -> "&lt;string&gt;"
+ranally::String escape(
+    ranally::String const& string)
+{
+    return ranally::String(string)
+        .replace("&" , "&amp;")  // This one first!
+        .replace("<" , "&lt;")
+        .replace(">" , "&gt;")
+        .replace("\"", "&quot;")
+        .replace("'" , "&apos;")
+        ;
+}
+
+
 ranally::String python_ast_to_xml(
     mod_ty const ast,
     ranally::String const& source_name)
@@ -636,25 +698,33 @@ ranally::String python_ast_to_xml(
 
     ranally::String xml;
 
-    switch(ast->kind) {
-        case Module_kind: {
-            xml += (boost::format("<Ranally source=\"%1%\">")
-                % source_name.encode_in_utf8()).str().c_str();
-            write_statement_nodes(ast->v.Module.body, xml);
-            xml += "</Ranally>";
-            break;
+    try {
+        switch(ast->kind) {
+            case Module_kind: {
+                xml += (boost::format("<Ranally source=\"%1%\">")
+                    % escape(source_name).encode_in_utf8()).str().c_str();
+                write_statement_nodes(ast->v.Module.body, xml);
+                xml += "</Ranally>";
+                break;
+            }
+            case Expression_kind: // {
+            //   write_expression_node(ast->v.Expression.body, xml);
+            //   break;
+            // }
+            case Interactive_kind:
+            case Suite_kind: {
+                // TODO Error message.
+                bool implemented = false;
+                assert(implemented);
+                break;
+            }
         }
-        case Expression_kind: // {
-        //   write_expression_node(ast->v.Expression.body, xml);
-        //   break;
-        // }
-        case Interactive_kind:
-        case Suite_kind: {
-            // TODO Error message.
-            bool implemented = false;
-            assert(implemented);
-            break;
-        }
+    }
+    catch(ranally::detail::Exception& exception) {
+        exception
+            << ranally::detail::ExceptionSourceName(source_name)
+            ;
+        throw;
     }
 
     return xml;
@@ -739,7 +809,7 @@ String AlgebraParser::parse_string(
     }
 
     return String("<?xml version=\"1.0\"?>") + python_ast_to_xml(ast,
-        "&lt;string&gt;");
+        "<string>");
 }
 
 
@@ -761,7 +831,7 @@ String AlgebraParser::parse_file(
     if(file_pointer == NULL) {
         BOOST_THROW_EXCEPTION(detail::FileOpenError()
             << boost::errinfo_errno(errno)
-            << detail::ExceptionFilename(filename));
+            << detail::ExceptionSourceName(filename));
     }
 
     mod_ty ast = PyParser_ASTFromFile(file_pointer, filename_in_utf8.c_str(),

@@ -21,6 +21,7 @@ chmod 666 $io_test_dir/read_only_dir
 
 interpreter_test_dir="$source_dir/interpreter/test"
 $cmake -E copy $test_data_dir/valid-1.ran $interpreter_test_dir
+$cmake -E copy $test_data_dir/valid-2.ran $interpreter_test_dir
 $cmake -E copy $test_data_dir/invalid-1.ran $interpreter_test_dir
 $cmake -E copy $test_data_dir/valid-1.ran $interpreter_test_dir/valid-1_unreadable.ran
 chmod a-r $interpreter_test_dir/valid-1_unreadable.ran

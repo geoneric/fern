@@ -5,14 +5,32 @@ namespace ranally {
 
 Messages::Messages()
 {
+    // TODO Use this format:  <source name>:<line>:<col>:<message>
     insert(std::make_pair(MessageId::UNKNOWN_ERROR,
         "Sorry, unknown error"));
-    insert(std::make_pair(MessageId::ERROR_PARSING,
-        "Error while parsing: %1%\n%2%:%3%: %4%"));
-    insert(std::make_pair(MessageId::ERROR_PARSING_FILE,
-        "Error while parsing file %1%: %2%\n%3%:%4%: %5%"));
+
     insert(std::make_pair(MessageId::IO_ERROR,
-        "IO error while handling file %1%: %2%"));
+        // source: message
+        "IO error handling %1%: %2%"));
+
+    insert(std::make_pair(MessageId::ERROR_PARSING,
+        // source:line:col: message
+        "Error parsing %1%:%2%:%3%: %4%"));
+    insert(std::make_pair(MessageId::ERROR_PARSING_STATEMENT,
+        // source:line:col:statement: message
+        "Error parsing %1%:%2%:%3%:%4%: %5%"));
+
+    insert(std::make_pair(MessageId::UNSUPPORTED_EXPRESSION,
+        // expression
+        "Unsupported expression: %1%"));
+
+    insert(std::make_pair(MessageId::UNDEFINED_IDENTIFIER,
+        // identifier
+        "Undefined identifier: %1%"));
+
+    insert(std::make_pair(MessageId::ERROR_VALIDATING,
+        // source:line:col: message
+        "%1%:%2%:%3%: %4%"));
 }
 
 

@@ -19,7 +19,8 @@ public:
     Support()
         : _algebra_parser(),
           _xml_parser(),
-          _visitor(ranally::OperationXmlParser().parse(ranally::operations_xml))
+          _visitor(ranally::OperationXmlParser().parse(
+              ranally::operations_xml))
     {
     }
 
@@ -41,7 +42,7 @@ BOOST_AUTO_TEST_CASE(visit_empty_script)
     // Ast before and after should be the same.
     std::shared_ptr<ranally::ScriptVertex> tree1, tree2;
 
-    tree1 = _xml_parser.parse(_algebra_parser.parse_string(
+    tree1 = _xml_parser.parse_string(_algebra_parser.parse_string(
         ranally::String("")));
     assert(tree1);
 
@@ -65,7 +66,8 @@ BOOST_AUTO_TEST_CASE(visit_empty_script)
 BOOST_AUTO_TEST_CASE(visit_number)
 {
     std::shared_ptr<ranally::ScriptVertex> tree =
-        _xml_parser.parse(_algebra_parser.parse_string(ranally::String("5")));
+        _xml_parser.parse_string(_algebra_parser.parse_string(
+            ranally::String("5")));
     tree->Accept(_visitor);
 
     BOOST_CHECK_EQUAL(tree->source_name(), ranally::String("<string>"));
@@ -79,7 +81,7 @@ BOOST_AUTO_TEST_CASE(visit_operation)
 {
     {
         std::shared_ptr<ranally::ScriptVertex> tree =
-            _xml_parser.parse(_algebra_parser.parse_string(
+            _xml_parser.parse_string(_algebra_parser.parse_string(
                 ranally::String("abs(a)")));
         tree->Accept(_visitor);
 

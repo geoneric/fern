@@ -39,7 +39,8 @@ BOOST_AUTO_TEST_CASE(visit_empty_script)
 {
     std::shared_ptr<ranally::ScriptVertex> tree;
 
-    tree = _xml_parser.parse(_algebra_parser.parse_string(ranally::String("")));
+    tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+        ranally::String("")));
     tree->Accept(_visitor);
 }
 
@@ -48,7 +49,7 @@ BOOST_AUTO_TEST_CASE(visit_name)
 {
     std::shared_ptr<ranally::ScriptVertex> tree;
 
-    tree = _xml_parser.parse(_algebra_parser.parse_string(
+    tree = _xml_parser.parse_string(_algebra_parser.parse_string(
         ranally::String("a")));
 
     ranally::NameVertex const* vertex_a =
@@ -69,7 +70,7 @@ BOOST_AUTO_TEST_CASE(visit_assignment)
     std::shared_ptr<ranally::ScriptVertex> tree;
 
     {
-        tree = _xml_parser.parse(_algebra_parser.parse_string(
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
             ranally::String("a = b")));
 
         ranally::AssignmentVertex const* assignment =
@@ -99,9 +100,10 @@ BOOST_AUTO_TEST_CASE(visit_assignment)
     }
 
     {
-        tree = _xml_parser.parse(_algebra_parser.parse_string(ranally::String(
-            "a = b\n"
-            "d = f(a)\n"
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            ranally::String(
+                "a = b\n"
+                "d = f(a)\n"
         )));
 
         ranally::AssignmentVertex const* assignment_1 =
@@ -165,11 +167,12 @@ BOOST_AUTO_TEST_CASE(visit_if)
     std::shared_ptr<ranally::ScriptVertex> tree;
 
     {
-        tree = _xml_parser.parse(_algebra_parser.parse_string(ranally::String(
-            "a = b\n"
-            "if True:\n"
-            "    a = c\n"
-            "d = a\n"
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            ranally::String(
+                "a = b\n"
+                "if True:\n"
+                "    a = c\n"
+                "d = a\n"
         )));
 
         ranally::AssignmentVertex const* assignment_1 =
@@ -222,11 +225,12 @@ BOOST_AUTO_TEST_CASE(visit_reuse_of_identifiers)
     std::shared_ptr<ranally::ScriptVertex> tree;
 
     {
-        tree = _xml_parser.parse(_algebra_parser.parse_string(ranally::String(
-            "a = \"MyRaster\"\n"
-            "b = abs(a)\n"
-            "c = abs(b)\n"
-            "b = c + b\n"
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            ranally::String(
+                "a = \"MyRaster\"\n"
+                "b = abs(a)\n"
+                "c = abs(b)\n"
+                "b = c + b\n"
         )));
 
         ranally::AssignmentVertex const* assignment_1 =

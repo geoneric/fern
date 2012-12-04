@@ -1,59 +1,61 @@
 #include "ranally/language/operator_vertex.h"
 #include <map>
-#include <stdexcept>
 #include "ranally/core/string.h"
 
 
 namespace ranally {
 
+std::map<String, String> unary_operator_symbols = {
+    { "Invert", "~" },
+    { "Not"   , "!" },
+    { "Add"   , "+" },
+    { "Sub"   , "-" }
+};
+
+
+std::map<String, String> binary_operator_symbols = {
+    // Binary operators.
+    { "Add"     , "+"   },
+    { "Sub"     , "-"   },
+    { "Mult"    , "*"   },
+    { "Div"     , "/"   },
+    { "Mod"     , "%"   },
+    { "Pow"     , "**"  },
+    { "LShift"  , "<<"  },
+    { "RShift"  , ">>"  },
+    { "BitOr"   , "|"   },
+    { "BitXor"  , "^"   },
+    { "BitAnd"  , "&"   },
+    { "FloorDiv", "//"  },
+
+    // Boolean operators.
+    { "And"     , "and" },
+    { "Or"      , "or"  },
+
+    // Comparison operators.
+    { "Eq"      , "=="  },
+    { "NotEq"   , "!="  },
+    { "Lt"      , "<"   },
+    { "LtE"     , "<="  },
+    { "Gt"      , ">"   },
+    { "GtE"     , ">="  }
+};
+
+
+std::map<size_t, std::map<String, String>> operator_symbols = {
+    { 1, unary_operator_symbols  },
+    { 2, binary_operator_symbols }
+};
+
+
 String name_to_symbol(
     String const& name,
     size_t nr_operands)
 {
-    std::map<String, String> symbols;
-
-    if(nr_operands == 1) {
-        // Unary operators.
-        symbols["Invert"] = "~";
-        symbols["Not"] = "!";
-        symbols["Add"] = "+";
-        symbols["Sub"] = "-";
-    }
-    else if(nr_operands == 2) {
-        // Binary operators.
-        symbols["Add"] = "+";
-        symbols["Sub"] = "-";
-        symbols["Mult"] = "*";
-        symbols["Div"] = "/";
-        symbols["Mod"] = "%";
-        symbols["Pow"] = "**";
-        symbols["LShift"] = "<<";
-        symbols["RShift"] = ">>";
-        symbols["BitOr"] = "|";
-        symbols["BitXor"] = "^";
-        symbols["BitAnd"] = "&";
-        symbols["FloorDiv"] = "//";
-
-        // Boolean operators.
-        symbols["And"] = "and";
-        symbols["Or"] = "or";
-
-        // Comparison operators.
-        symbols["Eq"] = "==";
-        symbols["NotEq"] = "!=";
-        symbols["Lt"] = "<";
-        symbols["LtE"] = "<=";
-        symbols["Gt"] = ">";
-        symbols["GtE"] = ">=";
-    }
-
-    if(symbols.find(name) == symbols.end()) {
-        throw std::runtime_error((boost::format(
-            "operator %1% with %2% operands not available")
-            % name.encode_in_utf8() % nr_operands).str().c_str());
-    }
-
-    return symbols[name];
+    assert(operator_symbols.find(nr_operands) != operator_symbols.end());
+    assert(operator_symbols[nr_operands].find(name) !=
+        operator_symbols[nr_operands].end());
+    return operator_symbols[nr_operands][name];
 }
 
 

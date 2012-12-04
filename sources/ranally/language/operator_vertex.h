@@ -37,7 +37,7 @@ public:
 
 private:
 
-    String           _symbol;
+    String         _symbol;
 
 };
 

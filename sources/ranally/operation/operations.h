@@ -54,8 +54,6 @@ private:
 /*!
   \tparam    Range Class of collection containing OperationPtr instances.
   \param     operations Collection of OperationPtr instances.
-  \exception std::runtime_error In case \a operations contains multiple
-             instances with the same name.
 */
 template<
     class Range>
@@ -67,13 +65,7 @@ inline Operations::Operations(
 
     for(Iterator it = boost::begin(operations); it != end; ++it) {
         OperationPtr const& operation(*it);
-
-        if(_operations.find(operation->name()) != _operations.end()) {
-            throw std::runtime_error((boost::format(
-                "operation %1% already present")
-                % operation->name().encode_in_utf8()).str().c_str());
-        }
-
+        assert(_operations.find(operation->name()) == _operations.end());
         _operations[operation->name()] = operation;
     }
 }

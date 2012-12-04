@@ -74,8 +74,8 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
     // Empty script.
     {
         // Only script vertex.
-        tree = _xml_parser.parse(_algebra_parser.parse_string(ranally::String(
-            "")));
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            ranally::String("")));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 1u);
@@ -83,8 +83,8 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
 
     // Name.
     {
-        tree = _xml_parser.parse(_algebra_parser.parse_string(ranally::String(
-            "a")));
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            ranally::String("a")));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 2u);
@@ -92,8 +92,8 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
 
     // Number.
     {
-        tree = _xml_parser.parse(_algebra_parser.parse_string(ranally::String(
-            "5")));
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            ranally::String("5")));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 2u);
@@ -101,8 +101,8 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
 
     // String.
     {
-        tree = _xml_parser.parse(_algebra_parser.parse_string(ranally::String(
-            "\"five\"")));
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            ranally::String("\"five\"")));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 2u);
@@ -110,8 +110,8 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
 
     // Operator.
     {
-        tree = _xml_parser.parse(_algebra_parser.parse_string(ranally::String(
-            "a + b")));
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            ranally::String("a + b")));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 4u);
@@ -119,8 +119,8 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
 
     // Function.
     {
-        tree = _xml_parser.parse(_algebra_parser.parse_string(ranally::String(
-            "f(a, b)")));
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            ranally::String("f(a, b)")));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 4u);
@@ -128,8 +128,8 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
 
     // Assignment.
     {
-        tree = _xml_parser.parse(_algebra_parser.parse_string(ranally::String(
-            "c = f(a, b)")));
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            ranally::String("c = f(a, b)")));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 6u);
@@ -137,11 +137,12 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
 
     // If.
     {
-        tree = _xml_parser.parse(_algebra_parser.parse_string(ranally::String(
-            "if a > b:\n"
-            "    c = d\n"
-            "else:\n"
-            "    e = f")));
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            ranally::String(
+                "if a > b:\n"
+                "    c = d\n"
+                "else:\n"
+                "    e = f")));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 11u);
@@ -149,13 +150,24 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
 
     // While.
     {
-        tree = _xml_parser.parse(_algebra_parser.parse_string(ranally::String(
-            "while a > b:\n"
-            "    c = c + d\n"
-            "else:\n"
-            "    e = f")));
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            ranally::String(
+                "while a > b:\n"
+                "    c = c + d\n"
+                "else:\n"
+                "    e = f")));
         assert(tree);
         tree->Accept(visitor);
+        BOOST_CHECK_EQUAL(visitor.nr_vertices(), 13u);
+    }
+
+    // Slice.
+    {
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            ranally::String("a[b]")));
+        assert(tree);
+        tree->Accept(visitor);
+        // TODO
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 13u);
     }
 }

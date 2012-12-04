@@ -52,6 +52,9 @@ public:
 
     String&        strip               (String const& characters=String());
 
+    String&        replace             (String const& old_string,
+                                        String const& new_string);
+
 private:
 
     String&        strip_begin         (String const& characters);

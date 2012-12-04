@@ -11,12 +11,12 @@ Messages const& Exception::messages()
 }
 
 
-Exception::Exception()
-
-    : _message_id(MessageId::UNKNOWN_ERROR)
-
-{
-}
+// Exception::Exception()
+// 
+//     : _message_id(MessageId::UNKNOWN_ERROR)
+// 
+// {
+// }
 
 
 Exception::Exception(

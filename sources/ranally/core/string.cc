@@ -186,6 +186,15 @@ String& String::strip(
 }
 
 
+String& String::replace(
+    String const& old_string,
+    String const& new_string)
+{
+    findAndReplace(old_string, new_string);
+    return *this;
+}
+
+
 String operator+(
     String const& lhs,
     String const& rhs)

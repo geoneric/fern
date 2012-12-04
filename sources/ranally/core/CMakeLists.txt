@@ -5,7 +5,9 @@ SET(SOURCES
     io_error
     messages
     parse_error
+    script_error
     string
+    validate_error
 )
 ADD_LIBRARY(ranally_core
     ${SOURCES}

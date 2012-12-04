@@ -59,16 +59,17 @@ void throw_syntax_error(
     String statement = as_unicode_string(statement_object).strip("\n");
 
     detail::ParseError exception;
-    exception
-        << detail::ExceptionMessage(message)
-        << detail::ExceptionStatement(statement)
-        << detail::ExceptionLineNr(line_nr)
-        << detail::ExceptionColNr(col_nr)
-        ;
 
     if(!source_name.is_empty()) {
-        exception << detail::ExceptionFilename(source_name);
+        exception << detail::ExceptionSourceName(source_name);
     }
+
+    exception
+        << detail::ExceptionLineNr(line_nr)
+        << detail::ExceptionColNr(col_nr)
+        << detail::ExceptionStatement(statement)
+        << detail::ExceptionMessage(message)
+        ;
 
     BOOST_THROW_EXCEPTION(exception);
 }

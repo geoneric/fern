@@ -4,15 +4,12 @@
 namespace ranally {
 
 ParseError::ParseError(
+    String const& source_name,
     long line_nr,
     long col_nr,
-    String statement,
     String const& message)
 
-    : Exception(MessageId::ERROR_PARSING),
-      _line_nr(line_nr),
-      _col_nr(col_nr),
-      _statement(statement),
+    : ScriptError(MessageId::ERROR_PARSING, source_name, line_nr, col_nr),
       _message(message)
 
 {
@@ -20,20 +17,19 @@ ParseError::ParseError(
 
 
 ParseError::ParseError(
-    String const& filename,
+    String const& source_name,
     long line_nr,
     long col_nr,
     String statement,
     String const& message)
 
-    : Exception(MessageId::ERROR_PARSING_FILE),
-      _filename(filename),
-      _line_nr(line_nr),
-      _col_nr(col_nr),
+    : ScriptError(MessageId::ERROR_PARSING_STATEMENT, source_name, line_nr,
+        col_nr),
       _statement(statement),
       _message(message)
 
 {
+    assert(!_statement.is_empty());
 }
 
 
@@ -44,21 +40,21 @@ String ParseError::message() const
 {
     String message_;
 
-    if(_filename.is_empty()) {
+    if(_statement.is_empty()) {
         message_ = boost::format(Exception::message().encode_in_utf8())
+            % source_name().encode_in_utf8()
+            % line_nr()
+            % col_nr()
             % _message.encode_in_utf8()
-            % _line_nr
-            % _col_nr
-            % _statement
             ;
     }
     else {
         message_ = boost::format(Exception::message().encode_in_utf8())
-            % _filename.encode_in_utf8()
-            % _message.encode_in_utf8()
-            % _line_nr
-            % _col_nr
+            % source_name().encode_in_utf8()
+            % line_nr()
+            % col_nr()
             % _statement
+            % _message.encode_in_utf8()
             ;
     }
 

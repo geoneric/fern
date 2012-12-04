@@ -42,6 +42,7 @@ SET(SOURCES
     script_visitor
     statement_vertex
     string_vertex
+    subscript_vertex
     symbol_table
     syntax_vertex
     thread_visitor

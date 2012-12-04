@@ -35,9 +35,12 @@ public:
 
     XmlParser&     operator=           (XmlParser const&)=delete;
 
-    std::shared_ptr<ScriptVertex> parse(std::istream& stream) const;
+    std::shared_ptr<ScriptVertex> parse_string(
+                                        String const& xml) const;
 
-    std::shared_ptr<ScriptVertex> parse(String const& xml) const;
+private:
+
+    std::shared_ptr<ScriptVertex> parse(std::istream& stream) const;
 
 };
 

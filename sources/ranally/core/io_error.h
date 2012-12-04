@@ -9,10 +9,10 @@ class IOError:
 {
 public:
 
-                   IOError             (String const& filename,
+                   IOError             (String const& source_name,
                                         String const& message);
 
-                   IOError             (String const& filename,
+                   IOError             (String const& source_name,
                                         int errno_);
 
                    IOError             (IOError const&)=default;
@@ -29,7 +29,7 @@ public:
 
 private:
 
-    String         _filename;
+    String         _source_name;
 
     String         _message;
 

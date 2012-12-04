@@ -1,6 +1,7 @@
 #include "ranally/language/xml_parser.h"
 #include <sstream>
 #include <stack>
+#include "ranally/core/exception.h"
 #include "ranally/core/string.h"
 #include "ranally/language/function_vertex.h"
 #include "ranally/language/if_vertex.h"
@@ -9,6 +10,7 @@
 #include "ranally/language/operator_vertex.h"
 #include "ranally/language/ranally-pskel.hxx"
 #include "ranally/language/string_vertex.h"
+#include "ranally/language/subscript_vertex.h"
 #include "ranally/language/syntax_vertex.h"
 #include "ranally/language/while_vertex.h"
 
@@ -126,7 +128,8 @@ private:
 // };
 
 
-class If_pimpl: public ranally::If_pskel
+class If_pimpl:
+    public ranally::If_pskel
 {
 
 public:
@@ -726,6 +729,53 @@ private:
 };
 
 
+class Subscript_pimpl:
+    public ranally::Subscript_pskel
+{
+
+public:
+
+    void pre()
+    {
+        _data_stack.push(SubscriptData());
+    }
+
+    void Expression(
+        std::shared_ptr<ranally::ExpressionVertex>
+            const& vertex)
+    {
+        assert(_data_stack.size() == 1);
+        if(!_data_stack.top().expression) {
+            _data_stack.top().expression = vertex;
+        }
+        else {
+            assert(!_data_stack.top().selection);
+            _data_stack.top().selection = vertex;
+        }
+    }
+
+    std::shared_ptr<ranally::ExpressionVertex> post_Subscript()
+    {
+        assert(!_data_stack.empty());
+        SubscriptData result(_data_stack.top());
+        _data_stack.pop();
+        return std::shared_ptr<ranally::SubscriptVertex>(
+            new ranally::SubscriptVertex(result.expression, result.selection));
+    }
+
+private:
+
+    struct SubscriptData
+    {
+        ranally::ExpressionVertexPtr expression;
+        ranally::ExpressionVertexPtr selection;
+    };
+
+    std::stack<SubscriptData> _data_stack;
+
+};
+
+
 class Expression_pimpl:
     public ranally::Expression_pskel
 {
@@ -759,6 +809,16 @@ public:
         _data_stack.top().vertex = std::shared_ptr<ranally::NameVertex>(
             new ranally::NameVertex(_data_stack.top().line,
                 _data_stack.top().col, ranally::String(name)));
+    }
+
+    void Subscript(
+        std::shared_ptr<ranally::ExpressionVertex> const& vertex)
+    {
+        assert(!_data_stack.empty());
+        assert(!_data_stack.top().vertex);
+        _data_stack.top().vertex = vertex;
+        _data_stack.top().vertex->set_position(_data_stack.top().line,
+            _data_stack.top().col);
     }
 
     void String(
@@ -875,8 +935,12 @@ std::shared_ptr<ScriptVertex> XmlParser::parse(
     Operator_pimpl operator_p;
     operator_p.parsers(string_p, expressions_p);
 
-    expression_p.parsers(string_p, string_p, number_p, function_p, operator_p,
-      non_negative_integer_p, non_negative_integer_p);
+    Subscript_pimpl subscript_p;
+    subscript_p.parsers(expression_p);
+
+    expression_p.parsers(string_p, subscript_p, string_p, number_p,
+        function_p, operator_p, non_negative_integer_p,
+        non_negative_integer_p);
 
     // Targets_pimpl targets_p;
     // targets_p.parsers(expression_p);
@@ -912,7 +976,7 @@ std::shared_ptr<ScriptVertex> XmlParser::parse(
   \overload
   \param     xml String with Xml to parse.
 */
-std::shared_ptr<ScriptVertex> XmlParser::parse(
+std::shared_ptr<ScriptVertex> XmlParser::parse_string(
     String const& xml) const
 {
     // Copy string contents in a string stream and work with that.
@@ -920,7 +984,22 @@ std::shared_ptr<ScriptVertex> XmlParser::parse(
     stream.exceptions(std::ifstream::badbit | std::ifstream::failbit);
     stream << xml.encode_in_utf8(); // << std::endl;
 
-    return parse(stream);
+    std::shared_ptr<ScriptVertex> vertex;
+
+    try {
+        vertex = parse(stream);
+    }
+    catch(xml_schema::parsing const& exception) {
+        assert(!exception.diagnostics().empty());
+        BOOST_THROW_EXCEPTION(ranally::detail::ParseError()
+            << detail::ExceptionSourceName("<string>")
+            << detail::ExceptionLineNr(exception.diagnostics()[0].line())
+            << detail::ExceptionColNr(exception.diagnostics()[0].column())
+            << detail::ExceptionMessage(exception.diagnostics()[0].message())
+        );
+    }
+
+    return vertex;
 }
 
 } // namespace ranally
