@@ -35,8 +35,7 @@ BOOST_AUTO_TEST_CASE(parse_string)
     catch(ranally::ParseError const& exception) {
         ranally::String message = exception.message();
         BOOST_CHECK_EQUAL(message,
-            "Error while parsing: invalid syntax\n"
-            "1:7: a = b c");
+            "Error parsing <string>:1:7:a = b c: invalid syntax");
     }
 }
 
@@ -65,8 +64,7 @@ BOOST_AUTO_TEST_CASE(parse_file)
     catch(ranally::ParseError const& exception) {
         ranally::String message = exception.message();
         BOOST_CHECK_EQUAL(message,
-            "Error while parsing file invalid-1.ran: invalid syntax\n"
-            "1:7: a = b c");
+            "Error parsing invalid-1.ran:1:7:a = b c: invalid syntax");
     }
 
     // Unreadable file, io error.
@@ -77,8 +75,7 @@ BOOST_AUTO_TEST_CASE(parse_file)
     catch(ranally::IOError const& exception) {
         ranally::String message = exception.message();
         BOOST_CHECK_EQUAL(message,
-            "IO error while handling file valid-1_unreadable.ran: "
-            "Permission denied");
+            "IO error handling valid-1_unreadable.ran: Permission denied");
     }
 }
 
@@ -111,8 +108,7 @@ BOOST_AUTO_TEST_CASE(validate)
     catch(ranally::ValidateError const& exception) {
         ranally::String message = exception.message();
         BOOST_CHECK_EQUAL(message,
-            // TODO unknown function
-            "valid-2.ran:x:y: z");
+            "valid-2.ran:4:4: Undefined operation: does_not_exist");
     }
 }
 

@@ -83,6 +83,8 @@ private:
 
     void           Visit               (StringVertex&);
 
+    void           Visit               (SubscriptVertex&);
+
     void           Visit               (SyntaxVertex&);
 
     void           Visit               (WhileVertex&);

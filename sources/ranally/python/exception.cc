@@ -25,6 +25,7 @@ void throw_error(
 
 
 void throw_syntax_error(
+    String const& source_name,
     PyObject* value,
     PyObject* /* traceback */)
 {
@@ -42,8 +43,8 @@ void throw_syntax_error(
     assert(PySequence_Check(details_object));
     assert(PySequence_Length(details_object) == 4);
 
-    OwnedReference source_object(PySequence_GetItem(details_object, 0));
-    String source_name = as_unicode_string(source_object);
+    // OwnedReference source_object(PySequence_GetItem(details_object, 0));
+    // String source_name = as_unicode_string(source_object);
 
     OwnedReference line_nr_object(PySequence_GetItem(details_object, 1));
     assert(PyInt_Check((PyObject*)line_nr_object));
@@ -58,13 +59,12 @@ void throw_syntax_error(
     OwnedReference statement_object(PySequence_GetItem(details_object, 3));
     String statement = as_unicode_string(statement_object).strip("\n");
 
+    assert(!PyErr_Occurred());
+
     detail::ParseError exception;
 
-    if(!source_name.is_empty()) {
-        exception << detail::ExceptionSourceName(source_name);
-    }
-
     exception
+        << detail::ExceptionSourceName(source_name)
         << detail::ExceptionLineNr(line_nr)
         << detail::ExceptionColNr(col_nr)
         << detail::ExceptionStatement(statement)
@@ -77,7 +77,8 @@ void throw_syntax_error(
 } // Anonymous namespace
 
 
-void throw_exception()
+void throw_exception(
+    String const& source_name)
 {
     assert(PyErr_Occurred());
 
@@ -96,7 +97,7 @@ void throw_exception()
     // String typeName = as_unicode_string(typeNameObject);
 
     if(PyErr_GivenExceptionMatches(type, PyExc_SyntaxError)) {
-        throw_syntax_error(value, traceback);
+        throw_syntax_error(source_name, value, traceback);
     }
     else {
         assert(false);

@@ -67,6 +67,8 @@ private:
 
     void           Visit               (ScriptVertex&);
 
+    void           Visit               (SubscriptVertex&);
+
     void           Visit               (WhileVertex&);
 
 };

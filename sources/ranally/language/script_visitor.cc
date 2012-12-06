@@ -145,6 +145,18 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
+    SubscriptVertex& vertex)
+{
+    _script += "(";
+    vertex.expression()->Accept(*this);
+    _script += ")";
+    _script += "[";
+    vertex.selection()->Accept(*this);
+    _script += "]";
+}
+
+
+void ScriptVisitor::Visit(
     NumberVertex<int8_t>& vertex)
 {
     _script += String(boost::format("%1%") % vertex.value());

@@ -230,4 +230,22 @@ BOOST_AUTO_TEST_CASE(visit_while)
         "    e\n"));
 }
 
+
+BOOST_AUTO_TEST_CASE(visit_subscript)
+{
+    ranally::String xml;
+
+    xml = _algebra_parser.parse_string(ranally::String(
+        "a = b[c]"));
+    _xml_parser.parse_string(xml)->Accept(_visitor);
+    BOOST_CHECK_EQUAL(_visitor.script(), ranally::String(
+        "a = (b)[c]\n"));
+
+    xml = _algebra_parser.parse_string(ranally::String(
+        "a = (b + c)[c > d]"));
+    _xml_parser.parse_string(xml)->Accept(_visitor);
+    BOOST_CHECK_EQUAL(_visitor.script(), ranally::String(
+        "a = ((b) + (c))[(c) > (d)]\n"));
+}
+
 BOOST_AUTO_TEST_SUITE_END()

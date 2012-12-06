@@ -34,11 +34,15 @@ public:
 
     SubscriptVertex&      operator=    (SubscriptVertex const&)=delete;
 
+    String const&  symbol              () const;
+
     std::shared_ptr<ExpressionVertex> const& expression() const;
 
     std::shared_ptr<ExpressionVertex> const& selection() const;
 
 private:
+
+    String         _symbol;
 
     ExpressionVertexPtr _expression;
 

@@ -5,7 +5,7 @@
 namespace ranally {
 namespace python {
 
-void               throw_exception     ();
+void               throw_exception     (String const& source_name);
 
 } // namespace python
 } // namespace ranally

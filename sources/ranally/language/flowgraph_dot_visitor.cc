@@ -223,6 +223,29 @@ void FlowgraphDotVisitor::Visit(
 }
 
 
+void FlowgraphDotVisitor::Visit(
+    SubscriptVertex& vertex)
+{
+    switch(_mode) {
+        case Mode::Declaring: {
+            add_script(
+                String(boost::format("\"%1%\"") % &vertex) +
+                " [label=\"" + vertex.symbol() + "\", shape=triangle];\n"
+            );
+            break;
+        }
+        case Mode::ConnectingFlowgraph: {
+            add_flowgraph_vertex(*vertex.expression(), vertex);
+            add_flowgraph_vertex(*vertex.selection(), vertex);
+            break;
+        }
+    }
+
+    vertex.expression()->Accept(*this);
+    vertex.selection()->Accept(*this);
+}
+
+
 template<typename T>
 void FlowgraphDotVisitor::Visit(
     NumberVertex<T>& vertex)

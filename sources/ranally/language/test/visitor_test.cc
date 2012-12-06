@@ -167,8 +167,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
             ranally::String("a[b]")));
         assert(tree);
         tree->Accept(visitor);
-        // TODO
-        BOOST_CHECK_EQUAL(visitor.nr_vertices(), 13u);
+        BOOST_CHECK_EQUAL(visitor.nr_vertices(), 4u);
     }
 }
 

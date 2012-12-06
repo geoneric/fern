@@ -73,6 +73,8 @@ private:
 
     void           Visit               (StringVertex& vertex);
 
+    void           Visit               (SubscriptVertex& vertex);
+
     void           Visit               (SyntaxVertex& vertex);
 
     void           Visit               (WhileVertex& vertex);

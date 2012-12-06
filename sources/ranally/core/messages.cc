@@ -17,7 +17,7 @@ Messages::Messages()
         // source:line:col: message
         "Error parsing %1%:%2%:%3%: %4%"));
     insert(std::make_pair(MessageId::ERROR_PARSING_STATEMENT,
-        // source:line:col:statement: message
+        // source:line:col: statement: message
         "Error parsing %1%:%2%:%3%:%4%: %5%"));
 
     insert(std::make_pair(MessageId::UNSUPPORTED_EXPRESSION,
@@ -27,6 +27,9 @@ Messages::Messages()
     insert(std::make_pair(MessageId::UNDEFINED_IDENTIFIER,
         // identifier
         "Undefined identifier: %1%"));
+    insert(std::make_pair(MessageId::UNDEFINED_OPERATION,
+        // operation
+        "Undefined operation: %1%"));
 
     insert(std::make_pair(MessageId::ERROR_VALIDATING,
         // source:line:col: message

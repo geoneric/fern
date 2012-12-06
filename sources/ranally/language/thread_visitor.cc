@@ -83,6 +83,27 @@ void ThreadVisitor::Visit(
 }
 
 
+void ThreadVisitor::Visit(
+    SubscriptVertex& vertex)
+{
+    // First we must get the control.
+    assert(_last_vertex);
+    _last_vertex->add_successor(&vertex);
+
+    // Let the main expression thread itself.
+    _last_vertex = &vertex;
+    vertex.expression()->Accept(*this);
+    _last_vertex->add_successor(&vertex);
+
+    // Let the selection thread itself.
+    _last_vertex = &vertex;
+    vertex.selection()->Accept(*this);
+    _last_vertex->add_successor(&vertex);
+
+    _last_vertex = &vertex;
+}
+
+
 template<typename T>
 void ThreadVisitor::Visit(
     NumberVertex<T>& vertex)

@@ -9,7 +9,7 @@ ValidateError::ValidateError(
     long col_nr,
     String const& message)
 
-    : ScriptError(MessageId::ERROR_VALIDATING_FILE, source_name, line_nr,
+    : ScriptError(MessageId::ERROR_VALIDATING, source_name, line_nr,
           col_nr),
       _message(message)
 

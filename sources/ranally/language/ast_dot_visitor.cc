@@ -401,6 +401,36 @@ void AstDotVisitor::Visit(
 
 
 void AstDotVisitor::Visit(
+    SubscriptVertex& vertex)
+{
+    switch(_mode) {
+        case Mode::Declaring: {
+            add_script(
+                String(boost::format("\"%1%\"") % &vertex) +
+                " [label=\"" + vertex.symbol() + "\"];\n"
+            );
+            break;
+        }
+        case Mode::ConnectingAst: {
+            add_ast_vertex(vertex, *vertex.expression());
+            add_ast_vertex(vertex, *vertex.selection());
+            break;
+        }
+        case Mode::ConnectingCfg: {
+            add_cfg_vertices(vertex);
+            break;
+        }
+        case Mode::ConnectingUses: {
+            break;
+        }
+    }
+
+    vertex.expression()->Accept(*this);
+    vertex.selection()->Accept(*this);
+}
+
+
+void AstDotVisitor::Visit(
     ScriptVertex& vertex)
 {
     // TODO 'ordering=out' is current not supported in combination with
@@ -408,7 +438,7 @@ void AstDotVisitor::Visit(
     // TODO available.
     set_script(String(
         "digraph G {\n"
-        "// ordering=out;\n"
+        // "ordering=out;\n"
         "rankdir=TB;\n"
     ));
 

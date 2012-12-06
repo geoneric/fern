@@ -28,8 +28,7 @@ void ValidateVisitor::Visit(
     // Find out if we know about an operation with the same name as this
     // function's name.
     if(!vertex.operation()) {
-        // TODO Add to unit tests.
-        BOOST_THROW_EXCEPTION(detail::ValidateError()
+        BOOST_THROW_EXCEPTION(detail::UndefinedOperation()
             << detail::ExceptionFunction(vertex.name())
             << detail::ExceptionLineNr(vertex.line())
             << detail::ExceptionColNr(vertex.col())
