@@ -10,6 +10,7 @@
 #include "ranally/language/script_vertex.h"
 #include "ranally/language/statement_vertex.h"
 #include "ranally/language/string_vertex.h"
+#include "ranally/language/subscript_vertex.h"
 #include "ranally/language/while_vertex.h"
 
 
@@ -208,6 +209,22 @@ void Visitor::Visit(
 void Visitor::Visit(
     StringVertex& vertex)
 {
+    Visit(dynamic_cast<ExpressionVertex&>(vertex));
+}
+
+
+//! Visit a SubscriptVertex instance.
+/*!
+  \param     vertex Vertex to visit.
+
+  The default implementation visits the expression and the selection. After
+  that it calls Visit(ExpressionVertex&).
+*/
+void Visitor::Visit(
+    SubscriptVertex& vertex)
+{
+    vertex.expression()->Accept(*this);
+    vertex.selection()->Accept(*this);
     Visit(dynamic_cast<ExpressionVertex&>(vertex));
 }
 

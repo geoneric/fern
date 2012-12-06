@@ -15,6 +15,7 @@ class OperationVertex;
 class OperatorVertex;
 class ScriptVertex;
 class StringVertex;
+class SubscriptVertex;
 class WhileVertex;
 
 
@@ -42,6 +43,7 @@ class Visitor:
     public Loki::Visitor<OperatorVertex>,
     public Loki::Visitor<ScriptVertex>,
     public Loki::Visitor<StringVertex>,
+    public Loki::Visitor<SubscriptVertex>,
     public Loki::Visitor<WhileVertex>
 {
 
@@ -110,6 +112,8 @@ private:
     virtual void   Visit               (StatementVertex& vertex);
 
     virtual void   Visit               (StringVertex& vertex);
+
+    virtual void   Visit               (SubscriptVertex& vertex);
 
     virtual void   Visit               (SyntaxVertex& vertex);
 

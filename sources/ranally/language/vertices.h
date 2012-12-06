@@ -8,4 +8,5 @@
 #include "ranally/language/script_vertex.h"
 #include "ranally/language/statement_vertex.h"
 #include "ranally/language/string_vertex.h"
+#include "ranally/language/subscript_vertex.h"
 #include "ranally/language/while_vertex.h"
