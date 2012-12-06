@@ -52,8 +52,14 @@ ENDIF()
 # Configure packages.
 SET(Boost_USE_STATIC_LIBS OFF)
 SET(Boost_USE_STATIC_RUNTIME OFF)
-ADD_DEFINITIONS(-DBOOST_ALL_DYN_LINK)  # Use dynamic libraries.
-ADD_DEFINITIONS(-DBOOST_ALL_NO_LIB)  # Prevent auto-linking.
+ADD_DEFINITIONS(
+    # Use dynamic libraries.
+    -DBOOST_ALL_DYN_LINK
+    # Prevent auto-linking.
+    -DBOOST_ALL_NO_LIB
+    # # No deprecated features.
+    # -DBOOST_FILESYSTEM_NO_DEPRECATED
+)
 SET(HDF5_USE_STATIC_LIBRARIES OFF)
 
 # Find packages.
