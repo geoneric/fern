@@ -75,7 +75,11 @@ protected:
 
     virtual void   Visit               (FunctionVertex& vertex);
 
+    virtual void   Visit               (OperationVertex& vertex);
+
     virtual void   Visit               (ScriptVertex& vertex);
+
+    virtual void   Visit               (SubscriptVertex& vertex);
 
     virtual void   Visit               (WhileVertex& vertex);
 
@@ -105,15 +109,11 @@ private:
 
     virtual void   Visit               (NumberVertex<double>& vertex);
 
-    virtual void   Visit               (OperationVertex& vertex);
-
     virtual void   Visit               (OperatorVertex& vertex);
 
     virtual void   Visit               (StatementVertex& vertex);
 
     virtual void   Visit               (StringVertex& vertex);
-
-    virtual void   Visit               (SubscriptVertex& vertex);
 
     virtual void   Visit               (SyntaxVertex& vertex);
 

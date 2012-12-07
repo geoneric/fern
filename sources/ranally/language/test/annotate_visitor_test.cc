@@ -105,7 +105,7 @@ BOOST_AUTO_TEST_CASE(visit_operation)
             operation->parameters());
         ranally::Parameter const& parameter(parameters[0]);
         BOOST_CHECK_EQUAL(parameter.data_types(),
-            ranally::DataTypes(ranally::DT_VALUE | ranally::DT_RASTER));
+            ranally::DataTypes(ranally::DT_SCALAR | ranally::DT_FEATURE));
         BOOST_CHECK_EQUAL(parameter.value_types(),
             ranally::ValueTypes(ranally::ValueType(ranally::VT_NUMBER)));
 

@@ -11,33 +11,44 @@
 
 namespace {
 
+// These strings should match the ones used in the XML schema.
+static std::map<ranally::String, ranally::DataType> data_type_by_string = {
+    { "Scalar"        , ranally::DataType::DT_SCALAR           },
+    { "Point"         , ranally::DataType::DT_POINT            },
+    { "Line"          , ranally::DataType::DT_LINE             },
+    { "Polygon"       , ranally::DataType::DT_POLYGON          },
+    { "Feature"       , ranally::DataType::DT_FEATURE          },
+    { "All"           , ranally::DataType::DT_ALL              },
+    { "DependsOnInput", ranally::DataType::DT_DEPENDS_ON_INPUT }
+};
+
+
+// These strings should match the ones used in the XML schema.
+static std::map<ranally::String, ranally::ValueType> value_type_by_string = {
+    { "Uint8"         , ranally::ValueType::VT_UINT8            },
+    { "Int8"          , ranally::ValueType::VT_INT8             },
+    { "Uint16"        , ranally::ValueType::VT_UINT16           },
+    { "Int16"         , ranally::ValueType::VT_INT16            },
+    { "Uint32"        , ranally::ValueType::VT_UINT32           },
+    { "Int32"         , ranally::ValueType::VT_INT32            },
+    { "Uint64"        , ranally::ValueType::VT_UINT64           },
+    { "Int64"         , ranally::ValueType::VT_INT64            },
+    { "Size"          , ranally::ValueType::VT_SIZE             },
+    { "Float32"       , ranally::ValueType::VT_FLOAT32          },
+    { "Float64"       , ranally::ValueType::VT_FLOAT64          },
+    { "String"        , ranally::ValueType::VT_STRING           },
+    { "Number"        , ranally::ValueType::VT_NUMBER           },
+    { "All"           , ranally::ValueType::VT_ALL              },
+    { "DependsOnInput", ranally::ValueType::VT_DEPENDS_ON_INPUT }
+};
+
+
 ranally::DataType string_to_data_type(
     std::string const& string)
 {
     assert(!string.empty());
-    ranally::DataType data_type = ranally::DataType::DT_UNKNOWN;
-
-    if(string == "Value") {
-        data_type = ranally::DataType::DT_VALUE;
-    }
-    else if(string == "Raster") {
-        data_type = ranally::DataType::DT_RASTER;
-    }
-    else if(string == "Feature") {
-        data_type = ranally::DataType::DT_FEATURE;
-    }
-    else if(string == "Spatial") {
-        data_type = ranally::DataType::DT_SPATIAL;
-    }
-    else if(string == "All") {
-        data_type = ranally::DataType::DT_ALL;
-    }
-    else if(string == "DependsOnInput") {
-        data_type = ranally::DataType::DT_DEPENDS_ON_INPUT;
-    }
-
-    assert(data_type != ranally::DataType::DT_UNKNOWN);
-    return data_type;
+    assert(data_type_by_string.find(string) != data_type_by_string.end());
+    return data_type_by_string[string];
 }
 
 
@@ -45,65 +56,8 @@ static ranally::ValueType string_to_value_type(
     std::string const& string)
 {
     assert(!string.empty());
-    ranally::ValueType value_type = ranally::VT_UNKNOWN;
-
-    if(string == "UInt8") {
-        value_type = ranally::VT_UINT8;
-    }
-    else if(string == "Int8") {
-        value_type = ranally::VT_INT8;
-    }
-    else if(string == "UInt16") {
-        value_type = ranally::VT_UINT16;
-    }
-    else if(string == "Int16") {
-        value_type = ranally::VT_INT16;
-    }
-    else if(string == "UInt32") {
-        value_type = ranally::VT_UINT32;
-    }
-    else if(string == "Int32") {
-        value_type = ranally::VT_INT32;
-    }
-    else if(string == "UInt64") {
-        value_type = ranally::VT_UINT64;
-    }
-    else if(string == "Int64") {
-        value_type = ranally::VT_INT64;
-    }
-    else if(string == "Float32") {
-        value_type = ranally::VT_FLOAT32;
-    }
-    else if(string == "Float64") {
-        value_type = ranally::VT_FLOAT64;
-    }
-    else if(string == "String") {
-        value_type = ranally::VT_STRING;
-    }
-    else if(string == "UnsignedInteger") {
-        value_type = ranally::VT_UNSIGNED_INTEGER;
-    }
-    else if(string == "SignedInteger") {
-        value_type = ranally::VT_SIGNED_INTEGER;
-    }
-    else if(string == "Integer") {
-        value_type = ranally::VT_INTEGER;
-    }
-    else if(string == "FloatingPoint") {
-        value_type = ranally::VT_FLOATING_POINT;
-    }
-    else if(string == "Number") {
-        value_type = ranally::VT_NUMBER;
-    }
-    else if(string == "All") {
-        value_type = ranally::VT_ALL;
-    }
-    else if(string == "DependsOnInput") {
-        value_type = ranally::VT_DEPENDS_ON_INPUT;
-    }
-
-    assert(value_type != ranally::VT_UNKNOWN);
-    return value_type;
+    assert(value_type_by_string.find(string) != value_type_by_string.end());
+    return value_type_by_string[string];
 }
 
 
@@ -490,6 +444,12 @@ public:
 
     ranally::ValueTypes post_ValueTypes()
     {
+        if(_value_types == ranally::VT_UNKNOWN) {
+            // No ValueType elements are parsed. Aparently, value type is not
+            // relevant. This happens for operations dealing with the domain
+            // only, for example.
+            _value_types = ranally::VT_NOT_RELEVANT;
+        }
         return _value_types;
     }
 

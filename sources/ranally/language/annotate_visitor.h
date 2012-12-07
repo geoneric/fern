@@ -21,6 +21,17 @@ namespace ranally {
   is not known. Annotation is optional. The ValidateVisitor will check if all
   information required for execution is present.
 
+  \todo      In case of subscript vertices, the names used in the selection
+             expression should be first looked up in the list of attributes
+             of the expression being subscripted. If not found there, the names
+             refer to identifiers in the enclosing scope. For this to work,
+             we need to know about the attributes of the main expression.
+             if name in list of attribute
+               name is feature attribute
+             else
+               name refers to name defined elsewhere
+             fi
+
   \sa        ValidateVisitor
 */
 class AnnotateVisitor:
@@ -45,9 +56,40 @@ public:
 
 private:
 
+    // Annotation calculates as many data and value types of expressions as
+    // possible.
+    //
+    // We start with this information:
+    // - result types for numbers
+    // - result types for operations
+    //   - if the result types are not depenent on the data/value types of
+    //     the parameters.
+    //   - else, if the result types of all parameters are known, the result
+    //     type of the operation is calculated.
+    // We start with propagating that information across the assignment.
+    // We propagate the information from the defined names to the use
+    // locations. This may result in more operations knowing data/value
+    // types of all parameters.
+    // Iterate untill no additional information can be generated anymore.
+    enum Mode {
+        //! Right sight of assignment statements is visited.
+        Using,
+
+        //! Left side of assignment statements is visited.
+        Defining
+    };
+
+    //! Current mode.
+    Mode           _mode;
+
+    //! Whether or not visiting the vertices changed any result types.
+    bool           _result_types_changed;
+
     OperationsPtr  _operations;
 
     void           Visit               (AssignmentVertex& vertex);
+
+    void           Visit               (NameVertex& vertex);
 
     void           Visit               (NumberVertex<int8_t>& vertex);
 
@@ -70,6 +112,10 @@ private:
     void           Visit               (NumberVertex<double>& vertex);
 
     void           Visit               (OperationVertex& vertex);
+
+    void           Visit               (ScriptVertex& vertex);
+
+    void           Visit               (SubscriptVertex& vertex);
 
 };
 

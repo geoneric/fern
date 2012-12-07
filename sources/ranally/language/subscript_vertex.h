@@ -42,10 +42,12 @@ public:
 
 private:
 
-    String         _symbol;
+    String const   _symbol;
 
+    //! Expression being subscripted.
     ExpressionVertexPtr _expression;
 
+    //! Expression that selects from the expression being subscripted.
     ExpressionVertexPtr _selection;
 
 };

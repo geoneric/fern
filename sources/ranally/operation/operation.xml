@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <Operations>
+<!--
   <Operation>
     <Name>debug</Name>
     <Description>Print the argument value to the standard output stream.</Description>
@@ -53,6 +54,7 @@
       </Result>
     </Results>
   </Operation>
+-->
   <Operation>
     <Name>abs</Name>
     <Description>Calculate the absolute value of the argument.</Description>
@@ -61,8 +63,7 @@
         <Name>parameter</Name>
         <Description>Parameter.</Description>
         <DataTypes>
-          <DataType>Value</DataType>
-          <DataType>Raster</DataType>
+          <DataType>All</DataType>
         </DataTypes>
         <ValueTypes>
           <ValueType>Number</ValueType>
@@ -78,5 +79,50 @@
       </Result>
     </Results>
   </Operation>
+  <Operation>
+    <Name>count</Name>
+    <Description>Sum the number of feature elements in a feature.</Description>
+    <Parameters>
+      <Parameter>
+        <Name>feature</Name>
+        <Description>Feature.</Description>
+        <DataTypes>
+          <DataType>Feature</DataType>
+        </DataTypes>
+        <ValueTypes/>
+      </Parameter>
+    </Parameters>
+    <Results>
+      <Result>
+        <Name>result</Name>
+        <Description>Sum of feature elements.</Description>
+        <DataType>Scalar</DataType>
+        <ValueType>Size</ValueType>
+      </Result>
+    </Results>
+  </Operation>
+  <Operation>
+    <Name>read</Name>
+    <Description>Read a feature from a dataset.</Description>
+    <Parameters>
+      <Parameter>
+        <Name>name</Name>
+        <Description>Dataset name.</Description>
+        <DataTypes>
+          <DataType>Scalar</DataType>
+        </DataTypes>
+        <ValueTypes>
+          <ValueType>String</ValueType>
+        </ValueTypes>
+      </Parameter>
+    </Parameters>
+    <Results>
+      <Result>
+        <Name>result</Name>
+        <Description>Feature read.</Description>
+        <DataType>Feature</DataType>
+        <ValueType>All</ValueType>
+      </Result>
+    </Results>
+  </Operation>
 </Operations>
-

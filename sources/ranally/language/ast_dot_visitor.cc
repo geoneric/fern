@@ -27,20 +27,26 @@ String join(
 String data_types_to_string(
     DataTypes const& data_types)
 {
+    // TODO Remove data type when handled and assert data_types is zero at the
+    //      end.
     std::vector<String> strings;
 
-    if(data_types & DataType::DT_UNKNOWN) {
+    if(data_types & DT_UNKNOWN) {
+        assert(data_types == DataType::DT_UNKNOWN);
         strings.push_back("?");
     }
     else {
-        if(data_types & DataType::DT_VALUE) {
-            strings.push_back("val");
+        if(data_types & DataType::DT_SCALAR) {
+            strings.push_back("scl");
         }
-        if(data_types & DataType::DT_RASTER) {
-            strings.push_back("rst");
+        if(data_types & DataType::DT_POINT) {
+            strings.push_back("pnt");
         }
-        if(data_types & DataType::DT_FEATURE) {
-            strings.push_back("ftr");
+        if(data_types & DataType::DT_LINE) {
+            strings.push_back("line");
+        }
+        if(data_types & DataType::DT_POLYGON) {
+            strings.push_back("poly");
         }
         if(data_types & DataType::DT_DEPENDS_ON_INPUT) {
             strings.push_back("dep");
@@ -55,52 +61,64 @@ String data_types_to_string(
 String value_types_to_string(
     ValueTypes const& value_types)
 {
+    // TODO Remove data type when handled and assert data_types is zero at the
+    //      end.
     std::vector<String> strings;
 
-    if(value_types & DataType::DT_UNKNOWN) {
+    if(value_types & ValueType::VT_UNKNOWN) {
+        assert(value_types == ValueType::VT_UNKNOWN);
         strings.push_back("?");
     }
+    else if(value_types & ValueType::VT_NOT_RELEVANT) {
+        assert(value_types == ValueType::VT_NOT_RELEVANT);
+        strings.push_back("n/r");
+    }
     else {
-        if(value_types & VT_UINT8) {
-            strings.push_back("u8");
-        }
-        if(value_types & VT_INT8) {
-            strings.push_back("s8");
-        }
-        if(value_types & VT_UINT16) {
-            strings.push_back("u16");
-        }
-        if(value_types & VT_INT16) {
-            strings.push_back("s16");
-        }
-        if(value_types & VT_UINT32) {
-            strings.push_back("u32");
-        }
-        if(value_types & VT_INT32) {
-            strings.push_back("s32");
-        }
-        if(value_types & VT_UINT64) {
-            strings.push_back("u64");
-        }
-        if(value_types & VT_INT64) {
-            strings.push_back("s64");
-        }
-        if(value_types & VT_FLOAT32) {
-            strings.push_back("f32");
-        }
-        if(value_types & VT_FLOAT64) {
-            strings.push_back("f64");
-        }
-        if(value_types & VT_STRING) {
-            strings.push_back("str");
-        }
-        if(value_types & VT_DEPENDS_ON_INPUT) {
-            strings.push_back("dep");
-        }
+        if(value_types & VT_UINT8           ) { strings.push_back("u8");   }
+        if(value_types & VT_INT8            ) { strings.push_back("s8");   }
+        if(value_types & VT_UINT16          ) { strings.push_back("u16");  }
+        if(value_types & VT_INT16           ) { strings.push_back("s16");  }
+        if(value_types & VT_UINT32          ) { strings.push_back("u32");  }
+        if(value_types & VT_INT32           ) { strings.push_back("s32");  }
+        if(value_types & VT_UINT64          ) { strings.push_back("u64");  }
+        if(value_types & VT_INT64           ) { strings.push_back("s64");  }
+        if(value_types & VT_FLOAT32         ) { strings.push_back("f32");  }
+        if(value_types & VT_FLOAT64         ) { strings.push_back("f64");  }
+        if(value_types & VT_STRING          ) { strings.push_back("str");  }
+        if(value_types & VT_DEPENDS_ON_INPUT) { strings.push_back("dep");  }
     }
 
     assert(!strings.empty());
     return join(strings, "|");
+}
+
+
+String annotate_expression_label(
+    String const& name,
+    ExpressionVertex const& vertex)
+{
+    String label = name + "\\n";
+
+    std::vector<ExpressionVertex::ResultType> const&
+        result_types(vertex.result_types());
+    if(result_types.empty()) {
+        label +=
+            "dt: unknown\\n"
+            "vt: unknown";
+    }
+    else {
+        assert(result_types.size() == 1);
+        String data_types = data_types_to_string(std::get<0>(
+            result_types[0]));
+        String value_types = value_types_to_string(std::get<1>(
+            result_types[0]));
+
+        label +=
+            "dt: " + data_types + "\\n"
+            "vt: " + value_types;
+    }
+
+    return label;
 }
 
 } // Anonymous namespace
@@ -180,10 +198,12 @@ void AstDotVisitor::Visit(
     switch(_mode) {
         case Mode::Declaring: {
             add_script(
-                String(boost::format("\"%1%\"") % &vertex) +
-                " [label=\"" + String(boost::format("%1%") % vertex.value()) +
-                "\", fontname=courier, shape=box];\n"
-            );
+                String(boost::format("\"%1%\" [label=\"%2%\", shape=box];\n")
+                    % &vertex
+                    % annotate_expression_label(
+                        (boost::format("%1%")) % vertex.value(), vertex)
+            ));
+
             break;
         }
         case Mode::ConnectingAst: {
@@ -257,9 +277,10 @@ void AstDotVisitor::Visit(
     switch(_mode) {
         case Mode::Declaring: {
             add_script(
-                String(boost::format("\"%1%\"") % &vertex) +
-                " [label=\"" + vertex.symbol() + "\"];\n"
-            );
+                String(boost::format("\"%1%\" [label=\"%2%\"];\n")
+                    % &vertex
+                    % annotate_expression_label(vertex.symbol(), vertex)
+            ));
             break;
         }
         case Mode::ConnectingAst: {
@@ -289,8 +310,10 @@ void AstDotVisitor::Visit(
     switch(_mode) {
         case Mode::Declaring: {
             add_script(
-                String(boost::format("\"%1%\"") % &vertex) +
-                " [label=\"" + vertex.name() + "\"];\n");
+                String(boost::format("\"%1%\" [label=\"%2%\"];\n")
+                    % &vertex
+                    % annotate_expression_label(vertex.name(), vertex)
+            ));
             break;
         }
         case Mode::ConnectingAst: {
@@ -359,29 +382,11 @@ void AstDotVisitor::Visit(
 {
     switch(_mode) {
         case Mode::Declaring: {
-            std::vector<String> attributes;
-            String label = vertex.name();
-
-            std::vector<ExpressionVertex::ResultType> const&
-                result_types(vertex.result_types());
-            if(!result_types.empty()) {
-                assert(result_types.size() == 1);
-                String data_types = data_types_to_string(std::get<0>(
-                    result_types[0]));
-                String value_types = value_types_to_string(std::get<1>(
-                    result_types[0]));
-
-                label += String("\\n") +
-                    "dt: " + data_types + "\\n" +
-                    "vt: " + value_types;
-            }
-
-            attributes.push_back("label=\"" + label + "\"");
-
             add_script(
-                String(boost::format("\"%1%\"") % &vertex) + " [" +
-                join(attributes, ", ") + "];\n"
-            );
+                String(boost::format("\"%1%\" [label=\"%2%\"];\n")
+                    % &vertex
+                    % annotate_expression_label(vertex.name(), vertex)
+            ));
 
             break;
         }
@@ -406,9 +411,10 @@ void AstDotVisitor::Visit(
     switch(_mode) {
         case Mode::Declaring: {
             add_script(
-                String(boost::format("\"%1%\"") % &vertex) +
-                " [label=\"" + vertex.symbol() + "\"];\n"
-            );
+                String(boost::format("\"%1%\" [label=\"%2%\"];\n")
+                    % &vertex
+                    % annotate_expression_label(vertex.symbol(), vertex)
+            ));
             break;
         }
         case Mode::ConnectingAst: {

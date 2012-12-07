@@ -30,6 +30,9 @@ enum ValueType {
     //! Integral value type.
     VT_INTEGER=VT_UNSIGNED_INTEGER | VT_SIGNED_INTEGER,
 
+    //! Largest unsigned integer value type.
+    VT_SIZE=VT_UINT64,
+
     //! Floatint point value type.
     VT_FLOATING_POINT=VT_FLOAT32 | VT_FLOAT64,
 
@@ -40,7 +43,10 @@ enum ValueType {
     VT_ALL=VT_NUMBER | VT_STRING,
 
     //! Value type depends on value type of input.
-    VT_DEPENDS_ON_INPUT=2048
+    VT_DEPENDS_ON_INPUT=2048,
+
+    //! Value type is not relevant, for example for operations on the geometry.
+    VT_NOT_RELEVANT=4096
 };
 
 typedef unsigned int ValueTypes;

@@ -119,11 +119,18 @@
       - XmlParser.cc
     -->
     <xs:restriction base="xs:string">
-      <xs:enumeration value="Number"/>
+      <xs:enumeration value="Scalar"/>
+      <xs:enumeration value="Point"/>
+      <xs:enumeration value="Line"/>
+      <xs:enumeration value="Polygon"/>
+      <xs:enumeration value="Feature"/>
+      <!--
+      <xs:enumeration value="Value"/>
       <xs:enumeration value="String"/>
       <xs:enumeration value="Raster"/>
       <xs:enumeration value="Feature"/>
       <xs:enumeration value="Spatial"/>
+      -->
       <xs:enumeration value="All"/>
       <!--
       <xs:pattern value="Number|String|Raster|Feature|Spatial|All"/>
@@ -134,6 +141,7 @@
   <xs:complexType
     name="ValueTypes">
     <xs:sequence
+      minOccurs="0"
       maxOccurs="unbounded">
       <xs:element
         name="ValueType"
@@ -166,6 +174,7 @@
       <xs:enumeration value="UnsignedInteger"/>
       <xs:enumeration value="SignedInteger"/>
       <xs:enumeration value="Integer"/>
+      <xs:enumeration value="Size"/>
       <xs:enumeration value="FloatingPoint"/>
       <xs:enumeration value="Number"/>
       <xs:enumeration value="All"/>
@@ -175,4 +184,3 @@
     </xs:restriction>
   </xs:simpleType>
 </xs:schema>
-
