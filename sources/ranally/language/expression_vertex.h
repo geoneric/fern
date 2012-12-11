@@ -1,8 +1,5 @@
 #pragma once
-#include <tuple>
-#include <vector>
-#include "ranally/operation/data_types.h"
-#include "ranally/operation/value_types.h"
+#include "ranally/language/result_types.h"
 #include "ranally/language/statement_vertex.h"
 
 
@@ -28,8 +25,6 @@ class ExpressionVertex:
 
 public:
 
-    typedef std::tuple<DataTypes, ValueTypes> ResultType;
-
     virtual        ~ExpressionVertex   ()=default;
 
                    ExpressionVertex    (ExpressionVertex&&)=delete;
@@ -50,13 +45,11 @@ public:
 
     // operation::ValueType value_type       () const;
 
-    void           set_result_types    (
-                                  std::vector<ResultType> const& result_types);
+    void           set_result_types    (ResultTypes const& result_types);
 
-    void           add_result_type     (DataTypes data_type,
-                                        ValueTypes value_type);
+    void           add_result_type     (ResultType const& result_type);
 
-    std::vector<ResultType> const& result_types() const;
+    ResultTypes const& result_types    () const;
 
     DataTypes      data_type           (size_t index) const;
 
@@ -87,7 +80,7 @@ private:
 
     // typedef boost::tuple<operation::DataType, operation::ValueType> ResultType;
 
-    std::vector<ResultType> _result_types;
+    ResultTypes    _result_types;
 
     //! Value of expression, in case this expression is the target of an assignment.
     ExpressionVertexPtr _value;

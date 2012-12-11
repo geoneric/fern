@@ -98,7 +98,7 @@ static String to_string(
 
 ValueTypes::ValueTypes()
 
-    : FlagCollection<detail::ValueType, detail::ValueType::VT_NR_VALUE_TYPES>()
+    : FlagCollection<ValueTypes, detail::ValueType, detail::ValueType::VT_NR_VALUE_TYPES>()
 
 {
 }
@@ -107,7 +107,7 @@ ValueTypes::ValueTypes()
 ValueTypes::ValueTypes(
     std::set<detail::ValueType> const& value_types)
 
-    : FlagCollection<detail::ValueType, detail::ValueType::VT_NR_VALUE_TYPES>(
+    : FlagCollection<ValueTypes, detail::ValueType, detail::ValueType::VT_NR_VALUE_TYPES>(
         value_types)
 
 {
@@ -127,4 +127,24 @@ String ValueTypes::to_string() const
 
     return join(strings, "|");
 }
+
+
+ValueTypes operator|(
+    ValueTypes const& lhs,
+    ValueTypes const& rhs)
+{
+    ValueTypes result(lhs);
+    result |= rhs;
+    return result;
+}
+
+
+std::ostream& operator<<(
+    std::ostream& stream,
+    ValueTypes const& flags)
+{
+    stream << flags.to_string();
+    return stream;
+}
+
 } // namespace ranally

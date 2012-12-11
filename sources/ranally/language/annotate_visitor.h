@@ -62,7 +62,7 @@ private:
     // We start with this information:
     // - result types for numbers
     // - result types for operations
-    //   - if the result types are not depenent on the data/value types of
+    //   - if the result types are not dependent on the data/value types of
     //     the parameters.
     //   - else, if the result types of all parameters are known, the result
     //     type of the operation is calculated.
@@ -81,9 +81,6 @@ private:
 
     //! Current mode.
     Mode           _mode;
-
-    //! Whether or not visiting the vertices changed any result types.
-    bool           _result_types_changed;
 
     OperationsPtr  _operations;
 

@@ -13,7 +13,7 @@ namespace ranally {
   \sa        .
 */
 class ValueTypes:
-    public FlagCollection<detail::ValueType,
+    public FlagCollection<ValueTypes, detail::ValueType,
         detail::ValueType::VT_NR_VALUE_TYPES>
 {
 
@@ -94,5 +94,12 @@ private:
                              std::set<detail::ValueType> const& value_types);
 
 };
+
+
+ValueTypes         operator|(           ValueTypes const& lhs,
+                                        ValueTypes const& rhs);
+
+std::ostream&      operator<<(          std::ostream& stream,
+                                        ValueTypes const& flags);
 
 } // namespace ranally

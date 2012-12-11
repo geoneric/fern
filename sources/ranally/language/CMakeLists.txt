@@ -38,6 +38,8 @@ SET(SOURCES
     operation_vertex
     operator_vertex
     optimize_visitor
+    result_type
+    result_types
     script_vertex
     script_visitor
     statement_vertex

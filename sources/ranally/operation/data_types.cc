@@ -64,7 +64,7 @@ static String to_string(
 
 DataTypes::DataTypes()
 
-    : FlagCollection<detail::DataType, detail::DataType::DT_NR_DATA_TYPES>()
+    : FlagCollection<DataTypes, detail::DataType, detail::DataType::DT_NR_DATA_TYPES>()
 
 {
 }
@@ -73,7 +73,7 @@ DataTypes::DataTypes()
 DataTypes::DataTypes(
     std::set<detail::DataType> const& data_types)
 
-    : FlagCollection<detail::DataType, detail::DataType::DT_NR_DATA_TYPES>(
+    : FlagCollection<DataTypes, detail::DataType, detail::DataType::DT_NR_DATA_TYPES>(
         data_types)
 
 {
@@ -92,6 +92,25 @@ String DataTypes::to_string() const
     }
 
     return join(strings, "|");
+}
+
+
+DataTypes operator|(
+    DataTypes const& lhs,
+    DataTypes const& rhs)
+{
+    DataTypes result(lhs);
+    result |= rhs;
+    return result;
+}
+
+
+std::ostream& operator<<(
+    std::ostream& stream,
+    DataTypes const& flags)
+{
+    stream << flags.to_string();
+    return stream;
 }
 
 } // namespace ranally

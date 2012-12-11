@@ -11,7 +11,6 @@ AnnotateVisitor::AnnotateVisitor(
 
     : Visitor(),
       _mode(Mode::Using),
-      _result_types_changed(true),
       _operations(operations)
 
 {
@@ -29,11 +28,9 @@ void AnnotateVisitor::Visit(
     // Propagate the result types from the expression to the target.
     ExpressionVertex const& expression(*vertex.expression());
     ExpressionVertex& target(*vertex.target());
-    if(target.result_types() != expression.result_types()) {
-        target.set_result_types(expression.result_types());
-        _result_types_changed = true;
-        vertex.target()->Accept(*this);
-    }
+    assert(target.result_types().empty());
+    target.set_result_types(expression.result_types());
+    vertex.target()->Accept(*this);
 
     _mode = Mode::Using;
 }
@@ -48,10 +45,8 @@ void AnnotateVisitor::Visit(                                                   \
 {                                                                              \
     switch(_mode) {                                                            \
         case Using: {                                                          \
-            if(vertex.result_types().empty()) {                                \
-                vertex.add_result_type(data_type, value_type);                 \
-                _result_types_changed = true;                                  \
-            }                                                                  \
+            assert(vertex.result_types().empty());                             \
+            vertex.add_result_type(ResultType(data_type, value_type));         \
             break;                                                             \
         }                                                                      \
         case Defining: {                                                       \
@@ -91,19 +86,14 @@ void AnnotateVisitor::Visit(
 
                     assert(vertex.result_types().empty());
                     for(auto result: operation->results()) {
-                        vertex.add_result_type(result.data_type(),
-                            result.value_type());
+                        vertex.add_result_type(ResultType(result.data_type(),
+                            result.value_type()));
                     }
-
-                    _result_types_changed = true;
                 }
 
                 // TODO Calculate result type based on result type calculation
                 //      strategy (property of the operation) and the result
                 //      types of the arguments.
-                //      Only update operation's result type if this is
-                //      different from the current result type. Set
-                //      _result_types_changed accordingly.
             }
             break;
         }
@@ -126,10 +116,8 @@ void AnnotateVisitor::Visit(
                 // Propagate the result types to all use sites, but only when
                 // needed.
                 assert(use_vertex);
-                if(use_vertex->result_types() != vertex.result_types()) {
-                    use_vertex->set_result_types(vertex.result_types());
-                    _result_types_changed = true;
-                }
+                assert(use_vertex->result_types().empty());
+                use_vertex->set_result_types(vertex.result_types());
             }
             break;
         }
@@ -144,10 +132,8 @@ void AnnotateVisitor::Visit(
         case Using: {
             // The result type of a subscript expression is the same as the
             // result type of the main expression.
-            if(vertex.result_types() != vertex.expression()->result_types()) {
-                vertex.set_result_types(vertex.expression()->result_types());
-                _result_types_changed = true;
-            }
+            assert(vertex.result_types().empty());
+            vertex.set_result_types(vertex.expression()->result_types());
             break;
         }
         case Defining: {
@@ -161,12 +147,7 @@ void AnnotateVisitor::Visit(
     ScriptVertex& vertex)
 {
     _mode = Mode::Using;
-    _result_types_changed = true;
-
-    while(_result_types_changed) {
-        _result_types_changed = false;
-        Visitor::Visit(vertex);
-    }
+    Visitor::Visit(vertex);
 }
 
 } // namespace ranally

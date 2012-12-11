@@ -15,7 +15,8 @@ namespace ranally {
   \sa        .
 */
 class DataTypes:
-    public FlagCollection<detail::DataType, detail::DataType::DT_NR_DATA_TYPES>
+    public FlagCollection<DataTypes, detail::DataType,
+        detail::DataType::DT_NR_DATA_TYPES>
 {
 
     friend class DataTypesTest;
@@ -70,5 +71,12 @@ private:
                              std::set<detail::DataType> const& data_types);
 
 };
+
+
+DataTypes          operator|(           DataTypes const& lhs,
+                                        DataTypes const& rhs);
+
+std::ostream&      operator<<(          std::ostream& stream,
+                                        DataTypes const& flags);
 
 } // namespace ranally
