@@ -4,6 +4,21 @@
 
 namespace ranally {
 
+//!
+/*!
+  \tparam    .
+  \param     .
+  \return    .
+  \exception .
+  \warning   .
+  \sa        .
+
+  The \a data_types argument passed in can not be DataTypes::UNKNOWN. The
+  \a value_types argument passed in can be ValueTypes::UNKNOWN, in which case
+  the value type is taken to be not relevant. This is the case for operations
+  that work on feature domains and not on the attributes, like an operation
+  that counts the number of feature elements.
+*/
 Parameter::Parameter(
     String const& name,
     String const& description,
@@ -18,8 +33,8 @@ Parameter::Parameter(
 {
     assert(!_name.is_empty());
     assert(!_description.is_empty());
-    assert(_data_types != DataType::DT_UNKNOWN);
-    assert(_value_types != VT_UNKNOWN);
+    assert(_data_types != DataTypes::UNKNOWN);
+    // assert(_value_types != ValueTypes::UNKNOWN);
 }
 
 

@@ -1,4 +1,5 @@
 SET(TEST_NAMES
+    data_types_test
     operation_xml_parser_test
     print_test
 )

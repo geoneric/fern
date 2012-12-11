@@ -5,61 +5,10 @@
 #include <vector>
 #include "ranally/core/string.h"
 #include "ranally/operation/operation-pskel.hxx"
-#include "ranally/operation/data_type.h"
 #include "ranally/operation/operations.h"
 
 
 namespace {
-
-// These strings should match the ones used in the XML schema.
-static std::map<ranally::String, ranally::DataType> data_type_by_string = {
-    { "Scalar"        , ranally::DataType::DT_SCALAR           },
-    { "Point"         , ranally::DataType::DT_POINT            },
-    { "Line"          , ranally::DataType::DT_LINE             },
-    { "Polygon"       , ranally::DataType::DT_POLYGON          },
-    { "Feature"       , ranally::DataType::DT_FEATURE          },
-    { "All"           , ranally::DataType::DT_ALL              },
-    { "DependsOnInput", ranally::DataType::DT_DEPENDS_ON_INPUT }
-};
-
-
-// These strings should match the ones used in the XML schema.
-static std::map<ranally::String, ranally::ValueType> value_type_by_string = {
-    { "Uint8"         , ranally::ValueType::VT_UINT8            },
-    { "Int8"          , ranally::ValueType::VT_INT8             },
-    { "Uint16"        , ranally::ValueType::VT_UINT16           },
-    { "Int16"         , ranally::ValueType::VT_INT16            },
-    { "Uint32"        , ranally::ValueType::VT_UINT32           },
-    { "Int32"         , ranally::ValueType::VT_INT32            },
-    { "Uint64"        , ranally::ValueType::VT_UINT64           },
-    { "Int64"         , ranally::ValueType::VT_INT64            },
-    { "Size"          , ranally::ValueType::VT_SIZE             },
-    { "Float32"       , ranally::ValueType::VT_FLOAT32          },
-    { "Float64"       , ranally::ValueType::VT_FLOAT64          },
-    { "String"        , ranally::ValueType::VT_STRING           },
-    { "Number"        , ranally::ValueType::VT_NUMBER           },
-    { "All"           , ranally::ValueType::VT_ALL              },
-    { "DependsOnInput", ranally::ValueType::VT_DEPENDS_ON_INPUT }
-};
-
-
-ranally::DataType string_to_data_type(
-    std::string const& string)
-{
-    assert(!string.empty());
-    assert(data_type_by_string.find(string) != data_type_by_string.end());
-    return data_type_by_string[string];
-}
-
-
-static ranally::ValueType string_to_value_type(
-    std::string const& string)
-{
-    assert(!string.empty());
-    assert(value_type_by_string.find(string) != value_type_by_string.end());
-    return value_type_by_string[string];
-}
-
 
 class Operations_pimpl:
     public ranally::Operations_pskel
@@ -290,8 +239,8 @@ private:
     {
         ranally::String name;
         ranally::String description;
-        ranally::DataType data_type;
-        ranally::ValueType value_type;
+        ranally::DataTypes data_type;
+        ranally::ValueTypes value_type;
     };
 
     std::stack<ResultData> _data_stack;
@@ -323,7 +272,8 @@ public:
         std::string const& data_type)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().data_type = string_to_data_type(data_type);
+        _data_stack.top().data_type = ranally::DataTypes::from_string(
+            data_type);
     }
 
     void ValueType(
@@ -331,7 +281,8 @@ public:
         std::string const& value_type)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().value_type = string_to_value_type(value_type);
+        _data_stack.top().value_type = ranally::ValueTypes::from_string(
+            value_type);
     }
 
     ranally::Result post_Result()
@@ -359,7 +310,7 @@ public:
 
     void pre()
     {
-        _data_types = ranally::DataType::DT_UNKNOWN;
+        _data_types = ranally::DataTypes::UNKNOWN;
     }
 
     // void DataType(
@@ -371,7 +322,7 @@ public:
     void DataType(
         std::string const& data_type)
     {
-        _data_types |= string_to_data_type(data_type);
+        _data_types |= ranally::DataTypes::from_string(data_type);
     }
 
     ranally::DataTypes post_DataTypes()
@@ -409,7 +360,7 @@ public:
 //     {
 //         assert(false);
 //         assert(_data_type.empty());
-//         return string_to_data_type(_data_type);
+//         return DataType::from_string(_data_type);
 //     }
 // 
 // };
@@ -427,7 +378,7 @@ public:
 
     void pre()
     {
-        _value_types = ranally::VT_UNKNOWN;
+        _value_types = ranally::ValueTypes::UNKNOWN;
     }
 
     // void ValueType(
@@ -439,17 +390,17 @@ public:
     void ValueType(
         std::string const& value_type)
     {
-        _value_types |= string_to_value_type(value_type);
+        _value_types |= ranally::ValueTypes::from_string(value_type);
     }
 
     ranally::ValueTypes post_ValueTypes()
     {
-        if(_value_types == ranally::VT_UNKNOWN) {
-            // No ValueType elements are parsed. Aparently, value type is not
-            // relevant. This happens for operations dealing with the domain
-            // only, for example.
-            _value_types = ranally::VT_NOT_RELEVANT;
-        }
+        // if(_value_types == ranally::ValueTypes::UNKNOWN) {
+        //     // No ValueType elements are parsed. Aparently, value type is not
+        //     // relevant. This happens for operations dealing with the domain
+        //     // only, for example.
+        //     _value_types = ranally::ValueTypes::NOT_RELEVANT;
+        // }
         return _value_types;
     }
 
@@ -480,7 +431,7 @@ public:
 //     ranally::ValueType post_ValueType()
 //     {
 //         assert(_data_type.empty());
-//         return string_to_value_type(_data_type);
+//         return ValueTypes::from_string(_data_type);
 //     }
 // 
 // };

@@ -12,6 +12,6 @@ namespace http://www.jemig.eu/ranally
     Result             "ranally::Result";
     DataTypes          "ranally::DataTypes";
     ValueTypes         "ranally::ValueTypes";
-    DataType           "ranally::DataType";
-    ValueType          "ranally::ValueType";
+    DataType           "ranally::DataTypes";
+    ValueType          "ranally::ValueTypes";
 }

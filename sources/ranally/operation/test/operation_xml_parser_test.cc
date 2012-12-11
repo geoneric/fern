@@ -65,10 +65,10 @@ BOOST_AUTO_TEST_CASE(parse)
         BOOST_CHECK(parameter.name() == "value");
         BOOST_CHECK(parameter.description() == "Value to print.");
         data_types = parameter.data_types();
-        BOOST_CHECK(data_types == ranally::DT_ALL);
+        BOOST_CHECK(data_types == ranally::DataTypes::ALL);
 
         value_types = parameter.value_types();
-        BOOST_CHECK(value_types == ranally::VT_ALL);
+        BOOST_CHECK(value_types == ranally::ValueTypes::ALL);
 
         results = operation->results();
         BOOST_CHECK(results.empty());

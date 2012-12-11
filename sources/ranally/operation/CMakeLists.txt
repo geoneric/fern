@@ -44,11 +44,13 @@ ADD_CUSTOM_COMMAND(
 )
 SET(SOURCES
     ${CMAKE_CURRENT_BINARY_DIR}/operation-pskel.cxx
+    data_types
     operation
+    operation_xml_parser
     operations
     parameter
     result
-    operation_xml_parser
+    value_types
 )
 ADD_LIBRARY(ranally_operation
     ${SOURCES}

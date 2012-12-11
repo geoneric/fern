@@ -1,11 +1,11 @@
-#define BOOST_TEST_MODULE ranally language
+#define BOOST_TEST_MODULE ranally operation
 #include <boost/range/iterator_range.hpp>
 #include <boost/test/unit_test.hpp>
 #include "ranally/raster.h"
 #include "ranally/operation/print.h"
 
 
-BOOST_AUTO_TEST_SUITE(algebra_parser)
+BOOST_AUTO_TEST_SUITE(print)
 
 BOOST_AUTO_TEST_CASE(print)
 {

@@ -1,7 +1,7 @@
 #pragma once
 #include "ranally/core/string.h"
-#include "ranally/operation/data_type.h"
-#include "ranally/operation/value_type.h"
+#include "ranally/operation/data_types.h"
+#include "ranally/operation/value_types.h"
 
 
 namespace ranally {

@@ -221,4 +221,22 @@ std::ostream& operator<<(
     return stream;
 }
 
+
+String join(
+    std::vector<String> const& strings,
+    String const& separator)
+{
+    String result;
+
+    if(!strings.empty()) {
+        result += strings.front();
+
+        for(size_t i = 1; i < strings.size(); ++i) {
+            result += separator + strings[i];
+        }
+    }
+
+    return result;
+}
+
 } // namespace ranally

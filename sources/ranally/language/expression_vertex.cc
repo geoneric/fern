@@ -70,8 +70,8 @@ void ExpressionVertex::set_result_types(
 
 
 void ExpressionVertex::add_result_type(
-    DataType data_type,
-    ValueType value_type)
+    DataTypes data_type,
+    ValueTypes value_type)
 {
     _result_types.push_back(std::make_tuple(data_type, value_type));
 }
@@ -84,7 +84,7 @@ ExpressionVertex::result_types() const
 }
 
 
-DataType ExpressionVertex::data_type(
+DataTypes ExpressionVertex::data_type(
   size_t index) const
 {
     assert(index < _result_types.size());
@@ -92,7 +92,7 @@ DataType ExpressionVertex::data_type(
 }
 
 
-ValueType ExpressionVertex::value_type(
+ValueTypes ExpressionVertex::value_type(
     size_t index) const
 {
     assert(index < _result_types.size());

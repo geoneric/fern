@@ -105,15 +105,16 @@ BOOST_AUTO_TEST_CASE(visit_operation)
             operation->parameters());
         ranally::Parameter const& parameter(parameters[0]);
         BOOST_CHECK_EQUAL(parameter.data_types(),
-            ranally::DataTypes(ranally::DT_SCALAR | ranally::DT_FEATURE));
-        BOOST_CHECK_EQUAL(parameter.value_types(),
-            ranally::ValueTypes(ranally::ValueType(ranally::VT_NUMBER)));
+            ranally::DataTypes::SCALAR | ranally::DataTypes::FEATURE);
+        BOOST_CHECK_EQUAL(parameter.value_types(), ranally::ValueTypes::NUMBER);
 
         BOOST_CHECK_EQUAL(operation->results().size(), 1u);
         std::vector<ranally::Result> const& results(operation->results());
         ranally::Result const& result(results[0]);
-        BOOST_CHECK_EQUAL(result.data_type(), ranally::DT_DEPENDS_ON_INPUT);
-        BOOST_CHECK_EQUAL(result.value_type(), ranally::VT_DEPENDS_ON_INPUT);
+        BOOST_CHECK_EQUAL(result.data_type(),
+            ranally::DataTypes::DEPENDS_ON_INPUT);
+        BOOST_CHECK_EQUAL(result.value_type(),
+            ranally::ValueTypes::DEPENDS_ON_INPUT);
     }
 }
 

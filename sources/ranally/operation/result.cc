@@ -7,8 +7,8 @@ namespace ranally {
 Result::Result(
     String const& name,
     String const& description,
-    DataType const& data_type,
-    ValueType const& value_type)
+    DataTypes const& data_type,
+    ValueTypes const& value_type)
 
     : _name(name),
       _description(description),
@@ -59,13 +59,13 @@ String const& Result::description() const
 }
 
 
-DataType Result::data_type() const
+DataTypes Result::data_type() const
 {
     return _data_type;
 }
 
 
-ValueType Result::value_type() const
+ValueTypes Result::value_type() const
 {
     return _value_type;
 }

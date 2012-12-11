@@ -6,93 +6,6 @@
 namespace ranally {
 namespace {
 
-String join(
-    std::vector<String> const& strings,
-    String const& separator)
-{
-    String result;
-
-    if(!strings.empty()) {
-        result += strings.front();
-
-        for(size_t i = 1; i < strings.size(); ++i) {
-            result += separator + strings[i];
-        }
-    }
-
-    return result;
-}
-
-
-String data_types_to_string(
-    DataTypes const& data_types)
-{
-    // TODO Remove data type when handled and assert data_types is zero at the
-    //      end.
-    std::vector<String> strings;
-
-    if(data_types & DT_UNKNOWN) {
-        assert(data_types == DataType::DT_UNKNOWN);
-        strings.push_back("?");
-    }
-    else {
-        if(data_types & DataType::DT_SCALAR) {
-            strings.push_back("scl");
-        }
-        if(data_types & DataType::DT_POINT) {
-            strings.push_back("pnt");
-        }
-        if(data_types & DataType::DT_LINE) {
-            strings.push_back("line");
-        }
-        if(data_types & DataType::DT_POLYGON) {
-            strings.push_back("poly");
-        }
-        if(data_types & DataType::DT_DEPENDS_ON_INPUT) {
-            strings.push_back("dep");
-        }
-    }
-
-    assert(!strings.empty());
-    return join(strings, "|");
-}
-
-
-String value_types_to_string(
-    ValueTypes const& value_types)
-{
-    // TODO Remove data type when handled and assert data_types is zero at the
-    //      end.
-    std::vector<String> strings;
-
-    if(value_types & ValueType::VT_UNKNOWN) {
-        assert(value_types == ValueType::VT_UNKNOWN);
-        strings.push_back("?");
-    }
-    else if(value_types & ValueType::VT_NOT_RELEVANT) {
-        assert(value_types == ValueType::VT_NOT_RELEVANT);
-        strings.push_back("n/r");
-    }
-    else {
-        if(value_types & VT_UINT8           ) { strings.push_back("u8");   }
-        if(value_types & VT_INT8            ) { strings.push_back("s8");   }
-        if(value_types & VT_UINT16          ) { strings.push_back("u16");  }
-        if(value_types & VT_INT16           ) { strings.push_back("s16");  }
-        if(value_types & VT_UINT32          ) { strings.push_back("u32");  }
-        if(value_types & VT_INT32           ) { strings.push_back("s32");  }
-        if(value_types & VT_UINT64          ) { strings.push_back("u64");  }
-        if(value_types & VT_INT64           ) { strings.push_back("s64");  }
-        if(value_types & VT_FLOAT32         ) { strings.push_back("f32");  }
-        if(value_types & VT_FLOAT64         ) { strings.push_back("f64");  }
-        if(value_types & VT_STRING          ) { strings.push_back("str");  }
-        if(value_types & VT_DEPENDS_ON_INPUT) { strings.push_back("dep");  }
-    }
-
-    assert(!strings.empty());
-    return join(strings, "|");
-}
-
-
 String annotate_expression_label(
     String const& name,
     ExpressionVertex const& vertex)
@@ -108,10 +21,8 @@ String annotate_expression_label(
     }
     else {
         assert(result_types.size() == 1);
-        String data_types = data_types_to_string(std::get<0>(
-            result_types[0]));
-        String value_types = value_types_to_string(std::get<1>(
-            result_types[0]));
+        String data_types = std::get<0>(result_types[0]).to_string();
+        String value_types = std::get<1>(result_types[0]).to_string();
 
         label +=
             "dt: " + data_types + "\\n"

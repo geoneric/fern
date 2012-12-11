@@ -1,7 +1,7 @@
 #pragma once
 #include "ranally/core/string.h"
-#include "ranally/operation/data_type.h"
-#include "ranally/operation/value_type.h"
+#include "ranally/operation/data_types.h"
+#include "ranally/operation/value_types.h"
 
 
 namespace ranally {
@@ -21,8 +21,8 @@ public:
 
                    Result              (String const& name,
                                         String const& description,
-                                        DataType const& data_type,
-                                        ValueType const& value_type);
+                                        DataTypes const& data_type,
+                                        ValueTypes const& value_type);
 
                    ~Result             ()=default;
 
@@ -38,9 +38,9 @@ public:
 
     String const&  description         () const;
 
-    DataType       data_type           () const;
+    DataTypes      data_type           () const;
 
-    ValueType      value_type          () const;
+    ValueTypes     value_type          () const;
 
 private:
 
@@ -48,9 +48,9 @@ private:
 
     String         _description;
 
-    DataType       _data_type;
+    DataTypes      _data_type;
 
-    ValueType      _value_type;
+    ValueTypes     _value_type;
 
 };
 

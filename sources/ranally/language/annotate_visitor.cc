@@ -60,16 +60,16 @@ void AnnotateVisitor::Visit(                                                   \
     }                                                                          \
 }
 
-VISIT_NUMBER_VERTEX(int8_t  , DataType::DT_SCALAR, VT_INT8   )
-VISIT_NUMBER_VERTEX(int16_t , DataType::DT_SCALAR, VT_INT16  )
-VISIT_NUMBER_VERTEX(int32_t , DataType::DT_SCALAR, VT_INT32  )
-VISIT_NUMBER_VERTEX(int64_t , DataType::DT_SCALAR, VT_INT64  )
-VISIT_NUMBER_VERTEX(uint8_t , DataType::DT_SCALAR, VT_UINT8  )
-VISIT_NUMBER_VERTEX(uint16_t, DataType::DT_SCALAR, VT_UINT16 )
-VISIT_NUMBER_VERTEX(uint32_t, DataType::DT_SCALAR, VT_UINT32 )
-VISIT_NUMBER_VERTEX(uint64_t, DataType::DT_SCALAR, VT_UINT64 )
-VISIT_NUMBER_VERTEX(float   , DataType::DT_SCALAR, VT_FLOAT32)
-VISIT_NUMBER_VERTEX(double  , DataType::DT_SCALAR, VT_FLOAT64)
+VISIT_NUMBER_VERTEX(int8_t  , DataTypes::SCALAR, ValueTypes::INT8   )
+VISIT_NUMBER_VERTEX(int16_t , DataTypes::SCALAR, ValueTypes::INT16  )
+VISIT_NUMBER_VERTEX(int32_t , DataTypes::SCALAR, ValueTypes::INT32  )
+VISIT_NUMBER_VERTEX(int64_t , DataTypes::SCALAR, ValueTypes::INT64  )
+VISIT_NUMBER_VERTEX(uint8_t , DataTypes::SCALAR, ValueTypes::UINT8  )
+VISIT_NUMBER_VERTEX(uint16_t, DataTypes::SCALAR, ValueTypes::UINT16 )
+VISIT_NUMBER_VERTEX(uint32_t, DataTypes::SCALAR, ValueTypes::UINT32 )
+VISIT_NUMBER_VERTEX(uint64_t, DataTypes::SCALAR, ValueTypes::UINT64 )
+VISIT_NUMBER_VERTEX(float   , DataTypes::SCALAR, ValueTypes::FLOAT32)
+VISIT_NUMBER_VERTEX(double  , DataTypes::SCALAR, ValueTypes::FLOAT64)
 
 #undef VISIT_NUMBER_VERTEX
 

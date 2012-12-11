@@ -70,4 +70,7 @@ String             operator+           (String const& lhs,
 std::ostream&      operator<<          (std::ostream& stream,
                                         String const& string);
 
+String             join                (std::vector<String> const& strings,
+                                        String const& separator);
+
 } // namespace ranally
