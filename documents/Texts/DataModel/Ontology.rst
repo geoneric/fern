@@ -6,11 +6,12 @@ A feature is a combination of a spatio-temporal domain with one or more attribut
 
 There is always a correspondence between an attribute and some real-world phenomenon. Empirical values are also treated as attributes. Empirical values are tied to the feature earth, or space in general, for example.
 
-Modellers are interested in attributes and there location in space and time, not technicalities. Modellers model concentrations, income, volumes, speeds, directions, etc. The fact that there are things like agents, points, rasters, vectors, single precision floating points, unsigned integers, etc, is an implementation detail that may or may not be relevant to the modeller. It may not matter to him as long as requirements in execution speed, data size, accuracy, etc are met. Since environmental attributes matter more to humans than implementation details, working with attributes results in a simpler, more correct, design for a modelling environment, than working with concepts like rasters, features, time steps, and Monte Carlo sample numbers.
+Modellers are interested in attributes and their location in space and time, not technicalities. Modellers model concentrations, income, volumes, speeds, directions, etc. The fact that there are things like agents, points, rasters, vectors, single precision floating points, unsigned integers, etc, is an implementation detail that may or may not be relevant to the modeller. It may not matter to him as long as requirements in execution speed, data size, accuracy, etc are met. Since environmental attributes matter more to humans than implementation details, working with attributes results in a simpler, more correct, design for a modelling environment, than working with concepts like rasters, features, time steps, and Monte Carlo sample numbers.
 
 In the next section, we describe ways to categorize attributes. This will improve our understanding of what attributes are. After that, we move on to the functions that are used to manipulate attributes in a model. Finally, we have something to say about the modelling environment.
 
 [Attributes vs parameters vs inputs vs outputs]
+[Classical features vs new style features]
 
 Attribute type categorizations
 ------------------------------
@@ -30,9 +31,9 @@ In case information about the uncertainty in an attribute's values is missing, t
 
 Given that, we can conclude that the constant value 5 is an example of an uncertain spatio-temporal attribute value. The value is 5 at all locations in the spatio-temporal domain and the error in the attribute value is zero at all these locations. Reasons why an attribute's value is constant in space and/or time are, for example:
 
-* The spatio-temporal domain is small compared to the variability of the attribute.
+* The spatio-temporal domain is small compared to the amount of variability of the attribute.
 * The measuring technique is not sensitive enough to pick up variation in the attribute's values.
-* Given the modelling task at hand, the model result is not sensitive enough to the attribute's variation.
+* Given the modelling task at hand, the model result is not sensitive enough to the attribute's variation. It may make sense to use a constant value because of better runtime efficiency.
 
 The fact that an attribute's value is constant or varies through space and/or time is not an inherit characteristic of the feature. Therefore:
 
@@ -46,7 +47,7 @@ Constant attribute values can be replaced by varying atttribute values and vice 
 
 Continuous versus discrete variation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-When we consider the type of variation of attribute values, we can categorize the attributes in continuous and discrete types.
+When we consider the type of variation of attribute values, we can categorize the attributes in continuous and discrete varying types.
 
 Spatially continous
 """""""""""""""""""
@@ -74,9 +75,9 @@ Temporal discrete
 
 And now to something completely different...
 """"""""""""""""""""""""""""""""""""""""""""
-Given the current generation of GIS and environmental modelling software, it seems that there are two different kinds of discretisized attributes: those with spatio-temporally discretely varying values (features), and those with spatio-temporally continuously varying values (rasters). But even a spatio-temporally continuously varying attribute is always tied to a discrete entity. A sattelite image, for example, contains spatially continuously varying attribute values, but those values are linked to the area for which these values are defined. In the example of a sattelite image this is the border of the image. In other cases this area may be a research area, a country, a continent, the earth, a set of planets, all planets, etc.
+Given the current generation of GIS and environmental modelling software, it seems that there are two different kinds of discretisized attributes: those with spatio-temporally discretely varying values (features), and those with spatio-temporally continuously varying values (rasters). But even a spatio-temporally continuously varying attribute is always tied to a discrete entity. A satelite image, for example, contains spatially continuously varying attribute values, but those values are linked to the area for which these values are defined. In the example of a satelite image this is the border of the image. In other cases this area may be a research area, a country, a continent, the earth, a set of planets, all planets, etc.
 
-So, when all attribute values are eventually linked to a descrete entity (which we call a feature-item later on), then the thing that is different between the continuously and discretely varying attribute values is the fact that a discretely varying attribute has a single value per feature-item, and a continuously varying attribute has a collection of values (vector, 2D matrix, 3D matrix) per feature-item. In the example of the mass movement event in the previous section, it would be nice to be able to store the start and the end moment of the movement, and be able to continuously record the speed and direction attributes during the event. Likewise, in the case of the sattelite images, the feature's geometry storeѕ the location of the image, but the attribute's continuously varying values are stored using a 2D matrix. More about this in the Data Model section.
+So, when all attribute values are eventually linked to a descrete entity (which we call a feature-item later on), then the thing that is different between the continuously and discretely varying attribute values is the fact that a discretely varying attribute has a single value per feature-item, and a continuously varying attribute has a collection of values (vector, 2D matrix, 3D matrix) per feature-item. In the example of the mass movement event in the previous section, it would be nice to be able to store the start and the end moment of the movement, and be able to continuously record the speed and direction attributes during the event. Likewise, in the case of the satelite images, the feature's geometry storeѕ the location of the image, but the attribute's continuously varying values are stored using a 2D matrix. More about this in the Data Model section.
 
 Mobile versus stationary
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -114,7 +115,7 @@ An attribute contains values that represent the state of the attribute. Function
 
 Functions versus models
 ^^^^^^^^^^^^^^^^^^^^^^^
-A function accepts input attributes and calculates the state values of output attributes. Models (including user defined functions) do the same thing. The difference between the two is a matter of scale / hierarchy. Whether or not a function or a model uses iteration to calculate the result is of no relevance and can be considered an internal detail.
+A function accepts input attributes and calculates the state values of output attributes. Models (including user defined functions) do the same thing. The difference between the two is a matter of scale / hierarchy / complexity. Whether or not a function or a model uses iteration to calculate the result is of no relevance and can be considered an internal detail.
 
 .. important::
 
@@ -136,5 +137,5 @@ A built-in function like slope is, in principal, no different from a user-define
 
 Modelling environment
 ---------------------
-All attributes are passive, in the sense that they are just values and there is no behavioural logic coupled to the attribute that is able to change the attribute values. All attributes are input to operations that return newly calculated attribute values. This is common usage in map algebra implementations, but agent based models tend to use an object oriented type of approach that couples behaviour with attribute values. The same functionality can be achieved by defining functions that recieve attributes that are coupled to spatially discrete objects, for example. This results in a general algebraic modelling language where operations accept all kinds of attributes, creating new attributes.
+All attributes are passive, in the sense that they are just values and there is no behavioural logic coupled to the attribute that is able to change the attribute values. All attributes are input to operations that return newly calculated attribute values. This is common usage in map algebra implementations, but agent based models tend to use an object oriented approach that couples behaviour with attribute values. The same functionality can be achieved by defining functions that recieve attributes that are coupled to spatially discrete objects, for example. This results in a general algebraic modelling language where operations accept all kinds of attributes, creating new attributes.
 

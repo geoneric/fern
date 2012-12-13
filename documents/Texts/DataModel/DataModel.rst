@@ -62,6 +62,8 @@ Feature
 -------
 A feature is a combination of a domain with zero or more associated attributes.
 
+[ Model scalars using a feature with some null domain and a single attribute value? ]
+
 In space, a feature is some spatial entity that has a position in space, and associated attributes. Examples of such features are houses, roads, cities, rivers, boats, planes, continents, etc.
 
 In time, a feature is a collection of moments in time for which an attribute value is available. This can be one or more periods in time, or one or more moments in time. Examples of temporal features are average temperature per geological era, number of animal species going extinct per mass extinction event, number of plant species per interglacial, gross income per interbellum, tax rate per government period, etc.
@@ -100,6 +102,12 @@ A domain contains information about the spatial and/or the temporal domain of th
 In a domain, the feature-items are defined. Each of these items has a unique id which is used to lookup attribute values. For example, a country feature will have a domain consisting of multi-polygon feature-items. Each of these feature-items defines the borders of a single country, whose attributes can be looked up using the feature-item id.
 
 The same domain is referenced by the enclosing feature, as well as each of the feature's attributes. This makes it easier to work with the attributes without a reference to the enclosing feature.
+
+A spatial domain means attribute values vary with space. A temporal domain means attribute values vary with time. A mobile domain means the attribute's position changes with time. Any combination is possible, including a domain that is neither spatial, temporal and mobile. This means a constant value is stored that is constant through space and time.
+
+[ I think a mobile domain doesn't need to be temporal, but maybe they do. I am thinking about a temporal constant value that does change position over time, like the color of a driving car. A mobile domain does need to be spatial. ]
+
+The temporal coordinates with which the mobility is modelled are independent of the temporal coordiantes with which the attribute value variation is modelled.
 
 Attribute
 ---------
