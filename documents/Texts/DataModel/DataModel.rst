@@ -45,24 +45,22 @@ Below is a very high level graph of the data model as described in this document
 
      feature1 -> domain1 [label="1"];
      feature1 -> attribute1 [label="*"];
+     feature1 -> feature2 [label="*", color="grey60", fontcolor="grey60"];
      attribute1 -> domain1 [label="1"];
-     attribute1 -> feature2 [label="?", color="grey60", fontcolor="grey60"];
-     attribute1 -> value1 [label="?"];
+     attribute1 -> value1 [label="1"];
 
      feature2 -> domain2 [label="1", color="grey60", fontcolor="grey60"];
      feature2 -> attribute2 [label="*", color="grey60", fontcolor="grey60"];
+     feature2 -> feature3 [label="*", color="grey80", fontcolor="grey80"];
      attribute2 -> domain2 [label="1", color="grey60", fontcolor="grey60"];
-     attribute2 -> feature3 [label="?", color="grey80", fontcolor="grey80"];
-     attribute2 -> value2 [label="?", color="grey60", fontcolor="grey60"];
+     attribute2 -> value2 [label="1", color="grey60", fontcolor="grey60"];
   }
 
 What folows is a description of each of the classes of information that are part of the data model.
 
 Feature
 -------
-A feature is a combination of a domain with zero or more associated attributes.
-
-[ Model scalars using a feature with some null domain and a single attribute value? ]
+A feature is a combination of a domain with zero or more associated attributes, and zero or more sub-features. For example, a deer feature can be modelled using a mobile point feature that contains the current location, and may have attributes like day_of_birth and weight, and may have sub-features like the minimum bounding rectangle of the first degree family members.
 
 In space, a feature is some spatial entity that has a position in space, and associated attributes. Examples of such features are houses, roads, cities, rivers, boats, planes, continents, etc.
 
@@ -105,9 +103,11 @@ The same domain is referenced by the enclosing feature, as well as each of the f
 
 A spatial domain means attribute values vary with space. A temporal domain means attribute values vary with time. A mobile domain means the attribute's position changes with time. Any combination is possible, including a domain that is neither spatial, temporal and mobile. This means a constant value is stored that is constant through space and time.
 
+[ Again, all feature attributes are uncertain, spatial and temporal. The domain can be spatial or not, meaning that the domain contains spatial coordinates over which the attribute's values change. For a non-spatial domain there is only one such coordinate, or even none. Maybe we should speak of spatial explicit and spatial non-explicit. Non-spatial is a silly and confusing word. Same for temporal. ]
+
 [ I think a mobile domain doesn't need to be temporal, but maybe they do. I am thinking about a temporal constant value that does change position over time, like the color of a driving car. A mobile domain does need to be spatial. ]
 
-The temporal coordinates with which the mobility is modelled are independent of the temporal coordiantes with which the attribute value variation is modelled.
+The temporal coordinates with which the mobility is modelled are independent of the temporal coordinates with which the attribute value variation is modelled.
 
 Attribute
 ---------
