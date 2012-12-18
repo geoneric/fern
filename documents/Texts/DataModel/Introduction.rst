@@ -1,6 +1,6 @@
 Introduction
 ============
-This document describes concepts that are common to feature-based and field-based modelling with uncertain spatio-temporal feature attributes. The ultimate goal is to develop a modelling environment for uncertain attributes of spatio-temporal phenomena, descritisized as features or as fields.
+This document describes concepts that are common to feature-based and field-based modelling with uncertain spatio-temporal feature attributes. The ultimate goal is to develop a modelling environment for uncertain attributes of spatio-temporal phenomena, descritisized as features or as fields. We envision a feature algebra of which map algebra is a subset. Everything that is possible in map algebra is also possible in feature algebra, and much more.
 
 Yet another modelling language???
 ---------------------------------
