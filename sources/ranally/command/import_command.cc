@@ -57,7 +57,7 @@ int ImportCommand::execute() const
     else {
         String input_dataset_name = argv()[1];
         String output_dataset_name = argv()[2];
-        import(input_dataset_name, output_dataset_name);
+        // import(input_dataset_name, output_dataset_name);
         status = EXIT_SUCCESS;
     }
 

@@ -11,7 +11,7 @@ ADD_DEPENDENCIES(ranally
 )
 TARGET_LINK_LIBRARIES(ranally
     ranally_interpreter
-    ranally_io
+    # ranally_io
     ranally_language
     ranally_python
     ranally_operation
