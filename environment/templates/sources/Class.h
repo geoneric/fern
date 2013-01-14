@@ -35,5 +35,3 @@ private:
 };
 
 } // namespace ranally
-
-#endif

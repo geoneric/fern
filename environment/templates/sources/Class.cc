@@ -3,13 +3,13 @@
 
 namespace ranally {
 
-Class::Class()
-{
-}
-
-
-Class::~Class()
-{
-}
+// Class::Class()
+// {
+// }
+// 
+// 
+// Class::~Class()
+// {
+// }
 
 } // namespace ranally
