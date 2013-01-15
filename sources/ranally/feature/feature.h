@@ -7,6 +7,7 @@
 namespace ranally {
 
 class Attribute;
+class Domain;
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -17,11 +18,10 @@ class Attribute;
 class Feature
 {
 
-    friend class featureTest;
-
 public:
 
-                   Feature             ()=default;
+    template<class Domain>
+                   Feature             (std::shared_ptr<Domain> const& domain);
 
                    Feature             (Feature const&)=delete;
 
@@ -34,7 +34,15 @@ public:
                    ~Feature            ()=default;
 
     template<class Attribute>
-    void           add_attribute       (std::shared_ptr<Attribute>& attribute);
+    void           add_attribute       (std::shared_ptr<Attribute> const&
+                                           attribute);
+
+    template<class Attribute>
+    std::shared_ptr<Attribute> attribute(
+                                        String const& name) const;
+
+    template<class Domain>
+    std::shared_ptr<Domain> domain     () const;
 
     size_t         nr_attributes       () const;
 
@@ -42,9 +50,31 @@ protected:
 
 private:
 
+    std::shared_ptr<Domain> _domain;
+
     std::map<String, std::shared_ptr<Attribute>> _attributes;
 
+    std::shared_ptr<Attribute> attribute(
+                                        String const& name) const;
+
 };
+
+
+template<class Domain>
+inline Feature::Feature(
+    std::shared_ptr<Domain> const& domain)
+
+    : _domain(domain)
+
+{
+}
+
+
+template<class Domain>
+std::shared_ptr<Domain> Feature::domain() const
+{
+    return std::dynamic_pointer_cast<Domain>(_domain);
+}
 
 
 //! Add an attribute to the feature.
@@ -55,10 +85,18 @@ private:
 */
 template<class Attribute>
 inline void Feature::add_attribute(
-    std::shared_ptr<Attribute>& attribute)
+    std::shared_ptr<Attribute> const& attribute)
 {
     assert(_attributes.find(attribute->name()) == _attributes.end());
     _attributes[attribute->name()] = attribute;
+}
+
+
+template<class Attribute>
+inline std::shared_ptr<Attribute> Feature::attribute(
+    String const& name) const
+{
+    return std::dynamic_pointer_cast<Attribute>(attribute(name));
 }
 
 } // namespace ranally

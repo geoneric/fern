@@ -15,9 +15,13 @@ namespace ranally {
 class Attribute
 {
 
-    friend class AttributeTest;
-
 public:
+
+    virtual        ~Attribute          ()=default;
+
+    String const&  name                () const;
+
+protected:
 
                    Attribute           (String const& name);
 
@@ -28,12 +32,6 @@ public:
                    Attribute           (Attribute&&)=delete;
 
     Attribute&     operator=           (Attribute&&)=delete;
-
-                   ~Attribute          ()=default;
-
-    String const&  name                () const;
-
-protected:
 
 private:
 

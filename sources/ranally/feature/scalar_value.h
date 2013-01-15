@@ -4,18 +4,15 @@
 
 namespace ranally {
 
-//! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
+//! ScalarValue is an attribute value that contains a single value.
 /*!
-  longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
-
-  \sa        .
+  ScalarValue instances can be associated with a ScalarDomain in a
+  ScalarAttribute.
 */
 template<class T>
 class ScalarValue:
     public Value
 {
-
-    friend class ScalarValueTest;
 
 public:
 
@@ -31,7 +28,7 @@ public:
 
                    ~ScalarValue        ();
 
-protected:
+    T const&       operator()          () const;
 
 private:
 
@@ -46,6 +43,7 @@ inline ScalarValue<T>::ScalarValue(
 
     : Value(),
       _value(value)
+
 {
 }
 
@@ -53,6 +51,13 @@ inline ScalarValue<T>::ScalarValue(
 template<class T>
 inline ScalarValue<T>::~ScalarValue()
 {
+}
+
+
+template<class T>
+inline T const& ScalarValue<T>::operator()() const
+{
+    return _value;
 }
 
 } // namespace ranally

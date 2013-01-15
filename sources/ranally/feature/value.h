@@ -12,8 +12,6 @@ namespace ranally {
 class Value
 {
 
-    friend class ValueTest;
-
 public:
 
 protected:

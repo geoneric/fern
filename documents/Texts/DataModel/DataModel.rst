@@ -271,3 +271,107 @@ Misc
 ----
 * Features are allowed to overlap, for example when 2D trees in a forrest are represented as (horizontal) polygons instead of points.
 
+
+
+
+
+Alternative idea
+----------------
+
+.. graphviz::
+
+   digraph DataModel {
+     feature1[
+       label="Feature"
+     ]
+     feature2[
+       label="Feature",
+       color="grey60",
+       fontcolor="grey60"
+     ]
+     feature3[
+       label="Feature"
+       color="grey80",
+       fontcolor="grey80"
+     ]
+     domain1[
+       label="Domain"
+     ]
+     domain2[
+       label="Domain"
+       color="grey60",
+       fontcolor="grey60"
+     ]
+     attribute1[
+       label="Attribute"
+     ]
+     attribute2[
+       label="Attribute"
+       color="grey60",
+       fontcolor="grey60"
+     ]
+     value1[
+       label="Value"
+     ]
+     value2[
+       label="Value"
+       color="grey60",
+       fontcolor="grey60"
+     ]
+
+     feature1 -> domain1 [label="1"];
+     feature1 -> attribute1 [label="*"];
+     attribute1 -> domain1 [label="1 (filtered)"]
+     attribute1 -> value1 [label="*"];
+     attribute1 -> feature2 [label="*"];
+     // value1 -> domain1 [ label="1"];
+
+     feature2 -> domain2 [ label="1", color="grey60", fontcolor="grey60"];
+     feature2 -> attribute2 [label="*", color="grey60", fontcolor="grey60"];
+     attribute2 -> domain2 [label="1 (filtered)", color="grey60", fontcolor="grey60"];
+     attribute2 -> value2 [label="*", color="grey60", fontcolor="grey60"];
+     attribute2 -> feature3 [label="*", color="grey60", fontcolor="grey60"];
+     // value2 -> domain2 [ label="1", color="grey60", fontcolor="grey60"];
+
+     // feature3 -> domain2 [ label="1", color="grey80", fontcolor="grey80"];
+  }
+
+* A feature has a domain. This pins the feature in spatio-temporal space.
+* A feature has zero or more attributes. These attribute describe the feature, given its domain.
+* An attribute contains zero or more values, and zero or more sub-features. These values and sub-features contain information given, a subset of, a feature's domain.
+* Values describe some simple property of, a subset of, a feature's domain.
+* Sub-features describe some more complex property of, a subset of, a feature's domain. Sub-features are features.
+
+*Police car example:*
+
+In an application it may be relevant to model the police cars driving through a city. Such a `police_car` feature is a mobile spatial point feature. Its position changes through time. We can think of various attributes of the `police_car` feature:
+
+* Its `id`.
+* Its `current_speed`.
+* The `officers` in the car.
+* The `zone` that can be reached within 10 minutes of time, given the road network and its properties (speed limits, current traffic conditions, etc).
+
+Each officer may also have some relevant attributes:
+
+* His `id`.
+* His `residence`.
+
+Residence may be a point feature with some relevant attributes:
+
+* The `phone_number`.
+
+Some of these attributes are simple values that can be stored per point feature-item. Some of them are mobile and some of them are not. A single id is stored per `police_car` point feature. But speed is tracked through time, with new values added to the `current_speed` attribute's list of values as the `police_car` feature's mobile point domain is updated. So, the `id` attribute contains a value for a subset of the `police_car`'s domain, while the `speed` attribute contains a value for each feature-item in the `police_car`'s domain. Attributes containing a value for each feature-item in, a filtered view of, a feature's domain are called value-attributes.
+
+Some of the `police_car`'s attributes are features themselves. The `zone` attribute is a mobile polygon feature. For each feature-item in the `police_car`'s domain (for each point), there is a corresponding polygon feature item in the `zone` attribute. Since zone is a feature it can contain attributes too, like properties of the neighborhood covered by each `zone`. Attributes containing a feature-item for each feature-item in, a filtered view of, a feature's domain are called feature-attributes.
+
+This allows for various many-to-n and n-to-many relations. A single policy car may contain multiple officers that have different residences.
+
+Although this data model allows for all data to be stored in a single database, from a practical standpoint, it makes more sense to use links (or joins in database speak) between pieces of data. The police car has its attributes, while persons have their own attributes. The `police_car`'s officers may be linked, by `person_id` to the `person` features to be able to easily use their attributes given the `police_car` feature.
+
+.. code-block:: python
+
+   # Convex hull around the residences of all officers driving around in police
+   # cars:
+   convex_hull = convex_hull(police_car.officers.residence)
+
+One can think of a feature's position in time and place as attributes too. These are standard attributes which are grouped in the domain. The other, model specific, attributes are dependend on the domain attributes.

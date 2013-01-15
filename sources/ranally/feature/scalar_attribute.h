@@ -19,8 +19,6 @@ class ScalarAttribute:
     public Attribute
 {
 
-    friend class ScalarAttributeTest;
-
 public:
 
                    ScalarAttribute     (String const& name,
@@ -39,7 +37,7 @@ public:
 
                    ~ScalarAttribute    ()=default;
 
-protected:
+    std::shared_ptr<ScalarValue<T>> const& value() const;
 
 private:
 
@@ -63,6 +61,13 @@ inline ScalarAttribute<T>::ScalarAttribute(
 {
     assert(_domain);
     assert(_value);
+}
+
+
+template<class T>
+inline std::shared_ptr<ScalarValue<T>> const& ScalarAttribute<T>::value() const
+{
+    return _value;
 }
 
 } // namespace ranally

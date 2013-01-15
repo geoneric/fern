@@ -12,8 +12,6 @@ namespace ranally {
 class Class
 {
 
-    friend class ClassTest;
-
 public:
 
                    Class               ()=default;

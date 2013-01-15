@@ -12,8 +12,6 @@ namespace ranally {
 class Domain
 {
 
-    friend class DomainTest;
-
 public:
 
     virtual        ~Domain             ()=default;
