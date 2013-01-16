@@ -1,6 +1,9 @@
 Glossary
 ========
 
+..
+   TODO period, episode
+
 .. glossary::
    :sorted:
 
