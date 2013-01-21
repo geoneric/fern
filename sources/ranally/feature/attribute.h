@@ -37,8 +37,6 @@ private:
 
     String         _name;
 
-    // std::unique_ptr<Feature> _feature;
-
 };
 
 } // namespace ranally

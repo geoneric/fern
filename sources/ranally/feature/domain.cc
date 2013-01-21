@@ -6,10 +6,10 @@ namespace ranally {
 // Domain::Domain()
 // {
 // }
-// 
-// 
-// Domain::~Domain()
-// {
-// }
+
+
+Domain::~Domain()
+{
+}
 
 } // namespace ranally

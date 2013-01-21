@@ -1,8 +1,7 @@
 #pragma once
 #include <memory>
-#include <vector>
 #include "ranally/feature/domain.h"
-#include "ranally/feature/geometry.h"
+#include "ranally/feature/fid_map.h"
 
 
 namespace ranally {
@@ -13,14 +12,16 @@ namespace ranally {
 
   \sa        .
 */
-template<class Model>
+template<
+    class Geometry>
 class FeatureDomain:
-    public Domain
+    public Domain,
+    public FidMap<Geometry>
 {
 
 public:
 
-                   FeatureDomain       ()=default;
+                   FeatureDomain       ();
 
                    FeatureDomain       (FeatureDomain const&)=delete;
 
@@ -30,31 +31,28 @@ public:
 
     FeatureDomain& operator=           (FeatureDomain&&)=delete;
 
-                   ~FeatureDomain      () noexcept(true)=default;
-
-    void           append              (Model const& model);
-
-    std::vector<Model> const& geometry () const;
+                   ~FeatureDomain      ();
 
 private:
-
-    std::vector<Model> _geometry;
 
 };
 
 
-template<class Model>
-void FeatureDomain<Model>::append(
-    Model const& model)
+template<
+    class Geometry>
+inline FeatureDomain<Geometry>::FeatureDomain()
+
+    : Domain(),
+      FidMap<Geometry>()
+
 {
-    _geometry.push_back(model);
 }
 
 
-template<class Model>
-inline std::vector<Model> const& FeatureDomain<Model>::geometry() const
+template<
+    class Geometry>
+inline FeatureDomain<Geometry>::~FeatureDomain()
 {
-    return _geometry;
 }
 
 } // namespace ranally

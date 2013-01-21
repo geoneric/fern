@@ -14,7 +14,8 @@ namespace ranally {
 
   \sa        .
 */
-template<class T>
+template<
+    class T>
 class ScalarAttribute:
     public Attribute
 {
@@ -48,7 +49,8 @@ private:
 };
 
 
-template<class T>
+template<
+    class T>
 inline ScalarAttribute<T>::ScalarAttribute(
     String const& name,
     std::shared_ptr<ScalarDomain> const& domain,
@@ -64,7 +66,8 @@ inline ScalarAttribute<T>::ScalarAttribute(
 }
 
 
-template<class T>
+template<
+    class T>
 inline std::shared_ptr<ScalarValue<T>> const& ScalarAttribute<T>::value() const
 {
     return _value;

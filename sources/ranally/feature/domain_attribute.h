@@ -1,0 +1,82 @@
+#pragma once
+#include <cassert>
+#include <memory>
+#include "ranally/feature/attribute.h"
+#include "ranally/feature/feature_domain.h"
+#include "ranally/feature/domain_value.h"
+
+
+namespace ranally {
+
+//! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
+/*!
+  longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
+
+  \sa        .
+*/
+template<
+    class Model,
+    class T>
+class DomainAttribute:
+    public Attribute
+{
+
+public:
+
+                   DomainAttribute     (
+                                   String const& name,
+                                   std::shared_ptr<FeatureDomain<Model>> const&
+                                        domain,
+                                   std::shared_ptr<DomainValue<T>> const&
+                                       value);
+
+                   DomainAttribute     (DomainAttribute const&)=delete;
+
+    DomainAttribute& operator=         (DomainAttribute const&)=delete;
+
+                   DomainAttribute     (DomainAttribute&&)=delete;
+
+    DomainAttribute& operator=         (DomainAttribute&&)=delete;
+
+                   ~DomainAttribute    ()=default;
+
+    std::shared_ptr<DomainValue<T>> const& value() const;
+
+private:
+
+    std::shared_ptr<FeatureDomain<Model>> _domain;
+
+    std::shared_ptr<DomainValue<T>> _value;
+
+};
+
+
+template<
+    class Model,
+    class T>
+inline DomainAttribute<Model, T>::DomainAttribute(
+    String const& name,
+    std::shared_ptr<FeatureDomain<Model>> const& domain,
+    std::shared_ptr<DomainValue<T>> const& value)
+
+    : Attribute(name),
+      _domain(domain),
+      _value(value)
+
+{
+    assert(_domain);
+    assert(_value);
+    assert(_domain->size() == _value->size());
+}
+
+
+template<
+    class Model,
+    class T>
+inline std::shared_ptr<DomainValue<T>> const&
+    DomainAttribute<Model, T>::value() const
+{
+    return _value;
+}
+
+} // namespace ranally

@@ -6,10 +6,10 @@ namespace ranally {
 // ScalarDomain::ScalarDomain()
 // {
 // }
-// 
-// 
-// ScalarDomain::~ScalarDomain()
-// {
-// }
+
+
+ScalarDomain::~ScalarDomain()
+{
+}
 
 } // namespace ranally

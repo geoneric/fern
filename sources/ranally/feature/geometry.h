@@ -13,9 +13,58 @@ namespace ranally {
 //      one and project all incoming data to that cs?
 
 typedef double Coordinate;
+typedef int64_t Fid;
 
-typedef boost::geometry::model::point<Coordinate, 2,
-    boost::geometry::cs::cartesian > Point;
+
+namespace detail {
+
+  typedef boost::geometry::model::point<Coordinate, 2,
+      boost::geometry::cs::cartesian> PointBase;
+}
+
+typedef detail::PointBase Point;
+
+
+// class Point:
+//     public detail::PointBase
+// {
+// 
+// public:
+// 
+//                    Point               ();
+// 
+//                    Point               (Coordinate x,
+//                                         Coordinate y);
+//                                         // Fid fid);
+// 
+// private:
+// 
+//     // //! Feature-id.
+//     // Fid            _fid;
+// 
+// };
+// 
+// 
+// inline Point::Point()
+// 
+//     : detail::PointBase()
+// 
+// {
+// }
+// 
+// 
+// inline Point::Point(
+//     Coordinate x,
+//     Coordinate y)
+//     // Fid fid)
+// 
+//     : detail::PointBase(x, y) // ,
+//       // _fid(fid)
+// 
+// {
+// }
+
+
 
 namespace detail {
     //! Points are stored in clock-wise direction.
@@ -37,3 +86,40 @@ typedef boost::geometry::model::polygon<Point, detail::clockWise,
 // typedef std::shared_ptr<Polygons> PolygonsPtr;
 
 } // namespace ranally
+
+
+namespace boost {
+namespace geometry {
+namespace model {
+
+inline bool operator==(
+    ranally::Point const& lhs,
+    ranally::Point const& rhs)
+{
+   return
+       boost::geometry::get<0>(lhs) == boost::geometry::get<0>(rhs) &&
+       boost::geometry::get<1>(lhs) == boost::geometry::get<1>(rhs)
+       ;
+}
+
+} // namespace model
+} // namespace geometry
+
+namespace test_tools {
+
+inline std::ostream& operator<<(
+    std::ostream& stream,
+    ranally::Point const& point)
+{
+    stream << "(" <<
+        boost::geometry::get<0>(point)
+        << ", " <<
+        boost::geometry::get<1>(point)
+        << ")"
+        ;
+    return stream;
+}
+
+} // namespace test_tools
+} // namespace boost
+

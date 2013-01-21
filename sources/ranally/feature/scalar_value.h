@@ -9,7 +9,8 @@ namespace ranally {
   ScalarValue instances can be associated with a ScalarDomain in a
   ScalarAttribute.
 */
-template<class T>
+template<
+    class T>
 class ScalarValue:
     public Value
 {
@@ -37,7 +38,8 @@ private:
 };
 
 
-template<class T>
+template<
+    class T>
 inline ScalarValue<T>::ScalarValue(
     T const& value)
 
@@ -48,13 +50,15 @@ inline ScalarValue<T>::ScalarValue(
 }
 
 
-template<class T>
+template<
+    class T>
 inline ScalarValue<T>::~ScalarValue()
 {
 }
 
 
-template<class T>
+template<
+    class T>
 inline T const& ScalarValue<T>::operator()() const
 {
     return _value;

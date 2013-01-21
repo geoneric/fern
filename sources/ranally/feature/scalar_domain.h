@@ -24,7 +24,7 @@ public:
 
     ScalarDomain&  operator=           (ScalarDomain&&)=delete;
 
-                   ~ScalarDomain       () noexcept(true)=default;
+                   ~ScalarDomain       ();
 
 protected:
 

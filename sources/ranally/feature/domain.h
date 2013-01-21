@@ -14,7 +14,7 @@ class Domain
 
 public:
 
-    virtual        ~Domain             ()=default;
+    virtual        ~Domain             ();
 
 protected:
 

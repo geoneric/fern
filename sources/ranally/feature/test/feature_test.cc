@@ -5,6 +5,7 @@
 // #include <boost/geometry/geometries/adapted/c_array.hpp>
 #include "ranally/core/string.h"
 #include "ranally/feature/attribute.h"
+#include "ranally/feature/domain_attribute.h"
 #include "ranally/feature/domain_value.h"
 #include "ranally/feature/feature.h"
 #include "ranally/feature/feature_domain.h"
@@ -68,10 +69,10 @@ BOOST_AUTO_TEST_CASE(point_feature_value_attributes)
 
     // We have four points representing four police cars.
     auto domain(std::make_shared<FeatureDomain<Point>>());
-    domain->append(Point(1.0, 1.0));
-    domain->append(Point(1.0, 2.0));
-    domain->append(Point(2.0, 2.0));
-    domain->append(Point(2.0, 1.0));
+    domain->insert(1, Point(1.0, 1.0));
+    domain->insert(2, Point(1.0, 2.0));
+    domain->insert(3, Point(2.0, 2.0));
+    domain->insert(4, Point(2.0, 1.0));
 
     // The feature contains the domain and no attributes.
     Feature police_car(domain);
@@ -80,18 +81,70 @@ BOOST_AUTO_TEST_CASE(point_feature_value_attributes)
 
     // id, uint8
     auto id_value(std::make_shared<DomainValue<uint8_t>>(*domain));
-    assert(id_value->size() == domain->geometry().size());
-    auto& values((*id_value)());
-    values[0] = 3u;
-    values[1] = 5u;
-    values[2] = 7u;
-    values[3] = 9u;
-    // auto id_attribute(std::make_shared<DomainAttribute<uint8_t>>("id", domain,
-    //     id_value));
+    BOOST_REQUIRE_EQUAL(id_value->size(), domain->size());
+    id_value->insert(1, 3u);
+    id_value->insert(2, 5u);
+    id_value->insert(3, 7u);
+    id_value->insert(4, 9u);
+    auto id_attribute(std::make_shared<DomainAttribute<Point, uint8_t>>("id",
+        domain, id_value));
+    police_car.add_attribute(id_attribute);
+
+    // TODO More attributes...
+
+    // Test the police_car's domain.
+    domain = police_car.domain<FeatureDomain<Point>>();
+    BOOST_CHECK_EQUAL(domain->size(), 4u);
+    BOOST_CHECK_EQUAL(domain->at(1), Point(1.0, 1.0));
+    BOOST_CHECK_EQUAL(domain->at(2), Point(1.0, 2.0));
+    BOOST_CHECK_EQUAL(domain->at(3), Point(2.0, 2.0));
+    BOOST_CHECK_EQUAL(domain->at(4), Point(2.0, 1.0));
+
+    // Test the police_car's attributes.
+    id_attribute = police_car.attribute<DomainAttribute<Point, uint8_t>>("id");
+    BOOST_REQUIRE(id_attribute);
+    id_value = id_attribute->value();
+    BOOST_CHECK_EQUAL(id_value->size(), 4u);
+    BOOST_CHECK_EQUAL(id_value->at(1), 3u);
+    BOOST_CHECK_EQUAL(id_value->at(2), 5u);
+    BOOST_CHECK_EQUAL(id_value->at(3), 7u);
+    BOOST_CHECK_EQUAL(id_value->at(4), 9u);
+}
+
+
+BOOST_AUTO_TEST_CASE(point_feature_feature_attributes)
+{
+    using namespace ranally;
+
+    // Let's play with the deer car feature, being a point feature with some
+    // feature attributes.
+
+    // We have four points representing four deer cars.
+    auto domain(std::make_shared<FeatureDomain<Point>>());
+    domain->insert(1, Point(1.0, 1.0));
+    domain->insert(2, Point(1.0, 2.0));
+    domain->insert(3, Point(2.0, 2.0));
+    domain->insert(4, Point(2.0, 1.0));
+
+    // The feature contains the domain and no attributes.
+    Feature deer(domain);
+
+    // Add some feature attributes.
+
+    // place_of_birth, point feature.
+    // First create the place_of_birth feature, then add it as a value to the
+    // deer feature.
+    // auto place_of_birth(std::make_shared<DomainValue<Feature>>(*domain));
+    // BOOST_REQUIRE_EQUAL(place_of_birth->size(), domain->size());
+    // place_of_birth->insert(1, 3u);
+    // place_of_birth->insert(2, 5u);
+    // place_of_birth->insert(3, 7u);
+    // place_of_birth->insert(4, 9u);
+    // auto id_attribute(std::make_shared<DomainAttribute<Point, uint8_t>>("id",
+    //     domain, place_of_birth));
     // police_car.add_attribute(id_attribute);
 
 
-    // Test the police_car's attributes.
 
 
 }

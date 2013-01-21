@@ -60,7 +60,8 @@ private:
 };
 
 
-template<class Domain>
+template<
+    class Domain>
 inline Feature::Feature(
     std::shared_ptr<Domain> const& domain)
 
@@ -70,7 +71,8 @@ inline Feature::Feature(
 }
 
 
-template<class Domain>
+template<
+    class Domain>
 std::shared_ptr<Domain> Feature::domain() const
 {
     return std::dynamic_pointer_cast<Domain>(_domain);
@@ -83,7 +85,8 @@ std::shared_ptr<Domain> Feature::domain() const
   \param     attribute Pointer to Attribute instance.
   \warning   An equally named attribute must not already exist in the feature.
 */
-template<class Attribute>
+template<
+    class Attribute>
 inline void Feature::add_attribute(
     std::shared_ptr<Attribute> const& attribute)
 {
@@ -92,7 +95,8 @@ inline void Feature::add_attribute(
 }
 
 
-template<class Attribute>
+template<
+    class Attribute>
 inline std::shared_ptr<Attribute> Feature::attribute(
     String const& name) const
 {
