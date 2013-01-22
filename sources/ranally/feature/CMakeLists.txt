@@ -4,6 +4,7 @@ SET(SOURCES
     attribute
     domain
     feature
+    # feature_domain_value
     scalar_domain
     value
 )

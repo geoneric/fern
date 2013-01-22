@@ -9,6 +9,7 @@
 #include "ranally/feature/domain_value.h"
 #include "ranally/feature/feature.h"
 #include "ranally/feature/feature_domain.h"
+// #include "ranally/feature/feature_domain_value.h"
 // #include "ranally/feature/point_domain.h"
 // #include "ranally/feature/polygon_domain.h"
 #include "ranally/feature/scalar_attribute.h"
@@ -134,7 +135,8 @@ BOOST_AUTO_TEST_CASE(point_feature_feature_attributes)
     // place_of_birth, point feature.
     // First create the place_of_birth feature, then add it as a value to the
     // deer feature.
-    // auto place_of_birth(std::make_shared<DomainValue<Feature>>(*domain));
+
+    // auto place_of_birth(std::make_shared<FeatureDomainValue>(*domain));
     // BOOST_REQUIRE_EQUAL(place_of_birth->size(), domain->size());
     // place_of_birth->insert(1, 3u);
     // place_of_birth->insert(2, 5u);

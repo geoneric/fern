@@ -10,19 +10,19 @@
 export DEVENV_BRANCH=master
 
 _devEnv="$DEVELOPMENT_ROOT/projects/DevEnv"
-_personalConfiguration="$_devEnv/Configuration/personal/Kor"
+_personalConfiguration="$_devEnv/configuration/personal/kor"
 
 # Load common settings and utility functions.
 # source "$_personalConfiguration/Profiles/Utils.sh"
-source "$_personalConfiguration/Profiles/common" $1
+source "$_personalConfiguration/profiles/common" $1
 # setPcrTeamExternIfNotSetAlready $DEVENV_BRANCH
 
 # Load project settings.
-source "$_personalConfiguration/Profiles/DevEnv"
+source "$_personalConfiguration/profiles/DevEnv"
 
 export RANALLY=$projects/Ranally
 
-export CDPATH=$CDPATH:$RANALLY/Sources/Ranally
+# export CDPATH=$CDPATH:$RANALLY/Sources/Ranally
 
 _baseName=`basename $RANALLY`
 
