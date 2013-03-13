@@ -4,6 +4,27 @@
 
 namespace ranally {
 
+#define VISIT_NUMBER_VERTEX()                                                  \
+void AnnotateVisitor::Visit(                                                   \
+    NumberVertex<type>& vertex)                                                \
+{                                                                              \
+    std::cout << "Push number on stack" << std::endl                           \
+}
+
+VISIT_NUMBER_VERTEX(int8_t  )
+VISIT_NUMBER_VERTEX(int16_t )
+VISIT_NUMBER_VERTEX(int32_t )
+VISIT_NUMBER_VERTEX(int64_t )
+VISIT_NUMBER_VERTEX(uint8_t )
+VISIT_NUMBER_VERTEX(uint16_t)
+VISIT_NUMBER_VERTEX(uint32_t)
+VISIT_NUMBER_VERTEX(uint64_t)
+VISIT_NUMBER_VERTEX(float   )
+VISIT_NUMBER_VERTEX(double  )
+
+#undef VISIT_NUMBER_VERTEX
+
+
 void ExecuteVisitor::Visit(
     OperationVertex& vertex)
 {
@@ -17,6 +38,9 @@ void ExecuteVisitor::Visit(
     //      the values.
     //      Where to store the result values is related to where to store the
     //      argument values
+
+    // TODO Create stack with operand values. boost::any
+
     std::cout << "execute: " << vertex.name() << std::endl;
 }
 
