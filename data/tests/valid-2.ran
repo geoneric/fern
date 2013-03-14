@@ -1,0 +1,4 @@
+# Valid syntax.
+# Unknown function 'does_not_exist'.
+b = 5
+a = does_not_exist(b)
