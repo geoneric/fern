@@ -1,36 +1,20 @@
 # vim:syntax=sh
 
-# Requires:
-# - DEVELOPMENT_ROOT
-# Sets:
-# - DEVENV_BRANCH
-# - RANALLY
-
-# Set branches.
 export DEVENV_BRANCH=master
 
-_devEnv="$DEVELOPMENT_ROOT/projects/DevEnv"
-_personalConfiguration="$_devEnv/configuration/personal/kor"
+_devenv="$PROJECTS/`ls $PROJECTS | grep -i \"^devenv$\"`"
+_personal_configuration="$_devenv/configuration/personal/kor"
+unset _devenv
 
-# Load common settings and utility functions.
-# source "$_personalConfiguration/Profiles/Utils.sh"
-source "$_personalConfiguration/profiles/common" $1
-# setPcrTeamExternIfNotSetAlready $DEVENV_BRANCH
-
-# Load project settings.
-source "$_personalConfiguration/profiles/DevEnv"
+source "$_personal_configuration/profiles/common" $1
+source "$_personal_configuration/profiles/DevEnv"
+unset _personal_configuration
 
 export RANALLY=$projects/Ranally
 
-# export CDPATH=$CDPATH:$RANALLY/Sources/Ranally
-
-_baseName=`basename $RANALLY`
-
-export PATH=$RANALLY/environment/scripts:$OBJECTS/$_baseName/bin:$PATH
-
+_basename=`basename $RANALLY`
+export PATH=$RANALLY/environment/scripts:$OBJECTS/$_basename/bin:$PATH
 unset _basename
-unset _devEnv
-unset _personalConfiguration
 
 cd $RANALLY
 setPromptForProject Ranally $BUILD_TYPE
