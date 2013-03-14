@@ -55,6 +55,10 @@ void AnnotateVisitor::Visit(                                                   \
     }                                                                          \
 }
 
+// TODO Use traits in the implementation! Don't pass these things to the macro.
+// TODO Refactor all these macro call lists. They are everywhere. Make a
+//      VISIT_NUMBER_VERTICES macro that calls the macro for each numeric
+//      type.
 VISIT_NUMBER_VERTEX(int8_t  , DataTypes::SCALAR, ValueTypes::INT8   )
 VISIT_NUMBER_VERTEX(int16_t , DataTypes::SCALAR, ValueTypes::INT16  )
 VISIT_NUMBER_VERTEX(int32_t , DataTypes::SCALAR, ValueTypes::INT32  )
