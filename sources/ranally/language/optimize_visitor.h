@@ -16,6 +16,8 @@ namespace ranally {
   \todo      Not sure if a visitor is the way to go. This visitor updates the
              shape of the syntax tree, which is currently visited! Maybe a new
              tree should be created?
+  \todo      Get rid of assignments to variables that aren't used later on.
+             Warn about them.
   \sa        .
 */
 class OptimizeVisitor
