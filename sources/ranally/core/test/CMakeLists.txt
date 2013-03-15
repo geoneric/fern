@@ -1,4 +1,5 @@
 SET(TEST_NAMES
+    stack_test
     string_test
 )
 

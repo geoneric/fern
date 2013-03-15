@@ -6,6 +6,7 @@ SET(SOURCES
     messages
     parse_error
     script_error
+    stack
     string
     validate_error
 )
