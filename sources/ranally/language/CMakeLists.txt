@@ -27,7 +27,6 @@ SET(SOURCES
     ast_dot_visitor
     copy_visitor
     dot_visitor
-    execute_visitor
     expression_vertex
     function_vertex
     identify_visitor

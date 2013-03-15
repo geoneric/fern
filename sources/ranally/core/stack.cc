@@ -3,6 +3,12 @@
 
 namespace ranally {
 
+boost::any const& Stack::top() const
+{
+  return _stack.top();
+}
+
+
 void Stack::pop()
 {
     _stack.pop();

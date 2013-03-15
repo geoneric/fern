@@ -1,4 +1,5 @@
 SET(TEST_NAMES
+    execute_visitor_test
     interpreter_test
 )
 

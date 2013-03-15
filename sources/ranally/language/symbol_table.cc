@@ -8,7 +8,7 @@ namespace ranally {
 
 //! Destruct a symbol table.
 /*!
-  All definitions in all scopes are removed.
+  All values in all scopes are removed.
 */
 SymbolTable::~SymbolTable()
 {
@@ -17,36 +17,37 @@ SymbolTable::~SymbolTable()
     }
 
     assert(_scopes.empty());
-    assert(_definitions.empty());
+    assert(_values.empty());
 }
 
 
-SymbolTable::Definitions const& SymbolTable::definitions(
-    String const& name) const
-{
-    assert(has_definition(name));
-    return _definitions.find(name)->second;
-}
-
-
-SymbolTable::Definitions& SymbolTable::definitions(
-    String const& name)
-{
-    assert(has_definition(name));
-    return _definitions.find(name)->second;
-}
+// SymbolTable::Values const& SymbolTable::values(
+//     String const& name) const
+// {
+//     assert(has_value(name));
+//     return _values.find(name)->second;
+// }
+// 
+// 
+// SymbolTable::Values& SymbolTable::values(
+//     String const& name)
+// {
+//     assert(has_value(name));
+//     return _values.find(name)->second;
+// }
 
 
 //! Add a scope to the symbol table.
 /*!
   \sa        pop_scope().
 
-  All subsequent calls to add_definition(NameVertex*) will add definitions
-  to this new scope.
+  All subsequent calls to add_value(String const&, NameVertex*) will add
+  values to this new scope.
 */
 void SymbolTable::push_scope()
 {
-    _scopes.push_back(Definitions());
+    _scopes.push_back(Values());
+    _scopes2.push_back(Scope<SymbolTable::T>());
 }
 
 
@@ -55,29 +56,32 @@ void SymbolTable::push_scope()
   \warning   push_scope() must have been called first.
   \sa        push_scope().
 
-  All definitions present in the current scope are removed.
+  All values present in the current scope are removed.
 */
 void SymbolTable::pop_scope()
 {
-    // For all definitions in the top-most scope, first remove them from the
-    // definitions map. After that they can be removed from the scope stack.
+    // For all values in the top-most scope, first remove them from the
+    // values map. After that they can be removed from the scope stack.
 
     assert(!_scopes.empty());
 
-    for(auto definition: _scopes.back()) {
-        Definitions& definitions(this->definitions(definition->name()));
-        assert(std::find(definitions.begin(), definitions.end(), definition) !=
-            definitions.end());
-        definitions.remove(definition);
+    for(auto value: _scopes.back()) {
+        // TODO...
+        Values& values(this->values(value->name()));
+        assert(std::find(values.begin(), values.end(), value) !=
+            values.end());
+        values.remove(value);
 
-        // Erase the list of definitions for the current name if the list is
+        // Erase the list of values for the current name if the list is
         // empty.
-        if(definitions.empty()) {
-            _definitions.erase(definition->name());
+        if(values.empty()) {
+            // TODO...
+            _values.erase(value->name());
         }
     }
 
     _scopes.pop_back();
+    _scopes2.pop_back();
 }
 
 
@@ -90,7 +94,8 @@ void SymbolTable::pop_scope()
 */
 SymbolTable::size_type SymbolTable::scope_level() const
 {
-    return _scopes.size();
+    // return _scopes.size();
+    return _scopes2.size();
 }
 
 
@@ -102,17 +107,18 @@ SymbolTable::size_type SymbolTable::scope_level() const
 SymbolTable::size_type SymbolTable::scope_level(
     String const& name) const
 {
-    assert(has_definition(name));
+    assert(has_value(name));
 
     // Iterate over each scope level until we find the level that contains the
-    // requested definition.
+    // requested value.
     size_type result = _scopes.size();
 
     for(size_type i = 0; i < _scopes.size(); ++i) {
         size_type j = _scopes.size() - 1 - i;
 
-        for(auto definition: _scopes[j]) {
-            if(definition->name() == name) {
+        for(auto value: _scopes[j]) {
+            // TODO...
+            if(value->name() == name) {
                 result = j + 1;
                 break;
             }
@@ -123,35 +129,37 @@ SymbolTable::size_type SymbolTable::scope_level(
 }
 
 
-//! Add a definition to the current scope.
+//! Add a value to the current scope.
 /*!
-  \param     definition Definition to add.
-  \warning   push_scope() must be called before definitions can be added to the
+  \param     name Name of value to add.
+  \param     value Value to add.
+  \warning   push_scope() must be called before values can be added to the
              symbol table.
   \todo      If name is already defined in an outer scope, add it to that one.
 */
-void SymbolTable::add_definition(
-    NameVertex* definition)
+void SymbolTable::add_value(
+    String const& name,
+    T const& value)
 {
-    // Add an empty list of definitions if a definition by this name does not
+    // Add an empty list of values if a value by this name does not
     // already exist.
-    if(!has_definition(definition->name())) {
-        _definitions[definition->name()] = Definitions();
+    if(!has_value(name)) {
+        _values[name] = Values();
     }
 
     // TODO If the name is already defined, we may want to issue a warning that
-    //      - this new definition is hiding the existing one (nested scope), or
-    //      - this new definition is overwriting the existing one (unnested
+    //      - this new value is hiding the existing one (nested scope), or
+    //      - this new value is overwriting the existing one (unnested
     //      scope).
     //      This warning should be conditional on some warning level.
 
     // TODO If the name is already defined in the current scope, this new
-    //      definition should overwrite the previous one. Currently, the new
-    //      definition is added to the collections.
+    //      value should overwrite the previous one. Currently, the new
+    //      value is added to the collections.
 
-    // TODO In some cases, the new definition should overwrite the previous one,
-    //      but in other cases, the new definition should just be added to the
-    //      list of definition. This happens when a global identifier is assigned
+    // TODO In some cases, the new value should overwrite the previous one,
+    //      but in other cases, the new value should just be added to the
+    //      list of value. This happens when a global identifier is assigned
     //      to in an if/while script, for example. The value of the identifier
     //      may be updated, but this depends on the runtime condition. So, if
     //      multiple definitions with the same name exist in the same scope,
@@ -159,39 +167,31 @@ void SymbolTable::add_definition(
     //      checked for compatibility (same/convertable types).
 
     // Store the pointer in the list of definitions for this name. The
-    // most recent definition is stored at the front of the list.
-    Definitions& definitions_by_name(definitions(definition->name()));
-    definitions_by_name.insert(definitions_by_name.begin(), definition);
+    // most recent value is stored at the front of the list.
+    Values& definitions_by_name(values(name));
+    definitions_by_name.insert(definitions_by_name.begin(), value);
 
-    // Add the pointer also to the list of definitions present in the current
-    // scope. The most recent definition is stored at the front of the list.
+    // Add the pointer also to the list of values present in the current
+    // scope. The most recent value is stored at the front of the list.
     assert(!_scopes.empty());
-    Definitions& definitions_by_scope(_scopes.back());
+    Values& definitions_by_scope(_scopes.back());
     definitions_by_scope.insert(definitions_by_scope.begin(),
         definitions_by_name.front());
 }
 
 
-bool SymbolTable::has_definition(
+bool SymbolTable::has_value(
     String const& name) const
 {
-    return _definitions.find(name) != _definitions.end();
+    return _values.find(name) != _values.end();
 }
 
 
-NameVertex const* SymbolTable::definition(
+SymbolTable::T const& SymbolTable::value(
     String const& name) const
 {
-    assert(!definitions(name).empty());
-    return definitions(name).front();
-}
-
-
-NameVertex* SymbolTable::definition(
-    String const& name)
-{
-    assert(!definitions(name).empty());
-    return definitions(name).front();
+    assert(!values(name).empty());
+    return values(name).front();
 }
 
 
@@ -205,8 +205,8 @@ SymbolTable::size_type SymbolTable::size() const
 {
     size_type result = 0;
 
-    for(auto definitions: _scopes) {
-        result += definitions.size();
+    for(auto values: _scopes) {
+        result += values.size();
     }
 
     return result;

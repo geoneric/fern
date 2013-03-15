@@ -1,6 +1,7 @@
 ADD_SUBDIRECTORY(test)
 
 SET(SOURCES
+    execute_visitor
     interpreter
 )
 ADD_LIBRARY(ranally_interpreter

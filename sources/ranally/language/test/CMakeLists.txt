@@ -4,7 +4,6 @@ SET(TEST_NAMES
     assignment_vertex_test
     definition_test
     dot_visitor_test
-    execute_visitor_test
     expression_vertex_test
     function_vertex_test
     identify_visitor_test

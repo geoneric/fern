@@ -2,6 +2,7 @@
 #include <list>
 #include <map>
 #include <vector>
+#include "ranally/language/scope.h"
 #include "ranally/core/string.h"
 
 
@@ -9,14 +10,14 @@ namespace ranally {
 
 class NameVertex;
 
-//! Datastructure for keeping track of definitions.
+//! Datastructure for keeping track of symbols and their value.
 /*!
-  The table is able to store multiple definitions of the same name and supports
+  The table is able to store multiple values of the same name and supports
   scoping.
 
-  Definitions are added to the current scope using add_definition. Make sure
+  Values are added to the current scope using add_symbol. Make sure
   that such a scope exists. After creation of a SymbolTable instance,
-  push_scope() must be called before identifiers can be added. You can make
+  push_scope() must be called before symbols can be added. You can make
   multiple calls to push_scope() in case of nested scopes. When filling the
   table, make sure to match each call to push_scope() with a call to
   pop_scope().
@@ -28,15 +29,17 @@ class SymbolTable
 
 public:
 
-    //! Type for lists of definitions.
-    typedef std::list<NameVertex*> Definitions;
+    typedef NameVertex* T;
+
+    //! Type for lists of values.
+    typedef std::list<T> Values;
 
     //! Type for scope levels.
-    typedef std::vector<Definitions>::size_type size_type;
+    typedef std::vector<Values>::size_type size_type;
 
     //! Construct an empty symbol table.
     /*!
-      \warning   Call push_scope before adding definitions.
+      \warning   Call push_scope before adding values.
     */
                    SymbolTable         ()=default;
 
@@ -58,13 +61,12 @@ public:
 
     size_type      scope_level         (String const& name) const;
 
-    void           add_definition      (NameVertex* definition);
+    void           add_value           (String const& name,
+                                        T const& value);
 
-    bool           has_definition      (String const& name) const;
+    bool           has_value           (String const& name) const;
 
-    NameVertex const* definition       (String const& name) const;
-
-    NameVertex*    definition          (String const& name);
+    T const&       value               (String const& name) const;
 
     bool           empty               () const;
 
@@ -72,15 +74,18 @@ public:
 
 private:
 
-    //! Definitions by name.
-    std::map<String, Definitions> _definitions;
+    //! Values by name.
+    std::map<String, Values> _values;
 
-    //! Definitions by scope level.
-    std::vector<Definitions> _scopes;
+    //! Values by scope level.
+    std::vector<Values> _scopes;
 
-    Definitions const& definitions     (String const& name) const;
+    //! Values by scope level.
+    std::vector<Scope<T>> _scopes2;
 
-    Definitions&   definitions         (String const& name);
+    // Values const&  values              (String const& name) const;
+
+    // Values&        values              (String const& name);
 
 };
 

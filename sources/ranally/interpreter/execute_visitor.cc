@@ -1,19 +1,24 @@
-#include "ranally/language/execute_visitor.h"
+#include "ranally/interpreter/execute_visitor.h"
 #include "ranally/language/vertices.h"
 
 
 namespace ranally {
 
 void ExecuteVisitor::Visit(
-    AssignmentVertex& /* vertex */)
+    AssignmentVertex& vertex)
 {
-    // Let the expression execute itself.
+    // Let the source expression execute itself, leaving the result(s) on the
+    // stack.
+    vertex.expression()->Accept(*this);
+
+    // Assume the target expression is a NameVertex (it should, for now).
+    assert(dynamic_cast<NameVertex const*>(vertex.target().get()));
+
     // Store the result in a scoped symbol table for later reference.
     // Update scope at correct moments in other visit functions.
 
-    // _symbol_table.add_value(vertex.target()->name(), value);
+    // _symbol_table.add_value(vertex.target()->name(), _stack.top());
 }
-
 
 
 void ExecuteVisitor::Visit(

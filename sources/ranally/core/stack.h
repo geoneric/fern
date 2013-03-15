@@ -25,6 +25,8 @@ public:
   template<class T>
   T const&         top                 () const;
 
+  boost::any const& top                () const;
+
   void             pop                 ();
 
   size_t           size                () const;

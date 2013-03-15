@@ -51,7 +51,7 @@ void IdentifyVisitor::Visit(
             // Using a name, connect it to the definition.
             assert(vertex.definitions().empty());
 
-            if(_symbol_table.has_definition(vertex.name())) {
+            if(_symbol_table.has_value(vertex.name())) {
                 // TODO: A name can have multiple definitions. Deeper
                 // scopes can update identifiers in upper scopes, for
                 // example in an if-block.
@@ -70,7 +70,7 @@ void IdentifyVisitor::Visit(
                 // or higher scope. All current and higher definitions are
                 // relevant here.
                 NameVertex* definition =
-                    _symbol_table.definition(vertex.name());
+                    _symbol_table.value(vertex.name());
                 vertex.add_definition(definition);
                 definition->add_use(&vertex);
             }
@@ -81,7 +81,7 @@ void IdentifyVisitor::Visit(
             // Defining a name, add it to the symbol table.
             assert(vertex.definitions().empty());
             vertex.add_definition(&vertex);
-            _symbol_table.add_definition(&vertex);
+            _symbol_table.add_value(vertex.name(), &vertex);
             break;
         }
     }

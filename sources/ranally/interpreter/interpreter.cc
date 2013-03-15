@@ -6,11 +6,11 @@
 #include "ranally/operation/operation_xml_parser.h"
 #include "ranally/operation/operation-xml.h"
 #include "ranally/language/annotate_visitor.h"
-#include "ranally/language/execute_visitor.h"
 #include "ranally/language/identify_visitor.h"
 #include "ranally/language/script_vertex.h"
 #include "ranally/language/thread_visitor.h"
 #include "ranally/language/validate_visitor.h"
+#include "ranally/interpreter/execute_visitor.h"
 
 
 namespace ranally {
