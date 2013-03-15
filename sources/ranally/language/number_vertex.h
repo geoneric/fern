@@ -17,10 +17,6 @@ class NumberVertex:
 
     friend class NumberVertexTest;
 
-private:
-
-    T              _value;
-
 public:
 
     LOKI_DEFINE_VISITABLE()
@@ -42,6 +38,10 @@ public:
     NumberVertex&  operator=           (NumberVertex const&)=delete;
 
     T              value               () const;
+
+private:
+
+    T              _value;
 
 };
 
