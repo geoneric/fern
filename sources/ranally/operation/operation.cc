@@ -60,6 +60,12 @@ String const& Operation::description() const
 }
 
 
+size_t Operation::arity() const
+{
+    return _parameters.size();
+}
+
+
 std::vector<Parameter> const& Operation::parameters() const
 {
     return _parameters;

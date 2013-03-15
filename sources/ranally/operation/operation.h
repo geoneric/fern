@@ -41,6 +41,8 @@ public:
 
     String const&  description         () const;
 
+    size_t         arity               () const;
+
     std::vector<Parameter> const& parameters() const;
 
     std::vector<Result> const& results   () const;
