@@ -21,7 +21,7 @@ void ValidateVisitor::Visit(
 
 
 void ValidateVisitor::Visit(
-    FunctionVertex& vertex)
+    OperationVertex& vertex)
 {
     Visitor::Visit(vertex);
 
@@ -51,6 +51,9 @@ void ValidateVisitor::Visit(
             << detail::ExceptionColNr(vertex.col())
         );
     }
+
+
+
 
     // TODO
     // // Check if the data type of each provided argument is accepted by the

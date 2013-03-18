@@ -31,6 +31,9 @@ namespace ranally {
              else
                name refers to name defined elsewhere
              fi
+  \todo      Set the data types and value types of expressions. Use a stack
+             and symbol table to simulate run time behavior and set each
+             expression's data and value types, if possible.
 
   \sa        ValidateVisitor
 */

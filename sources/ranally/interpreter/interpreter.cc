@@ -141,27 +141,6 @@ ScriptVertexPtr Interpreter::parse_file(
                 *message);
         }
     }
-    catch(detail::UnsupportedExpressionError const& exception) {
-        String const* source_name = boost::get_error_info<
-            detail::ExceptionSourceName>(exception);
-        assert(source_name);
-
-        long const* line_nr = boost::get_error_info<
-            detail::ExceptionLineNr>(exception);
-        assert(line_nr);
-
-        long const* col_nr = boost::get_error_info<
-            detail::ExceptionColNr>(exception);
-        assert(col_nr);
-
-        String const* expression = boost::get_error_info<
-            detail::ExceptionExpressionKind>(exception);
-        assert(expression);
-
-        throw ParseError(*source_name, *line_nr, *col_nr,
-            Exception::messages().format_message(
-                MessageId::UNSUPPORTED_EXPRESSION, *expression));
-    }
 
     return script_vertex;
 }

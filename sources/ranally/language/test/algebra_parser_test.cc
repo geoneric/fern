@@ -394,7 +394,7 @@ BOOST_AUTO_TEST_CASE(parse_binary_operator)
                 "<Statement>"
                   "<Expression line=\"1\" col=\"0\">"
                     "<Operator>"
-                      "<Name>Add</Name>"
+                      "<Name>add</Name>"
                       "<Expressions>"
                         "<Expression line=\"1\" col=\"0\">"
                           "<Name>a</Name>"

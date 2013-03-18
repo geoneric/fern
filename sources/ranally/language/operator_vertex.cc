@@ -8,14 +8,14 @@ namespace ranally {
 std::map<String, String> unary_operator_symbols = {
     { "Invert", "~" },
     { "Not"   , "!" },
-    { "Add"   , "+" },
+    { "add"   , "+" },
     { "Sub"   , "-" }
 };
 
 
 std::map<String, String> binary_operator_symbols = {
     // Binary operators.
-    { "Add"     , "+"   },
+    { "add"     , "+"   },
     { "Sub"     , "-"   },
     { "Mult"    , "*"   },
     { "Div"     , "/"   },

@@ -175,7 +175,7 @@ void write_unary_operator_node(
             break;
         }
         case UAdd: {
-            xml += "Add";
+            xml += "add";
             break;
         }
         case USub: {
@@ -204,7 +204,7 @@ void write_binary_operator_node(
 
     switch(binary_operator) {
         case Add: {
-            xml += "Add";
+            xml += "add";
             break;
         }
         case Sub: {

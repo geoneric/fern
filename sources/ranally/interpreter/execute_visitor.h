@@ -1,5 +1,7 @@
 #pragma once
+#include <boost/any.hpp>
 #include "ranally/core/stack.h"
+#include "ranally/core/symbol_table.h"
 #include "ranally/language/visitor.h"
 
 
@@ -44,10 +46,17 @@ public:
 
     ExecuteVisitor& operator=          (ExecuteVisitor const&)=delete;
 
+    Stack const&   stack               () const;
+
+    SymbolTable<boost::any> const& symbol_table() const;
+
 private:
 
     //! Stack with values that are passed in and out of expressions.
     Stack          _stack;
+
+    //! Symbol table with values of variables.
+    SymbolTable<boost::any> _symbol_table;
 
     void           Visit               (AssignmentVertex& vertex);
 

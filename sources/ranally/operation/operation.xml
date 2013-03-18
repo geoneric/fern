@@ -80,6 +80,40 @@
     </Results>
   </Operation>
   <Operation>
+    <Name>add</Name>
+    <Description>Calculate the sum of the arguments.</Description>
+    <Parameters>
+      <Parameter>
+        <Name>parameter1</Name>
+        <Description>Parameter.</Description>
+        <DataTypes>
+          <DataType>Scalar</DataType>
+        </DataTypes>
+        <ValueTypes>
+          <ValueType>Number</ValueType>
+        </ValueTypes>
+      </Parameter>
+      <Parameter>
+        <Name>parameter2</Name>
+        <Description>Parameter.</Description>
+        <DataTypes>
+          <DataType>Scalar</DataType>
+        </DataTypes>
+        <ValueTypes>
+          <ValueType>Number</ValueType>
+        </ValueTypes>
+      </Parameter>
+    </Parameters>
+    <Results>
+      <Result>
+        <Name>result</Name>
+        <Description>The sum of the arguments.</Description>
+        <DataType>DependsOnInput</DataType>
+        <ValueType>DependsOnInput</ValueType>
+      </Result>
+    </Results>
+  </Operation>
+  <Operation>
     <Name>count</Name>
     <Description>Sum the number of feature elements in a feature.</Description>
     <Parameters>

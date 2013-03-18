@@ -51,7 +51,7 @@ private:
 
     void           Visit               (NameVertex& vertex);
 
-    void           Visit               (FunctionVertex& vertex);
+    void           Visit               (OperationVertex& vertex);
 
 };
 

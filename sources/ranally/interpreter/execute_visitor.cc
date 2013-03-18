@@ -4,6 +4,18 @@
 
 namespace ranally {
 
+Stack const& ExecuteVisitor::stack() const
+{
+    return _stack;
+}
+
+
+SymbolTable<boost::any> const& ExecuteVisitor::symbol_table() const
+{
+    return _symbol_table;
+}
+
+
 void ExecuteVisitor::Visit(
     AssignmentVertex& vertex)
 {
@@ -16,8 +28,8 @@ void ExecuteVisitor::Visit(
 
     // Store the result in a scoped symbol table for later reference.
     // Update scope at correct moments in other visit functions.
-
-    // _symbol_table.add_value(vertex.target()->name(), _stack.top());
+    _symbol_table.add_value(vertex.target()->name(), _stack.top());
+    _stack.pop();
 }
 
 
@@ -38,10 +50,11 @@ void ExecuteVisitor::Visit(
 
 
 void ExecuteVisitor::Visit(
-    NameVertex& /* vertex */)
+    NameVertex& vertex)
 {
     // Retrieve the value from the symbol table and push it onto the stack.
-    // _stack.push(_symbol_table.value(vertex.name()));
+    assert(_symbol_table.has_value(vertex.name()));
+    _stack.push(_symbol_table.value(vertex.name()));
 }
 
 
@@ -83,6 +96,7 @@ void ExecuteVisitor::Visit(
     // end up at the top of the stack.
     visit_expressions(vertex.expressions());
 
+    assert(vertex.operation());
     Operation const& operation(*vertex.operation());
     assert(_stack.size() >= operation.arity());
 
@@ -90,17 +104,17 @@ void ExecuteVisitor::Visit(
     // Given the properties of the operation:
     // TODO Try one out, create a test and see how it works.
 
-    if(operation.name() == "Add") {
-        assert(operation.arity() == 2);
-        assert(vertex.data_type(0) == DataTypes::SCALAR);
-        assert(vertex.data_type(1) == DataTypes::SCALAR);
-        assert(vertex.value_type(0) == ValueTypes::FLOAT64);
-        assert(vertex.value_type(1) == ValueTypes::FLOAT64);
+    // if(operation.name() == "add") {
+    //     assert(operation.arity() == 2);
+    //     assert(vertex.data_type(0) == DataTypes::SCALAR);
+    //     assert(vertex.data_type(1) == DataTypes::SCALAR);
+    //     assert(vertex.value_type(0) == ValueTypes::INT64);
+    //     assert(vertex.value_type(1) == ValueTypes::INT64);
 
-        double result = _stack.top<double>(); _stack.pop();
-        result += _stack.top<double>(); _stack.pop();
-        _stack.push(result);
-    }
+    //     int64_t result = _stack.top<int64_t>(); _stack.pop();
+    //     result += _stack.top<int64_t>(); _stack.pop();
+    //     _stack.push(result);
+    // }
 }
 
 
