@@ -26,13 +26,13 @@ SET(TEST_NAMES
 )
 
 MACRO(ADD_UNIT_TEST NAME)
-    ADD_EXECUTABLE(${NAME} ${NAME})
-    TARGET_LINK_LIBRARIES(${NAME}
+    ADD_EXECUTABLE(language_${NAME} ${NAME})
+    TARGET_LINK_LIBRARIES(language_${NAME}
         ranally_interpreter
         ranally_language
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
-    ADD_TEST(NAME ${NAME} COMMAND ${NAME})
+    ADD_TEST(NAME language_${NAME} COMMAND language_${NAME})
 ENDMACRO()
 
 FOREACH(NAME ${TEST_NAMES})
