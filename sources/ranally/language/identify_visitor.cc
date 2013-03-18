@@ -150,7 +150,7 @@ void IdentifyVisitor::Visit(
 }
 
 
-SymbolTable const& IdentifyVisitor::symbol_table() const
+SymbolTable<NameVertex*> const& IdentifyVisitor::symbol_table() const
 {
     return _symbol_table;
 }

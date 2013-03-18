@@ -24,12 +24,14 @@ public:
 
     Scope&         operator=           (Scope const&)=default;
 
-    void           add_value           (String const& name,
+    size_t         size                () const;
+
+    void           set_value           (String const& name,
                                         Value const& value);
 
     bool           has_value           (String const& name) const;
 
-    Value const&   value               (String const& name) const;
+    Value          value               (String const& name) const;
 
 private:
 
@@ -41,7 +43,15 @@ private:
 
 template<
     class Value>
-inline void Scope<Value>::add_value(
+inline size_t Scope<Value>::size() const
+{
+    return _values.size();
+}
+
+
+template<
+    class Value>
+inline void Scope<Value>::set_value(
     String const& name,
     Value const& value)
 {
@@ -60,11 +70,11 @@ inline bool Scope<Value>::has_value(
 
 template<
     class Value>
-inline Value const& Scope<Value>::value(
+inline Value Scope<Value>::value(
     String const& name) const
 {
     assert(has_value(name));
-    return _values[name];
+    return _values.find(name)->second;
 }
 
 } // namespace ranally

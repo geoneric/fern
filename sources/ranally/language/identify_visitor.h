@@ -1,5 +1,5 @@
 #pragma once
-#include "ranally/language/symbol_table.h"
+#include "ranally/core/symbol_table.h"
 #include "ranally/language/visitor.h"
 
 
@@ -42,7 +42,7 @@ public:
 
     IdentifyVisitor& operator=         (IdentifyVisitor const&)=delete;
 
-    SymbolTable const& symbol_table    () const;
+    SymbolTable<NameVertex*> const& symbol_table() const;
 
 private:
 
@@ -51,7 +51,7 @@ private:
         Using
     };
 
-    SymbolTable    _symbol_table;
+    SymbolTable<NameVertex*> _symbol_table;
 
     Mode           _mode;
 

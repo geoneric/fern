@@ -1,6 +1,6 @@
-#define BOOST_TEST_MODULE ranally language
+#define BOOST_TEST_MODULE ranally core
+#include <boost/any.hpp>
 #include <boost/test/unit_test.hpp>
-#include "ranally/language/name_vertex.h"
 #include "ranally/core/symbol_table.h"
 
 
@@ -11,10 +11,10 @@ BOOST_AUTO_TEST_CASE(scoping)
 {
     using namespace ranally;
 
-    typedef SymbolTable<ranally::NameVertex*> SymbolTable;
+    typedef SymbolTable<boost::any> SymbolTable;
 
     SymbolTable table;
-    ranally::String name("a");
+    String name("a");
     BOOST_CHECK_EQUAL(table.scope_level(), SymbolTable::size_type(0));
 
     // Add and remove one value for 'a'.
@@ -22,9 +22,9 @@ BOOST_AUTO_TEST_CASE(scoping)
         table.push_scope();
         BOOST_CHECK_EQUAL(table.scope_level(), SymbolTable::size_type(1));
 
-        std::unique_ptr<NameVertex> a(new NameVertex(name));
-        table.add_value(name, a.get());
+        table.add_value(name, boost::any(5));
         BOOST_REQUIRE(table.has_value(name));
+        BOOST_CHECK_EQUAL(boost::any_cast<int>(table.value(name)), 5);
         BOOST_CHECK_EQUAL(table.scope_level(name), table.scope_level());
 
         table.pop_scope();
@@ -38,18 +38,16 @@ BOOST_AUTO_TEST_CASE(scoping)
         table.push_scope();
         BOOST_CHECK_EQUAL(table.scope_level(), SymbolTable::size_type(1));
 
-        std::unique_ptr<NameVertex> a1(new NameVertex(name));
-        table.add_value(name, a1.get());
+        table.add_value(name, boost::any(5));
         BOOST_REQUIRE(table.has_value(name));
-        BOOST_CHECK_EQUAL(table.value(name), a1.get());
+        BOOST_CHECK_EQUAL(boost::any_cast<int>(table.value(name)), 5);
         BOOST_CHECK_EQUAL(table.scope_level(name), table.scope_level());
 
         BOOST_CHECK_EQUAL(table.scope_level(), SymbolTable::size_type(1));
 
-        std::unique_ptr<NameVertex> a2(new NameVertex(name));
-        table.add_value(name, a2.get());
+        table.add_value(name, boost::any(6));
         BOOST_REQUIRE(table.has_value(name));
-        BOOST_CHECK_EQUAL(table.value(name), a2.get());
+        BOOST_CHECK_EQUAL(boost::any_cast<int>(table.value(name)), 6);
         BOOST_CHECK_EQUAL(table.scope_level(name), table.scope_level());
 
         // Should remove all definitions of 'a' in the current scope.
@@ -64,25 +62,23 @@ BOOST_AUTO_TEST_CASE(scoping)
         table.push_scope();
         BOOST_CHECK_EQUAL(table.scope_level(), SymbolTable::size_type(1));
 
-        std::unique_ptr<NameVertex> a1(new NameVertex(name));
-        table.add_value(name, a1.get());
+        table.add_value(name, boost::any(5));
         BOOST_REQUIRE(table.has_value(name));
-        BOOST_CHECK_EQUAL(table.value(name), a1.get());
+        BOOST_CHECK_EQUAL(boost::any_cast<int>(table.value(name)), 5);
 
         table.push_scope();
         BOOST_CHECK_EQUAL(table.scope_level(), SymbolTable::size_type(2));
 
-        std::unique_ptr<NameVertex> a2(new NameVertex(name));
-        table.add_value(name, a2.get());
+        table.add_value(name, boost::any(6));
         BOOST_REQUIRE(table.has_value(name));
-        BOOST_CHECK_EQUAL(table.value(name), a2.get());
+        BOOST_CHECK_EQUAL(boost::any_cast<int>(table.value(name)), 6);
 
         // Should reveal the first value.
         table.pop_scope();
         BOOST_CHECK_EQUAL(table.scope_level(), SymbolTable::size_type(1));
 
         BOOST_REQUIRE(table.has_value(name));
-        BOOST_CHECK_EQUAL(table.value(name), a1.get());
+        BOOST_CHECK_EQUAL(boost::any_cast<int>(table.value(name)), 5);
         BOOST_CHECK_EQUAL(table.scope_level(name), table.scope_level());
 
         table.pop_scope();
