@@ -77,4 +77,12 @@ std::vector<Result> const& Operation::results() const
     return _results;
 }
 
+
+ResultType Operation::result_type(
+    size_t index,
+    std::vector<ResultType> const& argument_types) const
+{
+    // TODO
+}
+
 } // namespace ranally

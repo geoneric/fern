@@ -50,6 +50,8 @@ SET(SOURCES
     operations
     parameter
     result
+    result_type
+    result_types
     value_types
 )
 ADD_LIBRARY(ranally_operation

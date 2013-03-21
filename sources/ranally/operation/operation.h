@@ -4,6 +4,7 @@
 #include "ranally/core/string.h"
 #include "ranally/operation/parameter.h"
 #include "ranally/operation/result.h"
+#include "ranally/operation/result_type.h"
 
 
 namespace ranally {
@@ -45,7 +46,11 @@ public:
 
     std::vector<Parameter> const& parameters() const;
 
-    std::vector<Result> const& results   () const;
+    std::vector<Result> const& results () const;
+
+    ResultType     result_type         (
+                        size_t index,
+                        std::vector<ResultType> const& argument_types) const;
 
 private:
 

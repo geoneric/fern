@@ -1,5 +1,8 @@
 #pragma once
+#include <stack>
+#include "ranally/core/symbol_table.h"
 #include "ranally/operation/operations.h"
+#include "ranally/operation/result_type.h"
 #include "ranally/language/visitor.h"
 
 
@@ -59,31 +62,9 @@ public:
 
 private:
 
-    // Annotation calculates as many data and value types of expressions as
-    // possible.
-    //
-    // We start with this information:
-    // - result types for numbers
-    // - result types for operations
-    //   - if the result types are not dependent on the data/value types of
-    //     the parameters.
-    //   - else, if the result types of all parameters are known, the result
-    //     type of the operation is calculated.
-    // We start with propagating that information across the assignment.
-    // We propagate the information from the defined names to the use
-    // locations. This may result in more operations knowing data/value
-    // types of all parameters.
-    // Iterate untill no additional information can be generated anymore.
-    enum Mode {
-        //! Right sight of assignment statements is visited.
-        Using,
+    std::stack<ResultType> _stack;
 
-        //! Left side of assignment statements is visited.
-        Defining
-    };
-
-    //! Current mode.
-    Mode           _mode;
+    SymbolTable<ResultType> _symbol_table;
 
     OperationsPtr  _operations;
 
@@ -112,8 +93,6 @@ private:
     void           Visit               (NumberVertex<double>& vertex);
 
     void           Visit               (OperationVertex& vertex);
-
-    void           Visit               (ScriptVertex& vertex);
 
     void           Visit               (SubscriptVertex& vertex);
 

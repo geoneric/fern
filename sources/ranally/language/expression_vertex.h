@@ -1,5 +1,5 @@
 #pragma once
-#include "ranally/language/result_types.h"
+#include "ranally/operation/result_types.h"
 #include "ranally/language/statement_vertex.h"
 
 

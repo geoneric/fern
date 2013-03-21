@@ -10,7 +10,6 @@ AnnotateVisitor::AnnotateVisitor(
     ranally::OperationsPtr const& operations)
 
     : Visitor(),
-      _mode(Mode::Using),
       _operations(operations)
 
 {
@@ -21,18 +20,24 @@ AnnotateVisitor::AnnotateVisitor(
 void AnnotateVisitor::Visit(
     AssignmentVertex& vertex)
 {
-    assert(_mode == Mode::Using);
+    // Let the source expression execute itself, leaving the result(s) on the
+    // stack.
     vertex.expression()->Accept(*this);
 
-    _mode = Mode::Defining;
-    // Propagate the result types from the expression to the target.
-    ExpressionVertex const& expression(*vertex.expression());
-    ExpressionVertex& target(*vertex.target());
-    assert(target.result_types().empty());
-    target.set_result_types(expression.result_types());
-    vertex.target()->Accept(*this);
+    // Assume the target expression is a NameVertex (it should, for now).
+    assert(dynamic_cast<NameVertex const*>(vertex.target().get()));
 
-    _mode = Mode::Using;
+    // Store the result in a scoped symbol table for later reference.
+    // Update scope at correct moments in other visit functions.
+    _symbol_table.add_value(vertex.target()->name(), _stack.top());
+    _stack.pop();
+
+    // // Propagate the result types from the expression to the target.
+    // ExpressionVertex const& expression(*vertex.expression());
+    // ExpressionVertex& target(*vertex.target());
+    // assert(target.result_types().empty());
+    // target.set_result_types(expression.result_types());
+    // vertex.target()->Accept(*this);
 }
 
 
@@ -43,16 +48,10 @@ void AnnotateVisitor::Visit(
 void AnnotateVisitor::Visit(                                                   \
     NumberVertex<type>& vertex)                                                \
 {                                                                              \
-    switch(_mode) {                                                            \
-        case Using: {                                                          \
-            assert(vertex.result_types().empty());                             \
-            vertex.add_result_type(ResultType(data_type, value_type));         \
-            break;                                                             \
-        }                                                                      \
-        case Defining: {                                                       \
-            break;                                                             \
-        }                                                                      \
-    }                                                                          \
+    assert(vertex.result_types().empty());                                     \
+    ResultType result_type(data_type, value_type);                             \
+    vertex.add_result_type(result_type);                                       \
+    _stack.push(result_type);                                                  \
 }
 
 // TODO Use traits in the implementation! Don't pass these things to the macro.
@@ -76,33 +75,35 @@ VISIT_NUMBER_VERTEX(double  , DataTypes::SCALAR, ValueTypes::FLOAT64)
 void AnnotateVisitor::Visit(
     OperationVertex& vertex)
 {
-    switch(_mode) {
-        case Using: {
-            // Depth first, visit the children first.
-            Visitor::Visit(vertex);
+    // Depth first, visit the children first.
+    Visitor::Visit(vertex);
 
-            // Retrieve info about the operation, if available.
-            if(_operations->has_operation(vertex.name())) {
-                if(!vertex.operation()) {
-                    OperationPtr const& operation(_operations->operation(
-                        vertex.name()));
-                    vertex.set_operation(operation);
+    // Retrieve info about the operation, if available.
+    if(_operations->has_operation(vertex.name())) {
+        assert(!vertex.operation());
+        OperationPtr const& operation(_operations->operation(
+            vertex.name()));
+        vertex.set_operation(operation);
 
-                    assert(vertex.result_types().empty());
-                    for(auto result: operation->results()) {
-                        vertex.add_result_type(ResultType(result.data_type(),
-                            result.value_type()));
-                    }
-                }
+        assert(vertex.result_types().empty());
 
-                // TODO Calculate result type based on result type calculation
-                //      strategy (property of the operation) and the result
-                //      types of the arguments.
+        // There are vertex.expressions().size() ResultType instances on the
+        // stack. Given these and the operation, calculate a ResultType
+        // instance for the result of this expression. It is possible that
+        // there are not enough arguments provided. In that case the
+        // calculation of the result type may fail. Validation will pick that
+        // up.
+        if(vertex.expressions().size() == operation->arity()) {
+            std::vector<ResultType> argument_types;
+            for(size_t i = 0; i < vertex.expressions().size(); ++i) {
+                argument_types.push_back(_stack.top());
+                _stack.pop();
             }
-            break;
-        }
-        case Defining: {
-            break;
+
+            for(size_t i = 0; i < operation->results().size(); ++i) {
+                vertex.add_result_type(operation->result_type(i,
+                    argument_types));
+            }
         }
     }
 }
@@ -111,47 +112,31 @@ void AnnotateVisitor::Visit(
 void AnnotateVisitor::Visit(
     NameVertex& vertex)
 {
-    switch(_mode) {
-        case Using: {
-            break;
-        }
-        case Defining: {
-            for(NameVertex* use_vertex: vertex.uses()) {
-                // Propagate the result types to all use sites, but only when
-                // needed.
-                assert(use_vertex);
-                assert(use_vertex->result_types().empty());
-                use_vertex->set_result_types(vertex.result_types());
-            }
-            break;
-        }
+    // Retrieve the value from the symbol table and push it onto the stack.
+    if(_symbol_table.has_value(vertex.name())) {
+        ResultType result_type(_symbol_table.value(vertex.name()));
+        _stack.push(result_type);
+        vertex.add_result_type(result_type);
     }
 }
 
 
 void AnnotateVisitor::Visit(
-    SubscriptVertex& vertex)
+    SubscriptVertex& /* vertex */)
 {
-    switch(_mode) {
-        case Using: {
-            // The result type of a subscript expression is the same as the
-            // result type of the main expression.
-            assert(vertex.result_types().empty());
-            vertex.set_result_types(vertex.expression()->result_types());
-            break;
-        }
-        case Defining: {
-            break;
-        }
-    }
-}
-
-
-void AnnotateVisitor::Visit(
-    ScriptVertex& vertex)
-{
-    _mode = Mode::Using;
-    Visitor::Visit(vertex);
+    // TODO
+    // switch(_mode) {
+    //     case Using: {
+    //         // The result type of a subscript expression is the same as the
+    //         // result type of the main expression.
+    //         assert(vertex.result_types().empty());
+    //         vertex.set_result_types(vertex.expression()->result_types());
+    //         break;
+    //     }
+    //     case Defining: {
+    //         break;
+    //     }
+    // }
 }
 
 } // namespace ranally
