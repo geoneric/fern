@@ -1,4 +1,4 @@
-#include "ranally/language/result_type.h"
+#include "ranally/operation/result_type.h"
 
 
 namespace ranally {

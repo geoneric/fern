@@ -14,6 +14,8 @@ public:
 
                    ResultTypes         ()=default;
 
+                   ResultTypes         (size_t size);
+
                    ResultTypes         (ResultTypes&&)=default;
 
     ResultTypes&   operator=           (ResultTypes&&)=default;

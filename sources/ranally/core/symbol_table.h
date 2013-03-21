@@ -183,6 +183,7 @@ void SymbolTable<T>::add_value(
     //      then they should be treated as possible definitions. They should be
     //      checked for compatibility (same/convertable types).
 
+    assert(!_scopes.empty());
     _scopes.back().set_value(name, value);
 }
 

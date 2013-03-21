@@ -94,7 +94,9 @@ private:
 
     void           Visit               (OperationVertex& vertex);
 
-    void           Visit               (SubscriptVertex& vertex);
+    // void           Visit               (SubscriptVertex& vertex);
+
+    void           Visit               (ScriptVertex& vertex);
 
 };
 

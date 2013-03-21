@@ -3,6 +3,15 @@
 
 namespace ranally {
 
+ResultTypes::ResultTypes(
+    size_t size)
+
+    : std::vector<ResultType>(size)
+
+{
+}
+
+
 bool ResultTypes::fixed() const
 {
     bool result = empty() ? false : true;

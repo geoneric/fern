@@ -64,7 +64,8 @@ static String to_string(
 
 DataTypes::DataTypes()
 
-    : FlagCollection<DataTypes, detail::DataType, detail::DataType::DT_NR_DATA_TYPES>()
+    : FlagCollection<DataTypes, detail::DataType,
+        detail::DataType::DT_NR_DATA_TYPES>()
 
 {
 }
@@ -73,8 +74,8 @@ DataTypes::DataTypes()
 DataTypes::DataTypes(
     std::set<detail::DataType> const& data_types)
 
-    : FlagCollection<DataTypes, detail::DataType, detail::DataType::DT_NR_DATA_TYPES>(
-        data_types)
+    : FlagCollection<DataTypes, detail::DataType,
+        detail::DataType::DT_NR_DATA_TYPES>(data_types)
 
 {
 }

@@ -29,6 +29,7 @@ void AnnotateVisitor::Visit(
 
     // Store the result in a scoped symbol table for later reference.
     // Update scope at correct moments in other visit functions.
+    assert(!_stack.empty());
     _symbol_table.add_value(vertex.target()->name(), _stack.top());
     _stack.pop();
 
@@ -50,8 +51,8 @@ void AnnotateVisitor::Visit(                                                   \
 {                                                                              \
     assert(vertex.result_types().empty());                                     \
     ResultType result_type(data_type, value_type);                             \
-    vertex.add_result_type(result_type);                                       \
     _stack.push(result_type);                                                  \
+    vertex.add_result_type(result_type);                                       \
 }
 
 // TODO Use traits in the implementation! Don't pass these things to the macro.
@@ -87,24 +88,33 @@ void AnnotateVisitor::Visit(
 
         assert(vertex.result_types().empty());
 
+        // http://en.cppreference.com/w/cpp/types/common_type
         // There are vertex.expressions().size() ResultType instances on the
         // stack. Given these and the operation, calculate a ResultType
         // instance for the result of this expression. It is possible that
         // there are not enough arguments provided. In that case the
         // calculation of the result type may fail. Validation will pick that
         // up.
-        if(vertex.expressions().size() == operation->arity()) {
-            std::vector<ResultType> argument_types;
-            for(size_t i = 0; i < vertex.expressions().size(); ++i) {
-                argument_types.push_back(_stack.top());
-                _stack.pop();
-            }
 
+        // Get the result types from all argument expressions provided.
+        std::vector<ResultType> argument_types;
+        for(size_t i = 0; i < vertex.expressions().size(); ++i) {
+            assert(!_stack.empty());
+            argument_types.push_back(_stack.top());
+            _stack.pop();
+        }
+
+        ResultTypes result_types(vertex.expressions().size());
+        if(vertex.expressions().size() == operation->arity()) {
+            // Calculate result type for each result.
             for(size_t i = 0; i < operation->results().size(); ++i) {
-                vertex.add_result_type(operation->result_type(i,
-                    argument_types));
+                ResultType result_type = operation->result_type(i,
+                    argument_types);
+                _stack.push(result_type);
+                result_types.push_back(result_type);
             }
         }
+        vertex.set_result_types(result_types);
     }
 }
 
@@ -112,31 +122,44 @@ void AnnotateVisitor::Visit(
 void AnnotateVisitor::Visit(
     NameVertex& vertex)
 {
-    // Retrieve the value from the symbol table and push it onto the stack.
+    ResultType result_type;
+
+    // If the symbol is defined, retrieve the value from the symbol table.
     if(_symbol_table.has_value(vertex.name())) {
-        ResultType result_type(_symbol_table.value(vertex.name()));
-        _stack.push(result_type);
-        vertex.add_result_type(result_type);
+        result_type = _symbol_table.value(vertex.name());
     }
+
+    // Push the value onto the stack, even if it is undefined.
+    _stack.push(result_type);
+    vertex.add_result_type(result_type);
 }
 
 
 void AnnotateVisitor::Visit(
-    SubscriptVertex& /* vertex */)
+    ScriptVertex& vertex)
 {
-    // TODO
-    // switch(_mode) {
-    //     case Using: {
-    //         // The result type of a subscript expression is the same as the
-    //         // result type of the main expression.
-    //         assert(vertex.result_types().empty());
-    //         vertex.set_result_types(vertex.expression()->result_types());
-    //         break;
-    //     }
-    //     case Defining: {
-    //         break;
-    //     }
-    // }
+    _symbol_table.push_scope();
+    Visitor::Visit(vertex);
+    _symbol_table.pop_scope();
 }
+
+
+// void AnnotateVisitor::Visit(
+//     SubscriptVertex& /* vertex */)
+// {
+//     // TODO
+//     // switch(_mode) {
+//     //     case Using: {
+//     //         // The result type of a subscript expression is the same as the
+//     //         // result type of the main expression.
+//     //         assert(vertex.result_types().empty());
+//     //         vertex.set_result_types(vertex.expression()->result_types());
+//     //         break;
+//     //     }
+//     //     case Defining: {
+//     //         break;
+//     //     }
+//     // }
+// }
 
 } // namespace ranally
