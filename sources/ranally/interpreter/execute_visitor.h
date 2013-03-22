@@ -34,9 +34,9 @@ class ExecuteVisitor:
 
 public:
 
-                   ExecuteVisitor      ()=default;
+                   ExecuteVisitor      ();
 
-                   ~ExecuteVisitor     ()=default;
+                   ~ExecuteVisitor     ();
 
                    ExecuteVisitor      (ExecuteVisitor&&)=delete;
 
@@ -47,6 +47,8 @@ public:
     ExecuteVisitor& operator=          (ExecuteVisitor const&)=delete;
 
     Stack const&   stack               () const;
+
+    void           clear_stack         ();
 
     SymbolTable<boost::any> const& symbol_table() const;
 
@@ -85,6 +87,8 @@ private:
     void           Visit               (NumberVertex<double>& vertex);
 
     void           Visit               (OperationVertex& vertex);
+
+    void           Visit               (ScriptVertex& vertex);
 
     void           Visit               (StringVertex& vertex);
 

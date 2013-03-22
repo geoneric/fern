@@ -12,7 +12,7 @@ DataTypes const DataTypes::LINE({ detail::DataType::DT_LINE });
 DataTypes const DataTypes::POLYGON({ detail::DataType::DT_POLYGON });
 DataTypes const DataTypes::FEATURE({ detail::DataType::DT_POINT, detail::DataType::DT_LINE, detail::DataType::DT_POLYGON });
 DataTypes const DataTypes::ALL({ detail::DataType::DT_SCALAR, detail::DataType::DT_POINT, detail::DataType::DT_LINE, detail::DataType::DT_POLYGON } );
-DataTypes const DataTypes::DEPENDS_ON_INPUT({ detail::DataType::DT_DEPENDS_ON_INPUT });
+// DataTypes const DataTypes::DEPENDS_ON_INPUT({ detail::DataType::DT_DEPENDS_ON_INPUT });
 
 
 // These strings should match the ones used in the XML schema.
@@ -22,8 +22,8 @@ static std::map<String, DataTypes> data_type_by_string = {
     { "Line"          , DataTypes::LINE             },
     { "Polygon"       , DataTypes::POLYGON          },
     { "Feature"       , DataTypes::FEATURE          },
-    { "All"           , DataTypes::ALL              },
-    { "DependsOnInput", DataTypes::DEPENDS_ON_INPUT }
+    { "All"           , DataTypes::ALL              } // ,
+    // { "DependsOnInput", DataTypes::DEPENDS_ON_INPUT }
 };
 
 
@@ -31,8 +31,8 @@ static std::map<detail::DataType, String> string_by_data_type = {
     { detail::DataType::DT_SCALAR          , "Scalar"         },
     { detail::DataType::DT_POINT           , "Point"          },
     { detail::DataType::DT_LINE            , "Line"           },
-    { detail::DataType::DT_POLYGON         , "Polygon"        },
-    { detail::DataType::DT_DEPENDS_ON_INPUT, "DependsOnInput" }
+    { detail::DataType::DT_POLYGON         , "Polygon"        } // ,
+    // { detail::DataType::DT_DEPENDS_ON_INPUT, "DependsOnInput" }
 };
 
 
@@ -49,8 +49,8 @@ std::vector<detail::DataType> const DataTypes::DATA_TYPES = {
     detail::DataType::DT_SCALAR,
     detail::DataType::DT_POINT,
     detail::DataType::DT_LINE,
-    detail::DataType::DT_POLYGON,
-    detail::DataType::DT_DEPENDS_ON_INPUT
+    detail::DataType::DT_POLYGON // ,
+    // detail::DataType::DT_DEPENDS_ON_INPUT
 };
 
 
@@ -65,7 +65,7 @@ static String to_string(
 DataTypes::DataTypes()
 
     : FlagCollection<DataTypes, detail::DataType,
-        detail::DataType::DT_NR_DATA_TYPES>()
+          detail::DataType::DT_NR_DATA_TYPES>()
 
 {
 }
@@ -75,7 +75,7 @@ DataTypes::DataTypes(
     std::set<detail::DataType> const& data_types)
 
     : FlagCollection<DataTypes, detail::DataType,
-        detail::DataType::DT_NR_DATA_TYPES>(data_types)
+          detail::DataType::DT_NR_DATA_TYPES>(data_types)
 
 {
 }
@@ -90,6 +90,10 @@ String DataTypes::to_string() const
         if(test(data_type)) {
             strings.push_back(ranally::to_string(data_type));
         }
+    }
+
+    if(strings.empty()) {
+        strings.push_back("?");
     }
 
     return join(strings, "|");

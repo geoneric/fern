@@ -41,6 +41,8 @@ public:
 
     virtual String to_string           () const=0;
 
+    Flags&         operator&=          (Flags const& flags);
+
     Flags&         operator|=          (Flags const& flags);
 
     Flags&         operator^=          (Flags const& flags);
@@ -77,6 +79,18 @@ inline FlagCollection<Flags, Flag, size>::FlagCollection(
     for(Flag flag: flags) {
         std::bitset<size>::set(flag);
     }
+}
+
+
+template<
+    class Flags,
+    typename Flag,
+    size_t size>
+inline Flags& FlagCollection<Flags, Flag, size>::operator&=(
+    Flags const& flags)
+{
+    std::bitset<size>::operator&=(flags);
+    return dynamic_cast<Flags&>(*this);
 }
 
 

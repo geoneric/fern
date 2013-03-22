@@ -4,6 +4,8 @@ ADD_EXECUTABLE(ranally
     describe_command
     execute_command
     import_command
+    interpreter
+    message
     ranally
 )
 ADD_DEPENDENCIES(ranally
@@ -16,6 +18,8 @@ TARGET_LINK_LIBRARIES(ranally
     ranally_python
     ranally_operation
     ranally_core
+    ${READLINE_LIBRARY}
+    termcap
 )
 INSTALL(
     TARGETS ranally

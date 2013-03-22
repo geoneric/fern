@@ -10,10 +10,31 @@ AnnotateVisitor::AnnotateVisitor(
     ranally::OperationsPtr const& operations)
 
     : Visitor(),
+      _stack(),
+      _symbol_table(),
       _operations(operations)
 
 {
     assert(_operations);
+    _symbol_table.push_scope();
+}
+
+
+AnnotateVisitor::~AnnotateVisitor()
+{
+    _symbol_table.pop_scope();
+}
+
+
+std::stack<ResultType> const& AnnotateVisitor::stack() const
+{
+    return _stack;
+}
+
+
+void AnnotateVisitor::clear_stack()
+{
+    _stack = std::stack<ResultType>();
 }
 
 
@@ -33,11 +54,12 @@ void AnnotateVisitor::Visit(
     _symbol_table.add_value(vertex.target()->name(), _stack.top());
     _stack.pop();
 
-    // // Propagate the result types from the expression to the target.
-    // ExpressionVertex const& expression(*vertex.expression());
-    // ExpressionVertex& target(*vertex.target());
-    // assert(target.result_types().empty());
-    // target.set_result_types(expression.result_types());
+    // Propagate the result types from the expression to the target.
+    ExpressionVertex const& expression(*vertex.expression());
+    ExpressionVertex& target(*vertex.target());
+    assert(target.result_types().empty());
+    assert(expression.result_types().size() == 1);
+    target.set_result_types(expression.result_types());
     // vertex.target()->Accept(*this);
 }
 
@@ -53,6 +75,7 @@ void AnnotateVisitor::Visit(                                                   \
     ResultType result_type(data_type, value_type);                             \
     _stack.push(result_type);                                                  \
     vertex.add_result_type(result_type);                                       \
+    assert(vertex.result_types().size() == 1);                                 \
 }
 
 // TODO Use traits in the implementation! Don't pass these things to the macro.
@@ -76,8 +99,20 @@ VISIT_NUMBER_VERTEX(double  , DataTypes::SCALAR, ValueTypes::FLOAT64)
 void AnnotateVisitor::Visit(
     OperationVertex& vertex)
 {
+    assert(vertex.result_types().empty());
+
     // Depth first, visit the children first.
     Visitor::Visit(vertex);
+
+    // Get the result types from all argument expressions provided.
+    std::vector<ResultType> argument_types;
+    for(size_t i = 0; i < vertex.expressions().size(); ++i) {
+        assert(!_stack.empty());
+        argument_types.push_back(_stack.top());
+        _stack.pop();
+    }
+
+    ResultTypes result_types(1);
 
     // Retrieve info about the operation, if available.
     if(_operations->has_operation(vertex.name())) {
@@ -96,32 +131,31 @@ void AnnotateVisitor::Visit(
         // calculation of the result type may fail. Validation will pick that
         // up.
 
-        // Get the result types from all argument expressions provided.
-        std::vector<ResultType> argument_types;
-        for(size_t i = 0; i < vertex.expressions().size(); ++i) {
-            assert(!_stack.empty());
-            argument_types.push_back(_stack.top());
-            _stack.pop();
-        }
-
-        ResultTypes result_types(vertex.expressions().size());
         if(vertex.expressions().size() == operation->arity()) {
             // Calculate result type for each result.
-            for(size_t i = 0; i < operation->results().size(); ++i) {
+            // TODO Update for multiple results.
+            for(size_t i = 0; i < 1; ++i) {
                 ResultType result_type = operation->result_type(i,
                     argument_types);
-                _stack.push(result_type);
-                result_types.push_back(result_type);
+                result_types[i] = result_type;
             }
         }
-        vertex.set_result_types(result_types);
     }
+
+    for(auto result_type: result_types) {
+        _stack.push(result_type);
+    }
+    vertex.set_result_types(result_types);
+
+    assert(vertex.result_types().size() == 1);
 }
 
 
 void AnnotateVisitor::Visit(
     NameVertex& vertex)
 {
+    assert(vertex.result_types().empty());
+
     ResultType result_type;
 
     // If the symbol is defined, retrieve the value from the symbol table.
@@ -132,15 +166,15 @@ void AnnotateVisitor::Visit(
     // Push the value onto the stack, even if it is undefined.
     _stack.push(result_type);
     vertex.add_result_type(result_type);
+
+    assert(vertex.result_types().size() == 1);
 }
 
 
 void AnnotateVisitor::Visit(
     ScriptVertex& vertex)
 {
-    _symbol_table.push_scope();
     Visitor::Visit(vertex);
-    _symbol_table.pop_scope();
 }
 
 

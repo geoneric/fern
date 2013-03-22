@@ -1,11 +1,13 @@
-#include <iostream>
 #include <cstring>
+#include <iostream>
 #include <memory>
 #include "ranally/configure.h"
 #include "ranally/command/convert_command.h"
 #include "ranally/command/describe_command.h"
 #include "ranally/command/execute_command.h"
 #include "ranally/command/import_command.h"
+#include "ranally/command/interpreter.h"
+#include "ranally/command/message.h"
 
 
 namespace ranally {
@@ -26,15 +28,8 @@ void show_general_help()
         "  import              Import data\n"
         "\n"
         "See 'ranally COMMAND --help' for more information on a specific command.\n"
+        "The interactive interpreter is entered when no arguments are passed.\n"
         ;
-}
-
-
-void show_version()
-{
-    std::cout << "ranally " << RANALLY_VERSION << "-" << RANALLY_BUILD_STAGE
-        << "\n";
-    std::cout << RANALLY_COPYRIGHT << "\n";
 }
 
 
@@ -56,8 +51,19 @@ int main(
 {
     int status = EXIT_FAILURE;
 
-    if(argc == 1 || std::strcmp(argv[1], "--help") == 0) {
-        // No arguments, or the help option.
+    if(argc == 1) {
+        // No arguments, enter the interpreter.
+        try {
+            ranally::enter_interpreter();
+            status = EXIT_SUCCESS;
+        }
+        catch(std::exception const& exception) {
+            std::cerr << exception.what() << '\n';
+            status = EXIT_FAILURE;
+        }
+    }
+    else if(std::strcmp(argv[1], "--help") == 0) {
+        // The help option.
         ranally::show_general_help();
         status = EXIT_SUCCESS;
     }

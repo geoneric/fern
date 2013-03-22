@@ -31,6 +31,8 @@ public:
 
     ValueTypes     value_type          () const;
 
+    bool           defined             () const;
+
     bool           fixed               () const;
 
 private:
@@ -40,5 +42,15 @@ private:
     ValueTypes     _value_types;
 
 };
+
+
+bool               operator==          (ResultType const& lhs,
+                                        ResultType const& rhs);
+
+bool               operator!=          (ResultType const& lhs,
+                                        ResultType const& rhs);
+
+std::ostream&      operator<<          (std::ostream& stream,
+                                        ResultType const& result_type);
 
 } // namespace ranally

@@ -5,12 +5,9 @@
 #include "ranally/core/validate_error.h"
 #include "ranally/operation/operation_xml_parser.h"
 #include "ranally/operation/operation-xml.h"
-#include "ranally/language/annotate_visitor.h"
 #include "ranally/language/identify_visitor.h"
 #include "ranally/language/script_vertex.h"
 #include "ranally/language/thread_visitor.h"
-#include "ranally/language/validate_visitor.h"
-#include "ranally/interpreter/execute_visitor.h"
 
 
 namespace ranally {
@@ -18,7 +15,10 @@ namespace ranally {
 Interpreter::Interpreter()
 
     : _algebra_parser(),
-      _xml_parser()
+      _xml_parser(),
+      _annotate_visitor(OperationXmlParser().parse(operations_xml)),
+      _validate_visitor(),
+      _execute_visitor()
 
 {
 }
@@ -160,7 +160,7 @@ ScriptVertexPtr Interpreter::parse_file(
   - Annotation.
 */
 void Interpreter::annotate(
-    ScriptVertexPtr const& tree) const
+    ScriptVertexPtr const& tree)
 {
     ThreadVisitor thread_visitor;
     tree->Accept(thread_visitor);
@@ -168,9 +168,7 @@ void Interpreter::annotate(
     IdentifyVisitor identify_visitor;
     tree->Accept(identify_visitor);
 
-    OperationsPtr operations(OperationXmlParser().parse(operations_xml));
-    AnnotateVisitor annotate_visitor(operations);
-    tree->Accept(annotate_visitor);
+    tree->Accept(_annotate_visitor);
 }
 
 
@@ -187,12 +185,11 @@ void Interpreter::annotate(
   - Validation.
 */
 void Interpreter::validate(
-    ScriptVertexPtr const& tree) const
+    ScriptVertexPtr const& tree)
 {
     try {
         annotate(tree);
-        ValidateVisitor validate_visitor;
-        tree->Accept(validate_visitor);
+        tree->Accept(_validate_visitor);
     }
     catch(detail::UndefinedIdentifier const& exception) {
         String const& source_name = tree->source_name();
@@ -248,11 +245,34 @@ void Interpreter::validate(
   - Execution.
 */
 void Interpreter::execute(
-    ScriptVertexPtr const& tree) const
+    ScriptVertexPtr const& tree)
 {
     validate(tree);
-    ExecuteVisitor execute_visitor;
-    tree->Accept(execute_visitor);
+    tree->Accept(_execute_visitor);
+}
+
+
+std::stack<std::tuple<ResultType, boost::any>> Interpreter::stack()
+{
+    std::stack<ResultType> result_types(_annotate_visitor.stack());
+    Stack values(_execute_visitor.stack());
+    assert(result_types.size() == values.size());
+    std::stack<std::tuple<ResultType, boost::any>> result;
+
+    for(size_t i = 0; i < _annotate_visitor.stack().size(); ++i) {
+        result.push(std::make_tuple(result_types.top(), values.top()));
+        result_types.pop();
+        values.pop();
+    }
+
+    return result;
+}
+
+
+void Interpreter::clear_stack()
+{
+    _annotate_visitor.clear_stack();
+    _execute_visitor.clear_stack();
 }
 
 } // namespace ranally

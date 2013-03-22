@@ -49,12 +49,36 @@
       <Result>
         <Name>result</Name>
         <Description>Result of adding the two parameters.</Description>
-        <DataType>DependsOnInput</DataType>
-        <ValueType>DependsOnInput</ValueType>
+        <DataType>All</DataType>
+        <ValueType>Number</ValueType>
       </Result>
     </Results>
   </Operation>
 -->
+  <Operation>
+    <Name>int32</Name>
+    <Description>Cast argument to int32.</Description>
+    <Parameters>
+      <Parameter>
+        <Name>parameter</Name>
+        <Description>Parameter.</Description>
+        <DataTypes>
+          <DataType>All</DataType>
+        </DataTypes>
+        <ValueTypes>
+          <ValueType>Number</ValueType>
+        </ValueTypes>
+      </Parameter>
+    </Parameters>
+    <Results>
+      <Result>
+        <Name>result</Name>
+        <Description>The argument value as an int32.</Description>
+        <DataType>All</DataType>
+        <ValueType>Int32</ValueType>
+      </Result>
+    </Results>
+  </Operation>
   <Operation>
     <Name>abs</Name>
     <Description>Calculate the absolute value of the argument.</Description>
@@ -74,8 +98,8 @@
       <Result>
         <Name>result</Name>
         <Description>The absolute value of the argument.</Description>
-        <DataType>DependsOnInput</DataType>
-        <ValueType>DependsOnInput</ValueType>
+        <DataType>All</DataType>
+        <ValueType>Number</ValueType>
       </Result>
     </Results>
   </Operation>
@@ -108,8 +132,8 @@
       <Result>
         <Name>result</Name>
         <Description>The sum of the arguments.</Description>
-        <DataType>DependsOnInput</DataType>
-        <ValueType>DependsOnInput</ValueType>
+        <DataType>Scalar</DataType>
+        <ValueType>Number</ValueType>
       </Result>
     </Results>
   </Operation>

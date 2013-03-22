@@ -4,9 +4,31 @@
 
 namespace ranally {
 
+ExecuteVisitor::ExecuteVisitor()
+
+    : _stack(),
+      _symbol_table()
+
+{
+   _symbol_table.push_scope();
+}
+
+
+ExecuteVisitor::~ExecuteVisitor()
+{
+   _symbol_table.pop_scope();
+}
+
+
 Stack const& ExecuteVisitor::stack() const
 {
     return _stack;
+}
+
+
+void ExecuteVisitor::clear_stack()
+{
+    _stack = Stack();
 }
 
 
@@ -100,6 +122,10 @@ void ExecuteVisitor::Visit(
     Operation const& operation(*vertex.operation());
     assert(_stack.size() >= operation.arity());
 
+    for(size_t i = 1; i < vertex.expressions().size(); ++i) {
+        _stack.pop();
+    }
+
     // We have everything we need: operation, arguments.
     // Given the properties of the operation:
     // TODO Try one out, create a test and see how it works.
@@ -115,6 +141,13 @@ void ExecuteVisitor::Visit(
     //     result += _stack.top<int64_t>(); _stack.pop();
     //     _stack.push(result);
     // }
+}
+
+
+void ExecuteVisitor::Visit(
+    ScriptVertex& vertex)
+{
+    Visitor::Visit(vertex);
 }
 
 

@@ -14,8 +14,8 @@ enum DataType {
 
     DT_POLYGON,
 
-    //! Data type depends on data type of input.
-    DT_DEPENDS_ON_INPUT,
+    // //! Data type depends on data type of input.
+    // DT_DEPENDS_ON_INPUT,
 
     DT_NR_DATA_TYPES
 };

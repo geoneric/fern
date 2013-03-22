@@ -36,7 +36,7 @@ DescribeCommand::~DescribeCommand() noexcept(true) =default;
 void DescribeCommand::describe(
     ScriptVertexPtr const& tree) const
 {
-    interpreter().validate(tree);
+    const_cast<Interpreter&>(interpreter()).validate(tree);
 
     // TODO describe
     // ranally::DescribeVisitor describe_visitor(std::cout);

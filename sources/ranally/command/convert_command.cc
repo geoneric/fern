@@ -142,7 +142,7 @@ String ConvertCommand::convert_to_dot_ast(
     std::shared_ptr<ScriptVertex> const& tree,
     int modes) const
 {
-    interpreter().annotate(tree);
+    const_cast<Interpreter&>(interpreter()).annotate(tree);
 
     AstDotVisitor ast_dot_visitor(modes);
     tree->Accept(ast_dot_visitor);
@@ -210,7 +210,7 @@ int ConvertCommand::convert_to_dot_ast(
 String ConvertCommand::convert_to_dot_flowgraph(
     ScriptVertexPtr const& tree) const
 {
-    interpreter().annotate(tree);
+    const_cast<Interpreter&>(interpreter()).annotate(tree);
 
     FlowgraphDotVisitor flowgraph_dot_visitor;
     tree->Accept(flowgraph_dot_visitor);

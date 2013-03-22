@@ -44,8 +44,8 @@ public:
     //! Alias for all data types.
     static DataTypes const ALL;
 
-    //! Data type depends on the data type of the operation's input parameters.
-    static DataTypes const DEPENDS_ON_INPUT;
+    // //! Data type depends on the data type of the operation's input parameters.
+    // static DataTypes const DEPENDS_ON_INPUT;
 
     static DataTypes from_string       (String const& string);
 
@@ -73,10 +73,10 @@ private:
 };
 
 
-DataTypes          operator|(           DataTypes const& lhs,
+DataTypes          operator|           (DataTypes const& lhs,
                                         DataTypes const& rhs);
 
-std::ostream&      operator<<(          std::ostream& stream,
+std::ostream&      operator<<          (std::ostream& stream,
                                         DataTypes const& flags);
 
 } // namespace ranally

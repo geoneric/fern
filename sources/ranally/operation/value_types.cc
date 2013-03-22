@@ -24,7 +24,7 @@ ValueTypes const ValueTypes::SIZE({ detail::ValueType::VT_UINT64 });
 ValueTypes const ValueTypes::FLOATING_POINT({ detail::ValueType::VT_FLOAT32, detail::ValueType::VT_FLOAT64 });
 ValueTypes const ValueTypes::NUMBER({ detail::ValueType::VT_UINT8, detail::ValueType::VT_UINT16, detail::ValueType::VT_UINT32, detail::ValueType::VT_UINT64, detail::ValueType::VT_INT8, detail::ValueType::VT_INT16, detail::ValueType::VT_INT32, detail::ValueType::VT_INT64, detail::ValueType::VT_FLOAT32, detail::ValueType::VT_FLOAT64 });
 ValueTypes const ValueTypes::ALL({ detail::ValueType::VT_UINT8, detail::ValueType::VT_UINT16, detail::ValueType::VT_UINT32, detail::ValueType::VT_UINT64, detail::ValueType::VT_INT8, detail::ValueType::VT_INT16, detail::ValueType::VT_INT32, detail::ValueType::VT_INT64, detail::ValueType::VT_FLOAT32, detail::ValueType::VT_FLOAT64, detail::ValueType::VT_STRING });
-ValueTypes const ValueTypes::DEPENDS_ON_INPUT({ detail::ValueType::VT_DEPENDS_ON_INPUT });
+// ValueTypes const ValueTypes::DEPENDS_ON_INPUT({ detail::ValueType::VT_DEPENDS_ON_INPUT });
 
 
 // These strings should match the ones used in the XML schema.
@@ -42,8 +42,8 @@ static std::map<String, ValueTypes> value_type_by_string = {
     { "Float64"       , ValueTypes::FLOAT64          },
     { "String"        , ValueTypes::STRING           },
     { "Number"        , ValueTypes::NUMBER           },
-    { "All"           , ValueTypes::ALL              },
-    { "DependsOnInput", ValueTypes::DEPENDS_ON_INPUT }
+    { "All"           , ValueTypes::ALL              } // ,
+    // { "DependsOnInput", ValueTypes::DEPENDS_ON_INPUT }
 };
 
 
@@ -58,8 +58,8 @@ static std::map<detail::ValueType, String> string_by_value_type = {
     { detail::ValueType::VT_INT64           , "Int64"          },
     { detail::ValueType::VT_FLOAT32         , "Float32"        },
     { detail::ValueType::VT_FLOAT64         , "Float64"        },
-    { detail::ValueType::VT_STRING          , "String"         },
-    { detail::ValueType::VT_DEPENDS_ON_INPUT, "DependsOnInput" }
+    { detail::ValueType::VT_STRING          , "String"         } // ,
+    // { detail::ValueType::VT_DEPENDS_ON_INPUT, "DependsOnInput" }
 };
 
 
@@ -83,8 +83,8 @@ std::vector<detail::ValueType> const ValueTypes::VALUE_TYPES = {
     detail::ValueType::VT_INT64,
     detail::ValueType::VT_FLOAT32,
     detail::ValueType::VT_FLOAT64,
-    detail::ValueType::VT_STRING,
-    detail::ValueType::VT_DEPENDS_ON_INPUT
+    detail::ValueType::VT_STRING // ,
+    // detail::ValueType::VT_DEPENDS_ON_INPUT
 };
 
 
@@ -98,7 +98,8 @@ static String to_string(
 
 ValueTypes::ValueTypes()
 
-    : FlagCollection<ValueTypes, detail::ValueType, detail::ValueType::VT_NR_VALUE_TYPES>()
+    : FlagCollection<ValueTypes, detail::ValueType,
+              detail::ValueType::VT_NR_VALUE_TYPES>()
 
 {
 }
@@ -107,8 +108,8 @@ ValueTypes::ValueTypes()
 ValueTypes::ValueTypes(
     std::set<detail::ValueType> const& value_types)
 
-    : FlagCollection<ValueTypes, detail::ValueType, detail::ValueType::VT_NR_VALUE_TYPES>(
-        value_types)
+    : FlagCollection<ValueTypes, detail::ValueType,
+              detail::ValueType::VT_NR_VALUE_TYPES>(value_types)
 
 {
 }
@@ -123,6 +124,10 @@ String ValueTypes::to_string() const
         if(test(value_type)) {
             strings.push_back(ranally::to_string(value_type));
         }
+    }
+
+    if(strings.empty()) {
+        strings.push_back("?");
     }
 
     return join(strings, "|");

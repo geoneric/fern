@@ -34,7 +34,7 @@ ExecuteCommand::~ExecuteCommand() noexcept(true) =default;
 void ExecuteCommand::execute(
     ScriptVertexPtr const& tree) const
 {
-    interpreter().execute(tree);
+    const_cast<Interpreter&>(interpreter()).execute(tree);
 }
 
 

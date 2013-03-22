@@ -67,8 +67,8 @@ public:
     //! Alias for all value types.
     static ValueTypes const ALL;
 
-    //! Value type depends on the value type of the operation's input parameters.
-    static ValueTypes const DEPENDS_ON_INPUT;
+    // //! Value type depends on the value type of the operation's input parameters.
+    // static ValueTypes const DEPENDS_ON_INPUT;
 
     static ValueTypes from_string      (String const& string);
 
@@ -96,10 +96,10 @@ private:
 };
 
 
-ValueTypes         operator|(           ValueTypes const& lhs,
+ValueTypes         operator|           (ValueTypes const& lhs,
                                         ValueTypes const& rhs);
 
-std::ostream&      operator<<(          std::ostream& stream,
+std::ostream&      operator<<          (std::ostream& stream,
                                         ValueTypes const& flags);
 
 } // namespace ranally

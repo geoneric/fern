@@ -10,7 +10,10 @@ namespace ranally {
 void ValidateVisitor::Visit(
     NameVertex& vertex)
 {
-    if(vertex.definitions().empty()) {
+    assert(vertex.result_types().size() == 1);
+
+    // if(vertex.definitions().empty()) {
+    if(!vertex.result_types()[0].defined()) {
         BOOST_THROW_EXCEPTION(detail::UndefinedIdentifier()
             << detail::ExceptionIdentifier(vertex.name())
             << detail::ExceptionLineNr(vertex.line())
@@ -51,9 +54,6 @@ void ValidateVisitor::Visit(
             << detail::ExceptionColNr(vertex.col())
         );
     }
-
-
-
 
     // TODO
     // // Check if the data type of each provided argument is accepted by the

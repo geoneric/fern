@@ -50,7 +50,7 @@ public:
 
                    AnnotateVisitor     (OperationsPtr const& operations);
 
-                   ~AnnotateVisitor    ()=default;
+                   ~AnnotateVisitor    ();
 
                    AnnotateVisitor     (AnnotateVisitor&&)=delete;
 
@@ -59,6 +59,10 @@ public:
                    AnnotateVisitor     (AnnotateVisitor const&)=delete;
 
     AnnotateVisitor& operator=         (AnnotateVisitor const&)=delete;
+
+    std::stack<ResultType> const& stack() const;
+
+    void           clear_stack         ();
 
 private:
 
