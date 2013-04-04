@@ -18,6 +18,7 @@ unset _basename
 
 export CC=/opt/gcc-4.8/bin/gcc
 export CXX=/opt/gcc-4.8/bin/g++
+export LD_LIBRARY_PATH=/opt/gcc-4.8/lib64:$LD_LIBRARY_PATH
 
 cd $RANALLY
 setPromptForProject Ranally $BUILD_TYPE
