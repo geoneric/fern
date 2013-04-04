@@ -36,8 +36,6 @@ bool ResultType::defined() const
 bool ResultType::fixed() const
 {
     return _data_types.fixed() && _value_types.fixed();
-        // !_data_types.test(detail::DataType::DT_DEPENDS_ON_INPUT)
-        // !_value_types.test(detail::ValueType::VT_DEPENDS_ON_INPUT)
 }
 
 

@@ -130,16 +130,7 @@ void Visitor::Visit(                                                           \
     Visit(dynamic_cast<ExpressionVertex&>(vertex));                            \
 }
 
-VISIT_NUMBER_VERTEX(int8_t  )
-VISIT_NUMBER_VERTEX(int16_t )
-VISIT_NUMBER_VERTEX(int32_t )
-VISIT_NUMBER_VERTEX(int64_t )
-VISIT_NUMBER_VERTEX(uint8_t )
-VISIT_NUMBER_VERTEX(uint16_t)
-VISIT_NUMBER_VERTEX(uint32_t)
-VISIT_NUMBER_VERTEX(uint64_t)
-VISIT_NUMBER_VERTEX(float   )
-VISIT_NUMBER_VERTEX(double  )
+VISIT_NUMBER_VERTICES(VISIT_NUMBER_VERTEX)
 
 #undef VISIT_NUMBER_VERTEX
 

@@ -220,11 +220,11 @@ public:
         std::shared_ptr<ranally::ScriptVertex> tree(_xml_parser.parse_string(
             _algebra_parser.parse_string(script)));
         tree->Accept(_visitor);
-        ranally::OperationVertex* operation_vertex =
-            dynamic_cast<ranally::OperationVertex*>(
+        ranally::ExpressionVertex* expression_vertex =
+            dynamic_cast<ranally::ExpressionVertex*>(
                 tree->statements()[0].get());
 
-        ranally::ResultTypes result_types(operation_vertex->result_types());
+        ranally::ResultTypes result_types(expression_vertex->result_types());
         BOOST_REQUIRE_EQUAL(result_types.size(), 1u);
         BOOST_CHECK_EQUAL(result_types[0], result_type);
     }
@@ -244,6 +244,18 @@ BOOST_FIXTURE_TEST_CASE(visit_operation_2, Support)
 {
     OperationResultTypeTester tester(_algebra_parser, _xml_parser, _visitor);
 
+    // TODO Update tester from operation to expression.
+
+    // Default integer type is int64.
+    tester("5", ranally::ResultType(
+        ranally::DataTypes::SCALAR,
+        ranally::ValueTypes::INT64));
+
+    // Default float type is float64.
+    tester("5.5", ranally::ResultType(
+        ranally::DataTypes::SCALAR,
+        ranally::ValueTypes::FLOAT64));
+
     tester("abs(a)", ranally::ResultType(
         ranally::DataTypes::ALL,
         ranally::ValueTypes::NUMBER));
@@ -258,6 +270,16 @@ BOOST_FIXTURE_TEST_CASE(visit_operation_2, Support)
         ranally::DataTypes::SCALAR,
         ranally::ValueTypes::INT32));
     tester("int32(5.5)", ranally::ResultType(
+        ranally::DataTypes::SCALAR,
+        ranally::ValueTypes::INT32));
+
+    tester("5 + 6", ranally::ResultType(
+        ranally::DataTypes::SCALAR,
+        ranally::ValueTypes::INT64));
+    tester("5 + int32(6)", ranally::ResultType(
+        ranally::DataTypes::SCALAR,
+        ranally::ValueTypes::INT64));
+    tester("int32(5) + int32(6)", ranally::ResultType(
         ranally::DataTypes::SCALAR,
         ranally::ValueTypes::INT32));
 }

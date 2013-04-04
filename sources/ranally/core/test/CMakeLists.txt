@@ -1,4 +1,5 @@
 SET(TEST_NAMES
+    flag_collection_test
     scope_test
     stack_test
     string_test

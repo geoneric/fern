@@ -1,6 +1,5 @@
 #pragma once
 #include <bitset>
-#include <set>
 #include "ranally/core/string.h"
 
 
@@ -59,7 +58,7 @@ public:
 
 protected:
 
-                   FlagCollection      (std::set<Flag> const& flags);
+    constexpr      FlagCollection      (unsigned long long bits);
 
 private:
 
@@ -70,15 +69,12 @@ template<
     class Flags,
     typename Flag,
     size_t size>
-inline FlagCollection<Flags, Flag, size>::FlagCollection(
-    std::set<Flag> const& flags)
+inline constexpr FlagCollection<Flags, Flag, size>::FlagCollection(
+    unsigned long long bits)
 
-    : std::bitset<size>()
+    : std::bitset<size>(bits )
 
 {
-    for(Flag flag: flags) {
-        std::bitset<size>::set(flag);
-    }
 }
 
 

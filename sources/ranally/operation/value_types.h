@@ -67,9 +67,6 @@ public:
     //! Alias for all value types.
     static ValueTypes const ALL;
 
-    // //! Value type depends on the value type of the operation's input parameters.
-    // static ValueTypes const DEPENDS_ON_INPUT;
-
     static ValueTypes from_string      (String const& string);
 
                    ValueTypes          ();
@@ -90,10 +87,19 @@ private:
 
     static std::vector<detail::ValueType> const VALUE_TYPES;
 
-                   ValueTypes          (
-                             std::set<detail::ValueType> const& value_types);
+    constexpr      ValueTypes          (unsigned long long bits);
 
 };
+
+
+constexpr inline ValueTypes::ValueTypes(
+    unsigned long long bits)
+
+    : FlagCollection<ValueTypes, detail::ValueType,
+          detail::ValueType::VT_NR_VALUE_TYPES>(bits)
+
+{
+}
 
 
 ValueTypes         operator|           (ValueTypes const& lhs,

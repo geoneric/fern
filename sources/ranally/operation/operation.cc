@@ -91,6 +91,14 @@ DataTypes Operation::result_data_type(
     assert(index < _results.size());
     assert(argument_data_types.size() == _parameters.size());
 
+    {
+        Result const& result(_results[index]);
+        if(result.data_type().fixed()) {
+            return result.data_type();
+        }
+    }
+
+
     std::vector<DataTypes> data_types(argument_data_types);
 
     // Select subset of data types that are supported by the parameter.
@@ -137,16 +145,37 @@ ValueTypes Operation::result_value_type(
     // the result. It is either a simple combination of the value types of
     // the arguments (C++ rules), or a fixed value type which is an operation
     // property.
-
     assert(index < _results.size());
     assert(argument_value_types.size() == _parameters.size());
 
-    std::vector<ValueTypes> value_types(argument_value_types);
+
+    {
+        Result const& result(_results[index]);
+        if(result.value_type().fixed()) {
+            return result.value_type();
+        }
+    }
+
 
     // Select subset of value types that are supported by the parameter.
-    for(size_t i = 0; i < value_types.size(); ++i) {
-        value_types[i] = value_types[i] &= _parameters[i].value_types();
+    std::vector<ValueTypes> supported_value_types(argument_value_types);
+    for(size_t i = 0; i < supported_value_types.size(); ++i) {
+        supported_value_types[i] =
+            supported_value_types[i] &= _parameters[i].value_types();
     }
+
+
+    ValueTypes merged_argument_value_types;
+    {
+        for(auto value_type: supported_value_types) {
+            merged_argument_value_types |= value_type;
+        }
+
+        if(merged_argument_value_types.fixed()) {
+            return merged_argument_value_types;
+        }
+    }
+
 
     // Aggregate all value types.
     ValueTypes merged_parameter_value_types;
@@ -154,10 +183,6 @@ ValueTypes Operation::result_value_type(
         merged_parameter_value_types |= parameter.value_types();
     }
 
-    ValueTypes merged_argument_value_types;
-    for(auto value_type: value_types) {
-        merged_argument_value_types |= value_type;
-    }
 
     ValueTypes result_value_type;
 

@@ -29,9 +29,6 @@ enum ValueType {
     //! String value.
     VT_STRING,
 
-    // //! Value type depends on value type of input.
-    // VT_DEPENDS_ON_INPUT,
-
     VT_NR_VALUE_TYPES
 };
 

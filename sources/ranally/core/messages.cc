@@ -20,9 +20,13 @@ Messages::Messages()
         // source:line:col: statement: message
         "Error parsing %1%:%2%:%3%:%4%: %5%"));
 
-    insert(std::make_pair(MessageId::UNSUPPORTED_EXPRESSION,
-        // expression
-        "Unsupported expression: %1%"));
+    // insert(std::make_pair(MessageId::UNSUPPORTED_EXPRESSION,
+    //     // expression
+    //     "Unsupported expression: %1%"));
+
+    insert(std::make_pair(MessageId::UNSUPPORTED_LANGUAGE_CONSTRUCT,
+        // construct
+        "Unsupported language construct: %1%"));
 
     insert(std::make_pair(MessageId::UNDEFINED_IDENTIFIER,
         // identifier

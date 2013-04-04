@@ -44,9 +44,6 @@ public:
     //! Alias for all data types.
     static DataTypes const ALL;
 
-    // //! Data type depends on the data type of the operation's input parameters.
-    // static DataTypes const DEPENDS_ON_INPUT;
-
     static DataTypes from_string       (String const& string);
 
                    DataTypes           ();
@@ -67,10 +64,19 @@ private:
 
     static std::vector<detail::DataType> const DATA_TYPES;
 
-                   DataTypes           (
-                             std::set<detail::DataType> const& data_types);
+    constexpr      DataTypes           (unsigned long long bits);
 
 };
+
+
+constexpr inline DataTypes::DataTypes(
+    unsigned long long bits)
+
+    : FlagCollection<DataTypes, detail::DataType,
+          detail::DataType::DT_NR_DATA_TYPES>(bits)
+
+{
+}
 
 
 DataTypes          operator|           (DataTypes const& lhs,

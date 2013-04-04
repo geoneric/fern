@@ -70,6 +70,27 @@ ScriptVertexPtr Interpreter::parse_string(
                 *message);
         }
     }
+    catch(detail::UnsupportedLanguageConstruct const& exception) {
+        String const* source_name = boost::get_error_info<
+            detail::ExceptionSourceName>(exception);
+        assert(source_name);
+
+        long const* line_nr = boost::get_error_info<
+            detail::ExceptionLineNr>(exception);
+        assert(line_nr);
+
+        long const* col_nr = boost::get_error_info<
+            detail::ExceptionColNr>(exception);
+        assert(col_nr);
+
+        String const* construct = boost::get_error_info<
+            detail::ExceptionConstruct>(exception);
+        assert(construct);
+
+        throw ParseError(*source_name, *line_nr, *col_nr,
+            Exception::messages().format_message(
+                MessageId::UNSUPPORTED_LANGUAGE_CONSTRUCT, *construct));
+    }
 
     return script_vertex;
 }
@@ -140,6 +161,27 @@ ScriptVertexPtr Interpreter::parse_file(
             throw ParseError(*source_name, *line_nr, *col_nr, *statement,
                 *message);
         }
+    }
+    catch(detail::UnsupportedLanguageConstruct const& exception) {
+        String const* source_name = boost::get_error_info<
+            detail::ExceptionSourceName>(exception);
+        assert(source_name);
+
+        long const* line_nr = boost::get_error_info<
+            detail::ExceptionLineNr>(exception);
+        assert(line_nr);
+
+        long const* col_nr = boost::get_error_info<
+            detail::ExceptionColNr>(exception);
+        assert(col_nr);
+
+        String const* construct = boost::get_error_info<
+            detail::ExceptionConstruct>(exception);
+        assert(construct);
+
+        throw ParseError(*source_name, *line_nr, *col_nr,
+            Exception::messages().format_message(
+                MessageId::UNSUPPORTED_LANGUAGE_CONSTRUCT, *construct));
     }
 
     return script_vertex;

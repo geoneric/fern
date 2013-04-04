@@ -22,6 +22,19 @@ void               write_statement_nodes(
                                         ranally::String& xml);
 
 
+void throw_unsupported_language_construct(
+    long line_nr,
+    long col_nr,
+    ranally::String const& kind)
+{
+    BOOST_THROW_EXCEPTION(ranally::detail::UnsupportedLanguageConstruct()
+        << ranally::detail::ExceptionConstruct(kind)
+        << ranally::detail::ExceptionLineNr(line_nr)
+        << ranally::detail::ExceptionColNr(col_nr)
+    );
+}
+
+
 void write_name_node(
     identifier const id,
     expr_context_ty const& /* context */,
@@ -384,19 +397,6 @@ void write_subscript_node(
 }
 
 
-void throw_unsupported_expression_kind(
-    long line_nr,
-    long col_nr,
-    ranally::String const& kind)
-{
-    BOOST_THROW_EXCEPTION(ranally::detail::UnsupportedExpressionError()
-        << ranally::detail::ExceptionExpressionKind(kind)
-        << ranally::detail::ExceptionLineNr(line_nr)
-        << ranally::detail::ExceptionColNr(col_nr)
-    );
-}
-
-
 void write_expression_node(
     expr_ty const& expression,
     ranally::String& xml)
@@ -458,55 +458,56 @@ void write_expression_node(
             break;
         }
         case IfExp_kind: {
-            throw_unsupported_expression_kind(line_nr, col_nr, "if");
+            throw_unsupported_language_construct(line_nr, col_nr, "if");
             break;
         }
         case Lambda_kind: {
-            throw_unsupported_expression_kind(line_nr, col_nr, "lambda");
+            throw_unsupported_language_construct(line_nr, col_nr, "lambda");
             break;
         }
         case Dict_kind: {
-            throw_unsupported_expression_kind(line_nr, col_nr, "dictionary");
+            throw_unsupported_language_construct(line_nr, col_nr, "dictionary");
             break;
         }
         case DictComp_kind: {
-            throw_unsupported_expression_kind(line_nr, col_nr, "dictionary comprehension");
+            throw_unsupported_language_construct(line_nr, col_nr,
+                "dictionary comprehension");
             break;
         }
         case GeneratorExp_kind: {
-            throw_unsupported_expression_kind(line_nr, col_nr, "generator");
+            throw_unsupported_language_construct(line_nr, col_nr, "generator");
             break;
         }
         case Yield_kind: {
-            throw_unsupported_expression_kind(line_nr, col_nr, "yield");
+            throw_unsupported_language_construct(line_nr, col_nr, "yield");
             break;
         }
         case Repr_kind: {
-            throw_unsupported_expression_kind(line_nr, col_nr, "repr");
+            throw_unsupported_language_construct(line_nr, col_nr, "repr");
             break;
         }
         case Attribute_kind: {
-            throw_unsupported_expression_kind(line_nr, col_nr, "attribute");
+            throw_unsupported_language_construct(line_nr, col_nr, "attribute");
             break;
         }
         case List_kind: {
-            throw_unsupported_expression_kind(line_nr, col_nr, "list");
+            throw_unsupported_language_construct(line_nr, col_nr, "list");
             break;
         }
         case ListComp_kind: {
-            throw_unsupported_expression_kind(line_nr, col_nr, "list comprehension");
+            throw_unsupported_language_construct(line_nr, col_nr, "list comprehension");
             break;
         }
         case Set_kind: {
-            throw_unsupported_expression_kind(line_nr, col_nr, "set");
+            throw_unsupported_language_construct(line_nr, col_nr, "set");
             break;
         }
         case SetComp_kind: {
-            throw_unsupported_expression_kind(line_nr, col_nr, "set comprehension");
+            throw_unsupported_language_construct(line_nr, col_nr, "set comprehension");
             break;
         }
         case Tuple_kind: {
-            throw_unsupported_expression_kind(line_nr, col_nr, "tuple");
+            throw_unsupported_language_construct(line_nr, col_nr, "tuple");
             break;
         }
     }
@@ -611,6 +612,11 @@ void write_statement_nodes(
                 asdl_seq_GET(statements, i));
             assert(statement);
 
+            // 1-based linenumber.
+            // 0-based column id.
+            long line_nr = statement->lineno;
+            long col_nr = statement->col_offset;
+            // TODO Add line/col to XML.
             xml += "<Statement>";
 
             switch(statement->kind) {
@@ -634,36 +640,108 @@ void write_statement_nodes(
                         xml);
                     break;
                 }
-                case Print_kind: // {
+                case Print_kind: {
+                    throw_unsupported_language_construct(line_nr, col_nr,
+                        "print");
+                    break;
+                }
+
+                // {
                 //   writePrintFunctionNode(statement->v.Print.dest,
                 //     statement->v.Print.values, xml);
                 //   break;
                 // }
 
-                // TODO
-                case Break_kind:
-                case Continue_kind:
-                case Assert_kind:
-                case AugAssign_kind:
+                case Break_kind: {
+                    throw_unsupported_language_construct(line_nr, col_nr,
+                        "break");
+                    break;
+                }
+                case Continue_kind: {
+                    throw_unsupported_language_construct(line_nr, col_nr,
+                        "continue");
+                    break;
+                }
+                case Assert_kind: {
+                    throw_unsupported_language_construct(line_nr, col_nr,
+                        "assert");
+                    break;
+                }
+                case AugAssign_kind: {
+                    throw_unsupported_language_construct(line_nr, col_nr,
+                        "augmented assign");
+                    break;
+                }
 
-                case Global_kind:
-                case Pass_kind:
+                case Global_kind: {
+                    throw_unsupported_language_construct(line_nr, col_nr,
+                        "global");
+                    break;
+                }
+                case Pass_kind: {
+                    throw_unsupported_language_construct(line_nr, col_nr,
+                        "pass");
+                    break;
+                }
 
-                case FunctionDef_kind:
-                case ClassDef_kind:
-                case Return_kind:
-                case Delete_kind:
-                case For_kind:
-                case With_kind:
-                case Raise_kind:
-                case TryExcept_kind:
-                case TryFinally_kind:
-                case Import_kind:
-                case ImportFrom_kind:
-                case Exec_kind:
-                {
-                    bool implemented = false;
-                    assert(implemented);
+                case FunctionDef_kind: {
+                    throw_unsupported_language_construct(line_nr, col_nr,
+                        "define function");
+                    break;
+                }
+                case ClassDef_kind: {
+                    throw_unsupported_language_construct(line_nr, col_nr,
+                        "define class");
+                    break;
+                }
+                case Return_kind: {
+                    throw_unsupported_language_construct(line_nr, col_nr,
+                        "return");
+                    break;
+                }
+                case Delete_kind: {
+                    throw_unsupported_language_construct(line_nr, col_nr,
+                        "delete");
+                    break;
+                }
+                case For_kind: {
+                    throw_unsupported_language_construct(line_nr, col_nr,
+                        "for");
+                    break;
+                }
+                case With_kind: {
+                    throw_unsupported_language_construct(line_nr, col_nr,
+                        "with");
+                    break;
+                }
+                case Raise_kind: {
+                    throw_unsupported_language_construct(line_nr, col_nr,
+                        "raise");
+                    break;
+                }
+                case TryExcept_kind: {
+                    throw_unsupported_language_construct(line_nr, col_nr,
+                        "try/except");
+                    break;
+                }
+                case TryFinally_kind: {
+                    throw_unsupported_language_construct(line_nr, col_nr,
+                        "try/finally");
+                    break;
+                }
+                case Import_kind: {
+                    throw_unsupported_language_construct(line_nr, col_nr,
+                        "import");
+                    break;
+                }
+                case ImportFrom_kind: {
+                    throw_unsupported_language_construct(line_nr, col_nr,
+                        "import from");
+                    break;
+                }
+                case Exec_kind: {
+                    throw_unsupported_language_construct(line_nr, col_nr,
+                        "exec");
                     break;
                 }
             }

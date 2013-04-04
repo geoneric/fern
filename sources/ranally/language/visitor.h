@@ -119,4 +119,21 @@ private:
 
 };
 
+
+//! Macro that will call the macro passed in for each numeric value type.
+/*!
+*/
+#define VISIT_NUMBER_VERTICES(                                                 \
+        macro)                                                                 \
+    macro(int8_t)                                                              \
+    macro(int16_t)                                                             \
+    macro(int32_t)                                                             \
+    macro(int64_t)                                                             \
+    macro(uint8_t)                                                             \
+    macro(uint16_t)                                                            \
+    macro(uint32_t)                                                            \
+    macro(uint64_t)                                                            \
+    macro(float)                                                               \
+    macro(double)
+
 } // namespace ranally

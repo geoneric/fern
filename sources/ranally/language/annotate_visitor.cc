@@ -1,6 +1,7 @@
 #include "ranally/language/annotate_visitor.h"
 #include "ranally/core/string.h"
 #include "ranally/operation/result.h"
+#include "ranally/operation/type_traits.h"
 #include "ranally/language/vertices.h"
 
 
@@ -65,33 +66,18 @@ void AnnotateVisitor::Visit(
 
 
 #define VISIT_NUMBER_VERTEX(                                                   \
-    type,                                                                      \
-    data_type,                                                                 \
-    value_type)                                                                \
+    type)                                                                      \
 void AnnotateVisitor::Visit(                                                   \
     NumberVertex<type>& vertex)                                                \
 {                                                                              \
     assert(vertex.result_types().empty());                                     \
-    ResultType result_type(data_type, value_type);                             \
+    ResultType result_type(DataTypes::SCALAR, TypeTraits<type>::value_type);   \
     _stack.push(result_type);                                                  \
     vertex.add_result_type(result_type);                                       \
     assert(vertex.result_types().size() == 1);                                 \
 }
 
-// TODO Use traits in the implementation! Don't pass these things to the macro.
-// TODO Refactor all these macro call lists. They are everywhere. Make a
-//      VISIT_NUMBER_VERTICES macro that calls the macro for each numeric
-//      type.
-VISIT_NUMBER_VERTEX(int8_t  , DataTypes::SCALAR, ValueTypes::INT8   )
-VISIT_NUMBER_VERTEX(int16_t , DataTypes::SCALAR, ValueTypes::INT16  )
-VISIT_NUMBER_VERTEX(int32_t , DataTypes::SCALAR, ValueTypes::INT32  )
-VISIT_NUMBER_VERTEX(int64_t , DataTypes::SCALAR, ValueTypes::INT64  )
-VISIT_NUMBER_VERTEX(uint8_t , DataTypes::SCALAR, ValueTypes::UINT8  )
-VISIT_NUMBER_VERTEX(uint16_t, DataTypes::SCALAR, ValueTypes::UINT16 )
-VISIT_NUMBER_VERTEX(uint32_t, DataTypes::SCALAR, ValueTypes::UINT32 )
-VISIT_NUMBER_VERTEX(uint64_t, DataTypes::SCALAR, ValueTypes::UINT64 )
-VISIT_NUMBER_VERTEX(float   , DataTypes::SCALAR, ValueTypes::FLOAT32)
-VISIT_NUMBER_VERTEX(double  , DataTypes::SCALAR, ValueTypes::FLOAT64)
+VISIT_NUMBER_VERTICES(VISIT_NUMBER_VERTEX)
 
 #undef VISIT_NUMBER_VERTEX
 

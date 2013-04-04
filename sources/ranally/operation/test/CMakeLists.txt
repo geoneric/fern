@@ -2,6 +2,8 @@ SET(TEST_NAMES
     data_types_test
     operation_xml_parser_test
     print_test
+    result_type_test
+    type_traits_test
 )
 
 MACRO(ADD_UNIT_TEST NAME)

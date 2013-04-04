@@ -14,6 +14,7 @@ namespace ranally {
 class Exception:
     public virtual std::exception
 {
+
 public:
 
                    Exception           ()=delete;
@@ -28,13 +29,11 @@ public:
 
     Exception&     operator=           (Exception&&)=default;
 
-    virtual        ~Exception          () noexcept(true) =default;
+    virtual        ~Exception          ()=default;
 
     virtual String message             () const;
 
     static Messages const& messages    ();
-
-protected:
 
 private:
 
@@ -56,7 +55,7 @@ namespace detail {
 typedef boost::error_info<struct tag_source_name, String> ExceptionSourceName;
 typedef boost::error_info<struct tag_message, String> ExceptionMessage;
 typedef boost::error_info<struct tag_expression_kind, String>
-    ExceptionExpressionKind;
+    ExceptionConstruct;
 typedef boost::error_info<struct tag_statement, String> ExceptionStatement;
 typedef boost::error_info<struct tag_identifier, String> ExceptionIdentifier;
 typedef boost::error_info<struct tag_function_name, String>
@@ -75,7 +74,7 @@ struct Exception:
 
 // Exception types.
 struct ParseError: public virtual Exception { };
-struct UnsupportedExpressionError: public virtual Exception { };
+struct UnsupportedLanguageConstruct: public virtual Exception { };
 
 struct ValidateError: public virtual Exception { };
 struct UndefinedIdentifier: public virtual ValidateError { };

@@ -154,6 +154,16 @@ BOOST_AUTO_TEST_CASE(parse_string)
         BOOST_CHECK_THROW(parser.parse_string(ranally::String("if")),
             ranally::detail::ParseError);
     }
+
+    {
+        BOOST_CHECK_THROW(parser.parse_string(ranally::String("yield")),
+            ranally::detail::UnsupportedLanguageConstruct);
+    }
+
+    {
+        BOOST_CHECK_THROW(parser.parse_string(ranally::String("print(5)")),
+            ranally::detail::UnsupportedLanguageConstruct);
+    }
 }
 
 
