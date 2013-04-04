@@ -21,7 +21,7 @@ public:
                    ConvertCommand      (int argc,
                                         char** argv);
 
-                   ~ConvertCommand     () noexcept(true); // =default;
+                   ~ConvertCommand     ()=default;
 
                    ConvertCommand      (ConvertCommand&&)=delete;
 

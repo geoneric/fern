@@ -30,9 +30,6 @@ DescribeCommand::DescribeCommand(
 }
 
 
-DescribeCommand::~DescribeCommand() noexcept(true) =default;
-
-
 void DescribeCommand::describe(
     ScriptVertexPtr const& tree) const
 {

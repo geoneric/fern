@@ -71,7 +71,7 @@ public:
 
                    ValueTypes          ();
 
-                   ~ValueTypes         () noexcept(true) =default;
+                   ~ValueTypes         ()=default;
 
                    ValueTypes          (ValueTypes&&)=default;
 

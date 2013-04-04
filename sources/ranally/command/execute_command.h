@@ -21,7 +21,7 @@ public:
                    ExecuteCommand      (int argc,
                                         char** argv);
 
-                   ~ExecuteCommand     () noexcept(true); // =default;
+                   ~ExecuteCommand     ()=default;
 
                    ExecuteCommand      (ExecuteCommand&&)=delete;
 

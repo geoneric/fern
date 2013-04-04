@@ -617,7 +617,10 @@ void write_statement_nodes(
             long line_nr = statement->lineno;
             long col_nr = statement->col_offset;
             // TODO Add line/col to XML.
-            xml += "<Statement>";
+            // xml += "<Statement>";
+            xml += (boost::format("<Statement line=\"%1%\" col=\"%2%\">")
+                % line_nr
+                % col_nr).str().c_str();
 
             switch(statement->kind) {
                 case Expr_kind: {

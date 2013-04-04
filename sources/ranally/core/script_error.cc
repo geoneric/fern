@@ -19,9 +19,6 @@ ScriptError::ScriptError(
 }
 
 
-ScriptError::~ScriptError() noexcept(true) =default;
-
-
 String ScriptError::source_name() const
 {
     return _source_name;

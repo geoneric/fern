@@ -17,9 +17,6 @@ ValidateError::ValidateError(
 }
 
 
-ValidateError::~ValidateError() noexcept(true) =default;
-
-
 String ValidateError::message() const
 {
     String message_;

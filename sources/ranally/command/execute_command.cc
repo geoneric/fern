@@ -28,9 +28,6 @@ ExecuteCommand::ExecuteCommand(
 }
 
 
-ExecuteCommand::~ExecuteCommand() noexcept(true) =default;
-
-
 void ExecuteCommand::execute(
     ScriptVertexPtr const& tree) const
 {

@@ -27,9 +27,6 @@ IOError::IOError(
 }
 
 
-IOError::~IOError() noexcept(true) =default;
-
-
 String IOError::message() const
 {
     return boost::format(Exception::message().encode_in_utf8())

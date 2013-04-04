@@ -17,7 +17,7 @@ public:
 
     ScriptError&   operator=           (ScriptError&&)=default;
 
-                   ~ScriptError        () noexcept(true);
+                   ~ScriptError        ()=default;
 
 protected:
 

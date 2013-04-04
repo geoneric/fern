@@ -296,12 +296,28 @@ public:
         _data_stack.push(StatementData());
     }
 
+    void line(
+        unsigned long long line)
+    {
+        assert(!_data_stack.empty());
+        _data_stack.top().line = line;
+    }
+
+    void col(
+        unsigned long long col)
+    {
+        assert(!_data_stack.empty());
+        _data_stack.top().col = col;
+    }
+
     void Expression(
         std::shared_ptr<ranally::ExpressionVertex> const& vertex)
     {
         assert(vertex);
         assert(!_data_stack.empty());
-        _data_stack.top() = vertex;
+        _data_stack.top().vertex = vertex;
+        _data_stack.top().vertex->set_position(_data_stack.top().line,
+            _data_stack.top().col);
     }
 
     void Assignment(
@@ -309,7 +325,9 @@ public:
     {
         assert(vertex);
         assert(!_data_stack.empty());
-        _data_stack.top() = vertex;
+        _data_stack.top().vertex = vertex;
+        _data_stack.top().vertex->set_position(_data_stack.top().line,
+            _data_stack.top().col);
     }
 
     void If(
@@ -317,7 +335,9 @@ public:
     {
         assert(vertex);
         assert(!_data_stack.empty());
-        _data_stack.top() = vertex;
+        _data_stack.top().vertex = vertex;
+        _data_stack.top().vertex->set_position(_data_stack.top().line,
+            _data_stack.top().col);
     }
 
     void While(
@@ -325,7 +345,9 @@ public:
     {
         assert(vertex);
         assert(!_data_stack.empty());
-        _data_stack.top() = vertex;
+        _data_stack.top().vertex = vertex;
+        _data_stack.top().vertex->set_position(_data_stack.top().line,
+            _data_stack.top().col);
     }
 
     std::shared_ptr<ranally::StatementVertex> post_Statement()
@@ -333,12 +355,17 @@ public:
         assert(!_data_stack.empty());
         StatementData result(_data_stack.top());
         _data_stack.pop();
-        return result;
+        return result.vertex;
     }
 
 private:
 
-    typedef std::shared_ptr<ranally::StatementVertex> StatementData;
+    struct StatementData
+    {
+        int line;
+        int col;
+        std::shared_ptr<ranally::StatementVertex> vertex;
+    };
 
     std::stack<StatementData> _data_stack;
 
@@ -443,9 +470,9 @@ public:
 
 private:
 
-  unsigned long long _size;
+    unsigned long long _size;
 
-  long long        _value;
+    long long        _value;
 
 };
 
@@ -571,9 +598,9 @@ public:
 
 private:
 
-  unsigned long long _size;
+    unsigned long long _size;
 
-  double           _value;
+    double           _value;
 
 };
 
@@ -957,7 +984,8 @@ std::shared_ptr<ScriptVertex> XmlParser::parse(
     while_p.parsers(expression_p, statements_p);
 
     Statement_pimpl statement_p;
-    statement_p.parsers(expression_p, assignment_p, if_p, while_p);
+    statement_p.parsers(expression_p, assignment_p, if_p, while_p,
+        non_negative_integer_p, non_negative_integer_p);
 
     statements_p.parsers(statement_p);
 

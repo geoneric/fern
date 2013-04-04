@@ -33,9 +33,6 @@ ParseError::ParseError(
 }
 
 
-ParseError::~ParseError() noexcept(true) =default;
-
-
 String ParseError::message() const
 {
     String message_;

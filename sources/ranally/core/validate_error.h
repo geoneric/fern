@@ -22,7 +22,7 @@ public:
 
     ValidateError& operator=           (ValidateError&&)=default;
 
-                   ~ValidateError      () noexcept(true);
+                   ~ValidateError      ()=default;
 
     String         message             () const;
 

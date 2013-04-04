@@ -28,7 +28,7 @@ public:
 
     ParseError&    operator=           (ParseError&&)=default;
 
-                   ~ParseError         () noexcept(true);
+                   ~ParseError         ()=default;
 
     String         message             () const;
 

@@ -32,9 +32,6 @@ ImportCommand::ImportCommand(
 }
 
 
-ImportCommand::~ImportCommand() noexcept(true) =default;
-
-
 int ImportCommand::execute() const
 {
     int status = EXIT_FAILURE;

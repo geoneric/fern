@@ -117,9 +117,6 @@ ConvertCommand::ConvertCommand(
 }
 
 
-ConvertCommand::~ConvertCommand() noexcept(true) =default;
-
-
 int ConvertCommand::convert_to_ranally(
     int /* argc */,
     char** /* argv */) const

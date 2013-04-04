@@ -23,7 +23,7 @@ public:
 
     IOError&       operator=           (IOError&&)=default;
 
-                   ~IOError            () noexcept(true);
+                   ~IOError            ()=default;
 
     String         message             () const;
 

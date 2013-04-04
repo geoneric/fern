@@ -48,7 +48,7 @@ public:
 
                    DataTypes           ();
 
-                   ~DataTypes          () noexcept(true) =default;
+                   ~DataTypes          ()=default;
 
                    DataTypes           (DataTypes&&)=default;
 
