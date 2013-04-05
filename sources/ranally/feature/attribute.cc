@@ -5,23 +5,25 @@
 namespace ranally {
 
 Attribute::Attribute(
-    String const& name)
+    DataType data_type,
+    ValueType value_type)
 
-    : _name(name)
+    : _data_type(data_type),
+      _value_type(value_type)
 
 {
-    assert(!name.is_empty());
 }
 
 
-// Attribute::~Attribute()
-// {
-// }
-
-
-String const& Attribute::name() const
+DataType Attribute::data_type() const
 {
-    return _name;
+    return _data_type;
+}
+
+
+ValueType Attribute::value_type() const
+{
+    return _value_type;
 }
 
 } // namespace ranally

@@ -2,7 +2,6 @@
 
 
 namespace ranally {
-namespace detail {
 
 enum DataType {
 
@@ -14,8 +13,8 @@ enum DataType {
 
     DT_POLYGON,
 
-    DT_NR_DATA_TYPES
+    DT_LAST_DATA_TYPE = DT_POLYGON
+
 };
 
-} // namespace detail
 } // namespace ranally

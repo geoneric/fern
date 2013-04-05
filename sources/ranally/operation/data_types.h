@@ -15,8 +15,7 @@ namespace ranally {
   \sa        .
 */
 class DataTypes:
-    public FlagCollection<DataTypes, detail::DataType,
-        detail::DataType::DT_NR_DATA_TYPES>
+    public FlagCollection<DataTypes, DataType, DataType::DT_LAST_DATA_TYPE + 1>
 {
 
     friend class DataTypesTest;
@@ -62,7 +61,7 @@ public:
 
 private:
 
-    static std::vector<detail::DataType> const DATA_TYPES;
+    static std::vector<DataType> const DATA_TYPES;
 
     constexpr      DataTypes           (unsigned long long bits);
 
@@ -72,8 +71,7 @@ private:
 constexpr inline DataTypes::DataTypes(
     unsigned long long bits)
 
-    : FlagCollection<DataTypes, detail::DataType,
-          detail::DataType::DT_NR_DATA_TYPES>(bits)
+    : FlagCollection<DataTypes, DataType, DataType::DT_LAST_DATA_TYPE + 1>(bits)
 
 {
 }

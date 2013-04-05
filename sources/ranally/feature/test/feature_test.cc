@@ -33,15 +33,15 @@ BOOST_AUTO_TEST_CASE(scalar_feature_value_attributes)
 
     // standard gravity, double.
     auto gravity_value(std::make_shared<ScalarValue<double>>(9.8));
-    auto gravity_attribute(std::make_shared<ScalarAttribute<double>>("gravity",
+    auto gravity_attribute(std::make_shared<ScalarAttribute<double>>(
         earth.domain<ScalarDomain>(), gravity_value));
-    earth.add_attribute(gravity_attribute);
+    earth.add_attribute("gravity", gravity_attribute);
 
     // latin name, string.
     auto latin_name_value(std::make_shared<ScalarValue<String>>("terra"));
     auto latin_name_attribute(std::make_shared<ScalarAttribute<String>>(
-        "latin_name", earth.domain<ScalarDomain>(), latin_name_value));
-    earth.add_attribute(latin_name_attribute);
+        earth.domain<ScalarDomain>(), latin_name_value));
+    earth.add_attribute("latin_name", latin_name_attribute);
 
     // Test the earth feature's attributes.
     BOOST_CHECK_EQUAL(earth.nr_attributes(), 2u);
@@ -87,9 +87,9 @@ BOOST_AUTO_TEST_CASE(point_feature_value_attributes)
     id_value->insert(2, 5u);
     id_value->insert(3, 7u);
     id_value->insert(4, 9u);
-    auto id_attribute(std::make_shared<DomainAttribute<Point, uint8_t>>("id",
+    auto id_attribute(std::make_shared<DomainAttribute<Point, uint8_t>>(
         domain, id_value));
-    police_car.add_attribute(id_attribute);
+    police_car.add_attribute("id", id_attribute);
 
     // TODO More attributes...
 

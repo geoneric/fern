@@ -2,7 +2,6 @@
 
 
 namespace ranally {
-namespace detail {
 
 enum ValueType {
 
@@ -26,11 +25,10 @@ enum ValueType {
 
     VT_FLOAT64,
 
-    //! String value.
     VT_STRING,
 
-    VT_NR_VALUE_TYPES
+    VT_LAST_VALUE_TYPE = VT_STRING
+
 };
 
-} // namespace detail
 } // namespace ranally

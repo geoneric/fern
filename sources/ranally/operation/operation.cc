@@ -120,7 +120,7 @@ DataTypes Operation::result_data_type(
     DataTypes result_data_type;
 
     // Calculate data type of result.
-    if(merged_argument_data_types.test(ranally::detail::DT_SCALAR)) {
+    if(merged_argument_data_types.test(ranally::DT_SCALAR)) {
         result_data_type = DataTypes::SCALAR;
     }
     else if(merged_argument_data_types == DataTypes::UNKNOWN) {
@@ -187,28 +187,28 @@ ValueTypes Operation::result_value_type(
     ValueTypes result_value_type;
 
     // Calculate value type of result.
-    if(merged_argument_value_types.test(ranally::detail::VT_FLOAT64)) {
+    if(merged_argument_value_types.test(ranally::VT_FLOAT64)) {
         result_value_type = ValueTypes::FLOAT64;
     }
-    else if(merged_argument_value_types.test(ranally::detail::VT_FLOAT32)) {
+    else if(merged_argument_value_types.test(ranally::VT_FLOAT32)) {
         result_value_type = ValueTypes::FLOAT32;
     }
-    else if(merged_argument_value_types.test(ranally::detail::VT_UINT64)) {
+    else if(merged_argument_value_types.test(ranally::VT_UINT64)) {
         result_value_type = ValueTypes::UINT64;
     }
-    else if(merged_argument_value_types.test(ranally::detail::VT_INT64)) {
+    else if(merged_argument_value_types.test(ranally::VT_INT64)) {
         result_value_type = ValueTypes::INT64;
     }
-    else if(merged_argument_value_types.test(ranally::detail::VT_UINT32)) {
+    else if(merged_argument_value_types.test(ranally::VT_UINT32)) {
         result_value_type = ValueTypes::UINT32;
     }
-    else if(merged_argument_value_types.test(ranally::detail::VT_INT32)) {
+    else if(merged_argument_value_types.test(ranally::VT_INT32)) {
         result_value_type = ValueTypes::INT32;
     }
-    else if(merged_argument_value_types.test(ranally::detail::VT_UINT16)) {
+    else if(merged_argument_value_types.test(ranally::VT_UINT16)) {
         result_value_type = ValueTypes::UINT16;
     }
-    else if(merged_argument_value_types.test(ranally::detail::VT_INT8)) {
+    else if(merged_argument_value_types.test(ranally::VT_INT8)) {
         result_value_type = ValueTypes::INT8;
     }
     else if(merged_argument_value_types == ValueTypes::UNKNOWN) {

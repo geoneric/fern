@@ -5,17 +5,17 @@
 namespace ranally {
 
 ValueTypes const ValueTypes::UNKNOWN;
-ValueTypes const ValueTypes::UINT8(1 << detail::ValueType::VT_UINT8);
-ValueTypes const ValueTypes::INT8(1 << detail::ValueType::VT_INT8);
-ValueTypes const ValueTypes::UINT16(1 << detail::ValueType::VT_UINT16);
-ValueTypes const ValueTypes::INT16(1 << detail::ValueType::VT_INT16);
-ValueTypes const ValueTypes::UINT32(1 << detail::ValueType::VT_UINT32);
-ValueTypes const ValueTypes::INT32(1 << detail::ValueType::VT_INT32);
-ValueTypes const ValueTypes::UINT64(1 << detail::ValueType::VT_UINT64);
-ValueTypes const ValueTypes::INT64(1 << detail::ValueType::VT_INT64);
-ValueTypes const ValueTypes::FLOAT32(1 << detail::ValueType::VT_FLOAT32);
-ValueTypes const ValueTypes::FLOAT64(1 << detail::ValueType::VT_FLOAT64);
-ValueTypes const ValueTypes::STRING(1 << detail::ValueType::VT_STRING);
+ValueTypes const ValueTypes::UINT8(1 << ValueType::VT_UINT8);
+ValueTypes const ValueTypes::INT8(1 << ValueType::VT_INT8);
+ValueTypes const ValueTypes::UINT16(1 << ValueType::VT_UINT16);
+ValueTypes const ValueTypes::INT16(1 << ValueType::VT_INT16);
+ValueTypes const ValueTypes::UINT32(1 << ValueType::VT_UINT32);
+ValueTypes const ValueTypes::INT32(1 << ValueType::VT_INT32);
+ValueTypes const ValueTypes::UINT64(1 << ValueType::VT_UINT64);
+ValueTypes const ValueTypes::INT64(1 << ValueType::VT_INT64);
+ValueTypes const ValueTypes::FLOAT32(1 << ValueType::VT_FLOAT32);
+ValueTypes const ValueTypes::FLOAT64(1 << ValueType::VT_FLOAT64);
+ValueTypes const ValueTypes::STRING(1 << ValueType::VT_STRING);
 ValueTypes const ValueTypes::UNSIGNED_INTEGER(ValueTypes::UINT8 |
     ValueTypes::UINT16 | ValueTypes::UINT32 | ValueTypes::UINT64);
 ValueTypes const ValueTypes::SIGNED_INTEGER(ValueTypes::INT8 |
@@ -49,18 +49,18 @@ static std::map<String, ValueTypes> value_type_by_string = {
 };
 
 
-static std::map<detail::ValueType, String> string_by_value_type = {
-    { detail::ValueType::VT_UINT8           , "Uint8"          },
-    { detail::ValueType::VT_INT8            , "Int8"           },
-    { detail::ValueType::VT_UINT16          , "Uint16"         },
-    { detail::ValueType::VT_INT16           , "Int16"          },
-    { detail::ValueType::VT_UINT32          , "Uint32"         },
-    { detail::ValueType::VT_INT32           , "Int32"          },
-    { detail::ValueType::VT_UINT64          , "Uint64"         },
-    { detail::ValueType::VT_INT64           , "Int64"          },
-    { detail::ValueType::VT_FLOAT32         , "Float32"        },
-    { detail::ValueType::VT_FLOAT64         , "Float64"        },
-    { detail::ValueType::VT_STRING          , "String"         }
+static std::map<ValueType, String> string_by_value_type = {
+    { ValueType::VT_UINT8           , "Uint8"          },
+    { ValueType::VT_INT8            , "Int8"           },
+    { ValueType::VT_UINT16          , "Uint16"         },
+    { ValueType::VT_INT16           , "Int16"          },
+    { ValueType::VT_UINT32          , "Uint32"         },
+    { ValueType::VT_INT32           , "Int32"          },
+    { ValueType::VT_UINT64          , "Uint64"         },
+    { ValueType::VT_INT64           , "Int64"          },
+    { ValueType::VT_FLOAT32         , "Float32"        },
+    { ValueType::VT_FLOAT64         , "Float64"        },
+    { ValueType::VT_STRING          , "String"         }
 };
 
 
@@ -73,23 +73,23 @@ ValueTypes ValueTypes::from_string(
 }
 
 
-std::vector<detail::ValueType> const ValueTypes::VALUE_TYPES = {
-    detail::ValueType::VT_UINT8,
-    detail::ValueType::VT_INT8,
-    detail::ValueType::VT_UINT16,
-    detail::ValueType::VT_INT16,
-    detail::ValueType::VT_UINT32,
-    detail::ValueType::VT_INT32,
-    detail::ValueType::VT_UINT64,
-    detail::ValueType::VT_INT64,
-    detail::ValueType::VT_FLOAT32,
-    detail::ValueType::VT_FLOAT64,
-    detail::ValueType::VT_STRING
+std::vector<ValueType> const ValueTypes::VALUE_TYPES = {
+    ValueType::VT_UINT8,
+    ValueType::VT_INT8,
+    ValueType::VT_UINT16,
+    ValueType::VT_INT16,
+    ValueType::VT_UINT32,
+    ValueType::VT_INT32,
+    ValueType::VT_UINT64,
+    ValueType::VT_INT64,
+    ValueType::VT_FLOAT32,
+    ValueType::VT_FLOAT64,
+    ValueType::VT_STRING
 };
 
 
 static String to_string(
-    detail::ValueType value_type)
+    ValueType value_type)
 {
     assert(string_by_value_type.find(value_type) != string_by_value_type.end());
     return string_by_value_type[value_type];
@@ -98,8 +98,8 @@ static String to_string(
 
 ValueTypes::ValueTypes()
 
-    : FlagCollection<ValueTypes, detail::ValueType,
-              detail::ValueType::VT_NR_VALUE_TYPES>()
+    : FlagCollection<ValueTypes, ValueType,
+          ValueType::VT_LAST_VALUE_TYPE + 1>()
 
 {
 }
@@ -107,10 +107,10 @@ ValueTypes::ValueTypes()
 
 String ValueTypes::to_string() const
 {
-    assert(ValueTypes::VALUE_TYPES.size() == detail::VT_NR_VALUE_TYPES);
+    assert(ValueTypes::VALUE_TYPES.size() == VT_LAST_VALUE_TYPE + 1);
     std::vector<String> strings;
 
-    for(detail::ValueType value_type: ValueTypes::VALUE_TYPES) {
+    for(ValueType value_type: ValueTypes::VALUE_TYPES) {
         if(test(value_type)) {
             strings.push_back(ranally::to_string(value_type));
         }

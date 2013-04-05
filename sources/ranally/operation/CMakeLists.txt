@@ -52,6 +52,7 @@ SET(SOURCES
     result
     result_type
     result_types
+    type_traits
     value_types
 )
 ADD_LIBRARY(ranally_operation

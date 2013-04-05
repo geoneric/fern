@@ -1,8 +1,10 @@
 ADD_SUBDIRECTORY(test)
 
 SET(SOURCES
+    attribute_value
     execute_visitor
     interpreter
+    value
 )
 ADD_LIBRARY(ranally_interpreter
     ${SOURCES}
@@ -12,5 +14,6 @@ ADD_DEPENDENCIES(ranally_interpreter
     operation-xml.h
 )
 TARGET_LINK_LIBRARIES(ranally_interpreter
+    ranally_feature
     ranally_language
 )

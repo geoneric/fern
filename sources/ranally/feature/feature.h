@@ -34,8 +34,9 @@ public:
                    ~Feature            ()=default;
 
     template<class Attribute>
-    void           add_attribute       (std::shared_ptr<Attribute> const&
-                                           attribute);
+    void           add_attribute       (String const& name,
+                                        std::shared_ptr<Attribute> const&
+                                            attribute);
 
     template<class Attribute>
     std::shared_ptr<Attribute> attribute(
@@ -45,8 +46,6 @@ public:
     std::shared_ptr<Domain> domain     () const;
 
     size_t         nr_attributes       () const;
-
-protected:
 
 private:
 
@@ -88,10 +87,11 @@ std::shared_ptr<Domain> Feature::domain() const
 template<
     class Attribute>
 inline void Feature::add_attribute(
+    String const& name,
     std::shared_ptr<Attribute> const& attribute)
 {
-    assert(_attributes.find(attribute->name()) == _attributes.end());
-    _attributes[attribute->name()] = attribute;
+    assert(_attributes.find(name) == _attributes.end());
+    _attributes[name] = attribute;
 }
 
 

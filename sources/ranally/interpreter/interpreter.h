@@ -18,8 +18,6 @@ namespace ranally {
 class Interpreter
 {
 
-    friend class InterpreterTest;
-
 public:
 
                    Interpreter         ();
@@ -44,7 +42,7 @@ public:
 
     void           execute             (ScriptVertexPtr const& tree);
 
-    std::stack<std::tuple<ResultType, boost::any>> stack();
+    std::stack<std::shared_ptr<interpreter::Value>> stack();
 
     void           clear_stack         ();
 

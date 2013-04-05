@@ -1,5 +1,7 @@
 #pragma once
 #include "ranally/core/string.h"
+#include "ranally/operation/data_type.h"
+#include "ranally/operation/value_type.h"
 
 
 namespace ranally {
@@ -17,13 +19,14 @@ class Attribute
 
 public:
 
-    virtual        ~Attribute          ()=default;
+    DataType       data_type           () const;
 
-    String const&  name                () const;
+    ValueType      value_type          () const;
 
 protected:
 
-                   Attribute           (String const& name);
+                   Attribute           (DataType data_type,
+                                        ValueType value_type);
 
                    Attribute           (Attribute const&)=delete;
 
@@ -33,9 +36,13 @@ protected:
 
     Attribute&     operator=           (Attribute&&)=delete;
 
+    virtual        ~Attribute          ()=default;
+
 private:
 
-    String         _name;
+    DataType       _data_type;
+
+    ValueType      _value_type;
 
 };
 

@@ -1,6 +1,7 @@
 #pragma once
 #include <cassert>
 #include <memory>
+#include "ranally/operation/type_traits.h"
 #include "ranally/feature/attribute.h"
 #include "ranally/feature/feature_domain.h"
 #include "ranally/feature/domain_value.h"
@@ -24,7 +25,6 @@ class DomainAttribute:
 public:
 
                    DomainAttribute     (
-                                   String const& name,
                                    std::shared_ptr<FeatureDomain<Model>> const&
                                         domain,
                                    std::shared_ptr<DomainValue<T>> const&
@@ -55,11 +55,11 @@ template<
     class Model,
     class T>
 inline DomainAttribute<Model, T>::DomainAttribute(
-    String const& name,
     std::shared_ptr<FeatureDomain<Model>> const& domain,
     std::shared_ptr<DomainValue<T>> const& value)
 
-    : Attribute(name),
+    // TODO Get data type from model type traits.
+    : Attribute(DT_POINT, TypeTraits<T>::value_type),
       _domain(domain),
       _value(value)
 

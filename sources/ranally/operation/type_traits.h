@@ -8,6 +8,8 @@ template<
     class T>
 struct TypeTraits
 {
+    // static ValueType const value_type;
+
     // static ValueTypes const value_types;
 };
 
@@ -15,99 +17,99 @@ struct TypeTraits
 template<>
 struct TypeTraits<int8_t>
 {
-    static ValueTypes const value_type;
-};
+    static ValueType const value_type;
 
-ValueTypes const TypeTraits<int8_t>::value_type(ValueTypes::INT8);
+    static ValueTypes const value_types;
+};
 
 
 template<>
 struct TypeTraits<uint8_t>
 {
-    static ValueTypes const value_type;
-};
+    static ValueType const value_type;
 
-ValueTypes const TypeTraits<uint8_t>::value_type(ValueTypes::UINT8);
+    static ValueTypes const value_types;
+};
 
 
 template<>
 struct TypeTraits<int16_t>
 {
-    static ValueTypes const value_type;
-};
+    static ValueType const value_type;
 
-ValueTypes const TypeTraits<int16_t>::value_type(ValueTypes::INT16);
+    static ValueTypes const value_types;
+};
 
 
 template<>
 struct TypeTraits<uint16_t>
 {
-    static ValueTypes const value_type;
-};
+    static ValueType const value_type;
 
-ValueTypes const TypeTraits<uint16_t>::value_type(ValueTypes::UINT16);
+    static ValueTypes const value_types;
+};
 
 
 template<>
 struct TypeTraits<int32_t>
 {
-    static ValueTypes const value_type;
-};
+    static ValueType const value_type;
 
-ValueTypes const TypeTraits<int32_t>::value_type(ValueTypes::INT32);
+    static ValueTypes const value_types;
+};
 
 
 template<>
 struct TypeTraits<uint32_t>
 {
-    static ValueTypes const value_type;
-};
+    static ValueType const value_type;
 
-ValueTypes const TypeTraits<uint32_t>::value_type(ValueTypes::UINT32);
+    static ValueTypes const value_types;
+};
 
 
 template<>
 struct TypeTraits<int64_t>
 {
-    static ValueTypes const value_type;
-};
+    static ValueType const value_type;
 
-ValueTypes const TypeTraits<int64_t>::value_type(ValueTypes::INT64);
+    static ValueTypes const value_types;
+};
 
 
 template<>
 struct TypeTraits<uint64_t>
 {
-    static ValueTypes const value_type;
-};
+    static ValueType const value_type;
 
-ValueTypes const TypeTraits<uint64_t>::value_type(ValueTypes::UINT64);
+    static ValueTypes const value_types;
+};
 
 
 template<>
 struct TypeTraits<float>
 {
-    static ValueTypes const value_type;
-};
+    static ValueType const value_type;
 
-ValueTypes const TypeTraits<float>::value_type(ValueTypes::FLOAT32);
+    static ValueTypes const value_types;
+};
 
 
 template<>
 struct TypeTraits<double>
 {
-    static ValueTypes const value_type;
-};
+    static ValueType const value_type;
 
-ValueTypes const TypeTraits<double>::value_type(ValueTypes::FLOAT64);
+    static ValueTypes const value_types;
+};
 
 
 template<>
 struct TypeTraits<String>
 {
-    static ValueTypes const value_type;
-};
+    static ValueType const value_type;
 
-ValueTypes const TypeTraits<String>::value_type(ValueTypes::STRING);
+    static ValueTypes const value_types;
+};
 
 } // namespace ranally

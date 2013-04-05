@@ -1,6 +1,7 @@
 #pragma once
 #include <cassert>
 #include <memory>
+#include "ranally/operation/type_traits.h"
 #include "ranally/feature/attribute.h"
 #include "ranally/feature/scalar_domain.h"
 #include "ranally/feature/scalar_value.h"
@@ -22,8 +23,7 @@ class ScalarAttribute:
 
 public:
 
-                   ScalarAttribute     (String const& name,
-                                        std::shared_ptr<ScalarDomain> const&
+                   ScalarAttribute     (std::shared_ptr<ScalarDomain> const&
                                             domain,
                                         std::shared_ptr<ScalarValue<T>> const&
                                             value);
@@ -52,11 +52,10 @@ private:
 template<
     class T>
 inline ScalarAttribute<T>::ScalarAttribute(
-    String const& name,
     std::shared_ptr<ScalarDomain> const& domain,
     std::shared_ptr<ScalarValue<T>> const& value)
 
-    : Attribute(name),
+    : Attribute(DT_SCALAR, TypeTraits<T>::value_type),
       _domain(domain),
       _value(value)
 

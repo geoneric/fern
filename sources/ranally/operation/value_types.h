@@ -13,8 +13,8 @@ namespace ranally {
   \sa        .
 */
 class ValueTypes:
-    public FlagCollection<ValueTypes, detail::ValueType,
-        detail::ValueType::VT_NR_VALUE_TYPES>
+    public FlagCollection<ValueTypes, ValueType,
+        ValueType::VT_LAST_VALUE_TYPE + 1>
 {
 
     friend class ValueTypesTest;
@@ -85,7 +85,7 @@ public:
 
 private:
 
-    static std::vector<detail::ValueType> const VALUE_TYPES;
+    static std::vector<ValueType> const VALUE_TYPES;
 
     constexpr      ValueTypes          (unsigned long long bits);
 
@@ -95,8 +95,8 @@ private:
 constexpr inline ValueTypes::ValueTypes(
     unsigned long long bits)
 
-    : FlagCollection<ValueTypes, detail::ValueType,
-          detail::ValueType::VT_NR_VALUE_TYPES>(bits)
+    : FlagCollection<ValueTypes, ValueType,
+          ValueType::VT_LAST_VALUE_TYPE + 1>(bits)
 
 {
 }

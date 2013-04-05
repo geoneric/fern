@@ -7,7 +7,11 @@
 #include <readline/history.h>
 #include "ranally/core/exception.h"
 #include "ranally/command/message.h"
+#include "ranally/feature/scalar_attribute.h"
+#include "ranally/interpreter/attribute_value.h"
 #include "ranally/interpreter/interpreter.h"
+#include "ranally/operation/type_traits.h"
+#include "ranally/operation/value_type_traits.h"
 
 
 namespace std {
@@ -28,17 +32,85 @@ struct default_delete<char>
 
 namespace ranally {
 
-void show_stack_values(
-    std::stack<std::tuple<ResultType, boost::any>> stack)
+template<
+    typename T>
+inline void show_value(
+    ScalarValue<T> const& value)
 {
-    ResultType result_type;
-    boost::any value;
+    std::cout << value() << "\n";
+}
 
+
+#define SHOW_VALUE_CASE(                                                       \
+        value_type)                                                            \
+    case value_type: {                                                         \
+        typedef ValueTypeTraits<value_type>::type type;                        \
+        std::shared_ptr<ScalarAttribute<type>> scalar_attribute(               \
+            std::dynamic_pointer_cast<ScalarAttribute<type>>(attribute));      \
+        show_value<type>(*scalar_attribute->value());                          \
+        break;                                                                 \
+    }
+
+void show_value(
+    std::shared_ptr<interpreter::AttributeValue> const& value)
+{
+    assert(value);
+
+    std::shared_ptr<Attribute> const& attribute(value->attribute());
+
+    switch(attribute->data_type()) {
+        case DT_SCALAR: {
+            switch(attribute->value_type()) {
+                SHOW_VALUE_CASE(VT_INT8)
+                SHOW_VALUE_CASE(VT_INT16)
+                SHOW_VALUE_CASE(VT_INT32)
+                SHOW_VALUE_CASE(VT_INT64)
+                SHOW_VALUE_CASE(VT_UINT8)
+                SHOW_VALUE_CASE(VT_UINT16)
+                SHOW_VALUE_CASE(VT_UINT32)
+                SHOW_VALUE_CASE(VT_UINT64)
+                SHOW_VALUE_CASE(VT_FLOAT32)
+                SHOW_VALUE_CASE(VT_FLOAT64)
+                SHOW_VALUE_CASE(VT_STRING)
+            }
+
+            break;
+        }
+        default: {
+            assert(false);
+            break;
+        }
+    }
+}
+
+#undef SHOW_VALUE_CASE
+
+
+void show_value(
+    std::shared_ptr<interpreter::Value> const& value)
+{
+    assert(value);
+
+    switch(value->value_type()) {
+        case interpreter::ValueType::VT_ATTRIBUTE: {
+            show_value(std::dynamic_pointer_cast<interpreter::AttributeValue>(
+                value));
+            break;
+        }
+        case interpreter::ValueType::VT_FEATURE: {
+            assert(false);
+            break;
+        }
+    }
+}
+
+
+void show_stack_values(
+    std::stack<std::shared_ptr<interpreter::Value>> stack)
+{
     while(!stack.empty()) {
-        std::tie(result_type, value) = stack.top();
+        show_value(stack.top());
         stack.pop();
-
-        std::cout << result_type << std::endl;
     }
 }
 

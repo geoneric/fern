@@ -1,5 +1,7 @@
 #include "ranally/interpreter/execute_visitor.h"
 #include "ranally/language/vertices.h"
+#include "ranally/feature/scalar_attribute.h"
+#include "ranally/interpreter/attribute_value.h"
 
 
 namespace ranally {
@@ -20,7 +22,8 @@ ExecuteVisitor::~ExecuteVisitor()
 }
 
 
-Stack const& ExecuteVisitor::stack() const
+std::stack<std::shared_ptr<interpreter::Value>> const&
+ExecuteVisitor::stack() const
 {
     return _stack;
 }
@@ -28,11 +31,12 @@ Stack const& ExecuteVisitor::stack() const
 
 void ExecuteVisitor::clear_stack()
 {
-    _stack = Stack();
+    _stack = std::stack<std::shared_ptr<interpreter::Value>>();
 }
 
 
-SymbolTable<boost::any> const& ExecuteVisitor::symbol_table() const
+SymbolTable<std::shared_ptr<interpreter::Value>> const&
+ExecuteVisitor::symbol_table() const
 {
     return _symbol_table;
 }
@@ -85,7 +89,11 @@ void ExecuteVisitor::Visit(
 void ExecuteVisitor::Visit(                                                    \
     NumberVertex<type>& vertex)                                                \
 {                                                                              \
-    _stack.push<type>(vertex.value());                                         \
+    _stack.push(                                                               \
+        std::shared_ptr<interpreter::Value>(new interpreter::AttributeValue(   \
+            std::shared_ptr<Attribute>(new ScalarAttribute<type>(              \
+                std::make_shared<ScalarDomain>(),                              \
+                std::make_shared<ScalarValue<type>>(vertex.value()))))));      \
 }
 
 VISIT_NUMBER_VERTICES(VISIT_NUMBER_VERTEX)

@@ -294,20 +294,22 @@ void Interpreter::execute(
 }
 
 
-std::stack<std::tuple<ResultType, boost::any>> Interpreter::stack()
+std::stack<std::shared_ptr<interpreter::Value>> Interpreter::stack()
 {
-    std::stack<ResultType> result_types(_annotate_visitor.stack());
-    Stack values(_execute_visitor.stack());
-    assert(result_types.size() == values.size());
-    std::stack<std::tuple<ResultType, boost::any>> result;
+    // std::stack<ResultType> result_types(_annotate_visitor.stack());
+    // Stack values(_execute_visitor.stack());
+    // assert(result_types.size() == values.size());
+    // std::stack<std::tuple<ResultType, boost::any>> result;
 
-    for(size_t i = 0; i < _annotate_visitor.stack().size(); ++i) {
-        result.push(std::make_tuple(result_types.top(), values.top()));
-        result_types.pop();
-        values.pop();
-    }
+    // for(size_t i = 0; i < _annotate_visitor.stack().size(); ++i) {
+    //     result.push(std::make_tuple(result_types.top(), values.top()));
+    //     result_types.pop();
+    //     values.pop();
+    // }
 
-    return result;
+    // return result;
+
+    return _execute_visitor.stack();
 }
 
 

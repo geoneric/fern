@@ -1,8 +1,9 @@
 #pragma once
-#include <boost/any.hpp>
-#include "ranally/core/stack.h"
+#include <memory>
+#include <stack>
 #include "ranally/core/symbol_table.h"
 #include "ranally/language/visitor.h"
+#include "ranally/interpreter/value.h"
 
 
 namespace ranally {
@@ -30,8 +31,6 @@ class ExecuteVisitor:
     public Visitor
 {
 
-    friend class ExecuteVisitorTest;
-
 public:
 
                    ExecuteVisitor      ();
@@ -46,19 +45,20 @@ public:
 
     ExecuteVisitor& operator=          (ExecuteVisitor const&)=delete;
 
-    Stack const&   stack               () const;
+    std::stack<std::shared_ptr<interpreter::Value>> const& stack() const;
 
     void           clear_stack         ();
 
-    SymbolTable<boost::any> const& symbol_table() const;
+    SymbolTable<std::shared_ptr<interpreter::Value>> const&
+                   symbol_table        () const;
 
 private:
 
     //! Stack with values that are passed in and out of expressions.
-    Stack          _stack;
+    std::stack<std::shared_ptr<interpreter::Value>> _stack;
 
     //! Symbol table with values of variables.
-    SymbolTable<boost::any> _symbol_table;
+    SymbolTable<std::shared_ptr<interpreter::Value>> _symbol_table;
 
     void           Visit               (AssignmentVertex& vertex);
 
