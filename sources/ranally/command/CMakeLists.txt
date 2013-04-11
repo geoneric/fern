@@ -13,12 +13,6 @@ ADD_DEPENDENCIES(ranally
 )
 TARGET_LINK_LIBRARIES(ranally
     ranally_interpreter
-    # ranally_io
-    ranally_language
-    # ranally_feature
-    ranally_python
-    ranally_operation
-    ranally_core
     ${READLINE_LIBRARY}
     termcap
 )

@@ -3,7 +3,7 @@
 #include "ranally/core/io_error.h"
 #include "ranally/core/parse_error.h"
 #include "ranally/core/validate_error.h"
-#include "ranally/operation/operation_xml_parser.h"
+#include "ranally/operation/xml/operation_xml_parser.h"
 #include "ranally/operation/operation-xml.h"
 #include "ranally/language/identify_visitor.h"
 #include "ranally/language/script_vertex.h"

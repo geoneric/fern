@@ -1,0 +1,17 @@
+namespace http://www.jemig.eu/ranally
+{
+    include "ranally/operation/core/parameter.h";
+    include "ranally/operation/core/result.h";
+    include "ranally/operation/std/operations.h";
+
+    Operations         "std::shared_ptr<ranally::Operations>";
+    Operation          "std::shared_ptr<ranally::Operation>";
+    Parameters         "std::vector<ranally::Parameter> const&";
+    Results            "std::vector<ranally::Result> const&";
+    Parameter          "ranally::Parameter";
+    Result             "ranally::Result";
+    DataTypes          "ranally::DataTypes";
+    ValueTypes         "ranally::ValueTypes";
+    DataType           "ranally::DataTypes";
+    ValueType          "ranally::ValueTypes";
+}

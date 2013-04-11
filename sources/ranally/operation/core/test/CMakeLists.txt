@@ -1,0 +1,18 @@
+SET(TEST_NAMES
+    data_types_test
+    result_type_test
+    type_traits_test
+)
+
+MACRO(ADD_UNIT_TEST NAME)
+    ADD_EXECUTABLE(operation_core_${NAME} ${NAME})
+    TARGET_LINK_LIBRARIES(operation_core_${NAME}
+        ranally_operation_core
+        ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+    )
+    ADD_TEST(NAME operation_core_${NAME} COMMAND operation_core_${NAME})
+ENDMACRO()
+
+FOREACH(NAME ${TEST_NAMES})
+    ADD_UNIT_TEST(${NAME})
+ENDFOREACH()

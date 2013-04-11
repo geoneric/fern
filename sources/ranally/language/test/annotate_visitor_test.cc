@@ -1,9 +1,9 @@
 #define BOOST_TEST_MODULE ranally language
 #include <boost/test/unit_test.hpp>
-#include "ranally/operation/operation-xml.h"
-#include "ranally/operation/parameter.h"
-#include "ranally/operation/result.h"
-#include "ranally/operation/operation_xml_parser.h"
+#include "ranally/operation/core/parameter.h"
+#include "ranally/operation/core/result.h"
+#include "ranally/operation/xml/operation_xml_parser.h"
+#include "ranally/operation/std/operation-xml.h"
 #include "ranally/language/algebra_parser.h"
 #include "ranally/language/annotate_visitor.h"
 #include "ranally/language/vertices.h"

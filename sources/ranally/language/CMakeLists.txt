@@ -53,7 +53,7 @@ ADD_LIBRARY(ranally_language
     ${SOURCES}
 )
 TARGET_LINK_LIBRARIES(ranally_language
-    ranally_operation
+    ranally_operation_xml
     ranally_python
     ranally_core
     ${EXPAT_LIBRARY}

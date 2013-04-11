@@ -6,6 +6,40 @@
 
 namespace ranally {
 
+//! Execute operation \a name given \a arguments, and return the results.
+/*!
+  \param     name Name of operation to execute.
+  \param     arguments Arguments to pass to the operation.
+  \return    Zero or more results calculated by the operation.
+*/
+std::vector<std::shared_ptr<interpreter::Value>> execute_operation(
+    String const& name,
+    std::vector<std::shared_ptr<interpreter::Value>> arguments)
+{
+    std::vector<std::shared_ptr<interpreter::Value>> results;
+
+    // TODO
+
+
+    // Given
+    // - name
+    // - arguments
+    // - result
+    // Instantiate operation class that translates the arguments to the results.
+    //
+    // -> Create Operation hierarchy:
+    //     Operation
+    //     -> Unary Operation
+    //     -> Binary Operation
+    //     -> NAry Operation
+    //     Or only one Operation class that all operations inherit. Per
+    //     ConcreteOperation the operation is executed.
+
+
+    return results;
+}
+
+
 ExecuteVisitor::ExecuteVisitor()
 
     : _stack(),
@@ -104,42 +138,27 @@ VISIT_NUMBER_VERTICES(VISIT_NUMBER_VERTEX)
 void ExecuteVisitor::Visit(
     OperationVertex& vertex)
 {
-    // Maybe create a hierarchy of execution blocks that share the same
-    // base class, but are templated on the argument types, result types and
-    // operation type. (It also includes control flow blocks.) Each execution
-    // block is capable of returning its results in the correct types. Maybe
-    // each execution block is a functor.
-    // Arguments of operations then become execution blocks that can execute
-    // themselves and return a result.
-    // Can we use this idea for a compiler too?
-
     // Let the argument expressions execute themselves. The resulting values
     // end up at the top of the stack.
     visit_expressions(vertex.expressions());
+
+    std::vector<std::shared_ptr<interpreter::Value>> arguments;
+    for(size_t i = 0; i < vertex.expressions().size(); ++i) {
+        assert(!_stack.empty());
+        arguments.push_back(_stack.top());
+        _stack.pop();
+    }
 
     assert(vertex.operation());
     Operation const& operation(*vertex.operation());
     assert(_stack.size() >= operation.arity());
 
-    for(size_t i = 1; i < vertex.expressions().size(); ++i) {
-        _stack.pop();
+    std::vector<std::shared_ptr<interpreter::Value>> results =
+        execute_operation(operation.name(), arguments);
+
+    for(auto result: results) {
+        _stack.push(result);
     }
-
-    // We have everything we need: operation, arguments.
-    // Given the properties of the operation:
-    // TODO Try one out, create a test and see how it works.
-
-    // if(operation.name() == "add") {
-    //     assert(operation.arity() == 2);
-    //     assert(vertex.data_type(0) == DataTypes::SCALAR);
-    //     assert(vertex.data_type(1) == DataTypes::SCALAR);
-    //     assert(vertex.value_type(0) == ValueTypes::INT64);
-    //     assert(vertex.value_type(1) == ValueTypes::INT64);
-
-    //     int64_t result = _stack.top<int64_t>(); _stack.pop();
-    //     result += _stack.top<int64_t>(); _stack.pop();
-    //     _stack.push(result);
-    // }
 }
 
 

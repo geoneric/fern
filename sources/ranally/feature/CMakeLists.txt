@@ -12,6 +12,6 @@ ADD_LIBRARY(ranally_feature
     ${SOURCES}
 )
 TARGET_LINK_LIBRARIES(ranally_feature
-    ranally_operation
+    ranally_operation_core
     ranally_core
 )

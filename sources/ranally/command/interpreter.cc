@@ -10,8 +10,8 @@
 #include "ranally/feature/scalar_attribute.h"
 #include "ranally/interpreter/attribute_value.h"
 #include "ranally/interpreter/interpreter.h"
-#include "ranally/operation/type_traits.h"
-#include "ranally/operation/value_type_traits.h"
+#include "ranally/operation/core/type_traits.h"
+#include "ranally/operation/core/value_type_traits.h"
 
 
 namespace std {

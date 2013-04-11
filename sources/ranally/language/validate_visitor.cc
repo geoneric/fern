@@ -1,7 +1,7 @@
 #include "ranally/language/validate_visitor.h"
 #include "ranally/core/exception.h"
 #include "ranally/core/string.h"
-#include "ranally/operation/operation.h"
+#include "ranally/operation/core/operation.h"
 #include "ranally/language/vertices.h"
 
 

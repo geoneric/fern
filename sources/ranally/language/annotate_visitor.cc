@@ -1,7 +1,7 @@
 #include "ranally/language/annotate_visitor.h"
 #include "ranally/core/string.h"
-#include "ranally/operation/result.h"
-#include "ranally/operation/type_traits.h"
+#include "ranally/operation/core/result.h"
+#include "ranally/operation/core/type_traits.h"
 #include "ranally/language/vertices.h"
 
 

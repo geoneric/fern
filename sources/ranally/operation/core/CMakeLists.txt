@@ -1,0 +1,18 @@
+ADD_SUBDIRECTORY(test)
+
+SET(SOURCES
+    data_types
+    operation
+    parameter
+    result
+    result_type
+    result_types
+    type_traits
+    value_types
+)
+ADD_LIBRARY(ranally_operation_core
+    ${SOURCES}
+)
+TARGET_LINK_LIBRARIES(ranally_operation_core
+    ranally_core
+)

@@ -1,7 +1,7 @@
 #pragma once
 #include <cassert>
 #include <memory>
-#include "ranally/operation/type_traits.h"
+#include "ranally/operation/core/type_traits.h"
 #include "ranally/feature/attribute.h"
 #include "ranally/feature/feature_domain.h"
 #include "ranally/feature/domain_value.h"
