@@ -1,5 +1,4 @@
 SET(TEST_NAMES
-    algebra_parser_test
     annotate_visitor_test
     assignment_vertex_test
     definition_test
@@ -11,6 +10,8 @@ SET(TEST_NAMES
     name_vertex_test
     number_vertex_test
     operator_vertex_test
+    # This introduces a syclic dependency. Shouldn't depend on interpreter.
+    # Or move to higher level place.
     # optimize_visitor_test
     script_vertex_test
     script_visitor_test
@@ -28,7 +29,7 @@ SET(TEST_NAMES
 MACRO(ADD_UNIT_TEST NAME)
     ADD_EXECUTABLE(language_${NAME} ${NAME})
     TARGET_LINK_LIBRARIES(language_${NAME}
-        ranally_interpreter
+        ranally_script
         ranally_language
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )

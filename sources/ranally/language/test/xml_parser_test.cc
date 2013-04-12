@@ -2,7 +2,7 @@
 #include <boost/test/unit_test.hpp>
 #include "ranally/core/exception.h"
 #include "ranally/core/string.h"
-#include "ranally/language/algebra_parser.h"
+#include "ranally/script/algebra_parser.h"
 #include "ranally/language/ranally-pskel.hxx"
 #include "ranally/language/xml_parser.h"
 

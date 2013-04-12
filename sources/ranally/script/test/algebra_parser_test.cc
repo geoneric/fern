@@ -1,8 +1,8 @@
-#define BOOST_TEST_MODULE ranally language
+#define BOOST_TEST_MODULE ranally script
 #include <boost/test/unit_test.hpp>
 #include "ranally/core/exception.h"
 #include "ranally/core/string.h"
-#include "ranally/language/algebra_parser.h"
+#include "ranally/script/algebra_parser.h"
 
 
 BOOST_AUTO_TEST_SUITE(algebra_parser)

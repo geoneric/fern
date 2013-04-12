@@ -1,6 +1,6 @@
 #include "ranally/command/command.h"
 #include <fstream>
-#include "ranally/language/algebra_parser.h"
+#include "ranally/script/algebra_parser.h"
 
 
 namespace ranally {

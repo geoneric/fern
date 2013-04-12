@@ -1,5 +1,5 @@
 #pragma once
-#include "ranally/language/algebra_parser.h"
+#include "ranally/script/algebra_parser.h"
 #include "ranally/language/annotate_visitor.h"
 #include "ranally/language/script_vertex.h"
 #include "ranally/language/validate_visitor.h"

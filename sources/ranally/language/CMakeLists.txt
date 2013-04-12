@@ -21,7 +21,6 @@ ADD_CUSTOM_COMMAND(
 )
 SET(SOURCES
     ${CMAKE_CURRENT_BINARY_DIR}/ranally-pskel.cxx
-    algebra_parser
     annotate_visitor
     assignment_vertex
     ast_dot_visitor
@@ -54,8 +53,5 @@ ADD_LIBRARY(ranally_language
 )
 TARGET_LINK_LIBRARIES(ranally_language
     ranally_operation_xml
-    ranally_python
-    ranally_core
     ${EXPAT_LIBRARY}
-    ${PYTHON_LIBRARIES}
 )

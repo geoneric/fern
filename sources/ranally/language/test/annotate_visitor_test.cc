@@ -4,7 +4,7 @@
 #include "ranally/operation/core/result.h"
 #include "ranally/operation/xml/operation_xml_parser.h"
 #include "ranally/operation/std/operation-xml.h"
-#include "ranally/language/algebra_parser.h"
+#include "ranally/script/algebra_parser.h"
 #include "ranally/language/annotate_visitor.h"
 #include "ranally/language/vertices.h"
 #include "ranally/language/xml_parser.h"
