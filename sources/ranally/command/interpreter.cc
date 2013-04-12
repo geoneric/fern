@@ -132,6 +132,13 @@ void enter_interpreter()
     std::shared_ptr<ranally::ScriptVertex> script_vertex;
 
     ranally::show_version();
+    using_history();
+
+    // Determine path name of history file. Reading the file will fail if it
+    // doesn't exists, which is OK.
+    std::string history_filename((ranally::String::decode_from_default_encoding(
+        std::getenv("HOME")) + "/.ranally").encode_in_default_encoding());
+    /* int result = */ read_history(history_filename.c_str());
 
     while(true) {
         // Obtain a statement from the user.
@@ -142,7 +149,7 @@ void enter_interpreter()
         }
 
         add_history(line.get());
-        statement = String(line.get());
+        statement = String::decode_from_default_encoding(line.get());
 
         try {
             // Parse and execute the statement.
@@ -157,12 +164,15 @@ void enter_interpreter()
             std::cerr << message << std::endl;
         }
         catch(std::exception const& exception) {
-            std::cerr << "TODO: unhandeled exception: " << exception.what()
+            std::cerr << "TODO: unhandled exception: "
+                << ranally::String(exception.what())
                 << std::endl;
         }
 
         interpreter.clear_stack();
     }
+
+    /* result = */ write_history(history_filename.c_str());
 }
 
 } // namespace ranally
