@@ -39,12 +39,32 @@ std::string encode_in_utf8(
 }
 
 
+std::string encode_in_default_encoding(
+    UnicodeString const& string)
+{
+    // Number of Unicode characters in the string.
+    int32_t nr_code_points = string.countChar32();
+
+    // Number of (UChar) units representing the Unicode characters.
+    int32_t nr_code_units = string.length();
+
+    int32_t max_nr_bytes_needed = 4 * nr_code_points;
+    std::unique_ptr<char> encoded_string(new char[max_nr_bytes_needed]);
+
+    int32_t nr_bytes_written = string.extract(0, nr_code_units,
+        encoded_string.get(), max_nr_bytes_needed);
+    assert(nr_bytes_written < max_nr_bytes_needed);
+
+    return std::string(encoded_string.get(), nr_bytes_written);
+}
+
+
 //! Decodes \a string from UTF8 encoding and returns the result.
 /*!
   \param     string Array of Unicode characters encoded in UTF8.
   \return    Unicode string
 */
-UnicodeString decodeFromUTF8(
+UnicodeString decode_from_utf8(
     std::string const& string)
 {
     return UnicodeString(string.c_str(), "UTF-8");
@@ -55,19 +75,53 @@ UnicodeString decodeFromUTF8(
 
 namespace ranally {
 
+//! Return string decoded from platform's default codepage.
+/*!
+  \param     string String to copy into the new string, incoded in platform's
+             default codepage.
+  \return    New String instance.
+*/
+String String::decode_from_default_encoding(
+    char const* string)
+{
+    return String(UnicodeString(string));
+}
+
+
+//! Return string decoded from platform's default codepage.
+/*!
+  \param     string String to copy into the new string, incoded in platform's
+             default codepage.
+  \return    New String instance.
+*/
+String String::decode_from_default_encoding(
+    std::string const& string)
+{
+    return String(UnicodeString(string.c_str()));
+}
+
+
+//! Constructor.
+/*!
+  \param     string String to copy into the new string, encoded in UTF8.
+*/
 String::String(
     char const* string)
 
-    : UnicodeString(decodeFromUTF8(std::string(string)))
+    : UnicodeString(decode_from_utf8(std::string(string)))
 
 {
 }
 
 
+//! Constructor.
+/*!
+  \param     string String to copy into the new string, encoded in UTF8.
+*/
 String::String(
     std::string const& string)
 
-    : UnicodeString(decodeFromUTF8(string))
+    : UnicodeString(decode_from_utf8(string))
 
 {
 }
@@ -82,10 +136,15 @@ String::String(
 }
 
 
+//! Constructor.
+/*!
+  \param     format Format containing string to copy into the new string,
+             encoded in UTF8.
+*/
 String::String(
     boost::format const& format)
 
-    : UnicodeString(decodeFromUTF8(format.str()))
+    : UnicodeString(decode_from_utf8(format.str()))
 
 {
 }
@@ -94,6 +153,12 @@ String::String(
 std::string String::encode_in_utf8() const
 {
     return ::encode_in_utf8(*this);
+}
+
+
+std::string String::encode_in_default_encoding() const
+{
+    return ::encode_in_default_encoding(*this);
 }
 
 
@@ -217,7 +282,7 @@ std::ostream& operator<<(
     std::ostream& stream,
     String const& string)
 {
-    stream << string.encode_in_utf8();
+    stream << string.encode_in_default_encoding();
     return stream;
 }
 

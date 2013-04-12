@@ -18,6 +18,12 @@ class String:
 
 public:
 
+    static String  decode_from_default_encoding(
+                                        char const* string);
+
+    static String  decode_from_default_encoding(
+                                        std::string const& string);
+
                    String              ()=default;
 
                    String              (char const* string);
@@ -45,6 +51,8 @@ public:
     String&        operator+=          (String const& string);
 
     std::string    encode_in_utf8      () const;
+
+    std::string    encode_in_default_encoding() const;
 
     bool           is_empty            () const;
 
