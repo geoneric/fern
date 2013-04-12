@@ -1,0 +1,21 @@
+ADD_SUBDIRECTORY(test)
+
+SET(SOURCES
+    annotate_visitor
+    ast_dot_visitor
+    copy_visitor
+    dot_visitor
+    identify_visitor
+    flowgraph_dot_visitor
+    optimize_visitor
+    script_visitor
+    thread_visitor
+    validate_visitor
+    visitor
+)
+ADD_LIBRARY(ranally_ast_visitor
+    ${SOURCES}
+)
+TARGET_LINK_LIBRARIES(ranally_ast_visitor
+    ranally_ast_core
+)

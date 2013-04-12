@@ -1,9 +1,9 @@
 #pragma once
 #include "ranally/script/algebra_parser.h"
-#include "ranally/language/annotate_visitor.h"
-#include "ranally/language/script_vertex.h"
-#include "ranally/language/validate_visitor.h"
-#include "ranally/language/xml_parser.h"
+#include "ranally/ast/core/script_vertex.h"
+#include "ranally/ast/visitor/annotate_visitor.h"
+#include "ranally/ast/visitor/validate_visitor.h"
+#include "ranally/ast/xml/xml_parser.h"
 #include "ranally/interpreter/execute_visitor.h"
 
 

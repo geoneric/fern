@@ -1,0 +1,25 @@
+ADD_SUBDIRECTORY(test)
+
+SET(SOURCES
+    assignment_vertex
+    expression_vertex
+    function_vertex
+    if_vertex
+    name_vertex
+    number_vertex
+    operation_vertex
+    operator_vertex
+    script_vertex
+    statement_vertex
+    string_vertex
+    subscript_vertex
+    syntax_vertex
+    while_vertex
+)
+ADD_LIBRARY(ranally_ast_core
+    ${SOURCES}
+)
+TARGET_LINK_LIBRARIES(ranally_ast_core
+    ranally_operation_core
+    ranally_core
+)

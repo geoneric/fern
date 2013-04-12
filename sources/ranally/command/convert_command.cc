@@ -1,7 +1,7 @@
 #include "ranally/command/convert_command.h"
 #include "ranally/core/exception.h"
-#include "ranally/language/ast_dot_visitor.h"
-#include "ranally/language/flowgraph_dot_visitor.h"
+#include "ranally/ast/visitor/ast_dot_visitor.h"
+#include "ranally/ast/visitor/flowgraph_dot_visitor.h"
 
 
 namespace ranally {

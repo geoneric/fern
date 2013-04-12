@@ -15,6 +15,8 @@ ADD_DEPENDENCIES(ranally_interpreter
 )
 TARGET_LINK_LIBRARIES(ranally_interpreter
     ranally_feature
-    ranally_language
+    ranally_ast_visitor
+    ranally_ast_xml
+    ranally_operation_xml
     ranally_script
 )

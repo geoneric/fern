@@ -2,7 +2,7 @@
 #include <memory>
 #include <stack>
 #include "ranally/core/symbol_table.h"
-#include "ranally/language/visitor.h"
+#include "ranally/ast/visitor/visitor.h"
 #include "ranally/interpreter/value.h"
 
 

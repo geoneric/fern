@@ -1,5 +1,5 @@
 #include "ranally/interpreter/execute_visitor.h"
-#include "ranally/language/vertices.h"
+#include "ranally/ast/core/vertices.h"
 #include "ranally/feature/scalar_attribute.h"
 #include "ranally/interpreter/attribute_value.h"
 
