@@ -1,0 +1,10 @@
+/*! \page ast_visitor ast_visitor library
+
+\section ast_visitor_introduction Introduction
+This library contains code that is related to visiting ASTs.
+
+\section ast_visitor_dependencies Dependencies
+This library depends on \ref ast_core because it contains the definition of the classes that make up the syntax tree.
+*/
+
+// vim:syntax=cpp

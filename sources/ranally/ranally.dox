@@ -1,0 +1,13 @@
+/*!
+\mainpage Ranally
+
+  - \ref core
+  - ast
+    - \ref ast_core
+    - \ref ast_xml
+    - \ref ast_visitor
+  - operation
+    - \ref operation_core
+*/
+
+// vim:syntax=cpp

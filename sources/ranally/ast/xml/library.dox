@@ -1,0 +1,12 @@
+/*! \page ast_xml ast_xml library
+
+\section ast_xml_introduction Introduction
+This library contains code that is related to translating an XML to a syntax tree.
+
+\section ast_xml_dependencies Dependencies
+This library depends on \ref ast_core because it contains the definition of the classes that make up the syntax tree.
+
+It also depends on the Expat libraries, because the generated XML parser depends on it.
+*/
+
+// vim:syntax=cpp

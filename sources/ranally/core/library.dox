@@ -1,0 +1,10 @@
+/*! \page core core library
+
+\section core_introduction Introduction
+This library contains code that is of general use to the other libraries.
+
+\section core_dependencies Dependencies
+This library depends on the ICU libraries, because ranally String subclasses it.
+*/
+
+// vim:syntax=cpp
