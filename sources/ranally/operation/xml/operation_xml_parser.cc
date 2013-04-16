@@ -4,7 +4,7 @@
 #include <stack>
 #include <vector>
 #include "ranally/core/string.h"
-#include "ranally/operation/std/operations.h"
+#include "ranally/operation/core/operations.h"
 #include "ranally/operation/xml/operation-pskel.hxx"
 
 

@@ -27,6 +27,6 @@ ADD_LIBRARY(ranally_operation_xml
 )
 TARGET_LINK_LIBRARIES(ranally_operation_xml
     ranally_operation_core
-    ranally_operation_std
+    # ranally_operation_std
     ${EXPAT_LIBRARY}
 )

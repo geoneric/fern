@@ -3,6 +3,7 @@ ADD_SUBDIRECTORY(test)
 SET(SOURCES
     data_types
     operation
+    operations
     parameter
     result
     result_type

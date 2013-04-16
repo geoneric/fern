@@ -8,6 +8,8 @@
     - \ref ast_visitor
   - operation
     - \ref operation_core
+    - \ref operation_std
+    - \ref operation_xml
 */
 
 // vim:syntax=cpp

@@ -1,6 +1,6 @@
 #pragma once
 #include "ranally/core/string.h"
-#include "ranally/operation/std/operations.h"
+#include "ranally/operation/core/operations.h"
 
 
 namespace ranally {

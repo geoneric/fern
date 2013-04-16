@@ -24,15 +24,15 @@ ADD_CUSTOM_COMMAND(
             "}\\n"
                 >> ${CMAKE_CURRENT_BINARY_DIR}/operation-xml.h
 )
-SET(SOURCES
-    operations
-)
-ADD_LIBRARY(ranally_operation_std
-    ${SOURCES}
-)
-TARGET_LINK_LIBRARIES(ranally_operation_std
-    ranally_core
-)
+# SET(SOURCES
+#     # ...
+# )
+# ADD_LIBRARY(ranally_operation_std
+#     ${SOURCES}
+# )
+# TARGET_LINK_LIBRARIES(ranally_operation_std
+#     ranally_core
+# )
 ADD_CUSTOM_TARGET(operation-xml.h
     DEPENDS
         ${CMAKE_CURRENT_BINARY_DIR}/operation-xml.h

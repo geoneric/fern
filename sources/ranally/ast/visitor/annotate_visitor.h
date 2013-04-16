@@ -1,8 +1,8 @@
 #pragma once
 #include <stack>
 #include "ranally/core/symbol_table.h"
+#include "ranally/operation/core/operations.h"
 #include "ranally/operation/core/result_type.h"
-#include "ranally/operation/std/operations.h"
 #include "ranally/ast/visitor/visitor.h"
 
 

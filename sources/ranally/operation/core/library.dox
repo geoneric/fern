@@ -4,7 +4,8 @@
 This library contains code that is related to describing operations.
 
 \section operation_core_dependencies Dependencies
-This library depends on \ref ranally_core.
+
+  - \ref core
 */
 
 // vim:syntax=cpp

@@ -4,7 +4,8 @@
 This library contains code that is related to visiting ASTs.
 
 \section ast_visitor_dependencies Dependencies
-This library depends on \ref ast_core because it contains the definition of the classes that make up the syntax tree.
+
+  - \ref ast_core : it contains the definition of the classes that make up the syntax tree.
 */
 
 // vim:syntax=cpp

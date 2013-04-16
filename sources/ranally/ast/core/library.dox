@@ -4,7 +4,8 @@
 This library contains code that is related to defining abstract syntax trees.
 
 \section ast_core_dependencies Dependencies
-This library depends on \ref ranally_operation_core because ranally::ExpressionVertex and ranally::OperationVertex use it.
+
+  - \ref operation_core : ranally::ExpressionVertex and ranally::OperationVertex use it.
 */
 
 // vim:syntax=cpp

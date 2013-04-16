@@ -1,4 +1,4 @@
-#include "ranally/operation/std/operations.h"
+#include "ranally/operation/core/operations.h"
 
 
 namespace ranally {

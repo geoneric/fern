@@ -1,8 +1,8 @@
 namespace http://www.jemig.eu/ranally
 {
+    include "ranally/operation/core/operations.h";
     include "ranally/operation/core/parameter.h";
     include "ranally/operation/core/result.h";
-    include "ranally/operation/std/operations.h";
 
     Operations         "std::shared_ptr<ranally::Operations>";
     Operation          "std::shared_ptr<ranally::Operation>";
