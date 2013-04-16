@@ -48,6 +48,26 @@ Operation& Operation::operator=(
 }
 
 
+// String Operation::xml() const
+// {
+//     String result = boost::format(
+//         "<?xml version="1.0"?>\n"
+//         "  <Operation>\n"
+//         "  <Name>%1%</Name>\n"
+//         "  <Description>%2%</Description>\n"
+//         "  <Parameters>\n"
+//         "    %3%\n"
+//         "  </Parameters>\n"
+//         "  <Results>\n"
+//         "    %4%\n"
+//         "  </Results>\n"
+//         "</Operation>\n"
+//         ) % name() % description % parameters % results;
+// 
+//     return result;
+// }
+
+
 String const& Operation::name() const
 {
     return _name;

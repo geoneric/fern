@@ -38,6 +38,8 @@ public:
 
     Operation&     operator=           (Operation const& other);
 
+    // String         xml                 () const;
+
     String const&  name                () const;
 
     String const&  description         () const;
