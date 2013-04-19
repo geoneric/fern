@@ -1,51 +1,20 @@
 #include "ranally/interpreter/execute_visitor.h"
 #include "ranally/ast/core/vertices.h"
 #include "ranally/feature/scalar_attribute.h"
-#include "ranally/interpreter/attribute_value.h"
+#include "ranally/operation/core/attribute_argument.h"
 
 
 namespace ranally {
 
-//! Execute operation \a name given \a arguments, and return the results.
-/*!
-  \param     name Name of operation to execute.
-  \param     arguments Arguments to pass to the operation.
-  \return    Zero or more results calculated by the operation.
-*/
-std::vector<std::shared_ptr<interpreter::Value>> execute_operation(
-    String const& name,
-    std::vector<std::shared_ptr<interpreter::Value>> arguments)
-{
-    std::vector<std::shared_ptr<interpreter::Value>> results;
+ExecuteVisitor::ExecuteVisitor(
+    OperationsPtr const& operations)
 
-    // TODO
-
-
-    // Given
-    // - name
-    // - arguments
-    // - result
-    // Instantiate operation class that translates the arguments to the results.
-    //
-    // -> Create Operation hierarchy:
-    //     Operation
-    //     -> Unary Operation
-    //     -> Binary Operation
-    //     -> NAry Operation
-    //     Or only one Operation class that all operations inherit. Per
-    //     ConcreteOperation the operation is executed.
-
-
-    return results;
-}
-
-
-ExecuteVisitor::ExecuteVisitor()
-
-    : _stack(),
+    : _operations(operations),
+      _stack(),
       _symbol_table()
 
 {
+   assert(operations);
    _symbol_table.push_scope();
 }
 
@@ -56,7 +25,7 @@ ExecuteVisitor::~ExecuteVisitor()
 }
 
 
-std::stack<std::shared_ptr<interpreter::Value>> const&
+std::stack<std::shared_ptr<Argument>> const&
 ExecuteVisitor::stack() const
 {
     return _stack;
@@ -65,11 +34,11 @@ ExecuteVisitor::stack() const
 
 void ExecuteVisitor::clear_stack()
 {
-    _stack = std::stack<std::shared_ptr<interpreter::Value>>();
+    _stack = std::stack<std::shared_ptr<Argument>>();
 }
 
 
-SymbolTable<std::shared_ptr<interpreter::Value>> const&
+SymbolTable<std::shared_ptr<Argument>> const&
 ExecuteVisitor::symbol_table() const
 {
     return _symbol_table;
@@ -124,7 +93,7 @@ void ExecuteVisitor::Visit(                                                    \
     NumberVertex<type>& vertex)                                                \
 {                                                                              \
     _stack.push(                                                               \
-        std::shared_ptr<interpreter::Value>(new interpreter::AttributeValue(   \
+        std::shared_ptr<Argument>(new AttributeArgument(                       \
             std::shared_ptr<Attribute>(new ScalarAttribute<type>(              \
                 std::make_shared<ScalarDomain>(),                              \
                 std::make_shared<ScalarValue<type>>(vertex.value()))))));      \
@@ -142,21 +111,17 @@ void ExecuteVisitor::Visit(
     // end up at the top of the stack.
     visit_expressions(vertex.expressions());
 
-    std::vector<std::shared_ptr<interpreter::Value>> arguments;
+    Operation const& operation(*_operations->operation(vertex.name()));
+    assert(_stack.size() >= operation.arity());
+
+    std::vector<std::shared_ptr<Argument>> arguments;
     for(size_t i = 0; i < vertex.expressions().size(); ++i) {
         assert(!_stack.empty());
         arguments.push_back(_stack.top());
         _stack.pop();
     }
 
-    assert(vertex.operation());
-    Operation const& operation(*vertex.operation());
-    assert(_stack.size() >= operation.arity());
-
-    std::vector<std::shared_ptr<interpreter::Value>> results =
-        execute_operation(operation.name(), arguments);
-
-    for(auto result: results) {
+    for(auto result: operation.execute(arguments)) {
         _stack.push(result);
     }
 }

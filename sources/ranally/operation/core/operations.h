@@ -24,6 +24,9 @@ public:
     template<class Range>
                    Operations          (Range const& operations);
 
+                   Operations          (std::initializer_list<OperationPtr>
+                                            values);
+
                    ~Operations         ()=default;
 
                    Operations          (Operations&&)=delete;

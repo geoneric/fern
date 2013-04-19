@@ -3,8 +3,7 @@
 #include "ranally/core/io_error.h"
 #include "ranally/core/parse_error.h"
 #include "ranally/core/validate_error.h"
-#include "ranally/operation/xml/operation_xml_parser.h"
-#include "ranally/operation/std/operation-xml.h"
+#include "ranally/operation/std/operations.h"
 #include "ranally/ast/core/script_vertex.h"
 #include "ranally/ast/visitor/identify_visitor.h"
 #include "ranally/ast/visitor/thread_visitor.h"
@@ -14,11 +13,12 @@ namespace ranally {
 
 Interpreter::Interpreter()
 
-    : _algebra_parser(),
+    : _operations(operations),
+      _algebra_parser(),
       _xml_parser(),
-      _annotate_visitor(OperationXmlParser().parse(operations_xml)),
+      _annotate_visitor(_operations),
       _validate_visitor(),
-      _execute_visitor()
+      _execute_visitor(_operations)
 
 {
 }
@@ -294,7 +294,7 @@ void Interpreter::execute(
 }
 
 
-std::stack<std::shared_ptr<interpreter::Value>> Interpreter::stack()
+std::stack<std::shared_ptr<Argument>> Interpreter::stack()
 {
     // std::stack<ResultType> result_types(_annotate_visitor.stack());
     // Stack values(_execute_visitor.stack());

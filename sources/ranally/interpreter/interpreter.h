@@ -42,11 +42,14 @@ public:
 
     void           execute             (ScriptVertexPtr const& tree);
 
-    std::stack<std::shared_ptr<interpreter::Value>> stack();
+    std::stack<std::shared_ptr<Argument>>
+                   stack               ();
 
     void           clear_stack         ();
 
 private:
+
+    OperationsPtr  _operations;
 
     AlgebraParser  _algebra_parser;
 

@@ -260,4 +260,11 @@ ResultType Operation::result_type(
         result_value_type(index, value_types));
 }
 
+
+std::vector<std::shared_ptr<Argument>> Operation::execute(
+    std::vector<std::shared_ptr<Argument>> const& /* arguments */) const
+{
+    assert(false);
+}
+
 } // namespace ranally

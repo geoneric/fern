@@ -8,8 +8,8 @@
 #include "ranally/core/exception.h"
 #include "ranally/command/message.h"
 #include "ranally/feature/scalar_attribute.h"
-#include "ranally/interpreter/attribute_value.h"
 #include "ranally/interpreter/interpreter.h"
+#include "ranally/operation/core/attribute_argument.h"
 #include "ranally/operation/core/type_traits.h"
 #include "ranally/operation/core/value_type_traits.h"
 
@@ -52,7 +52,7 @@ inline void show_value(
     }
 
 void show_value(
-    std::shared_ptr<interpreter::AttributeValue> const& value)
+    std::shared_ptr<AttributeArgument> const& value)
 {
     assert(value);
 
@@ -87,17 +87,16 @@ void show_value(
 
 
 void show_value(
-    std::shared_ptr<interpreter::Value> const& value)
+    std::shared_ptr<Argument> const& value)
 {
     assert(value);
 
-    switch(value->value_type()) {
-        case interpreter::ValueType::VT_ATTRIBUTE: {
-            show_value(std::dynamic_pointer_cast<interpreter::AttributeValue>(
-                value));
+    switch(value->argument_type()) {
+        case ArgumentType::AT_ATTRIBUTE: {
+            show_value(std::dynamic_pointer_cast<AttributeArgument>(value));
             break;
         }
-        case interpreter::ValueType::VT_FEATURE: {
+        case ArgumentType::AT_FEATURE: {
             assert(false);
             break;
         }
@@ -106,7 +105,7 @@ void show_value(
 
 
 void show_stack_values(
-    std::stack<std::shared_ptr<interpreter::Value>> stack)
+    std::stack<std::shared_ptr<Argument>> stack)
 {
     while(!stack.empty()) {
         show_value(stack.top());

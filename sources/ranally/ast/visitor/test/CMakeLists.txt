@@ -17,7 +17,7 @@ MACRO(ADD_UNIT_TEST NAME)
         ranally_ast_visitor
         ranally_script
         ranally_ast_xml
-        ranally_operation_xml
+        ranally_operation_std
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
     ADD_TEST(NAME ast_visitor_${NAME} COMMAND ast_visitor_${NAME})

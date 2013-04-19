@@ -2,6 +2,7 @@
 #include <memory>
 #include <vector>
 #include "ranally/core/string.h"
+#include "ranally/operation/core/argument.h"
 #include "ranally/operation/core/parameter.h"
 #include "ranally/operation/core/result.h"
 #include "ranally/operation/core/result_type.h"
@@ -14,6 +15,8 @@ namespace ranally {
   longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 
   \sa        .
+
+  TODO Make this an abstract base class for all operations.
 */
 class Operation
 {
@@ -53,6 +56,10 @@ public:
     ResultType     result_type         (
                         size_t index,
                         std::vector<ResultType> const& argument_types) const;
+
+    virtual std::vector<std::shared_ptr<Argument>>
+                   execute             (std::vector<std::shared_ptr<Argument>>
+                                            const& arguments) const;
 
 private:
 

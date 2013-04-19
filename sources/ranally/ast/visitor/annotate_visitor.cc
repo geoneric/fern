@@ -8,12 +8,12 @@
 namespace ranally {
 
 AnnotateVisitor::AnnotateVisitor(
-    ranally::OperationsPtr const& operations)
+    OperationsPtr const& operations)
 
     : Visitor(),
+      _operations(operations),
       _stack(),
-      _symbol_table(),
-      _operations(operations)
+      _symbol_table()
 
 {
     assert(_operations);

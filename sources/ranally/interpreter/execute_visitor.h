@@ -3,27 +3,30 @@
 #include <stack>
 #include "ranally/core/symbol_table.h"
 #include "ranally/ast/visitor/visitor.h"
-#include "ranally/interpreter/value.h"
+#include "ranally/operation/core/operations.h"
 
 
 namespace ranally {
 
-//! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
+//! Visitor that executes an abstract syntax tree.
 /*!
-  longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
+  This visitor immediately executes expressions as they are encountered during
+  the visit.
 
+  <ideas>
   Encapsulate executable stuff in an Executor instance (script, function,
   expression). Each Executor accepts argument values and returns result
   values.
 
   A script is an anonymous function. The undefined variables are the
-  script's arguments, which need to satisfied by some other means. If this
+  script's arguments, which need to be satisfied by some other means. If this
   doesn't happen, then they are really undefined.
 
   We need a Context that has a symbol table with currently visible variables
   and their values. Such an instance must be passed into the Executors. That's
   how they get at values. Each Executor can store local variables locally.
   They may update global variables in the Context's symbol table.
+  </ideas>
 
   \sa        .
 */
@@ -33,7 +36,7 @@ class ExecuteVisitor:
 
 public:
 
-                   ExecuteVisitor      ();
+                   ExecuteVisitor      (OperationsPtr const& operations);
 
                    ~ExecuteVisitor     ();
 
@@ -45,20 +48,23 @@ public:
 
     ExecuteVisitor& operator=          (ExecuteVisitor const&)=delete;
 
-    std::stack<std::shared_ptr<interpreter::Value>> const& stack() const;
+    std::stack<std::shared_ptr<Argument>> const&
+                   stack               () const;
 
     void           clear_stack         ();
 
-    SymbolTable<std::shared_ptr<interpreter::Value>> const&
+    SymbolTable<std::shared_ptr<Argument>> const&
                    symbol_table        () const;
 
 private:
 
+    OperationsPtr  _operations;
+
     //! Stack with values that are passed in and out of expressions.
-    std::stack<std::shared_ptr<interpreter::Value>> _stack;
+    std::stack<std::shared_ptr<Argument>> _stack;
 
     //! Symbol table with values of variables.
-    SymbolTable<std::shared_ptr<interpreter::Value>> _symbol_table;
+    SymbolTable<std::shared_ptr<Argument>> _symbol_table;
 
     void           Visit               (AssignmentVertex& vertex);
 

@@ -3,6 +3,18 @@
 
 namespace ranally {
 
+Operations::Operations(
+    std::initializer_list<OperationPtr> values)
+
+    : _operations()
+
+{
+    for(auto value: values) {
+        _operations[value->name()] = value;
+    }
+}
+
+
 bool Operations::empty() const
 {
     return _operations.empty();

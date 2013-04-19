@@ -66,11 +66,11 @@ public:
 
 private:
 
+    OperationsPtr  _operations;
+
     std::stack<ResultType> _stack;
 
     SymbolTable<ResultType> _symbol_table;
-
-    OperationsPtr  _operations;
 
     void           Visit               (AssignmentVertex& vertex);
 

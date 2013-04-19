@@ -2,8 +2,7 @@
 #include <boost/test/unit_test.hpp>
 #include "ranally/operation/core/parameter.h"
 #include "ranally/operation/core/result.h"
-#include "ranally/operation/xml/operation_xml_parser.h"
-#include "ranally/operation/std/operation-xml.h"
+#include "ranally/operation/std/operations.h"
 #include "ranally/script/algebra_parser.h"
 #include "ranally/ast/visitor/annotate_visitor.h"
 #include "ranally/ast/core/vertices.h"
@@ -18,8 +17,7 @@ public:
     Support()
         : _algebra_parser(),
           _xml_parser(),
-          _visitor(ranally::OperationXmlParser().parse(
-              ranally::operations_xml))
+          _visitor(ranally::operations)
     {
     }
 

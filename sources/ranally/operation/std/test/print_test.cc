@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE ranally operation
+#define BOOST_TEST_MODULE ranally operation_std
 #include <boost/range/iterator_range.hpp>
 #include <boost/test/unit_test.hpp>
 #include "ranally/raster.h"

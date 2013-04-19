@@ -34,7 +34,6 @@ Parameter::Parameter(
     assert(!_name.is_empty());
     assert(!_description.is_empty());
     assert(_data_types != DataTypes::UNKNOWN);
-    // assert(_value_types != ValueTypes::UNKNOWN);
 }
 
 
