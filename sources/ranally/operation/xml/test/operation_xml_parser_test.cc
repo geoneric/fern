@@ -9,7 +9,7 @@ BOOST_AUTO_TEST_SUITE(operation_xml_parser)
 
 BOOST_AUTO_TEST_CASE(parse)
 {
-    ranally::OperationXmlParser xmlParser;
+    ranally::OperationXmlParser xml_parser;
     ranally::String xml;
     ranally::OperationsPtr operations;
     std::vector<ranally::Parameter> parameters;
@@ -22,7 +22,7 @@ BOOST_AUTO_TEST_CASE(parse)
         xml =
             "<?xml version=\"1.0\"?>"
             "<Operations/>";
-        operations = xmlParser.parse(xml);
+        operations = xml_parser.parse(xml);
         BOOST_CHECK(operations->empty());
     }
 
@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(parse)
               "</Operation>"
             "</Operations>";
 
-        operations = xmlParser.parse(xml);
+        operations = xml_parser.parse(xml);
         BOOST_CHECK_EQUAL(operations->size(), 1u);
         BOOST_REQUIRE(operations->has_operation("print"));
 

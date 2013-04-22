@@ -7,8 +7,8 @@ BOOST_AUTO_TEST_SUITE(operations)
 
 BOOST_AUTO_TEST_CASE(operations)
 {
-    BOOST_CHECK( ranally::operations->has_operation("abs"));
-    BOOST_CHECK(!ranally::operations->has_operation("sba"));
+    BOOST_CHECK( ranally::operations()->has_operation("abs"));
+    BOOST_CHECK(!ranally::operations()->has_operation("sba"));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

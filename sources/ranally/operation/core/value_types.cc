@@ -29,7 +29,6 @@ ValueTypes const ValueTypes::NUMBER(ValueTypes::INTEGER |
     ValueTypes::FLOATING_POINT);
 ValueTypes const ValueTypes::ALL(ValueTypes::NUMBER | ValueTypes::STRING);
 
-
 // These strings should match the ones used in the XML schema.
 static std::map<String, ValueTypes> value_type_by_string = {
     { "Uint8"         , ValueTypes::UINT8            },
@@ -64,12 +63,11 @@ static std::map<ValueType, String> string_by_value_type = {
 };
 
 
-ValueTypes ValueTypes::from_string(
-    String const& string)
+static String to_string(
+    ValueType value_type)
 {
-    assert(!string.is_empty());
-    assert(value_type_by_string.find(string) != value_type_by_string.end());
-    return value_type_by_string[string];
+    assert(string_by_value_type.find(value_type) != string_by_value_type.end());
+    return string_by_value_type[value_type];
 }
 
 
@@ -88,11 +86,12 @@ std::vector<ValueType> const ValueTypes::VALUE_TYPES = {
 };
 
 
-static String to_string(
-    ValueType value_type)
+ValueTypes ValueTypes::from_string(
+    String const& string)
 {
-    assert(string_by_value_type.find(value_type) != string_by_value_type.end());
-    return string_by_value_type[value_type];
+    assert(!string.is_empty());
+    assert(value_type_by_string.find(string) != value_type_by_string.end());
+    return value_type_by_string[string];
 }
 
 

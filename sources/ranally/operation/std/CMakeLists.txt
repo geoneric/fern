@@ -26,6 +26,8 @@ ADD_CUSTOM_COMMAND(
 )
 SET(SOURCES
     abs
+    add
+    int32
     operations
 )
 ADD_LIBRARY(ranally_operation_std

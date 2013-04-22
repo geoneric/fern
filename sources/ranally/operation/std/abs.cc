@@ -24,6 +24,7 @@ Abs::Abs()
       )
 
 {
+    std::cout << parameters()[0].data_types() << std::endl;
 }
 
 

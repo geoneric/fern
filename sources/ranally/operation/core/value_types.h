@@ -9,8 +9,10 @@ namespace ranally {
 /*!
   longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 
-  \todo      Refactor with DataTypes.
-  \sa        .
+  \warning   Don't instantiate this class as a static variable.
+             The implementation depends on static variables which may or may
+             not be initialized yet (the order of initialization of static
+             variables across compilation units is undefined).
 */
 class ValueTypes:
     public FlagCollection<ValueTypes, ValueType,

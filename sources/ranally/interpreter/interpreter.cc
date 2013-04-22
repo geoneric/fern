@@ -13,7 +13,7 @@ namespace ranally {
 
 Interpreter::Interpreter()
 
-    : _operations(operations),
+    : _operations(operations()),
       _algebra_parser(),
       _xml_parser(),
       _annotate_visitor(_operations),

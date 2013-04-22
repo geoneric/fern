@@ -17,7 +17,7 @@ public:
     Support()
         : _algebra_parser(),
           _xml_parser(),
-          _visitor(ranally::operations)
+          _visitor(ranally::operations())
     {
     }
 

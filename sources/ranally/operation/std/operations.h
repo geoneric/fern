@@ -5,6 +5,8 @@
 
 namespace ranally {
 
-extern std::shared_ptr<Operations> operations;
+// extern std::shared_ptr<Operations> operations;
+
+std::shared_ptr<Operations> const& operations ();
 
 } // namespace ranally

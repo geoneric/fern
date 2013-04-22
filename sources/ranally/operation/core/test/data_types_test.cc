@@ -12,6 +12,9 @@ BOOST_AUTO_TEST_CASE(string)
         "Point|Line|Polygon");
     BOOST_CHECK_EQUAL(ranally::DataTypes::ALL.to_string(),
         "Scalar|Point|Line|Polygon");
+    BOOST_CHECK_EQUAL(
+        (ranally::DataTypes::SCALAR | ranally::DataTypes::FEATURE).to_string(),
+        "Scalar|Point|Line|Polygon");
 }
 
 

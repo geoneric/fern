@@ -11,8 +11,10 @@ namespace ranally {
   predefined collections for basic and combined data types. Member functions
   allow you to add and remove certain data types.
 
-  \todo      Refactor with ValueTypes.
-  \sa        .
+  \warning   Don't instantiate this class as a static variable.
+             The implementation depends on static variables which may or may
+             not be initialized yet (the order of initialization of static
+             variables across compilation units is undefined).
 */
 class DataTypes:
     public FlagCollection<DataTypes, DataType, DataType::DT_LAST_DATA_TYPE + 1>

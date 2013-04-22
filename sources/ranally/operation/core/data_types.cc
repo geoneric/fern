@@ -16,21 +16,29 @@ DataTypes const DataTypes::ALL(DataTypes::SCALAR | DataTypes::FEATURE);
 
 // These strings should match the ones used in the XML schema.
 static std::map<String, DataTypes> data_type_by_string = {
-    { "Scalar"        , DataTypes::SCALAR           },
-    { "Point"         , DataTypes::POINT            },
-    { "Line"          , DataTypes::LINE             },
-    { "Polygon"       , DataTypes::POLYGON          },
-    { "Feature"       , DataTypes::FEATURE          },
-    { "All"           , DataTypes::ALL              }
+    { "Scalar" , DataTypes::SCALAR },
+    { "Point"  , DataTypes::POINT  },
+    { "Line"   , DataTypes::LINE   },
+    { "Polygon", DataTypes::POLYGON},
+    { "Feature", DataTypes::FEATURE},
+    { "All"    , DataTypes::ALL    }
 };
 
 
 static std::map<DataType, String> string_by_data_type = {
-    { DataType::DT_SCALAR          , "Scalar"         },
-    { DataType::DT_POINT           , "Point"          },
-    { DataType::DT_LINE            , "Line"           },
-    { DataType::DT_POLYGON         , "Polygon"        }
+    { DataType::DT_SCALAR , "Scalar" },
+    { DataType::DT_POINT  , "Point"  },
+    { DataType::DT_LINE   , "Line"   },
+    { DataType::DT_POLYGON, "Polygon"}
 };
+
+
+static String to_string(
+    DataType data_type)
+{
+    assert(string_by_data_type.find(data_type) != string_by_data_type.end());
+    return string_by_data_type[data_type];
+}
 
 
 DataTypes DataTypes::from_string(
@@ -48,14 +56,6 @@ std::vector<DataType> const DataTypes::DATA_TYPES = {
     DataType::DT_LINE,
     DataType::DT_POLYGON
 };
-
-
-static String to_string(
-    DataType data_type)
-{
-    assert(string_by_data_type.find(data_type) != string_by_data_type.end());
-    return string_by_data_type[data_type];
-}
 
 
 DataTypes::DataTypes()
