@@ -1,5 +1,5 @@
 # Read the initial area feature (polygon).
-# Area has a grass and countdown attributes.
+# Area has grass and countdown attributes.
 area = ...
 
 # Read the initial animal features (points).
