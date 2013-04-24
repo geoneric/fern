@@ -3,5 +3,11 @@ INPUT                   = ${CMAKE_CURRENT_SOURCE_DIR}/ranally \
                           ${CMAKE_CURRENT_BINARY_DIR}/ranally
 ${DOXYGEN_TEMPLATE}
 EXCLUDE_PATTERNS        = *_test.cc \
-                          ${CMAKE_CURRENT_SOURCE_DIR}/ranally/io/*.h \
-                          ${CMAKE_CURRENT_SOURCE_DIR}/ranally/io/*.cc
+                          ${CMAKE_CURRENT_SOURCE_DIR}/ranally/io/core/*.h \
+                          ${CMAKE_CURRENT_SOURCE_DIR}/ranally/io/core/*.cc \
+                          ${CMAKE_CURRENT_SOURCE_DIR}/ranally/io/hdf5/*.h \
+                          ${CMAKE_CURRENT_SOURCE_DIR}/ranally/io/hdf5/*.cc \
+                          ${CMAKE_CURRENT_SOURCE_DIR}/ranally/io/netcdf/*.h \
+                          ${CMAKE_CURRENT_SOURCE_DIR}/ranally/io/netcdf/*.cc \
+                          ${CMAKE_CURRENT_SOURCE_DIR}/ranally/io/ogr/*.h \
+                          ${CMAKE_CURRENT_SOURCE_DIR}/ranally/io/ogr/*.cc

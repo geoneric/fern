@@ -3,7 +3,7 @@
 #include "ranally/core/exception.h"
 #include "ranally/core/string.h"
 #include "ranally/script/algebra_parser.h"
-#include "ranally/ast/xml/ranally-pskel.hxx"
+#include "ranally/ast/xml/syntax_tree-pskel.hxx"
 #include "ranally/ast/xml/xml_parser.h"
 
 

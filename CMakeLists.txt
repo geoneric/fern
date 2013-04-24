@@ -87,5 +87,28 @@ INCLUDE_DIRECTORIES(
     ${XSD_INCLUDE_DIRS}
 )
 
+MACRO(ADD_PARSER_GENERATION_COMMAND
+        BASENAME)
+    CONFIGURE_FILE(
+        ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.map.in
+        ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.map
+    )
+
+    ADD_CUSTOM_COMMAND(
+        OUTPUT
+            ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}-pskel.hxx
+            ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}-pskel.cxx
+        COMMAND
+            ${XSD_EXECUTABLE} cxx-parser --xml-parser expat
+                --type-map ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.map
+                ${ARGN}
+                ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.xsd
+        DEPENDS
+            ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.map
+            ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.xsd
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    )
+ENDMACRO()
+
 ADD_SUBDIRECTORY(documents)
 ADD_SUBDIRECTORY(sources)

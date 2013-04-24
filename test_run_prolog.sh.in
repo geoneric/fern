@@ -3,20 +3,20 @@ source_dir="${CMAKE_CURRENT_BINARY_DIR}/sources/ranally"
 cmake="${CMAKE_COMMAND}"
 
 
-io_test_dir="$source_dir/io/test"
-$cmake -E copy $test_data_dir/point.json $io_test_dir
-
-$cmake -E copy $test_data_dir/point.json $io_test_dir/read_only_point.json
-chmod 444 $io_test_dir/read_only_point.json
-
-$cmake -E copy $test_data_dir/point.json $io_test_dir/write_only_point.json
-chmod 222 $io_test_dir/write_only_point.json
-
-$cmake -E copy $test_data_dir/point.json $io_test_dir/execute_only_point.json
-chmod 111 $io_test_dir/execute_only_point.json
-
-$cmake -E make_directory $io_test_dir/read_only_dir
-chmod 666 $io_test_dir/read_only_dir
+# io_test_dir="$source_dir/io/test"
+# $cmake -E copy $test_data_dir/point.json $io_test_dir
+# 
+# $cmake -E copy $test_data_dir/point.json $io_test_dir/read_only_point.json
+# chmod 444 $io_test_dir/read_only_point.json
+# 
+# $cmake -E copy $test_data_dir/point.json $io_test_dir/write_only_point.json
+# chmod 222 $io_test_dir/write_only_point.json
+# 
+# $cmake -E copy $test_data_dir/point.json $io_test_dir/execute_only_point.json
+# chmod 111 $io_test_dir/execute_only_point.json
+# 
+# $cmake -E make_directory $io_test_dir/read_only_dir
+# chmod 666 $io_test_dir/read_only_dir
 
 
 interpreter_test_dir="$source_dir/interpreter/test"

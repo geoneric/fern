@@ -12,7 +12,7 @@
 #include "ranally/ast/core/subscript_vertex.h"
 #include "ranally/ast/core/syntax_vertex.h"
 #include "ranally/ast/core/while_vertex.h"
-#include "ranally/ast/xml/ranally-pskel.hxx"
+#include "ranally/ast/xml/syntax_tree-pskel.hxx"
 
 
 namespace {
