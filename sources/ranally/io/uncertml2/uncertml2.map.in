@@ -1,29 +1,8 @@
-namespace http://www.geoneric.eu/ranally
+namespace http://www.uncertml.org/2.0
 {
-    // include <memory>;
-    // include "ranally/ast/core/assignment_vertex.h";
-    // include "ranally/ast/core/expression_vertex.h";
-    // include "ranally/ast/core/function_vertex.h";
-    // include "ranally/ast/core/operator_vertex.h";
-    // include "ranally/ast/core/if_vertex.h";
-    // include "ranally/ast/core/while_vertex.h";
-    // include "ranally/ast/core/script_vertex.h";
+    include <memory>;
+    include "ranally/uncertainty/normal_distribution.h";
 
-    // Ranally          "std::shared_ptr<ScriptVertex>";
-    // Number           "std::shared_ptr<ExpressionVertex>";
-    // Integer          "std::shared_ptr<ExpressionVertex>";
-    // UnsignedInteger  "std::shared_ptr<ExpressionVertex>";
-    // Float            "std::shared_ptr<ExpressionVertex>";
-    // Expression       "std::shared_ptr<ExpressionVertex>";
-    // Subscript        "std::shared_ptr<ExpressionVertex>";
-
-    // Statement        "std::shared_ptr<StatementVertex>";
-    // Function         "std::shared_ptr<FunctionVertex>";
-    // Operator         "std::shared_ptr<OperatorVertex>";
-    // Assignment       "std::shared_ptr<AssignmentVertex>";
-    // If               "std::shared_ptr<IfVertex>";
-    // While            "std::shared_ptr<WhileVertex>";
-    // Targets          "std::vector<std::shared_ptr<ExpressionVertex>>";
-    // Expressions      "std::vector<std::shared_ptr<ExpressionVertex>>";
-    // Statements       "std::vector<std::shared_ptr<StatementVertex>>";
+    positiveRealNumber  "double";
+    NormalDistribution  "std::shared_ptr<ranally::NormalDistribution<double>>";
 }

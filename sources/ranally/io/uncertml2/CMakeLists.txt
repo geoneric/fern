@@ -12,6 +12,6 @@ ADD_LIBRARY(ranally_io_uncertml2
     ${SOURCES}
 )
 TARGET_LINK_LIBRARIES(ranally_io_uncertml2
-    # ranally_ast_core
+    ranally_uncertainty
     ${EXPAT_LIBRARY}
 )

@@ -1,9 +1,11 @@
 #pragma once
 #include <memory>
-// #include "ranally/core/string.h"
+#include "ranally/core/string.h"
 
 
 namespace ranally {
+
+class Uncertainty;
 
 //! TODO
 /*!
@@ -26,12 +28,12 @@ public:
 
     UncertML2Parser& operator=         (UncertML2Parser const&)=delete;
 
-    // std::shared_ptr<ScriptVertex> parse_string(
-    //                                     String const& xml) const;
+    std::shared_ptr<Uncertainty> parse_string(
+                                        String const& xml) const;
 
 private:
 
-    // std::shared_ptr<ScriptVertex> parse(std::istream& stream) const;
+    std::shared_ptr<Uncertainty> parse (std::istream& stream) const;
 
 };
 
