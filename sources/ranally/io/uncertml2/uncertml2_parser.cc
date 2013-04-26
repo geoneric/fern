@@ -1,4 +1,4 @@
-#include "ranally/io/uncertml/uncertml2_parser.h"
+#include "ranally/io/uncertml2/uncertml2_parser.h"
 // #include <sstream>
 // #include <stack>
 // #include "ranally/core/exception.h"
@@ -12,12 +12,15 @@
 // #include "ranally/ast/core/subscript_vertex.h"
 // #include "ranally/ast/core/syntax_vertex.h"
 // #include "ranally/ast/core/while_vertex.h"
-// #include "ranally/ast/xml/syntax_tree-pskel.hxx"
+#include "ranally/io/uncertml2/uncertml2-pskel.hxx"
 
 
 namespace {
 
-
+class UncertML2_pimpl:
+    public uncertml2::Mean_pskel
+{
+};
 
 } // Anonymous namespace
 

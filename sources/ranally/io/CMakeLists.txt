@@ -3,7 +3,7 @@
 # ADD_SUBDIRECTORY(netcdf)
 # ADD_SUBDIRECTORY(ogr)
 # ADD_SUBDIRECTORY(test)
-ADD_SUBDIRECTORY(uncertml)
+ADD_SUBDIRECTORY(uncertml2)
 
 # SET(SOURCES
 #     attribute

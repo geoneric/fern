@@ -1,7 +1,7 @@
 ADD_SUBDIRECTORY(test)
 
 ADD_PARSER_GENERATION_COMMAND(uncertml2
-    --namespace-map http://www.uncertml.org/2.0=uncertml
+    --namespace-map http://www.uncertml.org/2.0=uncertml2
     --generate-polymorphic)
 
 SET(SOURCES
