@@ -28,8 +28,7 @@ public:
 
     UncertML2Parser& operator=         (UncertML2Parser const&)=delete;
 
-    std::shared_ptr<Uncertainty> parse_string(
-                                        String const& xml) const;
+    std::shared_ptr<Uncertainty> parse (String const& xml) const;
 
 private:
 

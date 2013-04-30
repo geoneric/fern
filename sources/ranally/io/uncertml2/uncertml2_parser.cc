@@ -1,4 +1,5 @@
 #include "ranally/io/uncertml2/uncertml2_parser.h"
+#include <cmath>
 #include <sstream>
 // #include <stack>
 #include "ranally/core/exception.h"
@@ -14,10 +15,39 @@ class NormalDistribution_pimpl:
 
 public:
 
+    void pre()
+    {
+        std::cout << "NormalDistribution_pimpl::pre" << std::endl;
+    }
+
+    void mean(
+        std::vector<double> const& values)
+    {
+        _means = values;
+    }
+
+    void variance(
+        std::vector<double> const& values)
+    {
+        _variances = values;
+    }
+
     std::shared_ptr<ranally::NormalDistribution<double> >
         post_NormalDistribution()
     {
+        std::cout << "post_NormalDistribution" << std::endl;
+        assert(_means.size() == 1);
+        assert(_variances.size() == 1);
+        assert(_variances[0] >= 0.0);
+        return std::make_shared<ranally::NormalDistribution<double>>(_means[0],
+            std::sqrt(_variances[0]));
     }
+
+private:
+
+    std::vector<double> _means;
+
+    std::vector<double> _variances;
 
 };
 
@@ -25,6 +55,82 @@ public:
 class ContinuousValuesType_pimpl:
     public uncertml2::ContinuousValuesType_pskel
 {
+
+public:
+
+    void pre()
+    {
+        std::cout << "ContinuousValuesType_pimpl::pre" << std::endl;
+    }
+
+    void item(
+        double value)
+    {
+        _values.push_back(value);
+    }
+
+    std::vector<double> const& post_ContinuousValuesType()
+    {
+        std::cout << "post_ContinuousValuesType" << std::endl;
+        return _values;
+    }
+
+private:
+
+    std::vector<double> _values;
+
+};
+
+
+class PositiveRealValuesType_pimpl:
+    public uncertml2::PositiveRealValuesType_pskel
+{
+
+public:
+
+    void pre()
+    {
+        std::cout << "PositiveRealValuesType_pimpl::pre" << std::endl;
+    }
+
+    void item(
+        double value)
+    {
+        _values.push_back(value);
+    }
+
+    std::vector<double> const& post_PositiveRealValuesType()
+    {
+        std::cout << "post_PositiveRealValuesType" << std::endl;
+        return _values;
+    }
+
+private:
+
+    std::vector<double> _values;
+
+};
+
+
+class PositiveRealNumber_pimpl:
+    public uncertml2::positiveRealNumber_pskel
+{
+
+public:
+
+    void pre()
+    {
+        std::cout << "PositiveRealNumber_pimpl::pre" << std::endl;
+    }
+
+    double post_double()
+    {
+        std::cout << "post_double" << std::endl;
+        return post_positiveRealNumber();
+    }
+
+private:
+
 };
 
 } // Anonymous namespace
@@ -104,24 +210,35 @@ std::shared_ptr<Uncertainty> UncertML2Parser::parse(
 
     // statements_p.parsers(statement_p);
 
+    std::cout << "parse!" << std::endl;
+
     xml_schema::double_pimpl double_p;
+    xml_schema::uri_pimpl uri_p;
+    xml_schema::string_pimpl string_p;
 
     ContinuousValuesType_pimpl continuous_values_p;
-    continuous_values_p.item_parser(double_p);
+    // continuous_values_p.item_parser(double_p);
+    // TODO Why doesn't this work???
+    // continuous_values_p.parsers(double_p);
+    continuous_values_p.parsers(double_p, uri_p, string_p);
 
-    // PositiveRealNumber_pimpl positive_real_number_p;
+    PositiveRealNumber_pimpl positive_real_number_p;
 
-    // PositiveRealValues_pimpl positive_real_values_p;
+    PositiveRealValuesType_pimpl positive_real_values_p;
+    // TODO Why doesn't this work???
     // positive_real_values_p.parsers(positive_real_number_p);
+    // positive_real_values_p.item_parser(positive_real_number_p);
+    positive_real_values_p.parsers(positive_real_number_p, uri_p, string_p);
 
     NormalDistribution_pimpl normal_distribution_p;
-    // normal_distribution_p.parsers(continuous_values_p /* , positive_real_values_p */);
-    normal_distribution_p.mean_parser(continuous_values_p);
+    normal_distribution_p.parsers(continuous_values_p, positive_real_values_p);
+    // normal_distribution_p.mean_parser(continuous_values_p);
 
     xml_schema::document doc_p(normal_distribution_p, "Blah");
 
     normal_distribution_p.pre();
     doc_p.parse(stream);
+    std::cout << "parse!" << std::endl;
     return normal_distribution_p.post_NormalDistribution();
 }
 
@@ -130,7 +247,7 @@ std::shared_ptr<Uncertainty> UncertML2Parser::parse(
   \overload
   \param     xml String with Xml to parse.
 */
-std::shared_ptr<Uncertainty> UncertML2Parser::parse_string(
+std::shared_ptr<Uncertainty> UncertML2Parser::parse(
     String const& xml) const
 {
     // Copy string contents in a string stream and work with that.
