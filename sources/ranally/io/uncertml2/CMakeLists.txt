@@ -3,6 +3,8 @@ ADD_SUBDIRECTORY(test)
 ADD_PARSER_GENERATION_COMMAND(uncertml2
     --namespace-map http://www.uncertml.org/2.0=uncertml2
     --generate-polymorphic)
+    # TODO Suppress validation because of issues in uncertml xsd.
+    # --suppress-validation)
 
 SET(SOURCES
     ${CMAKE_CURRENT_BINARY_DIR}/uncertml2-pskel.cxx
