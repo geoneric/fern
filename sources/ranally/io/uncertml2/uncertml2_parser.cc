@@ -1,7 +1,6 @@
 #include "ranally/io/uncertml2/uncertml2_parser.h"
 #include <cmath>
 #include <sstream>
-// #include <stack>
 #include "ranally/core/exception.h"
 #include "ranally/io/uncertml2/uncertml2-pskel.hxx"
 

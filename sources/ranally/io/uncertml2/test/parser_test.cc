@@ -1,5 +1,6 @@
 #define BOOST_TEST_MODULE ranally operation_xml
 #include <boost/test/unit_test.hpp>
+#include "ranally/core/exception.h"
 #include "ranally/io/uncertml2/uncertml2_parser.h"
 #include "ranally/uncertainty/normal_distribution.h"
 
@@ -12,6 +13,7 @@ BOOST_AUTO_TEST_CASE(parse)
     ranally::String xml;
     std::shared_ptr<ranally::Uncertainty> uncertainty;
 
+    // Example from the uncertml reference.
     {
         xml =
             "<?xml version=\"1.0\"?>\n"
@@ -30,6 +32,18 @@ BOOST_AUTO_TEST_CASE(parse)
         BOOST_CHECK_CLOSE(normal_distribution->mean(), 3.14, 0.001);
         BOOST_CHECK_CLOSE(normal_distribution->standard_deviation(),
             std::sqrt(3.14), 0.001);
+    }
+
+    // Empty file.
+    {
+        xml = "";
+        BOOST_CHECK_THROW(parser.parse(xml), ranally::detail::ParseError);
+    }
+
+    // Parse error.
+    {
+        xml = "abc";
+        BOOST_CHECK_THROW(parser.parse(xml), ranally::detail::ParseError);
     }
 }
 
