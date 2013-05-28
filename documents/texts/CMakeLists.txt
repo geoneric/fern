@@ -1,0 +1,3 @@
+ADD_SUBDIRECTORY(Project)
+ADD_SUBDIRECTORY(data_model)
+ADD_SUBDIRECTORY(development)
