@@ -25,14 +25,14 @@ Wolve sheep predation
 ~~~~~~~~~~~~~~~~~~~~~
 This model is inspired by the `NetLogo Wolf Sheep Predation model <http://ccl.northwestern.edu/netlogo/models/WolfSheepPredation>`_.
 
-.. literalinclude:: WolvesAndSheep.ran
+.. literalinclude:: wolves_and_sheep.ran
    :language: python
 
 Heatbugs
 ~~~~~~~~
 This model is inspired by the `NetLogo Heatbugs model <http://ccl.northwestern.edu/netlogo/models/Heatbugs>`_.
 
-.. literalinclude:: Heatbugs.ran
+.. literalinclude:: heatbugs.ran
    :language: python
 
 Connecting agents
