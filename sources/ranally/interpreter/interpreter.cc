@@ -18,7 +18,7 @@ Interpreter::Interpreter()
       _xml_parser(),
       _annotate_visitor(_operations),
       _validate_visitor(),
-      _execute_visitor(_operations)
+      _back_end(_operations)
 
 {
 }
@@ -290,14 +290,14 @@ void Interpreter::execute(
     ScriptVertexPtr const& tree)
 {
     validate(tree);
-    tree->Accept(_execute_visitor);
+    tree->Accept(_back_end);
 }
 
 
 std::stack<std::shared_ptr<Argument>> Interpreter::stack()
 {
     // std::stack<ResultType> result_types(_annotate_visitor.stack());
-    // Stack values(_execute_visitor.stack());
+    // Stack values(_back_end.stack());
     // assert(result_types.size() == values.size());
     // std::stack<std::tuple<ResultType, boost::any>> result;
 
@@ -309,14 +309,14 @@ std::stack<std::shared_ptr<Argument>> Interpreter::stack()
 
     // return result;
 
-    return _execute_visitor.stack();
+    return _back_end.stack();
 }
 
 
 void Interpreter::clear_stack()
 {
     _annotate_visitor.clear_stack();
-    _execute_visitor.clear_stack();
+    _back_end.clear_stack();
 }
 
 } // namespace ranally
