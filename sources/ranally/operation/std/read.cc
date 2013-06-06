@@ -1,0 +1,62 @@
+#include "ranally/operation/std/read.h"
+#include "ranally/feature/scalar_attribute.h"
+#include "ranally/operation/core/attribute_argument.h"
+
+
+namespace ranally {
+
+std::vector<std::shared_ptr<Argument>> read(
+        Attribute const& attribute)
+{
+    ScalarAttribute<String> const& value(
+        dynamic_cast<ScalarAttribute<String> const&>(attribute));
+    // T result = std::read((*value.value())());
+
+    // return std::vector<std::shared_ptr<Argument>>({
+    //     std::shared_ptr<Argument>(new AttributeArgument(
+    //         std::shared_ptr<Attribute>(new ScalarAttribute<T>(
+    //             std::make_shared<ScalarDomain>(),
+    //             std::make_shared<ScalarValue<T>>(result)))))
+    // });
+}
+
+
+Read::Read()
+
+    : Operation("read",
+          "Read a feature or a feature attribute and return the result.",
+          {
+              Parameter("Feature or attribute name",
+                  "Name of feature or attribute to read.",
+                  DataTypes::SCALAR,
+                  ValueTypes::STRING)
+          },
+          {
+              // TODO: In case a feature is read, what should the data type be?
+              Result("Feature read",
+                  "Feature read.",
+                  DataTypes::FEATURE,
+                  ValueTypes::ALL)
+          }
+      )
+
+{
+}
+
+
+std::vector<std::shared_ptr<Argument>> Read::execute(
+    std::vector<std::shared_ptr<Argument>> const& arguments) const
+{
+    assert(arguments.size() == 1);
+    assert(arguments[0]->argument_type() == ArgumentType::AT_ATTRIBUTE);
+
+    AttributeArgument const& attribute_argument(
+        *std::dynamic_pointer_cast<AttributeArgument>(arguments[0]));
+    Attribute const& attribute(*attribute_argument.attribute());
+    assert(attribute.data_type() == DataType::DT_SCALAR);
+    assert(attribute.value_type() == ValueType::VT_STRING);
+
+    return read(attribute);
+}
+
+} // namespace ranally

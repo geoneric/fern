@@ -29,6 +29,7 @@ SET(SOURCES
     add
     int32
     operations
+    read
 )
 ADD_LIBRARY(ranally_operation_std
     ${SOURCES}

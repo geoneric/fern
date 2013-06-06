@@ -87,6 +87,7 @@ void ExecuteVisitor::Visit(
 }
 
 
+// TODO Connect this attribute to a global script feature.
 #define VISIT_NUMBER_VERTEX(                                                   \
     type)                                                                      \
 void ExecuteVisitor::Visit(                                                    \
@@ -135,10 +136,16 @@ void ExecuteVisitor::Visit(
 
 
 void ExecuteVisitor::Visit(
-    StringVertex& /* vertex */)
+    StringVertex& vertex)
 {
-    // Read attribute value from dataset and store on stack.
-    // _stack.push(read(vertex.value());
+    // TODO Connect this attribute to a global script feature.
+    // Turn the string constant into an attribute with a global domain and a
+    // single value.
+    _stack.push(
+        std::shared_ptr<Argument>(new AttributeArgument(
+            std::shared_ptr<Attribute>(new ScalarAttribute<String>(
+                std::make_shared<ScalarDomain>(),
+                std::make_shared<ScalarValue<String>>(vertex.value()))))));
 }
 
 

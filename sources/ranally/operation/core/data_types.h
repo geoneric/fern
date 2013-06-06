@@ -15,6 +15,9 @@ namespace ranally {
              The implementation depends on static variables which may or may
              not be initialized yet (the order of initialization of static
              variables across compilation units is undefined).
+
+  \todo Ditch SCALAR? Rename SCALAR to CONSTANT?
+  \todo Rename to FeatureType?
 */
 class DataTypes:
     public FlagCollection<DataTypes, DataType, DataType::DT_LAST_DATA_TYPE + 1>
