@@ -1,56 +1,186 @@
-# Read the initial area feature (polygon).
-# Area has grass and countdown attributes.
-area = ...
+# Select objects by attribute value, using selection operator.
+#   Selection operator returns a subset of the feature's objects, based on the
+#   condition operand. For each object, the conditional expression returns a
+#   value that is convertable to a boolean value.
+#   The subset contains references to the original feature's domain objects.
+#   This means that the subset has access to the same attributes as the
+#   original feature. These attributes can be updated through the subset.
+#   It is not possible to add or remove attributes to/from the original feature
+#   trough a subset. Attributes added or removed from the original feature are
+#   also added or removed from the subset.
+#   Domain objects added to the original feature's domain are not added to the
+#   subset.
+#   Domain objects removed from the original feature's domain are also removed
+#   from the subset.
+#   Domain objects added to the subset's domain are added to the original
+#   feature's domain.
+#   Domain objects removed from the subset's domain are also removed from the
+#   original feature's domain.
+#
+# Create temporary feature.
+# Create temporary attribute.
+# Add/remove attribute to/from a feature.
+# Read/write attribute from/to another feature's attribute.
+#
+# Identifiers are references to instances. Instances are reference counted and
+# are removed from memory once the last identifier referring to it goes out of
+# scope.
+#
+# Scopes are:
+# - Function bodies.
+# - Script modules.
+#
+# This script iterates through time. This is managed by the interpreter and
+# based on the temporal characteristics of the input data and, optional,
+# user settings.
 
-# Read the initial animal features (points).
-# Sheep and wolves have an energy attribute.
-sheep = ...
-wolves = ...
+# read_attribute
+#     Create a new attribute based on another attribute and return a
+#     reference to it.
+# write_attribute
+#     Write the value of one attribute to another attribute.
+# add_attribute
+#     Add an existing attribute to a feature.
+# remove_attribute
+#     Remove an attribute from a feature.
 
-radius = ...
-sheep_gain_from_food = ...
-wolf_gain_from_food = ...
+# Error handling. Exceptions, or what? Nothing? At least assertions.
+
+# Selection operator.
+# Condition can be two things:
+# - Boolean attribute.
+#   -> Result is subset of objects that are located within the boolean
+#      attribute.
+# - Subset.
+#   -> Result is subset.
+#
+# Subset of sheep that are located in True locations.
+# sheep_on_grass = sheep[grass]
+#
+# Subset of sheep that are older than 5.
+# sheep_on_grass = sheep[age > 5]
+#
+# Subset of sheep that are older than 5 and located in True locations.
+# The condition is the subset itself.
+# sheep_on_grass = sheep[age > 5 and grass]
+#
+# Reference to an anonymous attribute of sheep. When the reference
+# goes out of scope, it signals the sheep feature to get rit of the attribute.
+# a = sheep.age > 5
+#
+# Reference to a subset of sheep. When the reference goes out of scope, the
+# subset is deleted.
+# b = sheep[age > 5]
+#
+# Reference to an attribute of a subset of sheep. When the reference goes out
+# of scope, the attribute and the subset are deleted.
+# c = sheep[age > 5].age
+#
+# Reference to an attribute of a subset of sheep. When the reference goes out
+# of scope, the attribute is deleted.
+# d = c + 5
+#
+# Features, attributes, subsets, are reference counted and go out of scope
+# ASAP.
+#
+# TODO The move operation works on a spatio(-temporal) domain. It changes the
+#      location of the spatial coordinates (translate?). Somehow, such a
+#      domain must be selected. A feature has multiple attributes, each of
+#      which references a domain. Domains may be shared.
+#      How to select the correct domain? Options:
+#      - translate(sheep) -> Use spatial domain, iff there is only one.
+#      - translate(sheep.<attribute>) -> Use attribute's domain.
+#      - translate(sheep.<attribute>.domain) -> Use attribute's domain.
 
 
 def die(
         animals):
-    # Get rid of animals with low energy levels.
+    """
+    Return a subset of the feature pointed to by *animals*, containing those
+    animals that have a high enough energy level to keep on living. The
+    instance referred to by the *animals* identifier passed in is not changed.
+    """
+    # The selection operator is used to select a subset of the animals, based
+    # on an attribute value.
+    # The local animals identifier is overwritten to refer to the subset. We
+    # could have used any name, or we could have used no name at, returning
+    # the result of the selection operation directly.
     animals = animals[energy > 0]
     return animals
 
 
 def reproduce(
         animals):
-    # Randomly select animals that will reproduce.
-    reproducing_animals = animals.select_random(random())
+    """
+    Update the instance pointed to by *animals* to contain additional animals.
+    """
+    # A random selection of objects is taken, which is duplicated. The
+    # original energy level of each parent is divided between the parent and
+    # the offspring.
+    # Duplicating (a subset of) objects, also copies the attribute values.
+    reproducing_animals = select_random(animals, ...)
     reproducing_animals.energy /= 2
-    baby_animals = reproducing_animals.hatch()
-    baby_animals.move(...)
-    return animals
+    offspring = duplicate(reproducing_animals)
+    move(offspring, ...)
 
 
 def eat_grass(
         sheep,
-        grass):
-    sheep -= 1
-    sheep_on_grass = sheep.select_if(grass)
-    grass = if_then(not sheep_on_grass, grass)
-    sheep_on_grass.energy += sheep_gain_from_food
+        grass,
+        gain_from_food):
+    """
+    Those *sheep* objects that are standing on *grass*, eat some, and gain
+    *gain_from_food* amount of energy.
+    """
+    # The selection operator is used to select a subset of sheep, based
+    # on a boolean external attribute. Those sheep are selected that are
+    # located in grass domain objects that have a grass attribute value of
+    # True. In case grass has a 2D attribute value, only those sheep are
+    # selected that are located in cells containing a True value.
+    sheep_on_grass = sheep[grass]
+    sheep_on_grass.energy += gain_from_food
+
+    # Update every grass cell that contains sheep that have eaten to False:
+    # - A temporary feature attribute is created, containing the value False
+    #   for each object.
+    # - The attribute value False is written to those cells in the area's
+    #   grass attribute that correspond with the location of sheep_on_grass'
+    #   objects.
+    write_attribute(if_then(sheep_on_grass, False), grass)
+
+    # TODO grass is an attribute value, which cannot be selected from.
+    # Selection works on features. It creates a subset of objects.
+    # Here, we want to update the value if a sheep was located in the value.
+    # In case the value is a 2D array, we only want to update certain cells
+    # within the value...
+    # 1. Select area polygon objects that contain sheep.
+    # 2. Given the grass value of these objects, modify the value. In such a 
+    #    way that it works for nD values.
+    # area[grass and sheep].grass = False
+    # grass[sheep] = False
 
 
 def eat_sheep(
         wolves,
-        sheep):
-    wolves.energy -= 1
-    wolves_near_sheep = wolves.select_when_nearby(sheep, radius)
-    wolves_catching_sheep = wolves_near_sheep.select_random(random())
-    caught_sheep = sheep.select_when_nearby(wolves_catching_sheep, radius)
+        sheep,
+        search_radius,
+        gain_from_food):
+    # Select wolves that are near sheep.
+    wolves_near_sheep = select_by_radius(wolves, sheep, search_radius)
+
+    # Select wolves that will catch a sheep.
+    wolves_catching_sheep = select_random(wolves_near_sheep, ...)
+
+    # Select sheep that are caught and delete them.
+    caught_sheep = select_by_radius(sheep, wolves_catching_sheep, search_radius)
     delete(caught_sheep)
-    wolves_catching_sheep.energy += wolf_gain_from_food
+
+    wolves_catching_sheep.energy += gain_from_food
 
 
 def grow_grass(
-        area):
+        area,
+        grass_regrowth_time):
     if not area.grass:
         if area.countdown <= 0:
             area.grass = True
@@ -59,16 +189,42 @@ def grow_grass(
             area.countdown -= 1
 
 
-sheep.move(...)
-eat_grass(sheep, area.grass)
+# Read the initial area feature (polygon).
+# Area has grass and countdown attributes.
+# - grass is a polygon feature with a 2D array per polygon. This array
+#   contains boolean cells. A True cell represents a cell containing grass.
+# - countdown is a value representing time until the grass is gone.
+#
+# sheep is a point feature with an energy attribute per point.
+area = ...
+
+# Read the initial animal features (points).
+# Sheep and wolves have an energy attribute.
+sheep = ...
+wolves = ...
+
+# Wolves select sheep from area within this radius.
+search_radius = ...
+
+# Sheep and wolves gain energy from eating.
+sheep_gain_from_food = ...
+wolf_gain_from_food = ...
+
+grass_regrowth_time = ...
+
+
+move(sheep, ...)
+sheep.energy -= 1
+eat_grass(sheep, area.grass, sheep_gain_from_food)
 sheep = die(sheep)
-sheep = reproduce(sheep)
+reproduce(sheep)
 
-wolves.move(...)
-eat_sheep(wolves, sheep)
+move(wolves, ...)
+wolves.energy -= 1
+eat_sheep(wolves, sheep, search_radius, wolf_gain_from_food)
 wolves = die(wolves)
-wolves = reproduce(wolves)
+reproduce(wolves)
 
-grow_grass(area)
+grow_grass(area, grass_regrowth_time)
 
 # vim:syntax=python
