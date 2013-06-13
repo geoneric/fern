@@ -137,27 +137,11 @@ def eat_grass(
     # located in grass domain objects that have a grass attribute value of
     # True. In case grass has a 2D attribute value, only those sheep are
     # selected that are located in cells containing a True value.
+    # Assign value False to those location in the grass attribute that
+    # correspond with the locations of sheep objects to False.
     sheep_on_grass = sheep[grass]
     sheep_on_grass.energy += gain_from_food
-
-    # Update every grass cell that contains sheep that have eaten to False:
-    # - A temporary feature attribute is created, containing the value False
-    #   for each object.
-    # - The attribute value False is written to those cells in the area's
-    #   grass attribute that correspond with the location of sheep_on_grass'
-    #   objects.
-    write_attribute(if_then(sheep_on_grass, False), grass)
-
-    # TODO grass is an attribute value, which cannot be selected from.
-    # Selection works on features. It creates a subset of objects.
-    # Here, we want to update the value if a sheep was located in the value.
-    # In case the value is a 2D array, we only want to update certain cells
-    # within the value...
-    # 1. Select area polygon objects that contain sheep.
-    # 2. Given the grass value of these objects, modify the value. In such a 
-    #    way that it works for nD values.
-    # area[grass and sheep].grass = False
-    # grass[sheep] = False
+    set_value(grass, sheep_on_grass, False)
 
 
 def eat_sheep(
@@ -165,22 +149,26 @@ def eat_sheep(
         sheep,
         search_radius,
         gain_from_food):
-    # Select wolves that are near sheep.
+    """
+    A random selection of *wolves* eat *sheep* that are within the
+    *search_radius*, and gain *gain_from_food* amount of energy.
+    """
+    # Wolves are selected by using a search radius around each wolf. A random
+    # selection of these wolves eat one of the nearby sheep.
     wolves_near_sheep = select_by_radius(wolves, sheep, search_radius)
-
-    # Select wolves that will catch a sheep.
     wolves_catching_sheep = select_random(wolves_near_sheep, ...)
-
-    # Select sheep that are caught and delete them.
-    caught_sheep = select_by_radius(sheep, wolves_catching_sheep, search_radius)
+    caught_sheep = select_by_radius(sheep, wolves_catching_sheep,
+        search_radius, 1)
     delete(caught_sheep)
-
     wolves_catching_sheep.energy += gain_from_food
 
 
 def grow_grass(
         area,
         grass_regrowth_time):
+    """
+    Grow grass within *area* using a *grass_regrowth_time*.
+    """
     if not area.grass:
         if area.countdown <= 0:
             area.grass = True

@@ -1,6 +1,6 @@
 Data model
 ==========
-Below is a very high level graph of the data model as described in this document. It shows a feature at the top. This is a real world object or agent, that has attributes defined over a domain. The domain contains a definition of the spatio-temporal coordinates where the feature's attributes are located. An attribute is a property of a feature, like its color or height. Each attribute has a domain (the same one as the one the enclosing feature has), and a value and/or a larger scale sub-feature. The data model is recursive. Small scale features may be defined by larger scale features. For example, the `earth` feature may have a `soil_class` attribute attached to the `national_park` sub-feature.
+Below is a very high level graph of the data model as described in this document. It shows a feature at the top. This is a real world phenomenon, that is described by attributes which are defined over spatio-temporal domains. `Earth` is an example of a feature, as is `Roads`. An attribute represents a property of a feature, like its color or height. Each attribute has a domain defining the spatio-temporal coordinates of the domain objects, and an optional value per domain object.
 
 .. graphviz::
 
@@ -8,58 +8,27 @@ Below is a very high level graph of the data model as described in this document
      feature1[
        label="Feature"
      ]
-     feature2[
-       label="Feature",
-       color="grey60",
-       fontcolor="grey60"
-     ]
-     feature3[
-       label="Feature"
-       color="grey80",
-       fontcolor="grey80"
+     attribute1[
+       label="Attribute"
      ]
      domain1[
        label="Domain"
      ]
-     domain2[
-       label="Domain"
-       color="grey60",
-       fontcolor="grey60"
-     ]
-     attribute1[
-       label="Attribute"
-     ]
-     attribute2[
-       label="Attribute"
-       color="grey60",
-       fontcolor="grey60"
-     ]
      value1[
        label="Value"
      ]
-     value2[
-       label="Value"
-       color="grey60",
-       fontcolor="grey60"
-     ]
 
-     feature1 -> domain1 [label="1"];
      feature1 -> attribute1 [label="*"];
-     feature1 -> feature2 [label="*", color="grey60", fontcolor="grey60"];
      attribute1 -> domain1 [label="1"];
-     attribute1 -> value1 [label="1"];
-
-     feature2 -> domain2 [label="1", color="grey60", fontcolor="grey60"];
-     feature2 -> attribute2 [label="*", color="grey60", fontcolor="grey60"];
-     feature2 -> feature3 [label="*", color="grey80", fontcolor="grey80"];
-     attribute2 -> domain2 [label="1", color="grey60", fontcolor="grey60"];
-     attribute2 -> value2 [label="1", color="grey60", fontcolor="grey60"];
+     attribute1 -> value1 [label="?"];
   }
 
 What folows is a description of each of the classes of information that are part of the data model.
 
 Feature
 -------
+TODO hier verder
+
 A feature is a combination of a domain with zero or more associated attributes, and zero or more sub-features. For example, a deer feature can be modelled using a mobile point feature that contains the current location, and may have attributes like day_of_birth and weight, and may have sub-features like the minimum bounding rectangle of the first degree family members.
 
 Another example of a feature with a sub-feature is a police car mobile point feature that also has a polygon sub-feature that contains the area that can be reached within 10 minutes of driving time. As the car moves, this area changes based on the surrounding road network.
