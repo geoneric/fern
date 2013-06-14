@@ -2,7 +2,7 @@
 
 export DEVENV_BRANCH=master
 
-_devenv="$PROJECTS/`ls $PROJECTS | grep -i \"^devenv$\"`"
+_devenv="$PROJECTS/`\ls $PROJECTS | \grep -i \"^devenv$\"`"
 _profiles="$_devenv/configuration/profiles"
 unset _devenv
 
@@ -10,7 +10,7 @@ source "$_profiles/common" $1
 source "$_profiles/DevEnv"
 unset _profiles
 
-export RANALLY="$PROJECTS/`ls $PROJECTS | grep -i \"^ranally$\"`"
+export RANALLY="$PROJECTS/`\ls $PROJECTS | \grep -i \"^ranally$\"`"
 
 _basename=`basename $RANALLY`
 export PATH=$RANALLY/environment/scripts:$OBJECTS/$_basename/bin:$PATH
