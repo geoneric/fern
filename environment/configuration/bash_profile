@@ -16,6 +16,7 @@ _basename=`basename $RANALLY`
 export PATH=$RANALLY/environment/scripts:$OBJECTS/$_basename/bin:$PATH
 unset _basename
 
+# Override to make use of our own built, new gcc.
 export CC=/opt/gcc-4.8/bin/gcc
 export CXX=/opt/gcc-4.8/bin/g++
 export LD_LIBRARY_PATH=/opt/gcc-4.8/lib64:$LD_LIBRARY_PATH
