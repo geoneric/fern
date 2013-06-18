@@ -1,6 +1,6 @@
 Data model
 ==========
-Below is a very high level graph of the data model as described in this document. It shows a feature at the top. This is a real world phenomenon, that is described by attributes which are defined over spatio-temporal domains. `Earth` is an example of a feature, as is `Roads`. An attribute represents a property of a feature, like its color or height. Each attribute has a domain defining the spatio-temporal coordinates of the domain objects, and an optional value per domain object.
+Below is a very high level graph of the data model as described in this document. It shows a feature at the top. This is a real-world phenomenon, that is described by one or more attributes which are defined over spatio-temporal domains. `Earth` is an example of a feature, as is `Roads`. An attribute represents a property of a feature, like its color or height. Each attribute has a domain defining the spatio-temporal coordinates of the domain objects, and an optional value per domain object.
 
 .. graphviz::
 
@@ -17,10 +17,35 @@ Below is a very high level graph of the data model as described in this document
      value1[
        label="Value"
      ]
+     // attribute2[
+     //   label="Attribute"
+     //   color="grey60"
+     //   fontcolor="grey60"
+     // ]
+     // domain2[
+     //   label="Domain"
+     //   color="grey60"
+     //   fontcolor="grey60"
+     // ]
+     // value2[
+     //   label="Value"
+     //   color="grey60"
+     //   fontcolor="grey60"
+     // ]
+     // attribute3[
+     //   label="Attribute"
+     //   color="grey80"
+     //   fontcolor="grey80"
+     // ]
 
-     feature1 -> attribute1 [label="*"];
-     attribute1 -> domain1 [label="1"];
-     attribute1 -> value1 [label="?"];
+     feature1 -> attribute1 [label="+"]
+     attribute1 -> domain1 [label="1"]
+     attribute1 -> value1 [label="?"]
+
+     // attribute1 -> attribute2 [label="*"]
+     // attribute2 -> domain2 [label="1", color="grey60", fontcolor="grey60"]
+     // attribute2 -> value2 [label="?", color="grey60", fontcolor="grey60"]
+     // attribute2 -> attribute3 [label="*", color="grey60", fontcolor="grey60"]
   }
 
 What folows is a description of each of the classes of information that are part of the data model.
