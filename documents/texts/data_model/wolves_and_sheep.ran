@@ -1,15 +1,16 @@
 def die(
         animals):
     """
-    Return a subset of the feature pointed to by *animals*, containing those
-    animals that have a high enough energy level to keep on living. The
-    instance referred to by the *animals* identifier passed in is not changed.
+    Return a subset of the feature pointed to by *animals*, containing
+    those animals that have a high enough energy level to keep on
+    living. The instance referred to by the *animals* identifier passed
+    in is not changed.
     """
-    # The selection operator is used to select a subset of the animals, based
-    # on an attribute value.
-    # The local animals identifier is overwritten to refer to the subset. We
-    # could have used any name, or we could have used no name at, returning
-    # the result of the selection operation directly.
+    # The selection operator is used to select a subset of the animals,
+    # based on an attribute value.  The local animals identifier is
+    # overwritten to refer to the subset. We could have used any name, or
+    # we could have used no name at, returning the result of the selection
+    # operation directly.
     animals = animals[energy > 0]
     return animals
 
@@ -17,12 +18,13 @@ def die(
 def reproduce(
         animals):
     """
-    Update the instance pointed to by *animals* to contain additional animals.
+    Update the instance pointed to by *animals* to contain additional
+    animals.
     """
     # A random selection of objects is taken, which is duplicated. The
-    # original energy level of each parent is divided between the parent and
-    # the offspring.
-    # Duplicating (a subset of) objects, also copies the attribute values.
+    # original energy level of each parent is divided between the parent
+    # and the offspring.  Duplicating (a subset of) objects, also copies
+    # the attribute values.
     reproducing_animals = select_random(animals, ...)
     reproducing_animals.energy /= 2
     offspring = duplicate(reproducing_animals)
@@ -34,14 +36,14 @@ def eat_grass(
         grass,
         gain_from_food):
     """
-    Those *sheep* objects that are standing on *grass*, eat some, and gain
-    *gain_from_food* amount of energy.
+    Those *sheep* objects that are standing on *grass*, eat some, and
+    gain *gain_from_food* amount of energy.
     """
     # The selection operator is used to select a subset of sheep, based
     # on a boolean external attribute. Those sheep are selected that are
-    # located in grass domain objects that have a grass attribute value of
-    # True. In case grass has a 2D attribute value, only those sheep are
-    # selected that are located in cells containing a True value.
+    # located in grass domain objects that have a grass attribute value
+    # of True. In case grass has a 2D attribute value, only those sheep
+    # are selected that are located in cells containing a True value.
     # Assign value False to those location in the grass attribute that
     # correspond with the locations of sheep objects to False.
     sheep_on_grass = sheep[grass]
@@ -58,8 +60,8 @@ def eat_sheep(
     A random selection of *wolves* eat *sheep* that are within the
     *search_radius*, and gain *gain_from_food* amount of energy.
     """
-    # Wolves are selected by using a search radius around each wolf. A random
-    # selection of these wolves eat one of the nearby sheep.
+    # Wolves are selected by using a search radius around each wolf. A
+    # random selection of these wolves eat one of the nearby sheep.
     wolves_near_sheep = select_by_radius(wolves, sheep, search_radius)
     wolves_catching_sheep = select_random(wolves_near_sheep, ...)
     caught_sheep = select_by_radius(sheep, wolves_catching_sheep,
@@ -88,11 +90,11 @@ def grow_grass(
 #   contains boolean cells. A True cell represents a cell containing grass.
 # - countdown is a value representing time until the grass is gone.
 #
-# sheep is a point feature with an energy attribute per point.
 area = ...
 
 # Read the initial animal features (points).
 # Sheep and wolves have an energy attribute.
+# sheep is a point feature with an energy attribute per point.
 sheep = ...
 wolves = ...
 

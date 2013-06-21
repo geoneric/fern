@@ -63,6 +63,7 @@ SET(Python_ADDITIONAL_VERSIONS "2.7")
 # Find packages.
 FIND_PACKAGE(Boost REQUIRED
     COMPONENTS filesystem system unit_test_framework)
+FIND_PACKAGE(Doxygen REQUIRED)
 FIND_PACKAGE(EXPAT REQUIRED)
 FIND_PACKAGE(GDAL REQUIRED)
 FIND_PACKAGE(HDF5 REQUIRED
@@ -73,6 +74,14 @@ FIND_PACKAGE(NetCDF REQUIRED)
 FIND_PACKAGE(PythonLibs REQUIRED)
 FIND_PACKAGE(Readline REQUIRED)
 FIND_PACKAGE(XSD REQUIRED)
+
+# SET(LATEX_COMPILER_FLAGS
+#     # "--shell-escape
+#     "-interaction=nonstopmode --enable-write18"
+#     # "-interaction=nonstopmode --enable-write18"
+#     # CACHE STRING "Flags passed to latex."
+# )
+INCLUDE(UseLATEX)
 
 # Configure project.
 INCLUDE_DIRECTORIES(

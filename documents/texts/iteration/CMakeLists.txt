@@ -1,0 +1,4 @@
+ADD_LATEX_DOCUMENT(iteration.tex
+    DEFAULT_PDF
+    MANGLE_TARGET_NAMES
+)

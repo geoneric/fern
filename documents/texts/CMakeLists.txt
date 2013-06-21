@@ -1,3 +1,5 @@
 ADD_SUBDIRECTORY(Project)
 ADD_SUBDIRECTORY(data_model)
 ADD_SUBDIRECTORY(development)
+ADD_SUBDIRECTORY(iteration)
+ADD_SUBDIRECTORY(language)

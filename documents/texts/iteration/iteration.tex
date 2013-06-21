@@ -1,0 +1,66 @@
+\documentclass[10pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+% \usepackage{hyperref}
+% \usepackage{graphicx}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{comment_color}{rgb}{0,0.6,0}
+\definecolor{identifier_color}{rgb}{0,0,0.6}
+\definecolor{keyword_color}{rgb}{0.6,0.6,0}
+\definecolor{number_color}{rgb}{0.6,0,0}
+\definecolor{string_color}{rgb}{0.6,0,0}
+
+\lstdefinestyle{my_style}{
+  language=Python,
+  % numbers=left,
+  basicstyle=\scriptsize\ttfamily,
+  commentstyle=\itshape\color{comment_color},
+  identifierstyle=\color{identifier_color},
+  keywordstyle=\color{keyword_color},
+  numberstyle=\color{number_color},
+  stringstyle=\color{string_color},
+}
+
+\lstset{style=my_style}
+
+\begin{document}
+\title{Iteration in Geoneric models}
+\author{Kor de Jong}
+\maketitle
+
+\emph{This document is work in progress. Although eventually, the contents become stable, currently it is work in progress. Please comment!}
+
+\section{Introduction}
+todo
+
+\section{Iteration}
+A Geoneric model contains the rules to calculate new state based on current state. In general, the new state represents the current state at a later moment in time. Only when the temporal domain is undefined and none of the current state variables are overwritten by the new state, does the result not represent state of a later moment in time.
+
+\begin{lstlisting}
+f1 = read("f1.hdf")
+a2 = f1.a1 + 4
+\end{lstlisting}
+
+This model does not have feed-back variables.
+If attribute \emph{f1.a1} has a temporal domain, then attribute \emph{a2} will be temporal too. It will have the \emph{same temporal domain} as attribute \emph{f1.a1}.
+
+If attribute \emph{f1.a1}'s temporal domain is the null domain, then attribute \emph{a2} will have the \emph{same temporal domain}.
+
+Concluding, in case a model does not contain feed-back variables, the resulting attributes values are defined over the same temporal domains as the input attributes values.
+
+\begin{lstlisting}
+f1 = read("f1.hdf")
+f1.a1 = f1.a1 + 4
+\end{lstlisting}
+
+This model has a feed-back variable.
+If attribute \emph{f1.a1}'s temporal domain contains one or more periods, then this model will calculate 
+
+If attribute \emph{f1.a1}'s temporal domain is the null domain, then this model will update the attribute value. The domain of the resulting attribute will be the same as the domain of the input attribute.
+
+If attribute \emph{f1.a1}'s temporal domain contains only one time point, then the temporal domain of the result is undefined. In that case, the modeler needs to explicitly define the properties of the temporal domain (the modeling period, outside the model).
+
+\section{Discussion}
+
+\end{document}

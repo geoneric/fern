@@ -1,0 +1,15 @@
+ADD_CUSTOM_COMMAND(
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/data_model.pdf
+    COMMAND ${DOXYGEN_DOT_EXECUTABLE} -Tpdf -o${CMAKE_CURRENT_BINARY_DIR}/data_model.pdf ${CMAKE_CURRENT_SOURCE_DIR}/data_model.dot
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/data_model.dot
+)
+ADD_CUSTOM_TARGET(data_model_pdf
+    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/data_model.pdf)
+
+ADD_LATEX_DOCUMENT(language.tex
+    CONFIGURE language.tex
+    DEFAULT_PDF
+    MANGLE_TARGET_NAMES
+)
+
+ADD_DEPENDENCIES(language_pdf data_model_pdf)
