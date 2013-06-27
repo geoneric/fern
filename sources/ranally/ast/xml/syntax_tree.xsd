@@ -45,6 +45,9 @@
       <xs:element
         name="While"
         type="ranally:While"/>
+      <xs:element
+        name="FunctionDefinition"
+        type="ranally:FunctionDefinition"/>
     </xs:choice>
     <xs:attribute name="line" type="xs:nonNegativeInteger" use="required"/>
     <xs:attribute name="col" type="xs:nonNegativeInteger" use="required"/>
@@ -78,6 +81,22 @@
         name="Statements"
         type="ranally:Statements"/>
       <!-- False block. -->
+      <xs:element
+        name="Statements"
+        type="ranally:Statements"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="FunctionDefinition">
+    <xs:sequence>
+      <xs:element
+        name="Name"
+        type="xs:string"/>
+      <!-- Arguments. -->
+      <xs:element
+        name="Expressions"
+        type="ranally:Expressions"/>
+      <!-- Body. -->
       <xs:element
         name="Statements"
         type="ranally:Statements"/>

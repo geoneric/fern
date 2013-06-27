@@ -4,6 +4,7 @@ namespace http://www.jemig.eu/ranally
     include "ranally/ast/core/assignment_vertex.h";
     include "ranally/ast/core/expression_vertex.h";
     include "ranally/ast/core/function_vertex.h";
+    include "ranally/ast/core/function_definition_vertex.h";
     include "ranally/ast/core/operator_vertex.h";
     include "ranally/ast/core/if_vertex.h";
     include "ranally/ast/core/while_vertex.h";
@@ -19,6 +20,7 @@ namespace http://www.jemig.eu/ranally
 
     Statement        "std::shared_ptr<StatementVertex>";
     Function         "std::shared_ptr<FunctionVertex>";
+    FunctionDefinition "std::shared_ptr<FunctionDefinitionVertex>";
     Operator         "std::shared_ptr<OperatorVertex>";
     Assignment       "std::shared_ptr<AssignmentVertex>";
     If               "std::shared_ptr<IfVertex>";

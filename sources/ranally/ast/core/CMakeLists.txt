@@ -4,6 +4,7 @@ SET(SOURCES
     assignment_vertex
     expression_vertex
     function_vertex
+    function_definition_vertex
     if_vertex
     name_vertex
     number_vertex

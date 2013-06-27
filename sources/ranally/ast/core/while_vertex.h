@@ -15,8 +15,6 @@ class WhileVertex:
     public StatementVertex
 {
 
-    friend class WhileVertexTest;
-
 public:
 
     LOKI_DEFINE_VISITABLE()

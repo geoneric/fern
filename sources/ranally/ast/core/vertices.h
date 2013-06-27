@@ -1,6 +1,7 @@
 #pragma once
 #include "ranally/ast/core/assignment_vertex.h"
 #include "ranally/ast/core/function_vertex.h"
+#include "ranally/ast/core/function_definition_vertex.h"
 #include "ranally/ast/core/if_vertex.h"
 #include "ranally/ast/core/name_vertex.h"
 #include "ranally/ast/core/number_vertex.h"

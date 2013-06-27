@@ -2,6 +2,7 @@ SET(TEST_NAMES
     assignment_vertex_test
     expression_vertex_test
     function_vertex_test
+    function_definition_vertex_test
     if_vertex_test
     name_vertex_test
     number_vertex_test

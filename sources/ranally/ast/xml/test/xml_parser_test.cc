@@ -161,6 +161,52 @@ BOOST_AUTO_TEST_CASE(parse_string)
         xml = algebra_parser.parse_string(ranally::String("a[b]"));
         tree = xml_parser.parse_string(xml);
     }
+
+    {
+        // Function definition.
+        xml = 
+            "<?xml version=\"1.0\"?>"
+            "<Ranally source=\"&lt;string&gt;\">"
+              "<Statements>"
+                "<Statement line=\"1\" col=\"0\">"
+                  "<FunctionDefinition>"
+                    "<Name>foo</Name>"
+                    "<Expressions>"
+                      "<Expression line=\"1\" col=\"8\">"
+                        "<Name>a</Name>"
+                      "</Expression>"
+                      "<Expression line=\"1\" col=\"11\">"
+                        "<Name>b</Name>"
+                      "</Expression>"
+                    "</Expressions>"
+                    "<Statements>"
+                      "<Statement line=\"2\" col=\"4\">"
+                        "<Assignment>"
+                          "<Expression line=\"2\" col=\"4\">"
+                            "<Name>c</Name>"
+                          "</Expression>"
+                          "<Expression line=\"2\" col=\"8\">"
+                            "<Operator>"
+                              "<Name>add</Name>"
+                              "<Expressions>"
+                                "<Expression line=\"2\" col=\"8\">"
+                                  "<Name>a</Name>"
+                                "</Expression>"
+                                "<Expression line=\"2\" col=\"12\">"
+                                  "<Name>b</Name>"
+                                "</Expression>"
+                              "</Expressions>"
+                            "</Operator>"
+                          "</Expression>"
+                        "</Assignment>"
+                      "</Statement>"
+                    "</Statements>"
+                  "</FunctionDefinition>"
+                "</Statement>"
+              "</Statements>"
+            "</Ranally>";
+        tree = xml_parser.parse_string(xml);
+    }
 }
 
 BOOST_AUTO_TEST_SUITE_END()

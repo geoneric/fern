@@ -239,6 +239,72 @@ private:
 };
 
 
+class FunctionDefinition_pimpl:
+    public ranally::FunctionDefinition_pskel
+{
+
+public:
+
+    void pre()
+    {
+        _data_stack.push(FunctionDefinitionData());
+    }
+
+    void Name(
+        std::string const& name)
+    {
+        assert(!_data_stack.empty());
+        _data_stack.top().name = ranally::String(name);
+    }
+
+    void Expressions(
+        std::vector<std::shared_ptr<ranally::ExpressionVertex>>
+            const& vertices)
+    {
+        assert(!_data_stack.empty());
+        assert(_data_stack.top().expression_vertices.empty());
+        _data_stack.top().expression_vertices = vertices;
+    }
+
+    void Statements(
+        std::vector<std::shared_ptr<ranally::StatementVertex>>
+            const& vertices)
+    {
+        assert(!vertices.empty());
+        _data_stack.top().statement_vertices = vertices;
+    }
+
+    std::shared_ptr<ranally::FunctionDefinitionVertex> post_FunctionDefinition()
+    {
+        assert(!_data_stack.empty());
+        FunctionDefinitionData result(_data_stack.top());
+        _data_stack.pop();
+        return std::shared_ptr<ranally::FunctionDefinitionVertex>(
+            new ranally::FunctionDefinitionVertex(
+                result.name, result.expression_vertices,
+                    result.statement_vertices));
+    }
+
+private:
+
+    typedef std::vector<std::shared_ptr<ranally::ExpressionVertex>>
+        ExpressionVertices;
+
+    typedef std::vector<std::shared_ptr<ranally::StatementVertex>>
+        StatementVertices;
+
+    struct FunctionDefinitionData
+    {
+        ranally::String name;
+        ExpressionVertices expression_vertices;
+        StatementVertices statement_vertices;
+    };
+
+    std::stack<FunctionDefinitionData> _data_stack;
+
+};
+
+
 class Statements_pimpl:
     public ranally::Statements_pskel
 {
@@ -333,6 +399,16 @@ public:
 
     void While(
         std::shared_ptr<ranally::WhileVertex> const& vertex)
+    {
+        assert(vertex);
+        assert(!_data_stack.empty());
+        _data_stack.top().vertex = vertex;
+        _data_stack.top().vertex->set_position(_data_stack.top().line,
+            _data_stack.top().col);
+    }
+
+    void FunctionDefinition(
+        std::shared_ptr<ranally::FunctionDefinitionVertex> const& vertex)
     {
         assert(vertex);
         assert(!_data_stack.empty());
@@ -974,9 +1050,12 @@ std::shared_ptr<ScriptVertex> XmlParser::parse(
     While_pimpl while_p;
     while_p.parsers(expression_p, statements_p);
 
+    FunctionDefinition_pimpl function_definition_p;
+    function_definition_p.parsers(string_p, expressions_p, statements_p);
+
     Statement_pimpl statement_p;
     statement_p.parsers(expression_p, assignment_p, if_p, while_p,
-        non_negative_integer_p, non_negative_integer_p);
+        function_definition_p, non_negative_integer_p, non_negative_integer_p);
 
     statements_p.parsers(statement_p);
 
