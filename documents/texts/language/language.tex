@@ -48,9 +48,7 @@ The Geoneric data model determines how information about environmental attribute
 
 As an example, consider the feature \emph{study\_area}. It contains attributes like \emph{area} and \emph{height}. The \emph{area} attribute is a constant attribute, which means that the domain is a \emph{null domain} (the area does not vary over the study area), and the associated attribute value is a single number. The study area's \emph{height} attribute value is a 2-dimensional array containing height values. In this case, the value is coupled to a domain object defining the boundary rectangle of the raster. (Todo: Add graphics illustrating examples.)
 
-\section{Example models}
-
-\subsection{Wolves and sheep}
+\section{Wolf sheep predation model}
 In this model wolves and sheep roam the study area for food. Sheep eat grass, and wolves eat sheep. At the start of the model we have to read the initial state of the attributes involved:
 
 \begin{lstlisting}
@@ -191,6 +189,16 @@ def grow_grass(
 % \lstinputlisting{@CMAKE_CURRENT_SOURCE_DIR@/../data_model/wolves_and_sheep.ran}
 
 \section{Discussion}
-todo
+From the example model ...
+
+User defined functions. Domain specific, high level functions. Role of functions and components/modules.
+
+Implicit iteration. In other document.
+
+Data model. In other document.
+
+Identifiers are references to data. References can be shared. Life cycle.
+
+Relation with Python. Syntax. Scope.
 
 \end{document}
