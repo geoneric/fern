@@ -1,5 +1,4 @@
 #pragma once
-#include "ranally/ast/core/expression_vertex.h"
 #include "ranally/ast/core/statement_vertex.h"
 
 
@@ -12,7 +11,7 @@ namespace ranally {
   \sa        .
 */
 class FunctionDefinitionVertex:
-    public ExpressionVertex
+    public StatementVertex
 {
 
 public:
@@ -36,11 +35,15 @@ public:
 
     FunctionDefinitionVertex& operator=(FunctionDefinitionVertex const&)=delete;
 
+    String const&  name                () const;
+
     ExpressionVertices const& arguments() const;
 
     StatementVertices const& body() const;
 
 private:
+
+    String         _name;
 
     ExpressionVertices _arguments;
 

@@ -8,11 +8,18 @@ FunctionDefinitionVertex::FunctionDefinitionVertex(
     ExpressionVertices const& arguments,
     StatementVertices const& body)
 
-    : ExpressionVertex(name),
+    : StatementVertex(),
+      _name(name),
       _arguments(arguments),
       _body(body)
 
 {
+}
+
+
+String const& FunctionDefinitionVertex::name() const
+{
+    return _name;
 }
 
 
