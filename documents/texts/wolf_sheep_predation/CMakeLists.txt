@@ -6,10 +6,10 @@ ADD_CUSTOM_COMMAND(
 ADD_CUSTOM_TARGET(data_model_pdf
     DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/data_model.pdf)
 
-ADD_LATEX_DOCUMENT(language.tex
-    CONFIGURE language.tex
+ADD_LATEX_DOCUMENT(wolf_sheep_predation.tex
+    CONFIGURE wolf_sheep_predation.tex
     DEFAULT_PDF
     MANGLE_TARGET_NAMES
 )
 
-ADD_DEPENDENCIES(language_pdf data_model_pdf)
+ADD_DEPENDENCIES(wolf_sheep_predation data_model_pdf)
