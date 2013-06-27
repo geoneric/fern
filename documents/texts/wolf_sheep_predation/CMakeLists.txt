@@ -12,4 +12,4 @@ ADD_LATEX_DOCUMENT(wolf_sheep_predation.tex
     MANGLE_TARGET_NAMES
 )
 
-ADD_DEPENDENCIES(wolf_sheep_predation data_model_pdf)
+ADD_DEPENDENCIES(wolf_sheep_predation_pdf data_model_pdf)
