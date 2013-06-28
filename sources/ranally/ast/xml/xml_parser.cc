@@ -305,6 +305,46 @@ private:
 };
 
 
+class Return_pimpl:
+    public ranally::Return_pskel
+{
+
+public:
+
+    void pre()
+    {
+        _data_stack.push(ReturnData());
+    }
+
+    void Expression(
+        std::shared_ptr<ranally::ExpressionVertex> const& expression)
+    {
+        assert(!_data_stack.empty());
+        _data_stack.top().expression_vertex = expression;
+    }
+
+    std::shared_ptr<ranally::ReturnVertex> post_Return()
+    {
+        assert(!_data_stack.empty());
+        ReturnData result(_data_stack.top());
+        _data_stack.pop();
+        return std::shared_ptr<ranally::ReturnVertex>(
+            new ranally::ReturnVertex(
+                result.expression_vertex));
+    }
+
+private:
+
+    struct ReturnData
+    {
+        std::shared_ptr<ranally::ExpressionVertex> expression_vertex;
+    };
+
+    std::stack<ReturnData> _data_stack;
+
+};
+
+
 class Statements_pimpl:
     public ranally::Statements_pskel
 {
@@ -409,6 +449,16 @@ public:
 
     void FunctionDefinition(
         std::shared_ptr<ranally::FunctionDefinitionVertex> const& vertex)
+    {
+        assert(vertex);
+        assert(!_data_stack.empty());
+        _data_stack.top().vertex = vertex;
+        _data_stack.top().vertex->set_position(_data_stack.top().line,
+            _data_stack.top().col);
+    }
+
+    void Return(
+        std::shared_ptr<ranally::ReturnVertex> const& vertex)
     {
         assert(vertex);
         assert(!_data_stack.empty());
@@ -1053,9 +1103,13 @@ std::shared_ptr<ScriptVertex> XmlParser::parse(
     FunctionDefinition_pimpl function_definition_p;
     function_definition_p.parsers(string_p, expressions_p, statements_p);
 
+    Return_pimpl return_p;
+    return_p.parsers(expression_p);
+
     Statement_pimpl statement_p;
     statement_p.parsers(expression_p, assignment_p, if_p, while_p,
-        function_definition_p, non_negative_integer_p, non_negative_integer_p);
+        function_definition_p, return_p, non_negative_integer_p,
+        non_negative_integer_p);
 
     statements_p.parsers(statement_p);
 

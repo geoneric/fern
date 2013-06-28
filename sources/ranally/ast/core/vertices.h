@@ -6,6 +6,7 @@
 #include "ranally/ast/core/name_vertex.h"
 #include "ranally/ast/core/number_vertex.h"
 #include "ranally/ast/core/operator_vertex.h"
+#include "ranally/ast/core/return_vertex.h"
 #include "ranally/ast/core/script_vertex.h"
 #include "ranally/ast/core/statement_vertex.h"
 #include "ranally/ast/core/string_vertex.h"

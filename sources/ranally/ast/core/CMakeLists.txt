@@ -10,6 +10,7 @@ SET(SOURCES
     number_vertex
     operation_vertex
     operator_vertex
+    return_vertex
     script_vertex
     statement_vertex
     string_vertex

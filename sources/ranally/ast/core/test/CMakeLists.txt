@@ -7,6 +7,7 @@ SET(TEST_NAMES
     name_vertex_test
     number_vertex_test
     operator_vertex_test
+    return_vertex_test
     script_vertex_test
     statement_vertex_test
     string_vertex_test
