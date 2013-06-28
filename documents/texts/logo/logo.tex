@@ -1,0 +1,18 @@
+\documentclass[class=minimal, border=0pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{lindenmayersystems}
+
+\begin{document}
+
+\pgfdeclarelindenmayersystem{Fractal plant}{
+    \rule{X -> F-[[X]+X]+F[+FX]-X}
+    \rule{F -> FF}
+}
+
+\begin{tikzpicture}
+    \draw [green!50!black, rotate=90]
+        [l-system={Fractal plant, axiom=X, order=4, step=3pt, angle=25}]
+        lindenmayer system;
+\end{tikzpicture}
+
+\end{document}
