@@ -256,6 +256,73 @@ void AstDotVisitor::Visit(
 
 
 void AstDotVisitor::Visit(
+    FunctionDefinitionVertex& vertex)
+{
+    switch(_mode) {
+        case Mode::Declaring: {
+            add_script(
+                String(boost::format("\"%1%\" ["
+                        "label=\"%2%\" "
+                    "];\n")
+                    % &vertex
+                    % vertex.name()));
+            break;
+        }
+        case Mode::ConnectingAst: {
+            for(auto expression_vertex: vertex.arguments()) {
+                add_ast_vertex(vertex, *expression_vertex);
+            }
+            for(auto statement_vertex: vertex.body()) {
+                add_ast_vertex(vertex, *statement_vertex);
+            }
+            break;
+        }
+        case Mode::ConnectingCfg: {
+            break;
+        }
+        case Mode::ConnectingUses: {
+            break;
+        }
+    }
+
+    for(auto expression_vertex: vertex.arguments()) {
+        expression_vertex->Accept(*this);
+    }
+    for(auto statement_vertex: vertex.body()) {
+        statement_vertex->Accept(*this);
+    }
+}
+
+
+void AstDotVisitor::Visit(
+    ReturnVertex& vertex)
+{
+    switch(_mode) {
+        case Mode::Declaring: {
+            add_script(
+                String(boost::format("\"%1%\" ["
+                        "label=\"return\" "
+                    "];\n")
+                    % &vertex));
+            break;
+        }
+        case Mode::ConnectingAst: {
+            add_ast_vertex(vertex, *vertex.expression());
+            break;
+        }
+        case Mode::ConnectingCfg: {
+            break;
+        }
+        case Mode::ConnectingUses: {
+            break;
+        }
+    }
+
+    vertex.expression()->Accept(*this);
+}
+
+
+void AstDotVisitor::Visit(
     IfVertex& vertex)
 {
     switch(_mode) {
@@ -302,8 +369,8 @@ void AstDotVisitor::Visit(
         case Mode::Declaring: {
             add_script(
                 String(boost::format("\"%1%\" ["
-                        "label=\"%2%\""
-                        "style=filled, "
+                        "label=\"%2%\" "
+                        "style=filled "
                         "fillcolor=\"%3%\""
                     "];\n")
                     % &vertex
@@ -374,7 +441,7 @@ void AstDotVisitor::Visit(
     // TODO available.
     set_script(String(
         "digraph G {\n"
-        // "ordering=out;\n"
+        "ordering=out;\n"
         "rankdir=TB;\n"
     ));
 

@@ -6,6 +6,7 @@
 namespace ranally {
 
 class AssignmentVertex;
+class FunctionDefinitionVertex;
 class FunctionVertex;
 class IfVertex;
 class NameVertex;
@@ -13,6 +14,7 @@ template<typename T>
     class NumberVertex;
 class OperationVertex;
 class OperatorVertex;
+class ReturnVertex;
 class ScriptVertex;
 class StringVertex;
 class SubscriptVertex;
@@ -27,6 +29,7 @@ class WhileVertex;
 class Visitor:
     public Loki::BaseVisitor,
     public Loki::Visitor<AssignmentVertex>,
+    public Loki::Visitor<FunctionDefinitionVertex>,
     public Loki::Visitor<FunctionVertex>,
     public Loki::Visitor<IfVertex>,
     public Loki::Visitor<NameVertex>,
@@ -41,6 +44,7 @@ class Visitor:
     public Loki::Visitor<NumberVertex<float>>,
     public Loki::Visitor<NumberVertex<double>>,
     public Loki::Visitor<OperatorVertex>,
+    public Loki::Visitor<ReturnVertex>,
     public Loki::Visitor<ScriptVertex>,
     public Loki::Visitor<StringVertex>,
     public Loki::Visitor<SubscriptVertex>,
@@ -73,9 +77,13 @@ protected:
 
     virtual void   Visit               (IfVertex& vertex);
 
+    virtual void   Visit               (FunctionDefinitionVertex& vertex);
+
     virtual void   Visit               (FunctionVertex& vertex);
 
     virtual void   Visit               (OperationVertex& vertex);
+
+    virtual void   Visit               (ReturnVertex& vertex);
 
     virtual void   Visit               (ScriptVertex& vertex);
 

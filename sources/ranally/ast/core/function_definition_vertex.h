@@ -39,7 +39,11 @@ public:
 
     ExpressionVertices const& arguments() const;
 
-    StatementVertices const& body() const;
+    ExpressionVertices& arguments      ();
+
+    StatementVertices const& body      () const;
+
+    StatementVertices& body            ();
 
 private:
 

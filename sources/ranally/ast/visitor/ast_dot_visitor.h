@@ -58,6 +58,8 @@ private:
 
     void           Visit               (FunctionVertex& vertex);
 
+    void           Visit               (FunctionDefinitionVertex& vertex);
+
     void           Visit               (IfVertex& vertex);
 
     void           Visit               (NameVertex& vertex);
@@ -86,6 +88,8 @@ private:
     void           Visit               (NumberVertex<double>& vertex);
 
     void           Visit               (OperatorVertex& vertex);
+
+    void           Visit               (ReturnVertex& vertex);
 
     void           Visit               (ScriptVertex& vertex);
 

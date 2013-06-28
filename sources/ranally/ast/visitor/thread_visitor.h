@@ -40,6 +40,8 @@ private:
 
     void           Visit               (FunctionVertex& vertex);
 
+    void           Visit               (FunctionDefinitionVertex& vertex);
+
     void           Visit               (IfVertex& vertex);
 
     void           Visit               (NameVertex& vertex);
@@ -69,6 +71,8 @@ private:
 
     void           Visit               (OperatorVertex& vertex);
 
+    void           Visit               (ReturnVertex& vertex);
+
     void           Visit               (ScriptVertex& vertex);
 
     void           Visit               (StringVertex& vertex);
@@ -78,6 +82,12 @@ private:
     void           Visit               (SyntaxVertex& vertex);
 
     void           Visit               (WhileVertex& vertex);
+
+    // bool           is_user_defined_function(
+    //                                     String const& name) const;
+
+    // void           visit_user_defined_function(
+    //                                     FunctionVertex& vertex);
 
 };
 

@@ -60,7 +60,24 @@ void Visitor::Visit(
 }
 
 
-//! Visit an FunctionVertex instance.
+//! Visit a FunctionDefinitionVertex instance.
+/*!
+  \param     vertex Vertex to visit.
+
+  The default implementation allows the the argument expressions, and the
+  block statements to accept the visitor, in that order. After that it calls
+  Visit(StatementVertex&).
+*/
+void Visitor::Visit(
+    FunctionDefinitionVertex& vertex)
+{
+    visit_expressions(vertex.arguments());
+    visit_statements(vertex.body());
+    Visit(dynamic_cast<StatementVertex&>(vertex));
+}
+
+
+//! Visit a FunctionVertex instance.
 /*!
   \param     vertex Vertex to visit.
 
@@ -148,6 +165,23 @@ void Visitor::Visit(
     OperatorVertex& vertex)
 {
     Visit(dynamic_cast<OperationVertex&>(vertex));
+}
+
+
+//! Visit a ReturnVertex instance.
+/*!
+  \param     vertex Vertex to visit.
+
+  The default implementation calls Visit(StatementVertex&);
+
+  The default implementation visits the expression. After that it calls
+  Visit(StatementVertex&).
+*/
+void Visitor::Visit(
+    ReturnVertex& vertex)
+{
+    vertex.expression()->Accept(*this);
+    Visit(dynamic_cast<StatementVertex&>(vertex));
 }
 
 

@@ -29,7 +29,19 @@ ExpressionVertices const& FunctionDefinitionVertex::arguments() const
 }
 
 
+ExpressionVertices& FunctionDefinitionVertex::arguments()
+{
+    return _arguments;
+}
+
+
 StatementVertices const& FunctionDefinitionVertex::body() const
+{
+    return _body;
+}
+
+
+StatementVertices& FunctionDefinitionVertex::body()
 {
     return _body;
 }
