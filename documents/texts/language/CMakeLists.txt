@@ -1,0 +1,5 @@
+ADD_LATEX_DOCUMENT(language.tex
+    DEPENDS geoneric.sty
+    DEFAULT_PDF
+    MANGLE_TARGET_NAMES
+)

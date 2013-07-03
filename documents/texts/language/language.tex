@@ -1,0 +1,133 @@
+\documentclass[10pt, a4paper]{article}
+\usepackage{geoneric}
+
+\usepackage{syntax}
+\setlength{\grammarindent}{12em}  % Increase separation between LHS/RHS.
+
+\begin{document}
+\title{Geoneric modeling language}
+\author{Kor de Jong}
+\maketitle
+
+\emph{This document is work in progress. Although eventually, the contents become stable, currently it is work in progress. Please comment!}
+
+\section{Introduction}
+The Geoneric modeling language is a small domain specific language targetted at defining environmental models. This document describes the most important features of the language.
+
+The most important part of the modeling environment are the implemented operations. Without an extensive set of operations, the environment is of no use to the modeler. The modeling language is the user interface to calling operations. It has a syntax which needs to be folowed when defining models. A syntactically correct model has semantics. The semantics determine how the modeling environment interprets the model.
+
+The Geoneric modeling language is a very simple programming language. The goal of the language is to support the modeler in defining modular models, using a syntax that is easy to understand, even for people not used to expressing models using a computer language.
+
+\section{Syntax}
+TODO:
+
+\begin{itemize}
+    \item List requirements/goals of the language. Therefore we chose Python syntax. (The semantics are different though.) Therefore, we support importing modules and the definition of functions.
+    \item Intro about syntax. Easy. Based on Python.
+    \item Identifiers are UTF8 Unicode strings. $\pi$ is a valid identifier.
+    \item Check with Python 3 syntax.
+    \item Don't go into the details too much!
+    \item What about object orientation? Object orientation versus features icw functions.
+\end{itemize}
+
+The language needs to fulfill at least all of these requirements:
+
+\begin{itemize}
+    \item The language must allow many environmental models to be expressed. There will always be a category of models that the language is not capable of expressing of course.
+    \item The language must have as many features as needed to allow the modeler to \emph{conveniently} express his models, and nothing more. The language is an environmental modeling language and not a general programming language. Convenient means:
+    \begin{itemize}
+        \item The language must have a familiar syntax.
+        \item The language must support reuse of model code.
+    \end{itemize}
+\end{itemize}
+
+Given these requirements, the modeling language has the folowing, initial set of features:
+
+\begin{itemize}
+    \item The syntax is 100\% compatible with the Python programming language syntax. Python is known for its clear syntax. The niceness of a language's syntax is a matter of taste, but given the popularity of Python, and the similarity of its expression syntax with algebraic expressions, we think that the Python syntax is a good choice for a modeling language.
+    \item Functions can be defined that perform a specific task by combining lower level operations. This is useful in the light of code reuse, but also because it allows the modeler to create a library of functions with names that are meaningful in his domain. In general, a model is a sequence of function calls that themselves are sequences of function calls, etc. This way, arbitrary complex models can be created, with the built-in operations at the lower levels of the function hierarchy.
+    \item Model scripts can be devided into modules with related code. Modules can be imported by other modules. This way, code can be shared between models.
+\end{itemize}
+
+Appendix bla presents the complete set of grammar rules that define the syntax.
+
+\section{Semantics}
+
+\subsection{Scope}
+A scope is a block of statements within which an identifier is visible. Blocks of statements that introduce a scope are:
+
+\begin{description}
+    \item [module] A module is a file with statements. All defined identifiers are visible in the module's scope, after their definition.
+    \item [function] The body of a function definition is a scope. All defined identifiers are visible in the body's scope, after their definition.
+    % \item [if, while] The bodies of an if and while statement are scopes. All defined identifiers are visible in the body's scope, after their definition.
+\end{description}
+
+Besides visibility, the scope in which an identifier is defined determines the lifetime of the identifier. If the identifier is a variable, and the variable is the last reference to an instance, then the memory occupied by the instance is freed immediately. By limiting the scopes of variables the amount of resources used by the model can be kept to a (relative) minimum.
+
+Scopes nest, and identifiers visible in an outer scope are visible in the inner scope. For example, in the next example, identifier $\pi$ is defined in the module's scope, and is visible in the function body's scope:
+
+\begin{lstlisting}[mathescape]
+$\pi$ = 3.14159265359
+
+def area_of_circle(
+        radius):
+    return $\pi$ * radius * radius
+\end{lstlisting}
+
+When an identifier is defined in an inner scope with the same name as an identifier defined in an outer scope, then the identifier in the outer scope is temporarely hidden from view. After the end of the inner scope, the identifier from the outer scope is visible again:
+
+\begin{lstlisting}[mathescape]
+foo = 5
+
+def bar():
+    foo = 6
+    return foo
+
+print(bar())  # 6
+print(foo)    # still 5
+\end{lstlisting}
+
+\section{Comparison with Python}
+
+Syntax
+
+Scope
+
+\section{Conclusions}
+
+\section{Appendix grammar}
+
+What folows is a sequence of language grammar rules with a short description.
+
+module
+
+function definition
+
+statements
+
+statement
+
+expressions
+
+expression
+
+\begin{grammar}
+<atom> ::= <identifier> | <literal>
+
+<identifier> ::=  (<letter> | "_") (<letter> | <digit> | "_")*
+
+<letter> ::=  <lowercase> | <uppercase>
+
+<lowercase> ::=  <lowercase Unicode character>
+
+<uppercase> ::=  <uppercase Unicode character>
+
+<digit> ::=  "0"..."9"
+
+<literal> ::=  <stringliteral> | <integer> | <longinteger> | <floatnumber> | <imagnumber>
+
+
+\end{grammar}
+
+
+\end{document}
