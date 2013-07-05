@@ -107,7 +107,8 @@
   </xs:complexType>
 
   <xs:complexType name="Return">
-    <xs:sequence>
+    <xs:sequence
+      minOccurs="0">
       <xs:element
         name="Expression"
         type="ranally:Expression"/>

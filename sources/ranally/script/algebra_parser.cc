@@ -616,9 +616,14 @@ void write_return_node(
     expr_ty const value,
     ranally::String& xml)
 {
-    xml += "<Return>";
-    write_expression_node(value, xml);
-    xml += "</Return>";
+    if(!value) {
+        xml += "<Return/>";
+    }
+    else {
+        xml += "<Return>";
+        write_expression_node(value, xml);
+        xml += "</Return>";
+    }
 }
 
 

@@ -763,6 +763,20 @@ BOOST_AUTO_TEST_CASE(return_)
 
     {
         xml = parser.parse_string(ranally::String(
+            "return"));
+        BOOST_CHECK_EQUAL(xml, ranally::String(
+            "<?xml version=\"1.0\"?>"
+            "<Ranally source=\"&lt;string&gt;\">"
+              "<Statements>"
+                "<Statement line=\"1\" col=\"0\">"
+                  "<Return/>"
+                "</Statement>"
+              "</Statements>"
+            "</Ranally>"));
+    }
+
+    {
+        xml = parser.parse_string(ranally::String(
             "return c"));
         BOOST_CHECK_EQUAL(xml, ranally::String(
             "<?xml version=\"1.0\"?>"

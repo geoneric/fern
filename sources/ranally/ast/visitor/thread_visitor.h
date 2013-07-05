@@ -1,4 +1,6 @@
 #pragma once
+#include <stack>
+#include "ranally/core/symbol_table.h"
 #include "ranally/ast/visitor/visitor.h"
 
 
@@ -33,8 +35,24 @@ public:
 
 private:
 
+    enum Mode {
+        //! Visit function definions, skip other statements.
+        VisitFunctionDefinitionStatements,
+
+        //! Visit statements that are not function definitions.
+        VisitNonFunctionDefinitionStatements
+    };
+
     //! Last vertex processed on the control flow path.
     SyntaxVertex*  _last_vertex;
+
+    //! Symbol table with function definitions.
+    SymbolTable<FunctionDefinitionVertex*> _symbol_table;
+
+    //! Stack of function definitions being visited.
+    std::stack<FunctionDefinitionVertex*> _function_definitions;
+
+    Mode           _mode;
 
     void           Visit               (AssignmentVertex& vertex);
 
@@ -83,11 +101,7 @@ private:
 
     void           Visit               (WhileVertex& vertex);
 
-    // bool           is_user_defined_function(
-    //                                     String const& name) const;
-
-    // void           visit_user_defined_function(
-    //                                     FunctionVertex& vertex);
+    void           visit_scope         (StatementVertices& statements);
 
 };
 

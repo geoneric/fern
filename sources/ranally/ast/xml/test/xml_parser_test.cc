@@ -169,6 +169,17 @@ BOOST_AUTO_TEST_CASE(parse_string)
             "<Ranally source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
+                  "<Return/>"
+                "</Statement>"
+              "</Statements>"
+            "</Ranally>";
+        tree = xml_parser.parse_string(xml);
+
+        xml =
+            "<?xml version=\"1.0\"?>"
+            "<Ranally source=\"&lt;string&gt;\">"
+              "<Statements>"
+                "<Statement line=\"1\" col=\"0\">"
                   "<Return>"
                     "<Expression line=\"1\" col=\"7\">"
                       "<Name>c</Name>"

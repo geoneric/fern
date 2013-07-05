@@ -328,9 +328,11 @@ public:
         assert(!_data_stack.empty());
         ReturnData result(_data_stack.top());
         _data_stack.pop();
-        return std::shared_ptr<ranally::ReturnVertex>(
-            new ranally::ReturnVertex(
-                result.expression_vertex));
+        std::shared_ptr<ranally::ReturnVertex> vertex(
+            result.expression_vertex
+                ?  new ranally::ReturnVertex(result.expression_vertex)
+                :  new ranally::ReturnVertex());
+        return vertex;
     }
 
 private:

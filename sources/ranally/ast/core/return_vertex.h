@@ -19,6 +19,8 @@ public:
 
     LOKI_DEFINE_VISITABLE()
 
+                   ReturnVertex        ();
+
                    ReturnVertex        (ExpressionVertexPtr const& expression);
 
                    ~ReturnVertex       ()=default;

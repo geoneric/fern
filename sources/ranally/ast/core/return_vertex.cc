@@ -3,6 +3,15 @@
 
 namespace ranally {
 
+ReturnVertex::ReturnVertex()
+
+    : StatementVertex(),
+      _expression()
+
+{
+}
+
+
 ReturnVertex::ReturnVertex(
     ExpressionVertexPtr const& expression)
 

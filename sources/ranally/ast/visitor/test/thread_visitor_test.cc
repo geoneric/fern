@@ -2,11 +2,7 @@
 #include <boost/test/unit_test.hpp>
 #include "ranally/core/string.h"
 #include "ranally/script/algebra_parser.h"
-#include "ranally/ast/core/assignment_vertex.h"
-#include "ranally/ast/core/function_vertex.h"
-#include "ranally/ast/core/if_vertex.h"
-#include "ranally/ast/core/operator_vertex.h"
-#include "ranally/ast/core/script_vertex.h"
+#include "ranally/ast/core/vertices.h"
 #include "ranally/ast/visitor/thread_visitor.h"
 #include "ranally/ast/xml/xml_parser.h"
 
@@ -423,6 +419,160 @@ BOOST_AUTO_TEST_CASE(visit_if)
 
 BOOST_AUTO_TEST_CASE(visit_while)
 {
+}
+
+
+BOOST_AUTO_TEST_CASE(visit_function_definition)
+{
+    std::shared_ptr<ranally::ScriptVertex> tree;
+
+    {
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            ranally::String(u8R"(
+def foo():
+    return
+)")));
+        tree->Accept(_visitor);
+
+        // The defined function isn't called, so the script is in effect
+        // empty. This doesn't mean the definition isn't in the script. It
+        // means threading hasn't connected to the function.
+        BOOST_CHECK_EQUAL(tree->successor(), &(*tree));
+
+        BOOST_REQUIRE_EQUAL(tree->statements().size(), 1u);
+        ranally::FunctionDefinitionVertex const* vertex_foo =
+            dynamic_cast<ranally::FunctionDefinitionVertex const*>(
+                &(*tree->statements()[0]));
+        BOOST_REQUIRE(vertex_foo);
+
+        BOOST_REQUIRE_EQUAL(vertex_foo->body().size(), 1u);
+        ranally::ReturnVertex const* return_vertex =
+            dynamic_cast<ranally::ReturnVertex const*>(
+                &(*vertex_foo->body()[0]));
+        BOOST_REQUIRE(return_vertex);
+        BOOST_CHECK(!return_vertex->expression());
+
+        BOOST_CHECK_EQUAL(vertex_foo->successor(), return_vertex);
+        BOOST_CHECK_EQUAL(return_vertex->successor(), vertex_foo);
+    }
+
+    {
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            ranally::String(u8R"(
+def foo():
+    return 5
+)")));
+        tree->Accept(_visitor);
+
+        // The defined function isn't called, so the script is in effect
+        // empty. This doesn't mean the definition isn't in the script. It
+        // means threading hasn't connected to the function.
+        BOOST_CHECK_EQUAL(tree->successor(), &(*tree));
+
+        BOOST_REQUIRE_EQUAL(tree->statements().size(), 1u);
+        ranally::FunctionDefinitionVertex const* vertex_foo =
+            dynamic_cast<ranally::FunctionDefinitionVertex const*>(
+                &(*tree->statements()[0]));
+        BOOST_REQUIRE(vertex_foo);
+
+        BOOST_REQUIRE_EQUAL(vertex_foo->body().size(), 1u);
+        ranally::ReturnVertex const* return_vertex =
+            dynamic_cast<ranally::ReturnVertex const*>(
+                &(*vertex_foo->body()[0]));
+        BOOST_REQUIRE(return_vertex);
+
+        ranally::SyntaxVertex const* number_vertex =
+            &(*return_vertex->expression());
+
+        BOOST_CHECK_EQUAL(vertex_foo->successor(), number_vertex);
+        BOOST_CHECK_EQUAL(number_vertex->successor(), return_vertex);
+        BOOST_CHECK_EQUAL(return_vertex->successor(), vertex_foo);
+    }
+
+    {
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            ranally::String(u8R"(
+def foo():
+    return 5
+
+a = foo())")));
+        tree->Accept(_visitor);
+
+        BOOST_REQUIRE_EQUAL(tree->statements().size(), 2u);
+
+        ranally::FunctionDefinitionVertex const* vertex_foo =
+            dynamic_cast<ranally::FunctionDefinitionVertex const*>(
+                &(*tree->statements()[0]));
+        BOOST_REQUIRE(vertex_foo);
+
+        BOOST_REQUIRE_EQUAL(vertex_foo->body().size(), 1u);
+        ranally::ReturnVertex const* return_vertex =
+            dynamic_cast<ranally::ReturnVertex const*>(
+                &(*vertex_foo->body()[0]));
+        BOOST_REQUIRE(return_vertex);
+
+        BOOST_REQUIRE(return_vertex->expression());
+        ranally::NumberVertex<int64_t> const* number_vertex =
+            dynamic_cast<ranally::NumberVertex<int64_t> const*>(
+                &(*return_vertex->expression()));
+
+        ranally::AssignmentVertex const* assignment_vertex =
+            dynamic_cast<ranally::AssignmentVertex const*>(
+                &(*tree->statements()[1]));
+        BOOST_REQUIRE(assignment_vertex);
+
+        ranally::FunctionVertex const* function_vertex =
+            dynamic_cast<ranally::FunctionVertex const*>(
+                &(*assignment_vertex->expression()));
+        BOOST_REQUIRE(function_vertex);
+
+        ranally::NameVertex const* name_vertex =
+            dynamic_cast<ranally::NameVertex const*>(
+                &(*assignment_vertex->target()));
+        BOOST_REQUIRE(name_vertex);
+
+        BOOST_CHECK_EQUAL(tree->successor(), function_vertex);
+        BOOST_CHECK_EQUAL(function_vertex->successor(), vertex_foo);
+        // assignment_vertex->successor(), function_vertex);
+        // BOOST_CHECK_EQUAL(function_vertex->successor(), vertex_foo);
+        // BOOST_CHECK_EQUAL(vertex_foo->successor(), number_vertex);
+        // BOOST_CHECK_EQUAL(number_vertex->successor(), return_vertex);
+
+        // BOOST_CHECK_EQUAL(return_vertex->successor(), vertex_foo);
+
+        // TODO Add two arguments to the function and let the function return
+        //      the sum.
+        // TODO Add a function_definition exit vertex.
+        // TODO Rename SyntaxVertex to AstVertex. The vertices are more related
+        //             to the AST than to the syntax of the language. Some of
+        //             the vertices have no equivalent in the language
+        //             (ExitFunctionVertex, ExitWhileVertex, ExitIfVertex).
+        // TODO Rename ScriptVertex to ModuleVertex.
+        // TODO Rename FunctionVertex to CallVertex?
+        //      Rename FunctionDefinitionVertex to FunctionVertex?
+        //      Add ExitFunctionVertex. Or maybe a general ExitVertex to exit
+        //      a block of statements. ExitBlockVertex?
+    }
+
+    {
+        // Test whether function call can precede the definition.
+        // Test whether the original order of the statements is maintained.
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            ranally::String(u8R"(
+a = foo()
+
+def foo():
+    return 5
+)")));
+        tree->Accept(_visitor);
+
+        BOOST_REQUIRE_EQUAL(tree->statements().size(), 2u);
+
+        // TODO
+    }
+
+    // TODO Test function with return statement and subsequent statements.
+    // TODO Test function without return statement.
 }
 
 BOOST_AUTO_TEST_SUITE_END()
