@@ -15,7 +15,9 @@ template<typename T>
 class OperationVertex;
 class OperatorVertex;
 class ReturnVertex;
+class ScopeVertex;
 class ScriptVertex;
+class SentinelVertex;
 class StringVertex;
 class SubscriptVertex;
 class WhileVertex;
@@ -45,7 +47,9 @@ class Visitor:
     public Loki::Visitor<NumberVertex<double>>,
     public Loki::Visitor<OperatorVertex>,
     public Loki::Visitor<ReturnVertex>,
+    public Loki::Visitor<ScopeVertex>,
     public Loki::Visitor<ScriptVertex>,
+    public Loki::Visitor<SentinelVertex>,
     public Loki::Visitor<StringVertex>,
     public Loki::Visitor<SubscriptVertex>,
     public Loki::Visitor<WhileVertex>
@@ -118,6 +122,10 @@ private:
     virtual void   Visit               (NumberVertex<double>& vertex);
 
     virtual void   Visit               (OperatorVertex& vertex);
+
+    virtual void   Visit               (ScopeVertex& vertex);
+
+    virtual void   Visit               (SentinelVertex& vertex);
 
     virtual void   Visit               (StatementVertex& vertex);
 

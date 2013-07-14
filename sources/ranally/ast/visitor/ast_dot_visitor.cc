@@ -272,7 +272,7 @@ void AstDotVisitor::Visit(
             for(auto expression_vertex: vertex.arguments()) {
                 add_ast_vertex(vertex, *expression_vertex);
             }
-            for(auto statement_vertex: vertex.body()) {
+            for(auto statement_vertex: vertex.scope()->statements()) {
                 add_ast_vertex(vertex, *statement_vertex);
             }
             break;
@@ -288,7 +288,7 @@ void AstDotVisitor::Visit(
     for(auto expression_vertex: vertex.arguments()) {
         expression_vertex->Accept(*this);
     }
-    for(auto statement_vertex: vertex.body()) {
+    for(auto statement_vertex: vertex.scope()->statements()) {
         statement_vertex->Accept(*this);
     }
 }
@@ -335,10 +335,10 @@ void AstDotVisitor::Visit(
         }
         case Mode::ConnectingAst: {
             add_ast_vertex(vertex, *vertex.condition());
-            for(auto statement_vertex: vertex.true_statements()) {
+            for(auto statement_vertex: vertex.true_scope()->statements()) {
                 add_ast_vertex(vertex, *statement_vertex);
             }
-            for(auto statement_vertex: vertex.false_statements()) {
+            for(auto statement_vertex: vertex.false_scope()->statements()) {
                 add_ast_vertex(vertex, *statement_vertex);
             }
             break;
@@ -353,10 +353,10 @@ void AstDotVisitor::Visit(
     }
 
     vertex.condition()->Accept(*this);
-    for(auto statement_vertex: vertex.true_statements()) {
+    for(auto statement_vertex: vertex.true_scope()->statements()) {
         statement_vertex->Accept(*this);
     }
-    for(auto statement_vertex: vertex.false_statements()) {
+    for(auto statement_vertex: vertex.false_scope()->statements()) {
         statement_vertex->Accept(*this);
     }
 }
@@ -452,12 +452,12 @@ void AstDotVisitor::Visit(
             % vertex.source_name().encode_in_utf8())
     );
 
-    for(auto statement_vertex: vertex.statements()) {
+    for(auto statement_vertex: vertex.scope()->statements()) {
         statement_vertex->Accept(*this);
     }
 
     set_mode(Mode::ConnectingAst);
-    for(auto statement_vertex: vertex.statements()) {
+    for(auto statement_vertex: vertex.scope()->statements()) {
         add_ast_vertex(vertex, *statement_vertex);
         statement_vertex->Accept(*this);
     }
@@ -465,14 +465,14 @@ void AstDotVisitor::Visit(
     if(_modes & Mode::ConnectingCfg) {
         set_mode(Mode::ConnectingCfg);
         add_cfg_vertices(vertex);
-        for(auto statement_vertex: vertex.statements()) {
+        for(auto statement_vertex: vertex.scope()->statements()) {
           statement_vertex->Accept(*this);
         }
     }
 
     if(_modes & Mode::ConnectingUses) {
         set_mode(Mode::ConnectingUses);
-        for(auto statement_vertex: vertex.statements()) {
+        for(auto statement_vertex: vertex.scope()->statements()) {
             statement_vertex->Accept(*this);
         }
     }
@@ -520,10 +520,10 @@ void AstDotVisitor::Visit(
         }
         case Mode::ConnectingAst: {
             add_ast_vertex(vertex, *vertex.condition());
-            for(auto statement_vertex: vertex.true_statements()) {
+            for(auto statement_vertex: vertex.true_scope()->statements()) {
                 add_ast_vertex(vertex, *statement_vertex);
             }
-            for(auto statement_vertex: vertex.false_statements()) {
+            for(auto statement_vertex: vertex.false_scope()->statements()) {
                 add_ast_vertex(vertex, *statement_vertex);
             }
             break;
@@ -538,10 +538,10 @@ void AstDotVisitor::Visit(
     }
 
     vertex.condition()->Accept(*this);
-    for(auto statement_vertex: vertex.true_statements()) {
+    for(auto statement_vertex: vertex.true_scope()->statements()) {
         statement_vertex->Accept(*this);
     }
-    for(auto statement_vertex: vertex.false_statements()) {
+    for(auto statement_vertex: vertex.false_scope()->statements()) {
         statement_vertex->Accept(*this);
     }
 }

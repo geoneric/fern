@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE(visit_name)
         ranally::String("a")));
 
     ranally::NameVertex const* vertex_a =
-        dynamic_cast<ranally::NameVertex const*>(&(*tree->statements()[0]));
+        dynamic_cast<ranally::NameVertex const*>(&(*tree->scope()->statements()[0]));
 
     BOOST_CHECK(vertex_a->definitions().empty());
     BOOST_CHECK(vertex_a->uses().empty());
@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_CASE(visit_assignment)
 
         ranally::AssignmentVertex const* assignment =
             dynamic_cast<ranally::AssignmentVertex const*>(
-                &(*tree->statements()[0]));
+                &(*tree->scope()->statements()[0]));
         ranally::NameVertex const* vertex_a =
             dynamic_cast<ranally::NameVertex const*>(
                 &(*assignment->target()));
@@ -108,7 +108,7 @@ BOOST_AUTO_TEST_CASE(visit_assignment)
 
         ranally::AssignmentVertex const* assignment_1 =
             dynamic_cast<ranally::AssignmentVertex const*>(
-                &(*tree->statements()[0]));
+                &(*tree->scope()->statements()[0]));
         ranally::NameVertex const* vertex_a1 =
             dynamic_cast<ranally::NameVertex const*>(
                 &(*assignment_1->target()));
@@ -118,7 +118,7 @@ BOOST_AUTO_TEST_CASE(visit_assignment)
 
         ranally::AssignmentVertex const* assignment_2 =
             dynamic_cast<ranally::AssignmentVertex const*>(
-                &(*tree->statements()[1]));
+                &(*tree->scope()->statements()[1]));
         ranally::FunctionVertex const* function =
             dynamic_cast<ranally::FunctionVertex const*>(
                 &(*assignment_2->expression()));
@@ -177,24 +177,24 @@ BOOST_AUTO_TEST_CASE(visit_if)
 
         ranally::AssignmentVertex const* assignment_1 =
             dynamic_cast<ranally::AssignmentVertex const*>(
-                &(*tree->statements()[0]));
+                &(*tree->scope()->statements()[0]));
         ranally::NameVertex const* vertex_a1 =
             dynamic_cast<ranally::NameVertex const*>(
                 &(*assignment_1->target()));
 
         ranally::IfVertex const* ifVertex =
             dynamic_cast<ranally::IfVertex const*>(
-                &(*tree->statements()[1]));
+                &(*tree->scope()->statements()[1]));
         ranally::AssignmentVertex const* assignment_2 =
             dynamic_cast<ranally::AssignmentVertex const*>(
-                &(*ifVertex->true_statements()[0]));
+                &(*ifVertex->true_scope()->statements()[0]));
         ranally::NameVertex const* vertex_a2 =
             dynamic_cast<ranally::NameVertex const*>(
                 &(*assignment_2->target()));
 
         ranally::AssignmentVertex const* assignment_3 =
             dynamic_cast<ranally::AssignmentVertex const*>(
-                &(*tree->statements()[2]));
+                &(*tree->scope()->statements()[2]));
         ranally::NameVertex const* vertex_a3 =
             dynamic_cast<ranally::NameVertex const*>(
                 &(*assignment_3->expression()));
@@ -235,7 +235,7 @@ BOOST_AUTO_TEST_CASE(visit_reuse_of_identifiers)
 
         ranally::AssignmentVertex const* assignment_1 =
             dynamic_cast<ranally::AssignmentVertex const*>(
-                &(*tree->statements()[0]));
+                &(*tree->scope()->statements()[0]));
         ranally::NameVertex const* vertex_a1 =
             dynamic_cast<ranally::NameVertex const*>(
                 &(*assignment_1->target()));
@@ -244,7 +244,7 @@ BOOST_AUTO_TEST_CASE(visit_reuse_of_identifiers)
 
         ranally::AssignmentVertex const* assignment_2 =
             dynamic_cast<ranally::AssignmentVertex const*>(
-                &(*tree->statements()[1]));
+                &(*tree->scope()->statements()[1]));
         ranally::NameVertex const* vertex_b1 =
             dynamic_cast<ranally::NameVertex const*>(
                 &(*assignment_2->target()));
@@ -261,7 +261,7 @@ BOOST_AUTO_TEST_CASE(visit_reuse_of_identifiers)
 
         ranally::AssignmentVertex const* assignment_3 =
             dynamic_cast<ranally::AssignmentVertex const*>(
-                &(*tree->statements()[2]));
+                &(*tree->scope()->statements()[2]));
         ranally::NameVertex const* vertex_c1 =
             dynamic_cast<ranally::NameVertex const*>(
                 &(*assignment_3->target()));
@@ -278,7 +278,7 @@ BOOST_AUTO_TEST_CASE(visit_reuse_of_identifiers)
 
         ranally::AssignmentVertex const* assignment_4 =
             dynamic_cast<ranally::AssignmentVertex const*>(
-                &(*tree->statements()[3]));
+                &(*tree->scope()->statements()[3]));
         ranally::NameVertex const* vertex_b4 =
             dynamic_cast<ranally::NameVertex const*>(
                 &(*assignment_4->target()));

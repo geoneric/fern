@@ -1,4 +1,5 @@
 #pragma once
+#include "ranally/ast/core/scope_vertex.h"
 #include "ranally/ast/core/statement_vertex.h"
 
 
@@ -20,10 +21,9 @@ public:
 
     LOKI_DEFINE_VISITABLE()
 
-                   ScriptVertex        (String const& source_name,
-                                        StatementVertices const& statements);
-
-  //                  ScriptVertex        (ScriptVertex const& other);
+                   ScriptVertex        (
+                                  String const& source_name,
+                                  std::shared_ptr<ScopeVertex> const& scope);
 
                    ~ScriptVertex       ()=default;
 
@@ -37,15 +37,15 @@ public:
 
     String const&  source_name         () const;
 
-    StatementVertices const& statements  () const;
+    std::shared_ptr<ScopeVertex> const& scope() const;
 
-    StatementVertices& statements        ();
+    std::shared_ptr<ScopeVertex>& scope();
 
 private:
 
     String         _source_name;
 
-    StatementVertices _statements;
+    std::shared_ptr<ScopeVertex> _scope;
 
 };
 

@@ -11,7 +11,9 @@ SET(SOURCES
     operation_vertex
     operator_vertex
     return_vertex
+    scope_vertex
     script_vertex
+    sentinel_vertex
     statement_vertex
     string_vertex
     subscript_vertex

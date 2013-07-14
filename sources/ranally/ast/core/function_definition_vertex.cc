@@ -6,12 +6,12 @@ namespace ranally {
 FunctionDefinitionVertex::FunctionDefinitionVertex(
     String const& name,
     ExpressionVertices const& arguments,
-    StatementVertices const& body)
+    std::shared_ptr<ScopeVertex> const& scope)
 
     : StatementVertex(),
       _name(name),
       _arguments(arguments),
-      _body(body)
+      _scope(scope)
 
 {
 }
@@ -35,15 +35,15 @@ ExpressionVertices& FunctionDefinitionVertex::arguments()
 }
 
 
-StatementVertices const& FunctionDefinitionVertex::body() const
+std::shared_ptr<ScopeVertex> const& FunctionDefinitionVertex::scope() const
 {
-    return _body;
+    return _scope;
 }
 
 
-StatementVertices& FunctionDefinitionVertex::body()
+std::shared_ptr<ScopeVertex>& FunctionDefinitionVertex::scope()
 {
-    return _body;
+    return _scope;
 }
 
 } // namespace ranally

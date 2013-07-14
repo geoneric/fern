@@ -64,15 +64,15 @@ void Visitor::Visit(
 /*!
   \param     vertex Vertex to visit.
 
-  The default implementation allows the the argument expressions, and the
-  block statements to accept the visitor, in that order. After that it calls
-  Visit(StatementVertex&).
+  The default implementation allows the the argument expressions, the
+  block statements and the sentinel to accept the visitor, in that order.
+  After that it calls Visit(StatementVertex&).
 */
 void Visitor::Visit(
     FunctionDefinitionVertex& vertex)
 {
     visit_expressions(vertex.arguments());
-    visit_statements(vertex.body());
+    Visit(*vertex.scope());
     Visit(dynamic_cast<StatementVertex&>(vertex));
 }
 
@@ -102,8 +102,8 @@ void Visitor::Visit(
     IfVertex& vertex)
 {
     vertex.condition()->Accept(*this);
-    visit_statements(vertex.true_statements());
-    visit_statements(vertex.false_statements());
+    Visit(*vertex.true_scope());
+    Visit(*vertex.false_scope());
     Visit(dynamic_cast<StatementVertex&>(vertex));
 }
 
@@ -195,7 +195,7 @@ void Visitor::Visit(
 void Visitor::Visit(
     ScriptVertex& vertex)
 {
-    visit_statements(vertex.statements());
+    Visit(*vertex.scope());
     Visit(dynamic_cast<SyntaxVertex&>(vertex));
 }
 
@@ -266,9 +266,25 @@ void Visitor::Visit(
     WhileVertex& vertex)
 {
     vertex.condition()->Accept(*this);
-    visit_statements(vertex.true_statements());
-    visit_statements(vertex.false_statements());
+    Visit(*vertex.true_scope());
+    Visit(*vertex.false_scope());
     Visit(dynamic_cast<StatementVertex&>(vertex));
+}
+
+
+void Visitor::Visit(
+    SentinelVertex& vertex)
+{
+    Visit(dynamic_cast<SyntaxVertex&>(vertex));
+}
+
+
+void Visitor::Visit(
+    ScopeVertex& vertex)
+{
+    visit_statements(vertex.statements());
+    Visit(*vertex.sentinel());
+    Visit(dynamic_cast<SyntaxVertex&>(vertex));
 }
 
 } // namespace ranally

@@ -108,7 +108,7 @@ void IdentifyVisitor::Visit(
 {
     assert(_symbol_table.empty());
     _symbol_table.push_scope();
-    visit_statements(vertex.statements());
+    visit_statements(vertex.scope()->statements());
     _symbol_table.pop_scope();
     assert(_symbol_table.empty());
 }
@@ -119,14 +119,13 @@ void IdentifyVisitor::Visit(
 {
     vertex.condition()->Accept(*this);
 
-    assert(!vertex.true_statements().empty());
     _symbol_table.push_scope();
-    visit_statements(vertex.true_statements());
+    visit_statements(vertex.true_scope()->statements());
     _symbol_table.pop_scope();
 
-    if(!vertex.false_statements().empty()) {
+    if(vertex.false_scope()) {
         _symbol_table.push_scope();
-        visit_statements(vertex.false_statements());
+        visit_statements(vertex.false_scope()->statements());
         _symbol_table.pop_scope();
     }
 }
@@ -137,14 +136,13 @@ void IdentifyVisitor::Visit(
 {
     vertex.condition()->Accept(*this);
 
-    assert(!vertex.true_statements().empty());
     _symbol_table.push_scope();
-    visit_statements(vertex.true_statements());
+    visit_statements(vertex.true_scope()->statements());
     _symbol_table.pop_scope();
 
-    if(!vertex.false_statements().empty()) {
+    if(vertex.false_scope()) {
         _symbol_table.push_scope();
-        visit_statements(vertex.false_statements());
+        visit_statements(vertex.false_scope()->statements());
         _symbol_table.pop_scope();
     }
 }

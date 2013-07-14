@@ -1,5 +1,6 @@
 #pragma once
 #include "ranally/ast/core/expression_vertex.h"
+#include "ranally/ast/core/scope_vertex.h"
 #include "ranally/ast/core/statement_vertex.h"
 
 
@@ -21,8 +22,8 @@ public:
 
                    WhileVertex         (
                         std::shared_ptr<ExpressionVertex> const& condition,
-                        StatementVertices const& true_statements,
-                        StatementVertices const& false_statements);
+                        std::shared_ptr<ScopeVertex> const& true_scope,
+                        std::shared_ptr<ScopeVertex> const& false_scope);
 
                    ~WhileVertex        ()=default;
 
@@ -36,21 +37,27 @@ public:
 
     std::shared_ptr<ExpressionVertex> const& condition() const;
 
-    StatementVertices const& true_statements() const;
+    std::shared_ptr<ScopeVertex> const& true_scope() const;
 
-    StatementVertices& true_statements ();
+    std::shared_ptr<ScopeVertex>& true_scope ();
 
-    StatementVertices const& false_statements() const;
+    std::shared_ptr<ScopeVertex> const& false_scope() const;
 
-    StatementVertices& false_statements();
+    std::shared_ptr<ScopeVertex>& false_scope();
+
+    std::shared_ptr<SentinelVertex> const& sentinel() const;
+
+    std::shared_ptr<SentinelVertex>& sentinel();
 
 private:
 
     ExpressionVertexPtr _condition;
 
-    StatementVertices _true_statements;
+    std::shared_ptr<ScopeVertex> _true_scope;
 
-    StatementVertices _false_statements;
+    std::shared_ptr<ScopeVertex> _false_scope;
+
+    std::shared_ptr<SentinelVertex> _sentinel;
 
 };
 

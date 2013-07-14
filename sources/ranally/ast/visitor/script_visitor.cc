@@ -125,7 +125,7 @@ void ScriptVisitor::Visit(
 {
     _indent_level = 0;
     _script = String();
-    visit_statements(vertex.statements());
+    visit_statements(vertex.scope()->statements());
     assert(_indent_level == 0);
 }
 
@@ -237,8 +237,6 @@ void ScriptVisitor::Visit(
 void ScriptVisitor::Visit(
     IfVertex& vertex)
 {
-    assert(!vertex.true_statements().empty());
-
     // The indent function called in visit_statements of the parent vertex
     // indents the first line of this if-statement, so we have to indent the
     // else line ourselves.
@@ -249,14 +247,14 @@ void ScriptVisitor::Visit(
     _script += ":\n";
 
     ++_indent_level;
-    visit_statements(vertex.true_statements());
+    visit_statements(vertex.true_scope()->statements());
     --_indent_level;
 
-    if(!vertex.false_statements().empty()) {
+    if(!vertex.false_scope()->statements().empty()) {
         _script += indentation();
         _script += "else:\n";
         ++_indent_level;
-        visit_statements(vertex.false_statements());
+        visit_statements(vertex.false_scope()->statements());
         --_indent_level;
     }
 }
@@ -265,8 +263,6 @@ void ScriptVisitor::Visit(
 void ScriptVisitor::Visit(
     WhileVertex& vertex)
 {
-    assert(!vertex.true_statements().empty());
-
     String result;
 
     // The indent function called in visit_statements of the parent vertex
@@ -278,14 +274,14 @@ void ScriptVisitor::Visit(
     vertex.condition()->Accept(*this);
     _script += ":\n";
     ++_indent_level;
-    visit_statements(vertex.true_statements());
+    visit_statements(vertex.true_scope()->statements());
     --_indent_level;
 
-    if(!vertex.false_statements().empty()) {
+    if(!vertex.false_scope()->statements().empty()) {
         _script += indentation();
         _script += "else:\n";
         ++_indent_level;
-        visit_statements(vertex.false_statements());
+        visit_statements(vertex.false_scope()->statements());
         --_indent_level;
     }
 }

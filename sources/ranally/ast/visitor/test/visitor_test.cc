@@ -73,21 +73,22 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
 
     // Empty script.
     {
-        // Only script vertex.
+        // Script, scope, sentinel.
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
             ranally::String("")));
         assert(tree);
         tree->Accept(visitor);
-        BOOST_CHECK_EQUAL(visitor.nr_vertices(), 1u);
+        BOOST_CHECK_EQUAL(visitor.nr_vertices(), 3u);
     }
 
     // Name.
     {
+        // Script, scope, name, sentinel.
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
             ranally::String("a")));
         assert(tree);
         tree->Accept(visitor);
-        BOOST_CHECK_EQUAL(visitor.nr_vertices(), 2u);
+        BOOST_CHECK_EQUAL(visitor.nr_vertices(), 4u);
     }
 
     // Number.
@@ -96,7 +97,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
             ranally::String("5")));
         assert(tree);
         tree->Accept(visitor);
-        BOOST_CHECK_EQUAL(visitor.nr_vertices(), 2u);
+        BOOST_CHECK_EQUAL(visitor.nr_vertices(), 4u);
     }
 
     // String.
@@ -105,7 +106,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
             ranally::String("\"five\"")));
         assert(tree);
         tree->Accept(visitor);
-        BOOST_CHECK_EQUAL(visitor.nr_vertices(), 2u);
+        BOOST_CHECK_EQUAL(visitor.nr_vertices(), 4u);
     }
 
     // Operator.
@@ -114,7 +115,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
             ranally::String("a + b")));
         assert(tree);
         tree->Accept(visitor);
-        BOOST_CHECK_EQUAL(visitor.nr_vertices(), 4u);
+        BOOST_CHECK_EQUAL(visitor.nr_vertices(), 6u);
     }
 
     // Function.
@@ -123,7 +124,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
             ranally::String("f(a, b)")));
         assert(tree);
         tree->Accept(visitor);
-        BOOST_CHECK_EQUAL(visitor.nr_vertices(), 4u);
+        BOOST_CHECK_EQUAL(visitor.nr_vertices(), 6u);
     }
 
     // Assignment.
@@ -132,7 +133,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
             ranally::String("c = f(a, b)")));
         assert(tree);
         tree->Accept(visitor);
-        BOOST_CHECK_EQUAL(visitor.nr_vertices(), 6u);
+        BOOST_CHECK_EQUAL(visitor.nr_vertices(), 8u);
     }
 
     // If.
@@ -145,7 +146,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
                 "    e = f")));
         assert(tree);
         tree->Accept(visitor);
-        BOOST_CHECK_EQUAL(visitor.nr_vertices(), 11u);
+        BOOST_CHECK_EQUAL(visitor.nr_vertices(), 17u);
     }
 
     // While.
@@ -158,7 +159,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
                 "    e = f")));
         assert(tree);
         tree->Accept(visitor);
-        BOOST_CHECK_EQUAL(visitor.nr_vertices(), 13u);
+        BOOST_CHECK_EQUAL(visitor.nr_vertices(), 19u);
     }
 
     // Slice.
@@ -167,7 +168,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
             ranally::String("a[b]")));
         assert(tree);
         tree->Accept(visitor);
-        BOOST_CHECK_EQUAL(visitor.nr_vertices(), 4u);
+        BOOST_CHECK_EQUAL(visitor.nr_vertices(), 6u);
     }
 }
 

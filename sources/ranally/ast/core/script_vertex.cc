@@ -6,11 +6,11 @@ namespace ranally {
 
 ScriptVertex::ScriptVertex(
     String const& source_name,
-    StatementVertices const& statements)
+    std::shared_ptr<ScopeVertex> const& scope)
 
     : SyntaxVertex(),
       _source_name(source_name),
-      _statements(statements)
+      _scope(scope)
 
 {
 }
@@ -39,15 +39,15 @@ String const& ScriptVertex::source_name() const
 }
 
 
-StatementVertices const& ScriptVertex::statements() const
+std::shared_ptr<ScopeVertex> const& ScriptVertex::scope() const
 {
-    return _statements;
+    return _scope;
 }
 
 
-StatementVertices& ScriptVertex::statements()
+std::shared_ptr<ScopeVertex>& ScriptVertex::scope()
 {
-    return _statements;
+    return _scope;
 }
 
 

@@ -171,14 +171,14 @@ void FlowgraphDotVisitor::Visit(
             "rankdir=TB;\n"
         ) % if_cluster_id++));
     }
-    for(auto statement_vertex: vertex.true_statements()) {
+    for(auto statement_vertex: vertex.true_scope()->statements()) {
         statement_vertex->Accept(*this);
     }
     if(_mode == Mode::ConnectingFlowgraph) {
         add_script("}\n");
     }
 
-    if(!vertex.false_statements().empty()) {
+    if(!vertex.false_scope()->statements().empty()) {
         // TODO condition -> sub graph
         if(_mode == Mode::ConnectingFlowgraph) {
             add_script(String(boost::format(
@@ -187,7 +187,7 @@ void FlowgraphDotVisitor::Visit(
                 "rankdir=TB;\n"
             ) % if_cluster_id++));
         }
-        for(auto statement_vertex: vertex.false_statements()) {
+        for(auto statement_vertex: vertex.false_scope()->statements()) {
             statement_vertex->Accept(*this);
         }
         if(_mode == Mode::ConnectingFlowgraph) {
@@ -403,12 +403,12 @@ void FlowgraphDotVisitor::Visit(
     //   String(boost::format(" [label=\"%1%\"];\n"))
     //     % vertex.sourceName().encode_in_utf8());
 
-    for(auto statement_vertex: vertex.statements()) {
+    for(auto statement_vertex: vertex.scope()->statements()) {
         statement_vertex->Accept(*this);
     }
 
     set_mode(Mode::ConnectingFlowgraph);
-    for(auto statement_vertex: vertex.statements()) {
+    for(auto statement_vertex: vertex.scope()->statements()) {
         // add_flowgraph_vertex(vertex, *statement_vertex);
         statement_vertex->Accept(*this);
     }

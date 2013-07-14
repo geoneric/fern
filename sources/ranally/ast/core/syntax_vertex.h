@@ -54,6 +54,8 @@ public:
 
     SyntaxVertices const& successors   () const;
 
+    bool           has_successor       () const;
+
     SyntaxVertex const* successor      () const;
 
     SyntaxVertex*  successor           ();

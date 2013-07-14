@@ -76,6 +76,12 @@ SyntaxVertex::SyntaxVertices const& SyntaxVertex::successors() const
 }
 
 
+bool SyntaxVertex::has_successor() const
+{
+    return !_successors.empty();
+}
+
+
 //! Return the successor in the control flow graph of this vertex.
 /*!
   \return    Pointer to the successor.

@@ -5,15 +5,18 @@ namespace ranally {
 
 WhileVertex::WhileVertex(
     std::shared_ptr<ExpressionVertex> const& condition,
-    StatementVertices const& true_statements,
-    StatementVertices const& false_statements)
+    std::shared_ptr<ScopeVertex> const& true_scope,
+    std::shared_ptr<ScopeVertex> const& false_scope)
 
     : StatementVertex(),
       _condition(condition),
-      _true_statements(true_statements),
-      _false_statements(false_statements)
+      _true_scope(true_scope),
+      _false_scope(false_scope),
+      _sentinel(new SentinelVertex())
 
 {
+    assert(_true_scope && !_true_scope->statements().empty());
+    assert(_false_scope);
 }
 
 
@@ -23,27 +26,39 @@ std::shared_ptr<ExpressionVertex> const& WhileVertex::condition() const
 }
 
 
-StatementVertices const& WhileVertex::true_statements() const
+std::shared_ptr<ScopeVertex> const& WhileVertex::true_scope() const
 {
-    return _true_statements;
+    return _true_scope;
 }
 
 
-StatementVertices& WhileVertex::true_statements()
+std::shared_ptr<ScopeVertex>& WhileVertex::true_scope()
 {
-    return _true_statements;
+    return _true_scope;
 }
 
 
-StatementVertices const& WhileVertex::false_statements() const
+std::shared_ptr<ScopeVertex> const& WhileVertex::false_scope() const
 {
-    return _false_statements;
+    return _false_scope;
 }
 
 
-StatementVertices& WhileVertex::false_statements()
+std::shared_ptr<ScopeVertex>& WhileVertex::false_scope()
 {
-    return _false_statements;
+    return _false_scope;
+}
+
+
+std::shared_ptr<SentinelVertex> const& WhileVertex::sentinel() const
+{
+    return _sentinel;
+}
+
+
+std::shared_ptr<SentinelVertex>& WhileVertex::sentinel()
+{
+    return _sentinel;
 }
 
 } // namespace ranally

@@ -1,4 +1,5 @@
 #pragma once
+#include "ranally/ast/core/scope_vertex.h"
 #include "ranally/ast/core/statement_vertex.h"
 
 
@@ -19,9 +20,9 @@ public:
     LOKI_DEFINE_VISITABLE()
 
                    FunctionDefinitionVertex(
-                                        String const& name,
-                                        ExpressionVertices const& arguments,
-                                        StatementVertices const& body);
+                                  String const& name,
+                                  ExpressionVertices const& arguments,
+                                  std::shared_ptr<ScopeVertex> const& scope);
 
                    ~FunctionDefinitionVertex()=default;
 
@@ -41,9 +42,9 @@ public:
 
     ExpressionVertices& arguments      ();
 
-    StatementVertices const& body      () const;
+    std::shared_ptr<ScopeVertex> const& scope() const;
 
-    StatementVertices& body            ();
+    std::shared_ptr<ScopeVertex>& scope();
 
 private:
 
@@ -51,7 +52,7 @@ private:
 
     ExpressionVertices _arguments;
 
-    StatementVertices _body;
+    std::shared_ptr<ScopeVertex> _scope;
 
 };
 

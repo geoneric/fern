@@ -75,11 +75,12 @@ void CopyVisitor::Visit(
 
 
 void CopyVisitor::Visit(
-    ScriptVertex& vertex)
+    ScriptVertex& /* vertex */)
 {
-    assert(!_script_vertex);
-    visit_statements(vertex.statements());
-    _script_vertex.reset(new ScriptVertex(vertex.source_name(), _statements));
+    assert(false);
+    // assert(!_script_vertex);
+    // visit_statements(vertex.scope()->statements());
+    // _script_vertex.reset(new ScriptVertex(vertex.source_name(), _statements));
 }
 
 

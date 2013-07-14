@@ -13,8 +13,8 @@ namespace ranally {
   \sa        .
   \todo      Is it possible to pass pointers as arguments to the Visit functions?
 */
-class ThreadVisitor
-    : public Visitor
+class ThreadVisitor:
+    public Visitor
 {
 
     friend class ThreadVisitorTest;
@@ -91,7 +91,11 @@ private:
 
     void           Visit               (ReturnVertex& vertex);
 
+    void           Visit               (ScopeVertex& vertex);
+
     void           Visit               (ScriptVertex& vertex);
+
+    void           Visit               (SentinelVertex& vertex);
 
     void           Visit               (StringVertex& vertex);
 
@@ -101,7 +105,7 @@ private:
 
     void           Visit               (WhileVertex& vertex);
 
-    void           visit_scope         (StatementVertices& statements);
+    // void           visit_scope         (StatementVertices& statements);
 
 };
 
