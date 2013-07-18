@@ -66,6 +66,8 @@ public:
 
     void           add_successor       (SyntaxVertex* successor);
 
+    void           set_successor       (SyntaxVertex* successor);
+
 protected:
 
                    SyntaxVertex        ();

@@ -129,13 +129,33 @@ SyntaxVertex* SyntaxVertex::successor(
 //! Adds a successor to the control flow graph of this vertex.
 /*!
   \param     successor Successor to set.
-  \sa        setSuccessor(SyntaxVertex*)
+  \sa        set_successor(SyntaxVertex*)
+
+  Prefer set_successor(SyntaxVertex*) over this method.
 */
 void SyntaxVertex::add_successor(
     SyntaxVertex* successor)
 {
     assert(successor);
     _successors.push_back(successor);
+}
+
+
+//! Adds a successor to the control flow graph of this vertex.
+/*!
+  \param     successor Successor to set.
+  \sa        add_successor(SyntaxVertex*)
+
+  Prefer this method over add_successor(SyntaxVertex*) because it checks
+  whether a successor is already set or not. Most of the times, a vertex
+  has a single successor.  Only call add_successor for those special
+  cases that a vertex can have more than one successor (eg: IfVertex).
+*/
+void SyntaxVertex::set_successor(
+    SyntaxVertex* successor)
+{
+    assert(_successors.empty());
+    add_successor(successor);
 }
 
 } // namespace ranally

@@ -463,23 +463,27 @@ def foo():
         BOOST_CHECK_EQUAL(tree->scope()->sentinel()->successor(), tree);
 
         BOOST_REQUIRE_EQUAL(tree->scope()->statements().size(), 1u);
-        ranally::FunctionDefinitionVertex const* vertex_foo =
+        ranally::FunctionDefinitionVertex const* function_definition_vertex =
             dynamic_cast<ranally::FunctionDefinitionVertex const*>(
                 &(*tree->scope()->statements()[0]));
-        BOOST_REQUIRE(vertex_foo);
+        BOOST_REQUIRE(function_definition_vertex);
 
-        BOOST_REQUIRE_EQUAL(vertex_foo->scope()->statements().size(), 1u);
+        BOOST_REQUIRE_EQUAL(
+            function_definition_vertex->scope()->statements().size(), 1u);
         ranally::ReturnVertex const* return_vertex =
             dynamic_cast<ranally::ReturnVertex const*>(
-                &(*vertex_foo->scope()->statements()[0]));
+                &(*function_definition_vertex->scope()->statements()[0]));
         BOOST_REQUIRE(return_vertex);
         BOOST_CHECK(!return_vertex->expression());
 
-        BOOST_CHECK_EQUAL(vertex_foo->successor(), vertex_foo->scope());
-        BOOST_CHECK_EQUAL(vertex_foo->scope()->successor(), return_vertex);
+        BOOST_CHECK_EQUAL(function_definition_vertex->successor(),
+            function_definition_vertex->scope());
+        BOOST_CHECK_EQUAL(function_definition_vertex->scope()->successor(),
+            return_vertex);
         BOOST_CHECK_EQUAL(return_vertex->successor(),
-            vertex_foo->scope()->sentinel());
-        BOOST_CHECK(!vertex_foo->scope()->sentinel()->has_successor());
+            function_definition_vertex->scope()->sentinel());
+        BOOST_CHECK(
+            !function_definition_vertex->scope()->sentinel()->has_successor());
     }
 
     {
@@ -493,8 +497,10 @@ def foo():
         // The defined function isn't called, so the script is in effect
         // empty. This doesn't mean the definition isn't in the script. It
         // means threading hasn't connected to the function.
-        // hier verder
-        BOOST_CHECK_EQUAL(tree->successor(), &(*tree));
+        BOOST_CHECK_EQUAL(tree->successor(), tree->scope());
+        BOOST_CHECK_EQUAL(tree->scope()->successor(),
+            tree->scope()->sentinel());
+        BOOST_CHECK_EQUAL(tree->scope()->sentinel()->successor(), tree);
 
         BOOST_REQUIRE_EQUAL(tree->scope()->statements().size(), 1u);
         ranally::FunctionDefinitionVertex const* vertex_foo =
@@ -512,10 +518,11 @@ def foo():
         ranally::SyntaxVertex const* number_vertex =
             &(*return_vertex->expression());
 
-        BOOST_CHECK_EQUAL(vertex_foo->successor(), number_vertex);
+        BOOST_CHECK_EQUAL(vertex_foo->successor(), vertex_foo->scope());
+        BOOST_CHECK_EQUAL(vertex_foo->scope()->successor(), number_vertex);
         BOOST_CHECK_EQUAL(number_vertex->successor(), return_vertex);
         BOOST_CHECK_EQUAL(return_vertex->successor(),
-            &(*vertex_foo->scope()->sentinel()));
+            vertex_foo->scope()->sentinel());
         BOOST_CHECK(!vertex_foo->scope()->sentinel()->has_successor());
     }
 
@@ -561,20 +568,24 @@ a = foo())")));
                 &(*assignment_vertex->target()));
         BOOST_REQUIRE(name_vertex);
 
-        BOOST_CHECK_EQUAL(tree->successor(), function_vertex);
+        BOOST_CHECK_EQUAL(tree->successor(), tree->scope());
+        BOOST_CHECK_EQUAL(tree->scope()->successor(), function_vertex);
         BOOST_CHECK_EQUAL(function_vertex->successor(), vertex_foo);
-        BOOST_CHECK_EQUAL(vertex_foo->successor(), number_vertex);
+        BOOST_CHECK_EQUAL(vertex_foo->successor(), vertex_foo->scope());
+        BOOST_CHECK_EQUAL(vertex_foo->scope()->successor(), number_vertex);
         BOOST_CHECK_EQUAL(number_vertex->successor(), return_vertex);
         BOOST_CHECK_EQUAL(return_vertex->successor(),
-            &(*vertex_foo->scope()->sentinel()));
+            vertex_foo->scope()->sentinel());
         BOOST_REQUIRE(vertex_foo->scope()->sentinel()->has_successor());
-        BOOST_CHECK_EQUAL(vertex_foo->scope()->sentinel()->successor(), name_vertex);
+        BOOST_CHECK_EQUAL(vertex_foo->scope()->sentinel()->successor(),
+            name_vertex);
         BOOST_CHECK_EQUAL(name_vertex->successor(), assignment_vertex);
-        BOOST_CHECK_EQUAL(assignment_vertex->successor(), &(*tree));
+        BOOST_CHECK_EQUAL(assignment_vertex->successor(),
+            tree->scope()->sentinel());
+        BOOST_CHECK_EQUAL(tree->scope()->sentinel()->successor(), tree);
     }
 
     {
-    std::cout << "test" << std::endl;
         // Test function without return statement.
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
             ranally::String(u8R"(
@@ -603,20 +614,23 @@ foo())")));
                 &(*tree->scope()->statements()[1]));
         BOOST_REQUIRE(function_call_vertex);
 
-        BOOST_CHECK_EQUAL(tree->successor(), function_call_vertex);
+        BOOST_CHECK_EQUAL(tree->successor(), tree->scope());
+        BOOST_CHECK_EQUAL(tree->scope()->successor(), function_call_vertex);
         BOOST_CHECK_EQUAL(function_call_vertex->successor(),
             function_definition_vertex);
-        BOOST_CHECK_EQUAL(function_definition_vertex->successor(), name_vertex);
-        BOOST_CHECK_EQUAL(name_vertex->successor(),
-            &(*function_definition_vertex->scope()->sentinel()));
-        // BOOST_CHECK_EQUAL(function_definition_vertex->scope()->sentinel()->successor(),
-        //     &(*tree->scope()->sentinel()));
+        BOOST_CHECK_EQUAL(function_definition_vertex->successor(),
+            function_definition_vertex->scope());
+        BOOST_CHECK_EQUAL(function_definition_vertex->scope()->successor(),
+            name_vertex);
+        BOOST_CHECK_EQUAL(name_vertex->successor(), 
+            function_definition_vertex->scope()->sentinel());
+        BOOST_REQUIRE(
+            function_definition_vertex->scope()->sentinel()->has_successor());
+        BOOST_CHECK_EQUAL(
+            function_definition_vertex->scope()->sentinel()->successor(),
+            tree->scope()->sentinel());
+        BOOST_CHECK_EQUAL(tree->scope()->sentinel()->successor(), tree);
     }
-
-
-return;
-
-
 
     {
         // Test whether function call can precede the definition.
@@ -633,9 +647,59 @@ def foo():
         BOOST_REQUIRE_EQUAL(tree->scope()->statements().size(), 2u);
 
 
+        ranally::AssignmentVertex const* assignment_vertex =
+            dynamic_cast<ranally::AssignmentVertex const*>(
+                &(*tree->scope()->statements()[0]));
+        BOOST_REQUIRE(assignment_vertex);
+
+        ranally::FunctionVertex const* function_call_vertex =
+            dynamic_cast<ranally::FunctionVertex const*>(
+                &(*assignment_vertex->expression()));
+        BOOST_REQUIRE(function_call_vertex);
+
+        ranally::NameVertex const* name_vertex =
+            dynamic_cast<ranally::NameVertex const*>(
+                &(*assignment_vertex->target()));
+        BOOST_REQUIRE(name_vertex);
 
 
-        // TODO
+        ranally::FunctionDefinitionVertex const* function_definition_vertex =
+            dynamic_cast<ranally::FunctionDefinitionVertex const*>(
+                &(*tree->scope()->statements()[1]));
+        BOOST_REQUIRE(function_definition_vertex);
+
+        BOOST_REQUIRE_EQUAL(
+            function_definition_vertex->scope()->statements().size(), 1u);
+        ranally::ReturnVertex const* return_vertex =
+            dynamic_cast<ranally::ReturnVertex const*>(
+                &(*function_definition_vertex->scope()->statements()[0]));
+        BOOST_REQUIRE(return_vertex);
+
+        BOOST_REQUIRE(return_vertex->expression());
+        ranally::NumberVertex<int64_t> const* number_vertex =
+            dynamic_cast<ranally::NumberVertex<int64_t> const*>(
+                &(*return_vertex->expression()));
+
+        BOOST_CHECK_EQUAL(tree->successor(), tree->scope());
+        BOOST_CHECK_EQUAL(tree->scope()->successor(), function_call_vertex);
+        BOOST_CHECK_EQUAL(function_call_vertex->successor(),
+            function_definition_vertex);
+        BOOST_CHECK_EQUAL(function_definition_vertex->successor(),
+            function_definition_vertex->scope());
+        BOOST_CHECK_EQUAL(function_definition_vertex->scope()->successor(),
+            number_vertex);
+        BOOST_CHECK_EQUAL(number_vertex->successor(), return_vertex);
+        BOOST_CHECK_EQUAL(return_vertex->successor(),
+            function_definition_vertex->scope()->sentinel());
+        BOOST_REQUIRE(
+            function_definition_vertex->scope()->sentinel()->has_successor());
+        BOOST_CHECK_EQUAL(
+            function_definition_vertex->scope()->sentinel()->successor(),
+            name_vertex);
+        BOOST_CHECK_EQUAL(name_vertex->successor(), assignment_vertex);
+        BOOST_CHECK_EQUAL(assignment_vertex->successor(),
+            tree->scope()->sentinel());
+        BOOST_CHECK_EQUAL(tree->scope()->sentinel()->successor(), tree);
     }
 
     // TODO Test function with return statement and subsequent statements.
@@ -649,6 +713,7 @@ def foo():
     // TODO Rename FunctionVertex to CallVertex?
     //      Rename FunctionDefinitionVertex to FunctionVertex?
     // TODO Add sentinel to script, if, while statements.
+    // TODO Test nested function definition.
 
 }
 

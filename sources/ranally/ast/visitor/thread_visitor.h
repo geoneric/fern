@@ -52,7 +52,7 @@ private:
     //! Stack of function definitions being visited.
     std::stack<FunctionDefinitionVertex*> _function_definitions;
 
-    Mode           _mode;
+    std::stack<Mode> _modes;
 
     void           Visit               (AssignmentVertex& vertex);
 
