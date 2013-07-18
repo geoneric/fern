@@ -762,8 +762,8 @@ private:
 };
 
 
-class Function_pimpl:
-    public ranally::Function_pskel
+class FunctionCall_pimpl:
+    public ranally::FunctionCall_pskel
 {
 
 public:
@@ -1068,7 +1068,7 @@ std::shared_ptr<ModuleVertex> XmlParser::parse(
     Expressions_pimpl expressions_p;
     expressions_p.parsers(expression_p);
 
-    Function_pimpl function_p;
+    FunctionCall_pimpl function_p;
     function_p.parsers(string_p, expressions_p);
 
     Operator_pimpl operator_p;

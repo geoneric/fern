@@ -54,6 +54,8 @@ private:
 
     std::stack<Mode> _modes;
 
+    void           thread_to           (AstVertex* vertex);
+
     void           Visit               (AssignmentVertex& vertex);
 
     void           Visit               (FunctionCallVertex& vertex);

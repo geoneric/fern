@@ -16,6 +16,16 @@ ThreadVisitor::ThreadVisitor()
 }
 
 
+void ThreadVisitor::thread_to(
+    AstVertex* vertex)
+{
+    if(_last_vertex) {
+        _last_vertex->set_successor(vertex);
+    }
+    _last_vertex = vertex;
+}
+
+
 void ThreadVisitor::Visit(
     AssignmentVertex& vertex)
 {
@@ -30,8 +40,7 @@ void ThreadVisitor::Visit(
             vertex.target()->Accept(*this);
 
             assert(_last_vertex);
-            _last_vertex->set_successor(&vertex);
-            _last_vertex = &vertex;
+            thread_to(&vertex);
             break;
         }
     }
@@ -49,9 +58,7 @@ void ThreadVisitor::Visit(
         case Mode::VisitNonFunctionDefinitionStatements: {
             visit_expressions(vertex.expressions());
 
-            assert(_last_vertex);
-            _last_vertex->set_successor(&vertex);
-            _last_vertex = &vertex;
+            thread_to(&vertex);
 
             // If the function calls a user defined function, then we
             // must pass control to it. When threading the AST, a user
@@ -64,7 +71,7 @@ void ThreadVisitor::Visit(
                     _symbol_table.value(vertex.name());
 
                 // Entry point of definition.
-                _last_vertex->set_successor(function_definition);
+                thread_to(function_definition);
 
                 // Exit point of definition.
                 _last_vertex = &(*function_definition->scope()->sentinel());
@@ -124,9 +131,7 @@ void ThreadVisitor::Visit(
         case Mode::VisitNonFunctionDefinitionStatements: {
             visit_expressions(vertex.expressions());
 
-            assert(_last_vertex);
-            _last_vertex->set_successor(&vertex);
-            _last_vertex = &vertex;
+            thread_to(&vertex);
             break;
         }
     }
@@ -163,9 +168,7 @@ void ThreadVisitor::Visit(
             break;
         }
         case Mode::VisitNonFunctionDefinitionStatements: {
-            assert(_last_vertex);
-            _last_vertex->set_successor(&vertex);
-            _last_vertex = &vertex;
+            thread_to(&vertex);
             break;
         }
     }
@@ -181,9 +184,7 @@ void ThreadVisitor::Visit(
             break;
         }
         case Mode::VisitNonFunctionDefinitionStatements: {
-            assert(_last_vertex);
-            _last_vertex->set_successor(&vertex);
-            _last_vertex = &vertex;
+            thread_to(&vertex);
             break;
         }
     }
@@ -200,11 +201,9 @@ void ThreadVisitor::Visit(
         }
         case Mode::VisitNonFunctionDefinitionStatements: {
             // First we must get the control.
-            assert(_last_vertex);
-            _last_vertex->set_successor(&vertex);
+            thread_to(&vertex);
 
             // Let the main expression thread itself.
-            _last_vertex = &vertex;
             vertex.expression()->Accept(*this);
             _last_vertex->set_successor(&vertex);
 
@@ -230,9 +229,8 @@ void ThreadVisitor::Visit(
             break;
         }
         case Mode::VisitNonFunctionDefinitionStatements: {
-            assert(_last_vertex);
-            _last_vertex->set_successor(&vertex);
-            _last_vertex = &vertex;
+            thread_to(&vertex);
+
             break;
         }
     }
@@ -264,8 +262,14 @@ void ThreadVisitor::Visit(
             if(vertex.expression()) {
                 vertex.expression()->Accept(*this);
             }
-            _last_vertex->set_successor(&vertex);
-            _last_vertex = &vertex;
+            thread_to(&vertex);
+
+            // We can't assume that the next vertex will be the sentinel. It
+            // is allowed to put stuff after a return statement. So we need
+            // to explicitly connect to the sentinel ourselves. See
+            // Visit(ScopeVertex) for more info.
+            _last_vertex->set_successor(
+                &*_function_definitions.top()->scope()->sentinel());
             break;
         }
     }
@@ -281,6 +285,7 @@ void ThreadVisitor::Visit(
             break;
         }
         case Mode::VisitNonFunctionDefinitionStatements: {
+            assert(_last_vertex);
             _last_vertex->set_successor(&vertex);
             _last_vertex = &vertex;
             break;
@@ -383,8 +388,35 @@ void ThreadVisitor::Visit(
         _last_vertex->add_successor(&vertex);
         _last_vertex = &vertex;
 
-        visit_statements(vertex.statements());
-        Visit(*vertex.sentinel());
+        for(auto statementVertex: vertex.statements()) {
+            statementVertex->Accept(*this);
+            assert(_last_vertex);
+            // Iff the last vertex' successor is the sentinel of this scope,
+            // then the last statement was the return statement, which
+            // explicitly connected to the sentinel. In that case we reset
+            // the _last_vertex pointer to null. Subsequent statements are
+            // threaded but they are not connected to the control flow graph.
+            // This is the reason that leave vertices (expressions,
+            // return statement) have to test whether _last_vertex is not
+            // null before attaching (they call thread_to(AstVertex)).
+            if(_last_vertex->has_successor()) {
+                assert(_last_vertex->successor() == &*vertex.sentinel());
+                _last_vertex = nullptr;
+            }
+        }
+
+        // If _last_vertex is the null vertex, then the last statement was
+        // a return statement which is already connected to the sentinel
+        // vertex. Otherwise, just visit the sentinel vertex.
+        if(!_last_vertex) {
+            assert(vertex.statements().back()->successor() ==
+                &*vertex.sentinel());
+            _last_vertex = &*vertex.sentinel();
+        }
+        else {
+            Visit(*vertex.sentinel());
+        }
+
         _modes.pop();
     }
 

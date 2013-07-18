@@ -635,12 +635,15 @@ foo())")));
     {
         // Test whether function call can precede the definition.
         // Test whether the original order of the statements is maintained.
+        // Test whether statements after the return statement are threaded.
+        // These are unreachable, but must be threaded anyway.
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
             ranally::String(u8R"(
 a = foo()
 
 def foo():
     return 5
+    6
 )")));
         tree->Accept(_visitor);
 
@@ -669,16 +672,22 @@ def foo():
         BOOST_REQUIRE(function_definition_vertex);
 
         BOOST_REQUIRE_EQUAL(
-            function_definition_vertex->scope()->statements().size(), 1u);
+            function_definition_vertex->scope()->statements().size(), 2u);
         ranally::ReturnVertex const* return_vertex =
             dynamic_cast<ranally::ReturnVertex const*>(
                 &(*function_definition_vertex->scope()->statements()[0]));
         BOOST_REQUIRE(return_vertex);
 
+        ranally::NumberVertex<int64_t> const* number6_vertex =
+            dynamic_cast<ranally::NumberVertex<int64_t> const*>(
+                &(*function_definition_vertex->scope()->statements()[1]));
+        BOOST_REQUIRE(number6_vertex);
+
         BOOST_REQUIRE(return_vertex->expression());
-        ranally::NumberVertex<int64_t> const* number_vertex =
+        ranally::NumberVertex<int64_t> const* number5_vertex =
             dynamic_cast<ranally::NumberVertex<int64_t> const*>(
                 &(*return_vertex->expression()));
+        BOOST_REQUIRE(number5_vertex);
 
         BOOST_CHECK_EQUAL(tree->successor(), tree->scope());
         BOOST_CHECK_EQUAL(tree->scope()->successor(), function_call_vertex);
@@ -687,10 +696,15 @@ def foo():
         BOOST_CHECK_EQUAL(function_definition_vertex->successor(),
             function_definition_vertex->scope());
         BOOST_CHECK_EQUAL(function_definition_vertex->scope()->successor(),
-            number_vertex);
-        BOOST_CHECK_EQUAL(number_vertex->successor(), return_vertex);
+            number5_vertex);
+        BOOST_CHECK_EQUAL(number5_vertex->successor(), return_vertex);
         BOOST_CHECK_EQUAL(return_vertex->successor(),
             function_definition_vertex->scope()->sentinel());
+
+        // number6_vertex is unreachable.
+        BOOST_CHECK_EQUAL(number6_vertex->successor(),
+            function_definition_vertex->scope()->sentinel());
+
         BOOST_REQUIRE(
             function_definition_vertex->scope()->sentinel()->has_successor());
         BOOST_CHECK_EQUAL(
@@ -702,16 +716,11 @@ def foo():
         BOOST_CHECK_EQUAL(tree->scope()->sentinel()->successor(), tree);
     }
 
-    // TODO Test function with return statement and subsequent statements.
-
-
     // TODO Add two arguments to the function and let the function return
     //      the sum.
 
 
     // TODO Test nested function definition.
-
-
 
 }
 

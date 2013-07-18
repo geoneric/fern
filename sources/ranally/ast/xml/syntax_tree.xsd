@@ -151,8 +151,8 @@
         name="Number"
         type="ranally:Number"/>
       <xs:element
-        name="Function"
-        type="ranally:Function"/>
+        name="FunctionCall"
+        type="ranally:FunctionCall"/>
       <xs:element
         name="Operator"
         type="ranally:Operator"/>
@@ -219,7 +219,7 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="Function">
+  <xs:complexType name="FunctionCall">
     <xs:sequence>
       <xs:element
         name="Name"
