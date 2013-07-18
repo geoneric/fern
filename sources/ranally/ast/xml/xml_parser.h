@@ -5,7 +5,7 @@
 
 namespace ranally {
 
-class ScriptVertex;
+class ModuleVertex;
 
 //! An XmlParser parses an XML document and converts it to a syntax tree.
 /*!
@@ -35,12 +35,12 @@ public:
 
     XmlParser&     operator=           (XmlParser const&)=delete;
 
-    std::shared_ptr<ScriptVertex> parse_string(
+    std::shared_ptr<ModuleVertex> parse_string(
                                         String const& xml) const;
 
 private:
 
-    std::shared_ptr<ScriptVertex> parse(std::istream& stream) const;
+    std::shared_ptr<ModuleVertex> parse(std::istream& stream) const;
 
 };
 

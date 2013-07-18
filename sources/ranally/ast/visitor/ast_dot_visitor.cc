@@ -53,8 +53,8 @@ void AstDotVisitor::set_mode(
 
 
 void AstDotVisitor::add_ast_vertex(
-    SyntaxVertex const& source_vertex,
-    SyntaxVertex const& target_vertex)
+    AstVertex const& source_vertex,
+    AstVertex const& target_vertex)
 {
     assert(_mode == Mode::ConnectingAst);
     add_script(
@@ -66,7 +66,7 @@ void AstDotVisitor::add_ast_vertex(
 
 
 void AstDotVisitor::add_cfg_vertices(
-    SyntaxVertex const& source_vertex)
+    AstVertex const& source_vertex)
 {
     assert(_mode == Mode::ConnectingCfg);
     for(auto successor: source_vertex.successors()) {
@@ -217,7 +217,7 @@ void AstDotVisitor::Visit(
 
 
 void AstDotVisitor::Visit(
-    FunctionVertex& vertex)
+    FunctionCallVertex& vertex)
 {
     switch(_mode) {
         case Mode::Declaring: {
@@ -434,7 +434,7 @@ void AstDotVisitor::Visit(
 
 
 void AstDotVisitor::Visit(
-    ScriptVertex& vertex)
+    ModuleVertex& vertex)
 {
     // TODO 'ordering=out' is current not supported in combination with
     // TODO 'constraint=false'. Check again with dot > 2.28.0, when it becomes

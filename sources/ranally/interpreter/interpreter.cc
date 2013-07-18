@@ -4,7 +4,6 @@
 #include "ranally/core/parse_error.h"
 #include "ranally/core/validate_error.h"
 #include "ranally/operation/std/operations.h"
-#include "ranally/ast/core/script_vertex.h"
 #include "ranally/ast/visitor/identify_visitor.h"
 #include "ranally/ast/visitor/thread_visitor.h"
 
@@ -33,10 +32,10 @@ Interpreter::Interpreter()
   \warning   .
   \sa        .
 */
-ScriptVertexPtr Interpreter::parse_string(
+ModuleVertexPtr Interpreter::parse_string(
     String const& string) const
 {
-    ScriptVertexPtr script_vertex;
+    ModuleVertexPtr script_vertex;
 
     try {
         script_vertex = _xml_parser.parse_string(_algebra_parser.parse_string(
@@ -104,10 +103,10 @@ ScriptVertexPtr Interpreter::parse_string(
 
   In case \a filename is empty, the script is read from standard input.
 */
-ScriptVertexPtr Interpreter::parse_file(
+ModuleVertexPtr Interpreter::parse_file(
     String const& filename) const
 {
-    ScriptVertexPtr script_vertex;
+    ModuleVertexPtr script_vertex;
 
     try {
         if(filename.is_empty()) {
@@ -202,7 +201,7 @@ ScriptVertexPtr Interpreter::parse_file(
   - Annotation.
 */
 void Interpreter::annotate(
-    ScriptVertexPtr const& tree)
+    ModuleVertexPtr const& tree)
 {
     ThreadVisitor thread_visitor;
     tree->Accept(thread_visitor);
@@ -223,11 +222,11 @@ void Interpreter::annotate(
   result of parsing a script, without further processing.
 
   The folowing steps are performed:
-  - Annotation (see annotate(ScriptVertexPtr const&)).
+  - Annotation (see annotate(ModuleVertexPtr const&)).
   - Validation.
 */
 void Interpreter::validate(
-    ScriptVertexPtr const& tree)
+    ModuleVertexPtr const& tree)
 {
     try {
         annotate(tree);
@@ -283,11 +282,11 @@ void Interpreter::validate(
   result of parsing a script, without further processing.
 
   The folowing steps are performed:
-  - Validation (see validate(ScriptVertexPtr const&)).
+  - Validation (see validate(ModuleVertexPtr const&)).
   - Execution.
 */
 void Interpreter::execute(
-    ScriptVertexPtr const& tree)
+    ModuleVertexPtr const& tree)
 {
     validate(tree);
     tree->Accept(_back_end);

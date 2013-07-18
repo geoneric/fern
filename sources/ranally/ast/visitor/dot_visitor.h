@@ -42,7 +42,7 @@ private:
 
     String         _script;
 
-    virtual void   Visit               (ScriptVertex& vertex)=0;
+    virtual void   Visit               (ModuleVertex& vertex)=0;
 
 };
 

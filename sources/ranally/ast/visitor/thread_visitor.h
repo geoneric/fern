@@ -44,7 +44,7 @@ private:
     };
 
     //! Last vertex processed on the control flow path.
-    SyntaxVertex*  _last_vertex;
+    AstVertex*     _last_vertex;
 
     //! Symbol table with function definitions.
     SymbolTable<FunctionDefinitionVertex*> _symbol_table;
@@ -56,7 +56,7 @@ private:
 
     void           Visit               (AssignmentVertex& vertex);
 
-    void           Visit               (FunctionVertex& vertex);
+    void           Visit               (FunctionCallVertex& vertex);
 
     void           Visit               (FunctionDefinitionVertex& vertex);
 
@@ -93,7 +93,7 @@ private:
 
     void           Visit               (ScopeVertex& vertex);
 
-    void           Visit               (ScriptVertex& vertex);
+    void           Visit               (ModuleVertex& vertex);
 
     void           Visit               (SentinelVertex& vertex);
 
@@ -101,7 +101,7 @@ private:
 
     void           Visit               (SubscriptVertex& vertex);
 
-    void           Visit               (SyntaxVertex& vertex);
+    void           Visit               (AstVertex& vertex);
 
     void           Visit               (WhileVertex& vertex);
 

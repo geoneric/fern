@@ -2,7 +2,7 @@
 #include <boost/test/unit_test.hpp>
 
 
-BOOST_AUTO_TEST_SUITE(syntax_vertex)
+BOOST_AUTO_TEST_SUITE(ast_vertex)
 
 BOOST_AUTO_TEST_CASE(dummy)
 {

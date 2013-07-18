@@ -128,7 +128,7 @@ void enter_interpreter()
     std::unique_ptr<char> line;
     ranally::String statement;
     ranally::Interpreter interpreter;
-    std::shared_ptr<ranally::ScriptVertex> script_vertex;
+    std::shared_ptr<ranally::ModuleVertex> script_vertex;
 
     ranally::show_version();
     using_history();

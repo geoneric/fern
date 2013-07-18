@@ -44,14 +44,14 @@ private:
     void           set_mode            (Mode mode);
 
     void           add_flowgraph_vertex(NameVertex const& source_vertex,
-                                        SyntaxVertex const& target_vertex);
+                                        AstVertex const& target_vertex);
 
-    void           add_flowgraph_vertex(SyntaxVertex const& source_vertex,
-                                        SyntaxVertex const& target_vertex);
+    void           add_flowgraph_vertex(AstVertex const& source_vertex,
+                                        AstVertex const& target_vertex);
 
     void           Visit               (AssignmentVertex& vertex);
 
-    void           Visit               (FunctionVertex& vertex);
+    void           Visit               (FunctionCallVertex& vertex);
 
     void           Visit               (IfVertex& vertex);
 
@@ -82,7 +82,7 @@ private:
 
     void           Visit               (OperatorVertex& vertex);
 
-    void           Visit               (ScriptVertex& vertex);
+    void           Visit               (ModuleVertex& vertex);
 
     void           Visit               (StringVertex& vertex);
 

@@ -33,7 +33,7 @@ BOOST_FIXTURE_TEST_SUITE(optimize_visitor, Support)
 
 BOOST_AUTO_TEST_CASE(remove_temporary_identifier)
 {
-    std::shared_ptr<ranally::ScriptVertex> tree;
+    std::shared_ptr<ranally::ModuleVertex> tree;
     ranally::String script;
 
     // Make sure that temporary identifiers which are only used as input to

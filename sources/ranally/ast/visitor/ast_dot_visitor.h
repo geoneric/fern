@@ -47,20 +47,22 @@ private:
 
     void           set_mode            (Mode mode);
 
-    void           add_ast_vertex      (SyntaxVertex const& sourceVertex,
-                                        SyntaxVertex const& targetVertex);
+    void           add_ast_vertex      (AstVertex const& sourceVertex,
+                                        AstVertex const& targetVertex);
 
-    void           add_cfg_vertices    (SyntaxVertex const& sourceVertex);
+    void           add_cfg_vertices    (AstVertex const& sourceVertex);
 
     void           add_use_vertices    (NameVertex const& vertex);
 
     void           Visit               (AssignmentVertex& vertex);
 
-    void           Visit               (FunctionVertex& vertex);
+    void           Visit               (FunctionCallVertex& vertex);
 
     void           Visit               (FunctionDefinitionVertex& vertex);
 
     void           Visit               (IfVertex& vertex);
+
+    void           Visit               (ModuleVertex& vertex);
 
     void           Visit               (NameVertex& vertex);
 
@@ -90,8 +92,6 @@ private:
     void           Visit               (OperatorVertex& vertex);
 
     void           Visit               (ReturnVertex& vertex);
-
-    void           Visit               (ScriptVertex& vertex);
 
     void           Visit               (StringVertex& vertex);
 

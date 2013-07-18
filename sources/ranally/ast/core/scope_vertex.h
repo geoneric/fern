@@ -5,7 +5,7 @@
 namespace ranally {
 
 class ScopeVertex:
-    public SyntaxVertex
+    public AstVertex
 {
 
 public:

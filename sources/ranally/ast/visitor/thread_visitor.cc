@@ -39,7 +39,7 @@ void ThreadVisitor::Visit(
 
 
 void ThreadVisitor::Visit(
-    FunctionVertex& vertex)
+    FunctionCallVertex& vertex)
 {
     switch(_modes.top()) {
         case Mode::VisitFunctionDefinitionStatements: {
@@ -83,8 +83,8 @@ void ThreadVisitor::Visit(
         case Mode::VisitFunctionDefinitionStatements: {
             // Don't hook up this definition to the current _last_vertex. It
             // is up to the caller to hook the definition up appropriately
-            // (ѕee Visit(FunctionVertex)).
-            SyntaxVertex* original_last_vertex = _last_vertex;
+            // (ѕee Visit(FunctionCallVertex)).
+            AstVertex* original_last_vertex = _last_vertex;
 
             // Push the current function definition being processed. This is
             // used by return vertices to connect to the function's sentinel.
@@ -134,14 +134,14 @@ void ThreadVisitor::Visit(
 
 
 void ThreadVisitor::Visit(
-    SyntaxVertex&)
+    AstVertex&)
 {
     assert(false);
 }
 
 
 void ThreadVisitor::Visit(
-    ScriptVertex& vertex)
+    ModuleVertex& vertex)
 {
     assert(_symbol_table.empty());
     assert(_function_definitions.empty());
@@ -357,10 +357,10 @@ void ThreadVisitor::Visit(
     // function definition's statements are threaded now, but aren't
     // connected to the current thread. Only when the function is called
     // is the function definition's thread connected to the main thread
-    // (see Visit(FunctionVertex&)).
+    // (see Visit(FunctionCallVertex&)).
     {
         assert(_last_vertex);
-        SyntaxVertex* original_last_vertex = _last_vertex;
+        AstVertex* original_last_vertex = _last_vertex;
 
         _modes.push(Mode::VisitFunctionDefinitionStatements);
         _last_vertex = &vertex;

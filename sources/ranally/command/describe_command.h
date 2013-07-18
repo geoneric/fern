@@ -35,7 +35,7 @@ public:
 
 private:
 
-    void           describe            (ScriptVertexPtr const& tree) const;
+    void           describe            (ModuleVertexPtr const& tree) const;
 
 };
 

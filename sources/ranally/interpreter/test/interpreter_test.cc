@@ -14,7 +14,7 @@ BOOST_AUTO_TEST_SUITE(interpreter)
 BOOST_AUTO_TEST_CASE(parse_string)
 {
     ranally::Interpreter interpreter;
-    ranally::ScriptVertexPtr vertex;
+    ranally::ModuleVertexPtr vertex;
 
     // String with valid statements, should succeed.
     std::vector<ranally::String> valid_statements = {
@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE(parse_string)
 BOOST_AUTO_TEST_CASE(parse_file)
 {
     ranally::Interpreter interpreter;
-    ranally::ScriptVertexPtr vertex;
+    ranally::ModuleVertexPtr vertex;
 
     // File with valid statement, should succeed.
     std::vector<ranally::String> valid_files = {
@@ -86,7 +86,7 @@ BOOST_AUTO_TEST_CASE(parse_file)
 BOOST_AUTO_TEST_CASE(validate)
 {
     ranally::Interpreter interpreter;
-    ranally::ScriptVertexPtr vertex;
+    ranally::ModuleVertexPtr vertex;
 
     vertex = interpreter.parse_file("valid-1.ran");
     BOOST_CHECK(vertex);
@@ -133,7 +133,7 @@ BOOST_AUTO_TEST_CASE(validate)
 BOOST_AUTO_TEST_CASE(execute)
 {
     ranally::Interpreter interpreter;
-    ranally::ScriptVertexPtr tree;
+    ranally::ModuleVertexPtr tree;
 
     struct TestAbsResult {
         void operator()(ranally::Interpreter& interpreter) {

@@ -78,7 +78,7 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-    FunctionVertex& vertex)
+    FunctionCallVertex& vertex)
 {
     _script += vertex.name();
     visit_expressions(vertex.expressions());
@@ -114,14 +114,14 @@ void ScriptVisitor::Visit(
 
 
 void ScriptVisitor::Visit(
-    SyntaxVertex&)
+    AstVertex&)
 {
     assert(false);
 }
 
 
 void ScriptVisitor::Visit(
-    ScriptVertex& vertex)
+    ModuleVertex& vertex)
 {
     _indent_level = 0;
     _script = String();

@@ -23,7 +23,7 @@ void FlowgraphDotVisitor::set_mode(
 
 void FlowgraphDotVisitor::add_flowgraph_vertex(
     NameVertex const& source_vertex,
-    SyntaxVertex const& target_vertex)
+    AstVertex const& target_vertex)
 {
     if(!source_vertex.definitions().empty()) {
         for(auto definition: source_vertex.definitions()) {
@@ -45,8 +45,8 @@ void FlowgraphDotVisitor::add_flowgraph_vertex(
 
 
 void FlowgraphDotVisitor::add_flowgraph_vertex(
-    SyntaxVertex const& source_vertex,
-    SyntaxVertex const& target_vertex)
+    AstVertex const& source_vertex,
+    AstVertex const& target_vertex)
 {
     assert(_mode == Mode::ConnectingFlowgraph);
 
@@ -64,8 +64,8 @@ void FlowgraphDotVisitor::add_flowgraph_vertex(
     /// //      it is, instead of optimizing the plot by finding stuff ourselves.
     /// assert(!_definition);
     /// _mode = ConnectingOperationArgument;
-    /// const_cast<SyntaxVertex&>(source_vertex).Accept(*this);
-    /// SyntaxVertex const* new_source_vertex = _definition
+    /// const_cast<AstVertex&>(source_vertex).Accept(*this);
+    /// AstVertex const* new_source_vertex = _definition
     ///   ? _definition
     ///   : &source_vertex;
 
@@ -120,7 +120,7 @@ void FlowgraphDotVisitor::Visit(
 
 
 void FlowgraphDotVisitor::Visit(
-    FunctionVertex& vertex)
+    FunctionCallVertex& vertex)
 {
     switch(_mode) {
         case Mode::Declaring: {
@@ -388,7 +388,7 @@ void FlowgraphDotVisitor::Visit(
 
 
 void FlowgraphDotVisitor::Visit(
-    ScriptVertex& vertex)
+    ModuleVertex& vertex)
 {
     set_script(String(
         "digraph G {\n"

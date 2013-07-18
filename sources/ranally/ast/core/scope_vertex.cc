@@ -6,7 +6,7 @@ namespace ranally {
 ScopeVertex::ScopeVertex(
     StatementVertices const& statements)
 
-    : SyntaxVertex(),
+    : AstVertex(),
       _statements(statements),
       _sentinel(new SentinelVertex())
 

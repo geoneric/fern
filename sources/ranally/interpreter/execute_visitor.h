@@ -70,6 +70,8 @@ private:
 
     void           Visit               (IfVertex& vertex);
 
+    void           Visit               (ModuleVertex& vertex);
+
     void           Visit               (NameVertex& vertex);
 
     void           Visit               (NumberVertex<int8_t>& vertex);
@@ -93,8 +95,6 @@ private:
     void           Visit               (NumberVertex<double>& vertex);
 
     void           Visit               (OperationVertex& vertex);
-
-    void           Visit               (ScriptVertex& vertex);
 
     void           Visit               (StringVertex& vertex);
 

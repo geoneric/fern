@@ -4,10 +4,10 @@
 #include "ranally/ast/core/assignment_vertex.h"
 #include "ranally/ast/visitor/identify_visitor.h"
 #include "ranally/ast/core/if_vertex.h"
-#include "ranally/ast/core/function_vertex.h"
+#include "ranally/ast/core/function_call_vertex.h"
+#include "ranally/ast/core/module_vertex.h"
 #include "ranally/ast/core/name_vertex.h"
 #include "ranally/ast/core/operator_vertex.h"
-#include "ranally/ast/core/script_vertex.h"
 #include "ranally/ast/xml/xml_parser.h"
 
 
@@ -37,7 +37,7 @@ BOOST_FIXTURE_TEST_SUITE(identify_visitor, Support)
 
 BOOST_AUTO_TEST_CASE(visit_empty_script)
 {
-    std::shared_ptr<ranally::ScriptVertex> tree;
+    std::shared_ptr<ranally::ModuleVertex> tree;
 
     tree = _xml_parser.parse_string(_algebra_parser.parse_string(
         ranally::String("")));
@@ -47,13 +47,14 @@ BOOST_AUTO_TEST_CASE(visit_empty_script)
 
 BOOST_AUTO_TEST_CASE(visit_name)
 {
-    std::shared_ptr<ranally::ScriptVertex> tree;
+    std::shared_ptr<ranally::ModuleVertex> tree;
 
     tree = _xml_parser.parse_string(_algebra_parser.parse_string(
         ranally::String("a")));
 
     ranally::NameVertex const* vertex_a =
-        dynamic_cast<ranally::NameVertex const*>(&(*tree->scope()->statements()[0]));
+        dynamic_cast<ranally::NameVertex const*>(
+            &(*tree->scope()->statements()[0]));
 
     BOOST_CHECK(vertex_a->definitions().empty());
     BOOST_CHECK(vertex_a->uses().empty());
@@ -67,7 +68,7 @@ BOOST_AUTO_TEST_CASE(visit_name)
 
 BOOST_AUTO_TEST_CASE(visit_assignment)
 {
-    std::shared_ptr<ranally::ScriptVertex> tree;
+    std::shared_ptr<ranally::ModuleVertex> tree;
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
@@ -119,8 +120,8 @@ BOOST_AUTO_TEST_CASE(visit_assignment)
         ranally::AssignmentVertex const* assignment_2 =
             dynamic_cast<ranally::AssignmentVertex const*>(
                 &(*tree->scope()->statements()[1]));
-        ranally::FunctionVertex const* function =
-            dynamic_cast<ranally::FunctionVertex const*>(
+        ranally::FunctionCallVertex const* function =
+            dynamic_cast<ranally::FunctionCallVertex const*>(
                 &(*assignment_2->expression()));
         ranally::NameVertex const* vertex_a2 =
             dynamic_cast<ranally::NameVertex const*>(
@@ -164,7 +165,7 @@ BOOST_AUTO_TEST_CASE(visit_assignment)
 
 BOOST_AUTO_TEST_CASE(visit_if)
 {
-    std::shared_ptr<ranally::ScriptVertex> tree;
+    std::shared_ptr<ranally::ModuleVertex> tree;
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
@@ -222,7 +223,7 @@ BOOST_AUTO_TEST_CASE(visit_if)
 
 BOOST_AUTO_TEST_CASE(visit_reuse_of_identifiers)
 {
-    std::shared_ptr<ranally::ScriptVertex> tree;
+    std::shared_ptr<ranally::ModuleVertex> tree;
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
@@ -248,8 +249,8 @@ BOOST_AUTO_TEST_CASE(visit_reuse_of_identifiers)
         ranally::NameVertex const* vertex_b1 =
             dynamic_cast<ranally::NameVertex const*>(
                 &(*assignment_2->target()));
-        ranally::FunctionVertex const* vertex_abs1 =
-            dynamic_cast<ranally::FunctionVertex const*>(
+        ranally::FunctionCallVertex const* vertex_abs1 =
+            dynamic_cast<ranally::FunctionCallVertex const*>(
                 &(*assignment_2->expression()));
         ranally::NameVertex const* vertex_a2 =
             dynamic_cast<ranally::NameVertex const*>(
@@ -265,8 +266,8 @@ BOOST_AUTO_TEST_CASE(visit_reuse_of_identifiers)
         ranally::NameVertex const* vertex_c1 =
             dynamic_cast<ranally::NameVertex const*>(
                 &(*assignment_3->target()));
-        ranally::FunctionVertex const* vertex_abs2 =
-            dynamic_cast<ranally::FunctionVertex const*>(
+        ranally::FunctionCallVertex const* vertex_abs2 =
+            dynamic_cast<ranally::FunctionCallVertex const*>(
                 &(*assignment_3->expression()));
         ranally::NameVertex const* vertex_b2 =
             dynamic_cast<ranally::NameVertex const*>(

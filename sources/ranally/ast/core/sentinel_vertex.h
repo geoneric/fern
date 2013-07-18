@@ -1,11 +1,11 @@
 #pragma once
-#include "ranally/ast/core/syntax_vertex.h"
+#include "ranally/ast/core/ast_vertex.h"
 
 
 namespace ranally {
 
 class SentinelVertex:
-    public SyntaxVertex
+    public AstVertex
 {
 
 public:

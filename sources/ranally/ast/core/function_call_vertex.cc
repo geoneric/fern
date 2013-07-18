@@ -1,9 +1,9 @@
-#include "ranally/ast/core/function_vertex.h"
+#include "ranally/ast/core/function_call_vertex.h"
 
 
 namespace ranally {
 
-FunctionVertex::FunctionVertex(
+FunctionCallVertex::FunctionCallVertex(
     String const& name,
     ExpressionVertices const& expressions)
 

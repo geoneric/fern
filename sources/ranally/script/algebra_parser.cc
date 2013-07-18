@@ -174,11 +174,11 @@ void write_call_node(
     assert(starargs == 0); // TODO
     assert(kwargs == 0); // TODO
 
-    xml += "<Function>";
+    xml += "<FunctionCall>";
     assert(function->kind == Name_kind);
     write_name_node(function->v.Name.id, function->v.Name.ctx, xml);
     write_expressions_node(arguments, xml);
-    xml += "</Function>";
+    xml += "</FunctionCall>";
 }
 
 
@@ -639,12 +639,12 @@ void write_return_node(
 //     xml += (boost::format("<Expression line=\"%1%\" col=\"%2%\">")
 //         % expression->lineno
 //         % expression->col_offset);
-//     xml += "<Function>";
+//     xml += "<FunctionCall>";
 //     xml += "<Name>";
 //     xml += "print";
 //     xml += "</Name>";
 //     write_expressions_node(values, xml);
-//     xml += "</Function>";
+//     xml += "</FunctionCall>";
 //     xml += "</Expression>";
 // }
 

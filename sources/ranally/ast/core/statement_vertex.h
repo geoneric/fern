@@ -1,5 +1,5 @@
 #pragma once
-#include "ranally/ast/core/syntax_vertex.h"
+#include "ranally/ast/core/ast_vertex.h"
 
 
 namespace ranally {
@@ -11,7 +11,7 @@ namespace ranally {
   \sa        .
 */
 class StatementVertex:
-    public SyntaxVertex
+    public AstVertex
 {
 
     friend class StatementVertexTest;

@@ -37,7 +37,7 @@ void IdentifyVisitor::Visit(
 
 
 void IdentifyVisitor::Visit(
-    FunctionVertex& vertex)
+    FunctionCallVertex& vertex)
 {
     visit_expressions(vertex.expressions());
 }
@@ -104,7 +104,7 @@ void IdentifyVisitor::Visit(
 
 
 void IdentifyVisitor::Visit(
-    ScriptVertex& vertex)
+    ModuleVertex& vertex)
 {
     assert(_symbol_table.empty());
     _symbol_table.push_scope();

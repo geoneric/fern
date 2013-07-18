@@ -1,7 +1,7 @@
 #define BOOST_TEST_MODULE ranally ast
 #include <boost/test/unit_test.hpp>
 #include "ranally/script/algebra_parser.h"
-#include "ranally/ast/core/script_vertex.h"
+#include "ranally/ast/core/module_vertex.h"
 #include "ranally/ast/visitor/visitor.h"
 #include "ranally/ast/xml/xml_parser.h"
 
@@ -28,14 +28,14 @@ private:
     size_t           _nr_vertices;
 
     void Visit(
-        ranally::ScriptVertex& vertex)
+        ranally::ModuleVertex& vertex)
     {
         _nr_vertices = 0u;
         ranally::Visitor::Visit(vertex);
     }
 
     void Visit(
-        ranally::SyntaxVertex& /* vertex */)
+        ranally::AstVertex& /* vertex */)
     {
         ++_nr_vertices;
     }
@@ -69,7 +69,7 @@ BOOST_FIXTURE_TEST_SUITE(visitor, Support)
 BOOST_AUTO_TEST_CASE(count_vertices_visitor)
 {
     CountVerticesVisitor visitor;
-    std::shared_ptr<ranally::ScriptVertex> tree;
+    std::shared_ptr<ranally::ModuleVertex> tree;
 
     // Empty script.
     {

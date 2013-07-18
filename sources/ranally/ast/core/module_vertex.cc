@@ -1,14 +1,14 @@
-#include "ranally/ast/core/script_vertex.h"
-#include "ranally/ast/visitor/copy_visitor.h"
+#include "ranally/ast/core/module_vertex.h"
+// #include "ranally/ast/visitor/copy_visitor.h"
 
 
 namespace ranally {
 
-ScriptVertex::ScriptVertex(
+ModuleVertex::ModuleVertex(
     String const& source_name,
     std::shared_ptr<ScopeVertex> const& scope)
 
-    : SyntaxVertex(),
+    : AstVertex(),
       _source_name(source_name),
       _scope(scope)
 
@@ -16,10 +16,10 @@ ScriptVertex::ScriptVertex(
 }
 
 
-// ScriptVertex::ScriptVertex(
-//   ScriptVertex const& other)
+// ModuleVertex::ModuleVertex(
+//   ModuleVertex const& other)
 // 
-//   : SyntaxVertex(other),
+//   : AstVertex(other),
 //     _source_name(other._source_name)
 // 
 // {
@@ -33,27 +33,27 @@ ScriptVertex::ScriptVertex(
 // }
 
 
-String const& ScriptVertex::source_name() const
+String const& ModuleVertex::source_name() const
 {
     return _source_name;
 }
 
 
-std::shared_ptr<ScopeVertex> const& ScriptVertex::scope() const
+std::shared_ptr<ScopeVertex> const& ModuleVertex::scope() const
 {
     return _scope;
 }
 
 
-std::shared_ptr<ScopeVertex>& ScriptVertex::scope()
+std::shared_ptr<ScopeVertex>& ModuleVertex::scope()
 {
     return _scope;
 }
 
 
 // bool operator==(
-//   ScriptVertex const& lhs,
-//   ScriptVertex const& rhs)
+//   ModuleVertex const& lhs,
+//   ModuleVertex const& rhs)
 // {
 //   // EqualityVisitor visitor(&rhs);
 //   // lhs.Accept(visitor);
@@ -64,8 +64,8 @@ std::shared_ptr<ScopeVertex>& ScriptVertex::scope()
 
 
 // bool operator!=(
-//   ScriptVertex const& lhs,
-//   ScriptVertex const& rhs)
+//   ModuleVertex const& lhs,
+//   ModuleVertex const& rhs)
 // {
 //   return !(lhs == rhs);
 // }

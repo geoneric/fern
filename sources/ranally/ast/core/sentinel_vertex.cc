@@ -5,7 +5,7 @@ namespace ranally {
 
 SentinelVertex::SentinelVertex()
 
-    : SyntaxVertex()
+    : AstVertex()
 
 {
 }

@@ -129,7 +129,7 @@ void ExecuteVisitor::Visit(
 
 
 void ExecuteVisitor::Visit(
-    ScriptVertex& vertex)
+    ModuleVertex& vertex)
 {
     Visitor::Visit(vertex);
 }

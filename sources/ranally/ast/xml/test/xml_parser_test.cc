@@ -14,7 +14,7 @@ BOOST_AUTO_TEST_CASE(parse_string)
     ranally::AlgebraParser algebra_parser;
     ranally::XmlParser xml_parser;
     ranally::String xml;
-    std::shared_ptr<ranally::SyntaxVertex> tree;
+    std::shared_ptr<ranally::AstVertex> tree;
 
     {
         // Empty xml.

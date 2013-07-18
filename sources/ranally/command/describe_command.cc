@@ -31,7 +31,7 @@ DescribeCommand::DescribeCommand(
 
 
 void DescribeCommand::describe(
-    ScriptVertexPtr const& tree) const
+    ModuleVertexPtr const& tree) const
 {
     const_cast<Interpreter&>(interpreter()).validate(tree);
 
@@ -62,7 +62,7 @@ int DescribeCommand::execute() const
             std::string input_filename =
                 std::strcmp(argv()[current_argument_id], "-") != 0
                     ? argv()[current_argument_id] : "";
-            ScriptVertexPtr tree(interpreter().parse_file(input_filename));
+            ModuleVertexPtr tree(interpreter().parse_file(input_filename));
             describe(tree);
             status = EXIT_SUCCESS;
         }

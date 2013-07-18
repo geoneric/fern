@@ -1,10 +1,10 @@
-#include "ranally/ast/core/syntax_vertex.h"
+#include "ranally/ast/core/ast_vertex.h"
 // #include "ranally/ast/copy_visitor.h"
 
 
 namespace ranally {
 
-SyntaxVertex::SyntaxVertex()
+AstVertex::AstVertex()
 
     : Loki::BaseVisitable<>(),
       _line(0),
@@ -15,7 +15,7 @@ SyntaxVertex::SyntaxVertex()
 }
 
 
-SyntaxVertex::SyntaxVertex(
+AstVertex::AstVertex(
     int line_nr,
     int col_id)
 
@@ -28,15 +28,15 @@ SyntaxVertex::SyntaxVertex(
 }
 
 
-// SyntaxVertex::SyntaxVertex(
-//   SyntaxVertex const& other)
+// AstVertex::AstVertex(
+//   AstVertex const& other)
 // 
 //   : Loki::BaseVisitable<>(other),
 //     _line(other._line),
 //     _col(other._col)
 // 
 // {
-//   // BOOST_FOREACH(SyntaxVertex* vertex, other._successors) {
+//   // BOOST_FOREACH(AstVertex* vertex, other._successors) {
 //   //   CopyVisitor visitor;
 //   //   vertex->Accept(visitor);
 //   //   _successors.push_back(visitor.vertex());
@@ -49,7 +49,7 @@ SyntaxVertex::SyntaxVertex(
 
 
 
-void SyntaxVertex::set_position(
+void AstVertex::set_position(
     int line_nr,
     int col_id)
 {
@@ -58,25 +58,25 @@ void SyntaxVertex::set_position(
 }
 
 
-int SyntaxVertex::line() const
+int AstVertex::line() const
 {
     return _line;
 }
 
 
-int SyntaxVertex::col() const
+int AstVertex::col() const
 {
     return _col;
 }
 
 
-SyntaxVertex::SyntaxVertices const& SyntaxVertex::successors() const
+AstVertex::AstVertices const& AstVertex::successors() const
 {
     return _successors;
 }
 
 
-bool SyntaxVertex::has_successor() const
+bool AstVertex::has_successor() const
 {
     return !_successors.empty();
 }
@@ -87,7 +87,7 @@ bool SyntaxVertex::has_successor() const
   \return    Pointer to the successor.
   \warning   It is assumed that this vertex has only one successor.
 */
-SyntaxVertex const* SyntaxVertex::successor() const
+AstVertex const* AstVertex::successor() const
 {
     return successor(0);
 }
@@ -96,7 +96,7 @@ SyntaxVertex const* SyntaxVertex::successor() const
 /*!
   \overload
 */
-SyntaxVertex* SyntaxVertex::successor()
+AstVertex* AstVertex::successor()
 {
     return successor(0);
 }
@@ -107,7 +107,7 @@ SyntaxVertex* SyntaxVertex::successor()
   \param     index Index of successor to return.
   \return    Pointer to the successor.
 */
-SyntaxVertex const* SyntaxVertex::successor(
+AstVertex const* AstVertex::successor(
     size_type index) const
 {
     assert(index < _successors.size());
@@ -118,7 +118,7 @@ SyntaxVertex const* SyntaxVertex::successor(
 /*!
   \overload
 */
-SyntaxVertex* SyntaxVertex::successor(
+AstVertex* AstVertex::successor(
     size_type index)
 {
     assert(index < _successors.size());
@@ -129,12 +129,12 @@ SyntaxVertex* SyntaxVertex::successor(
 //! Adds a successor to the control flow graph of this vertex.
 /*!
   \param     successor Successor to set.
-  \sa        set_successor(SyntaxVertex*)
+  \sa        set_successor(AstVertex*)
 
-  Prefer set_successor(SyntaxVertex*) over this method.
+  Prefer set_successor(AstVertex*) over this method.
 */
-void SyntaxVertex::add_successor(
-    SyntaxVertex* successor)
+void AstVertex::add_successor(
+    AstVertex* successor)
 {
     assert(successor);
     _successors.push_back(successor);
@@ -144,15 +144,15 @@ void SyntaxVertex::add_successor(
 //! Adds a successor to the control flow graph of this vertex.
 /*!
   \param     successor Successor to set.
-  \sa        add_successor(SyntaxVertex*)
+  \sa        add_successor(AstVertex*)
 
-  Prefer this method over add_successor(SyntaxVertex*) because it checks
+  Prefer this method over add_successor(AstVertex*) because it checks
   whether a successor is already set or not. Most of the times, a vertex
   has a single successor.  Only call add_successor for those special
   cases that a vertex can have more than one successor (eg: IfVertex).
 */
-void SyntaxVertex::set_successor(
-    SyntaxVertex* successor)
+void AstVertex::set_successor(
+    AstVertex* successor)
 {
     assert(_successors.empty());
     add_successor(successor);

@@ -33,9 +33,9 @@ public:
         _scope_vertex.reset(new ranally::ScopeVertex(statements));
     }
 
-    std::shared_ptr<ranally::ScriptVertex> post_Ranally()
+    std::shared_ptr<ranally::ModuleVertex> post_Ranally()
     {
-        return std::shared_ptr<ranally::ScriptVertex>(new ranally::ScriptVertex(
+        return std::shared_ptr<ranally::ModuleVertex>(new ranally::ModuleVertex(
             _source_name, _scope_vertex));
     }
 
@@ -789,13 +789,13 @@ public:
         _data_stack.top().expression_vertices = vertices;
     }
 
-    std::shared_ptr<ranally::FunctionVertex> post_Function()
+    std::shared_ptr<ranally::FunctionCallVertex> post_FunctionCall()
     {
         assert(!_data_stack.empty());
         FunctionData result(_data_stack.top());
         _data_stack.pop();
-        return std::shared_ptr<ranally::FunctionVertex>(
-            new ranally::FunctionVertex(result.name,
+        return std::shared_ptr<ranally::FunctionCallVertex>(
+            new ranally::FunctionCallVertex(result.name,
                 result.expression_vertices));
     }
 
@@ -980,8 +980,8 @@ public:
             _data_stack.top().col);
     }
 
-    void Function(
-        std::shared_ptr<ranally::FunctionVertex> const& vertex)
+    void FunctionCall(
+        std::shared_ptr<ranally::FunctionCallVertex> const& vertex)
     {
         assert(!_data_stack.empty());
         assert(!_data_stack.top().vertex);
@@ -1033,7 +1033,7 @@ namespace ranally {
   \exception std::exception In case of a System category error.
   \exception xml_schema::parsing In case of Xml category error.
 */
-std::shared_ptr<ScriptVertex> XmlParser::parse(
+std::shared_ptr<ModuleVertex> XmlParser::parse(
     std::istream& stream) const
 {
     // Python stores regular integers in a C long. Xsd doesn't have a long
@@ -1123,7 +1123,7 @@ std::shared_ptr<ScriptVertex> XmlParser::parse(
   \overload
   \param     xml String with Xml to parse.
 */
-std::shared_ptr<ScriptVertex> XmlParser::parse_string(
+std::shared_ptr<ModuleVertex> XmlParser::parse_string(
     String const& xml) const
 {
     // Copy string contents in a string stream and work with that.
@@ -1131,7 +1131,7 @@ std::shared_ptr<ScriptVertex> XmlParser::parse_string(
     stream.exceptions(std::ifstream::badbit | std::ifstream::failbit);
     stream << xml.encode_in_utf8(); // << std::endl;
 
-    std::shared_ptr<ScriptVertex> vertex;
+    std::shared_ptr<ModuleVertex> vertex;
 
     try {
         vertex = parse(stream);

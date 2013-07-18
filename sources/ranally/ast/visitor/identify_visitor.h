@@ -57,7 +57,7 @@ private:
 
     void           Visit               (AssignmentVertex&);
 
-    void           Visit               (FunctionVertex&);
+    void           Visit               (FunctionCallVertex&);
 
     void           Visit               (IfVertex&);
 
@@ -65,7 +65,7 @@ private:
 
     void           Visit               (OperatorVertex&);
 
-    void           Visit               (ScriptVertex&);
+    void           Visit               (ModuleVertex&);
 
     void           Visit               (SubscriptVertex&);
 

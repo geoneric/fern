@@ -136,7 +136,7 @@ int ConvertCommand::convert_to_cpp(
 
 
 String ConvertCommand::convert_to_dot_ast(
-    std::shared_ptr<ScriptVertex> const& tree,
+    std::shared_ptr<ModuleVertex> const& tree,
     int modes) const
 {
     const_cast<Interpreter&>(interpreter()).annotate(tree);
@@ -193,7 +193,7 @@ int ConvertCommand::convert_to_dot_ast(
             ++current_argument_id;
             std::string output_filename = current_argument_id == argc - 1
                 ? argv[current_argument_id] : "";
-            ScriptVertexPtr tree(interpreter().parse_file(input_filename));
+            ModuleVertexPtr tree(interpreter().parse_file(input_filename));
             String dot_script = convert_to_dot_ast(tree, modes);
             write(dot_script, output_filename);
             status = EXIT_SUCCESS;
@@ -205,7 +205,7 @@ int ConvertCommand::convert_to_dot_ast(
 
 
 String ConvertCommand::convert_to_dot_flowgraph(
-    ScriptVertexPtr const& tree) const
+    ModuleVertexPtr const& tree) const
 {
     const_cast<Interpreter&>(interpreter()).annotate(tree);
 
@@ -247,7 +247,7 @@ int ConvertCommand::convert_to_dot_flowgraph(
             ++current_argument_id;
             std::string output_filename = current_argument_id == argc - 1
                 ? argv[current_argument_id] : "";
-            ScriptVertexPtr tree(interpreter().parse_file(input_filename));
+            ModuleVertexPtr tree(interpreter().parse_file(input_filename));
             String dot_script = convert_to_dot_flowgraph(tree);
             write(dot_script, output_filename);
             status = EXIT_SUCCESS;

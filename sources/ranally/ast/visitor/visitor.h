@@ -1,14 +1,15 @@
 #pragma once
 #include <loki/Visitor.h>
-#include "ranally/ast/core/syntax_vertex.h"
+#include "ranally/ast/core/ast_vertex.h"
 
 
 namespace ranally {
 
 class AssignmentVertex;
 class FunctionDefinitionVertex;
-class FunctionVertex;
+class FunctionCallVertex;
 class IfVertex;
+class ModuleVertex;
 class NameVertex;
 template<typename T>
     class NumberVertex;
@@ -16,7 +17,6 @@ class OperationVertex;
 class OperatorVertex;
 class ReturnVertex;
 class ScopeVertex;
-class ScriptVertex;
 class SentinelVertex;
 class StringVertex;
 class SubscriptVertex;
@@ -26,13 +26,13 @@ class WhileVertex;
 //! Base class for syntax tree visitors.
 /*!
   This class offers default implementations for the visit functions for all
-  SyntaxVertex specializations.
+  AstVertex specializations.
 */
 class Visitor:
     public Loki::BaseVisitor,
     public Loki::Visitor<AssignmentVertex>,
     public Loki::Visitor<FunctionDefinitionVertex>,
-    public Loki::Visitor<FunctionVertex>,
+    public Loki::Visitor<FunctionCallVertex>,
     public Loki::Visitor<IfVertex>,
     public Loki::Visitor<NameVertex>,
     public Loki::Visitor<NumberVertex<int8_t>>,
@@ -48,7 +48,7 @@ class Visitor:
     public Loki::Visitor<OperatorVertex>,
     public Loki::Visitor<ReturnVertex>,
     public Loki::Visitor<ScopeVertex>,
-    public Loki::Visitor<ScriptVertex>,
+    public Loki::Visitor<ModuleVertex>,
     public Loki::Visitor<SentinelVertex>,
     public Loki::Visitor<StringVertex>,
     public Loki::Visitor<SubscriptVertex>,
@@ -83,13 +83,13 @@ protected:
 
     virtual void   Visit               (FunctionDefinitionVertex& vertex);
 
-    virtual void   Visit               (FunctionVertex& vertex);
+    virtual void   Visit               (FunctionCallVertex& vertex);
 
     virtual void   Visit               (OperationVertex& vertex);
 
     virtual void   Visit               (ReturnVertex& vertex);
 
-    virtual void   Visit               (ScriptVertex& vertex);
+    virtual void   Visit               (ModuleVertex& vertex);
 
     virtual void   Visit               (SubscriptVertex& vertex);
 
@@ -131,7 +131,7 @@ private:
 
     virtual void   Visit               (StringVertex& vertex);
 
-    virtual void   Visit               (SyntaxVertex& vertex);
+    virtual void   Visit               (AstVertex& vertex);
 
 };
 

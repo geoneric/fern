@@ -10,28 +10,26 @@ namespace ranally {
 
   \sa        .
 */
-class FunctionVertex:
+class FunctionCallVertex:
     public OperationVertex
 {
-
-    friend class FunctionVertexTest;
 
 public:
 
     LOKI_DEFINE_VISITABLE()
 
-                   FunctionVertex      (String const& name,
+                   FunctionCallVertex  (String const& name,
                                         ExpressionVertices const& expressions);
 
-                   ~FunctionVertex     ()=default;
+                   ~FunctionCallVertex ()=default;
 
-                   FunctionVertex      (FunctionVertex&&)=delete;
+                   FunctionCallVertex  (FunctionCallVertex&&)=delete;
 
-    FunctionVertex& operator=          (FunctionVertex&&)=delete;
+    FunctionCallVertex& operator=      (FunctionCallVertex&&)=delete;
 
-                   FunctionVertex      (FunctionVertex const&)=delete;
+                   FunctionCallVertex  (FunctionCallVertex const&)=delete;
 
-    FunctionVertex& operator=          (FunctionVertex const&)=delete;
+    FunctionCallVertex& operator=      (FunctionCallVertex const&)=delete;
 
 private:
 
