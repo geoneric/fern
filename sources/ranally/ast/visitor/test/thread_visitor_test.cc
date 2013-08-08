@@ -1,6 +1,6 @@
 #define BOOST_TEST_MODULE ranally ast
-#include <typeinfo>
-//    std::cout << typeid(*tree->scope()->successor()).name() << std::endl;
+// #include <typeinfo>
+// std::cout << typeid(*tree->scope()->successor()).name() << std::endl;
 #include <boost/test/unit_test.hpp>
 #include "ranally/core/string.h"
 #include "ranally/script/algebra_parser.h"
@@ -716,9 +716,24 @@ def foo():
         BOOST_CHECK_EQUAL(tree->scope()->sentinel()->successor(), tree);
     }
 
-    // TODO Add two arguments to the function and let the function return
-    //      the sum.
+    {
+        // Add two arguments to the function and let the function return
+        // the sum.
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            ranally::String(u8R"(
+def sum(lhs, rhs):
+    return lhs + rhs
 
+s = sum(5, 6)
+)")));
+        tree->Accept(_visitor);
+
+        ranally::AssignmentVertex const* assignment_vertex =
+            dynamic_cast<ranally::AssignmentVertex const*>(
+                &(*tree->scope()->statements()[1]));
+
+        // hier verder
+    }
 
     // TODO Test nested function definition.
 
