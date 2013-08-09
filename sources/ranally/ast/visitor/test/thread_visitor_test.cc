@@ -1,12 +1,13 @@
 #define BOOST_TEST_MODULE ranally ast
-// #include <typeinfo>
-// std::cout << typeid(*tree->scope()->successor()).name() << std::endl;
 #include <boost/test/unit_test.hpp>
 #include "ranally/core/string.h"
 #include "ranally/script/algebra_parser.h"
 #include "ranally/ast/core/vertices.h"
 #include "ranally/ast/visitor/thread_visitor.h"
 #include "ranally/ast/xml/xml_parser.h"
+
+// #include <typeinfo>
+// std::cout << typeid(*tree->scope()->successor()).name() << std::endl;
 
 
 namespace boost {
@@ -30,7 +31,7 @@ public:
     Support()
         : _algebra_parser(),
           _xml_parser(),
-          _visitor()
+          _thread_visitor()
     {
     }
 
@@ -40,7 +41,7 @@ protected:
 
     ranally::XmlParser _xml_parser;
 
-    ranally::ThreadVisitor _visitor;
+    ranally::ThreadVisitor _thread_visitor;
 
 };
 
@@ -53,7 +54,7 @@ BOOST_AUTO_TEST_CASE(visit_empty_script)
 
     tree = _xml_parser.parse_string(_algebra_parser.parse_string(
         ranally::String("")));
-    tree->Accept(_visitor);
+    tree->Accept(_thread_visitor);
     BOOST_CHECK_EQUAL(tree->successor(), tree->scope());
     BOOST_CHECK_EQUAL(tree->scope()->successor(), tree->scope()->sentinel());
     BOOST_CHECK_EQUAL(tree->scope()->sentinel()->successor(), tree);
@@ -66,7 +67,7 @@ BOOST_AUTO_TEST_CASE(visit_name)
 
     tree = _xml_parser.parse_string(_algebra_parser.parse_string(
         ranally::String("a")));
-    tree->Accept(_visitor);
+    tree->Accept(_thread_visitor);
 
     ranally::AstVertex const* vertex_a = &(*tree->scope()->statements()[0]);
 
@@ -83,7 +84,7 @@ BOOST_AUTO_TEST_CASE(visit_assignment)
 
     tree = _xml_parser.parse_string(_algebra_parser.parse_string(
         ranally::String("a = b")));
-    tree->Accept(_visitor);
+    tree->Accept(_thread_visitor);
 
     ranally::AssignmentVertex const* assignment =
         dynamic_cast<ranally::AssignmentVertex const*>(
@@ -106,7 +107,7 @@ BOOST_AUTO_TEST_CASE(visit_string)
 
     tree = _xml_parser.parse_string(_algebra_parser.parse_string(
         ranally::String("\"five\"")));
-    tree->Accept(_visitor);
+    tree->Accept(_thread_visitor);
 
     ranally::AstVertex const* string_vertex =
         &(*tree->scope()->statements()[0]);
@@ -124,7 +125,7 @@ BOOST_AUTO_TEST_CASE(visit_number)
 
     tree = _xml_parser.parse_string(_algebra_parser.parse_string(
         ranally::String("5")));
-    tree->Accept(_visitor);
+    tree->Accept(_thread_visitor);
 
     ranally::AstVertex const* number_vertex =
         &(*tree->scope()->statements()[0]);
@@ -143,7 +144,7 @@ BOOST_AUTO_TEST_CASE(visit_function)
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
             ranally::String("f()")));
-        tree->Accept(_visitor);
+        tree->Accept(_thread_visitor);
 
         ranally::AstVertex const* function_call_vertex =
             &(*tree->scope()->statements()[0]);
@@ -158,7 +159,7 @@ BOOST_AUTO_TEST_CASE(visit_function)
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
             ranally::String("f(1, \"2\", three, four())")));
-        tree->Accept(_visitor);
+        tree->Accept(_thread_visitor);
 
         ranally::FunctionCallVertex const* function_call_vertex =
             dynamic_cast<ranally::FunctionCallVertex const*>(
@@ -192,7 +193,7 @@ BOOST_AUTO_TEST_CASE(visit_operator)
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
             ranally::String("-a")));
-        tree->Accept(_visitor);
+        tree->Accept(_thread_visitor);
 
         ranally::OperatorVertex const* operator_vertex =
             dynamic_cast<ranally::OperatorVertex const*>(
@@ -211,7 +212,7 @@ BOOST_AUTO_TEST_CASE(visit_operator)
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
             ranally::String("a + b")));
-        tree->Accept(_visitor);
+        tree->Accept(_thread_visitor);
 
         ranally::OperatorVertex const* operator_vertex =
             dynamic_cast<ranally::OperatorVertex const*>(
@@ -233,7 +234,7 @@ BOOST_AUTO_TEST_CASE(visit_operator)
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
             ranally::String("-(a + b)")));
-        tree->Accept(_visitor);
+        tree->Accept(_thread_visitor);
 
         ranally::OperatorVertex const* operator1_vertex =
             dynamic_cast<ranally::OperatorVertex const*>(
@@ -264,7 +265,7 @@ BOOST_AUTO_TEST_CASE(visit_multiple_statement)
 
     tree = _xml_parser.parse_string(_algebra_parser.parse_string(
         ranally::String("a;b;c")));
-    tree->Accept(_visitor);
+    tree->Accept(_thread_visitor);
 
     ranally::AstVertex const* vertex_a = &(*tree->scope()->statements()[0]);
     ranally::AstVertex const* vertex_b = &(*tree->scope()->statements()[1]);
@@ -285,7 +286,7 @@ BOOST_AUTO_TEST_CASE(visit_nested_expressions)
 
     tree = _xml_parser.parse_string(_algebra_parser.parse_string(
         ranally::String("a = b + c")));
-    tree->Accept(_visitor);
+    tree->Accept(_thread_visitor);
 
     ranally::AssignmentVertex const* assignment =
         dynamic_cast<ranally::AssignmentVertex const*>(
@@ -320,7 +321,7 @@ BOOST_AUTO_TEST_CASE(visit_if)
                 "if a:\n"
                 "    b\n"
                 "    c")));
-        tree->Accept(_visitor);
+        tree->Accept(_thread_visitor);
 
         ranally::IfVertex const* if_vertex =
             dynamic_cast<ranally::IfVertex const*>(
@@ -359,7 +360,7 @@ BOOST_AUTO_TEST_CASE(visit_if)
                 "else:\n"
                 "    g\n"
                 "    h\n")));
-        tree->Accept(_visitor);
+        tree->Accept(_thread_visitor);
 
         // True block first if.
         ranally::IfVertex const* if1_vertex =
@@ -452,7 +453,7 @@ BOOST_AUTO_TEST_CASE(visit_function_definition)
 def foo():
     return
 )")));
-        tree->Accept(_visitor);
+        tree->Accept(_thread_visitor);
 
         // The defined function isn't called, so the script is in effect
         // empty. This doesn't mean the definition isn't in the script. It
@@ -492,7 +493,7 @@ def foo():
 def foo():
     return 5
 )")));
-        tree->Accept(_visitor);
+        tree->Accept(_thread_visitor);
 
         // The defined function isn't called, so the script is in effect
         // empty. This doesn't mean the definition isn't in the script. It
@@ -533,7 +534,7 @@ def foo():
     return 5
 
 a = foo())")));
-        tree->Accept(_visitor);
+        tree->Accept(_thread_visitor);
 
         BOOST_REQUIRE_EQUAL(tree->scope()->statements().size(), 2u);
 
@@ -593,7 +594,7 @@ def foo():
     bar
 
 foo())")));
-        tree->Accept(_visitor);
+        tree->Accept(_thread_visitor);
 
         BOOST_REQUIRE_EQUAL(tree->scope()->statements().size(), 2u);
 
@@ -645,7 +646,7 @@ def foo():
     return 5
     6
 )")));
-        tree->Accept(_visitor);
+        tree->Accept(_thread_visitor);
 
         BOOST_REQUIRE_EQUAL(tree->scope()->statements().size(), 2u);
 
@@ -726,7 +727,7 @@ def sum(lhs, rhs):
 
 s = sum(5, 6)
 )")));
-        tree->Accept(_visitor);
+        tree->Accept(_thread_visitor);
 
         BOOST_REQUIRE_EQUAL(tree->scope()->statements().size(), 2u);
 
@@ -854,7 +855,7 @@ def foo(a, b):
 
 result = foo(5, 6)
 )")));
-        tree->Accept(_visitor);
+        tree->Accept(_thread_visitor);
 
         BOOST_REQUIRE_EQUAL(tree->scope()->statements().size(), 2u);
 
