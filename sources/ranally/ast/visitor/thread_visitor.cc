@@ -98,6 +98,11 @@ void ThreadVisitor::Visit(
             _function_definitions.push(&vertex);
 
             _last_vertex = &vertex;
+
+            _modes.push(Mode::VisitNonFunctionDefinitionStatements);
+            visit_expressions(vertex.arguments());
+            _modes.pop();
+
             Visit(*vertex.scope());
             assert(_last_vertex == &*vertex.scope()->sentinel());
 

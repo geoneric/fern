@@ -728,15 +728,316 @@ s = sum(5, 6)
 )")));
         tree->Accept(_visitor);
 
+        BOOST_REQUIRE_EQUAL(tree->scope()->statements().size(), 2u);
+
+        // def sum(lhs, rhs)
+        ranally::FunctionDefinitionVertex const* function_definition_vertex =
+            dynamic_cast<ranally::FunctionDefinitionVertex const*>(
+                &(*tree->scope()->statements()[0]));
+        BOOST_REQUIRE(function_definition_vertex);
+
+        // (lhs, rhs)
+        BOOST_REQUIRE_EQUAL(function_definition_vertex->arguments().size(), 2u);
+
+        ranally::NameVertex const* lhs_parameter_vertex =
+            dynamic_cast<ranally::NameVertex const*>(
+                &(*function_definition_vertex->arguments()[0]));
+        BOOST_REQUIRE(lhs_parameter_vertex);
+
+        ranally::NameVertex const* rhs_parameter_vertex =
+            dynamic_cast<ranally::NameVertex const*>(
+                &(*function_definition_vertex->arguments()[1]));
+        BOOST_REQUIRE(rhs_parameter_vertex);
+
+        // return lhs + rhs
+        BOOST_REQUIRE_EQUAL(
+            function_definition_vertex->scope()->statements().size(), 1u);
+
+        ranally::ReturnVertex const* return_vertex =
+            dynamic_cast<ranally::ReturnVertex const*>(
+                &(*function_definition_vertex->scope()->statements()[0]));
+        BOOST_REQUIRE(return_vertex);
+        BOOST_REQUIRE(return_vertex->expression());
+
+        // lhs + rhs
+        ranally::OperatorVertex const* operator_vertex =
+            dynamic_cast<ranally::OperatorVertex const*>(
+                &(*return_vertex->expression()));
+        BOOST_REQUIRE(operator_vertex);
+        BOOST_REQUIRE_EQUAL(operator_vertex->expressions().size(), 2u);
+
+        // lhs
+        ranally::NameVertex const* lhs_argument_vertex =
+            dynamic_cast<ranally::NameVertex const*>(
+                &(*operator_vertex->expressions()[0]));
+        BOOST_REQUIRE(lhs_argument_vertex);
+
+        // rhs
+        ranally::NameVertex const* rhs_argument_vertex =
+            dynamic_cast<ranally::NameVertex const*>(
+                &(*operator_vertex->expressions()[1]));
+        BOOST_REQUIRE(rhs_argument_vertex);
+
+        // s = sum(5, 6)
         ranally::AssignmentVertex const* assignment_vertex =
             dynamic_cast<ranally::AssignmentVertex const*>(
                 &(*tree->scope()->statements()[1]));
+        BOOST_REQUIRE(assignment_vertex);
 
-        // hier verder
+        ranally::FunctionCallVertex const* function_call_vertex =
+            dynamic_cast<ranally::FunctionCallVertex const*>(
+                &(*assignment_vertex->expression()));
+        BOOST_REQUIRE(function_call_vertex);
+
+        // (5, 6)
+        BOOST_REQUIRE_EQUAL(function_call_vertex->expressions().size(), 2u);
+
+        // 5
+        ranally::NumberVertex<int64_t> const* five_vertex =
+            dynamic_cast<ranally::NumberVertex<int64_t> const*>(
+                &(*function_call_vertex->expressions()[0]));
+        BOOST_REQUIRE(five_vertex);
+
+        // 6
+        ranally::NumberVertex<int64_t> const* six_vertex =
+            dynamic_cast<ranally::NumberVertex<int64_t> const*>(
+                &(*function_call_vertex->expressions()[1]));
+        BOOST_REQUIRE(six_vertex);
+
+        // s
+        ranally::NameVertex const* target_vertex =
+            dynamic_cast<ranally::NameVertex const*>(
+                &(*assignment_vertex->target()));
+        BOOST_REQUIRE(target_vertex);
+
+        // Threading.
+        BOOST_CHECK_EQUAL(tree->successor(), tree->scope());
+        BOOST_CHECK_EQUAL(tree->scope()->successor(), five_vertex);
+        BOOST_CHECK_EQUAL(five_vertex->successor(), six_vertex);
+        BOOST_CHECK_EQUAL(six_vertex->successor(), function_call_vertex);
+        BOOST_CHECK_EQUAL(function_call_vertex->successor(),
+            function_definition_vertex);
+        BOOST_CHECK_EQUAL(function_definition_vertex->successor(),
+            lhs_parameter_vertex);
+        BOOST_CHECK_EQUAL(lhs_parameter_vertex->successor(),
+            rhs_parameter_vertex);
+        BOOST_CHECK_EQUAL(rhs_parameter_vertex->successor(),
+            function_definition_vertex->scope());
+        BOOST_CHECK_EQUAL(function_definition_vertex->scope()->successor(),
+            lhs_argument_vertex);
+        BOOST_CHECK_EQUAL(lhs_argument_vertex->successor(),
+            rhs_argument_vertex);
+        BOOST_CHECK_EQUAL(rhs_argument_vertex->successor(), operator_vertex);
+        BOOST_CHECK_EQUAL(operator_vertex->successor(), return_vertex);
+        BOOST_CHECK_EQUAL(return_vertex->successor(),
+            function_definition_vertex->scope()->sentinel());
+        BOOST_REQUIRE(
+            function_definition_vertex->scope()->sentinel()->has_successor());
+        BOOST_CHECK_EQUAL(
+            function_definition_vertex->scope()->sentinel()->successor(),
+            target_vertex);
+        BOOST_CHECK_EQUAL(target_vertex->successor(), assignment_vertex);
+        BOOST_CHECK_EQUAL(assignment_vertex->successor(),
+            tree->scope()->sentinel());
+        BOOST_CHECK_EQUAL(tree->scope()->sentinel()->successor(), tree);
     }
 
-    // TODO Test nested function definition.
+    {
+        // Test nested function definitions.
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            ranally::String(u8R"(
+def foo(a, b):
+    def bar(c, d):
+        return c + d
 
+    return bar(a, b)
+
+result = foo(5, 6)
+)")));
+        tree->Accept(_visitor);
+
+        BOOST_REQUIRE_EQUAL(tree->scope()->statements().size(), 2u);
+
+        // def foo(a, b)
+        ranally::FunctionDefinitionVertex const* foo_definition_vertex =
+            dynamic_cast<ranally::FunctionDefinitionVertex const*>(
+                &(*tree->scope()->statements()[0]));
+        BOOST_REQUIRE(foo_definition_vertex);
+
+        // (a, b)
+        BOOST_REQUIRE_EQUAL(foo_definition_vertex->arguments().size(), 2u);
+
+        ranally::NameVertex const* a_parameter_vertex =
+            dynamic_cast<ranally::NameVertex const*>(
+                &(*foo_definition_vertex->arguments()[0]));
+        BOOST_REQUIRE(a_parameter_vertex);
+
+        ranally::NameVertex const* b_parameter_vertex =
+            dynamic_cast<ranally::NameVertex const*>(
+                &(*foo_definition_vertex->arguments()[1]));
+        BOOST_REQUIRE(b_parameter_vertex);
+
+        BOOST_REQUIRE_EQUAL(
+            foo_definition_vertex->scope()->statements().size(), 2u);
+
+        // def bar(c, d):
+        ranally::FunctionDefinitionVertex const* bar_definition_vertex =
+            dynamic_cast<ranally::FunctionDefinitionVertex const*>(
+                &(*foo_definition_vertex->scope()->statements()[0]));
+        BOOST_REQUIRE(bar_definition_vertex);
+
+        // (c, d)
+        BOOST_REQUIRE_EQUAL(bar_definition_vertex->arguments().size(), 2u);
+
+        ranally::NameVertex const* c_parameter_vertex =
+            dynamic_cast<ranally::NameVertex const*>(
+                &(*bar_definition_vertex->arguments()[0]));
+        BOOST_REQUIRE(c_parameter_vertex);
+
+        ranally::NameVertex const* d_parameter_vertex =
+            dynamic_cast<ranally::NameVertex const*>(
+                &(*bar_definition_vertex->arguments()[1]));
+        BOOST_REQUIRE(d_parameter_vertex);
+
+        BOOST_REQUIRE_EQUAL(
+            bar_definition_vertex->scope()->statements().size(), 1u);
+
+        ranally::ReturnVertex const* bar_return_vertex =
+            dynamic_cast<ranally::ReturnVertex const*>(
+                &(*bar_definition_vertex->scope()->statements()[0]));
+        BOOST_REQUIRE(bar_return_vertex);
+        BOOST_REQUIRE(bar_return_vertex->expression());
+
+        // c + d
+        ranally::OperatorVertex const* operator_vertex =
+            dynamic_cast<ranally::OperatorVertex const*>(
+                &(*bar_return_vertex->expression()));
+        BOOST_REQUIRE(operator_vertex);
+        BOOST_REQUIRE_EQUAL(operator_vertex->expressions().size(), 2u);
+
+        // c
+        ranally::NameVertex const* c_argument_vertex =
+            dynamic_cast<ranally::NameVertex const*>(
+                &(*operator_vertex->expressions()[0]));
+        BOOST_REQUIRE(c_argument_vertex);
+
+        // d
+        ranally::NameVertex const* d_argument_vertex =
+            dynamic_cast<ranally::NameVertex const*>(
+                &(*operator_vertex->expressions()[1]));
+        BOOST_REQUIRE(d_argument_vertex);
+
+        // return bar(a, b)
+        ranally::ReturnVertex const* foo_return_vertex =
+            dynamic_cast<ranally::ReturnVertex const*>(
+                &(*foo_definition_vertex->scope()->statements()[1]));
+        BOOST_REQUIRE(foo_return_vertex);
+        BOOST_REQUIRE(foo_return_vertex->expression());
+
+        // bar(a, b)
+        ranally::FunctionCallVertex const* bar_call_vertex =
+            dynamic_cast<ranally::FunctionCallVertex const*>(
+                &(*foo_return_vertex->expression()));
+        BOOST_REQUIRE(bar_call_vertex);
+
+        // (a, b)
+        BOOST_REQUIRE_EQUAL(bar_call_vertex->expressions().size(), 2u);
+
+        // a
+        ranally::NameVertex const* a_argument_vertex =
+            dynamic_cast<ranally::NameVertex const*>(
+                &(*bar_call_vertex->expressions()[0]));
+        BOOST_REQUIRE(a_argument_vertex);
+
+        // b
+        ranally::NameVertex const* b_argument_vertex =
+            dynamic_cast<ranally::NameVertex const*>(
+                &(*bar_call_vertex->expressions()[1]));
+        BOOST_REQUIRE(b_argument_vertex);
+
+        // result = foo(5, 6)
+        ranally::AssignmentVertex const* assignment_vertex =
+            dynamic_cast<ranally::AssignmentVertex const*>(
+                &(*tree->scope()->statements()[1]));
+        BOOST_REQUIRE(assignment_vertex);
+
+        ranally::FunctionCallVertex const* foo_call_vertex =
+            dynamic_cast<ranally::FunctionCallVertex const*>(
+                &(*assignment_vertex->expression()));
+        BOOST_REQUIRE(foo_call_vertex);
+
+        // (5, 6)
+        BOOST_REQUIRE_EQUAL(foo_call_vertex->expressions().size(), 2u);
+
+        // 5
+        ranally::NumberVertex<int64_t> const* five_vertex =
+            dynamic_cast<ranally::NumberVertex<int64_t> const*>(
+                &(*foo_call_vertex->expressions()[0]));
+        BOOST_REQUIRE(five_vertex);
+
+        // 6
+        ranally::NumberVertex<int64_t> const* six_vertex =
+            dynamic_cast<ranally::NumberVertex<int64_t> const*>(
+                &(*foo_call_vertex->expressions()[1]));
+        BOOST_REQUIRE(six_vertex);
+
+        // result
+        ranally::NameVertex const* target_vertex =
+            dynamic_cast<ranally::NameVertex const*>(
+                &(*assignment_vertex->target()));
+        BOOST_REQUIRE(target_vertex);
+
+        // Threading.
+        BOOST_CHECK_EQUAL(tree->successor(), tree->scope());
+        BOOST_CHECK_EQUAL(tree->scope()->successor(), five_vertex);
+        BOOST_CHECK_EQUAL(five_vertex->successor(), six_vertex);
+        BOOST_CHECK_EQUAL(six_vertex->successor(), foo_call_vertex);
+
+        BOOST_CHECK_EQUAL(foo_call_vertex->successor(), foo_definition_vertex);
+        BOOST_CHECK_EQUAL(foo_definition_vertex->successor(),
+            a_parameter_vertex);
+        BOOST_CHECK_EQUAL(a_parameter_vertex->successor(), b_parameter_vertex);
+        BOOST_CHECK_EQUAL(b_parameter_vertex->successor(),
+            foo_definition_vertex->scope());
+        BOOST_CHECK_EQUAL(foo_definition_vertex->scope()->successor(),
+            a_argument_vertex);
+        BOOST_CHECK_EQUAL(a_argument_vertex->successor(),
+            b_argument_vertex);
+        BOOST_CHECK_EQUAL(b_argument_vertex->successor(), bar_call_vertex);
+
+        BOOST_CHECK_EQUAL(bar_call_vertex->successor(), bar_definition_vertex);
+        BOOST_CHECK_EQUAL(bar_definition_vertex->successor(),
+            c_parameter_vertex);
+        BOOST_CHECK_EQUAL(c_parameter_vertex->successor(), d_parameter_vertex);
+        BOOST_CHECK_EQUAL(d_parameter_vertex->successor(),
+            bar_definition_vertex->scope());
+        BOOST_CHECK_EQUAL(bar_definition_vertex->scope()->successor(),
+            c_argument_vertex);
+        BOOST_CHECK_EQUAL(c_argument_vertex->successor(),
+            d_argument_vertex);
+        BOOST_CHECK_EQUAL(d_argument_vertex->successor(), operator_vertex);
+
+        BOOST_CHECK_EQUAL(operator_vertex->successor(), bar_return_vertex);
+        BOOST_CHECK_EQUAL(bar_return_vertex->successor(),
+            bar_definition_vertex->scope()->sentinel());
+        BOOST_REQUIRE(
+            bar_definition_vertex->scope()->sentinel()->has_successor());
+        BOOST_CHECK_EQUAL(
+            bar_definition_vertex->scope()->sentinel()->successor(),
+            foo_return_vertex);
+        BOOST_CHECK_EQUAL(foo_return_vertex->successor(),
+            foo_definition_vertex->scope()->sentinel());
+        BOOST_REQUIRE(
+            foo_definition_vertex->scope()->sentinel()->has_successor());
+
+        BOOST_CHECK_EQUAL(
+            foo_definition_vertex->scope()->sentinel()->successor(),
+            target_vertex);
+        BOOST_CHECK_EQUAL(target_vertex->successor(), assignment_vertex);
+        BOOST_CHECK_EQUAL(assignment_vertex->successor(),
+            tree->scope()->sentinel());
+        BOOST_CHECK_EQUAL(tree->scope()->sentinel()->successor(), tree);
+    }
 }
 
 BOOST_AUTO_TEST_SUITE_END()
