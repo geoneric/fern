@@ -1,9 +1,9 @@
-#define BOOST_TEST_MODULE ranally ast
+#define BOOST_TEST_MODULE geoneric ast
 #include <boost/test/unit_test.hpp>
-#include "ranally/core/string.h"
-#include "ranally/script/algebra_parser.h"
-#include "ranally/ast/core/module_vertex.h"
-#include "ranally/ast/xml/xml_parser.h"
+#include "geoneric/core/string.h"
+#include "geoneric/script/algebra_parser.h"
+#include "geoneric/ast/core/module_vertex.h"
+#include "geoneric/ast/xml/xml_parser.h"
 
 
 class Support
@@ -19,9 +19,9 @@ public:
 
 protected:
 
-    ranally::AlgebraParser _algebra_parser;
+    geoneric::AlgebraParser _algebra_parser;
 
-    ranally::XmlParser _xml_parser;
+    geoneric::XmlParser _xml_parser;
 
 };
 
@@ -30,9 +30,9 @@ BOOST_FIXTURE_TEST_SUITE(dot_visitor, Support)
 
 BOOST_AUTO_TEST_CASE(visit_empty_script)
 {
-    // ranally::String xml;
+    // geoneric::String xml;
 
-    // xml = _algebra_parser.parse_string(ranally::String(""));
+    // xml = _algebra_parser.parse_string(geoneric::String(""));
     // BOOST_CHECK(_xml_parser.parse(xml)->Accept(_visitor) ==
     //   "digraph G {\n"
     //   "}\n"
@@ -42,9 +42,9 @@ BOOST_AUTO_TEST_CASE(visit_empty_script)
 
 BOOST_AUTO_TEST_CASE(visit_name)
 {
-    // ranally::String xml;
+    // geoneric::String xml;
 
-    // xml = _algebra_parser.parse_string(ranally::String("a"));
+    // xml = _algebra_parser.parse_string(geoneric::String("a"));
     // BOOST_CHECK(_xml_parser.parse(xml)->Accept(_visitor) ==
     //   "digraph G {\n"
     //   "  a;\n"
@@ -55,9 +55,9 @@ BOOST_AUTO_TEST_CASE(visit_name)
 
 BOOST_AUTO_TEST_CASE(visit_assignment)
 {
-    // ranally::String xml;
+    // geoneric::String xml;
 
-    // xml = _algebra_parser.parse_string(ranally::String("a = b"));
+    // xml = _algebra_parser.parse_string(geoneric::String("a = b"));
     // BOOST_CHECK(_xml_parser.parse(xml)->Accept(_visitor) ==
     //   "digraph G {\n"
     //   "  b -> a;\n"
@@ -68,9 +68,9 @@ BOOST_AUTO_TEST_CASE(visit_assignment)
 
 BOOST_AUTO_TEST_CASE(visit_string)
 {
-    // ranally::String xml;
+    // geoneric::String xml;
 
-    // xml = _algebra_parser.parse_string(ranally::String("\"five\""));
+    // xml = _algebra_parser.parse_string(geoneric::String("\"five\""));
     // BOOST_CHECK(_xml_parser.parse(xml)->Accept(_visitor) ==
     //   "digraph G {\n"
     //   "  \"five\";\n"
@@ -81,23 +81,23 @@ BOOST_AUTO_TEST_CASE(visit_string)
 
 BOOST_AUTO_TEST_CASE(visit_number)
 {
-    // ranally::String xml;
+    // geoneric::String xml;
 
-    // xml = _algebra_parser.parse_string(ranally::String("5"));
+    // xml = _algebra_parser.parse_string(geoneric::String("5"));
     // BOOST_CHECK(_xml_parser.parse(xml)->Accept(_visitor) ==
     //   "digraph G {\n"
     //   "  5;\n"
     //   "}\n"
     // );
 
-    // xml = _algebra_parser.parse_string(ranally::String("5L"));
+    // xml = _algebra_parser.parse_string(geoneric::String("5L"));
     // BOOST_CHECK(_xml_parser.parse(xml)->Accept(_visitor) ==
     //   "digraph G {\n"
     //   "  5;\n"
     //   "}\n"
     // );
 
-    // xml = _algebra_parser.parse_string(ranally::String("5.5"));
+    // xml = _algebra_parser.parse_string(geoneric::String("5.5"));
     // BOOST_CHECK(_xml_parser.parse(xml)->Accept(_visitor) ==
     //   "digraph G {\n"
     //   "  5.5;\n"
@@ -110,16 +110,16 @@ BOOST_AUTO_TEST_CASE(visit_number)
 
 BOOST_AUTO_TEST_CASE(visit_function)
 {
-    // ranally::String xml;
+    // geoneric::String xml;
 
-    // xml = _algebra_parser.parse_string(ranally::String("f()"));
+    // xml = _algebra_parser.parse_string(geoneric::String("f()"));
     // BOOST_CHECK(_xml_parser.parse(xml)->Accept(_visitor) ==
     //   "digraph G {\n"
     //   "  f;\n"
     //   "}\n"
     // );
 
-    // xml = _algebra_parser.parse_string(ranally::String("f(1, \"2\", three, four())"));
+    // xml = _algebra_parser.parse_string(geoneric::String("f(1, \"2\", three, four())"));
     // BOOST_CHECK(_xml_parser.parse(xml)->Accept(_visitor) ==
     //   "digraph G {\n"
     //   "  1 -> f;\n"
@@ -133,18 +133,18 @@ BOOST_AUTO_TEST_CASE(visit_function)
 
 BOOST_AUTO_TEST_CASE(visit_operator)
 {
-    // ranally::String xml;
+    // geoneric::String xml;
 
-    // xml = _algebra_parser.parse_string(ranally::String("-a"));
+    // xml = _algebra_parser.parse_string(geoneric::String("-a"));
     // BOOST_CHECK(_xml_parser.parse(xml)->Accept(_visitor) == "-(a)\n");
 
-    // xml = _algebra_parser.parse_string(ranally::String("a + b"));
+    // xml = _algebra_parser.parse_string(geoneric::String("a + b"));
     // BOOST_CHECK(_xml_parser.parse(xml)->Accept(_visitor) == "(a) + (b)\n");
 
-    // xml = _algebra_parser.parse_string(ranally::String("-(a + b)"));
+    // xml = _algebra_parser.parse_string(geoneric::String("-(a + b)"));
     // BOOST_CHECK(_xml_parser.parse(xml)->Accept(_visitor) == "-((a) + (b))\n");
 
-    // xml = _algebra_parser.parse_string(ranally::String("a + b * c + d"));
+    // xml = _algebra_parser.parse_string(geoneric::String("a + b * c + d"));
     // BOOST_CHECK(_xml_parser.parse(xml)->Accept(_visitor) ==
     //   "((a) + ((b) * (c))) + (d)\n");
 }
@@ -152,18 +152,18 @@ BOOST_AUTO_TEST_CASE(visit_operator)
 
 BOOST_AUTO_TEST_CASE(visit_multiple_statements)
 {
-    // ranally::String xml;
+    // geoneric::String xml;
 
-    // xml = _algebra_parser.parse_string(ranally::String("a\nb"));
+    // xml = _algebra_parser.parse_string(geoneric::String("a\nb"));
     // BOOST_CHECK(_xml_parser.parse(xml)->Accept(_visitor) == "a\nb\n");
 }
 
 
 BOOST_AUTO_TEST_CASE(visit_if)
 {
-    // ranally::String xml;
+    // geoneric::String xml;
 
-    // xml = _algebra_parser.parse_string(ranally::String(
+    // xml = _algebra_parser.parse_string(geoneric::String(
     //     "if a:\n"
     //     "  b\n"
     //     "  c"));
@@ -172,7 +172,7 @@ BOOST_AUTO_TEST_CASE(visit_if)
     //     "  b\n"
     //     "  c\n");
 
-    // xml = _algebra_parser.parse_string(ranally::String(
+    // xml = _algebra_parser.parse_string(geoneric::String(
     //     "if a:\n"
     //     "  b\n"
     //     "  c\n"
@@ -188,7 +188,7 @@ BOOST_AUTO_TEST_CASE(visit_if)
     //     "    e\n"
     //     "    f\n");
 
-    // xml = _algebra_parser.parse_string(ranally::String(
+    // xml = _algebra_parser.parse_string(geoneric::String(
     //     "if a:\n"
     //     "  b\n"
     //     "  c\n"
@@ -214,9 +214,9 @@ BOOST_AUTO_TEST_CASE(visit_if)
 
 BOOST_AUTO_TEST_CASE(visit_while)
 {
-    // ranally::String xml;
+    // geoneric::String xml;
 
-    // xml = _algebra_parser.parse_string(ranally::String(
+    // xml = _algebra_parser.parse_string(geoneric::String(
     //     "while a:\n"
     //     "  b\n"
     //     "  c"));
@@ -225,7 +225,7 @@ BOOST_AUTO_TEST_CASE(visit_while)
     //     "  b\n"
     //     "  c\n");
 
-    // xml = _algebra_parser.parse_string(ranally::String(
+    // xml = _algebra_parser.parse_string(geoneric::String(
     //     "while a:\n"
     //     "  b\n"
     //     "  c\n"

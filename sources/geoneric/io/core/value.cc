@@ -1,7 +1,7 @@
-#include "ranally/io/value.h"
+#include "geoneric/io/value.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 Value::Value()
 {
@@ -12,4 +12,4 @@ Value::~Value()
 {
 }
 
-} // namespace ranally
+} // namespace geoneric

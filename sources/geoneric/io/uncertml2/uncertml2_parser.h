@@ -1,9 +1,9 @@
 #pragma once
 #include <memory>
-#include "ranally/core/string.h"
+#include "geoneric/core/string.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 class Uncertainty;
 
@@ -36,4 +36,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

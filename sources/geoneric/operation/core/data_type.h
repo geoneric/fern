@@ -1,7 +1,7 @@
 #pragma once
 
 
-namespace ranally {
+namespace geoneric {
 
 enum DataType {
 
@@ -17,4 +17,4 @@ enum DataType {
 
 };
 
-} // namespace ranally
+} // namespace geoneric

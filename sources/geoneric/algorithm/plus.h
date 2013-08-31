@@ -2,10 +2,10 @@
 #include <boost/range/begin.hpp>
 #include <boost/range/end.hpp>
 #include <boost/range/const_iterator.hpp>
-#include "ranally/data_traits.h"
+#include "geoneric/data_traits.h"
 
 
-namespace ranally {
+namespace geoneric {
 namespace algorithm {
 namespace detail {
 
@@ -107,4 +107,4 @@ inline void plus(
 }
 
 } // namespace algorithm
-} // namespace ranally
+} // namespace geoneric

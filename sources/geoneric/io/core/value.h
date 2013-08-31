@@ -1,7 +1,7 @@
 #pragma once
 
 
-namespace ranally {
+namespace geoneric {
 
 //! A value is a property of an attribute's domain.
 /*!
@@ -28,4 +28,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

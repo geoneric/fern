@@ -8,10 +8,10 @@ SET(SOURCES
     scalar_domain
     value
 )
-ADD_LIBRARY(ranally_feature
+ADD_LIBRARY(geoneric_feature
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(ranally_feature
-    ranally_operation_core
-    ranally_core
+TARGET_LINK_LIBRARIES(geoneric_feature
+    geoneric_operation_core
+    geoneric_core
 )

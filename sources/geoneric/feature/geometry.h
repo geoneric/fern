@@ -7,7 +7,7 @@
 #include <boost/geometry/geometries/polygon.hpp>
 
 
-namespace ranally {
+namespace geoneric {
 
 // TODO What about the coordinate system? How to go about that? Can we pick
 //      one and project all incoming data to that cs?
@@ -85,7 +85,7 @@ typedef boost::geometry::model::polygon<Point, detail::clockWise,
 
 // typedef std::shared_ptr<Polygons> PolygonsPtr;
 
-} // namespace ranally
+} // namespace geoneric
 
 
 namespace boost {
@@ -93,8 +93,8 @@ namespace geometry {
 namespace model {
 
 inline bool operator==(
-    ranally::Point const& lhs,
-    ranally::Point const& rhs)
+    geoneric::Point const& lhs,
+    geoneric::Point const& rhs)
 {
    return
        boost::geometry::get<0>(lhs) == boost::geometry::get<0>(rhs) &&
@@ -109,7 +109,7 @@ namespace test_tools {
 
 inline std::ostream& operator<<(
     std::ostream& stream,
-    ranally::Point const& point)
+    geoneric::Point const& point)
 {
     stream << "(" <<
         boost::geometry::get<0>(point)

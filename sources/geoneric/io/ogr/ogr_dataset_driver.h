@@ -1,11 +1,11 @@
 #pragma once
-#include "ranally/io/dataset_driver.h"
-#include "ranally/io/ogr_dataset.h"
+#include "geoneric/io/dataset_driver.h"
+#include "geoneric/io/ogr_dataset.h"
 
 
 class OGRSFDriver;
 
-namespace ranally {
+namespace geoneric {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -39,4 +39,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

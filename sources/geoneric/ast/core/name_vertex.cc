@@ -1,7 +1,7 @@
-#include "ranally/ast/core/name_vertex.h"
+#include "geoneric/ast/core/name_vertex.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 NameVertex::NameVertex(
     String const& name)
@@ -86,4 +86,4 @@ std::vector<NameVertex*> const& NameVertex::uses() const
     return _uses;
 }
 
-} // namespace ranally
+} // namespace geoneric

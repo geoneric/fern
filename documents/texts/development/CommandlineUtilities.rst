@@ -2,8 +2,8 @@
 Commandline utilities
 *********************
 
-ranally
-=======
+geoneric
+========
 Main command to unlock the functionality from the commandline.
 
 .. code-block:: c++
@@ -30,17 +30,17 @@ Main command to unlock the functionality from the commandline.
   // - execute command is implied.
   // - first positional is filename of script.
   // - if --script option is provided, than script positional should not be.
-  //   ranally model.ran
-  //   ranally execute model.ran
-  //   ranally --script "slope = slope("dem")"
-  //   ranally execute --script "slope = slope("dem")"
+  //   geoneric model.ran
+  //   geoneric execute model.ran
+  //   geoneric --script "slope = slope("dem")"
+  //   geoneric execute --script "slope = slope("dem")"
   //
   // - first positional is language argument.
   // - 
-  //   ranally convert dot model.ran model.dot
-  //   ranally convert c++ model.ran
-  //   ranally convert c++ --namespace bla --output-directory ./blo model.ran
-  //   ranally convert python --package bli model.ran
+  //   geoneric convert dot model.ran model.dot
+  //   geoneric convert c++ model.ran
+  //   geoneric convert c++ --namespace bla --output-directory ./blo model.ran
+  //   geoneric convert python --package bli model.ran
   //
   //   The Python extension converter should not create the core C++ code.
   //   The c++ converter is for doing that. Or can we use two convert commands?

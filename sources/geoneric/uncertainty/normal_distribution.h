@@ -1,9 +1,9 @@
 #pragma once
-#include "ranally/uncertainty/distribution.h"
+#include "geoneric/uncertainty/distribution.h"
 #include <boost/random/normal_distribution.hpp>
 
 
-namespace ranally {
+namespace geoneric {
 
 //! Class models uncertainty using a normal distribution.
 /*!
@@ -54,4 +54,4 @@ inline T NormalDistribution<T>::operator()(
     return _distribution(random_number_generator);
 }
 
-} // namespace ranally
+} // namespace geoneric

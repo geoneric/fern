@@ -1,7 +1,7 @@
-#include "ranally/io/spatial_domain.h"
+#include "geoneric/io/spatial_domain.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 SpatialDomain::SpatialDomain(
     Type type)
@@ -28,4 +28,4 @@ bool SpatialDomain::is_temporal() const
     return false;
 }
 
-} // namespace ranally
+} // namespace geoneric

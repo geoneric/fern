@@ -1,9 +1,9 @@
 #pragma once
-#include "ranally/core/string.h"
-#include "ranally/io/domain.h"
+#include "geoneric/core/string.h"
+#include "geoneric/io/domain.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 //! Class for Feature instances combining Domain with an Attribute.
 /*!
@@ -39,4 +39,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

@@ -1,7 +1,7 @@
-#include "ranally/ast/core/operation_vertex.h"
+#include "geoneric/ast/core/operation_vertex.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 OperationVertex::OperationVertex(
     String const& name,
@@ -33,4 +33,4 @@ OperationPtr const& OperationVertex::operation() const
     return _operation;
 }
 
-} // namespace ranally
+} // namespace geoneric

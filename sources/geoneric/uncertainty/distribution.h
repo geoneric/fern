@@ -1,8 +1,8 @@
 #pragma once
-#include "ranally/uncertainty/uncertainty.h"
+#include "geoneric/uncertainty/uncertainty.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 //! Abstract base class for classes that model uncertainty using a distribution.
 /*!
@@ -31,4 +31,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

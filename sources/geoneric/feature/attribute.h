@@ -1,10 +1,10 @@
 #pragma once
-#include "ranally/core/string.h"
-#include "ranally/operation/core/data_type.h"
-#include "ranally/operation/core/value_type.h"
+#include "geoneric/core/string.h"
+#include "geoneric/operation/core/data_type.h"
+#include "geoneric/operation/core/value_type.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 // class Feature;
 
@@ -46,4 +46,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

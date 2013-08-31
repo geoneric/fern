@@ -1,14 +1,14 @@
-#include "ranally/interpreter/interpreter.h"
+#include "geoneric/interpreter/interpreter.h"
 #include <sstream>
-#include "ranally/core/io_error.h"
-#include "ranally/core/parse_error.h"
-#include "ranally/core/validate_error.h"
-#include "ranally/operation/std/operations.h"
-#include "ranally/ast/visitor/identify_visitor.h"
-#include "ranally/ast/visitor/thread_visitor.h"
+#include "geoneric/core/io_error.h"
+#include "geoneric/core/parse_error.h"
+#include "geoneric/core/validate_error.h"
+#include "geoneric/operation/std/operations.h"
+#include "geoneric/ast/visitor/identify_visitor.h"
+#include "geoneric/ast/visitor/thread_visitor.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 Interpreter::Interpreter()
 
@@ -318,4 +318,4 @@ void Interpreter::clear_stack()
     _back_end.clear_stack();
 }
 
-} // namespace ranally
+} // namespace geoneric

@@ -1,9 +1,9 @@
 #pragma once
-#include "ranally/io/dataset_driver.h"
-#include "ranally/io/hdf5_dataset.h"
+#include "geoneric/io/dataset_driver.h"
+#include "geoneric/io/hdf5_dataset.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 //! Data set driver for HDF5 data sets.
 /*!
@@ -35,4 +35,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE ranally algorithm
+#define BOOST_TEST_MODULE geoneric algorithm
 #include <boost/test/unit_test.hpp>
 
 

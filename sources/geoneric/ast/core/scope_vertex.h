@@ -1,8 +1,8 @@
 #pragma once
-#include "ranally/ast/core/sentinel_vertex.h"
+#include "geoneric/ast/core/sentinel_vertex.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 class ScopeVertex:
     public AstVertex
@@ -38,4 +38,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

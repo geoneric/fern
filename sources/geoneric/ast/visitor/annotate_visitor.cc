@@ -1,11 +1,11 @@
-#include "ranally/ast/visitor/annotate_visitor.h"
-#include "ranally/core/string.h"
-#include "ranally/operation/core/result.h"
-#include "ranally/operation/core/type_traits.h"
-#include "ranally/ast/core/vertices.h"
+#include "geoneric/ast/visitor/annotate_visitor.h"
+#include "geoneric/core/string.h"
+#include "geoneric/operation/core/result.h"
+#include "geoneric/operation/core/type_traits.h"
+#include "geoneric/ast/core/vertices.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 AnnotateVisitor::AnnotateVisitor(
     OperationsPtr const& operations)
@@ -182,4 +182,4 @@ void AnnotateVisitor::Visit(
 //     // }
 // }
 
-} // namespace ranally
+} // namespace geoneric

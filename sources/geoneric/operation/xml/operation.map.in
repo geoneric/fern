@@ -1,17 +1,17 @@
-namespace http://www.jemig.eu/ranally
+namespace http://www.geoneric.eu
 {
-    include "ranally/operation/core/operations.h";
-    include "ranally/operation/core/parameter.h";
-    include "ranally/operation/core/result.h";
+    include "geoneric/operation/core/operations.h";
+    include "geoneric/operation/core/parameter.h";
+    include "geoneric/operation/core/result.h";
 
-    Operations         "std::shared_ptr<ranally::Operations>";
-    Operation          "std::shared_ptr<ranally::Operation>";
-    Parameters         "std::vector<ranally::Parameter> const&";
-    Results            "std::vector<ranally::Result> const&";
-    Parameter          "ranally::Parameter";
-    Result             "ranally::Result";
-    DataTypes          "ranally::DataTypes";
-    ValueTypes         "ranally::ValueTypes";
-    DataType           "ranally::DataTypes";
-    ValueType          "ranally::ValueTypes";
+    Operations         "std::shared_ptr<geoneric::Operations>";
+    Operation          "std::shared_ptr<geoneric::Operation>";
+    Parameters         "std::vector<geoneric::Parameter> const&";
+    Results            "std::vector<geoneric::Result> const&";
+    Parameter          "geoneric::Parameter";
+    Result             "geoneric::Result";
+    DataTypes          "geoneric::DataTypes";
+    ValueTypes         "geoneric::ValueTypes";
+    DataType           "geoneric::DataTypes";
+    ValueType          "geoneric::ValueTypes";
 }

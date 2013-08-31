@@ -1,7 +1,7 @@
-#include "ranally/feature/feature.h"
+#include "geoneric/feature/feature.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 // Feature::Feature()
 // {
@@ -25,4 +25,4 @@ size_t Feature::nr_attributes() const
     return _attributes.size();
 }
 
-} // namespace ranally
+} // namespace geoneric

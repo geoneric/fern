@@ -1,8 +1,8 @@
 #pragma once
-#include "ranally/ast/visitor/visitor.h"
+#include "geoneric/ast/visitor/visitor.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -64,4 +64,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

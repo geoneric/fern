@@ -1,8 +1,8 @@
 #pragma once
-#include "ranally/operation/core/operation.h"
+#include "geoneric/operation/core/operation.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 class Int32:
     public Operation
@@ -30,4 +30,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

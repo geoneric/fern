@@ -4,7 +4,7 @@
 #include <unicode/unistr.h>
 
 
-namespace ranally {
+namespace geoneric {
 
 //! Unicode string class.
 /*!
@@ -81,4 +81,4 @@ std::ostream&      operator<<          (std::ostream& stream,
 String             join                (std::vector<String> const& strings,
                                         String const& separator);
 
-} // namespace ranally
+} // namespace geoneric

@@ -1,9 +1,9 @@
 #pragma once
-#include "ranally/io/geometry.h"
-#include "ranally/io/spatial_domain.h"
+#include "geoneric/io/geometry.h"
+#include "geoneric/io/spatial_domain.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -31,4 +31,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

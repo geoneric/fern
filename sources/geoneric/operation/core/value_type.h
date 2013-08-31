@@ -1,7 +1,7 @@
 #pragma once
 
 
-namespace ranally {
+namespace geoneric {
 
 enum ValueType {
 
@@ -31,4 +31,4 @@ enum ValueType {
 
 };
 
-} // namespace ranally
+} // namespace geoneric

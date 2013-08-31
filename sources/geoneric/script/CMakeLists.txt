@@ -3,11 +3,11 @@ ADD_SUBDIRECTORY(test)
 SET(SOURCES
     algebra_parser
 )
-ADD_LIBRARY(ranally_script
+ADD_LIBRARY(geoneric_script
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(ranally_script
-    ranally_python
-    ranally_core
+TARGET_LINK_LIBRARIES(geoneric_script
+    geoneric_python
+    geoneric_core
     ${PYTHON_LIBRARIES}
 )

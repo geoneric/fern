@@ -1,27 +1,27 @@
-#include "ranally/command/convert_command.h"
-#include "ranally/core/exception.h"
-#include "ranally/ast/visitor/ast_dot_visitor.h"
-#include "ranally/ast/visitor/flowgraph_dot_visitor.h"
+#include "geoneric/command/convert_command.h"
+#include "geoneric/core/exception.h"
+#include "geoneric/ast/visitor/ast_dot_visitor.h"
+#include "geoneric/ast/visitor/flowgraph_dot_visitor.h"
 
 
-namespace ranally {
+namespace geoneric {
 namespace {
 
 void show_convert_help()
 {
     std::cout <<
-        "usage: ranally convert [--help] LANGUAGE [ARGS]\n"
+        "usage: geoneric convert [--help] LANGUAGE [ARGS]\n"
         "\n"
         "Convert the script to a target language.\n"
         "\n"
         "languages:\n"
-        "  ranally             Round-trip script\n"
+        "  geoneric             Round-trip script\n"
         "  dot                 Convert script to Dot graph\n"
         "  c++                 Convert script to C++ code\n"
         "  python              Convert script to C++ code for Python extension\n"
         "  xml                 Convert script to XML\n"
         "\n"
-        "See 'ranally convert LANGUAGE --help' for more information on a specific\n"
+        "See 'geoneric convert LANGUAGE --help' for more information on a specific\n"
         "language.\n"
         ;
 }
@@ -30,7 +30,7 @@ void show_convert_help()
 void show_convert_dot_help()
 {
     std::cout <<
-        "usage: ranally convert dot [--help] GRAPH_TYPE [ARGS]\n"
+        "usage: geoneric convert dot [--help] GRAPH_TYPE [ARGS]\n"
         "\n"
         "Convert the script to a dot graph.\n"
         "\n"
@@ -38,7 +38,7 @@ void show_convert_dot_help()
         "  ast                 Abstract syntax tree\n"
         "  flowgraph           Flowgraph\n"
         "\n"
-        "See 'ranally convert dot GRAPH_TYPE --help' for more information on a\n"
+        "See 'geoneric convert dot GRAPH_TYPE --help' for more information on a\n"
         "specific graph type.\n"
         ;
 }
@@ -47,7 +47,7 @@ void show_convert_dot_help()
 void show_convert_dot_ast_help()
 {
     std::cout <<
-        "usage: ranally convert dot ast [--help] [--with-cfg] [--with-use]\n"
+        "usage: geoneric convert dot ast [--help] [--with-cfg] [--with-use]\n"
         "                               INPUT_SCRIPT OUTPUT_SCRIPT\n"
         "\n"
         "Convert the script to a dot graph containing the abstract syntax tree.\n"
@@ -63,7 +63,7 @@ void show_convert_dot_ast_help()
 void show_convert_dot_flowgraph_help()
 {
     std::cout <<
-        "usage: ranally convert dot flowgraph [--help] INPUT_SCRIPT OUTPUT_SCRIPT\n"
+        "usage: geoneric convert dot flowgraph [--help] INPUT_SCRIPT OUTPUT_SCRIPT\n"
         "\n"
         "Convert the script to a dot graph containing the flow graph.\n"
         "\n"
@@ -75,12 +75,12 @@ void show_convert_dot_flowgraph_help()
 }
 
 
-// void show_convert_ranally_help()
+// void show_convert_geoneric_help()
 // {
 //     std::cout <<
-//         "usage: ranally convert ranally INPUT_SCRIPT [OUTPUT_SCRIPT]\n"
+//         "usage: geoneric convert geoneric INPUT_SCRIPT [OUTPUT_SCRIPT]\n"
 //         "\n"
-//         "Convert the script to a ranally script (round-trip).\n"
+//         "Convert the script to a geoneric script (round-trip).\n"
 //         "\n"
 //         "  INPUT_SCRIPT        Script to convert or - to read from standard input\n"
 //         "  OUTPUT_SCRIPT       File to write result to\n"
@@ -93,7 +93,7 @@ void show_convert_dot_flowgraph_help()
 void show_convert_xml_help()
 {
     std::cout <<
-        "usage: ranally convert xml [--help] INPUT_SCRIPT OUTPUT_SCRIPT\n"
+        "usage: geoneric convert xml [--help] INPUT_SCRIPT OUTPUT_SCRIPT\n"
         "\n"
         "Convert the script to xml.\n"
         "\n"
@@ -117,11 +117,11 @@ ConvertCommand::ConvertCommand(
 }
 
 
-int ConvertCommand::convert_to_ranally(
+int ConvertCommand::convert_to_geoneric(
     int /* argc */,
     char** /* argv */) const
 {
-    std::cout << "Conversion to Ranally script not supported yet\n";
+    std::cout << "Conversion to Geoneric script not supported yet\n";
     return EXIT_SUCCESS;
 }
 
@@ -277,7 +277,7 @@ int ConvertCommand::convert_to_dot(
     }
     else {
         std::cerr << "Unknown graph type: " << argv[1] << "\n";
-        std::cerr << "See 'ranally convert dot --help' for list of types.\n";
+        std::cerr << "See 'geoneric convert dot --help' for list of types.\n";
         status = EXIT_FAILURE;
     }
 
@@ -341,8 +341,8 @@ int ConvertCommand::execute() const
             show_convert_help();
             status = EXIT_SUCCESS;
         }
-        else if(std::strcmp(argv()[1], "ranally") == 0) {
-            status = convert_to_ranally(argc() - 1, argv() + 1);
+        else if(std::strcmp(argv()[1], "geoneric") == 0) {
+            status = convert_to_geoneric(argc() - 1, argv() + 1);
         }
         else if(std::strcmp(argv()[1], "dot") == 0) {
             status = convert_to_dot(argc() - 1, argv() + 1);
@@ -358,7 +358,7 @@ int ConvertCommand::execute() const
         }
         else {
             std::cerr << "Unknown target language: " << argv()[1] << "\n";
-            std::cerr << "See 'ranally convert --help' for list of languages.\n";
+            std::cerr << "See 'geoneric convert --help' for list of languages.\n";
             status = EXIT_FAILURE;
         }
     }
@@ -374,4 +374,4 @@ int ConvertCommand::execute() const
     return status;
 }
 
-} // namespace ranally
+} // namespace geoneric

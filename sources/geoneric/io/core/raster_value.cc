@@ -1,7 +1,7 @@
-#include "ranally/io/raster_value.h"
+#include "geoneric/io/raster_value.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 RasterValue::RasterValue()
 
@@ -15,4 +15,4 @@ RasterValue::~RasterValue()
 {
 }
 
-} // namespace ranally
+} // namespace geoneric

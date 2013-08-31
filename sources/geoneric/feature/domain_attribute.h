@@ -1,13 +1,13 @@
 #pragma once
 #include <cassert>
 #include <memory>
-#include "ranally/operation/core/type_traits.h"
-#include "ranally/feature/attribute.h"
-#include "ranally/feature/feature_domain.h"
-#include "ranally/feature/domain_value.h"
+#include "geoneric/operation/core/type_traits.h"
+#include "geoneric/feature/attribute.h"
+#include "geoneric/feature/feature_domain.h"
+#include "geoneric/feature/domain_value.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -79,4 +79,4 @@ inline std::shared_ptr<DomainValue<T>> const&
     return _value;
 }
 
-} // namespace ranally
+} // namespace geoneric

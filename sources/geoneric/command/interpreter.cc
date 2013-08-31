@@ -1,17 +1,17 @@
-#include "ranally/command/interpreter.h"
+#include "geoneric/command/interpreter.h"
 #include <iostream>
 #include <memory>
 #include <cstdio>
 #include <cstdlib>
 #include <readline/readline.h>
 #include <readline/history.h>
-#include "ranally/core/exception.h"
-#include "ranally/command/message.h"
-#include "ranally/feature/scalar_attribute.h"
-#include "ranally/interpreter/interpreter.h"
-#include "ranally/operation/core/attribute_argument.h"
-#include "ranally/operation/core/type_traits.h"
-#include "ranally/operation/core/value_type_traits.h"
+#include "geoneric/core/exception.h"
+#include "geoneric/command/message.h"
+#include "geoneric/feature/scalar_attribute.h"
+#include "geoneric/interpreter/interpreter.h"
+#include "geoneric/operation/core/attribute_argument.h"
+#include "geoneric/operation/core/type_traits.h"
+#include "geoneric/operation/core/value_type_traits.h"
 
 
 namespace std {
@@ -30,7 +30,7 @@ struct default_delete<char>
 } // namespace std
 
 
-namespace ranally {
+namespace geoneric {
 
 template<
     typename T>
@@ -126,17 +126,17 @@ void enter_interpreter()
     // can be executed, a scope must be pushed.
 
     std::unique_ptr<char> line;
-    ranally::String statement;
-    ranally::Interpreter interpreter;
-    std::shared_ptr<ranally::ModuleVertex> script_vertex;
+    geoneric::String statement;
+    geoneric::Interpreter interpreter;
+    std::shared_ptr<geoneric::ModuleVertex> script_vertex;
 
-    ranally::show_version();
+    geoneric::show_version();
     using_history();
 
     // Determine path name of history file. Reading the file will fail if it
     // doesn't exists, which is OK.
-    std::string history_filename((ranally::String::decode_from_default_encoding(
-        std::getenv("HOME")) + "/.ranally").encode_in_default_encoding());
+    std::string history_filename((geoneric::String::decode_from_default_encoding(
+        std::getenv("HOME")) + "/.geoneric").encode_in_default_encoding());
     /* int result = */ read_history(history_filename.c_str());
 
     while(true) {
@@ -158,13 +158,13 @@ void enter_interpreter()
             // Print any values that are left on the stack and clear the stack.
             show_stack_values(interpreter.stack());
         }
-        catch(ranally::Exception const& exception) {
-            ranally::String message = exception.message();
+        catch(geoneric::Exception const& exception) {
+            geoneric::String message = exception.message();
             std::cerr << message << std::endl;
         }
         catch(std::exception const& exception) {
             std::cerr << "TODO: unhandled exception: "
-                << ranally::String(exception.what())
+                << geoneric::String(exception.what())
                 << std::endl;
         }
 
@@ -174,4 +174,4 @@ void enter_interpreter()
     /* result = */ write_history(history_filename.c_str());
 }
 
-} // namespace ranally
+} // namespace geoneric

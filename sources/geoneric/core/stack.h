@@ -3,7 +3,7 @@
 #include <boost/any.hpp>
 
 
-namespace ranally {
+namespace geoneric {
 
 //! Stack for storing any type of value.
 /*!
@@ -54,4 +54,4 @@ inline T const& Stack::top() const
     return boost::any_cast<T const&>(_stack.top());
 }
 
-} // namespace ranally
+} // namespace geoneric

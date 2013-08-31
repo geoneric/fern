@@ -1,9 +1,9 @@
 #pragma once
-#include "ranally/core/flag_collection.h"
-#include "ranally/operation/core/data_type.h"
+#include "geoneric/core/flag_collection.h"
+#include "geoneric/operation/core/data_type.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 //! Collection of data types.
 /*!
@@ -88,4 +88,4 @@ DataTypes          operator|           (DataTypes const& lhs,
 std::ostream&      operator<<          (std::ostream& stream,
                                         DataTypes const& flags);
 
-} // namespace ranally
+} // namespace geoneric

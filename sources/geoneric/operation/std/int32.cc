@@ -1,9 +1,9 @@
-#include "ranally/operation/std/int32.h"
-#include "ranally/feature/scalar_attribute.h"
-#include "ranally/operation/core/attribute_argument.h"
+#include "geoneric/operation/std/int32.h"
+#include "geoneric/feature/scalar_attribute.h"
+#include "geoneric/operation/core/attribute_argument.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 Int32::Int32()
 
@@ -58,4 +58,4 @@ std::vector<std::shared_ptr<Argument>> Int32::execute(
     // });
 }
 
-} // namespace ranally
+} // namespace geoneric

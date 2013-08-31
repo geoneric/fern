@@ -1,15 +1,15 @@
-#include "ranally/command/import_command.h"
+#include "geoneric/command/import_command.h"
 #include <cstring>
 #include <iostream>
 
 
-namespace ranally {
+namespace geoneric {
 namespace {
 
 void show_import_help()
 {
     std::cout <<
-        "usage: ranally import INPUT_DATA_SET OUTPUT_DATA_SET\n"
+        "usage: geoneric import INPUT_DATA_SET OUTPUT_DATA_SET\n"
         "\n"
         "Import the data set.\n"
         "\n"
@@ -60,4 +60,4 @@ int ImportCommand::execute() const
     return status;
 }
 
-} // namespace ranally
+} // namespace geoneric

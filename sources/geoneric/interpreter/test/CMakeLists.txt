@@ -6,7 +6,7 @@ SET(TEST_NAMES
 MACRO(ADD_UNIT_TEST NAME)
     ADD_EXECUTABLE(interpreter_${NAME} ${NAME})
     TARGET_LINK_LIBRARIES(interpreter_${NAME}
-        ranally_interpreter
+        geoneric_interpreter
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
     ADD_TEST(NAME interpreter_${NAME} COMMAND interpreter_${NAME})

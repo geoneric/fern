@@ -1,10 +1,10 @@
 #pragma once
 #include <memory>
 #include <unordered_map>
-#include "ranally/feature/geometry.h"
+#include "geoneric/feature/geometry.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 //! Collection for mapping feature id's to attribute values.
 /*!
@@ -120,4 +120,4 @@ inline void FidMap<T>::insert(
         std::make_shared<T>(value);
 }
 
-} // namespace ranally
+} // namespace geoneric

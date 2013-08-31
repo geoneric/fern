@@ -1,8 +1,8 @@
-#include "ranally/ast/core/module_vertex.h"
-// #include "ranally/ast/visitor/copy_visitor.h"
+#include "geoneric/ast/core/module_vertex.h"
+// #include "geoneric/ast/visitor/copy_visitor.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 ModuleVertex::ModuleVertex(
     String const& source_name,
@@ -70,4 +70,4 @@ std::shared_ptr<ScopeVertex>& ModuleVertex::scope()
 //   return !(lhs == rhs);
 // }
 
-} // namespace ranally
+} // namespace geoneric

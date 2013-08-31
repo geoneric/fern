@@ -1,8 +1,8 @@
-#include "ranally/ast/visitor/copy_visitor.h"
-#include "ranally/ast/core/vertices.h"
+#include "geoneric/ast/visitor/copy_visitor.h"
+#include "geoneric/ast/core/vertices.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 std::shared_ptr<ModuleVertex> const& CopyVisitor::module_vertex() const
 {
@@ -90,4 +90,4 @@ void CopyVisitor::Visit(
     assert(false);
 }
 
-} // namespace ranally
+} // namespace geoneric

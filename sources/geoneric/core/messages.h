@@ -1,11 +1,11 @@
 #pragma once
 #include <map>
 #include <boost/format.hpp>
-#include "ranally/core/message_id.h"
-#include "ranally/core/string.h"
+#include "geoneric/core/message_id.h"
+#include "geoneric/core/string.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 class Messages:
     private std::map<MessageId, String>
@@ -45,4 +45,4 @@ inline String Messages::format_message(
     ).str());
 }
 
-} // namespace ranally
+} // namespace geoneric

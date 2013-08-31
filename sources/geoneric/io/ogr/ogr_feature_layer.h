@@ -1,11 +1,11 @@
 #pragma once
 #include <memory>
-#include "ranally/core/string.h"
+#include "geoneric/core/string.h"
 
 
 class OGRLayer;
 
-namespace ranally {
+namespace geoneric {
 
 class Domain;
 
@@ -52,4 +52,4 @@ std::shared_ptr<Domain> OGRFeatureLayer::domain() const
     return std::dynamic_pointer_cast<Domain>(_domain);
 }
 
-} // namespace ranally
+} // namespace geoneric

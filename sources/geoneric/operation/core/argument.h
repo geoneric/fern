@@ -1,8 +1,8 @@
 #pragma once
-#include "ranally/operation/core/argument_type.h"
+#include "geoneric/operation/core/argument_type.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 //! Base class for values that are handled by the interpreter.
 /*!
@@ -37,4 +37,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

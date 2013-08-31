@@ -1,9 +1,9 @@
-#include "ranally/io/polygon_attribute.h"
-#include "ranally/io/polygon_feature.h"
-#include "ranally/io/polygon_value.h"
+#include "geoneric/io/polygon_attribute.h"
+#include "geoneric/io/polygon_feature.h"
+#include "geoneric/io/polygon_value.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 PolygonAttribute::PolygonAttribute(
     String const& name,
@@ -41,4 +41,4 @@ std::vector<PolygonValuePtr> PolygonAttribute::values() const
     return _values;
 }
 
-} // namespace ranally
+} // namespace geoneric

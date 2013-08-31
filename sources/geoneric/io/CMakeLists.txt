@@ -34,11 +34,11 @@ ADD_SUBDIRECTORY(uncertml2)
 #     util
 #     value
 # )
-# ADD_LIBRARY(ranally_io
+# ADD_LIBRARY(geoneric_io
 #     ${SOURCES}
 # )
-# TARGET_LINK_LIBRARIES(ranally_io
-#     ranally_core
+# TARGET_LINK_LIBRARIES(geoneric_io
+#     geoneric_core
 #     # ${HDF5_LIBRARIES}
 #     # ${GDAL_LIBRARIES}
 #     ${Boost_FILESYSTEM_LIBRARY}

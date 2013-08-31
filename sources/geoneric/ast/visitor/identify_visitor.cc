@@ -1,9 +1,9 @@
-#include "ranally/ast/visitor/identify_visitor.h"
-#include "ranally/core/string.h"
-#include "ranally/ast/core/vertices.h"
+#include "geoneric/ast/visitor/identify_visitor.h"
+#include "geoneric/core/string.h"
+#include "geoneric/ast/core/vertices.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 IdentifyVisitor::IdentifyVisitor()
 
@@ -153,4 +153,4 @@ SymbolTable<NameVertex*> const& IdentifyVisitor::symbol_table() const
     return _symbol_table;
 }
 
-} // namespace ranally
+} // namespace geoneric

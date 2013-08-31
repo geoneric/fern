@@ -1,8 +1,8 @@
 #pragma once
-#include "ranally/core/exception.h"
+#include "geoneric/core/exception.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 class ScriptError:
     public Exception
@@ -42,4 +42,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

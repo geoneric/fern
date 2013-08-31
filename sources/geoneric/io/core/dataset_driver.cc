@@ -1,7 +1,7 @@
-#include "ranally/io/dataset_driver.h"
+#include "geoneric/io/dataset_driver.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 DatasetDriver::DatasetDriver()
 {
@@ -12,4 +12,4 @@ DatasetDriver::~DatasetDriver()
 {
 }
 
-} // namespace ranally
+} // namespace geoneric

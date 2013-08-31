@@ -7,7 +7,7 @@ SET(TEST_NAMES
 MACRO(ADD_UNIT_TEST NAME)
     ADD_EXECUTABLE(io_${NAME} ${NAME})
     TARGET_LINK_LIBRARIES(io_${NAME}
-        ranally_io
+        geoneric_io
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
     ADD_TEST(NAME io_${NAME} COMMAND io_${NAME})

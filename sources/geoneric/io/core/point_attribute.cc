@@ -1,9 +1,9 @@
-#include "ranally/io/point_attribute.h"
-#include "ranally/io/point_feature.h"
-#include "ranally/io/point_value.h"
+#include "geoneric/io/point_attribute.h"
+#include "geoneric/io/point_feature.h"
+#include "geoneric/io/point_value.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 PointAttribute::PointAttribute(
     String const& name,
@@ -41,4 +41,4 @@ PointValues const& PointAttribute::values() const
     return _values;
 }
 
-} // namespace ranally
+} // namespace geoneric

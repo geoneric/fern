@@ -1,8 +1,8 @@
-#include "ranally/operation/core/data_types.h"
+#include "geoneric/operation/core/data_types.h"
 #include <map>
 
 
-namespace ranally {
+namespace geoneric {
 
 DataTypes const DataTypes::UNKNOWN;
 DataTypes const DataTypes::SCALAR(1 << DataType::DT_SCALAR);
@@ -73,7 +73,7 @@ String DataTypes::to_string() const
 
     for(DataType data_type: DataTypes::DATA_TYPES) {
         if(test(data_type)) {
-            strings.push_back(ranally::to_string(data_type));
+            strings.push_back(geoneric::to_string(data_type));
         }
     }
 
@@ -103,4 +103,4 @@ std::ostream& operator<<(
     return stream;
 }
 
-} // namespace ranally
+} // namespace geoneric

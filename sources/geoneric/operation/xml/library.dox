@@ -1,11 +1,11 @@
 /*! \page operation_xml operation_xml library
 
 \section operation_xml_introduction Introduction
-This library contains code that is related to translating XML to ranally::Operation instances.
+This library contains code that is related to translating XML to geoneric::Operation instances.
 
 \section operation_xml_dependencies Dependencies
 
-  - \ref operation_core : contains the definition of the ranally::Operation class.
+  - \ref operation_core : contains the definition of the geoneric::Operation class.
   - Expat libraries: the generated XML parser depends on it.
 */
 

@@ -1,11 +1,11 @@
-#include "ranally/ast/visitor/validate_visitor.h"
-#include "ranally/core/exception.h"
-#include "ranally/core/string.h"
-#include "ranally/operation/core/operation.h"
-#include "ranally/ast/core/vertices.h"
+#include "geoneric/ast/visitor/validate_visitor.h"
+#include "geoneric/core/exception.h"
+#include "geoneric/core/string.h"
+#include "geoneric/operation/core/operation.h"
+#include "geoneric/ast/core/vertices.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 void ValidateVisitor::Visit(
     NameVertex& vertex)
@@ -38,7 +38,7 @@ void ValidateVisitor::Visit(
         );
     }
 
-    ranally::Operation const& operation(*vertex.operation());
+    geoneric::Operation const& operation(*vertex.operation());
 
     // Check if the number of arguments provided equals the required number of
     // arguments.
@@ -66,4 +66,4 @@ void ValidateVisitor::Visit(
     // // ...
 }
 
-} // namespace ranally
+} // namespace geoneric

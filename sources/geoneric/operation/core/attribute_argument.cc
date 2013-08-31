@@ -1,7 +1,7 @@
-#include "ranally/operation/core/attribute_argument.h"
+#include "geoneric/operation/core/attribute_argument.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 AttributeArgument::AttributeArgument(
     std::shared_ptr<Attribute> const& attribute)
@@ -18,4 +18,4 @@ std::shared_ptr<Attribute> const& AttributeArgument::attribute() const
     return _attribute;
 }
 
-} // namespace ranally
+} // namespace geoneric

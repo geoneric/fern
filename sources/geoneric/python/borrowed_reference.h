@@ -2,7 +2,7 @@
 #include <Python.h>
 
 
-namespace ranally {
+namespace geoneric {
 namespace python {
 
 //! Class for holding a borrowed reference to a Python object.
@@ -69,4 +69,4 @@ inline BorrowedReference::operator T*()
 }
 
 } // namespace python
-} // namespace ranally
+} // namespace geoneric

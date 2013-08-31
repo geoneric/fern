@@ -1,7 +1,7 @@
-#include "ranally/core/messages.h"
+#include "geoneric/core/messages.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 Messages::Messages()
 {
@@ -58,4 +58,4 @@ String const& Messages::operator[](
     return (*it).second;
 }
 
-} // namespace ranally
+} // namespace geoneric

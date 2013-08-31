@@ -1,7 +1,7 @@
-#include "ranally/operation/core/argument.h"
+#include "geoneric/operation/core/argument.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 Argument::Argument(
     ArgumentType argument_type)
@@ -17,4 +17,4 @@ ArgumentType Argument::argument_type() const
     return _argument_type;
 }
 
-} // namespace ranally
+} // namespace geoneric

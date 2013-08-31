@@ -1,8 +1,8 @@
-#include "ranally/ast/visitor/dot_visitor.h"
-#include "ranally/ast/core/vertices.h"
+#include "geoneric/ast/visitor/dot_visitor.h"
+#include "geoneric/ast/core/vertices.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 String const& DotVisitor::script() const
 {
@@ -23,4 +23,4 @@ void DotVisitor::add_script(
     _script += string;
 }
 
-} // namespace ranally
+} // namespace geoneric

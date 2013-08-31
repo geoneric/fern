@@ -1,4 +1,4 @@
-ADD_EXECUTABLE(ranally
+ADD_EXECUTABLE(geoneric
     command
     convert_command
     describe_command
@@ -6,17 +6,17 @@ ADD_EXECUTABLE(ranally
     import_command
     interpreter
     message
-    ranally
+    geoneric
 )
-ADD_DEPENDENCIES(ranally
+ADD_DEPENDENCIES(geoneric
     Operation-xml.h
 )
-TARGET_LINK_LIBRARIES(ranally
-    ranally_interpreter
+TARGET_LINK_LIBRARIES(geoneric
+    geoneric_interpreter
     ${READLINE_LIBRARY}
     termcap
 )
 INSTALL(
-    TARGETS ranally
+    TARGETS geoneric
     RUNTIME DESTINATION bin COMPONENT Runtime
 )

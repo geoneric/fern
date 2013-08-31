@@ -1,9 +1,9 @@
-#include "ranally/operation/std/operations.h"
-#include "ranally/operation/std/abs.h"
-#include "ranally/operation/std/add.h"
-#include "ranally/operation/std/int32.h"
+#include "geoneric/operation/std/operations.h"
+#include "geoneric/operation/std/abs.h"
+#include "geoneric/operation/std/add.h"
+#include "geoneric/operation/std/int32.h"
 
-namespace ranally {
+namespace geoneric {
 
 // std::shared_ptr<Operations> operations(new Operations({
 //     std::shared_ptr<Operation>(new Abs())
@@ -29,4 +29,4 @@ std::shared_ptr<Operations> const& operations()
     return detail::operations;
 }
 
-} // namespace ranally
+} // namespace geoneric

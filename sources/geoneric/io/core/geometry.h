@@ -6,7 +6,7 @@
 #include <boost/geometry/geometries/polygon.hpp>
 
 
-namespace ranally {
+namespace geoneric {
 
 // TODO What about the coordinate system? How to go about that? Can we pick
 //      one and project all incoming data to that cs?
@@ -35,4 +35,4 @@ typedef std::shared_ptr<Points> PointsPtr;
 
 typedef std::shared_ptr<Polygons> PolygonsPtr;
 
-} // namespace ranally
+} // namespace geoneric

@@ -1,11 +1,11 @@
-#include "ranally/io/uncertml2/uncertml2_parser.h"
+#include "geoneric/io/uncertml2/uncertml2_parser.h"
 #include <cmath>
 #include <sstream>
-#include "ranally/core/exception.h"
-#include "ranally/io/uncertml2/uncertml2-pskel.hxx"
+#include "geoneric/core/exception.h"
+#include "geoneric/io/uncertml2/uncertml2-pskel.hxx"
 
 
-namespace ranally {
+namespace geoneric {
 namespace {
 
 class NormalDistribution_pimpl:
@@ -30,13 +30,13 @@ public:
         _variances = values;
     }
 
-    std::shared_ptr<ranally::NormalDistribution<double> >
+    std::shared_ptr<geoneric::NormalDistribution<double> >
         post_NormalDistribution()
     {
         assert(_means.size() == 1);
         assert(_variances.size() == 1);
         assert(_variances[0] >= 0.0);
-        return std::make_shared<ranally::NormalDistribution<double>>(_means[0],
+        return std::make_shared<geoneric::NormalDistribution<double>>(_means[0],
             std::sqrt(_variances[0]));
     }
 
@@ -201,7 +201,7 @@ std::shared_ptr<Uncertainty> UncertML2Parser::parse(
             << " "
             << exception.diagnostics()[0].message()
             << std::endl;
-        BOOST_THROW_EXCEPTION(ranally::detail::ParseError()
+        BOOST_THROW_EXCEPTION(geoneric::detail::ParseError()
             << detail::ExceptionSourceName("<string>")
             << detail::ExceptionLineNr(exception.diagnostics()[0].line())
             << detail::ExceptionColNr(exception.diagnostics()[0].column())
@@ -212,4 +212,4 @@ std::shared_ptr<Uncertainty> UncertML2Parser::parse(
     return vertex;
 }
 
-} // namespace ranally
+} // namespace geoneric

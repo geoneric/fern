@@ -1,9 +1,9 @@
-#include "ranally/ast/core/operator_vertex.h"
+#include "geoneric/ast/core/operator_vertex.h"
 #include <map>
-#include "ranally/core/string.h"
+#include "geoneric/core/string.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 std::map<String, String> unary_operator_symbols = {
     { "Invert", "~" },
@@ -75,4 +75,4 @@ String const& OperatorVertex::symbol() const
     return _symbol;
 }
 
-} // namespace ranally
+} // namespace geoneric

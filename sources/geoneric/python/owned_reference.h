@@ -2,7 +2,7 @@
 #include <Python.h>
 
 
-namespace ranally {
+namespace geoneric {
 namespace python {
 
 //! Class for holding an owned reference to a Python object.
@@ -53,4 +53,4 @@ private:
 };
 
 } // namespace python
-} // namespace ranally
+} // namespace geoneric

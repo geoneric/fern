@@ -2,10 +2,10 @@
 #include <algorithm>
 #include <array>
 #include <boost/range/iterator.hpp>
-#include "ranally/data_traits.h"
+#include "geoneric/data_traits.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 template<
     typename ValueType,
@@ -96,7 +96,7 @@ struct DataTraits<Raster<ValueType, nr_rows, nr_cols>>
     typedef RasterTag DataCategory;
 };
 
-} // namespace ranally
+} // namespace geoneric
 
 
 namespace boost {
@@ -105,10 +105,10 @@ template<
     typename ValueType,
     size_t nr_rows,
     size_t nr_cols>
-struct range_const_iterator<ranally::Raster<ValueType, nr_rows, nr_cols>>
+struct range_const_iterator<geoneric::Raster<ValueType, nr_rows, nr_cols>>
 {
     typedef typename
-        ranally::Raster<ValueType, nr_rows, nr_cols>::const_iterator type;
+        geoneric::Raster<ValueType, nr_rows, nr_cols>::const_iterator type;
 };
 
 
@@ -116,10 +116,10 @@ template<
     typename ValueType,
     size_t nr_rows,
     size_t nr_cols>
-struct range_mutable_iterator<ranally::Raster<ValueType, nr_rows, nr_cols>>
+struct range_mutable_iterator<geoneric::Raster<ValueType, nr_rows, nr_cols>>
 {
     typedef typename
-        ranally::Raster<ValueType, nr_rows, nr_cols>::iterator type;
+        geoneric::Raster<ValueType, nr_rows, nr_cols>::iterator type;
 };
 
 } // namespace boost

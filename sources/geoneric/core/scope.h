@@ -1,9 +1,9 @@
 #pragma once
 #include <map>
-#include "ranally/core/string.h"
+#include "geoneric/core/string.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 template<
     class Value>
@@ -77,4 +77,4 @@ inline Value Scope<Value>::value(
     return _values.find(name)->second;
 }
 
-} // namespace ranally
+} // namespace geoneric

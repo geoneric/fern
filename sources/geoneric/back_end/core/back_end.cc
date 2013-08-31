@@ -1,7 +1,7 @@
-#include "ranally/back_end/core/back_end.h"
+#include "geoneric/back_end/core/back_end.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 BackEnd::BackEnd(
     OperationsPtr const& operations)
@@ -17,4 +17,4 @@ OperationsPtr const& BackEnd::operations() const
     return _operations;
 }
 
-} // namespace ranally
+} // namespace geoneric

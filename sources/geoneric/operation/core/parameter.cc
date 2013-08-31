@@ -1,8 +1,8 @@
-#include "ranally/operation/core/parameter.h"
+#include "geoneric/operation/core/parameter.h"
 #include <cassert>
 
 
-namespace ranally {
+namespace geoneric {
 
 //!
 /*!
@@ -91,4 +91,4 @@ ValueTypes Parameter::value_types() const
     return _value_types;
 }
 
-} // namespace ranally
+} // namespace geoneric

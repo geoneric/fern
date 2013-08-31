@@ -1,7 +1,7 @@
-#include "ranally/io/point_value.h"
+#include "geoneric/io/point_value.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 PointValue::PointValue()
 
@@ -15,4 +15,4 @@ PointValue::~PointValue()
 {
 }
 
-} // namespace ranally
+} // namespace geoneric

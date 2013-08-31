@@ -1,9 +1,9 @@
 #pragma once
-#include "ranally/io/feature.h"
-#include "ranally/io/point_ptr.h"
+#include "geoneric/io/feature.h"
+#include "geoneric/io/point_ptr.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -40,4 +40,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

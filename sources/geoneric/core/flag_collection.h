@@ -1,9 +1,9 @@
 #pragma once
 #include <bitset>
-#include "ranally/core/string.h"
+#include "geoneric/core/string.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 
 //! Collection for managing flags.
@@ -177,4 +177,4 @@ inline bool FlagCollection<Flags, Flag, size>::operator!=(
         flags);
 }
 
-} // namespace ranally
+} // namespace geoneric

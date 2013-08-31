@@ -1,10 +1,10 @@
-#define BOOST_TEST_MODULE ranally ast
+#define BOOST_TEST_MODULE geoneric ast
 #include <boost/test/unit_test.hpp>
-#include "ranally/core/string.h"
-#include "ranally/script/algebra_parser.h"
-#include "ranally/ast/core/vertices.h"
-#include "ranally/ast/visitor/thread_visitor.h"
-#include "ranally/ast/xml/xml_parser.h"
+#include "geoneric/core/string.h"
+#include "geoneric/script/algebra_parser.h"
+#include "geoneric/ast/core/vertices.h"
+#include "geoneric/ast/visitor/thread_visitor.h"
+#include "geoneric/ast/xml/xml_parser.h"
 
 // #include <typeinfo>
 // std::cout << typeid(*tree->scope()->successor()).name() << std::endl;
@@ -37,11 +37,11 @@ public:
 
 protected:
 
-    ranally::AlgebraParser _algebra_parser;
+    geoneric::AlgebraParser _algebra_parser;
 
-    ranally::XmlParser _xml_parser;
+    geoneric::XmlParser _xml_parser;
 
-    ranally::ThreadVisitor _thread_visitor;
+    geoneric::ThreadVisitor _thread_visitor;
 
 };
 
@@ -50,10 +50,10 @@ BOOST_FIXTURE_TEST_SUITE(thread_visitor, Support)
 
 BOOST_AUTO_TEST_CASE(visit_empty_script)
 {
-    std::shared_ptr<ranally::ModuleVertex> tree;
+    std::shared_ptr<geoneric::ModuleVertex> tree;
 
     tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-        ranally::String("")));
+        geoneric::String("")));
     tree->Accept(_thread_visitor);
     BOOST_CHECK_EQUAL(tree->successor(), tree->scope());
     BOOST_CHECK_EQUAL(tree->scope()->successor(), tree->scope()->sentinel());
@@ -63,13 +63,13 @@ BOOST_AUTO_TEST_CASE(visit_empty_script)
 
 BOOST_AUTO_TEST_CASE(visit_name)
 {
-    std::shared_ptr<ranally::ModuleVertex> tree;
+    std::shared_ptr<geoneric::ModuleVertex> tree;
 
     tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-        ranally::String("a")));
+        geoneric::String("a")));
     tree->Accept(_thread_visitor);
 
-    ranally::AstVertex const* vertex_a = &(*tree->scope()->statements()[0]);
+    geoneric::AstVertex const* vertex_a = &(*tree->scope()->statements()[0]);
 
     BOOST_CHECK_EQUAL(tree->successor(), tree->scope());
     BOOST_CHECK_EQUAL(tree->scope()->successor(), vertex_a);
@@ -80,17 +80,17 @@ BOOST_AUTO_TEST_CASE(visit_name)
 
 BOOST_AUTO_TEST_CASE(visit_assignment)
 {
-    std::shared_ptr<ranally::ModuleVertex> tree;
+    std::shared_ptr<geoneric::ModuleVertex> tree;
 
     tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-        ranally::String("a = b")));
+        geoneric::String("a = b")));
     tree->Accept(_thread_visitor);
 
-    ranally::AssignmentVertex const* assignment =
-        dynamic_cast<ranally::AssignmentVertex const*>(
+    geoneric::AssignmentVertex const* assignment =
+        dynamic_cast<geoneric::AssignmentVertex const*>(
             &(*tree->scope()->statements()[0]));
-    ranally::AstVertex const* vertex_a = &(*assignment->target());
-    ranally::AstVertex const* vertex_b = &(*assignment->expression());
+    geoneric::AstVertex const* vertex_a = &(*assignment->target());
+    geoneric::AstVertex const* vertex_b = &(*assignment->expression());
 
     BOOST_CHECK_EQUAL(tree->successor(), tree->scope());
     BOOST_CHECK_EQUAL(tree->scope()->successor(), vertex_b);
@@ -103,13 +103,13 @@ BOOST_AUTO_TEST_CASE(visit_assignment)
 
 BOOST_AUTO_TEST_CASE(visit_string)
 {
-    std::shared_ptr<ranally::ModuleVertex> tree;
+    std::shared_ptr<geoneric::ModuleVertex> tree;
 
     tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-        ranally::String("\"five\"")));
+        geoneric::String("\"five\"")));
     tree->Accept(_thread_visitor);
 
-    ranally::AstVertex const* string_vertex =
+    geoneric::AstVertex const* string_vertex =
         &(*tree->scope()->statements()[0]);
 
     BOOST_CHECK_EQUAL(tree->successor(), tree->scope());
@@ -121,13 +121,13 @@ BOOST_AUTO_TEST_CASE(visit_string)
 
 BOOST_AUTO_TEST_CASE(visit_number)
 {
-    std::shared_ptr<ranally::ModuleVertex> tree;
+    std::shared_ptr<geoneric::ModuleVertex> tree;
 
     tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-        ranally::String("5")));
+        geoneric::String("5")));
     tree->Accept(_thread_visitor);
 
-    ranally::AstVertex const* number_vertex =
+    geoneric::AstVertex const* number_vertex =
         &(*tree->scope()->statements()[0]);
 
     BOOST_CHECK_EQUAL(tree->successor(), tree->scope());
@@ -139,14 +139,14 @@ BOOST_AUTO_TEST_CASE(visit_number)
 
 BOOST_AUTO_TEST_CASE(visit_function)
 {
-    std::shared_ptr<ranally::ModuleVertex> tree;
+    std::shared_ptr<geoneric::ModuleVertex> tree;
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String("f()")));
+            geoneric::String("f()")));
         tree->Accept(_thread_visitor);
 
-        ranally::AstVertex const* function_call_vertex =
+        geoneric::AstVertex const* function_call_vertex =
             &(*tree->scope()->statements()[0]);
 
         BOOST_CHECK_EQUAL(tree->successor(), tree->scope());
@@ -158,19 +158,19 @@ BOOST_AUTO_TEST_CASE(visit_function)
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String("f(1, \"2\", three, four())")));
+            geoneric::String("f(1, \"2\", three, four())")));
         tree->Accept(_thread_visitor);
 
-        ranally::FunctionCallVertex const* function_call_vertex =
-            dynamic_cast<ranally::FunctionCallVertex const*>(
+        geoneric::FunctionCallVertex const* function_call_vertex =
+            dynamic_cast<geoneric::FunctionCallVertex const*>(
                 &(*tree->scope()->statements()[0]));
-        ranally::AstVertex const* vertex1 =
+        geoneric::AstVertex const* vertex1 =
             &(*function_call_vertex->expressions()[0]);
-        ranally::AstVertex const* vertex2 =
+        geoneric::AstVertex const* vertex2 =
             &(*function_call_vertex->expressions()[1]);
-        ranally::AstVertex const* vertex3 =
+        geoneric::AstVertex const* vertex3 =
             &(*function_call_vertex->expressions()[2]);
-        ranally::AstVertex const* vertex4 =
+        geoneric::AstVertex const* vertex4 =
             &(*function_call_vertex->expressions()[3]);
 
         BOOST_CHECK_EQUAL(tree->successor(), tree->scope());
@@ -188,17 +188,17 @@ BOOST_AUTO_TEST_CASE(visit_function)
 
 BOOST_AUTO_TEST_CASE(visit_operator)
 {
-    std::shared_ptr<ranally::ModuleVertex> tree;
+    std::shared_ptr<geoneric::ModuleVertex> tree;
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String("-a")));
+            geoneric::String("-a")));
         tree->Accept(_thread_visitor);
 
-        ranally::OperatorVertex const* operator_vertex =
-            dynamic_cast<ranally::OperatorVertex const*>(
+        geoneric::OperatorVertex const* operator_vertex =
+            dynamic_cast<geoneric::OperatorVertex const*>(
                 &(*tree->scope()->statements()[0]));
-        ranally::AstVertex const* vertex1 =
+        geoneric::AstVertex const* vertex1 =
             &(*operator_vertex->expressions()[0]);
 
         BOOST_CHECK_EQUAL(tree->successor(), tree->scope());
@@ -211,15 +211,15 @@ BOOST_AUTO_TEST_CASE(visit_operator)
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String("a + b")));
+            geoneric::String("a + b")));
         tree->Accept(_thread_visitor);
 
-        ranally::OperatorVertex const* operator_vertex =
-            dynamic_cast<ranally::OperatorVertex const*>(
+        geoneric::OperatorVertex const* operator_vertex =
+            dynamic_cast<geoneric::OperatorVertex const*>(
                 &(*tree->scope()->statements()[0]));
-        ranally::AstVertex const* vertex1 =
+        geoneric::AstVertex const* vertex1 =
             &(*operator_vertex->expressions()[0]);
-        ranally::AstVertex const* vertex2 =
+        geoneric::AstVertex const* vertex2 =
             &(*operator_vertex->expressions()[1]);
 
         BOOST_CHECK_EQUAL(tree->successor(), tree->scope());
@@ -233,18 +233,18 @@ BOOST_AUTO_TEST_CASE(visit_operator)
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String("-(a + b)")));
+            geoneric::String("-(a + b)")));
         tree->Accept(_thread_visitor);
 
-        ranally::OperatorVertex const* operator1_vertex =
-            dynamic_cast<ranally::OperatorVertex const*>(
+        geoneric::OperatorVertex const* operator1_vertex =
+            dynamic_cast<geoneric::OperatorVertex const*>(
                 &(*tree->scope()->statements()[0]));
-        ranally::OperatorVertex const* operator2_vertex =
-            dynamic_cast<ranally::OperatorVertex const*>(
+        geoneric::OperatorVertex const* operator2_vertex =
+            dynamic_cast<geoneric::OperatorVertex const*>(
                 &(*operator1_vertex->expressions()[0]));
-        ranally::AstVertex const* vertex1 =
+        geoneric::AstVertex const* vertex1 =
             &(*operator2_vertex->expressions()[0]);
-        ranally::AstVertex const* vertex2 =
+        geoneric::AstVertex const* vertex2 =
             &(*operator2_vertex->expressions()[1]);
 
         BOOST_CHECK_EQUAL(tree->successor(), tree->scope());
@@ -261,15 +261,15 @@ BOOST_AUTO_TEST_CASE(visit_operator)
 
 BOOST_AUTO_TEST_CASE(visit_multiple_statement)
 {
-    std::shared_ptr<ranally::ModuleVertex> tree;
+    std::shared_ptr<geoneric::ModuleVertex> tree;
 
     tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-        ranally::String("a;b;c")));
+        geoneric::String("a;b;c")));
     tree->Accept(_thread_visitor);
 
-    ranally::AstVertex const* vertex_a = &(*tree->scope()->statements()[0]);
-    ranally::AstVertex const* vertex_b = &(*tree->scope()->statements()[1]);
-    ranally::AstVertex const* vertex_c = &(*tree->scope()->statements()[2]);
+    geoneric::AstVertex const* vertex_a = &(*tree->scope()->statements()[0]);
+    geoneric::AstVertex const* vertex_b = &(*tree->scope()->statements()[1]);
+    geoneric::AstVertex const* vertex_c = &(*tree->scope()->statements()[2]);
 
     BOOST_CHECK_EQUAL(tree->successor(), tree->scope());
     BOOST_CHECK_EQUAL(tree->scope()->successor(), vertex_a);
@@ -282,22 +282,22 @@ BOOST_AUTO_TEST_CASE(visit_multiple_statement)
 
 BOOST_AUTO_TEST_CASE(visit_nested_expressions)
 {
-    std::shared_ptr<ranally::ModuleVertex> tree;
+    std::shared_ptr<geoneric::ModuleVertex> tree;
 
     tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-        ranally::String("a = b + c")));
+        geoneric::String("a = b + c")));
     tree->Accept(_thread_visitor);
 
-    ranally::AssignmentVertex const* assignment =
-        dynamic_cast<ranally::AssignmentVertex const*>(
+    geoneric::AssignmentVertex const* assignment =
+        dynamic_cast<geoneric::AssignmentVertex const*>(
             &(*tree->scope()->statements()[0]));
-    ranally::AstVertex const* vertex_a = &(*assignment->target());
-    ranally::OperatorVertex const* addition =
-        dynamic_cast<ranally::OperatorVertex const*>(
+    geoneric::AstVertex const* vertex_a = &(*assignment->target());
+    geoneric::OperatorVertex const* addition =
+        dynamic_cast<geoneric::OperatorVertex const*>(
             &(*assignment->expression()));
-    ranally::AstVertex const* vertex_b =
+    geoneric::AstVertex const* vertex_b =
         &(*addition->expressions()[0]);
-    ranally::AstVertex const* vertex_c =
+    geoneric::AstVertex const* vertex_c =
         &(*addition->expressions()[1]);
 
     BOOST_CHECK_EQUAL(tree->successor(), tree->scope());
@@ -313,24 +313,24 @@ BOOST_AUTO_TEST_CASE(visit_nested_expressions)
 
 BOOST_AUTO_TEST_CASE(visit_if)
 {
-    std::shared_ptr<ranally::ModuleVertex> tree;
+    std::shared_ptr<geoneric::ModuleVertex> tree;
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String(
+            geoneric::String(
                 "if a:\n"
                 "    b\n"
                 "    c")));
         tree->Accept(_thread_visitor);
 
-        ranally::IfVertex const* if_vertex =
-            dynamic_cast<ranally::IfVertex const*>(
+        geoneric::IfVertex const* if_vertex =
+            dynamic_cast<geoneric::IfVertex const*>(
                 &(*tree->scope()->statements()[0]));
-        ranally::AstVertex const* vertex_a =
+        geoneric::AstVertex const* vertex_a =
             &(*if_vertex->condition());
-        ranally::AstVertex const* vertex_b =
+        geoneric::AstVertex const* vertex_b =
             &(*if_vertex->true_scope()->statements()[0]);
-        ranally::AstVertex const* vertex_c =
+        geoneric::AstVertex const* vertex_c =
             &(*if_vertex->true_scope()->statements()[1]);
 
         BOOST_CHECK_EQUAL(tree->successor(), tree->scope());
@@ -350,7 +350,7 @@ BOOST_AUTO_TEST_CASE(visit_if)
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String(
+            geoneric::String(
                 "if a:\n"
                 "    b\n"
                 "    c\n"
@@ -363,31 +363,31 @@ BOOST_AUTO_TEST_CASE(visit_if)
         tree->Accept(_thread_visitor);
 
         // True block first if.
-        ranally::IfVertex const* if1_vertex =
-            dynamic_cast<ranally::IfVertex const*>(
+        geoneric::IfVertex const* if1_vertex =
+            dynamic_cast<geoneric::IfVertex const*>(
                 &(*tree->scope()->statements()[0]));
-        ranally::AstVertex const* vertex_a =
+        geoneric::AstVertex const* vertex_a =
             &(*if1_vertex->condition());
-        ranally::AstVertex const* vertex_b =
+        geoneric::AstVertex const* vertex_b =
             &(*if1_vertex->true_scope()->statements()[0]);
-        ranally::AstVertex const* vertex_c =
+        geoneric::AstVertex const* vertex_c =
             &(*if1_vertex->true_scope()->statements()[1]);
 
         // True block second if.
-        ranally::IfVertex const* if2_vertex =
-            dynamic_cast<ranally::IfVertex const*>(
+        geoneric::IfVertex const* if2_vertex =
+            dynamic_cast<geoneric::IfVertex const*>(
                 &(*if1_vertex->false_scope()->statements()[0]));
-        ranally::AstVertex const* vertex_d =
+        geoneric::AstVertex const* vertex_d =
             &(*if2_vertex->condition());
-        ranally::AstVertex const* vertex_e =
+        geoneric::AstVertex const* vertex_e =
             &(*if2_vertex->true_scope()->statements()[0]);
-        ranally::AstVertex const* vertex_f =
+        geoneric::AstVertex const* vertex_f =
             &(*if2_vertex->true_scope()->statements()[1]);
 
         // False block second if.
-        ranally::AstVertex const* vertex_g =
+        geoneric::AstVertex const* vertex_g =
             &(*if2_vertex->false_scope()->statements()[0]);
-        ranally::AstVertex const* vertex_h =
+        geoneric::AstVertex const* vertex_h =
             &(*if2_vertex->false_scope()->statements()[1]);
 
         // True block first if.
@@ -445,11 +445,11 @@ BOOST_AUTO_TEST_CASE(visit_while)
 
 BOOST_AUTO_TEST_CASE(visit_function_definition)
 {
-    std::shared_ptr<ranally::ModuleVertex> tree;
+    std::shared_ptr<geoneric::ModuleVertex> tree;
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String(u8R"(
+            geoneric::String(u8R"(
 def foo():
     return
 )")));
@@ -464,15 +464,15 @@ def foo():
         BOOST_CHECK_EQUAL(tree->scope()->sentinel()->successor(), tree);
 
         BOOST_REQUIRE_EQUAL(tree->scope()->statements().size(), 1u);
-        ranally::FunctionDefinitionVertex const* function_definition_vertex =
-            dynamic_cast<ranally::FunctionDefinitionVertex const*>(
+        geoneric::FunctionDefinitionVertex const* function_definition_vertex =
+            dynamic_cast<geoneric::FunctionDefinitionVertex const*>(
                 &(*tree->scope()->statements()[0]));
         BOOST_REQUIRE(function_definition_vertex);
 
         BOOST_REQUIRE_EQUAL(
             function_definition_vertex->scope()->statements().size(), 1u);
-        ranally::ReturnVertex const* return_vertex =
-            dynamic_cast<ranally::ReturnVertex const*>(
+        geoneric::ReturnVertex const* return_vertex =
+            dynamic_cast<geoneric::ReturnVertex const*>(
                 &(*function_definition_vertex->scope()->statements()[0]));
         BOOST_REQUIRE(return_vertex);
         BOOST_CHECK(!return_vertex->expression());
@@ -489,7 +489,7 @@ def foo():
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String(u8R"(
+            geoneric::String(u8R"(
 def foo():
     return 5
 )")));
@@ -504,19 +504,19 @@ def foo():
         BOOST_CHECK_EQUAL(tree->scope()->sentinel()->successor(), tree);
 
         BOOST_REQUIRE_EQUAL(tree->scope()->statements().size(), 1u);
-        ranally::FunctionDefinitionVertex const* vertex_foo =
-            dynamic_cast<ranally::FunctionDefinitionVertex const*>(
+        geoneric::FunctionDefinitionVertex const* vertex_foo =
+            dynamic_cast<geoneric::FunctionDefinitionVertex const*>(
                 &(*tree->scope()->statements()[0]));
         BOOST_REQUIRE(vertex_foo);
 
         BOOST_REQUIRE_EQUAL(vertex_foo->scope()->statements().size(), 1u);
-        ranally::ReturnVertex const* return_vertex =
-            dynamic_cast<ranally::ReturnVertex const*>(
+        geoneric::ReturnVertex const* return_vertex =
+            dynamic_cast<geoneric::ReturnVertex const*>(
                 &(*vertex_foo->scope()->statements()[0]));
         BOOST_REQUIRE(return_vertex);
 
         BOOST_REQUIRE(return_vertex->expression());
-        ranally::AstVertex const* number_vertex =
+        geoneric::AstVertex const* number_vertex =
             &(*return_vertex->expression());
 
         BOOST_CHECK_EQUAL(vertex_foo->successor(), vertex_foo->scope());
@@ -529,7 +529,7 @@ def foo():
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String(u8R"(
+            geoneric::String(u8R"(
 def foo():
     return 5
 
@@ -538,34 +538,34 @@ a = foo())")));
 
         BOOST_REQUIRE_EQUAL(tree->scope()->statements().size(), 2u);
 
-        ranally::FunctionDefinitionVertex const* vertex_foo =
-            dynamic_cast<ranally::FunctionDefinitionVertex const*>(
+        geoneric::FunctionDefinitionVertex const* vertex_foo =
+            dynamic_cast<geoneric::FunctionDefinitionVertex const*>(
                 &(*tree->scope()->statements()[0]));
         BOOST_REQUIRE(vertex_foo);
 
         BOOST_REQUIRE_EQUAL(vertex_foo->scope()->statements().size(), 1u);
-        ranally::ReturnVertex const* return_vertex =
-            dynamic_cast<ranally::ReturnVertex const*>(
+        geoneric::ReturnVertex const* return_vertex =
+            dynamic_cast<geoneric::ReturnVertex const*>(
                 &(*vertex_foo->scope()->statements()[0]));
         BOOST_REQUIRE(return_vertex);
 
         BOOST_REQUIRE(return_vertex->expression());
-        ranally::NumberVertex<int64_t> const* number_vertex =
-            dynamic_cast<ranally::NumberVertex<int64_t> const*>(
+        geoneric::NumberVertex<int64_t> const* number_vertex =
+            dynamic_cast<geoneric::NumberVertex<int64_t> const*>(
                 &(*return_vertex->expression()));
 
-        ranally::AssignmentVertex const* assignment_vertex =
-            dynamic_cast<ranally::AssignmentVertex const*>(
+        geoneric::AssignmentVertex const* assignment_vertex =
+            dynamic_cast<geoneric::AssignmentVertex const*>(
                 &(*tree->scope()->statements()[1]));
         BOOST_REQUIRE(assignment_vertex);
 
-        ranally::FunctionCallVertex const* function_call_vertex =
-            dynamic_cast<ranally::FunctionCallVertex const*>(
+        geoneric::FunctionCallVertex const* function_call_vertex =
+            dynamic_cast<geoneric::FunctionCallVertex const*>(
                 &(*assignment_vertex->expression()));
         BOOST_REQUIRE(function_call_vertex);
 
-        ranally::NameVertex const* name_vertex =
-            dynamic_cast<ranally::NameVertex const*>(
+        geoneric::NameVertex const* name_vertex =
+            dynamic_cast<geoneric::NameVertex const*>(
                 &(*assignment_vertex->target()));
         BOOST_REQUIRE(name_vertex);
 
@@ -589,7 +589,7 @@ a = foo())")));
     {
         // Test function without return statement.
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String(u8R"(
+            geoneric::String(u8R"(
 def foo():
     bar
 
@@ -598,20 +598,20 @@ foo())")));
 
         BOOST_REQUIRE_EQUAL(tree->scope()->statements().size(), 2u);
 
-        ranally::FunctionDefinitionVertex const* function_definition_vertex =
-            dynamic_cast<ranally::FunctionDefinitionVertex const*>(
+        geoneric::FunctionDefinitionVertex const* function_definition_vertex =
+            dynamic_cast<geoneric::FunctionDefinitionVertex const*>(
                 &(*tree->scope()->statements()[0]));
         BOOST_REQUIRE(function_definition_vertex);
 
         BOOST_REQUIRE_EQUAL(
             function_definition_vertex->scope()->statements().size(), 1u);
-        ranally::NameVertex const* name_vertex =
-            dynamic_cast<ranally::NameVertex const*>(
+        geoneric::NameVertex const* name_vertex =
+            dynamic_cast<geoneric::NameVertex const*>(
                 &(*function_definition_vertex->scope()->statements()[0]));
         BOOST_REQUIRE(name_vertex);
 
-        ranally::FunctionCallVertex const* function_call_vertex =
-            dynamic_cast<ranally::FunctionCallVertex const*>(
+        geoneric::FunctionCallVertex const* function_call_vertex =
+            dynamic_cast<geoneric::FunctionCallVertex const*>(
                 &(*tree->scope()->statements()[1]));
         BOOST_REQUIRE(function_call_vertex);
 
@@ -639,7 +639,7 @@ foo())")));
         // Test whether statements after the return statement are threaded.
         // These are unreachable, but must be threaded anyway.
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String(u8R"(
+            geoneric::String(u8R"(
 a = foo()
 
 def foo():
@@ -651,42 +651,42 @@ def foo():
         BOOST_REQUIRE_EQUAL(tree->scope()->statements().size(), 2u);
 
 
-        ranally::AssignmentVertex const* assignment_vertex =
-            dynamic_cast<ranally::AssignmentVertex const*>(
+        geoneric::AssignmentVertex const* assignment_vertex =
+            dynamic_cast<geoneric::AssignmentVertex const*>(
                 &(*tree->scope()->statements()[0]));
         BOOST_REQUIRE(assignment_vertex);
 
-        ranally::FunctionCallVertex const* function_call_vertex =
-            dynamic_cast<ranally::FunctionCallVertex const*>(
+        geoneric::FunctionCallVertex const* function_call_vertex =
+            dynamic_cast<geoneric::FunctionCallVertex const*>(
                 &(*assignment_vertex->expression()));
         BOOST_REQUIRE(function_call_vertex);
 
-        ranally::NameVertex const* name_vertex =
-            dynamic_cast<ranally::NameVertex const*>(
+        geoneric::NameVertex const* name_vertex =
+            dynamic_cast<geoneric::NameVertex const*>(
                 &(*assignment_vertex->target()));
         BOOST_REQUIRE(name_vertex);
 
 
-        ranally::FunctionDefinitionVertex const* function_definition_vertex =
-            dynamic_cast<ranally::FunctionDefinitionVertex const*>(
+        geoneric::FunctionDefinitionVertex const* function_definition_vertex =
+            dynamic_cast<geoneric::FunctionDefinitionVertex const*>(
                 &(*tree->scope()->statements()[1]));
         BOOST_REQUIRE(function_definition_vertex);
 
         BOOST_REQUIRE_EQUAL(
             function_definition_vertex->scope()->statements().size(), 2u);
-        ranally::ReturnVertex const* return_vertex =
-            dynamic_cast<ranally::ReturnVertex const*>(
+        geoneric::ReturnVertex const* return_vertex =
+            dynamic_cast<geoneric::ReturnVertex const*>(
                 &(*function_definition_vertex->scope()->statements()[0]));
         BOOST_REQUIRE(return_vertex);
 
-        ranally::NumberVertex<int64_t> const* number6_vertex =
-            dynamic_cast<ranally::NumberVertex<int64_t> const*>(
+        geoneric::NumberVertex<int64_t> const* number6_vertex =
+            dynamic_cast<geoneric::NumberVertex<int64_t> const*>(
                 &(*function_definition_vertex->scope()->statements()[1]));
         BOOST_REQUIRE(number6_vertex);
 
         BOOST_REQUIRE(return_vertex->expression());
-        ranally::NumberVertex<int64_t> const* number5_vertex =
-            dynamic_cast<ranally::NumberVertex<int64_t> const*>(
+        geoneric::NumberVertex<int64_t> const* number5_vertex =
+            dynamic_cast<geoneric::NumberVertex<int64_t> const*>(
                 &(*return_vertex->expression()));
         BOOST_REQUIRE(number5_vertex);
 
@@ -721,7 +721,7 @@ def foo():
         // Add two arguments to the function and let the function return
         // the sum.
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String(u8R"(
+            geoneric::String(u8R"(
 def sum(lhs, rhs):
     return lhs + rhs
 
@@ -732,21 +732,21 @@ s = sum(5, 6)
         BOOST_REQUIRE_EQUAL(tree->scope()->statements().size(), 2u);
 
         // def sum(lhs, rhs)
-        ranally::FunctionDefinitionVertex const* function_definition_vertex =
-            dynamic_cast<ranally::FunctionDefinitionVertex const*>(
+        geoneric::FunctionDefinitionVertex const* function_definition_vertex =
+            dynamic_cast<geoneric::FunctionDefinitionVertex const*>(
                 &(*tree->scope()->statements()[0]));
         BOOST_REQUIRE(function_definition_vertex);
 
         // (lhs, rhs)
         BOOST_REQUIRE_EQUAL(function_definition_vertex->arguments().size(), 2u);
 
-        ranally::NameVertex const* lhs_parameter_vertex =
-            dynamic_cast<ranally::NameVertex const*>(
+        geoneric::NameVertex const* lhs_parameter_vertex =
+            dynamic_cast<geoneric::NameVertex const*>(
                 &(*function_definition_vertex->arguments()[0]));
         BOOST_REQUIRE(lhs_parameter_vertex);
 
-        ranally::NameVertex const* rhs_parameter_vertex =
-            dynamic_cast<ranally::NameVertex const*>(
+        geoneric::NameVertex const* rhs_parameter_vertex =
+            dynamic_cast<geoneric::NameVertex const*>(
                 &(*function_definition_vertex->arguments()[1]));
         BOOST_REQUIRE(rhs_parameter_vertex);
 
@@ -754,39 +754,39 @@ s = sum(5, 6)
         BOOST_REQUIRE_EQUAL(
             function_definition_vertex->scope()->statements().size(), 1u);
 
-        ranally::ReturnVertex const* return_vertex =
-            dynamic_cast<ranally::ReturnVertex const*>(
+        geoneric::ReturnVertex const* return_vertex =
+            dynamic_cast<geoneric::ReturnVertex const*>(
                 &(*function_definition_vertex->scope()->statements()[0]));
         BOOST_REQUIRE(return_vertex);
         BOOST_REQUIRE(return_vertex->expression());
 
         // lhs + rhs
-        ranally::OperatorVertex const* operator_vertex =
-            dynamic_cast<ranally::OperatorVertex const*>(
+        geoneric::OperatorVertex const* operator_vertex =
+            dynamic_cast<geoneric::OperatorVertex const*>(
                 &(*return_vertex->expression()));
         BOOST_REQUIRE(operator_vertex);
         BOOST_REQUIRE_EQUAL(operator_vertex->expressions().size(), 2u);
 
         // lhs
-        ranally::NameVertex const* lhs_argument_vertex =
-            dynamic_cast<ranally::NameVertex const*>(
+        geoneric::NameVertex const* lhs_argument_vertex =
+            dynamic_cast<geoneric::NameVertex const*>(
                 &(*operator_vertex->expressions()[0]));
         BOOST_REQUIRE(lhs_argument_vertex);
 
         // rhs
-        ranally::NameVertex const* rhs_argument_vertex =
-            dynamic_cast<ranally::NameVertex const*>(
+        geoneric::NameVertex const* rhs_argument_vertex =
+            dynamic_cast<geoneric::NameVertex const*>(
                 &(*operator_vertex->expressions()[1]));
         BOOST_REQUIRE(rhs_argument_vertex);
 
         // s = sum(5, 6)
-        ranally::AssignmentVertex const* assignment_vertex =
-            dynamic_cast<ranally::AssignmentVertex const*>(
+        geoneric::AssignmentVertex const* assignment_vertex =
+            dynamic_cast<geoneric::AssignmentVertex const*>(
                 &(*tree->scope()->statements()[1]));
         BOOST_REQUIRE(assignment_vertex);
 
-        ranally::FunctionCallVertex const* function_call_vertex =
-            dynamic_cast<ranally::FunctionCallVertex const*>(
+        geoneric::FunctionCallVertex const* function_call_vertex =
+            dynamic_cast<geoneric::FunctionCallVertex const*>(
                 &(*assignment_vertex->expression()));
         BOOST_REQUIRE(function_call_vertex);
 
@@ -794,20 +794,20 @@ s = sum(5, 6)
         BOOST_REQUIRE_EQUAL(function_call_vertex->expressions().size(), 2u);
 
         // 5
-        ranally::NumberVertex<int64_t> const* five_vertex =
-            dynamic_cast<ranally::NumberVertex<int64_t> const*>(
+        geoneric::NumberVertex<int64_t> const* five_vertex =
+            dynamic_cast<geoneric::NumberVertex<int64_t> const*>(
                 &(*function_call_vertex->expressions()[0]));
         BOOST_REQUIRE(five_vertex);
 
         // 6
-        ranally::NumberVertex<int64_t> const* six_vertex =
-            dynamic_cast<ranally::NumberVertex<int64_t> const*>(
+        geoneric::NumberVertex<int64_t> const* six_vertex =
+            dynamic_cast<geoneric::NumberVertex<int64_t> const*>(
                 &(*function_call_vertex->expressions()[1]));
         BOOST_REQUIRE(six_vertex);
 
         // s
-        ranally::NameVertex const* target_vertex =
-            dynamic_cast<ranally::NameVertex const*>(
+        geoneric::NameVertex const* target_vertex =
+            dynamic_cast<geoneric::NameVertex const*>(
                 &(*assignment_vertex->target()));
         BOOST_REQUIRE(target_vertex);
 
@@ -846,7 +846,7 @@ s = sum(5, 6)
     {
         // Test nested function definitions.
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String(u8R"(
+            geoneric::String(u8R"(
 def foo(a, b):
     def bar(c, d):
         return c + d
@@ -860,21 +860,21 @@ result = foo(5, 6)
         BOOST_REQUIRE_EQUAL(tree->scope()->statements().size(), 2u);
 
         // def foo(a, b)
-        ranally::FunctionDefinitionVertex const* foo_definition_vertex =
-            dynamic_cast<ranally::FunctionDefinitionVertex const*>(
+        geoneric::FunctionDefinitionVertex const* foo_definition_vertex =
+            dynamic_cast<geoneric::FunctionDefinitionVertex const*>(
                 &(*tree->scope()->statements()[0]));
         BOOST_REQUIRE(foo_definition_vertex);
 
         // (a, b)
         BOOST_REQUIRE_EQUAL(foo_definition_vertex->arguments().size(), 2u);
 
-        ranally::NameVertex const* a_parameter_vertex =
-            dynamic_cast<ranally::NameVertex const*>(
+        geoneric::NameVertex const* a_parameter_vertex =
+            dynamic_cast<geoneric::NameVertex const*>(
                 &(*foo_definition_vertex->arguments()[0]));
         BOOST_REQUIRE(a_parameter_vertex);
 
-        ranally::NameVertex const* b_parameter_vertex =
-            dynamic_cast<ranally::NameVertex const*>(
+        geoneric::NameVertex const* b_parameter_vertex =
+            dynamic_cast<geoneric::NameVertex const*>(
                 &(*foo_definition_vertex->arguments()[1]));
         BOOST_REQUIRE(b_parameter_vertex);
 
@@ -882,62 +882,62 @@ result = foo(5, 6)
             foo_definition_vertex->scope()->statements().size(), 2u);
 
         // def bar(c, d):
-        ranally::FunctionDefinitionVertex const* bar_definition_vertex =
-            dynamic_cast<ranally::FunctionDefinitionVertex const*>(
+        geoneric::FunctionDefinitionVertex const* bar_definition_vertex =
+            dynamic_cast<geoneric::FunctionDefinitionVertex const*>(
                 &(*foo_definition_vertex->scope()->statements()[0]));
         BOOST_REQUIRE(bar_definition_vertex);
 
         // (c, d)
         BOOST_REQUIRE_EQUAL(bar_definition_vertex->arguments().size(), 2u);
 
-        ranally::NameVertex const* c_parameter_vertex =
-            dynamic_cast<ranally::NameVertex const*>(
+        geoneric::NameVertex const* c_parameter_vertex =
+            dynamic_cast<geoneric::NameVertex const*>(
                 &(*bar_definition_vertex->arguments()[0]));
         BOOST_REQUIRE(c_parameter_vertex);
 
-        ranally::NameVertex const* d_parameter_vertex =
-            dynamic_cast<ranally::NameVertex const*>(
+        geoneric::NameVertex const* d_parameter_vertex =
+            dynamic_cast<geoneric::NameVertex const*>(
                 &(*bar_definition_vertex->arguments()[1]));
         BOOST_REQUIRE(d_parameter_vertex);
 
         BOOST_REQUIRE_EQUAL(
             bar_definition_vertex->scope()->statements().size(), 1u);
 
-        ranally::ReturnVertex const* bar_return_vertex =
-            dynamic_cast<ranally::ReturnVertex const*>(
+        geoneric::ReturnVertex const* bar_return_vertex =
+            dynamic_cast<geoneric::ReturnVertex const*>(
                 &(*bar_definition_vertex->scope()->statements()[0]));
         BOOST_REQUIRE(bar_return_vertex);
         BOOST_REQUIRE(bar_return_vertex->expression());
 
         // c + d
-        ranally::OperatorVertex const* operator_vertex =
-            dynamic_cast<ranally::OperatorVertex const*>(
+        geoneric::OperatorVertex const* operator_vertex =
+            dynamic_cast<geoneric::OperatorVertex const*>(
                 &(*bar_return_vertex->expression()));
         BOOST_REQUIRE(operator_vertex);
         BOOST_REQUIRE_EQUAL(operator_vertex->expressions().size(), 2u);
 
         // c
-        ranally::NameVertex const* c_argument_vertex =
-            dynamic_cast<ranally::NameVertex const*>(
+        geoneric::NameVertex const* c_argument_vertex =
+            dynamic_cast<geoneric::NameVertex const*>(
                 &(*operator_vertex->expressions()[0]));
         BOOST_REQUIRE(c_argument_vertex);
 
         // d
-        ranally::NameVertex const* d_argument_vertex =
-            dynamic_cast<ranally::NameVertex const*>(
+        geoneric::NameVertex const* d_argument_vertex =
+            dynamic_cast<geoneric::NameVertex const*>(
                 &(*operator_vertex->expressions()[1]));
         BOOST_REQUIRE(d_argument_vertex);
 
         // return bar(a, b)
-        ranally::ReturnVertex const* foo_return_vertex =
-            dynamic_cast<ranally::ReturnVertex const*>(
+        geoneric::ReturnVertex const* foo_return_vertex =
+            dynamic_cast<geoneric::ReturnVertex const*>(
                 &(*foo_definition_vertex->scope()->statements()[1]));
         BOOST_REQUIRE(foo_return_vertex);
         BOOST_REQUIRE(foo_return_vertex->expression());
 
         // bar(a, b)
-        ranally::FunctionCallVertex const* bar_call_vertex =
-            dynamic_cast<ranally::FunctionCallVertex const*>(
+        geoneric::FunctionCallVertex const* bar_call_vertex =
+            dynamic_cast<geoneric::FunctionCallVertex const*>(
                 &(*foo_return_vertex->expression()));
         BOOST_REQUIRE(bar_call_vertex);
 
@@ -945,25 +945,25 @@ result = foo(5, 6)
         BOOST_REQUIRE_EQUAL(bar_call_vertex->expressions().size(), 2u);
 
         // a
-        ranally::NameVertex const* a_argument_vertex =
-            dynamic_cast<ranally::NameVertex const*>(
+        geoneric::NameVertex const* a_argument_vertex =
+            dynamic_cast<geoneric::NameVertex const*>(
                 &(*bar_call_vertex->expressions()[0]));
         BOOST_REQUIRE(a_argument_vertex);
 
         // b
-        ranally::NameVertex const* b_argument_vertex =
-            dynamic_cast<ranally::NameVertex const*>(
+        geoneric::NameVertex const* b_argument_vertex =
+            dynamic_cast<geoneric::NameVertex const*>(
                 &(*bar_call_vertex->expressions()[1]));
         BOOST_REQUIRE(b_argument_vertex);
 
         // result = foo(5, 6)
-        ranally::AssignmentVertex const* assignment_vertex =
-            dynamic_cast<ranally::AssignmentVertex const*>(
+        geoneric::AssignmentVertex const* assignment_vertex =
+            dynamic_cast<geoneric::AssignmentVertex const*>(
                 &(*tree->scope()->statements()[1]));
         BOOST_REQUIRE(assignment_vertex);
 
-        ranally::FunctionCallVertex const* foo_call_vertex =
-            dynamic_cast<ranally::FunctionCallVertex const*>(
+        geoneric::FunctionCallVertex const* foo_call_vertex =
+            dynamic_cast<geoneric::FunctionCallVertex const*>(
                 &(*assignment_vertex->expression()));
         BOOST_REQUIRE(foo_call_vertex);
 
@@ -971,20 +971,20 @@ result = foo(5, 6)
         BOOST_REQUIRE_EQUAL(foo_call_vertex->expressions().size(), 2u);
 
         // 5
-        ranally::NumberVertex<int64_t> const* five_vertex =
-            dynamic_cast<ranally::NumberVertex<int64_t> const*>(
+        geoneric::NumberVertex<int64_t> const* five_vertex =
+            dynamic_cast<geoneric::NumberVertex<int64_t> const*>(
                 &(*foo_call_vertex->expressions()[0]));
         BOOST_REQUIRE(five_vertex);
 
         // 6
-        ranally::NumberVertex<int64_t> const* six_vertex =
-            dynamic_cast<ranally::NumberVertex<int64_t> const*>(
+        geoneric::NumberVertex<int64_t> const* six_vertex =
+            dynamic_cast<geoneric::NumberVertex<int64_t> const*>(
                 &(*foo_call_vertex->expressions()[1]));
         BOOST_REQUIRE(six_vertex);
 
         // result
-        ranally::NameVertex const* target_vertex =
-            dynamic_cast<ranally::NameVertex const*>(
+        geoneric::NameVertex const* target_vertex =
+            dynamic_cast<geoneric::NameVertex const*>(
                 &(*assignment_vertex->target()));
         BOOST_REQUIRE(target_vertex);
 

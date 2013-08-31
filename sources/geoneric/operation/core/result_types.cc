@@ -1,7 +1,7 @@
-#include "ranally/operation/core/result_types.h"
+#include "geoneric/operation/core/result_types.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 ResultTypes::ResultTypes(
     size_t size)
@@ -27,4 +27,4 @@ bool ResultTypes::fixed() const
 }
 
 
-} // namespace ranally
+} // namespace geoneric

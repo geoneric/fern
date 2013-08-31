@@ -1,8 +1,8 @@
 #pragma once
-#include "ranally/core/string.h"
+#include "geoneric/core/string.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 class Dataset;
 
@@ -48,4 +48,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

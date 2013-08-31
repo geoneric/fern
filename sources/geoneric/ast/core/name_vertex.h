@@ -1,8 +1,8 @@
 #pragma once
-#include "ranally/ast/core/expression_vertex.h"
+#include "geoneric/ast/core/expression_vertex.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -84,4 +84,4 @@ inline std::ostream& operator<<(
     return stream;
 }
 
-} // namespace ranally
+} // namespace geoneric

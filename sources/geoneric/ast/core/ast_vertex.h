@@ -2,10 +2,10 @@
 #include <memory>
 #include <vector>
 #include <loki/Visitor.h>
-#include "ranally/core/string.h"
+#include "geoneric/core/string.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 class ExpressionVertex;
 class StatementVertex;
@@ -84,4 +84,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

@@ -1,10 +1,10 @@
-#include "ranally/interpreter/execute_visitor.h"
-#include "ranally/ast/core/vertices.h"
-#include "ranally/feature/scalar_attribute.h"
-#include "ranally/operation/core/attribute_argument.h"
+#include "geoneric/interpreter/execute_visitor.h"
+#include "geoneric/ast/core/vertices.h"
+#include "geoneric/feature/scalar_attribute.h"
+#include "geoneric/operation/core/attribute_argument.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 ExecuteVisitor::ExecuteVisitor(
     OperationsPtr const& operations)
@@ -160,4 +160,4 @@ void ExecuteVisitor::Visit(
     // TODO
 }
 
-} // namespace ranally
+} // namespace geoneric

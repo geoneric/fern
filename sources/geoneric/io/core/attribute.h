@@ -1,8 +1,8 @@
 #pragma once
-#include "ranally/core/string.h"
+#include "geoneric/core/string.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 //! Class for Attribute instances.
 /*!
@@ -33,4 +33,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

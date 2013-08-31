@@ -3,7 +3,7 @@
 #include <vector>
 
 
-namespace ranally {
+namespace geoneric {
 
 #define DEFINE_SHARED_POINTER_TYPE(                                            \
     className)                                                                 \
@@ -20,4 +20,4 @@ DEFINE_SHARED_POINTER_TYPE(PolygonValue)
 typedef std::vector<PolygonAttributePtr> PolygonAttributes;
 typedef std::vector<PolygonValuePtr> PolygonValues;
 
-} // namespace ranally
+} // namespace geoneric

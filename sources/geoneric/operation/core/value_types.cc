@@ -1,8 +1,8 @@
-#include "ranally/operation/core/value_types.h"
+#include "geoneric/operation/core/value_types.h"
 #include <map>
 
 
-namespace ranally {
+namespace geoneric {
 
 ValueTypes const ValueTypes::UNKNOWN;
 ValueTypes const ValueTypes::UINT8(1 << ValueType::VT_UINT8);
@@ -111,7 +111,7 @@ String ValueTypes::to_string() const
 
     for(ValueType value_type: ValueTypes::VALUE_TYPES) {
         if(test(value_type)) {
-            strings.push_back(ranally::to_string(value_type));
+            strings.push_back(geoneric::to_string(value_type));
         }
     }
 
@@ -141,4 +141,4 @@ std::ostream& operator<<(
     return stream;
 }
 
-} // namespace ranally
+} // namespace geoneric

@@ -1,7 +1,7 @@
-#include "ranally/io/temporal_domain.h"
+#include "geoneric/io/temporal_domain.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 TemporalDomain::TemporalDomain(
     Type type)
@@ -28,4 +28,4 @@ bool TemporalDomain::is_temporal() const
     return true;
 }
 
-} // namespace ranally
+} // namespace geoneric

@@ -1,10 +1,10 @@
 #pragma once
 #include <memory>
-#include "ranally/io/attribute.h"
-#include "ranally/io/raster_value.h"
+#include "geoneric/io/attribute.h"
+#include "geoneric/io/raster_value.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -31,4 +31,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

@@ -1,7 +1,7 @@
-#include "ranally/python/borrowed_reference.h"
+#include "geoneric/python/borrowed_reference.h"
 
 
-namespace ranally {
+namespace geoneric {
 namespace python {
 
 //! Default construct an instance.
@@ -89,4 +89,4 @@ BorrowedReference::operator PyObject*()
 }
 
 } // namespace python
-} // namespace ranally
+} // namespace geoneric

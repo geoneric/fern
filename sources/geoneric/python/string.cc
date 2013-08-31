@@ -1,7 +1,7 @@
-#include "ranally/python/string.h"
+#include "geoneric/python/string.h"
 
 
-namespace ranally {
+namespace geoneric {
 namespace python {
 
 String as_unicode_string(
@@ -16,4 +16,4 @@ String as_unicode_string(
 }
 
 } // namespace python
-} // namespace ranally
+} // namespace geoneric

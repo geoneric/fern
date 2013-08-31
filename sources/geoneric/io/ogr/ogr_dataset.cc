@@ -1,18 +1,18 @@
-#include "ranally/io/ogr_dataset.h"
+#include "geoneric/io/ogr_dataset.h"
 #include <cassert>
 #include <memory>
 #include "ogrsf_frmts.h"
-#include "ranally/core/string.h"
-#include "ranally/io/ogr_feature_layer.h"
-#include "ranally/io/point_attribute.h"
-#include "ranally/io/point_domain.h"
-#include "ranally/io/point_feature.h"
-#include "ranally/io/polygon_attribute.h"
-#include "ranally/io/polygon_domain.h"
-#include "ranally/io/polygon_feature.h"
+#include "geoneric/core/string.h"
+#include "geoneric/io/ogr_feature_layer.h"
+#include "geoneric/io/point_attribute.h"
+#include "geoneric/io/point_domain.h"
+#include "geoneric/io/point_feature.h"
+#include "geoneric/io/polygon_attribute.h"
+#include "geoneric/io/polygon_domain.h"
+#include "geoneric/io/polygon_feature.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 OGRDataset::OGRDataset(
     String const& name,
@@ -218,4 +218,4 @@ void OGRDataset::copy(
 {
 }
 
-} // namespace ranally
+} // namespace geoneric

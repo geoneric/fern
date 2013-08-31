@@ -1,9 +1,9 @@
-namespace http://www.jemig.eu/ranally
+namespace http://www.geoneric.eu
 {
     include <memory>;
-    include "ranally/ast/core/vertices.h";
+    include "geoneric/ast/core/vertices.h";
 
-    Ranally          "std::shared_ptr<ModuleVertex>";
+    Geoneric         "std::shared_ptr<ModuleVertex>";
     Number           "std::shared_ptr<ExpressionVertex>";
     Integer          "std::shared_ptr<ExpressionVertex>";
     UnsignedInteger  "std::shared_ptr<ExpressionVertex>";

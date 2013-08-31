@@ -1,9 +1,9 @@
 #pragma once
-#include "ranally/operation/core/data_types.h"
-#include "ranally/operation/core/value_types.h"
+#include "geoneric/operation/core/data_types.h"
+#include "geoneric/operation/core/value_types.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 class ResultType
 {
@@ -53,4 +53,4 @@ bool               operator!=          (ResultType const& lhs,
 std::ostream&      operator<<          (std::ostream& stream,
                                         ResultType const& result_type);
 
-} // namespace ranally
+} // namespace geoneric

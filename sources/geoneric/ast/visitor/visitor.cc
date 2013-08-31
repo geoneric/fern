@@ -1,8 +1,8 @@
-#include "ranally/ast/visitor/visitor.h"
-#include "ranally/ast/core/vertices.h"
+#include "geoneric/ast/visitor/visitor.h"
+#include "geoneric/ast/core/vertices.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 //! Allow all \a statements to accept the visitor.
 /*!
@@ -289,4 +289,4 @@ void Visitor::Visit(
     Visit(dynamic_cast<AstVertex&>(vertex));
 }
 
-} // namespace ranally
+} // namespace geoneric

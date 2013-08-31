@@ -1,18 +1,18 @@
-#define BOOST_TEST_MODULE ranally io
+#define BOOST_TEST_MODULE geoneric io
 #include <boost/test/unit_test.hpp>
-#include "ranally/core/string.h"
-#include "ranally/io/ogr_client.h"
-#include "ranally/io/ogr_dataset_driver.h"
-#include "ranally/io/point_domain.h"
-#include "ranally/io/point_feature.h"
+#include "geoneric/core/string.h"
+#include "geoneric/io/ogr_client.h"
+#include "geoneric/io/ogr_dataset_driver.h"
+#include "geoneric/io/point_domain.h"
+#include "geoneric/io/point_feature.h"
 
 
 void remove_test_files()
 {
-    std::vector<ranally::String> dataset_names;
+    std::vector<geoneric::String> dataset_names;
     dataset_names.push_back("test_create.shp");
     dataset_names.push_back("test_remove.shp");
-    ranally::OGRDatasetDriver driver("ESRI Shapefile");
+    geoneric::OGRDatasetDriver driver("ESRI Shapefile");
 
     for(auto dataset_name: dataset_names) {
         if(driver.exists(dataset_name)) {
@@ -24,13 +24,13 @@ void remove_test_files()
 
 
 class Support:
-    public ranally::OGRClient
+    public geoneric::OGRClient
 {
 
 public:
 
     Support()
-        : ranally::OGRClient()
+        : geoneric::OGRClient()
     {
         remove_test_files();
     }
@@ -42,7 +42,7 @@ BOOST_FIXTURE_TEST_SUITE(ogr_dataset_driver, Support)
 
 BOOST_AUTO_TEST_CASE(exists)
 {
-    ranally::OGRDatasetDriver driver("GeoJSON");
+    geoneric::OGRDatasetDriver driver("GeoJSON");
 
     BOOST_REQUIRE(!driver.exists("does_not_exist"));
     BOOST_REQUIRE( driver.exists("point.json"));
@@ -53,11 +53,11 @@ BOOST_AUTO_TEST_CASE(exists)
 
 BOOST_AUTO_TEST_CASE(create)
 {
-    ranally::OGRDatasetDriver driver("ESRI Shapefile");
-    std::unique_ptr<ranally::OGRDataset> dataSet;
+    geoneric::OGRDatasetDriver driver("ESRI Shapefile");
+    std::unique_ptr<geoneric::OGRDataset> dataSet;
 
     // Test creation of new data set. ------------------------------------------
-    ranally::String dataset_name = "test_create.shp";
+    geoneric::String dataset_name = "test_create.shp";
     BOOST_REQUIRE(!driver.exists(dataset_name));
 
     dataSet.reset(driver.create(dataset_name));
@@ -66,10 +66,10 @@ BOOST_AUTO_TEST_CASE(create)
     BOOST_CHECK(!driver.exists(dataset_name));
 
     // Add a feature.
-    ranally::PointsPtr points(new ranally::Points);
-    points->push_back(ranally::Point(3.0, 4.0));
-    ranally::PointDomainPtr domain(new ranally::PointDomain(points));;
-    ranally::PointFeature feature("Stations", domain);
+    geoneric::PointsPtr points(new geoneric::Points);
+    points->push_back(geoneric::Point(3.0, 4.0));
+    geoneric::PointDomainPtr domain(new geoneric::PointDomain(points));;
+    geoneric::PointFeature feature("Stations", domain);
     dataSet->add_feature(feature);
 
     // Now it should work.
@@ -113,19 +113,19 @@ BOOST_AUTO_TEST_CASE(create)
 
 BOOST_AUTO_TEST_CASE(remove)
 {
-    ranally::OGRDatasetDriver driver("ESRI Shapefile");
-    std::unique_ptr<ranally::OGRDataset> dataSet;
-    ranally::String dataset_name;
+    geoneric::OGRDatasetDriver driver("ESRI Shapefile");
+    std::unique_ptr<geoneric::OGRDataset> dataSet;
+    geoneric::String dataset_name;
 
     dataset_name = "test_remove.shp";
     BOOST_REQUIRE(!driver.exists(dataset_name));
 
     dataSet.reset(driver.create(dataset_name));
     BOOST_CHECK(!driver.exists(dataset_name));
-    ranally::PointsPtr points(new ranally::Points);
-    points->push_back(ranally::Point(3.0, 4.0));
-    ranally::PointDomainPtr domain(new ranally::PointDomain(points));;
-    ranally::PointFeature feature("Stations", domain);
+    geoneric::PointsPtr points(new geoneric::Points);
+    points->push_back(geoneric::Point(3.0, 4.0));
+    geoneric::PointDomainPtr domain(new geoneric::PointDomain(points));;
+    geoneric::PointFeature feature("Stations", domain);
     dataSet->add_feature(feature);
     BOOST_CHECK(driver.exists(dataset_name));
 
@@ -134,7 +134,7 @@ BOOST_AUTO_TEST_CASE(remove)
 
     {
         // Test remove of read-only file. --------------------------------------
-        ranally::OGRDatasetDriver driver("GeoJSON");
+        geoneric::OGRDatasetDriver driver("GeoJSON");
         dataset_name = "read_only_point.json";
         BOOST_CHECK(driver.exists(dataset_name));
         // TODO Read-only file is removed... Report to gdal list?!
@@ -150,9 +150,9 @@ BOOST_AUTO_TEST_CASE(remove)
 
 BOOST_AUTO_TEST_CASE(open)
 {
-    ranally::OGRDatasetDriver driver("GeoJSON");
-    std::unique_ptr<ranally::OGRDataset> dataSet;
-    ranally::String dataset_name;
+    geoneric::OGRDatasetDriver driver("GeoJSON");
+    std::unique_ptr<geoneric::OGRDataset> dataSet;
+    geoneric::String dataset_name;
 
     dataset_name = "point.json";
     BOOST_REQUIRE(driver.exists(dataset_name));

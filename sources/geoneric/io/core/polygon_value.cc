@@ -1,7 +1,7 @@
-#include "ranally/io/polygon_value.h"
+#include "geoneric/io/polygon_value.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 PolygonValue::PolygonValue()
 
@@ -15,4 +15,4 @@ PolygonValue::~PolygonValue()
 {
 }
 
-} // namespace ranally
+} // namespace geoneric

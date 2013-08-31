@@ -14,10 +14,10 @@ SET(TEST_NAMES
 MACRO(ADD_UNIT_TEST NAME)
     ADD_EXECUTABLE(ast_visitor_${NAME} ${NAME})
     TARGET_LINK_LIBRARIES(ast_visitor_${NAME}
-        ranally_ast_visitor
-        ranally_script
-        ranally_ast_xml
-        ranally_operation_std
+        geoneric_ast_visitor
+        geoneric_script
+        geoneric_ast_xml
+        geoneric_operation_std
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
     ADD_TEST(NAME ast_visitor_${NAME} COMMAND ast_visitor_${NAME})

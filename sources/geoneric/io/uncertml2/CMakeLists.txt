@@ -10,10 +10,10 @@ SET(SOURCES
     ${CMAKE_CURRENT_BINARY_DIR}/uncertml2-pskel.cxx
     uncertml2_parser
 )
-ADD_LIBRARY(ranally_io_uncertml2
+ADD_LIBRARY(geoneric_io_uncertml2
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(ranally_io_uncertml2
-    ranally_uncertainty
+TARGET_LINK_LIBRARIES(geoneric_io_uncertml2
+    geoneric_uncertainty
     ${EXPAT_LIBRARY}
 )

@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-namespace ranally {
+namespace geoneric {
 
 enum class ArgumentType {
 
@@ -16,4 +16,4 @@ enum class ArgumentType {
 std::ostream&      operator<<          (std::ostream& stream,
                                         ArgumentType const& argument_type);
 
-} // namespace ranally
+} // namespace geoneric

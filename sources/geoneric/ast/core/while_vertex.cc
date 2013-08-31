@@ -1,7 +1,7 @@
-#include "ranally/ast/core/while_vertex.h"
+#include "geoneric/ast/core/while_vertex.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 WhileVertex::WhileVertex(
     std::shared_ptr<ExpressionVertex> const& condition,
@@ -61,4 +61,4 @@ std::shared_ptr<SentinelVertex>& WhileVertex::sentinel()
     return _sentinel;
 }
 
-} // namespace ranally
+} // namespace geoneric

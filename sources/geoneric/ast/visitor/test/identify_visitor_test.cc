@@ -1,14 +1,14 @@
-#define BOOST_TEST_MODULE ranally ast
+#define BOOST_TEST_MODULE geoneric ast
 #include <boost/test/unit_test.hpp>
-#include "ranally/script/algebra_parser.h"
-#include "ranally/ast/core/assignment_vertex.h"
-#include "ranally/ast/visitor/identify_visitor.h"
-#include "ranally/ast/core/if_vertex.h"
-#include "ranally/ast/core/function_call_vertex.h"
-#include "ranally/ast/core/module_vertex.h"
-#include "ranally/ast/core/name_vertex.h"
-#include "ranally/ast/core/operator_vertex.h"
-#include "ranally/ast/xml/xml_parser.h"
+#include "geoneric/script/algebra_parser.h"
+#include "geoneric/ast/core/assignment_vertex.h"
+#include "geoneric/ast/visitor/identify_visitor.h"
+#include "geoneric/ast/core/if_vertex.h"
+#include "geoneric/ast/core/function_call_vertex.h"
+#include "geoneric/ast/core/module_vertex.h"
+#include "geoneric/ast/core/name_vertex.h"
+#include "geoneric/ast/core/operator_vertex.h"
+#include "geoneric/ast/xml/xml_parser.h"
 
 
 class Support
@@ -25,11 +25,11 @@ public:
 
 protected:
 
-    ranally::AlgebraParser _algebra_parser;
+    geoneric::AlgebraParser _algebra_parser;
 
-    ranally::XmlParser _xml_parser;
+    geoneric::XmlParser _xml_parser;
 
-    ranally::IdentifyVisitor _visitor;
+    geoneric::IdentifyVisitor _visitor;
 
 };
 
@@ -62,7 +62,7 @@ BOOST_FIXTURE_TEST_SUITE(identify_visitor, Support)
 
 BOOST_AUTO_TEST_CASE(visit_empty_script)
 {
-    using namespace ranally;
+    using namespace geoneric;
 
     std::shared_ptr<ModuleVertex> tree;
 
@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE(visit_empty_script)
 
 BOOST_AUTO_TEST_CASE(visit_name)
 {
-    using namespace ranally;
+    using namespace geoneric;
 
     std::shared_ptr<ModuleVertex> tree;
 
@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_CASE(visit_name)
 
 BOOST_AUTO_TEST_CASE(visit_assignment)
 {
-    using namespace ranally;
+    using namespace geoneric;
 
     std::shared_ptr<ModuleVertex> tree;
 
@@ -177,7 +177,7 @@ BOOST_AUTO_TEST_CASE(visit_assignment)
 
 BOOST_AUTO_TEST_CASE(visit_if)
 {
-    using namespace ranally;
+    using namespace geoneric;
 
     std::shared_ptr<ModuleVertex> tree;
 
@@ -227,7 +227,7 @@ BOOST_AUTO_TEST_CASE(visit_if)
 
 BOOST_AUTO_TEST_CASE(visit_reuse_of_identifiers)
 {
-    using namespace ranally;
+    using namespace geoneric;
 
     std::shared_ptr<ModuleVertex> tree;
 

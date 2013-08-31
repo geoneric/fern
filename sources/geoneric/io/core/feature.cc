@@ -1,7 +1,7 @@
-#include "ranally/io/feature.h"
+#include "geoneric/io/feature.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 Feature::Feature(
     String const& name,
@@ -30,4 +30,4 @@ Domain::Type Feature::domain_type() const
     return _domain_type;
 }
 
-} // namespace ranally
+} // namespace geoneric

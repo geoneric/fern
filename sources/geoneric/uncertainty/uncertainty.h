@@ -1,7 +1,7 @@
 #pragma once
 
 
-namespace ranally {
+namespace geoneric {
 
 //! Abstract base class for classes that model some form of uncertainty.
 /*!
@@ -29,4 +29,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

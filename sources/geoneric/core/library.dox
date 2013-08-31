@@ -5,7 +5,7 @@ This library contains code that is of general use to the other libraries.
 
 \section core_dependencies Dependencies
 
-  - ICU libraries: ranally String subclasses it.
+  - ICU libraries: geoneric String subclasses it.
 */
 
 // vim:syntax=cpp

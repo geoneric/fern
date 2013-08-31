@@ -5,11 +5,11 @@
 #include <boost/range/begin.hpp>
 #include <boost/range/end.hpp>
 #include <boost/range/iterator.hpp>
-#include "ranally/core/string.h"
-#include "ranally/operation/core/operation.h"
+#include "geoneric/core/string.h"
+#include "geoneric/operation/core/operation.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 //! Class for storing information about individual operations.
 /*!
@@ -76,4 +76,4 @@ inline Operations::Operations(
 
 typedef std::shared_ptr<Operations> OperationsPtr;
 
-} // namespace ranally
+} // namespace geoneric

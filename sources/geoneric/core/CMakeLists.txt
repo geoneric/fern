@@ -10,9 +10,9 @@ SET(SOURCES
     string
     validate_error
 )
-ADD_LIBRARY(ranally_core
+ADD_LIBRARY(geoneric_core
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(ranally_core
+TARGET_LINK_LIBRARIES(geoneric_core
     ${ICU_LIBRARIES}
 )

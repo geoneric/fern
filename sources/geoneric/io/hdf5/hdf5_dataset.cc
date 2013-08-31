@@ -1,21 +1,21 @@
-#include "ranally/io/hdf5_dataset.h"
+#include "geoneric/io/hdf5_dataset.h"
 #include <memory>
 #include <type_traits>
 #include <boost/multi_array.hpp>
 #include <cpp/H5Cpp.h>
 #include <hdf5.h>
 #include <hdf5_hl.h>
-#include "ranally/core/string.h"
-#include "ranally/io/feature.h"
-#include "ranally/io/point_attribute.h"
-#include "ranally/io/point_domain.h"
-#include "ranally/io/point_feature.h"
-#include "ranally/io/polygon_attribute.h"
-#include "ranally/io/polygon_domain.h"
-#include "ranally/io/polygon_feature.h"
+#include "geoneric/core/string.h"
+#include "geoneric/io/feature.h"
+#include "geoneric/io/point_attribute.h"
+#include "geoneric/io/point_domain.h"
+#include "geoneric/io/point_feature.h"
+#include "geoneric/io/polygon_attribute.h"
+#include "geoneric/io/polygon_domain.h"
+#include "geoneric/io/polygon_feature.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 HDF5Dataset::HDF5Dataset(
     String const& name,
@@ -187,7 +187,7 @@ void HDF5Dataset::add(
 
     // // Create attributes at /<feature name>/<attribute name>.
     // {
-    //     std::string attributePathName = ranally::util::encode_in_utf8(feature.name());
+    //     std::string attributePathName = geoneric::util::encode_in_utf8(feature.name());
     //     hid_t feature_group_id = H5Gcreate2(_file->getLocId(),
     //         feature_pathname.c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
     //     if(feature_group_id < 0) {
@@ -248,4 +248,4 @@ void HDF5Dataset::copy(
 {
 }
 
-} // namespace ranally
+} // namespace geoneric

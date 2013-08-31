@@ -1,10 +1,10 @@
 #pragma once
-#include "ranally/core/string.h"
+#include "geoneric/core/string.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 void               import              (String const& input_dataset_name,
                                         String const& output_dataset_name);
 
-} // namespace ranally
+} // namespace geoneric

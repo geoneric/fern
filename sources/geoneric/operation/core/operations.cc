@@ -1,7 +1,7 @@
-#include "ranally/operation/core/operations.h"
+#include "geoneric/operation/core/operations.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 Operations::Operations(
     std::initializer_list<OperationPtr> values)
@@ -43,4 +43,4 @@ OperationPtr const& Operations::operation(
     return (*it).second;
 }
 
-} // namespace ranally
+} // namespace geoneric

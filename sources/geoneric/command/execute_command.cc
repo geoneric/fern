@@ -1,13 +1,13 @@
-#include "ranally/command/execute_command.h"
+#include "geoneric/command/execute_command.h"
 
 
-namespace ranally {
+namespace geoneric {
 namespace {
 
 void show_execute_help()
 {
     std::cout <<
-        "usage: ranally execute [--help] INPUT_SCRIPT\n"
+        "usage: geoneric execute [--help] INPUT_SCRIPT\n"
         "\n"
         "Execute the script.\n"
         "\n"
@@ -60,4 +60,4 @@ int ExecuteCommand::execute() const
     return status;
 }
 
-} // namespace ranally
+} // namespace geoneric

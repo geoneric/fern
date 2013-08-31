@@ -1,6 +1,6 @@
-#define BOOST_TEST_MODULE ranally core
+#define BOOST_TEST_MODULE geoneric core
 #include <boost/test/unit_test.hpp>
-#include "ranally/core/flag_collection.h"
+#include "geoneric/core/flag_collection.h"
 
 
 enum MyFlags {
@@ -12,10 +12,10 @@ enum MyFlags {
 
 
 class MyFlagCollection:
-    public ranally::FlagCollection<MyFlagCollection, MyFlags, MF_NR_MY_FLAGS>
+    public geoneric::FlagCollection<MyFlagCollection, MyFlags, MF_NR_MY_FLAGS>
 {
 
-    typedef ranally::FlagCollection<MyFlagCollection, MyFlags, MF_NR_MY_FLAGS>
+    typedef geoneric::FlagCollection<MyFlagCollection, MyFlags, MF_NR_MY_FLAGS>
         Base;
 
 public:
@@ -27,7 +27,7 @@ public:
     {
     }
 
-    ranally::String to_string() const { return "blah"; }
+    geoneric::String to_string() const { return "blah"; }
 
 };
 

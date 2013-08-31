@@ -1,7 +1,7 @@
-#include "ranally/ast/core/expression_vertex.h"
+#include "geoneric/ast/core/expression_vertex.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 ExpressionVertex::ExpressionVertex(
     String const& name)
@@ -110,4 +110,4 @@ ExpressionVertexPtr const& ExpressionVertex::value() const
     return _value;
 }
 
-} // namespace ranally
+} // namespace geoneric

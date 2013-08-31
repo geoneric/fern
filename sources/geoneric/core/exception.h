@@ -1,12 +1,12 @@
 #pragma once
 #include <exception>
 #include <boost/exception/all.hpp>
-#include "ranally/core/message_id.h"
-#include "ranally/core/messages.h"
-#include "ranally/core/string.h"
+#include "geoneric/core/message_id.h"
+#include "geoneric/core/messages.h"
+#include "geoneric/core/string.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 // High level exception classes. The classes in this namespace end up in the
 // user's code.
@@ -47,7 +47,7 @@ private:
 namespace detail {
 
 // Low level exception handling code. None of these should end up in the user's
-// code. This is all private to ranally's code.
+// code. This is all private to geoneric's code.
 
 // Exception information that is added to the low level exception instances
 // used in the core of the code.
@@ -88,4 +88,4 @@ struct FileOpenError: public virtual IOError { };
 // struct DomainError: public virtual Exception { };
 
 } // namespace detail
-} // namespace ranally
+} // namespace geoneric

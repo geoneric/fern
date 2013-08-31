@@ -1,7 +1,7 @@
-#include "ranally/core/validate_error.h"
+#include "geoneric/core/validate_error.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 ValidateError::ValidateError(
     String const& source_name,
@@ -31,4 +31,4 @@ String ValidateError::message() const
     return message_;
 }
 
-} // namespace ranally
+} // namespace geoneric

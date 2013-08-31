@@ -1,8 +1,8 @@
 #pragma once
 
 
-namespace ranally {
+namespace geoneric {
 
 void               enter_interpreter   ();
 
-} // namespace ranally
+} // namespace geoneric

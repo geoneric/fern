@@ -1,7 +1,7 @@
-#include "ranally/operation/core/result_type.h"
+#include "geoneric/operation/core/result_type.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 ResultType::ResultType(
     DataTypes const& data_types,
@@ -64,4 +64,4 @@ std::ostream& operator<<(
     return stream;
 }
 
-} // namespace ranally
+} // namespace geoneric

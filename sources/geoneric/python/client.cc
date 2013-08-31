@@ -1,8 +1,8 @@
 #include <Python.h>
-#include "ranally/python/client.h"
+#include "geoneric/python/client.h"
 
 
-namespace ranally {
+namespace geoneric {
 namespace python {
 
 unsigned short Client::_count = 0;
@@ -54,4 +54,4 @@ bool Client::is_initialized() const
 }
 
 } // namespace python
-} // namespace ranally
+} // namespace geoneric

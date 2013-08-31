@@ -1,20 +1,20 @@
-#define BOOST_TEST_MODULE ranally feature
+#define BOOST_TEST_MODULE geoneric feature
 #include <boost/test/unit_test.hpp>
 // #include <boost/geometry/algorithms/assign.hpp>
 // #include <boost/geometry/geometry.hpp>
 // #include <boost/geometry/geometries/adapted/c_array.hpp>
-#include "ranally/core/string.h"
-#include "ranally/feature/attribute.h"
-#include "ranally/feature/domain_attribute.h"
-#include "ranally/feature/domain_value.h"
-#include "ranally/feature/feature.h"
-#include "ranally/feature/feature_domain.h"
-// #include "ranally/feature/feature_domain_value.h"
-// #include "ranally/feature/point_domain.h"
-// #include "ranally/feature/polygon_domain.h"
-#include "ranally/feature/scalar_attribute.h"
-#include "ranally/feature/scalar_domain.h"
-#include "ranally/feature/scalar_value.h"
+#include "geoneric/core/string.h"
+#include "geoneric/feature/attribute.h"
+#include "geoneric/feature/domain_attribute.h"
+#include "geoneric/feature/domain_value.h"
+#include "geoneric/feature/feature.h"
+#include "geoneric/feature/feature_domain.h"
+// #include "geoneric/feature/feature_domain_value.h"
+// #include "geoneric/feature/point_domain.h"
+// #include "geoneric/feature/polygon_domain.h"
+#include "geoneric/feature/scalar_attribute.h"
+#include "geoneric/feature/scalar_domain.h"
+#include "geoneric/feature/scalar_value.h"
 
 // BOOST_GEOMETRY_REGISTER_C_ARRAY_CS(cs::cartesian)
 
@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_SUITE(feature)
 
 BOOST_AUTO_TEST_CASE(scalar_feature_value_attributes)
 {
-    using namespace ranally;
+    using namespace geoneric;
 
     // Let's play with feature earth, being a scalar feature (whose location
     // in space and time is irrelevant).
@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_CASE(scalar_feature_value_attributes)
 
 BOOST_AUTO_TEST_CASE(point_feature_value_attributes)
 {
-    using namespace ranally;
+    using namespace geoneric;
 
     // Let's play with the police car feature, being a point feature with some
     // value attributes.
@@ -115,7 +115,7 @@ BOOST_AUTO_TEST_CASE(point_feature_value_attributes)
 
 BOOST_AUTO_TEST_CASE(point_feature_feature_attributes)
 {
-    using namespace ranally;
+    using namespace geoneric;
 
     // Let's play with the deer car feature, being a point feature with some
     // feature attributes.
@@ -157,34 +157,34 @@ BOOST_AUTO_TEST_CASE(point_feature_feature_attributes)
 //     // namespace bg = boost::geometry;
 // 
 //     // // Let's play with feature earth.
-//     // ranally::Feature earth;
+//     // geoneric::Feature earth;
 // 
 //     // // Add some polygon attributes.
-//     // std::shared_ptr<ranally::Polygons> polygons(new ranally::Polygons());
-//     // ranally::Polygon polygon;
+//     // std::shared_ptr<geoneric::Polygons> polygons(new geoneric::Polygons());
+//     // geoneric::Polygon polygon;
 // 
 //     // {
 //     //     polygon.clear();
 //     //     auto& point_list(polygon.inners());
-//     //     bg::append(point_list, bg::make<ranally::Point>(1.0, 1.0));
-//     //     bg::append(point_list, bg::make<ranally::Point>(1.0, 2.0));
-//     //     bg::append(point_list, bg::make<ranally::Point>(2.0, 2.0));
-//     //     bg::append(point_list, bg::make<ranally::Point>(2.0, 1.0));
+//     //     bg::append(point_list, bg::make<geoneric::Point>(1.0, 1.0));
+//     //     bg::append(point_list, bg::make<geoneric::Point>(1.0, 2.0));
+//     //     bg::append(point_list, bg::make<geoneric::Point>(2.0, 2.0));
+//     //     bg::append(point_list, bg::make<geoneric::Point>(2.0, 1.0));
 //     // }
 //     // polygons->push_back(polygon);
 // 
 //     // {
 //     //     polygon.clear();
 //     //     auto& point_list(polygon.inners());
-//     //     bg::append(point_list, bg::make<ranally::Point>(3.0, 1.0));
-//     //     bg::append(point_list, bg::make<ranally::Point>(3.0, 2.0));
-//     //     bg::append(point_list, bg::make<ranally::Point>(4.0, 2.0));
-//     //     bg::append(point_list, bg::make<ranally::Point>(4.0, 1.0));
+//     //     bg::append(point_list, bg::make<geoneric::Point>(3.0, 1.0));
+//     //     bg::append(point_list, bg::make<geoneric::Point>(3.0, 2.0));
+//     //     bg::append(point_list, bg::make<geoneric::Point>(4.0, 2.0));
+//     //     bg::append(point_list, bg::make<geoneric::Point>(4.0, 1.0));
 //     // }
 //     // polygons->push_back(polygon);
 // 
-//     // std::shared_ptr<ranally::PolygonDomain> polygon_domain(
-//     //     new ranally::PolygonDomain(polygons));
+//     // std::shared_ptr<geoneric::PolygonDomain> polygon_domain(
+//     //     new geoneric::PolygonDomain(polygons));
 // 
 //     // // TODO Besided the coordinates, each geometry must have an id.
 // 

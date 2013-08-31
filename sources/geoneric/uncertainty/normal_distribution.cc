@@ -1,7 +1,7 @@
-#include "ranally/uncertainty/normal_distribution.h"
+#include "geoneric/uncertainty/normal_distribution.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 template<
     typename T>
@@ -34,4 +34,4 @@ T NormalDistribution<T>::standard_deviation() const
 template class NormalDistribution<float>;
 template class NormalDistribution<double>;
 
-} // namespace ranally
+} // namespace geoneric

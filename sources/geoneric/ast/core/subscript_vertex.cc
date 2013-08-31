@@ -1,7 +1,7 @@
-#include "ranally/ast/core/subscript_vertex.h"
+#include "geoneric/ast/core/subscript_vertex.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 SubscriptVertex::SubscriptVertex(
     ExpressionVertexPtr const& expression,
@@ -34,4 +34,4 @@ String const& SubscriptVertex::symbol() const
 }
 
 
-} // namespace ranally
+} // namespace geoneric

@@ -1,7 +1,7 @@
-#include "ranally/core/stack.h"
+#include "geoneric/core/stack.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 boost::any const& Stack::top() const
 {
@@ -26,4 +26,4 @@ bool Stack::empty() const
     return _stack.empty();
 }
 
-} // namespace ranally
+} // namespace geoneric

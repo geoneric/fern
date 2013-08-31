@@ -1,15 +1,15 @@
-#include "ranally/ast/xml/xml_parser.h"
+#include "geoneric/ast/xml/xml_parser.h"
 #include <sstream>
 #include <stack>
-#include "ranally/core/exception.h"
-#include "ranally/ast/core/vertices.h"
-#include "ranally/ast/xml/syntax_tree-pskel.hxx"
+#include "geoneric/core/exception.h"
+#include "geoneric/ast/core/vertices.h"
+#include "geoneric/ast/xml/syntax_tree-pskel.hxx"
 
 
 namespace {
 
-class Ranally_pimpl:
-    public ranally::Ranally_pskel
+class Geoneric_pimpl:
+    public geoneric::Geoneric_pskel
 {
 
 public:
@@ -22,34 +22,34 @@ public:
     void source(
         std::string const& sourceName)
     {
-        _source_name = ranally::String(sourceName);
+        _source_name = geoneric::String(sourceName);
     }
 
     void Statements(
-        std::vector<std::shared_ptr<ranally::StatementVertex>> const&
+        std::vector<std::shared_ptr<geoneric::StatementVertex>> const&
             statements)
     {
         assert(!_scope_vertex);
-        _scope_vertex.reset(new ranally::ScopeVertex(statements));
+        _scope_vertex.reset(new geoneric::ScopeVertex(statements));
     }
 
-    std::shared_ptr<ranally::ModuleVertex> post_Ranally()
+    std::shared_ptr<geoneric::ModuleVertex> post_Geoneric()
     {
-        return std::shared_ptr<ranally::ModuleVertex>(new ranally::ModuleVertex(
+        return std::shared_ptr<geoneric::ModuleVertex>(new geoneric::ModuleVertex(
             _source_name, _scope_vertex));
     }
 
 private:
 
-    ranally::String  _source_name;
+    geoneric::String  _source_name;
 
-    std::shared_ptr<ranally::ScopeVertex> _scope_vertex;
+    std::shared_ptr<geoneric::ScopeVertex> _scope_vertex;
 
 };
 
 
 class Assignment_pimpl:
-    public ranally::Assignment_pskel
+    public geoneric::Assignment_pskel
 {
 
 public:
@@ -60,7 +60,7 @@ public:
     }
 
     // void Targets(
-    //   std::vector<std::shared_ptr<ranally::ExpressionVertex>> const&
+    //   std::vector<std::shared_ptr<geoneric::ExpressionVertex>> const&
     //     vertices)
     // {
     //   assert(!vertices.empty());
@@ -68,31 +68,31 @@ public:
     // }
 
     void Expression(
-        std::shared_ptr<ranally::ExpressionVertex> const& vertex)
+        std::shared_ptr<geoneric::ExpressionVertex> const& vertex)
     {
         _expressions.push_back(vertex);
         assert(_expressions.size() <= 2);
     }
 
-    std::shared_ptr<ranally::AssignmentVertex> post_Assignment()
+    std::shared_ptr<geoneric::AssignmentVertex> post_Assignment()
     {
         assert(!_expressions.empty());
-        return std::shared_ptr<ranally::AssignmentVertex>(
-            new ranally::AssignmentVertex(_expressions[0], _expressions[1]));
+        return std::shared_ptr<geoneric::AssignmentVertex>(
+            new geoneric::AssignmentVertex(_expressions[0], _expressions[1]));
     }
 
 private:
 
-    std::vector<std::shared_ptr<ranally::ExpressionVertex>>
+    std::vector<std::shared_ptr<geoneric::ExpressionVertex>>
         _expressions;
 
 };
 
 
-// class Targets_pimpl: public ranally::Targets_pskel
+// class Targets_pimpl: public geoneric::Targets_pskel
 // {
 // private:
-//   std::vector<std::shared_ptr<ranally::ExpressionVertex>>
+//   std::vector<std::shared_ptr<geoneric::ExpressionVertex>>
 //     _vertices;
 // 
 // public:
@@ -102,13 +102,13 @@ private:
 //   }
 // 
 //   void Expression(
-//     std::shared_ptr<ranally::ExpressionVertex> const& vertex)
+//     std::shared_ptr<geoneric::ExpressionVertex> const& vertex)
 //   {
 //     assert(vertex);
 //     _vertices.push_back(vertex);
 //   }
 // 
-//   std::vector<std::shared_ptr<ranally::ExpressionVertex>>
+//   std::vector<std::shared_ptr<geoneric::ExpressionVertex>>
 //     post_Targets()
 //   {
 //     assert(!_vertices.empty());
@@ -118,7 +118,7 @@ private:
 
 
 class If_pimpl:
-    public ranally::If_pskel
+    public geoneric::If_pskel
 {
 
 public:
@@ -129,7 +129,7 @@ public:
     }
 
     void Expression(
-        std::shared_ptr<ranally::ExpressionVertex> const& vertex)
+        std::shared_ptr<geoneric::ExpressionVertex> const& vertex)
     {
         assert(!_data_stack.top().condition_vertex);
         assert(vertex);
@@ -137,28 +137,28 @@ public:
     }
 
     void Statements(
-        std::vector<std::shared_ptr<ranally::StatementVertex>>
+        std::vector<std::shared_ptr<geoneric::StatementVertex>>
             const& statements)
     {
         if(!_data_stack.top().true_scope) {
             assert(!statements.empty());
             assert(!_data_stack.top().false_scope);
-            _data_stack.top().true_scope.reset(new ranally::ScopeVertex(
+            _data_stack.top().true_scope.reset(new geoneric::ScopeVertex(
                 statements));
         }
         else {
             assert(!_data_stack.top().false_scope);
-            _data_stack.top().false_scope.reset(new ranally::ScopeVertex(
+            _data_stack.top().false_scope.reset(new geoneric::ScopeVertex(
                 statements));
         }
     }
 
-    std::shared_ptr<ranally::IfVertex> post_If()
+    std::shared_ptr<geoneric::IfVertex> post_If()
     {
         assert(!_data_stack.empty());
         IfData result(_data_stack.top());
         _data_stack.pop();
-        return std::shared_ptr<ranally::IfVertex>(new ranally::IfVertex(
+        return std::shared_ptr<geoneric::IfVertex>(new geoneric::IfVertex(
             result.condition_vertex, result.true_scope, result.false_scope));
     }
 
@@ -166,9 +166,9 @@ private:
 
     struct IfData
     {
-        std::shared_ptr<ranally::ExpressionVertex> condition_vertex;
-        std::shared_ptr<ranally::ScopeVertex> true_scope;
-        std::shared_ptr<ranally::ScopeVertex> false_scope;
+        std::shared_ptr<geoneric::ExpressionVertex> condition_vertex;
+        std::shared_ptr<geoneric::ScopeVertex> true_scope;
+        std::shared_ptr<geoneric::ScopeVertex> false_scope;
     };
 
     std::stack<IfData> _data_stack;
@@ -177,7 +177,7 @@ private:
 
 
 class While_pimpl:
-    public ranally::While_pskel
+    public geoneric::While_pskel
 {
 
 public:
@@ -188,7 +188,7 @@ public:
     }
 
     void Expression(
-        std::shared_ptr<ranally::ExpressionVertex> const& vertex)
+        std::shared_ptr<geoneric::ExpressionVertex> const& vertex)
     {
         assert(!_data_stack.top().condition_vertex);
         assert(vertex);
@@ -196,28 +196,28 @@ public:
     }
 
     void Statements(
-        std::vector<std::shared_ptr<ranally::StatementVertex>>
+        std::vector<std::shared_ptr<geoneric::StatementVertex>>
             const& statements)
     {
         if(!_data_stack.top().true_scope) {
             assert(!statements.empty());
             assert(!_data_stack.top().false_scope);
-            _data_stack.top().true_scope.reset(new ranally::ScopeVertex(
+            _data_stack.top().true_scope.reset(new geoneric::ScopeVertex(
                 statements));
         }
         else {
             assert(!_data_stack.top().false_scope);
-            _data_stack.top().false_scope.reset(new ranally::ScopeVertex(
+            _data_stack.top().false_scope.reset(new geoneric::ScopeVertex(
                 statements));
         }
     }
 
-    std::shared_ptr<ranally::WhileVertex> post_While()
+    std::shared_ptr<geoneric::WhileVertex> post_While()
     {
         assert(!_data_stack.empty());
         WhileData result(_data_stack.top());
         _data_stack.pop();
-        return std::shared_ptr<ranally::WhileVertex>(new ranally::WhileVertex(
+        return std::shared_ptr<geoneric::WhileVertex>(new geoneric::WhileVertex(
             result.condition_vertex, result.true_scope, result.false_scope));
     }
 
@@ -225,9 +225,9 @@ private:
 
     struct WhileData
     {
-        std::shared_ptr<ranally::ExpressionVertex> condition_vertex;
-        std::shared_ptr<ranally::ScopeVertex> true_scope;
-        std::shared_ptr<ranally::ScopeVertex> false_scope;
+        std::shared_ptr<geoneric::ExpressionVertex> condition_vertex;
+        std::shared_ptr<geoneric::ScopeVertex> true_scope;
+        std::shared_ptr<geoneric::ScopeVertex> false_scope;
     };
 
     std::stack<WhileData> _data_stack;
@@ -236,7 +236,7 @@ private:
 
 
 class FunctionDefinition_pimpl:
-    public ranally::FunctionDefinition_pskel
+    public geoneric::FunctionDefinition_pskel
 {
 
 public:
@@ -250,11 +250,11 @@ public:
         std::string const& name)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().name = ranally::String(name);
+        _data_stack.top().name = geoneric::String(name);
     }
 
     void Expressions(
-        std::vector<std::shared_ptr<ranally::ExpressionVertex>>
+        std::vector<std::shared_ptr<geoneric::ExpressionVertex>>
             const& vertices)
     {
         assert(!_data_stack.empty());
@@ -263,34 +263,34 @@ public:
     }
 
     void Statements(
-        std::vector<std::shared_ptr<ranally::StatementVertex>>
+        std::vector<std::shared_ptr<geoneric::StatementVertex>>
             const& statements)
     {
         assert(!statements.empty());
-        _data_stack.top().scope_vertex.reset(new ranally::ScopeVertex(
+        _data_stack.top().scope_vertex.reset(new geoneric::ScopeVertex(
             statements));
     }
 
-    std::shared_ptr<ranally::FunctionDefinitionVertex> post_FunctionDefinition()
+    std::shared_ptr<geoneric::FunctionDefinitionVertex> post_FunctionDefinition()
     {
         assert(!_data_stack.empty());
         FunctionDefinitionData result(_data_stack.top());
         _data_stack.pop();
-        return std::shared_ptr<ranally::FunctionDefinitionVertex>(
-            new ranally::FunctionDefinitionVertex(
+        return std::shared_ptr<geoneric::FunctionDefinitionVertex>(
+            new geoneric::FunctionDefinitionVertex(
                 result.name, result.expression_vertices, result.scope_vertex));
     }
 
 private:
 
-    typedef std::vector<std::shared_ptr<ranally::ExpressionVertex>>
+    typedef std::vector<std::shared_ptr<geoneric::ExpressionVertex>>
         ExpressionVertices;
 
     struct FunctionDefinitionData
     {
-        ranally::String name;
+        geoneric::String name;
         ExpressionVertices expression_vertices;
-        std::shared_ptr<ranally::ScopeVertex> scope_vertex;
+        std::shared_ptr<geoneric::ScopeVertex> scope_vertex;
     };
 
     std::stack<FunctionDefinitionData> _data_stack;
@@ -299,7 +299,7 @@ private:
 
 
 class Return_pimpl:
-    public ranally::Return_pskel
+    public geoneric::Return_pskel
 {
 
 public:
@@ -310,21 +310,21 @@ public:
     }
 
     void Expression(
-        std::shared_ptr<ranally::ExpressionVertex> const& expression)
+        std::shared_ptr<geoneric::ExpressionVertex> const& expression)
     {
         assert(!_data_stack.empty());
         _data_stack.top().expression_vertex = expression;
     }
 
-    std::shared_ptr<ranally::ReturnVertex> post_Return()
+    std::shared_ptr<geoneric::ReturnVertex> post_Return()
     {
         assert(!_data_stack.empty());
         ReturnData result(_data_stack.top());
         _data_stack.pop();
-        std::shared_ptr<ranally::ReturnVertex> vertex(
+        std::shared_ptr<geoneric::ReturnVertex> vertex(
             result.expression_vertex
-                ?  new ranally::ReturnVertex(result.expression_vertex)
-                :  new ranally::ReturnVertex());
+                ?  new geoneric::ReturnVertex(result.expression_vertex)
+                :  new geoneric::ReturnVertex());
         return vertex;
     }
 
@@ -332,7 +332,7 @@ private:
 
     struct ReturnData
     {
-        std::shared_ptr<ranally::ExpressionVertex> expression_vertex;
+        std::shared_ptr<geoneric::ExpressionVertex> expression_vertex;
     };
 
     std::stack<ReturnData> _data_stack;
@@ -341,7 +341,7 @@ private:
 
 
 class Statements_pimpl:
-    public ranally::Statements_pskel
+    public geoneric::Statements_pskel
 {
 
 public:
@@ -352,13 +352,13 @@ public:
     }
 
     void Statement(
-        std::shared_ptr<ranally::StatementVertex> const& vertex)
+        std::shared_ptr<geoneric::StatementVertex> const& vertex)
     {
         assert(vertex);
         _data_stack.top().push_back(vertex);
     }
 
-    std::vector<std::shared_ptr<ranally::StatementVertex>>
+    std::vector<std::shared_ptr<geoneric::StatementVertex>>
         post_Statements()
     {
         assert(!_data_stack.empty());
@@ -369,7 +369,7 @@ public:
 
 private:
 
-    typedef std::vector<std::shared_ptr<ranally::StatementVertex>>
+    typedef std::vector<std::shared_ptr<geoneric::StatementVertex>>
         StatementsData;
 
     std::stack<StatementsData> _data_stack;
@@ -378,7 +378,7 @@ private:
 
 
 class Statement_pimpl:
-    public ranally::Statement_pskel
+    public geoneric::Statement_pskel
 {
 
 public:
@@ -403,7 +403,7 @@ public:
     }
 
     void Expression(
-        std::shared_ptr<ranally::ExpressionVertex> const& vertex)
+        std::shared_ptr<geoneric::ExpressionVertex> const& vertex)
     {
         assert(vertex);
         assert(!_data_stack.empty());
@@ -413,7 +413,7 @@ public:
     }
 
     void Assignment(
-        std::shared_ptr<ranally::AssignmentVertex> const& vertex)
+        std::shared_ptr<geoneric::AssignmentVertex> const& vertex)
     {
         assert(vertex);
         assert(!_data_stack.empty());
@@ -423,7 +423,7 @@ public:
     }
 
     void If(
-        std::shared_ptr<ranally::IfVertex> const& vertex)
+        std::shared_ptr<geoneric::IfVertex> const& vertex)
     {
         assert(vertex);
         assert(!_data_stack.empty());
@@ -433,7 +433,7 @@ public:
     }
 
     void While(
-        std::shared_ptr<ranally::WhileVertex> const& vertex)
+        std::shared_ptr<geoneric::WhileVertex> const& vertex)
     {
         assert(vertex);
         assert(!_data_stack.empty());
@@ -443,7 +443,7 @@ public:
     }
 
     void FunctionDefinition(
-        std::shared_ptr<ranally::FunctionDefinitionVertex> const& vertex)
+        std::shared_ptr<geoneric::FunctionDefinitionVertex> const& vertex)
     {
         assert(vertex);
         assert(!_data_stack.empty());
@@ -453,7 +453,7 @@ public:
     }
 
     void Return(
-        std::shared_ptr<ranally::ReturnVertex> const& vertex)
+        std::shared_ptr<geoneric::ReturnVertex> const& vertex)
     {
         assert(vertex);
         assert(!_data_stack.empty());
@@ -462,7 +462,7 @@ public:
             _data_stack.top().col);
     }
 
-    std::shared_ptr<ranally::StatementVertex> post_Statement()
+    std::shared_ptr<geoneric::StatementVertex> post_Statement()
     {
         assert(!_data_stack.empty());
         StatementData result(_data_stack.top());
@@ -476,7 +476,7 @@ private:
     {
         int line;
         int col;
-        std::shared_ptr<ranally::StatementVertex> vertex;
+        std::shared_ptr<geoneric::StatementVertex> vertex;
     };
 
     std::stack<StatementData> _data_stack;
@@ -485,7 +485,7 @@ private:
 
 
 class Expressions_pimpl:
-    public ranally::Expressions_pskel
+    public geoneric::Expressions_pskel
 {
 
 public:
@@ -496,13 +496,13 @@ public:
     }
 
     void Expression(
-        std::shared_ptr<ranally::ExpressionVertex> const& vertex)
+        std::shared_ptr<geoneric::ExpressionVertex> const& vertex)
     {
         assert(vertex);
         _data_stack.top().push_back(vertex);
     }
 
-    std::vector<std::shared_ptr<ranally::ExpressionVertex>>
+    std::vector<std::shared_ptr<geoneric::ExpressionVertex>>
         post_Expressions()
     {
         assert(!_data_stack.empty());
@@ -513,7 +513,7 @@ public:
 
 private:
 
-    typedef std::vector<std::shared_ptr<ranally::ExpressionVertex>>
+    typedef std::vector<std::shared_ptr<geoneric::ExpressionVertex>>
         ExpressionsData;
 
     std::stack<ExpressionsData> _data_stack;
@@ -522,7 +522,7 @@ private:
 
 
 class Integer_pimpl:
-    public ranally::Integer_pskel
+    public geoneric::Integer_pskel
 {
 
 public:
@@ -545,29 +545,29 @@ public:
         _value = value;
     }
 
-    std::shared_ptr<ranally::ExpressionVertex> post_Integer()
+    std::shared_ptr<geoneric::ExpressionVertex> post_Integer()
     {
-        std::shared_ptr<ranally::ExpressionVertex> result;
+        std::shared_ptr<geoneric::ExpressionVertex> result;
 
         switch(_size) {
             case 8: {
-                result = std::shared_ptr<ranally::ExpressionVertex>(
-                    new ranally::NumberVertex<int8_t>(_value));
+                result = std::shared_ptr<geoneric::ExpressionVertex>(
+                    new geoneric::NumberVertex<int8_t>(_value));
                 break;
             }
             case 16: {
-                result = std::shared_ptr<ranally::ExpressionVertex>(
-                    new ranally::NumberVertex<int16_t>(_value));
+                result = std::shared_ptr<geoneric::ExpressionVertex>(
+                    new geoneric::NumberVertex<int16_t>(_value));
                 break;
             }
             case 32: {
-                result = std::shared_ptr<ranally::ExpressionVertex>(
-                    new ranally::NumberVertex<int32_t>(_value));
+                result = std::shared_ptr<geoneric::ExpressionVertex>(
+                    new geoneric::NumberVertex<int32_t>(_value));
                 break;
             }
             case 64: {
-                result = std::shared_ptr<ranally::ExpressionVertex>(
-                    new ranally::NumberVertex<int64_t>(_value));
+                result = std::shared_ptr<geoneric::ExpressionVertex>(
+                    new geoneric::NumberVertex<int64_t>(_value));
                 break;
             }
             default: {
@@ -590,7 +590,7 @@ private:
 
 
 class UnsignedInteger_pimpl:
-    public ranally::UnsignedInteger_pskel
+    public geoneric::UnsignedInteger_pskel
 {
 
 public:
@@ -612,30 +612,30 @@ public:
         _value = value;
     }
 
-    std::shared_ptr<ranally::ExpressionVertex>
+    std::shared_ptr<geoneric::ExpressionVertex>
         post_UnsignedInteger()
     {
-        std::shared_ptr<ranally::ExpressionVertex> result;
+        std::shared_ptr<geoneric::ExpressionVertex> result;
 
         switch(_size) {
             case 8: {
-                result = std::shared_ptr<ranally::ExpressionVertex>(
-                    new ranally::NumberVertex<uint8_t>(_value));
+                result = std::shared_ptr<geoneric::ExpressionVertex>(
+                    new geoneric::NumberVertex<uint8_t>(_value));
                 break;
             }
             case 16: {
-                result = std::shared_ptr<ranally::ExpressionVertex>(
-                    new ranally::NumberVertex<uint16_t>(_value));
+                result = std::shared_ptr<geoneric::ExpressionVertex>(
+                    new geoneric::NumberVertex<uint16_t>(_value));
                 break;
             }
             case 32: {
-                result = std::shared_ptr<ranally::ExpressionVertex>(
-                    new ranally::NumberVertex<uint32_t>(_value));
+                result = std::shared_ptr<geoneric::ExpressionVertex>(
+                    new geoneric::NumberVertex<uint32_t>(_value));
                 break;
             }
             case 64: {
-                result = std::shared_ptr<ranally::ExpressionVertex>(
-                    new ranally::NumberVertex<uint64_t>(_value));
+                result = std::shared_ptr<geoneric::ExpressionVertex>(
+                    new geoneric::NumberVertex<uint64_t>(_value));
                 break;
             }
             default: {
@@ -659,7 +659,7 @@ private:
 
 
 class Float_pimpl:
-    public ranally::Float_pskel
+    public geoneric::Float_pskel
 {
 
 public:
@@ -681,21 +681,21 @@ public:
         _value = value;
     }
 
-    std::shared_ptr<ranally::ExpressionVertex> post_Float()
+    std::shared_ptr<geoneric::ExpressionVertex> post_Float()
     {
-        std::shared_ptr<ranally::ExpressionVertex> result;
+        std::shared_ptr<geoneric::ExpressionVertex> result;
 
         switch(_size) {
             case 32: {
                 assert(sizeof(float) == 4);
-                result = std::shared_ptr<ranally::ExpressionVertex>(
-                    new ranally::NumberVertex<float>(_value));
+                result = std::shared_ptr<geoneric::ExpressionVertex>(
+                    new geoneric::NumberVertex<float>(_value));
                 break;
             }
             case 64: {
                 assert(sizeof(double) == 8);
-                result = std::shared_ptr<ranally::ExpressionVertex>(
-                    new ranally::NumberVertex<double>(_value));
+                result = std::shared_ptr<geoneric::ExpressionVertex>(
+                    new geoneric::NumberVertex<double>(_value));
                 break;
             }
             default: {
@@ -718,7 +718,7 @@ private:
 
 
 class Number_pimpl:
-    public ranally::Number_pskel
+    public geoneric::Number_pskel
 {
 
 public:
@@ -729,27 +729,27 @@ public:
     }
 
     void Integer(
-        std::shared_ptr<ranally::ExpressionVertex> const& vertex)
+        std::shared_ptr<geoneric::ExpressionVertex> const& vertex)
     {
         assert(!_vertex);
         _vertex = vertex;
     }
 
     void UnsignedInteger(
-        std::shared_ptr<ranally::ExpressionVertex> const& vertex)
+        std::shared_ptr<geoneric::ExpressionVertex> const& vertex)
     {
         assert(!_vertex);
         _vertex = vertex;
     }
 
     void Float(
-        std::shared_ptr<ranally::ExpressionVertex> const& vertex)
+        std::shared_ptr<geoneric::ExpressionVertex> const& vertex)
     {
         assert(!_vertex);
         _vertex = vertex;
     }
 
-    std::shared_ptr<ranally::ExpressionVertex> post_Number()
+    std::shared_ptr<geoneric::ExpressionVertex> post_Number()
     {
         assert(_vertex);
         return _vertex;
@@ -757,13 +757,13 @@ public:
 
 private:
 
-    std::shared_ptr<ranally::ExpressionVertex> _vertex;
+    std::shared_ptr<geoneric::ExpressionVertex> _vertex;
 
 };
 
 
 class FunctionCall_pimpl:
-    public ranally::FunctionCall_pskel
+    public geoneric::FunctionCall_pskel
 {
 
 public:
@@ -777,11 +777,11 @@ public:
         std::string const& name)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().name = ranally::String(name);
+        _data_stack.top().name = geoneric::String(name);
     }
 
     void Expressions(
-        std::vector<std::shared_ptr<ranally::ExpressionVertex>>
+        std::vector<std::shared_ptr<geoneric::ExpressionVertex>>
             const& vertices)
     {
         assert(!_data_stack.empty());
@@ -789,24 +789,24 @@ public:
         _data_stack.top().expression_vertices = vertices;
     }
 
-    std::shared_ptr<ranally::FunctionCallVertex> post_FunctionCall()
+    std::shared_ptr<geoneric::FunctionCallVertex> post_FunctionCall()
     {
         assert(!_data_stack.empty());
         FunctionData result(_data_stack.top());
         _data_stack.pop();
-        return std::shared_ptr<ranally::FunctionCallVertex>(
-            new ranally::FunctionCallVertex(result.name,
+        return std::shared_ptr<geoneric::FunctionCallVertex>(
+            new geoneric::FunctionCallVertex(result.name,
                 result.expression_vertices));
     }
 
 private:
 
-    typedef std::vector<std::shared_ptr<ranally::ExpressionVertex>>
+    typedef std::vector<std::shared_ptr<geoneric::ExpressionVertex>>
         ExpressionVertices;
 
     struct FunctionData
     {
-        ranally::String name;
+        geoneric::String name;
         ExpressionVertices expression_vertices;
     };
 
@@ -816,7 +816,7 @@ private:
 
 
 class Operator_pimpl:
-    public ranally::Operator_pskel
+    public geoneric::Operator_pskel
 {
 
 public:
@@ -830,11 +830,11 @@ public:
         std::string const& name)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().name = ranally::String(name);
+        _data_stack.top().name = geoneric::String(name);
     }
 
     void Expressions(
-        std::vector<std::shared_ptr<ranally::ExpressionVertex>>
+        std::vector<std::shared_ptr<geoneric::ExpressionVertex>>
             const& vertices)
     {
         assert(!_data_stack.empty());
@@ -842,24 +842,24 @@ public:
         _data_stack.top().expression_vertices = vertices;
     }
 
-    std::shared_ptr<ranally::OperatorVertex> post_Operator()
+    std::shared_ptr<geoneric::OperatorVertex> post_Operator()
     {
         assert(!_data_stack.empty());
         OperatorData result(_data_stack.top());
         _data_stack.pop();
-        return std::shared_ptr<ranally::OperatorVertex>(
-            new ranally::OperatorVertex(result.name,
+        return std::shared_ptr<geoneric::OperatorVertex>(
+            new geoneric::OperatorVertex(result.name,
                 result.expression_vertices));
     }
 
 private:
 
-    typedef std::vector<std::shared_ptr<ranally::ExpressionVertex>>
+    typedef std::vector<std::shared_ptr<geoneric::ExpressionVertex>>
         ExpressionVertices;
 
     struct OperatorData
     {
-        ranally::String name;
+        geoneric::String name;
         ExpressionVertices expression_vertices;
     };
 
@@ -869,7 +869,7 @@ private:
 
 
 class Subscript_pimpl:
-    public ranally::Subscript_pskel
+    public geoneric::Subscript_pskel
 {
 
 public:
@@ -880,7 +880,7 @@ public:
     }
 
     void Expression(
-        std::shared_ptr<ranally::ExpressionVertex>
+        std::shared_ptr<geoneric::ExpressionVertex>
             const& vertex)
     {
         assert(_data_stack.size() == 1);
@@ -893,21 +893,21 @@ public:
         }
     }
 
-    std::shared_ptr<ranally::ExpressionVertex> post_Subscript()
+    std::shared_ptr<geoneric::ExpressionVertex> post_Subscript()
     {
         assert(!_data_stack.empty());
         SubscriptData result(_data_stack.top());
         _data_stack.pop();
-        return std::shared_ptr<ranally::SubscriptVertex>(
-            new ranally::SubscriptVertex(result.expression, result.selection));
+        return std::shared_ptr<geoneric::SubscriptVertex>(
+            new geoneric::SubscriptVertex(result.expression, result.selection));
     }
 
 private:
 
     struct SubscriptData
     {
-        ranally::ExpressionVertexPtr expression;
-        ranally::ExpressionVertexPtr selection;
+        geoneric::ExpressionVertexPtr expression;
+        geoneric::ExpressionVertexPtr selection;
     };
 
     std::stack<SubscriptData> _data_stack;
@@ -916,7 +916,7 @@ private:
 
 
 class Expression_pimpl:
-    public ranally::Expression_pskel
+    public geoneric::Expression_pskel
 {
 
 public:
@@ -945,13 +945,13 @@ public:
     {
         assert(!_data_stack.empty());
         assert(!_data_stack.top().vertex);
-        _data_stack.top().vertex = std::shared_ptr<ranally::NameVertex>(
-            new ranally::NameVertex(_data_stack.top().line,
-                _data_stack.top().col, ranally::String(name)));
+        _data_stack.top().vertex = std::shared_ptr<geoneric::NameVertex>(
+            new geoneric::NameVertex(_data_stack.top().line,
+                _data_stack.top().col, geoneric::String(name)));
     }
 
     void Subscript(
-        std::shared_ptr<ranally::ExpressionVertex> const& vertex)
+        std::shared_ptr<geoneric::ExpressionVertex> const& vertex)
     {
         assert(!_data_stack.empty());
         assert(!_data_stack.top().vertex);
@@ -965,13 +965,13 @@ public:
     {
         assert(!_data_stack.empty());
         assert(!_data_stack.top().vertex);
-        _data_stack.top().vertex = std::shared_ptr<ranally::StringVertex>(
-            new ranally::StringVertex(_data_stack.top().line,
-                _data_stack.top().col, ranally::String(string)));
+        _data_stack.top().vertex = std::shared_ptr<geoneric::StringVertex>(
+            new geoneric::StringVertex(_data_stack.top().line,
+                _data_stack.top().col, geoneric::String(string)));
     }
 
     void Number(
-        std::shared_ptr<ranally::ExpressionVertex> const& vertex)
+        std::shared_ptr<geoneric::ExpressionVertex> const& vertex)
     {
         assert(!_data_stack.empty());
         assert(!_data_stack.top().vertex);
@@ -981,7 +981,7 @@ public:
     }
 
     void FunctionCall(
-        std::shared_ptr<ranally::FunctionCallVertex> const& vertex)
+        std::shared_ptr<geoneric::FunctionCallVertex> const& vertex)
     {
         assert(!_data_stack.empty());
         assert(!_data_stack.top().vertex);
@@ -991,7 +991,7 @@ public:
     }
 
     void Operator(
-        std::shared_ptr<ranally::OperatorVertex> const& vertex)
+        std::shared_ptr<geoneric::OperatorVertex> const& vertex)
     {
         assert(!_data_stack.empty());
         assert(!_data_stack.top().vertex);
@@ -1000,7 +1000,7 @@ public:
             _data_stack.top().col);
     }
 
-    std::shared_ptr<ranally::ExpressionVertex> post_Expression()
+    std::shared_ptr<geoneric::ExpressionVertex> post_Expression()
     {
         assert(!_data_stack.empty());
         ExpressionData result(_data_stack.top());
@@ -1014,7 +1014,7 @@ private:
   {
       int line;
       int col;
-      std::shared_ptr<ranally::ExpressionVertex> vertex;
+      std::shared_ptr<geoneric::ExpressionVertex> vertex;
   };
 
   std::stack<ExpressionData> _data_stack;
@@ -1024,7 +1024,7 @@ private:
 } // Anonymous namespace
 
 
-namespace ranally {
+namespace geoneric {
 
 //! Parse the Xml in \a stream and return a syntax tree.
 /*!
@@ -1108,14 +1108,14 @@ std::shared_ptr<ModuleVertex> XmlParser::parse(
 
     statements_p.parsers(statement_p);
 
-    Ranally_pimpl ranally_p;
-    ranally_p.parsers(statements_p, string_p);
+    Geoneric_pimpl geoneric_p;
+    geoneric_p.parsers(statements_p, string_p);
 
-    xml_schema::document doc_p(ranally_p, "Ranally");
+    xml_schema::document doc_p(geoneric_p, "Geoneric");
 
-    ranally_p.pre();
+    geoneric_p.pre();
     doc_p.parse(stream);
-    return ranally_p.post_Ranally();
+    return geoneric_p.post_Geoneric();
 }
 
 
@@ -1138,7 +1138,7 @@ std::shared_ptr<ModuleVertex> XmlParser::parse_string(
     }
     catch(xml_schema::parsing const& exception) {
         assert(!exception.diagnostics().empty());
-        BOOST_THROW_EXCEPTION(ranally::detail::ParseError()
+        BOOST_THROW_EXCEPTION(geoneric::detail::ParseError()
             << detail::ExceptionSourceName("<string>")
             << detail::ExceptionLineNr(exception.diagnostics()[0].line())
             << detail::ExceptionColNr(exception.diagnostics()[0].column())
@@ -1149,4 +1149,4 @@ std::shared_ptr<ModuleVertex> XmlParser::parse_string(
     return vertex;
 }
 
-} // namespace ranally
+} // namespace geoneric

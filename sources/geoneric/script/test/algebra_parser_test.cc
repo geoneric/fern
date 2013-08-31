@@ -1,36 +1,36 @@
-#define BOOST_TEST_MODULE ranally script
+#define BOOST_TEST_MODULE geoneric script
 #include <boost/test/unit_test.hpp>
-#include "ranally/core/exception.h"
-#include "ranally/core/string.h"
-#include "ranally/script/algebra_parser.h"
+#include "geoneric/core/exception.h"
+#include "geoneric/core/string.h"
+#include "geoneric/script/algebra_parser.h"
 
 
 BOOST_AUTO_TEST_SUITE(algebra_parser)
 
 BOOST_AUTO_TEST_CASE(parse_empty_script)
 {
-    ranally::AlgebraParser parser;
+    geoneric::AlgebraParser parser;
 
     {
-        ranally::String xml(parser.parse_string(ranally::String("")));
-        BOOST_CHECK_EQUAL(xml, ranally::String(
+        geoneric::String xml(parser.parse_string(geoneric::String("")));
+        BOOST_CHECK_EQUAL(xml, geoneric::String(
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
                 "<Statements/>"
-            "</Ranally>"));
+            "</Geoneric>"));
     }
 }
 
 
 BOOST_AUTO_TEST_CASE(parse_name)
 {
-    ranally::AlgebraParser parser;
+    geoneric::AlgebraParser parser;
 
     {
-        ranally::String xml(parser.parse_string(ranally::String("a")));
-        BOOST_CHECK_EQUAL(xml, ranally::String(
+        geoneric::String xml(parser.parse_string(geoneric::String("a")));
+        BOOST_CHECK_EQUAL(xml, geoneric::String(
           "<?xml version=\"1.0\"?>"
-          "<Ranally source=\"&lt;string&gt;\">"
+          "<Geoneric source=\"&lt;string&gt;\">"
             "<Statements>"
               "<Statement line=\"1\" col=\"0\">"
                 "<Expression line=\"1\" col=\"0\">"
@@ -38,15 +38,15 @@ BOOST_AUTO_TEST_CASE(parse_name)
                 "</Expression>"
               "</Statement>"
             "</Statements>"
-          "</Ranally>"));
+          "</Geoneric>"));
     }
 
     // TODO #if PYTHONVER >= 2.7/3.0?
     // {
-    //     ranally::String xml(parser.parse_string(ranally::String("ñ")));
-    //     BOOST_CHECK_EQUAL(xml, ranally::String(
+    //     geoneric::String xml(parser.parse_string(geoneric::String("ñ")));
+    //     BOOST_CHECK_EQUAL(xml, geoneric::String(
     //       "<?xml version=\"1.0\"?>"
-    //       "<Ranally>"
+    //       "<Geoneric>"
     //         "<Statements>"
     //           "<Statement>"
     //             "<Expression line=\"1\" col=\"0\">"
@@ -54,20 +54,20 @@ BOOST_AUTO_TEST_CASE(parse_name)
     //             "</Expression>"
     //           "</Statement>"
     //         "</Statements>"
-    //       "</Ranally>"));
+    //       "</Geoneric>"));
     // }
 }
 
 
 BOOST_AUTO_TEST_CASE(parse_assignment)
 {
-    ranally::AlgebraParser parser;
+    geoneric::AlgebraParser parser;
 
     {
-        ranally::String xml(parser.parse_string(ranally::String("a = b")));
-        BOOST_CHECK_EQUAL(xml, ranally::String(
+        geoneric::String xml(parser.parse_string(geoneric::String("a = b")));
+        BOOST_CHECK_EQUAL(xml, geoneric::String(
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Assignment>"
@@ -80,20 +80,20 @@ BOOST_AUTO_TEST_CASE(parse_assignment)
                   "</Assignment>"
                 "</Statement>"
               "</Statements>"
-            "</Ranally>"));
+            "</Geoneric>"));
     }
 }
 
 
 BOOST_AUTO_TEST_CASE(parse_string)
 {
-    ranally::AlgebraParser parser;
+    geoneric::AlgebraParser parser;
 
     {
-        ranally::String xml(parser.parse_string(ranally::String("\"five\"")));
-        BOOST_CHECK_EQUAL(xml, ranally::String(
+        geoneric::String xml(parser.parse_string(geoneric::String("\"five\"")));
+        BOOST_CHECK_EQUAL(xml, geoneric::String(
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -101,14 +101,14 @@ BOOST_AUTO_TEST_CASE(parse_string)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Ranally>"));
+            "</Geoneric>"));
     }
 
     {
-        ranally::String xml(parser.parse_string(ranally::String("\"\"")));
-        BOOST_CHECK_EQUAL(xml, ranally::String(
+        geoneric::String xml(parser.parse_string(geoneric::String("\"\"")));
+        BOOST_CHECK_EQUAL(xml, geoneric::String(
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -116,14 +116,14 @@ BOOST_AUTO_TEST_CASE(parse_string)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Ranally>"));
+            "</Geoneric>"));
     }
 
     {
-        ranally::String xml(parser.parse_string(ranally::String("\" \"")));
-        BOOST_CHECK_EQUAL(xml, ranally::String(
+        geoneric::String xml(parser.parse_string(geoneric::String("\" \"")));
+        BOOST_CHECK_EQUAL(xml, geoneric::String(
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -131,15 +131,15 @@ BOOST_AUTO_TEST_CASE(parse_string)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Ranally>"));
+            "</Geoneric>"));
     }
 
     // Test handling of Unicode characters.
     {
-        ranally::String xml(parser.parse_string(ranally::String("\"mañana\"")));
-        BOOST_CHECK_EQUAL(xml, ranally::String(
+        geoneric::String xml(parser.parse_string(geoneric::String("\"mañana\"")));
+        BOOST_CHECK_EQUAL(xml, geoneric::String(
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -147,35 +147,35 @@ BOOST_AUTO_TEST_CASE(parse_string)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Ranally>"));
+            "</Geoneric>"));
     }
 
     {
-        BOOST_CHECK_THROW(parser.parse_string(ranally::String("if")),
-            ranally::detail::ParseError);
+        BOOST_CHECK_THROW(parser.parse_string(geoneric::String("if")),
+            geoneric::detail::ParseError);
     }
 
     {
-        BOOST_CHECK_THROW(parser.parse_string(ranally::String("yield")),
-            ranally::detail::UnsupportedLanguageConstruct);
+        BOOST_CHECK_THROW(parser.parse_string(geoneric::String("yield")),
+            geoneric::detail::UnsupportedLanguageConstruct);
     }
 
     {
-        BOOST_CHECK_THROW(parser.parse_string(ranally::String("print(5)")),
-            ranally::detail::UnsupportedLanguageConstruct);
+        BOOST_CHECK_THROW(parser.parse_string(geoneric::String("print(5)")),
+            geoneric::detail::UnsupportedLanguageConstruct);
     }
 }
 
 
 BOOST_AUTO_TEST_CASE(parse_number)
 {
-    ranally::AlgebraParser parser;
+    geoneric::AlgebraParser parser;
 
     {
-        ranally::String xml(parser.parse_string(ranally::String("5")));
-        BOOST_CHECK_EQUAL(xml, ranally::String(boost::format(
+        geoneric::String xml(parser.parse_string(geoneric::String("5")));
+        BOOST_CHECK_EQUAL(xml, geoneric::String(boost::format(
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -188,14 +188,14 @@ BOOST_AUTO_TEST_CASE(parse_number)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Ranally>") % (sizeof(long) * 8)));
+            "</Geoneric>") % (sizeof(long) * 8)));
     }
 
     {
-        ranally::String xml(parser.parse_string(ranally::String("5L")));
-        BOOST_CHECK_EQUAL(xml, ranally::String(
+        geoneric::String xml(parser.parse_string(geoneric::String("5L")));
+        BOOST_CHECK_EQUAL(xml, geoneric::String(
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -208,14 +208,14 @@ BOOST_AUTO_TEST_CASE(parse_number)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Ranally>"));
+            "</Geoneric>"));
     }
 
     {
-        ranally::String xml(parser.parse_string(ranally::String("5.5")));
-        BOOST_CHECK_EQUAL(xml, ranally::String(
+        geoneric::String xml(parser.parse_string(geoneric::String("5.5")));
+        BOOST_CHECK_EQUAL(xml, geoneric::String(
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -228,21 +228,21 @@ BOOST_AUTO_TEST_CASE(parse_number)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Ranally>"));
+            "</Geoneric>"));
     }
 }
 
 
 BOOST_AUTO_TEST_CASE(parse_call)
 {
-    ranally::AlgebraParser parser;
-    ranally::String xml;
+    geoneric::AlgebraParser parser;
+    geoneric::String xml;
 
     {
-        xml = parser.parse_string(ranally::String("f()"));
-        BOOST_CHECK_EQUAL(xml, ranally::String(
+        xml = parser.parse_string(geoneric::String("f()"));
+        BOOST_CHECK_EQUAL(xml, geoneric::String(
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -253,14 +253,14 @@ BOOST_AUTO_TEST_CASE(parse_call)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Ranally>"));
+            "</Geoneric>"));
     }
 
     {
-        xml = parser.parse_string(ranally::String("f(1, \"2\", three, four())"));
-        BOOST_CHECK_EQUAL(xml, ranally::String(boost::format(
+        xml = parser.parse_string(geoneric::String("f(1, \"2\", three, four())"));
+        BOOST_CHECK_EQUAL(xml, geoneric::String(boost::format(
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -292,21 +292,21 @@ BOOST_AUTO_TEST_CASE(parse_call)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Ranally>") % (sizeof(long) * 8)));
+            "</Geoneric>") % (sizeof(long) * 8)));
     }
 }
 
 
 // BOOST_AUTO_TEST_CASE(parse_print)
 // {
-//   ranally::AlgebraParser parser;
-//   ranally::String xml;
+//   geoneric::AlgebraParser parser;
+//   geoneric::String xml;
 // 
 //   {
-//     xml = parser.parse_string(ranally::String("print"));
-//     BOOST_CHECK_EQUAL(xml, ranally::String(
+//     xml = parser.parse_string(geoneric::String("print"));
+//     BOOST_CHECK_EQUAL(xml, geoneric::String(
 //       "<?xml version=\"1.0\"?>"
-//       "<Ranally source=\"&lt;string&gt;\">"
+//       "<Geoneric source=\"&lt;string&gt;\">"
 //         "<Statements>"
 //           "<Statement>"
 //             "<Expression line=\"1\" col=\"0\">"
@@ -317,14 +317,14 @@ BOOST_AUTO_TEST_CASE(parse_call)
 //             "</Expression>"
 //           "</Statement>"
 //         "</Statements>"
-//       "</Ranally>"));
+//       "</Geoneric>"));
 //   }
 // 
 //   // {
-//   //   xml = parser.parse_string(ranally::String("print(1, \"2\", three, four())"));
-//   //   BOOST_CHECK_EQUAL(xml, ranally::String(boost::format(
+//   //   xml = parser.parse_string(geoneric::String("print(1, \"2\", three, four())"));
+//   //   BOOST_CHECK_EQUAL(xml, geoneric::String(boost::format(
 //   //     "<?xml version=\"1.0\"?>"
-//   //     "<Ranally source=\"&lt;string&gt;\">"
+//   //     "<Geoneric source=\"&lt;string&gt;\">"
 //   //       "<Statements>"
 //   //         "<Statement>"
 //   //           "<Expression line=\"1\" col=\"0\">"
@@ -356,21 +356,21 @@ BOOST_AUTO_TEST_CASE(parse_call)
 //   //           "</Expression>"
 //   //         "</Statement>"
 //   //       "</Statements>"
-//   //     "</Ranally>") % (sizeof(long) * 8)));
+//   //     "</Geoneric>") % (sizeof(long) * 8)));
 //   // }
 // }
 
 
 BOOST_AUTO_TEST_CASE(parse_unary_operator)
 {
-    ranally::AlgebraParser parser;
-    ranally::String xml;
+    geoneric::AlgebraParser parser;
+    geoneric::String xml;
 
     {
-        xml = parser.parse_string(ranally::String("-a"));
-        BOOST_CHECK_EQUAL(xml, ranally::String(
+        xml = parser.parse_string(geoneric::String("-a"));
+        BOOST_CHECK_EQUAL(xml, geoneric::String(
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -385,21 +385,21 @@ BOOST_AUTO_TEST_CASE(parse_unary_operator)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Ranally>"));
+            "</Geoneric>"));
     }
 }
 
 
 BOOST_AUTO_TEST_CASE(parse_binary_operator)
 {
-    ranally::AlgebraParser parser;
-    ranally::String xml;
+    geoneric::AlgebraParser parser;
+    geoneric::String xml;
 
     {
-        xml = parser.parse_string(ranally::String("a + b"));
-        BOOST_CHECK_EQUAL(xml, ranally::String(
+        xml = parser.parse_string(geoneric::String("a + b"));
+        BOOST_CHECK_EQUAL(xml, geoneric::String(
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -417,21 +417,21 @@ BOOST_AUTO_TEST_CASE(parse_binary_operator)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Ranally>"));
+            "</Geoneric>"));
     }
 }
 
 
 BOOST_AUTO_TEST_CASE(parse_boolean_operator)
 {
-    ranally::AlgebraParser parser;
-    ranally::String xml;
+    geoneric::AlgebraParser parser;
+    geoneric::String xml;
 
     {
-        xml = parser.parse_string(ranally::String("a and b"));
-        BOOST_CHECK_EQUAL(xml, ranally::String(
+        xml = parser.parse_string(geoneric::String("a and b"));
+        BOOST_CHECK_EQUAL(xml, geoneric::String(
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -449,21 +449,21 @@ BOOST_AUTO_TEST_CASE(parse_boolean_operator)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Ranally>"));
+            "</Geoneric>"));
     }
 }
 
 
 BOOST_AUTO_TEST_CASE(parse_comparison_operator)
 {
-    ranally::AlgebraParser parser;
-    ranally::String xml;
+    geoneric::AlgebraParser parser;
+    geoneric::String xml;
 
     {
-        xml = parser.parse_string(ranally::String("a <= b"));
-        BOOST_CHECK_EQUAL(xml, ranally::String(
+        xml = parser.parse_string(geoneric::String("a <= b"));
+        BOOST_CHECK_EQUAL(xml, geoneric::String(
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -481,20 +481,20 @@ BOOST_AUTO_TEST_CASE(parse_comparison_operator)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Ranally>"));
+            "</Geoneric>"));
     }
 }
 
 
 BOOST_AUTO_TEST_CASE(parse_multiple_statements)
 {
-    ranally::AlgebraParser parser;
+    geoneric::AlgebraParser parser;
 
     {
-        ranally::String xml(parser.parse_string(ranally::String("a\nb")));
-        BOOST_CHECK_EQUAL(xml, ranally::String(
+        geoneric::String xml(parser.parse_string(geoneric::String("a\nb")));
+        BOOST_CHECK_EQUAL(xml, geoneric::String(
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -507,23 +507,23 @@ BOOST_AUTO_TEST_CASE(parse_multiple_statements)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Ranally>"));
+            "</Geoneric>"));
     }
 }
 
 
 BOOST_AUTO_TEST_CASE(parse_if)
 {
-    ranally::AlgebraParser parser;
-    ranally::String xml;
+    geoneric::AlgebraParser parser;
+    geoneric::String xml;
 
     {
-        xml = parser.parse_string(ranally::String(
+        xml = parser.parse_string(geoneric::String(
             "if a:\n"
             "  b"));
-        BOOST_CHECK_EQUAL(xml, ranally::String(
+        BOOST_CHECK_EQUAL(xml, geoneric::String(
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<If>"
@@ -541,18 +541,18 @@ BOOST_AUTO_TEST_CASE(parse_if)
                   "</If>"
                 "</Statement>"
               "</Statements>"
-            "</Ranally>"));
+            "</Geoneric>"));
     }
 
     {
-        xml = parser.parse_string(ranally::String(
+        xml = parser.parse_string(geoneric::String(
             "if a:\n"
             "  b\n"
             "elif(c):\n"
             "  d"));
-        BOOST_CHECK_EQUAL(xml, ranally::String(
+        BOOST_CHECK_EQUAL(xml, geoneric::String(
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<If>"
@@ -586,20 +586,20 @@ BOOST_AUTO_TEST_CASE(parse_if)
                   "</If>"
                 "</Statement>"
               "</Statements>"
-            "</Ranally>"));
+            "</Geoneric>"));
     }
 
     {
-        xml = parser.parse_string(ranally::String(
+        xml = parser.parse_string(geoneric::String(
             "if a:\n"
             "  b\n"
             "elif c:\n"
             "  d\n"
             "else:\n"
             "  e"));
-        BOOST_CHECK_EQUAL(xml, ranally::String(
+        BOOST_CHECK_EQUAL(xml, geoneric::String(
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<If>"
@@ -639,23 +639,23 @@ BOOST_AUTO_TEST_CASE(parse_if)
                   "</If>"
                 "</Statement>"
               "</Statements>"
-            "</Ranally>"));
+            "</Geoneric>"));
     }
 }
 
 
 BOOST_AUTO_TEST_CASE(parse_while)
 {
-    ranally::AlgebraParser parser;
-    ranally::String xml;
+    geoneric::AlgebraParser parser;
+    geoneric::String xml;
 
     {
-        xml = parser.parse_string(ranally::String(
+        xml = parser.parse_string(geoneric::String(
             "while a:\n"
             "  b"));
-        BOOST_CHECK_EQUAL(xml, ranally::String(
+        BOOST_CHECK_EQUAL(xml, geoneric::String(
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<While>"
@@ -673,18 +673,18 @@ BOOST_AUTO_TEST_CASE(parse_while)
                   "</While>"
                 "</Statement>"
               "</Statements>"
-            "</Ranally>"));
+            "</Geoneric>"));
     }
 
     {
-        xml = parser.parse_string(ranally::String(
+        xml = parser.parse_string(geoneric::String(
             "while a:\n"
             "  b\n"
             "else:\n"
             "  c"));
-        BOOST_CHECK_EQUAL(xml, ranally::String(
+        BOOST_CHECK_EQUAL(xml, geoneric::String(
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<While>"
@@ -708,35 +708,35 @@ BOOST_AUTO_TEST_CASE(parse_while)
                   "</While>"
                 "</Statement>"
               "</Statements>"
-            "</Ranally>"));
+            "</Geoneric>"));
     }
 }
 
 
 BOOST_AUTO_TEST_CASE(parse_file)
 {
-    ranally::AlgebraParser parser;
-    ranally::String filename;
+    geoneric::AlgebraParser parser;
+    geoneric::String filename;
 
     {
         filename = "DoesNotExist.ran";
         BOOST_CHECK_THROW(parser.parse_file(filename),
-            ranally::detail::FileOpenError);
+            geoneric::detail::FileOpenError);
     }
 }
 
 
 BOOST_AUTO_TEST_CASE(parse_slice)
 {
-    ranally::AlgebraParser parser;
-    ranally::String xml;
+    geoneric::AlgebraParser parser;
+    geoneric::String xml;
 
     {
-        xml = parser.parse_string(ranally::String(
+        xml = parser.parse_string(geoneric::String(
             "a[b]"));
-        BOOST_CHECK_EQUAL(xml, ranally::String(
+        BOOST_CHECK_EQUAL(xml, geoneric::String(
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -751,36 +751,36 @@ BOOST_AUTO_TEST_CASE(parse_slice)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Ranally>"));
+            "</Geoneric>"));
     }
 }
 
 
 BOOST_AUTO_TEST_CASE(return_)
 {
-    ranally::AlgebraParser parser;
-    ranally::String xml;
+    geoneric::AlgebraParser parser;
+    geoneric::String xml;
 
     {
-        xml = parser.parse_string(ranally::String(
+        xml = parser.parse_string(geoneric::String(
             "return"));
-        BOOST_CHECK_EQUAL(xml, ranally::String(
+        BOOST_CHECK_EQUAL(xml, geoneric::String(
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Return/>"
                 "</Statement>"
               "</Statements>"
-            "</Ranally>"));
+            "</Geoneric>"));
     }
 
     {
-        xml = parser.parse_string(ranally::String(
+        xml = parser.parse_string(geoneric::String(
             "return c"));
-        BOOST_CHECK_EQUAL(xml, ranally::String(
+        BOOST_CHECK_EQUAL(xml, geoneric::String(
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Return>"
@@ -790,23 +790,23 @@ BOOST_AUTO_TEST_CASE(return_)
                   "</Return>"
                 "</Statement>"
               "</Statements>"
-            "</Ranally>"));
+            "</Geoneric>"));
     }
 }
 
 
 BOOST_AUTO_TEST_CASE(parse_function)
 {
-    ranally::AlgebraParser parser;
-    ranally::String xml;
+    geoneric::AlgebraParser parser;
+    geoneric::String xml;
 
     {
-        xml = parser.parse_string(ranally::String(
+        xml = parser.parse_string(geoneric::String(
             "def foo(a, b):\n"
             "    c = a + b\n"));
-        BOOST_CHECK_EQUAL(xml, ranally::String(
+        BOOST_CHECK_EQUAL(xml, geoneric::String(
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<FunctionDefinition>"
@@ -844,7 +844,7 @@ BOOST_AUTO_TEST_CASE(parse_function)
                   "</FunctionDefinition>"
                 "</Statement>"
               "</Statements>"
-            "</Ranally>"));
+            "</Geoneric>"));
     }
 }
 

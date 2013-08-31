@@ -20,10 +20,10 @@ SET(SOURCES
     subscript_vertex
     while_vertex
 )
-ADD_LIBRARY(ranally_ast_core
+ADD_LIBRARY(geoneric_ast_core
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(ranally_ast_core
-    ranally_operation_core
-    ranally_core
+TARGET_LINK_LIBRARIES(geoneric_ast_core
+    geoneric_operation_core
+    geoneric_core
 )

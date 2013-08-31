@@ -1,9 +1,9 @@
-#include "ranally/io/util.h"
+#include "geoneric/io/util.h"
 #include <memory>
-#include "ranally/io/hdf5_dataset_driver.h"
+#include "geoneric/io/hdf5_dataset_driver.h"
 
 
-namespace ranally {
+namespace geoneric {
 namespace {
 
 //! Opening modes for data sets.
@@ -44,4 +44,4 @@ void import(
     output_dataset->copy(*input_dataset);
 }
 
-} // namespace ranally
+} // namespace geoneric

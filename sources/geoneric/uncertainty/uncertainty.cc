@@ -1,6 +1,6 @@
-#include "ranally/uncertainty/uncertainty.h"
+#include "geoneric/uncertainty/uncertainty.h"
 
 
-namespace ranally {
+namespace geoneric {
 
-} // namespace ranally
+} // namespace geoneric

@@ -1,7 +1,7 @@
-#include "ranally/ast/core/function_definition_vertex.h"
+#include "geoneric/ast/core/function_definition_vertex.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 FunctionDefinitionVertex::FunctionDefinitionVertex(
     String const& name,
@@ -46,4 +46,4 @@ std::shared_ptr<ScopeVertex>& FunctionDefinitionVertex::scope()
     return _scope;
 }
 
-} // namespace ranally
+} // namespace geoneric

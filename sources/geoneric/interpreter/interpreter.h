@@ -1,13 +1,13 @@
 #pragma once
-#include "ranally/script/algebra_parser.h"
-#include "ranally/ast/core/module_vertex.h"
-#include "ranally/ast/visitor/annotate_visitor.h"
-#include "ranally/ast/visitor/validate_visitor.h"
-#include "ranally/ast/xml/xml_parser.h"
-#include "ranally/interpreter/execute_visitor.h"
+#include "geoneric/script/algebra_parser.h"
+#include "geoneric/ast/core/module_vertex.h"
+#include "geoneric/ast/visitor/annotate_visitor.h"
+#include "geoneric/ast/visitor/validate_visitor.h"
+#include "geoneric/ast/xml/xml_parser.h"
+#include "geoneric/interpreter/execute_visitor.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -63,4 +63,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

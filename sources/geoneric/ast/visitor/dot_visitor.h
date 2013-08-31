@@ -1,9 +1,9 @@
 #pragma once
-#include "ranally/core/string.h"
-#include "ranally/ast/visitor/visitor.h"
+#include "geoneric/core/string.h"
+#include "geoneric/ast/visitor/visitor.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 //! Base class for visitors emitting dot graphs.
 /*!
@@ -46,4 +46,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

@@ -1,7 +1,7 @@
 #pragma once
 
 
-namespace ranally {
+namespace geoneric {
 
 //! A Domain positions a Feature's Attribute in the spatio-temporal coordinate space.
 /*!
@@ -43,4 +43,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

@@ -1,8 +1,8 @@
-#include "ranally/ast/visitor/thread_visitor.h"
-#include "ranally/ast/core/vertices.h"
+#include "geoneric/ast/visitor/thread_visitor.h"
+#include "geoneric/ast/core/vertices.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 ThreadVisitor::ThreadVisitor()
 
@@ -428,4 +428,4 @@ void ThreadVisitor::Visit(
     _symbol_table.pop_scope();
 }
 
-} // namespace ranally
+} // namespace geoneric

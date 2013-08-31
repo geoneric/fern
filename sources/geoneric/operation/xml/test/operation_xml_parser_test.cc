@@ -1,21 +1,21 @@
-#define BOOST_TEST_MODULE ranally operation_xml
+#define BOOST_TEST_MODULE geoneric operation_xml
 #include <boost/test/unit_test.hpp>
-#include "ranally/operation/core/parameter.h"
-#include "ranally/operation/core/result.h"
-#include "ranally/operation/xml/operation_xml_parser.h"
+#include "geoneric/operation/core/parameter.h"
+#include "geoneric/operation/core/result.h"
+#include "geoneric/operation/xml/operation_xml_parser.h"
 
 
 BOOST_AUTO_TEST_SUITE(operation_xml_parser)
 
 BOOST_AUTO_TEST_CASE(parse)
 {
-    ranally::OperationXmlParser xml_parser;
-    ranally::String xml;
-    ranally::OperationsPtr operations;
-    std::vector<ranally::Parameter> parameters;
-    std::vector<ranally::Result> results;
-    ranally::DataTypes data_types;
-    ranally::ValueTypes value_types;
+    geoneric::OperationXmlParser xml_parser;
+    geoneric::String xml;
+    geoneric::OperationsPtr operations;
+    std::vector<geoneric::Parameter> parameters;
+    std::vector<geoneric::Result> results;
+    geoneric::DataTypes data_types;
+    geoneric::ValueTypes value_types;
 
     {
         // Empty xml.
@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE(parse)
         BOOST_CHECK_EQUAL(operations->size(), 1u);
         BOOST_REQUIRE(operations->has_operation("print"));
 
-        ranally::OperationPtr const& operation(
+        geoneric::OperationPtr const& operation(
             operations->operation("print"));
         BOOST_CHECK(operation->name() == "print");
         BOOST_CHECK(operation->description() ==
@@ -61,14 +61,14 @@ BOOST_AUTO_TEST_CASE(parse)
 
         parameters = operation->parameters();
         BOOST_CHECK_EQUAL(parameters.size(), 1u);
-        ranally::Parameter parameter = parameters[0];
+        geoneric::Parameter parameter = parameters[0];
         BOOST_CHECK(parameter.name() == "value");
         BOOST_CHECK(parameter.description() == "Value to print.");
         data_types = parameter.data_types();
-        BOOST_CHECK(data_types == ranally::DataTypes::ALL);
+        BOOST_CHECK(data_types == geoneric::DataTypes::ALL);
 
         value_types = parameter.value_types();
-        BOOST_CHECK(value_types == ranally::ValueTypes::ALL);
+        BOOST_CHECK(value_types == geoneric::ValueTypes::ALL);
 
         results = operation->results();
         BOOST_CHECK(results.empty());

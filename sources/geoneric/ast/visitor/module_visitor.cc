@@ -1,8 +1,8 @@
-#include "ranally/ast/visitor/module_visitor.h"
-#include "ranally/ast/core/vertices.h"
+#include "geoneric/ast/visitor/module_visitor.h"
+#include "geoneric/ast/core/vertices.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 ModuleVisitor::ModuleVisitor(
     size_t tab_size)
@@ -286,4 +286,4 @@ void ModuleVisitor::Visit(
     }
 }
 
-} // namespace ranally
+} // namespace geoneric

@@ -1,12 +1,12 @@
 #pragma once
 #include <Python.h>
-#include "ranally/core/string.h"
+#include "geoneric/core/string.h"
 
 
-namespace ranally {
+namespace geoneric {
 namespace python {
 
 String             as_unicode_string   (PyObject* object);
 
 } // namespace python
-} // namespace ranally
+} // namespace geoneric

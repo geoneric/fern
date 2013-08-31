@@ -1,7 +1,7 @@
-#include "ranally/io/point_domain.h"
+#include "geoneric/io/point_domain.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 PointDomain::PointDomain(
     PointsPtr const& points)
@@ -24,4 +24,4 @@ Points const& PointDomain::points() const
     return *_points;
 }
 
-} // namespace ranally
+} // namespace geoneric

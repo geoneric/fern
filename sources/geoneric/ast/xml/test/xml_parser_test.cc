@@ -1,36 +1,36 @@
-#define BOOST_TEST_MODULE ranally ast
+#define BOOST_TEST_MODULE geoneric ast
 #include <boost/test/unit_test.hpp>
-#include "ranally/core/exception.h"
-#include "ranally/core/string.h"
-#include "ranally/script/algebra_parser.h"
-#include "ranally/ast/xml/syntax_tree-pskel.hxx"
-#include "ranally/ast/xml/xml_parser.h"
+#include "geoneric/core/exception.h"
+#include "geoneric/core/string.h"
+#include "geoneric/script/algebra_parser.h"
+#include "geoneric/ast/xml/syntax_tree-pskel.hxx"
+#include "geoneric/ast/xml/xml_parser.h"
 
 
 BOOST_AUTO_TEST_SUITE(xml_parser)
 
 BOOST_AUTO_TEST_CASE(parse_string)
 {
-    ranally::AlgebraParser algebra_parser;
-    ranally::XmlParser xml_parser;
-    ranally::String xml;
-    std::shared_ptr<ranally::AstVertex> tree;
+    geoneric::AlgebraParser algebra_parser;
+    geoneric::XmlParser xml_parser;
+    geoneric::String xml;
+    std::shared_ptr<geoneric::AstVertex> tree;
 
     {
         // Empty xml.
-        xml = algebra_parser.parse_string(ranally::String(""));
+        xml = algebra_parser.parse_string(geoneric::String(""));
         tree = xml_parser.parse_string(xml);
     }
 
     {
         // Name expression.
-        xml = algebra_parser.parse_string(ranally::String("a"));
+        xml = algebra_parser.parse_string(geoneric::String("a"));
         tree = xml_parser.parse_string(xml);
     }
 
     {
         // String expression.
-        xml = algebra_parser.parse_string(ranally::String("\"five\""));
+        xml = algebra_parser.parse_string(geoneric::String("\"five\""));
         tree = xml_parser.parse_string(xml);
     }
 
@@ -38,24 +38,24 @@ BOOST_AUTO_TEST_CASE(parse_string)
         // TODO test all numeric types.
 
         // Numeric expression.
-        xml = algebra_parser.parse_string(ranally::String("5"));
+        xml = algebra_parser.parse_string(geoneric::String("5"));
         tree = xml_parser.parse_string(xml);
 
-        xml = algebra_parser.parse_string(ranally::String("5L"));
+        xml = algebra_parser.parse_string(geoneric::String("5L"));
         tree = xml_parser.parse_string(xml);
 
         // TODO test unsigned types.
 
-        xml = algebra_parser.parse_string(ranally::String("5.5"));
+        xml = algebra_parser.parse_string(geoneric::String("5.5"));
         tree = xml_parser.parse_string(xml);
     }
 
     {
         // Function call.
-        xml = algebra_parser.parse_string(ranally::String("f()"));
+        xml = algebra_parser.parse_string(geoneric::String("f()"));
         tree = xml_parser.parse_string(xml);
 
-        xml = algebra_parser.parse_string(ranally::String(
+        xml = algebra_parser.parse_string(geoneric::String(
             "f(1, \"2\", three, four())"));
         tree = xml_parser.parse_string(xml);
     }
@@ -63,49 +63,49 @@ BOOST_AUTO_TEST_CASE(parse_string)
     {
         // Operator.
         // Unary.
-        xml = algebra_parser.parse_string(ranally::String("-a"));
+        xml = algebra_parser.parse_string(geoneric::String("-a"));
         tree = xml_parser.parse_string(xml);
 
         // Binary.
-        xml = algebra_parser.parse_string(ranally::String("a + b"));
+        xml = algebra_parser.parse_string(geoneric::String("a + b"));
         tree = xml_parser.parse_string(xml);
 
         // Boolean.
-        xml = algebra_parser.parse_string(ranally::String("a and b"));
+        xml = algebra_parser.parse_string(geoneric::String("a and b"));
         tree = xml_parser.parse_string(xml);
 
         // Comparison.
-        xml = algebra_parser.parse_string(ranally::String("a == b"));
+        xml = algebra_parser.parse_string(geoneric::String("a == b"));
         tree = xml_parser.parse_string(xml);
     }
 
     {
         // Assignment statement.
-        xml = algebra_parser.parse_string(ranally::String("a = b"));
+        xml = algebra_parser.parse_string(geoneric::String("a = b"));
         tree = xml_parser.parse_string(xml);
     }
 
     {
         // Multiple statements.
-        xml = algebra_parser.parse_string(ranally::String("a\nb"));
+        xml = algebra_parser.parse_string(geoneric::String("a\nb"));
         tree = xml_parser.parse_string(xml);
     }
 
     {
         // If statement.
-        xml = algebra_parser.parse_string(ranally::String(
+        xml = algebra_parser.parse_string(geoneric::String(
             "if a:\n"
             "    b"));
         tree = xml_parser.parse_string(xml);
 
-        xml = algebra_parser.parse_string(ranally::String(
+        xml = algebra_parser.parse_string(geoneric::String(
             "if a:\n"
             "    b\n"
             "else:\n"
             "    c"));
         tree = xml_parser.parse_string(xml);
 
-        xml = algebra_parser.parse_string(ranally::String(
+        xml = algebra_parser.parse_string(geoneric::String(
             "if a:\n"
             "    b\n"
             "elif c:\n"
@@ -115,12 +115,12 @@ BOOST_AUTO_TEST_CASE(parse_string)
 
     {
         // While statement.
-        xml = algebra_parser.parse_string(ranally::String(
+        xml = algebra_parser.parse_string(geoneric::String(
             "while a:\n"
             "    b"));
         tree = xml_parser.parse_string(xml);
 
-        xml = algebra_parser.parse_string(ranally::String(
+        xml = algebra_parser.parse_string(geoneric::String(
             "while a:\n"
             "    b\n"
             "else:\n"
@@ -130,35 +130,35 @@ BOOST_AUTO_TEST_CASE(parse_string)
 
     {
         // Random string.
-        BOOST_CHECK_THROW(xml_parser.parse_string(ranally::String("blabla")),
-            ranally::detail::ParseError);
+        BOOST_CHECK_THROW(xml_parser.parse_string(geoneric::String("blabla")),
+            geoneric::detail::ParseError);
 
         // Attribute value missing.
         xml =
             "<?xml version=\"1.0\"?>"
-            "<Ranally>"
+            "<Geoneric>"
               "<Expression col=\"0\">"
                 "<Name>a</Name>"
               "</Expression>"
-            "</Ranally>";
+            "</Geoneric>";
         BOOST_CHECK_THROW(xml_parser.parse_string(xml),
-            ranally::detail::ParseError);
+            geoneric::detail::ParseError);
 
         // Attribute value out of range.
         xml =
             "<?xml version=\"1.0\"?>"
-            "<Ranally>"
+            "<Geoneric>"
               "<Expression line=\"-1\" col=\"0\">"
                 "<Name>a</Name>"
               "</Expression>"
-            "</Ranally>";
+            "</Geoneric>";
         BOOST_CHECK_THROW(xml_parser.parse_string(xml),
-            ranally::detail::ParseError);
+            geoneric::detail::ParseError);
     }
 
     {
         // Slice expression.
-        xml = algebra_parser.parse_string(ranally::String("a[b]"));
+        xml = algebra_parser.parse_string(geoneric::String("a[b]"));
         tree = xml_parser.parse_string(xml);
     }
 
@@ -166,18 +166,18 @@ BOOST_AUTO_TEST_CASE(parse_string)
         // Return statement.
         xml =
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Return/>"
                 "</Statement>"
               "</Statements>"
-            "</Ranally>";
+            "</Geoneric>";
         tree = xml_parser.parse_string(xml);
 
         xml =
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Return>"
@@ -187,7 +187,7 @@ BOOST_AUTO_TEST_CASE(parse_string)
                   "</Return>"
                 "</Statement>"
               "</Statements>"
-            "</Ranally>";
+            "</Geoneric>";
         tree = xml_parser.parse_string(xml);
     }
 
@@ -195,7 +195,7 @@ BOOST_AUTO_TEST_CASE(parse_string)
         // Function definition.
         xml =
             "<?xml version=\"1.0\"?>"
-            "<Ranally source=\"&lt;string&gt;\">"
+            "<Geoneric source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<FunctionDefinition>"
@@ -233,7 +233,7 @@ BOOST_AUTO_TEST_CASE(parse_string)
                   "</FunctionDefinition>"
                 "</Statement>"
               "</Statements>"
-            "</Ranally>";
+            "</Geoneric>";
         tree = xml_parser.parse_string(xml);
     }
 }

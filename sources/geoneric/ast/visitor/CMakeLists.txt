@@ -13,9 +13,9 @@ SET(SOURCES
     validate_visitor
     visitor
 )
-ADD_LIBRARY(ranally_ast_visitor
+ADD_LIBRARY(geoneric_ast_visitor
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(ranally_ast_visitor
-    ranally_ast_core
+TARGET_LINK_LIBRARIES(geoneric_ast_visitor
+    geoneric_ast_core
 )

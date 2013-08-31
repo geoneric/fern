@@ -1,12 +1,12 @@
 #pragma once
 #include <memory>
 #include <stack>
-#include "ranally/core/symbol_table.h"
-#include "ranally/ast/visitor/visitor.h"
-#include "ranally/operation/core/operations.h"
+#include "geoneric/core/symbol_table.h"
+#include "geoneric/ast/visitor/visitor.h"
+#include "geoneric/operation/core/operations.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 //! Visitor that executes an abstract syntax tree.
 /*!
@@ -104,4 +104,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

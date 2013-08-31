@@ -1,13 +1,13 @@
 #pragma once
 #include <memory>
-#include "ranally/io/dataset.h"
+#include "geoneric/io/dataset.h"
 
 
 namespace H5 {
     class H5File;
 } // namespace H5
 
-namespace ranally {
+namespace geoneric {
 
 //! Class for HDF5 data sets.
 /*!
@@ -53,4 +53,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

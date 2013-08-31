@@ -13,7 +13,7 @@ build_type=$3
 cmake="cmake"
 
 # devenv_sources="$DEVENV"
-ranally_sources="$RANALLY"
+geoneric_sources="$GEONERIC"
 
 external_prefix="$PCRTEAM_EXTERN"
 
@@ -95,13 +95,13 @@ function install_project() {
 
 function build_projects() {
     # build_project devenv ""
-    build_project ranally ""
+    build_project geoneric ""
 }
 
 
 function install_projects() {
     rm -fr $install_prefix
-    install_project ranally
+    install_project geoneric
 }
 
 
@@ -109,4 +109,4 @@ build_projects
 install_projects
 mkdir $install_prefix/lib
 fixup.py $install_prefix $external_prefix
-verify_ranally_installation.py $install_prefix
+verify_geoneric_installation.py $install_prefix

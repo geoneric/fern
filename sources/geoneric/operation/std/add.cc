@@ -1,9 +1,9 @@
-#include "ranally/operation/std/add.h"
-#include "ranally/feature/scalar_attribute.h"
-#include "ranally/operation/core/attribute_argument.h"
+#include "geoneric/operation/std/add.h"
+#include "geoneric/feature/scalar_attribute.h"
+#include "geoneric/operation/core/attribute_argument.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 Add::Add()
 
@@ -63,4 +63,4 @@ std::vector<std::shared_ptr<Argument>> Add::execute(
     // });
 }
 
-} // namespace ranally
+} // namespace geoneric

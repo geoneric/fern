@@ -1,10 +1,10 @@
-#include "ranally/io/attribute.h"
-#include "ranally/io/domain.h"
-#include "ranally/io/feature.h"
-#include "ranally/io/value.h"
+#include "geoneric/io/attribute.h"
+#include "geoneric/io/domain.h"
+#include "geoneric/io/feature.h"
+#include "geoneric/io/value.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 Attribute::Attribute(
     String const& name)
@@ -25,4 +25,4 @@ String const& Attribute::name() const
     return _name;
 }
 
-} // namespace ranally
+} // namespace geoneric

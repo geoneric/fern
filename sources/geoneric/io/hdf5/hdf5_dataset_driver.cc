@@ -1,12 +1,12 @@
-#include "ranally/io/hdf5_dataset_driver.h"
+#include "geoneric/io/hdf5_dataset_driver.h"
 #include <cassert>
 #include <boost/filesystem.hpp>
 #include <cpp/H5Cpp.h>
-#include "ranally/core/string.h"
-#include "ranally/io/hdf5_dataset.h"
+#include "geoneric/core/string.h"
+#include "geoneric/io/hdf5_dataset.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 HDF5DatasetDriver::HDF5DatasetDriver()
 
@@ -98,4 +98,4 @@ HDF5Dataset* HDF5DatasetDriver::open(
     return result;
 }
 
-} // namespace ranally
+} // namespace geoneric

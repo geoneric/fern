@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE ranally io
+#define BOOST_TEST_MODULE geoneric io
 #include <boost/test/unit_test.hpp>
 
 

@@ -1,8 +1,8 @@
 #pragma once
-#include "ranally/operation/core/value_types.h"
+#include "geoneric/operation/core/value_types.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 template<
     class T>
@@ -112,4 +112,4 @@ struct TypeTraits<String>
     static ValueTypes const value_types;
 };
 
-} // namespace ranally
+} // namespace geoneric

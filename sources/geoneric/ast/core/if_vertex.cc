@@ -1,7 +1,7 @@
-#include "ranally/ast/core/if_vertex.h"
+#include "geoneric/ast/core/if_vertex.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 IfVertex::IfVertex(
     std::shared_ptr<ExpressionVertex> const& condition,
@@ -61,4 +61,4 @@ std::shared_ptr<SentinelVertex>& IfVertex::sentinel()
     return _sentinel;
 }
 
-} // namespace ranally
+} // namespace geoneric

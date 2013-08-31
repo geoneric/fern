@@ -2,7 +2,7 @@
 #include <cstring>
 
 
-namespace ranally {
+namespace geoneric {
 namespace python {
 
 //! Utility class for clients that use the Python library.
@@ -47,4 +47,4 @@ private:
 };
 
 } // namespace python
-} // namespace ranally
+} // namespace geoneric

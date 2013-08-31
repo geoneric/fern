@@ -1,23 +1,23 @@
-#define BOOST_TEST_MODULE ranally interpreter
+#define BOOST_TEST_MODULE geoneric interpreter
 #include <boost/test/unit_test.hpp>
-#include "ranally/core/io_error.h"
-#include "ranally/core/parse_error.h"
-#include "ranally/core/validate_error.h"
-#include "ranally/operation/core/attribute_argument.h"
-#include "ranally/feature/scalar_attribute.h"
-#include "ranally/interpreter/execute_visitor.h"
-#include "ranally/interpreter/interpreter.h"
+#include "geoneric/core/io_error.h"
+#include "geoneric/core/parse_error.h"
+#include "geoneric/core/validate_error.h"
+#include "geoneric/operation/core/attribute_argument.h"
+#include "geoneric/feature/scalar_attribute.h"
+#include "geoneric/interpreter/execute_visitor.h"
+#include "geoneric/interpreter/interpreter.h"
 
 
 BOOST_AUTO_TEST_SUITE(interpreter)
 
 BOOST_AUTO_TEST_CASE(parse_string)
 {
-    ranally::Interpreter interpreter;
-    ranally::ModuleVertexPtr vertex;
+    geoneric::Interpreter interpreter;
+    geoneric::ModuleVertexPtr vertex;
 
     // String with valid statements, should succeed.
-    std::vector<ranally::String> valid_statements = {
+    std::vector<geoneric::String> valid_statements = {
         "a = b + c",
         "a",
         "b + c",
@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE(parse_string)
         "# comment"
     };
 
-    for(ranally::String const& statement: valid_statements) {
+    for(geoneric::String const& statement: valid_statements) {
         vertex = interpreter.parse_string(statement);
         BOOST_CHECK(vertex);
     }
@@ -35,8 +35,8 @@ BOOST_AUTO_TEST_CASE(parse_string)
         interpreter.parse_string("a = b c");
         BOOST_CHECK(false);
     }
-    catch(ranally::ParseError const& exception) {
-        ranally::String message = exception.message();
+    catch(geoneric::ParseError const& exception) {
+        geoneric::String message = exception.message();
         BOOST_CHECK_EQUAL(message,
             "Error parsing <string>:1:7:a = b c: invalid syntax");
     }
@@ -45,16 +45,16 @@ BOOST_AUTO_TEST_CASE(parse_string)
 
 BOOST_AUTO_TEST_CASE(parse_file)
 {
-    ranally::Interpreter interpreter;
-    ranally::ModuleVertexPtr vertex;
+    geoneric::Interpreter interpreter;
+    geoneric::ModuleVertexPtr vertex;
 
     // File with valid statement, should succeed.
-    std::vector<ranally::String> valid_files = {
+    std::vector<geoneric::String> valid_files = {
         "valid-1.ran",
         "valid-2.ran"
     };
 
-    for(ranally::String const& filename: valid_files) {
+    for(geoneric::String const& filename: valid_files) {
         vertex = interpreter.parse_file(filename);
         BOOST_CHECK(vertex);
     }
@@ -64,8 +64,8 @@ BOOST_AUTO_TEST_CASE(parse_file)
         interpreter.parse_file("invalid-1.ran");
         BOOST_CHECK(false);
     }
-    catch(ranally::ParseError const& exception) {
-        ranally::String message = exception.message();
+    catch(geoneric::ParseError const& exception) {
+        geoneric::String message = exception.message();
         BOOST_CHECK_EQUAL(message,
             "Error parsing invalid-1.ran:1:7:a = b c: invalid syntax");
     }
@@ -75,8 +75,8 @@ BOOST_AUTO_TEST_CASE(parse_file)
         interpreter.parse_file("valid-1_unreadable.ran");
         BOOST_CHECK(false);
     }
-    catch(ranally::IOError const& exception) {
-        ranally::String message = exception.message();
+    catch(geoneric::IOError const& exception) {
+        geoneric::String message = exception.message();
         BOOST_CHECK_EQUAL(message,
             "IO error handling valid-1_unreadable.ran: Permission denied");
     }
@@ -85,8 +85,8 @@ BOOST_AUTO_TEST_CASE(parse_file)
 
 BOOST_AUTO_TEST_CASE(validate)
 {
-    ranally::Interpreter interpreter;
-    ranally::ModuleVertexPtr vertex;
+    geoneric::Interpreter interpreter;
+    geoneric::ModuleVertexPtr vertex;
 
     vertex = interpreter.parse_file("valid-1.ran");
     BOOST_CHECK(vertex);
@@ -95,8 +95,8 @@ BOOST_AUTO_TEST_CASE(validate)
         interpreter.validate(vertex);
         BOOST_CHECK(false);
     }
-    catch(ranally::ValidateError const& exception) {
-        ranally::String message = exception.message();
+    catch(geoneric::ValidateError const& exception) {
+        geoneric::String message = exception.message();
         BOOST_CHECK_EQUAL(message,
             "valid-1.ran:3:4: Undefined identifier: b");
     }
@@ -108,8 +108,8 @@ BOOST_AUTO_TEST_CASE(validate)
         interpreter.validate(vertex);
         BOOST_CHECK(false);
     }
-    catch(ranally::ValidateError const& exception) {
-        ranally::String message = exception.message();
+    catch(geoneric::ValidateError const& exception) {
+        geoneric::String message = exception.message();
         BOOST_CHECK_EQUAL(message,
             "valid-2.ran:4:4: Undefined operation: does_not_exist");
     }
@@ -122,8 +122,8 @@ BOOST_AUTO_TEST_CASE(validate)
         interpreter.validate(vertex);
         BOOST_CHECK(false);
     }
-    catch(ranally::ValidateError const& exception) {
-        ranally::String message = exception.message();
+    catch(geoneric::ValidateError const& exception) {
+        geoneric::String message = exception.message();
         BOOST_CHECK_EQUAL(message,
             "<string>:1:4: Undefined operation: blah");
     }
@@ -154,8 +154,8 @@ foo(5)
             interpreter.validate(vertex);
             BOOST_CHECK(false);
         }
-        catch(ranally::ValidateError const& exception) {
-            ranally::String message = exception.message();
+        catch(geoneric::ValidateError const& exception) {
+            geoneric::String message = exception.message();
             // TODO Update message in test.
             BOOST_CHECK_EQUAL(message,
                 "<string>:1:4: Undefined operation: blah");
@@ -166,33 +166,33 @@ foo(5)
 
 BOOST_AUTO_TEST_CASE(execute)
 {
-    ranally::Interpreter interpreter;
-    ranally::ModuleVertexPtr tree;
+    geoneric::Interpreter interpreter;
+    geoneric::ModuleVertexPtr tree;
 
     struct TestAbsResult {
-        void operator()(ranally::Interpreter& interpreter) {
-            std::stack<std::shared_ptr<ranally::Argument>> stack(
+        void operator()(geoneric::Interpreter& interpreter) {
+            std::stack<std::shared_ptr<geoneric::Argument>> stack(
                 interpreter.stack());
             BOOST_CHECK_EQUAL(stack.size(), 1u);
 
-            std::shared_ptr<ranally::Argument> const& argument(stack.top());
+            std::shared_ptr<geoneric::Argument> const& argument(stack.top());
             BOOST_REQUIRE_EQUAL(argument->argument_type(),
-                ranally::ArgumentType::AT_ATTRIBUTE);
+                geoneric::ArgumentType::AT_ATTRIBUTE);
 
-            std::shared_ptr<ranally::AttributeArgument> const&
+            std::shared_ptr<geoneric::AttributeArgument> const&
                 attribute_argument(
-                    std::dynamic_pointer_cast<ranally::AttributeArgument>(
+                    std::dynamic_pointer_cast<geoneric::AttributeArgument>(
                         argument));
             BOOST_REQUIRE(attribute_argument);
 
-            std::shared_ptr<ranally::Attribute> const& attribute(
+            std::shared_ptr<geoneric::Attribute> const& attribute(
                 attribute_argument->attribute());
 
-            BOOST_REQUIRE_EQUAL(attribute->data_type(), ranally::DT_SCALAR);
-            BOOST_REQUIRE_EQUAL(attribute->value_type(), ranally::VT_INT64);
+            BOOST_REQUIRE_EQUAL(attribute->data_type(), geoneric::DT_SCALAR);
+            BOOST_REQUIRE_EQUAL(attribute->value_type(), geoneric::VT_INT64);
 
-            std::shared_ptr<ranally::ScalarAttribute<int64_t>> scalar_attribute(
-                std::dynamic_pointer_cast<ranally::ScalarAttribute<int64_t>>(
+            std::shared_ptr<geoneric::ScalarAttribute<int64_t>> scalar_attribute(
+                std::dynamic_pointer_cast<geoneric::ScalarAttribute<int64_t>>(
                     attribute));
             BOOST_REQUIRE(scalar_attribute);
 
@@ -223,9 +223,9 @@ BOOST_AUTO_TEST_CASE(execute)
 
 
 
-    // ranally::SymbolTable<boost::any> const& symbol_table(
+    // geoneric::SymbolTable<boost::any> const& symbol_table(
     //     execute_visitor.symbol_table());
-    // ranally::Stack const& stack(execute_visitor.stack());
+    // geoneric::Stack const& stack(execute_visitor.stack());
 
     // BOOST_CHECK_EQUAL(symbol_table.size(), 1u);
     // BOOST_CHECK(symbol_table.has_value("a"));
@@ -241,12 +241,12 @@ BOOST_AUTO_TEST_CASE(execute)
     // interpreter.validate(tree);
     // interpreter.execute(tree);
 
-    // ranally::ExecuteVisitor execute_visitor;
+    // geoneric::ExecuteVisitor execute_visitor;
     // tree->Accept(execute_visitor);
 
-    // ranally::SymbolTable<boost::any> const& symbol_table(
+    // geoneric::SymbolTable<boost::any> const& symbol_table(
     //     execute_visitor.symbol_table());
-    // ranally::Stack const& stack(execute_visitor.stack());
+    // geoneric::Stack const& stack(execute_visitor.stack());
 
     // BOOST_CHECK_EQUAL(symbol_table.size(), 1u);
     // BOOST_CHECK(symbol_table.has_value("a"));

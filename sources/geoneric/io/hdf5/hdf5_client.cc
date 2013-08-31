@@ -1,8 +1,8 @@
-#include "ranally/io/hdf5_client.h"
+#include "geoneric/io/hdf5_client.h"
 #include <cpp/H5Cpp.h>
 
 
-namespace ranally {
+namespace geoneric {
 
 HDF5Client::HDF5Client()
 {
@@ -17,4 +17,4 @@ HDF5Client::~HDF5Client()
     // H5close();
 }
 
-} // namespace ranally
+} // namespace geoneric

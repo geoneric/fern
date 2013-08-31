@@ -1,7 +1,7 @@
-#include "ranally/feature/scalar_domain.h"
+#include "geoneric/feature/scalar_domain.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 // ScalarDomain::ScalarDomain()
 // {
@@ -12,4 +12,4 @@ ScalarDomain::~ScalarDomain()
 {
 }
 
-} // namespace ranally
+} // namespace geoneric

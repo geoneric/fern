@@ -1,10 +1,10 @@
-#include "ranally/io/ogr_dataset_driver.h"
+#include "geoneric/io/ogr_dataset_driver.h"
 #include <cassert>
 #include "ogrsf_frmts.h"
-#include "ranally/core/string.h"
+#include "geoneric/core/string.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 OGRDatasetDriver::OGRDatasetDriver(
     String const& name)
@@ -77,7 +77,7 @@ OGRDataset* OGRDatasetDriver::open(
     String const& name) const
 {
     // OGRDataSource* data_source = OGRSFDriverRegistrar::Open(
-    //   ranally::util::encode_in_utf8(name).c_str(), FALSE);
+    //   geoneric::util::encode_in_utf8(name).c_str(), FALSE);
     OGRDataSource* data_source = _driver->Open(
         name.encode_in_utf8().c_str(), FALSE);
 
@@ -89,4 +89,4 @@ OGRDataset* OGRDatasetDriver::open(
     return new OGRDataset(name, data_source);
 }
 
-} // namespace ranally
+} // namespace geoneric

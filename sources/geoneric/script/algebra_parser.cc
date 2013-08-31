@@ -1,10 +1,10 @@
 #include <Python.h> // This one first, to get rid of preprocessor warnings.
-#include "ranally/script/algebra_parser.h"
+#include "geoneric/script/algebra_parser.h"
 #include <cassert>
 #include <iostream>
 #include "Python-ast.h"
-#include "ranally/core/exception.h"
-#include "ranally/python/exception.h"
+#include "geoneric/core/exception.h"
+#include "geoneric/python/exception.h"
 
 
 //  PyObject* type = PyObject_Type(id);
@@ -16,31 +16,31 @@ namespace {
 
 void               write_expression_node(
                                         expr_ty const& expression,
-                                        ranally::String& xml);
+                                        geoneric::String& xml);
 void               write_expression_nodes(
                                         asdl_seq const* expressions,
-                                        ranally::String& xml);
+                                        geoneric::String& xml);
 void               write_statement_nodes(
                                         asdl_seq const* statements,
-                                        ranally::String& xml);
+                                        geoneric::String& xml);
 
 
 void throw_unsupported_language_construct(
     long line_nr,
     long col_nr,
-    ranally::String const& kind)
+    geoneric::String const& kind)
 {
-    BOOST_THROW_EXCEPTION(ranally::detail::UnsupportedLanguageConstruct()
-        << ranally::detail::ExceptionConstruct(kind)
-        << ranally::detail::ExceptionLineNr(line_nr)
-        << ranally::detail::ExceptionColNr(col_nr)
+    BOOST_THROW_EXCEPTION(geoneric::detail::UnsupportedLanguageConstruct()
+        << geoneric::detail::ExceptionConstruct(kind)
+        << geoneric::detail::ExceptionLineNr(line_nr)
+        << geoneric::detail::ExceptionColNr(col_nr)
     );
 }
 
 
 void write_identifier_node(
     identifier const identifier,
-    ranally::String& xml)
+    geoneric::String& xml)
 {
     assert(PyString_Check(identifier));
 
@@ -58,7 +58,7 @@ void write_identifier_node(
 void write_name_node(
     identifier const identifier,
     expr_context_ty const& /* context */,
-    ranally::String& xml)
+    geoneric::String& xml)
 {
     write_identifier_node(identifier, xml);
 }
@@ -66,7 +66,7 @@ void write_name_node(
 
 void write_number_node(
     object const& number,
-    ranally::String& xml)
+    geoneric::String& xml)
 {
     // TODO Handle all numeric types.
     // TODO Use types with a known size: int32, int64, float32, float64, etc.
@@ -123,7 +123,7 @@ void write_number_node(
 
 void write_string_node(
     string const string,
-    ranally::String& xml)
+    geoneric::String& xml)
 {
     // TODO Verify the string is encoded as UTF8.
     // TODO Only support Unicode strings? Convert on the fly when it's not?
@@ -142,7 +142,7 @@ void write_string_node(
 
 void write_expressions_node(
     asdl_seq const* expressions,
-    ranally::String& xml)
+    geoneric::String& xml)
 {
     if(expressions == 0) {
         xml += "<Expressions/>";
@@ -168,7 +168,7 @@ void write_call_node(
     asdl_seq const* keywords,
     expr_ty const starargs,
     expr_ty const kwargs,
-    ranally::String& xml)
+    geoneric::String& xml)
 {
     assert(keywords == 0 || keywords->size == 0); // TODO Support keywords.
     assert(starargs == 0); // TODO
@@ -185,7 +185,7 @@ void write_call_node(
 void write_unary_operator_node(
     unaryop_ty const unaryOperator,
     expr_ty const operand,
-    ranally::String& xml)
+    geoneric::String& xml)
 {
     xml += "<Operator><Name>";
 
@@ -222,7 +222,7 @@ void write_binary_operator_node(
     expr_ty const left_operand,
     operator_ty const binary_operator,
     expr_ty const right_operand,
-    ranally::String& xml)
+    geoneric::String& xml)
 {
     xml += "<Operator><Name>";
 
@@ -291,7 +291,7 @@ void write_binary_operator_node(
 void write_boolean_operator_node(
     boolop_ty const boolean_operator,
     asdl_seq const* operands,
-    ranally::String& xml)
+    geoneric::String& xml)
 {
     xml += "<Operator><Name>";
 
@@ -318,7 +318,7 @@ void write_comparison_operator_node(
     expr_ty const left_operand,
     asdl_int_seq const* operators,
     asdl_seq const* comparators,
-    ranally::String& xml)
+    geoneric::String& xml)
 {
     // http://docs.python.org/reference/expressions.html#notin
     // x < y <= z is equivalent to x < y and y <= z
@@ -371,7 +371,7 @@ void write_comparison_operator_node(
 
 void write_slice_node(
     slice_ty const slice,
-    ranally::String& xml)
+    geoneric::String& xml)
 {
     // TODO Raise exception.
     assert(slice->kind == Index_kind);
@@ -398,7 +398,7 @@ void write_subscript_node(
     expr_ty const expression,
     slice_ty const slice,
     expr_context_ty const /* context */,
-    ranally::String& xml)
+    geoneric::String& xml)
 {
     // expression is the expression being subscripted.
     xml += "<Subscript>";
@@ -410,7 +410,7 @@ void write_subscript_node(
 
 void write_expression_node(
     expr_ty const& expression,
-    ranally::String& xml)
+    geoneric::String& xml)
 {
     assert(expression);
 
@@ -541,7 +541,7 @@ void write_expression_node(
 void write_assignment_node(
     asdl_seq const* targets,
     expr_ty const& value,
-    ranally::String& xml)
+    geoneric::String& xml)
 {
     // Copy the value expression to one or more targets.
     // When there is more than one target, value should be an iterable.
@@ -563,7 +563,7 @@ void write_if_node(
     expr_ty const test,
     asdl_seq const* body,
     asdl_seq const* orelse,
-    ranally::String& xml)
+    geoneric::String& xml)
 {
     xml += "<If>";
     write_expression_node(test, xml);
@@ -577,7 +577,7 @@ void write_while_node(
     expr_ty const test,
     asdl_seq const* body,
     asdl_seq const* orelse,
-    ranally::String& xml)
+    geoneric::String& xml)
 {
     xml += "<While>";
     write_expression_node(test, xml);
@@ -589,7 +589,7 @@ void write_while_node(
 
 void write_arguments_node(
     arguments_ty const arguments,
-    ranally::String& xml)
+    geoneric::String& xml)
 {
     // TODO Throw exception in case vararg, kwarg, or defaults are set.
     write_expression_nodes(arguments->args, xml);
@@ -601,7 +601,7 @@ void write_function_definition_node(
     arguments_ty const arguments,
     asdl_seq const* body,
     asdl_seq const* /* decorator_list */,
-    ranally::String& xml)
+    geoneric::String& xml)
 {
     // TODO Exception when decorator_list is not empty.
     xml += "<FunctionDefinition>";
@@ -614,7 +614,7 @@ void write_function_definition_node(
 
 void write_return_node(
     expr_ty const value,
-    ranally::String& xml)
+    geoneric::String& xml)
 {
     if(!value) {
         xml += "<Return/>";
@@ -630,7 +630,7 @@ void write_return_node(
 // void writePrintFunctionNode(
 //     expr_ty const dest,
 //     asdl_seq const* values,
-//     ranally::String& xml)
+//     geoneric::String& xml)
 // {
 //     // assert(!values || values->size == 0); // built-in print specific.
 //     // assert(values->size == 1);
@@ -651,7 +651,7 @@ void write_return_node(
 
 void write_expression_nodes(
     asdl_seq const* expressions,
-    ranally::String& xml)
+    geoneric::String& xml)
 {
     if(!expressions || asdl_seq_LEN(expressions) == 0) {
         xml += "<Expressions/>";
@@ -675,7 +675,7 @@ void write_expression_nodes(
 
 void write_statement_nodes(
     asdl_seq const* statements,
-    ranally::String& xml)
+    geoneric::String& xml)
 {
     if(!statements || asdl_seq_LEN(statements) == 0) {
         xml += "<Statements/>";
@@ -837,10 +837,10 @@ void write_statement_nodes(
 
 
 // <string> -> "&lt;string&gt;"
-ranally::String escape(
-    ranally::String const& string)
+geoneric::String escape(
+    geoneric::String const& string)
 {
-    return ranally::String(string)
+    return geoneric::String(string)
         .replace("&" , "&amp;")  // This one first!
         .replace("<" , "&lt;")
         .replace(">" , "&gt;")
@@ -850,21 +850,21 @@ ranally::String escape(
 }
 
 
-ranally::String python_ast_to_xml(
+geoneric::String python_ast_to_xml(
     mod_ty const ast,
-    ranally::String const& source_name)
+    geoneric::String const& source_name)
 {
     assert(ast);
 
-    ranally::String xml;
+    geoneric::String xml;
 
     try {
         switch(ast->kind) {
             case Module_kind: {
-                xml += (boost::format("<Ranally source=\"%1%\">")
+                xml += (boost::format("<Geoneric source=\"%1%\">")
                     % escape(source_name).encode_in_utf8()).str().c_str();
                 write_statement_nodes(ast->v.Module.body, xml);
-                xml += "</Ranally>";
+                xml += "</Geoneric>";
                 break;
             }
             case Expression_kind: // {
@@ -880,9 +880,9 @@ ranally::String python_ast_to_xml(
             }
         }
     }
-    catch(ranally::detail::Exception& exception) {
+    catch(geoneric::detail::Exception& exception) {
         exception
-            << ranally::detail::ExceptionSourceName(source_name)
+            << geoneric::detail::ExceptionSourceName(source_name)
             ;
         throw;
     }
@@ -934,7 +934,7 @@ private:
 } // Anonymous namespace
 
 
-namespace ranally {
+namespace geoneric {
 
 //! Construct an AlgebraParser instance.
 /*!
@@ -1004,4 +1004,4 @@ String AlgebraParser::parse_file(
     return String("<?xml version=\"1.0\"?>") + python_ast_to_xml(ast, filename);
 }
 
-} // namespace ranally
+} // namespace geoneric

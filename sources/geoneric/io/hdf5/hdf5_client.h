@@ -1,7 +1,7 @@
 #pragma once
 
 
-namespace ranally {
+namespace geoneric {
 
 //! Class that encapsulates the configuration of the HDF5 library for the HDF5 client.
 /*!
@@ -33,4 +33,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

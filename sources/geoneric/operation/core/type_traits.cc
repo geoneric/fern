@@ -1,7 +1,7 @@
-#include "ranally/operation/core/type_traits.h"
+#include "geoneric/operation/core/type_traits.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 ValueType const TypeTraits<int8_t>::value_type(VT_INT8);
 ValueTypes const TypeTraits<int8_t>::value_types(ValueTypes::INT8);

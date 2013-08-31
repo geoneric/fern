@@ -1,7 +1,7 @@
-#include "ranally/ast/core/statement_vertex.h"
+#include "geoneric/ast/core/statement_vertex.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 StatementVertex::StatementVertex(
     int line_nr,
@@ -12,4 +12,4 @@ StatementVertex::StatementVertex(
 {
 }
 
-} // namespace ranally
+} // namespace geoneric

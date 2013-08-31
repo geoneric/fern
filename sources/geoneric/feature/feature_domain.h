@@ -1,10 +1,10 @@
 #pragma once
 #include <memory>
-#include "ranally/feature/domain.h"
-#include "ranally/feature/fid_map.h"
+#include "geoneric/feature/domain.h"
+#include "geoneric/feature/fid_map.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -55,4 +55,4 @@ inline FeatureDomain<Geometry>::~FeatureDomain()
 {
 }
 
-} // namespace ranally
+} // namespace geoneric

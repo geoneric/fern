@@ -1,7 +1,7 @@
-#include "ranally/ast/core/return_vertex.h"
+#include "geoneric/ast/core/return_vertex.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 ReturnVertex::ReturnVertex()
 
@@ -31,4 +31,4 @@ ExpressionVertexPtr const& ReturnVertex::expression() const
     return _expression;
 }
 
-} // namespace ranally
+} // namespace geoneric

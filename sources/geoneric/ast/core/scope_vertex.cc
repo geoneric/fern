@@ -1,7 +1,7 @@
-#include "ranally/ast/core/scope_vertex.h"
+#include "geoneric/ast/core/scope_vertex.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 ScopeVertex::ScopeVertex(
     StatementVertices const& statements)
@@ -37,4 +37,4 @@ std::shared_ptr<SentinelVertex>& ScopeVertex::sentinel()
     return _sentinel;
 }
 
-} // namespace ranally
+} // namespace geoneric

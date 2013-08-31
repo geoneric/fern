@@ -1,13 +1,13 @@
-#define BOOST_TEST_MODULE ranally core
+#define BOOST_TEST_MODULE geoneric core
 #include <boost/test/unit_test.hpp>
-#include "ranally/core/stack.h"
+#include "geoneric/core/stack.h"
 
 
 BOOST_AUTO_TEST_SUITE(stack)
 
 BOOST_AUTO_TEST_CASE(stack_1)
 {
-    ranally::Stack stack;
+    geoneric::Stack stack;
 
     BOOST_CHECK_EQUAL(stack.size(), 0u);
     BOOST_CHECK(stack.empty());
@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE(stack_1)
 BOOST_AUTO_TEST_CASE(stack_2)
 {
     {
-        ranally::Stack stack;
+        geoneric::Stack stack;
         stack.push(std::string("5"));
         boost::any value = stack.top();
         BOOST_CHECK_EQUAL(boost::any_cast<std::string>(value),
@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE(stack_2)
         // Push a shared pointer on the stack. The use count should be
         // increased by one. When copying the value from the stack, the
         // use count should again be increased by one.
-        ranally::Stack stack;
+        geoneric::Stack stack;
 
         // One shared pointer.
         std::shared_ptr<std::string> value1(new std::string("5"));

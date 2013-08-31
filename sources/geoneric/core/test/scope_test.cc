@@ -1,7 +1,7 @@
-#define BOOST_TEST_MODULE ranally core
+#define BOOST_TEST_MODULE geoneric core
 #include <boost/any.hpp>
 #include <boost/test/unit_test.hpp>
-#include "ranally/core/scope.h"
+#include "geoneric/core/scope.h"
 
 
 BOOST_AUTO_TEST_SUITE(scope)
@@ -10,7 +10,7 @@ BOOST_AUTO_TEST_SUITE(scope)
 BOOST_AUTO_TEST_CASE(general)
 {
     {
-        ranally::Scope<int> scope;
+        geoneric::Scope<int> scope;
         BOOST_CHECK(!scope.has_value("a"));
 
         scope.set_value("a", 5);
@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE(general)
     }
 
     {
-        ranally::Scope<boost::any> scope;
+        geoneric::Scope<boost::any> scope;
         BOOST_CHECK(!scope.has_value("a"));
 
         scope.set_value("a", boost::any(5));

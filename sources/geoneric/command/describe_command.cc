@@ -1,13 +1,13 @@
-#include "ranally/command/describe_command.h"
+#include "geoneric/command/describe_command.h"
 
 
-namespace ranally {
+namespace geoneric {
 namespace {
 
 void show_describe_help()
 {
     std::cout <<
-        "usage: ranally describe INPUT_SCRIPT\n"
+        "usage: geoneric describe INPUT_SCRIPT\n"
         "\n"
         "Describe the script.\n"
         "\n"
@@ -36,7 +36,7 @@ void DescribeCommand::describe(
     const_cast<Interpreter&>(interpreter()).validate(tree);
 
     // TODO describe
-    // ranally::DescribeVisitor describe_visitor(std::cout);
+    // geoneric::DescribeVisitor describe_visitor(std::cout);
     // tree->Accept(describe_visitor);
 }
 
@@ -71,4 +71,4 @@ int DescribeCommand::execute() const
     return status;
 }
 
-} // namespace ranally
+} // namespace geoneric

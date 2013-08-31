@@ -1,9 +1,9 @@
 #pragma once
-#include "ranally/operation/core/operation.h"
-#include "ranally/ast/core/expression_vertex.h"
+#include "geoneric/operation/core/operation.h"
+#include "geoneric/ast/core/expression_vertex.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -48,4 +48,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

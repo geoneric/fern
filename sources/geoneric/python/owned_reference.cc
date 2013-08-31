@@ -1,7 +1,7 @@
-#include "ranally/python/owned_reference.h"
+#include "geoneric/python/owned_reference.h"
 
 
-namespace ranally {
+namespace geoneric {
 namespace python {
 
 //! Default construct an instance.
@@ -141,4 +141,4 @@ void OwnedReference::dec_ref()
 }
 
 } // namespace python
-} // namespace ranally
+} // namespace geoneric

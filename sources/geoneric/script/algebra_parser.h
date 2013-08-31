@@ -1,9 +1,9 @@
 #pragma once
-#include "ranally/core/string.h"
-#include "ranally/python/client.h"
+#include "geoneric/core/string.h"
+#include "geoneric/python/client.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 //! An AlgebraParser parses a script and converts it to XML.
 /*!
@@ -11,7 +11,7 @@ namespace ranally {
   syntactically correct, than an XML will be created. This XML has the same
   semantic content as the original script. It's just easier to post process.
 
-  The XML returned conforms to the Ranally.xsd schema.
+  The XML returned conforms to the Geoneric.xsd schema.
 
   \sa        XmlParser
   \todo      The arena used by the parse functions could be a member variable.
@@ -46,4 +46,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

@@ -1,7 +1,7 @@
-#include "ranally/ast/core/assignment_vertex.h"
+#include "geoneric/ast/core/assignment_vertex.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 AssignmentVertex::AssignmentVertex(
     ExpressionVertexPtr const& target,
@@ -45,4 +45,4 @@ ExpressionVertexPtr const& AssignmentVertex::expression() const
     return _expression;
 }
 
-} // namespace ranally
+} // namespace geoneric

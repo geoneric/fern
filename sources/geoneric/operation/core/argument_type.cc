@@ -1,7 +1,7 @@
-#include "ranally/operation/core/argument_type.h"
+#include "geoneric/operation/core/argument_type.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 std::ostream& operator<<(
     std::ostream& stream,
@@ -21,4 +21,4 @@ std::ostream& operator<<(
     return stream;
 }
 
-} // namespace ranally
+} // namespace geoneric

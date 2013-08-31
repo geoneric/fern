@@ -1,7 +1,7 @@
-#include "ranally/core/exception.h"
+#include "geoneric/core/exception.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 Messages Exception::_messages;
 
@@ -33,4 +33,4 @@ String Exception::message() const
     return _messages[_message_id];
 }
 
-} // namespace ranally
+} // namespace geoneric

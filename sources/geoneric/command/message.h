@@ -1,8 +1,8 @@
 #pragma once
 
 
-namespace ranally {
+namespace geoneric {
 
 void               show_version        ();
 
-} // namespace ranally
+} // namespace geoneric

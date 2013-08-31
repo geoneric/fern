@@ -1,22 +1,22 @@
-#include "ranally/operation/xml/operation_xml_parser.h"
+#include "geoneric/operation/xml/operation_xml_parser.h"
 #include <memory>
 #include <sstream>
 #include <stack>
 #include <vector>
-#include "ranally/core/string.h"
-#include "ranally/operation/core/operations.h"
-#include "ranally/operation/xml/operation-pskel.hxx"
+#include "geoneric/core/string.h"
+#include "geoneric/operation/core/operations.h"
+#include "geoneric/operation/xml/operation-pskel.hxx"
 
 
 namespace {
 
 class Operations_pimpl:
-    public ranally::Operations_pskel
+    public geoneric::Operations_pskel
 {
 
 private:
 
-    typedef std::vector<std::shared_ptr<ranally::Operation>> OperationsData;
+    typedef std::vector<std::shared_ptr<geoneric::Operation>> OperationsData;
 
     OperationsData   _operations;
 
@@ -28,31 +28,31 @@ public:
     }
 
     void Operation(
-        ranally::OperationPtr const& operation)
+        geoneric::OperationPtr const& operation)
     {
         _operations.push_back(operation);
     }
 
-    ranally::OperationsPtr post_Operations()
+    geoneric::OperationsPtr post_Operations()
     {
-        return ranally::OperationsPtr(new ranally::Operations(_operations));
+        return geoneric::OperationsPtr(new geoneric::Operations(_operations));
     }
 
 };
 
 
 class Operation_pimpl:
-    public ranally::Operation_pskel
+    public geoneric::Operation_pskel
 {
 
 private:
 
     struct OperationData
     {
-        ranally::String name;
-        ranally::String description;
-        std::vector<ranally::Parameter> parameters;
-        std::vector<ranally::Result> results;
+        geoneric::String name;
+        geoneric::String description;
+        std::vector<geoneric::Parameter> parameters;
+        std::vector<geoneric::Result> results;
     };
 
     std::stack<OperationData> _data_stack;
@@ -69,37 +69,37 @@ public:
         std::string const& name)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().name = ranally::String(name);
+        _data_stack.top().name = geoneric::String(name);
     }
 
     void Description(
         std::string const& description)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().description = ranally::String(description);
+        _data_stack.top().description = geoneric::String(description);
     }
 
     void Parameters(
-        std::vector<ranally::Parameter> const& parameters)
+        std::vector<geoneric::Parameter> const& parameters)
     {
         assert(!_data_stack.empty());
         _data_stack.top().parameters = parameters;
     }
 
     void Results(
-        std::vector<ranally::Result> const& results)
+        std::vector<geoneric::Result> const& results)
     {
         assert(!_data_stack.empty());
         _data_stack.top().results = results;
     }
 
-    ranally::OperationPtr post_Operation()
+    geoneric::OperationPtr post_Operation()
     {
         assert(_data_stack.size() == 1);
         assert(!_data_stack.empty());
         OperationData result(_data_stack.top());
         _data_stack.pop();
-        return ranally::OperationPtr(new ranally::Operation(result.name,
+        return geoneric::OperationPtr(new geoneric::Operation(result.name,
             result.description, result.parameters, result.results));
     }
 
@@ -107,12 +107,12 @@ public:
 
 
 class Parameters_pimpl:
-    public ranally::Parameters_pskel
+    public geoneric::Parameters_pskel
 {
 
 private:
 
-    std::vector<ranally::Parameter> _parameters;
+    std::vector<geoneric::Parameter> _parameters;
 
 public:
 
@@ -122,12 +122,12 @@ public:
     }
 
     void Parameter(
-        ranally::Parameter const& parameter)
+        geoneric::Parameter const& parameter)
     {
         _parameters.push_back(parameter);
     }
 
-    std::vector<ranally::Parameter> const& post_Parameters()
+    std::vector<geoneric::Parameter> const& post_Parameters()
     {
         return _parameters;
     }
@@ -136,17 +136,17 @@ public:
 
 
 class Parameter_pimpl:
-    public ranally::Parameter_pskel
+    public geoneric::Parameter_pskel
 {
 
 private:
 
     struct ParameterData
     {
-        ranally::String name;
-        ranally::String description;
-        ranally::DataTypes data_types;
-        ranally::ValueTypes value_types;
+        geoneric::String name;
+        geoneric::String description;
+        geoneric::DataTypes data_types;
+        geoneric::ValueTypes value_types;
     };
 
     std::stack<ParameterData> _data_stack;
@@ -163,37 +163,37 @@ public:
         std::string const& name)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().name = ranally::String(name);
+        _data_stack.top().name = geoneric::String(name);
     }
 
     void Description(
         std::string const& description)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().description = ranally::String(description);
+        _data_stack.top().description = geoneric::String(description);
     }
 
     void DataTypes(
-        ranally::DataTypes const& data_types)
+        geoneric::DataTypes const& data_types)
     {
         assert(!_data_stack.empty());
         _data_stack.top().data_types = data_types;
     }
 
     void ValueTypes(
-        ranally::ValueTypes const& value_types)
+        geoneric::ValueTypes const& value_types)
     {
         assert(!_data_stack.empty());
         _data_stack.top().value_types = value_types;
     }
 
-    ranally::Parameter post_Parameter()
+    geoneric::Parameter post_Parameter()
     {
         assert(_data_stack.size() == 1);
         assert(!_data_stack.empty());
         ParameterData result(_data_stack.top());
         _data_stack.pop();
-        return ranally::Parameter(result.name, result.description,
+        return geoneric::Parameter(result.name, result.description,
             result.data_types, result.value_types);
     }
 
@@ -201,12 +201,12 @@ public:
 
 
 class Results_pimpl:
-    public ranally::Results_pskel
+    public geoneric::Results_pskel
 {
 
 private:
 
-    std::vector<ranally::Result> _results;
+    std::vector<geoneric::Result> _results;
 
 public:
 
@@ -216,12 +216,12 @@ public:
     }
 
     void Result(
-        ranally::Result const& result)
+        geoneric::Result const& result)
     {
         _results.push_back(result);
     }
 
-    std::vector<ranally::Result> const& post_Results()
+    std::vector<geoneric::Result> const& post_Results()
     {
         return _results;
     }
@@ -230,17 +230,17 @@ public:
 
 
 class Result_pimpl:
-    public ranally::Result_pskel
+    public geoneric::Result_pskel
 {
 
 private:
 
     struct ResultData
     {
-        ranally::String name;
-        ranally::String description;
-        ranally::DataTypes data_type;
-        ranally::ValueTypes value_type;
+        geoneric::String name;
+        geoneric::String description;
+        geoneric::DataTypes data_type;
+        geoneric::ValueTypes value_type;
     };
 
     std::stack<ResultData> _data_stack;
@@ -257,41 +257,41 @@ public:
         std::string const& name)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().name = ranally::String(name);
+        _data_stack.top().name = geoneric::String(name);
     }
 
     void Description(
         std::string const& description)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().description = ranally::String(description);
+        _data_stack.top().description = geoneric::String(description);
     }
 
     void DataType(
-        // ranally::DataType const& data_type)
+        // geoneric::DataType const& data_type)
         std::string const& data_type)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().data_type = ranally::DataTypes::from_string(
+        _data_stack.top().data_type = geoneric::DataTypes::from_string(
             data_type);
     }
 
     void ValueType(
-        // ranally::ValueType const& value_type)
+        // geoneric::ValueType const& value_type)
         std::string const& value_type)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().value_type = ranally::ValueTypes::from_string(
+        _data_stack.top().value_type = geoneric::ValueTypes::from_string(
             value_type);
     }
 
-    ranally::Result post_Result()
+    geoneric::Result post_Result()
     {
         assert(_data_stack.size() == 1);
         assert(!_data_stack.empty());
         ResultData result(_data_stack.top());
         _data_stack.pop();
-        return ranally::Result(result.name, result.description,
+        return geoneric::Result(result.name, result.description,
           result.data_type, result.value_type);
     }
 
@@ -299,22 +299,22 @@ public:
 
 
 class DataTypes_pimpl:
-    public ranally::DataTypes_pskel
+    public geoneric::DataTypes_pskel
 {
 
 private:
 
-    ranally::DataTypes _data_types;
+    geoneric::DataTypes _data_types;
 
 public:
 
     void pre()
     {
-        _data_types = ranally::DataTypes::UNKNOWN;
+        _data_types = geoneric::DataTypes::UNKNOWN;
     }
 
     // void DataType(
-    //     ranally::DataType const& data_type)
+    //     geoneric::DataType const& data_type)
     // {
     //     _data_types.push_back(data_type);
     // }
@@ -322,10 +322,10 @@ public:
     void DataType(
         std::string const& data_type)
     {
-        _data_types |= ranally::DataTypes::from_string(data_type);
+        _data_types |= geoneric::DataTypes::from_string(data_type);
     }
 
-    ranally::DataTypes post_DataTypes()
+    geoneric::DataTypes post_DataTypes()
     {
         return _data_types;
     }
@@ -334,7 +334,7 @@ public:
 
 
 // class DataType_pimpl:
-//     public ranally::DataType_pskel
+//     public geoneric::DataType_pskel
 // {
 // 
 // private:
@@ -356,7 +356,7 @@ public:
 //         return _data_type;
 //     }
 // 
-//     ranally::DataType post_DataType()
+//     geoneric::DataType post_DataType()
 //     {
 //         assert(false);
 //         assert(_data_type.empty());
@@ -367,22 +367,22 @@ public:
 
 
 class ValueTypes_pimpl:
-    public ranally::ValueTypes_pskel
+    public geoneric::ValueTypes_pskel
 {
 
 private:
 
-    ranally::ValueTypes _value_types;
+    geoneric::ValueTypes _value_types;
 
 public:
 
     void pre()
     {
-        _value_types = ranally::ValueTypes::UNKNOWN;
+        _value_types = geoneric::ValueTypes::UNKNOWN;
     }
 
     // void ValueType(
-    //     ranally::ValueType const& value_type)
+    //     geoneric::ValueType const& value_type)
     // {
     //     _value_types.push_back(value_type);
     // }
@@ -390,16 +390,16 @@ public:
     void ValueType(
         std::string const& value_type)
     {
-        _value_types |= ranally::ValueTypes::from_string(value_type);
+        _value_types |= geoneric::ValueTypes::from_string(value_type);
     }
 
-    ranally::ValueTypes post_ValueTypes()
+    geoneric::ValueTypes post_ValueTypes()
     {
-        // if(_value_types == ranally::ValueTypes::UNKNOWN) {
+        // if(_value_types == geoneric::ValueTypes::UNKNOWN) {
         //     // No ValueType elements are parsed. Aparently, value type is not
         //     // relevant. This happens for operations dealing with the domain
         //     // only, for example.
-        //     _value_types = ranally::ValueTypes::NOT_RELEVANT;
+        //     _value_types = geoneric::ValueTypes::NOT_RELEVANT;
         // }
         return _value_types;
     }
@@ -408,7 +408,7 @@ public:
 
 
 // class ValueType_pimpl:
-//     public ranally::ValueType_pskel
+//     public geoneric::ValueType_pskel
 // {
 // 
 // private:
@@ -428,7 +428,7 @@ public:
 //         return _data_type;
 //     }
 // 
-//     ranally::ValueType post_ValueType()
+//     geoneric::ValueType post_ValueType()
 //     {
 //         assert(_data_type.empty());
 //         return ValueTypes::from_string(_data_type);
@@ -439,7 +439,7 @@ public:
 } // Anonymous namespace
 
 
-namespace ranally {
+namespace geoneric {
 
 OperationXmlParser::OperationXmlParser()
 {
@@ -505,4 +505,4 @@ OperationsPtr OperationXmlParser::parse(
     return parse(stream);
 }
 
-} // namespace ranally
+} // namespace geoneric

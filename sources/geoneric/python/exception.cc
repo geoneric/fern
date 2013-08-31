@@ -1,10 +1,10 @@
-#include "ranally/python/exception.h"
-#include "ranally/core/exception.h"
-#include "ranally/python/owned_reference.h"
-#include "ranally/python/string.h"
+#include "geoneric/python/exception.h"
+#include "geoneric/core/exception.h"
+#include "geoneric/python/owned_reference.h"
+#include "geoneric/python/string.h"
 
 
-namespace ranally {
+namespace geoneric {
 namespace python {
 namespace {
 
@@ -108,4 +108,4 @@ void throw_exception(
 }
 
 } // namespace python
-} // namespace ranally
+} // namespace geoneric

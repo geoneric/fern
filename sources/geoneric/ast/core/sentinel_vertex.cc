@@ -1,7 +1,7 @@
-#include "ranally/ast/core/sentinel_vertex.h"
+#include "geoneric/ast/core/sentinel_vertex.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 SentinelVertex::SentinelVertex()
 
@@ -10,4 +10,4 @@ SentinelVertex::SentinelVertex()
 {
 }
 
-} // namespace ranally
+} // namespace geoneric

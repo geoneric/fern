@@ -1,4 +1,4 @@
-# ranally convert dot ast script.ran script.dot && \
+# geoneric convert dot ast script.ran script.dot && \
 #   dot -Tpdf script.dot -o script.pdf
 
 a = 5

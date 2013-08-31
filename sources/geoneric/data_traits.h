@@ -2,7 +2,7 @@
 #include <stdint.h>
 
 
-namespace ranally {
+namespace geoneric {
 
 struct ScalarTag { };
 struct RangeTag { };
@@ -39,4 +39,4 @@ SPECIALIZE_DATA_TRAITS_FOR_SCALAR(double)
 
 #undef SPECIALIZE_DATA_TRAITS_FOR_SCALAR
 
-} // namespace ranally
+} // namespace geoneric

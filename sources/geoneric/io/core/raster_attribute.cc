@@ -1,7 +1,7 @@
-#include "ranally/io/raster_attribute.h"
+#include "geoneric/io/raster_attribute.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 RasterAttribute::RasterAttribute(
     String const& name)
@@ -17,4 +17,4 @@ RasterAttribute::~RasterAttribute()
 {
 }
 
-} // namespace ranally
+} // namespace geoneric

@@ -1,7 +1,7 @@
-#include "ranally/feature/domain.h"
+#include "geoneric/feature/domain.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 // Domain::Domain()
 // {
@@ -12,4 +12,4 @@ Domain::~Domain()
 {
 }
 
-} // namespace ranally
+} // namespace geoneric

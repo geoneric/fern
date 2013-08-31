@@ -1,7 +1,7 @@
-#include "ranally/ast/core/number_vertex.h"
+#include "geoneric/ast/core/number_vertex.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 template<typename T>
 NumberVertex<T>::NumberVertex(
@@ -45,4 +45,4 @@ template class NumberVertex<uint64_t>;
 template class NumberVertex<float>;
 template class NumberVertex<double>;
 
-} // namespace ranally
+} // namespace geoneric

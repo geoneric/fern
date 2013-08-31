@@ -1,8 +1,8 @@
-#include "ranally/operation/core/result.h"
+#include "geoneric/operation/core/result.h"
 #include <cassert>
 
 
-namespace ranally {
+namespace geoneric {
 
 Result::Result(
     String const& name,
@@ -70,4 +70,4 @@ ValueTypes Result::value_type() const
     return _value_type;
 }
 
-} // namespace ranally
+} // namespace geoneric

@@ -1,9 +1,9 @@
-#include "ranally/operation/std/abs.h"
-#include "ranally/feature/scalar_attribute.h"
-#include "ranally/operation/core/attribute_argument.h"
+#include "geoneric/operation/std/abs.h"
+#include "geoneric/feature/scalar_attribute.h"
+#include "geoneric/operation/core/attribute_argument.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 template<
     typename T>
@@ -125,4 +125,4 @@ std::vector<std::shared_ptr<Argument>> Abs::execute(
     return result;
 }
 
-} // namespace ranally
+} // namespace geoneric

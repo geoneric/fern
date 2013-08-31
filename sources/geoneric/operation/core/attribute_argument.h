@@ -1,9 +1,9 @@
 #pragma once
 #include <memory>
-#include "ranally/operation/core/argument.h"
+#include "geoneric/operation/core/argument.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 class Attribute;
 
@@ -40,4 +40,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

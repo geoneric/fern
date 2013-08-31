@@ -1,9 +1,9 @@
 #pragma once
-#include "ranally/core/symbol_table.h"
-#include "ranally/ast/visitor/visitor.h"
+#include "geoneric/core/symbol_table.h"
+#include "geoneric/ast/visitor/visitor.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 //! Class for visitors that connect uses of names with their definitions.
 /*!
@@ -73,4 +73,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

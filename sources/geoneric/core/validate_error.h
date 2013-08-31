@@ -1,8 +1,8 @@
 #pragma once
-#include "ranally/core/script_error.h"
+#include "geoneric/core/script_error.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 class ValidateError:
     public ScriptError
@@ -32,4 +32,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

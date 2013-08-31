@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <xs:schema
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  xmlns:ranally="http://www.jemig.eu/ranally"
-  targetNamespace="http://www.jemig.eu/ranally"
+  xmlns:geoneric="http://www.geoneric.eu"
+  targetNamespace="http://www.geoneric.eu"
 >
 
 <!--
@@ -10,11 +10,11 @@
 -->
 
   <xs:complexType
-    name="Ranally">
+    name="Geoneric">
     <xs:sequence>
       <xs:element
         name="Statements"
-        type="ranally:Statements"/>
+        type="geoneric:Statements"/>
     </xs:sequence>
     <xs:attribute name="source" type="xs:string" use="required"/>
   </xs:complexType>
@@ -26,7 +26,7 @@
       maxOccurs="unbounded">
       <xs:element
         name="Statement"
-        type="ranally:Statement"/>
+        type="geoneric:Statement"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -35,22 +35,22 @@
     <xs:choice>
       <xs:element
         name="Expression"
-        type="ranally:Expression"/>
+        type="geoneric:Expression"/>
       <xs:element
         name="Assignment"
-        type="ranally:Assignment"/>
+        type="geoneric:Assignment"/>
       <xs:element
         name="If"
-        type="ranally:If"/>
+        type="geoneric:If"/>
       <xs:element
         name="While"
-        type="ranally:While"/>
+        type="geoneric:While"/>
       <xs:element
         name="FunctionDefinition"
-        type="ranally:FunctionDefinition"/>
+        type="geoneric:FunctionDefinition"/>
       <xs:element
         name="Return"
-        type="ranally:Return"/>
+        type="geoneric:Return"/>
     </xs:choice>
     <xs:attribute name="line" type="xs:nonNegativeInteger" use="required"/>
     <xs:attribute name="col" type="xs:nonNegativeInteger" use="required"/>
@@ -61,15 +61,15 @@
       <!-- Condition. -->
       <xs:element
         name="Expression"
-        type="ranally:Expression"/>
+        type="geoneric:Expression"/>
       <!-- True block. -->
       <xs:element
         name="Statements"
-        type="ranally:Statements"/>
+        type="geoneric:Statements"/>
       <!-- False block. -->
       <xs:element
         name="Statements"
-        type="ranally:Statements"/>
+        type="geoneric:Statements"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -78,15 +78,15 @@
       <!-- Condition. -->
       <xs:element
         name="Expression"
-        type="ranally:Expression"/>
+        type="geoneric:Expression"/>
       <!-- True block. -->
       <xs:element
         name="Statements"
-        type="ranally:Statements"/>
+        type="geoneric:Statements"/>
       <!-- False block. -->
       <xs:element
         name="Statements"
-        type="ranally:Statements"/>
+        type="geoneric:Statements"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -98,11 +98,11 @@
       <!-- Arguments. -->
       <xs:element
         name="Expressions"
-        type="ranally:Expressions"/>
+        type="geoneric:Expressions"/>
       <!-- Body. -->
       <xs:element
         name="Statements"
-        type="ranally:Statements"/>
+        type="geoneric:Statements"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -111,7 +111,7 @@
       minOccurs="0">
       <xs:element
         name="Expression"
-        type="ranally:Expression"/>
+        type="geoneric:Expression"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -119,10 +119,10 @@
     <xs:sequence>
       <xs:element
         name="Expression"
-        type="ranally:Expression"/>
+        type="geoneric:Expression"/>
       <xs:element
         name="Expression"
-        type="ranally:Expression"/>
+        type="geoneric:Expression"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -132,7 +132,7 @@
       maxOccurs="unbounded">
       <xs:element
         name="Expression"
-        type="ranally:Expression"/>
+        type="geoneric:Expression"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -143,19 +143,19 @@
         type="xs:string"/>
       <xs:element
         name="Subscript"
-        type="ranally:Subscript"/>
+        type="geoneric:Subscript"/>
       <xs:element
         name="String"
         type="xs:string"/>
       <xs:element
         name="Number"
-        type="ranally:Number"/>
+        type="geoneric:Number"/>
       <xs:element
         name="FunctionCall"
-        type="ranally:FunctionCall"/>
+        type="geoneric:FunctionCall"/>
       <xs:element
         name="Operator"
-        type="ranally:Operator"/>
+        type="geoneric:Operator"/>
     </xs:choice>
     <xs:attribute name="line" type="xs:nonNegativeInteger" use="required"/>
     <xs:attribute name="col" type="xs:nonNegativeInteger" use="required"/>
@@ -165,10 +165,10 @@
     <xs:sequence>
       <xs:element
         name="Expression"
-        type="ranally:Expression"/>
+        type="geoneric:Expression"/>
       <xs:element
         name="Expression"
-        type="ranally:Expression"/>
+        type="geoneric:Expression"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -176,13 +176,13 @@
     <xs:choice>
       <xs:element
         name="Integer"
-        type="ranally:Integer"/>
+        type="geoneric:Integer"/>
       <xs:element
         name="UnsignedInteger"
-        type="ranally:UnsignedInteger"/>
+        type="geoneric:UnsignedInteger"/>
       <xs:element
         name="Float"
-        type="ranally:Float"/>
+        type="geoneric:Float"/>
     </xs:choice>
   </xs:complexType>
 
@@ -226,7 +226,7 @@
         type="xs:string"/>
       <xs:element
         name="Expressions"
-        type="ranally:Expressions"/>
+        type="geoneric:Expressions"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -237,7 +237,7 @@
         type="xs:string"/>
       <xs:element
         name="Expressions"
-        type="ranally:Expressions"/>
+        type="geoneric:Expressions"/>
     </xs:sequence>
   </xs:complexType>
 </xs:schema>

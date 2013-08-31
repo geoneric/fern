@@ -1,9 +1,9 @@
-#include "ranally/ast/visitor/ast_dot_visitor.h"
-#include "ranally/core/string.h"
-#include "ranally/ast/core/vertices.h"
+#include "geoneric/ast/visitor/ast_dot_visitor.h"
+#include "geoneric/core/string.h"
+#include "geoneric/ast/core/vertices.h"
 
 
-namespace ranally {
+namespace geoneric {
 namespace {
 
 String annotate_expression_label(
@@ -672,4 +672,4 @@ void AstDotVisitor::Visit(
     }
 }
 
-} // namespace ranally
+} // namespace geoneric

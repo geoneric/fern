@@ -1,11 +1,11 @@
-#include "ranally/io/ogr_feature_layer.h"
+#include "geoneric/io/ogr_feature_layer.h"
 #include "ogrsf_frmts.h"
-#include "ranally/core/string.h"
-#include "ranally/io/point_domain.h"
-#include "ranally/io/polygon_domain.h"
+#include "geoneric/core/string.h"
+#include "geoneric/io/point_domain.h"
+#include "geoneric/io/polygon_domain.h"
 
 
-namespace ranally {
+namespace geoneric {
 namespace {
 
 Domain::Type domain_type(
@@ -77,4 +77,4 @@ Domain const& OGRFeatureLayer::domain() const
     return *_domain;
 }
 
-} // namespace ranally
+} // namespace geoneric

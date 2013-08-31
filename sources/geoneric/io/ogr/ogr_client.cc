@@ -1,9 +1,9 @@
-#include "ranally/io/ogr_client.h"
+#include "geoneric/io/ogr_client.h"
 #include "cpl_error.h"
 #include "ogr_api.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 OGRClient::OGRClient()
 {
@@ -17,4 +17,4 @@ OGRClient::~OGRClient()
     OGRCleanupAll();
 }
 
-} // namespace ranally
+} // namespace geoneric

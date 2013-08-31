@@ -1,7 +1,7 @@
-#define BOOST_TEST_MODULE ranally core
+#define BOOST_TEST_MODULE geoneric core
 #include <boost/any.hpp>
 #include <boost/test/unit_test.hpp>
-#include "ranally/core/symbol_table.h"
+#include "geoneric/core/symbol_table.h"
 
 
 BOOST_AUTO_TEST_SUITE(symbol_table)
@@ -9,7 +9,7 @@ BOOST_AUTO_TEST_SUITE(symbol_table)
 
 BOOST_AUTO_TEST_CASE(scoping)
 {
-    using namespace ranally;
+    using namespace geoneric;
 
     typedef SymbolTable<boost::any> SymbolTable;
 

@@ -1,7 +1,7 @@
-#include "ranally/io/dataset.h"
+#include "geoneric/io/dataset.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 Dataset::Dataset(
     String const& name)
@@ -22,4 +22,4 @@ String const& Dataset::name() const
     return _name;
 }
 
-} // namespace ranally
+} // namespace geoneric

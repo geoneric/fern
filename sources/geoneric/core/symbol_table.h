@@ -1,11 +1,11 @@
 #pragma once
 #include <cassert>
 #include <boost/range/adaptor/reversed.hpp>
-#include "ranally/core/scope.h"
-#include "ranally/core/string.h"
+#include "geoneric/core/scope.h"
+#include "geoneric/core/string.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 //! Datastructure for keeping track of symbols and their value.
 /*!
@@ -246,4 +246,4 @@ typename SymbolTable<T>::size_type SymbolTable<T>::size() const
     return result;
 }
 
-} // namespace ranally
+} // namespace geoneric

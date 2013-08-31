@@ -1,9 +1,9 @@
 #pragma once
-#include "ranally/feature/fid_map.h"
-#include "ranally/feature/value.h"
+#include "geoneric/feature/fid_map.h"
+#include "geoneric/feature/value.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -61,4 +61,4 @@ inline DomainValue<T>::~DomainValue()
 {
 }
 
-} // namespace ranally
+} // namespace geoneric

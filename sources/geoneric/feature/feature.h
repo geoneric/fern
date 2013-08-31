@@ -1,10 +1,10 @@
 #pragma once
 #include <map>
 #include <memory>
-#include "ranally/core/string.h"
+#include "geoneric/core/string.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 class Attribute;
 class Domain;
@@ -103,4 +103,4 @@ inline std::shared_ptr<Attribute> Feature::attribute(
     return std::dynamic_pointer_cast<Attribute>(attribute(name));
 }
 
-} // namespace ranally
+} // namespace geoneric

@@ -5,7 +5,7 @@ SET(TEST_NAMES
 MACRO(ADD_UNIT_TEST NAME)
     ADD_EXECUTABLE(script_${NAME} ${NAME})
     TARGET_LINK_LIBRARIES(script_${NAME}
-        ranally_script
+        geoneric_script
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
     ADD_TEST(NAME script_${NAME} COMMAND script_${NAME})

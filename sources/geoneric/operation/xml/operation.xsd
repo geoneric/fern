@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <xs:schema
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  xmlns:ranally="http://www.jemig.eu/ranally"
-  targetNamespace="http://www.jemig.eu/ranally"
+  xmlns:geoneric="http://www.geoneric.eu"
+  targetNamespace="http://www.geoneric.eu"
 >
 
   <xs:complexType
@@ -12,7 +12,7 @@
       maxOccurs="unbounded">
       <xs:element
         name="Operation"
-        type="ranally:Operation"/>
+        type="geoneric:Operation"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -27,10 +27,10 @@
         type="xs:string"/>
       <xs:element
         name="Parameters"
-        type="ranally:Parameters"/>
+        type="geoneric:Parameters"/>
       <xs:element
         name="Results"
-        type="ranally:Results"/>
+        type="geoneric:Results"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -41,7 +41,7 @@
       maxOccurs="unbounded">
       <xs:element
         name="Parameter"
-        type="ranally:Parameter"/>
+        type="geoneric:Parameter"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -52,7 +52,7 @@
       maxOccurs="unbounded">
       <xs:element
         name="Result"
-        type="ranally:Result"/>
+        type="geoneric:Result"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -67,10 +67,10 @@
       type="xs:string"/>
     <xs:element
       name="DataTypes"
-      type="ranally:DataTypes"/>
+      type="geoneric:DataTypes"/>
     <xs:element
       name="ValueTypes"
-      type="ranally:ValueTypes"/>
+      type="geoneric:ValueTypes"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -87,13 +87,13 @@
       name="DataType"
       type="xs:string"/>
       <!--
-      type="ranally:DataType"/>
+      type="geoneric:DataType"/>
       -->
     <xs:element
       name="ValueType"
       type="xs:string"/>
       <!--
-      type="ranally:ValueType"/>
+      type="geoneric:ValueType"/>
       -->
     </xs:sequence>
   </xs:complexType>
@@ -106,7 +106,7 @@
         name="DataType"
         type="xs:string"/>
         <!--
-        type="ranally:DataType"/>
+        type="geoneric:DataType"/>
         -->
     </xs:sequence>
   </xs:complexType>
@@ -147,7 +147,7 @@
         name="ValueType"
         type="xs:string"/>
         <!--
-        type="ranally:ValueType"/>
+        type="geoneric:ValueType"/>
         -->
     </xs:sequence>
   </xs:complexType>

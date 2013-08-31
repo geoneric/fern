@@ -1,19 +1,19 @@
-#define BOOST_TEST_MODULE ranally ast
+#define BOOST_TEST_MODULE geoneric ast
 #include <boost/test/unit_test.hpp>
-#include "ranally/script/algebra_parser.h"
-#include "ranally/ast/core/module_vertex.h"
-#include "ranally/ast/visitor/visitor.h"
-#include "ranally/ast/xml/xml_parser.h"
+#include "geoneric/script/algebra_parser.h"
+#include "geoneric/ast/core/module_vertex.h"
+#include "geoneric/ast/visitor/visitor.h"
+#include "geoneric/ast/xml/xml_parser.h"
 
 
 class CountVerticesVisitor:
-    public ranally::Visitor
+    public geoneric::Visitor
 {
 
 public:
 
     CountVerticesVisitor()
-        : ranally::Visitor(),
+        : geoneric::Visitor(),
           _nr_vertices(0u)
     {
     }
@@ -28,14 +28,14 @@ private:
     size_t           _nr_vertices;
 
     void Visit(
-        ranally::ModuleVertex& vertex)
+        geoneric::ModuleVertex& vertex)
     {
         _nr_vertices = 0u;
-        ranally::Visitor::Visit(vertex);
+        geoneric::Visitor::Visit(vertex);
     }
 
     void Visit(
-        ranally::AstVertex& /* vertex */)
+        geoneric::AstVertex& /* vertex */)
     {
         ++_nr_vertices;
     }
@@ -56,9 +56,9 @@ public:
 
 protected:
 
-    ranally::AlgebraParser _algebra_parser;
+    geoneric::AlgebraParser _algebra_parser;
 
-    ranally::XmlParser _xml_parser;
+    geoneric::XmlParser _xml_parser;
 
 };
 
@@ -69,13 +69,13 @@ BOOST_FIXTURE_TEST_SUITE(visitor, Support)
 BOOST_AUTO_TEST_CASE(count_vertices_visitor)
 {
     CountVerticesVisitor visitor;
-    std::shared_ptr<ranally::ModuleVertex> tree;
+    std::shared_ptr<geoneric::ModuleVertex> tree;
 
     // Empty script.
     {
         // Script, scope, sentinel.
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String("")));
+            geoneric::String("")));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 3u);
@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
     {
         // Script, scope, name, sentinel.
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String("a")));
+            geoneric::String("a")));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 4u);
@@ -94,7 +94,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
     // Number.
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String("5")));
+            geoneric::String("5")));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 4u);
@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
     // String.
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String("\"five\"")));
+            geoneric::String("\"five\"")));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 4u);
@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
     // Operator.
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String("a + b")));
+            geoneric::String("a + b")));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 6u);
@@ -121,7 +121,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
     // Function.
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String("f(a, b)")));
+            geoneric::String("f(a, b)")));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 6u);
@@ -130,7 +130,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
     // Assignment.
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String("c = f(a, b)")));
+            geoneric::String("c = f(a, b)")));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 8u);
@@ -139,7 +139,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
     // If.
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String(
+            geoneric::String(
                 "if a > b:\n"
                 "    c = d\n"
                 "else:\n"
@@ -152,7 +152,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
     // While.
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String(
+            geoneric::String(
                 "while a > b:\n"
                 "    c = c + d\n"
                 "else:\n"
@@ -165,7 +165,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
     // Slice.
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String("a[b]")));
+            geoneric::String("a[b]")));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 6u);
@@ -174,7 +174,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
     // Function definition.
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String(u8R"(
+            geoneric::String(u8R"(
 def foo():
     return
 )")));
@@ -186,7 +186,7 @@ def foo():
     // Function call.
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String(u8R"(
+            geoneric::String(u8R"(
 bla()
 )")));
         assert(tree);

@@ -1,7 +1,7 @@
-#include "ranally/ast/core/function_call_vertex.h"
+#include "geoneric/ast/core/function_call_vertex.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 FunctionCallVertex::FunctionCallVertex(
     String const& name,
@@ -12,4 +12,4 @@ FunctionCallVertex::FunctionCallVertex(
 {
 }
 
-} // namespace ranally
+} // namespace geoneric

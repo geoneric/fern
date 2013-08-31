@@ -1,7 +1,7 @@
-#include "ranally/io/domain.h"
+#include "geoneric/io/domain.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 Domain::Domain(
     Type type)
@@ -22,4 +22,4 @@ Domain::Type Domain::type() const
     return _type;
 }
 
-} // namespace ranally
+} // namespace geoneric

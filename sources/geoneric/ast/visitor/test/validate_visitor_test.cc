@@ -1,11 +1,11 @@
-#define BOOST_TEST_MODULE ranally ast
+#define BOOST_TEST_MODULE geoneric ast
 #include <boost/test/unit_test.hpp>
-#include "ranally/core/validate_error.h"
-#include "ranally/script/algebra_parser.h"
-#include "ranally/ast/core/vertices.h"
-#include "ranally/ast/visitor/thread_visitor.h"
-#include "ranally/ast/visitor/validate_visitor.h"
-#include "ranally/ast/xml/xml_parser.h"
+#include "geoneric/core/validate_error.h"
+#include "geoneric/script/algebra_parser.h"
+#include "geoneric/ast/core/vertices.h"
+#include "geoneric/ast/visitor/thread_visitor.h"
+#include "geoneric/ast/visitor/validate_visitor.h"
+#include "geoneric/ast/xml/xml_parser.h"
 
 
 class Support
@@ -23,13 +23,13 @@ public:
 
 protected:
 
-    ranally::AlgebraParser _algebra_parser;
+    geoneric::AlgebraParser _algebra_parser;
 
-    ranally::XmlParser _xml_parser;
+    geoneric::XmlParser _xml_parser;
 
-    ranally::ThreadVisitor _thread_visitor;
+    geoneric::ThreadVisitor _thread_visitor;
 
-    ranally::ValidateVisitor _validate_visitor;
+    geoneric::ValidateVisitor _validate_visitor;
 
 };
 
@@ -38,12 +38,12 @@ BOOST_FIXTURE_TEST_SUITE(validate_visitor, Support)
 
 BOOST_AUTO_TEST_CASE(visit_function_definition)
 {
-    std::shared_ptr<ranally::ModuleVertex> tree;
+    std::shared_ptr<geoneric::ModuleVertex> tree;
 
     // Call undefined operation. Not built-in and not user-defined.
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String(u8R"(
+            geoneric::String(u8R"(
 def foo():
     return
 
@@ -52,7 +52,7 @@ bar()
 
         tree->Accept(_thread_visitor);
         BOOST_CHECK_THROW(tree->Accept(_validate_visitor),
-            ranally::detail::UndefinedOperation);
+            geoneric::detail::UndefinedOperation);
     }
 }
 

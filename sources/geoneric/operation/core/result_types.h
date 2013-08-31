@@ -1,8 +1,8 @@
 #pragma once
-#include "ranally/operation/core/result_type.h"
+#include "geoneric/operation/core/result_type.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 class ResultTypes:
     public std::vector<ResultType>
@@ -32,4 +32,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

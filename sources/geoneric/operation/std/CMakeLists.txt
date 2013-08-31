@@ -8,7 +8,7 @@ ADD_CUSTOM_COMMAND(
     COMMENT "Generating XML header with operations meta info" VERBATIM
     COMMAND
         echo
-            "namespace ranally {\\n"
+            "namespace geoneric {\\n"
             "static char const* const operations_xml = \"\\"
                 > ${CMAKE_CURRENT_BINARY_DIR}/operation-xml.h
     COMMAND
@@ -31,12 +31,12 @@ SET(SOURCES
     operations
     read
 )
-ADD_LIBRARY(ranally_operation_std
+ADD_LIBRARY(geoneric_operation_std
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(ranally_operation_std
-    ranally_feature
-    ranally_operation_core
+TARGET_LINK_LIBRARIES(geoneric_operation_std
+    geoneric_feature
+    geoneric_operation_core
 )
 ADD_CUSTOM_TARGET(operation-xml.h
     DEPENDS

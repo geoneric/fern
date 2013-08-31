@@ -1,4 +1,4 @@
-#include "ranally/core/string.h"
+#include "geoneric/core/string.h"
 #include <memory>
 #include <unicode/ustring.h>
 
@@ -73,7 +73,7 @@ UnicodeString decode_from_utf8(
 } // Anonymous namespace
 
 
-namespace ranally {
+namespace geoneric {
 
 //! Return string decoded from platform's default codepage.
 /*!
@@ -304,4 +304,4 @@ String join(
     return result;
 }
 
-} // namespace ranally
+} // namespace geoneric

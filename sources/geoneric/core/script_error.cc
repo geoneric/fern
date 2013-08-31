@@ -1,7 +1,7 @@
-#include "ranally/core/script_error.h"
+#include "geoneric/core/script_error.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 ScriptError::ScriptError(
     MessageId message_id,
@@ -36,4 +36,4 @@ long ScriptError::col_nr() const
     return _col_nr;
 }
 
-} // namespace ranally
+} // namespace geoneric

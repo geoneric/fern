@@ -1,8 +1,8 @@
 #pragma once
-#include "ranally/feature/domain.h"
+#include "geoneric/feature/domain.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 //! Domain when spatio-temporal locations are not relevant.
 /*!
@@ -32,4 +32,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

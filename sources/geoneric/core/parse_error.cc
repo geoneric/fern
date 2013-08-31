@@ -1,7 +1,7 @@
-#include "ranally/core/parse_error.h"
+#include "geoneric/core/parse_error.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 ParseError::ParseError(
     String const& source_name,
@@ -58,4 +58,4 @@ String ParseError::message() const
     return message_;
 }
 
-} // namespace ranally
+} // namespace geoneric

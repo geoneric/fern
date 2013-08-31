@@ -1,10 +1,10 @@
-#include "ranally/ast/visitor/optimize_visitor.h"
+#include "geoneric/ast/visitor/optimize_visitor.h"
 #include <algorithm>
-#include "ranally/core/string.h"
-#include "ranally/ast/core/assignment_vertex.h"
+#include "geoneric/core/string.h"
+#include "geoneric/ast/core/assignment_vertex.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 OptimizeVisitor::OptimizeVisitor()
 
@@ -160,4 +160,4 @@ std::cout << "visit script" << std::endl;
     } while(inlined_expressions);
 }
 
-} // namespace ranally
+} // namespace geoneric

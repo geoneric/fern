@@ -1,10 +1,10 @@
-#include "ranally/feature/feature_domain_value.h"
+#include "geoneric/feature/feature_domain_value.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 inline FeatureDomainValue::~FeatureDomainValue()
 {
 }
 
-} // namespace ranally
+} // namespace geoneric

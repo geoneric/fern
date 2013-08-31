@@ -1,7 +1,7 @@
 #include "pack_class.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 // Class::Class()
 // {
@@ -12,4 +12,4 @@ namespace ranally {
 // {
 // }
 
-} // namespace ranally
+} // namespace geoneric

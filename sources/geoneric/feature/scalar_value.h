@@ -1,8 +1,8 @@
 #pragma once
-#include "ranally/feature/value.h"
+#include "geoneric/feature/value.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 //! ScalarValue is an attribute value that contains a single value.
 /*!
@@ -64,4 +64,4 @@ inline T const& ScalarValue<T>::operator()() const
     return _value;
 }
 
-} // namespace ranally
+} // namespace geoneric

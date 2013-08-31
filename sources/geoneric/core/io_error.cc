@@ -1,7 +1,7 @@
-#include "ranally/core/io_error.h"
+#include "geoneric/core/io_error.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 IOError::IOError(
     String const& source_name,
@@ -35,4 +35,4 @@ String IOError::message() const
         ;
 }
 
-} // namespace ranally
+} // namespace geoneric

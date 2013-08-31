@@ -1,8 +1,8 @@
 #pragma once
-#include "ranally/data_traits.h"
+#include "geoneric/data_traits.h"
 
 
-namespace ranally {
+namespace geoneric {
 namespace algorithm {
 
 
@@ -21,4 +21,4 @@ inline void plus(
 }
 
 } // namespace algorithm
-} // namespace ranally
+} // namespace geoneric

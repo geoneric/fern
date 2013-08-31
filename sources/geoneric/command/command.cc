@@ -1,9 +1,9 @@
-#include "ranally/command/command.h"
+#include "geoneric/command/command.h"
 #include <fstream>
-#include "ranally/script/algebra_parser.h"
+#include "geoneric/script/algebra_parser.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 Command::Command(
     int argc,
@@ -42,21 +42,21 @@ Interpreter const& Command::interpreter() const
 // 
 //   In case \a filename is empty, the script is read from standard input.
 // */
-// ranally::String Command::read(
+// geoneric::String Command::read(
 //     std::string const& filename)
 // {
-//     ranally::String xml;
-//     ranally::AlgebraParser parser;
+//     geoneric::String xml;
+//     geoneric::AlgebraParser parser;
 // 
 //     if(filename.empty()) {
 //         // Read script from the standard input stream.
 //         std::ostringstream script;
 //         script << std::cin.rdbuf();
-//         xml = parser.parseString(ranally::String(script.str()));
+//         xml = parser.parseString(geoneric::String(script.str()));
 //     }
 //     else {
 //         // Read script from a file.
-//         xml = parser.parseFile(ranally::String(filename));
+//         xml = parser.parseFile(geoneric::String(filename));
 //     }
 // 
 //     return xml;
@@ -72,7 +72,7 @@ Interpreter const& Command::interpreter() const
   output, encoded in UTF8.
 */
 void Command::write(
-    ranally::String const& contents,
+    geoneric::String const& contents,
     std::string const& filename) const
 {
     if(filename.empty()) {
@@ -84,4 +84,4 @@ void Command::write(
     }
 }
 
-} // namespace ranally
+} // namespace geoneric

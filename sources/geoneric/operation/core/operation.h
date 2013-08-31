@@ -1,14 +1,14 @@
 #pragma once
 #include <memory>
 #include <vector>
-#include "ranally/core/string.h"
-#include "ranally/operation/core/argument.h"
-#include "ranally/operation/core/parameter.h"
-#include "ranally/operation/core/result.h"
-#include "ranally/operation/core/result_type.h"
+#include "geoneric/core/string.h"
+#include "geoneric/operation/core/argument.h"
+#include "geoneric/operation/core/parameter.h"
+#include "geoneric/operation/core/result.h"
+#include "geoneric/operation/core/result_type.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -84,4 +84,4 @@ private:
 
 typedef std::shared_ptr<Operation> OperationPtr;
 
-} // namespace ranally
+} // namespace geoneric

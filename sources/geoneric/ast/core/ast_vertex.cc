@@ -1,8 +1,8 @@
-#include "ranally/ast/core/ast_vertex.h"
-// #include "ranally/ast/copy_visitor.h"
+#include "geoneric/ast/core/ast_vertex.h"
+// #include "geoneric/ast/copy_visitor.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 AstVertex::AstVertex()
 
@@ -158,4 +158,4 @@ void AstVertex::set_successor(
     add_successor(successor);
 }
 
-} // namespace ranally
+} // namespace geoneric

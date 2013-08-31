@@ -1,14 +1,14 @@
-#include "ranally/command/message.h"
+#include "geoneric/command/message.h"
 #include <iostream>
-#include "ranally/configure.h"
+#include "geoneric/configure.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 void show_version()
 {
-    std::cout << "ranally " << RANALLY_VERSION << "\n";
-    std::cout << RANALLY_COPYRIGHT << "\n";
+    std::cout << "geoneric " << GEONERIC_VERSION << "\n";
+    std::cout << GEONERIC_COPYRIGHT << "\n";
 }
 
-} // namespace ranally
+} // namespace geoneric

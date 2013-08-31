@@ -1,9 +1,9 @@
-#include "ranally/operation/std/read.h"
-#include "ranally/feature/scalar_attribute.h"
-#include "ranally/operation/core/attribute_argument.h"
+#include "geoneric/operation/std/read.h"
+#include "geoneric/feature/scalar_attribute.h"
+#include "geoneric/operation/core/attribute_argument.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 std::vector<std::shared_ptr<Argument>> read(
         Attribute const& attribute)
@@ -59,4 +59,4 @@ std::vector<std::shared_ptr<Argument>> Read::execute(
     return read(attribute);
 }
 
-} // namespace ranally
+} // namespace geoneric

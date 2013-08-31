@@ -1,14 +1,14 @@
 PROJECT_NAME            = ${PROJECT_NAME}
-INPUT                   = ${CMAKE_CURRENT_SOURCE_DIR}/ranally \
-                          ${CMAKE_CURRENT_BINARY_DIR}/ranally \
+INPUT                   = ${CMAKE_CURRENT_SOURCE_DIR}/geoneric \
+                          ${CMAKE_CURRENT_BINARY_DIR}/geoneric \
                           ${XSD_INCLUDE_DIRS}/xsd/cxx
 ${DOXYGEN_TEMPLATE}
 EXCLUDE_PATTERNS        = *_test.cc \
-                          ${CMAKE_CURRENT_SOURCE_DIR}/ranally/io/core/*.h \
-                          ${CMAKE_CURRENT_SOURCE_DIR}/ranally/io/core/*.cc \
-                          ${CMAKE_CURRENT_SOURCE_DIR}/ranally/io/hdf5/*.h \
-                          ${CMAKE_CURRENT_SOURCE_DIR}/ranally/io/hdf5/*.cc \
-                          ${CMAKE_CURRENT_SOURCE_DIR}/ranally/io/netcdf/*.h \
-                          ${CMAKE_CURRENT_SOURCE_DIR}/ranally/io/netcdf/*.cc \
-                          ${CMAKE_CURRENT_SOURCE_DIR}/ranally/io/ogr/*.h \
-                          ${CMAKE_CURRENT_SOURCE_DIR}/ranally/io/ogr/*.cc
+                          ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/io/core/*.h \
+                          ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/io/core/*.cc \
+                          ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/io/hdf5/*.h \
+                          ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/io/hdf5/*.cc \
+                          ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/io/netcdf/*.h \
+                          ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/io/netcdf/*.cc \
+                          ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/io/ogr/*.h \
+                          ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/io/ogr/*.cc

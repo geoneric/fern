@@ -1,9 +1,9 @@
 #pragma once
 #include <memory>
-#include "ranally/core/string.h"
+#include "geoneric/core/string.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 class ModuleVertex;
 
@@ -12,7 +12,7 @@ class ModuleVertex;
   Apart from XML validation checks, no semantic checks are performed. The
   syntax tree has the same semantic content as the XML.
 
-  The parser assumes the XML passed in conforms to the Ranally.xsd schema.
+  The parser assumes the XML passed in conforms to the Geoneric.xsd schema.
 
   \sa        AlgebraParser
 */
@@ -44,4 +44,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

@@ -1,7 +1,7 @@
-#include "ranally/io/polygon_domain.h"
+#include "geoneric/io/polygon_domain.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 PolygonDomain::PolygonDomain(
     PolygonsPtr const& polygons)
@@ -18,4 +18,4 @@ PolygonDomain::~PolygonDomain()
 {
 }
 
-} // namespace ranally
+} // namespace geoneric

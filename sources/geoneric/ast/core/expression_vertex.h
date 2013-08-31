@@ -1,9 +1,9 @@
 #pragma once
-#include "ranally/operation/core/result_types.h"
-#include "ranally/ast/core/statement_vertex.h"
+#include "geoneric/operation/core/result_types.h"
+#include "geoneric/ast/core/statement_vertex.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 class ExpressionVertex;
 
@@ -87,4 +87,4 @@ private:
 
 };
 
-} // namespace ranally
+} // namespace geoneric

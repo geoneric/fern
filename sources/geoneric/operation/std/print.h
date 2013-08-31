@@ -2,10 +2,10 @@
 #include <boost/range/begin.hpp>
 #include <boost/range/end.hpp>
 #include <boost/range/distance.hpp>
-#include "ranally/data_traits.h"
+#include "geoneric/data_traits.h"
 
 
-namespace ranally {
+namespace geoneric {
 namespace detail {
 
 template<
@@ -79,4 +79,4 @@ inline void print(
     detail::print(category(), argument, stream);
 }
 
-} // namespace ranally
+} // namespace geoneric

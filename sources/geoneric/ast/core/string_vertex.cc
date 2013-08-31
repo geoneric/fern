@@ -1,7 +1,7 @@
-#include "ranally/ast/core/string_vertex.h"
+#include "geoneric/ast/core/string_vertex.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 StringVertex::StringVertex(
     int line_nr,
@@ -20,4 +20,4 @@ String const& StringVertex::value() const
     return _value;
 }
 
-} // namespace ranally
+} // namespace geoneric

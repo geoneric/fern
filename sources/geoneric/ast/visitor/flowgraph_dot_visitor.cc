@@ -1,9 +1,9 @@
-#include "ranally/ast/visitor/flowgraph_dot_visitor.h"
-#include "ranally/core/string.h"
-#include "ranally/ast/core/vertices.h"
+#include "geoneric/ast/visitor/flowgraph_dot_visitor.h"
+#include "geoneric/core/string.h"
+#include "geoneric/ast/core/vertices.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 FlowgraphDotVisitor::FlowgraphDotVisitor()
 
@@ -416,4 +416,4 @@ void FlowgraphDotVisitor::Visit(
     add_script("}\n");
 }
 
-} // namespace ranally
+} // namespace geoneric

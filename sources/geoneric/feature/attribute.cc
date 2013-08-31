@@ -1,8 +1,8 @@
-#include "ranally/feature/attribute.h"
+#include "geoneric/feature/attribute.h"
 #include <cassert>
 
 
-namespace ranally {
+namespace geoneric {
 
 Attribute::Attribute(
     DataType data_type,
@@ -26,4 +26,4 @@ ValueType Attribute::value_type() const
     return _value_type;
 }
 
-} // namespace ranally
+} // namespace geoneric

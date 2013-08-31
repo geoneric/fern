@@ -1,9 +1,9 @@
 #pragma once
 #include <loki/Visitor.h>
-#include "ranally/ast/core/ast_vertex.h"
+#include "geoneric/ast/core/ast_vertex.h"
 
 
-namespace ranally {
+namespace geoneric {
 
 class AssignmentVertex;
 class FunctionDefinitionVertex;
@@ -152,4 +152,4 @@ private:
     macro(float)                                                               \
     macro(double)
 
-} // namespace ranally
+} // namespace geoneric
