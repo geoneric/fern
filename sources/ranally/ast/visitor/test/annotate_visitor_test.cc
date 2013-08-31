@@ -43,7 +43,7 @@ BOOST_FIXTURE_TEST_CASE(visit_empty_script, Support)
 {
     // Parse empty script.
     // Ast before and after should be the same.
-    std::shared_ptr<ranally::ScriptVertex> tree1, tree2;
+    std::shared_ptr<ranally::ModuleVertex> tree1, tree2;
 
     tree1 = _xml_parser.parse_string(_algebra_parser.parse_string(
         ranally::String("")));
@@ -62,14 +62,14 @@ BOOST_FIXTURE_TEST_CASE(visit_empty_script, Support)
     BOOST_CHECK_EQUAL(tree1->source_name(), ranally::String("<string>"));
     BOOST_CHECK_EQUAL(tree1->line(), 0);
     BOOST_CHECK_EQUAL(tree1->col(), 0);
-    BOOST_CHECK(tree1->statements().empty());
+    BOOST_CHECK(tree1->scope()->statements().empty());
 }
 
 
 BOOST_FIXTURE_TEST_CASE(visit_number, Support)
 {
     {
-        std::shared_ptr<ranally::ScriptVertex> tree =
+        std::shared_ptr<ranally::ModuleVertex> tree =
             _xml_parser.parse_string(_algebra_parser.parse_string(
                 ranally::String("5")));
         tree->Accept(_visitor);
@@ -77,10 +77,10 @@ BOOST_FIXTURE_TEST_CASE(visit_number, Support)
         BOOST_CHECK_EQUAL(tree->source_name(), ranally::String("<string>"));
         BOOST_CHECK_EQUAL(tree->line(), 0);
         BOOST_CHECK_EQUAL(tree->col(), 0);
-        BOOST_CHECK_EQUAL(tree->statements().size(), 1u);
+        BOOST_CHECK_EQUAL(tree->scope()->statements().size(), 1u);
 
         std::shared_ptr<ranally::StatementVertex> const& statement(
-            tree->statements()[0]);
+            tree->scope()->statements()[0]);
         BOOST_REQUIRE(statement);
 
         ranally::NumberVertex<int64_t> const* number_vertex(
@@ -94,7 +94,7 @@ BOOST_FIXTURE_TEST_CASE(visit_number, Support)
     }
 
     {
-        std::shared_ptr<ranally::ScriptVertex> tree =
+        std::shared_ptr<ranally::ModuleVertex> tree =
             _xml_parser.parse_string(_algebra_parser.parse_string(
                 ranally::String("5.5")));
         tree->Accept(_visitor);
@@ -102,10 +102,10 @@ BOOST_FIXTURE_TEST_CASE(visit_number, Support)
         BOOST_CHECK_EQUAL(tree->source_name(), ranally::String("<string>"));
         BOOST_CHECK_EQUAL(tree->line(), 0);
         BOOST_CHECK_EQUAL(tree->col(), 0);
-        BOOST_CHECK_EQUAL(tree->statements().size(), 1u);
+        BOOST_CHECK_EQUAL(tree->scope()->statements().size(), 1u);
 
         std::shared_ptr<ranally::StatementVertex> const& statement(
-            tree->statements()[0]);
+            tree->scope()->statements()[0]);
         BOOST_REQUIRE(statement);
 
         ranally::NumberVertex<double> const* number_vertex(
@@ -122,7 +122,7 @@ BOOST_FIXTURE_TEST_CASE(visit_number, Support)
 
 BOOST_FIXTURE_TEST_CASE(visit_name, Support)
 {
-    std::shared_ptr<ranally::ScriptVertex> tree =
+    std::shared_ptr<ranally::ModuleVertex> tree =
         _xml_parser.parse_string(_algebra_parser.parse_string(
             ranally::String("a")));
     tree->Accept(_visitor);
@@ -130,10 +130,10 @@ BOOST_FIXTURE_TEST_CASE(visit_name, Support)
     BOOST_CHECK_EQUAL(tree->source_name(), ranally::String("<string>"));
     BOOST_CHECK_EQUAL(tree->line(), 0);
     BOOST_CHECK_EQUAL(tree->col(), 0);
-    BOOST_CHECK_EQUAL(tree->statements().size(), 1u);
+    BOOST_CHECK_EQUAL(tree->scope()->statements().size(), 1u);
 
     std::shared_ptr<ranally::StatementVertex> const& statement(
-        tree->statements()[0]);
+        tree->scope()->statements()[0]);
     BOOST_REQUIRE(statement);
 
     ranally::NameVertex const* name_vertex(
@@ -149,7 +149,7 @@ BOOST_FIXTURE_TEST_CASE(visit_name, Support)
 BOOST_FIXTURE_TEST_CASE(visit_operation, Support)
 {
     {
-        std::shared_ptr<ranally::ScriptVertex> tree =
+        std::shared_ptr<ranally::ModuleVertex> tree =
             _xml_parser.parse_string(_algebra_parser.parse_string(
                 ranally::String("abs(a)")));
         tree->Accept(_visitor);
@@ -158,15 +158,16 @@ BOOST_FIXTURE_TEST_CASE(visit_operation, Support)
         BOOST_CHECK_EQUAL(tree->line(), 0);
         BOOST_CHECK_EQUAL(tree->col(), 0);
 
-        BOOST_REQUIRE_EQUAL(tree->statements().size(), 1u);
+        BOOST_REQUIRE_EQUAL(tree->scope()->statements().size(), 1u);
         std::shared_ptr<ranally::StatementVertex> const& statement(
-            tree->statements()[0]);
+            tree->scope()->statements()[0]);
         BOOST_REQUIRE(statement);
-        ranally::OperationVertex const* function_vertex(
+        ranally::OperationVertex const* function_call_vertex(
             dynamic_cast<ranally::OperationVertex*>(statement.get()));
-        BOOST_REQUIRE(function_vertex);
+        BOOST_REQUIRE(function_call_vertex);
 
-        ranally::OperationPtr const& operation(function_vertex->operation());
+        ranally::OperationPtr const& operation(
+            function_call_vertex->operation());
         BOOST_REQUIRE(operation);
 
         BOOST_CHECK_EQUAL(operation->parameters().size(), 1u);
@@ -183,7 +184,7 @@ BOOST_FIXTURE_TEST_CASE(visit_operation, Support)
         BOOST_CHECK_EQUAL(result.data_type(), ranally::DataTypes::ALL);
         BOOST_CHECK_EQUAL(result.value_type(), ranally::ValueTypes::NUMBER);
 
-        ranally::ResultTypes result_types(function_vertex->result_types());
+        ranally::ResultTypes result_types(function_call_vertex->result_types());
         BOOST_REQUIRE_EQUAL(result_types.size(), 1u);
         BOOST_CHECK_EQUAL(result_types[0], ranally::ResultType(
             ranally::DataTypes::ALL, ranally::ValueTypes::NUMBER));
@@ -215,12 +216,12 @@ public:
         ranally::String const& script,
         ranally::ResultType const& result_type)
     {
-        std::shared_ptr<ranally::ScriptVertex> tree(_xml_parser.parse_string(
+        std::shared_ptr<ranally::ModuleVertex> tree(_xml_parser.parse_string(
             _algebra_parser.parse_string(script)));
         tree->Accept(_visitor);
         ranally::ExpressionVertex* expression_vertex =
             dynamic_cast<ranally::ExpressionVertex*>(
-                tree->statements()[0].get());
+                tree->scope()->statements()[0].get());
 
         ranally::ResultTypes result_types(expression_vertex->result_types());
         BOOST_REQUIRE_EQUAL(result_types.size(), 1u);

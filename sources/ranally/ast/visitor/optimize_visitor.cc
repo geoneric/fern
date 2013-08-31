@@ -132,7 +132,7 @@ std::cout << "register inlining of " << vertex.name().encode_in_utf8() << " by "
 
 
 void OptimizeVisitor::Visit(
-    ScriptVertex& vertex)
+    ModuleVertex& vertex)
 {
     bool inlined_expressions;
 

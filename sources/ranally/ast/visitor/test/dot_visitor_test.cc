@@ -2,7 +2,7 @@
 #include <boost/test/unit_test.hpp>
 #include "ranally/core/string.h"
 #include "ranally/script/algebra_parser.h"
-#include "ranally/ast/core/script_vertex.h"
+#include "ranally/ast/core/module_vertex.h"
 #include "ranally/ast/xml/xml_parser.h"
 
 

@@ -35,7 +35,7 @@ public:
 
 private:
 
-    void           execute             (ScriptVertexPtr const& tree) const;
+    void           execute             (ModuleVertexPtr const& tree) const;
 
 };
 

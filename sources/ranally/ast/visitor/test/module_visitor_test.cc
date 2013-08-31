@@ -2,8 +2,8 @@
 #include <boost/test/unit_test.hpp>
 #include "ranally/core/string.h"
 #include "ranally/script/algebra_parser.h"
-#include "ranally/ast/core/script_vertex.h"
-#include "ranally/ast/visitor/script_visitor.h"
+#include "ranally/ast/core/module_vertex.h"
+#include "ranally/ast/visitor/module_visitor.h"
 #include "ranally/ast/xml/xml_parser.h"
 
 
@@ -25,21 +25,21 @@ protected:
 
     ranally::XmlParser _xml_parser;
 
-    ranally::ScriptVisitor _visitor;
+    ranally::ModuleVisitor _visitor;
 
 };
 
 
-BOOST_FIXTURE_TEST_SUITE(script_visitor, Support)
+BOOST_FIXTURE_TEST_SUITE(module_visitor, Support)
 
 
-BOOST_AUTO_TEST_CASE(visit_empty_script)
+BOOST_AUTO_TEST_CASE(visit_empty_module)
 {
     ranally::String xml;
 
     xml = _algebra_parser.parse_string(ranally::String(""));
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.script(), ranally::String(""));
+    BOOST_CHECK_EQUAL(_visitor.module(), ranally::String(""));
 }
 
 
@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(visit_name)
 
     xml = _algebra_parser.parse_string(ranally::String("a"));
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.script(), ranally::String("a\n"));
+    BOOST_CHECK_EQUAL(_visitor.module(), ranally::String("a\n"));
 }
 
 
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(visit_assignment)
 
     xml = _algebra_parser.parse_string(ranally::String("a = b"));
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.script(), ranally::String("a = b\n"));
+    BOOST_CHECK_EQUAL(_visitor.module(), ranally::String("a = b\n"));
 }
 
 
@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE(visit_string)
 
     xml = _algebra_parser.parse_string(ranally::String("\"five\""));
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.script(), ranally::String("\"five\"\n"));
+    BOOST_CHECK_EQUAL(_visitor.module(), ranally::String("\"five\"\n"));
 }
 
 
@@ -79,16 +79,16 @@ BOOST_AUTO_TEST_CASE(visit_number)
 
     xml = _algebra_parser.parse_string(ranally::String("5"));
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.script(), ranally::String("5\n"));
+    BOOST_CHECK_EQUAL(_visitor.module(), ranally::String("5\n"));
 
     xml = _algebra_parser.parse_string(ranally::String("5L"));
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.script(), ranally::String(
+    BOOST_CHECK_EQUAL(_visitor.module(), ranally::String(
       sizeof(long) == sizeof(int64_t) ? "5\n" : "5L\n"));
 
     xml = _algebra_parser.parse_string(ranally::String("5.5"));
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.script(), ranally::String("5.5\n"));
+    BOOST_CHECK_EQUAL(_visitor.module(), ranally::String("5.5\n"));
 
     // TODO add tests for all numeric types.
 }
@@ -100,12 +100,12 @@ BOOST_AUTO_TEST_CASE(visit_function)
 
     xml = _algebra_parser.parse_string(ranally::String("f()"));
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.script(), ranally::String("f()\n"));
+    BOOST_CHECK_EQUAL(_visitor.module(), ranally::String("f()\n"));
 
     xml = _algebra_parser.parse_string(
         ranally::String("f(1, \"2\", three, four())"));
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.script(), ranally::String(
+    BOOST_CHECK_EQUAL(_visitor.module(), ranally::String(
         "f(1, \"2\", three, four())\n"));
 }
 
@@ -116,19 +116,19 @@ BOOST_AUTO_TEST_CASE(visit_operator)
 
     xml = _algebra_parser.parse_string(ranally::String("-a"));
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.script(), ranally::String("-(a)\n"));
+    BOOST_CHECK_EQUAL(_visitor.module(), ranally::String("-(a)\n"));
 
     xml = _algebra_parser.parse_string(ranally::String("a + b"));
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.script(), ranally::String("(a) + (b)\n"));
+    BOOST_CHECK_EQUAL(_visitor.module(), ranally::String("(a) + (b)\n"));
 
     xml = _algebra_parser.parse_string(ranally::String("-(a + b)"));
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.script(), ranally::String("-((a) + (b))\n"));
+    BOOST_CHECK_EQUAL(_visitor.module(), ranally::String("-((a) + (b))\n"));
 
     xml = _algebra_parser.parse_string(ranally::String("a + b * c + d"));
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.script(), ranally::String(
+    BOOST_CHECK_EQUAL(_visitor.module(), ranally::String(
         "((a) + ((b) * (c))) + (d)\n"));
 }
 
@@ -139,7 +139,7 @@ BOOST_AUTO_TEST_CASE(visit_multiple_statements)
 
     xml = _algebra_parser.parse_string(ranally::String("a\nb"));
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.script(), ranally::String("a\nb\n"));
+    BOOST_CHECK_EQUAL(_visitor.module(), ranally::String("a\nb\n"));
 }
 
 
@@ -152,7 +152,7 @@ BOOST_AUTO_TEST_CASE(visit_if)
         "    b\n"
         "    c"));
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.script(), ranally::String(
+    BOOST_CHECK_EQUAL(_visitor.module(), ranally::String(
         "if a:\n"
         "    b\n"
         "    c\n"));
@@ -165,7 +165,7 @@ BOOST_AUTO_TEST_CASE(visit_if)
         "    e\n"
         "    f\n"));
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.script(), ranally::String(
+    BOOST_CHECK_EQUAL(_visitor.module(), ranally::String(
         "if a:\n"
         "    b\n"
         "    c\n"
@@ -185,7 +185,7 @@ BOOST_AUTO_TEST_CASE(visit_if)
         "    g\n"
         "    h\n"));
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.script(), ranally::String(
+    BOOST_CHECK_EQUAL(_visitor.module(), ranally::String(
         "if a:\n"
         "    b\n"
         "    c\n"
@@ -208,7 +208,7 @@ BOOST_AUTO_TEST_CASE(visit_while)
         "    b\n"
         "    c"));
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.script(), ranally::String(
+    BOOST_CHECK_EQUAL(_visitor.module(), ranally::String(
         "while a:\n"
         "    b\n"
         "    c\n"));
@@ -221,7 +221,7 @@ BOOST_AUTO_TEST_CASE(visit_while)
         "    d\n"
         "    e"));
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.script(), ranally::String(
+    BOOST_CHECK_EQUAL(_visitor.module(), ranally::String(
         "while a:\n"
         "    b\n"
         "    c\n"
@@ -238,13 +238,13 @@ BOOST_AUTO_TEST_CASE(visit_subscript)
     xml = _algebra_parser.parse_string(ranally::String(
         "a = b[c]"));
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.script(), ranally::String(
+    BOOST_CHECK_EQUAL(_visitor.module(), ranally::String(
         "a = (b)[c]\n"));
 
     xml = _algebra_parser.parse_string(ranally::String(
         "a = (b + c)[c > d]"));
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.script(), ranally::String(
+    BOOST_CHECK_EQUAL(_visitor.module(), ranally::String(
         "a = ((b) + (c))[(c) > (d)]\n"));
 }
 

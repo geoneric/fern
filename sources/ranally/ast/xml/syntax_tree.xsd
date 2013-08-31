@@ -45,6 +45,12 @@
       <xs:element
         name="While"
         type="ranally:While"/>
+      <xs:element
+        name="FunctionDefinition"
+        type="ranally:FunctionDefinition"/>
+      <xs:element
+        name="Return"
+        type="ranally:Return"/>
     </xs:choice>
     <xs:attribute name="line" type="xs:nonNegativeInteger" use="required"/>
     <xs:attribute name="col" type="xs:nonNegativeInteger" use="required"/>
@@ -84,6 +90,31 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="FunctionDefinition">
+    <xs:sequence>
+      <xs:element
+        name="Name"
+        type="xs:string"/>
+      <!-- Arguments. -->
+      <xs:element
+        name="Expressions"
+        type="ranally:Expressions"/>
+      <!-- Body. -->
+      <xs:element
+        name="Statements"
+        type="ranally:Statements"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Return">
+    <xs:sequence
+      minOccurs="0">
+      <xs:element
+        name="Expression"
+        type="ranally:Expression"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="Assignment">
     <xs:sequence>
       <xs:element
@@ -120,8 +151,8 @@
         name="Number"
         type="ranally:Number"/>
       <xs:element
-        name="Function"
-        type="ranally:Function"/>
+        name="FunctionCall"
+        type="ranally:FunctionCall"/>
       <xs:element
         name="Operator"
         type="ranally:Operator"/>
@@ -188,7 +219,7 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="Function">
+  <xs:complexType name="FunctionCall">
     <xs:sequence>
       <xs:element
         name="Name"

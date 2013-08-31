@@ -2,18 +2,22 @@ ADD_SUBDIRECTORY(test)
 
 SET(SOURCES
     assignment_vertex
+    ast_vertex
     expression_vertex
-    function_vertex
+    function_call_vertex
+    function_definition_vertex
     if_vertex
+    module_vertex
     name_vertex
     number_vertex
     operation_vertex
     operator_vertex
-    script_vertex
+    return_vertex
+    scope_vertex
+    sentinel_vertex
     statement_vertex
     string_vertex
     subscript_vertex
-    syntax_vertex
     while_vertex
 )
 ADD_LIBRARY(ranally_ast_core

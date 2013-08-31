@@ -11,27 +11,25 @@ namespace ranally {
 
   \sa        .
 */
-class ScriptVisitor
+class ModuleVisitor
     : public Visitor
 {
 
-    friend class ScriptVisitorTest;
-
 public:
 
-                   ScriptVisitor       (size_t tab_size=4);
+                   ModuleVisitor       (size_t tab_size=4);
 
-                   ~ScriptVisitor      ()=default;
+                   ~ModuleVisitor      ()=default;
 
-                   ScriptVisitor       (ScriptVisitor&&)=delete;
+                   ModuleVisitor       (ModuleVisitor&&)=delete;
 
-    ScriptVisitor& operator=           (ScriptVisitor&&)=delete;
+    ModuleVisitor& operator=           (ModuleVisitor&&)=delete;
 
-                   ScriptVisitor       (ScriptVisitor const&)=delete;
+                   ModuleVisitor       (ModuleVisitor const&)=delete;
 
-    ScriptVisitor& operator=           (ScriptVisitor const&)=delete;
+    ModuleVisitor& operator=           (ModuleVisitor const&)=delete;
 
-    String const&  script              () const;
+    String const&  module              () const;
 
 private:
 
@@ -39,7 +37,7 @@ private:
 
     size_t         _indent_level;
 
-    String         _script;
+    String         _module;
 
     // void           indent              (String const& statement);
 
@@ -51,7 +49,7 @@ private:
 
     void           Visit               (AssignmentVertex&);
 
-    void           Visit               (FunctionVertex&);
+    void           Visit               (FunctionCallVertex&);
 
     void           Visit               (IfVertex&);
 
@@ -79,13 +77,13 @@ private:
 
     void           Visit               (OperatorVertex&);
 
-    void           Visit               (ScriptVertex&);
+    void           Visit               (ModuleVertex&);
 
     void           Visit               (StringVertex&);
 
     void           Visit               (SubscriptVertex&);
 
-    void           Visit               (SyntaxVertex&);
+    void           Visit               (AstVertex&);
 
     void           Visit               (WhileVertex&);
 

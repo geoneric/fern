@@ -14,12 +14,9 @@ class Ranally_pimpl:
 
 public:
 
-    typedef std::vector<std::shared_ptr<ranally::StatementVertex>>
-        StatementVertices;
-
     void pre()
     {
-        _statement_vertices.clear();
+        _scope_vertex.reset();
     }
 
     void source(
@@ -29,23 +26,24 @@ public:
     }
 
     void Statements(
-        StatementVertices const& vertices)
+        std::vector<std::shared_ptr<ranally::StatementVertex>> const&
+            statements)
     {
-        assert(_statement_vertices.empty());
-        _statement_vertices = vertices;
+        assert(!_scope_vertex);
+        _scope_vertex.reset(new ranally::ScopeVertex(statements));
     }
 
-    std::shared_ptr<ranally::ScriptVertex> post_Ranally()
+    std::shared_ptr<ranally::ModuleVertex> post_Ranally()
     {
-        return std::shared_ptr<ranally::ScriptVertex>(new ranally::ScriptVertex(
-            _source_name, _statement_vertices));
+        return std::shared_ptr<ranally::ModuleVertex>(new ranally::ModuleVertex(
+            _source_name, _scope_vertex));
     }
 
 private:
 
     ranally::String  _source_name;
 
-    StatementVertices _statement_vertices;
+    std::shared_ptr<ranally::ScopeVertex> _scope_vertex;
 
 };
 
@@ -140,15 +138,18 @@ public:
 
     void Statements(
         std::vector<std::shared_ptr<ranally::StatementVertex>>
-            const& vertices)
+            const& statements)
     {
-        if(_data_stack.top().true_statement_vertices.empty()) {
-            assert(!vertices.empty());
-            _data_stack.top().true_statement_vertices = vertices;
+        if(!_data_stack.top().true_scope) {
+            assert(!statements.empty());
+            assert(!_data_stack.top().false_scope);
+            _data_stack.top().true_scope.reset(new ranally::ScopeVertex(
+                statements));
         }
         else {
-            assert(_data_stack.top().false_statement_vertices.empty());
-            _data_stack.top().false_statement_vertices = vertices;
+            assert(!_data_stack.top().false_scope);
+            _data_stack.top().false_scope.reset(new ranally::ScopeVertex(
+                statements));
         }
     }
 
@@ -158,20 +159,16 @@ public:
         IfData result(_data_stack.top());
         _data_stack.pop();
         return std::shared_ptr<ranally::IfVertex>(new ranally::IfVertex(
-            result.condition_vertex, result.true_statement_vertices,
-            result.false_statement_vertices));
+            result.condition_vertex, result.true_scope, result.false_scope));
     }
 
 private:
 
-    typedef std::vector<std::shared_ptr<ranally::StatementVertex>>
-        StatementVertices;
-
     struct IfData
     {
         std::shared_ptr<ranally::ExpressionVertex> condition_vertex;
-        StatementVertices true_statement_vertices;
-        StatementVertices false_statement_vertices;
+        std::shared_ptr<ranally::ScopeVertex> true_scope;
+        std::shared_ptr<ranally::ScopeVertex> false_scope;
     };
 
     std::stack<IfData> _data_stack;
@@ -200,15 +197,18 @@ public:
 
     void Statements(
         std::vector<std::shared_ptr<ranally::StatementVertex>>
-            const& vertices)
+            const& statements)
     {
-        if(_data_stack.top().true_statement_vertices.empty()) {
-            assert(!vertices.empty());
-            _data_stack.top().true_statement_vertices = vertices;
+        if(!_data_stack.top().true_scope) {
+            assert(!statements.empty());
+            assert(!_data_stack.top().false_scope);
+            _data_stack.top().true_scope.reset(new ranally::ScopeVertex(
+                statements));
         }
         else {
-            assert(_data_stack.top().false_statement_vertices.empty());
-            _data_stack.top().false_statement_vertices = vertices;
+            assert(!_data_stack.top().false_scope);
+            _data_stack.top().false_scope.reset(new ranally::ScopeVertex(
+                statements));
         }
     }
 
@@ -218,23 +218,124 @@ public:
         WhileData result(_data_stack.top());
         _data_stack.pop();
         return std::shared_ptr<ranally::WhileVertex>(new ranally::WhileVertex(
-            result.condition_vertex, result.true_statement_vertices,
-                result.false_statement_vertices));
+            result.condition_vertex, result.true_scope, result.false_scope));
     }
 
 private:
 
-    typedef std::vector<std::shared_ptr<ranally::StatementVertex>>
-        StatementVertices;
-
     struct WhileData
     {
         std::shared_ptr<ranally::ExpressionVertex> condition_vertex;
-        StatementVertices true_statement_vertices;
-        StatementVertices false_statement_vertices;
+        std::shared_ptr<ranally::ScopeVertex> true_scope;
+        std::shared_ptr<ranally::ScopeVertex> false_scope;
     };
 
     std::stack<WhileData> _data_stack;
+
+};
+
+
+class FunctionDefinition_pimpl:
+    public ranally::FunctionDefinition_pskel
+{
+
+public:
+
+    void pre()
+    {
+        _data_stack.push(FunctionDefinitionData());
+    }
+
+    void Name(
+        std::string const& name)
+    {
+        assert(!_data_stack.empty());
+        _data_stack.top().name = ranally::String(name);
+    }
+
+    void Expressions(
+        std::vector<std::shared_ptr<ranally::ExpressionVertex>>
+            const& vertices)
+    {
+        assert(!_data_stack.empty());
+        assert(_data_stack.top().expression_vertices.empty());
+        _data_stack.top().expression_vertices = vertices;
+    }
+
+    void Statements(
+        std::vector<std::shared_ptr<ranally::StatementVertex>>
+            const& statements)
+    {
+        assert(!statements.empty());
+        _data_stack.top().scope_vertex.reset(new ranally::ScopeVertex(
+            statements));
+    }
+
+    std::shared_ptr<ranally::FunctionDefinitionVertex> post_FunctionDefinition()
+    {
+        assert(!_data_stack.empty());
+        FunctionDefinitionData result(_data_stack.top());
+        _data_stack.pop();
+        return std::shared_ptr<ranally::FunctionDefinitionVertex>(
+            new ranally::FunctionDefinitionVertex(
+                result.name, result.expression_vertices, result.scope_vertex));
+    }
+
+private:
+
+    typedef std::vector<std::shared_ptr<ranally::ExpressionVertex>>
+        ExpressionVertices;
+
+    struct FunctionDefinitionData
+    {
+        ranally::String name;
+        ExpressionVertices expression_vertices;
+        std::shared_ptr<ranally::ScopeVertex> scope_vertex;
+    };
+
+    std::stack<FunctionDefinitionData> _data_stack;
+
+};
+
+
+class Return_pimpl:
+    public ranally::Return_pskel
+{
+
+public:
+
+    void pre()
+    {
+        _data_stack.push(ReturnData());
+    }
+
+    void Expression(
+        std::shared_ptr<ranally::ExpressionVertex> const& expression)
+    {
+        assert(!_data_stack.empty());
+        _data_stack.top().expression_vertex = expression;
+    }
+
+    std::shared_ptr<ranally::ReturnVertex> post_Return()
+    {
+        assert(!_data_stack.empty());
+        ReturnData result(_data_stack.top());
+        _data_stack.pop();
+        std::shared_ptr<ranally::ReturnVertex> vertex(
+            result.expression_vertex
+                ?  new ranally::ReturnVertex(result.expression_vertex)
+                :  new ranally::ReturnVertex());
+        return vertex;
+    }
+
+private:
+
+    struct ReturnData
+    {
+        std::shared_ptr<ranally::ExpressionVertex> expression_vertex;
+    };
+
+    std::stack<ReturnData> _data_stack;
 
 };
 
@@ -333,6 +434,26 @@ public:
 
     void While(
         std::shared_ptr<ranally::WhileVertex> const& vertex)
+    {
+        assert(vertex);
+        assert(!_data_stack.empty());
+        _data_stack.top().vertex = vertex;
+        _data_stack.top().vertex->set_position(_data_stack.top().line,
+            _data_stack.top().col);
+    }
+
+    void FunctionDefinition(
+        std::shared_ptr<ranally::FunctionDefinitionVertex> const& vertex)
+    {
+        assert(vertex);
+        assert(!_data_stack.empty());
+        _data_stack.top().vertex = vertex;
+        _data_stack.top().vertex->set_position(_data_stack.top().line,
+            _data_stack.top().col);
+    }
+
+    void Return(
+        std::shared_ptr<ranally::ReturnVertex> const& vertex)
     {
         assert(vertex);
         assert(!_data_stack.empty());
@@ -641,8 +762,8 @@ private:
 };
 
 
-class Function_pimpl:
-    public ranally::Function_pskel
+class FunctionCall_pimpl:
+    public ranally::FunctionCall_pskel
 {
 
 public:
@@ -668,13 +789,13 @@ public:
         _data_stack.top().expression_vertices = vertices;
     }
 
-    std::shared_ptr<ranally::FunctionVertex> post_Function()
+    std::shared_ptr<ranally::FunctionCallVertex> post_FunctionCall()
     {
         assert(!_data_stack.empty());
         FunctionData result(_data_stack.top());
         _data_stack.pop();
-        return std::shared_ptr<ranally::FunctionVertex>(
-            new ranally::FunctionVertex(result.name,
+        return std::shared_ptr<ranally::FunctionCallVertex>(
+            new ranally::FunctionCallVertex(result.name,
                 result.expression_vertices));
     }
 
@@ -859,8 +980,8 @@ public:
             _data_stack.top().col);
     }
 
-    void Function(
-        std::shared_ptr<ranally::FunctionVertex> const& vertex)
+    void FunctionCall(
+        std::shared_ptr<ranally::FunctionCallVertex> const& vertex)
     {
         assert(!_data_stack.empty());
         assert(!_data_stack.top().vertex);
@@ -912,7 +1033,7 @@ namespace ranally {
   \exception std::exception In case of a System category error.
   \exception xml_schema::parsing In case of Xml category error.
 */
-std::shared_ptr<ScriptVertex> XmlParser::parse(
+std::shared_ptr<ModuleVertex> XmlParser::parse(
     std::istream& stream) const
 {
     // Python stores regular integers in a C long. Xsd doesn't have a long
@@ -947,7 +1068,7 @@ std::shared_ptr<ScriptVertex> XmlParser::parse(
     Expressions_pimpl expressions_p;
     expressions_p.parsers(expression_p);
 
-    Function_pimpl function_p;
+    FunctionCall_pimpl function_p;
     function_p.parsers(string_p, expressions_p);
 
     Operator_pimpl operator_p;
@@ -974,9 +1095,16 @@ std::shared_ptr<ScriptVertex> XmlParser::parse(
     While_pimpl while_p;
     while_p.parsers(expression_p, statements_p);
 
+    FunctionDefinition_pimpl function_definition_p;
+    function_definition_p.parsers(string_p, expressions_p, statements_p);
+
+    Return_pimpl return_p;
+    return_p.parsers(expression_p);
+
     Statement_pimpl statement_p;
     statement_p.parsers(expression_p, assignment_p, if_p, while_p,
-        non_negative_integer_p, non_negative_integer_p);
+        function_definition_p, return_p, non_negative_integer_p,
+        non_negative_integer_p);
 
     statements_p.parsers(statement_p);
 
@@ -995,7 +1123,7 @@ std::shared_ptr<ScriptVertex> XmlParser::parse(
   \overload
   \param     xml String with Xml to parse.
 */
-std::shared_ptr<ScriptVertex> XmlParser::parse_string(
+std::shared_ptr<ModuleVertex> XmlParser::parse_string(
     String const& xml) const
 {
     // Copy string contents in a string stream and work with that.
@@ -1003,7 +1131,7 @@ std::shared_ptr<ScriptVertex> XmlParser::parse_string(
     stream.exceptions(std::ifstream::badbit | std::ifstream::failbit);
     stream << xml.encode_in_utf8(); // << std::endl;
 
-    std::shared_ptr<ScriptVertex> vertex;
+    std::shared_ptr<ModuleVertex> vertex;
 
     try {
         vertex = parse(stream);

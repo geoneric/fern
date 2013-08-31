@@ -30,7 +30,7 @@ public:
 
     CopyVisitor&   operator=           (CopyVisitor const&)=delete;
 
-    std::shared_ptr<ScriptVertex> const& script_vertex() const;
+    std::shared_ptr<ModuleVertex> const& module_vertex() const;
 
     // SyntaxVertices const& syntax_vertices () const;
 
@@ -38,7 +38,7 @@ public:
 
 private:
 
-    std::shared_ptr<ScriptVertex> _script_vertex;
+    std::shared_ptr<ModuleVertex> _module_vertex;
 
     // SyntaxVertices   _syntax_vertices;
 
@@ -50,7 +50,7 @@ private:
 
     void           Visit               (AssignmentVertex&);
 
-    void           Visit               (FunctionVertex&);
+    void           Visit               (FunctionCallVertex&);
 
     void           Visit               (IfVertex&);
 
@@ -58,7 +58,7 @@ private:
 
     void           Visit               (OperatorVertex&);
 
-    void           Visit               (ScriptVertex&);
+    void           Visit               (ModuleVertex&);
 
     void           Visit               (WhileVertex&);
 

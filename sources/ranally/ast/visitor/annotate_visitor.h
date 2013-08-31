@@ -20,9 +20,9 @@ namespace ranally {
   is performed by this visitor. It only annotates the tree. Use a
   ValidateVisitor to perform the actual validation.
 
-  For example, in case of a FunctionVertex, it is no problem if the operation
-  is not known. Annotation is optional. The ValidateVisitor will check if all
-  information required for execution is present.
+  For example, in case of a FunctionCallVertex, it is no problem if the
+  operation is not known. Annotation is optional. The ValidateVisitor
+  will check if all information required for execution is present.
 
   \todo      In case of subscript vertices, the names used in the selection
              expression should be first looked up in the list of attributes
@@ -100,7 +100,7 @@ private:
 
     // void           Visit               (SubscriptVertex& vertex);
 
-    void           Visit               (ScriptVertex& vertex);
+    void           Visit               (ModuleVertex& vertex);
 
 };
 

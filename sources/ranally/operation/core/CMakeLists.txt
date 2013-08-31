@@ -2,6 +2,7 @@ ADD_SUBDIRECTORY(test)
 
 SET(SOURCES
     argument
+    argument_type
     attribute_argument
     data_types
     operation

@@ -53,8 +53,8 @@ void AstDotVisitor::set_mode(
 
 
 void AstDotVisitor::add_ast_vertex(
-    SyntaxVertex const& source_vertex,
-    SyntaxVertex const& target_vertex)
+    AstVertex const& source_vertex,
+    AstVertex const& target_vertex)
 {
     assert(_mode == Mode::ConnectingAst);
     add_script(
@@ -65,8 +65,36 @@ void AstDotVisitor::add_ast_vertex(
 }
 
 
+// void AstDotVisitor::add_ast_vertex(
+//     AstVertex const& source_vertex,
+//     ScopeVertex const& target_vertex)
+// {
+//     assert(_mode == Mode::ConnectingAst);
+//     add_script(
+//         String(boost::format("\"%1%\"") % &source_vertex) + " -> " +
+//         String(boost::format("\"%1%\"") % &target_vertex) + " ["
+//         // String(boost::format("\"cluster_%1%\"") % &target_vertex) + " ["
+//         "];\n"
+//     );
+// }
+// 
+// 
+// void AstDotVisitor::add_ast_vertex(
+//     ScopeVertex const& source_vertex,
+//     AstVertex const& target_vertex)
+// {
+//     assert(_mode == Mode::ConnectingAst);
+//     add_script(
+//         // String(boost::format("\"cluster_%1%\"") % &source_vertex) + " -> " +
+//         String(boost::format("\"%1%\"") % &source_vertex) + " -> " +
+//         String(boost::format("\"%1%\"") % &target_vertex) + " ["
+//         "];\n"
+//     );
+// }
+
+
 void AstDotVisitor::add_cfg_vertices(
-    SyntaxVertex const& source_vertex)
+    AstVertex const& source_vertex)
 {
     assert(_mode == Mode::ConnectingCfg);
     for(auto successor: source_vertex.successors()) {
@@ -217,7 +245,7 @@ void AstDotVisitor::Visit(
 
 
 void AstDotVisitor::Visit(
-    FunctionVertex& vertex)
+    FunctionCallVertex& vertex)
 {
     switch(_mode) {
         case Mode::Declaring: {
@@ -256,6 +284,106 @@ void AstDotVisitor::Visit(
 
 
 void AstDotVisitor::Visit(
+    FunctionDefinitionVertex& vertex)
+{
+    _scope_names.push(vertex.name().encode_in_utf8());
+
+    switch(_mode) {
+        case Mode::Declaring: {
+            add_script(
+                String(boost::format("\"%1%\" ["
+                        "label=\"%2%\" "
+                    "];\n")
+                    % &vertex
+                    % vertex.name()));
+            break;
+        }
+        case Mode::ConnectingAst: {
+            // Visit(*vertex.scope());
+            // add_script(String(boost::format(
+            //     "subgraph cluster_%1% {\n"
+            //         "label=\"%2%\";\n")
+            //     % &vertex
+            //     % vertex.name()));
+
+            // for(auto expression_vertex: vertex.arguments()) {
+            //     add_ast_vertex(vertex, *expression_vertex);
+            // }
+            // for(auto statement_vertex: vertex.scope()->statements()) {
+            //     add_ast_vertex(vertex, *statement_vertex);
+            // }
+
+            // for(auto expression_vertex: vertex.arguments()) {
+            //     expression_vertex->Accept(*this);
+            // }
+            // for(auto statement_vertex: vertex.scope()->statements()) {
+            //     statement_vertex->Accept(*this);
+            // }
+
+            // add_script("}\n");
+            break;
+        }
+        case Mode::ConnectingCfg: {
+            break;
+        }
+        case Mode::ConnectingUses: {
+            break;
+        }
+    }
+
+    // for(auto expression_vertex: vertex.arguments()) {
+    //     expression_vertex->Accept(*this);
+    // }
+    Visit(*vertex.scope());
+    // vertex.scope()->Accept(*this);
+
+    // // // Recursing AST in case we are connecting is already handled above.
+    // // if(_mode != Mode::ConnectingAst) {
+    //     for(auto expression_vertex: vertex.arguments()) {
+    //         expression_vertex->Accept(*this);
+    //     }
+    //     // for(auto statement_vertex: vertex.scope()->statements()) {
+    //     //     statement_vertex->Accept(*this);
+    //     // }
+    //     vertex.scope()->Accept(*this);
+    // // }
+    _scope_names.pop();
+}
+
+
+void AstDotVisitor::Visit(
+    ReturnVertex& vertex)
+{
+    switch(_mode) {
+        case Mode::Declaring: {
+            add_script(
+                String(boost::format("\"%1%\" ["
+                        "label=\"return\" "
+                    "];\n")
+                    % &vertex));
+            break;
+        }
+        case Mode::ConnectingAst: {
+            if(vertex.expression()) {
+                add_ast_vertex(vertex, *vertex.expression());
+            }
+            break;
+        }
+        case Mode::ConnectingCfg: {
+            break;
+        }
+        case Mode::ConnectingUses: {
+            break;
+        }
+    }
+
+    if(vertex.expression()) {
+        vertex.expression()->Accept(*this);
+    }
+}
+
+
+void AstDotVisitor::Visit(
     IfVertex& vertex)
 {
     switch(_mode) {
@@ -268,16 +396,16 @@ void AstDotVisitor::Visit(
         }
         case Mode::ConnectingAst: {
             add_ast_vertex(vertex, *vertex.condition());
-            for(auto statement_vertex: vertex.true_statements()) {
-                add_ast_vertex(vertex, *statement_vertex);
-            }
-            for(auto statement_vertex: vertex.false_statements()) {
-                add_ast_vertex(vertex, *statement_vertex);
-            }
+            // for(auto statement_vertex: vertex.true_scope()->statements()) {
+            //     add_ast_vertex(vertex, *statement_vertex);
+            // }
+            // for(auto statement_vertex: vertex.false_scope()->statements()) {
+            //     add_ast_vertex(vertex, *statement_vertex);
+            // }
             break;
         }
         case Mode::ConnectingCfg: {
-            add_cfg_vertices(vertex);
+            // add_cfg_vertices(vertex);
             break;
         }
         case Mode::ConnectingUses: {
@@ -286,12 +414,14 @@ void AstDotVisitor::Visit(
     }
 
     vertex.condition()->Accept(*this);
-    for(auto statement_vertex: vertex.true_statements()) {
-        statement_vertex->Accept(*this);
-    }
-    for(auto statement_vertex: vertex.false_statements()) {
-        statement_vertex->Accept(*this);
-    }
+    vertex.true_scope()->Accept(*this);
+    vertex.false_scope()->Accept(*this);
+    // for(auto statement_vertex: vertex.true_scope()->statements()) {
+    //     statement_vertex->Accept(*this);
+    // }
+    // for(auto statement_vertex: vertex.false_scope()->statements()) {
+    //     statement_vertex->Accept(*this);
+    // }
 }
 
 
@@ -302,8 +432,8 @@ void AstDotVisitor::Visit(
         case Mode::Declaring: {
             add_script(
                 String(boost::format("\"%1%\" ["
-                        "label=\"%2%\""
-                        "style=filled, "
+                        "label=\"%2%\" "
+                        "style=filled "
                         "fillcolor=\"%3%\""
                     "];\n")
                     % &vertex
@@ -367,50 +497,45 @@ void AstDotVisitor::Visit(
 
 
 void AstDotVisitor::Visit(
-    ScriptVertex& vertex)
+    ModuleVertex& vertex)
 {
+    _scope_names.push(vertex.source_name().encode_in_utf8());
     // TODO 'ordering=out' is current not supported in combination with
     // TODO 'constraint=false'. Check again with dot > 2.28.0, when it becomes
     // TODO available.
     set_script(String(
         "digraph G {\n"
-        // "ordering=out;\n"
+        "ordering=out;\n"
         "rankdir=TB;\n"
     ));
 
     set_mode(Mode::Declaring);
-    add_script(
-        String(boost::format("\"%1%\"") % &vertex) +
-        String(boost::format(" [label=\"%1%\"];\n")
-            % vertex.source_name().encode_in_utf8())
-    );
-
-    for(auto statement_vertex: vertex.statements()) {
-        statement_vertex->Accept(*this);
-    }
+    Visit(*vertex.scope());
 
     set_mode(Mode::ConnectingAst);
-    for(auto statement_vertex: vertex.statements()) {
-        add_ast_vertex(vertex, *statement_vertex);
-        statement_vertex->Accept(*this);
-    }
+    Visit(*vertex.scope());
 
     if(_modes & Mode::ConnectingCfg) {
         set_mode(Mode::ConnectingCfg);
-        add_cfg_vertices(vertex);
-        for(auto statement_vertex: vertex.statements()) {
-          statement_vertex->Accept(*this);
-        }
+        // add_cfg_vertices(vertex);
+        Visit(*vertex.scope());
+        // vertex.scope()->Accept(*this);
+        // for(auto statement_vertex: vertex.scope()->statements()) {
+        //   statement_vertex->Accept(*this);
+        // }
     }
 
     if(_modes & Mode::ConnectingUses) {
         set_mode(Mode::ConnectingUses);
-        for(auto statement_vertex: vertex.statements()) {
-            statement_vertex->Accept(*this);
-        }
+        // vertex.scope()->Accept(*this);
+        Visit(*vertex.scope());
+        // for(auto statement_vertex: vertex.scope()->statements()) {
+        //     statement_vertex->Accept(*this);
+        // }
     }
 
     add_script("}\n");
+    _scope_names.pop();
 }
 
 
@@ -453,16 +578,16 @@ void AstDotVisitor::Visit(
         }
         case Mode::ConnectingAst: {
             add_ast_vertex(vertex, *vertex.condition());
-            for(auto statement_vertex: vertex.true_statements()) {
-                add_ast_vertex(vertex, *statement_vertex);
-            }
-            for(auto statement_vertex: vertex.false_statements()) {
-                add_ast_vertex(vertex, *statement_vertex);
-            }
+            // for(auto statement_vertex: vertex.true_scope()->statements()) {
+            //     add_ast_vertex(vertex, *statement_vertex);
+            // }
+            // for(auto statement_vertex: vertex.false_scope()->statements()) {
+            //     add_ast_vertex(vertex, *statement_vertex);
+            // }
             break;
         }
         case Mode::ConnectingCfg: {
-            add_cfg_vertices(vertex);
+            // add_cfg_vertices(vertex);
             break;
         }
         case Mode::ConnectingUses: {
@@ -471,11 +596,79 @@ void AstDotVisitor::Visit(
     }
 
     vertex.condition()->Accept(*this);
-    for(auto statement_vertex: vertex.true_statements()) {
+    vertex.true_scope()->Accept(*this);
+    vertex.false_scope()->Accept(*this);
+    // for(auto statement_vertex: vertex.true_scope()->statements()) {
+    //     statement_vertex->Accept(*this);
+    // }
+    // for(auto statement_vertex: vertex.false_scope()->statements()) {
+    //     statement_vertex->Accept(*this);
+    // }
+}
+
+
+void AstDotVisitor::Visit(
+    ScopeVertex& vertex)
+{
+    switch(_mode) {
+        case Mode::Declaring: {
+            add_script(
+                String(boost::format("\"%1%\" ["
+                        "label=\"scope\" "
+                    "];\n")
+                    % &vertex));
+            break;
+        }
+        case Mode::ConnectingAst: {
+            add_script(String(boost::format(
+                "subgraph cluster_%1% {\n"
+                    "label=\"%2%\";\n")
+                % &vertex
+                % _scope_names.top()));
+
+            for(auto statement_vertex: vertex.statements()) {
+                add_ast_vertex(vertex, *statement_vertex);
+            }
+
+            break;
+        }
+        case Mode::ConnectingCfg: {
+            break;
+        }
+        case Mode::ConnectingUses: {
+            break;
+        }
+    }
+
+    for(auto statement_vertex: vertex.statements()) {
         statement_vertex->Accept(*this);
     }
-    for(auto statement_vertex: vertex.false_statements()) {
-        statement_vertex->Accept(*this);
+    Visit(*vertex.sentinel());
+}
+
+
+void AstDotVisitor::Visit(
+    SentinelVertex& vertex)
+{
+    switch(_mode) {
+        case Mode::Declaring: {
+            add_script(
+                String(boost::format("\"%1%\" ["
+                        "label=\"sentinel\" "
+                    "];\n")
+                    % &vertex));
+            break;
+        }
+        case Mode::ConnectingAst: {
+            add_script("}\n");
+            break;
+        }
+        case Mode::ConnectingCfg: {
+            break;
+        }
+        case Mode::ConnectingUses: {
+            break;
+        }
     }
 }
 

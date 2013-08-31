@@ -41,14 +41,14 @@ private:
     int            convert_to_cpp      (int argc,
                                         char** argv) const;
 
-    String         convert_to_dot_ast  (ScriptVertexPtr const& tree,
+    String         convert_to_dot_ast  (ModuleVertexPtr const& tree,
                                         int modes) const;
 
     int            convert_to_dot_ast  (int argc,
                                         char** argv) const;
 
     String         convert_to_dot_flowgraph(
-                                        ScriptVertexPtr const& tree) const;
+                                        ModuleVertexPtr const& tree) const;
 
     int            convert_to_dot_flowgraph(
                                         int argc,

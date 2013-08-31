@@ -246,10 +246,10 @@ BOOST_AUTO_TEST_CASE(parse_call)
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
-                    "<Function>"
+                    "<FunctionCall>"
                       "<Name>f</Name>"
                       "<Expressions/>"
-                    "</Function>"
+                    "</FunctionCall>"
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
@@ -264,7 +264,7 @@ BOOST_AUTO_TEST_CASE(parse_call)
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
-                    "<Function>"
+                    "<FunctionCall>"
                       "<Name>f</Name>"
                       "<Expressions>"
                         "<Expression line=\"1\" col=\"2\">"
@@ -282,13 +282,13 @@ BOOST_AUTO_TEST_CASE(parse_call)
                           "<Name>three</Name>"
                         "</Expression>"
                         "<Expression line=\"1\" col=\"17\">"
-                          "<Function>"
+                          "<FunctionCall>"
                             "<Name>four</Name>"
                             "<Expressions/>"
-                          "</Function>"
+                          "</FunctionCall>"
                         "</Expression>"
                       "</Expressions>"
-                    "</Function>"
+                    "</FunctionCall>"
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
@@ -310,10 +310,10 @@ BOOST_AUTO_TEST_CASE(parse_call)
 //         "<Statements>"
 //           "<Statement>"
 //             "<Expression line=\"1\" col=\"0\">"
-//               "<Function>"
+//               "<FunctionCall>"
 //                 "<Name>print</Name>"
 //                 "<Expressions/>"
-//               "</Function>"
+//               "</FunctionCall>"
 //             "</Expression>"
 //           "</Statement>"
 //         "</Statements>"
@@ -328,7 +328,7 @@ BOOST_AUTO_TEST_CASE(parse_call)
 //   //       "<Statements>"
 //   //         "<Statement>"
 //   //           "<Expression line=\"1\" col=\"0\">"
-//   //             "<Function>"
+//   //             "<FunctionCall>"
 //   //               "<Name>f</Name>"
 //   //               "<Expressions>"
 //   //                 "<Expression line=\"1\" col=\"6\">"
@@ -346,13 +346,13 @@ BOOST_AUTO_TEST_CASE(parse_call)
 //   //                   "<Name>three</Name>"
 //   //                 "</Expression>"
 //   //                 "<Expression line=\"1\" col=\"21\">"
-//   //                   "<Function>"
+//   //                   "<FunctionCall>"
 //   //                     "<Name>four</Name>"
 //   //                     "<Expressions/>"
-//   //                   "</Function>"
+//   //                   "</FunctionCall>"
 //   //                 "</Expression>"
 //   //               "</Expressions>"
-//   //             "</Function>"
+//   //             "</FunctionCall>"
 //   //           "</Expression>"
 //   //         "</Statement>"
 //   //       "</Statements>"
@@ -749,6 +749,99 @@ BOOST_AUTO_TEST_CASE(parse_slice)
                       "</Expression>"
                     "</Subscript>"
                   "</Expression>"
+                "</Statement>"
+              "</Statements>"
+            "</Ranally>"));
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(return_)
+{
+    ranally::AlgebraParser parser;
+    ranally::String xml;
+
+    {
+        xml = parser.parse_string(ranally::String(
+            "return"));
+        BOOST_CHECK_EQUAL(xml, ranally::String(
+            "<?xml version=\"1.0\"?>"
+            "<Ranally source=\"&lt;string&gt;\">"
+              "<Statements>"
+                "<Statement line=\"1\" col=\"0\">"
+                  "<Return/>"
+                "</Statement>"
+              "</Statements>"
+            "</Ranally>"));
+    }
+
+    {
+        xml = parser.parse_string(ranally::String(
+            "return c"));
+        BOOST_CHECK_EQUAL(xml, ranally::String(
+            "<?xml version=\"1.0\"?>"
+            "<Ranally source=\"&lt;string&gt;\">"
+              "<Statements>"
+                "<Statement line=\"1\" col=\"0\">"
+                  "<Return>"
+                    "<Expression line=\"1\" col=\"7\">"
+                      "<Name>c</Name>"
+                    "</Expression>"
+                  "</Return>"
+                "</Statement>"
+              "</Statements>"
+            "</Ranally>"));
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(parse_function)
+{
+    ranally::AlgebraParser parser;
+    ranally::String xml;
+
+    {
+        xml = parser.parse_string(ranally::String(
+            "def foo(a, b):\n"
+            "    c = a + b\n"));
+        BOOST_CHECK_EQUAL(xml, ranally::String(
+            "<?xml version=\"1.0\"?>"
+            "<Ranally source=\"&lt;string&gt;\">"
+              "<Statements>"
+                "<Statement line=\"1\" col=\"0\">"
+                  "<FunctionDefinition>"
+                    "<Name>foo</Name>"
+                    "<Expressions>"
+                      "<Expression line=\"1\" col=\"8\">"
+                        "<Name>a</Name>"
+                      "</Expression>"
+                      "<Expression line=\"1\" col=\"11\">"
+                        "<Name>b</Name>"
+                      "</Expression>"
+                    "</Expressions>"
+                    "<Statements>"
+                      "<Statement line=\"2\" col=\"4\">"
+                        "<Assignment>"
+                          "<Expression line=\"2\" col=\"4\">"
+                            "<Name>c</Name>"
+                          "</Expression>"
+                          "<Expression line=\"2\" col=\"8\">"
+                            "<Operator>"
+                              "<Name>add</Name>"
+                              "<Expressions>"
+                                "<Expression line=\"2\" col=\"8\">"
+                                  "<Name>a</Name>"
+                                "</Expression>"
+                                "<Expression line=\"2\" col=\"12\">"
+                                  "<Name>b</Name>"
+                                "</Expression>"
+                              "</Expressions>"
+                            "</Operator>"
+                          "</Expression>"
+                        "</Assignment>"
+                      "</Statement>"
+                    "</Statements>"
+                  "</FunctionDefinition>"
                 "</Statement>"
               "</Statements>"
             "</Ranally>"));

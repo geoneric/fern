@@ -1,10 +1,10 @@
-#include "ranally/ast/visitor/script_visitor.h"
+#include "ranally/ast/visitor/module_visitor.h"
 #include "ranally/ast/core/vertices.h"
 
 
 namespace ranally {
 
-ScriptVisitor::ScriptVisitor(
+ModuleVisitor::ModuleVisitor(
     size_t tab_size)
 
     : Visitor(),
@@ -15,13 +15,13 @@ ScriptVisitor::ScriptVisitor(
 }
 
 
-String const& ScriptVisitor::script() const
+String const& ModuleVisitor::module() const
 {
-    return _script;
+    return _module;
 }
 
 
-// String ScriptVisitor::indent(
+// String ModuleVisitor::indent(
 //   String const& statement)
 // {
 //   // Only the first line of multi-line statements (if-statement) is indented
@@ -31,61 +31,61 @@ String const& ScriptVisitor::script() const
 // }
 
 
-String ScriptVisitor::indentation() const
+String ModuleVisitor::indentation() const
 {
     return String(std::string(_indent_level * _tab_size, ' '));
 }
 
 
-void ScriptVisitor::visit_statements(
+void ModuleVisitor::visit_statements(
     StatementVertices& statements)
 {
     for(auto statement_vertex: statements) {
-        _script += indentation();
+        _module += indentation();
         statement_vertex->Accept(*this);
 
-        if(!_script.ends_with("\n")) {
-            _script += "\n";
+        if(!_module.ends_with("\n")) {
+            _module += "\n";
         }
     }
 }
 
 
-void ScriptVisitor::visit_expressions(
+void ModuleVisitor::visit_expressions(
     ExpressionVertices const& expressions)
 {
-    _script += "(";
+    _module += "(";
 
     for(size_t i = 0; i < expressions.size(); ++i) {
         expressions[i]->Accept(*this);
 
         if(i < expressions.size() - 1) {
-            _script += ", ";
+            _module += ", ";
         }
     }
 
-    _script += ")";
+    _module += ")";
 }
 
 
-void ScriptVisitor::Visit(
+void ModuleVisitor::Visit(
     AssignmentVertex& vertex)
 {
     vertex.target()->Accept(*this);
-    _script += " = ";
+    _module += " = ";
     vertex.expression()->Accept(*this);
 }
 
 
-void ScriptVisitor::Visit(
-    FunctionVertex& vertex)
+void ModuleVisitor::Visit(
+    FunctionCallVertex& vertex)
 {
-    _script += vertex.name();
+    _module += vertex.name();
     visit_expressions(vertex.expressions());
 }
 
 
-void ScriptVisitor::Visit(
+void ModuleVisitor::Visit(
     OperatorVertex& vertex)
 {
     assert(vertex.expressions().size() == 1 ||
@@ -93,180 +93,176 @@ void ScriptVisitor::Visit(
 
     if(vertex.expressions().size() == 1) {
         // Unary operator.
-        _script += vertex.symbol();
-        _script += "(";
+        _module += vertex.symbol();
+        _module += "(";
         vertex.expressions()[0]->Accept(*this);
-        _script += ")";
+        _module += ")";
     }
     else if(vertex.expressions().size() == 2) {
         // Binary operator.
-        _script += "(";
+        _module += "(";
         vertex.expressions()[0]->Accept(*this);
-        _script += ") ";
+        _module += ") ";
 
-        _script += vertex.symbol();
+        _module += vertex.symbol();
 
-        _script += " (";
+        _module += " (";
         vertex.expressions()[1]->Accept(*this);
-        _script += ")";
+        _module += ")";
     }
 }
 
 
-void ScriptVisitor::Visit(
-    SyntaxVertex&)
+void ModuleVisitor::Visit(
+    AstVertex&)
 {
     assert(false);
 }
 
 
-void ScriptVisitor::Visit(
-    ScriptVertex& vertex)
+void ModuleVisitor::Visit(
+    ModuleVertex& vertex)
 {
     _indent_level = 0;
-    _script = String();
-    visit_statements(vertex.statements());
+    _module = String();
+    visit_statements(vertex.scope()->statements());
     assert(_indent_level == 0);
 }
 
 
-void ScriptVisitor::Visit(
+void ModuleVisitor::Visit(
     StringVertex& vertex)
 {
-    _script += "\"" + vertex.value() + "\"";
+    _module += "\"" + vertex.value() + "\"";
 }
 
 
-void ScriptVisitor::Visit(
+void ModuleVisitor::Visit(
     NameVertex& vertex)
 {
-    _script += vertex.name();
+    _module += vertex.name();
 }
 
 
-void ScriptVisitor::Visit(
+void ModuleVisitor::Visit(
     SubscriptVertex& vertex)
 {
-    _script += "(";
+    _module += "(";
     vertex.expression()->Accept(*this);
-    _script += ")";
-    _script += "[";
+    _module += ")";
+    _module += "[";
     vertex.selection()->Accept(*this);
-    _script += "]";
+    _module += "]";
 }
 
 
-void ScriptVisitor::Visit(
+void ModuleVisitor::Visit(
     NumberVertex<int8_t>& vertex)
 {
-    _script += String(boost::format("%1%") % vertex.value());
+    _module += String(boost::format("%1%") % vertex.value());
 }
 
 
-void ScriptVisitor::Visit(
+void ModuleVisitor::Visit(
     NumberVertex<int16_t>& vertex)
 {
-    _script += String(boost::format("%1%") % vertex.value());
+    _module += String(boost::format("%1%") % vertex.value());
 }
 
 
-void ScriptVisitor::Visit(
+void ModuleVisitor::Visit(
     NumberVertex<int32_t>& vertex)
 {
-    _script += String(boost::format("%1%") % vertex.value());
+    _module += String(boost::format("%1%") % vertex.value());
 }
 
 
-void ScriptVisitor::Visit(
+void ModuleVisitor::Visit(
     NumberVertex<int64_t>& vertex)
 {
     std::string format_string = sizeof(long) == sizeof(int64_t)
         ? "%1%" : "%1%L";
-    _script += String(boost::format(format_string) % vertex.value());
+    _module += String(boost::format(format_string) % vertex.value());
 }
 
 
-void ScriptVisitor::Visit(
+void ModuleVisitor::Visit(
     NumberVertex<uint8_t>& vertex)
 {
     // U?
-    _script += String(boost::format("%1%U") % vertex.value());
+    _module += String(boost::format("%1%U") % vertex.value());
 }
 
 
-void ScriptVisitor::Visit(
+void ModuleVisitor::Visit(
     NumberVertex<uint16_t>& vertex)
 {
     // U?
-    _script += String(boost::format("%1%U") % vertex.value());
+    _module += String(boost::format("%1%U") % vertex.value());
 }
 
 
-void ScriptVisitor::Visit(
+void ModuleVisitor::Visit(
     NumberVertex<uint32_t>& vertex)
 {
     // U?
-    _script += String(boost::format("%1%U") % vertex.value());
+    _module += String(boost::format("%1%U") % vertex.value());
 }
 
 
-void ScriptVisitor::Visit(
+void ModuleVisitor::Visit(
     NumberVertex<uint64_t>& vertex)
 {
     // U?
     std::string format_string = sizeof(unsigned long) == sizeof(uint64_t)
       ? "%1%U" : "%1%UL";
-    _script += String(boost::format(format_string) % vertex.value());
+    _module += String(boost::format(format_string) % vertex.value());
 }
 
 
-void ScriptVisitor::Visit(
+void ModuleVisitor::Visit(
     NumberVertex<float>& vertex)
 {
-    _script += String(boost::format("%1%") % vertex.value());
+    _module += String(boost::format("%1%") % vertex.value());
 }
 
 
-void ScriptVisitor::Visit(
+void ModuleVisitor::Visit(
     NumberVertex<double>& vertex)
 {
-    _script += String(boost::format("%1%") % vertex.value());
+    _module += String(boost::format("%1%") % vertex.value());
 }
 
 
-void ScriptVisitor::Visit(
+void ModuleVisitor::Visit(
     IfVertex& vertex)
 {
-    assert(!vertex.true_statements().empty());
-
     // The indent function called in visit_statements of the parent vertex
     // indents the first line of this if-statement, so we have to indent the
     // else line ourselves.
     // The statements that are part of the true and false blocks are indented
     // by the visit_statements.
-    _script += "if ";
+    _module += "if ";
     vertex.condition()->Accept(*this);
-    _script += ":\n";
+    _module += ":\n";
 
     ++_indent_level;
-    visit_statements(vertex.true_statements());
+    visit_statements(vertex.true_scope()->statements());
     --_indent_level;
 
-    if(!vertex.false_statements().empty()) {
-        _script += indentation();
-        _script += "else:\n";
+    if(!vertex.false_scope()->statements().empty()) {
+        _module += indentation();
+        _module += "else:\n";
         ++_indent_level;
-        visit_statements(vertex.false_statements());
+        visit_statements(vertex.false_scope()->statements());
         --_indent_level;
     }
 }
 
 
-void ScriptVisitor::Visit(
+void ModuleVisitor::Visit(
     WhileVertex& vertex)
 {
-    assert(!vertex.true_statements().empty());
-
     String result;
 
     // The indent function called in visit_statements of the parent vertex
@@ -274,18 +270,18 @@ void ScriptVisitor::Visit(
     // else line ourselves.
     // The statements that are part of the true and false blocks are indented
     // by the visit_statements.
-    _script += "while ";
+    _module += "while ";
     vertex.condition()->Accept(*this);
-    _script += ":\n";
+    _module += ":\n";
     ++_indent_level;
-    visit_statements(vertex.true_statements());
+    visit_statements(vertex.true_scope()->statements());
     --_indent_level;
 
-    if(!vertex.false_statements().empty()) {
-        _script += indentation();
-        _script += "else:\n";
+    if(!vertex.false_scope()->statements().empty()) {
+        _module += indentation();
+        _module += "else:\n";
         ++_indent_level;
-        visit_statements(vertex.false_statements());
+        visit_statements(vertex.false_scope()->statements());
         --_indent_level;
     }
 }

@@ -158,7 +158,7 @@ void AnnotateVisitor::Visit(
 
 
 void AnnotateVisitor::Visit(
-    ScriptVertex& vertex)
+    ModuleVertex& vertex)
 {
     Visitor::Visit(vertex);
 }

@@ -19,31 +19,29 @@ typedef std::vector<std::shared_ptr<StatementVertex>> StatementVertices;
 
   \sa        .
 */
-class SyntaxVertex:
+class AstVertex:
     public Loki::BaseVisitable<>
 {
 
-    friend class SyntaxVertexTest;
-
 private:
 
-    typedef std::vector<SyntaxVertex*> SyntaxVertices;
+    typedef std::vector<AstVertex*> AstVertices;
 
 public:
 
     LOKI_DEFINE_VISITABLE()
 
-    typedef SyntaxVertices::size_type size_type;
+    typedef AstVertices::size_type size_type;
 
-    virtual        ~SyntaxVertex       ()=default;
+    virtual        ~AstVertex          ()=default;
 
-                   SyntaxVertex        (SyntaxVertex&&)=delete;
+                   AstVertex           (AstVertex&&)=delete;
 
-    SyntaxVertex&  operator=           (SyntaxVertex&&)=delete;
+    AstVertex&     operator=           (AstVertex&&)=delete;
 
-                   SyntaxVertex        (SyntaxVertex const&)=delete;
+                   AstVertex           (AstVertex const&)=delete;
 
-    SyntaxVertex&  operator=           (SyntaxVertex const&)=delete;
+    AstVertex&     operator=           (AstVertex const&)=delete;
 
     void           set_position        (int line_nr,
                                         int col_id);
@@ -52,23 +50,27 @@ public:
 
     int            col                 () const;
 
-    SyntaxVertices const& successors   () const;
+    bool           has_successor       () const;
 
-    SyntaxVertex const* successor      () const;
+    AstVertices const& successors      () const;
 
-    SyntaxVertex*  successor           ();
+    AstVertex const* successor         () const;
 
-    SyntaxVertex const* successor      (size_type index) const;
+    AstVertex*     successor           ();
 
-    SyntaxVertex*  successor           (size_type index);
+    AstVertex const* successor         (size_type index) const;
 
-    void           add_successor       (SyntaxVertex* successor);
+    AstVertex*     successor           (size_type index);
+
+    void           add_successor       (AstVertex* successor);
+
+    void           set_successor       (AstVertex* successor);
 
 protected:
 
-                   SyntaxVertex        ();
+                   AstVertex           ();
 
-                   SyntaxVertex        (int line_nr,
+                   AstVertex           (int line_nr,
                                         int col_id);
 
 private:
@@ -78,7 +80,7 @@ private:
     int            _col;
 
     //! The next vertex/vertices to process.
-    SyntaxVertices _successors;
+    AstVertices    _successors;
 
 };
 

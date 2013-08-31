@@ -65,7 +65,7 @@ private:
 
     void           Visit               (NameVertex& vertex);
 
-    void           Visit               (ScriptVertex& vertex);
+    void           Visit               (ModuleVertex& vertex);
 
 };
 

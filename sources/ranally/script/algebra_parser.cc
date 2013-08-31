@@ -17,6 +17,9 @@ namespace {
 void               write_expression_node(
                                         expr_ty const& expression,
                                         ranally::String& xml);
+void               write_expression_nodes(
+                                        asdl_seq const* expressions,
+                                        ranally::String& xml);
 void               write_statement_nodes(
                                         asdl_seq const* statements,
                                         ranally::String& xml);
@@ -35,21 +38,29 @@ void throw_unsupported_language_construct(
 }
 
 
-void write_name_node(
-    identifier const id,
-    expr_context_ty const& /* context */,
+void write_identifier_node(
+    identifier const identifier,
     ranally::String& xml)
 {
-    assert(PyString_Check(id));
+    assert(PyString_Check(identifier));
 
     // TODO Handle Unicode. In modern Python, identifiers are Unicode strings.
     xml += "<Name>";
-    xml += PyString_AsString(id);
+    xml += PyString_AsString(identifier);
     xml += "</Name>";
 
-    // PyObject* bytes = PyUnicode_AsUTF8String(id);
+    // PyObject* bytes = PyUnicode_AsUTF8String(identifier);
     // assert(bytes);
     // xml += dev::decodeFromUTF8(PyBytes_AsString(bytes));
+}
+
+
+void write_name_node(
+    identifier const identifier,
+    expr_context_ty const& /* context */,
+    ranally::String& xml)
+{
+    write_identifier_node(identifier, xml);
 }
 
 
@@ -163,11 +174,11 @@ void write_call_node(
     assert(starargs == 0); // TODO
     assert(kwargs == 0); // TODO
 
-    xml += "<Function>";
+    xml += "<FunctionCall>";
     assert(function->kind == Name_kind);
     write_name_node(function->v.Name.id, function->v.Name.ctx, xml);
     write_expressions_node(arguments, xml);
-    xml += "</Function>";
+    xml += "</FunctionCall>";
 }
 
 
@@ -495,7 +506,8 @@ void write_expression_node(
             break;
         }
         case ListComp_kind: {
-            throw_unsupported_language_construct(line_nr, col_nr, "list comprehension");
+            throw_unsupported_language_construct(line_nr, col_nr,
+                "list comprehension");
             break;
         }
         case Set_kind: {
@@ -503,7 +515,8 @@ void write_expression_node(
             break;
         }
         case SetComp_kind: {
-            throw_unsupported_language_construct(line_nr, col_nr, "set comprehension");
+            throw_unsupported_language_construct(line_nr, col_nr,
+                "set comprehension");
             break;
         }
         case Tuple_kind: {
@@ -574,6 +587,46 @@ void write_while_node(
 }
 
 
+void write_arguments_node(
+    arguments_ty const arguments,
+    ranally::String& xml)
+{
+    // TODO Throw exception in case vararg, kwarg, or defaults are set.
+    write_expression_nodes(arguments->args, xml);
+}
+
+
+void write_function_definition_node(
+    identifier const name,
+    arguments_ty const arguments,
+    asdl_seq const* body,
+    asdl_seq const* /* decorator_list */,
+    ranally::String& xml)
+{
+    // TODO Exception when decorator_list is not empty.
+    xml += "<FunctionDefinition>";
+    write_identifier_node(name, xml);
+    write_arguments_node(arguments, xml);
+    write_statement_nodes(body, xml);
+    xml += "</FunctionDefinition>";
+}
+
+
+void write_return_node(
+    expr_ty const value,
+    ranally::String& xml)
+{
+    if(!value) {
+        xml += "<Return/>";
+    }
+    else {
+        xml += "<Return>";
+        write_expression_node(value, xml);
+        xml += "</Return>";
+    }
+}
+
+
 // void writePrintFunctionNode(
 //     expr_ty const dest,
 //     asdl_seq const* values,
@@ -586,28 +639,52 @@ void write_while_node(
 //     xml += (boost::format("<Expression line=\"%1%\" col=\"%2%\">")
 //         % expression->lineno
 //         % expression->col_offset);
-//     xml += "<Function>";
+//     xml += "<FunctionCall>";
 //     xml += "<Name>";
 //     xml += "print";
 //     xml += "</Name>";
 //     write_expressions_node(values, xml);
-//     xml += "</Function>";
+//     xml += "</FunctionCall>";
 //     xml += "</Expression>";
 // }
+
+
+void write_expression_nodes(
+    asdl_seq const* expressions,
+    ranally::String& xml)
+{
+    if(!expressions || asdl_seq_LEN(expressions) == 0) {
+        xml += "<Expressions/>";
+    }
+    else {
+        xml += "<Expressions>";
+
+        for(int i = 0; i < asdl_seq_LEN(expressions); ++i) {
+            expr_ty const expression = static_cast<expr_ty const>(
+                asdl_seq_GET(expressions, i));
+            assert(expression);
+
+            write_expression_node(expression, xml);
+
+        }
+
+        xml += "</Expressions>";
+    }
+}
 
 
 void write_statement_nodes(
     asdl_seq const* statements,
     ranally::String& xml)
 {
-    if(!statements || statements->size == 0) {
+    if(!statements || asdl_seq_LEN(statements) == 0) {
         xml += "<Statements/>";
     }
     else {
         xml += "<Statements>";
 
         // See Python-ast.h.
-        for(int i = 0; i < statements->size; ++i) {
+        for(int i = 0; i < asdl_seq_LEN(statements); ++i) {
             stmt_ty const statement = static_cast<stmt_ty const>(
                 asdl_seq_GET(statements, i));
             assert(statement);
@@ -641,6 +718,18 @@ void write_statement_nodes(
                     write_while_node(statement->v.While.test,
                         statement->v.While.body, statement->v.While.orelse,
                         xml);
+                    break;
+                }
+                case FunctionDef_kind: {
+                    write_function_definition_node(
+                        statement->v.FunctionDef.name,
+                        statement->v.FunctionDef.args,
+                        statement->v.FunctionDef.body,
+                        statement->v.FunctionDef.decorator_list, xml);
+                    break;
+                }
+                case Return_kind: {
+                    write_return_node(statement->v.Return.value, xml);
                     break;
                 }
                 case Print_kind: {
@@ -687,19 +776,9 @@ void write_statement_nodes(
                     break;
                 }
 
-                case FunctionDef_kind: {
-                    throw_unsupported_language_construct(line_nr, col_nr,
-                        "define function");
-                    break;
-                }
                 case ClassDef_kind: {
                     throw_unsupported_language_construct(line_nr, col_nr,
                         "define class");
-                    break;
-                }
-                case Return_kind: {
-                    throw_unsupported_language_construct(line_nr, col_nr,
-                        "return");
                     break;
                 }
                 case Delete_kind: {

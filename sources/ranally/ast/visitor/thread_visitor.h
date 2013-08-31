@@ -1,4 +1,6 @@
 #pragma once
+#include <stack>
+#include "ranally/core/symbol_table.h"
 #include "ranally/ast/visitor/visitor.h"
 
 
@@ -11,8 +13,8 @@ namespace ranally {
   \sa        .
   \todo      Is it possible to pass pointers as arguments to the Visit functions?
 */
-class ThreadVisitor
-    : public Visitor
+class ThreadVisitor:
+    public Visitor
 {
 
     friend class ThreadVisitorTest;
@@ -33,12 +35,32 @@ public:
 
 private:
 
+    enum Mode {
+        //! Visit function definions, skip other statements.
+        VisitFunctionDefinitionStatements,
+
+        //! Visit statements that are not function definitions.
+        VisitNonFunctionDefinitionStatements
+    };
+
     //! Last vertex processed on the control flow path.
-    SyntaxVertex*  _last_vertex;
+    AstVertex*     _last_vertex;
+
+    //! Symbol table with function definitions.
+    SymbolTable<FunctionDefinitionVertex*> _symbol_table;
+
+    //! Stack of function definitions being visited.
+    std::stack<FunctionDefinitionVertex*> _function_definitions;
+
+    std::stack<Mode> _modes;
+
+    void           thread_to           (AstVertex* vertex);
 
     void           Visit               (AssignmentVertex& vertex);
 
-    void           Visit               (FunctionVertex& vertex);
+    void           Visit               (FunctionCallVertex& vertex);
+
+    void           Visit               (FunctionDefinitionVertex& vertex);
 
     void           Visit               (IfVertex& vertex);
 
@@ -69,15 +91,23 @@ private:
 
     void           Visit               (OperatorVertex& vertex);
 
-    void           Visit               (ScriptVertex& vertex);
+    void           Visit               (ReturnVertex& vertex);
+
+    void           Visit               (ScopeVertex& vertex);
+
+    void           Visit               (ModuleVertex& vertex);
+
+    void           Visit               (SentinelVertex& vertex);
 
     void           Visit               (StringVertex& vertex);
 
     void           Visit               (SubscriptVertex& vertex);
 
-    void           Visit               (SyntaxVertex& vertex);
+    void           Visit               (AstVertex& vertex);
 
     void           Visit               (WhileVertex& vertex);
+
+    // void           visit_scope         (StatementVertices& statements);
 
 };
 

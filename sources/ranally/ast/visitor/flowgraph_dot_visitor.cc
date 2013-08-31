@@ -23,7 +23,7 @@ void FlowgraphDotVisitor::set_mode(
 
 void FlowgraphDotVisitor::add_flowgraph_vertex(
     NameVertex const& source_vertex,
-    SyntaxVertex const& target_vertex)
+    AstVertex const& target_vertex)
 {
     if(!source_vertex.definitions().empty()) {
         for(auto definition: source_vertex.definitions()) {
@@ -45,8 +45,8 @@ void FlowgraphDotVisitor::add_flowgraph_vertex(
 
 
 void FlowgraphDotVisitor::add_flowgraph_vertex(
-    SyntaxVertex const& source_vertex,
-    SyntaxVertex const& target_vertex)
+    AstVertex const& source_vertex,
+    AstVertex const& target_vertex)
 {
     assert(_mode == Mode::ConnectingFlowgraph);
 
@@ -64,8 +64,8 @@ void FlowgraphDotVisitor::add_flowgraph_vertex(
     /// //      it is, instead of optimizing the plot by finding stuff ourselves.
     /// assert(!_definition);
     /// _mode = ConnectingOperationArgument;
-    /// const_cast<SyntaxVertex&>(source_vertex).Accept(*this);
-    /// SyntaxVertex const* new_source_vertex = _definition
+    /// const_cast<AstVertex&>(source_vertex).Accept(*this);
+    /// AstVertex const* new_source_vertex = _definition
     ///   ? _definition
     ///   : &source_vertex;
 
@@ -120,7 +120,7 @@ void FlowgraphDotVisitor::Visit(
 
 
 void FlowgraphDotVisitor::Visit(
-    FunctionVertex& vertex)
+    FunctionCallVertex& vertex)
 {
     switch(_mode) {
         case Mode::Declaring: {
@@ -171,14 +171,14 @@ void FlowgraphDotVisitor::Visit(
             "rankdir=TB;\n"
         ) % if_cluster_id++));
     }
-    for(auto statement_vertex: vertex.true_statements()) {
+    for(auto statement_vertex: vertex.true_scope()->statements()) {
         statement_vertex->Accept(*this);
     }
     if(_mode == Mode::ConnectingFlowgraph) {
         add_script("}\n");
     }
 
-    if(!vertex.false_statements().empty()) {
+    if(!vertex.false_scope()->statements().empty()) {
         // TODO condition -> sub graph
         if(_mode == Mode::ConnectingFlowgraph) {
             add_script(String(boost::format(
@@ -187,7 +187,7 @@ void FlowgraphDotVisitor::Visit(
                 "rankdir=TB;\n"
             ) % if_cluster_id++));
         }
-        for(auto statement_vertex: vertex.false_statements()) {
+        for(auto statement_vertex: vertex.false_scope()->statements()) {
             statement_vertex->Accept(*this);
         }
         if(_mode == Mode::ConnectingFlowgraph) {
@@ -388,7 +388,7 @@ void FlowgraphDotVisitor::Visit(
 
 
 void FlowgraphDotVisitor::Visit(
-    ScriptVertex& vertex)
+    ModuleVertex& vertex)
 {
     set_script(String(
         "digraph G {\n"
@@ -403,12 +403,12 @@ void FlowgraphDotVisitor::Visit(
     //   String(boost::format(" [label=\"%1%\"];\n"))
     //     % vertex.sourceName().encode_in_utf8());
 
-    for(auto statement_vertex: vertex.statements()) {
+    for(auto statement_vertex: vertex.scope()->statements()) {
         statement_vertex->Accept(*this);
     }
 
     set_mode(Mode::ConnectingFlowgraph);
-    for(auto statement_vertex: vertex.statements()) {
+    for(auto statement_vertex: vertex.scope()->statements()) {
         // add_flowgraph_vertex(vertex, *statement_vertex);
         statement_vertex->Accept(*this);
     }

@@ -1,6 +1,6 @@
 #pragma once
 #include "ranally/script/algebra_parser.h"
-#include "ranally/ast/core/script_vertex.h"
+#include "ranally/ast/core/module_vertex.h"
 #include "ranally/ast/visitor/annotate_visitor.h"
 #include "ranally/ast/visitor/validate_visitor.h"
 #include "ranally/ast/xml/xml_parser.h"
@@ -32,15 +32,15 @@ public:
 
     Interpreter&   operator=           (Interpreter const&)=delete;
 
-    ScriptVertexPtr parse_string       (String const& string) const;
+    ModuleVertexPtr parse_string       (String const& string) const;
 
-    ScriptVertexPtr parse_file         (String const& filename) const;
+    ModuleVertexPtr parse_file         (String const& filename) const;
 
-    void           annotate            (ScriptVertexPtr const& tree);
+    void           annotate            (ModuleVertexPtr const& tree);
 
-    void           validate            (ScriptVertexPtr const& tree);
+    void           validate            (ModuleVertexPtr const& tree);
 
-    void           execute             (ScriptVertexPtr const& tree);
+    void           execute             (ModuleVertexPtr const& tree);
 
     std::stack<std::shared_ptr<Argument>>
                    stack               ();

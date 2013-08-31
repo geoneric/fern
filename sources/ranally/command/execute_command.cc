@@ -29,7 +29,7 @@ ExecuteCommand::ExecuteCommand(
 
 
 void ExecuteCommand::execute(
-    ScriptVertexPtr const& tree) const
+    ModuleVertexPtr const& tree) const
 {
     const_cast<Interpreter&>(interpreter()).execute(tree);
 }
@@ -52,7 +52,7 @@ int ExecuteCommand::execute() const
     else {
         std::string input_filename = std::strcmp(argv()[1], "-") != 0
             ? argv()[1] : "";
-        ScriptVertexPtr tree(interpreter().parse_file(input_filename));
+        ModuleVertexPtr tree(interpreter().parse_file(input_filename));
         execute(tree);
         status = EXIT_SUCCESS;
     }
