@@ -22,6 +22,10 @@ ReturnVertex::ReturnVertex(
 }
 
 
+//! Return the expression returned, which may be absent.
+/*!
+  \return    Expression if set, or null pointer.
+*/
 ExpressionVertexPtr const& ReturnVertex::expression() const
 {
     return _expression;

@@ -30,111 +30,123 @@ protected:
     ranally::XmlParser _xml_parser;
 
     ranally::IdentifyVisitor _visitor;
+
 };
+
+
+//! Return a C pointer to the instance pointed to by the shared pointer.
+/*!
+  \tparam    Vertex Type of vertex pointer to return.
+  \tparam    SmartPointerToVertex Type of smart pointer passed in.
+  \param     vertex Smart pointer.
+  \return    C pointer.
+  \warning   A dynamic cast is performed to convert from the type of the
+             instance pointed to by \a vertex to the type that needs to be
+             returned. This cast must succeed.
+
+  This is a utility function to make the test cases smaller.
+*/
+template<
+    class Vertex,
+    class SmartPointerToVertex>
+Vertex const* c_ptr(
+    SmartPointerToVertex const& vertex)
+{
+    Vertex const* result = dynamic_cast<Vertex const*>(&(*vertex));
+    assert(result);
+    return result;
+}
 
 
 BOOST_FIXTURE_TEST_SUITE(identify_visitor, Support)
 
 BOOST_AUTO_TEST_CASE(visit_empty_script)
 {
-    std::shared_ptr<ranally::ModuleVertex> tree;
+    using namespace ranally;
 
-    tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-        ranally::String("")));
+    std::shared_ptr<ModuleVertex> tree;
+
+    tree = _xml_parser.parse_string(_algebra_parser.parse_string(String("")));
     tree->Accept(_visitor);
 }
 
 
 BOOST_AUTO_TEST_CASE(visit_name)
 {
-    std::shared_ptr<ranally::ModuleVertex> tree;
+    using namespace ranally;
 
-    tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-        ranally::String("a")));
+    std::shared_ptr<ModuleVertex> tree;
 
-    ranally::NameVertex const* vertex_a =
-        dynamic_cast<ranally::NameVertex const*>(
-            &(*tree->scope()->statements()[0]));
+    tree = _xml_parser.parse_string(_algebra_parser.parse_string(String("a")));
 
-    BOOST_CHECK(vertex_a->definitions().empty());
-    BOOST_CHECK(vertex_a->uses().empty());
+    NameVertex const* a = c_ptr<NameVertex>(tree->scope()->statements()[0]);
+
+    BOOST_CHECK(a->definitions().empty());
+    BOOST_CHECK(a->uses().empty());
 
     tree->Accept(_visitor);
 
-    BOOST_CHECK(vertex_a->definitions().empty());
-    BOOST_CHECK(vertex_a->uses().empty());
+    BOOST_CHECK(a->definitions().empty());
+    BOOST_CHECK(a->uses().empty());
 }
 
 
 BOOST_AUTO_TEST_CASE(visit_assignment)
 {
-    std::shared_ptr<ranally::ModuleVertex> tree;
+    using namespace ranally;
+
+    std::shared_ptr<ModuleVertex> tree;
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String("a = b")));
+            String("a = b")));
 
-        ranally::AssignmentVertex const* assignment =
-            dynamic_cast<ranally::AssignmentVertex const*>(
-                &(*tree->scope()->statements()[0]));
-        ranally::NameVertex const* vertex_a =
-            dynamic_cast<ranally::NameVertex const*>(
-                &(*assignment->target()));
-        ranally::NameVertex const* vertex_b =
-            dynamic_cast<ranally::NameVertex const*>(
-                &(*assignment->expression()));
+        AssignmentVertex const* assignment = c_ptr<AssignmentVertex>(
+            tree->scope()->statements()[0]);
+        NameVertex const* a = c_ptr<NameVertex>(assignment->target());
+        NameVertex const* b = c_ptr<NameVertex>(assignment->expression());
 
-        BOOST_CHECK(vertex_a->definitions().empty());
-        BOOST_CHECK(vertex_a->uses().empty());
+        BOOST_CHECK(a->definitions().empty());
+        BOOST_CHECK(a->uses().empty());
 
-        BOOST_CHECK(vertex_b->definitions().empty());
-        BOOST_CHECK(vertex_b->uses().empty());
+        BOOST_CHECK(b->definitions().empty());
+        BOOST_CHECK(b->uses().empty());
 
         tree->Accept(_visitor);
 
-        BOOST_REQUIRE_EQUAL(vertex_a->definitions().size(), 1u);
-        BOOST_CHECK_EQUAL(vertex_a->definitions()[0], vertex_a);
-        BOOST_CHECK(vertex_a->uses().empty());
+        BOOST_REQUIRE_EQUAL(a->definitions().size(), 1u);
+        BOOST_CHECK_EQUAL(a->definitions()[0], a);
+        BOOST_CHECK(a->uses().empty());
 
-        BOOST_CHECK(vertex_b->definitions().empty());
-        BOOST_CHECK(vertex_b->uses().empty());
+        BOOST_CHECK(b->definitions().empty());
+        BOOST_CHECK(b->uses().empty());
     }
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String(
+            String(
                 "a = b\n"
                 "d = f(a)\n"
         )));
 
-        ranally::AssignmentVertex const* assignment_1 =
-            dynamic_cast<ranally::AssignmentVertex const*>(
-                &(*tree->scope()->statements()[0]));
-        ranally::NameVertex const* vertex_a1 =
-            dynamic_cast<ranally::NameVertex const*>(
-                &(*assignment_1->target()));
-        ranally::NameVertex const* vertex_b =
-            dynamic_cast<ranally::NameVertex const*>(
-                &(*assignment_1->expression()));
+        AssignmentVertex const* assignment_1 = c_ptr<AssignmentVertex>(
+            tree->scope()->statements()[0]);
+        NameVertex const* a1 = c_ptr<NameVertex>(assignment_1->target());
+        NameVertex const* b = c_ptr<NameVertex>(assignment_1->expression());
 
-        ranally::AssignmentVertex const* assignment_2 =
-            dynamic_cast<ranally::AssignmentVertex const*>(
-                &(*tree->scope()->statements()[1]));
-        ranally::FunctionCallVertex const* function =
-            dynamic_cast<ranally::FunctionCallVertex const*>(
-                &(*assignment_2->expression()));
-        ranally::NameVertex const* vertex_a2 =
-            dynamic_cast<ranally::NameVertex const*>(
-                &(*function->expressions()[0]));
-        ranally::NameVertex const* vertex_d =
-            dynamic_cast<ranally::NameVertex const*>(
-                &(*assignment_2->target()));
+        AssignmentVertex const* assignment_2 = c_ptr<AssignmentVertex>(
+            tree->scope()->statements()[1]);
+        FunctionCallVertex const* function = c_ptr<FunctionCallVertex>(
+            assignment_2->expression());
+        NameVertex const* vertex_a2 = c_ptr<NameVertex>(
+            function->expressions()[0]);
+        NameVertex const* vertex_d = c_ptr<NameVertex>(assignment_2->target());
 
-        BOOST_CHECK(vertex_a1->definitions().empty());
-        BOOST_CHECK(vertex_a1->uses().empty());
+        BOOST_CHECK(a1->definitions().empty());
+        BOOST_CHECK(a1->uses().empty());
 
-        BOOST_CHECK(vertex_b->definitions().empty());
-        BOOST_CHECK(vertex_b->uses().empty());
+        BOOST_CHECK(b->definitions().empty());
+        BOOST_CHECK(b->uses().empty());
 
         BOOST_CHECK(vertex_d->definitions().empty());
         BOOST_CHECK(vertex_d->uses().empty());
@@ -144,20 +156,20 @@ BOOST_AUTO_TEST_CASE(visit_assignment)
 
         tree->Accept(_visitor);
 
-        BOOST_REQUIRE_EQUAL(vertex_a1->definitions().size(), 1u);
-        BOOST_CHECK_EQUAL(vertex_a1->definitions()[0], vertex_a1);
-        BOOST_REQUIRE_EQUAL(vertex_a1->uses().size(), 1u);
-        BOOST_CHECK_EQUAL(vertex_a1->uses()[0], vertex_a2);
+        BOOST_REQUIRE_EQUAL(a1->definitions().size(), 1u);
+        BOOST_CHECK_EQUAL(a1->definitions()[0], a1);
+        BOOST_REQUIRE_EQUAL(a1->uses().size(), 1u);
+        BOOST_CHECK_EQUAL(a1->uses()[0], vertex_a2);
 
-        BOOST_CHECK(vertex_b->definitions().empty());
-        BOOST_CHECK(vertex_b->uses().empty());
+        BOOST_CHECK(b->definitions().empty());
+        BOOST_CHECK(b->uses().empty());
 
         BOOST_REQUIRE_EQUAL(vertex_d->definitions().size(), 1u);
         BOOST_CHECK_EQUAL(vertex_d->definitions()[0], vertex_d);
         BOOST_CHECK(vertex_d->uses().empty());
 
         BOOST_REQUIRE_EQUAL(vertex_a2->definitions().size(), 1u);
-        BOOST_CHECK_EQUAL(vertex_a2->definitions()[0], vertex_a1);
+        BOOST_CHECK_EQUAL(vertex_a2->definitions()[0], a1);
         BOOST_CHECK(vertex_a2->uses().empty());
     }
 }
@@ -165,47 +177,39 @@ BOOST_AUTO_TEST_CASE(visit_assignment)
 
 BOOST_AUTO_TEST_CASE(visit_if)
 {
-    std::shared_ptr<ranally::ModuleVertex> tree;
+    using namespace ranally;
+
+    std::shared_ptr<ModuleVertex> tree;
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String(
+            String(
                 "a = b\n"
                 "if True:\n"
                 "    a = c\n"
                 "d = a\n"
         )));
 
-        ranally::AssignmentVertex const* assignment_1 =
-            dynamic_cast<ranally::AssignmentVertex const*>(
-                &(*tree->scope()->statements()[0]));
-        ranally::NameVertex const* vertex_a1 =
-            dynamic_cast<ranally::NameVertex const*>(
-                &(*assignment_1->target()));
+        AssignmentVertex const* assignment_1 = c_ptr<AssignmentVertex>(
+            tree->scope()->statements()[0]);
+        NameVertex const* a1 = c_ptr<NameVertex>(assignment_1->target());
 
-        ranally::IfVertex const* ifVertex =
-            dynamic_cast<ranally::IfVertex const*>(
-                &(*tree->scope()->statements()[1]));
-        ranally::AssignmentVertex const* assignment_2 =
-            dynamic_cast<ranally::AssignmentVertex const*>(
-                &(*ifVertex->true_scope()->statements()[0]));
-        ranally::NameVertex const* vertex_a2 =
-            dynamic_cast<ranally::NameVertex const*>(
-                &(*assignment_2->target()));
+        IfVertex const* if_ = c_ptr<IfVertex>(tree->scope()->statements()[1]);
+        AssignmentVertex const* assignment_2 = c_ptr<AssignmentVertex>(
+            if_->true_scope()->statements()[0]);
+        NameVertex const* vertex_a2 = c_ptr<NameVertex>(assignment_2->target());
 
-        ranally::AssignmentVertex const* assignment_3 =
-            dynamic_cast<ranally::AssignmentVertex const*>(
-                &(*tree->scope()->statements()[2]));
-        ranally::NameVertex const* vertex_a3 =
-            dynamic_cast<ranally::NameVertex const*>(
-                &(*assignment_3->expression()));
+        AssignmentVertex const* assignment_3 = c_ptr<AssignmentVertex>(
+            tree->scope()->statements()[2]);
+        NameVertex const* vertex_a3 = c_ptr<NameVertex>(
+            assignment_3->expression());
 
         tree->Accept(_visitor);
 
-        BOOST_REQUIRE_EQUAL(vertex_a1->definitions().size(), 1u);
-        BOOST_CHECK_EQUAL(vertex_a1->definitions()[0], vertex_a1);
-        BOOST_REQUIRE_EQUAL(vertex_a1->uses().size(), 1u);
-        BOOST_CHECK_EQUAL(vertex_a1->uses()[0], vertex_a3);
+        BOOST_REQUIRE_EQUAL(a1->definitions().size(), 1u);
+        BOOST_CHECK_EQUAL(a1->definitions()[0], a1);
+        BOOST_REQUIRE_EQUAL(a1->uses().size(), 1u);
+        BOOST_CHECK_EQUAL(a1->uses()[0], vertex_a3);
 
         BOOST_REQUIRE_EQUAL(vertex_a2->definitions().size(), 1u);
         BOOST_CHECK_EQUAL(vertex_a2->definitions()[0], vertex_a2);
@@ -214,7 +218,7 @@ BOOST_AUTO_TEST_CASE(visit_if)
         // BOOST_CHECK_EQUAL(vertex_a2->uses()[0], vertex_a3);
 
         // BOOST_REQUIRE_EQUAL(vertex_a3->definitions().size(), 2u);
-        // BOOST_CHECK_EQUAL(vertex_a3->definitions()[0], vertex_a1);
+        // BOOST_CHECK_EQUAL(vertex_a3->definitions()[0], a1);
         // BOOST_CHECK_EQUAL(vertex_a3->definitions()[0], vertex_a2);
         // BOOST_CHECK(vertex_a3->uses().empty());
     }
@@ -223,98 +227,80 @@ BOOST_AUTO_TEST_CASE(visit_if)
 
 BOOST_AUTO_TEST_CASE(visit_reuse_of_identifiers)
 {
-    std::shared_ptr<ranally::ModuleVertex> tree;
+    using namespace ranally;
+
+    std::shared_ptr<ModuleVertex> tree;
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            ranally::String(
+            String(
                 "a = \"MyRaster\"\n"
                 "b = abs(a)\n"
                 "c = abs(b)\n"
                 "b = c + b\n"
         )));
 
-        ranally::AssignmentVertex const* assignment_1 =
-            dynamic_cast<ranally::AssignmentVertex const*>(
-                &(*tree->scope()->statements()[0]));
-        ranally::NameVertex const* vertex_a1 =
-            dynamic_cast<ranally::NameVertex const*>(
-                &(*assignment_1->target()));
+        AssignmentVertex const* assignment_1 = c_ptr<AssignmentVertex>(
+            tree->scope()->statements()[0]);
+        NameVertex const* a1 = c_ptr<NameVertex>(assignment_1->target());
         BOOST_REQUIRE(assignment_1);
-        BOOST_REQUIRE(vertex_a1);
+        BOOST_REQUIRE(a1);
 
-        ranally::AssignmentVertex const* assignment_2 =
-            dynamic_cast<ranally::AssignmentVertex const*>(
-                &(*tree->scope()->statements()[1]));
-        ranally::NameVertex const* vertex_b1 =
-            dynamic_cast<ranally::NameVertex const*>(
-                &(*assignment_2->target()));
-        ranally::FunctionCallVertex const* vertex_abs1 =
-            dynamic_cast<ranally::FunctionCallVertex const*>(
-                &(*assignment_2->expression()));
-        ranally::NameVertex const* vertex_a2 =
-            dynamic_cast<ranally::NameVertex const*>(
-                &(*vertex_abs1->expressions()[0]));
+        AssignmentVertex const* assignment_2 = c_ptr<AssignmentVertex>(
+            tree->scope()->statements()[1]);
+        NameVertex const* vertex_b1 = c_ptr<NameVertex>(assignment_2->target());
+        FunctionCallVertex const* vertex_abs1 = c_ptr<FunctionCallVertex>(
+            assignment_2->expression());
+        NameVertex const* vertex_a2 = c_ptr<NameVertex>(
+            vertex_abs1->expressions()[0]);
         BOOST_REQUIRE(assignment_2);
         BOOST_REQUIRE(vertex_b1);
         BOOST_REQUIRE(vertex_abs1);
         BOOST_REQUIRE(vertex_a2);
 
-        ranally::AssignmentVertex const* assignment_3 =
-            dynamic_cast<ranally::AssignmentVertex const*>(
-                &(*tree->scope()->statements()[2]));
-        ranally::NameVertex const* vertex_c1 =
-            dynamic_cast<ranally::NameVertex const*>(
-                &(*assignment_3->target()));
-        ranally::FunctionCallVertex const* vertex_abs2 =
-            dynamic_cast<ranally::FunctionCallVertex const*>(
-                &(*assignment_3->expression()));
-        ranally::NameVertex const* vertex_b2 =
-            dynamic_cast<ranally::NameVertex const*>(
-                &(*vertex_abs2->expressions()[0]));
+        AssignmentVertex const* assignment_3 = c_ptr<AssignmentVertex>(
+            tree->scope()->statements()[2]);
+        NameVertex const* c1 = c_ptr<NameVertex>(assignment_3->target());
+        FunctionCallVertex const* vertex_abs2 = c_ptr<FunctionCallVertex>(
+            assignment_3->expression());
+        NameVertex const* b2 = c_ptr<NameVertex>(vertex_abs2->expressions()[0]);
         BOOST_REQUIRE(assignment_3);
-        BOOST_REQUIRE(vertex_c1);
+        BOOST_REQUIRE(c1);
         BOOST_REQUIRE(vertex_abs2);
-        BOOST_REQUIRE(vertex_b2);
+        BOOST_REQUIRE(b2);
 
-        ranally::AssignmentVertex const* assignment_4 =
-            dynamic_cast<ranally::AssignmentVertex const*>(
-                &(*tree->scope()->statements()[3]));
-        ranally::NameVertex const* vertex_b4 =
-            dynamic_cast<ranally::NameVertex const*>(
-                &(*assignment_4->target()));
-        ranally::OperatorVertex const* vertex_plus1 =
-            dynamic_cast<ranally::OperatorVertex const*>(
-                &(*assignment_4->expression()));
-        ranally::NameVertex const* vertex_c2 =
-            dynamic_cast<ranally::NameVertex const*>(
-                &(*vertex_plus1->expressions()[0]));
-        ranally::NameVertex const* vertex_b3 =
-            dynamic_cast<ranally::NameVertex const*>(
-                &(*vertex_plus1->expressions()[1]));
+        AssignmentVertex const* assignment_4 = c_ptr<AssignmentVertex>(
+            tree->scope()->statements()[3]);
+        NameVertex const* vertex_b4 = c_ptr<NameVertex>(
+            assignment_4->target());
+        OperatorVertex const* plus_1 = c_ptr<OperatorVertex>(
+            assignment_4->expression());
+        NameVertex const* c2 = c_ptr<NameVertex>(plus_1->expressions()[0]);
+        NameVertex const* vertex_b3 = c_ptr<NameVertex>(
+            plus_1->expressions()[1]);
         BOOST_REQUIRE(assignment_4);
         BOOST_REQUIRE(vertex_b4);
-        BOOST_REQUIRE(vertex_plus1);
-        BOOST_REQUIRE(vertex_c2);
+        BOOST_REQUIRE(plus_1);
+        BOOST_REQUIRE(c2);
         BOOST_REQUIRE(vertex_b3);
 
         tree->Accept(_visitor);
 
-        BOOST_REQUIRE_EQUAL(vertex_a1->definitions().size(), 1u);
-        BOOST_CHECK_EQUAL(vertex_a1->definitions()[0], vertex_a1);
-        BOOST_REQUIRE_EQUAL(vertex_a1->uses().size(), 1u);
-        BOOST_CHECK_EQUAL(vertex_a1->uses()[0], vertex_a2);
+        BOOST_REQUIRE_EQUAL(a1->definitions().size(), 1u);
+        BOOST_CHECK_EQUAL(a1->definitions()[0], a1);
+        BOOST_REQUIRE_EQUAL(a1->uses().size(), 1u);
+        BOOST_CHECK_EQUAL(a1->uses()[0], vertex_a2);
 
         BOOST_REQUIRE_EQUAL(vertex_b1->definitions().size(), 1u);
         BOOST_CHECK_EQUAL(vertex_b1->definitions()[0], vertex_b1);
         BOOST_REQUIRE_EQUAL(vertex_b1->uses().size(), 2u);
-        BOOST_CHECK_EQUAL(vertex_b1->uses()[0], vertex_b2);
+        BOOST_CHECK_EQUAL(vertex_b1->uses()[0], b2);
         BOOST_CHECK_EQUAL(vertex_b1->uses()[1], vertex_b3);
 
-        BOOST_REQUIRE_EQUAL(vertex_c1->definitions().size(), 1u);
-        BOOST_CHECK_EQUAL(vertex_c1->definitions()[0], vertex_c1);
-        BOOST_REQUIRE_EQUAL(vertex_c1->uses().size(), 1u);
-        BOOST_CHECK_EQUAL(vertex_c1->uses()[0], vertex_c2);
+        BOOST_REQUIRE_EQUAL(c1->definitions().size(), 1u);
+        BOOST_CHECK_EQUAL(c1->definitions()[0], c1);
+        BOOST_REQUIRE_EQUAL(c1->uses().size(), 1u);
+        BOOST_CHECK_EQUAL(c1->uses()[0], c2);
 
         BOOST_REQUIRE_EQUAL(vertex_b4->definitions().size(), 1u);
         BOOST_CHECK_EQUAL(vertex_b4->definitions()[0], vertex_b4);

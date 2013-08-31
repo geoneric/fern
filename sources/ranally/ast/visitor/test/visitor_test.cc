@@ -170,6 +170,29 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 6u);
     }
+
+    // Function definition.
+    {
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            ranally::String(u8R"(
+def foo():
+    return
+)")));
+        assert(tree);
+        tree->Accept(visitor);
+        BOOST_CHECK_EQUAL(visitor.nr_vertices(), 7u);
+    }
+
+    // Function call.
+    {
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            ranally::String(u8R"(
+bla()
+)")));
+        assert(tree);
+        tree->Accept(visitor);
+        BOOST_CHECK_EQUAL(visitor.nr_vertices(), 4u);
+    }
 }
 
 BOOST_AUTO_TEST_SUITE_END()

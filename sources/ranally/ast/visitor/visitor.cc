@@ -180,7 +180,9 @@ void Visitor::Visit(
 void Visitor::Visit(
     ReturnVertex& vertex)
 {
-    vertex.expression()->Accept(*this);
+    if(vertex.expression()) {
+        vertex.expression()->Accept(*this);
+    }
     Visit(dynamic_cast<StatementVertex&>(vertex));
 }
 

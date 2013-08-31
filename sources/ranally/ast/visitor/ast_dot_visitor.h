@@ -1,4 +1,5 @@
 #pragma once
+#include <stack>
 #include "ranally/ast/visitor/dot_visitor.h"
 
 
@@ -45,10 +46,19 @@ private:
     //! Modes to process.
     int            _modes;
 
+    //! Names of scopes (module, user defined function, ...).
+    std::stack<std::string> _scope_names;
+
     void           set_mode            (Mode mode);
 
     void           add_ast_vertex      (AstVertex const& sourceVertex,
                                         AstVertex const& targetVertex);
+
+    // void           add_ast_vertex      (AstVertex const& source_vertex,
+    //                                     ScopeVertex const& target_vertex);
+
+    // void           add_ast_vertex      (ScopeVertex const& source_vertex,
+    //                                     AstVertex const& target_vertex);
 
     void           add_cfg_vertices    (AstVertex const& sourceVertex);
 
@@ -92,6 +102,10 @@ private:
     void           Visit               (OperatorVertex& vertex);
 
     void           Visit               (ReturnVertex& vertex);
+
+    void           Visit               (ScopeVertex& vertex);
+
+    void           Visit               (SentinelVertex& vertex);
 
     void           Visit               (StringVertex& vertex);
 

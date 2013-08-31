@@ -127,6 +127,40 @@ BOOST_AUTO_TEST_CASE(validate)
         BOOST_CHECK_EQUAL(message,
             "<string>:1:4: Undefined operation: blah");
     }
+
+    // Verify that calling user-defined operation doesn't throw.
+    {
+        vertex = interpreter.parse_string(u8R"(
+def foo():
+    return
+
+foo()
+)");
+        BOOST_REQUIRE(vertex);
+        // TODO Make sure user-defined operations are detected and handled
+        //      like built-in ones.
+        BOOST_CHECK_NO_THROW(interpreter.validate(vertex));
+    }
+
+    // Call user-defined operation with wrong number of arguments.
+    {
+        vertex = interpreter.parse_string(u8R"(
+def foo():
+    return
+
+foo(5)
+)");
+        try {
+            interpreter.validate(vertex);
+            BOOST_CHECK(false);
+        }
+        catch(ranally::ValidateError const& exception) {
+            ranally::String message = exception.message();
+            // TODO Update message in test.
+            BOOST_CHECK_EQUAL(message,
+                "<string>:1:4: Undefined operation: blah");
+        }
+    }
 }
 
 

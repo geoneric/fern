@@ -23,8 +23,6 @@ class AstVertex:
     public Loki::BaseVisitable<>
 {
 
-    friend class AstVertexTest;
-
 private:
 
     typedef std::vector<AstVertex*> AstVertices;
@@ -52,17 +50,17 @@ public:
 
     int            col                 () const;
 
-    AstVertices const& successors      () const;
-
     bool           has_successor       () const;
+
+    AstVertices const& successors      () const;
 
     AstVertex const* successor         () const;
 
-    AstVertex*  successor              ();
+    AstVertex*     successor           ();
 
     AstVertex const* successor         (size_type index) const;
 
-    AstVertex*  successor              (size_type index);
+    AstVertex*     successor           (size_type index);
 
     void           add_successor       (AstVertex* successor);
 
