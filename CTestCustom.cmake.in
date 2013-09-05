@@ -1,2 +1,2 @@
-SET(CTEST_CUSTOM_PRE_TEST "bash test_run_prolog.sh")
-SET(CTEST_CUSTOM_POST_TEST "bash test_run_epilog.sh")
+SET(CTEST_CUSTOM_PRE_TEST "./test_run_prolog.sh")
+SET(CTEST_CUSTOM_POST_TEST "./test_run_epilog.sh")
