@@ -1,9 +1,9 @@
-#include "geoneric/io/hdf5_dataset_driver.h"
+#include "geoneric/io/hdf5/hdf5_dataset_driver.h"
 #include <cassert>
 #include <boost/filesystem.hpp>
 #include <cpp/H5Cpp.h>
 #include "geoneric/core/string.h"
-#include "geoneric/io/hdf5_dataset.h"
+#include "geoneric/io/hdf5/hdf5_dataset.h"
 
 
 namespace geoneric {

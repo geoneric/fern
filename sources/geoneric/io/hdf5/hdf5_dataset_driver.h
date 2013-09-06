@@ -1,6 +1,6 @@
 #pragma once
-#include "geoneric/io/dataset_driver.h"
-#include "geoneric/io/hdf5_dataset.h"
+#include "geoneric/io/core/dataset_driver.h"
+#include "geoneric/io/hdf5/hdf5_dataset.h"
 
 
 namespace geoneric {

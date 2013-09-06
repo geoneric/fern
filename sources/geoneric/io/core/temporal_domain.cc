@@ -1,4 +1,4 @@
-#include "geoneric/io/temporal_domain.h"
+#include "geoneric/io/core/temporal_domain.h"
 
 
 namespace geoneric {

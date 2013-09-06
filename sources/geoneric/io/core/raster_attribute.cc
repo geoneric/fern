@@ -1,4 +1,4 @@
-#include "geoneric/io/raster_attribute.h"
+#include "geoneric/io/core/raster_attribute.h"
 
 
 namespace geoneric {

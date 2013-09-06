@@ -1,4 +1,4 @@
-#include "geoneric/io/ogr_client.h"
+#include "geoneric/io/ogr/ogr_client.h"
 #include "cpl_error.h"
 #include "ogr_api.h"
 

@@ -1,10 +1,10 @@
 #define BOOST_TEST_MODULE geoneric io
 #include <boost/test/unit_test.hpp>
 #include "geoneric/core/string.h"
-#include "geoneric/io/ogr_client.h"
-#include "geoneric/io/ogr_dataset_driver.h"
-#include "geoneric/io/point_domain.h"
-#include "geoneric/io/point_feature.h"
+#include "geoneric/io/ogr/ogr_client.h"
+#include "geoneric/io/ogr/ogr_dataset_driver.h"
+#include "geoneric/io/core/point_domain.h"
+#include "geoneric/io/core/point_feature.h"
 
 
 void remove_test_files()

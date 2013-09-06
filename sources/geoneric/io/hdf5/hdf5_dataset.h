@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "geoneric/io/dataset.h"
+#include "geoneric/io/core/dataset.h"
 
 
 namespace H5 {

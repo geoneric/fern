@@ -1,7 +1,7 @@
-#include "geoneric/io/attribute.h"
-#include "geoneric/io/domain.h"
-#include "geoneric/io/feature.h"
-#include "geoneric/io/value.h"
+#include "geoneric/io/core/attribute.h"
+#include "geoneric/io/core/domain.h"
+#include "geoneric/io/core/feature.h"
+#include "geoneric/io/core/value.h"
 
 
 namespace geoneric {

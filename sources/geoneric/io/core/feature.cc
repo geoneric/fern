@@ -1,4 +1,4 @@
-#include "geoneric/io/feature.h"
+#include "geoneric/io/core/feature.h"
 
 
 namespace geoneric {

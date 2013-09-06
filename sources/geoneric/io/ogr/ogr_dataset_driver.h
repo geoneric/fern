@@ -1,6 +1,6 @@
 #pragma once
-#include "geoneric/io/dataset_driver.h"
-#include "geoneric/io/ogr_dataset.h"
+#include "geoneric/io/core/dataset_driver.h"
+#include "geoneric/io/ogr/ogr_dataset.h"
 
 
 class OGRSFDriver;

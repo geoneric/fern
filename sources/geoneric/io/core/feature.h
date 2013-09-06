@@ -1,6 +1,6 @@
 #pragma once
 #include "geoneric/core/string.h"
-#include "geoneric/io/domain.h"
+#include "geoneric/io/core/domain.h"
 
 
 namespace geoneric {

@@ -1,8 +1,8 @@
-#include "geoneric/io/ogr_feature_layer.h"
+#include "geoneric/io/ogr/ogr_feature_layer.h"
 #include "ogrsf_frmts.h"
 #include "geoneric/core/string.h"
-#include "geoneric/io/point_domain.h"
-#include "geoneric/io/polygon_domain.h"
+#include "geoneric/io/core/point_domain.h"
+#include "geoneric/io/core/polygon_domain.h"
 
 
 namespace geoneric {

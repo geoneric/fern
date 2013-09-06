@@ -1,4 +1,4 @@
-#include "geoneric/io/hdf5_client.h"
+#include "geoneric/io/hdf5/hdf5_client.h"
 #include <cpp/H5Cpp.h>
 
 

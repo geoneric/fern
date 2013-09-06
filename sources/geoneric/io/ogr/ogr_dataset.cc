@@ -1,15 +1,15 @@
-#include "geoneric/io/ogr_dataset.h"
+#include "geoneric/io/ogr/ogr_dataset.h"
 #include <cassert>
 #include <memory>
 #include "ogrsf_frmts.h"
 #include "geoneric/core/string.h"
-#include "geoneric/io/ogr_feature_layer.h"
-#include "geoneric/io/point_attribute.h"
-#include "geoneric/io/point_domain.h"
-#include "geoneric/io/point_feature.h"
-#include "geoneric/io/polygon_attribute.h"
-#include "geoneric/io/polygon_domain.h"
-#include "geoneric/io/polygon_feature.h"
+#include "geoneric/io/ogr/ogr_feature_layer.h"
+#include "geoneric/io/core/point_attribute.h"
+#include "geoneric/io/core/point_domain.h"
+#include "geoneric/io/core/point_feature.h"
+#include "geoneric/io/core/polygon_attribute.h"
+#include "geoneric/io/core/polygon_domain.h"
+#include "geoneric/io/core/polygon_feature.h"
 
 
 namespace geoneric {

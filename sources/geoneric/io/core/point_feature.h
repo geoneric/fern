@@ -1,6 +1,6 @@
 #pragma once
-#include "geoneric/io/feature.h"
-#include "geoneric/io/point_ptr.h"
+#include "geoneric/io/core/feature.h"
+#include "geoneric/io/core/point_ptr.h"
 
 
 namespace geoneric {

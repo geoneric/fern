@@ -1,5 +1,5 @@
 #pragma once
-#include "geoneric/io/dataset.h"
+#include "geoneric/io/core/dataset.h"
 
 
 class OGRDataSource;

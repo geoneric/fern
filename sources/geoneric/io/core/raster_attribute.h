@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
-#include "geoneric/io/attribute.h"
-#include "geoneric/io/raster_value.h"
+#include "geoneric/io/core/attribute.h"
+#include "geoneric/io/core/raster_value.h"
 
 
 namespace geoneric {

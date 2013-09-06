@@ -1,6 +1,6 @@
-#include "geoneric/io/point_feature.h"
-#include "geoneric/io/point_attribute.h"
-#include "geoneric/io/point_domain.h"
+#include "geoneric/io/core/point_feature.h"
+#include "geoneric/io/core/point_attribute.h"
+#include "geoneric/io/core/point_domain.h"
 
 
 namespace geoneric {

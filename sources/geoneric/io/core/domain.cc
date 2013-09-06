@@ -1,4 +1,4 @@
-#include "geoneric/io/domain.h"
+#include "geoneric/io/core/domain.h"
 
 
 namespace geoneric {

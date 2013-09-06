@@ -1,6 +1,6 @@
-#include "geoneric/io/polygon_attribute.h"
-#include "geoneric/io/polygon_feature.h"
-#include "geoneric/io/polygon_value.h"
+#include "geoneric/io/core/polygon_attribute.h"
+#include "geoneric/io/core/polygon_feature.h"
+#include "geoneric/io/core/polygon_value.h"
 
 
 namespace geoneric {

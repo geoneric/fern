@@ -1,4 +1,4 @@
-#include "geoneric/io/ogr_dataset_driver.h"
+#include "geoneric/io/ogr/ogr_dataset_driver.h"
 #include <cassert>
 #include "ogrsf_frmts.h"
 #include "geoneric/core/string.h"
