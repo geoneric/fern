@@ -44,7 +44,7 @@ private:
 template<
     class GID,
     class Value>
-void Values::add(
+inline void Values<GID, Value>::add(
     GID const& gid,
     Value const& value)
 {

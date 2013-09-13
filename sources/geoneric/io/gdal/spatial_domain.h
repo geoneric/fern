@@ -49,7 +49,7 @@ private:
 
 template<
     class Geometry_>
-typename SpatialDomain<Geometry_>::GID SpatialDomain<Geometry_>::add(
+inline typename SpatialDomain<Geometry_>::GID SpatialDomain<Geometry_>::add(
     Geometry_ const& geometry)
 {
     GID gid = _geometries.size();
@@ -60,7 +60,7 @@ typename SpatialDomain<Geometry_>::GID SpatialDomain<Geometry_>::add(
 
 template<
     class Geometry_>
-Geometry_ const& SpatialDomain<Geometry_>::geometry(
+inline Geometry_ const& SpatialDomain<Geometry_>::geometry(
     GID const& gid)
 {
     assert(_geometries.find(gid) != _geometries.end());

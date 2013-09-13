@@ -39,9 +39,9 @@ BOOST_AUTO_TEST_CASE(spatial_domain)
 {
     typedef geoneric::Point<double, 2> Point;
     typedef geoneric::Box<Point> Box;
-    typedef geoneric::SpatialDomain<Box> SpatialDomain;
+    typedef geoneric::SpatialDomain<Box> BoxDomain;
 
-    SpatialDomain spatial_domain;
+    BoxDomain spatial_domain;
 
     Point south_west;
     Point north_east;
@@ -54,8 +54,8 @@ BOOST_AUTO_TEST_CASE(spatial_domain)
 
     // Whatever the geometry, adding one to a domain should result in a
     // unique geometry id.
-    SpatialDomain::GID gid1 = spatial_domain.add(box1);
-    SpatialDomain::GID gid2 = spatial_domain.add(box2);
+    BoxDomain::GID gid1 = spatial_domain.add(box1);
+    BoxDomain::GID gid2 = spatial_domain.add(box2);
     BOOST_CHECK_NE(gid1, gid2);
 
     // Test geometries themselves.
