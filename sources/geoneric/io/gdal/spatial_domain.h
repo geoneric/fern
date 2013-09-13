@@ -38,7 +38,11 @@ public:
 
     GID            add                 (Geometry_ const& geometry);
 
-    Geometry_ const& geometry           (GID const& gid);
+    Geometry_ const& geometry          (GID const& gid);
+
+    bool           empty               () const;
+
+    size_t         size                () const;
 
 private:
 
@@ -66,5 +70,22 @@ inline Geometry_ const& SpatialDomain<Geometry_>::geometry(
     assert(_geometries.find(gid) != _geometries.end());
     return _geometries.find(gid)->second;
 }
+
+
+template<
+    class Geometry_>
+inline bool SpatialDomain<Geometry_>::empty() const
+{
+    return _geometries.empty();
+}
+
+
+template<
+    class Geometry_>
+inline size_t SpatialDomain<Geometry_>::size() const
+{
+    return _geometries.size();
+}
+
 
 } // namespace geoneric

@@ -34,6 +34,12 @@ public:
     void           add                 (GID const& gid,
                                         Value const& value);
 
+    bool           empty               () const;
+
+    size_t         size                () const;
+
+    Value const&   value               (GID const& gid) const;
+
 private:
 
     std::map<GID, Value> _values;
@@ -49,6 +55,36 @@ inline void Values<GID, Value>::add(
     Value const& value)
 {
     _values[gid] = value;
+}
+
+
+template<
+    class GID,
+    class Value>
+inline bool Values<GID, Value>::empty() const
+{
+    return _values.empty();
+}
+
+
+template<
+    class GID,
+    class Value>
+inline size_t Values<GID, Value>::size() const
+{
+    return _values.size();
+}
+
+
+template<
+    class GID,
+    class Value>
+inline Value const& Values<GID, Value>::value(
+    GID const& gid) const
+{
+    auto iterator = _values.find(gid);
+    assert(iterator != _values.end());
+    return iterator->second;
 }
 
 } // namespace geoneric

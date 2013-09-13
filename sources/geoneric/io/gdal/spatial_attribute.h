@@ -22,7 +22,9 @@ class SpatialAttribute:
 
 public:
 
-                   SpatialAttribute    ()=default;
+    typedef typename Domain::GID GID;
+
+                   SpatialAttribute    ();
 
                    SpatialAttribute    (SpatialAttribute const&)=delete;
 
@@ -34,8 +36,16 @@ public:
 
                    ~SpatialAttribute   ()=default;
 
-    void           add                 (typename Domain::Geometry const& geometry,
+    GID            add                 (typename Domain::Geometry const& geometry,
                                         Value const& value);
+
+    bool           empty               () const;
+
+    size_t         size                () const;
+
+    Domain const&  domain              () const;
+
+    Values<typename Domain::GID, Value> const& values() const;
 
 private:
 
@@ -49,12 +59,69 @@ private:
 template<
     class Domain,
     class Value>
-inline void SpatialAttribute<Domain, Value>::add(
-    typename Domain::Geometry const& geometry,
-    Value const& value)
+inline SpatialAttribute<Domain, Value>::SpatialAttribute()
+
+    : _domain(new Domain),
+      _values(new Values<typename Domain::GID, Value>)
+
 {
-    typename Domain::GID gid = _domain->add(geometry);
+}
+
+
+template<
+    class Domain,
+    class Value>
+inline auto SpatialAttribute<Domain, Value>::add(
+    typename Domain::Geometry const& geometry,
+    Value const& value) -> GID
+{
+    assert((domain().empty() == values().empty()) || values().empty());
+
+    GID gid = _domain->add(geometry);
     _values->add(gid, value);
+
+    return gid;
+}
+
+
+template<
+    class Domain,
+    class Value>
+inline Domain const&  SpatialAttribute<Domain, Value>::domain() const
+{
+    return *_domain;
+}
+
+
+template<
+    class Domain,
+    class Value>
+inline Values<typename Domain::GID, Value> const&
+SpatialAttribute<Domain, Value>::values() const
+{
+    return *_values;
+}
+
+
+template<
+    class Domain,
+    class Value>
+bool SpatialAttribute<Domain, Value>::empty() const
+{
+    assert((domain().empty() == values().empty()) || values().empty());
+
+    return domain().empty();
+}
+
+
+template<
+    class Domain,
+    class Value>
+size_t SpatialAttribute<Domain, Value>::size() const
+{
+    assert((domain().size() == values().size()) || values().empty());
+
+    return domain().size();
 }
 
 } // namespace geoneric
