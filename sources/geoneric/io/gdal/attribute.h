@@ -14,6 +14,8 @@ class Attribute
 
 public:
 
+protected:
+
                    Attribute           ()=default;
 
                    Attribute           (Attribute const&)=delete;
@@ -24,7 +26,7 @@ public:
 
     Attribute&     operator=           (Attribute&&)=delete;
 
-                   ~Attribute          ()=default;
+    virtual        ~Attribute          ()=default;
 
 private:
 

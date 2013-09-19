@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(array_per_box)
     typedef geoneric::Box<Point> Box;
     typedef geoneric::SpatialDomain<Box> BoxDomain;
     typedef geoneric::ArrayValue<int, 2> Value;
-    typedef std::shared_ptr<geoneric::ArrayValue<int, 2>> ValuePtr;
+    typedef std::shared_ptr<Value> ValuePtr;
     typedef geoneric::SpatialAttribute<BoxDomain, ValuePtr> BoxesAttribute;
 
     Point south_west;

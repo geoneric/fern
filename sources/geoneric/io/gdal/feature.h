@@ -32,6 +32,8 @@ public:
 
                    ~Feature            ()=default;
 
+    bool           has_attribute       (String const& name);
+
 private:
 
 };

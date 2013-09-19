@@ -14,6 +14,8 @@ class Domain
 
 public:
 
+protected:
+
                    Domain              ()=default;
 
                    Domain              (Domain const&)=delete;
@@ -24,7 +26,7 @@ public:
 
     Domain&        operator=           (Domain&&)=delete;
 
-                   ~Domain             ()=default;
+    virtual        ~Domain             ()=default;
 
 private:
 

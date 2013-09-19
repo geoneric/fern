@@ -19,6 +19,10 @@ $cmake -E make_directory $io_ogr_test_dir/read_only_dir
 chmod 666 $io_ogr_test_dir/read_only_dir
 
 
+io_gdal_test_dir="$source_dir/io/gdal/test"
+$cmake -E copy $test_data_dir/raster-1.asc $io_gdal_test_dir
+
+
 interpreter_test_dir="$source_dir/interpreter/test"
 $cmake -E copy $test_data_dir/valid-1.ran $interpreter_test_dir
 $cmake -E copy $test_data_dir/valid-2.ran $interpreter_test_dir

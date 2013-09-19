@@ -6,6 +6,7 @@ SET(SOURCES
     dataset_driver
     domain
     feature
+    path
     point_attribute
     point_domain
     point_feature
@@ -27,4 +28,6 @@ ADD_LIBRARY(geoneric_io_core
 )
 TARGET_LINK_LIBRARIES(geoneric_io_core
     geoneric_core
+    ${Boost_FILESYSTEM_LIBRARY}
+    ${Boost_SYSTEM_LIBRARY}
 )

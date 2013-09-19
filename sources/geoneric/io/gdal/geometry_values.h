@@ -21,15 +21,17 @@ class GeometryValues:
 
 public:
 
+    typedef typename std::map<GID, Value>::const_iterator const_iterator;
+
                    GeometryValues      ()=default;
 
                    GeometryValues      (GeometryValues const&)=delete;
 
-    GeometryValues&        operator=   (GeometryValues const&)=delete;
+    GeometryValues& operator=          (GeometryValues const&)=delete;
 
                    GeometryValues      (GeometryValues&&)=delete;
 
-    GeometryValues&        operator=   (GeometryValues&&)=delete;
+    GeometryValues& operator=          (GeometryValues&&)=delete;
 
                    ~GeometryValues     ()=default;
 
@@ -41,6 +43,8 @@ public:
     size_t         size                () const;
 
     Value const&   value               (GID const& gid) const;
+
+    const_iterator cbegin              () const;
 
 private:
 
@@ -87,6 +91,15 @@ inline Value const& GeometryValues<GID, Value>::value(
     auto iterator = _values.find(gid);
     assert(iterator != _values.end());
     return iterator->second;
+}
+
+
+template<
+    class GID,
+    class Value>
+inline auto GeometryValues<GID, Value>::cbegin() const -> const_iterator
+{
+    return _values.cbegin();
 }
 
 } // namespace geoneric

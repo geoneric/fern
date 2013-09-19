@@ -5,7 +5,7 @@
 
 namespace geoneric {
 
-boost::multi_array_types::extent_gen extents;
+extern boost::multi_array_types::extent_gen extents;
 
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
@@ -23,6 +23,8 @@ class Array:
 
 public:
 
+protected:
+
                    Array               ()=default;
 
     template<class ExtentList>
@@ -36,7 +38,7 @@ public:
 
     Array&         operator=           (Array&&)=delete;
 
-                   ~Array              ()=default;
+    virtual        ~Array              ()=default;
 
 private:
 

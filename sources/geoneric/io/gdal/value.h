@@ -14,6 +14,8 @@ class Value
 
 public:
 
+protected:
+
                    Value               ()=default;
 
                    Value               (Value const&)=delete;
@@ -24,7 +26,7 @@ public:
 
     Value&         operator=           (Value&&)=delete;
 
-                   ~Value              ()=default;
+    virtual        ~Value              ()=default;
 
 private:
 

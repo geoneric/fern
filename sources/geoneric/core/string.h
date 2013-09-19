@@ -8,6 +8,11 @@ namespace geoneric {
 
 //! Unicode string class.
 /*!
+
+  \todo When converting to / from default encoding, the character type
+        depends on the OS. char for ISO/IEC 9945, wchar_t for Windows
+        Compare with boost::filesystem's path. Add compile-time checks for
+        this.
 */
 // This class privately inherits from UnicodeString so we can keep track of
 // the methods that are actually used. If necessary we may want to move to
