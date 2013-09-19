@@ -15,7 +15,8 @@ namespace geoneric {
 */
 template<
     class Geometry_>
-class SpatialDomain: public Domain
+class SpatialDomain:
+    public Domain
 {
 
 public:

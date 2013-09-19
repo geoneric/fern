@@ -1,4 +1,5 @@
 SET(TEST_NAMES
+    constant_attribute_test
     feature_test
     spatial_attribute_test
     spatial_domain_test

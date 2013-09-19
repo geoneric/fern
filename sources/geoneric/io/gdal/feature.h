@@ -15,7 +15,7 @@ namespace geoneric {
   \sa        .
 */
 class Feature:
-    public std::map<String, std::unique_ptr<Attribute>>
+    public std::map<String, std::shared_ptr<Attribute>>
 {
 
 public:

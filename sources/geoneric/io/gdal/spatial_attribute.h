@@ -2,7 +2,7 @@
 
 #include <memory>
 #include "geoneric/io/gdal/attribute.h"
-#include "geoneric/io/gdal/values.h"
+#include "geoneric/io/gdal/geometry_values.h"
 
 
 namespace geoneric {
@@ -45,13 +45,13 @@ public:
 
     Domain const&  domain              () const;
 
-    Values<typename Domain::GID, Value> const& values() const;
+    GeometryValues<typename Domain::GID, Value> const& values() const;
 
 private:
 
     std::unique_ptr<Domain> _domain;
 
-    std::unique_ptr<Values<typename Domain::GID, Value>> _values;
+    std::unique_ptr<GeometryValues<typename Domain::GID, Value>> _values;
 
 };
 
@@ -62,7 +62,7 @@ template<
 inline SpatialAttribute<Domain, Value>::SpatialAttribute()
 
     : _domain(new Domain),
-      _values(new Values<typename Domain::GID, Value>)
+      _values(new GeometryValues<typename Domain::GID, Value>)
 
 {
 }
@@ -96,8 +96,8 @@ inline Domain const&  SpatialAttribute<Domain, Value>::domain() const
 template<
     class Domain,
     class Value>
-inline Values<typename Domain::GID, Value> const&
-SpatialAttribute<Domain, Value>::values() const
+inline GeometryValues<typename Domain::GID, Value> const&
+    SpatialAttribute<Domain, Value>::values() const
 {
     return *_values;
 }
