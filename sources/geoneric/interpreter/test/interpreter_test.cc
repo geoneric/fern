@@ -3,8 +3,8 @@
 #include "geoneric/core/io_error.h"
 #include "geoneric/core/parse_error.h"
 #include "geoneric/core/validate_error.h"
+#include "geoneric/feature/core/constant_attribute.h"
 #include "geoneric/operation/core/attribute_argument.h"
-#include "geoneric/feature/scalar_attribute.h"
 #include "geoneric/interpreter/execute_visitor.h"
 #include "geoneric/interpreter/interpreter.h"
 
@@ -184,19 +184,19 @@ BOOST_AUTO_TEST_CASE(execute)
                     std::dynamic_pointer_cast<geoneric::AttributeArgument>(
                         argument));
             BOOST_REQUIRE(attribute_argument);
+            BOOST_REQUIRE_EQUAL(attribute_argument->data_type(),
+                geoneric::DT_SCALAR);
+            BOOST_REQUIRE_EQUAL(attribute_argument->value_type(),
+                geoneric::VT_INT64);
 
             std::shared_ptr<geoneric::Attribute> const& attribute(
                 attribute_argument->attribute());
 
-            BOOST_REQUIRE_EQUAL(attribute->data_type(), geoneric::DT_SCALAR);
-            BOOST_REQUIRE_EQUAL(attribute->value_type(), geoneric::VT_INT64);
-
-            std::shared_ptr<geoneric::ScalarAttribute<int64_t>> scalar_attribute(
-                std::dynamic_pointer_cast<geoneric::ScalarAttribute<int64_t>>(
-                    attribute));
-            BOOST_REQUIRE(scalar_attribute);
-
-            BOOST_CHECK_EQUAL((*scalar_attribute->value())(), 5);
+            std::shared_ptr<geoneric::ConstantAttribute<int64_t>>
+                constant_attribute(std::dynamic_pointer_cast<
+                    geoneric::ConstantAttribute<int64_t>>(attribute));
+            BOOST_REQUIRE(constant_attribute);
+            BOOST_CHECK_EQUAL(constant_attribute->values().value(), 5);
         }
     };
 

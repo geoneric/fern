@@ -1,6 +1,6 @@
 #include "geoneric/interpreter/execute_visitor.h"
 #include "geoneric/ast/core/vertices.h"
-#include "geoneric/feature/scalar_attribute.h"
+#include "geoneric/feature/core/constant_attribute.h"
 #include "geoneric/operation/core/attribute_argument.h"
 
 
@@ -9,7 +9,8 @@ namespace geoneric {
 ExecuteVisitor::ExecuteVisitor(
     OperationsPtr const& operations)
 
-    : _operations(operations),
+    : AstVisitor(),
+      _operations(operations),
       _stack(),
       _symbol_table()
 
@@ -26,7 +27,7 @@ ExecuteVisitor::~ExecuteVisitor()
 
 
 std::stack<std::shared_ptr<Argument>> const&
-ExecuteVisitor::stack() const
+    ExecuteVisitor::stack() const
 {
     return _stack;
 }
@@ -39,7 +40,7 @@ void ExecuteVisitor::clear_stack()
 
 
 SymbolTable<std::shared_ptr<Argument>> const&
-ExecuteVisitor::symbol_table() const
+    ExecuteVisitor::symbol_table() const
 {
     return _symbol_table;
 }
@@ -95,9 +96,7 @@ void ExecuteVisitor::Visit(                                                    \
 {                                                                              \
     _stack.push(                                                               \
         std::shared_ptr<Argument>(new AttributeArgument(                       \
-            std::shared_ptr<Attribute>(new ScalarAttribute<type>(              \
-                std::make_shared<ScalarDomain>(),                              \
-                std::make_shared<ScalarValue<type>>(vertex.value()))))));      \
+            std::make_shared<ConstantAttribute<type>>(vertex.value()))));      \
 }
 
 VISIT_NUMBER_VERTICES(VISIT_NUMBER_VERTEX)
@@ -131,21 +130,19 @@ void ExecuteVisitor::Visit(
 void ExecuteVisitor::Visit(
     ModuleVertex& vertex)
 {
-    Visitor::Visit(vertex);
+    AstVisitor::Visit(vertex);
 }
 
 
 void ExecuteVisitor::Visit(
     StringVertex& vertex)
 {
-    // TODO Connect this attribute to a global script feature.
+    // TODO Connect this attribute to a global script-feature.
     // Turn the string constant into an attribute with a global domain and a
     // single value.
     _stack.push(
         std::shared_ptr<Argument>(new AttributeArgument(
-            std::shared_ptr<Attribute>(new ScalarAttribute<String>(
-                std::make_shared<ScalarDomain>(),
-                std::make_shared<ScalarValue<String>>(vertex.value()))))));
+            std::make_shared<ConstantAttribute<String>>(vertex.value()))));
 }
 
 

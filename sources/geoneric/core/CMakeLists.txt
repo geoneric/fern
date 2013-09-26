@@ -1,6 +1,7 @@
 ADD_SUBDIRECTORY(test)
 
 SET(SOURCES
+    data_types
     exception
     io_error
     messages
@@ -8,7 +9,9 @@ SET(SOURCES
     script_error
     stack
     string
+    type_traits
     validate_error
+    value_types
 )
 ADD_LIBRARY(geoneric_core
     ${SOURCES}

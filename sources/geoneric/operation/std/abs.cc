@@ -1,5 +1,5 @@
 #include "geoneric/operation/std/abs.h"
-#include "geoneric/feature/scalar_attribute.h"
+#include "geoneric/feature/core/constant_attribute.h"
 #include "geoneric/operation/core/attribute_argument.h"
 
 
@@ -10,15 +10,13 @@ template<
 std::vector<std::shared_ptr<Argument>> abs(
         Attribute const& attribute)
 {
-    ScalarAttribute<T> const& value(
-        dynamic_cast<ScalarAttribute<T> const&>(attribute));
-    T result = std::abs((*value.value())());
+    ConstantAttribute<T> const& value(
+        dynamic_cast<ConstantAttribute<T> const&>(attribute));
+    T result = std::abs(value.values().value());
 
     return std::vector<std::shared_ptr<Argument>>({
         std::shared_ptr<Argument>(new AttributeArgument(
-            std::shared_ptr<Attribute>(new ScalarAttribute<T>(
-                std::make_shared<ScalarDomain>(),
-                std::make_shared<ScalarValue<T>>(result)))))
+            std::make_shared<ConstantAttribute<T>>(result)))
     });
 }
 
@@ -54,12 +52,11 @@ std::vector<std::shared_ptr<Argument>> Abs::execute(
     AttributeArgument const& attribute_argument(
         *std::dynamic_pointer_cast<AttributeArgument>(arguments[0]));
     Attribute const& attribute(*attribute_argument.attribute());
-
     std::vector<std::shared_ptr<Argument>> result;
 
-    switch(attribute.data_type()) {
+    switch(attribute_argument.data_type()) {
         case DataType::DT_SCALAR: {
-            switch(attribute.value_type()) {
+            switch(attribute_argument.value_type()) {
                 case ValueType::VT_UINT8: {
                     result = abs<uint8_t>(attribute);
                     break;

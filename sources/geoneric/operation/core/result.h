@@ -1,7 +1,7 @@
 #pragma once
+#include "geoneric/core/data_types.h"
 #include "geoneric/core/string.h"
-#include "geoneric/operation/core/data_types.h"
-#include "geoneric/operation/core/value_types.h"
+#include "geoneric/core/value_types.h"
 
 
 namespace geoneric {

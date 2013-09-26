@@ -1,5 +1,4 @@
 #include "geoneric/operation/std/int32.h"
-#include "geoneric/feature/scalar_attribute.h"
 #include "geoneric/operation/core/attribute_argument.h"
 
 

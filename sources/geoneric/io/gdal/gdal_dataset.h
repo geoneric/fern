@@ -1,5 +1,4 @@
 #pragma once
-
 #include "geoneric/io/gdal/dataset.h"
 
 

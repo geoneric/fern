@@ -7,7 +7,7 @@ namespace geoneric {
 
 IdentifyVisitor::IdentifyVisitor()
 
-    : Visitor(),
+    : AstVisitor(),
       _mode(Mode::Using)
 
 {

@@ -1,6 +1,6 @@
 #pragma once
 #include "geoneric/core/symbol_table.h"
-#include "geoneric/ast/visitor/visitor.h"
+#include "geoneric/ast/visitor/ast_visitor.h"
 
 
 namespace geoneric {
@@ -23,7 +23,7 @@ namespace geoneric {
   \sa        SymbolTable, NameVertex
 */
 class IdentifyVisitor:
-    public Visitor
+    public AstVisitor
 {
 
     friend class IdentifyVisitorTest;

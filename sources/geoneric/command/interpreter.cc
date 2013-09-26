@@ -5,13 +5,13 @@
 #include <cstdlib>
 #include <readline/readline.h>
 #include <readline/history.h>
-#include "geoneric/core/exception.h"
 #include "geoneric/command/message.h"
-#include "geoneric/feature/scalar_attribute.h"
+#include "geoneric/core/exception.h"
+#include "geoneric/core/type_traits.h"
+#include "geoneric/core/value_type_traits.h"
+#include "geoneric/feature/core/constant_attribute.h"
 #include "geoneric/interpreter/interpreter.h"
 #include "geoneric/operation/core/attribute_argument.h"
-#include "geoneric/operation/core/type_traits.h"
-#include "geoneric/operation/core/value_type_traits.h"
 
 
 namespace std {
@@ -32,12 +32,21 @@ struct default_delete<char>
 
 namespace geoneric {
 
+// template<
+//     typename T>
+// inline void show_value(
+//     ScalarValue<T> const& value)
+// {
+//     std::cout << value() << "\n";
+// }
+
+
 template<
     typename T>
 inline void show_value(
-    ScalarValue<T> const& value)
+    T const& value)
 {
-    std::cout << value() << "\n";
+    std::cout << value << "\n";
 }
 
 
@@ -45,9 +54,9 @@ inline void show_value(
         value_type)                                                            \
     case value_type: {                                                         \
         typedef ValueTypeTraits<value_type>::type type;                        \
-        std::shared_ptr<ScalarAttribute<type>> scalar_attribute(               \
-            std::dynamic_pointer_cast<ScalarAttribute<type>>(attribute));      \
-        show_value<type>(*scalar_attribute->value());                          \
+        ConstantAttribute<type> const& constant_attribute(                     \
+            dynamic_cast<ConstantAttribute<type> const&>(*attribute));         \
+        show_value<type>(constant_attribute.values().value());                 \
         break;                                                                 \
     }
 
@@ -58,9 +67,13 @@ void show_value(
 
     std::shared_ptr<Attribute> const& attribute(value->attribute());
 
-    switch(attribute->data_type()) {
+    // switch(attribute->data_type()) {
+    // TODO Assuming scalar ...
+    switch(DT_SCALAR) {
         case DT_SCALAR: {
-            switch(attribute->value_type()) {
+            // TODO Assuming int32 ...
+            // switch(attribute->value_type()) {
+            switch(VT_INT64) {
                 SHOW_VALUE_CASE(VT_INT8)
                 SHOW_VALUE_CASE(VT_INT16)
                 SHOW_VALUE_CASE(VT_INT32)

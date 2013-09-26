@@ -1,9 +1,11 @@
 SET(TEST_NAMES
+    data_types_test
     flag_collection_test
     scope_test
     stack_test
     string_test
     symbol_table_test
+    type_traits_test
 )
 
 MACRO(ADD_UNIT_TEST NAME)

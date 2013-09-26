@@ -1,6 +1,6 @@
 #pragma once
 #include "geoneric/core/string.h"
-#include "geoneric/ast/visitor/visitor.h"
+#include "geoneric/ast/visitor/ast_visitor.h"
 
 
 namespace geoneric {
@@ -11,7 +11,7 @@ namespace geoneric {
   for visualising the syntax-tree.
 */
 class DotVisitor:
-    public Visitor
+    public AstVisitor
 {
 
     friend class DotVisitorTest;

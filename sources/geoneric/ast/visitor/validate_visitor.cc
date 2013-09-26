@@ -26,7 +26,7 @@ void ValidateVisitor::Visit(
 void ValidateVisitor::Visit(
     OperationVertex& vertex)
 {
-    Visitor::Visit(vertex);
+    AstVisitor::Visit(vertex);
 
     // Find out if we know about an operation with the same name as this
     // function's name.

@@ -1,11 +1,7 @@
 ADD_SUBDIRECTORY(test)
 
 SET(SOURCES
-    array
-    attribute
     dataset
-    domain
-    feature
     gdal_dataset
 )
 ADD_LIBRARY(geoneric_io_gdal
@@ -13,5 +9,6 @@ ADD_LIBRARY(geoneric_io_gdal
 )
 TARGET_LINK_LIBRARIES(geoneric_io_gdal
     geoneric_io_core
+    geoneric_feature_core
     ${GDAL_LIBRARIES}
 )

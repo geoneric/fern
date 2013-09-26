@@ -1,27 +1,27 @@
 ADD_SUBDIRECTORY(test)
 
 SET(SOURCES
-    attribute
-    dataset
-    dataset_driver
-    domain
-    feature
+    # attribute
+    # dataset
+    # dataset_driver
+    # domain
+    # feature
     path
-    point_attribute
-    point_domain
-    point_feature
-    point_value
-    polygon_attribute
-    polygon_domain
-    polygon_feature
-    polygon_value
-    raster_attribute
-    raster_value
-    spatial_domain
-    spatio_temporal_domain
-    temporal_domain
-    util
-    value
+    # point_attribute
+    # point_domain
+    # point_feature
+    # point_value
+    # polygon_attribute
+    # polygon_domain
+    # polygon_feature
+    # polygon_value
+    # raster_attribute
+    # raster_value
+    # spatial_domain
+    # spatio_temporal_domain
+    # temporal_domain
+    # util
+    # value
 )
 ADD_LIBRARY(geoneric_io_core
     ${SOURCES}

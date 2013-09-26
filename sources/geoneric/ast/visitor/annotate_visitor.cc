@@ -1,7 +1,7 @@
 #include "geoneric/ast/visitor/annotate_visitor.h"
 #include "geoneric/core/string.h"
+#include "geoneric/core/type_traits.h"
 #include "geoneric/operation/core/result.h"
-#include "geoneric/operation/core/type_traits.h"
 #include "geoneric/ast/core/vertices.h"
 
 
@@ -10,7 +10,7 @@ namespace geoneric {
 AnnotateVisitor::AnnotateVisitor(
     OperationsPtr const& operations)
 
-    : Visitor(),
+    : AstVisitor(),
       _operations(operations),
       _stack(),
       _symbol_table()
@@ -88,7 +88,7 @@ void AnnotateVisitor::Visit(
     assert(vertex.result_types().empty());
 
     // Depth first, visit the children first.
-    Visitor::Visit(vertex);
+    AstVisitor::Visit(vertex);
 
     // Get the result types from all argument expressions provided.
     std::vector<ResultType> argument_types;
@@ -160,7 +160,7 @@ void AnnotateVisitor::Visit(
 void AnnotateVisitor::Visit(
     ModuleVertex& vertex)
 {
-    Visitor::Visit(vertex);
+    AstVisitor::Visit(vertex);
 }
 
 

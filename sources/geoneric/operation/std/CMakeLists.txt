@@ -35,7 +35,6 @@ ADD_LIBRARY(geoneric_operation_std
     ${SOURCES}
 )
 TARGET_LINK_LIBRARIES(geoneric_operation_std
-    geoneric_feature
     geoneric_operation_core
 )
 ADD_CUSTOM_TARGET(operation-xml.h

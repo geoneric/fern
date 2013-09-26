@@ -8,7 +8,7 @@ namespace geoneric {
 
 OptimizeVisitor::OptimizeVisitor()
 
-    : Visitor(),
+    : AstVisitor(),
       _mode(Mode::Defining)
 
 {
@@ -26,7 +26,7 @@ void OptimizeVisitor::register_expression_for_inlining(
 void OptimizeVisitor::visit_statements(
     StatementVertices& statements)
 {
-    Visitor::visit_statements(statements);
+    AstVisitor::visit_statements(statements);
 
     switch(_mode) {
         case Mode::Using: {
@@ -144,7 +144,7 @@ std::cout << "visit script" << std::endl;
 
         // First visit all use locations of name vertices.
         _mode = Mode::Using;
-        Visitor::Visit(vertex);
+        AstVisitor::Visit(vertex);
 
         // If expressions have been inlined, then the script will
         // change. We need to repeat the visit until the script is stable.
@@ -152,7 +152,7 @@ std::cout << "visit script" << std::endl;
 
         // Now visit all defining locations of name vertices.
         _mode = Mode::Defining;
-        Visitor::Visit(vertex);
+        AstVisitor::Visit(vertex);
 
         assert(_inline_expressions.empty());
         assert(_inlined_expressions.empty());

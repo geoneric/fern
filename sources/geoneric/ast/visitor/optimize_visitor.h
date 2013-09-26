@@ -1,7 +1,7 @@
 #pragma once
 #include <map>
 #include "geoneric/ast/core/name_vertex.h"
-#include "geoneric/ast/visitor/visitor.h"
+#include "geoneric/ast/visitor/ast_visitor.h"
 
 
 namespace geoneric {
@@ -20,8 +20,8 @@ namespace geoneric {
              Warn about them.
   \sa        .
 */
-class OptimizeVisitor
-    : public Visitor
+class OptimizeVisitor:
+    public AstVisitor
 {
 
     friend class OptimizeVisitorTest;

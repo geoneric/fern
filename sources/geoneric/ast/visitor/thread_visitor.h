@@ -1,7 +1,7 @@
 #pragma once
 #include <stack>
 #include "geoneric/core/symbol_table.h"
-#include "geoneric/ast/visitor/visitor.h"
+#include "geoneric/ast/visitor/ast_visitor.h"
 
 
 namespace geoneric {
@@ -14,7 +14,7 @@ namespace geoneric {
   \todo      Is it possible to pass pointers as arguments to the Visit functions?
 */
 class ThreadVisitor:
-    public Visitor
+    public AstVisitor
 {
 
     friend class ThreadVisitorTest;

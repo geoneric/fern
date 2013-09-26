@@ -1,5 +1,6 @@
 SET(TEST_NAMES
     annotate_visitor_test
+    ast_visitor_test
     dot_visitor_test
     identify_visitor_test
     module_visitor_test
@@ -8,7 +9,6 @@ SET(TEST_NAMES
     # optimize_visitor_test
     thread_visitor_test
     validate_visitor_test
-    visitor_test
 )
 
 MACRO(ADD_UNIT_TEST NAME)

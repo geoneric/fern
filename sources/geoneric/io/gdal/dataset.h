@@ -1,8 +1,7 @@
 #pragma once
-
 #include <memory>
 #include "geoneric/core/string.h"
-#include "geoneric/io/gdal/feature.h"
+#include "geoneric/feature/core/feature.h"
 
 
 namespace geoneric {

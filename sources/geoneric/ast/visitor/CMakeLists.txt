@@ -3,6 +3,7 @@ ADD_SUBDIRECTORY(test)
 SET(SOURCES
     annotate_visitor
     ast_dot_visitor
+    ast_visitor
     copy_visitor
     dot_visitor
     identify_visitor
@@ -11,7 +12,6 @@ SET(SOURCES
     optimize_visitor
     thread_visitor
     validate_visitor
-    visitor
 )
 ADD_LIBRARY(geoneric_ast_visitor
     ${SOURCES}

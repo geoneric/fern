@@ -1,11 +1,11 @@
 #include "geoneric/io/gdal/gdal_dataset.h"
 #include "gdal_priv.h"
 #include "geoneric/io/core/path.h"
-#include "geoneric/io/gdal/array_value.h"
-#include "geoneric/io/gdal/box.h"
-#include "geoneric/io/gdal/point.h"
-#include "geoneric/io/gdal/spatial_attribute.h"
-#include "geoneric/io/gdal/spatial_domain.h"
+#include "geoneric/feature/core/array_value.h"
+#include "geoneric/feature/core/box.h"
+#include "geoneric/feature/core/point.h"
+#include "geoneric/feature/core/spatial_attribute.h"
+#include "geoneric/feature/core/spatial_domain.h"
 
 
 namespace geoneric {

@@ -1,6 +1,6 @@
 #pragma once
 #include "geoneric/core/string.h"
-#include "geoneric/ast/visitor/visitor.h"
+#include "geoneric/ast/visitor/ast_visitor.h"
 
 
 namespace geoneric {
@@ -11,8 +11,8 @@ namespace geoneric {
 
   \sa        .
 */
-class ModuleVisitor
-    : public Visitor
+class ModuleVisitor:
+    public AstVisitor
 {
 
 public:

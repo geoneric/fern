@@ -1,5 +1,4 @@
 #include "geoneric/operation/std/add.h"
-#include "geoneric/feature/scalar_attribute.h"
 #include "geoneric/operation/core/attribute_argument.h"
 
 
@@ -38,14 +37,12 @@ std::vector<std::shared_ptr<Argument>> Add::execute(
     assert(arguments[0]->argument_type() == ArgumentType::AT_ATTRIBUTE);
     assert(arguments[1]->argument_type() == ArgumentType::AT_ATTRIBUTE);
 
-    assert(false);
+    AttributeArgument const& attribute_argument(
+        *std::dynamic_pointer_cast<AttributeArgument>(arguments[0]));
+    assert(attribute_argument.data_type() == DataType::DT_SCALAR);
+    assert(attribute_argument.value_type() == ValueType::VT_INT64);
 
-    // AttributeArgument const& attribute_argument(
-    //     *std::dynamic_pointer_cast<AttributeArgument>(arguments[0]));
     // Attribute const& attribute(*attribute_argument.attribute());
-
-    // assert(attribute.data_type() == DataType::DT_SCALAR);
-    // assert(attribute.value_type() == ValueType::VT_INT64);
 
     // ScalarAttribute<int64_t> const& value(
     //     dynamic_cast<ScalarAttribute<int64_t> const&>(attribute));
@@ -61,6 +58,8 @@ std::vector<std::shared_ptr<Argument>> Add::execute(
     //             std::make_shared<ScalarDomain>(),
     //             std::make_shared<ScalarValue<int64_t>>(result)))))
     // });
+
+    return std::vector<std::shared_ptr<Argument>>();
 }
 
 } // namespace geoneric

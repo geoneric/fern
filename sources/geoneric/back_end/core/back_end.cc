@@ -6,7 +6,8 @@ namespace geoneric {
 BackEnd::BackEnd(
     OperationsPtr const& operations)
 
-    : _operations(operations)
+    : AstVisitor(),
+      _operations(operations)
 
 {
 }

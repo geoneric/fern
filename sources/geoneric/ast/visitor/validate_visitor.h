@@ -1,5 +1,5 @@
 #pragma once
-#include "geoneric/ast/visitor/visitor.h"
+#include "geoneric/ast/visitor/ast_visitor.h"
 
 
 namespace geoneric {
@@ -28,10 +28,8 @@ namespace geoneric {
   \sa        AnnotateVisitor
 */
 class ValidateVisitor:
-    public Visitor
+    public AstVisitor
 {
-
-    friend class ValidateVisitorTest;
 
 public:
 

@@ -2,7 +2,7 @@
 #include <memory>
 #include <stack>
 #include "geoneric/core/symbol_table.h"
-#include "geoneric/ast/visitor/visitor.h"
+#include "geoneric/ast/visitor/ast_visitor.h"
 #include "geoneric/operation/core/operations.h"
 
 
@@ -31,7 +31,7 @@ namespace geoneric {
   \sa        .
 */
 class ExecuteVisitor:
-    public Visitor
+    public AstVisitor
 {
 
 public:

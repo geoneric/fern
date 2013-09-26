@@ -1,5 +1,5 @@
 #pragma once
-#include "geoneric/ast/visitor/visitor.h"
+#include "geoneric/ast/visitor/ast_visitor.h"
 #include "geoneric/operation/core/operations.h"
 
 
@@ -12,7 +12,7 @@ namespace geoneric {
   \sa        .
 */
 class BackEnd:
-    public Visitor
+    public AstVisitor
 {
 
 public:

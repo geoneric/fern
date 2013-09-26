@@ -6,7 +6,7 @@ namespace geoneric {
 
 ThreadVisitor::ThreadVisitor()
 
-    : Visitor(),
+    : AstVisitor(),
       _last_vertex(nullptr),
       _symbol_table(),
       _function_definitions(),

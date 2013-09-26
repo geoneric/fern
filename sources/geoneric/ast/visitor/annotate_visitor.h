@@ -3,7 +3,7 @@
 #include "geoneric/core/symbol_table.h"
 #include "geoneric/operation/core/operations.h"
 #include "geoneric/operation/core/result_type.h"
-#include "geoneric/ast/visitor/visitor.h"
+#include "geoneric/ast/visitor/ast_visitor.h"
 
 
 
@@ -41,7 +41,7 @@ namespace geoneric {
   \sa        ValidateVisitor
 */
 class AnnotateVisitor:
-    public Visitor
+    public AstVisitor
 {
 
     friend class AnnotateVisitorTest;

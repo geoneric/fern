@@ -7,7 +7,7 @@ namespace geoneric {
 ModuleVisitor::ModuleVisitor(
     size_t tab_size)
 
-    : Visitor(),
+    : AstVisitor(),
       _tab_size(tab_size),
       _indent_level(0)
 

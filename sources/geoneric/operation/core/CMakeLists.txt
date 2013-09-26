@@ -4,19 +4,17 @@ SET(SOURCES
     argument
     argument_type
     attribute_argument
-    data_types
     operation
     operations
     parameter
     result
     result_type
     result_types
-    type_traits
-    value_types
 )
 ADD_LIBRARY(geoneric_operation_core
     ${SOURCES}
 )
 TARGET_LINK_LIBRARIES(geoneric_operation_core
+    geoneric_feature_visitor
     geoneric_core
 )

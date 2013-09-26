@@ -1,5 +1,5 @@
 #pragma once
-#include "geoneric/ast/visitor/visitor.h"
+#include "geoneric/ast/visitor/ast_visitor.h"
 
 
 namespace geoneric {
@@ -11,7 +11,7 @@ namespace geoneric {
   \sa        .
 */
 class CopyVisitor:
-    public Visitor
+    public AstVisitor
 {
 
     friend class CopyVisitorTest;
