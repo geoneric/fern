@@ -24,7 +24,7 @@ void AttributeTypeVisitor::Visit(
 }
 
 
-#define VISIT_NUMBER_ATTRIBUTE(                                                \
+#define VISIT_SCALAR_ATTRIBUTE(                                                \
     type)                                                                      \
 void AttributeTypeVisitor::Visit(                                              \
     ConstantAttribute<type> const& /* attribute */)                            \
@@ -33,9 +33,9 @@ void AttributeTypeVisitor::Visit(                                              \
     _value_type = TypeTraits<type>::value_type;                                \
 }
 
-VISIT_NUMBER_ATTRIBUTES(VISIT_NUMBER_ATTRIBUTE)
+VISIT_SCALAR_ATTRIBUTES(VISIT_SCALAR_ATTRIBUTE)
 
-#undef VISIT_NUMBER_ATTRIBUTE
+#undef VISIT_SCALAR_ATTRIBUTE
 
 
 DataType AttributeTypeVisitor::data_type() const

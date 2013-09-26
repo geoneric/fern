@@ -2,6 +2,8 @@
 #include "geoneric/operation/std/abs.h"
 #include "geoneric/operation/std/add.h"
 #include "geoneric/operation/std/int32.h"
+#include "geoneric/operation/std/read.h"
+
 
 namespace geoneric {
 
@@ -22,7 +24,8 @@ std::shared_ptr<Operations> const& operations()
         detail::operations.reset(new Operations({
             std::shared_ptr<Operation>(new Abs()),
             std::shared_ptr<Operation>(new Add()),
-            std::shared_ptr<Operation>(new Int32())
+            std::shared_ptr<Operation>(new Int32()),
+            std::shared_ptr<Operation>(new Read())
         }));
     }
 

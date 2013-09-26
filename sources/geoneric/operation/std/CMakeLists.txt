@@ -36,6 +36,7 @@ ADD_LIBRARY(geoneric_operation_std
 )
 TARGET_LINK_LIBRARIES(geoneric_operation_std
     geoneric_operation_core
+    geoneric_io_gdal
 )
 ADD_CUSTOM_TARGET(operation-xml.h
     DEPENDS

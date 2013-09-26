@@ -34,4 +34,10 @@ bool Path::operator==(
         dynamic_cast<boost::filesystem::path const&>(path);
 }
 
+
+Path::operator String() const
+{
+    return String(native());
+}
+
 } // namespace geoneric

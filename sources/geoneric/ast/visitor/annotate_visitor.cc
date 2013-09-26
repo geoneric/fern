@@ -83,6 +83,17 @@ VISIT_NUMBER_VERTICES(VISIT_NUMBER_VERTEX)
 
 
 void AnnotateVisitor::Visit(
+    StringVertex& vertex)
+{
+    assert(vertex.result_types().empty());
+    ResultType result_type(DataTypes::SCALAR, ValueTypes::STRING);
+    _stack.push(result_type);
+    vertex.add_result_type(result_type);
+    assert(vertex.result_types().size() == 1);
+}
+
+
+void AnnotateVisitor::Visit(
     OperationVertex& vertex)
 {
     assert(vertex.result_types().empty());
@@ -103,8 +114,7 @@ void AnnotateVisitor::Visit(
     // Retrieve info about the operation, if available.
     if(_operations->has_operation(vertex.name())) {
         assert(!vertex.operation());
-        OperationPtr const& operation(_operations->operation(
-            vertex.name()));
+        OperationPtr const& operation(_operations->operation(vertex.name()));
         vertex.set_operation(operation);
 
         assert(vertex.result_types().empty());

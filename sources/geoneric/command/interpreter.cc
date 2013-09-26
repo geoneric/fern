@@ -10,8 +10,11 @@
 #include "geoneric/core/type_traits.h"
 #include "geoneric/core/value_type_traits.h"
 #include "geoneric/feature/core/constant_attribute.h"
+#include "geoneric/feature/core/feature.h"
+#include "geoneric/feature/visitor/attribute_type_visitor.h"
 #include "geoneric/interpreter/interpreter.h"
 #include "geoneric/operation/core/attribute_argument.h"
+#include "geoneric/operation/core/feature_argument.h"
 
 
 namespace std {
@@ -46,6 +49,9 @@ template<
 inline void show_value(
     T const& value)
 {
+    static_assert(
+        std::is_arithmetic<T>::value || std::is_same<T, String>::value,
+        "T must be a number or a string");
     std::cout << value << "\n";
 }
 
@@ -55,25 +61,23 @@ inline void show_value(
     case value_type: {                                                         \
         typedef ValueTypeTraits<value_type>::type type;                        \
         ConstantAttribute<type> const& constant_attribute(                     \
-            dynamic_cast<ConstantAttribute<type> const&>(*attribute));         \
+            dynamic_cast<ConstantAttribute<type> const&>(*value));             \
         show_value<type>(constant_attribute.values().value());                 \
         break;                                                                 \
     }
 
+
 void show_value(
-    std::shared_ptr<AttributeArgument> const& value)
+    std::shared_ptr<Attribute> const& value)
 {
     assert(value);
 
-    std::shared_ptr<Attribute> const& attribute(value->attribute());
+    geoneric::AttributeTypeVisitor visitor;
+    value->Accept(visitor);
 
-    // switch(attribute->data_type()) {
-    // TODO Assuming scalar ...
-    switch(DT_SCALAR) {
+    switch(visitor.data_type()) {
         case DT_SCALAR: {
-            // TODO Assuming int32 ...
-            // switch(attribute->value_type()) {
-            switch(VT_INT64) {
+            switch(visitor.value_type()) {
                 SHOW_VALUE_CASE(VT_INT8)
                 SHOW_VALUE_CASE(VT_INT16)
                 SHOW_VALUE_CASE(VT_INT32)
@@ -89,6 +93,10 @@ void show_value(
 
             break;
         }
+        case DT_POLYGON: {
+            std::cout << "polygon" << std::endl;
+            break;
+        }
         default: {
             assert(false);
             break;
@@ -97,6 +105,32 @@ void show_value(
 }
 
 #undef SHOW_VALUE_CASE
+
+
+void show_value(
+    std::shared_ptr<AttributeArgument> const& value)
+{
+    assert(value);
+
+    std::shared_ptr<Attribute> const& attribute(value->attribute());
+    show_value(attribute);
+}
+
+
+void show_value(
+    std::shared_ptr<FeatureArgument> const& value)
+{
+    assert(value);
+
+    std::shared_ptr<Feature> const& feature(value->feature());
+    std::cout << "feature containing " << feature->nr_attributes()
+        << " attribute(s):" << "\n";
+
+    for(auto attribute_name: feature->attribute_names()) {
+        std::cout << attribute_name << "\n";
+        show_value(feature->attribute(attribute_name));
+    }
+}
 
 
 void show_value(
@@ -110,7 +144,7 @@ void show_value(
             break;
         }
         case ArgumentType::AT_FEATURE: {
-            assert(false);
+            show_value(std::dynamic_pointer_cast<FeatureArgument>(value));
             break;
         }
     }

@@ -52,6 +52,7 @@ void ExecuteVisitor::Visit(
     // Let the source expression execute itself, leaving the result(s) on the
     // stack.
     vertex.expression()->Accept(*this);
+    assert(!_stack.empty());
 
     // Assume the target expression is a NameVertex (it should, for now).
     assert(dynamic_cast<NameVertex const*>(vertex.target().get()));

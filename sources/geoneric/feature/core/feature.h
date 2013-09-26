@@ -14,7 +14,7 @@ namespace geoneric {
   \sa        .
 */
 class Feature:
-    public std::map<String, std::shared_ptr<Attribute>>
+    private std::map<String, std::shared_ptr<Attribute>>
 {
 
 public:
@@ -31,7 +31,17 @@ public:
 
                    ~Feature            ()=default;
 
-    bool           has_attribute       (String const& name);
+    size_t         nr_attributes       () const;
+
+    bool           contains_attribute  (String const& name);
+
+    void           add_attribute       (String const& name,
+                                        std::shared_ptr<Attribute> const& attribute);
+
+    std::vector<String> attribute_names  () const;
+
+    std::shared_ptr<Attribute> const& attribute(
+                                        String const& name);
 
 private:
 

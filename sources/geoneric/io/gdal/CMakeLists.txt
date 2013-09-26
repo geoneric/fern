@@ -2,7 +2,10 @@ ADD_SUBDIRECTORY(test)
 
 SET(SOURCES
     dataset
+    driver
+    drivers
     gdal_dataset
+    gdal_driver
 )
 ADD_LIBRARY(geoneric_io_gdal
     ${SOURCES}

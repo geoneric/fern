@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <loki/Visitor.h>
+#include "geoneric/core/string.h"
 #include "geoneric/feature/core/attribute.h"
 
 
@@ -26,7 +27,8 @@ class AttributeVisitor:
     public Loki::Visitor<ConstantAttribute<uint32_t>, void, true>,
     public Loki::Visitor<ConstantAttribute<uint64_t>, void, true>,
     public Loki::Visitor<ConstantAttribute<float>, void, true>,
-    public Loki::Visitor<ConstantAttribute<double>, void, true>
+    public Loki::Visitor<ConstantAttribute<double>, void, true>,
+    public Loki::Visitor<ConstantAttribute<String>, void, true>
 {
 
 public:
@@ -53,6 +55,8 @@ public:
 
     virtual void   Visit               (ConstantAttribute<double> const& attribute);
 
+    virtual void   Visit               (ConstantAttribute<String> const& attribute);
+
 protected:
 
                    AttributeVisitor    ()=default;
@@ -75,7 +79,7 @@ private:
 //! Macro that will call the macro passed in for each numeric value type.
 /*!
 */
-#define VISIT_NUMBER_ATTRIBUTES(                                               \
+#define VISIT_SCALAR_ATTRIBUTES(                                               \
         macro)                                                                 \
     macro(int8_t)                                                              \
     macro(int16_t)                                                             \
@@ -86,6 +90,7 @@ private:
     macro(uint32_t)                                                            \
     macro(uint64_t)                                                            \
     macro(float)                                                               \
-    macro(double)
+    macro(double)                                                              \
+    macro(String)
 
 } // namespace geoneric

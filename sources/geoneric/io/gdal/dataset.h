@@ -22,6 +22,8 @@ public:
 
     virtual size_t nr_features         () const=0;
 
+    virtual bool   contains_feature    (String const& name) const=0;
+
     virtual std::shared_ptr<Feature> read(String const& name) const=0;
 
 protected:

@@ -10,15 +10,20 @@
 
 namespace geoneric {
 
+bool GDALDataset::can_open(
+    String const& name)
+{
+    return GDALOpen(name.encode_in_default_encoding().c_str(), GA_ReadOnly) !=
+        nullptr;
+}
+
+
 GDALDataset::GDALDataset(
     String const& name)
 
     : Dataset(name, OpenMode::READ)
 
 {
-    // TODO Move somewhere else.
-    GDALAllRegister();
-
     if(!exists()) {
         // TODO raise exception.
         assert(false);
@@ -113,7 +118,8 @@ std::shared_ptr<Feature> GDALDataset::read(
     BoxesAttribute::GID gid = attribute->add(box, grid);
 
     std::shared_ptr<Feature> feature(new Feature());
-    (*feature)[name] = std::dynamic_pointer_cast<Attribute>(attribute);
+    feature->add_attribute(name, std::dynamic_pointer_cast<Attribute>(
+        attribute));
 
     return feature;
 }

@@ -1,4 +1,5 @@
 SET(TEST_NAMES
+    drivers_test
     gdal_dataset_test
 )
 

@@ -50,6 +50,8 @@ public:
 
     void           Visit               (ConstantAttribute<double> const& attribute);
 
+    void           Visit               (ConstantAttribute<String> const& attribute);
+
     void           Visit               (Attribute const& attribute);
 
     DataType       data_type           () const;

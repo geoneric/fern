@@ -23,7 +23,7 @@ void AttributeVisitor::Visit(                                                  \
     Visit(dynamic_cast<Attribute const&>(attribute));                          \
 }
 
-VISIT_NUMBER_ATTRIBUTES(VISIT_NUMBER_ATTRIBUTE)
+VISIT_SCALAR_ATTRIBUTES(VISIT_NUMBER_ATTRIBUTE)
 
 #undef VISIT_NUMBER_ATTRIBUTE
 

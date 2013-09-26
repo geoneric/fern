@@ -96,6 +96,8 @@ private:
 
     void           Visit               (NumberVertex<double>& vertex);
 
+    void           Visit               (StringVertex& vertex);
+
     void           Visit               (OperationVertex& vertex);
 
     // void           Visit               (SubscriptVertex& vertex);

@@ -4,6 +4,7 @@ SET(SOURCES
     argument
     argument_type
     attribute_argument
+    feature_argument
     operation
     operations
     parameter

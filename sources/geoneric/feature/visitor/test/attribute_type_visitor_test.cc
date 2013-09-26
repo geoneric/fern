@@ -50,6 +50,14 @@ BOOST_AUTO_TEST_CASE(attribute_type_visitor)
         BOOST_CHECK_EQUAL(visitor.data_type(), geoneric::DT_SCALAR);
         BOOST_CHECK_EQUAL(visitor.value_type(), geoneric::VT_INT32);
     }
+
+    // Visit a constant string attribute.
+    {
+        geoneric::ConstantAttribute<geoneric::String> string_attribute;
+        string_attribute.Accept(visitor);
+        BOOST_CHECK_EQUAL(visitor.data_type(), geoneric::DT_SCALAR);
+        BOOST_CHECK_EQUAL(visitor.value_type(), geoneric::VT_STRING);
+    }
 }
 
 BOOST_AUTO_TEST_SUITE_END()

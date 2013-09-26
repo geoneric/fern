@@ -16,6 +16,8 @@ class GDALDataset:
 
 public:
 
+    static bool    can_open            (String const& name);
+
                    GDALDataset         (String const& name);
 
                    GDALDataset         (GDALDataset const&)=delete;
@@ -30,13 +32,13 @@ public:
 
     size_t         nr_features         () const;
 
+    bool           contains_feature    (String const& name) const;
+
     std::shared_ptr<Feature> read      (String const& name) const;
 
 private:
 
     bool           exists              () const;
-
-    bool           contains_feature    (String const& name) const;
 
 };
 

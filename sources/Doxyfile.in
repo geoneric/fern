@@ -4,6 +4,8 @@ INPUT                   = ${CMAKE_CURRENT_SOURCE_DIR}/geoneric \
                           ${XSD_INCLUDE_DIRS}/xsd/cxx
 ${DOXYGEN_TEMPLATE}
 EXCLUDE_PATTERNS        = *_test.cc \
+                          ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/tmp/*/*.h \
+                          ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/tmp/*/*.cc \
                           ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/io/core/*.h \
                           ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/io/core/*.cc \
                           ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/io/hdf5/*.h \

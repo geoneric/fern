@@ -35,6 +35,8 @@ public:
 
     bool           operator==          (Path const& path) const;
 
+                   operator String     () const;
+
     Path           stem                () const;
 
 private:
