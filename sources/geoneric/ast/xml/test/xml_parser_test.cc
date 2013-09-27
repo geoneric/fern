@@ -14,24 +14,24 @@ BOOST_AUTO_TEST_CASE(parse_string)
     geoneric::AlgebraParser algebra_parser;
     geoneric::XmlParser xml_parser;
     geoneric::String xml;
-    std::shared_ptr<geoneric::AstVertex> tree;
+    // std::shared_ptr<geoneric::AstVertex> tree;
 
     {
         // Empty xml.
         xml = algebra_parser.parse_string(geoneric::String(""));
-        tree = xml_parser.parse_string(xml);
+        BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
     }
 
     {
         // Name expression.
         xml = algebra_parser.parse_string(geoneric::String("a"));
-        tree = xml_parser.parse_string(xml);
+        BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
     }
 
     {
         // String expression.
         xml = algebra_parser.parse_string(geoneric::String("\"five\""));
-        tree = xml_parser.parse_string(xml);
+        BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
     }
 
     {
@@ -39,56 +39,56 @@ BOOST_AUTO_TEST_CASE(parse_string)
 
         // Numeric expression.
         xml = algebra_parser.parse_string(geoneric::String("5"));
-        tree = xml_parser.parse_string(xml);
+        BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
 
         xml = algebra_parser.parse_string(geoneric::String("5L"));
-        tree = xml_parser.parse_string(xml);
+        BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
 
         // TODO test unsigned types.
 
         xml = algebra_parser.parse_string(geoneric::String("5.5"));
-        tree = xml_parser.parse_string(xml);
+        BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
     }
 
     {
         // Function call.
         xml = algebra_parser.parse_string(geoneric::String("f()"));
-        tree = xml_parser.parse_string(xml);
+        BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
 
         xml = algebra_parser.parse_string(geoneric::String(
             "f(1, \"2\", three, four())"));
-        tree = xml_parser.parse_string(xml);
+        BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
     }
 
     {
         // Operator.
         // Unary.
         xml = algebra_parser.parse_string(geoneric::String("-a"));
-        tree = xml_parser.parse_string(xml);
+        BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
 
         // Binary.
         xml = algebra_parser.parse_string(geoneric::String("a + b"));
-        tree = xml_parser.parse_string(xml);
+        BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
 
         // Boolean.
         xml = algebra_parser.parse_string(geoneric::String("a and b"));
-        tree = xml_parser.parse_string(xml);
+        BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
 
         // Comparison.
         xml = algebra_parser.parse_string(geoneric::String("a == b"));
-        tree = xml_parser.parse_string(xml);
+        BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
     }
 
     {
         // Assignment statement.
         xml = algebra_parser.parse_string(geoneric::String("a = b"));
-        tree = xml_parser.parse_string(xml);
+        BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
     }
 
     {
         // Multiple statements.
         xml = algebra_parser.parse_string(geoneric::String("a\nb"));
-        tree = xml_parser.parse_string(xml);
+        BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
     }
 
     {
@@ -96,21 +96,21 @@ BOOST_AUTO_TEST_CASE(parse_string)
         xml = algebra_parser.parse_string(geoneric::String(
             "if a:\n"
             "    b"));
-        tree = xml_parser.parse_string(xml);
+        BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
 
         xml = algebra_parser.parse_string(geoneric::String(
             "if a:\n"
             "    b\n"
             "else:\n"
             "    c"));
-        tree = xml_parser.parse_string(xml);
+        BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
 
         xml = algebra_parser.parse_string(geoneric::String(
             "if a:\n"
             "    b\n"
             "elif c:\n"
             "    d"));
-        tree = xml_parser.parse_string(xml);
+        BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
     }
 
     {
@@ -118,14 +118,14 @@ BOOST_AUTO_TEST_CASE(parse_string)
         xml = algebra_parser.parse_string(geoneric::String(
             "while a:\n"
             "    b"));
-        tree = xml_parser.parse_string(xml);
+        BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
 
         xml = algebra_parser.parse_string(geoneric::String(
             "while a:\n"
             "    b\n"
             "else:\n"
             "    c"));
-        tree = xml_parser.parse_string(xml);
+        BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
     }
 
     {
@@ -159,7 +159,13 @@ BOOST_AUTO_TEST_CASE(parse_string)
     {
         // Slice expression.
         xml = algebra_parser.parse_string(geoneric::String("a[b]"));
-        tree = xml_parser.parse_string(xml);
+        BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
+    }
+
+    {
+        // Attribute expression.
+        xml = algebra_parser.parse_string(geoneric::String("a.b"));
+        BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
     }
 
     {
@@ -173,7 +179,7 @@ BOOST_AUTO_TEST_CASE(parse_string)
                 "</Statement>"
               "</Statements>"
             "</Geoneric>";
-        tree = xml_parser.parse_string(xml);
+        BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
 
         xml =
             "<?xml version=\"1.0\"?>"
@@ -188,7 +194,7 @@ BOOST_AUTO_TEST_CASE(parse_string)
                 "</Statement>"
               "</Statements>"
             "</Geoneric>";
-        tree = xml_parser.parse_string(xml);
+        BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
     }
 
     {
@@ -234,7 +240,7 @@ BOOST_AUTO_TEST_CASE(parse_string)
                 "</Statement>"
               "</Statements>"
             "</Geoneric>";
-        tree = xml_parser.parse_string(xml);
+        BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
     }
 }
 

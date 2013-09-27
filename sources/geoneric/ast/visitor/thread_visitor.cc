@@ -36,9 +36,7 @@ void ThreadVisitor::Visit(
         }
         case Mode::VisitNonFunctionDefinitionStatements: {
             vertex.expression()->Accept(*this);
-
             vertex.target()->Accept(*this);
-
             assert(_last_vertex);
             thread_to(&vertex);
             break;
@@ -135,7 +133,6 @@ void ThreadVisitor::Visit(
         }
         case Mode::VisitNonFunctionDefinitionStatements: {
             visit_expressions(vertex.expressions());
-
             thread_to(&vertex);
             break;
         }
@@ -205,19 +202,26 @@ void ThreadVisitor::Visit(
             break;
         }
         case Mode::VisitNonFunctionDefinitionStatements: {
-            // First we must get the control.
-            thread_to(&vertex);
-
-            // Let the main expression thread itself.
             vertex.expression()->Accept(*this);
-            _last_vertex->set_successor(&vertex);
-
-            // Let the selection thread itself.
-            _last_vertex = &vertex;
             vertex.selection()->Accept(*this);
-            _last_vertex->set_successor(&vertex);
+            thread_to(&vertex);
+            break;
+        }
+    }
+}
 
-            _last_vertex = &vertex;
+
+void ThreadVisitor::Visit(
+    AttributeVertex& vertex)
+{
+    switch(_modes.top()) {
+        case Mode::VisitFunctionDefinitionStatements: {
+            // Do nothing. This is not a function definition.
+            break;
+        }
+        case Mode::VisitNonFunctionDefinitionStatements: {
+            vertex.expression()->Accept(*this);
+            thread_to(&vertex);
             break;
         }
     }
@@ -235,7 +239,6 @@ void ThreadVisitor::Visit(
         }
         case Mode::VisitNonFunctionDefinitionStatements: {
             thread_to(&vertex);
-
             break;
         }
     }

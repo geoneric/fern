@@ -67,7 +67,7 @@ private:
 
     void           Visit               (ModuleVertex&);
 
-    void           Visit               (SubscriptVertex&);
+    // void           Visit               (SubscriptVertex&);
 
     void           Visit               (WhileVertex&);
 

@@ -3,6 +3,7 @@ ADD_SUBDIRECTORY(test)
 SET(SOURCES
     assignment_vertex
     ast_vertex
+    attribute_vertex
     expression_vertex
     function_call_vertex
     function_definition_vertex

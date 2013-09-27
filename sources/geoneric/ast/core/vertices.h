@@ -1,5 +1,6 @@
 #pragma once
 #include "geoneric/ast/core/assignment_vertex.h"
+#include "geoneric/ast/core/attribute_vertex.h"
 #include "geoneric/ast/core/function_call_vertex.h"
 #include "geoneric/ast/core/function_definition_vertex.h"
 #include "geoneric/ast/core/if_vertex.h"

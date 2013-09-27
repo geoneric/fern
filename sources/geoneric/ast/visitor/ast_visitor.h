@@ -7,6 +7,7 @@
 namespace geoneric {
 
 class AssignmentVertex;
+class AttributeVertex;
 class FunctionDefinitionVertex;
 class FunctionCallVertex;
 class IfVertex;
@@ -32,6 +33,7 @@ class WhileVertex;
 class AstVisitor:
     public Loki::BaseVisitor,
     public Loki::Visitor<AssignmentVertex>,
+    public Loki::Visitor<AttributeVertex>,
     public Loki::Visitor<FunctionDefinitionVertex>,
     public Loki::Visitor<FunctionCallVertex>,
     public Loki::Visitor<IfVertex>,
@@ -77,6 +79,8 @@ protected:
     virtual void   visit_expressions   (ExpressionVertices const& expressions);
 
     virtual void   Visit               (AssignmentVertex& vertex);
+
+    virtual void   Visit               (AttributeVertex& vertex);
 
     virtual void   Visit               (IfVertex& vertex);
 

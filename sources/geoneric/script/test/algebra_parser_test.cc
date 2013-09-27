@@ -756,6 +756,34 @@ BOOST_AUTO_TEST_CASE(parse_slice)
 }
 
 
+BOOST_AUTO_TEST_CASE(parse_attribute)
+{
+    geoneric::AlgebraParser parser;
+    geoneric::String xml;
+
+    {
+        xml = parser.parse_string(geoneric::String(
+            "a.b"));
+        BOOST_CHECK_EQUAL(xml, geoneric::String(
+            "<?xml version=\"1.0\"?>"
+            "<Geoneric source=\"&lt;string&gt;\">"
+              "<Statements>"
+                "<Statement line=\"1\" col=\"0\">"
+                  "<Expression line=\"1\" col=\"0\">"
+                    "<Attribute>"
+                      "<Expression line=\"1\" col=\"0\">"
+                        "<Name>a</Name>"
+                      "</Expression>"
+                      "<Name>b</Name>"
+                    "</Attribute>"
+                  "</Expression>"
+                "</Statement>"
+              "</Statements>"
+            "</Geoneric>"));
+    }
+}
+
+
 BOOST_AUTO_TEST_CASE(return_)
 {
     geoneric::AlgebraParser parser;

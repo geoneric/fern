@@ -1,13 +1,8 @@
 #define BOOST_TEST_MODULE geoneric ast
 #include <boost/test/unit_test.hpp>
 #include "geoneric/script/algebra_parser.h"
-#include "geoneric/ast/core/assignment_vertex.h"
 #include "geoneric/ast/visitor/identify_visitor.h"
-#include "geoneric/ast/core/if_vertex.h"
-#include "geoneric/ast/core/function_call_vertex.h"
-#include "geoneric/ast/core/module_vertex.h"
-#include "geoneric/ast/core/name_vertex.h"
-#include "geoneric/ast/core/operator_vertex.h"
+#include "geoneric/ast/core/vertices.h"
 #include "geoneric/ast/xml/xml_parser.h"
 
 
@@ -305,6 +300,55 @@ BOOST_AUTO_TEST_CASE(visit_reuse_of_identifiers)
         BOOST_REQUIRE_EQUAL(vertex_b4->definitions().size(), 1u);
         BOOST_CHECK_EQUAL(vertex_b4->definitions()[0], vertex_b4);
         BOOST_REQUIRE_EQUAL(vertex_b4->uses().size(), 0u);
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(visit_attribute)
+{
+    using namespace geoneric;
+
+    std::shared_ptr<ModuleVertex> tree;
+
+    {
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            String(
+                "a = read(\"bla.nc\")\n"
+                "c = a.b\n"
+        )));
+
+        // a
+        AssignmentVertex const* assignment_1 = c_ptr<AssignmentVertex>(
+            tree->scope()->statements()[0]);
+        BOOST_REQUIRE(assignment_1);
+        NameVertex const* a1 = c_ptr<NameVertex>(assignment_1->target());
+        BOOST_REQUIRE(a1);
+
+        // c
+        AssignmentVertex const* assignment_2 = c_ptr<AssignmentVertex>(
+            tree->scope()->statements()[1]);
+        BOOST_REQUIRE(assignment_2);
+        NameVertex const* c = c_ptr<NameVertex>(assignment_2->target());
+        BOOST_REQUIRE(c);
+
+        // a.b
+        AttributeVertex const* attribute = c_ptr<AttributeVertex>(
+            assignment_2->expression());
+        BOOST_REQUIRE(attribute);
+
+        NameVertex const* a2 = c_ptr<NameVertex>(attribute->expression());
+        BOOST_REQUIRE(a2);
+
+        tree->Accept(_visitor);
+
+        BOOST_REQUIRE_EQUAL(a1->definitions().size(), 1u);
+        BOOST_CHECK_EQUAL(a1->definitions()[0], a1);
+        BOOST_REQUIRE_EQUAL(a1->uses().size(), 1u);
+        BOOST_CHECK_EQUAL(a1->uses()[0], a2);
+
+        BOOST_REQUIRE_EQUAL(c->definitions().size(), 1u);
+        BOOST_CHECK_EQUAL(c->definitions()[0], c);
+        BOOST_CHECK(c->uses().empty());
     }
 }
 

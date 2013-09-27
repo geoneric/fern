@@ -95,12 +95,13 @@ void IdentifyVisitor::Visit(
 }
 
 
-void IdentifyVisitor::Visit(
-    SubscriptVertex& vertex)
-{
-    vertex.expression()->Accept(*this);
-    vertex.selection()->Accept(*this);
-}
+// Default behavior of AstVisitor already.
+// void IdentifyVisitor::Visit(
+//     SubscriptVertex& vertex)
+// {
+//     vertex.expression()->Accept(*this);
+//     vertex.selection()->Accept(*this);
+// }
 
 
 void IdentifyVisitor::Visit(

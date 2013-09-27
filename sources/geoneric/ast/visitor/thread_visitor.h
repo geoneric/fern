@@ -58,6 +58,8 @@ private:
 
     void           Visit               (AssignmentVertex& vertex);
 
+    void           Visit               (AttributeVertex& vertex);
+
     void           Visit               (FunctionCallVertex& vertex);
 
     void           Visit               (FunctionDefinitionVertex& vertex);

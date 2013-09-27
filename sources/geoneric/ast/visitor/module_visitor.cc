@@ -157,6 +157,17 @@ void ModuleVisitor::Visit(
 
 
 void ModuleVisitor::Visit(
+    AttributeVertex& vertex)
+{
+    _module += "(";
+    vertex.expression()->Accept(*this);
+    _module += ")";
+    _module += ".";
+    _module += vertex.member_name();
+}
+
+
+void ModuleVisitor::Visit(
     NumberVertex<int8_t>& vertex)
 {
     _module += String(boost::format("%1%") % vertex.value());

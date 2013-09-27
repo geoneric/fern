@@ -237,6 +237,7 @@ BOOST_AUTO_TEST_CASE(visit_subscript)
 
     xml = _algebra_parser.parse_string(geoneric::String(
         "a = b[c]"));
+    std::cout << xml << std::endl;
     _xml_parser.parse_string(xml)->Accept(_visitor);
     BOOST_CHECK_EQUAL(_visitor.module(), geoneric::String(
         "a = (b)[c]\n"));
@@ -246,6 +247,25 @@ BOOST_AUTO_TEST_CASE(visit_subscript)
     _xml_parser.parse_string(xml)->Accept(_visitor);
     BOOST_CHECK_EQUAL(_visitor.module(), geoneric::String(
         "a = ((b) + (c))[(c) > (d)]\n"));
+}
+
+
+BOOST_AUTO_TEST_CASE(visit_attribute)
+{
+    geoneric::String xml;
+
+    xml = _algebra_parser.parse_string(geoneric::String(
+        "a = b.c"));
+    std::cout << xml << std::endl;
+    _xml_parser.parse_string(xml)->Accept(_visitor);
+    BOOST_CHECK_EQUAL(_visitor.module(), geoneric::String(
+        "a = (b).c\n"));
+
+    xml = _algebra_parser.parse_string(geoneric::String(
+        "a = (b + c).d"));
+    _xml_parser.parse_string(xml)->Accept(_visitor);
+    BOOST_CHECK_EQUAL(_visitor.module(), geoneric::String(
+        "a = ((b) + (c)).d\n"));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

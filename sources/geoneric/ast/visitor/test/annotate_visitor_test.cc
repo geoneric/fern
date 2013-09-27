@@ -283,4 +283,34 @@ BOOST_FIXTURE_TEST_CASE(visit_operation_2, Support)
         geoneric::ValueTypes::INT32));
 }
 
+
+BOOST_FIXTURE_TEST_CASE(visit_attribute, Support)
+{
+    {
+        // TODO hier verder
+        // std::shared_ptr<geoneric::ModuleVertex> tree =
+        //     _xml_parser.parse_string(_algebra_parser.parse_string(
+        //         geoneric::String("5")));
+        // tree->Accept(_visitor);
+
+        // BOOST_CHECK_EQUAL(tree->source_name(), geoneric::String("<string>"));
+        // BOOST_CHECK_EQUAL(tree->line(), 0);
+        // BOOST_CHECK_EQUAL(tree->col(), 0);
+        // BOOST_CHECK_EQUAL(tree->scope()->statements().size(), 1u);
+
+        // std::shared_ptr<geoneric::StatementVertex> const& statement(
+        //     tree->scope()->statements()[0]);
+        // BOOST_REQUIRE(statement);
+
+        // geoneric::NumberVertex<int64_t> const* number_vertex(
+        //     dynamic_cast<geoneric::NumberVertex<int64_t>*>(statement.get()));
+        // BOOST_REQUIRE(number_vertex);
+
+        // geoneric::ResultTypes result_types(number_vertex->result_types());
+        // BOOST_REQUIRE_EQUAL(result_types.size(), 1u);
+        // BOOST_CHECK_EQUAL(result_types[0], geoneric::ResultType(
+        //     geoneric::DataTypes::SCALAR, geoneric::ValueTypes::INT64));
+    }
+}
+
 BOOST_AUTO_TEST_SUITE_END()

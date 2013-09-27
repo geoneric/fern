@@ -49,6 +49,8 @@ private:
 
     void           Visit               (AssignmentVertex&);
 
+    void           Visit               (AttributeVertex& vertex);
+
     void           Visit               (FunctionCallVertex&);
 
     void           Visit               (IfVertex&);

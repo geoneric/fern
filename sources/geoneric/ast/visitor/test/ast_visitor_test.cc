@@ -171,6 +171,15 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 6u);
     }
 
+    // Attribute.
+    {
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            geoneric::String("a.b")));
+        assert(tree);
+        tree->Accept(visitor);
+        BOOST_CHECK_EQUAL(visitor.nr_vertices(), 5u);
+    }
+
     // Function definition.
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(

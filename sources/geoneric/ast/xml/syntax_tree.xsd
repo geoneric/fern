@@ -145,6 +145,9 @@
         name="Subscript"
         type="geoneric:Subscript"/>
       <xs:element
+        name="Attribute"
+        type="geoneric:Attribute"/>
+      <xs:element
         name="String"
         type="xs:string"/>
       <xs:element
@@ -169,6 +172,17 @@
       <xs:element
         name="Expression"
         type="geoneric:Expression"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Attribute">
+    <xs:sequence>
+      <xs:element
+        name="Expression"
+        type="geoneric:Expression"/>
+      <xs:element
+        name="Name"
+        type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
 

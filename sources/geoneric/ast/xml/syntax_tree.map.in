@@ -10,6 +10,7 @@ namespace http://www.geoneric.eu
     Float            "std::shared_ptr<ExpressionVertex>";
     Expression       "std::shared_ptr<ExpressionVertex>";
     Subscript        "std::shared_ptr<ExpressionVertex>";
+    Attribute        "std::shared_ptr<ExpressionVertex>";
 
     Statement        "std::shared_ptr<StatementVertex>";
     FunctionCall     "std::shared_ptr<FunctionCallVertex>";

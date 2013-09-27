@@ -1041,4 +1041,58 @@ result = foo(5, 6)
     }
 }
 
+
+BOOST_AUTO_TEST_CASE(visit_subscript)
+{
+    std::shared_ptr<geoneric::ModuleVertex> tree;
+
+    {
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            geoneric::String("a[b]")));
+        tree->Accept(_thread_visitor);
+
+        geoneric::SubscriptVertex const* subscript =
+            dynamic_cast<geoneric::SubscriptVertex const*>(
+                &(*tree->scope()->statements()[0]));
+        BOOST_REQUIRE(subscript);
+
+        geoneric::AstVertex const* a = &(*subscript->expression());
+        geoneric::AstVertex const* b = &(*subscript->selection());
+
+        BOOST_CHECK_EQUAL(tree->successor(), tree->scope());
+        BOOST_CHECK_EQUAL(tree->scope()->successor(), a);
+        BOOST_CHECK_EQUAL(a->successor(), b);
+        BOOST_CHECK_EQUAL(b->successor(), subscript);
+        BOOST_CHECK_EQUAL(subscript->successor(),
+            tree->scope()->sentinel());
+        BOOST_CHECK_EQUAL(tree->scope()->sentinel()->successor(), tree);
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(visit_attribute)
+{
+    std::shared_ptr<geoneric::ModuleVertex> tree;
+
+    {
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
+            geoneric::String("a.b")));
+        tree->Accept(_thread_visitor);
+
+        geoneric::AttributeVertex const* attribute =
+            dynamic_cast<geoneric::AttributeVertex const*>(
+                &(*tree->scope()->statements()[0]));
+        BOOST_REQUIRE(attribute);
+
+        geoneric::AstVertex const* a = &(*attribute->expression());
+
+        BOOST_CHECK_EQUAL(tree->successor(), tree->scope());
+        BOOST_CHECK_EQUAL(tree->scope()->successor(), a);
+        BOOST_CHECK_EQUAL(a->successor(), attribute);
+        BOOST_CHECK_EQUAL(attribute->successor(),
+            tree->scope()->sentinel());
+        BOOST_CHECK_EQUAL(tree->scope()->sentinel()->successor(), tree);
+    }
+}
+
 BOOST_AUTO_TEST_SUITE_END()

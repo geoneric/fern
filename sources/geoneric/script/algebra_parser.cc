@@ -408,6 +408,19 @@ void write_subscript_node(
 }
 
 
+void write_attribute_node(
+    expr_ty const expression,
+    identifier const name,
+    expr_context_ty const /* context */,
+    geoneric::String& xml)
+{
+    xml += "<Attribute>";
+    write_expression_node(expression, xml);
+    write_identifier_node(name, xml);
+    xml += "</Attribute>";
+}
+
+
 void write_expression_node(
     expr_ty const& expression,
     geoneric::String& xml)
@@ -498,7 +511,8 @@ void write_expression_node(
             break;
         }
         case Attribute_kind: {
-            throw_unsupported_language_construct(line_nr, col_nr, "attribute");
+            write_attribute_node(expression->v.Attribute.value,
+                expression->v.Attribute.attr, expression->v.Attribute.ctx, xml);
             break;
         }
         case List_kind: {

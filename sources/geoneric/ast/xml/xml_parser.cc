@@ -880,8 +880,7 @@ public:
     }
 
     void Expression(
-        std::shared_ptr<geoneric::ExpressionVertex>
-            const& vertex)
+        std::shared_ptr<geoneric::ExpressionVertex> const& vertex)
     {
         assert(_data_stack.size() == 1);
         if(!_data_stack.top().expression) {
@@ -911,6 +910,56 @@ private:
     };
 
     std::stack<SubscriptData> _data_stack;
+
+};
+
+
+class Attribute_pimpl:
+    public geoneric::Attribute_pskel
+{
+
+public:
+
+    void pre()
+    {
+        _data_stack.push(AttributeData());
+    }
+
+    void Expression(
+        std::shared_ptr<geoneric::ExpressionVertex> const& vertex)
+    {
+        assert(_data_stack.size() == 1);
+        assert(!_data_stack.top().expression);
+        _data_stack.top().expression = vertex;
+    }
+
+    void Name(
+        std::string const& name)
+    {
+        assert(_data_stack.size() == 1);
+        assert(_data_stack.top().member_name.empty());
+        _data_stack.top().member_name = name;
+    }
+
+    std::shared_ptr<geoneric::ExpressionVertex> post_Attribute()
+    {
+        assert(_data_stack.size() == 1);
+        AttributeData result(_data_stack.top());
+        _data_stack.pop();
+        return std::shared_ptr<geoneric::AttributeVertex>(
+            new geoneric::AttributeVertex(result.expression,
+                result.member_name));
+    }
+
+private:
+
+    struct AttributeData
+    {
+        geoneric::ExpressionVertexPtr expression;
+        std::string member_name;
+    };
+
+    std::stack<AttributeData> _data_stack;
 
 };
 
@@ -951,6 +1000,16 @@ public:
     }
 
     void Subscript(
+        std::shared_ptr<geoneric::ExpressionVertex> const& vertex)
+    {
+        assert(!_data_stack.empty());
+        assert(!_data_stack.top().vertex);
+        _data_stack.top().vertex = vertex;
+        _data_stack.top().vertex->set_position(_data_stack.top().line,
+            _data_stack.top().col);
+    }
+
+    void Attribute(
         std::shared_ptr<geoneric::ExpressionVertex> const& vertex)
     {
         assert(!_data_stack.empty());
@@ -1077,7 +1136,10 @@ std::shared_ptr<ModuleVertex> XmlParser::parse(
     Subscript_pimpl subscript_p;
     subscript_p.parsers(expression_p);
 
-    expression_p.parsers(string_p, subscript_p, string_p, number_p,
+    Attribute_pimpl attribute_p;
+    attribute_p.parsers(expression_p, string_p);
+
+    expression_p.parsers(string_p, subscript_p, attribute_p, string_p, number_p,
         function_p, operator_p, non_negative_integer_p,
         non_negative_integer_p);
 

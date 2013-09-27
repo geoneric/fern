@@ -47,6 +47,21 @@ void AstVisitor::Visit(
 }
 
 
+//! Visit an AttributeVertex instance.
+/*!
+  \param     vertex Vertex to visit.
+
+  The default implementation visits the expression. After
+  that it calls Visit(ExpressionVertex&).
+*/
+void AstVisitor::Visit(
+    AttributeVertex& vertex)
+{
+    vertex.expression()->Accept(*this);
+    Visit(dynamic_cast<ExpressionVertex&>(vertex));
+}
+
+
 //! Visit an ExpressionVertex instance.
 /*!
   \param     vertex Vertex to visit.
