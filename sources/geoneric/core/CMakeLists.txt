@@ -1,6 +1,7 @@
 ADD_SUBDIRECTORY(test)
 
 SET(SOURCES
+    data_name
     data_types
     exception
     io_error

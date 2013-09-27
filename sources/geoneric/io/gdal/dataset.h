@@ -24,7 +24,13 @@ public:
 
     virtual bool   contains_feature    (String const& name) const=0;
 
-    virtual std::shared_ptr<Feature> read(String const& name) const=0;
+    virtual bool   contains_attribute  (String const& name) const=0;
+
+    virtual std::shared_ptr<Feature> read_feature(
+                                        String const& name) const=0;
+
+    virtual std::shared_ptr<Attribute> read_attribute(
+                                        String const& name) const=0;
 
 protected:
 

@@ -21,6 +21,8 @@ class String:
     private UnicodeString
 {
 
+    friend class DataName;
+
 public:
 
     static String  decode_from_default_encoding(

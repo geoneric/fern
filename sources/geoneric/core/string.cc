@@ -53,7 +53,7 @@ std::string encode_in_default_encoding(
 
     int32_t nr_bytes_written = string.extract(0, nr_code_units,
         encoded_string.get(), max_nr_bytes_needed);
-    assert(nr_bytes_written < max_nr_bytes_needed);
+    assert(nr_bytes_written <= max_nr_bytes_needed);
 
     return std::string(encoded_string.get(), nr_bytes_written);
 }

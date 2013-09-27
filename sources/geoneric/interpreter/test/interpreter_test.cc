@@ -268,7 +268,9 @@ BOOST_AUTO_TEST_CASE(execute_read_with_raster_input)
     geoneric::Interpreter interpreter;
     geoneric::ModuleVertexPtr tree;
 
+    // Read feature.
     {
+        interpreter.clear_stack();
         geoneric::String script = "read(\"raster-1.asc\")";
         tree = interpreter.parse_string(script);
         interpreter.execute(tree);
@@ -318,7 +320,54 @@ BOOST_AUTO_TEST_CASE(execute_read_with_raster_input)
         BOOST_CHECK_EQUAL((*value)[3], -9999);
         BOOST_CHECK_EQUAL((*value)[4],     1);
         BOOST_CHECK_EQUAL((*value)[5],     2);
+    }
 
+    // Read attribute.
+    {
+        interpreter.clear_stack();
+        geoneric::String script = "read(\"raster-1.asc:raster-1\")";
+        tree = interpreter.parse_string(script);
+        interpreter.execute(tree);
+
+        std::stack<std::shared_ptr<geoneric::Argument>> stack(
+            interpreter.stack());
+        BOOST_CHECK_EQUAL(stack.size(), 1u);
+
+        std::shared_ptr<geoneric::Argument> const& argument(stack.top());
+        BOOST_REQUIRE_EQUAL(argument->argument_type(),
+            geoneric::ArgumentType::AT_ATTRIBUTE);
+
+        std::shared_ptr<geoneric::AttributeArgument> const&
+            attribute_argument(
+                std::dynamic_pointer_cast<geoneric::AttributeArgument>(
+                    argument));
+        BOOST_REQUIRE(attribute_argument);
+
+        std::shared_ptr<geoneric::Attribute> const& attribute(
+            attribute_argument->attribute());
+
+        typedef geoneric::Point<double, 2> Point;
+        typedef geoneric::Box<Point> Box;
+        typedef geoneric::SpatialDomain<Box> BoxDomain;
+        typedef geoneric::ArrayValue<int32_t, 1> Value;
+        typedef std::shared_ptr<Value> ValuePtr;
+        typedef geoneric::SpatialAttribute<BoxDomain, ValuePtr> BoxesAttribute;
+
+        std::shared_ptr<BoxesAttribute> boxes_attribute(
+            std::dynamic_pointer_cast<BoxesAttribute>(attribute));
+        BOOST_REQUIRE(boxes_attribute);
+        BOOST_REQUIRE_EQUAL(boxes_attribute->size(), 1u);
+
+        ValuePtr value = boxes_attribute->values().cbegin()->second;
+        BOOST_REQUIRE_EQUAL(value->num_dimensions(), 1);
+        BOOST_REQUIRE_EQUAL(value->size(), 6);
+
+        BOOST_CHECK_EQUAL((*value)[0],    -2);
+        BOOST_CHECK_EQUAL((*value)[1],    -1);
+        BOOST_CHECK_EQUAL((*value)[2],    -0);
+        BOOST_CHECK_EQUAL((*value)[3], -9999);
+        BOOST_CHECK_EQUAL((*value)[4],     1);
+        BOOST_CHECK_EQUAL((*value)[5],     2);
     }
 
     /// Hier verder.
@@ -385,14 +434,15 @@ BOOST_AUTO_TEST_CASE(execute_abs_with_raster_input)
     geoneric::ModuleVertexPtr tree;
 
     {
-        // Hier verder.
-        // geoneric::String script = "abs(read(\"raster-1.asc\"))";
-        // tree = interpreter.parse_string(script);
+        geoneric::String script = "abs(read(\"raster-1.asc:raster-1\"))";
+        tree = interpreter.parse_string(script);
         // interpreter.execute(tree);
 
         // std::stack<std::shared_ptr<geoneric::Argument>> stack(
         //     interpreter.stack());
         // BOOST_CHECK_EQUAL(stack.size(), 1u);
+
+        // hier verder
     }
 }
 

@@ -34,7 +34,13 @@ public:
 
     bool           contains_feature    (String const& name) const;
 
-    std::shared_ptr<Feature> read      (String const& name) const;
+    bool           contains_attribute  (String const& name) const;
+
+    std::shared_ptr<Feature> read_feature(
+                                        String const& name) const;
+
+    std::shared_ptr<Attribute> read_attribute(
+                                        String const& name) const;
 
 private:
 

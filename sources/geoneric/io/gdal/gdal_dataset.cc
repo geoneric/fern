@@ -47,14 +47,43 @@ size_t GDALDataset::nr_features() const
 bool GDALDataset::contains_feature(
     String const& name) const
 {
-    return Path(this->name()).stem() == name;
+    // GDAL raster datasets contain the root feature, but no sub-features.
+    return name == "/";
 }
 
 
-std::shared_ptr<Feature> GDALDataset::read(
+bool GDALDataset::contains_attribute(
+    String const& name) const
+{
+    // The name of the one attribute in a GDAL raster equals the name of the
+    // dataset without leading path and extension.
+    return String(Path(this->name()).stem()) == name;
+}
+
+
+std::shared_ptr<Feature> GDALDataset::read_feature(
     String const& name) const
 {
     if(!contains_feature(name)) {
+        // TODO raise exception
+        assert(false);
+    }
+
+    String attribute_name = Path(this->name()).stem();
+    assert(contains_attribute(attribute_name));
+
+    std::shared_ptr<Feature> feature(new Feature());
+    feature->add_attribute(attribute_name, std::dynamic_pointer_cast<Attribute>(
+        read_attribute(attribute_name)));
+
+    return feature;
+}
+
+
+std::shared_ptr<Attribute> GDALDataset::read_attribute(
+    String const& name) const
+{
+    if(!contains_attribute(name)) {
         // TODO raise exception
         assert(false);
     }
@@ -117,11 +146,7 @@ std::shared_ptr<Feature> GDALDataset::read(
     BoxesAttributePtr attribute(new BoxesAttribute());
     BoxesAttribute::GID gid = attribute->add(box, grid);
 
-    std::shared_ptr<Feature> feature(new Feature());
-    feature->add_attribute(name, std::dynamic_pointer_cast<Attribute>(
-        attribute));
-
-    return feature;
+    return std::dynamic_pointer_cast<Attribute>(attribute);
 }
 
 } // namespace geoneric

@@ -1,4 +1,5 @@
 #include "geoneric/operation/std/read.h"
+#include "geoneric/core/data_name.h"
 #include "geoneric/feature/core/constant_attribute.h"
 #include "geoneric/io/gdal/drivers.h"
 #include "geoneric/io/core/path.h"
@@ -19,27 +20,29 @@ std::vector<std::shared_ptr<Argument>> read(
     // - Assume the name refers to an attribute.
     // - Assume the name refers to a raster that can be read by gdal.
 
-    String const name = value.values().value();
-    // TODO Properly parse name. Handle directories, ...
-    String const dataset_name = name;
-    String const feature_name = Path(name).stem();
+    DataName name(value.values().value());
+    std::shared_ptr<Dataset> dataset(open(name.dataset_name()));
 
-    std::shared_ptr<Dataset> dataset(open(dataset_name));
-
-    if(!dataset->contains_feature(feature_name)) {
+    // Dataset is open, first find out where name.data_pathname is pointing
+    // to: feature or attribute. Then request either a feature or an attribute.
+    std::vector<std::shared_ptr<Argument>> result;
+    if(dataset->contains_feature(name.data_pathname())) {
+        result = std::vector<std::shared_ptr<Argument>>({
+            std::shared_ptr<Argument>(new FeatureArgument(
+                dataset->read_feature(name.data_pathname())))});
+    }
+    else if(dataset->contains_attribute(name.data_pathname())) {
+        result = std::vector<std::shared_ptr<Argument>>({
+            std::shared_ptr<Argument>(new AttributeArgument(
+                dataset->read_attribute(name.data_pathname())))});
+    }
+    else {
         // TODO raise exception;
         assert(false);
     }
 
-    std::shared_ptr<Feature> result(dataset->read(feature_name));
-    assert(result);
-
-    // We now have a feature containing a box domain and a 2D array value.
-    // Just return it. This is what we have, given the argument. Generalize
-    // later on.
-    return std::vector<std::shared_ptr<Argument>>({
-        std::shared_ptr<Argument>(new FeatureArgument(result))
-    });
+    assert(!result.empty());
+    return result;
 }
 
 
