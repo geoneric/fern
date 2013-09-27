@@ -28,13 +28,13 @@ Abs::Abs()
           {
               Parameter("Input argument",
                   "Argument to calculate absolute value of.",
-                  DataTypes::SCALAR | DataTypes::FEATURE,
+                  DataTypes::CONSTANT | DataTypes::FEATURE,
                   ValueTypes::NUMBER)
           },
           {
               Result("Result value",
                   "Absolute value of the input argument.",
-                  DataTypes::SCALAR | DataTypes::FEATURE,
+                  DataTypes::CONSTANT | DataTypes::FEATURE,
                   ValueTypes::NUMBER)
           }
       )
@@ -55,7 +55,7 @@ std::vector<std::shared_ptr<Argument>> Abs::execute(
     std::vector<std::shared_ptr<Argument>> result;
 
     switch(attribute_argument.data_type()) {
-        case DataType::DT_SCALAR: {
+        case DataType::DT_CONSTANT: {
             switch(attribute_argument.value_type()) {
                 case ValueType::VT_UINT8: {
                     result = abs<uint8_t>(attribute);

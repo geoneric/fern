@@ -5,31 +5,31 @@
 namespace geoneric {
 
 DataTypes const DataTypes::UNKNOWN;
-DataTypes const DataTypes::SCALAR(1 << DataType::DT_SCALAR);
+DataTypes const DataTypes::CONSTANT(1 << DataType::DT_CONSTANT);
 DataTypes const DataTypes::POINT(1 << DataType::DT_POINT);
 DataTypes const DataTypes::LINE(1 << DataType::DT_LINE);
 DataTypes const DataTypes::POLYGON(1 << DataType::DT_POLYGON);
 DataTypes const DataTypes::FEATURE(DataTypes::POINT | DataTypes::LINE |
     DataTypes::POLYGON);
-DataTypes const DataTypes::ALL(DataTypes::SCALAR | DataTypes::FEATURE);
+DataTypes const DataTypes::ALL(DataTypes::CONSTANT | DataTypes::FEATURE);
 
 
 // These strings should match the ones used in the XML schema.
 static std::map<String, DataTypes> data_type_by_string = {
-    { "Scalar" , DataTypes::SCALAR },
-    { "Point"  , DataTypes::POINT  },
-    { "Line"   , DataTypes::LINE   },
-    { "Polygon", DataTypes::POLYGON},
-    { "Feature", DataTypes::FEATURE},
-    { "All"    , DataTypes::ALL    }
+    { "Constant", DataTypes::CONSTANT },
+    { "Point"   , DataTypes::POINT    },
+    { "Line"    , DataTypes::LINE     },
+    { "Polygon" , DataTypes::POLYGON  },
+    { "Feature" , DataTypes::FEATURE  },
+    { "All"     , DataTypes::ALL      }
 };
 
 
 static std::map<DataType, String> string_by_data_type = {
-    { DataType::DT_SCALAR , "Scalar" },
-    { DataType::DT_POINT  , "Point"  },
-    { DataType::DT_LINE   , "Line"   },
-    { DataType::DT_POLYGON, "Polygon"}
+    { DataType::DT_CONSTANT, "Constant" },
+    { DataType::DT_POINT   , "Point"    },
+    { DataType::DT_LINE    , "Line"     },
+    { DataType::DT_POLYGON , "Polygon"  }
 };
 
 
@@ -51,7 +51,7 @@ DataTypes DataTypes::from_string(
 
 
 std::vector<DataType> const DataTypes::DATA_TYPES = {
-    DataType::DT_SCALAR,
+    DataType::DT_CONSTANT,
     DataType::DT_POINT,
     DataType::DT_LINE,
     DataType::DT_POLYGON

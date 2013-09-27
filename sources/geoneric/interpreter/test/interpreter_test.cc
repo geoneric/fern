@@ -192,7 +192,7 @@ BOOST_AUTO_TEST_CASE(execute)
                         argument));
             BOOST_REQUIRE(attribute_argument);
             BOOST_REQUIRE_EQUAL(attribute_argument->data_type(),
-                geoneric::DT_SCALAR);
+                geoneric::DT_CONSTANT);
             BOOST_REQUIRE_EQUAL(attribute_argument->value_type(),
                 geoneric::VT_INT64);
 

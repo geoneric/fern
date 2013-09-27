@@ -4,7 +4,7 @@
 
 namespace geoneric {
 
-struct ScalarTag { };
+struct ConstantTag { };
 struct RangeTag { };
 struct RasterTag: RangeTag { };
 
@@ -23,7 +23,7 @@ struct DataTraits
 template<> \
 struct DataTraits<type> \
 { \
-    typedef ScalarTag DataCategory; \
+    typedef ConstantTag DataCategory; \
 };
 
 SPECIALIZE_DATA_TRAITS_FOR_SCALAR(int8_t)

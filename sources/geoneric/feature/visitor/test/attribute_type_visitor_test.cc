@@ -22,12 +22,12 @@
 
 template<
     class T>
-void test_constant_scalar_attribute(
+void test_constant_attribute(
     geoneric::AttributeTypeVisitor& visitor)
 {
     geoneric::ConstantAttribute<T> attribute;
     attribute.Accept(visitor);
-    BOOST_CHECK_EQUAL(visitor.data_type(), geoneric::DT_SCALAR);
+    BOOST_CHECK_EQUAL(visitor.data_type(), geoneric::DT_CONSTANT);
     BOOST_CHECK_EQUAL(visitor.value_type(),
         geoneric::TypeTraits<T>::value_type);
 }
@@ -39,15 +39,15 @@ BOOST_AUTO_TEST_CASE(attribute_type_visitor)
 {
     geoneric::AttributeTypeVisitor visitor;
 
-    // Check constant scalar attributes.
-    CALL_FUNCTION_TEMPLATE_1(test_constant_scalar_attribute, visitor);
+    // Check constant attributes.
+    CALL_FUNCTION_TEMPLATE_1(test_constant_attribute, visitor);
 
     // Make sure visiting using a pointer to the base class works too.
     {
         geoneric::ConstantAttribute<int32_t> int32_attribute;
         geoneric::Attribute *attribute = &int32_attribute;
         attribute->Accept(visitor);
-        BOOST_CHECK_EQUAL(visitor.data_type(), geoneric::DT_SCALAR);
+        BOOST_CHECK_EQUAL(visitor.data_type(), geoneric::DT_CONSTANT);
         BOOST_CHECK_EQUAL(visitor.value_type(), geoneric::VT_INT32);
     }
 
@@ -55,7 +55,7 @@ BOOST_AUTO_TEST_CASE(attribute_type_visitor)
     {
         geoneric::ConstantAttribute<geoneric::String> string_attribute;
         string_attribute.Accept(visitor);
-        BOOST_CHECK_EQUAL(visitor.data_type(), geoneric::DT_SCALAR);
+        BOOST_CHECK_EQUAL(visitor.data_type(), geoneric::DT_CONSTANT);
         BOOST_CHECK_EQUAL(visitor.value_type(), geoneric::VT_STRING);
     }
 }

@@ -24,18 +24,18 @@ void AttributeTypeVisitor::Visit(
 }
 
 
-#define VISIT_SCALAR_ATTRIBUTE(                                                \
+#define VISIT_CONSTANT_ATTRIBUTE(                                              \
     type)                                                                      \
 void AttributeTypeVisitor::Visit(                                              \
     ConstantAttribute<type> const& /* attribute */)                            \
 {                                                                              \
-    _data_type = DT_SCALAR;                                                    \
+    _data_type = DT_CONSTANT;                                                  \
     _value_type = TypeTraits<type>::value_type;                                \
 }
 
-VISIT_SCALAR_ATTRIBUTES(VISIT_SCALAR_ATTRIBUTE)
+VISIT_CONSTANT_ATTRIBUTES(VISIT_CONSTANT_ATTRIBUTE)
 
-#undef VISIT_SCALAR_ATTRIBUTE
+#undef VISIT_CONSTANT_ATTRIBUTE
 
 
 DataType AttributeTypeVisitor::data_type() const

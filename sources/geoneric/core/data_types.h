@@ -16,7 +16,6 @@ namespace geoneric {
              not be initialized yet (the order of initialization of static
              variables across compilation units is undefined).
 
-  \todo Ditch SCALAR? Rename SCALAR to CONSTANT?
   \todo Rename to FeatureType?
 */
 class DataTypes:
@@ -30,8 +29,8 @@ public:
     //! Unknown data type, no flag is set.
     static DataTypes const UNKNOWN;
 
-    //! Scalar data type.
-    static DataTypes const SCALAR;
+    //! Constant data type.
+    static DataTypes const CONSTANT;
 
     //! Point feature.
     static DataTypes const POINT;

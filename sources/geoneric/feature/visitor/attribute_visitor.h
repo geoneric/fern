@@ -79,7 +79,7 @@ private:
 //! Macro that will call the macro passed in for each numeric value type.
 /*!
 */
-#define VISIT_SCALAR_ATTRIBUTES(                                               \
+#define VISIT_CONSTANT_ATTRIBUTES(                                             \
         macro)                                                                 \
     macro(int8_t)                                                              \
     macro(int16_t)                                                             \

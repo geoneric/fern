@@ -11,10 +11,10 @@ BOOST_AUTO_TEST_CASE(string)
     BOOST_CHECK_EQUAL(geoneric::DataTypes::FEATURE.to_string(),
         "Point|Line|Polygon");
     BOOST_CHECK_EQUAL(geoneric::DataTypes::ALL.to_string(),
-        "Scalar|Point|Line|Polygon");
+        "Constant|Point|Line|Polygon");
     BOOST_CHECK_EQUAL(
-        (geoneric::DataTypes::SCALAR | geoneric::DataTypes::FEATURE).to_string(),
-        "Scalar|Point|Line|Polygon");
+        (geoneric::DataTypes::CONSTANT | geoneric::DataTypes::FEATURE).to_string(),
+        "Constant|Point|Line|Polygon");
 }
 
 

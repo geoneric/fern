@@ -7,8 +7,7 @@ namespace geoneric {
 //! Base class for values that are handled by the interpreter.
 /*!
   These values represent all possible value types that are passed in the
-  scripting language. Examples are scalar values and attribute values. Other
-  value types may be added in the future.
+  scripting language.
 */
 class Argument
 {

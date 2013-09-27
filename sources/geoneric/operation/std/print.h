@@ -11,7 +11,7 @@ namespace detail {
 template<
     typename Argument>
 inline void print(
-    ScalarTag /* tag */,
+    ConstantTag /* tag */,
     Argument argument,
     std::ostream& stream)
 {

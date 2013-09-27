@@ -111,7 +111,7 @@
         <Name>parameter1</Name>
         <Description>Parameter.</Description>
         <DataTypes>
-          <DataType>Scalar</DataType>
+          <DataType>Constant</DataType>
         </DataTypes>
         <ValueTypes>
           <ValueType>Number</ValueType>
@@ -121,7 +121,7 @@
         <Name>parameter2</Name>
         <Description>Parameter.</Description>
         <DataTypes>
-          <DataType>Scalar</DataType>
+          <DataType>Constant</DataType>
         </DataTypes>
         <ValueTypes>
           <ValueType>Number</ValueType>
@@ -132,7 +132,7 @@
       <Result>
         <Name>result</Name>
         <Description>The sum of the arguments.</Description>
-        <DataType>Scalar</DataType>
+        <DataType>Constant</DataType>
         <ValueType>Number</ValueType>
       </Result>
     </Results>
@@ -154,7 +154,7 @@
       <Result>
         <Name>result</Name>
         <Description>Sum of feature elements.</Description>
-        <DataType>Scalar</DataType>
+        <DataType>Constant</DataType>
         <ValueType>Size</ValueType>
       </Result>
     </Results>
@@ -167,7 +167,7 @@
         <Name>name</Name>
         <Description>Dataset name.</Description>
         <DataTypes>
-          <DataType>Scalar</DataType>
+          <DataType>Constant</DataType>
         </DataTypes>
         <ValueTypes>
           <ValueType>String</ValueType>

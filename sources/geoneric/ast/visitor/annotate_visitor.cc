@@ -71,7 +71,8 @@ void AnnotateVisitor::Visit(                                                   \
     NumberVertex<type>& vertex)                                                \
 {                                                                              \
     assert(vertex.result_types().empty());                                     \
-    ResultType result_type(DataTypes::SCALAR, TypeTraits<type>::value_types);  \
+    ResultType result_type(DataTypes::CONSTANT,                                \
+        TypeTraits<type>::value_types);                                        \
     _stack.push(result_type);                                                  \
     vertex.add_result_type(result_type);                                       \
     assert(vertex.result_types().size() == 1);                                 \
@@ -86,7 +87,7 @@ void AnnotateVisitor::Visit(
     StringVertex& vertex)
 {
     assert(vertex.result_types().empty());
-    ResultType result_type(DataTypes::SCALAR, ValueTypes::STRING);
+    ResultType result_type(DataTypes::CONSTANT, ValueTypes::STRING);
     _stack.push(result_type);
     vertex.add_result_type(result_type);
     assert(vertex.result_types().size() == 1);

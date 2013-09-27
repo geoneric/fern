@@ -90,7 +90,7 @@ BOOST_FIXTURE_TEST_CASE(visit_number, Support)
         geoneric::ResultTypes result_types(number_vertex->result_types());
         BOOST_REQUIRE_EQUAL(result_types.size(), 1u);
         BOOST_CHECK_EQUAL(result_types[0], geoneric::ResultType(
-            geoneric::DataTypes::SCALAR, geoneric::ValueTypes::INT64));
+            geoneric::DataTypes::CONSTANT, geoneric::ValueTypes::INT64));
     }
 
     {
@@ -115,7 +115,7 @@ BOOST_FIXTURE_TEST_CASE(visit_number, Support)
         geoneric::ResultTypes result_types(number_vertex->result_types());
         BOOST_REQUIRE_EQUAL(result_types.size(), 1u);
         BOOST_CHECK_EQUAL(result_types[0], geoneric::ResultType(
-            geoneric::DataTypes::SCALAR, geoneric::ValueTypes::FLOAT64));
+            geoneric::DataTypes::CONSTANT, geoneric::ValueTypes::FLOAT64));
     }
 }
 
@@ -175,7 +175,7 @@ BOOST_FIXTURE_TEST_CASE(visit_operation, Support)
             operation->parameters());
         geoneric::Parameter const& parameter(parameters[0]);
         BOOST_CHECK_EQUAL(parameter.data_types(),
-            geoneric::DataTypes::SCALAR | geoneric::DataTypes::FEATURE);
+            geoneric::DataTypes::CONSTANT | geoneric::DataTypes::FEATURE);
         BOOST_CHECK_EQUAL(parameter.value_types(), geoneric::ValueTypes::NUMBER);
 
         BOOST_CHECK_EQUAL(operation->results().size(), 1u);
@@ -247,39 +247,39 @@ BOOST_FIXTURE_TEST_CASE(visit_operation_2, Support)
 
     // Default integer type is int64.
     tester("5", geoneric::ResultType(
-        geoneric::DataTypes::SCALAR,
+        geoneric::DataTypes::CONSTANT,
         geoneric::ValueTypes::INT64));
 
     // Default float type is float64.
     tester("5.5", geoneric::ResultType(
-        geoneric::DataTypes::SCALAR,
+        geoneric::DataTypes::CONSTANT,
         geoneric::ValueTypes::FLOAT64));
 
     tester("abs(a)", geoneric::ResultType(
         geoneric::DataTypes::ALL,
         geoneric::ValueTypes::NUMBER));
     tester("abs(5)", geoneric::ResultType(
-        geoneric::DataTypes::SCALAR,
+        geoneric::DataTypes::CONSTANT,
         geoneric::ValueTypes::INT64));
     tester("abs(5.5)", geoneric::ResultType(
-        geoneric::DataTypes::SCALAR,
+        geoneric::DataTypes::CONSTANT,
         geoneric::ValueTypes::FLOAT64));
 
     tester("int32(5)", geoneric::ResultType(
-        geoneric::DataTypes::SCALAR,
+        geoneric::DataTypes::CONSTANT,
         geoneric::ValueTypes::INT32));
     tester("int32(5.5)", geoneric::ResultType(
-        geoneric::DataTypes::SCALAR,
+        geoneric::DataTypes::CONSTANT,
         geoneric::ValueTypes::INT32));
 
     tester("5 + 6", geoneric::ResultType(
-        geoneric::DataTypes::SCALAR,
+        geoneric::DataTypes::CONSTANT,
         geoneric::ValueTypes::INT64));
     tester("5 + int32(6)", geoneric::ResultType(
-        geoneric::DataTypes::SCALAR,
+        geoneric::DataTypes::CONSTANT,
         geoneric::ValueTypes::INT64));
     tester("int32(5) + int32(6)", geoneric::ResultType(
-        geoneric::DataTypes::SCALAR,
+        geoneric::DataTypes::CONSTANT,
         geoneric::ValueTypes::INT32));
 }
 
@@ -309,7 +309,7 @@ BOOST_FIXTURE_TEST_CASE(visit_attribute, Support)
         // geoneric::ResultTypes result_types(number_vertex->result_types());
         // BOOST_REQUIRE_EQUAL(result_types.size(), 1u);
         // BOOST_CHECK_EQUAL(result_types[0], geoneric::ResultType(
-        //     geoneric::DataTypes::SCALAR, geoneric::ValueTypes::INT64));
+        //     geoneric::DataTypes::CONSTANT, geoneric::ValueTypes::INT64));
     }
 }
 

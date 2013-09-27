@@ -16,7 +16,7 @@ template<
 inline void plus(
     RangeTag /* tag1 */,
     Argument1 const& argument1,
-    ScalarTag /* tag2 */,
+    ConstantTag /* tag2 */,
     Argument2 const& argument2,
     Result& result)
 {
@@ -38,7 +38,7 @@ template<
     typename Argument2,
     typename Result>
 inline void plus(
-    ScalarTag tag1,
+    ConstantTag tag1,
     Argument1 argument1,
     RangeTag tag2,
     Argument2 const& argument2,
@@ -54,9 +54,9 @@ template<
     typename Argument2,
     typename Result>
 inline void plus(
-    ScalarTag /* tag1 */,
+    ConstantTag /* tag1 */,
     Argument1 argument1,
-    ScalarTag /* tag2 */,
+    ConstantTag /* tag2 */,
     Argument2 argument2,
     Result& result)
 {

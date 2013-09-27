@@ -10,9 +10,9 @@ BOOST_AUTO_TEST_SUITE(print)
 BOOST_AUTO_TEST_CASE(print)
 {
     {
-        int scalar = 5;
+        int constant = 5;
         std::stringstream stream;
-        geoneric::print(scalar, stream);
+        geoneric::print(constant, stream);
         BOOST_CHECK_EQUAL(stream.str(), "5\n");
     }
 

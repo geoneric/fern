@@ -53,7 +53,7 @@ Read::Read()
           {
               Parameter("Feature or attribute name",
                   "Name of feature or attribute to read.",
-                  DataTypes::SCALAR,
+                  DataTypes::CONSTANT,
                   ValueTypes::STRING)
           },
           {
@@ -76,7 +76,7 @@ std::vector<std::shared_ptr<Argument>> Read::execute(
 
     AttributeArgument const& attribute_argument(
         *std::dynamic_pointer_cast<AttributeArgument>(arguments[0]));
-    assert(attribute_argument.data_type() == DataType::DT_SCALAR);
+    assert(attribute_argument.data_type() == DataType::DT_CONSTANT);
     assert(attribute_argument.value_type() == ValueType::VT_STRING);
     Attribute const& attribute(*attribute_argument.attribute());
 

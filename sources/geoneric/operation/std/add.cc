@@ -11,17 +11,17 @@ Add::Add()
           {
               Parameter("First input argument",
                   "First argument to add.",
-                  DataTypes::SCALAR | DataTypes::FEATURE,
+                  DataTypes::CONSTANT | DataTypes::FEATURE,
                   ValueTypes::NUMBER),
               Parameter("Second input argument",
                   "Second argument to add.",
-                  DataTypes::SCALAR | DataTypes::FEATURE,
+                  DataTypes::CONSTANT | DataTypes::FEATURE,
                   ValueTypes::NUMBER)
           },
           {
               Result("Result value",
                   "Input arguments, added together.",
-                  DataTypes::SCALAR | DataTypes::FEATURE,
+                  DataTypes::CONSTANT | DataTypes::FEATURE,
                   ValueTypes::NUMBER)
           }
       )
@@ -39,25 +39,8 @@ std::vector<std::shared_ptr<Argument>> Add::execute(
 
     AttributeArgument const& attribute_argument(
         *std::dynamic_pointer_cast<AttributeArgument>(arguments[0]));
-    assert(attribute_argument.data_type() == DataType::DT_SCALAR);
+    assert(attribute_argument.data_type() == DataType::DT_CONSTANT);
     assert(attribute_argument.value_type() == ValueType::VT_INT64);
-
-    // Attribute const& attribute(*attribute_argument.attribute());
-
-    // ScalarAttribute<int64_t> const& value(
-    //     dynamic_cast<ScalarAttribute<int64_t> const&>(attribute));
-
-    // int64_t result = std::abs((*value.value())());
-
-    // // // TODO Store result
-    // // // TODO Return result
-
-    // return std::vector<std::shared_ptr<Argument>>({
-    //     std::shared_ptr<Argument>(new AttributeArgument(
-    //         std::shared_ptr<Attribute>(new ScalarAttribute<int64_t>(
-    //             std::make_shared<ScalarDomain>(),
-    //             std::make_shared<ScalarValue<int64_t>>(result)))))
-    // });
 
     return std::vector<std::shared_ptr<Argument>>();
 }

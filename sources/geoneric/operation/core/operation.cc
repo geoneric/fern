@@ -140,8 +140,8 @@ DataTypes Operation::result_data_type(
     DataTypes result_data_type;
 
     // Calculate data type of result.
-    if(merged_argument_data_types.test(geoneric::DT_SCALAR)) {
-        result_data_type = DataTypes::SCALAR;
+    if(merged_argument_data_types.test(geoneric::DT_CONSTANT)) {
+        result_data_type = DataTypes::CONSTANT;
     }
     else if(merged_argument_data_types == DataTypes::UNKNOWN) {
         result_data_type = merged_parameter_data_types;

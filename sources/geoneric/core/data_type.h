@@ -5,7 +5,7 @@ namespace geoneric {
 
 enum DataType {
 
-    DT_SCALAR,
+    DT_CONSTANT,
 
     DT_POINT,
 

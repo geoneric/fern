@@ -35,15 +35,6 @@ struct default_delete<char>
 
 namespace geoneric {
 
-// template<
-//     typename T>
-// inline void show_value(
-//     ScalarValue<T> const& value)
-// {
-//     std::cout << value() << "\n";
-// }
-
-
 template<
     typename T>
 inline void show_value(
@@ -76,7 +67,7 @@ void show_value(
     value->Accept(visitor);
 
     switch(visitor.data_type()) {
-        case DT_SCALAR: {
+        case DT_CONSTANT: {
             switch(visitor.value_type()) {
                 SHOW_VALUE_CASE(VT_INT8)
                 SHOW_VALUE_CASE(VT_INT16)
