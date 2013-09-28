@@ -1,7 +1,6 @@
 #include "geoneric/feature/visitor/attribute_visitor.h"
 #include <cassert>
 #include <iostream>
-#include "geoneric/feature/core/constant_attribute.h"
 
 
 namespace geoneric {
@@ -15,7 +14,7 @@ void AttributeVisitor::Visit(
 
 
 // The default implementation calls Visit(Attribute&).
-#define VISIT_NUMBER_ATTRIBUTE(                                                \
+#define VISIT_CONSTANT_ATTRIBUTE(                                              \
     type)                                                                      \
 void AttributeVisitor::Visit(                                                  \
     ConstantAttribute<type> const& attribute)                                  \
@@ -23,8 +22,22 @@ void AttributeVisitor::Visit(                                                  \
     Visit(dynamic_cast<Attribute const&>(attribute));                          \
 }
 
-VISIT_CONSTANT_ATTRIBUTES(VISIT_NUMBER_ATTRIBUTE)
+VISIT_ATTRIBUTES(VISIT_CONSTANT_ATTRIBUTE)
 
 #undef VISIT_NUMBER_ATTRIBUTE
+
+
+// The default implementation calls Visit(Attribute&).
+#define VISIT_FIELD_ATTRIBUTE(                                                 \
+    type)                                                                      \
+void AttributeVisitor::Visit(                                                  \
+    FieldAttribute<type> const& attribute)                                     \
+{                                                                              \
+    Visit(dynamic_cast<Attribute const&>(attribute));                          \
+}
+
+VISIT_ATTRIBUTES(VISIT_FIELD_ATTRIBUTE)
+
+#undef VISIT_FIELD_ATTRIBUTE
 
 } // namespace geoneric

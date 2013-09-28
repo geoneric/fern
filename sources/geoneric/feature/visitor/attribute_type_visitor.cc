@@ -18,9 +18,7 @@ void AttributeTypeVisitor::Visit(
     Attribute const& /* attribute */)
 {
     // We end up here when an attribute type is visited that isn't supported.
-    // In that case, data type and value type are set to special values.
-    _data_type = DT_LAST_DATA_TYPE;
-    _value_type = VT_LAST_VALUE_TYPE;
+    assert(false);
 }
 
 
@@ -33,9 +31,23 @@ void AttributeTypeVisitor::Visit(                                              \
     _value_type = TypeTraits<type>::value_type;                                \
 }
 
-VISIT_CONSTANT_ATTRIBUTES(VISIT_CONSTANT_ATTRIBUTE)
+VISIT_ATTRIBUTES(VISIT_CONSTANT_ATTRIBUTE)
 
 #undef VISIT_CONSTANT_ATTRIBUTE
+
+
+#define VISIT_FIELD_ATTRIBUTE(                                                 \
+    type)                                                                      \
+void AttributeTypeVisitor::Visit(                                              \
+    FieldAttribute<type> const& /* attribute */)                               \
+{                                                                              \
+    _data_type = DT_STATIC_FIELD;                                              \
+    _value_type = TypeTraits<type>::value_type;                                \
+}
+
+VISIT_ATTRIBUTES(VISIT_FIELD_ATTRIBUTE)
+
+#undef VISIT_FIELD_ATTRIBUTE
 
 
 DataType AttributeTypeVisitor::data_type() const

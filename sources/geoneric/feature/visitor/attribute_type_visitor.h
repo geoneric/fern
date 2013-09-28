@@ -30,6 +30,8 @@ public:
 
                    ~AttributeTypeVisitor()=default;
 
+    void           Visit               (Attribute const& attribute);
+
     void           Visit               (ConstantAttribute<int8_t> const& attribute);
 
     void           Visit               (ConstantAttribute<int16_t> const& attribute);
@@ -52,7 +54,27 @@ public:
 
     void           Visit               (ConstantAttribute<String> const& attribute);
 
-    void           Visit               (Attribute const& attribute);
+    virtual void   Visit               (FieldAttribute<int8_t> const& attribute);
+
+    virtual void   Visit               (FieldAttribute<int16_t> const& attribute);
+
+    virtual void   Visit               (FieldAttribute<int32_t> const& attribute);
+
+    virtual void   Visit               (FieldAttribute<int64_t> const& attribute);
+
+    virtual void   Visit               (FieldAttribute<uint8_t> const& attribute);
+
+    virtual void   Visit               (FieldAttribute<uint16_t> const& attribute);
+
+    virtual void   Visit               (FieldAttribute<uint32_t> const& attribute);
+
+    virtual void   Visit               (FieldAttribute<uint64_t> const& attribute);
+
+    virtual void   Visit               (FieldAttribute<float> const& attribute);
+
+    virtual void   Visit               (FieldAttribute<double> const& attribute);
+
+    virtual void   Visit               (FieldAttribute<String> const& attribute);
 
     DataType       data_type           () const;
 

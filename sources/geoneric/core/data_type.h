@@ -5,15 +5,19 @@ namespace geoneric {
 
 enum DataType {
 
+    //! A single value, constant in time and space.
     DT_CONSTANT,
 
-    DT_POINT,
+    //! A 2D field of spatially varying values, constant in time.
+    DT_STATIC_FIELD,
 
-    DT_LINE,
+    // DT_POINT,
 
-    DT_POLYGON,
+    // DT_LINE,
 
-    DT_LAST_DATA_TYPE = DT_POLYGON
+    // DT_POLYGON,
+
+    DT_LAST_DATA_TYPE = DT_STATIC_FIELD
 
 };
 

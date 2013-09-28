@@ -119,11 +119,14 @@
       - XmlParser.cc
     -->
     <xs:restriction base="xs:string">
-      <xs:enumeration value="Scalar"/>
+      <xs:enumeration value="Constant"/>
+      <xs:enumeration value="StaticField"/>
+      <!--
       <xs:enumeration value="Point"/>
       <xs:enumeration value="Line"/>
       <xs:enumeration value="Polygon"/>
       <xs:enumeration value="Feature"/>
+      -->
       <!--
       <xs:enumeration value="Value"/>
       <xs:enumeration value="String"/>

@@ -84,10 +84,14 @@ void show_value(
 
             break;
         }
-        case DT_POLYGON: {
-            std::cout << "polygon" << std::endl;
+        case DT_STATIC_FIELD: {
+            std::cout << "static field" << std::endl;
             break;
         }
+        // case DT_POLYGON: {
+        //     std::cout << "polygon" << std::endl;
+        //     break;
+        // }
         default: {
             assert(false);
             break;

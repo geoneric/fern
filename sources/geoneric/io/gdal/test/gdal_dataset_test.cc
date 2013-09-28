@@ -1,11 +1,7 @@
 #define BOOST_TEST_MODULE geoneric io
 #include <boost/test/unit_test.hpp>
 #include "gdal_priv.h"
-#include "geoneric/feature/core/array_value.h"
-#include "geoneric/feature/core/box.h"
-#include "geoneric/feature/core/point.h"
-#include "geoneric/feature/core/spatial_attribute.h"
-#include "geoneric/feature/core/spatial_domain.h"
+#include "geoneric/feature/core/attributes.h"
 #include "geoneric/io/gdal/gdal_dataset.h"
 
 
@@ -20,14 +16,6 @@ BOOST_AUTO_TEST_CASE(gdal_dataset)
     BOOST_CHECK(dataset.contains_feature("/"));
     BOOST_CHECK(dataset.contains_attribute("raster-1"));
 
-    typedef geoneric::Point<double, 2> Point;
-    typedef geoneric::Box<Point> Box;
-    typedef geoneric::SpatialDomain<Box> BoxDomain;
-    typedef geoneric::ArrayValue<int32_t, 1> Value;
-    typedef std::shared_ptr<Value> ValuePtr;
-    typedef geoneric::SpatialAttribute<BoxDomain, ValuePtr> BoxesAttribute;
-    typedef std::shared_ptr<BoxesAttribute> BoxesAttributePtr;
-
     // Read the feature containing the attribute.
     {
         std::shared_ptr<geoneric::Feature> feature = dataset.read_feature("/");
@@ -35,12 +23,14 @@ BOOST_AUTO_TEST_CASE(gdal_dataset)
         BOOST_CHECK_EQUAL(feature->nr_attributes(), 1u);
         BOOST_CHECK(feature->contains_attribute("raster-1"));
 
-        BoxesAttributePtr attribute = std::dynamic_pointer_cast<BoxesAttribute>(
-            feature->attribute("raster-1"));
+        geoneric::FieldAttributePtr<int32_t> attribute =
+            std::dynamic_pointer_cast<geoneric::FieldAttribute<int32_t>>(
+                feature->attribute("raster-1"));
         BOOST_REQUIRE(attribute);
         BOOST_REQUIRE_EQUAL(attribute->size(), 1u);
 
-        ValuePtr value = attribute->values().cbegin()->second;
+        geoneric::d1::ArrayValuePtr<int32_t> value =
+            attribute->values().cbegin()->second;
         BOOST_REQUIRE_EQUAL(value->num_dimensions(), 1);
         BOOST_REQUIRE_EQUAL(value->size(), 6);
 
@@ -54,12 +44,14 @@ BOOST_AUTO_TEST_CASE(gdal_dataset)
 
     // Read the attribute.
     {
-        BoxesAttributePtr attribute = std::dynamic_pointer_cast<BoxesAttribute>(
-            dataset.read_attribute("raster-1"));
+        geoneric::FieldAttributePtr<int32_t> attribute =
+            std::dynamic_pointer_cast<geoneric::FieldAttribute<int32_t>>(
+                dataset.read_attribute("raster-1"));
         BOOST_REQUIRE(attribute);
         BOOST_REQUIRE_EQUAL(attribute->size(), 1u);
 
-        ValuePtr value = attribute->values().cbegin()->second;
+        geoneric::d1::ArrayValuePtr<int32_t> value =
+            attribute->values().cbegin()->second;
         BOOST_REQUIRE_EQUAL(value->num_dimensions(), 1);
         BOOST_REQUIRE_EQUAL(value->size(), 6);
 

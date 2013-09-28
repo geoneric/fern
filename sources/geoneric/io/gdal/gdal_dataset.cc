@@ -1,11 +1,7 @@
 #include "geoneric/io/gdal/gdal_dataset.h"
 #include "gdal_priv.h"
 #include "geoneric/io/core/path.h"
-#include "geoneric/feature/core/array_value.h"
-#include "geoneric/feature/core/box.h"
-#include "geoneric/feature/core/point.h"
-#include "geoneric/feature/core/spatial_attribute.h"
-#include "geoneric/feature/core/spatial_domain.h"
+#include "geoneric/feature/core/attributes.h"
 
 
 namespace geoneric {
@@ -117,25 +113,18 @@ std::shared_ptr<Attribute> GDALDataset::read_attribute(
     assert(band);
     assert(band->GetRasterDataType() == GDT_Int32);
 
-    typedef Point<double, 2> Point;
-    typedef Box<Point> Box;
-    typedef SpatialDomain<Box> BoxDomain;
-    typedef ArrayValue<int32_t, 1> Value;
-    typedef std::shared_ptr<Value> ValuePtr;
-    typedef SpatialAttribute<BoxDomain, ValuePtr> BoxesAttribute;
-    typedef std::shared_ptr<BoxesAttribute> BoxesAttributePtr;
-
-    Point south_west;
+    d2::Point south_west;
     set<0>(south_west, geo_transform[0]);
     set<1>(south_west, geo_transform[3]);
 
-    Point north_east;
+    d2::Point north_east;
     set<0>(north_east, get<0>(south_west) + nr_cols * cell_size);
     set<1>(north_east, get<1>(south_west) + nr_rows * cell_size);
 
-    Box box(south_west, north_east);
+    d2::Box box(south_west, north_east);
 
-    ValuePtr grid(new Value(extents[nr_rows * nr_cols]));
+    d1::ArrayValuePtr<int32_t> grid(new d1::ArrayValue<int32_t>(
+        extents[nr_rows * nr_cols]));
 
     if(band->RasterIO(GF_Read, 0, 0, nr_cols, nr_rows, grid->data(), nr_cols,
             nr_rows, GDT_Int32, 0, 0) != CE_None) {
@@ -143,8 +132,8 @@ std::shared_ptr<Attribute> GDALDataset::read_attribute(
         assert(false);
     }
 
-    BoxesAttributePtr attribute(new BoxesAttribute());
-    BoxesAttribute::GID gid = attribute->add(box, grid);
+    FieldAttributePtr<int32_t> attribute(new FieldAttribute<int32_t>());
+    FieldAttribute<int32_t>::GID gid = attribute->add(box, grid);
 
     return std::dynamic_pointer_cast<Attribute>(attribute);
 }

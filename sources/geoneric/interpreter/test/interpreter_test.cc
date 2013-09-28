@@ -3,13 +3,7 @@
 #include "geoneric/core/io_error.h"
 #include "geoneric/core/parse_error.h"
 #include "geoneric/core/validate_error.h"
-#include "geoneric/feature/core/array_value.h"
-#include "geoneric/feature/core/constant_attribute.h"
-#include "geoneric/feature/core/box.h"
-#include "geoneric/feature/core/feature.h"
-#include "geoneric/feature/core/point.h"
-#include "geoneric/feature/core/spatial_attribute.h"
-#include "geoneric/feature/core/spatial_domain.h"
+#include "geoneric/feature/core/attributes.h"
 #include "geoneric/operation/core/attribute_argument.h"
 #include "geoneric/operation/core/feature_argument.h"
 #include "geoneric/interpreter/execute_visitor.h"
@@ -298,19 +292,14 @@ BOOST_AUTO_TEST_CASE(execute_read_with_raster_input)
         std::shared_ptr<geoneric::Attribute> const& attribute(
             feature->attribute("raster-1"));
 
-        typedef geoneric::Point<double, 2> Point;
-        typedef geoneric::Box<Point> Box;
-        typedef geoneric::SpatialDomain<Box> BoxDomain;
-        typedef geoneric::ArrayValue<int32_t, 1> Value;
-        typedef std::shared_ptr<Value> ValuePtr;
-        typedef geoneric::SpatialAttribute<BoxDomain, ValuePtr> BoxesAttribute;
-
-        std::shared_ptr<BoxesAttribute> boxes_attribute(
-            std::dynamic_pointer_cast<BoxesAttribute>(attribute));
+        geoneric::FieldAttributePtr<int32_t> boxes_attribute(
+            std::dynamic_pointer_cast<geoneric::FieldAttribute<int32_t>>(
+                attribute));
         BOOST_REQUIRE(boxes_attribute);
         BOOST_REQUIRE_EQUAL(boxes_attribute->size(), 1u);
 
-        ValuePtr value = boxes_attribute->values().cbegin()->second;
+        geoneric::d1::ArrayValuePtr<int32_t> value =
+            boxes_attribute->values().cbegin()->second;
         BOOST_REQUIRE_EQUAL(value->num_dimensions(), 1);
         BOOST_REQUIRE_EQUAL(value->size(), 6);
 
@@ -346,19 +335,14 @@ BOOST_AUTO_TEST_CASE(execute_read_with_raster_input)
         std::shared_ptr<geoneric::Attribute> const& attribute(
             attribute_argument->attribute());
 
-        typedef geoneric::Point<double, 2> Point;
-        typedef geoneric::Box<Point> Box;
-        typedef geoneric::SpatialDomain<Box> BoxDomain;
-        typedef geoneric::ArrayValue<int32_t, 1> Value;
-        typedef std::shared_ptr<Value> ValuePtr;
-        typedef geoneric::SpatialAttribute<BoxDomain, ValuePtr> BoxesAttribute;
-
-        std::shared_ptr<BoxesAttribute> boxes_attribute(
-            std::dynamic_pointer_cast<BoxesAttribute>(attribute));
+        geoneric::FieldAttributePtr<int32_t> boxes_attribute(
+            std::dynamic_pointer_cast<geoneric::FieldAttribute<int32_t>>(
+                attribute));
         BOOST_REQUIRE(boxes_attribute);
         BOOST_REQUIRE_EQUAL(boxes_attribute->size(), 1u);
 
-        ValuePtr value = boxes_attribute->values().cbegin()->second;
+        geoneric::d1::ArrayValuePtr<int32_t> value =
+            boxes_attribute->values().cbegin()->second;
         BOOST_REQUIRE_EQUAL(value->num_dimensions(), 1);
         BOOST_REQUIRE_EQUAL(value->size(), 6);
 
@@ -436,11 +420,11 @@ BOOST_AUTO_TEST_CASE(execute_abs_with_raster_input)
     {
         geoneric::String script = "abs(read(\"raster-1.asc:raster-1\"))";
         tree = interpreter.parse_string(script);
-        // interpreter.execute(tree);
+        interpreter.execute(tree);
 
-        // std::stack<std::shared_ptr<geoneric::Argument>> stack(
-        //     interpreter.stack());
-        // BOOST_CHECK_EQUAL(stack.size(), 1u);
+        std::stack<std::shared_ptr<geoneric::Argument>> stack(
+            interpreter.stack());
+        BOOST_CHECK_EQUAL(stack.size(), 1u);
 
         // hier verder
     }

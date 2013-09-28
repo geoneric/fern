@@ -2,13 +2,10 @@
 #include <cstdint>
 #include <loki/Visitor.h>
 #include "geoneric/core/string.h"
-#include "geoneric/feature/core/attribute.h"
+#include "geoneric/feature/core/attributes.h"
 
 
 namespace geoneric {
-
-template<class T>
-    class ConstantAttribute;
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -28,7 +25,19 @@ class AttributeVisitor:
     public Loki::Visitor<ConstantAttribute<uint64_t>, void, true>,
     public Loki::Visitor<ConstantAttribute<float>, void, true>,
     public Loki::Visitor<ConstantAttribute<double>, void, true>,
-    public Loki::Visitor<ConstantAttribute<String>, void, true>
+    public Loki::Visitor<ConstantAttribute<String>, void, true>,
+    public Loki::Visitor<FieldAttribute<int8_t>, void, true>,
+    public Loki::Visitor<FieldAttribute<int16_t>, void, true>,
+    public Loki::Visitor<FieldAttribute<int32_t>, void, true>,
+    public Loki::Visitor<FieldAttribute<int64_t>, void, true>,
+    public Loki::Visitor<FieldAttribute<uint8_t>, void, true>,
+    public Loki::Visitor<FieldAttribute<uint16_t>, void, true>,
+    public Loki::Visitor<FieldAttribute<uint32_t>, void, true>,
+    public Loki::Visitor<FieldAttribute<uint64_t>, void, true>,
+    public Loki::Visitor<FieldAttribute<float>, void, true>,
+    public Loki::Visitor<FieldAttribute<double>, void, true>,
+    public Loki::Visitor<FieldAttribute<String>, void, true>
+
 {
 
 public:
@@ -57,6 +66,28 @@ public:
 
     virtual void   Visit               (ConstantAttribute<String> const& attribute);
 
+    virtual void   Visit               (FieldAttribute<int8_t> const& attribute);
+
+    virtual void   Visit               (FieldAttribute<int16_t> const& attribute);
+
+    virtual void   Visit               (FieldAttribute<int32_t> const& attribute);
+
+    virtual void   Visit               (FieldAttribute<int64_t> const& attribute);
+
+    virtual void   Visit               (FieldAttribute<uint8_t> const& attribute);
+
+    virtual void   Visit               (FieldAttribute<uint16_t> const& attribute);
+
+    virtual void   Visit               (FieldAttribute<uint32_t> const& attribute);
+
+    virtual void   Visit               (FieldAttribute<uint64_t> const& attribute);
+
+    virtual void   Visit               (FieldAttribute<float> const& attribute);
+
+    virtual void   Visit               (FieldAttribute<double> const& attribute);
+
+    virtual void   Visit               (FieldAttribute<String> const& attribute);
+
 protected:
 
                    AttributeVisitor    ()=default;
@@ -79,7 +110,7 @@ private:
 //! Macro that will call the macro passed in for each numeric value type.
 /*!
 */
-#define VISIT_CONSTANT_ATTRIBUTES(                                             \
+#define VISIT_ATTRIBUTES(                                                      \
         macro)                                                                 \
     macro(int8_t)                                                              \
     macro(int16_t)                                                             \

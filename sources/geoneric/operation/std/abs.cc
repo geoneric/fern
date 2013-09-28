@@ -28,13 +28,13 @@ Abs::Abs()
           {
               Parameter("Input argument",
                   "Argument to calculate absolute value of.",
-                  DataTypes::CONSTANT | DataTypes::FEATURE,
+                  DataTypes::CONSTANT | DataTypes::STATIC_FIELD,
                   ValueTypes::NUMBER)
           },
           {
               Result("Result value",
                   "Absolute value of the input argument.",
-                  DataTypes::CONSTANT | DataTypes::FEATURE,
+                  DataTypes::CONSTANT | DataTypes::STATIC_FIELD,
                   ValueTypes::NUMBER)
           }
       )
@@ -105,18 +105,22 @@ std::vector<std::shared_ptr<Argument>> Abs::execute(
 
             break;
         }
-        case DataType::DT_POINT: {
+        case DataType::DT_STATIC_FIELD: {
             assert(false);
             break;
         }
-        case DataType::DT_LINE: {
-            assert(false);
-            break;
-        }
-        case DataType::DT_POLYGON: {
-            assert(false);
-            break;
-        }
+        // case DataType::DT_POINT: {
+        //     assert(false);
+        //     break;
+        // }
+        // case DataType::DT_LINE: {
+        //     assert(false);
+        //     break;
+        // }
+        // case DataType::DT_POLYGON: {
+        //     assert(false);
+        //     break;
+        // }
     }
 
     return result;

@@ -175,7 +175,7 @@ BOOST_FIXTURE_TEST_CASE(visit_operation, Support)
             operation->parameters());
         geoneric::Parameter const& parameter(parameters[0]);
         BOOST_CHECK_EQUAL(parameter.data_types(),
-            geoneric::DataTypes::CONSTANT | geoneric::DataTypes::FEATURE);
+            geoneric::DataTypes::CONSTANT | geoneric::DataTypes::STATIC_FIELD);
         BOOST_CHECK_EQUAL(parameter.value_types(), geoneric::ValueTypes::NUMBER);
 
         BOOST_CHECK_EQUAL(operation->results().size(), 1u);

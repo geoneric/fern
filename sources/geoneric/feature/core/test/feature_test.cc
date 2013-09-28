@@ -1,10 +1,7 @@
 #define BOOST_TEST_MODULE geoneric feature
 #include <boost/test/unit_test.hpp>
-#include "geoneric/feature/core/constant_attribute.h"
-#include "geoneric/feature/core/feature.h"
-#include "geoneric/feature/core/point.h"
-#include "geoneric/feature/core/spatial_attribute.h"
-#include "geoneric/feature/core/spatial_domain.h"
+#include "geoneric/feature/core/attributes.h"
+// #include "geoneric/feature/core/feature.h"
 
 
 BOOST_AUTO_TEST_SUITE(feature)
@@ -25,10 +22,10 @@ BOOST_AUTO_TEST_CASE(feature)
     {
         geoneric::Feature planets;
 
-        typedef geoneric::Point<int, 3> Point;
-        typedef geoneric::SpatialDomain<Point> PointDomain;
         typedef int Value;
-        typedef geoneric::SpatialAttribute<PointDomain, Value> PointsAttribute;
+        typedef geoneric::Point<int, 3> Point;
+        typedef geoneric::SpatialAttribute<geoneric::SpatialDomain<Point>,
+            Value> PointsAttribute;
         typedef std::shared_ptr<PointsAttribute> PointsAttributePtr;
 
         Point center_of_planet1 = { 1, 1, 1 };

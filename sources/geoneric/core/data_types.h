@@ -32,17 +32,19 @@ public:
     //! Constant data type.
     static DataTypes const CONSTANT;
 
-    //! Point feature.
-    static DataTypes const POINT;
+    static DataTypes const STATIC_FIELD;
 
-    //! Line feature.
-    static DataTypes const LINE;
+    // //! Point feature.
+    // static DataTypes const POINT;
 
-    //! Polygon feature.
-    static DataTypes const POLYGON;
+    // //! Line feature.
+    // static DataTypes const LINE;
 
-    //! Alias for all feature data types.
-    static DataTypes const FEATURE;
+    // //! Polygon feature.
+    // static DataTypes const POLYGON;
+
+    // //! Alias for all feature data types.
+    // static DataTypes const FEATURE;
 
     //! Alias for all data types.
     static DataTypes const ALL;

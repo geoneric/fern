@@ -6,30 +6,33 @@ namespace geoneric {
 
 DataTypes const DataTypes::UNKNOWN;
 DataTypes const DataTypes::CONSTANT(1 << DataType::DT_CONSTANT);
-DataTypes const DataTypes::POINT(1 << DataType::DT_POINT);
-DataTypes const DataTypes::LINE(1 << DataType::DT_LINE);
-DataTypes const DataTypes::POLYGON(1 << DataType::DT_POLYGON);
-DataTypes const DataTypes::FEATURE(DataTypes::POINT | DataTypes::LINE |
-    DataTypes::POLYGON);
-DataTypes const DataTypes::ALL(DataTypes::CONSTANT | DataTypes::FEATURE);
+DataTypes const DataTypes::STATIC_FIELD(1 << DataType::DT_STATIC_FIELD);
+// DataTypes const DataTypes::POINT(1 << DataType::DT_POINT);
+// DataTypes const DataTypes::LINE(1 << DataType::DT_LINE);
+// DataTypes const DataTypes::POLYGON(1 << DataType::DT_POLYGON);
+// DataTypes const DataTypes::FEATURE(DataTypes::POINT | DataTypes::LINE |
+//     DataTypes::POLYGON);
+DataTypes const DataTypes::ALL(DataTypes::CONSTANT | DataTypes::STATIC_FIELD);
 
 
 // These strings should match the ones used in the XML schema.
 static std::map<String, DataTypes> data_type_by_string = {
     { "Constant", DataTypes::CONSTANT },
-    { "Point"   , DataTypes::POINT    },
-    { "Line"    , DataTypes::LINE     },
-    { "Polygon" , DataTypes::POLYGON  },
-    { "Feature" , DataTypes::FEATURE  },
-    { "All"     , DataTypes::ALL      }
+    { "StaticField", DataTypes::STATIC_FIELD },
+    // { "Point", DataTypes::POINT },
+    // { "Line", DataTypes::LINE },
+    // { "Polygon", DataTypes::POLYGON },
+    // { "Feature", DataTypes::FEATURE },
+    { "All"     , DataTypes::ALL }
 };
 
 
 static std::map<DataType, String> string_by_data_type = {
     { DataType::DT_CONSTANT, "Constant" },
-    { DataType::DT_POINT   , "Point"    },
-    { DataType::DT_LINE    , "Line"     },
-    { DataType::DT_POLYGON , "Polygon"  }
+    { DataType::DT_STATIC_FIELD, "StaticField" }
+    // { DataType::DT_POINT   , "Point"    },
+    // { DataType::DT_LINE    , "Line"     },
+    // { DataType::DT_POLYGON , "Polygon"  }
 };
 
 
@@ -52,9 +55,10 @@ DataTypes DataTypes::from_string(
 
 std::vector<DataType> const DataTypes::DATA_TYPES = {
     DataType::DT_CONSTANT,
-    DataType::DT_POINT,
-    DataType::DT_LINE,
-    DataType::DT_POLYGON
+    DataType::DT_STATIC_FIELD
+    // DataType::DT_POINT,
+    // DataType::DT_LINE,
+    // DataType::DT_POLYGON
 };
 
 

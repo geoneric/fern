@@ -11,17 +11,17 @@ Add::Add()
           {
               Parameter("First input argument",
                   "First argument to add.",
-                  DataTypes::CONSTANT | DataTypes::FEATURE,
+                  DataTypes::CONSTANT | DataTypes::STATIC_FIELD,
                   ValueTypes::NUMBER),
               Parameter("Second input argument",
                   "Second argument to add.",
-                  DataTypes::CONSTANT | DataTypes::FEATURE,
+                  DataTypes::CONSTANT | DataTypes::STATIC_FIELD,
                   ValueTypes::NUMBER)
           },
           {
               Result("Result value",
                   "Input arguments, added together.",
-                  DataTypes::CONSTANT | DataTypes::FEATURE,
+                  DataTypes::CONSTANT | DataTypes::STATIC_FIELD,
                   ValueTypes::NUMBER)
           }
       )

@@ -11,13 +11,13 @@ Int32::Int32()
           {
               Parameter("Input argument",
                   "Argument to cast.",
-                  DataTypes::CONSTANT | DataTypes::FEATURE,
+                  DataTypes::CONSTANT | DataTypes::STATIC_FIELD,
                   ValueTypes::NUMBER)
           },
           {
               Result("Result value",
                   "Input argument as an int32.",
-                  DataTypes::CONSTANT | DataTypes::FEATURE,
+                  DataTypes::CONSTANT | DataTypes::STATIC_FIELD,
                   ValueTypes::INT32)
           }
       )
