@@ -31,6 +31,7 @@ ln -s does_not_exist.asc $io_core_test_dir/raster-1-dangling_link.asc
 
 io_gdal_test_dir="$source_dir/io/gdal/test"
 $cmake -E copy $test_data_dir/raster-1.asc $io_gdal_test_dir
+$cmake -E copy $test_data_dir/raster-2.asc $io_gdal_test_dir
 $cmake -E copy $test_data_dir/raster-1.asc $io_gdal_test_dir/write_only.asc
 chmod 222 $io_gdal_test_dir/write_only.asc
 

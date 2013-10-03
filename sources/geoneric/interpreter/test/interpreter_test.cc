@@ -162,6 +162,21 @@ foo(5)
             //     "<string>:1:4: Undefined operation: blah");
         }
     }
+
+    // Operation with wrong number of arguments.
+    vertex = interpreter.parse_string("abs(5, 6)");
+    BOOST_REQUIRE(vertex);
+
+    try {
+        interpreter.validate(vertex);
+        BOOST_CHECK(false);
+    }
+    catch(geoneric::ValidateError const& exception) {
+        geoneric::String message = exception.message();
+        BOOST_CHECK_EQUAL(message,
+            "<string>:1:0: Wrong number of arguments for operation: abs: "
+            "1 required, but 2 provided");
+    }
 }
 
 

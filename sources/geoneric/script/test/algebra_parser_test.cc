@@ -375,7 +375,7 @@ BOOST_AUTO_TEST_CASE(parse_unary_operator)
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
                     "<Operator>"
-                      "<Name>Sub</Name>"
+                      "<Name>UnarySub</Name>"
                       "<Expressions>"
                         "<Expression line=\"1\" col=\"1\">"
                           "<Name>a</Name>"

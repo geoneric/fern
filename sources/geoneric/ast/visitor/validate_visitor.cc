@@ -44,7 +44,7 @@ void ValidateVisitor::Visit(
     // arguments.
     if(vertex.expressions().size() != operation.parameters().size()) {
         // TODO Add to unit tests.
-        BOOST_THROW_EXCEPTION(detail::ValidateError()
+        BOOST_THROW_EXCEPTION(detail::WrongNumberOfArguments()
             << detail::ExceptionFunction(vertex.name())
             << detail::ExceptionRequiredNrArguments(
                 operation.parameters().size())

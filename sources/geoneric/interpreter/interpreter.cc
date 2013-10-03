@@ -270,6 +270,31 @@ void Interpreter::validate(
             Exception::messages().format_message(
                 MessageId::UNDEFINED_OPERATION, *operation_name));
     }
+    catch(detail::WrongNumberOfArguments const& exception) {
+        String const& source_name = tree->source_name();
+
+        String const* operation_name = boost::get_error_info<
+            detail::ExceptionFunction>(exception);
+        assert(operation_name);
+
+        long const* line_nr = boost::get_error_info<
+            detail::ExceptionLineNr>(exception);
+        assert(line_nr);
+
+        long const* col_nr = boost::get_error_info<
+            detail::ExceptionColNr>(exception);
+        assert(col_nr);
+
+        size_t const* required_nr_arguments = boost::get_error_info<
+            detail::ExceptionRequiredNrArguments>(exception);
+        size_t const* provided_nr_arguments = boost::get_error_info<
+            detail::ExceptionProvidedNrArguments>(exception);
+
+        throw ValidateError(source_name, *line_nr, *col_nr,
+            Exception::messages().format_message(
+                MessageId::WRONG_NUMBER_OF_ARGUMENTS, *operation_name,
+                    *required_nr_arguments, *provided_nr_arguments));
+    }
 }
 
 

@@ -7,9 +7,9 @@ namespace geoneric {
 
 std::map<String, String> unary_operator_symbols = {
     { "Invert", "~" },
-    { "Not"   , "!" },
-    { "add"   , "+" },
-    { "Sub"   , "-" }
+    { "Not", "!" },
+    { "UnaryAdd", "+" },
+    { "UnarySub", "-" }
 };
 
 

@@ -8,7 +8,7 @@
 
 BOOST_AUTO_TEST_SUITE(gdal_dataset)
 
-BOOST_AUTO_TEST_CASE(gdal_dataset)
+BOOST_AUTO_TEST_CASE(raster_1)
 {
     GDALAllRegister();
 
@@ -33,9 +33,8 @@ BOOST_AUTO_TEST_CASE(gdal_dataset)
         geoneric::d2::MaskedArrayValue<int32_t> const& value =
             *attribute->values().cbegin()->second;
         BOOST_REQUIRE_EQUAL(value.num_dimensions(), 2);
-        BOOST_REQUIRE_EQUAL(value.num_elements(), 6);
-        BOOST_REQUIRE_EQUAL(value.size(), 3);
-        BOOST_REQUIRE_EQUAL(value[0].size(), 2);
+        BOOST_REQUIRE_EQUAL(value.shape()[0], 3);
+        BOOST_REQUIRE_EQUAL(value.shape()[1], 2);
 
         BOOST_CHECK(!value.mask()[0][0]);
         BOOST_CHECK(!value.mask()[0][1]);
@@ -43,12 +42,12 @@ BOOST_AUTO_TEST_CASE(gdal_dataset)
         BOOST_CHECK( value.mask()[1][1]);
         BOOST_CHECK(!value.mask()[2][0]);
         BOOST_CHECK(!value.mask()[2][1]);
-        BOOST_CHECK_EQUAL(value[0][0],    -2);
-        BOOST_CHECK_EQUAL(value[0][1],    -1);
-        BOOST_CHECK_EQUAL(value[1][0],    -0);
+        BOOST_CHECK_EQUAL(value[0][0], -2);
+        BOOST_CHECK_EQUAL(value[0][1], -1);
+        BOOST_CHECK_EQUAL(value[1][0], -0);
         // BOOST_CHECK_EQUAL(value[1][1], -9999);
-        BOOST_CHECK_EQUAL(value[2][0],     1);
-        BOOST_CHECK_EQUAL(value[2][1],     2);
+        BOOST_CHECK_EQUAL(value[2][0], 1);
+        BOOST_CHECK_EQUAL(value[2][1], 2);
     }
 
     // Read the attribute.
@@ -62,9 +61,8 @@ BOOST_AUTO_TEST_CASE(gdal_dataset)
         geoneric::d2::MaskedArrayValue<int32_t> const& value =
             *attribute->values().cbegin()->second;
         BOOST_REQUIRE_EQUAL(value.num_dimensions(), 2);
-        BOOST_REQUIRE_EQUAL(value.num_elements(), 6);
-        BOOST_REQUIRE_EQUAL(value.size(), 3);
-        BOOST_REQUIRE_EQUAL(value[0].size(), 2);
+        BOOST_REQUIRE_EQUAL(value.shape()[0], 3);
+        BOOST_REQUIRE_EQUAL(value.shape()[1], 2);
 
         BOOST_CHECK(!value.mask()[0][0]);
         BOOST_CHECK(!value.mask()[0][1]);
@@ -72,12 +70,53 @@ BOOST_AUTO_TEST_CASE(gdal_dataset)
         BOOST_CHECK( value.mask()[1][1]);
         BOOST_CHECK(!value.mask()[2][0]);
         BOOST_CHECK(!value.mask()[2][1]);
-        BOOST_CHECK_EQUAL(value[0][0],    -2);
-        BOOST_CHECK_EQUAL(value[0][1],    -1);
-        BOOST_CHECK_EQUAL(value[1][0],    -0);
+        BOOST_CHECK_EQUAL(value[0][0], -2);
+        BOOST_CHECK_EQUAL(value[0][1], -1);
+        BOOST_CHECK_EQUAL(value[1][0], -0);
         // BOOST_CHECK_EQUAL(value[1][1], -9999);
-        BOOST_CHECK_EQUAL(value[2][0],     1);
-        BOOST_CHECK_EQUAL(value[2][1],     2);
+        BOOST_CHECK_EQUAL(value[2][0], 1);
+        BOOST_CHECK_EQUAL(value[2][1], 2);
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(raster_2)
+{
+    geoneric::GDALDataset dataset("raster-2.asc");
+    BOOST_CHECK_EQUAL(dataset.nr_features(), 1u);
+    BOOST_CHECK(dataset.contains_feature("/"));
+    BOOST_CHECK(dataset.contains_attribute("raster-2"));
+
+    // Read the feature containing the attribute.
+    {
+        std::shared_ptr<geoneric::Feature> feature = dataset.read_feature("/");
+        BOOST_REQUIRE(feature);
+        BOOST_CHECK_EQUAL(feature->nr_attributes(), 1u);
+        BOOST_CHECK(feature->contains_attribute("raster-2"));
+
+        geoneric::FieldAttributePtr<float> attribute =
+            std::dynamic_pointer_cast<geoneric::FieldAttribute<float>>(
+                feature->attribute("raster-2"));
+        BOOST_REQUIRE(attribute);
+        BOOST_REQUIRE_EQUAL(attribute->size(), 1u);
+
+        geoneric::d2::MaskedArrayValue<float> const& value =
+            *attribute->values().cbegin()->second;
+        BOOST_REQUIRE_EQUAL(value.num_dimensions(), 2);
+        BOOST_REQUIRE_EQUAL(value.shape()[0], 3);
+        BOOST_REQUIRE_EQUAL(value.shape()[1], 2);
+
+        BOOST_CHECK(!value.mask()[0][0]);
+        BOOST_CHECK(!value.mask()[0][1]);
+        BOOST_CHECK(!value.mask()[1][0]);
+        BOOST_CHECK( value.mask()[1][1]);
+        BOOST_CHECK(!value.mask()[2][0]);
+        BOOST_CHECK(!value.mask()[2][1]);
+        BOOST_CHECK_CLOSE(value[0][0], -2.2, 0.0001);
+        BOOST_CHECK_CLOSE(value[0][1], -1.1, 0.0001);
+        BOOST_CHECK_CLOSE(value[1][0], -0.0, 0.0001);
+        BOOST_CHECK_CLOSE(value[2][0], 1.1, 0.0001);
+        BOOST_CHECK_CLOSE(value[2][1], 2.2, 0.0001);
     }
 }
 

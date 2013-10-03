@@ -47,6 +47,10 @@ Messages::Messages()
     insert(std::make_pair(MessageId::UNDEFINED_OPERATION,
         // operation
         "Undefined operation: %1%"));
+    insert(std::make_pair(MessageId::WRONG_NUMBER_OF_ARGUMENTS,
+        // operation: required_number: provided_number
+        "Wrong number of arguments for operation: %1%: "
+        "%2% required, but %3% provided"));
 
     insert(std::make_pair(MessageId::ERROR_VALIDATING,
         // source:line:col: message

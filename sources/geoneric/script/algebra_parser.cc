@@ -199,11 +199,11 @@ void write_unary_operator_node(
             break;
         }
         case UAdd: {
-            xml += "add";
+            xml += "UnaryAdd";
             break;
         }
         case USub: {
-            xml += "Sub";
+            xml += "UnarySub";
             break;
         }
         // Don't add a default clause! We want to hear from the compiler if

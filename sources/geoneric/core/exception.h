@@ -79,6 +79,7 @@ struct UnsupportedLanguageConstruct: public virtual Exception { };
 struct ValidateError: public virtual Exception { };
 struct UndefinedIdentifier: public virtual ValidateError { };
 struct UndefinedOperation: public virtual ValidateError { };
+struct WrongNumberOfArguments: public virtual ValidateError { };
 
 struct IOError: public virtual Exception { };
 struct FileOpenError: public virtual IOError { };

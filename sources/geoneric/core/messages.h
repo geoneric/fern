@@ -37,6 +37,15 @@ public:
                                         T1 const& argument1,
                                         T2 const& argument2) const;
 
+    template<
+        class T1,
+        class T2,
+        class T3>
+    String         format_message      (MessageId message_id,
+                                        T1 const& argument1,
+                                        T2 const& argument2,
+                                        T3 const& argument3) const;
+
 private:
 
 };
@@ -66,8 +75,26 @@ inline String Messages::format_message(
     String const& format_string(this->operator[](message_id));
     return String((boost::format(format_string.encode_in_utf8())
         % argument1
+        % argument2
+    ).str());
+}
+
+
+template<
+    class T1,
+    class T2,
+    class T3>
+inline String Messages::format_message(
+    MessageId message_id,
+    T1 const& argument1,
+    T2 const& argument2,
+    T3 const& argument3) const
+{
+    String const& format_string(this->operator[](message_id));
+    return String((boost::format(format_string.encode_in_utf8())
         % argument1
         % argument2
+        % argument3
     ).str());
 }
 
