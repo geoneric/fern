@@ -123,13 +123,20 @@ std::shared_ptr<Attribute> GDALDataset::read_attribute(
 
     d2::Box box(south_west, north_east);
 
-    d1::ArrayValuePtr<int32_t> grid(new d1::ArrayValue<int32_t>(
-        extents[nr_rows * nr_cols]));
+    d2::MaskedArrayValuePtr<int32_t> grid(new d2::MaskedArrayValue<int32_t>(
+        extents[nr_rows][nr_cols]));
 
     if(band->RasterIO(GF_Read, 0, 0, nr_cols, nr_rows, grid->data(), nr_cols,
             nr_rows, GDT_Int32, 0, 0) != CE_None) {
         // TODO raise exception
         assert(false);
+    }
+
+    int success = 0;
+    int32_t nodata_value = static_cast<int32_t>(band->GetNoDataValue(&success));
+
+    if(success) {
+        grid->mask_value(nodata_value);
     }
 
     FieldAttributePtr<int32_t> attribute(new FieldAttribute<int32_t>());

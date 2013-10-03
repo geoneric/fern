@@ -7,6 +7,9 @@ BOOST_AUTO_TEST_SUITE(spatial_attribute)
 
 BOOST_AUTO_TEST_CASE(int_per_box)
 {
+    typedef geoneric::SpatialAttribute<geoneric::FieldDomain, int>
+        FieldAttribute;
+
     // // An integer value is stored per box.
     geoneric::d2::Point south_west;
     geoneric::set<0>(south_west, 1.1);
@@ -18,10 +21,10 @@ BOOST_AUTO_TEST_CASE(int_per_box)
 
     int value = 5;
 
-    geoneric::FieldAttribute<int, int> attribute;
+    FieldAttribute attribute;
     BOOST_CHECK(attribute.empty());
 
-    geoneric::FieldAttribute<int, int>::GID gid = attribute.add(box, value);
+    FieldAttribute::GID gid = attribute.add(box, value);
     BOOST_CHECK(!attribute.empty());
     BOOST_CHECK_EQUAL(attribute.domain().size(), 1u);
     BOOST_CHECK_EQUAL(attribute.values().value(gid), value);
@@ -33,7 +36,8 @@ BOOST_AUTO_TEST_CASE(array_per_box)
     // A pointer to a 2D array is stored as value per box.
     typedef geoneric::d2::ArrayValue<int> Value;
     typedef geoneric::d2::ArrayValuePtr<int> ValuePtr;
-    typedef geoneric::FieldAttribute<int, ValuePtr> FieldAttribute;
+    typedef geoneric::SpatialAttribute<geoneric::FieldDomain, ValuePtr>
+        FieldAttribute;
 
     geoneric::d2::Point south_west;
     geoneric::set<0>(south_west, 1.1);

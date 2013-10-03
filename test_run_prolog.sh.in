@@ -3,20 +3,20 @@ source_dir="${CMAKE_CURRENT_BINARY_DIR}/sources/geoneric"
 cmake="${CMAKE_COMMAND}"
 
 
-io_ogr_test_dir="$source_dir/io/ogr/test"
-$cmake -E copy $test_data_dir/point.json $io_ogr_test_dir
-
-$cmake -E copy $test_data_dir/point.json $io_ogr_test_dir/read_only_point.json
-chmod 444 $io_ogr_test_dir/read_only_point.json
-
-$cmake -E copy $test_data_dir/point.json $io_ogr_test_dir/write_only_point.json
-chmod 222 $io_ogr_test_dir/write_only_point.json
-
-$cmake -E copy $test_data_dir/point.json $io_ogr_test_dir/execute_only_point.json
-chmod 111 $io_ogr_test_dir/execute_only_point.json
-
-$cmake -E make_directory $io_ogr_test_dir/read_only_dir
-chmod 666 $io_ogr_test_dir/read_only_dir
+# io_ogr_test_dir="$source_dir/io/ogr/test"
+# $cmake -E copy $test_data_dir/point.json $io_ogr_test_dir
+# 
+# $cmake -E copy $test_data_dir/point.json $io_ogr_test_dir/read_only_point.json
+# chmod 444 $io_ogr_test_dir/read_only_point.json
+# 
+# $cmake -E copy $test_data_dir/point.json $io_ogr_test_dir/write_only_point.json
+# chmod 222 $io_ogr_test_dir/write_only_point.json
+# 
+# $cmake -E copy $test_data_dir/point.json $io_ogr_test_dir/execute_only_point.json
+# chmod 111 $io_ogr_test_dir/execute_only_point.json
+# 
+# $cmake -E make_directory $io_ogr_test_dir/read_only_dir
+# chmod 666 $io_ogr_test_dir/read_only_dir
 
 
 io_gdal_test_dir="$source_dir/io/gdal/test"

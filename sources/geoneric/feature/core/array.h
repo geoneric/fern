@@ -1,4 +1,6 @@
 #pragma once
+// TODO Disable range checks in release builds.
+// #define BOOST_DISABLE_ASSERTS
 #include <boost/multi_array.hpp>
 
 
@@ -22,20 +24,18 @@ class Array:
 
 public:
 
-protected:
-
                    Array               ()=default;
 
     template<class ExtentList>
                    Array               (ExtentList const& sizes);
 
-                   Array               (Array const&)=delete;
+                   Array               (Array const&)=default;
 
-    Array&         operator=           (Array const&)=delete;
+    Array&         operator=           (Array const&)=default;
 
-                   Array               (Array&&)=delete;
+                   Array               (Array&&)=default;
 
-    Array&         operator=           (Array&&)=delete;
+    Array&         operator=           (Array&&)=default;
 
     virtual        ~Array              ()=default;
 

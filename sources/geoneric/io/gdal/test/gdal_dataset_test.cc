@@ -29,17 +29,25 @@ BOOST_AUTO_TEST_CASE(gdal_dataset)
         BOOST_REQUIRE(attribute);
         BOOST_REQUIRE_EQUAL(attribute->size(), 1u);
 
-        geoneric::d1::ArrayValuePtr<int32_t> value =
-            attribute->values().cbegin()->second;
-        BOOST_REQUIRE_EQUAL(value->num_dimensions(), 1);
-        BOOST_REQUIRE_EQUAL(value->size(), 6);
+        geoneric::d2::MaskedArrayValue<int32_t> const& value =
+            *attribute->values().cbegin()->second;
+        BOOST_REQUIRE_EQUAL(value.num_dimensions(), 2);
+        BOOST_REQUIRE_EQUAL(value.num_elements(), 6);
+        BOOST_REQUIRE_EQUAL(value.size(), 3);
+        BOOST_REQUIRE_EQUAL(value[0].size(), 2);
 
-        BOOST_CHECK_EQUAL((*value)[0],    -2);
-        BOOST_CHECK_EQUAL((*value)[1],    -1);
-        BOOST_CHECK_EQUAL((*value)[2],    -0);
-        BOOST_CHECK_EQUAL((*value)[3], -9999);
-        BOOST_CHECK_EQUAL((*value)[4],     1);
-        BOOST_CHECK_EQUAL((*value)[5],     2);
+        BOOST_CHECK(!value.mask()[0][0]);
+        BOOST_CHECK(!value.mask()[0][1]);
+        BOOST_CHECK(!value.mask()[1][0]);
+        BOOST_CHECK( value.mask()[1][1]);
+        BOOST_CHECK(!value.mask()[2][0]);
+        BOOST_CHECK(!value.mask()[2][1]);
+        BOOST_CHECK_EQUAL(value[0][0],    -2);
+        BOOST_CHECK_EQUAL(value[0][1],    -1);
+        BOOST_CHECK_EQUAL(value[1][0],    -0);
+        // BOOST_CHECK_EQUAL(value[1][1], -9999);
+        BOOST_CHECK_EQUAL(value[2][0],     1);
+        BOOST_CHECK_EQUAL(value[2][1],     2);
     }
 
     // Read the attribute.
@@ -50,17 +58,25 @@ BOOST_AUTO_TEST_CASE(gdal_dataset)
         BOOST_REQUIRE(attribute);
         BOOST_REQUIRE_EQUAL(attribute->size(), 1u);
 
-        geoneric::d1::ArrayValuePtr<int32_t> value =
-            attribute->values().cbegin()->second;
-        BOOST_REQUIRE_EQUAL(value->num_dimensions(), 1);
-        BOOST_REQUIRE_EQUAL(value->size(), 6);
+        geoneric::d2::MaskedArrayValue<int32_t> const& value =
+            *attribute->values().cbegin()->second;
+        BOOST_REQUIRE_EQUAL(value.num_dimensions(), 2);
+        BOOST_REQUIRE_EQUAL(value.num_elements(), 6);
+        BOOST_REQUIRE_EQUAL(value.size(), 3);
+        BOOST_REQUIRE_EQUAL(value[0].size(), 2);
 
-        BOOST_CHECK_EQUAL((*value)[0],    -2);
-        BOOST_CHECK_EQUAL((*value)[1],    -1);
-        BOOST_CHECK_EQUAL((*value)[2],    -0);
-        BOOST_CHECK_EQUAL((*value)[3], -9999);
-        BOOST_CHECK_EQUAL((*value)[4],     1);
-        BOOST_CHECK_EQUAL((*value)[5],     2);
+        BOOST_CHECK(!value.mask()[0][0]);
+        BOOST_CHECK(!value.mask()[0][1]);
+        BOOST_CHECK(!value.mask()[1][0]);
+        BOOST_CHECK( value.mask()[1][1]);
+        BOOST_CHECK(!value.mask()[2][0]);
+        BOOST_CHECK(!value.mask()[2][1]);
+        BOOST_CHECK_EQUAL(value[0][0],    -2);
+        BOOST_CHECK_EQUAL(value[0][1],    -1);
+        BOOST_CHECK_EQUAL(value[1][0],    -0);
+        // BOOST_CHECK_EQUAL(value[1][1], -9999);
+        BOOST_CHECK_EQUAL(value[2][0],     1);
+        BOOST_CHECK_EQUAL(value[2][1],     2);
     }
 }
 

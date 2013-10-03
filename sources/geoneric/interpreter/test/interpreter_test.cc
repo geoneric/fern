@@ -298,17 +298,24 @@ BOOST_AUTO_TEST_CASE(execute_read_with_raster_input)
         BOOST_REQUIRE(boxes_attribute);
         BOOST_REQUIRE_EQUAL(boxes_attribute->size(), 1u);
 
-        geoneric::d1::ArrayValuePtr<int32_t> value =
-            boxes_attribute->values().cbegin()->second;
-        BOOST_REQUIRE_EQUAL(value->num_dimensions(), 1);
-        BOOST_REQUIRE_EQUAL(value->size(), 6);
+        geoneric::FieldValue<int32_t> const& value =
+            *boxes_attribute->values().cbegin()->second;
+        BOOST_REQUIRE_EQUAL(value.num_dimensions(), 2);
+        BOOST_REQUIRE_EQUAL(value.shape()[0], 3);
+        BOOST_REQUIRE_EQUAL(value.shape()[1], 2);
 
-        BOOST_CHECK_EQUAL((*value)[0],    -2);
-        BOOST_CHECK_EQUAL((*value)[1],    -1);
-        BOOST_CHECK_EQUAL((*value)[2],    -0);
-        BOOST_CHECK_EQUAL((*value)[3], -9999);
-        BOOST_CHECK_EQUAL((*value)[4],     1);
-        BOOST_CHECK_EQUAL((*value)[5],     2);
+        BOOST_CHECK(!value.mask()[0][0]);
+        BOOST_CHECK(!value.mask()[0][1]);
+        BOOST_CHECK(!value.mask()[1][0]);
+        BOOST_CHECK( value.mask()[1][1]);
+        BOOST_CHECK(!value.mask()[2][0]);
+        BOOST_CHECK(!value.mask()[2][1]);
+        BOOST_CHECK_EQUAL(value[0][0],    -2);
+        BOOST_CHECK_EQUAL(value[0][1],    -1);
+        BOOST_CHECK_EQUAL(value[1][0],    -0);
+        // BOOST_CHECK_EQUAL(value[1][1], -9999);
+        BOOST_CHECK_EQUAL(value[2][0],     1);
+        BOOST_CHECK_EQUAL(value[2][1],     2);
     }
 
     // Read attribute.
@@ -341,17 +348,24 @@ BOOST_AUTO_TEST_CASE(execute_read_with_raster_input)
         BOOST_REQUIRE(boxes_attribute);
         BOOST_REQUIRE_EQUAL(boxes_attribute->size(), 1u);
 
-        geoneric::d1::ArrayValuePtr<int32_t> value =
-            boxes_attribute->values().cbegin()->second;
-        BOOST_REQUIRE_EQUAL(value->num_dimensions(), 1);
-        BOOST_REQUIRE_EQUAL(value->size(), 6);
+        geoneric::FieldValue<int32_t> const& value =
+            *boxes_attribute->values().cbegin()->second;
+        BOOST_REQUIRE_EQUAL(value.num_dimensions(), 2);
+        BOOST_REQUIRE_EQUAL(value.shape()[0], 3);
+        BOOST_REQUIRE_EQUAL(value.shape()[1], 2);
 
-        BOOST_CHECK_EQUAL((*value)[0],    -2);
-        BOOST_CHECK_EQUAL((*value)[1],    -1);
-        BOOST_CHECK_EQUAL((*value)[2],    -0);
-        BOOST_CHECK_EQUAL((*value)[3], -9999);
-        BOOST_CHECK_EQUAL((*value)[4],     1);
-        BOOST_CHECK_EQUAL((*value)[5],     2);
+        BOOST_CHECK(!value.mask()[0][0]);
+        BOOST_CHECK(!value.mask()[0][1]);
+        BOOST_CHECK(!value.mask()[1][0]);
+        BOOST_CHECK( value.mask()[1][1]);
+        BOOST_CHECK(!value.mask()[2][0]);
+        BOOST_CHECK(!value.mask()[2][1]);
+        BOOST_CHECK_EQUAL(value[0][0],    -2);
+        BOOST_CHECK_EQUAL(value[0][1],    -1);
+        BOOST_CHECK_EQUAL(value[1][0],    -0);
+        // BOOST_CHECK_EQUAL(value[1][1], -9999);
+        BOOST_CHECK_EQUAL(value[2][0],     1);
+        BOOST_CHECK_EQUAL(value[2][1],     2);
     }
 
     /// Hier verder.
@@ -426,7 +440,43 @@ BOOST_AUTO_TEST_CASE(execute_abs_with_raster_input)
             interpreter.stack());
         BOOST_CHECK_EQUAL(stack.size(), 1u);
 
-        // hier verder
+        std::shared_ptr<geoneric::Argument> const& argument(stack.top());
+        BOOST_REQUIRE_EQUAL(argument->argument_type(),
+            geoneric::ArgumentType::AT_ATTRIBUTE);
+
+        std::shared_ptr<geoneric::AttributeArgument> const&
+            attribute_argument(
+                std::dynamic_pointer_cast<geoneric::AttributeArgument>(
+                    argument));
+        BOOST_REQUIRE(attribute_argument);
+
+        std::shared_ptr<geoneric::Attribute> const& attribute(
+            attribute_argument->attribute());
+
+        geoneric::FieldAttributePtr<int32_t> boxes_attribute(
+            std::dynamic_pointer_cast<geoneric::FieldAttribute<int32_t>>(
+                attribute));
+        BOOST_REQUIRE(boxes_attribute);
+        BOOST_REQUIRE_EQUAL(boxes_attribute->size(), 1u);
+
+        geoneric::FieldValue<int32_t> const& value =
+            *boxes_attribute->values().cbegin()->second;
+        BOOST_REQUIRE_EQUAL(value.num_dimensions(), 2);
+        BOOST_REQUIRE_EQUAL(value.shape()[0], 3);
+        BOOST_REQUIRE_EQUAL(value.shape()[1], 2);
+
+        BOOST_CHECK(!value.mask()[0][0]);
+        BOOST_CHECK(!value.mask()[0][1]);
+        BOOST_CHECK(!value.mask()[1][0]);
+        BOOST_CHECK( value.mask()[1][1]);
+        BOOST_CHECK(!value.mask()[2][0]);
+        BOOST_CHECK(!value.mask()[2][1]);
+        BOOST_CHECK_EQUAL(value[0][0], 2);
+        BOOST_CHECK_EQUAL(value[0][1], 1);
+        BOOST_CHECK_EQUAL(value[1][0], 0);
+        // BOOST_CHECK_EQUAL(value[1][1], xxx);
+        BOOST_CHECK_EQUAL(value[2][0],   1);
+        BOOST_CHECK_EQUAL(value[2][1],   2);
     }
 }
 

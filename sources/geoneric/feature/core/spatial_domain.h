@@ -15,6 +15,7 @@ namespace geoneric {
 template<
     class Geometry_>
 class SpatialDomain:
+    private std::map<size_t, Geometry_>,
     public Domain
 {
 
@@ -23,6 +24,8 @@ public:
     typedef Geometry_ Geometry;
 
     typedef size_t GID;
+
+    typedef typename std::map<size_t, Geometry_>::const_iterator const_iterator;
 
                    SpatialDomain       ()=default;
 
@@ -36,6 +39,16 @@ public:
 
                    ~SpatialDomain      ()=default;
 
+    const_iterator cbegin              () const;
+
+    const_iterator begin               () const;
+
+    const_iterator cend                () const;
+
+    const_iterator end                 () const;
+
+    // std::vector<GID> const& gids       () const;
+
     GID            add                 (Geometry_ const& geometry);
 
     Geometry_ const& geometry          (GID const& gid);
@@ -46,18 +59,58 @@ public:
 
 private:
 
-    std::map<GID, Geometry_> _geometries;
+    // std::map<GID, Geometry_> _geometries;
 
 };
 
 
+// template<
+//     class Geometry_>
+// inline auto SpatialDomain<Geometry_>::gids() const -> std::vector<GID> const&
+// {
+//     return _gids;
+// }
+
+
 template<
     class Geometry_>
-inline typename SpatialDomain<Geometry_>::GID SpatialDomain<Geometry_>::add(
-    Geometry_ const& geometry)
+inline auto SpatialDomain<Geometry_>::cbegin() const -> const_iterator
 {
-    GID gid = _geometries.size();
-    _geometries[gid] = geometry;
+    return std::map<GID, Geometry_>::cbegin();
+}
+
+
+template<
+    class Geometry_>
+inline auto SpatialDomain<Geometry_>::begin() const -> const_iterator
+{
+    return std::map<GID, Geometry_>::begin();
+}
+
+
+template<
+    class Geometry_>
+inline auto SpatialDomain<Geometry_>::cend() const -> const_iterator
+{
+    return std::map<GID, Geometry_>::cend();
+}
+
+
+template<
+    class Geometry_>
+inline auto SpatialDomain<Geometry_>::end() const -> const_iterator
+{
+    return std::map<GID, Geometry_>::end();
+}
+
+
+template<
+    class Geometry_>
+inline auto SpatialDomain<Geometry_>::add(
+    Geometry_ const& geometry) -> GID
+{
+    GID gid = size();
+    this->insert(std::make_pair(gid, geometry));
     return gid;
 }
 
@@ -67,8 +120,8 @@ template<
 inline Geometry_ const& SpatialDomain<Geometry_>::geometry(
     GID const& gid)
 {
-    assert(_geometries.find(gid) != _geometries.end());
-    return _geometries.find(gid)->second;
+    assert(this->find(gid) != this->end());
+    return this->at(gid);
 }
 
 
@@ -76,7 +129,7 @@ template<
     class Geometry_>
 inline bool SpatialDomain<Geometry_>::empty() const
 {
-    return _geometries.empty();
+    return std::map<GID, Geometry_>::empty();
 }
 
 
@@ -84,8 +137,7 @@ template<
     class Geometry_>
 inline size_t SpatialDomain<Geometry_>::size() const
 {
-    return _geometries.size();
+    return std::map<GID, Geometry_>::size();
 }
-
 
 } // namespace geoneric
