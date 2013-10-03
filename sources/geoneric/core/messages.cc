@@ -12,6 +12,19 @@ Messages::Messages()
     insert(std::make_pair(MessageId::IO_ERROR,
         // source: message
         "IO error handling %1%: %2%"));
+    insert(std::make_pair(MessageId::DOES_NOT_EXIST,
+        "Does not exist"));
+    insert(std::make_pair(MessageId::CANNOT_BE_READ,
+        "Cannot be read"));
+    insert(std::make_pair(MessageId::DOES_NOT_CONTAIN_FEATURE,
+        // feature
+        "Does not contain feature: %1%"));
+    insert(std::make_pair(MessageId::DOES_NOT_CONTAIN_ATTRIBUTE,
+        // attribute
+        "Does not contain attribute: %1%"));
+    insert(std::make_pair(MessageId::UNSUPPORTED_VALUE_TYPE,
+        // attribute: value type
+        "Unsupported value type: %1%: %2%"));
 
     insert(std::make_pair(MessageId::ERROR_PARSING,
         // source:line:col: message

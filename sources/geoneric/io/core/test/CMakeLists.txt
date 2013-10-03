@@ -1,0 +1,16 @@
+SET(TEST_NAMES
+    file_test
+)
+
+MACRO(ADD_UNIT_TEST NAME)
+    ADD_EXECUTABLE(io_core_${NAME} ${NAME})
+    TARGET_LINK_LIBRARIES(io_core_${NAME}
+        geoneric_io_core
+        ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+    )
+    ADD_TEST(NAME io_core_${NAME} COMMAND io_core_${NAME})
+ENDMACRO()
+
+FOREACH(NAME ${TEST_NAMES})
+    ADD_UNIT_TEST(${NAME})
+ENDFOREACH()

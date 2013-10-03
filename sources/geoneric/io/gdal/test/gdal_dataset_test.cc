@@ -1,6 +1,7 @@
 #define BOOST_TEST_MODULE geoneric io
 #include <boost/test/unit_test.hpp>
 #include "gdal_priv.h"
+#include "geoneric/core/io_error.h"
 #include "geoneric/feature/core/attributes.h"
 #include "geoneric/io/gdal/gdal_dataset.h"
 
@@ -77,6 +78,56 @@ BOOST_AUTO_TEST_CASE(gdal_dataset)
         // BOOST_CHECK_EQUAL(value[1][1], -9999);
         BOOST_CHECK_EQUAL(value[2][0],     1);
         BOOST_CHECK_EQUAL(value[2][1],     2);
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(errors)
+{
+    try {
+        geoneric::GDALDataset dataset("../does_not_exist.asc");
+        BOOST_CHECK(false);
+    }
+    catch(geoneric::IOError const& exception) {
+        geoneric::String message = exception.message();
+        BOOST_CHECK_EQUAL(message,
+            "IO error handling ../does_not_exist.asc: Does not exist");
+    }
+
+    try {
+        geoneric::GDALDataset dataset("write_only.asc");
+        BOOST_CHECK(false);
+    }
+    catch(geoneric::IOError const& exception) {
+        geoneric::String message = exception.message();
+        BOOST_CHECK_EQUAL(message,
+            "IO error handling write_only.asc: Cannot be read");
+    }
+
+    {
+        geoneric::GDALDataset dataset("raster-1.asc");
+
+        try {
+            dataset.read_feature("blahdiblah");
+            BOOST_CHECK(false);
+        }
+        catch(geoneric::IOError const& exception) {
+            geoneric::String message = exception.message();
+            BOOST_CHECK_EQUAL(message,
+                "IO error handling raster-1.asc: "
+                "Does not contain feature: blahdiblah");
+        }
+
+        try {
+            dataset.read_attribute("blahdiblah");
+            BOOST_CHECK(false);
+        }
+        catch(geoneric::IOError const& exception) {
+            geoneric::String message = exception.message();
+            BOOST_CHECK_EQUAL(message,
+                "IO error handling raster-1.asc: "
+                "Does not contain attribute: blahdiblah");
+        }
     }
 }
 

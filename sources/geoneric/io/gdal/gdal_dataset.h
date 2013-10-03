@@ -2,6 +2,9 @@
 #include "geoneric/io/gdal/dataset.h"
 
 
+class GDALDataset;
+class GDALRasterBand;
+
 namespace geoneric {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
@@ -28,7 +31,7 @@ public:
 
     GDALDataset&   operator=           (GDALDataset&&)=delete;
 
-                   ~GDALDataset        ()=default;
+                   ~GDALDataset        ();
 
     size_t         nr_features         () const;
 
@@ -44,7 +47,12 @@ public:
 
 private:
 
-    bool           exists              () const;
+    ::GDALDataset* _dataset;
+
+    template<
+        class T>
+    std::shared_ptr<Attribute> read_attribute(
+                                        GDALRasterBand& band) const;
 
 };
 

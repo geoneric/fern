@@ -6,6 +6,7 @@ SET(SOURCES
     drivers
     gdal_dataset
     gdal_driver
+    gdal_data_type_traits;
 )
 ADD_LIBRARY(geoneric_io_gdal
     ${SOURCES}

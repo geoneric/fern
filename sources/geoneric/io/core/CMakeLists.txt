@@ -6,6 +6,7 @@ SET(SOURCES
     # dataset_driver
     # domain
     # feature
+    file
     path
     # point_attribute
     # point_domain
