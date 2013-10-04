@@ -59,12 +59,22 @@ Read::Read()
           {
               Result("Feature read",
                   "Feature read.",
-                  DataTypes::ALL,
-                  ValueTypes::ALL)
+                  ResultType(DataTypes::STATIC_FIELD,
+                      ValueTypes::NUMBER))
           }
       )
 
 {
+}
+
+
+ResultType Read::result_type(
+    size_t index,
+    std::vector<ResultType> const& /* argument_types */) const
+{
+    assert(index == 0);
+
+    return results()[0].result_type();
 }
 
 

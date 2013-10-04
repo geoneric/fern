@@ -292,7 +292,7 @@ public:
         ResultData result(_data_stack.top());
         _data_stack.pop();
         return geoneric::Result(result.name, result.description,
-          result.data_type, result.value_type);
+            geoneric::ResultType(result.data_type, result.value_type));
     }
 
 };

@@ -1,4 +1,5 @@
 #include "geoneric/ast/visitor/validate_visitor.h"
+#include <sstream>
 #include "geoneric/core/exception.h"
 #include "geoneric/core/string.h"
 #include "geoneric/operation/core/operation.h"
@@ -42,12 +43,10 @@ void ValidateVisitor::Visit(
 
     // Check if the number of arguments provided equals the required number of
     // arguments.
-    if(vertex.expressions().size() != operation.parameters().size()) {
-        // TODO Add to unit tests.
+    if(vertex.expressions().size() != operation.arity()) {
         BOOST_THROW_EXCEPTION(detail::WrongNumberOfArguments()
             << detail::ExceptionFunction(vertex.name())
-            << detail::ExceptionRequiredNrArguments(
-                operation.parameters().size())
+            << detail::ExceptionRequiredNrArguments(operation.arity())
             << detail::ExceptionProvidedNrArguments(
                 vertex.expressions().size())
             << detail::ExceptionLineNr(vertex.line())
@@ -55,15 +54,28 @@ void ValidateVisitor::Visit(
         );
     }
 
-    // TODO
-    // // Check if the data type of each provided argument is accepted by the
-    // // operation.
-    // // ...
+    // Check if the result type of each argument expression is compatible
+    // with the definition of the operation's parameters.
+    for(size_t i = 0; i < operation.arity(); ++i) {
+        ResultTypes const& parameter_types(
+            operation.parameters()[i].result_types());
+        ResultTypes const& expression_types(
+            vertex.expressions()[i]->result_types());
 
-    // TODO
-    // // Check if the value type of each provided argument is accepted by the
-    // // operation.
-    // // ...
+        if(!parameter_types.is_satisfied_by(expression_types)) {
+            std::ostringstream stream1, stream2;
+            stream1 << parameter_types;
+            stream2 << expression_types;
+            BOOST_THROW_EXCEPTION(detail::WrongTypeOfArgument()
+                << detail::ExceptionFunction(vertex.name())
+                << detail::ExceptionArgumentId(i + 1)
+                << detail::ExceptionRequiredArgumentTypes(stream1.str())
+                << detail::ExceptionProvidedArgumentTypes(stream2.str())
+                << detail::ExceptionLineNr(vertex.line())
+                << detail::ExceptionColNr(vertex.col())
+            );
+        }
+    }
 }
 
 } // namespace geoneric

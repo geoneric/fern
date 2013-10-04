@@ -27,13 +27,19 @@ Parameter::Parameter(
 
     : _name(name),
       _description(description),
-      _data_types(data_types),
-      _value_types(value_types)
+      _result_types({ResultType(data_types, value_types)})
+      // _data_types(data_types),
+      // _value_types(value_types)
 
 {
     assert(!_name.is_empty());
     assert(!_description.is_empty());
-    assert(_data_types != DataTypes::UNKNOWN);
+    // assert(_data_types != DataTypes::UNKNOWN);
+#ifndef NDEBUG
+    for(auto const& result_type: _result_types) {
+        assert(result_type.data_type() != DataTypes::UNKNOWN);
+    }
+#endif
 }
 
 
@@ -42,8 +48,9 @@ Parameter::Parameter(
 
     : _name(other._name),
       _description(other._description),
-      _data_types(other._data_types),
-      _value_types(other._value_types)
+      _result_types(other._result_types)
+      // _data_types(other._data_types),
+      // _value_types(other._value_types)
 
 {
 }
@@ -55,8 +62,9 @@ Parameter& Parameter::operator=(
     if(&other != this) {
         _name = other._name;
         _description = other._description;
-        _data_types = other._data_types;
-        _value_types = other._value_types;
+        // _data_types = other._data_types;
+        // _value_types = other._value_types;
+        _result_types = other._result_types;
     }
 
     return *this;
@@ -80,15 +88,21 @@ String const& Parameter::description() const
 }
 
 
-DataTypes Parameter::data_types() const
-{
-    return _data_types;
-}
+// DataTypes Parameter::data_types() const
+// {
+//     return _data_types;
+// }
+// 
+// 
+// ValueTypes Parameter::value_types() const
+// {
+//     return _value_types;
+// }
 
 
-ValueTypes Parameter::value_types() const
+ResultTypes Parameter::result_types() const
 {
-    return _value_types;
+    return _result_types;
 }
 
 } // namespace geoneric

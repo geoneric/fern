@@ -64,10 +64,11 @@ BOOST_AUTO_TEST_CASE(parse)
         geoneric::Parameter parameter = parameters[0];
         BOOST_CHECK(parameter.name() == "value");
         BOOST_CHECK(parameter.description() == "Value to print.");
-        data_types = parameter.data_types();
+        assert(parameter.result_types().size() == 1u);
+        data_types = parameter.result_types()[0].data_type();
         BOOST_CHECK(data_types == geoneric::DataTypes::ALL);
 
-        value_types = parameter.value_types();
+        value_types = parameter.result_types()[0].value_type();
         BOOST_CHECK(value_types == geoneric::ValueTypes::ALL);
 
         results = operation->results();

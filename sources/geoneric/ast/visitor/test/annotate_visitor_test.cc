@@ -174,17 +174,22 @@ BOOST_FIXTURE_TEST_CASE(visit_operation, Support)
         std::vector<geoneric::Parameter> const& parameters(
             operation->parameters());
         geoneric::Parameter const& parameter(parameters[0]);
-        BOOST_CHECK_EQUAL(parameter.data_types(),
+        BOOST_CHECK_EQUAL(parameter.result_types().size(), 1u);
+        BOOST_CHECK_EQUAL(parameter.result_types()[0].data_type(),
             geoneric::DataTypes::CONSTANT | geoneric::DataTypes::STATIC_FIELD);
-        BOOST_CHECK_EQUAL(parameter.value_types(), geoneric::ValueTypes::NUMBER);
+        BOOST_CHECK_EQUAL(parameter.result_types()[0].value_type(),
+            geoneric::ValueTypes::NUMBER);
 
         BOOST_CHECK_EQUAL(operation->results().size(), 1u);
         std::vector<geoneric::Result> const& results(operation->results());
         geoneric::Result const& result(results[0]);
-        BOOST_CHECK_EQUAL(result.data_type(), geoneric::DataTypes::ALL);
-        BOOST_CHECK_EQUAL(result.value_type(), geoneric::ValueTypes::NUMBER);
+        BOOST_CHECK_EQUAL(result.result_type().data_type(),
+            geoneric::DataTypes::ALL);
+        BOOST_CHECK_EQUAL(result.result_type().value_type(),
+            geoneric::ValueTypes::NUMBER);
 
-        geoneric::ResultTypes result_types(function_call_vertex->result_types());
+        geoneric::ResultTypes result_types(
+            function_call_vertex->result_types());
         BOOST_REQUIRE_EQUAL(result_types.size(), 1u);
         BOOST_CHECK_EQUAL(result_types[0], geoneric::ResultType(
             geoneric::DataTypes::ALL, geoneric::ValueTypes::NUMBER));

@@ -22,6 +22,9 @@ public:
 
     Read&          operator=           (Read const& other)=delete;
 
+    ResultType     result_type         (size_t index,
+                        std::vector<ResultType> const& argument_types) const;
+
     std::vector<std::shared_ptr<Argument>>
                    execute             (std::vector<std::shared_ptr<Argument>>
                                             const& arguments) const;

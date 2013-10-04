@@ -51,6 +51,10 @@ Messages::Messages()
         // operation: required_number: provided_number
         "Wrong number of arguments for operation: %1%: "
         "%2% required, but %3% provided"));
+    insert(std::make_pair(MessageId::WRONG_TYPE_OF_ARGUMENT,
+        // argument: operation: required_type: provided_type
+        "Wrong type of argument %1% provided for operation: %2%: "
+        "%3% required, but %4% provided"));
 
     insert(std::make_pair(MessageId::ERROR_VALIDATING,
         // source:line:col: message

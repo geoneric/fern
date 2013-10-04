@@ -1,14 +1,16 @@
 #pragma once
-#include "geoneric/core/data_types.h"
+// #include "geoneric/core/data_types.h"
 #include "geoneric/core/string.h"
-#include "geoneric/core/value_types.h"
+// #include "geoneric/core/value_types.h"
+#include "geoneric/operation/core/result_types.h"
 
 
 namespace geoneric {
 
-//! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
+//! A parameter is a description of an operation's argument.
 /*!
-  longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
+  A parameter is defined by its name, description, and the types of data and
+  values it is satisfied with.
 
   \sa        .
 */
@@ -38,9 +40,7 @@ public:
 
     String const&  description         () const;
 
-    DataTypes      data_types          () const;
-
-    ValueTypes     value_types         () const;
+    ResultTypes    result_types        () const;
 
 private:
 
@@ -48,9 +48,7 @@ private:
 
     String         _description;
 
-    DataTypes      _data_types;
-
-    ValueTypes     _value_types;
+    ResultTypes    _result_types;
 
 };
 

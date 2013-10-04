@@ -113,8 +113,8 @@ DataTypes Operation::result_data_type(
 
     {
         Result const& result(_results[index]);
-        if(result.data_type().fixed()) {
-            return result.data_type();
+        if(result.result_type().data_type().fixed()) {
+            return result.result_type().data_type();
         }
     }
 
@@ -123,13 +123,15 @@ DataTypes Operation::result_data_type(
 
     // Select subset of data types that are supported by the parameter.
     for(size_t i = 0; i < data_types.size(); ++i) {
-        data_types[i] = data_types[i] &= _parameters[i].data_types();
+        assert(_parameters[i].result_types().size() == 1u);
+        data_types[i] &= _parameters[i].result_types()[0].data_type();
     }
 
     // Aggregate all data types.
     DataTypes merged_parameter_data_types;
     for(auto parameter: _parameters) {
-        merged_parameter_data_types |= parameter.data_types();
+        assert(parameter.result_types().size() == 1u);
+        merged_parameter_data_types |= parameter.result_types()[0].data_type();
     }
 
     DataTypes merged_argument_data_types;
@@ -140,7 +142,10 @@ DataTypes Operation::result_data_type(
     DataTypes result_data_type;
 
     // Calculate data type of result.
-    if(merged_argument_data_types.test(geoneric::DT_CONSTANT)) {
+    if(merged_argument_data_types.test(geoneric::DT_STATIC_FIELD)) {
+        result_data_type = DataTypes::STATIC_FIELD;
+    }
+    else if(merged_argument_data_types.test(geoneric::DT_CONSTANT)) {
         result_data_type = DataTypes::CONSTANT;
     }
     else if(merged_argument_data_types == DataTypes::UNKNOWN) {
@@ -152,6 +157,8 @@ DataTypes Operation::result_data_type(
         assert(false);
     }
 
+    assert(result_data_type.is_subset_of(
+        _results[index].result_type().data_type()));
     return result_data_type;
 }
 
@@ -171,8 +178,8 @@ ValueTypes Operation::result_value_type(
 
     {
         Result const& result(_results[index]);
-        if(result.value_type().fixed()) {
-            return result.value_type();
+        if(result.result_type().value_type().fixed()) {
+            return result.result_type().value_type();
         }
     }
 
@@ -180,8 +187,10 @@ ValueTypes Operation::result_value_type(
     // Select subset of value types that are supported by the parameter.
     std::vector<ValueTypes> supported_value_types(argument_value_types);
     for(size_t i = 0; i < supported_value_types.size(); ++i) {
+        assert(_parameters[i].result_types().size() == 1u);
         supported_value_types[i] =
-            supported_value_types[i] &= _parameters[i].value_types();
+            supported_value_types[i] &=
+                _parameters[i].result_types()[0].value_type();
     }
 
 
@@ -200,7 +209,9 @@ ValueTypes Operation::result_value_type(
     // Aggregate all value types.
     ValueTypes merged_parameter_value_types;
     for(auto parameter: _parameters) {
-        merged_parameter_value_types |= parameter.value_types();
+        assert(parameter.result_types().size() == 1u);
+        merged_parameter_value_types |=
+            parameter.result_types()[0].value_type();
     }
 
 
@@ -228,6 +239,9 @@ ValueTypes Operation::result_value_type(
     else if(merged_argument_value_types.test(geoneric::VT_UINT16)) {
         result_value_type = ValueTypes::UINT16;
     }
+    else if(merged_argument_value_types.test(geoneric::VT_UINT8)) {
+        result_value_type = ValueTypes::UINT8;
+    }
     else if(merged_argument_value_types.test(geoneric::VT_INT8)) {
         result_value_type = ValueTypes::INT8;
     }
@@ -240,6 +254,8 @@ ValueTypes Operation::result_value_type(
         assert(false);
     }
 
+    assert(result_value_type.is_subset_of(
+        _results[index].result_type().value_type()));
     return result_value_type;
 }
 

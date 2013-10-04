@@ -17,8 +17,8 @@ Int32::Int32()
           {
               Result("Result value",
                   "Input argument as an int32.",
-                  DataTypes::CONSTANT | DataTypes::STATIC_FIELD,
-                  ValueTypes::INT32)
+                  ResultType(DataTypes::CONSTANT | DataTypes::STATIC_FIELD,
+                      ValueTypes::INT32))
           }
       )
 

@@ -66,6 +66,11 @@ typedef boost::error_info<struct tag_provided_nr_arguments, size_t>
     ExceptionProvidedNrArguments;
 typedef boost::error_info<struct tag_line_nr, long> ExceptionLineNr;
 typedef boost::error_info<struct tag_col_nr, long> ExceptionColNr;
+typedef boost::error_info<struct tag_argument_id, size_t> ExceptionArgumentId;
+typedef boost::error_info<struct tag_required_argument_type, String>
+    ExceptionRequiredArgumentTypes;
+typedef boost::error_info<struct tag_provided_argument_type, String>
+    ExceptionProvidedArgumentTypes;
 
 // Low leven exception classes.
 struct Exception:
@@ -80,6 +85,7 @@ struct ValidateError: public virtual Exception { };
 struct UndefinedIdentifier: public virtual ValidateError { };
 struct UndefinedOperation: public virtual ValidateError { };
 struct WrongNumberOfArguments: public virtual ValidateError { };
+struct WrongTypeOfArgument: public virtual ValidateError { };
 
 struct IOError: public virtual Exception { };
 struct FileOpenError: public virtual IOError { };

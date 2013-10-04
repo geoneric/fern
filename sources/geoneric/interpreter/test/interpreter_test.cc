@@ -177,6 +177,23 @@ foo(5)
             "<string>:1:0: Wrong number of arguments for operation: abs: "
             "1 required, but 2 provided");
     }
+
+    // Operation with wrong type of argument.
+    vertex = interpreter.parse_string("abs(\"-5\")");
+    BOOST_REQUIRE(vertex);
+
+    try {
+        interpreter.validate(vertex);
+        BOOST_CHECK(false);
+    }
+    catch(geoneric::ValidateError const& exception) {
+        geoneric::String message = exception.message();
+        BOOST_CHECK_EQUAL(message,
+            "<string>:1:0: Wrong type of argument 1 provided for operation: "
+            "abs: Constant|StaticField/Uint8|Int8|Uint16|Int16|Uint32|Int32|"
+            "Uint64|Int64|Float32|Float64 required, but Constant/String "
+            "provided");
+    }
 }
 
 

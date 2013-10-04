@@ -1,5 +1,6 @@
 SET(TEST_NAMES
     result_type_test
+    result_types_test
 )
 
 MACRO(ADD_UNIT_TEST NAME)

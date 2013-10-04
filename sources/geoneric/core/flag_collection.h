@@ -40,6 +40,8 @@ public:
 
     virtual String to_string           () const=0;
 
+    Flags          operator&           (Flags const& flags) const;
+
     Flags&         operator&=          (Flags const& flags);
 
     Flags&         operator|=          (Flags const& flags);
@@ -54,7 +56,13 @@ public:
 
     bool           test                (size_t pos) const;
 
+    bool           none                () const;
+
+    bool           any                 () const;
+
     bool           fixed               () const;
+
+    bool           is_subset_of        (FlagCollection const& flags) const;
 
 protected:
 
@@ -75,6 +83,19 @@ inline constexpr FlagCollection<Flags, Flag, size>::FlagCollection(
     : std::bitset<size>(bits )
 
 {
+}
+
+
+template<
+    class Flags,
+    typename Flag,
+    size_t size>
+inline Flags FlagCollection<Flags, Flag, size>::operator&(
+    Flags const& flags) const
+{
+    Flags result(dynamic_cast<Flags const&>(*this));
+    result &= flags;
+    return result;
 }
 
 
@@ -135,6 +156,26 @@ inline bool FlagCollection<Flags, Flag, size>::test(
 }
 
 
+template<
+    class Flags,
+    typename Flag,
+    size_t size>
+inline bool FlagCollection<Flags, Flag, size>::none() const
+{
+    return std::bitset<size>::none();
+}
+
+
+template<
+    class Flags,
+    typename Flag,
+    size_t size>
+inline bool FlagCollection<Flags, Flag, size>::any() const
+{
+    return std::bitset<size>::any();
+}
+
+
 //! Return whether only a single flag is set.
 /*!
   \return    true or false
@@ -158,11 +199,21 @@ template<
     class Flags,
     typename Flag,
     size_t size>
+inline bool FlagCollection<Flags, Flag, size>::is_subset_of(
+    FlagCollection const& flags) const
+{
+    return any() && ((*this & flags).count() == count());
+}
+
+
+template<
+    class Flags,
+    typename Flag,
+    size_t size>
 inline bool FlagCollection<Flags, Flag, size>::operator==(
     FlagCollection const& flags) const
 {
-    return std::bitset<size>::operator==(
-        flags);
+    return std::bitset<size>::operator==(flags);
 }
 
 
@@ -173,8 +224,7 @@ template<
 inline bool FlagCollection<Flags, Flag, size>::operator!=(
     FlagCollection const& flags) const
 {
-    return std::bitset<size>::operator!=(
-        flags);
+    return std::bitset<size>::operator!=(flags);
 }
 
 } // namespace geoneric

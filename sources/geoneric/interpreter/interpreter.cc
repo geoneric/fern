@@ -293,7 +293,35 @@ void Interpreter::validate(
         throw ValidateError(source_name, *line_nr, *col_nr,
             Exception::messages().format_message(
                 MessageId::WRONG_NUMBER_OF_ARGUMENTS, *operation_name,
-                    *required_nr_arguments, *provided_nr_arguments));
+                *required_nr_arguments, *provided_nr_arguments));
+    }
+    catch(detail::WrongTypeOfArgument const& exception) {
+        String const& source_name = tree->source_name();
+
+        String const* operation_name = boost::get_error_info<
+            detail::ExceptionFunction>(exception);
+        assert(operation_name);
+
+        long const* line_nr = boost::get_error_info<
+            detail::ExceptionLineNr>(exception);
+        assert(line_nr);
+
+        long const* col_nr = boost::get_error_info<
+            detail::ExceptionColNr>(exception);
+        assert(col_nr);
+
+        size_t const* argument_id = boost::get_error_info<
+            detail::ExceptionArgumentId>(exception);
+        String const* required_argument_types = boost::get_error_info<
+            detail::ExceptionRequiredArgumentTypes>(exception);
+        String const* provided_argument_types = boost::get_error_info<
+            detail::ExceptionProvidedArgumentTypes>(exception);
+
+        throw ValidateError(source_name, *line_nr, *col_nr,
+            Exception::messages().format_message(
+                MessageId::WRONG_TYPE_OF_ARGUMENT, *argument_id,
+                *operation_name, *required_argument_types,
+                *provided_argument_types));
     }
 }
 

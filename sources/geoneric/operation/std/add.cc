@@ -21,8 +21,8 @@ Add::Add()
           {
               Result("Result value",
                   "Input arguments, added together.",
-                  DataTypes::CONSTANT | DataTypes::STATIC_FIELD,
-                  ValueTypes::NUMBER)
+                  ResultType(DataTypes::CONSTANT | DataTypes::STATIC_FIELD,
+                      ValueTypes::NUMBER))
           }
       )
 

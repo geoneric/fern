@@ -57,6 +57,46 @@ BOOST_AUTO_TEST_CASE(flag_collection)
         BOOST_CHECK_EQUAL(flags.count(), 1u);
         BOOST_CHECK(flags.test(MF_YES));
     }
+
+    {
+        MyFlagCollection flags1, flags2;
+        flags1 |= MyFlagCollection(1 << MF_YES);
+        BOOST_CHECK( (flags1 & flags2).none());
+        BOOST_CHECK(!(flags1 & flags2).any());
+        BOOST_CHECK(!(flags1 & flags2).fixed());
+
+        flags2 |= MyFlagCollection(1 << MF_YES);
+        BOOST_CHECK(!(flags1 & flags2).none());
+        BOOST_CHECK( (flags1 & flags2).any());
+        BOOST_CHECK( (flags1 & flags2).fixed());
+
+        flags2 = MyFlagCollection(1 << MF_NO);
+        BOOST_CHECK( (flags1 & flags2).none());
+        BOOST_CHECK(!(flags1 & flags2).any());
+        BOOST_CHECK(!(flags1 & flags2).fixed());
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(is_subset_of)
+{
+    MyFlagCollection flags1, flags2;
+    BOOST_CHECK(!flags1.is_subset_of(flags2));
+
+    flags2 |= MyFlagCollection(1 << MF_YES);
+    BOOST_CHECK(!flags1.is_subset_of(flags2));
+
+    flags1 |= MyFlagCollection(1 << MF_YES);
+    BOOST_CHECK(flags1.is_subset_of(flags2));
+
+    flags1 |= MyFlagCollection(1 << MF_NO);
+    BOOST_CHECK(!flags1.is_subset_of(flags2));
+
+    flags2 |= MyFlagCollection(1 << MF_NO);
+    BOOST_CHECK(flags1.is_subset_of(flags2));
+
+    flags2 |= MyFlagCollection(1 << MF_MAYBE);
+    BOOST_CHECK(flags1.is_subset_of(flags2));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

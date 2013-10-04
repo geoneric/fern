@@ -8,8 +8,6 @@ namespace geoneric {
 class ResultType
 {
 
-    friend class ResultTypeTest;
-
 public:
 
                    ResultType          ()=default;
@@ -34,6 +32,8 @@ public:
     bool           defined             () const;
 
     bool           fixed               () const;
+
+    bool           is_satisfied_by     (ResultType const& result_type) const;
 
 private:
 

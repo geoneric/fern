@@ -39,6 +39,15 @@ bool ResultType::fixed() const
 }
 
 
+bool ResultType::is_satisfied_by(
+    ResultType const& result_type) const
+{
+    return
+        result_type.data_type().is_subset_of(_data_types) &&
+        result_type.value_type().is_subset_of(_value_types);
+}
+
+
 bool operator==(
     ResultType const& lhs,
     ResultType const& rhs)

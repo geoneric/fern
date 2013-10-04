@@ -53,7 +53,7 @@ public:
 
     std::vector<Result> const& results () const;
 
-    ResultType     result_type         (
+    virtual ResultType result_type     (
                         size_t index,
                         std::vector<ResultType> const& argument_types) const;
 

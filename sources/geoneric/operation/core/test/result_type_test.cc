@@ -28,4 +28,42 @@ BOOST_AUTO_TEST_CASE(result_type)
     }
 }
 
+BOOST_AUTO_TEST_CASE(is_satisfied_by)
+{
+    using namespace geoneric;
+    ResultType parameter_type, expression_type;
+
+    // constant, int32 parameter
+    {
+        parameter_type = ResultType(
+            DataTypes::CONSTANT,
+            ValueTypes::INT32);
+
+        expression_type = ResultType();
+        BOOST_CHECK(!parameter_type.is_satisfied_by(expression_type));
+
+        expression_type = ResultType(
+            DataTypes::CONSTANT,
+            ValueTypes::INT32);
+        BOOST_CHECK(parameter_type.is_satisfied_by(expression_type));
+
+        expression_type = ResultType(
+            DataTypes::CONSTANT,
+            ValueTypes::INT64);
+        BOOST_CHECK(!parameter_type.is_satisfied_by(expression_type));
+
+        expression_type = ResultType(
+            DataTypes::STATIC_FIELD,
+            ValueTypes::INT32);
+        BOOST_CHECK(!parameter_type.is_satisfied_by(expression_type));
+
+        expression_type = ResultType(
+            DataTypes::CONSTANT,
+            ValueTypes::INTEGER);
+        // Too broad. Expression properties are not a subset of the parameter's
+        // properties. Casting (automatically or explicit) would help here.
+        BOOST_CHECK(!parameter_type.is_satisfied_by(expression_type));
+    }
+}
+
 BOOST_AUTO_TEST_SUITE_END()
