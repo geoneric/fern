@@ -4,13 +4,28 @@
 #include "geoneric/core/parse_error.h"
 #include "geoneric/core/validate_error.h"
 #include "geoneric/feature/core/attributes.h"
+#include "geoneric/io/gdal/gdal_client.h"
 #include "geoneric/operation/core/attribute_argument.h"
 #include "geoneric/operation/core/feature_argument.h"
 #include "geoneric/interpreter/execute_visitor.h"
 #include "geoneric/interpreter/interpreter.h"
 
 
-BOOST_AUTO_TEST_SUITE(interpreter)
+class Support:
+    public geoneric::GDALClient
+{
+
+public:
+
+    Support()
+        : geoneric::GDALClient()
+    {
+    }
+
+};
+
+
+BOOST_FIXTURE_TEST_SUITE(interpreter, Support)
 
 BOOST_AUTO_TEST_CASE(parse_string)
 {
@@ -465,6 +480,71 @@ BOOST_AUTO_TEST_CASE(execute_abs_with_raster_input)
 
     {
         geoneric::String script = "abs(read(\"raster-1.asc:raster-1\"))";
+        tree = interpreter.parse_string(script);
+        interpreter.execute(tree);
+
+        std::stack<std::shared_ptr<geoneric::Argument>> stack(
+            interpreter.stack());
+        BOOST_CHECK_EQUAL(stack.size(), 1u);
+
+        std::shared_ptr<geoneric::Argument> const& argument(stack.top());
+        BOOST_REQUIRE_EQUAL(argument->argument_type(),
+            geoneric::ArgumentType::AT_ATTRIBUTE);
+
+        std::shared_ptr<geoneric::AttributeArgument> const&
+            attribute_argument(
+                std::dynamic_pointer_cast<geoneric::AttributeArgument>(
+                    argument));
+        BOOST_REQUIRE(attribute_argument);
+
+        std::shared_ptr<geoneric::Attribute> const& attribute(
+            attribute_argument->attribute());
+
+        geoneric::FieldAttributePtr<int32_t> boxes_attribute(
+            std::dynamic_pointer_cast<geoneric::FieldAttribute<int32_t>>(
+                attribute));
+        BOOST_REQUIRE(boxes_attribute);
+        BOOST_REQUIRE_EQUAL(boxes_attribute->size(), 1u);
+
+        geoneric::FieldValue<int32_t> const& value =
+            *boxes_attribute->values().cbegin()->second;
+        BOOST_REQUIRE_EQUAL(value.num_dimensions(), 2);
+        BOOST_REQUIRE_EQUAL(value.shape()[0], 3);
+        BOOST_REQUIRE_EQUAL(value.shape()[1], 2);
+
+        BOOST_CHECK(!value.mask()[0][0]);
+        BOOST_CHECK(!value.mask()[0][1]);
+        BOOST_CHECK(!value.mask()[1][0]);
+        BOOST_CHECK( value.mask()[1][1]);
+        BOOST_CHECK(!value.mask()[2][0]);
+        BOOST_CHECK(!value.mask()[2][1]);
+        BOOST_CHECK_EQUAL(value[0][0], 2);
+        BOOST_CHECK_EQUAL(value[0][1], 1);
+        BOOST_CHECK_EQUAL(value[1][0], 0);
+        // BOOST_CHECK_EQUAL(value[1][1], xxx);
+        BOOST_CHECK_EQUAL(value[2][0],   1);
+        BOOST_CHECK_EQUAL(value[2][1],   2);
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(execute_write_with_raster_input)
+{
+    geoneric::Interpreter interpreter;
+    geoneric::ModuleVertexPtr tree;
+
+    {
+        // Read a raster, calculate the abs, write the result.
+        // Read the new raster just written, leave it on the stack, and test
+        // the values.
+        geoneric::String script =
+            "format = \"HFA\"\n"
+            "attribute_name = \"output_dataset.map\"\n"
+            "raster1 = read(\"raster-1.asc:raster-1\")\n"
+            "raster2 = abs(raster1)\n"
+            "write(raster2, attribute_name, format)\n"
+            "read(\"output_dataset.map:output_dataset\")\n"
+            ;
         tree = interpreter.parse_string(script);
         interpreter.execute(tree);
 

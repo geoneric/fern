@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include "geoneric/io/gdal/dataset.h"
+#include "geoneric/io/gdal/open_mode.h"
 
 
 namespace geoneric {
@@ -16,7 +17,16 @@ class Driver
 
 public:
 
-    virtual std::shared_ptr<Dataset> open(String const& name)=0;
+    virtual bool   exists              (String const& name,
+                                        OpenMode open_mode)=0;
+
+    virtual std::shared_ptr<Dataset> open(
+                                        String const& name,
+                                        OpenMode open_mode)=0;
+
+    virtual std::shared_ptr<Dataset> create(
+                                        Attribute const& attribute,
+                                        String const& name)=0;
 
 protected:
 

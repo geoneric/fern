@@ -21,7 +21,8 @@ std::vector<std::shared_ptr<Argument>> read(
     // - Assume the name refers to a raster that can be read by gdal.
 
     DataName name(value.values().value());
-    std::shared_ptr<Dataset> dataset(open(name.dataset_name()));
+    std::shared_ptr<Dataset> dataset(open_dataset(name.dataset_name(),
+        OpenMode::READ));
 
     // Dataset is open, first find out where name.data_pathname is pointing
     // to: feature or attribute. Then request either a feature or an attribute.

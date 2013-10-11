@@ -1,18 +1,31 @@
 #define BOOST_TEST_MODULE geoneric io
 #include <boost/test/unit_test.hpp>
-#include "gdal_priv.h"
+#include <gdal_priv.h>
 #include "geoneric/core/io_error.h"
 #include "geoneric/feature/core/attributes.h"
 #include "geoneric/io/gdal/gdal_dataset.h"
+#include "geoneric/io/gdal/gdal_client.h"
 
 
-BOOST_AUTO_TEST_SUITE(gdal_dataset)
+class Support:
+    public geoneric::GDALClient
+{
+
+public:
+
+    Support()
+        : geoneric::GDALClient()
+    {
+    }
+
+};
+
+
+BOOST_FIXTURE_TEST_SUITE(gdal_dataset, Support)
 
 BOOST_AUTO_TEST_CASE(raster_1)
 {
-    GDALAllRegister();
-
-    geoneric::GDALDataset dataset("raster-1.asc");
+    geoneric::GDALDataset dataset("raster-1.asc", geoneric::OpenMode::READ);
     BOOST_CHECK_EQUAL(dataset.nr_features(), 1u);
     BOOST_CHECK(dataset.contains_feature("/"));
     BOOST_CHECK(dataset.contains_attribute("raster-1"));
@@ -82,7 +95,7 @@ BOOST_AUTO_TEST_CASE(raster_1)
 
 BOOST_AUTO_TEST_CASE(raster_2)
 {
-    geoneric::GDALDataset dataset("raster-2.asc");
+    geoneric::GDALDataset dataset("raster-2.asc", geoneric::OpenMode::READ);
     BOOST_CHECK_EQUAL(dataset.nr_features(), 1u);
     BOOST_CHECK(dataset.contains_feature("/"));
     BOOST_CHECK(dataset.contains_attribute("raster-2"));
@@ -123,8 +136,11 @@ BOOST_AUTO_TEST_CASE(raster_2)
 
 BOOST_AUTO_TEST_CASE(errors)
 {
+    ::GDALDriver* driver = GetGDALDriverManager()->GetDriverByName("AAIGrid");
+
     try {
-        geoneric::GDALDataset dataset("../does_not_exist.asc");
+        geoneric::GDALDataset dataset(driver, "../does_not_exist.asc",
+            geoneric::OpenMode::READ);
         BOOST_CHECK(false);
     }
     catch(geoneric::IOError const& exception) {
@@ -134,7 +150,8 @@ BOOST_AUTO_TEST_CASE(errors)
     }
 
     try {
-        geoneric::GDALDataset dataset("write_only.asc");
+        geoneric::GDALDataset dataset(driver, "write_only.asc",
+            geoneric::OpenMode::READ);
         BOOST_CHECK(false);
     }
     catch(geoneric::IOError const& exception) {
@@ -144,7 +161,8 @@ BOOST_AUTO_TEST_CASE(errors)
     }
 
     {
-        geoneric::GDALDataset dataset("raster-1.asc");
+        geoneric::GDALDataset dataset(driver, "raster-1.asc",
+            geoneric::OpenMode::READ);
 
         try {
             dataset.read_feature("blahdiblah");

@@ -1,8 +1,10 @@
 #pragma once
+#include "geoneric/feature/core/attributes.h"
 #include "geoneric/io/gdal/dataset.h"
 
 
 class GDALDataset;
+class GDALDriver;
 class GDALRasterBand;
 
 namespace geoneric {
@@ -19,9 +21,16 @@ class GDALDataset:
 
 public:
 
-    static bool    can_open            (String const& name);
+                   GDALDataset         (String const& name,
+                                        OpenMode open_mode);
 
-                   GDALDataset         (String const& name);
+                   GDALDataset         (::GDALDriver* driver,
+                                        String const& name,
+                                        OpenMode open_mode);
+
+                   GDALDataset         (::GDALDataset* dataset,
+                                        String const& name,
+                                        OpenMode open_mode);
 
                    GDALDataset         (GDALDataset const&)=delete;
 
@@ -45,14 +54,33 @@ public:
     std::shared_ptr<Attribute> read_attribute(
                                         String const& name) const;
 
+    void           write_attribute     (Attribute const& attribute,
+                                        String const& name) const;
+
 private:
 
+    ::GDALDriver*  _driver;
+
     ::GDALDataset* _dataset;
+
+    ::GDALDriver*  gdal_driver_for_read(String const& name);
+
+    ::GDALDriver*  gdal_driver_for_update(
+                                        String const& name);
+
+    ::GDALDataset* gdal_open_for_read  (String const& name);
+
+    ::GDALDataset* gdal_open_for_update(String const& name);
 
     template<
         class T>
     std::shared_ptr<Attribute> read_attribute(
                                         GDALRasterBand& band) const;
+
+    template<
+        class T>
+    void           write_attribute     (FieldAttribute<T> const& field,
+                                        String const& name) const;
 
 };
 

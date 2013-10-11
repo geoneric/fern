@@ -30,6 +30,7 @@ SET(SOURCES
     int32
     operations
     read
+    write
 )
 ADD_LIBRARY(geoneric_operation_std
     ${SOURCES}

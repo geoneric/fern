@@ -1,0 +1,117 @@
+#include "geoneric/operation/std/write.h"
+#include "geoneric/core/data_name.h"
+#include "geoneric/core/value_type_traits.h"
+#include "geoneric/feature/core/attributes.h"
+#include "geoneric/io/core/path.h"
+#include "geoneric/io/gdal/drivers.h"
+#include "geoneric/operation/core/attribute_argument.h"
+
+
+namespace geoneric {
+
+std::vector<std::shared_ptr<Argument>> write(
+        Attribute const& data_attribute,
+        Attribute const& name_attribute,
+        Attribute const& format_attribute)
+{
+    String const& name(dynamic_cast<ConstantAttribute<String> const&>(
+        name_attribute).values().value());
+    String const& format_name(dynamic_cast<ConstantAttribute<String> const&>(
+        format_attribute).values().value());
+
+    DataName data_name(name);
+    std::shared_ptr<Dataset> dataset;
+
+    if(!dataset_exists(data_name.dataset_name(), OpenMode::OVERWRITE,
+            format_name)) {
+        dataset = create_dataset(data_attribute, data_name.dataset_name(),
+            format_name);
+    }
+    else {
+        dataset = open_dataset(data_name.dataset_name(), OpenMode::UPDATE,
+            format_name);
+    }
+
+    String attribute_name = data_name.data_pathname();
+
+    if(attribute_name == "/") {
+        // Short hand notation is used for the attribute name.
+        attribute_name = Path(data_name.dataset_name()).stem();
+    }
+
+    assert(dataset);
+    dataset->write_attribute(data_attribute, attribute_name);
+
+    return std::vector<std::shared_ptr<Argument>>();
+}
+
+
+Write::Write()
+
+    : Operation("write",
+          "Write a feature or a feature attribute and return the result.",
+          {
+              Parameter("Feature or attribute",
+                  "Feature or attribute to write.",
+                  DataTypes::STATIC_FIELD,
+                  ValueTypes::NUMBER),
+              Parameter("Name",
+                  "Name of feature or attribute to write.",
+                  DataTypes::CONSTANT,
+                  ValueTypes::STRING),
+              Parameter("Format",
+                  "Name of format of dataset to write.",
+                  DataTypes::CONSTANT,
+                  ValueTypes::STRING)
+          },
+          {
+          }
+      )
+
+{
+}
+
+
+ResultType Write::result_type(
+    size_t index,
+    std::vector<ResultType> const& /* argument_types */) const
+{
+    assert(index == 0);
+
+    return ResultType();
+}
+
+
+std::vector<std::shared_ptr<Argument>> Write::execute(
+    std::vector<std::shared_ptr<Argument>> const& arguments) const
+{
+    assert(arguments.size() == 3);
+
+    assert(arguments[0]->argument_type() == ArgumentType::AT_ATTRIBUTE);
+    AttributeArgument const& data_attribute_argument(
+        *std::dynamic_pointer_cast<AttributeArgument>(arguments[0]));
+    // std::shared_ptr<Attribute> data_attribute(data_attribute_argument.attribute());
+
+    assert(arguments[1]->argument_type() == ArgumentType::AT_ATTRIBUTE);
+    AttributeArgument const& name_attribute_argument(
+        *std::dynamic_pointer_cast<AttributeArgument>(arguments[1]));
+    assert(name_attribute_argument.data_type() == DataType::DT_CONSTANT);
+    assert(name_attribute_argument.value_type() == ValueType::VT_STRING);
+    // Attribute const& name_attribute(*name_attribute_argument.attribute());
+
+    assert(arguments[2]->argument_type() == ArgumentType::AT_ATTRIBUTE);
+    AttributeArgument const& format_attribute_argument(
+        *std::dynamic_pointer_cast<AttributeArgument>(arguments[2]));
+    assert(format_attribute_argument.data_type() == DataType::DT_CONSTANT);
+    assert(format_attribute_argument.value_type() == ValueType::VT_STRING);
+    // Attribute const& format_attribute(*format_attribute_argument.attribute());
+
+    assert(data_attribute_argument.data_type() == DT_STATIC_FIELD);
+
+    return write(
+        *data_attribute_argument.attribute(),
+        *name_attribute_argument.attribute(),
+        *format_attribute_argument.attribute());
+}
+
+} // namespace geoneric

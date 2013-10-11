@@ -3,6 +3,7 @@
 #include "geoneric/operation/std/add.h"
 #include "geoneric/operation/std/int32.h"
 #include "geoneric/operation/std/read.h"
+#include "geoneric/operation/std/write.h"
 
 
 namespace geoneric {
@@ -25,7 +26,8 @@ std::shared_ptr<Operations> const& operations()
             std::shared_ptr<Operation>(new Abs()),
             std::shared_ptr<Operation>(new Add()),
             std::shared_ptr<Operation>(new Int32()),
-            std::shared_ptr<Operation>(new Read())
+            std::shared_ptr<Operation>(new Read()),
+            std::shared_ptr<Operation>(new Write())
         }));
     }
 

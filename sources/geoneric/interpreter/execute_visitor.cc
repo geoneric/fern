@@ -118,7 +118,8 @@ void ExecuteVisitor::Visit(
     std::vector<std::shared_ptr<Argument>> arguments;
     for(size_t i = 0; i < vertex.expressions().size(); ++i) {
         assert(!_stack.empty());
-        arguments.push_back(_stack.top());
+        // Arguments are popped from the top of the stack, in reverse order.
+        arguments.insert(arguments.begin(), _stack.top());
         _stack.pop();
     }
 

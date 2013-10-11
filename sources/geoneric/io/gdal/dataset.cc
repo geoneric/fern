@@ -14,9 +14,15 @@ Dataset::Dataset(
 }
 
 
-String const&  Dataset::name() const
+String const& Dataset::name() const
 {
     return _name;
+}
+
+
+OpenMode Dataset::open_mode() const
+{
+    return _open_mode;
 }
 
 } // namespace geoneric

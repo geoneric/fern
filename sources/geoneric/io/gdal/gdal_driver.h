@@ -1,6 +1,9 @@
 #pragma once
+#include "geoneric/feature/core/attributes.h"
 #include "geoneric/io/gdal/driver.h"
 
+
+class GDALDriver;
 
 namespace geoneric {
 
@@ -16,7 +19,9 @@ class GDALDriver:
 
 public:
 
-                   GDALDriver          ();
+                   GDALDriver          (String const& format);
+
+                   GDALDriver          (::GDALDriver* driver);
 
                    GDALDriver          (GDALDriver const&)=delete;
 
@@ -28,9 +33,32 @@ public:
 
                    ~GDALDriver         ()=default;
 
-    std::shared_ptr<Dataset> open      (String const& name);
+    bool           exists              (String const& name,
+                                        OpenMode open_mode);
+
+    std::shared_ptr<Dataset> open      (String const& name,
+                                        OpenMode open_mode);
+
+    std::shared_ptr<Dataset> create    (Attribute const& attribute,
+                                        String const& name);
 
 private:
+
+    String         _format;
+
+    ::GDALDriver*  _driver;
+
+    bool           can_open            (String const& name,
+                                        OpenMode open_mode);
+
+    bool           can_open_for_read   (String const& name);
+
+    bool           can_open_for_update (String const& name);
+
+    template<
+        class T>
+    std::shared_ptr<Dataset> create    (FieldAttribute<T> const& field,
+                                        String const& name);
 
 };
 

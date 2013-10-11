@@ -197,6 +197,33 @@ BOOST_FIXTURE_TEST_CASE(visit_operation, Support)
 
         // abs(5), abs(-5), abs(5.5)
     }
+
+    // Test whether result data type of read is propagated to result type of
+    // abs. Read results in field, so abs must result in field, with the same
+    // value types.
+    {
+        std::shared_ptr<geoneric::ModuleVertex> tree =
+            _xml_parser.parse_string(_algebra_parser.parse_string(
+                geoneric::String("abs(read(\"a\"))")));
+        tree->Accept(_visitor);
+
+        BOOST_CHECK_EQUAL(tree->source_name(), geoneric::String("<string>"));
+        BOOST_CHECK_EQUAL(tree->line(), 0);
+        BOOST_CHECK_EQUAL(tree->col(), 0);
+
+        BOOST_REQUIRE_EQUAL(tree->scope()->statements().size(), 1u);
+        std::shared_ptr<geoneric::StatementVertex> const& statement(
+            tree->scope()->statements()[0]);
+        BOOST_REQUIRE(statement);
+        geoneric::OperationVertex const* abs_vertex(
+            dynamic_cast<geoneric::OperationVertex*>(statement.get()));
+        BOOST_REQUIRE(abs_vertex);
+
+        geoneric::ResultTypes result_types(abs_vertex->result_types());
+        BOOST_REQUIRE_EQUAL(result_types.size(), 1u);
+        BOOST_CHECK_EQUAL(result_types[0], geoneric::ResultType(
+            geoneric::DataTypes::STATIC_FIELD, geoneric::ValueTypes::NUMBER));
+    }
 }
 
 

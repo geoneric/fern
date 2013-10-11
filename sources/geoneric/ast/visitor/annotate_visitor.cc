@@ -102,6 +102,7 @@ void AnnotateVisitor::Visit(
     // Depth first, visit the children first.
     AstVisitor::Visit(vertex);
 
+
     // Get the result types from all argument expressions provided.
     std::vector<ResultType> argument_types;
     for(size_t i = 0; i < vertex.expressions().size(); ++i) {

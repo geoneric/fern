@@ -4,6 +4,7 @@ SET(SOURCES
     dataset
     driver
     drivers
+    gdal_client
     gdal_dataset
     gdal_driver
     gdal_data_type_traits;
@@ -13,6 +14,7 @@ ADD_LIBRARY(geoneric_io_gdal
 )
 TARGET_LINK_LIBRARIES(geoneric_io_gdal
     geoneric_io_core
+    geoneric_feature_visitor
     geoneric_feature_core
     ${GDAL_LIBRARIES}
 )

@@ -17,7 +17,8 @@
     function_template<uint32_t>(argument);                                     \
     function_template<uint64_t>(argument);                                     \
     function_template<float>(argument);                                        \
-    function_template<double>(argument);
+    function_template<double>(argument);                                       \
+    function_template<geoneric::String>(argument);
 
 
 template<
@@ -54,7 +55,8 @@ BOOST_AUTO_TEST_CASE(attribute_type_visitor)
     // Visit a constant string attribute.
     {
         geoneric::ConstantAttribute<geoneric::String> string_attribute;
-        string_attribute.Accept(visitor);
+        geoneric::Attribute *attribute = &string_attribute;
+        attribute->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.data_type(), geoneric::DT_CONSTANT);
         BOOST_CHECK_EQUAL(visitor.value_type(), geoneric::VT_STRING);
     }

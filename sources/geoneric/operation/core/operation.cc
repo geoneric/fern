@@ -175,16 +175,25 @@ ValueTypes Operation::result_value_type(
     assert(index < _results.size());
     assert(argument_value_types.size() == _parameters.size());
 
-
     {
         Result const& result(_results[index]);
         if(result.result_type().value_type().fixed()) {
+            // The result value type doesn't depend on the argument value
+            // types.
             return result.result_type().value_type();
         }
     }
 
 
-    // Select subset of value types that are supported by the parameter.
+    if(argument_value_types.size() == 1u && argument_value_types[0].any()) {
+        // Propagate the value type(s) of the argument to the result. Assume
+        // that the value type of the argument is not changed by the operation.
+        return argument_value_types[0];
+    }
+
+
+    // Select the subset of argument value types that is supported by the
+    // parameter.
     std::vector<ValueTypes> supported_value_types(argument_value_types);
     for(size_t i = 0; i < supported_value_types.size(); ++i) {
         assert(_parameters[i].result_types().size() == 1u);

@@ -24,7 +24,7 @@ void AttributeVisitor::Visit(                                                  \
 
 VISIT_ATTRIBUTES(VISIT_CONSTANT_ATTRIBUTE)
 
-#undef VISIT_NUMBER_ATTRIBUTE
+#undef VISIT_CONSTANT_ATTRIBUTE
 
 
 // The default implementation calls Visit(Attribute&).

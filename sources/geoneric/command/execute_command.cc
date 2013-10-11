@@ -22,7 +22,8 @@ ExecuteCommand::ExecuteCommand(
     int argc,
     char** argv)
 
-    : Command(argc, argv)
+    : GDALClient(),
+      Command(argc, argv)
 
 {
 }

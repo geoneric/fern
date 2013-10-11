@@ -39,12 +39,22 @@ DataName::DataName(
 }
 
 
+//! Return the pathname of the dataset name.
+/*!
+  \return    Pathname.
+  \sa        data_pathname()
+*/
 String const& DataName::dataset_name() const
 {
     return _dataset_name;
 }
 
 
+//! Return the pathname of the data in the dataset.
+/*!
+  \return    Pathname.
+  \sa        dataset_name()
+*/
 String const& DataName::data_pathname() const
 {
     return _data_pathname;
