@@ -87,9 +87,10 @@ BOOST_FIXTURE_TEST_CASE(visit_number, Support)
             dynamic_cast<geoneric::NumberVertex<int64_t>*>(statement.get()));
         BOOST_REQUIRE(number_vertex);
 
-        geoneric::ResultTypes result_types(number_vertex->result_types());
-        BOOST_REQUIRE_EQUAL(result_types.size(), 1u);
-        BOOST_CHECK_EQUAL(result_types[0], geoneric::ResultType(
+        geoneric::ExpressionTypes expression_types(
+            number_vertex->expression_types());
+        BOOST_REQUIRE_EQUAL(expression_types.size(), 1u);
+        BOOST_CHECK_EQUAL(expression_types[0], geoneric::ExpressionType(
             geoneric::DataTypes::CONSTANT, geoneric::ValueTypes::INT64));
     }
 
@@ -112,9 +113,10 @@ BOOST_FIXTURE_TEST_CASE(visit_number, Support)
             dynamic_cast<geoneric::NumberVertex<double>*>(statement.get()));
         BOOST_REQUIRE(number_vertex);
 
-        geoneric::ResultTypes result_types(number_vertex->result_types());
-        BOOST_REQUIRE_EQUAL(result_types.size(), 1u);
-        BOOST_CHECK_EQUAL(result_types[0], geoneric::ResultType(
+        geoneric::ExpressionTypes expression_types(
+            number_vertex->expression_types());
+        BOOST_REQUIRE_EQUAL(expression_types.size(), 1u);
+        BOOST_CHECK_EQUAL(expression_types[0], geoneric::ExpressionType(
             geoneric::DataTypes::CONSTANT, geoneric::ValueTypes::FLOAT64));
     }
 }
@@ -140,9 +142,9 @@ BOOST_FIXTURE_TEST_CASE(visit_name, Support)
         dynamic_cast<geoneric::NameVertex*>(statement.get()));
     BOOST_REQUIRE(name_vertex);
 
-    geoneric::ResultTypes result_types(name_vertex->result_types());
-    BOOST_REQUIRE_EQUAL(result_types.size(), 1u);
-    BOOST_CHECK_EQUAL(result_types[0], geoneric::ResultType());
+    geoneric::ExpressionTypes expression_types(name_vertex->expression_types());
+    BOOST_REQUIRE_EQUAL(expression_types.size(), 1u);
+    BOOST_CHECK_EQUAL(expression_types[0], geoneric::ExpressionType());
 }
 
 
@@ -174,24 +176,24 @@ BOOST_FIXTURE_TEST_CASE(visit_operation, Support)
         std::vector<geoneric::Parameter> const& parameters(
             operation->parameters());
         geoneric::Parameter const& parameter(parameters[0]);
-        BOOST_CHECK_EQUAL(parameter.result_types().size(), 1u);
-        BOOST_CHECK_EQUAL(parameter.result_types()[0].data_type(),
+        BOOST_CHECK_EQUAL(parameter.expression_types().size(), 1u);
+        BOOST_CHECK_EQUAL(parameter.expression_types()[0].data_type(),
             geoneric::DataTypes::CONSTANT | geoneric::DataTypes::STATIC_FIELD);
-        BOOST_CHECK_EQUAL(parameter.result_types()[0].value_type(),
+        BOOST_CHECK_EQUAL(parameter.expression_types()[0].value_type(),
             geoneric::ValueTypes::NUMBER);
 
         BOOST_CHECK_EQUAL(operation->results().size(), 1u);
         std::vector<geoneric::Result> const& results(operation->results());
         geoneric::Result const& result(results[0]);
-        BOOST_CHECK_EQUAL(result.result_type().data_type(),
+        BOOST_CHECK_EQUAL(result.expression_type().data_type(),
             geoneric::DataTypes::ALL);
-        BOOST_CHECK_EQUAL(result.result_type().value_type(),
+        BOOST_CHECK_EQUAL(result.expression_type().value_type(),
             geoneric::ValueTypes::NUMBER);
 
-        geoneric::ResultTypes result_types(
-            function_call_vertex->result_types());
-        BOOST_REQUIRE_EQUAL(result_types.size(), 1u);
-        BOOST_CHECK_EQUAL(result_types[0], geoneric::ResultType(
+        geoneric::ExpressionTypes expression_types(
+            function_call_vertex->expression_types());
+        BOOST_REQUIRE_EQUAL(expression_types.size(), 1u);
+        BOOST_CHECK_EQUAL(expression_types[0], geoneric::ExpressionType(
             geoneric::DataTypes::ALL, geoneric::ValueTypes::NUMBER));
 
 
@@ -219,9 +221,10 @@ BOOST_FIXTURE_TEST_CASE(visit_operation, Support)
             dynamic_cast<geoneric::OperationVertex*>(statement.get()));
         BOOST_REQUIRE(abs_vertex);
 
-        geoneric::ResultTypes result_types(abs_vertex->result_types());
-        BOOST_REQUIRE_EQUAL(result_types.size(), 1u);
-        BOOST_CHECK_EQUAL(result_types[0], geoneric::ResultType(
+        geoneric::ExpressionTypes expression_types(
+            abs_vertex->expression_types());
+        BOOST_REQUIRE_EQUAL(expression_types.size(), 1u);
+        BOOST_CHECK_EQUAL(expression_types[0], geoneric::ExpressionType(
             geoneric::DataTypes::STATIC_FIELD, geoneric::ValueTypes::NUMBER));
     }
 }
@@ -246,7 +249,7 @@ public:
 
     void operator()(
         geoneric::String const& script,
-        geoneric::ResultType const& result_type)
+        geoneric::ExpressionType const& expression_type)
     {
         std::shared_ptr<geoneric::ModuleVertex> tree(_xml_parser.parse_string(
             _algebra_parser.parse_string(script)));
@@ -255,9 +258,10 @@ public:
             dynamic_cast<geoneric::ExpressionVertex*>(
                 tree->scope()->statements()[0].get());
 
-        geoneric::ResultTypes result_types(expression_vertex->result_types());
-        BOOST_REQUIRE_EQUAL(result_types.size(), 1u);
-        BOOST_CHECK_EQUAL(result_types[0], result_type);
+        geoneric::ExpressionTypes expression_types(
+            expression_vertex->expression_types());
+        BOOST_REQUIRE_EQUAL(expression_types.size(), 1u);
+        BOOST_CHECK_EQUAL(expression_types[0], expression_type);
     }
 
 private:
@@ -278,39 +282,39 @@ BOOST_FIXTURE_TEST_CASE(visit_operation_2, Support)
     // TODO Update tester from operation to expression.
 
     // Default integer type is int64.
-    tester("5", geoneric::ResultType(
+    tester("5", geoneric::ExpressionType(
         geoneric::DataTypes::CONSTANT,
         geoneric::ValueTypes::INT64));
 
     // Default float type is float64.
-    tester("5.5", geoneric::ResultType(
+    tester("5.5", geoneric::ExpressionType(
         geoneric::DataTypes::CONSTANT,
         geoneric::ValueTypes::FLOAT64));
 
-    tester("abs(a)", geoneric::ResultType(
+    tester("abs(a)", geoneric::ExpressionType(
         geoneric::DataTypes::ALL,
         geoneric::ValueTypes::NUMBER));
-    tester("abs(5)", geoneric::ResultType(
+    tester("abs(5)", geoneric::ExpressionType(
         geoneric::DataTypes::CONSTANT,
         geoneric::ValueTypes::INT64));
-    tester("abs(5.5)", geoneric::ResultType(
+    tester("abs(5.5)", geoneric::ExpressionType(
         geoneric::DataTypes::CONSTANT,
         geoneric::ValueTypes::FLOAT64));
 
-    tester("int32(5)", geoneric::ResultType(
+    tester("int32(5)", geoneric::ExpressionType(
         geoneric::DataTypes::CONSTANT,
         geoneric::ValueTypes::INT32));
-    tester("int32(5.5)", geoneric::ResultType(
+    tester("int32(5.5)", geoneric::ExpressionType(
         geoneric::DataTypes::CONSTANT,
         geoneric::ValueTypes::INT32));
 
-    tester("5 + 6", geoneric::ResultType(
+    tester("5 + 6", geoneric::ExpressionType(
         geoneric::DataTypes::CONSTANT,
         geoneric::ValueTypes::INT64));
-    tester("5 + int32(6)", geoneric::ResultType(
+    tester("5 + int32(6)", geoneric::ExpressionType(
         geoneric::DataTypes::CONSTANT,
         geoneric::ValueTypes::INT64));
-    tester("int32(5) + int32(6)", geoneric::ResultType(
+    tester("int32(5) + int32(6)", geoneric::ExpressionType(
         geoneric::DataTypes::CONSTANT,
         geoneric::ValueTypes::INT32));
 }
@@ -338,9 +342,10 @@ BOOST_FIXTURE_TEST_CASE(visit_attribute, Support)
         //     dynamic_cast<geoneric::NumberVertex<int64_t>*>(statement.get()));
         // BOOST_REQUIRE(number_vertex);
 
-        // geoneric::ResultTypes result_types(number_vertex->result_types());
-        // BOOST_REQUIRE_EQUAL(result_types.size(), 1u);
-        // BOOST_CHECK_EQUAL(result_types[0], geoneric::ResultType(
+        // geoneric::ExpressionTypes expression_types(
+        //     number_vertex->expression_types());
+        // BOOST_REQUIRE_EQUAL(expression_types.size(), 1u);
+        // BOOST_CHECK_EQUAL(expression_types[0], geoneric::ExpressionType(
         //     geoneric::DataTypes::CONSTANT, geoneric::ValueTypes::INT64));
     }
 }

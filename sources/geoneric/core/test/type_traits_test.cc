@@ -3,9 +3,9 @@
 #include "geoneric/core/type_traits.h"
 
 
-BOOST_AUTO_TEST_SUITE(result_type)
+BOOST_AUTO_TEST_SUITE(expression_type)
 
-BOOST_AUTO_TEST_CASE(result_type)
+BOOST_AUTO_TEST_CASE(expression_type)
 {
     BOOST_CHECK_EQUAL(geoneric::TypeTraits<uint8_t>::value_type,
         geoneric::VT_UINT8);

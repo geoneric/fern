@@ -4,13 +4,13 @@ SET(SOURCES
     argument
     argument_type
     attribute_argument
+    expression_type
     feature_argument
     operation
     operations
     parameter
     result
-    result_type
-    result_types
+    expression_types
 )
 ADD_LIBRARY(geoneric_operation_core
     ${SOURCES}

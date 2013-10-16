@@ -19,7 +19,7 @@ namespace geoneric {
              assignment (defining). Throw an error.
   \todo      Subscript vertices cannot be used on the left side of an
              assignment (defining)(?). Throw an error.
-  \todo      Compare each expression's result_type with the expression's
+  \todo      Compare each expression's expression_type with the expression's
              requirements. For example, operations can be checked against the
              operation's definition as read from the XML.
              An OperationVertex node is annotated according to the parameter

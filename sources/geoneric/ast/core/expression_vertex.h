@@ -1,5 +1,5 @@
 #pragma once
-#include "geoneric/operation/core/result_types.h"
+#include "geoneric/operation/core/expression_types.h"
 #include "geoneric/ast/core/statement_vertex.h"
 
 
@@ -37,11 +37,12 @@ public:
 
     String const&  name                () const;
 
-    void           set_result_types    (ResultTypes const& result_types);
+    void           set_expression_types(
+                                  ExpressionTypes const& expression_types);
 
-    void           add_result_type     (ResultType const& result_type);
+    void           add_result_type     (ExpressionType const& expression_type);
 
-    ResultTypes const& result_types    () const;
+    ExpressionTypes const& expression_types() const;
 
     void           set_value           (ExpressionVertexPtr const& value);
 
@@ -60,7 +61,7 @@ private:
     //! Name of the expression, eg: abs, myDog, 5.
     String         _name;
 
-    ResultTypes    _result_types;
+    ExpressionTypes _expression_types;
 
     //! Value of expression, in case this expression is the target of an assignment.
     ExpressionVertexPtr _value;

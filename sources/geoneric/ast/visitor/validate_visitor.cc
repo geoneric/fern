@@ -11,10 +11,10 @@ namespace geoneric {
 void ValidateVisitor::Visit(
     NameVertex& vertex)
 {
-    assert(vertex.result_types().size() == 1);
+    assert(vertex.expression_types().size() == 1);
 
     // if(vertex.definitions().empty()) {
-    if(!vertex.result_types()[0].defined()) {
+    if(!vertex.expression_types()[0].defined()) {
         BOOST_THROW_EXCEPTION(detail::UndefinedIdentifier()
             << detail::ExceptionIdentifier(vertex.name())
             << detail::ExceptionLineNr(vertex.line())
@@ -57,10 +57,10 @@ void ValidateVisitor::Visit(
     // Check if the result type of each argument expression is compatible
     // with the definition of the operation's parameters.
     for(size_t i = 0; i < operation.arity(); ++i) {
-        ResultTypes const& parameter_types(
-            operation.parameters()[i].result_types());
-        ResultTypes const& expression_types(
-            vertex.expressions()[i]->result_types());
+        ExpressionTypes const& parameter_types(
+            operation.parameters()[i].expression_types());
+        ExpressionTypes const& expression_types(
+            vertex.expressions()[i]->expression_types());
 
         if(!parameter_types.is_satisfied_by(expression_types)) {
             std::ostringstream stream1, stream2;

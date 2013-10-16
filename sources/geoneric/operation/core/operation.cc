@@ -113,8 +113,8 @@ DataTypes Operation::result_data_type(
 
     {
         Result const& result(_results[index]);
-        if(result.result_type().data_type().fixed()) {
-            return result.result_type().data_type();
+        if(result.expression_type().data_type().fixed()) {
+            return result.expression_type().data_type();
         }
     }
 
@@ -123,15 +123,16 @@ DataTypes Operation::result_data_type(
 
     // Select subset of data types that are supported by the parameter.
     for(size_t i = 0; i < data_types.size(); ++i) {
-        assert(_parameters[i].result_types().size() == 1u);
-        data_types[i] &= _parameters[i].result_types()[0].data_type();
+        assert(_parameters[i].expression_types().size() == 1u);
+        data_types[i] &= _parameters[i].expression_types()[0].data_type();
     }
 
     // Aggregate all data types.
     DataTypes merged_parameter_data_types;
     for(auto parameter: _parameters) {
-        assert(parameter.result_types().size() == 1u);
-        merged_parameter_data_types |= parameter.result_types()[0].data_type();
+        assert(parameter.expression_types().size() == 1u);
+        merged_parameter_data_types |=
+            parameter.expression_types()[0].data_type();
     }
 
     DataTypes merged_argument_data_types;
@@ -158,7 +159,7 @@ DataTypes Operation::result_data_type(
     }
 
     assert(result_data_type.is_subset_of(
-        _results[index].result_type().data_type()));
+        _results[index].expression_type().data_type()));
     return result_data_type;
 }
 
@@ -177,10 +178,10 @@ ValueTypes Operation::result_value_type(
 
     {
         Result const& result(_results[index]);
-        if(result.result_type().value_type().fixed()) {
+        if(result.expression_type().value_type().fixed()) {
             // The result value type doesn't depend on the argument value
             // types.
-            return result.result_type().value_type();
+            return result.expression_type().value_type();
         }
     }
 
@@ -196,10 +197,10 @@ ValueTypes Operation::result_value_type(
     // parameter.
     std::vector<ValueTypes> supported_value_types(argument_value_types);
     for(size_t i = 0; i < supported_value_types.size(); ++i) {
-        assert(_parameters[i].result_types().size() == 1u);
+        assert(_parameters[i].expression_types().size() == 1u);
         supported_value_types[i] =
             supported_value_types[i] &=
-                _parameters[i].result_types()[0].value_type();
+                _parameters[i].expression_types()[0].value_type();
     }
 
 
@@ -218,9 +219,9 @@ ValueTypes Operation::result_value_type(
     // Aggregate all value types.
     ValueTypes merged_parameter_value_types;
     for(auto parameter: _parameters) {
-        assert(parameter.result_types().size() == 1u);
+        assert(parameter.expression_types().size() == 1u);
         merged_parameter_value_types |=
-            parameter.result_types()[0].value_type();
+            parameter.expression_types()[0].value_type();
     }
 
 
@@ -264,14 +265,23 @@ ValueTypes Operation::result_value_type(
     }
 
     assert(result_value_type.is_subset_of(
-        _results[index].result_type().value_type()));
+        _results[index].expression_type().value_type()));
     return result_value_type;
 }
 
 
-ResultType Operation::result_type(
+//!
+/*!
+  \tparam    .
+  \param     .
+  \return    .
+  \exception .
+  \warning   .
+  \sa        .
+*/
+ExpressionType Operation::expression_type(
     size_t index,
-    std::vector<ResultType> const& argument_types) const
+    std::vector<ExpressionType> const& argument_types) const
 {
     std::vector<DataTypes> data_types;
     std::vector<ValueTypes> value_types;
@@ -280,7 +290,7 @@ ResultType Operation::result_type(
         value_types.push_back(argument_type.value_type());
     }
 
-    return ResultType(
+    return ExpressionType(
         result_data_type(index, data_types),
         result_value_type(index, value_types));
 }

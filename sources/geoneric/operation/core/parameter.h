@@ -1,8 +1,6 @@
 #pragma once
-// #include "geoneric/core/data_types.h"
 #include "geoneric/core/string.h"
-// #include "geoneric/core/value_types.h"
-#include "geoneric/operation/core/result_types.h"
+#include "geoneric/operation/core/expression_types.h"
 
 
 namespace geoneric {
@@ -40,7 +38,7 @@ public:
 
     String const&  description         () const;
 
-    ResultTypes    result_types        () const;
+    ExpressionTypes expression_types   () const;
 
 private:
 
@@ -48,7 +46,7 @@ private:
 
     String         _description;
 
-    ResultTypes    _result_types;
+    ExpressionTypes _expression_types;
 
 };
 

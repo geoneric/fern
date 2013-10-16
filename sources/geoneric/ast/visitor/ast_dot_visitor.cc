@@ -12,16 +12,16 @@ String annotate_expression_label(
 {
     String label = name + "\\n";
 
-    ResultTypes const& result_types(vertex.result_types());
-    if(result_types.empty()) {
+    ExpressionTypes const& expression_types(vertex.expression_types());
+    if(expression_types.is_empty()) {
         label +=
             "dt: -\\n"
             "vt: -";
     }
     else {
-        assert(result_types.size() == 1);
-        String data_types = result_types[0].data_type().to_string();
-        String value_types = result_types[0].value_type().to_string();
+        assert(expression_types.size() == 1);
+        String data_types = expression_types[0].data_type().to_string();
+        String value_types = expression_types[0].value_type().to_string();
 
         label +=
             "dt: " + data_types + "\\n"
@@ -218,7 +218,7 @@ void AstDotVisitor::Visit(
                     "];\n")
                     % &vertex
                     % annotate_expression_label(vertex.symbol(), vertex)
-                    % (vertex.result_types().fixed()
+                    % (vertex.expression_types().fixed()
                         ? "/spectral11/9" : "/spectral11/2")
             ));
             break;
@@ -257,7 +257,7 @@ void AstDotVisitor::Visit(
                     "];\n")
                     % &vertex
                     % annotate_expression_label(vertex.name(), vertex)
-                    % (vertex.result_types().fixed()
+                    % (vertex.expression_types().fixed()
                         ? "/spectral11/9" : "/spectral11/2")
             ));
             break;
@@ -438,7 +438,7 @@ void AstDotVisitor::Visit(
                     "];\n")
                     % &vertex
                     % annotate_expression_label(vertex.name(), vertex)
-                    % (vertex.result_types().fixed()
+                    % (vertex.expression_types().fixed()
                         ? "/spectral11/9" : "/spectral11/2")
             ));
 
@@ -472,7 +472,7 @@ void AstDotVisitor::Visit(
                     "];\n")
                     % &vertex
                     % annotate_expression_label(vertex.symbol(), vertex)
-                    % (vertex.result_types().fixed()
+                    % (vertex.expression_types().fixed()
                         ? "/spectral11/9" : "/spectral11/2")
             ));
             break;

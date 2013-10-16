@@ -7,7 +7,7 @@
 
 BOOST_AUTO_TEST_SUITE(plus)
 
-BOOST_AUTO_TEST_CASE(argument_and_result_types)
+BOOST_AUTO_TEST_CASE(argument_and_expression_types)
 {
     // int + int -> int
     {

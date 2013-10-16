@@ -3,9 +3,9 @@
 #include <vector>
 #include "geoneric/core/string.h"
 #include "geoneric/operation/core/argument.h"
+#include "geoneric/operation/core/expression_type.h"
 #include "geoneric/operation/core/parameter.h"
 #include "geoneric/operation/core/result.h"
-#include "geoneric/operation/core/result_type.h"
 
 
 namespace geoneric {
@@ -53,9 +53,9 @@ public:
 
     std::vector<Result> const& results () const;
 
-    virtual ResultType result_type     (
-                        size_t index,
-                        std::vector<ResultType> const& argument_types) const;
+    virtual ExpressionType expression_type(
+                                        size_t index,
+                   std::vector<ExpressionType> const& argument_types) const;
 
     virtual std::vector<std::shared_ptr<Argument>>
                    execute             (std::vector<std::shared_ptr<Argument>>

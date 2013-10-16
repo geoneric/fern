@@ -31,23 +31,23 @@ String const& ExpressionVertex::name() const
 }
 
 
-void ExpressionVertex::set_result_types(
-    ResultTypes const& result_types)
+void ExpressionVertex::set_expression_types(
+    ExpressionTypes const& expression_types)
 {
-    _result_types = result_types;
+    _expression_types = expression_types;
 }
 
 
 void ExpressionVertex::add_result_type(
-    ResultType const& result_type)
+    ExpressionType const& expression_type)
 {
-    _result_types.push_back(result_type);
+    _expression_types.add(expression_type);
 }
 
 
-ResultTypes const& ExpressionVertex::result_types() const
+ExpressionTypes const& ExpressionVertex::expression_types() const
 {
-    return _result_types;
+    return _expression_types;
 }
 
 

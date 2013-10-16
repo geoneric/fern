@@ -27,7 +27,7 @@ AnnotateVisitor::~AnnotateVisitor()
 }
 
 
-std::stack<ResultType> const& AnnotateVisitor::stack() const
+std::stack<ExpressionType> const& AnnotateVisitor::stack() const
 {
     return _stack;
 }
@@ -35,7 +35,7 @@ std::stack<ResultType> const& AnnotateVisitor::stack() const
 
 void AnnotateVisitor::clear_stack()
 {
-    _stack = std::stack<ResultType>();
+    _stack = std::stack<ExpressionType>();
 }
 
 
@@ -58,9 +58,9 @@ void AnnotateVisitor::Visit(
     // Propagate the result types from the expression to the target.
     ExpressionVertex const& expression(*vertex.expression());
     ExpressionVertex& target(*vertex.target());
-    assert(target.result_types().empty());
-    assert(expression.result_types().size() == 1);
-    target.set_result_types(expression.result_types());
+    assert(target.expression_types().is_empty());
+    assert(expression.expression_types().size() == 1);
+    target.set_expression_types(expression.expression_types());
     // vertex.target()->Accept(*this);
 }
 
@@ -70,12 +70,12 @@ void AnnotateVisitor::Visit(
 void AnnotateVisitor::Visit(                                                   \
     NumberVertex<type>& vertex)                                                \
 {                                                                              \
-    assert(vertex.result_types().empty());                                     \
-    ResultType result_type(DataTypes::CONSTANT,                                \
+    assert(vertex.expression_types().is_empty());                              \
+    ExpressionType expression_type(DataTypes::CONSTANT,                        \
         TypeTraits<type>::value_types);                                        \
-    _stack.push(result_type);                                                  \
-    vertex.add_result_type(result_type);                                       \
-    assert(vertex.result_types().size() == 1);                                 \
+    _stack.push(expression_type);                                              \
+    vertex.add_result_type(expression_type);                                   \
+    assert(vertex.expression_types().size() == 1);                             \
 }
 
 VISIT_NUMBER_VERTICES(VISIT_NUMBER_VERTEX)
@@ -86,32 +86,32 @@ VISIT_NUMBER_VERTICES(VISIT_NUMBER_VERTEX)
 void AnnotateVisitor::Visit(
     StringVertex& vertex)
 {
-    assert(vertex.result_types().empty());
-    ResultType result_type(DataTypes::CONSTANT, ValueTypes::STRING);
-    _stack.push(result_type);
-    vertex.add_result_type(result_type);
-    assert(vertex.result_types().size() == 1);
+    assert(vertex.expression_types().is_empty());
+    ExpressionType expression_type(DataTypes::CONSTANT, ValueTypes::STRING);
+    _stack.push(expression_type);
+    vertex.add_result_type(expression_type);
+    assert(vertex.expression_types().size() == 1);
 }
 
 
 void AnnotateVisitor::Visit(
     OperationVertex& vertex)
 {
-    assert(vertex.result_types().empty());
+    assert(vertex.expression_types().is_empty());
 
     // Depth first, visit the children first.
     AstVisitor::Visit(vertex);
 
 
     // Get the result types from all argument expressions provided.
-    std::vector<ResultType> argument_types;
+    std::vector<ExpressionType> argument_types;
     for(size_t i = 0; i < vertex.expressions().size(); ++i) {
         assert(!_stack.empty());
         argument_types.push_back(_stack.top());
         _stack.pop();
     }
 
-    ResultTypes result_types(1);
+    ExpressionTypes expression_types(1);
 
     // Retrieve info about the operation, if available.
     if(_operations->has_operation(vertex.name())) {
@@ -119,11 +119,11 @@ void AnnotateVisitor::Visit(
         OperationPtr const& operation(_operations->operation(vertex.name()));
         vertex.set_operation(operation);
 
-        assert(vertex.result_types().empty());
+        assert(vertex.expression_types().is_empty());
 
         // http://en.cppreference.com/w/cpp/types/common_type
-        // There are vertex.expressions().size() ResultType instances on the
-        // stack. Given these and the operation, calculate a ResultType
+        // There are vertex.expressions().size() ExpressionType instances on the
+        // stack. Given these and the operation, calculate a ExpressionType
         // instance for the result of this expression. It is possible that
         // there are not enough arguments provided. In that case the
         // calculation of the result type may fail. Validation will pick that
@@ -133,39 +133,39 @@ void AnnotateVisitor::Visit(
             // Calculate result type for each result.
             // TODO Update for multiple results.
             for(size_t i = 0; i < 1; ++i) {
-                ResultType result_type = operation->result_type(i,
+                ExpressionType expression_type = operation->expression_type(i,
                     argument_types);
-                result_types[i] = result_type;
+                expression_types[i] = expression_type;
             }
         }
     }
 
-    for(auto result_type: result_types) {
-        _stack.push(result_type);
+    for(auto expression_type: expression_types) {
+        _stack.push(expression_type);
     }
-    vertex.set_result_types(result_types);
+    vertex.set_expression_types(expression_types);
 
-    assert(vertex.result_types().size() == 1);
+    assert(vertex.expression_types().size() == 1);
 }
 
 
 void AnnotateVisitor::Visit(
     NameVertex& vertex)
 {
-    assert(vertex.result_types().empty());
+    assert(vertex.expression_types().is_empty());
 
-    ResultType result_type;
+    ExpressionType expression_type;
 
     // If the symbol is defined, retrieve the value from the symbol table.
     if(_symbol_table.has_value(vertex.name())) {
-        result_type = _symbol_table.value(vertex.name());
+        expression_type = _symbol_table.value(vertex.name());
     }
 
     // Push the value onto the stack, even if it is undefined.
-    _stack.push(result_type);
-    vertex.add_result_type(result_type);
+    _stack.push(expression_type);
+    vertex.add_result_type(expression_type);
 
-    assert(vertex.result_types().size() == 1);
+    assert(vertex.expression_types().size() == 1);
 }
 
 
@@ -184,8 +184,9 @@ void AnnotateVisitor::Visit(
 //     //     case Using: {
 //     //         // The result type of a subscript expression is the same as the
 //     //         // result type of the main expression.
-//     //         assert(vertex.result_types().empty());
-//     //         vertex.set_result_types(vertex.expression()->result_types());
+//     //         assert(vertex.expression_types().is_empty());
+//     //         vertex.set_expression_types(
+//     //             vertex.expression()->expression_types());
 //     //         break;
 //     //     }
 //     //     case Defining: {

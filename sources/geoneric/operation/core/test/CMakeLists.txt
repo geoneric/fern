@@ -1,6 +1,6 @@
 SET(TEST_NAMES
-    result_type_test
-    result_types_test
+    expression_type_test
+    expression_types_test
 )
 
 MACRO(ADD_UNIT_TEST NAME)

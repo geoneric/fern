@@ -7,11 +7,11 @@ namespace geoneric {
 Result::Result(
     String const& name,
     String const& description,
-    ResultType const& result_type)
+    ExpressionType const& expression_type)
 
     : _name(name),
       _description(description),
-      _result_type(result_type)
+      _expression_type(expression_type)
 
 {
     assert(!_name.is_empty());
@@ -24,7 +24,7 @@ Result::Result(
 
     : _name(other._name),
       _description(other._description),
-      _result_type(other._result_type)
+      _expression_type(other._expression_type)
 
 {
 }
@@ -36,7 +36,7 @@ Result& Result::operator=(
     if(&other != this) {
         _name = other._name;
         _description = other._description;
-        _result_type = other._result_type;
+        _expression_type = other._expression_type;
     }
 
     return *this;
@@ -55,9 +55,9 @@ String const& Result::description() const
 }
 
 
-ResultType const& Result::result_type() const
+ExpressionType const& Result::expression_type() const
 {
-    return _result_type;
+    return _expression_type;
 }
 
 } // namespace geoneric

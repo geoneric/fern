@@ -77,7 +77,7 @@ Abs::Abs()
           {
               Result("Result value",
                   "Absolute value of the input argument.",
-                  ResultType(DataTypes::CONSTANT | DataTypes::STATIC_FIELD,
+                  ExpressionType(DataTypes::CONSTANT | DataTypes::STATIC_FIELD,
                       ValueTypes::NUMBER))
           }
       )

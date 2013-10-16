@@ -1,6 +1,6 @@
 #pragma once
 #include "geoneric/core/string.h"
-#include "geoneric/operation/core/result_type.h"
+#include "geoneric/operation/core/expression_type.h"
 
 
 namespace geoneric {
@@ -20,7 +20,7 @@ public:
 
                    Result              (String const& name,
                                         String const& description,
-                                        ResultType const& result_type);
+                                        ExpressionType const& expression_type);
 
                    ~Result             ()=default;
 
@@ -36,7 +36,7 @@ public:
 
     String const&  description         () const;
 
-    ResultType const& result_type      () const;
+    ExpressionType const& expression_type() const;
 
 private:
 
@@ -44,7 +44,7 @@ private:
 
     String         _description;
 
-    ResultType     _result_type;
+    ExpressionType _expression_type;
 
 };
 

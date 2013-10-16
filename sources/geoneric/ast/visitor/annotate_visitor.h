@@ -1,8 +1,8 @@
 #pragma once
 #include <stack>
 #include "geoneric/core/symbol_table.h"
+#include "geoneric/operation/core/expression_type.h"
 #include "geoneric/operation/core/operations.h"
-#include "geoneric/operation/core/result_type.h"
 #include "geoneric/ast/visitor/ast_visitor.h"
 
 
@@ -60,7 +60,7 @@ public:
 
     AnnotateVisitor& operator=         (AnnotateVisitor const&)=delete;
 
-    std::stack<ResultType> const& stack() const;
+    std::stack<ExpressionType> const& stack() const;
 
     void           clear_stack         ();
 
@@ -68,9 +68,9 @@ private:
 
     OperationsPtr  _operations;
 
-    std::stack<ResultType> _stack;
+    std::stack<ExpressionType> _stack;
 
-    SymbolTable<ResultType> _symbol_table;
+    SymbolTable<ExpressionType> _symbol_table;
 
     void           Visit               (AssignmentVertex& vertex);
 

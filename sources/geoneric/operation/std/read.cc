@@ -60,7 +60,7 @@ Read::Read()
           {
               Result("Feature read",
                   "Feature read.",
-                  ResultType(DataTypes::STATIC_FIELD,
+                  ExpressionType(DataTypes::STATIC_FIELD,
                       ValueTypes::NUMBER))
           }
       )
@@ -69,13 +69,13 @@ Read::Read()
 }
 
 
-ResultType Read::result_type(
+ExpressionType Read::expression_type(
     size_t index,
-    std::vector<ResultType> const& /* argument_types */) const
+    std::vector<ExpressionType> const& /* argument_types */) const
 {
     assert(index == 0);
 
-    return results()[0].result_type();
+    return results()[0].expression_type();
 }
 
 

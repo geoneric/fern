@@ -22,8 +22,8 @@ public:
 
     Write&         operator=           (Write const& other)=delete;
 
-    ResultType     result_type         (size_t index,
-                        std::vector<ResultType> const& argument_types) const;
+    ExpressionType expression_type     (size_t index,
+                   std::vector<ExpressionType> const& argument_types) const;
 
     std::vector<std::shared_ptr<Argument>>
                    execute             (std::vector<std::shared_ptr<Argument>>

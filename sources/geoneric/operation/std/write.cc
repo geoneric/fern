@@ -72,13 +72,13 @@ Write::Write()
 }
 
 
-ResultType Write::result_type(
+ExpressionType Write::expression_type(
     size_t index,
-    std::vector<ResultType> const& /* argument_types */) const
+    std::vector<ExpressionType> const& /* argument_types */) const
 {
     assert(index == 0);
 
-    return ResultType();
+    return ExpressionType();
 }
 
 

@@ -27,7 +27,7 @@ Parameter::Parameter(
 
     : _name(name),
       _description(description),
-      _result_types({ResultType(data_types, value_types)})
+      _expression_types({ExpressionType(data_types, value_types)})
       // _data_types(data_types),
       // _value_types(value_types)
 
@@ -36,8 +36,8 @@ Parameter::Parameter(
     assert(!_description.is_empty());
     // assert(_data_types != DataTypes::UNKNOWN);
 #ifndef NDEBUG
-    for(auto const& result_type: _result_types) {
-        assert(result_type.data_type() != DataTypes::UNKNOWN);
+    for(auto const& expression_type: _expression_types) {
+        assert(expression_type.data_type() != DataTypes::UNKNOWN);
     }
 #endif
 }
@@ -48,7 +48,7 @@ Parameter::Parameter(
 
     : _name(other._name),
       _description(other._description),
-      _result_types(other._result_types)
+      _expression_types(other._expression_types)
       // _data_types(other._data_types),
       // _value_types(other._value_types)
 
@@ -64,7 +64,7 @@ Parameter& Parameter::operator=(
         _description = other._description;
         // _data_types = other._data_types;
         // _value_types = other._value_types;
-        _result_types = other._result_types;
+        _expression_types = other._expression_types;
     }
 
     return *this;
@@ -100,9 +100,9 @@ String const& Parameter::description() const
 // }
 
 
-ResultTypes Parameter::result_types() const
+ExpressionTypes Parameter::expression_types() const
 {
-    return _result_types;
+    return _expression_types;
 }
 
 } // namespace geoneric

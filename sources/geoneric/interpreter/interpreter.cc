@@ -348,14 +348,14 @@ void Interpreter::execute(
 
 std::stack<std::shared_ptr<Argument>> Interpreter::stack()
 {
-    // std::stack<ResultType> result_types(_annotate_visitor.stack());
+    // std::stack<ResultType> expression_types(_annotate_visitor.stack());
     // Stack values(_back_end.stack());
-    // assert(result_types.size() == values.size());
+    // assert(expression_types.size() == values.size());
     // std::stack<std::tuple<ResultType, boost::any>> result;
 
     // for(size_t i = 0; i < _annotate_visitor.stack().size(); ++i) {
-    //     result.push(std::make_tuple(result_types.top(), values.top()));
-    //     result_types.pop();
+    //     result.push(std::make_tuple(expression_types.top(), values.top()));
+    //     expression_types.pop();
     //     values.pop();
     // }
 
