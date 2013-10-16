@@ -49,30 +49,31 @@ BOOST_AUTO_TEST_CASE(parse)
               "</Operation>"
             "</Operations>";
 
-        operations = xml_parser.parse(xml);
-        BOOST_CHECK_EQUAL(operations->size(), 1u);
-        BOOST_REQUIRE(operations->has_operation("print"));
+        // TODO?
+        // operations = xml_parser.parse(xml);
+        // BOOST_CHECK_EQUAL(operations->size(), 1u);
+        // BOOST_REQUIRE(operations->has_operation("print"));
 
-        geoneric::OperationPtr const& operation(
-            operations->operation("print"));
-        BOOST_CHECK(operation->name() == "print");
-        BOOST_CHECK(operation->description() ==
-            "Print the argument value to the standard output stream.");
+        // geoneric::OperationPtr const& operation(
+        //     operations->operation("print"));
+        // BOOST_CHECK(operation->name() == "print");
+        // BOOST_CHECK(operation->description() ==
+        //     "Print the argument value to the standard output stream.");
 
-        parameters = operation->parameters();
-        BOOST_CHECK_EQUAL(parameters.size(), 1u);
-        geoneric::Parameter parameter = parameters[0];
-        BOOST_CHECK(parameter.name() == "value");
-        BOOST_CHECK(parameter.description() == "Value to print.");
-        assert(parameter.expression_types().size() == 1u);
-        data_types = parameter.expression_types()[0].data_type();
-        BOOST_CHECK(data_types == geoneric::DataTypes::ALL);
+        // parameters = operation->parameters();
+        // BOOST_CHECK_EQUAL(parameters.size(), 1u);
+        // geoneric::Parameter parameter = parameters[0];
+        // BOOST_CHECK(parameter.name() == "value");
+        // BOOST_CHECK(parameter.description() == "Value to print.");
+        // assert(parameter.expression_types().size() == 1u);
+        // data_types = parameter.expression_types()[0].data_type();
+        // BOOST_CHECK(data_types == geoneric::DataTypes::ALL);
 
-        value_types = parameter.expression_types()[0].value_type();
-        BOOST_CHECK(value_types == geoneric::ValueTypes::ALL);
+        // value_types = parameter.expression_types()[0].value_type();
+        // BOOST_CHECK(value_types == geoneric::ValueTypes::ALL);
 
-        results = operation->results();
-        BOOST_CHECK(results.empty());
+        // results = operation->results();
+        // BOOST_CHECK(results.empty());
     }
 }
 

@@ -5,6 +5,7 @@ SET(SOURCES
     argument_type
     attribute_argument
     expression_type
+    expression_type_calculation
     feature_argument
     operation
     operations

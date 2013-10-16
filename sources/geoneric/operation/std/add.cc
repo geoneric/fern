@@ -1,5 +1,6 @@
 #include "geoneric/operation/std/add.h"
 #include "geoneric/operation/core/attribute_argument.h"
+#include "geoneric/operation/core/expression_type_calculation.h"
 
 
 namespace geoneric {
@@ -27,6 +28,14 @@ Add::Add()
       )
 
 {
+}
+
+
+ExpressionType Add::expression_type(
+    size_t index,
+    std::vector<ExpressionType> const& argument_types) const
+{
+    return standard_expression_type(*this, index, argument_types);
 }
 
 

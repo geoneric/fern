@@ -99,8 +99,10 @@ public:
         assert(!_data_stack.empty());
         OperationData result(_data_stack.top());
         _data_stack.pop();
-        return geoneric::OperationPtr(new geoneric::Operation(result.name,
-            result.description, result.parameters, result.results));
+        assert(false);
+        return geoneric::OperationPtr();
+        // return geoneric::OperationPtr(new geoneric::Operation(result.name,
+        //     result.description, result.parameters, result.results));
     }
 
 };

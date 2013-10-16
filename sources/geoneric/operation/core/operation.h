@@ -55,11 +55,11 @@ public:
 
     virtual ExpressionType expression_type(
                                         size_t index,
-                   std::vector<ExpressionType> const& argument_types) const;
+                   std::vector<ExpressionType> const& argument_types) const=0;
 
     virtual std::vector<std::shared_ptr<Argument>>
                    execute             (std::vector<std::shared_ptr<Argument>>
-                                            const& arguments) const;
+                                            const& arguments) const=0;
 
 private:
 
@@ -70,14 +70,6 @@ private:
     std::vector<Parameter> _parameters;
 
     std::vector<Result> _results;
-
-    DataTypes      result_data_type    (
-                   size_t index,
-                   std::vector<DataTypes> const& argument_data_types) const;
-
-    ValueTypes     result_value_type    (
-                   size_t index,
-                   std::vector<ValueTypes> const& argument_value_types) const;
 
 };
 

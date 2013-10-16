@@ -2,6 +2,7 @@
 #include "geoneric/core/value_type_traits.h"
 #include "geoneric/feature/core/attributes.h"
 #include "geoneric/operation/core/attribute_argument.h"
+#include "geoneric/operation/core/expression_type_calculation.h"
 
 
 namespace geoneric {
@@ -83,6 +84,14 @@ Abs::Abs()
       )
 
 {
+}
+
+
+ExpressionType Abs::expression_type(
+    size_t index,
+    std::vector<ExpressionType> const& argument_types) const
+{
+    return standard_expression_type(*this, index, argument_types);
 }
 
 

@@ -22,6 +22,10 @@ public:
 
     Abs&           operator=           (Abs const& other)=delete;
 
+    ExpressionType expression_type     (size_t index,
+                                        std::vector<ExpressionType> const&
+                                            argument_types) const;
+
     std::vector<std::shared_ptr<Argument>>
                    execute             (std::vector<std::shared_ptr<Argument>>
                                             const& arguments) const;
