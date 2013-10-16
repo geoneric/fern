@@ -216,13 +216,11 @@ std::shared_ptr<Attribute> GDALDataset::read_attribute(
     assert(geo_transform[1] == std::abs(geo_transform[5]));
     double const cell_size = geo_transform[1];
 
-    d2::Point south_west;
+    d2::Point south_west, north_east;
     set<0>(south_west, geo_transform[0]);
-    set<1>(south_west, geo_transform[3]);
-
-    d2::Point north_east;
+    set<1>(north_east, geo_transform[3]);
     set<0>(north_east, get<0>(south_west) + nr_cols * cell_size);
-    set<1>(north_east, get<1>(south_west) + nr_rows * cell_size);
+    set<1>(south_west, get<1>(north_east) - nr_rows * cell_size);
 
     d2::Box box(south_west, north_east);
 
@@ -236,33 +234,25 @@ std::shared_ptr<Attribute> GDALDataset::read_attribute(
             Exception::messages()[MessageId::UNKNOWN_ERROR]);
     }
 
-    // int success = 0;
-    // T nodata_value = static_cast<T>(band.GetNoDataValue(&success));
-
-    // if(success) {
-    //     array->mask(nodata_value);
-    // }
-
     // http://trac.osgeo.org/gdal/wiki/rfc15_nodatabitmask
     int mask_flags = band.GetMaskFlags();
-    if(mask_flags != GMF_ALL_VALID) {
-        if(mask_flags & GMF_NODATA) {
-            GDALRasterBand* mask_band = band.GetMaskBand();
-            assert(mask_band->GetRasterDataType() == GDT_Byte);
-            // The mask band has gdal data type GDT_Byte. A value of zero
-            // means that the value must be masked.
-            ArrayValue<typename GDALDataTypeTraits<GDT_Byte>::type, 2> mask(
-                extents[nr_rows][nr_cols]);
+    if(!(mask_flags & GMF_ALL_VALID)) {
+        assert(!(mask_flags & GMF_ALPHA));
+        GDALRasterBand* mask_band = band.GetMaskBand();
+        assert(mask_band->GetRasterDataType() == GDT_Byte);
+        // The mask band has gdal data type GDT_Byte. A value of zero
+        // means that the value must be masked.
+        ArrayValue<typename GDALDataTypeTraits<GDT_Byte>::type, 2> mask(
+            extents[nr_rows][nr_cols]);
 
-            if(mask_band->RasterIO(GF_Read, 0, 0, nr_cols, nr_rows, mask.data(),
-                    nr_cols, nr_rows, GDT_Byte, 0, 0) != CE_None) {
-                // This shouldn't happen.
-                throw IOError(this->name(),
-                    Exception::messages()[MessageId::UNKNOWN_ERROR]);
-            }
-
-            array->mask(mask);
+        if(mask_band->RasterIO(GF_Read, 0, 0, nr_cols, nr_rows, mask.data(),
+                nr_cols, nr_rows, GDT_Byte, 0, 0) != CE_None) {
+            // This shouldn't happen.
+            throw IOError(this->name(),
+                Exception::messages()[MessageId::UNKNOWN_ERROR]);
         }
+
+        array->set_mask(mask);
     }
 
     FieldAttributePtr<T> attribute(new FieldAttribute<T>());
@@ -377,19 +367,64 @@ void GDALDataset::write_attribute(
     assert(_dataset);
     assert(_dataset->GetRasterCount() == 1);
 
-    GDALRasterBand* band = _dataset->GetRasterBand(1);
-    assert(band);
-
     assert(field.values().size() == 1u);
     FieldValue<T> const& array(*field.values().cbegin()->second);
     int nr_rows = array.shape()[0];
     int nr_cols = array.shape()[1];
+
+    double geo_transform[6];
+    {
+        FieldDomain const& domain(field.domain());
+        assert(domain.size() == 1u);
+        d2::Box const& box(domain.cbegin()->second);
+        geo_transform[0] = get<0>(box.min_corner());  // west
+        geo_transform[1] =
+            (get<0>(box.max_corner()) - get<0>(box.min_corner())) / nr_cols;
+        geo_transform[2] = 0.0;
+        geo_transform[3] = get<1>(box.max_corner());  // north
+        geo_transform[4] = 0.0;
+        geo_transform[5] =
+            (get<1>(box.max_corner()) - get<1>(box.min_corner())) / nr_rows;
+        assert(geo_transform[1] > 0.0);
+        assert(geo_transform[1] == geo_transform[5]);
+    }
+
+    if(_dataset->SetGeoTransform(geo_transform) != CE_None) {
+        throw IOError(this->name(),
+            Exception::messages()[MessageId::CANNOT_BE_WRITTEN]);
+    }
+
+    GDALRasterBand* band = _dataset->GetRasterBand(1);
+    assert(band);
 
     if(band->RasterIO(GF_Write, 0, 0, nr_cols, nr_rows, const_cast<T*>(
             array.data()), nr_cols, nr_rows, GDALTypeTraits<T>::data_type,
             0, 0) != CE_None) {
         throw IOError(this->name(),
             Exception::messages()[MessageId::CANNOT_BE_WRITTEN]);
+    }
+
+    if(array.has_masked_values()) {
+        // This assumes the dataset contains onle one band. The mask is taken to
+        // be global to the dataset.
+        if(band->CreateMaskBand(GMF_PER_DATASET) != CE_None) {
+            throw IOError(this->name(),
+                Exception::messages()[MessageId::CANNOT_BE_WRITTEN]);
+        }
+
+        GDALRasterBand* mask_band = band->GetMaskBand();
+        assert(mask_band->GetRasterDataType() == GDT_Byte);
+        // The mask band has gdal data type GDT_Byte. A value of zero
+        // means that the value must be masked.
+        ArrayValue<typename GDALDataTypeTraits<GDT_Byte>::type, 2> mask(
+            extents[nr_rows][nr_cols]);
+        array.mask(mask);
+
+        if(mask_band->RasterIO(GF_Write, 0, 0, nr_cols, nr_rows, mask.data(),
+                nr_cols, nr_rows, GDT_Byte, 0, 0) != CE_None) {
+            throw IOError(this->name(),
+                Exception::messages()[MessageId::CANNOT_BE_WRITTEN]);
+        }
     }
 }
 

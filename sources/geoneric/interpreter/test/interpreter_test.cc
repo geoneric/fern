@@ -571,8 +571,16 @@ BOOST_AUTO_TEST_CASE(execute_write_with_raster_input)
         BOOST_REQUIRE(boxes_attribute);
         BOOST_REQUIRE_EQUAL(boxes_attribute->size(), 1u);
 
-        geoneric::FieldValue<int32_t> const& value =
-            *boxes_attribute->values().cbegin()->second;
+        geoneric::FieldDomain const& domain(boxes_attribute->domain());
+        BOOST_REQUIRE_EQUAL(domain.size(), 1u);
+        geoneric::d2::Box const& box(domain.cbegin()->second);
+        BOOST_CHECK_EQUAL(geoneric::get<0>(box.min_corner()), -1.0);
+        BOOST_CHECK_EQUAL(geoneric::get<1>(box.min_corner()), -1.0);
+        BOOST_CHECK_EQUAL(geoneric::get<0>(box.max_corner()), 1.0);
+        BOOST_CHECK_EQUAL(geoneric::get<1>(box.max_corner()), 2.0);
+
+        geoneric::FieldValue<int32_t> const& value(
+            *boxes_attribute->values().cbegin()->second);
         BOOST_REQUIRE_EQUAL(value.num_dimensions(), 2);
         BOOST_REQUIRE_EQUAL(value.shape()[0], 3);
         BOOST_REQUIRE_EQUAL(value.shape()[1], 2);

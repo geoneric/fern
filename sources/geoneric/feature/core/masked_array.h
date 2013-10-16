@@ -35,15 +35,21 @@ public:
 
     virtual        ~MaskedArray        ();
 
+    bool           has_masked_values   () const;
+
     Array<bool, nr_dimensions> const& mask() const;
 
     Array<bool, nr_dimensions>& mask   ();
 
-    void           mask                (T const& value);
+    template<
+        class U>
+    void           mask                (Array<U, nr_dimensions>& mask) const;
+
+    void           set_mask            (T const& value);
 
     template<
         class U>
-    void           mask                (Array<U, nr_dimensions> const& mask);
+    void           set_mask            (Array<U, nr_dimensions> const& mask);
 
 private:
 
@@ -80,6 +86,25 @@ inline MaskedArray<T, nr_dimensions>::~MaskedArray()
 template<
     class T,
     size_t nr_dimensions>
+inline bool MaskedArray<T, nr_dimensions>::has_masked_values() const
+{
+    bool result = false;
+    bool const* mask = _mask.data();
+
+    for(size_t i = 0; i < this->num_elements(); ++i) {
+        if(mask[i]) {
+            result = true;
+            break;
+        }
+    }
+
+    return result;
+}
+
+
+template<
+    class T,
+    size_t nr_dimensions>
 inline Array<bool, nr_dimensions> const& MaskedArray<T, nr_dimensions>::
     mask() const
 {
@@ -108,7 +133,7 @@ inline Array<bool, nr_dimensions>& MaskedArray<T, nr_dimensions>::mask()
 template<
     class T,
     size_t nr_dimensions>
-inline void MaskedArray<T, nr_dimensions>::mask(
+inline void MaskedArray<T, nr_dimensions>::set_mask(
     T const& value)
 {
     T* values = this->data();
@@ -118,6 +143,28 @@ inline void MaskedArray<T, nr_dimensions>::mask(
         if(values[i] == value) {
             mask[i] = true;
         }
+    }
+}
+
+
+template<
+    class T,
+    size_t nr_dimensions>
+template<
+    class U>
+inline void MaskedArray<T, nr_dimensions>::mask(
+    Array<U, nr_dimensions>& mask) const
+{
+    static_assert(std::is_integral<U>::value, "Mask value must be integral");
+    assert(mask.num_elements() == this->num_elements());
+
+    U* other_mask_data = mask.data();
+    U const mask_value(0);
+    U const non_mask_value(255);
+    bool const* mask_data = _mask.data();
+
+    for(size_t i = 0; i < this->num_elements(); ++i) {
+        other_mask_data[i] = mask_data[i] ? mask_value : non_mask_value;
     }
 }
 
@@ -136,14 +183,14 @@ template<
     size_t nr_dimensions>
 template<
     class U>
-inline void MaskedArray<T, nr_dimensions>::mask(
+inline void MaskedArray<T, nr_dimensions>::set_mask(
     Array<U, nr_dimensions> const& mask)
 {
     static_assert(std::is_integral<U>::value, "Mask value must be integral");
     assert(mask.num_elements() == this->num_elements());
 
     U const* other_mask_data = mask.data();
-    U mask_value(0);
+    U const mask_value(0);
     bool* mask_data = _mask.data();
 
     for(size_t i = 0; i < this->num_elements(); ++i) {
