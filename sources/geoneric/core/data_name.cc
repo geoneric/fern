@@ -5,15 +5,17 @@
 namespace geoneric {
 
 static UErrorCode status;
-static RegexMatcher matcher("([^:]+)(?::(.+)?)?", 0, status);
+static RegexMatcher matcher("([^:]+)(?::(?!/)(.+)?)?", 0, status);
 
 DataName::DataName(
     String const& string)
 
-    : _dataset_name(),
+    : _database_pathname(),
       _data_pathname()
 
 {
+    String database_pathname, data_pathname;
+
     // http://userguide.icu-project.org/strings/regexp
     assert(!U_FAILURE(status));
 
@@ -25,17 +27,28 @@ DataName::DataName(
 
     assert(!U_FAILURE(status));
 
-    _dataset_name = matcher.group(1, status);
+    database_pathname = matcher.group(1, status);
     assert(!U_FAILURE(status));
 
     if(matcher.groupCount() > 1) {
-        _data_pathname = matcher.group(2, status);
+        data_pathname = matcher.group(2, status);
         assert(!U_FAILURE(status));
     }
 
-    if(_data_pathname.is_empty()) {
-        _data_pathname = "/";
+    if(data_pathname.is_empty()) {
+        data_pathname = "/";
     }
+
+    std::cout << data_pathname << std::endl;
+
+    // Remove starting and trailing occurences of path separator.
+    // Replace double occurences of path separator by single ones.
+    data_pathname.strip("/").replace("//", "/");
+
+    _database_pathname = database_pathname;
+    _data_pathname = data_pathname;
+
+    // assert(_data_pathname.is_absolute());
 }
 
 
@@ -44,18 +57,18 @@ DataName::DataName(
   \return    Pathname.
   \sa        data_pathname()
 */
-String const& DataName::dataset_name() const
+Path const& DataName::database_pathname() const
 {
-    return _dataset_name;
+    return _database_pathname;
 }
 
 
 //! Return the pathname of the data in the dataset.
 /*!
   \return    Pathname.
-  \sa        dataset_name()
+  \sa        database_pathname()
 */
-String const& DataName::data_pathname() const
+Path const& DataName::data_pathname() const
 {
     return _data_pathname;
 }

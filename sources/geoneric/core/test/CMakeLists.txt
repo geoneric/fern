@@ -2,6 +2,7 @@ SET(TEST_NAMES
     data_name_test
     data_types_test
     flag_collection_test
+    path_test
     scope_test
     stack_test
     string_test

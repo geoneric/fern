@@ -4,18 +4,16 @@
 #include "geoneric/core/io_error.h"
 #include "geoneric/feature/core/attributes.h"
 #include "geoneric/io/gdal/gdal_dataset.h"
-#include "geoneric/io/gdal/gdal_client.h"
 
 
-class Support:
-    public geoneric::GDALClient
+class Support
 {
 
 public:
 
     Support()
-        : geoneric::GDALClient()
     {
+        GDALAllRegister();
     }
 
 };

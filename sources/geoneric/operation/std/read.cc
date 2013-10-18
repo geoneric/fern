@@ -1,8 +1,7 @@
 #include "geoneric/operation/std/read.h"
 #include "geoneric/core/data_name.h"
 #include "geoneric/feature/core/constant_attribute.h"
-#include "geoneric/io/gdal/drivers.h"
-#include "geoneric/io/core/path.h"
+#include "geoneric/io/drivers.h"
 #include "geoneric/operation/core/attribute_argument.h"
 #include "geoneric/operation/core/feature_argument.h"
 
@@ -21,7 +20,7 @@ std::vector<std::shared_ptr<Argument>> read(
     // - Assume the name refers to a raster that can be read by gdal.
 
     DataName name(value.values().value());
-    std::shared_ptr<Dataset> dataset(open_dataset(name.dataset_name(),
+    std::shared_ptr<Dataset> dataset(open_dataset(name.database_pathname(),
         OpenMode::READ));
 
     // Dataset is open, first find out where name.data_pathname is pointing

@@ -4,7 +4,7 @@
 #include "geoneric/core/parse_error.h"
 #include "geoneric/core/validate_error.h"
 #include "geoneric/feature/core/attributes.h"
-#include "geoneric/io/gdal/gdal_client.h"
+#include "geoneric/io/io_client.h"
 #include "geoneric/operation/core/attribute_argument.h"
 #include "geoneric/operation/core/feature_argument.h"
 #include "geoneric/interpreter/execute_visitor.h"
@@ -12,13 +12,13 @@
 
 
 class Support:
-    public geoneric::GDALClient
+    public geoneric::IOClient
 {
 
 public:
 
     Support()
-        : geoneric::GDALClient()
+        : geoneric::IOClient()
     {
     }
 
@@ -597,6 +597,86 @@ BOOST_AUTO_TEST_CASE(execute_write_with_raster_input)
         // BOOST_CHECK_EQUAL(value[1][1], xxx);
         BOOST_CHECK_EQUAL(value[2][0],   1);
         BOOST_CHECK_EQUAL(value[2][1],   2);
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(execute_read_with_constant_input)
+{
+    geoneric::Interpreter interpreter;
+    geoneric::ModuleVertexPtr tree;
+
+        // Calculate the abs, write the result. Read the new constant just
+        // written, leave it on the stack, and test the values.
+
+
+    {
+        // Write a constant, read it again. Leave it on the stack, and test
+        // the values.
+        geoneric::String script = R"(
+format = "Geoneric"
+attribute_name = "earth.gravity"
+gravity = -9.8
+write(gravity, attribute_name, format)
+gravity = read(attribute_name))";
+        tree = interpreter.parse_string(script);
+        try {
+        interpreter.execute(tree);
+        }
+        catch(geoneric::Exception const& exception) {
+            std::cout << exception.message() << std::endl;
+        }
+        BOOST_CHECK(false);
+
+        // std::stack<std::shared_ptr<geoneric::Argument>> stack(
+        //     interpreter.stack());
+        // BOOST_CHECK_EQUAL(stack.size(), 1u);
+
+        // std::shared_ptr<geoneric::Argument> const& argument(stack.top());
+        // BOOST_REQUIRE_EQUAL(argument->argument_type(),
+        //     geoneric::ArgumentType::AT_ATTRIBUTE);
+
+        // std::shared_ptr<geoneric::AttributeArgument> const&
+        //     attribute_argument(
+        //         std::dynamic_pointer_cast<geoneric::AttributeArgument>(
+        //             argument));
+        // BOOST_REQUIRE(attribute_argument);
+
+        // std::shared_ptr<geoneric::Attribute> const& attribute(
+        //     attribute_argument->attribute());
+
+        // geoneric::FieldAttributePtr<int32_t> boxes_attribute(
+        //     std::dynamic_pointer_cast<geoneric::FieldAttribute<int32_t>>(
+        //         attribute));
+        // BOOST_REQUIRE(boxes_attribute);
+        // BOOST_REQUIRE_EQUAL(boxes_attribute->size(), 1u);
+
+        // geoneric::FieldDomain const& domain(boxes_attribute->domain());
+        // BOOST_REQUIRE_EQUAL(domain.size(), 1u);
+        // geoneric::d2::Box const& box(domain.cbegin()->second);
+        // BOOST_CHECK_EQUAL(geoneric::get<0>(box.min_corner()), -1.0);
+        // BOOST_CHECK_EQUAL(geoneric::get<1>(box.min_corner()), -1.0);
+        // BOOST_CHECK_EQUAL(geoneric::get<0>(box.max_corner()), 1.0);
+        // BOOST_CHECK_EQUAL(geoneric::get<1>(box.max_corner()), 2.0);
+
+        // geoneric::FieldValue<int32_t> const& value(
+        //     *boxes_attribute->values().cbegin()->second);
+        // BOOST_REQUIRE_EQUAL(value.num_dimensions(), 2);
+        // BOOST_REQUIRE_EQUAL(value.shape()[0], 3);
+        // BOOST_REQUIRE_EQUAL(value.shape()[1], 2);
+
+        // BOOST_CHECK(!value.mask()[0][0]);
+        // BOOST_CHECK(!value.mask()[0][1]);
+        // BOOST_CHECK(!value.mask()[1][0]);
+        // BOOST_CHECK( value.mask()[1][1]);
+        // BOOST_CHECK(!value.mask()[2][0]);
+        // BOOST_CHECK(!value.mask()[2][1]);
+        // BOOST_CHECK_EQUAL(value[0][0], 2);
+        // BOOST_CHECK_EQUAL(value[0][1], 1);
+        // BOOST_CHECK_EQUAL(value[1][0], 0);
+        // // BOOST_CHECK_EQUAL(value[1][1], xxx);
+        // BOOST_CHECK_EQUAL(value[2][0],   1);
+        // BOOST_CHECK_EQUAL(value[2][1],   2);
     }
 }
 

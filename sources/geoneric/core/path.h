@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include <boost/filesystem.hpp>
 #include "geoneric/core/string.h"
 
@@ -19,9 +20,11 @@ public:
 
                    Path                ()=default;
 
-                   Path                (boost::filesystem::path const& path);
+    // explicit       Path                (boost::filesystem::path const& path);
 
                    Path                (String const& string);
+
+                   Path                (char const* string);
 
                    Path                (Path&&)=default;
 
@@ -31,16 +34,34 @@ public:
 
     Path&          operator=           (Path const&)=default;
 
+    // Path&          operator=           (String const& string);
+
                    ~Path               ()=default;
 
     bool           operator==          (Path const& path) const;
 
                    operator String     () const;
 
+    String         generic_string      () const;
+
+    String         native_string       () const;
+
+    bool           is_absolute         () const;
+
     Path           stem                () const;
+
+    Path           parent_path         () const;
+
+    Path           filename            () const;
+
+    std::vector<String> names          () const;
 
 private:
 
 };
+
+
+std::ostream&      operator<<          (std::ostream& stream,
+                                        Path const& path);
 
 } // namespace geoneric

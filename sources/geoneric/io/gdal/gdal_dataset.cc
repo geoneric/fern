@@ -1,10 +1,10 @@
 #include "geoneric/io/gdal/gdal_dataset.h"
 #include "gdal_priv.h"
 #include "geoneric/core/io_error.h"
+#include "geoneric/core/path.h"
 #include "geoneric/core/value_type_traits.h"
 #include "geoneric/feature/visitor/attribute_type_visitor.h"
 #include "geoneric/io/core/file.h"
-#include "geoneric/io/core/path.h"
 #include "geoneric/io/gdal/gdal_data_type_traits.h"
 #include "geoneric/io/gdal/gdal_type_traits.h"
 

@@ -70,6 +70,8 @@ public:
     String&        replace             (String const& old_string,
                                         String const& new_string);
 
+    std::vector<String> split          (String characters=String()) const;
+
 private:
 
     String&        strip_begin         (String const& characters);

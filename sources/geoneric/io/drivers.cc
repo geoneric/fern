@@ -1,4 +1,4 @@
-#include "geoneric/io/gdal/drivers.h"
+#include "geoneric/io/drivers.h"
 #include "geoneric/core/io_error.h"
 #include "geoneric/io/gdal/gdal_driver.h"
 
@@ -9,14 +9,16 @@ std::map<String, std::shared_ptr<Driver>> drivers;
 
 
 static std::vector<std::shared_ptr<Driver>> drivers_to_try(
+    String const& name,
     String const& format)
 {
     std::vector<std::shared_ptr<Driver>> drivers;
 
     if(!format.is_empty()) {
         if(geoneric::drivers.find(format) == geoneric::drivers.end()) {
-            throw IOError(format,
-                Exception::messages()[MessageId::NO_SUCH_DRIVER]);
+            throw IOError(name,
+                Exception::messages().format_message(MessageId::NO_SUCH_DRIVER,
+                format));
         }
 
         drivers.push_back(geoneric::drivers.at(format));
@@ -38,7 +40,7 @@ std::shared_ptr<Dataset> open_dataset(
 {
     std::shared_ptr<Dataset> dataset;
 
-    for(auto driver: drivers_to_try(format)) {
+    for(auto driver: drivers_to_try(name, format)) {
         dataset = driver->open(name, open_mode);
         if(dataset) {
             break;
@@ -68,7 +70,7 @@ bool dataset_exists(
 {
     bool exists = false;
 
-    for(auto driver: drivers_to_try(format)) {
+    for(auto driver: drivers_to_try(name, format)) {
         exists = driver->exists(name, open_mode);
         if(exists) {
             break;
@@ -85,7 +87,7 @@ std::shared_ptr<Dataset> create_dataset(
     String const& format)
 {
     assert(!format.is_empty());
-    auto drivers(drivers_to_try(format));
+    auto drivers(drivers_to_try(name, format));
     assert(drivers.size() == 1u);
 
     return drivers[0]->create(attribute, name);

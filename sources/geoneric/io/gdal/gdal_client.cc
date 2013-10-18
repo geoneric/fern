@@ -1,6 +1,6 @@
 #include "geoneric/io/gdal/gdal_client.h"
 #include <gdal_priv.h>
-#include "geoneric/io/gdal/drivers.h"
+#include "geoneric/io/drivers.h"
 #include "geoneric/io/gdal/gdal_driver.h"
 
 

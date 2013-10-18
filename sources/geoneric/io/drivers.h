@@ -1,8 +1,8 @@
 #pragma once
 #include <memory>
 #include <map>
-#include "geoneric/io/gdal/dataset.h"
-#include "geoneric/io/gdal/driver.h"
+#include "geoneric/io/core/dataset.h"
+#include "geoneric/io/core/driver.h"
 
 
 namespace geoneric {

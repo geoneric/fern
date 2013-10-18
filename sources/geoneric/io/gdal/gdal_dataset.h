@@ -1,6 +1,6 @@
 #pragma once
 #include "geoneric/feature/core/attributes.h"
-#include "geoneric/io/gdal/dataset.h"
+#include "geoneric/io/core/dataset.h"
 
 
 class GDALDataset;

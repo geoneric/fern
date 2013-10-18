@@ -1,6 +1,7 @@
 #include "geoneric/core/string.h"
 #include <memory>
 #include <unicode/ustring.h>
+#include <unicode/regex.h>
 
 
 namespace {
@@ -217,15 +218,17 @@ String& String::strip_begin(
 String& String::strip_end(
     String const& characters)
 {
-    int32_t index = length() - 1;
+    if(!is_empty()) {
+        int32_t index = length() - 1;
 
-    while(index >= 0 && characters.indexOf(charAt(index)) != -1) {
-        --index;
+        while(index >= 0 && characters.indexOf(charAt(index)) != -1) {
+            --index;
+        }
+
+        assert(index >= 0);
+        assert(index < length());
+        remove(index + 1, length());
     }
-
-    assert(index >= 0);
-    assert(index < length());
-    remove(index + 1, length());
 
     return *this;
 }
@@ -302,6 +305,29 @@ String join(
     }
 
     return result;
+}
+
+
+std::vector<String> String::split(
+    String characters) const
+{
+    String string(*this);
+    string.strip(characters);
+
+    UErrorCode status = U_ZERO_ERROR;
+    if(characters.is_empty()) {
+        characters = "\\s";
+    }
+    String regex("[" + characters + "]+");
+    RegexMatcher matcher(regex, 0, status);
+    assert(!U_FAILURE(status));
+
+    int const max_nr_words = 10;
+    String words[max_nr_words];
+    int nr_words = matcher.split(string, words, max_nr_words, status);
+    assert(!U_FAILURE(status));
+
+    return std::vector<String>(words, words + nr_words);
 }
 
 } // namespace geoneric

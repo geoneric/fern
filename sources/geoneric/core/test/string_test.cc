@@ -59,6 +59,9 @@ BOOST_AUTO_TEST_CASE(strip)
     string = geoneric::String("").strip("");
     BOOST_CHECK_EQUAL(string, "");
 
+    string = geoneric::String("").strip("x");
+    BOOST_CHECK_EQUAL(string, "");
+
     string = geoneric::String("øaø").strip("ø");
     BOOST_CHECK_EQUAL(string, "a");
 }
@@ -70,6 +73,33 @@ BOOST_AUTO_TEST_CASE(replace)
 
     string = geoneric::String("<string>").replace("<", "&lt;");
     BOOST_CHECK_EQUAL(string, "&lt;string>");
+}
+
+
+BOOST_AUTO_TEST_CASE(split)
+{
+    geoneric::String string;
+    std::vector<geoneric::String> words;
+
+    string = geoneric::String();
+    words = string.split("");
+    BOOST_CHECK(words.empty());
+
+    string = geoneric::String();
+    words = string.split("x");
+    BOOST_CHECK(words.empty());
+
+    string = geoneric::String("abxcd");
+    words = string.split("x+");
+    BOOST_REQUIRE_EQUAL(words.size(), 2u);
+    BOOST_CHECK_EQUAL(words[0], "ab");
+    BOOST_CHECK_EQUAL(words[1], "cd");
+
+    string = geoneric::String("xxabxxcdxx");
+    words = string.split("x+");
+    BOOST_REQUIRE_EQUAL(words.size(), 2u);
+    BOOST_CHECK_EQUAL(words[0], "ab");
+    BOOST_CHECK_EQUAL(words[1], "cd");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -2,8 +2,7 @@
 #include "geoneric/core/data_name.h"
 #include "geoneric/core/value_type_traits.h"
 #include "geoneric/feature/core/attributes.h"
-#include "geoneric/io/core/path.h"
-#include "geoneric/io/gdal/drivers.h"
+#include "geoneric/io/drivers.h"
 #include "geoneric/operation/core/attribute_argument.h"
 
 
@@ -22,13 +21,13 @@ std::vector<std::shared_ptr<Argument>> write(
     DataName data_name(name);
     std::shared_ptr<Dataset> dataset;
 
-    if(!dataset_exists(data_name.dataset_name(), OpenMode::OVERWRITE,
+    if(!dataset_exists(data_name.database_pathname(), OpenMode::OVERWRITE,
             format_name)) {
-        dataset = create_dataset(data_attribute, data_name.dataset_name(),
+        dataset = create_dataset(data_attribute, data_name.database_pathname(),
             format_name);
     }
     else {
-        dataset = open_dataset(data_name.dataset_name(), OpenMode::UPDATE,
+        dataset = open_dataset(data_name.database_pathname(), OpenMode::UPDATE,
             format_name);
     }
 
@@ -36,7 +35,7 @@ std::vector<std::shared_ptr<Argument>> write(
 
     if(attribute_name == "/") {
         // Short hand notation is used for the attribute name.
-        attribute_name = Path(data_name.dataset_name()).stem();
+        attribute_name = Path(data_name.database_pathname()).stem();
     }
 
     assert(dataset);
@@ -53,7 +52,7 @@ Write::Write()
           {
               Parameter("Feature or attribute",
                   "Feature or attribute to write.",
-                  DataTypes::STATIC_FIELD,
+                  DataTypes::CONSTANT | DataTypes::STATIC_FIELD,
                   ValueTypes::NUMBER),
               Parameter("Name",
                   "Name of feature or attribute to write.",
@@ -90,23 +89,18 @@ std::vector<std::shared_ptr<Argument>> Write::execute(
     assert(arguments[0]->argument_type() == ArgumentType::AT_ATTRIBUTE);
     AttributeArgument const& data_attribute_argument(
         *std::dynamic_pointer_cast<AttributeArgument>(arguments[0]));
-    // std::shared_ptr<Attribute> data_attribute(data_attribute_argument.attribute());
 
     assert(arguments[1]->argument_type() == ArgumentType::AT_ATTRIBUTE);
     AttributeArgument const& name_attribute_argument(
         *std::dynamic_pointer_cast<AttributeArgument>(arguments[1]));
     assert(name_attribute_argument.data_type() == DataType::DT_CONSTANT);
     assert(name_attribute_argument.value_type() == ValueType::VT_STRING);
-    // Attribute const& name_attribute(*name_attribute_argument.attribute());
 
     assert(arguments[2]->argument_type() == ArgumentType::AT_ATTRIBUTE);
     AttributeArgument const& format_attribute_argument(
         *std::dynamic_pointer_cast<AttributeArgument>(arguments[2]));
     assert(format_attribute_argument.data_type() == DataType::DT_CONSTANT);
     assert(format_attribute_argument.value_type() == ValueType::VT_STRING);
-    // Attribute const& format_attribute(*format_attribute_argument.attribute());
-
-    assert(data_attribute_argument.data_type() == DT_STATIC_FIELD);
 
     return write(
         *data_attribute_argument.attribute(),

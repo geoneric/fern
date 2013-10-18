@@ -9,6 +9,11 @@
 
 namespace geoneric {
 
+static auto deleter = [](::GDALDataset* dataset)
+    { if(dataset) { GDALClose(dataset); } };
+typedef std::unique_ptr<::GDALDataset, decltype(deleter)> GDALDatasetPtr;
+
+
 GDALDriver::GDALDriver(
     String const& format)
 
@@ -53,7 +58,8 @@ bool GDALDriver::can_open_for_read(
 {
     GDALOpenInfo open_info(name.encode_in_default_encoding().c_str(),
         GA_ReadOnly);
-    return _driver->pfnOpen(&open_info) != nullptr;
+    GDALDatasetPtr dataset(_driver->pfnOpen(&open_info), deleter);
+    return static_cast<bool>(dataset);
 }
 
 
@@ -62,7 +68,8 @@ bool GDALDriver::can_open_for_update(
 {
     GDALOpenInfo open_info(name.encode_in_default_encoding().c_str(),
         GA_Update);
-    return _driver->pfnOpen(&open_info) != nullptr;
+    GDALDatasetPtr dataset(_driver->pfnOpen(&open_info), deleter);
+    return static_cast<bool>(dataset);
 }
 
 

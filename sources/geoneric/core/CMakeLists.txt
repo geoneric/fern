@@ -7,6 +7,7 @@ SET(SOURCES
     io_error
     messages
     parse_error
+    path
     script_error
     stack
     string
@@ -18,5 +19,7 @@ ADD_LIBRARY(geoneric_core
     ${SOURCES}
 )
 TARGET_LINK_LIBRARIES(geoneric_core
+    ${Boost_FILESYSTEM_LIBRARY}
+    ${Boost_SYSTEM_LIBRARY}
     ${ICU_LIBRARIES}
 )

@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
-#include "geoneric/io/gdal/dataset.h"
-#include "geoneric/io/gdal/open_mode.h"
+#include "geoneric/io/core/dataset.h"
+#include "geoneric/io/core/open_mode.h"
 
 
 namespace geoneric {

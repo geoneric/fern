@@ -1,4 +1,4 @@
-#include "geoneric/io/gdal/driver.h"
+#include "geoneric/io/core/driver.h"
 
 
 namespace geoneric {

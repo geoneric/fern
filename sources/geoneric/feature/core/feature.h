@@ -1,6 +1,7 @@
 #pragma once
 #include <map>
 #include <memory>
+#include "geoneric/core/path.h"
 #include "geoneric/core/string.h"
 #include "geoneric/feature/core/attribute.h"
 
@@ -13,8 +14,7 @@ namespace geoneric {
 
   \sa        .
 */
-class Feature:
-    private std::map<String, std::shared_ptr<Attribute>>
+class Feature
 {
 
 public:
@@ -31,19 +31,42 @@ public:
 
                    ~Feature            ()=default;
 
+    size_t         nr_features         () const;
+
+    size_t         nr_features         (Path const& feature_path) const;
+
+    std::vector<String> feature_names  () const;
+
+    bool           contains_feature    (Path const& path) const;
+
+    void           add_feature         (Path const& path,
+                                        std::shared_ptr<Feature> const&
+                                            feature);
+
+    std::shared_ptr<Feature> feature   (Path const& path) const;
+
     size_t         nr_attributes       () const;
 
-    bool           contains_attribute  (String const& name);
+    size_t         nr_attributes       (Path const& feature_path) const;
 
-    void           add_attribute       (String const& name,
-                                        std::shared_ptr<Attribute> const& attribute);
+    std::vector<String> attribute_names() const;
 
-    std::vector<String> attribute_names  () const;
+    bool           contains_attribute  (Path const& attribute_path) const;
 
-    std::shared_ptr<Attribute> const& attribute(
-                                        String const& name);
+    void           add_attribute       (Path const& path,
+                                        std::shared_ptr<Attribute> const&
+                                            attribute);
+
+    std::shared_ptr<Attribute> attribute(
+                                        Path const& path) const;
 
 private:
+
+    std::map<String, std::shared_ptr<Feature>> _features;
+
+    std::map<String, std::shared_ptr<Attribute>> _attributes;
+
+    std::shared_ptr<Feature> feature   (std::vector<String> names) const;
 
 };
 

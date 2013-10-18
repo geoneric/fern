@@ -36,6 +36,10 @@ $cmake -E copy $test_data_dir/raster-1.asc $io_gdal_test_dir/write_only.asc
 chmod 222 $io_gdal_test_dir/write_only.asc
 
 
+io_test_dir="$source_dir/io/test"
+$cmake -E copy $test_data_dir/raster-1.asc $io_test_dir
+
+
 interpreter_test_dir="$source_dir/interpreter/test"
 $cmake -E copy $test_data_dir/valid-1.ran $interpreter_test_dir
 $cmake -E copy $test_data_dir/valid-2.ran $interpreter_test_dir

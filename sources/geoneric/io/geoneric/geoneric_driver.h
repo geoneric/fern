@@ -1,9 +1,6 @@
 #pragma once
-#include "geoneric/feature/core/attributes.h"
 #include "geoneric/io/core/driver.h"
 
-
-class GDALDriver;
 
 namespace geoneric {
 
@@ -13,25 +10,23 @@ namespace geoneric {
 
   \sa        .
 */
-class GDALDriver:
+class GeonericDriver:
     public Driver
 {
 
 public:
 
-                   GDALDriver          (String const& format);
+                   GeonericDriver      ();
 
-                   GDALDriver          (::GDALDriver* driver);
+                   GeonericDriver      (GeonericDriver const&)=delete;
 
-                   GDALDriver          (GDALDriver const&)=delete;
+    GeonericDriver& operator=          (GeonericDriver const&)=delete;
 
-    GDALDriver&    operator=           (GDALDriver const&)=delete;
+                   GeonericDriver      (GeonericDriver&&)=delete;
 
-                   GDALDriver          (GDALDriver&&)=delete;
+    GeonericDriver& operator=          (GeonericDriver&&)=delete;
 
-    GDALDriver&    operator=           (GDALDriver&&)=delete;
-
-                   ~GDALDriver         ()=default;
+                   ~GeonericDriver     ()=default;
 
     bool           exists              (String const& name,
                                         OpenMode open_mode);
@@ -44,21 +39,12 @@ public:
 
 private:
 
-    String         _format;
-
-    ::GDALDriver*  _driver;
-
     bool           can_open            (String const& name,
                                         OpenMode open_mode);
 
     bool           can_open_for_read   (String const& name);
 
     bool           can_open_for_update (String const& name);
-
-    template<
-        class T>
-    std::shared_ptr<Dataset> create    (FieldAttribute<T> const& field,
-                                        String const& name);
 
 };
 

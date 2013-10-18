@@ -1,9 +1,6 @@
 ADD_SUBDIRECTORY(test)
 
 SET(SOURCES
-    dataset
-    driver
-    drivers
     gdal_client
     gdal_dataset
     gdal_driver

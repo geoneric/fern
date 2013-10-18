@@ -1,17 +1,17 @@
 #define BOOST_TEST_MODULE geoneric io
 #include <boost/test/unit_test.hpp>
-#include "geoneric/io/gdal/drivers.h"
-#include "geoneric/io/gdal/gdal_client.h"
+#include "geoneric/io/drivers.h"
+#include "geoneric/io/io_client.h"
 
 
 class Support:
-    public geoneric::GDALClient
+    public geoneric::IOClient
 {
 
 public:
 
     Support()
-        : geoneric::GDALClient()
+        : geoneric::IOClient()
     {
     }
 

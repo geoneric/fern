@@ -9,50 +9,44 @@ BOOST_AUTO_TEST_CASE(constructor)
 {
     {
         geoneric::DataName name("dataset:path");
-        BOOST_CHECK_EQUAL(name.dataset_name(), "dataset");
-        BOOST_CHECK_EQUAL(name.data_pathname(), "path");
+        BOOST_CHECK_EQUAL(name.database_pathname(), geoneric::Path("dataset"));
+        BOOST_CHECK_EQUAL(name.data_pathname(), geoneric::Path("path"));
     }
 
     {
         geoneric::DataName name("dataset");
-        BOOST_CHECK_EQUAL(name.dataset_name(), "dataset");
-        BOOST_CHECK_EQUAL(name.data_pathname(), "/");
+        BOOST_CHECK_EQUAL(name.database_pathname(), geoneric::Path("dataset"));
+        BOOST_CHECK_EQUAL(name.data_pathname(), geoneric::Path(""));
     }
 
     {
         geoneric::DataName name("dataset:");
-        BOOST_CHECK_EQUAL(name.dataset_name(), "dataset");
-        BOOST_CHECK_EQUAL(name.data_pathname(), "/");
+        BOOST_CHECK_EQUAL(name.database_pathname(), geoneric::Path("dataset"));
+        BOOST_CHECK_EQUAL(name.data_pathname(), geoneric::Path(""));
     }
 
     {
         geoneric::DataName name("dataset:path:to");
-        BOOST_CHECK_EQUAL(name.dataset_name(), "dataset");
-        BOOST_CHECK_EQUAL(name.data_pathname(), "path:to");
+        BOOST_CHECK_EQUAL(name.database_pathname(), geoneric::Path("dataset"));
+        BOOST_CHECK_EQUAL(name.data_pathname(), geoneric::Path("path:to"));
     }
 
     {
         geoneric::DataName name("dataset:path/to");
-        BOOST_CHECK_EQUAL(name.dataset_name(), "dataset");
-        BOOST_CHECK_EQUAL(name.data_pathname(), "path/to");
+        BOOST_CHECK_EQUAL(name.database_pathname(), geoneric::Path("dataset"));
+        BOOST_CHECK_EQUAL(name.data_pathname(), geoneric::Path("path/to"));
     }
 
     {
-        geoneric::DataName name("dataset:/path");
-        BOOST_CHECK_EQUAL(name.dataset_name(), "dataset");
-        BOOST_CHECK_EQUAL(name.data_pathname(), "/path");
+        geoneric::DataName name("dataset:path:to");
+        BOOST_CHECK_EQUAL(name.database_pathname(), geoneric::Path("dataset"));
+        BOOST_CHECK_EQUAL(name.data_pathname(), geoneric::Path("path:to"));
     }
 
     {
-        geoneric::DataName name("dataset:/path:to");
-        BOOST_CHECK_EQUAL(name.dataset_name(), "dataset");
-        BOOST_CHECK_EQUAL(name.data_pathname(), "/path:to");
-    }
-
-    {
-        geoneric::DataName name("dataset:/path/to");
-        BOOST_CHECK_EQUAL(name.dataset_name(), "dataset");
-        BOOST_CHECK_EQUAL(name.data_pathname(), "/path/to");
+        geoneric::DataName name("dataset:path/////to//");
+        BOOST_CHECK_EQUAL(name.database_pathname(), geoneric::Path("dataset"));
+        BOOST_CHECK_EQUAL(name.data_pathname(), geoneric::Path("path/to"));
     }
 }
 

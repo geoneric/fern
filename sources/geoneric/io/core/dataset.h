@@ -1,94 +1,68 @@
 #pragma once
+#include <memory>
 #include "geoneric/core/string.h"
+#include "geoneric/feature/core/feature.h"
+#include "geoneric/io/core/open_mode.h"
 
 
 namespace geoneric {
 
-class Feature;
-
-//! Abstract base class for data sets.
+//! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
-  A data set is a format specific instance containing information about the
-  data set. For example, it may contain/cache a file pointer that is used when
-  the data set is used for I/O. A data set is conceptually similar to a file,
-  but may consist of multiple files.
+  longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 
   \sa        .
 */
 class Dataset
 {
 
-    friend class DatasetTest;
-
 public:
+
+    //! Return the number of features in the dataset.
+    /*!
+        Nested features are not included in the count.
+    */
+    virtual size_t nr_features         () const=0;
+
+    virtual bool   contains_feature    (String const& name) const=0;
+
+    virtual bool   contains_attribute  (String const& name) const=0;
+
+    virtual std::shared_ptr<Feature> read_feature(
+                                        String const& name) const=0;
+
+    virtual std::shared_ptr<Attribute> read_attribute(
+                                        String const& name) const=0;
+
+    virtual void   write_attribute     (Attribute const& attribute,
+                                        String const& name) const=0;
+
+protected:
+
+                   Dataset             (String const& name,
+                                        OpenMode open_mode);
 
                    Dataset             (Dataset const&)=delete;
 
     Dataset&       operator=           (Dataset const&)=delete;
 
-    virtual        ~Dataset            ();
+                   Dataset             (Dataset&&)=delete;
+
+    Dataset&       operator=           (Dataset&&)=delete;
+
+    virtual        ~Dataset            ()=default;
 
     String const&  name                () const;
 
-    //! Return the number of features available in the data set.
-    /*!
-      \return    Number of features.
-    */
-    virtual size_t nr_features         () const=0;
-
-    //! Return feature with id \a i.
-    /*!
-      \return    Feature.
-    */
-    virtual Feature* feature           (size_t i) const=0;
-
-    //! Return feature with name \a name.
-    /*!
-      \return    Feature.
-    */
-    virtual Feature* feature           (String const& name) const=0;
-
-    //! Add \a feature to the data set.
-    /*!
-      \param     feature Feature to add to the data set.
-    */
-    virtual void   add_feature         (Feature const& feature)=0;
-
-    //! Copy all features from \a dataset.
-    /*!
-      \param     dataset Data set to copy.
-    */
-    virtual void   copy                (Dataset const& dataset)=0;
-
-    //! Return whether feature \a name is present.
-    /*!
-      \param     name Name of feature.
-      \return    true or false
-    */
-    virtual bool   exists              (String const& name) const=0;
-
-    //! Remove feature \a name.
-    /*!
-      \param     name Name of feature to remove.
-      \warning   It is assumed that feature \a name is present in the data set.
-      \sa        exists(String const&)
-    */
-    virtual void   remove              (String const& name)=0;
-
 protected:
 
-                   Dataset             (String const& name);
+    OpenMode       open_mode           () const;
 
 private:
 
-    //! Name of data set.
     String         _name;
 
-    //! Copy \a feature.
-    /*!
-      \param     feature Feature to copy.
-    */
-    virtual void   copy                (Feature const& feature)=0;
+    OpenMode       _open_mode;
 
 };
 

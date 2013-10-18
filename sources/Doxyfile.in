@@ -6,10 +6,6 @@ ${DOXYGEN_TEMPLATE}
 EXCLUDE_PATTERNS        = *_test.cc \
                           ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/tmp/*/*.h \
                           ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/tmp/*/*.cc \
-                          ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/io/core/*.h \
-                          ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/io/core/*.cc \
-                          ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/io/hdf5/*.h \
-                          ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/io/hdf5/*.cc \
                           ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/io/netcdf/*.h \
                           ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/io/netcdf/*.cc \
                           ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/io/ogr/*.h \
