@@ -183,11 +183,25 @@ bool String::operator==(
 }
 
 
+bool String::operator!=(
+    String const& string) const
+{
+    return UnicodeString::operator!=(string);
+}
+
+
 String& String::operator+=(
     String const& string)
 {
     UnicodeString::operator+=(string);
     return *this;
+}
+
+
+bool String::starts_with(
+    String const& string) const
+{
+    return UnicodeString::startsWith(string);
 }
 
 
@@ -218,17 +232,15 @@ String& String::strip_begin(
 String& String::strip_end(
     String const& characters)
 {
-    if(!is_empty()) {
-        int32_t index = length() - 1;
+    int32_t index = length() - 1;
 
-        while(index >= 0 && characters.indexOf(charAt(index)) != -1) {
-            --index;
-        }
-
-        assert(index >= 0);
-        assert(index < length());
-        remove(index + 1, length());
+    while(index >= 0 && characters.indexOf(charAt(index)) != -1) {
+        --index;
     }
+
+    assert(index >= -1);
+    assert(index < length());
+    remove(index + 1, length());
 
     return *this;
 }
@@ -251,6 +263,13 @@ String& String::strip(
         strip_end(characters);
     }
     return *this;
+}
+
+
+bool String::contains(
+    String const& string) const
+{
+    return indexOf(string) != -1;
 }
 
 

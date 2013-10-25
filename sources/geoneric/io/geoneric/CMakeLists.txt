@@ -5,6 +5,8 @@ SET(SOURCES
     geoneric_dataset
     geoneric_driver
     hdf5_client
+    hdf5_type_class_traits
+    hdf5_type_traits
     utils
 )
 ADD_LIBRARY(geoneric_io_geoneric
@@ -12,7 +14,7 @@ ADD_LIBRARY(geoneric_io_geoneric
 )
 TARGET_LINK_LIBRARIES(geoneric_io_geoneric
     geoneric_io_core
-    # geoneric_feature_visitor
+    geoneric_feature_visitor
     geoneric_feature_core
     ${HDF5_LIBRARIES}
 )

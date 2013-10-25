@@ -21,7 +21,7 @@ std::vector<std::shared_ptr<Argument>> write(
     DataName data_name(name);
     std::shared_ptr<Dataset> dataset;
 
-    if(!dataset_exists(data_name.database_pathname(), OpenMode::OVERWRITE,
+    if(!dataset_exists(data_name.database_pathname(), OpenMode::UPDATE,
             format_name)) {
         dataset = create_dataset(data_attribute, data_name.database_pathname(),
             format_name);
@@ -33,10 +33,10 @@ std::vector<std::shared_ptr<Argument>> write(
 
     String attribute_name = data_name.data_pathname();
 
-    if(attribute_name == "/") {
-        // Short hand notation is used for the attribute name.
-        attribute_name = Path(data_name.database_pathname()).stem();
-    }
+    // if(attribute_name == "/") {
+    //     // Short hand notation is used for the attribute name.
+    //     attribute_name = Path(data_name.database_pathname()).stem();
+    // }
 
     assert(dataset);
     dataset->write_attribute(data_attribute, attribute_name);

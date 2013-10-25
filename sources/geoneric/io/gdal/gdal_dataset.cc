@@ -154,37 +154,41 @@ size_t GDALDataset::nr_features() const
 
 
 bool GDALDataset::contains_feature(
-    String const& name) const
+    Path const& path) const
 {
-    // GDAL raster datasets contain the root feature, but no sub-features.
-    return name == "/";
+    // GDAL raster datasets contain one root feature, but no sub-features.
+    // /<raster>
+    return path == String("/") + String(Path(this->name()).stem());
 }
 
 
 bool GDALDataset::contains_attribute(
-    String const& name) const
+    Path const& path) const
 {
     // The name of the one attribute in a GDAL raster equals the name of the
-    // dataset without leading path and extension.
-    return String(Path(this->name()).stem()) == name;
+    // dataset without leading path and extension. It is prefixed by the path
+    // to the feature, which is also named after the raster.
+    // /<raster>/<raster>
+    return Path("/" + String(Path(this->name()).stem()) + "/" +
+        String(Path(this->name()).stem())) == path;
 }
 
 
 std::shared_ptr<Feature> GDALDataset::read_feature(
-    String const& name) const
+    Path const& path) const
 {
-    if(!contains_feature(name)) {
+    if(!contains_feature(path)) {
         throw IOError(this->name(),
             Exception::messages().format_message(
-                MessageId::DOES_NOT_CONTAIN_FEATURE, name));
+                MessageId::DOES_NOT_CONTAIN_FEATURE, path));
     }
 
-    String attribute_name = Path(this->name()).stem();
-    assert(contains_attribute(attribute_name));
+    Path attribute_path = path + "/" + Path(this->name()).stem();
+    assert(contains_attribute(attribute_path));
 
     std::shared_ptr<Feature> feature(new Feature());
-    feature->add_attribute(attribute_name, std::dynamic_pointer_cast<Attribute>(
-        read_attribute(attribute_name)));
+    feature->add_attribute(String(attribute_path.filename()),
+        std::dynamic_pointer_cast<Attribute>(read_attribute(attribute_path)));
 
     return feature;
 }
@@ -263,14 +267,14 @@ std::shared_ptr<Attribute> GDALDataset::read_attribute(
 
 
 std::shared_ptr<Attribute> GDALDataset::read_attribute(
-    String const& name) const
+    Path const& path) const
 {
     assert(_dataset);
 
-    if(!contains_attribute(name)) {
+    if(!contains_attribute(path)) {
         throw IOError(this->name(),
             Exception::messages().format_message(
-                MessageId::DOES_NOT_CONTAIN_ATTRIBUTE, name));
+                MessageId::DOES_NOT_CONTAIN_ATTRIBUTE, path));
     }
 
     // Assume we need the first band only.
@@ -314,37 +318,37 @@ std::shared_ptr<Attribute> GDALDataset::read_attribute(
             throw IOError(this->name(),
                 Exception::messages().format_message(
                     MessageId::UNSUPPORTED_VALUE_TYPE,
-                    name, GDALDataTypeTraits<GDT_CInt16>::name));
+                    path, GDALDataTypeTraits<GDT_CInt16>::name));
         }
         case GDT_CInt32: {
             throw IOError(this->name(),
                 Exception::messages().format_message(
                     MessageId::UNSUPPORTED_VALUE_TYPE,
-                    name, GDALDataTypeTraits<GDT_CInt32>::name));
+                    path, GDALDataTypeTraits<GDT_CInt32>::name));
         }
         case GDT_CFloat32: {
             throw IOError(this->name(),
                 Exception::messages().format_message(
                     MessageId::UNSUPPORTED_VALUE_TYPE,
-                    name, GDALDataTypeTraits<GDT_CFloat32>::name));
+                    path, GDALDataTypeTraits<GDT_CFloat32>::name));
         }
         case GDT_CFloat64: {
             throw IOError(this->name(),
                 Exception::messages().format_message(
                     MessageId::UNSUPPORTED_VALUE_TYPE,
-                    name, GDALDataTypeTraits<GDT_CFloat64>::name));
+                    path, GDALDataTypeTraits<GDT_CFloat64>::name));
         }
         case GDT_TypeCount: {
             throw IOError(this->name(),
                 Exception::messages().format_message(
                     MessageId::UNSUPPORTED_VALUE_TYPE,
-                    name, GDALDataTypeTraits<GDT_TypeCount>::name));
+                    path, GDALDataTypeTraits<GDT_TypeCount>::name));
         }
         case GDT_Unknown: {
             throw IOError(this->name(),
                 Exception::messages().format_message(
                     MessageId::UNSUPPORTED_VALUE_TYPE,
-                    name, GDALDataTypeTraits<GDT_Unknown>::name));
+                    path, GDALDataTypeTraits<GDT_Unknown>::name));
         }
     }
 
@@ -357,13 +361,14 @@ template<
     class T>
 void GDALDataset::write_attribute(
     FieldAttribute<T> const& field,
-    String const& name) const
+    Path const& path)
 {
     // It is assumed that the layered dataset is dimensioned correctly and
     // ready to receive values from the field attribute.
     assert(open_mode() == OpenMode::OVERWRITE ||
         open_mode() == OpenMode::UPDATE);
-    assert(contains_attribute(Path(name).stem()));
+    assert(contains_feature(path.parent_path()));
+    assert(contains_attribute(path));
     assert(_dataset);
     assert(_dataset->GetRasterCount() == 1);
 
@@ -434,13 +439,13 @@ void GDALDataset::write_attribute(
 case value_type: {                                                             \
     write_attribute(                                                           \
         dynamic_cast<FieldAttribute<                                           \
-            ValueTypeTraits<value_type>::type> const&>(attribute), name);      \
+            ValueTypeTraits<value_type>::type> const&>(attribute), path);      \
     break;                                                                     \
 }
 
 void GDALDataset::write_attribute(
     Attribute const& attribute,
-    String const& name) const
+    Path const& path)
 {
     AttributeTypeVisitor visitor;
     attribute.Accept(visitor);

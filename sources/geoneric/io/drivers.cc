@@ -24,8 +24,16 @@ static std::vector<std::shared_ptr<Driver>> drivers_to_try(
         drivers.push_back(geoneric::drivers.at(format));
     }
     else {
+        // Make sure the Geoneric driver is added first. GDAL may otherwise
+        // think it can read Geoneric formatted files, which it can't.
+        if(geoneric::drivers.find("Geoneric") != geoneric::drivers.end()) {
+            drivers.push_back(geoneric::drivers.at("Geoneric"));
+        }
+
         for(auto driver: geoneric::drivers) {
-            drivers.push_back(driver.second);
+            if(driver.second->name() != "Geoneric") {
+                drivers.push_back(driver.second);
+            }
         }
     }
 

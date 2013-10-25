@@ -1,0 +1,8 @@
+test_data_dir="${PROJECT_SOURCE_DIR}/data/tests"
+binary_dir="${CMAKE_CURRENT_BINARY_DIR}/sources/geoneric"
+cmake="${CMAKE_COMMAND}"
+
+
+interpreter_test_dir="$binary_dir/interpreter/test"
+$cmake -E remove -f $interpreter_test_dir/output_dataset.map
+$cmake -E remove -f $interpreter_test_dir/earth.gnr

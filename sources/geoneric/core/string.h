@@ -55,6 +55,8 @@ public:
 
     bool           operator==          (String const& string) const;
 
+    bool           operator!=          (String const& string) const;
+
     String&        operator+=          (String const& string);
 
     std::string    encode_in_utf8      () const;
@@ -63,9 +65,13 @@ public:
 
     bool           is_empty            () const;
 
+    bool           starts_with         (String const& string) const;
+
     bool           ends_with           (String const& string) const;
 
     String&        strip               (String const& characters=String());
+
+    bool           contains            (String const& string) const;
 
     String&        replace             (String const& old_string,
                                         String const& new_string);

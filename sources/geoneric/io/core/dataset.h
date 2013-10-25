@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include "geoneric/core/path.h"
 #include "geoneric/core/string.h"
 #include "geoneric/feature/core/feature.h"
 #include "geoneric/io/core/open_mode.h"
@@ -24,18 +25,18 @@ public:
     */
     virtual size_t nr_features         () const=0;
 
-    virtual bool   contains_feature    (String const& name) const=0;
+    virtual bool   contains_feature    (Path const& path) const=0;
 
-    virtual bool   contains_attribute  (String const& name) const=0;
+    virtual bool   contains_attribute  (Path const& path) const=0;
 
     virtual std::shared_ptr<Feature> read_feature(
-                                        String const& name) const=0;
+                                        Path const& path) const=0;
 
     virtual std::shared_ptr<Attribute> read_attribute(
-                                        String const& name) const=0;
+                                        Path const& path) const=0;
 
     virtual void   write_attribute     (Attribute const& attribute,
-                                        String const& name) const=0;
+                                        Path const& path)=0;
 
 protected:
 

@@ -25,12 +25,13 @@ BOOST_AUTO_TEST_CASE(raster_1)
 {
     geoneric::GDALDataset dataset("raster-1.asc", geoneric::OpenMode::READ);
     BOOST_CHECK_EQUAL(dataset.nr_features(), 1u);
-    BOOST_CHECK(dataset.contains_feature("/"));
-    BOOST_CHECK(dataset.contains_attribute("raster-1"));
+    BOOST_CHECK(dataset.contains_feature("/raster-1"));
+    BOOST_CHECK(dataset.contains_attribute("/raster-1/raster-1"));
 
     // Read the feature containing the attribute.
     {
-        std::shared_ptr<geoneric::Feature> feature = dataset.read_feature("/");
+        std::shared_ptr<geoneric::Feature> feature = dataset.read_feature(
+            "/raster-1");
         BOOST_REQUIRE(feature);
         BOOST_CHECK_EQUAL(feature->nr_attributes(), 1u);
         BOOST_CHECK(feature->contains_attribute("raster-1"));
@@ -65,7 +66,7 @@ BOOST_AUTO_TEST_CASE(raster_1)
     {
         geoneric::FieldAttributePtr<int32_t> attribute =
             std::dynamic_pointer_cast<geoneric::FieldAttribute<int32_t>>(
-                dataset.read_attribute("raster-1"));
+                dataset.read_attribute("/raster-1/raster-1"));
         BOOST_REQUIRE(attribute);
         BOOST_REQUIRE_EQUAL(attribute->size(), 1u);
 
@@ -95,12 +96,13 @@ BOOST_AUTO_TEST_CASE(raster_2)
 {
     geoneric::GDALDataset dataset("raster-2.asc", geoneric::OpenMode::READ);
     BOOST_CHECK_EQUAL(dataset.nr_features(), 1u);
-    BOOST_CHECK(dataset.contains_feature("/"));
-    BOOST_CHECK(dataset.contains_attribute("raster-2"));
+    BOOST_CHECK(dataset.contains_feature("/raster-2"));
+    BOOST_CHECK(dataset.contains_attribute("/raster-2/raster-2"));
 
     // Read the feature containing the attribute.
     {
-        std::shared_ptr<geoneric::Feature> feature = dataset.read_feature("/");
+        std::shared_ptr<geoneric::Feature> feature = dataset.read_feature(
+            "/raster-2");
         BOOST_REQUIRE(feature);
         BOOST_CHECK_EQUAL(feature->nr_attributes(), 1u);
         BOOST_CHECK(feature->contains_attribute("raster-2"));

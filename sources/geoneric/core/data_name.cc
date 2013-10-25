@@ -5,7 +5,9 @@
 namespace geoneric {
 
 static UErrorCode status;
-static RegexMatcher matcher("([^:]+)(?::(?!/)(.+)?)?", 0, status);
+// No starting /:
+// static RegexMatcher matcher("([^:]+)(?::(?!/)(.+)?)?", 0, status);
+static RegexMatcher matcher("([^:]+)(?::(.+)?)?", 0, status);
 
 DataName::DataName(
     String const& string)
@@ -35,20 +37,26 @@ DataName::DataName(
         assert(!U_FAILURE(status));
     }
 
+    // Remove trailing occurences of path separator.
+    // Replace double occurences of path separator by single ones.
+    data_pathname.strip_end("/");
+
+    // Loop, otherwise /// will result in //, instead of /, for example.
+    while(data_pathname.contains("//")) {
+        data_pathname.replace("//", "/");
+    }
+
     if(data_pathname.is_empty()) {
         data_pathname = "/";
     }
-
-    std::cout << data_pathname << std::endl;
-
-    // Remove starting and trailing occurences of path separator.
-    // Replace double occurences of path separator by single ones.
-    data_pathname.strip("/").replace("//", "/");
+    else if(!data_pathname.starts_with("/")) {
+        data_pathname = "/" + data_pathname;
+    }
 
     _database_pathname = database_pathname;
     _data_pathname = data_pathname;
 
-    // assert(_data_pathname.is_absolute());
+    assert(_data_pathname.is_absolute());
 }
 
 

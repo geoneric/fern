@@ -44,18 +44,18 @@ public:
 
     size_t         nr_features         () const;
 
-    bool           contains_feature    (String const& name) const;
+    bool           contains_feature    (Path const& path) const;
 
-    bool           contains_attribute  (String const& name) const;
+    bool           contains_attribute  (Path const& path) const;
 
     std::shared_ptr<Feature> read_feature(
-                                        String const& name) const;
+                                        Path const& path) const;
 
     std::shared_ptr<Attribute> read_attribute(
-                                        String const& name) const;
+                                        Path const& path) const;
 
     void           write_attribute     (Attribute const& attribute,
-                                        String const& name) const;
+                                        Path const& path);
 
 private:
 
@@ -80,7 +80,7 @@ private:
     template<
         class T>
     void           write_attribute     (FieldAttribute<T> const& field,
-                                        String const& name) const;
+                                        Path const& path);
 
 };
 

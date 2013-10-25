@@ -33,7 +33,7 @@ public:
 
     size_t         nr_features         () const;
 
-    size_t         nr_features         (Path const& feature_path) const;
+    size_t         nr_features         (Path const& path) const;
 
     std::vector<String> feature_names  () const;
 
@@ -47,11 +47,11 @@ public:
 
     size_t         nr_attributes       () const;
 
-    size_t         nr_attributes       (Path const& feature_path) const;
+    size_t         nr_attributes       (Path const& path) const;
 
     std::vector<String> attribute_names() const;
 
-    bool           contains_attribute  (Path const& attribute_path) const;
+    bool           contains_attribute  (Path const& path) const;
 
     void           add_attribute       (Path const& path,
                                         std::shared_ptr<Attribute> const&
@@ -67,6 +67,10 @@ private:
     std::map<String, std::shared_ptr<Attribute>> _attributes;
 
     std::shared_ptr<Feature> feature   (std::vector<String> names) const;
+
+    Feature const* parent_feature      (Path const& path) const;
+
+    Feature*       parent_feature      (Path const& path);
 
 };
 

@@ -73,6 +73,22 @@ BOOST_AUTO_TEST_CASE(replace)
 
     string = geoneric::String("<string>").replace("<", "&lt;");
     BOOST_CHECK_EQUAL(string, "&lt;string>");
+
+    string = geoneric::String("//").replace("//", "/");
+    BOOST_CHECK_EQUAL(string, "/");
+
+    string = geoneric::String("///").replace("//", "/");
+    BOOST_CHECK_EQUAL(string, "//");
+
+    string = geoneric::String("////").replace("//", "/");
+    BOOST_CHECK_EQUAL(string, "//");
+}
+
+
+BOOST_AUTO_TEST_CASE(contains)
+{
+    BOOST_CHECK( geoneric::String("<string>").contains("<"));
+    BOOST_CHECK(!geoneric::String("string>").contains("<"));
 }
 
 
@@ -100,6 +116,24 @@ BOOST_AUTO_TEST_CASE(split)
     BOOST_REQUIRE_EQUAL(words.size(), 2u);
     BOOST_CHECK_EQUAL(words[0], "ab");
     BOOST_CHECK_EQUAL(words[1], "cd");
+}
+
+
+BOOST_AUTO_TEST_CASE(encode_in_default_encoding)
+{
+    geoneric::String string;
+
+    string = "";
+    BOOST_CHECK_EQUAL(string.encode_in_default_encoding(), std::string(""));
+}
+
+
+BOOST_AUTO_TEST_CASE(encode_in_utf8)
+{
+    geoneric::String string;
+
+    string = "";
+    BOOST_CHECK_EQUAL(string.encode_in_utf8(), std::string(""));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

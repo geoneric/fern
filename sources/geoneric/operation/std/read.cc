@@ -22,6 +22,7 @@ std::vector<std::shared_ptr<Argument>> read(
     DataName name(value.values().value());
     std::shared_ptr<Dataset> dataset(open_dataset(name.database_pathname(),
         OpenMode::READ));
+    assert(dataset);
 
     // Dataset is open, first find out where name.data_pathname is pointing
     // to: feature or attribute. Then request either a feature or an attribute.

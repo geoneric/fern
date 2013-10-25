@@ -30,7 +30,7 @@ public:
 
 protected:
 
-                   Driver             ()=default;
+                   Driver             (String const& name);
 
                    Driver             (Driver const&)=delete;
 
@@ -42,7 +42,13 @@ protected:
 
     virtual        ~Driver            ()=default;
 
+public:
+
+    String const&  name               () const;
+
 private:
+
+    String         _name;
 
 };
 

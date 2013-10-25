@@ -44,6 +44,9 @@ private:
 
     bool           can_open_for_read   (String const& name);
 
+    bool           can_open_for_overwrite(
+                                        String const& name);
+
     bool           can_open_for_update (String const& name);
 
 };

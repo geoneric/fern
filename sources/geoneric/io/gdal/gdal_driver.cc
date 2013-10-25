@@ -15,17 +15,16 @@ typedef std::unique_ptr<::GDALDataset, decltype(deleter)> GDALDatasetPtr;
 
 
 GDALDriver::GDALDriver(
-    String const& format)
+    String const& name)
 
-    : Driver(),
-      _format(format),
+    : Driver(name),
       _driver(GetGDALDriverManager()->GetDriverByName(
-          format.encode_in_default_encoding().c_str()))
+          name.encode_in_default_encoding().c_str()))
 
 {
     if(!_driver) {
         // TODO Driver not available.
-        std::cout << "format: " << format << std::endl;
+        std::cout << "name: " << name << std::endl;
         assert(false);
     }
 }
@@ -34,8 +33,7 @@ GDALDriver::GDALDriver(
 GDALDriver::GDALDriver(
     ::GDALDriver* driver)
 
-    : Driver(),
-      _format(driver->GetDescription()),
+    : Driver(driver->GetDescription()),
       _driver(driver)
 
 {

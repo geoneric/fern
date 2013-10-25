@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_CASE(feature)
             std::make_shared<geoneric::ConstantAttribute<double>>(9.80665));
         BOOST_CHECK_EQUAL(earth.nr_features(), 0u);
         BOOST_CHECK_EQUAL(earth.nr_attributes(), 1u);
-        BOOST_CHECK(!earth.contains_attribute("acceleration"));
+        BOOST_CHECK(earth.contains_attribute("acceleration"));
 
         // Add continents child-feature.
         earth.add_feature("continents", std::make_shared<geoneric::Feature>());
@@ -28,13 +28,13 @@ BOOST_AUTO_TEST_CASE(feature)
         BOOST_CHECK_EQUAL(earth.nr_attributes(), 1u);
 
         // Add attribute that is global to all continents.
-        earth.add_attribute("continents/is_land",
+        earth.add_attribute("/continents/is_land",
             std::make_shared<geoneric::ConstantAttribute<bool>>(true));
         BOOST_CHECK_EQUAL(earth.nr_features(), 1u);
         BOOST_CHECK_EQUAL(earth.nr_attributes(), 1u);
         BOOST_CHECK_EQUAL(earth.nr_features("continents"), 0u);
         BOOST_CHECK_EQUAL(earth.nr_attributes("continents"), 1u);
-        BOOST_CHECK_EQUAL(earth.contains_attribute("continents/is_land"), 1u);
+        BOOST_CHECK(earth.contains_attribute("continents/is_land"));
     }
 
     // Planets feature. Attributes are stored per planet (a point in space).

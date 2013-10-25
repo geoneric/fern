@@ -9,20 +9,15 @@ namespace geoneric {
 
 GeonericDriver::GeonericDriver()
 
-    : Driver()
+    : Driver("Geoneric")
 
 {
 }
 
 
 bool GeonericDriver::can_open_for_read(
-    String const& /* name */)
+    String const& name)
 {
-    // GDALOpenInfo open_info(name.encode_in_default_encoding().c_str(),
-    //     GA_ReadOnly);
-    // return _driver->pfnOpen(&open_info) != nullptr;
-
-
     // bool result = false;
 
     // try {
@@ -34,18 +29,42 @@ bool GeonericDriver::can_open_for_read(
 
     // return result;
 
-    return false;
+    bool result = false;
+
+    try {
+        open_file(name, OpenMode::READ);
+        result = true;
+    }
+    catch(...) {
+    }
+
+    return result;
+}
+
+
+bool GeonericDriver::can_open_for_overwrite(
+    String const& name)
+{
+    // Don't use OVERWRITE here. It will create a new file.
+    // return static_cast<bool>(open_file(name, OpenMode::UPDATE));
+
+    return can_open_for_update(name);
 }
 
 
 bool GeonericDriver::can_open_for_update(
-    String const& /* name */)
+    String const& name)
 {
-    // GDALOpenInfo open_info(name.encode_in_default_encoding().c_str(),
-    //     GA_Update);
-    // return _driver->pfnOpen(&open_info) != nullptr;
+    bool result = false;
 
-    return false;
+    try {
+        open_file(name, OpenMode::UPDATE);
+        result = true;
+    }
+    catch(...) {
+    }
+
+    return result;
 }
 
 
@@ -53,10 +72,25 @@ bool GeonericDriver::can_open(
     String const& name,
     OpenMode open_mode)
 {
-    return open_mode == OpenMode::READ
-        ? can_open_for_read(name)
-        : can_open_for_update(name)
-        ;
+    // return static_cast<bool>(open_file(name, open_mode));
+    bool result = false;
+
+    switch(open_mode) {
+        case OpenMode::READ: {
+            result = can_open_for_read(name);
+            break;
+        }
+        case OpenMode::OVERWRITE: {
+            result = can_open_for_overwrite(name);
+            break;
+        }
+        case OpenMode::UPDATE: {
+            result = can_open_for_update(name);
+            break;
+        }
+    }
+
+    return result;
 }
 
 
@@ -69,10 +103,14 @@ bool GeonericDriver::exists(
 
 
 std::shared_ptr<Dataset> GeonericDriver::open(
-    String const& /* name */,
-    OpenMode /* open_mode */)
+    String const& name,
+    OpenMode open_mode)
 {
     std::shared_ptr<Dataset> result;
+
+    if(can_open(name, open_mode)) {
+        result = std::shared_ptr<Dataset>(new GeonericDataset(name, open_mode));
+    }
 
     return result;
 }

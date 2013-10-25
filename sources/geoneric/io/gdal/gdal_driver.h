@@ -19,7 +19,7 @@ class GDALDriver:
 
 public:
 
-                   GDALDriver          (String const& format);
+                   GDALDriver          (String const& name);
 
                    GDALDriver          (::GDALDriver* driver);
 
@@ -43,8 +43,6 @@ public:
                                         String const& name);
 
 private:
-
-    String         _format;
 
     ::GDALDriver*  _driver;
 

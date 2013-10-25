@@ -5,9 +5,9 @@ namespace geoneric {
 
 IOClient::IOClient()
 
-    : GDALClient(),
-      HDF5Client(),
-      GeonericClient()
+    : HDF5Client(),
+      GeonericClient(),
+      GDALClient()
 
 {
 }

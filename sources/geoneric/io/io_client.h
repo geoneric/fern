@@ -14,9 +14,9 @@ namespace geoneric {
 */
 class IOClient:
     // Order matters.
-    public GDALClient,
     public HDF5Client,
-    public GeonericClient
+    public GeonericClient,
+    public GDALClient
 {
 
 public:

@@ -312,9 +312,15 @@ BOOST_AUTO_TEST_CASE(execute_read_with_raster_input)
     // Read feature.
     {
         interpreter.clear_stack();
-        geoneric::String script = "read(\"raster-1.asc\")";
+        geoneric::String script = "read(\"raster-1.asc:raster-1\")";
         tree = interpreter.parse_string(script);
         interpreter.execute(tree);
+try {
+}
+catch(geoneric::Exception const& exception) {
+    std::cout << exception.message() << std::endl;
+    BOOST_CHECK(false);
+}
 
         std::stack<std::shared_ptr<geoneric::Argument>> stack(
             interpreter.stack());
@@ -368,7 +374,7 @@ BOOST_AUTO_TEST_CASE(execute_read_with_raster_input)
     // Read attribute.
     {
         interpreter.clear_stack();
-        geoneric::String script = "read(\"raster-1.asc:raster-1\")";
+        geoneric::String script = "read(\"raster-1.asc:raster-1/raster-1\")";
         tree = interpreter.parse_string(script);
         interpreter.execute(tree);
 
@@ -479,7 +485,8 @@ BOOST_AUTO_TEST_CASE(execute_abs_with_raster_input)
     geoneric::ModuleVertexPtr tree;
 
     {
-        geoneric::String script = "abs(read(\"raster-1.asc:raster-1\"))";
+        geoneric::String script =
+            "abs(read(\"raster-1.asc:raster-1/raster-1\"))";
         tree = interpreter.parse_string(script);
         interpreter.execute(tree);
 
@@ -539,11 +546,11 @@ BOOST_AUTO_TEST_CASE(execute_write_with_raster_input)
         // the values.
         geoneric::String script =
             "format = \"HFA\"\n"
-            "attribute_name = \"output_dataset.map\"\n"
-            "raster1 = read(\"raster-1.asc:raster-1\")\n"
+            "attribute_name = \"output_dataset.map:output_dataset/output_dataset\"\n"
+            "raster1 = read(\"raster-1.asc:raster-1/raster-1\")\n"
             "raster2 = abs(raster1)\n"
             "write(raster2, attribute_name, format)\n"
-            "read(\"output_dataset.map:output_dataset\")\n"
+            "read(\"output_dataset.map:output_dataset/output_dataset\")\n"
             ;
         tree = interpreter.parse_string(script);
         interpreter.execute(tree);
@@ -615,19 +622,14 @@ BOOST_AUTO_TEST_CASE(execute_read_with_constant_input)
         // the values.
         geoneric::String script = R"(
 format = "Geoneric"
-attribute_name = "earth.gravity"
+attribute_name = "earth.gnr:earth/gravity"
 gravity = -9.8
 write(gravity, attribute_name, format)
 gravity = read(attribute_name))";
         tree = interpreter.parse_string(script);
-        try {
         interpreter.execute(tree);
-        }
-        catch(geoneric::Exception const& exception) {
-            std::cout << exception.message() << std::endl;
-        }
-        BOOST_CHECK(false);
 
+        // hier verder
         // std::stack<std::shared_ptr<geoneric::Argument>> stack(
         //     interpreter.stack());
         // BOOST_CHECK_EQUAL(stack.size(), 1u);
