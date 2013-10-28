@@ -6,7 +6,7 @@
 
 namespace {
 
-//! Encodes a copy of \a string using UTF8 encoding and returns the result.
+//! Encode a copy of \a string using UTF8 encoding and return the result.
 /*!
   \param     string Unicode string to encode.
   \return    A copy of \a string encoded in UTF8.
@@ -40,6 +40,11 @@ std::string encode_in_utf8(
 }
 
 
+//! Encode a copy of \a string using the current encoding and return the result.
+/*!
+  \param     string Unicode string to encode.
+  \return    A copy of \a string encoded in the current encoding.
+*/
 std::string encode_in_default_encoding(
     UnicodeString const& string)
 {
@@ -60,10 +65,10 @@ std::string encode_in_default_encoding(
 }
 
 
-//! Decodes \a string from UTF8 encoding and returns the result.
+//! Decode \a string from UTF8 encoding and return the result.
 /*!
   \param     string Array of Unicode characters encoded in UTF8.
-  \return    Unicode string
+  \return    Unicode string.
 */
 UnicodeString decode_from_utf8(
     std::string const& string)
@@ -128,6 +133,13 @@ String::String(
 }
 
 
+//! Constructor.
+/*!
+  \param     string String to copy into the new string.
+
+  This constructor is private because we don't want clients to depend on
+  the fact that this class inherits from UnicodeString.
+*/
 String::String(
     UnicodeString const& string)
 
@@ -151,18 +163,31 @@ String::String(
 }
 
 
+//! Return a copy of the instance encoded in UTF8.
+/*!
+  \return    UTF8 encoded copy of this string.
+  \sa        encode_in_default_encoding()
+*/
 std::string String::encode_in_utf8() const
 {
     return ::encode_in_utf8(*this);
 }
 
 
+//! Return a copy of the instance encoded in the default encoding.
+/*!
+  \return    Default encoded copy of this string.
+  \sa        encode_in_utf8()
+*/
 std::string String::encode_in_default_encoding() const
 {
     return ::encode_in_default_encoding(*this);
 }
 
 
+//! Return whether the string is empty.
+/*!
+*/
 bool String::is_empty() const
 {
     return UnicodeString::isEmpty();
@@ -198,6 +223,10 @@ String& String::operator+=(
 }
 
 
+//! Return whether this string starts with \a string.
+/*!
+  \param     string String to compare.
+*/
 bool String::starts_with(
     String const& string) const
 {
@@ -205,6 +234,10 @@ bool String::starts_with(
 }
 
 
+//! Return whether this string ends with \a string.
+/*!
+  \param     string String to compare.
+*/
 bool String::ends_with(
     String const& string) const
 {
@@ -212,6 +245,11 @@ bool String::ends_with(
 }
 
 
+//! Strip characters from \a characters from the begin of the string.
+/*!
+  \param     characters String with characters to strip.
+  \return    Reference to *this.
+*/
 String& String::strip_begin(
     String const& characters)
 {
@@ -229,6 +267,11 @@ String& String::strip_begin(
 }
 
 
+//! Strip characters from \a characters from the end of the string.
+/*!
+  \param     characters String with characters to strip.
+  \return    Reference to *this.
+*/
 String& String::strip_end(
     String const& characters)
 {
@@ -246,9 +289,9 @@ String& String::strip_end(
 }
 
 
-//! Trim characters from the start and end of the string.
+//! Strip characters from the start and end of the string.
 /*!
-  \param     characters String with characters to trim. If empty, whitespace
+  \param     characters String with characters to strip. If empty, whitespace
              characters are trimmed.
   \return    Reference to this.
 */
@@ -266,6 +309,10 @@ String& String::strip(
 }
 
 
+//! Return whether this string contains \a string.
+/*!
+  \param     string String to search for.
+*/
 bool String::contains(
     String const& string) const
 {
@@ -273,6 +320,19 @@ bool String::contains(
 }
 
 
+//! Replace all occurences of \a old_string with \a new_string.
+/*!
+  \param     old_string String to search for.
+  \param     new_string String to insert if \a old_string is found.
+  \return    Reference to *this.
+  \warning   If, after replacing \a old_string by \a new_string, a new
+             occurence of \a old_string is introduced, this occurence is not
+             replaced. For example, if you want to replace all
+             occurences of two slasheѕ by one slash, then the string a///b is
+             updated to a//b, not a/b. Use a loop and contains(String const&)
+             if you want to be sure that the result doesn't contain an
+             occurence of \a old_string.
+*/
 String& String::replace(
     String const& old_string,
     String const& new_string)
@@ -282,6 +342,12 @@ String& String::replace(
 }
 
 
+//! Return the concatenation of \a lhs and \a rhs.
+/*!
+  \param     lhs Left hand side string.
+  \param     rhs Righ hand side string.
+  \return    New string.
+*/
 String operator+(
     String const& lhs,
     String const& rhs)
@@ -309,6 +375,17 @@ std::ostream& operator<<(
 }
 
 
+//! Join all \a strings, inserting \a separator inbetween the strings, and return the result.
+/*!
+  \param     strings String to join.
+  \param     separator String to insert inbetween the strings.
+  \return    New string.
+
+  Comparable to this Python code:
+  \code
+  separator.join(strings)
+  \endcode
+*/
 String join(
     std::vector<String> const& strings,
     String const& separator)
@@ -327,6 +404,15 @@ String join(
 }
 
 
+//! Split this string by \a characters and return the result.
+/*!
+  \param     characters Characters to split string by. If this string is empty,
+             the string is split by whitespace characters.
+  \return    Vector with strings.
+  \warning   The \a characters passed in are used in a regular expression,
+             where the string of characters is put in a bracket expression.
+             It is assumed this results in a valid regular expression.
+*/
 std::vector<String> String::split(
     String characters) const
 {

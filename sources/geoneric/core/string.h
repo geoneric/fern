@@ -8,15 +8,18 @@ namespace geoneric {
 
 //! Unicode string class.
 /*!
+  This class supports encoding and decoding strings using two encodings: UTF8
+  and the default encoding. This latter encoding is the current configured
+  platform encoding. UTF8 should be used for strings that are passed around
+  internally. The default encoding must be used when string data is obtained
+  from or returned to the external context of the software (eg: standard
+  output and input streams).
 
   \todo When converting to / from default encoding, the character type
         depends on the OS. char for ISO/IEC 9945, wchar_t for Windows
         Compare with boost::filesystem's path. Add compile-time checks for
         this.
 */
-// This class privately inherits from UnicodeString so we can keep track of
-// the methods that are actually used. If necessary we may want to move to
-// another string base type (C++ Unicode string type?!).
 class String:
     private UnicodeString
 {
@@ -36,8 +39,6 @@ public:
                    String              (char const* string);
 
                    String              (std::string const& string);
-
-                   String              (UnicodeString const& string);
 
                    String              (boost::format const& format);
 
@@ -79,6 +80,8 @@ public:
     std::vector<String> split          (String characters=String()) const;
 
 private:
+
+                   String              (UnicodeString const& string);
 
     String&        strip_begin         (String const& characters);
 
