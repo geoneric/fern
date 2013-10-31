@@ -71,16 +71,6 @@ Write::Write()
 }
 
 
-ExpressionType Write::expression_type(
-    size_t index,
-    std::vector<ExpressionType> const& /* argument_types */) const
-{
-    assert(index == 0);
-
-    return ExpressionType();
-}
-
-
 std::vector<std::shared_ptr<Argument>> Write::execute(
     std::vector<std::shared_ptr<Argument>> const& arguments) const
 {

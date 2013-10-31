@@ -14,6 +14,9 @@ GDALClient::GDALClient()
     ++_count;
 
     if(_count == 1u) {
+        // Don't throw in case of an error.
+        CPLSetErrorHandler(CPLQuietErrorHandler);
+
         register_all_drivers();
     }
 }

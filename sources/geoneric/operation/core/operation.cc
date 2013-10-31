@@ -86,6 +86,17 @@ size_t Operation::arity() const
 }
 
 
+ExpressionType Operation::expression_type(
+    size_t index,
+    std::vector<ExpressionType> const& /* argument_types */) const
+{
+    assert(_results.size() == 0);
+    assert(index == 0);
+
+    return ExpressionType();
+}
+
+
 std::vector<Parameter> const& Operation::parameters() const
 {
     return _parameters;

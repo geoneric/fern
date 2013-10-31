@@ -55,7 +55,7 @@ public:
 
     virtual ExpressionType expression_type(
                                         size_t index,
-                   std::vector<ExpressionType> const& argument_types) const=0;
+                   std::vector<ExpressionType> const& argument_types) const;
 
     virtual std::vector<std::shared_ptr<Argument>>
                    execute             (std::vector<std::shared_ptr<Argument>>
