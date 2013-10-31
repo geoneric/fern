@@ -1,5 +1,6 @@
 #include "geoneric/io/geoneric/geoneric_dataset.h"
 #include "geoneric/core/data_name.h"
+#include "geoneric/core/io_error.h"
 #include "geoneric/core/value_type_traits.h"
 #include "geoneric/feature/visitor/attribute_type_visitor.h"
 #include "geoneric/io/geoneric/hdf5_type_class_traits.h"
@@ -171,9 +172,18 @@ bool GeonericDataset::contains_attribute_by_name(
 
 
 std::shared_ptr<Feature> GeonericDataset::read_feature(
-    Path const& /* path */) const
+    Path const& path) const
 {
+    if(!contains_feature_by_name(path)) {
+        throw IOError(this->name(),
+            Exception::messages().format_message(
+                MessageId::DOES_NOT_CONTAIN_FEATURE, path));
+    }
+
     std::shared_ptr<Feature> result;
+
+    assert(false);
+
     return result;
 }
 
@@ -243,8 +253,11 @@ std::shared_ptr<Attribute> GeonericDataset::read_numeric_attribute(
 std::shared_ptr<Attribute> GeonericDataset::read_attribute(
     Path const& path) const
 {
-    assert(contains_feature(path.parent_path()));
-    assert(contains_attribute(path));
+    if(!contains_attribute(path)) {
+        throw IOError(this->name(),
+            Exception::messages().format_message(
+                MessageId::DOES_NOT_CONTAIN_ATTRIBUTE, path));
+    }
 
     std::shared_ptr<Attribute> result;
 

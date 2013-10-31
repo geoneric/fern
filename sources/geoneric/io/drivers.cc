@@ -49,8 +49,8 @@ std::shared_ptr<Dataset> open_dataset(
     std::shared_ptr<Dataset> dataset;
 
     for(auto driver: drivers_to_try(name, format)) {
-        dataset = driver->open(name, open_mode);
-        if(dataset) {
+        if(driver->can_open(name, open_mode)) {
+            dataset = driver->open(name, open_mode);
             break;
         }
     }
@@ -79,7 +79,7 @@ bool dataset_exists(
     bool exists = false;
 
     for(auto driver: drivers_to_try(name, format)) {
-        exists = driver->exists(name, open_mode);
+        exists = driver->can_open(name, open_mode);
         if(exists) {
             break;
         }
@@ -89,16 +89,16 @@ bool dataset_exists(
 }
 
 
-std::shared_ptr<Dataset> create_dataset(
-    Attribute const& attribute,
-    String const& name,
-    String const& format)
-{
-    assert(!format.is_empty());
-    auto drivers(drivers_to_try(name, format));
-    assert(drivers.size() == 1u);
-
-    return drivers[0]->create(attribute, name);
-}
+// std::shared_ptr<Dataset> create_dataset(
+//     Attribute const& attribute,
+//     String const& name,
+//     String const& format)
+// {
+//     assert(!format.is_empty());
+//     auto drivers(drivers_to_try(name, format));
+//     assert(drivers.size() == 1u);
+// 
+//     return drivers[0]->create(attribute, name);
+// }
 
 } // namespace geoneric

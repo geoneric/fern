@@ -10,31 +10,113 @@
 
 
 namespace geoneric {
+namespace {
 
-GDALDataset::GDALDataset(
-    String const& name,
-    OpenMode open_mode)
-
-    : Dataset(name, open_mode),
-      _driver(0),
-      _dataset(0)
-
+::GDALDataset* gdal_open_for_read(
+    GDALDriver const& driver,
+    String const& name)
 {
-    _driver = open_mode == OpenMode::READ
-        ? gdal_driver_for_read(this->name())
-        : gdal_driver_for_update(this->name())
-        ;
+    GDALOpenInfo open_info(name.encode_in_default_encoding().c_str(),
+        GA_ReadOnly);
+    ::GDALDataset* dataset = static_cast<::GDALDataset*>(driver.pfnOpen(
+        &open_info));
 
-    if(!_driver) {
-        // No driver that supports IO for this name.
-        assert(false);
+    if(!dataset) {
+        if(!file_exists(name)) {
+            throw IOError(name,
+                Exception::messages()[MessageId::DOES_NOT_EXIST]);
+        }
+        else {
+            throw IOError(name,
+                Exception::messages()[MessageId::CANNOT_BE_READ]);
+        }
     }
 
-    _dataset = open_mode == OpenMode::READ
-        ? gdal_open_for_read(this->name())
-        : gdal_open_for_update(this->name())
-        ;
+    return dataset;
 }
+
+
+::GDALDataset* gdal_open_for_update(
+    GDALDriver const& driver,
+    String const& name)
+{
+    GDALOpenInfo open_info(name.encode_in_default_encoding().c_str(),
+        GA_Update);
+    ::GDALDataset* dataset = static_cast<::GDALDataset*>(driver.pfnOpen(
+        &open_info));
+
+    if(!dataset) {
+        if(!file_exists(name)) {
+            throw IOError(name,
+                Exception::messages()[MessageId::DOES_NOT_EXIST]);
+        }
+        else {
+            throw IOError(name,
+                Exception::messages()[MessageId::CANNOT_BE_WRITTEN]);
+        }
+    }
+
+    return dataset;
+}
+
+
+::GDALDataset* gdal_open(
+    GDALDriver const& driver,
+    String const& name,
+    OpenMode open_mode)
+{
+    ::GDALDataset* dataset = nullptr;
+
+    switch(open_mode) {
+        case OpenMode::READ: {
+            dataset = gdal_open_for_read(driver, name);
+            break;
+        }
+        case OpenMode::UPDATE: {
+            dataset = gdal_open_for_update(driver, name);
+            break;
+        }
+        case OpenMode::OVERWRITE: {
+            // The dataset may not yet exist. In any case, we will be
+            // overwriting it. If it exists, we can delete it now.
+            driver.QuietDelete(name.encode_in_default_encoding().c_str());
+            break;
+        }
+    }
+
+    assert(dataset || open_mode == OpenMode::OVERWRITE);
+
+    return dataset;
+}
+
+
+template<
+    class T>
+::GDALDataset* create_gdal_dataset(
+    GDALDriver& driver,
+    FieldAttribute<T> const& field,
+    String const& name)
+{
+    assert(field.values().size() == 1u);
+    FieldValue<T> const& array(*field.values().cbegin()->second);
+    int nr_rows = array.shape()[0];
+    int nr_cols = array.shape()[1];
+    int nr_bands = 1;
+    char** options = NULL;
+
+    ::GDALDataset* dataset = driver.Create(
+        name.encode_in_default_encoding().c_str(), nr_cols, nr_rows, nr_bands,
+        GDALTypeTraits<T>::data_type, options);
+
+    if(!dataset) {
+        throw IOError(name,
+            Exception::messages()[MessageId::CANNOT_BE_CREATED]);
+    }
+
+    return dataset;
+}
+
+} // Anonymous namespace
 
 
 GDALDataset::GDALDataset(
@@ -44,14 +126,27 @@ GDALDataset::GDALDataset(
 
     : Dataset(name, open_mode),
       _driver(driver),
-      _dataset(0)
+      _dataset(nullptr)
 
 {
     assert(driver);
-    _dataset = open_mode == OpenMode::READ
-        ? gdal_open_for_read(this->name())
-        : gdal_open_for_update(this->name())
-        ;
+    _dataset = gdal_open(*_driver, this->name(), this->open_mode());
+}
+
+
+GDALDataset::GDALDataset(
+    String const& format,
+    String const& name,
+    OpenMode open_mode)
+
+    : Dataset(name, open_mode),
+      _driver(GetGDALDriverManager()->GetDriverByName(
+          format.encode_in_utf8().c_str())),
+      _dataset(nullptr)
+
+{
+    assert(_driver);
+    _dataset = gdal_open(*_driver, this->name(), this->open_mode());
 }
 
 
@@ -70,80 +165,11 @@ GDALDataset::GDALDataset(
 
 GDALDataset::~GDALDataset()
 {
-    assert(_dataset);
-    GDALClose(_dataset);
-}
-
-
-::GDALDriver* GDALDataset::gdal_driver_for_read(
-    String const& name)
-{
-    ::GDALDataset* dataset = static_cast<::GDALDataset*>(GDALOpen(
-        name.encode_in_default_encoding().c_str(), GA_ReadOnly));
-    ::GDALDriver* result = nullptr;
-
-    if(dataset) {
-        result = dataset->GetDriver();
-        GDALClose(dataset);
+    // If this instance is created with open mode OVERWRITE, and the dataset
+    // has not been created, then _dataset is still nullptr.
+    if(_dataset) {
+        GDALClose(_dataset);
     }
-
-    return result;
-}
-
-
-::GDALDriver* GDALDataset::gdal_driver_for_update(
-    String const& name)
-{
-    ::GDALDataset* dataset = static_cast<::GDALDataset*>(GDALOpen(
-        name.encode_in_default_encoding().c_str(), GA_Update));
-    ::GDALDriver* result = nullptr;
-
-    if(dataset) {
-        result = dataset->GetDriver();
-        GDALClose(dataset);
-    }
-
-    return result;
-}
-
-
-::GDALDataset* GDALDataset::gdal_open_for_read(
-    String const& name)
-{
-    GDALOpenInfo open_info(name.encode_in_default_encoding().c_str(),
-        GA_ReadOnly);
-    ::GDALDataset* dataset = static_cast<::GDALDataset*>(_driver->pfnOpen(
-        &open_info));
-
-    if(!dataset) {
-        if(!file_exists(name)) {
-            throw IOError(name,
-                Exception::messages()[MessageId::DOES_NOT_EXIST]);
-        }
-        else {
-            throw IOError(name,
-                Exception::messages()[MessageId::CANNOT_BE_READ]);
-        }
-    }
-
-    return dataset;
-}
-
-
-::GDALDataset* GDALDataset::gdal_open_for_update(
-    String const& name)
-{
-    GDALOpenInfo open_info(name.encode_in_default_encoding().c_str(),
-        GA_Update);
-    ::GDALDataset* dataset = static_cast<::GDALDataset*>(_driver->pfnOpen(
-        &open_info));
-
-    if(!dataset) {
-        throw IOError(name,
-            Exception::messages()[MessageId::CANNOT_BE_WRITTEN]);
-    }
-
-    return dataset;
 }
 
 
@@ -363,10 +389,15 @@ void GDALDataset::write_attribute(
     FieldAttribute<T> const& field,
     Path const& path)
 {
-    // It is assumed that the layered dataset is dimensioned correctly and
-    // ready to receive values from the field attribute.
-    assert(open_mode() == OpenMode::OVERWRITE ||
-        open_mode() == OpenMode::UPDATE);
+    assert((_dataset && (open_mode() == OpenMode::UPDATE)) ||
+        (!_dataset && (open_mode() == OpenMode::OVERWRITE)));
+
+    if(!_dataset && open_mode() == OpenMode::OVERWRITE) {
+        // Upon creation of this instance, the dataset, if it existed, was
+        // deleted. Now create a new dataset.
+        _dataset = create_gdal_dataset(*_driver, field, this->name());
+    }
+
     assert(contains_feature(path.parent_path()));
     assert(contains_attribute(path));
     assert(_dataset);

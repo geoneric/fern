@@ -1,12 +1,13 @@
 #include "geoneric/io/geoneric/utils.h"
 #include "geoneric/core/data_name.h"
 #include "geoneric/core/io_error.h"
+#include "geoneric/io/core/file.h"
 
 
 namespace geoneric {
 
 static std::shared_ptr<H5::H5File> open_file_for_overwrite(
-    Path const& pathname)
+    Path const& path)
 {
     std::shared_ptr<H5::H5File> result;
 
@@ -16,12 +17,12 @@ static std::shared_ptr<H5::H5File> open_file_for_overwrite(
             H5::FileCreatPropList::DEFAULT;
         H5::FileAccPropList access_properties = H5::FileAccPropList::DEFAULT;
         result.reset(new H5::H5File(
-            pathname.native_string().encode_in_default_encoding().c_str(),
+            path.native_string().encode_in_default_encoding().c_str(),
             access_mode, creation_properties, access_properties));
         result->flush(H5F_SCOPE_GLOBAL);
     }
     catch(H5::FileIException const& /* exception */) {
-        throw IOError(pathname.native_string(),
+        throw IOError(path.native_string(),
             Exception::messages()[MessageId::CANNOT_BE_CREATED]);
     }
 
@@ -30,9 +31,14 @@ static std::shared_ptr<H5::H5File> open_file_for_overwrite(
 
 
 static std::shared_ptr<H5::H5File> open_file_for_update(
-    Path const& pathname)
+    Path const& path)
 {
     std::shared_ptr<H5::H5File> result;
+
+    if(!file_exists(path)) {
+        throw IOError(path.native_string(),
+            Exception::messages()[MessageId::DOES_NOT_EXIST]);
+    }
 
     try {
         unsigned int access_mode = H5F_ACC_RDWR;
@@ -40,12 +46,12 @@ static std::shared_ptr<H5::H5File> open_file_for_update(
             H5::FileCreatPropList::DEFAULT;
         H5::FileAccPropList access_properties = H5::FileAccPropList::DEFAULT;
         result.reset(new H5::H5File(
-            pathname.native_string().encode_in_default_encoding().c_str(),
+            path.native_string().encode_in_default_encoding().c_str(),
             access_mode, creation_properties, access_properties));
         result->flush(H5F_SCOPE_GLOBAL);
     }
     catch(H5::FileIException const& /* exception */) {
-        throw IOError(pathname.native_string(),
+        throw IOError(path.native_string(),
             Exception::messages()[MessageId::CANNOT_BE_WRITTEN]);
     }
 
@@ -54,9 +60,14 @@ static std::shared_ptr<H5::H5File> open_file_for_update(
 
 
 static std::shared_ptr<H5::H5File> open_file_for_read(
-    Path const& pathname)
+    Path const& path)
 {
     std::shared_ptr<H5::H5File> result;
+
+    if(!file_exists(path)) {
+        throw IOError(path.native_string(),
+            Exception::messages()[MessageId::DOES_NOT_EXIST]);
+    }
 
     try {
         unsigned int access_mode = H5F_ACC_RDONLY;
@@ -64,12 +75,12 @@ static std::shared_ptr<H5::H5File> open_file_for_read(
             H5::FileCreatPropList::DEFAULT;
         H5::FileAccPropList access_properties = H5::FileAccPropList::DEFAULT;
         result.reset(new H5::H5File(
-            pathname.native_string().encode_in_default_encoding().c_str(),
+            path.native_string().encode_in_default_encoding().c_str(),
             access_mode, creation_properties, access_properties));
         result->flush(H5F_SCOPE_GLOBAL);
     }
     catch(H5::FileIException const& /* exception */) {
-        throw IOError(pathname.native_string(),
+        throw IOError(path.native_string(),
             Exception::messages()[MessageId::CANNOT_BE_READ]);
     }
 
@@ -78,22 +89,22 @@ static std::shared_ptr<H5::H5File> open_file_for_read(
 
 
 std::shared_ptr<H5::H5File> open_file(
-    Path const& pathname,
+    Path const& path,
     OpenMode open_mode)
 {
     std::shared_ptr<H5::H5File> result;
 
     switch(open_mode) {
         case OpenMode::OVERWRITE: {
-            result = open_file_for_overwrite(pathname);
+            result = open_file_for_overwrite(path);
             break;
         }
         case OpenMode::UPDATE: {
-            result = open_file_for_update(pathname);
+            result = open_file_for_update(path);
             break;
         }
         case OpenMode::READ: {
-            result = open_file_for_read(pathname);
+            result = open_file_for_read(path);
             break;
         }
     }

@@ -17,16 +17,31 @@ class Driver
 
 public:
 
-    virtual bool   exists              (String const& name,
+    //! Return whether the driver can open \a name in \a open_mode.
+    /*!
+      \param     name Name of dataset to open.
+      \param     open_mode Open mode to use.
+      \warning   In case open_mode is OVERWRITE, this function returns true
+                 if a new dataset could potentially be created. It doesn't
+                 mean that \a name exists.
+
+      This function aims to be as lightweight as possible, performing only the
+      minimum amount of tests, while still being able to tell whether the
+      dataset can be opened successfully or not.
+    */
+    virtual bool   can_open            (String const& name,
                                         OpenMode open_mode)=0;
 
+    //! Open \a name in \a open_mode and return the resulting dataset.
+    /*!
+      \param     name Name of dataset to open.
+      \param     open_mode Open mode to use.
+      \warning   In case open_mode is OVERWRITE, the dataset returned may not
+                 point to an existing dataset yet.
+    */
     virtual std::shared_ptr<Dataset> open(
                                         String const& name,
                                         OpenMode open_mode)=0;
-
-    virtual std::shared_ptr<Dataset> create(
-                                        Attribute const& attribute,
-                                        String const& name)=0;
 
 protected:
 

@@ -315,12 +315,6 @@ BOOST_AUTO_TEST_CASE(execute_read_with_raster_input)
         geoneric::String script = "read(\"raster-1.asc:raster-1\")";
         tree = interpreter.parse_string(script);
         interpreter.execute(tree);
-try {
-}
-catch(geoneric::Exception const& exception) {
-    std::cout << exception.message() << std::endl;
-    BOOST_CHECK(false);
-}
 
         std::stack<std::shared_ptr<geoneric::Argument>> stack(
             interpreter.stack());

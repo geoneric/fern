@@ -1,25 +1,27 @@
 #define BOOST_TEST_MODULE geoneric io
 #include <boost/test/unit_test.hpp>
-#include <cpp/H5Cpp.h>
-// #include "geoneric/core/io_error.h"
+#include "geoneric/core/io_error.h"
 #include "geoneric/feature/core/attributes.h"
 #include "geoneric/io/geoneric/geoneric_dataset.h"
+#include "geoneric/io/geoneric/hdf5_client.h"
 
 
-class Support
+class Support:
+    private geoneric::HDF5Client
 {
 
 public:
 
-    Support()
-    {
-        H5::H5Library::open();
-    }
+    // Support()
+    // {
+    //     H5::Exception::dontPrint();
+    //     H5::H5Library::open();
+    // }
 
-    ~Support()
-    {
-        H5::H5Library::close();
-    }
+    // ~Support()
+    // {
+    //     H5::H5Library::close();
+    // }
 
 };
 
@@ -87,6 +89,38 @@ BOOST_AUTO_TEST_CASE(write_and_read)
                     attribute));
         BOOST_REQUIRE(constant_attribute);
         BOOST_CHECK_EQUAL(constant_attribute->values().value(), 6);
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(errors)
+{
+    using namespace geoneric;
+
+    {
+        GeonericDataset dataset("constant-1.gnr", OpenMode::READ);
+
+        try {
+            dataset.read_feature("blahdiblah");
+            BOOST_CHECK(false);
+        }
+        catch(IOError const& exception) {
+            String message = exception.message();
+            BOOST_CHECK_EQUAL(message,
+                "IO error handling constant-1.gnr: "
+                "Does not contain feature: blahdiblah");
+        }
+
+        try {
+            dataset.read_attribute("blahdiblah");
+            BOOST_CHECK(false);
+        }
+        catch(IOError const& exception) {
+            String message = exception.message();
+            BOOST_CHECK_EQUAL(message,
+                "IO error handling constant-1.gnr: "
+                "Does not contain attribute: blahdiblah");
+        }
     }
 }
 

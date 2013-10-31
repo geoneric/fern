@@ -4,17 +4,16 @@
 
 namespace geoneric {
 
-//! Return whether \a filename is the name of a regular file or a symbolic link pointing to a regular file.
+//! Return whether \a path points to a regular file or a symbolic link pointing to a regular file.
 /*!
-  \param     filename Name of file to check.
-  \return    true or false
+  \param     path Path of file to check.
 */
 bool file_exists(
-    String const& filename)
+    Path const& path)
 {
     namespace fs = boost::filesystem;
 
-    fs::path pathname(filename.encode_in_default_encoding());
+    fs::path pathname(path.native_string().encode_in_default_encoding());
     fs::file_status status(fs::status(pathname));
 
     if(fs::exists(status)) {
@@ -26,6 +25,34 @@ bool file_exists(
         status = fs::status(pathname);
 
         return fs::exists(status) && fs::is_regular_file(status);
+    }
+
+    return false;
+}
+
+
+//! Return whether \a path points to a writable directory or a symbolic link pointing to a writable directory.
+/*!
+  \tparam    path Path of directory to check.
+*/
+bool directory_is_writable(
+    Path const& path)
+{
+    namespace fs = boost::filesystem;
+
+    fs::path pathname(path.is_empty() ? "."
+        : path.native_string().encode_in_default_encoding());
+    fs::file_status status(fs::status(pathname));
+
+    if(fs::exists(status)) {
+        if(fs::is_directory(status)) {
+            return true;
+        }
+
+        pathname = fs::canonical(pathname);
+        status = fs::status(pathname);
+
+        return fs::exists(status) && fs::is_directory(status);
     }
 
     return false;

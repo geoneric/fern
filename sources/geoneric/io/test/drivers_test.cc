@@ -1,5 +1,6 @@
 #define BOOST_TEST_MODULE geoneric io
 #include <boost/test/unit_test.hpp>
+#include "geoneric/core/io_error.h"
 #include "geoneric/io/drivers.h"
 #include "geoneric/io/io_client.h"
 
@@ -26,6 +27,49 @@ BOOST_AUTO_TEST_CASE(drivers)
     auto dataset = geoneric::open_dataset(name, geoneric::OpenMode::READ,
         "AAIGrid");
     BOOST_REQUIRE(dataset);
+}
+
+
+BOOST_AUTO_TEST_CASE(errors)
+{
+    using namespace geoneric;
+
+    for(auto pair: geoneric::drivers) {
+        auto driver = pair.second;
+
+        // When opening for read, the dataset must already exist.
+        try {
+            driver->open("../does_not_exist.gnr", OpenMode::READ);
+            BOOST_CHECK(false);
+        }
+        catch(IOError const& exception) {
+            String message = exception.message();
+            BOOST_CHECK_EQUAL(message,
+                "IO error handling ../does_not_exist.gnr: Does not exist");
+        }
+
+        // When opening for update, the dataset must already exist.
+        try {
+            driver->open("../does_not_exist.gnr", OpenMode::UPDATE);
+            BOOST_CHECK(false);
+        }
+        catch(IOError const& exception) {
+            String message = exception.message();
+            BOOST_CHECK_EQUAL(message,
+                "IO error handling ../does_not_exist.gnr: Does not exist");
+        }
+
+        // When opening for read, the dataset must be readable.
+        try {
+            driver->open("write_only.gnr", OpenMode::READ);
+            BOOST_CHECK(false);
+        }
+        catch(IOError const& exception) {
+            String message = exception.message();
+            BOOST_CHECK_EQUAL(message,
+                "IO error handling write_only.gnr: Cannot be read");
+        }
+    }
 }
 
 BOOST_AUTO_TEST_SUITE_END()

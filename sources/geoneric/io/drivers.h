@@ -17,8 +17,8 @@ std::shared_ptr<Dataset> open_dataset  (String const& name,
                                         OpenMode open_mode,
                                         String const& format="");
 
-std::shared_ptr<Dataset> create_dataset(Attribute const& attribute,
-                                        String const& name,
-                                        String const& format);
+// std::shared_ptr<Dataset> create_dataset(Attribute const& attribute,
+//                                         String const& name,
+//                                         String const& format);
 
 } // namespace geoneric

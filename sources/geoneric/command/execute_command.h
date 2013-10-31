@@ -1,6 +1,6 @@
 #pragma once
 #include "geoneric/command/command.h"
-#include "geoneric/io/gdal/gdal_client.h"
+#include "geoneric/io/io_client.h"
 
 
 namespace geoneric {
@@ -12,7 +12,7 @@ namespace geoneric {
   \sa        .
 */
 class ExecuteCommand:
-    private GDALClient,
+    private IOClient,
     public Command
 {
 

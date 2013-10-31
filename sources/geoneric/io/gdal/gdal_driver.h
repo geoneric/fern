@@ -33,29 +33,21 @@ public:
 
                    ~GDALDriver         ()=default;
 
-    bool           exists              (String const& name,
+    bool           can_open            (String const& name,
                                         OpenMode open_mode);
 
     std::shared_ptr<Dataset> open      (String const& name,
                                         OpenMode open_mode);
 
-    std::shared_ptr<Dataset> create    (Attribute const& attribute,
-                                        String const& name);
-
 private:
 
     ::GDALDriver*  _driver;
-
-    bool           can_open            (String const& name,
-                                        OpenMode open_mode);
 
     bool           can_open_for_read   (String const& name);
 
     bool           can_open_for_update (String const& name);
 
-    template<
-        class T>
-    std::shared_ptr<Dataset> create    (FieldAttribute<T> const& field,
+    bool           can_open_for_overwrite(
                                         String const& name);
 
 };

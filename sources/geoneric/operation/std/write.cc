@@ -23,8 +23,8 @@ std::vector<std::shared_ptr<Argument>> write(
 
     if(!dataset_exists(data_name.database_pathname(), OpenMode::UPDATE,
             format_name)) {
-        dataset = create_dataset(data_attribute, data_name.database_pathname(),
-            format_name);
+        dataset = open_dataset(data_name.database_pathname(),
+            OpenMode::OVERWRITE, format_name);
     }
     else {
         dataset = open_dataset(data_name.database_pathname(), OpenMode::UPDATE,

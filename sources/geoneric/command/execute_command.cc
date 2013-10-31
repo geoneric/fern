@@ -22,7 +22,7 @@ ExecuteCommand::ExecuteCommand(
     int argc,
     char** argv)
 
-    : GDALClient(),
+    : IOClient(),
       Command(argc, argv)
 
 {

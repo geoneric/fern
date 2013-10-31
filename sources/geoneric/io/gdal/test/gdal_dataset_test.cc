@@ -23,7 +23,8 @@ BOOST_FIXTURE_TEST_SUITE(gdal_dataset, Support)
 
 BOOST_AUTO_TEST_CASE(raster_1)
 {
-    geoneric::GDALDataset dataset("raster-1.asc", geoneric::OpenMode::READ);
+    geoneric::GDALDataset dataset("AAIGRID", "raster-1.asc",
+        geoneric::OpenMode::READ);
     BOOST_CHECK_EQUAL(dataset.nr_features(), 1u);
     BOOST_CHECK(dataset.contains_feature("/raster-1"));
     BOOST_CHECK(dataset.contains_attribute("/raster-1/raster-1"));
@@ -94,7 +95,8 @@ BOOST_AUTO_TEST_CASE(raster_1)
 
 BOOST_AUTO_TEST_CASE(raster_2)
 {
-    geoneric::GDALDataset dataset("raster-2.asc", geoneric::OpenMode::READ);
+    geoneric::GDALDataset dataset("AAIGRID", "raster-2.asc",
+        geoneric::OpenMode::READ);
     BOOST_CHECK_EQUAL(dataset.nr_features(), 1u);
     BOOST_CHECK(dataset.contains_feature("/raster-2"));
     BOOST_CHECK(dataset.contains_attribute("/raster-2/raster-2"));
@@ -137,28 +139,6 @@ BOOST_AUTO_TEST_CASE(raster_2)
 BOOST_AUTO_TEST_CASE(errors)
 {
     ::GDALDriver* driver = GetGDALDriverManager()->GetDriverByName("AAIGrid");
-
-    try {
-        geoneric::GDALDataset dataset(driver, "../does_not_exist.asc",
-            geoneric::OpenMode::READ);
-        BOOST_CHECK(false);
-    }
-    catch(geoneric::IOError const& exception) {
-        geoneric::String message = exception.message();
-        BOOST_CHECK_EQUAL(message,
-            "IO error handling ../does_not_exist.asc: Does not exist");
-    }
-
-    try {
-        geoneric::GDALDataset dataset(driver, "write_only.asc",
-            geoneric::OpenMode::READ);
-        BOOST_CHECK(false);
-    }
-    catch(geoneric::IOError const& exception) {
-        geoneric::String message = exception.message();
-        BOOST_CHECK_EQUAL(message,
-            "IO error handling write_only.asc: Cannot be read");
-    }
 
     {
         geoneric::GDALDataset dataset(driver, "raster-1.asc",

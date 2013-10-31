@@ -7,7 +7,7 @@
 
 namespace geoneric {
 
-std::shared_ptr<H5::H5File> open_file  (Path const& pathname,
+std::shared_ptr<H5::H5File> open_file  (Path const& path,
                                         OpenMode open_mode);
 
 } // namespace geoneric

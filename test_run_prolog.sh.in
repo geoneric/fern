@@ -32,12 +32,24 @@ ln -s does_not_exist.asc $io_core_test_dir/raster-1-dangling_link.asc
 io_gdal_test_dir="$source_dir/io/gdal/test"
 $cmake -E copy $test_data_dir/raster-1.asc $io_gdal_test_dir
 $cmake -E copy $test_data_dir/raster-2.asc $io_gdal_test_dir
-$cmake -E copy $test_data_dir/raster-1.asc $io_gdal_test_dir/write_only.asc
-chmod 222 $io_gdal_test_dir/write_only.asc
+# $cmake -E copy $test_data_dir/raster-1.asc $io_gdal_test_dir/write_only.asc
+# chmod 222 $io_gdal_test_dir/write_only.asc
+
+
+io_geoneric_test_dir="$source_dir/io/geoneric/test"
+echo "write(9.8, \"$io_geoneric_test_dir/constant-1.gnr:earth/gravity\", \
+    \"Geoneric\")" | geoneric execute -
+# $cmake -E copy $io_geoneric_test_dir/constant-1.gnr \
+#     $io_geoneric_test_dir/write_only.gnr
+# chmod 222 $io_geoneric_test_dir/write_only.gnr
 
 
 io_test_dir="$source_dir/io/test"
 $cmake -E copy $test_data_dir/raster-1.asc $io_test_dir
+echo "write(9.8, \"$io_test_dir/constant-1.gnr:earth/gravity\", \"Geoneric\")" \
+    | geoneric execute -
+$cmake -E copy $io_test_dir/constant-1.gnr $io_test_dir/write_only.gnr
+chmod 222 $io_test_dir/write_only.gnr
 
 
 interpreter_test_dir="$source_dir/interpreter/test"

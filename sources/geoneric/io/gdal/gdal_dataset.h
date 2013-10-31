@@ -21,7 +21,8 @@ class GDALDataset:
 
 public:
 
-                   GDALDataset         (String const& name,
+                   GDALDataset         (String const& format,
+                                        String const& name,
                                         OpenMode open_mode);
 
                    GDALDataset         (::GDALDriver* driver,
@@ -62,15 +63,6 @@ private:
     ::GDALDriver*  _driver;
 
     ::GDALDataset* _dataset;
-
-    ::GDALDriver*  gdal_driver_for_read(String const& name);
-
-    ::GDALDriver*  gdal_driver_for_update(
-                                        String const& name);
-
-    ::GDALDataset* gdal_open_for_read  (String const& name);
-
-    ::GDALDataset* gdal_open_for_update(String const& name);
 
     template<
         class T>

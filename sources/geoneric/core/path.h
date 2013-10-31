@@ -47,6 +47,8 @@ public:
 
     String         native_string       () const;
 
+    bool           is_empty            () const;
+
     bool           is_absolute         () const;
 
     Path           stem                () const;

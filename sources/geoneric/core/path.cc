@@ -83,6 +83,12 @@ String Path::native_string() const
 }
 
 
+bool Path::is_empty() const
+{
+    return boost::filesystem::path::empty();
+}
+
+
 bool Path::is_absolute() const
 {
     return boost::filesystem::path::is_absolute();
