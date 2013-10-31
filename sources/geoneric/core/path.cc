@@ -12,6 +12,7 @@ namespace geoneric {
 // }
 
 
+
 Path::Path(
     String const& string)
 

@@ -6,11 +6,12 @@
 
 namespace geoneric {
 
-//! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
+//! Class for representing paths.
 /*!
-  longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
+  A path can be a path to a file in the filesystem or to an attribute in a
+  database, for example.
 
-  \sa        .
+  \sa        DataName
 */
 class Path:
     private boost::filesystem::path

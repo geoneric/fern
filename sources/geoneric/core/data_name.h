@@ -21,6 +21,8 @@ namespace geoneric {
   Data pathname is an absolute pathname.
 
   The kind of data the data pathname points to is up to the application.
+
+  \sa        Path
 */
 class DataName
 {
