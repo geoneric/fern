@@ -49,6 +49,8 @@ public:
 
     bool           contains_attribute  (Path const& path) const;
 
+    ExpressionType expression_type     (Path const& path) const;
+
     std::shared_ptr<Feature> read_feature(
                                         Path const& path) const;
 

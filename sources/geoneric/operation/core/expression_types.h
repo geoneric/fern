@@ -1,5 +1,5 @@
 #pragma once
-#include "geoneric/operation/core/expression_type.h"
+#include "geoneric/core/expression_type.h"
 
 
 namespace geoneric {

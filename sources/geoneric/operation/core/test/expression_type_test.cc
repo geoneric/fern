@@ -1,6 +1,6 @@
 #define BOOST_TEST_MODULE geoneric operation_core
 #include <boost/test/unit_test.hpp>
-#include "geoneric/operation/core/expression_type.h"
+#include "geoneric/core/expression_type.h"
 
 
 BOOST_AUTO_TEST_SUITE(expression_type)

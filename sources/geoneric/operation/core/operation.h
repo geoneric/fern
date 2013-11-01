@@ -1,9 +1,9 @@
 #pragma once
 #include <memory>
 #include <vector>
+#include "geoneric/core/expression_type.h"
 #include "geoneric/core/string.h"
 #include "geoneric/operation/core/argument.h"
-#include "geoneric/operation/core/expression_type.h"
 #include "geoneric/operation/core/parameter.h"
 #include "geoneric/operation/core/result.h"
 

@@ -12,6 +12,8 @@ class Scope
 
 public:
 
+    typedef typename std::map<String, Value>::const_iterator const_iterator;
+
                    Scope               ()=default;
 
                    ~Scope              ()=default;
@@ -24,6 +26,10 @@ public:
 
     Scope&         operator=           (Scope const&)=default;
 
+    const_iterator begin               () const;
+
+    const_iterator end                 () const;
+
     size_t         size                () const;
 
     void           set_value           (String const& name,
@@ -33,12 +39,30 @@ public:
 
     Value          value               (String const& name) const;
 
+    void           clear               ();
+
 private:
 
     //! Values by name.
     std::map<String, Value> _values;
 
 };
+
+
+template<
+    class Value>
+inline typename Scope<Value>::const_iterator Scope<Value>::begin() const
+{
+    return _values.begin();
+}
+
+
+template<
+    class Value>
+inline typename Scope<Value>::const_iterator Scope<Value>::end() const
+{
+    return _values.end();
+}
 
 
 template<
@@ -75,6 +99,14 @@ inline Value Scope<Value>::value(
 {
     assert(has_value(name));
     return _values.find(name)->second;
+}
+
+
+template<
+    class Value>
+inline void Scope<Value>::clear()
+{
+    return _values.clear();
 }
 
 } // namespace geoneric

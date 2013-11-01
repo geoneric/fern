@@ -16,6 +16,8 @@ static std::vector<std::shared_ptr<Driver>> drivers_to_try(
 
     if(!format.is_empty()) {
         if(geoneric::drivers.find(format) == geoneric::drivers.end()) {
+            // TODO Just throw an "no such driver" exception and let the
+            //      caller add info about the name.
             throw IOError(name,
                 Exception::messages().format_message(MessageId::NO_SUCH_DRIVER,
                 format));
@@ -87,6 +89,37 @@ bool dataset_exists(
 
     return exists;
 }
+
+
+// ExpressionType expression_type(
+//     DataName const& data_name)
+// {
+//     std::shared_ptr<Dataset> dataset = open_dataset(
+//         data_name.database_pathname(), OpenMode::READ);
+//     return dataset->expression_type(data_name.data_pathname());
+// }
+
+
+// std::shared_ptr<Driver> driver_for(
+//     Path const& path,
+//     OpenMode open_mode)
+// {
+//     std::shared_ptr<Driver> result;
+// 
+//     for(auto driver: drivers_to_try(path.native_string(), "")) {
+//         if(driver->can_open(path, open_mode)) {
+//             result = driver;
+//             break;
+//         }
+//     }
+// 
+//     if(!result) {
+//         throw IOError(path.native_string(),
+//             Exception::messages()[MessageId::CANNOT_BE_READ]);
+//     }
+// 
+//     return result;
+// }
 
 
 // std::shared_ptr<Dataset> create_dataset(

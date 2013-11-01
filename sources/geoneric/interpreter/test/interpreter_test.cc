@@ -2,11 +2,13 @@
 #include <boost/test/unit_test.hpp>
 #include "geoneric/core/io_error.h"
 #include "geoneric/core/parse_error.h"
+#include "geoneric/core/type_traits.h"
 #include "geoneric/core/validate_error.h"
 #include "geoneric/feature/core/attributes.h"
 #include "geoneric/io/io_client.h"
 #include "geoneric/operation/core/attribute_argument.h"
 #include "geoneric/operation/core/feature_argument.h"
+#include "geoneric/interpreter/data_sources.h"
 #include "geoneric/interpreter/execute_visitor.h"
 #include "geoneric/interpreter/interpreter.h"
 
@@ -22,6 +24,43 @@ public:
     {
     }
 
+};
+
+
+template<
+    class T>
+struct TestAbsResult {
+    void operator()(
+            geoneric::Interpreter& interpreter,
+            T result)
+    {
+        std::stack<std::shared_ptr<geoneric::Argument>> stack(
+            interpreter.stack());
+        BOOST_CHECK_EQUAL(stack.size(), 1u);
+
+        std::shared_ptr<geoneric::Argument> const& argument(stack.top());
+        BOOST_REQUIRE_EQUAL(argument->argument_type(),
+            geoneric::ArgumentType::AT_ATTRIBUTE);
+
+        std::shared_ptr<geoneric::AttributeArgument> const&
+            attribute_argument(
+                std::dynamic_pointer_cast<geoneric::AttributeArgument>(
+                    argument));
+        BOOST_REQUIRE(attribute_argument);
+        BOOST_REQUIRE_EQUAL(attribute_argument->data_type(),
+            geoneric::DT_CONSTANT);
+        BOOST_REQUIRE_EQUAL(attribute_argument->value_type(),
+            geoneric::TypeTraits<T>::value_type);
+
+        std::shared_ptr<geoneric::Attribute> const& attribute(
+            attribute_argument->attribute());
+
+        std::shared_ptr<geoneric::ConstantAttribute<T>>
+            constant_attribute(std::dynamic_pointer_cast<
+                geoneric::ConstantAttribute<T>>(attribute));
+        BOOST_REQUIRE(constant_attribute);
+        BOOST_CHECK_EQUAL(constant_attribute->values().value(), result);
+    }
 };
 
 
@@ -217,43 +256,12 @@ BOOST_AUTO_TEST_CASE(execute)
     geoneric::Interpreter interpreter;
     geoneric::ModuleVertexPtr tree;
 
-    struct TestAbsResult {
-        void operator()(geoneric::Interpreter& interpreter) {
-            std::stack<std::shared_ptr<geoneric::Argument>> stack(
-                interpreter.stack());
-            BOOST_CHECK_EQUAL(stack.size(), 1u);
-
-            std::shared_ptr<geoneric::Argument> const& argument(stack.top());
-            BOOST_REQUIRE_EQUAL(argument->argument_type(),
-                geoneric::ArgumentType::AT_ATTRIBUTE);
-
-            std::shared_ptr<geoneric::AttributeArgument> const&
-                attribute_argument(
-                    std::dynamic_pointer_cast<geoneric::AttributeArgument>(
-                        argument));
-            BOOST_REQUIRE(attribute_argument);
-            BOOST_REQUIRE_EQUAL(attribute_argument->data_type(),
-                geoneric::DT_CONSTANT);
-            BOOST_REQUIRE_EQUAL(attribute_argument->value_type(),
-                geoneric::VT_INT64);
-
-            std::shared_ptr<geoneric::Attribute> const& attribute(
-                attribute_argument->attribute());
-
-            std::shared_ptr<geoneric::ConstantAttribute<int64_t>>
-                constant_attribute(std::dynamic_pointer_cast<
-                    geoneric::ConstantAttribute<int64_t>>(attribute));
-            BOOST_REQUIRE(constant_attribute);
-            BOOST_CHECK_EQUAL(constant_attribute->values().value(), 5);
-        }
-    };
-
     // Calculate abs(-5) and leave the result on the stack for testing.
     {
         tree = interpreter.parse_string("abs(-5)");
         BOOST_REQUIRE(tree);
         interpreter.execute(tree);
-        TestAbsResult()(interpreter);
+        TestAbsResult<int64_t>()(interpreter, 5);
     }
 
     // // Calculate abs(-5) and leave the result on the stack for testing.
@@ -265,7 +273,7 @@ BOOST_AUTO_TEST_CASE(execute)
     //         "do_abs(-5)");
     //     BOOST_REQUIRE(tree);
     //     interpreter.execute(tree);
-    //     TestAbsResult()(interpreter);
+    //     TestAbsResult<int64_t>()(interpreter, 5);
     // }
 
 
@@ -675,5 +683,78 @@ gravity = read(attribute_name))";
         // BOOST_CHECK_EQUAL(value[2][1],   2);
     }
 }
+
+
+// // TODO This is needed to be able to determine the prototype of the module.
+// BOOST_AUTO_TEST_CASE(determine_module_inputs_and_outputs)
+// {
+// }
+
+
+BOOST_AUTO_TEST_CASE(execute_with_external_inputs)
+{
+    geoneric::ModuleVertexPtr tree;
+
+    // If a script has undefined symbols, they must be provided from the
+    // outside. After that, validation should result in fixed result expression
+    // types and execution should succeed.
+
+    // In this script, 'input' is undefined. It must be provided, otherwise
+    // validation will throw an 'undefined identifier' exception.
+    geoneric::String script = u8R"(
+abs(input)
+)";
+
+    // Constant input.
+    {
+        std::shared_ptr<geoneric::DataSource> data_source(new
+            geoneric::ConstantSource<int32_t>(-9));
+        geoneric::Interpreter::DataSourceSymbolTable symbol_table;
+        symbol_table.push_scope();
+        symbol_table.add_value("input", data_source);
+
+        {
+            geoneric::Interpreter interpreter;
+            tree = interpreter.parse_string(script);
+            BOOST_REQUIRE_NO_THROW(interpreter.validate(tree, symbol_table));
+            // TODO Verify that the results are fixed.
+        }
+
+        {
+            geoneric::Interpreter interpreter;
+            tree = interpreter.parse_string(script);
+            BOOST_REQUIRE_NO_THROW(interpreter.execute(tree, symbol_table));
+            TestAbsResult<int32_t>()(interpreter, 9);
+        }
+    }
+
+    // Constant input, from file.
+    {
+        std::shared_ptr<geoneric::DataSource> data_source(new
+            geoneric::DatasetSource("constant-1.gnr:earth/gravity"));
+        geoneric::Interpreter::DataSourceSymbolTable symbol_table;
+        symbol_table.push_scope();
+        symbol_table.add_value("input", data_source);
+
+        {
+            geoneric::Interpreter interpreter;
+            tree = interpreter.parse_string(script);
+            BOOST_REQUIRE_NO_THROW(interpreter.validate(tree, symbol_table));
+            // TODO Verify that the results are fixed.
+        }
+
+        {
+            geoneric::Interpreter interpreter;
+            tree = interpreter.parse_string(script);
+            BOOST_REQUIRE_NO_THROW(interpreter.execute(tree, symbol_table));
+            TestAbsResult<double>()(interpreter, 9.8);
+        }
+    }
+}
+
+// // TODO This is needed to be able to configure where the output should go.
+// BOOST_AUTO_TEST_CASE(execute_with_external_outputs)
+// {
+// }
 
 BOOST_AUTO_TEST_SUITE_END()

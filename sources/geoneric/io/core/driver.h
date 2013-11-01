@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+// #include "geoneric/core/data_name.h"
 #include "geoneric/io/core/dataset.h"
 #include "geoneric/io/core/open_mode.h"
 
@@ -31,6 +32,9 @@ public:
     */
     virtual bool   can_open            (String const& name,
                                         OpenMode open_mode)=0;
+
+    // virtual ExpressionType
+    //                expression_type     (DataName const& data_name) const=0;
 
     //! Open \a name in \a open_mode and return the resulting dataset.
     /*!

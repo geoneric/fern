@@ -1,7 +1,7 @@
 #pragma once
 #include <stack>
+#include "geoneric/core/expression_type.h"
 #include "geoneric/core/symbol_table.h"
-#include "geoneric/operation/core/expression_type.h"
 #include "geoneric/operation/core/operations.h"
 #include "geoneric/ast/visitor/ast_visitor.h"
 
@@ -60,7 +60,16 @@ public:
 
     AnnotateVisitor& operator=         (AnnotateVisitor const&)=delete;
 
+    // void           set_external_symbol_table(
+    //                                     SymbolTable<ExpressionType> const&
+    //                                         symbol_table);
+
+    void           add_global_symbols  (SymbolTable<ExpressionType> const&
+                                            symbol_table);
+
     std::stack<ExpressionType> const& stack() const;
+
+    // void           reset               ();
 
     void           clear_stack         ();
 

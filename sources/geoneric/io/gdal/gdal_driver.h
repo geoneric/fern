@@ -36,6 +36,8 @@ public:
     bool           can_open            (String const& name,
                                         OpenMode open_mode);
 
+    // ExpressionType expression_type     (DataName const& data_name);
+
     std::shared_ptr<Dataset> open      (String const& name,
                                         OpenMode open_mode);
 

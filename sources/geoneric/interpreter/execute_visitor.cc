@@ -2,6 +2,7 @@
 #include "geoneric/ast/core/vertices.h"
 #include "geoneric/feature/core/constant_attribute.h"
 #include "geoneric/operation/core/attribute_argument.h"
+#include "geoneric/interpreter/data_sources.h"
 
 
 namespace geoneric {
@@ -12,17 +13,37 @@ ExecuteVisitor::ExecuteVisitor(
     : AstVisitor(),
       _operations(operations),
       _stack(),
-      _symbol_table()
+      _symbol_table(),
+      _data_source_symbol_table()
 
 {
    assert(operations);
    _symbol_table.push_scope();
+   _data_source_symbol_table.push_scope();
 }
 
 
 ExecuteVisitor::~ExecuteVisitor()
 {
    _symbol_table.pop_scope();
+   _data_source_symbol_table.pop_scope();
+}
+
+
+void ExecuteVisitor::set_data_source_symbols(
+    SymbolTable<std::shared_ptr<DataSource>> const& symbol_table)
+{
+    assert(_data_source_symbol_table.scope_level() == 1u);
+    _data_source_symbol_table.clear_scope();
+
+    if(!symbol_table.empty()) {
+        assert(symbol_table.scope_level() == 1u);
+
+        for(auto const& pair: symbol_table.scope(1u)) {
+            assert(!_data_source_symbol_table.has_value(pair.first));
+            _data_source_symbol_table.add_value(pair.first, pair.second);
+        }
+    }
 }
 
 
@@ -83,9 +104,19 @@ void ExecuteVisitor::Visit(
 void ExecuteVisitor::Visit(
     NameVertex& vertex)
 {
-    // Retrieve the value from the symbol table and push it onto the stack.
-    assert(_symbol_table.has_value(vertex.name()));
-    _stack.push(_symbol_table.value(vertex.name()));
+    if(_symbol_table.has_value(vertex.name())) {
+        // Retrieve the value from the symbol table and push it onto the stack.
+        _stack.push(_symbol_table.value(vertex.name()));
+    }
+    else {
+        // We must have a data source for this input variable.
+        assert(_data_source_symbol_table.has_value(vertex.name()));
+        // We must be at global scope now.
+        assert(_symbol_table.scope_level() == 1u);
+
+        // Read a value from a data source and add it onto the stack.
+        _stack.push(_data_source_symbol_table.value(vertex.name())->read());
+    }
 }
 
 

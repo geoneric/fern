@@ -8,6 +8,9 @@
 
 namespace geoneric {
 
+class DataSource;
+
+
 //! Visitor that executes an abstract syntax tree.
 /*!
   This visitor immediately executes expressions as they are encountered during
@@ -48,6 +51,10 @@ public:
 
     ExecuteVisitor& operator=          (ExecuteVisitor const&)=delete;
 
+    void           set_data_source_symbols(
+                                        SymbolTable<std::shared_ptr<
+                                            DataSource>> const& symbol_table);
+
     std::stack<std::shared_ptr<Argument>> const&
                    stack               () const;
 
@@ -65,6 +72,9 @@ private:
 
     //! Symbol table with values of variables.
     SymbolTable<std::shared_ptr<Argument>> _symbol_table;
+
+    //! Symbol table with data sources for undefined input variables.
+    SymbolTable<std::shared_ptr<DataSource>> _data_source_symbol_table;
 
     void           Visit               (AssignmentVertex& vertex);
 

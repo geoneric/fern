@@ -27,6 +27,14 @@ AnnotateVisitor::~AnnotateVisitor()
 }
 
 
+// void AnnotateVisitor::reset()
+// {
+//     clear_stack();
+//     _symbol_table = SymbolTable<ExpressionType>();
+//     _symbol_table.push_scope();
+// }
+
+
 std::stack<ExpressionType> const& AnnotateVisitor::stack() const
 {
     return _stack;
@@ -36,6 +44,34 @@ std::stack<ExpressionType> const& AnnotateVisitor::stack() const
 void AnnotateVisitor::clear_stack()
 {
     _stack = std::stack<ExpressionType>();
+}
+
+
+//! Add global symbols to the symbol table.
+/*!
+  \param     symbol_table Symbol table with symbols to add.
+  \warning   The symbol table passed in must only contain global symbols
+             (scope level 1).
+
+  Use this method to pass knowledge about undefined identifiers from the
+  context to the module. This way, the module can be better annotated. If all
+  symbols are resolved, annotation must be able to calculate exactly what
+  the expression types of the results will be.
+*/
+void AnnotateVisitor::add_global_symbols(
+    SymbolTable<ExpressionType> const& symbol_table)
+{
+    assert(_symbol_table.scope_level() > 0u);
+
+    if(!symbol_table.empty()) {
+        assert(symbol_table.scope_level() == 1u);
+
+        // Add the symbols to the symbol table.
+        for(auto const& pair: symbol_table.scope(1u)) {
+            assert(!_symbol_table.has_value(pair.first));  // What todo if so?
+            _symbol_table.add_value(pair.first, pair.second);
+        }
+    }
 }
 
 

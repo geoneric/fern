@@ -1,6 +1,8 @@
 ADD_SUBDIRECTORY(test)
 
 SET(SOURCES
+    data_source
+    dataset_source
     execute_visitor
     interpreter
 )

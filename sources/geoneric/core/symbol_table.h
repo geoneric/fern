@@ -12,12 +12,12 @@ namespace geoneric {
   The table is able to store multiple values of the same name and supports
   scoping.
 
-  Values are added to the current scope using add_symbol. Make sure
-  that such a scope exists. After creation of a SymbolTable instance,
-  push_scope() must be called before symbols can be added. You can make
-  multiple calls to push_scope() in case of nested scopes. When filling the
-  table, make sure to match each call to push_scope() with a call to
-  pop_scope().
+  Values are added to the current scope using add_value(String const&,
+  T const&). Make sure that such a scope exists. After creation of
+  a SymbolTable instance, push_scope() must be called before symbols
+  can be added. You can make multiple calls to push_scope() in case of
+  nested scopes. When filling the table, make sure to match each call
+  to push_scope() with a call to pop_scope().
 */
 template<
     class T>
@@ -37,9 +37,9 @@ public:
 
                    ~SymbolTable        ()=default;
 
-                   SymbolTable         (SymbolTable&&)=delete;
+                   SymbolTable         (SymbolTable&&)=default;
 
-    SymbolTable&   operator=           (SymbolTable&&)=delete;
+    SymbolTable&   operator=           (SymbolTable&&)=default;
 
                    SymbolTable         (SymbolTable const&)=delete;
 
@@ -49,9 +49,13 @@ public:
 
     void           pop_scope           ();
 
+    void           clear_scope         ();
+
     size_type      scope_level         () const;
 
     size_type      scope_level         (String const& name) const;
+
+    Scope<T> const& scope              (size_type scope_level) const;
 
     void           add_value           (String const& name,
                                         T const& value);
@@ -81,7 +85,7 @@ private:
 */
 template<
     class T>
-void SymbolTable<T>::push_scope()
+inline void SymbolTable<T>::push_scope()
 {
     _scopes.push_back(Scope<T>());
 }
@@ -96,10 +100,19 @@ void SymbolTable<T>::push_scope()
 */
 template<
     class T>
-void SymbolTable<T>::pop_scope()
+inline void SymbolTable<T>::pop_scope()
 {
     assert(!_scopes.empty());
     _scopes.pop_back();
+}
+
+
+template<
+    class T>
+inline void SymbolTable<T>::clear_scope()
+{
+    assert(!_scopes.empty());
+    _scopes.back().clear();
 }
 
 
@@ -113,7 +126,7 @@ void SymbolTable<T>::pop_scope()
 */
 template<
     class T>
-typename SymbolTable<T>::size_type SymbolTable<T>::scope_level() const
+inline typename SymbolTable<T>::size_type SymbolTable<T>::scope_level() const
 {
     return _scopes.size();
 }
@@ -126,7 +139,7 @@ typename SymbolTable<T>::size_type SymbolTable<T>::scope_level() const
 */
 template<
     class T>
-typename SymbolTable<T>::size_type SymbolTable<T>::scope_level(
+inline typename SymbolTable<T>::size_type SymbolTable<T>::scope_level(
     String const& name) const
 {
     assert(has_value(name));
@@ -150,6 +163,17 @@ typename SymbolTable<T>::size_type SymbolTable<T>::scope_level(
 }
 
 
+template<
+    class T>
+inline Scope<T> const& SymbolTable<T>::scope(
+    size_type scope_level) const
+{
+    assert(scope_level <= _scopes.size());
+    assert(scope_level > 0u);
+    return _scopes[scope_level - 1u];
+}
+
+
 //! Add a value to the current scope.
 /*!
   \param     name Name of value to add.
@@ -160,7 +184,7 @@ typename SymbolTable<T>::size_type SymbolTable<T>::scope_level(
 */
 template<
     class T>
-void SymbolTable<T>::add_value(
+inline void SymbolTable<T>::add_value(
     String const& name,
     T const& value)
 {
@@ -190,7 +214,7 @@ void SymbolTable<T>::add_value(
 
 template<
     class T>
-bool SymbolTable<T>::has_value(
+inline bool SymbolTable<T>::has_value(
     String const& name) const
 {
     bool result = false;
@@ -208,7 +232,7 @@ bool SymbolTable<T>::has_value(
 
 template<
     class T>
-T SymbolTable<T>::value(
+inline T SymbolTable<T>::value(
     String const& name) const
 {
     assert(has_value(name));
@@ -227,7 +251,7 @@ T SymbolTable<T>::value(
 
 template<
     class T>
-bool SymbolTable<T>::empty() const
+inline bool SymbolTable<T>::empty() const
 {
     return size() == 0;
 }
@@ -235,7 +259,7 @@ bool SymbolTable<T>::empty() const
 
 template<
     class T>
-typename SymbolTable<T>::size_type SymbolTable<T>::size() const
+inline typename SymbolTable<T>::size_type SymbolTable<T>::size() const
 {
     size_type result = 0;
 

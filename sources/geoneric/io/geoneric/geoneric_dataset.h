@@ -51,6 +51,8 @@ public:
 
     bool           contains_attribute  (Path const& path) const;
 
+    ExpressionType expression_type     (Path const& path) const;
+
     std::shared_ptr<Feature> read_feature(
                                         Path const& Path) const;
 
@@ -82,6 +84,11 @@ private:
     void           add_feature         (Path const& path);
 
     void           add_feature         (std::vector<String> const& names);
+
+    template<
+        class T>
+    ExpressionType expression_type_numeric_attribute(
+                                        H5::DataSet const& dataset) const;
 
     template<
         class T>

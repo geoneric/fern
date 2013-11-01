@@ -9,6 +9,16 @@ static UErrorCode status;
 // static RegexMatcher matcher("([^:]+)(?::(?!/)(.+)?)?", 0, status);
 static RegexMatcher matcher("([^:]+)(?::(.+)?)?", 0, status);
 
+
+DataName::DataName(
+    char const* string)
+
+    : DataName(String(string))
+
+{
+}
+
+
 DataName::DataName(
     String const& string)
 

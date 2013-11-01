@@ -4,6 +4,7 @@ SET(SOURCES
     data_name
     data_types
     exception
+    expression_type
     io_error
     messages
     parse_error

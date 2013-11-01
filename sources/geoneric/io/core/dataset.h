@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include "geoneric/core/expression_type.h"
 #include "geoneric/core/path.h"
 #include "geoneric/core/string.h"
 #include "geoneric/feature/core/feature.h"
@@ -29,11 +30,14 @@ public:
 
     virtual bool   contains_attribute  (Path const& path) const=0;
 
-    virtual std::shared_ptr<Feature> read_feature(
-                                        Path const& path) const=0;
+    virtual ExpressionType
+                   expression_type     (Path const& path) const=0;
 
-    virtual std::shared_ptr<Attribute> read_attribute(
-                                        Path const& path) const=0;
+    virtual std::shared_ptr<Feature>
+                   read_feature        (Path const& path) const=0;
+
+    virtual std::shared_ptr<Attribute>
+                   read_attribute      (Path const& path) const=0;
 
     virtual void   write_attribute     (Attribute const& attribute,
                                         Path const& path)=0;
@@ -54,8 +58,6 @@ protected:
     virtual        ~Dataset            ()=default;
 
     String const&  name                () const;
-
-protected:
 
     OpenMode       open_mode           () const;
 

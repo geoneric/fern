@@ -29,6 +29,8 @@ class DataName
 
 public:
 
+                   DataName            (char const* string);
+
                    DataName            (String const& string);
 
                    DataName            (DataName&&)=default;

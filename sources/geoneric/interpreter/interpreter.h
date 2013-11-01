@@ -9,6 +9,9 @@
 
 namespace geoneric {
 
+class DataSource;
+
+
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
   longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
@@ -19,6 +22,8 @@ class Interpreter
 {
 
 public:
+
+    typedef SymbolTable<std::shared_ptr<DataSource>> DataSourceSymbolTable;
 
                    Interpreter         ();
 
@@ -36,11 +41,20 @@ public:
 
     ModuleVertexPtr parse_file         (String const& filename) const;
 
-    void           annotate            (ModuleVertexPtr const& tree);
+    void           annotate            (ModuleVertexPtr const& tree,
+                                        DataSourceSymbolTable const&
+                                            symbol_table=
+                                                DataSourceSymbolTable());
 
-    void           validate            (ModuleVertexPtr const& tree);
+    void           validate            (ModuleVertexPtr const& tree,
+                                        DataSourceSymbolTable const&
+                                            symbol_table=
+                                                DataSourceSymbolTable());
 
-    void           execute             (ModuleVertexPtr const& tree);
+    void           execute             (ModuleVertexPtr const& tree,
+                                        DataSourceSymbolTable const&
+                                            symbol_table=
+                                                DataSourceSymbolTable());
 
     std::stack<std::shared_ptr<Argument>>
                    stack               ();
@@ -59,7 +73,7 @@ private:
 
     ValidateVisitor _validate_visitor;
 
-    ExecuteVisitor _back_end;
+    std::shared_ptr<ExecuteVisitor> _back_end;
 
 };
 

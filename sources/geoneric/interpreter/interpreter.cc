@@ -6,9 +6,33 @@
 #include "geoneric/operation/std/operations.h"
 #include "geoneric/ast/visitor/identify_visitor.h"
 #include "geoneric/ast/visitor/thread_visitor.h"
+#include "geoneric/interpreter/data_sources.h"
 
 
 namespace geoneric {
+
+namespace {
+
+SymbolTable<ExpressionType> expression_types(
+    SymbolTable<std::shared_ptr<DataSource>> const& data_sources)
+{
+    SymbolTable<ExpressionType> result;
+
+    if(!data_sources.empty()) {
+        assert(data_sources.scope_level() == 1u);
+        result.push_scope();
+
+        for(auto data_source: data_sources.scope(1)) {
+            result.add_value(data_source.first,
+                data_source.second->expression_type());
+        }
+    }
+
+    return result;
+}
+
+} // Anonymous namespace
+
 
 Interpreter::Interpreter()
 
@@ -17,7 +41,7 @@ Interpreter::Interpreter()
       _xml_parser(),
       _annotate_visitor(_operations),
       _validate_visitor(),
-      _back_end(_operations)
+      _back_end(new ExecuteVisitor(_operations))
 
 {
 }
@@ -201,14 +225,18 @@ ModuleVertexPtr Interpreter::parse_file(
   - Annotation.
 */
 void Interpreter::annotate(
-    ModuleVertexPtr const& tree)
+    ModuleVertexPtr const& tree,
+    DataSourceSymbolTable const& symbol_table)
 {
+    assert(symbol_table.empty() || symbol_table.scope_level() == 1u);
+
     ThreadVisitor thread_visitor;
     tree->Accept(thread_visitor);
 
     IdentifyVisitor identify_visitor;
     tree->Accept(identify_visitor);
 
+    _annotate_visitor.add_global_symbols(expression_types(symbol_table));
     tree->Accept(_annotate_visitor);
 }
 
@@ -222,14 +250,16 @@ void Interpreter::annotate(
   result of parsing a script, without further processing.
 
   The folowing steps are performed:
-  - Annotation (see annotate(ModuleVertexPtr const&)).
+  - Annotation (see annotate(ModuleVertexPtr const&, DataSourceSymbolTable
+    const&)).
   - Validation.
 */
 void Interpreter::validate(
-    ModuleVertexPtr const& tree)
+    ModuleVertexPtr const& tree,
+    DataSourceSymbolTable const& symbol_table)
 {
     try {
-        annotate(tree);
+        annotate(tree, symbol_table);
         tree->Accept(_validate_visitor);
     }
     catch(detail::UndefinedIdentifier const& exception) {
@@ -339,17 +369,22 @@ void Interpreter::validate(
   - Execution.
 */
 void Interpreter::execute(
-    ModuleVertexPtr const& tree)
+    ModuleVertexPtr const& tree,
+    DataSourceSymbolTable const& symbol_table)
 {
-    validate(tree);
-    tree->Accept(_back_end);
+    validate(tree, symbol_table);
+    _back_end->set_data_source_symbols(symbol_table);
+    tree->Accept(*_back_end);
+
+    // ExecutionManager manager(*_back_end, symbol_table);
+    // manager.run();
 }
 
 
 std::stack<std::shared_ptr<Argument>> Interpreter::stack()
 {
     // std::stack<ResultType> expression_types(_annotate_visitor.stack());
-    // Stack values(_back_end.stack());
+    // Stack values(_back_end->stack());
     // assert(expression_types.size() == values.size());
     // std::stack<std::tuple<ResultType, boost::any>> result;
 
@@ -361,14 +396,14 @@ std::stack<std::shared_ptr<Argument>> Interpreter::stack()
 
     // return result;
 
-    return _back_end.stack();
+    return _back_end->stack();
 }
 
 
 void Interpreter::clear_stack()
 {
     _annotate_visitor.clear_stack();
-    _back_end.clear_stack();
+    _back_end->clear_stack();
 }
 
 } // namespace geoneric

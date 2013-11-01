@@ -95,6 +95,14 @@ bool GDALDriver::can_open_for_overwrite(
 }
 
 
+// ExpressionType GDALDriver::expression_type(
+//     DataName const& data_name)
+// {
+//     return open(data_name.database_pathname(),
+//         OpenMode::READ)->expression_type(data_name.data_pathname());
+// }
+
+
 std::shared_ptr<Dataset> GDALDriver::open(
     String const& name,
     OpenMode open_mode)

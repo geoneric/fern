@@ -1,6 +1,7 @@
 #include "geoneric/io/geoneric/geoneric_dataset.h"
 #include "geoneric/core/data_name.h"
 #include "geoneric/core/io_error.h"
+#include "geoneric/core/type_traits.h"
 #include "geoneric/core/value_type_traits.h"
 #include "geoneric/feature/visitor/attribute_type_visitor.h"
 #include "geoneric/io/geoneric/hdf5_type_class_traits.h"
@@ -171,6 +172,154 @@ bool GeonericDataset::contains_attribute_by_name(
 }
 
 
+template<
+    class T>
+ExpressionType GeonericDataset::expression_type_numeric_attribute(
+    H5::DataSet const& dataset) const
+{
+    ExpressionType result;
+
+    H5::DataSpace data_space = dataset.getSpace();
+    assert(data_space.isSimple());
+
+    switch(data_space.getSimpleExtentType()) {
+        case H5S_SCALAR: {
+            result = ExpressionType(DataTypes::CONSTANT,
+                TypeTraits<T>::value_types);
+            break;
+        }
+        case H5S_SIMPLE: {
+            // TODO Implement.
+            assert(false);
+            break;
+        }
+        case H5S_NO_CLASS: {
+            // TODO Exception.
+            assert(false);
+            break;
+        }
+        case H5S_NULL: {
+            // TODO Exception.
+            assert(false);
+            break;
+        }
+    }
+
+    return result;
+}
+
+
+// TODO exception
+#define UNSUPPORTED_TYPE_CLASS_CASE(                                           \
+        type_class)                                                            \
+    case type_class: {                                                         \
+        std::cout << HDF5TypeClassTraits<type_class>::name << std::endl;       \
+        assert(false);                                                         \
+        break;                                                                 \
+    }
+
+#define NUMBER_CASE(                                                           \
+        type)                                                                  \
+    result = expression_type_numeric_attribute<type>(dataset);
+
+ExpressionType GeonericDataset::expression_type(
+    Path const& path) const
+{
+    if(!contains_attribute(path)) {
+        throw IOError(this->name(),
+            Exception::messages().format_message(
+                MessageId::DOES_NOT_CONTAIN_ATTRIBUTE, path));
+    }
+
+    ExpressionType result;
+    H5::DataSet const dataset = _file->openDataSet(
+        String(path).encode_in_utf8());
+    H5T_class_t const type_class = dataset.getTypeClass();
+
+    switch(type_class) {
+        case H5T_INTEGER: {
+            H5::IntType const int_type = dataset.getIntType();
+            assert(int_type.getSign() == H5T_SGN_NONE ||
+                int_type.getSign() == H5T_SGN_2);
+            size_t const int_size = int_type.getSize();
+
+            if(int_type.getSign() == H5T_SGN_NONE) {
+                // Unsigned.
+                if(int_size == 1u) {
+                    NUMBER_CASE(uint8_t);
+                }
+                else if(int_size == 2u) {
+                    NUMBER_CASE(uint16_t);
+                }
+                else if(int_size == 4u) {
+                    NUMBER_CASE(uint32_t);
+                }
+                else if(int_size == 8u) {
+                    NUMBER_CASE(uint64_t);
+                }
+                else {
+                    assert(false);
+                }
+            }
+            else {
+                // Signed.
+                if(int_size == 1u) {
+                    NUMBER_CASE(int8_t);
+                }
+                else if(int_size == 2u) {
+                    NUMBER_CASE(int16_t);
+                }
+                else if(int_size == 4u) {
+                    NUMBER_CASE(int32_t);
+                }
+                else if(int_size == 8u) {
+                    NUMBER_CASE(int64_t);
+                }
+                else {
+                    // TODO Exception.
+                    assert(false);
+                }
+            }
+
+            break;
+        }
+        case H5T_FLOAT: {
+            H5::FloatType const float_type = dataset.getFloatType();
+            size_t const float_size = float_type.getSize();
+
+            if(float_size == 4u) {
+                NUMBER_CASE(float);
+            }
+            else if(float_size == 8u) {
+                NUMBER_CASE(double);
+            }
+            else {
+                // TODO Exception.
+                assert(false);
+            }
+
+            break;
+        }
+        UNSUPPORTED_TYPE_CLASS_CASE(H5T_TIME)
+        UNSUPPORTED_TYPE_CLASS_CASE(H5T_STRING)
+        UNSUPPORTED_TYPE_CLASS_CASE(H5T_NO_CLASS)
+        UNSUPPORTED_TYPE_CLASS_CASE(H5T_BITFIELD)
+        UNSUPPORTED_TYPE_CLASS_CASE(H5T_OPAQUE)
+        UNSUPPORTED_TYPE_CLASS_CASE(H5T_COMPOUND)
+        UNSUPPORTED_TYPE_CLASS_CASE(H5T_REFERENCE)
+        UNSUPPORTED_TYPE_CLASS_CASE(H5T_ENUM)
+        UNSUPPORTED_TYPE_CLASS_CASE(H5T_VLEN)
+        UNSUPPORTED_TYPE_CLASS_CASE(H5T_ARRAY)
+        UNSUPPORTED_TYPE_CLASS_CASE(H5T_NCLASSES)
+    }
+
+    return result;
+}
+
+#undef UNSUPPORTED_TYPE_CLASS_CASE
+#undef NUMBER_CASE
+
+
 std::shared_ptr<Feature> GeonericDataset::read_feature(
     Path const& path) const
 {
@@ -272,7 +421,8 @@ std::shared_ptr<Attribute> GeonericDataset::read_attribute(
     // group->getObjinfo(pathname.encode_in_utf8(), status);
     // result = status.type == H5G_GROUP;
 
-    H5::DataSet const dataset = _file->openDataSet(String(path).encode_in_utf8());
+    H5::DataSet const dataset = _file->openDataSet(
+        String(path).encode_in_utf8());
     H5T_class_t const type_class = dataset.getTypeClass();
 
     switch(type_class) {

@@ -2,6 +2,7 @@
 #include "gdal_priv.h"
 #include "geoneric/core/io_error.h"
 #include "geoneric/core/path.h"
+#include "geoneric/core/type_traits.h"
 #include "geoneric/core/value_type_traits.h"
 #include "geoneric/feature/visitor/attribute_type_visitor.h"
 #include "geoneric/io/core/file.h"
@@ -116,6 +117,76 @@ template<
     return dataset;
 }
 
+
+#define GDAL_DATA_TYPE_TO_VALUE_TYPES_CASE(                                    \
+        gdal_data_type)                                                        \
+    case gdal_data_type: {                                                     \
+        result = TypeTraits<GDALDataTypeTraits<                                \
+            gdal_data_type>::type>::value_types;                               \
+        break;                                                                 \
+    }
+
+ValueTypes gdal_data_type_to_value_types(
+    GDALDataType data_type)
+{
+    ValueTypes result;
+
+    switch(data_type) {
+        GDAL_DATA_TYPE_TO_VALUE_TYPES_CASE(GDT_Byte)
+        GDAL_DATA_TYPE_TO_VALUE_TYPES_CASE(GDT_UInt16)
+        GDAL_DATA_TYPE_TO_VALUE_TYPES_CASE(GDT_Int16)
+        GDAL_DATA_TYPE_TO_VALUE_TYPES_CASE(GDT_UInt32)
+        GDAL_DATA_TYPE_TO_VALUE_TYPES_CASE(GDT_Int32)
+        GDAL_DATA_TYPE_TO_VALUE_TYPES_CASE(GDT_Float32)
+        GDAL_DATA_TYPE_TO_VALUE_TYPES_CASE(GDT_Float64)
+        default: {
+            assert(false);
+            // TODO Throw error stating the data type is not supported. The
+            //      caller should add more info.
+        }
+        // case GDT_CInt16: {
+        //     throw IOError(this->name(),
+        //         Exception::messages().format_message(
+        //             MessageId::UNSUPPORTED_VALUE_TYPE,
+        //             path, GDALDataTypeTraits<GDT_CInt16>::name));
+        // }
+        // case GDT_CInt32: {
+        //     throw IOError(this->name(),
+        //         Exception::messages().format_message(
+        //             MessageId::UNSUPPORTED_VALUE_TYPE,
+        //             path, GDALDataTypeTraits<GDT_CInt32>::name));
+        // }
+        // case GDT_CFloat32: {
+        //     throw IOError(this->name(),
+        //         Exception::messages().format_message(
+        //             MessageId::UNSUPPORTED_VALUE_TYPE,
+        //             path, GDALDataTypeTraits<GDT_CFloat32>::name));
+        // }
+        // case GDT_CFloat64: {
+        //     throw IOError(this->name(),
+        //         Exception::messages().format_message(
+        //             MessageId::UNSUPPORTED_VALUE_TYPE,
+        //             path, GDALDataTypeTraits<GDT_CFloat64>::name));
+        // }
+        // case GDT_TypeCount: {
+        //     throw IOError(this->name(),
+        //         Exception::messages().format_message(
+        //             MessageId::UNSUPPORTED_VALUE_TYPE,
+        //             path, GDALDataTypeTraits<GDT_TypeCount>::name));
+        // }
+        // case GDT_Unknown: {
+        //     throw IOError(this->name(),
+        //         Exception::messages().format_message(
+        //             MessageId::UNSUPPORTED_VALUE_TYPE,
+        //             path, GDALDataTypeTraits<GDT_Unknown>::name));
+        // }
+    }
+
+    return result;
+}
+
+#undef GDAL_DATA_TYPE_TO_VALUE_TYPES_CASE
+
 } // Anonymous namespace
 
 
@@ -197,6 +268,30 @@ bool GDALDataset::contains_attribute(
     // /<raster>/<raster>
     return Path("/" + String(Path(this->name()).stem()) + "/" +
         String(Path(this->name()).stem())) == path;
+}
+
+
+ExpressionType GDALDataset::expression_type(
+    Path const& path) const
+{
+    assert(_dataset);
+
+    if(!contains_attribute(path)) {
+        throw IOError(this->name(),
+            Exception::messages().format_message(
+                MessageId::DOES_NOT_CONTAIN_FEATURE, path));
+    }
+
+    ExpressionType result;
+
+    // Assume we need the first band only.
+    assert(_dataset->GetRasterCount() == 1);
+    GDALRasterBand* band = _dataset->GetRasterBand(1);
+    assert(band);
+    result = ExpressionType(DataTypes::STATIC_FIELD,
+        gdal_data_type_to_value_types(band->GetRasterDataType()));
+
+    return result;
 }
 
 
