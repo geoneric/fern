@@ -1,58 +1,73 @@
-#include "geoneric/command/convert_command.h"
+#include "geoneric/command/compile_command.h"
 #include "geoneric/core/exception.h"
 #include "geoneric/ast/visitor/ast_dot_visitor.h"
 #include "geoneric/ast/visitor/flowgraph_dot_visitor.h"
+#include "geoneric/compiler/compiler.h"
 
 
 namespace geoneric {
 namespace {
 
-void show_convert_help()
+void show_compile_help()
 {
     std::cout <<
-        "usage: geoneric convert [--help] LANGUAGE [ARGS]\n"
+        "usage: geoneric compile [--help] LANGUAGE [ARGS]\n"
         "\n"
-        "Convert the script to a target language.\n"
+        "Compile the script to a target language.\n"
         "\n"
         "languages:\n"
         "  geoneric             Round-trip script\n"
-        "  dot                 Convert script to Dot graph\n"
-        "  c++                 Convert script to C++ code\n"
-        "  python              Convert script to C++ code for Python extension\n"
-        "  xml                 Convert script to XML\n"
+        "  dot                 Compile script to Dot graph\n"
+        "  c++                 Compile script to C++ code\n"
+        "  python              Compile script to C++ code for Python extension\n"
+        "  xml                 Compile script to XML\n"
         "\n"
-        "See 'geoneric convert LANGUAGE --help' for more information on a specific\n"
+        "See 'geoneric compile LANGUAGE --help' for more information on a specific\n"
         "language.\n"
         ;
 }
 
 
-void show_convert_dot_help()
+void show_compile_cpp_help()
 {
     std::cout <<
-        "usage: geoneric convert dot [--help] GRAPH_TYPE [ARGS]\n"
+        "usage: geoneric compile cpp [--help] [--dump_driver]\n"
+        "                            INPUT_SCRIPT OUTPUT_MODULE\n"
         "\n"
-        "Convert the script to a dot graph.\n"
+        "Compile the script module to a C++ module.\n"
+        "\n"
+        "  INPUT_SCRIPT        Script to compile or - to read from standard input\n"
+        "  OUTPUT_MODULE       File to write result to, without an extension\n"
+        ;
+}
+
+
+void show_compile_dot_help()
+{
+    std::cout <<
+        "usage: geoneric compile dot [--help] GRAPH_TYPE [ARGS]\n"
+        "\n"
+        "Compile the script to a dot graph.\n"
         "\n"
         "graph types:\n"
         "  ast                 Abstract syntax tree\n"
         "  flowgraph           Flowgraph\n"
         "\n"
-        "See 'geoneric convert dot GRAPH_TYPE --help' for more information on a\n"
+        "See 'geoneric compile dot GRAPH_TYPE --help' for more information on a\n"
         "specific graph type.\n"
         ;
 }
 
 
-void show_convert_dot_ast_help()
+void show_compile_dot_ast_help()
 {
     std::cout <<
-        "usage: geoneric convert dot ast [--help] [--with-cfg] [--with-use]\n"
+        "usage: geoneric compile dot ast [--help] [--with-cfg] [--with-use]\n"
         "                               INPUT_SCRIPT OUTPUT_SCRIPT\n"
         "\n"
-        "Convert the script to a dot graph containing the abstract syntax tree.\n"
+        "Compile the script to a dot graph containing the abstract syntax tree.\n"
         "\n"
-        "  INPUT_SCRIPT        Script to convert or - to read from standard input\n"
+        "  INPUT_SCRIPT        Script to compile or - to read from standard input\n"
         "  OUTPUT_SCRIPT       File to write result to\n"
         "\n"
         "The result is written to standard output if no output script is provided\n"
@@ -60,14 +75,14 @@ void show_convert_dot_ast_help()
 }
 
 
-void show_convert_dot_flowgraph_help()
+void show_compile_dot_flowgraph_help()
 {
     std::cout <<
-        "usage: geoneric convert dot flowgraph [--help] INPUT_SCRIPT OUTPUT_SCRIPT\n"
+        "usage: geoneric compile dot flowgraph [--help] INPUT_SCRIPT OUTPUT_SCRIPT\n"
         "\n"
-        "Convert the script to a dot graph containing the flow graph.\n"
+        "Compile the script to a dot graph containing the flow graph.\n"
         "\n"
-        "  INPUT_SCRIPT        Script to convert or - to read from standard input\n"
+        "  INPUT_SCRIPT        Script to compile or - to read from standard input\n"
         "  OUTPUT_SCRIPT       File to write result to\n"
         "\n"
         "The result is written to standard output if no output script is provided\n"
@@ -75,14 +90,14 @@ void show_convert_dot_flowgraph_help()
 }
 
 
-// void show_convert_geoneric_help()
+// void show_compile_geoneric_help()
 // {
 //     std::cout <<
-//         "usage: geoneric convert geoneric INPUT_SCRIPT [OUTPUT_SCRIPT]\n"
+//         "usage: geoneric compile geoneric INPUT_SCRIPT [OUTPUT_SCRIPT]\n"
 //         "\n"
-//         "Convert the script to a geoneric script (round-trip).\n"
+//         "Compile the script to a geoneric script (round-trip).\n"
 //         "\n"
-//         "  INPUT_SCRIPT        Script to convert or - to read from standard input\n"
+//         "  INPUT_SCRIPT        Script to compile or - to read from standard input\n"
 //         "  OUTPUT_SCRIPT       File to write result to\n"
 //         "\n"
 //         "The result is written to standard output if no output script is provided\n"
@@ -90,14 +105,14 @@ void show_convert_dot_flowgraph_help()
 // }
 
 
-void show_convert_xml_help()
+void show_compile_xml_help()
 {
     std::cout <<
-        "usage: geoneric convert xml [--help] INPUT_SCRIPT OUTPUT_SCRIPT\n"
+        "usage: geoneric compile xml [--help] INPUT_SCRIPT OUTPUT_SCRIPT\n"
         "\n"
-        "Convert the script to xml.\n"
+        "Compile the script to xml.\n"
         "\n"
-        "  INPUT_SCRIPT        Script to convert or - to read from standard input\n"
+        "  INPUT_SCRIPT        Script to compile or - to read from standard input\n"
         "  OUTPUT_SCRIPT       File to write result to\n"
         "\n"
         "The result is written to standard output if no output script is provided\n"
@@ -107,7 +122,7 @@ void show_convert_xml_help()
 } // Anonymous namespace
 
 
-ConvertCommand::ConvertCommand(
+CompileCommand::CompileCommand(
     int argc,
     char** argv)
 
@@ -117,7 +132,7 @@ ConvertCommand::ConvertCommand(
 }
 
 
-int ConvertCommand::convert_to_geoneric(
+int CompileCommand::compile_to_geoneric(
     int /* argc */,
     char** /* argv */) const
 {
@@ -126,16 +141,63 @@ int ConvertCommand::convert_to_geoneric(
 }
 
 
-int ConvertCommand::convert_to_cpp(
-    int /* argc */,
-    char** /* argv */) const
+int CompileCommand::compile_to_cpp(
+    int argc,
+    char** argv) const
 {
-    std::cout << "Conversion to C++ not supported yet\n";
-    return EXIT_SUCCESS;
+    int status = EXIT_FAILURE;
+
+    if(argc == 1 || std::strcmp(argv[1], "--help") == 0) {
+        // No arguments, or the help option.
+        show_compile_cpp_help();
+        status = EXIT_SUCCESS;
+    }
+    else {
+        int current_argument_id = 1;
+        Compiler::Flags flags = 0;
+
+        while(current_argument_id < argc) {
+            if(std::strcmp(argv[current_argument_id], "--dump_driver") == 0) {
+                flags |= Compiler::DUMP_DRIVER;
+                ++current_argument_id;
+            }
+            else if(std::strcmp(argv[current_argument_id], "--dump_cmake") ==
+                    0) {
+                flags |= Compiler::DUMP_CMAKE;
+                ++current_argument_id;
+            }
+            else {
+                break;
+            }
+        }
+
+        if(argc - current_argument_id < 2) {
+            std::cerr << "Not enough arguments.\n";
+            show_compile_cpp_help();
+            status = EXIT_FAILURE;
+        }
+        else if(argc - current_argument_id > 2) {
+            std::cerr << "Too many arguments.\n";
+            show_compile_cpp_help();
+            status = EXIT_FAILURE;
+        }
+        else {
+            Path input_file_path =
+                std::strcmp(argv[current_argument_id], "-") != 0
+                    ? argv[current_argument_id] : "";
+            ++current_argument_id;
+            Path output_directory_path = argv[current_argument_id];
+            Compiler compiler("h", "cc");
+            compiler.compile(input_file_path, output_directory_path, flags);
+            status = EXIT_SUCCESS;
+        }
+    }
+
+    return status;
 }
 
 
-String ConvertCommand::convert_to_dot_ast(
+String CompileCommand::compile_to_dot_ast(
     std::shared_ptr<ModuleVertex> const& tree,
     int modes) const
 {
@@ -148,7 +210,7 @@ String ConvertCommand::convert_to_dot_ast(
 }
 
 
-int ConvertCommand::convert_to_dot_ast(
+int CompileCommand::compile_to_dot_ast(
     int argc,
     char** argv) const
 {
@@ -156,7 +218,7 @@ int ConvertCommand::convert_to_dot_ast(
 
     if(argc == 1 || std::strcmp(argv[1], "--help") == 0) {
         // No arguments, or the help option.
-        show_convert_dot_ast_help();
+        show_compile_dot_ast_help();
         status = EXIT_SUCCESS;
     }
     else {
@@ -178,12 +240,12 @@ int ConvertCommand::convert_to_dot_ast(
 
         if(current_argument_id == argc) {
             std::cerr << "Not enough arguments.\n";
-            show_convert_dot_ast_help();
+            show_compile_dot_ast_help();
             status = EXIT_FAILURE;
         }
         else if(argc - current_argument_id > 3) {
             std::cerr << "Too many arguments.\n";
-            show_convert_dot_ast_help();
+            show_compile_dot_ast_help();
             status = EXIT_FAILURE;
         }
         else {
@@ -194,7 +256,7 @@ int ConvertCommand::convert_to_dot_ast(
             std::string output_filename = current_argument_id == argc - 1
                 ? argv[current_argument_id] : "";
             ModuleVertexPtr tree(interpreter().parse_file(input_filename));
-            String dot_script = convert_to_dot_ast(tree, modes);
+            String dot_script = compile_to_dot_ast(tree, modes);
             write(dot_script, output_filename);
             status = EXIT_SUCCESS;
         }
@@ -204,7 +266,7 @@ int ConvertCommand::convert_to_dot_ast(
 }
 
 
-String ConvertCommand::convert_to_dot_flowgraph(
+String CompileCommand::compile_to_dot_flowgraph(
     ModuleVertexPtr const& tree) const
 {
     const_cast<Interpreter&>(interpreter()).annotate(tree);
@@ -216,7 +278,7 @@ String ConvertCommand::convert_to_dot_flowgraph(
 }
 
 
-int ConvertCommand::convert_to_dot_flowgraph(
+int CompileCommand::compile_to_dot_flowgraph(
     int argc,
     char** argv) const
 {
@@ -224,7 +286,7 @@ int ConvertCommand::convert_to_dot_flowgraph(
 
     if(argc == 1 || std::strcmp(argv[1], "--help") == 0) {
         // No arguments, or the help option.
-        show_convert_dot_flowgraph_help();
+        show_compile_dot_flowgraph_help();
         status = EXIT_SUCCESS;
     }
     else {
@@ -232,12 +294,12 @@ int ConvertCommand::convert_to_dot_flowgraph(
 
         if(current_argument_id == argc) {
             std::cerr << "Not enough arguments.\n";
-            show_convert_dot_ast_help();
+            show_compile_dot_ast_help();
             status = EXIT_FAILURE;
         }
         else if(argc - current_argument_id > 3) {
             std::cerr << "Too many arguments.\n";
-            show_convert_dot_ast_help();
+            show_compile_dot_ast_help();
             status = EXIT_FAILURE;
         }
         else {
@@ -248,7 +310,7 @@ int ConvertCommand::convert_to_dot_flowgraph(
             std::string output_filename = current_argument_id == argc - 1
                 ? argv[current_argument_id] : "";
             ModuleVertexPtr tree(interpreter().parse_file(input_filename));
-            String dot_script = convert_to_dot_flowgraph(tree);
+            String dot_script = compile_to_dot_flowgraph(tree);
             write(dot_script, output_filename);
             status = EXIT_SUCCESS;
         }
@@ -258,7 +320,7 @@ int ConvertCommand::convert_to_dot_flowgraph(
 }
 
 
-int ConvertCommand::convert_to_dot(
+int CompileCommand::compile_to_dot(
     int argc,
     char** argv) const
 {
@@ -266,18 +328,18 @@ int ConvertCommand::convert_to_dot(
 
     if(argc == 1 || std::strcmp(argv[1], "--help") == 0) {
         // No arguments, or the help option.
-        show_convert_dot_help();
+        show_compile_dot_help();
         status = EXIT_SUCCESS;
     }
     else if(std::strcmp(argv[1], "ast") == 0) {
-        status = convert_to_dot_ast(argc - 1, argv + 1);
+        status = compile_to_dot_ast(argc - 1, argv + 1);
     }
     else if(std::strcmp(argv[1], "flowgraph") == 0) {
-        status = convert_to_dot_flowgraph(argc - 1, argv + 1);
+        status = compile_to_dot_flowgraph(argc - 1, argv + 1);
     }
     else {
         std::cerr << "Unknown graph type: " << argv[1] << "\n";
-        std::cerr << "See 'geoneric convert dot --help' for list of types.\n";
+        std::cerr << "See 'geoneric compile dot --help' for list of types.\n";
         status = EXIT_FAILURE;
     }
 
@@ -285,7 +347,7 @@ int ConvertCommand::convert_to_dot(
 }
 
 
-int ConvertCommand::convert_to_python(
+int CompileCommand::compile_to_python(
     int /* argc */,
     char** /* argv */) const
 {
@@ -294,7 +356,7 @@ int ConvertCommand::convert_to_python(
 }
 
 
-int ConvertCommand::convert_to_xml(
+int CompileCommand::compile_to_xml(
     int argc,
     char** argv) const
 {
@@ -302,7 +364,7 @@ int ConvertCommand::convert_to_xml(
 
     if(argc == 1 || std::strcmp(argv[1], "--help") == 0) {
         // No arguments, or the help option.
-        show_convert_xml_help();
+        show_compile_xml_help();
         status = EXIT_SUCCESS;
     }
     else {
@@ -310,7 +372,7 @@ int ConvertCommand::convert_to_xml(
 
         if(argc - current_argument_id > 2) {
             std::cerr << "Too many arguments.\n";
-            show_convert_xml_help();
+            show_compile_xml_help();
             status = EXIT_FAILURE;
         }
         else {
@@ -331,34 +393,34 @@ int ConvertCommand::convert_to_xml(
 }
 
 
-int ConvertCommand::execute() const
+int CompileCommand::execute() const
 {
     int status = EXIT_FAILURE;
 
     try {
         if(argc() == 1 || std::strcmp(argv()[1], "--help") == 0) {
             // No arguments, or the help option.
-            show_convert_help();
+            show_compile_help();
             status = EXIT_SUCCESS;
         }
         else if(std::strcmp(argv()[1], "geoneric") == 0) {
-            status = convert_to_geoneric(argc() - 1, argv() + 1);
+            status = compile_to_geoneric(argc() - 1, argv() + 1);
         }
         else if(std::strcmp(argv()[1], "dot") == 0) {
-            status = convert_to_dot(argc() - 1, argv() + 1);
+            status = compile_to_dot(argc() - 1, argv() + 1);
         }
         else if(std::strcmp(argv()[1], "c++") == 0) {
-            status = convert_to_cpp(argc() - 1, argv() + 1);
+            status = compile_to_cpp(argc() - 1, argv() + 1);
         }
         else if(std::strcmp(argv()[1], "python") == 0) {
-            status = convert_to_python(argc() - 1, argv() + 1);
+            status = compile_to_python(argc() - 1, argv() + 1);
         }
         else if(std::strcmp(argv()[1], "xml") == 0) {
-            status = convert_to_xml(argc() - 1, argv() + 1);
+            status = compile_to_xml(argc() - 1, argv() + 1);
         }
         else {
             std::cerr << "Unknown target language: " << argv()[1] << "\n";
-            std::cerr << "See 'geoneric convert --help' for list of languages.\n";
+            std::cerr << "See 'geoneric compile --help' for list of languages.\n";
             status = EXIT_FAILURE;
         }
     }

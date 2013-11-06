@@ -2,7 +2,7 @@
 #include <iostream>
 #include <memory>
 #include "geoneric/configure.h"
-#include "geoneric/command/convert_command.h"
+#include "geoneric/command/compile_command.h"
 #include "geoneric/command/describe_command.h"
 #include "geoneric/command/execute_command.h"
 #include "geoneric/command/import_command.h"
@@ -23,7 +23,7 @@ void show_general_help()
         "\n"
         "commands:\n"
         "  execute             Execute script\n"
-        "  convert             Convert script\n"
+        "  compile             Compile script\n"
         "  describe            Describe script\n"
         "  import              Import data\n"
         "\n"
@@ -79,8 +79,8 @@ int main(
         std::unique_ptr<geoneric::Command> command;
 
         // A command may be given. Find out which one.
-        if(std::strcmp(argv[1], "convert") == 0) {
-            command.reset(new geoneric::ConvertCommand(argc - 1, argv + 1));
+        if(std::strcmp(argv[1], "compile") == 0) {
+            command.reset(new geoneric::CompileCommand(argc - 1, argv + 1));
         }
         else if(std::strcmp(argv[1], "describe") == 0) {
             command.reset(new geoneric::DescribeCommand(argc - 1, argv + 1));

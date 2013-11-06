@@ -10,57 +10,57 @@ namespace geoneric {
 
   \sa        .
 */
-class ConvertCommand:
+class CompileCommand:
     public Command
 {
 
-    friend class ConvertCommandTest;
+    friend class CompileCommandTest;
 
 public:
 
-                   ConvertCommand      (int argc,
+                   CompileCommand      (int argc,
                                         char** argv);
 
-                   ~ConvertCommand     ()=default;
+                   ~CompileCommand     ()=default;
 
-                   ConvertCommand      (ConvertCommand&&)=delete;
+                   CompileCommand      (CompileCommand&&)=delete;
 
-    ConvertCommand& operator=          (ConvertCommand&&)=delete;
+    CompileCommand& operator=          (CompileCommand&&)=delete;
 
-                   ConvertCommand      (ConvertCommand const&)=delete;
+                   CompileCommand      (CompileCommand const&)=delete;
 
-    ConvertCommand& operator=          (ConvertCommand const&)=delete;
+    CompileCommand& operator=          (CompileCommand const&)=delete;
 
     int            execute             () const;
 
 private:
 
-    int            convert_to_geoneric  (int argc,
+    int            compile_to_geoneric  (int argc,
                                         char** argv) const;
 
-    int            convert_to_cpp      (int argc,
+    int            compile_to_cpp      (int argc,
                                         char** argv) const;
 
-    String         convert_to_dot_ast  (ModuleVertexPtr const& tree,
+    String         compile_to_dot_ast  (ModuleVertexPtr const& tree,
                                         int modes) const;
 
-    int            convert_to_dot_ast  (int argc,
+    int            compile_to_dot_ast  (int argc,
                                         char** argv) const;
 
-    String         convert_to_dot_flowgraph(
+    String         compile_to_dot_flowgraph(
                                         ModuleVertexPtr const& tree) const;
 
-    int            convert_to_dot_flowgraph(
+    int            compile_to_dot_flowgraph(
                                         int argc,
                                         char** argv) const;
 
-    int            convert_to_dot      (int argc,
+    int            compile_to_dot      (int argc,
                                         char** argv) const;
 
-    int            convert_to_python   (int argc,
+    int            compile_to_python   (int argc,
                                         char** argv) const;
 
-    int            convert_to_xml      (int argc,
+    int            compile_to_xml      (int argc,
                                         char** argv) const;
 
 };

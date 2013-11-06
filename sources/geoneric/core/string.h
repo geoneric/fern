@@ -70,6 +70,8 @@ public:
 
     bool           ends_with           (String const& string) const;
 
+    void           clear               ();
+
     String&        strip               (String const& characters=String());
 
     bool           contains            (String const& string) const;

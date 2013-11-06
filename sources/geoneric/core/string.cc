@@ -245,6 +245,12 @@ bool String::ends_with(
 }
 
 
+void String::clear()
+{
+    UnicodeString::remove();
+}
+
+
 //! Strip characters from \a characters from the begin of the string.
 /*!
   \param     characters String with characters to strip.

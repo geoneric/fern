@@ -113,6 +113,31 @@ Path Path::filename() const
 }
 
 
+Path& Path::replace_extension(
+    Path const& extension)
+{
+    boost::filesystem::path::replace_extension(extension);
+    return *this;
+}
+
+
+Path& Path::operator/=(
+    Path const& path)
+{
+    boost::filesystem::path::operator/=(path);
+    return *this;
+}
+
+
+Path operator/(
+    Path const& lhs,
+    Path const& rhs)
+{
+    Path result(lhs);
+    return result /= rhs;
+}
+
+
 std::ostream& operator<<(
     std::ostream& stream,
     Path const& path)

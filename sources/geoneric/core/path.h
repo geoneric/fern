@@ -41,6 +41,8 @@ public:
 
     bool           operator==          (Path const& path) const;
 
+    Path&          operator/=          (Path const& path);
+
                    operator String     () const;
 
     String         generic_string      () const;
@@ -59,10 +61,15 @@ public:
 
     std::vector<String> names          () const;
 
+    Path&          replace_extension   (Path const& extension);
+
 private:
 
 };
 
+
+Path               operator/           (Path const& lhs,
+                                        Path const& rhs);
 
 std::ostream&      operator<<          (std::ostream& stream,
                                         Path const& path);
