@@ -3,6 +3,7 @@ SET(TEST_NAMES
     ast_visitor_test
     dot_visitor_test
     identify_visitor_test
+    io_visitor_test
     module_visitor_test
     # This introduces a syclic dependency. Shouldn't depend on interpreter.
     # Or move to higher level place.

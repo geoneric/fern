@@ -26,6 +26,9 @@ Messages::Messages()
     insert(std::make_pair(MessageId::DOES_NOT_CONTAIN_ATTRIBUTE,
         // attribute
         "Does not contain attribute: %1%"));
+    insert(std::make_pair(MessageId::DOES_NOT_CONTAIN_DATA,
+        // data path
+        "Does not contain data: %1%"));
     insert(std::make_pair(MessageId::UNSUPPORTED_VALUE_TYPE,
         // attribute: value type
         "Unsupported value type: %1%: %2%"));

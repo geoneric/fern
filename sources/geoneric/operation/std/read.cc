@@ -1,5 +1,6 @@
 #include "geoneric/operation/std/read.h"
 #include "geoneric/core/data_name.h"
+#include "geoneric/core/io_error.h"
 #include "geoneric/feature/core/constant_attribute.h"
 #include "geoneric/io/drivers.h"
 #include "geoneric/operation/core/attribute_argument.h"
@@ -38,8 +39,10 @@ std::vector<std::shared_ptr<Argument>> read(
                 dataset->read_attribute(name.data_pathname())))});
     }
     else {
-        // TODO raise exception;
-        assert(false);
+        // TODO Shouldn't this be detected earlier?! Annotate/validate?!
+        throw IOError(name.database_pathname(),
+            Exception::messages().format_message(
+                MessageId::DOES_NOT_CONTAIN_DATA, name.data_pathname()));
     }
 
     assert(!result.empty());

@@ -1,8 +1,10 @@
 #include "geoneric/interpreter/execute_visitor.h"
 #include "geoneric/ast/core/vertices.h"
+#include "geoneric/ast/visitor/io_visitor.h"
 #include "geoneric/feature/core/constant_attribute.h"
 #include "geoneric/operation/core/attribute_argument.h"
 #include "geoneric/interpreter/data_sources.h"
+#include "geoneric/interpreter/data_syncs.h"
 
 
 namespace geoneric {
@@ -14,12 +16,15 @@ ExecuteVisitor::ExecuteVisitor(
       _operations(operations),
       _stack(),
       _symbol_table(),
-      _data_source_symbol_table()
+      _data_source_symbol_table(),
+      _data_sync_symbol_table(),
+      _outputs()
 
 {
    assert(operations);
    _symbol_table.push_scope();
    _data_source_symbol_table.push_scope();
+   _data_sync_symbol_table.push_scope();
 }
 
 
@@ -27,6 +32,7 @@ ExecuteVisitor::~ExecuteVisitor()
 {
    _symbol_table.pop_scope();
    _data_source_symbol_table.pop_scope();
+   _data_sync_symbol_table.pop_scope();
 }
 
 
@@ -35,14 +41,31 @@ void ExecuteVisitor::set_data_source_symbols(
 {
     assert(_data_source_symbol_table.scope_level() == 1u);
     _data_source_symbol_table.clear_scope();
+    assert(_symbol_table.scope_level() == 1u);
 
     if(!symbol_table.empty()) {
         assert(symbol_table.scope_level() == 1u);
 
         for(auto const& pair: symbol_table.scope(1u)) {
             assert(!_data_source_symbol_table.has_value(pair.first));
+            if(_symbol_table.has_value(pair.first)) {
+                _symbol_table.erase_value(pair.first);
+            }
             _data_source_symbol_table.add_value(pair.first, pair.second);
         }
+    }
+}
+
+
+void ExecuteVisitor::set_data_sync_symbols(
+    SymbolTable<std::shared_ptr<DataSync>> const& symbol_table)
+{
+    assert(_data_sync_symbol_table.scope_level() == 1u);
+    _data_sync_symbol_table.clear_scope();
+
+    if(!symbol_table.empty()) {
+        assert(symbol_table.scope_level() == 1u);
+        _data_sync_symbol_table = symbol_table;
     }
 }
 
@@ -78,6 +101,16 @@ void ExecuteVisitor::Visit(
     // Assume the target expression is a NameVertex (it should, for now).
     assert(dynamic_cast<NameVertex const*>(vertex.target().get()));
 
+    // If the target vertex is an output, and if the output is mentioned in
+    // the data sync symbol table, then write out the result.
+    if(std::find(_outputs.begin(), _outputs.end(), vertex.target().get()) !=
+            _outputs.end()) {
+        if(_data_sync_symbol_table.has_value(vertex.target()->name())) {
+            _data_sync_symbol_table.value(vertex.target()->name())->write(
+                *_stack.top());
+        }
+    }
+
     // Store the result in a scoped symbol table for later reference.
     // Update scope at correct moments in other visit functions.
     _symbol_table.add_value(vertex.target()->name(), _stack.top());
@@ -104,19 +137,19 @@ void ExecuteVisitor::Visit(
 void ExecuteVisitor::Visit(
     NameVertex& vertex)
 {
-    if(_symbol_table.has_value(vertex.name())) {
-        // Retrieve the value from the symbol table and push it onto the stack.
-        _stack.push(_symbol_table.value(vertex.name()));
-    }
-    else {
+    if(!_symbol_table.has_value(vertex.name())) {
         // We must have a data source for this input variable.
         assert(_data_source_symbol_table.has_value(vertex.name()));
-        // We must be at global scope now.
-        assert(_symbol_table.scope_level() == 1u);
 
-        // Read a value from a data source and add it onto the stack.
-        _stack.push(_data_source_symbol_table.value(vertex.name())->read());
+        // Add the result of the read to the symbol table, so later
+        // references to the same symbol can use the data read, instead of
+        // reading the same data multiple times.
+        _symbol_table.add_value(vertex.name(),
+            _data_source_symbol_table.value(vertex.name())->read());
     }
+
+    assert(_symbol_table.has_value(vertex.name()));
+    _stack.push(_symbol_table.value(vertex.name()));
 }
 
 
@@ -163,6 +196,11 @@ void ExecuteVisitor::Visit(
 void ExecuteVisitor::Visit(
     ModuleVertex& vertex)
 {
+    // Determine inputs and outputs of the module.
+    IOVisitor visitor;
+    vertex.Accept(visitor);
+    _outputs = visitor.outputs();
+
     AstVisitor::Visit(vertex);
 }
 

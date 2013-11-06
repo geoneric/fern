@@ -5,10 +5,12 @@
 #include "geoneric/core/type_traits.h"
 #include "geoneric/core/validate_error.h"
 #include "geoneric/feature/core/attributes.h"
+#include "geoneric/io/drivers.h"
 #include "geoneric/io/io_client.h"
 #include "geoneric/operation/core/attribute_argument.h"
 #include "geoneric/operation/core/feature_argument.h"
 #include "geoneric/interpreter/data_sources.h"
+#include "geoneric/interpreter/data_syncs.h"
 #include "geoneric/interpreter/execute_visitor.h"
 #include "geoneric/interpreter/interpreter.h"
 
@@ -29,7 +31,7 @@ public:
 
 template<
     class T>
-struct TestAbsResult {
+struct TestConstant {
     void operator()(
             geoneric::Interpreter& interpreter,
             T result)
@@ -261,9 +263,10 @@ BOOST_AUTO_TEST_CASE(execute)
         tree = interpreter.parse_string("abs(-5)");
         BOOST_REQUIRE(tree);
         interpreter.execute(tree);
-        TestAbsResult<int64_t>()(interpreter, 5);
+        TestConstant<int64_t>()(interpreter, 5);
     }
 
+    // TODO
     // // Calculate abs(-5) and leave the result on the stack for testing.
     // // Call a user defined function that does the calculation.
     // {
@@ -273,7 +276,7 @@ BOOST_AUTO_TEST_CASE(execute)
     //         "do_abs(-5)");
     //     BOOST_REQUIRE(tree);
     //     interpreter.execute(tree);
-    //     TestAbsResult<int64_t>()(interpreter, 5);
+    //     TestConstant<int64_t>()(interpreter, 5);
     // }
 
 
@@ -615,10 +618,6 @@ BOOST_AUTO_TEST_CASE(execute_read_with_constant_input)
     geoneric::Interpreter interpreter;
     geoneric::ModuleVertexPtr tree;
 
-        // Calculate the abs, write the result. Read the new constant just
-        // written, leave it on the stack, and test the values.
-
-
     {
         // Write a constant, read it again. Leave it on the stack, and test
         // the values.
@@ -627,73 +626,19 @@ format = "Geoneric"
 attribute_name = "earth.gnr:earth/gravity"
 gravity = -9.8
 write(gravity, attribute_name, format)
-gravity = read(attribute_name))";
+read(attribute_name))";
         tree = interpreter.parse_string(script);
         interpreter.execute(tree);
-
-        // hier verder
-        // std::stack<std::shared_ptr<geoneric::Argument>> stack(
-        //     interpreter.stack());
-        // BOOST_CHECK_EQUAL(stack.size(), 1u);
-
-        // std::shared_ptr<geoneric::Argument> const& argument(stack.top());
-        // BOOST_REQUIRE_EQUAL(argument->argument_type(),
-        //     geoneric::ArgumentType::AT_ATTRIBUTE);
-
-        // std::shared_ptr<geoneric::AttributeArgument> const&
-        //     attribute_argument(
-        //         std::dynamic_pointer_cast<geoneric::AttributeArgument>(
-        //             argument));
-        // BOOST_REQUIRE(attribute_argument);
-
-        // std::shared_ptr<geoneric::Attribute> const& attribute(
-        //     attribute_argument->attribute());
-
-        // geoneric::FieldAttributePtr<int32_t> boxes_attribute(
-        //     std::dynamic_pointer_cast<geoneric::FieldAttribute<int32_t>>(
-        //         attribute));
-        // BOOST_REQUIRE(boxes_attribute);
-        // BOOST_REQUIRE_EQUAL(boxes_attribute->size(), 1u);
-
-        // geoneric::FieldDomain const& domain(boxes_attribute->domain());
-        // BOOST_REQUIRE_EQUAL(domain.size(), 1u);
-        // geoneric::d2::Box const& box(domain.cbegin()->second);
-        // BOOST_CHECK_EQUAL(geoneric::get<0>(box.min_corner()), -1.0);
-        // BOOST_CHECK_EQUAL(geoneric::get<1>(box.min_corner()), -1.0);
-        // BOOST_CHECK_EQUAL(geoneric::get<0>(box.max_corner()), 1.0);
-        // BOOST_CHECK_EQUAL(geoneric::get<1>(box.max_corner()), 2.0);
-
-        // geoneric::FieldValue<int32_t> const& value(
-        //     *boxes_attribute->values().cbegin()->second);
-        // BOOST_REQUIRE_EQUAL(value.num_dimensions(), 2);
-        // BOOST_REQUIRE_EQUAL(value.shape()[0], 3);
-        // BOOST_REQUIRE_EQUAL(value.shape()[1], 2);
-
-        // BOOST_CHECK(!value.mask()[0][0]);
-        // BOOST_CHECK(!value.mask()[0][1]);
-        // BOOST_CHECK(!value.mask()[1][0]);
-        // BOOST_CHECK( value.mask()[1][1]);
-        // BOOST_CHECK(!value.mask()[2][0]);
-        // BOOST_CHECK(!value.mask()[2][1]);
-        // BOOST_CHECK_EQUAL(value[0][0], 2);
-        // BOOST_CHECK_EQUAL(value[0][1], 1);
-        // BOOST_CHECK_EQUAL(value[1][0], 0);
-        // // BOOST_CHECK_EQUAL(value[1][1], xxx);
-        // BOOST_CHECK_EQUAL(value[2][0],   1);
-        // BOOST_CHECK_EQUAL(value[2][1],   2);
+        TestConstant<double>()(interpreter, -9.8);
     }
 }
 
 
-// // TODO This is needed to be able to determine the prototype of the module.
-// BOOST_AUTO_TEST_CASE(determine_module_inputs_and_outputs)
-// {
-// }
-
-
 BOOST_AUTO_TEST_CASE(execute_with_external_inputs)
 {
+    geoneric::Interpreter interpreter;
     geoneric::ModuleVertexPtr tree;
+    geoneric::Interpreter::DataSyncSymbolTable data_sync_symbol_table;
 
     // If a script has undefined symbols, they must be provided from the
     // outside. After that, validation should result in fixed result expression
@@ -709,22 +654,22 @@ abs(input)
     {
         std::shared_ptr<geoneric::DataSource> data_source(new
             geoneric::ConstantSource<int32_t>(-9));
-        geoneric::Interpreter::DataSourceSymbolTable symbol_table;
-        symbol_table.push_scope();
-        symbol_table.add_value("input", data_source);
+        geoneric::Interpreter::DataSourceSymbolTable data_source_symbol_table;
+        data_source_symbol_table.push_scope();
+        data_source_symbol_table.add_value("input", data_source);
 
         {
-            geoneric::Interpreter interpreter;
             tree = interpreter.parse_string(script);
-            BOOST_REQUIRE_NO_THROW(interpreter.validate(tree, symbol_table));
-            // TODO Verify that the results are fixed.
+            interpreter.clear_stack();
+            BOOST_REQUIRE_NO_THROW(interpreter.validate(tree, data_source_symbol_table));
         }
 
         {
-            geoneric::Interpreter interpreter;
             tree = interpreter.parse_string(script);
-            BOOST_REQUIRE_NO_THROW(interpreter.execute(tree, symbol_table));
-            TestAbsResult<int32_t>()(interpreter, 9);
+            interpreter.clear_stack();
+            BOOST_REQUIRE_NO_THROW(interpreter.execute(tree,
+                data_source_symbol_table, data_sync_symbol_table));
+            TestConstant<int32_t>()(interpreter, 9);
         }
     }
 
@@ -732,29 +677,103 @@ abs(input)
     {
         std::shared_ptr<geoneric::DataSource> data_source(new
             geoneric::DatasetSource("constant-1.gnr:earth/gravity"));
-        geoneric::Interpreter::DataSourceSymbolTable symbol_table;
-        symbol_table.push_scope();
-        symbol_table.add_value("input", data_source);
+        geoneric::Interpreter::DataSourceSymbolTable data_source_symbol_table;
+        data_source_symbol_table.push_scope();
+        data_source_symbol_table.add_value("input", data_source);
 
         {
-            geoneric::Interpreter interpreter;
             tree = interpreter.parse_string(script);
-            BOOST_REQUIRE_NO_THROW(interpreter.validate(tree, symbol_table));
-            // TODO Verify that the results are fixed.
+            interpreter.clear_stack();
+            BOOST_REQUIRE_NO_THROW(interpreter.validate(tree, data_source_symbol_table));
         }
 
         {
-            geoneric::Interpreter interpreter;
             tree = interpreter.parse_string(script);
-            BOOST_REQUIRE_NO_THROW(interpreter.execute(tree, symbol_table));
-            TestAbsResult<double>()(interpreter, 9.8);
+            interpreter.clear_stack();
+            BOOST_REQUIRE_NO_THROW(interpreter.execute(tree,
+                data_source_symbol_table, data_sync_symbol_table));
+            TestConstant<double>()(interpreter, 9.8);
         }
+    }
+
+    // Make sure that data is read only once. An assertion will fail if the
+    // same data is read more than once.
+    {
+        geoneric::String script = u8R"(
+abs(input)
+abs(input)
+)";
+        std::shared_ptr<geoneric::DataSource> data_source(new
+            geoneric::ConstantSource<int32_t>(-9));
+        geoneric::Interpreter::DataSourceSymbolTable data_source_symbol_table;
+        data_source_symbol_table.push_scope();
+        data_source_symbol_table.add_value("input", data_source);
+
+        tree = interpreter.parse_string(script);
+        interpreter.clear_stack();
+        BOOST_REQUIRE_NO_THROW(interpreter.execute(tree,
+            data_source_symbol_table, data_sync_symbol_table));
     }
 }
 
-// // TODO This is needed to be able to configure where the output should go.
-// BOOST_AUTO_TEST_CASE(execute_with_external_outputs)
-// {
-// }
+
+BOOST_AUTO_TEST_CASE(execute_with_external_outputs)
+{
+    using namespace geoneric;
+
+    String script;
+    Interpreter interpreter;
+
+    // Outputs of a script can be coupled to a data sync. That way, data will
+    // be saved.
+
+    {
+        Interpreter::DataSourceSymbolTable data_source_symbol_table;
+        String dataset_pathname = "execute_with_external_outputs.gnr";
+        std::shared_ptr<Dataset> dataset(open_dataset(dataset_pathname,
+            OpenMode::OVERWRITE));
+        std::shared_ptr<DataSync> data_sync_a(new DatasetSync(dataset,
+            "my_feature/a"));
+        std::shared_ptr<DataSync> data_sync_b(new DatasetSync(dataset,
+            "my_feature/b"));
+        Interpreter::DataSyncSymbolTable data_sync_symbol_table;
+        data_sync_symbol_table.push_scope();
+        data_sync_symbol_table.add_value("a", data_sync_a);
+        data_sync_symbol_table.add_value("b", data_sync_b);
+
+        {
+            // Four potential outputs, one of which is redefined.
+            interpreter.clear_stack();
+            script = u8R"(
+a = 5
+b = 6.6
+c = 7
+a = 8
+d = 9
+)";
+            BOOST_REQUIRE_NO_THROW(interpreter.execute(
+                interpreter.parse_string(script),
+                data_source_symbol_table, data_sync_symbol_table));
+
+            // Read the output file and leave result on stack. Verify it is
+            // indeed the value that should be written.
+            interpreter.clear_stack();
+            script = u8R"(
+read("execute_with_external_outputs.gnr:my_feature/a")
+)";
+            BOOST_REQUIRE_NO_THROW(interpreter.execute(
+                interpreter.parse_string(script)));
+            TestConstant<int64_t>()(interpreter, 8);
+
+            interpreter.clear_stack();
+            script = u8R"(
+read("execute_with_external_outputs.gnr:my_feature/b")
+)";
+            BOOST_REQUIRE_NO_THROW(interpreter.execute(
+                interpreter.parse_string(script)));
+            TestConstant<double>()(interpreter, 6.6);
+        }
+    }
+}
 
 BOOST_AUTO_TEST_SUITE_END()

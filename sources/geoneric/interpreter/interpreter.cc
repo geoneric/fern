@@ -5,6 +5,9 @@
 #include "geoneric/core/validate_error.h"
 #include "geoneric/operation/std/operations.h"
 #include "geoneric/ast/visitor/identify_visitor.h"
+#ifndef NDEBUG
+    #include "geoneric/ast/visitor/io_visitor.h"
+#endif
 #include "geoneric/ast/visitor/thread_visitor.h"
 #include "geoneric/interpreter/data_sources.h"
 
@@ -30,6 +33,12 @@ SymbolTable<ExpressionType> expression_types(
 
     return result;
 }
+
+
+// DataSourceSymbolTable solve_read_calls(
+//     ModuleVertexPtr const& tree)
+// {
+// }
 
 } // Anonymous namespace
 
@@ -211,6 +220,13 @@ ModuleVertexPtr Interpreter::parse_file(
 }
 
 
+void Interpreter::annotate(
+    ModuleVertexPtr const& tree)
+{
+    annotate(tree, DataSourceSymbolTable());
+}
+
+
 //! Annotate the model in \a tree.
 /*!
   \param     tree Syntax tree containing the model to annotate.
@@ -230,6 +246,11 @@ void Interpreter::annotate(
 {
     assert(symbol_table.empty() || symbol_table.scope_level() == 1u);
 
+    // // Replace read calls by undefined identifiers and return a symbol
+    // // table linking the identifiers to data sources. This way, we can
+    // // treat undefined identifiers and read calls in a similar fashion.
+    // DataSourceSymbolTable read_calls_symbol_table = solve_read_calls(tree);
+
     ThreadVisitor thread_visitor;
     tree->Accept(thread_visitor);
 
@@ -238,6 +259,13 @@ void Interpreter::annotate(
 
     _annotate_visitor.add_global_symbols(expression_types(symbol_table));
     tree->Accept(_annotate_visitor);
+}
+
+
+void Interpreter::validate(
+    ModuleVertexPtr const& tree)
+{
+    validate(tree, DataSourceSymbolTable());
 }
 
 
@@ -256,10 +284,10 @@ void Interpreter::annotate(
 */
 void Interpreter::validate(
     ModuleVertexPtr const& tree,
-    DataSourceSymbolTable const& symbol_table)
+    DataSourceSymbolTable const& data_source_symbol_table)
 {
     try {
-        annotate(tree, symbol_table);
+        annotate(tree, data_source_symbol_table);
         tree->Accept(_validate_visitor);
     }
     catch(detail::UndefinedIdentifier const& exception) {
@@ -356,6 +384,13 @@ void Interpreter::validate(
 }
 
 
+void Interpreter::execute(
+    ModuleVertexPtr const& tree)
+{
+    execute(tree, DataSourceSymbolTable(), DataSyncSymbolTable());
+}
+
+
 //! Execute the model in \a tree.
 /*!
   \param     tree Syntax tree containing the model to execute.
@@ -370,13 +405,33 @@ void Interpreter::validate(
 */
 void Interpreter::execute(
     ModuleVertexPtr const& tree,
-    DataSourceSymbolTable const& symbol_table)
+    DataSourceSymbolTable const& data_source_symbol_table,
+    DataSyncSymbolTable const& data_sync_symbol_table)
 {
-    validate(tree, symbol_table);
-    _back_end->set_data_source_symbols(symbol_table);
+    validate(tree, data_source_symbol_table);
+
+// TODO This doesn't work yet. We must handle read calls or forbid them.
+// #ifndef NDEBUG
+//     // By now, the expression types of all outputs should be known. Otherwise
+//     // annotation and/or validation made a mistake.
+//     IOVisitor visitor;
+//     tree->Accept(visitor);
+//     for(auto const& output: visitor.outputs()) {
+//         for(auto const& expression_type: output->expression_types()) {
+//             if(!expression_type.fixed()) {
+//                 std::cout << output->name() << std::endl;
+//             }
+//             assert(expression_type.fixed());
+//         }
+//     }
+// #endif
+
+    // TODO Catch exceptions. Out of memory, ..., ...
+    _back_end->set_data_source_symbols(data_source_symbol_table);
+    _back_end->set_data_sync_symbols(data_sync_symbol_table);
     tree->Accept(*_back_end);
 
-    // ExecutionManager manager(*_back_end, symbol_table);
+    // ExecutionManager manager(*_back_end, data_source_symbol_table);
     // manager.run();
 }
 

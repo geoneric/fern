@@ -18,13 +18,13 @@ public:
 
                    ~Scope              ()=default;
 
-                   Scope               (Scope&&)=default;
+                   Scope               (Scope&& other);
 
-    Scope&         operator=           (Scope&&)=default;
+    Scope&         operator=           (Scope&& other);
 
-                   Scope               (Scope const&)=default;
+                   Scope               (Scope const& other);
 
-    Scope&         operator=           (Scope const&)=default;
+    Scope&         operator=           (Scope const& other);
 
     const_iterator begin               () const;
 
@@ -34,6 +34,8 @@ public:
 
     void           set_value           (String const& name,
                                         Value const& value);
+
+    void           erase_value         (String const& name);
 
     bool           has_value           (String const& name) const;
 
@@ -47,6 +49,55 @@ private:
     std::map<String, Value> _values;
 
 };
+
+
+template<
+    class Value>
+Scope<Value>::Scope(
+    Scope&& other)
+
+    : _values()
+
+{
+    *this = std::move(other);
+}
+
+
+template<
+    class Value>
+Scope<Value>& Scope<Value>::operator=(
+    Scope&& other)
+{
+    if(this != &other) {
+        _values = std::move(other._values);
+    }
+
+    return *this;
+}
+
+
+template<
+    class Value>
+Scope<Value>::Scope(
+    Scope const& other)
+
+    : _values(other._values)
+
+{
+}
+
+
+template<
+    class Value>
+Scope<Value>& Scope<Value>::operator=(
+    Scope const& other)
+{
+    if(this != &other) {
+        _values = other._values;
+    }
+
+    return *this;
+}
 
 
 template<
@@ -80,6 +131,16 @@ inline void Scope<Value>::set_value(
     Value const& value)
 {
     _values[name] = value;
+}
+
+
+template<
+    class Value>
+inline void Scope<Value>::erase_value(
+    String const& name)
+{
+    assert(has_value(name));
+    _values.erase(name);
 }
 
 

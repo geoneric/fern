@@ -177,8 +177,9 @@ void enter_interpreter()
 
     // Determine path name of history file. Reading the file will fail if it
     // doesn't exists, which is OK.
-    std::string history_filename((geoneric::String::decode_from_default_encoding(
-        std::getenv("HOME")) + "/.geoneric").encode_in_default_encoding());
+    std::string history_filename((
+        geoneric::String::decode_from_default_encoding(std::getenv("HOME")) +
+        "/.geoneric").encode_in_default_encoding());
     /* int result = */ read_history(history_filename.c_str());
 
     while(true) {

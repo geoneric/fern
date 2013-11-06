@@ -23,10 +23,24 @@ BOOST_FIXTURE_TEST_SUITE(drivers, Support)
 
 BOOST_AUTO_TEST_CASE(drivers)
 {
-    geoneric::String name = "raster-1.asc";
-    auto dataset = geoneric::open_dataset(name, geoneric::OpenMode::READ,
-        "AAIGrid");
-    BOOST_REQUIRE(dataset);
+    using namespace geoneric;
+
+    {
+        auto dataset = open_dataset("raster-1.asc", OpenMode::READ, "AAIGrid");
+        BOOST_REQUIRE(dataset);
+    }
+
+    {
+        try {
+            open_dataset("../does_not_exist.gnr", OpenMode::READ);
+            BOOST_CHECK(false);
+        }
+        catch(IOError const& exception) {
+            String message = exception.message();
+            BOOST_CHECK_EQUAL(message,
+                "IO error handling ../does_not_exist.gnr: Cannot be read");
+        }
+    }
 }
 
 

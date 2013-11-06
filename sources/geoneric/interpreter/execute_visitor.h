@@ -9,6 +9,7 @@
 namespace geoneric {
 
 class DataSource;
+class DataSync;
 
 
 //! Visitor that executes an abstract syntax tree.
@@ -55,6 +56,10 @@ public:
                                         SymbolTable<std::shared_ptr<
                                             DataSource>> const& symbol_table);
 
+    void           set_data_sync_symbols(
+                                        SymbolTable<std::shared_ptr<
+                                            DataSync>> const& symbol_table);
+
     std::stack<std::shared_ptr<Argument>> const&
                    stack               () const;
 
@@ -75,6 +80,11 @@ private:
 
     //! Symbol table with data sources for undefined input variables.
     SymbolTable<std::shared_ptr<DataSource>> _data_source_symbol_table;
+
+    //! Symbol table with data sources for output variables.
+    SymbolTable<std::shared_ptr<DataSync>> _data_sync_symbol_table;
+
+    std::vector<NameVertex const*> _outputs;
 
     void           Visit               (AssignmentVertex& vertex);
 

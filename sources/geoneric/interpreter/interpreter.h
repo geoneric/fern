@@ -10,6 +10,7 @@
 namespace geoneric {
 
 class DataSource;
+class DataSync;
 
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
@@ -24,6 +25,8 @@ class Interpreter
 public:
 
     typedef SymbolTable<std::shared_ptr<DataSource>> DataSourceSymbolTable;
+
+    typedef SymbolTable<std::shared_ptr<DataSync>> DataSyncSymbolTable;
 
                    Interpreter         ();
 
@@ -41,20 +44,25 @@ public:
 
     ModuleVertexPtr parse_file         (String const& filename) const;
 
+    void           annotate            (ModuleVertexPtr const& tree);
+
     void           annotate            (ModuleVertexPtr const& tree,
                                         DataSourceSymbolTable const&
-                                            symbol_table=
-                                                DataSourceSymbolTable());
+                                            symbol_table);
+
+    void           validate            (ModuleVertexPtr const& tree);
 
     void           validate            (ModuleVertexPtr const& tree,
                                         DataSourceSymbolTable const&
-                                            symbol_table=
-                                                DataSourceSymbolTable());
+                                            symbol_table);
+
+    void           execute             (ModuleVertexPtr const& tree);
 
     void           execute             (ModuleVertexPtr const& tree,
                                         DataSourceSymbolTable const&
-                                            symbol_table=
-                                                DataSourceSymbolTable());
+                                            data_source_symbol_table,
+                                        DataSyncSymbolTable const&
+                                            data_sync_symbol_table);
 
     std::stack<std::shared_ptr<Argument>>
                    stack               ();

@@ -37,13 +37,13 @@ public:
 
                    ~SymbolTable        ()=default;
 
-                   SymbolTable         (SymbolTable&&)=default;
+                   SymbolTable         (SymbolTable&& other);
 
-    SymbolTable&   operator=           (SymbolTable&&)=default;
+    SymbolTable&   operator=           (SymbolTable&& other);
 
-                   SymbolTable         (SymbolTable const&)=delete;
+                   SymbolTable         (SymbolTable const& other);
 
-    SymbolTable&   operator=           (SymbolTable const&)=delete;
+    SymbolTable&   operator=           (SymbolTable const& other);
 
     void           push_scope          ();
 
@@ -60,6 +60,8 @@ public:
     void           add_value           (String const& name,
                                         T const& value);
 
+    void           erase_value         (String const& name);
+
     bool           has_value           (String const& name) const;
 
     T              value               (String const& name) const;
@@ -74,6 +76,55 @@ private:
     std::vector<Scope<T>> _scopes;
 
 };
+
+
+template<
+    class T>
+SymbolTable<T>::SymbolTable(
+    SymbolTable&& other)
+
+    : _scopes()
+
+{
+    *this = std::move(other);
+}
+
+
+template<
+    class T>
+SymbolTable<T>& SymbolTable<T>::operator=(
+    SymbolTable&& other)
+{
+    if(this != &other) {
+        _scopes = std::move(other._scopes);
+    }
+
+    return *this;
+}
+
+
+template<
+    class T>
+SymbolTable<T>::SymbolTable(
+    SymbolTable const& other)
+
+    : _scopes(other._scopes)
+
+{
+}
+
+
+template<
+    class T>
+SymbolTable<T>& SymbolTable<T>::operator=(
+    SymbolTable const& other)
+{
+    if(this != &other) {
+        _scopes = other._scopes;
+    }
+
+    return *this;
+}
 
 
 //! Add a scope to the symbol table.
@@ -194,10 +245,6 @@ inline void SymbolTable<T>::add_value(
     //      scope).
     //      This warning should be conditional on some warning level.
 
-    // TODO If the name is already defined in the current scope, this new
-    //      value should overwrite the previous one. Currently, the new
-    //      value is added to the collections.
-
     // TODO In some cases, the new value should overwrite the previous one,
     //      but in other cases, the new value should just be added to the
     //      list of value. This happens when a global identifier is assigned
@@ -209,6 +256,21 @@ inline void SymbolTable<T>::add_value(
 
     assert(!_scopes.empty());
     _scopes.back().set_value(name, value);
+}
+
+
+//! Erase value from the current scope.
+/*!
+  \param     name Name of value to erase.
+*/
+template<
+    class T>
+inline void SymbolTable<T>::erase_value(
+    String const& name)
+{
+    assert(!_scopes.empty());
+    assert(_scopes.back().has_value(name));
+    _scopes.back().erase_value(name);
 }
 
 

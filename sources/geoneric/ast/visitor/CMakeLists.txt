@@ -7,6 +7,7 @@ SET(SOURCES
     copy_visitor
     dot_visitor
     identify_visitor
+    io_visitor
     flowgraph_dot_visitor
     module_visitor
     optimize_visitor

@@ -73,6 +73,9 @@ template<
     class T>
 inline std::shared_ptr<Argument> ConstantSource<T>::read() const
 {
+#ifndef NDEBUG
+    set_data_has_been_read();
+#endif
     return std::shared_ptr<Argument>(new AttributeArgument(
         std::make_shared<ConstantAttribute<T>>(_value)));
 }

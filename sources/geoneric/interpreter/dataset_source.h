@@ -1,7 +1,6 @@
 #pragma once
 #include <memory>
 #include "geoneric/core/data_name.h"
-#include "geoneric/core/path.h"
 #include "geoneric/interpreter/data_source.h"
 
 

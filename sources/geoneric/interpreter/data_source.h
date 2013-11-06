@@ -9,7 +9,7 @@ namespace geoneric {
 /*!
   longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 
-  \sa        .
+  \sa        DataSync
 */
 class DataSource
 {
@@ -24,7 +24,7 @@ public:
 
 protected:
 
-                   DataSource          ()=default;
+                   DataSource          ();
 
                    DataSource          (DataSource const&)=delete;
 
@@ -36,7 +36,20 @@ protected:
 
     virtual        ~DataSource         ()=default;
 
+#ifndef NDEBUG
+    bool           data_has_been_read_already
+                                       () const;
+
+    void           set_data_has_been_read
+                                       () const;
+#endif
+
 private:
+
+#ifndef NDEBUG
+    //! Whether the data is read already.
+    mutable bool   _read;
+#endif
 
 };
 

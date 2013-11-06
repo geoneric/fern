@@ -57,6 +57,9 @@ void AnnotateVisitor::clear_stack()
   context to the module. This way, the module can be better annotated. If all
   symbols are resolved, annotation must be able to calculate exactly what
   the expression types of the results will be.
+
+  Symbols in the instance's symbol table with the same name as symbols from
+  \a symbol_table will be overwritten.
 */
 void AnnotateVisitor::add_global_symbols(
     SymbolTable<ExpressionType> const& symbol_table)
@@ -68,7 +71,6 @@ void AnnotateVisitor::add_global_symbols(
 
         // Add the symbols to the symbol table.
         for(auto const& pair: symbol_table.scope(1u)) {
-            assert(!_symbol_table.has_value(pair.first));  // What todo if so?
             _symbol_table.add_value(pair.first, pair.second);
         }
     }
