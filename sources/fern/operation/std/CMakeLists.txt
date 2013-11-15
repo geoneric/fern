@@ -32,12 +32,12 @@ SET(SOURCES
     read
     write
 )
-ADD_LIBRARY(geoneric_operation_std
+ADD_LIBRARY(fern_operation_std
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(geoneric_operation_std
-    geoneric_operation_core
-    geoneric_io
+TARGET_LINK_LIBRARIES(fern_operation_std
+    fern_operation_core
+    fern_io
 )
 ADD_CUSTOM_TARGET(operation-xml.h
     DEPENDS

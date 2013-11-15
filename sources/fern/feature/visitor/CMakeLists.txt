@@ -4,9 +4,9 @@ SET(SOURCES
     attribute_visitor
     attribute_type_visitor
 )
-ADD_LIBRARY(geoneric_feature_visitor
+ADD_LIBRARY(fern_feature_visitor
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(geoneric_feature_visitor
-    geoneric_core
+TARGET_LINK_LIBRARIES(fern_feature_visitor
+    fern_core
 )

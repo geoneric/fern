@@ -6,13 +6,13 @@ SET(SOURCES
     compiler
     module
 )
-ADD_LIBRARY(geoneric_compiler
+ADD_LIBRARY(fern_compiler
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(geoneric_compiler
-    # geoneric_ast_visitor
-    # geoneric_ast_xml
-    # geoneric_operation_std
-    # geoneric_script
-    # geoneric_core
+TARGET_LINK_LIBRARIES(fern_compiler
+    # fern_ast_visitor
+    # fern_ast_xml
+    # fern_operation_std
+    # fern_script
+    # fern_core
 )

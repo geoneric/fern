@@ -6,7 +6,7 @@ namespace fern {
 IOClient::IOClient()
 
     : HDF5Client(),
-      GeonericClient(),
+      FernClient(),
       GDALClient()
 
 {

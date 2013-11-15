@@ -1,14 +1,14 @@
 SET(TEST_NAMES
-    geoneric_dataset_test
+    fern_dataset_test
 )
 
 MACRO(ADD_UNIT_TEST NAME)
-    ADD_EXECUTABLE(io_geoneric_${NAME} ${NAME})
-    TARGET_LINK_LIBRARIES(io_geoneric_${NAME}
-        geoneric_io_geoneric
+    ADD_EXECUTABLE(io_fern_${NAME} ${NAME})
+    TARGET_LINK_LIBRARIES(io_fern_${NAME}
+        fern_io_geoneric
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
-    ADD_TEST(NAME io_geoneric_${NAME} COMMAND io_geoneric_${NAME})
+    ADD_TEST(NAME io_fern_${NAME} COMMAND io_fern_${NAME})
 ENDMACRO()
 
 FOREACH(NAME ${TEST_NAMES})

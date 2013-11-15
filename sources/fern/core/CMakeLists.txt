@@ -16,10 +16,10 @@ SET(SOURCES
     validate_error
     value_types
 )
-ADD_LIBRARY(geoneric_core
+ADD_LIBRARY(fern_core
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(geoneric_core
+TARGET_LINK_LIBRARIES(fern_core
     ${Boost_FILESYSTEM_LIBRARY}
     ${Boost_SYSTEM_LIBRARY}
     ${ICU_LIBRARIES}

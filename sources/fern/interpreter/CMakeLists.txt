@@ -8,12 +8,12 @@ SET(SOURCES
     execute_visitor
     interpreter
 )
-ADD_LIBRARY(geoneric_interpreter
+ADD_LIBRARY(fern_interpreter
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(geoneric_interpreter
-    geoneric_ast_visitor
-    geoneric_ast_xml
-    geoneric_operation_std
-    geoneric_script
+TARGET_LINK_LIBRARIES(fern_interpreter
+    fern_ast_visitor
+    fern_ast_xml
+    fern_operation_std
+    fern_script
 )

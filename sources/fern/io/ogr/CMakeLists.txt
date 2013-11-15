@@ -6,10 +6,10 @@ SET(SOURCES
     ogr_dataset_driver
     ogr_feature_layer
 )
-ADD_LIBRARY(geoneric_io_ogr
+ADD_LIBRARY(fern_io_ogr
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(geoneric_io_ogr
-    geoneric_io_core
+TARGET_LINK_LIBRARIES(fern_io_ogr
+    fern_io_core
     ${GDAL_LIBRARIES}
 )

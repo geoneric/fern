@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE geoneric core
+#define BOOST_TEST_MODULE fern core
 #include <boost/any.hpp>
 #include <boost/test/unit_test.hpp>
 #include "fern/core/symbol_table.h"

@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE geoneric uncertainty
+#define BOOST_TEST_MODULE fern uncertainty
 #include <boost/test/unit_test.hpp>
 #include <boost/random/mersenne_twister.hpp>
 #include "fern/uncertainty/normal_distribution.h"

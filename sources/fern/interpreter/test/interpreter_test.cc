@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE geoneric interpreter
+#define BOOST_TEST_MODULE fern interpreter
 #include <boost/test/unit_test.hpp>
 #include "fern/core/io_error.h"
 #include "fern/core/parse_error.h"
@@ -622,7 +622,7 @@ BOOST_AUTO_TEST_CASE(execute_read_with_constant_input)
         // Write a constant, read it again. Leave it on the stack, and test
         // the values.
         fern::String script = R"(
-format = "Geoneric"
+format = "Fern"
 attribute_name = "earth.gnr:earth/gravity"
 gravity = -9.8
 write(gravity, attribute_name, format)

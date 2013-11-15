@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE geoneric io
+#define BOOST_TEST_MODULE fern io
 #include <boost/test/unit_test.hpp>
 #include "fern/core/string.h"
 #include "fern/io/ogr/ogr_client.h"

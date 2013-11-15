@@ -12,10 +12,10 @@ SET(SOURCES
     result
     expression_types
 )
-ADD_LIBRARY(geoneric_operation_core
+ADD_LIBRARY(fern_operation_core
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(geoneric_operation_core
-    geoneric_feature_visitor
-    geoneric_core
+TARGET_LINK_LIBRARIES(fern_operation_core
+    fern_feature_visitor
+    fern_core
 )

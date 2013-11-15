@@ -12,8 +12,8 @@ ADD_DEPENDENCIES(fern
     Operation-xml.h
 )
 TARGET_LINK_LIBRARIES(fern
-    geoneric_compiler
-    geoneric_interpreter
+    fern_compiler
+    fern_interpreter
     ${READLINE_LIBRARY}
     termcap
 )

@@ -26,14 +26,14 @@ static std::vector<std::shared_ptr<Driver>> drivers_to_try(
         drivers.push_back(fern::drivers.at(format));
     }
     else {
-        // Make sure the Geoneric driver is added first. GDAL may otherwise
-        // think it can read Geoneric formatted files, which it can't.
-        if(fern::drivers.find("Geoneric") != fern::drivers.end()) {
-            drivers.push_back(fern::drivers.at("Geoneric"));
+        // Make sure the Fern driver is added first. GDAL may otherwise
+        // think it can read Fern formatted files, which it can't.
+        if(fern::drivers.find("Fern") != fern::drivers.end()) {
+            drivers.push_back(fern::drivers.at("Fern"));
         }
 
         for(auto driver: fern::drivers) {
-            if(driver.second->name() != "Geoneric") {
+            if(driver.second->name() != "Fern") {
                 drivers.push_back(driver.second);
             }
         }

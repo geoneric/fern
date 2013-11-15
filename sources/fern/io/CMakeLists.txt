@@ -11,10 +11,10 @@ SET(SOURCES
     drivers
     io_client
 )
-ADD_LIBRARY(geoneric_io
+ADD_LIBRARY(fern_io
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(geoneric_io
-    geoneric_io_gdal
-    geoneric_io_geoneric
+TARGET_LINK_LIBRARIES(fern_io
+    fern_io_gdal
+    fern_io_geoneric
 )

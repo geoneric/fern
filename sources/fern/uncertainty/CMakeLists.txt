@@ -5,8 +5,8 @@ SET(SOURCES
     normal_distribution
     uncertainty
 )
-ADD_LIBRARY(geoneric_uncertainty
+ADD_LIBRARY(fern_uncertainty
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(geoneric_uncertainty
+TARGET_LINK_LIBRARIES(fern_uncertainty
 )

@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE geoneric operation_xml
+#define BOOST_TEST_MODULE fern operation_xml
 #include <boost/test/unit_test.hpp>
 #include "fern/core/exception.h"
 #include "fern/io/uncertml2/uncertml2_parser.h"

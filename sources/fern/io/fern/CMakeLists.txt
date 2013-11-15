@@ -1,20 +1,20 @@
 ADD_SUBDIRECTORY(test)
 
 SET(SOURCES
-    geoneric_client
-    geoneric_dataset
-    geoneric_driver
+    fern_client
+    fern_dataset
+    fern_driver
     hdf5_client
     hdf5_type_class_traits
     hdf5_type_traits
     utils
 )
-ADD_LIBRARY(geoneric_io_geoneric
+ADD_LIBRARY(fern_io_geoneric
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(geoneric_io_geoneric
-    geoneric_io_core
-    geoneric_feature_visitor
-    geoneric_feature_core
+TARGET_LINK_LIBRARIES(fern_io_geoneric
+    fern_io_core
+    fern_feature_visitor
+    fern_feature_core
     ${HDF5_LIBRARIES}
 )

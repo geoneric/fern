@@ -6,9 +6,9 @@ SET(SOURCES
     domain
     feature
 )
-ADD_LIBRARY(geoneric_feature_core
+ADD_LIBRARY(fern_feature_core
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(geoneric_feature_core
-    geoneric_core
+TARGET_LINK_LIBRARIES(fern_feature_core
+    fern_core
 )

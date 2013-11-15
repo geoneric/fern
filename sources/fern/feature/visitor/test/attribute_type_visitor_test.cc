@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE geoneric feature
+#define BOOST_TEST_MODULE fern feature
 #include <boost/test/unit_test.hpp>
 #include "fern/core/type_traits.h"
 #include "fern/feature/core/constant_attribute.h"

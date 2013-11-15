@@ -10,10 +10,10 @@ SET(SOURCES
     ${CMAKE_CURRENT_BINARY_DIR}/uncertml2-pskel.cxx
     uncertml2_parser
 )
-ADD_LIBRARY(geoneric_io_uncertml2
+ADD_LIBRARY(fern_io_uncertml2
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(geoneric_io_uncertml2
-    geoneric_uncertainty
+TARGET_LINK_LIBRARIES(fern_io_uncertml2
+    fern_uncertainty
     ${EXPAT_LIBRARY}
 )

@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE geoneric ast
+#define BOOST_TEST_MODULE fern ast
 #include <boost/test/unit_test.hpp>
 #include "fern/script/algebra_parser.h"
 #include "fern/ast/core/vertices.h"

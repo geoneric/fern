@@ -3,11 +3,11 @@ ADD_SUBDIRECTORY(test)
 SET(SOURCES
     algebra_parser
 )
-ADD_LIBRARY(geoneric_script
+ADD_LIBRARY(fern_script
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(geoneric_script
-    geoneric_python
-    geoneric_core
+TARGET_LINK_LIBRARIES(fern_script
+    fern_python
+    fern_core
     ${PYTHON_LIBRARIES}
 )

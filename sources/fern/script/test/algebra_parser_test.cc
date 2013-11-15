@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE geoneric script
+#define BOOST_TEST_MODULE fern script
 #include <boost/test/unit_test.hpp>
 #include "fern/core/exception.h"
 #include "fern/core/string.h"

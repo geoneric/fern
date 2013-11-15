@@ -14,9 +14,9 @@ SET(SOURCES
     thread_visitor
     validate_visitor
 )
-ADD_LIBRARY(geoneric_ast_visitor
+ADD_LIBRARY(fern_ast_visitor
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(geoneric_ast_visitor
-    geoneric_ast_core
+TARGET_LINK_LIBRARIES(fern_ast_visitor
+    fern_ast_core
 )

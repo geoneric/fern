@@ -21,10 +21,10 @@ SET(SOURCES
     subscript_vertex
     while_vertex
 )
-ADD_LIBRARY(geoneric_ast_core
+ADD_LIBRARY(fern_ast_core
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(geoneric_ast_core
-    geoneric_operation_core
-    geoneric_core
+TARGET_LINK_LIBRARIES(fern_ast_core
+    fern_operation_core
+    fern_core
 )

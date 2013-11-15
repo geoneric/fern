@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE geoneric operation_xml
+#define BOOST_TEST_MODULE fern operation_xml
 #include <boost/test/unit_test.hpp>
 #include "fern/operation/core/parameter.h"
 #include "fern/operation/core/result.h"

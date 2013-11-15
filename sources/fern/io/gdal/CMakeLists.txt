@@ -6,12 +6,12 @@ SET(SOURCES
     gdal_driver
     gdal_data_type_traits;
 )
-ADD_LIBRARY(geoneric_io_gdal
+ADD_LIBRARY(fern_io_gdal
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(geoneric_io_gdal
-    geoneric_io_core
-    geoneric_feature_visitor
-    geoneric_feature_core
+TARGET_LINK_LIBRARIES(fern_io_gdal
+    fern_io_core
+    fern_feature_visitor
+    fern_feature_core
     ${GDAL_LIBRARIES}
 )

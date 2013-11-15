@@ -27,10 +27,10 @@ SET(SOURCES
     ${CMAKE_CURRENT_BINARY_DIR}/syntax_tree-pskel.cxx
     xml_parser
 )
-ADD_LIBRARY(geoneric_ast_xml
+ADD_LIBRARY(fern_ast_xml
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(geoneric_ast_xml
-    geoneric_ast_core
+TARGET_LINK_LIBRARIES(fern_ast_xml
+    fern_ast_core
     ${EXPAT_LIBRARY}
 )

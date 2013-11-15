@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE geoneric operation_std
+#define BOOST_TEST_MODULE fern operation_std
 #include <boost/test/unit_test.hpp>
 #include "fern/operation/std/abs.h"
 

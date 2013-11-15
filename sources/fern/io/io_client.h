@@ -1,6 +1,6 @@
 #pragma once
 #include "fern/io/gdal/gdal_client.h"
-#include "fern/io/fern/geoneric_client.h"
+#include "fern/io/fern/fern_client.h"
 #include "fern/io/fern/hdf5_client.h"
 
 
@@ -15,7 +15,7 @@ namespace fern {
 class IOClient:
     // Order matters.
     public HDF5Client,
-    public GeonericClient,
+    public FernClient,
     public GDALClient
 {
 

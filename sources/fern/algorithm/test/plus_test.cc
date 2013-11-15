@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE geoneric algorithm
+#define BOOST_TEST_MODULE fern algorithm
 #include <boost/test/unit_test.hpp>
 #include <array>
 #include "fern/algorithm/plus.h"

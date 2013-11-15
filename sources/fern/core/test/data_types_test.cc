@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE geoneric operation_core
+#define BOOST_TEST_MODULE fern operation_core
 #include <boost/test/unit_test.hpp>
 #include "fern/core/data_types.h"
 
