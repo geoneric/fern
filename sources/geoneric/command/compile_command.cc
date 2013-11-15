@@ -32,12 +32,12 @@ void show_compile_cpp_help()
 {
     std::cout <<
         "usage: geoneric compile cpp [--help] [--dump_driver]\n"
-        "                            INPUT_SCRIPT OUTPUT_MODULE\n"
+        "                            INPUT_SCRIPT OUTPUT_DIRECTORY\n"
         "\n"
         "Compile the script module to a C++ module.\n"
         "\n"
         "  INPUT_SCRIPT        Script to compile or - to read from standard input\n"
-        "  OUTPUT_MODULE       File to write result to, without an extension\n"
+        "  OUTPUT_DIRECTORY    Directory to write results to\n"
         ;
 }
 

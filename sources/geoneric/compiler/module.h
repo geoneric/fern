@@ -1,4 +1,6 @@
 #pragma once
+#include <vector>
+#include "geoneric/compiler/argument.h"
 
 
 namespace geoneric {
@@ -12,7 +14,9 @@ public:
 
 protected:
 
-                   Module              ()=default;
+                   Module              (std::vector<Argument> const& arguments,
+                                        int argc,
+                                        char** argv);
 
     virtual        ~Module             ()=default;
 
@@ -25,6 +29,14 @@ protected:
     Module&        operator=           (Module const&)=delete;
 
 private:
+
+    std::vector<Argument> const _arguments;
+
+    int const      _argc;
+
+    char** const   _argv;
+
+    void           parse_command_line  ();
 
 };
 

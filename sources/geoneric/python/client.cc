@@ -16,12 +16,8 @@ unsigned short Client::_count = 0;
   initialization fails.
 */
 Client::Client()
-
-    : _initialized(false)
-
 {
     Py_Initialize();
-    _initialized = true;
     ++_count;
 }
 
@@ -31,7 +27,7 @@ Client::Client()
 */
 Client::~Client()
 {
-    if(_initialized) {
+    if(is_initialized()) {
         assert(_count > 0);
         // Python docs: There is no return value; errors during finalization are
         // ignored.
@@ -44,13 +40,10 @@ Client::~Client()
 //! Return whether the Python API is initialized.
 /*!
   \return    true or false.
-
-  Since there currently is not a way to check whether initialization of the
-  Python API failed (see Client()), this method always returns true.
 */
 bool Client::is_initialized() const
 {
-    return _initialized;
+    return Py_IsInitialized() != 0;
 }
 
 } // namespace python

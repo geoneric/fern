@@ -41,9 +41,6 @@ private:
     //! Number of times Python is initialized without being finalized.
     static unsigned short _count;
 
-    //! Whether initialization of the Python library succeeded.
-    bool             _initialized;
-
 };
 
 } // namespace python
