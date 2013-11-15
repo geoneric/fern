@@ -116,7 +116,7 @@ void Compiler::compile(
                 model_name
             });
             std::vector<String> link_libraries({
-                "geoneric_compiler"
+                "fern_compiler"
             });
 
             cmake_script += String((boost::format(

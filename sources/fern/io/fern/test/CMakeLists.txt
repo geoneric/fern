@@ -5,7 +5,7 @@ SET(TEST_NAMES
 MACRO(ADD_UNIT_TEST NAME)
     ADD_EXECUTABLE(io_fern_${NAME} ${NAME})
     TARGET_LINK_LIBRARIES(io_fern_${NAME}
-        fern_io_geoneric
+        fern_io_fern
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
     ADD_TEST(NAME io_fern_${NAME} COMMAND io_fern_${NAME})

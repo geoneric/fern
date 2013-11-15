@@ -16,5 +16,5 @@ ADD_LIBRARY(fern_io
 )
 TARGET_LINK_LIBRARIES(fern_io
     fern_io_gdal
-    fern_io_geoneric
+    fern_io_fern
 )

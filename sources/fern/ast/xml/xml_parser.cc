@@ -8,8 +8,8 @@
 
 namespace {
 
-class Geoneric_pimpl:
-    public fern::Geoneric_pskel
+class Fern_pimpl:
+    public fern::Fern_pskel
 {
 
 public:
@@ -33,7 +33,7 @@ public:
         _scope_vertex.reset(new fern::ScopeVertex(statements));
     }
 
-    std::shared_ptr<fern::ModuleVertex> post_Geoneric()
+    std::shared_ptr<fern::ModuleVertex> post_Fern()
     {
         return std::shared_ptr<fern::ModuleVertex>(new fern::ModuleVertex(
             _source_name, _scope_vertex));
@@ -1170,14 +1170,14 @@ std::shared_ptr<ModuleVertex> XmlParser::parse(
 
     statements_p.parsers(statement_p);
 
-    Geoneric_pimpl geoneric_p;
-    geoneric_p.parsers(statements_p, string_p);
+    Fern_pimpl fern_p;
+    fern_p.parsers(statements_p, string_p);
 
-    xml_schema::document doc_p(geoneric_p, "Geoneric");
+    xml_schema::document doc_p(fern_p, "Fern");
 
-    geoneric_p.pre();
+    fern_p.pre();
     doc_p.parse(stream);
-    return geoneric_p.post_Geoneric();
+    return fern_p.post_Fern();
 }
 
 

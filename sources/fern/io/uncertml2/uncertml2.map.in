@@ -2,11 +2,11 @@ namespace http://www.uncertml.org/2.0
 {
     include <memory>;
     include <vector>;
-    include "geoneric/uncertainty/normal_distribution.h";
+    include "fern/uncertainty/normal_distribution.h";
 
     positiveRealNumber  "double";
     ContinuousValuesType "std::vector<double> const&";
-    NormalDistribution  "std::shared_ptr<geoneric::NormalDistribution<double>>";
+    NormalDistribution  "std::shared_ptr<fern::NormalDistribution<double>>";
     // PositiveRealNumber "double";
     PositiveRealValuesType "std::vector<double> const&";
 }

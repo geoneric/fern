@@ -15,9 +15,9 @@ BOOST_AUTO_TEST_CASE(parse_empty_script)
         fern::String xml(parser.parse_string(fern::String("")));
         BOOST_CHECK_EQUAL(xml, fern::String(
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
                 "<Statements/>"
-            "</Geoneric>"));
+            "</Fern>"));
     }
 }
 
@@ -30,7 +30,7 @@ BOOST_AUTO_TEST_CASE(parse_name)
         fern::String xml(parser.parse_string(fern::String("a")));
         BOOST_CHECK_EQUAL(xml, fern::String(
           "<?xml version=\"1.0\"?>"
-          "<Geoneric source=\"&lt;string&gt;\">"
+          "<Fern source=\"&lt;string&gt;\">"
             "<Statements>"
               "<Statement line=\"1\" col=\"0\">"
                 "<Expression line=\"1\" col=\"0\">"
@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_CASE(parse_name)
                 "</Expression>"
               "</Statement>"
             "</Statements>"
-          "</Geoneric>"));
+          "</Fern>"));
     }
 
     // TODO #if PYTHONVER >= 2.7/3.0?
@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE(parse_name)
     //     fern::String xml(parser.parse_string(fern::String("ñ")));
     //     BOOST_CHECK_EQUAL(xml, fern::String(
     //       "<?xml version=\"1.0\"?>"
-    //       "<Geoneric>"
+    //       "<Fern>"
     //         "<Statements>"
     //           "<Statement>"
     //             "<Expression line=\"1\" col=\"0\">"
@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(parse_name)
     //             "</Expression>"
     //           "</Statement>"
     //         "</Statements>"
-    //       "</Geoneric>"));
+    //       "</Fern>"));
     // }
 }
 
@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_CASE(parse_assignment)
         fern::String xml(parser.parse_string(fern::String("a = b")));
         BOOST_CHECK_EQUAL(xml, fern::String(
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Assignment>"
@@ -80,7 +80,7 @@ BOOST_AUTO_TEST_CASE(parse_assignment)
                   "</Assignment>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>"));
+            "</Fern>"));
     }
 }
 
@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_CASE(parse_string)
         fern::String xml(parser.parse_string(fern::String("\"five\"")));
         BOOST_CHECK_EQUAL(xml, fern::String(
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -101,14 +101,14 @@ BOOST_AUTO_TEST_CASE(parse_string)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>"));
+            "</Fern>"));
     }
 
     {
         fern::String xml(parser.parse_string(fern::String("\"\"")));
         BOOST_CHECK_EQUAL(xml, fern::String(
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -116,14 +116,14 @@ BOOST_AUTO_TEST_CASE(parse_string)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>"));
+            "</Fern>"));
     }
 
     {
         fern::String xml(parser.parse_string(fern::String("\" \"")));
         BOOST_CHECK_EQUAL(xml, fern::String(
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -131,7 +131,7 @@ BOOST_AUTO_TEST_CASE(parse_string)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>"));
+            "</Fern>"));
     }
 
     // Test handling of Unicode characters.
@@ -139,7 +139,7 @@ BOOST_AUTO_TEST_CASE(parse_string)
         fern::String xml(parser.parse_string(fern::String("\"mañana\"")));
         BOOST_CHECK_EQUAL(xml, fern::String(
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -147,7 +147,7 @@ BOOST_AUTO_TEST_CASE(parse_string)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>"));
+            "</Fern>"));
     }
 
     {
@@ -175,7 +175,7 @@ BOOST_AUTO_TEST_CASE(parse_number)
         fern::String xml(parser.parse_string(fern::String("5")));
         BOOST_CHECK_EQUAL(xml, fern::String(boost::format(
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -188,14 +188,14 @@ BOOST_AUTO_TEST_CASE(parse_number)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>") % (sizeof(long) * 8)));
+            "</Fern>") % (sizeof(long) * 8)));
     }
 
     {
         fern::String xml(parser.parse_string(fern::String("5L")));
         BOOST_CHECK_EQUAL(xml, fern::String(
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -208,14 +208,14 @@ BOOST_AUTO_TEST_CASE(parse_number)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>"));
+            "</Fern>"));
     }
 
     {
         fern::String xml(parser.parse_string(fern::String("5.5")));
         BOOST_CHECK_EQUAL(xml, fern::String(
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -228,7 +228,7 @@ BOOST_AUTO_TEST_CASE(parse_number)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>"));
+            "</Fern>"));
     }
 }
 
@@ -242,7 +242,7 @@ BOOST_AUTO_TEST_CASE(parse_call)
         xml = parser.parse_string(fern::String("f()"));
         BOOST_CHECK_EQUAL(xml, fern::String(
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -253,14 +253,14 @@ BOOST_AUTO_TEST_CASE(parse_call)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>"));
+            "</Fern>"));
     }
 
     {
         xml = parser.parse_string(fern::String("f(1, \"2\", three, four())"));
         BOOST_CHECK_EQUAL(xml, fern::String(boost::format(
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -292,7 +292,7 @@ BOOST_AUTO_TEST_CASE(parse_call)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>") % (sizeof(long) * 8)));
+            "</Fern>") % (sizeof(long) * 8)));
     }
 }
 
@@ -306,7 +306,7 @@ BOOST_AUTO_TEST_CASE(parse_call)
 //     xml = parser.parse_string(fern::String("print"));
 //     BOOST_CHECK_EQUAL(xml, fern::String(
 //       "<?xml version=\"1.0\"?>"
-//       "<Geoneric source=\"&lt;string&gt;\">"
+//       "<Fern source=\"&lt;string&gt;\">"
 //         "<Statements>"
 //           "<Statement>"
 //             "<Expression line=\"1\" col=\"0\">"
@@ -317,14 +317,14 @@ BOOST_AUTO_TEST_CASE(parse_call)
 //             "</Expression>"
 //           "</Statement>"
 //         "</Statements>"
-//       "</Geoneric>"));
+//       "</Fern>"));
 //   }
 // 
 //   // {
 //   //   xml = parser.parse_string(fern::String("print(1, \"2\", three, four())"));
 //   //   BOOST_CHECK_EQUAL(xml, fern::String(boost::format(
 //   //     "<?xml version=\"1.0\"?>"
-//   //     "<Geoneric source=\"&lt;string&gt;\">"
+//   //     "<Fern source=\"&lt;string&gt;\">"
 //   //       "<Statements>"
 //   //         "<Statement>"
 //   //           "<Expression line=\"1\" col=\"0\">"
@@ -356,7 +356,7 @@ BOOST_AUTO_TEST_CASE(parse_call)
 //   //           "</Expression>"
 //   //         "</Statement>"
 //   //       "</Statements>"
-//   //     "</Geoneric>") % (sizeof(long) * 8)));
+//   //     "</Fern>") % (sizeof(long) * 8)));
 //   // }
 // }
 
@@ -370,7 +370,7 @@ BOOST_AUTO_TEST_CASE(parse_unary_operator)
         xml = parser.parse_string(fern::String("-a"));
         BOOST_CHECK_EQUAL(xml, fern::String(
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -385,7 +385,7 @@ BOOST_AUTO_TEST_CASE(parse_unary_operator)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>"));
+            "</Fern>"));
     }
 }
 
@@ -399,7 +399,7 @@ BOOST_AUTO_TEST_CASE(parse_binary_operator)
         xml = parser.parse_string(fern::String("a + b"));
         BOOST_CHECK_EQUAL(xml, fern::String(
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -417,7 +417,7 @@ BOOST_AUTO_TEST_CASE(parse_binary_operator)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>"));
+            "</Fern>"));
     }
 }
 
@@ -431,7 +431,7 @@ BOOST_AUTO_TEST_CASE(parse_boolean_operator)
         xml = parser.parse_string(fern::String("a and b"));
         BOOST_CHECK_EQUAL(xml, fern::String(
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -449,7 +449,7 @@ BOOST_AUTO_TEST_CASE(parse_boolean_operator)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>"));
+            "</Fern>"));
     }
 }
 
@@ -463,7 +463,7 @@ BOOST_AUTO_TEST_CASE(parse_comparison_operator)
         xml = parser.parse_string(fern::String("a <= b"));
         BOOST_CHECK_EQUAL(xml, fern::String(
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -481,7 +481,7 @@ BOOST_AUTO_TEST_CASE(parse_comparison_operator)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>"));
+            "</Fern>"));
     }
 }
 
@@ -494,7 +494,7 @@ BOOST_AUTO_TEST_CASE(parse_multiple_statements)
         fern::String xml(parser.parse_string(fern::String("a\nb")));
         BOOST_CHECK_EQUAL(xml, fern::String(
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -507,7 +507,7 @@ BOOST_AUTO_TEST_CASE(parse_multiple_statements)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>"));
+            "</Fern>"));
     }
 }
 
@@ -523,7 +523,7 @@ BOOST_AUTO_TEST_CASE(parse_if)
             "  b"));
         BOOST_CHECK_EQUAL(xml, fern::String(
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<If>"
@@ -541,7 +541,7 @@ BOOST_AUTO_TEST_CASE(parse_if)
                   "</If>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>"));
+            "</Fern>"));
     }
 
     {
@@ -552,7 +552,7 @@ BOOST_AUTO_TEST_CASE(parse_if)
             "  d"));
         BOOST_CHECK_EQUAL(xml, fern::String(
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<If>"
@@ -586,7 +586,7 @@ BOOST_AUTO_TEST_CASE(parse_if)
                   "</If>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>"));
+            "</Fern>"));
     }
 
     {
@@ -599,7 +599,7 @@ BOOST_AUTO_TEST_CASE(parse_if)
             "  e"));
         BOOST_CHECK_EQUAL(xml, fern::String(
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<If>"
@@ -639,7 +639,7 @@ BOOST_AUTO_TEST_CASE(parse_if)
                   "</If>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>"));
+            "</Fern>"));
     }
 }
 
@@ -655,7 +655,7 @@ BOOST_AUTO_TEST_CASE(parse_while)
             "  b"));
         BOOST_CHECK_EQUAL(xml, fern::String(
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<While>"
@@ -673,7 +673,7 @@ BOOST_AUTO_TEST_CASE(parse_while)
                   "</While>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>"));
+            "</Fern>"));
     }
 
     {
@@ -684,7 +684,7 @@ BOOST_AUTO_TEST_CASE(parse_while)
             "  c"));
         BOOST_CHECK_EQUAL(xml, fern::String(
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<While>"
@@ -708,7 +708,7 @@ BOOST_AUTO_TEST_CASE(parse_while)
                   "</While>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>"));
+            "</Fern>"));
     }
 }
 
@@ -736,7 +736,7 @@ BOOST_AUTO_TEST_CASE(parse_slice)
             "a[b]"));
         BOOST_CHECK_EQUAL(xml, fern::String(
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -751,7 +751,7 @@ BOOST_AUTO_TEST_CASE(parse_slice)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>"));
+            "</Fern>"));
     }
 }
 
@@ -766,7 +766,7 @@ BOOST_AUTO_TEST_CASE(parse_attribute)
             "a.b"));
         BOOST_CHECK_EQUAL(xml, fern::String(
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Expression line=\"1\" col=\"0\">"
@@ -779,7 +779,7 @@ BOOST_AUTO_TEST_CASE(parse_attribute)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>"));
+            "</Fern>"));
     }
 }
 
@@ -794,13 +794,13 @@ BOOST_AUTO_TEST_CASE(return_)
             "return"));
         BOOST_CHECK_EQUAL(xml, fern::String(
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Return/>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>"));
+            "</Fern>"));
     }
 
     {
@@ -808,7 +808,7 @@ BOOST_AUTO_TEST_CASE(return_)
             "return c"));
         BOOST_CHECK_EQUAL(xml, fern::String(
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Return>"
@@ -818,7 +818,7 @@ BOOST_AUTO_TEST_CASE(return_)
                   "</Return>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>"));
+            "</Fern>"));
     }
 }
 
@@ -834,7 +834,7 @@ BOOST_AUTO_TEST_CASE(parse_function)
             "    c = a + b\n"));
         BOOST_CHECK_EQUAL(xml, fern::String(
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<FunctionDefinition>"
@@ -872,7 +872,7 @@ BOOST_AUTO_TEST_CASE(parse_function)
                   "</FunctionDefinition>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>"));
+            "</Fern>"));
     }
 }
 

@@ -47,7 +47,7 @@ private:
 namespace detail {
 
 // Low level exception handling code. None of these should end up in the user's
-// code. This is all private to geoneric's code.
+// code. This is all private to fern's code.
 
 // Exception information that is added to the low level exception instances
 // used in the core of the code.

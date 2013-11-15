@@ -11,18 +11,18 @@ namespace {
 void show_compile_help()
 {
     std::cout <<
-        "usage: geoneric compile [--help] LANGUAGE [ARGS]\n"
+        "usage: fern compile [--help] LANGUAGE [ARGS]\n"
         "\n"
         "Compile the script to a target language.\n"
         "\n"
         "languages:\n"
-        "  geoneric             Round-trip script\n"
+        "  fern                Round-trip script\n"
         "  dot                 Compile script to Dot graph\n"
         "  c++                 Compile script to C++ code\n"
         "  python              Compile script to C++ code for Python extension\n"
         "  xml                 Compile script to XML\n"
         "\n"
-        "See 'geoneric compile LANGUAGE --help' for more information on a specific\n"
+        "See 'fern compile LANGUAGE --help' for more information on a specific\n"
         "language.\n"
         ;
 }
@@ -31,7 +31,7 @@ void show_compile_help()
 void show_compile_cpp_help()
 {
     std::cout <<
-        "usage: geoneric compile cpp [--help] [--dump_driver]\n"
+        "usage: fern compile cpp [--help] [--dump_driver]\n"
         "                            INPUT_SCRIPT OUTPUT_DIRECTORY\n"
         "\n"
         "Compile the script module to a C++ module.\n"
@@ -45,7 +45,7 @@ void show_compile_cpp_help()
 void show_compile_dot_help()
 {
     std::cout <<
-        "usage: geoneric compile dot [--help] GRAPH_TYPE [ARGS]\n"
+        "usage: fern compile dot [--help] GRAPH_TYPE [ARGS]\n"
         "\n"
         "Compile the script to a dot graph.\n"
         "\n"
@@ -53,7 +53,7 @@ void show_compile_dot_help()
         "  ast                 Abstract syntax tree\n"
         "  flowgraph           Flowgraph\n"
         "\n"
-        "See 'geoneric compile dot GRAPH_TYPE --help' for more information on a\n"
+        "See 'fern compile dot GRAPH_TYPE --help' for more information on a\n"
         "specific graph type.\n"
         ;
 }
@@ -62,7 +62,7 @@ void show_compile_dot_help()
 void show_compile_dot_ast_help()
 {
     std::cout <<
-        "usage: geoneric compile dot ast [--help] [--with-cfg] [--with-use]\n"
+        "usage: fern compile dot ast [--help] [--with-cfg] [--with-use]\n"
         "                               INPUT_SCRIPT OUTPUT_SCRIPT\n"
         "\n"
         "Compile the script to a dot graph containing the abstract syntax tree.\n"
@@ -78,7 +78,7 @@ void show_compile_dot_ast_help()
 void show_compile_dot_flowgraph_help()
 {
     std::cout <<
-        "usage: geoneric compile dot flowgraph [--help] INPUT_SCRIPT OUTPUT_SCRIPT\n"
+        "usage: fern compile dot flowgraph [--help] INPUT_SCRIPT OUTPUT_SCRIPT\n"
         "\n"
         "Compile the script to a dot graph containing the flow graph.\n"
         "\n"
@@ -90,12 +90,12 @@ void show_compile_dot_flowgraph_help()
 }
 
 
-// void show_compile_geoneric_help()
+// void show_compile_fern_help()
 // {
 //     std::cout <<
-//         "usage: geoneric compile geoneric INPUT_SCRIPT [OUTPUT_SCRIPT]\n"
+//         "usage: fern compile fern INPUT_SCRIPT [OUTPUT_SCRIPT]\n"
 //         "\n"
-//         "Compile the script to a geoneric script (round-trip).\n"
+//         "Compile the script to a fern script (round-trip).\n"
 //         "\n"
 //         "  INPUT_SCRIPT        Script to compile or - to read from standard input\n"
 //         "  OUTPUT_SCRIPT       File to write result to\n"
@@ -108,7 +108,7 @@ void show_compile_dot_flowgraph_help()
 void show_compile_xml_help()
 {
     std::cout <<
-        "usage: geoneric compile xml [--help] INPUT_SCRIPT OUTPUT_SCRIPT\n"
+        "usage: fern compile xml [--help] INPUT_SCRIPT OUTPUT_SCRIPT\n"
         "\n"
         "Compile the script to xml.\n"
         "\n"
@@ -132,11 +132,11 @@ CompileCommand::CompileCommand(
 }
 
 
-int CompileCommand::compile_to_geoneric(
+int CompileCommand::compile_to_fern(
     int /* argc */,
     char** /* argv */) const
 {
-    std::cout << "Conversion to Geoneric script not supported yet\n";
+    std::cout << "Conversion to Fern script not supported yet\n";
     return EXIT_SUCCESS;
 }
 
@@ -339,7 +339,7 @@ int CompileCommand::compile_to_dot(
     }
     else {
         std::cerr << "Unknown graph type: " << argv[1] << "\n";
-        std::cerr << "See 'geoneric compile dot --help' for list of types.\n";
+        std::cerr << "See 'fern compile dot --help' for list of types.\n";
         status = EXIT_FAILURE;
     }
 
@@ -403,8 +403,8 @@ int CompileCommand::execute() const
             show_compile_help();
             status = EXIT_SUCCESS;
         }
-        else if(std::strcmp(argv()[1], "geoneric") == 0) {
-            status = compile_to_geoneric(argc() - 1, argv() + 1);
+        else if(std::strcmp(argv()[1], "fern") == 0) {
+            status = compile_to_fern(argc() - 1, argv() + 1);
         }
         else if(std::strcmp(argv()[1], "dot") == 0) {
             status = compile_to_dot(argc() - 1, argv() + 1);
@@ -420,7 +420,7 @@ int CompileCommand::execute() const
         }
         else {
             std::cerr << "Unknown target language: " << argv()[1] << "\n";
-            std::cerr << "See 'geoneric compile --help' for list of languages.\n";
+            std::cerr << "See 'fern compile --help' for list of languages.\n";
             status = EXIT_FAILURE;
         }
     }

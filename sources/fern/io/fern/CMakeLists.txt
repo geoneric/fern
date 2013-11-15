@@ -9,10 +9,10 @@ SET(SOURCES
     hdf5_type_traits
     utils
 )
-ADD_LIBRARY(fern_io_geoneric
+ADD_LIBRARY(fern_io_fern
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(fern_io_geoneric
+TARGET_LINK_LIBRARIES(fern_io_fern
     fern_io_core
     fern_feature_visitor
     fern_feature_core

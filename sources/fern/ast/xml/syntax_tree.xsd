@@ -10,7 +10,7 @@
 -->
 
   <xs:complexType
-    name="Geoneric">
+    name="Fern">
     <xs:sequence>
       <xs:element
         name="Statements"

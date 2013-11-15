@@ -3,7 +3,7 @@ namespace http://www.geoneric.eu/fern
     include <memory>;
     include "fern/ast/core/vertices.h";
 
-    Geoneric         "std::shared_ptr<ModuleVertex>";
+    Fern             "std::shared_ptr<ModuleVertex>";
     Number           "std::shared_ptr<ExpressionVertex>";
     Integer          "std::shared_ptr<ExpressionVertex>";
     UnsignedInteger  "std::shared_ptr<ExpressionVertex>";

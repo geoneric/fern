@@ -11,7 +11,7 @@ namespace fern {
   syntactically correct, than an XML will be created. This XML has the same
   semantic content as the original script. It's just easier to post process.
 
-  The XML returned conforms to the Geoneric.xsd schema.
+  The XML returned conforms to the Fern schema.
 
   \sa        XmlParser
   \todo      The arena used by the parse functions could be a member variable.

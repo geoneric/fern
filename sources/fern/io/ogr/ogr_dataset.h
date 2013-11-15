@@ -12,7 +12,7 @@ class OGRFeatureLayer;
 /*!
   The OGRDataset class is comparable with the OGRDataSource class as defined
   in OGR's API. An OGRLayer as used in OGR is what we call a Feature in
-  Geoneric.
+  Fern.
 
   \sa        .
 */

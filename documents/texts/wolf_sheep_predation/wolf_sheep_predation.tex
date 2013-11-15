@@ -25,17 +25,17 @@
 \lstset{style=my_style}
 
 \begin{document}
-\title{Implementing the wolf sheep predation model in the Geoneric modeling language}
+\title{Implementing the wolf sheep predation model in the Fern modeling language}
 \author{Kor de Jong}
 \maketitle
 
 \emph{This document is work in progress. Let me know what you think!}
 
 \section{Introduction}
-Geoneric is an environmental modeling platform. It is software with which environmental modelers can build models using a high level modeling language. In order to explain some features of the language, we describe an example model implementing wolf sheep predation. But before that, the data model is presented which is used to structure the environmental attributes manipulated in the model.
+Fern is an environmental modeling platform. It is software with which environmental modelers can build models using a high level modeling language. In order to explain some features of the language, we describe an example model implementing wolf sheep predation. But before that, the data model is presented which is used to structure the environmental attributes manipulated in the model.
 
 \section{Data model}
-The Geoneric data model determines how information about environmental attributes is organized by the software. A data model determines what kind of data can be represented by the software and what kind of operations can be efficiently implemented to manipulate this data. Other examples of data models are the field- and object-based data models used in GIS software to organize field and object data, respectively. In order for the modeling language to be able to integrate as many kinds of environmental attributes as possible, the Geoneric data model aims to be a superset of as many existing data models used in environmental modeling as possible.
+The Fern data model determines how information about environmental attributes is organized by the software. A data model determines what kind of data can be represented by the software and what kind of operations can be efficiently implemented to manipulate this data. Other examples of data models are the field- and object-based data models used in GIS software to organize field and object data, respectively. In order for the modeling language to be able to integrate as many kinds of environmental attributes as possible, the Fern data model aims to be a superset of as many existing data models used in environmental modeling as possible.
 
 \includegraphics{data_model.pdf}
 
@@ -80,7 +80,7 @@ Besides the three features (\emph{area}, \emph{sheep} and \emph{wolves}), the sn
 
 % # - countdown is a value representing time until the grass is gone.
 
-The Geoneric modeling language allows the modeler to create functions that perform a well defined task. A sequence of such function calls is easier to understand than a sequence of the underlying, lower level operations. The idea is that the modeler creates higher level function by combining lower level generic building blocks. These higher level functions make more sense to people in a certain domain, than the corresponding sequence of lower level functions would.
+The Fern modeling language allows the modeler to create functions that perform a well defined task. A sequence of such function calls is easier to understand than a sequence of the underlying, lower level operations. The idea is that the modeler creates higher level function by combining lower level generic building blocks. These higher level functions make more sense to people in a certain domain, than the corresponding sequence of lower level functions would.
 
 \begin{lstlisting}
 migrate(sheep)

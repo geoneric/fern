@@ -25,7 +25,7 @@ NetCDF groups act as datasets themselves. We could store multiple features in a 
 
 I/O probably should only involve the I/O of individual attributes and the I/O of domains. We need to be able to read and write a specific attribute to/from a dataset. We also need to be able to read and write a domain to a dataset.
 
-The type used to store attribute values and domains is geoneric::Feature. Behind the scenes, feature attributes from a single dataset share the same geoneric::Feature. In other words, each geoneric::Feature instance is linked to a single dataset.
+The type used to store attribute values and domains is fern::Feature. Behind the scenes, feature attributes from a single dataset share the same fern::Feature. In other words, each fern::Feature instance is linked to a single dataset.
 
 \code
 

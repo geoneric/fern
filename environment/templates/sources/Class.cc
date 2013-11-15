@@ -1,7 +1,7 @@
 #include "pack_class.h"
 
 
-namespace geoneric {
+namespace fern {
 
 // Class::Class()
 // {
@@ -12,4 +12,4 @@ namespace geoneric {
 // {
 // }
 
-} // namespace geoneric
+} // namespace fern

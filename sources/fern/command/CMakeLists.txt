@@ -6,7 +6,7 @@ ADD_EXECUTABLE(fern
     import_command
     interpreter
     message
-    geoneric
+    fern
 )
 ADD_DEPENDENCIES(fern
     Operation-xml.h

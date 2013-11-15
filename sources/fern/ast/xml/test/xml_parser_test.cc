@@ -136,22 +136,22 @@ BOOST_AUTO_TEST_CASE(parse_string)
         // Attribute value missing.
         xml =
             "<?xml version=\"1.0\"?>"
-            "<Geoneric>"
+            "<Fern>"
               "<Expression col=\"0\">"
                 "<Name>a</Name>"
               "</Expression>"
-            "</Geoneric>";
+            "</Fern>";
         BOOST_CHECK_THROW(xml_parser.parse_string(xml),
             fern::detail::ParseError);
 
         // Attribute value out of range.
         xml =
             "<?xml version=\"1.0\"?>"
-            "<Geoneric>"
+            "<Fern>"
               "<Expression line=\"-1\" col=\"0\">"
                 "<Name>a</Name>"
               "</Expression>"
-            "</Geoneric>";
+            "</Fern>";
         BOOST_CHECK_THROW(xml_parser.parse_string(xml),
             fern::detail::ParseError);
     }
@@ -172,18 +172,18 @@ BOOST_AUTO_TEST_CASE(parse_string)
         // Return statement.
         xml =
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Return/>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>";
+            "</Fern>";
         BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
 
         xml =
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<Return>"
@@ -193,7 +193,7 @@ BOOST_AUTO_TEST_CASE(parse_string)
                   "</Return>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>";
+            "</Fern>";
         BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
     }
 
@@ -201,7 +201,7 @@ BOOST_AUTO_TEST_CASE(parse_string)
         // Function definition.
         xml =
             "<?xml version=\"1.0\"?>"
-            "<Geoneric source=\"&lt;string&gt;\">"
+            "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
                 "<Statement line=\"1\" col=\"0\">"
                   "<FunctionDefinition>"
@@ -239,7 +239,7 @@ BOOST_AUTO_TEST_CASE(parse_string)
                   "</FunctionDefinition>"
                 "</Statement>"
               "</Statements>"
-            "</Geoneric>";
+            "</Fern>";
         BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
     }
 }

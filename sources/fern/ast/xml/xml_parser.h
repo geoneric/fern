@@ -12,7 +12,7 @@ class ModuleVertex;
   Apart from XML validation checks, no semantic checks are performed. The
   syntax tree has the same semantic content as the XML.
 
-  The parser assumes the XML passed in conforms to the Geoneric.xsd schema.
+  The parser assumes the XML passed in conforms to the Fern schema.
 
   \sa        AlgebraParser
 */

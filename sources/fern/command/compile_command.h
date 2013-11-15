@@ -35,7 +35,7 @@ public:
 
 private:
 
-    int            compile_to_geoneric  (int argc,
+    int            compile_to_fern     (int argc,
                                         char** argv) const;
 
     int            compile_to_cpp      (int argc,

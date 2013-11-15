@@ -35,10 +35,10 @@ void show_general_help()
 
 void show_build()
 {
-    std::cout << GEONERIC_BUILD_TYPE << " build (" << __DATE__ << ")\n"
-        << GEONERIC_ARCHITECTURE << ", "
-        << GEONERIC_SYSTEM << ", "
-        << GEONERIC_CXX_COMPILER
+    std::cout << FERN_BUILD_TYPE << " build (" << __DATE__ << ")\n"
+        << FERN_ARCHITECTURE << ", "
+        << FERN_SYSTEM << ", "
+        << FERN_CXX_COMPILER
         << "\n";
 }
 

@@ -85,10 +85,10 @@ void CompileVisitor::Visit(
     String model_name = Path(vertex.source_name()).filename().stem();
     String class_name = model_name;
 
-    // TODO Change location of module header to geoneric/module.h.
+    // TODO Change location of module header to fern/module.h.
     _header = String((boost::format(
         "#pragma once\n"
-        "#include \"geoneric/compiler/module.h\"\n"
+        "#include \"fern/compiler/module.h\"\n"
         "\n"
         "\n"
         "class %1%:\n"

@@ -9,7 +9,7 @@ namespace {
 void show_import_help()
 {
     std::cout <<
-        "usage: geoneric import INPUT_DATA_SET OUTPUT_DATA_SET\n"
+        "usage: fern import INPUT_DATA_SET OUTPUT_DATA_SET\n"
         "\n"
         "Import the data set.\n"
         "\n"

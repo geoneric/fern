@@ -875,10 +875,10 @@ fern::String python_ast_to_xml(
     try {
         switch(ast->kind) {
             case Module_kind: {
-                xml += (boost::format("<Geoneric source=\"%1%\">")
+                xml += (boost::format("<Fern source=\"%1%\">")
                     % escape(source_name).encode_in_utf8()).str().c_str();
                 write_statement_nodes(ast->v.Module.body, xml);
-                xml += "</Geoneric>";
+                xml += "</Fern>";
                 break;
             }
             case Expression_kind: // {

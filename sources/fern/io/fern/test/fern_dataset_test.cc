@@ -26,7 +26,7 @@ public:
 };
 
 
-BOOST_FIXTURE_TEST_SUITE(geoneric_dataset, Support)
+BOOST_FIXTURE_TEST_SUITE(fern_dataset, Support)
 
 BOOST_AUTO_TEST_CASE(write_and_read)
 {

@@ -4,7 +4,7 @@ cmake="${CMAKE_COMMAND}"
 
 
 echo "write(-9.8, \"$fern_test_dir/constant-1.gnr:earth/gravity\", \
-    \"Geoneric\")" | fern execute -
+    \"Fern\")" | fern execute -
 
 
 

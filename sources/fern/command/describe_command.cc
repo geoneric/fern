@@ -7,7 +7,7 @@ namespace {
 void show_describe_help()
 {
     std::cout <<
-        "usage: geoneric describe INPUT_SCRIPT\n"
+        "usage: fern describe INPUT_SCRIPT\n"
         "\n"
         "Describe the script.\n"
         "\n"

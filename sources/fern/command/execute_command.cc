@@ -7,7 +7,7 @@ namespace {
 void show_execute_help()
 {
     std::cout <<
-        "usage: geoneric execute [--help] INPUT_SCRIPT\n"
+        "usage: fern execute [--help] INPUT_SCRIPT\n"
         "\n"
         "Execute the script.\n"
         "\n"

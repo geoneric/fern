@@ -1,5 +1,5 @@
 ADD_LATEX_DOCUMENT(language.tex
-    DEPENDS geoneric.sty
+    DEPENDS fern.sty
     DEFAULT_PDF
     MANGLE_TARGET_NAMES
 )

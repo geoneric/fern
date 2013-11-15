@@ -2,8 +2,8 @@
 Commandline utilities
 *********************
 
-geoneric
-========
+fern
+====
 Main command to unlock the functionality from the commandline.
 
 .. code-block:: c++
@@ -30,17 +30,17 @@ Main command to unlock the functionality from the commandline.
   // - execute command is implied.
   // - first positional is filename of script.
   // - if --script option is provided, than script positional should not be.
-  //   geoneric model.ran
-  //   geoneric execute model.ran
-  //   geoneric --script "slope = slope("dem")"
-  //   geoneric execute --script "slope = slope("dem")"
+  //   fern model.ran
+  //   fern execute model.ran
+  //   fern --script "slope = slope("dem")"
+  //   fern execute --script "slope = slope("dem")"
   //
   // - first positional is language argument.
   // - 
-  //   geoneric convert dot model.ran model.dot
-  //   geoneric convert c++ model.ran
-  //   geoneric convert c++ --namespace bla --output-directory ./blo model.ran
-  //   geoneric convert python --package bli model.ran
+  //   fern convert dot model.ran model.dot
+  //   fern convert c++ model.ran
+  //   fern convert c++ --namespace bla --output-directory ./blo model.ran
+  //   fern convert python --package bli model.ran
   //
   //   The Python extension converter should not create the core C++ code.
   //   The c++ converter is for doing that. Or can we use two convert commands?

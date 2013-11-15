@@ -8,7 +8,7 @@ ADD_CUSTOM_COMMAND(
     COMMENT "Generating XML header with operations meta info" VERBATIM
     COMMAND
         echo
-            "namespace geoneric {\\n"
+            "namespace fern {\\n"
             "static char const* const operations_xml = \"\\"
                 > ${CMAKE_CURRENT_BINARY_DIR}/operation-xml.h
     COMMAND
