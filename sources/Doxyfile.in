@@ -1,12 +1,12 @@
 PROJECT_NAME            = ${PROJECT_NAME}
-INPUT                   = ${CMAKE_CURRENT_SOURCE_DIR}/geoneric \
-                          ${CMAKE_CURRENT_BINARY_DIR}/geoneric \
+INPUT                   = ${CMAKE_CURRENT_SOURCE_DIR}/fern \
+                          ${CMAKE_CURRENT_BINARY_DIR}/fern \
                           ${XSD_INCLUDE_DIRS}/xsd/cxx
 ${DOXYGEN_TEMPLATE}
 EXCLUDE_PATTERNS        = *_test.cc \
-                          ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/tmp/*/*.h \
-                          ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/tmp/*/*.cc \
-                          ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/io/netcdf/*.h \
-                          ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/io/netcdf/*.cc \
-                          ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/io/ogr/*.h \
-                          ${CMAKE_CURRENT_SOURCE_DIR}/geoneric/io/ogr/*.cc
+                          ${CMAKE_CURRENT_SOURCE_DIR}/fern/tmp/*/*.h \
+                          ${CMAKE_CURRENT_SOURCE_DIR}/fern/tmp/*/*.cc \
+                          ${CMAKE_CURRENT_SOURCE_DIR}/fern/io/netcdf/*.h \
+                          ${CMAKE_CURRENT_SOURCE_DIR}/fern/io/netcdf/*.cc \
+                          ${CMAKE_CURRENT_SOURCE_DIR}/fern/io/ogr/*.h \
+                          ${CMAKE_CURRENT_SOURCE_DIR}/fern/io/ogr/*.cc

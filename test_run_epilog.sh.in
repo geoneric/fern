@@ -1,5 +1,5 @@
 test_data_dir="${PROJECT_SOURCE_DIR}/data/tests"
-binary_dir="${CMAKE_CURRENT_BINARY_DIR}/sources/geoneric"
+binary_dir="${CMAKE_CURRENT_BINARY_DIR}/sources/fern"
 cmake="${CMAKE_COMMAND}"
 
 

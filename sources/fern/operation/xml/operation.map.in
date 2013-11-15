@@ -1,0 +1,17 @@
+namespace http://www.geoneric.eu/fern
+{
+    include "fern/operation/core/operations.h";
+    include "fern/operation/core/parameter.h";
+    include "fern/operation/core/result.h";
+
+    Operations         "std::shared_ptr<fern::Operations>";
+    Operation          "std::shared_ptr<fern::Operation>";
+    Parameters         "std::vector<fern::Parameter> const&";
+    Results            "std::vector<fern::Result> const&";
+    Parameter          "fern::Parameter";
+    Result             "fern::Result";
+    DataTypes          "fern::DataTypes";
+    ValueTypes         "fern::ValueTypes";
+    DataType           "fern::DataTypes";
+    ValueType          "fern::ValueTypes";
+}

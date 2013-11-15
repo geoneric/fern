@@ -1,0 +1,257 @@
+<?xml version="1.0"?>
+<xs:schema
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:fern="http://www.geoneric.eu/fern"
+  targetNamespace="http://www.geoneric.eu/fern"
+>
+
+<!--
+  elementFormDefault="qualified"
+-->
+
+  <xs:complexType
+    name="Geoneric">
+    <xs:sequence>
+      <xs:element
+        name="Statements"
+        type="fern:Statements"/>
+    </xs:sequence>
+    <xs:attribute name="source" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType
+    name="Statements">
+    <xs:sequence
+      minOccurs="0"
+      maxOccurs="unbounded">
+      <xs:element
+        name="Statement"
+        type="fern:Statement"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType
+    name="Statement">
+    <xs:choice>
+      <xs:element
+        name="Expression"
+        type="fern:Expression"/>
+      <xs:element
+        name="Assignment"
+        type="fern:Assignment"/>
+      <xs:element
+        name="If"
+        type="fern:If"/>
+      <xs:element
+        name="While"
+        type="fern:While"/>
+      <xs:element
+        name="FunctionDefinition"
+        type="fern:FunctionDefinition"/>
+      <xs:element
+        name="Return"
+        type="fern:Return"/>
+    </xs:choice>
+    <xs:attribute name="line" type="xs:nonNegativeInteger" use="required"/>
+    <xs:attribute name="col" type="xs:nonNegativeInteger" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="If">
+    <xs:sequence>
+      <!-- Condition. -->
+      <xs:element
+        name="Expression"
+        type="fern:Expression"/>
+      <!-- True block. -->
+      <xs:element
+        name="Statements"
+        type="fern:Statements"/>
+      <!-- False block. -->
+      <xs:element
+        name="Statements"
+        type="fern:Statements"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="While">
+    <xs:sequence>
+      <!-- Condition. -->
+      <xs:element
+        name="Expression"
+        type="fern:Expression"/>
+      <!-- True block. -->
+      <xs:element
+        name="Statements"
+        type="fern:Statements"/>
+      <!-- False block. -->
+      <xs:element
+        name="Statements"
+        type="fern:Statements"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="FunctionDefinition">
+    <xs:sequence>
+      <xs:element
+        name="Name"
+        type="xs:string"/>
+      <!-- Arguments. -->
+      <xs:element
+        name="Expressions"
+        type="fern:Expressions"/>
+      <!-- Body. -->
+      <xs:element
+        name="Statements"
+        type="fern:Statements"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Return">
+    <xs:sequence
+      minOccurs="0">
+      <xs:element
+        name="Expression"
+        type="fern:Expression"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Assignment">
+    <xs:sequence>
+      <xs:element
+        name="Expression"
+        type="fern:Expression"/>
+      <xs:element
+        name="Expression"
+        type="fern:Expression"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Expressions">
+    <xs:sequence
+      minOccurs="0"
+      maxOccurs="unbounded">
+      <xs:element
+        name="Expression"
+        type="fern:Expression"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Expression">
+    <xs:choice>
+      <xs:element
+        name="Name"
+        type="xs:string"/>
+      <xs:element
+        name="Subscript"
+        type="fern:Subscript"/>
+      <xs:element
+        name="Attribute"
+        type="fern:Attribute"/>
+      <xs:element
+        name="String"
+        type="xs:string"/>
+      <xs:element
+        name="Number"
+        type="fern:Number"/>
+      <xs:element
+        name="FunctionCall"
+        type="fern:FunctionCall"/>
+      <xs:element
+        name="Operator"
+        type="fern:Operator"/>
+    </xs:choice>
+    <xs:attribute name="line" type="xs:nonNegativeInteger" use="required"/>
+    <xs:attribute name="col" type="xs:nonNegativeInteger" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="Subscript">
+    <xs:sequence>
+      <xs:element
+        name="Expression"
+        type="fern:Expression"/>
+      <xs:element
+        name="Expression"
+        type="fern:Expression"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Attribute">
+    <xs:sequence>
+      <xs:element
+        name="Expression"
+        type="fern:Expression"/>
+      <xs:element
+        name="Name"
+        type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Number">
+    <xs:choice>
+      <xs:element
+        name="Integer"
+        type="fern:Integer"/>
+      <xs:element
+        name="UnsignedInteger"
+        type="fern:UnsignedInteger"/>
+      <xs:element
+        name="Float"
+        type="fern:Float"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="Integer">
+    <xs:sequence>
+      <xs:element
+        name="Size"
+        type="xs:positiveInteger"/>
+      <xs:element
+        name="Value"
+        type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="UnsignedInteger">
+    <xs:sequence>
+      <xs:element
+        name="Size"
+        type="xs:positiveInteger"/>
+      <xs:element
+        name="Value"
+        type="xs:nonNegativeInteger"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Float">
+    <xs:sequence>
+      <xs:element
+        name="Size"
+        type="xs:positiveInteger"/>
+      <xs:element
+        name="Value"
+        type="xs:double"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="FunctionCall">
+    <xs:sequence>
+      <xs:element
+        name="Name"
+        type="xs:string"/>
+      <xs:element
+        name="Expressions"
+        type="fern:Expressions"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Operator">
+    <xs:sequence>
+      <xs:element
+        name="Name"
+        type="xs:string"/>
+      <xs:element
+        name="Expressions"
+        type="fern:Expressions"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

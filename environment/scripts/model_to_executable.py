@@ -12,14 +12,14 @@ Options:
 """
 import sys
 import docopt
-import geoneric
+import fern
 
 
-@geoneric.checked_call
+@fern.checked_call
 def model_to_executable(
         model_filename,
         prefix):
-    geoneric.model_to_executable(model_filename, prefix)
+    fern.model_to_executable(model_filename, prefix)
 
 
 if __name__ == "__main__":

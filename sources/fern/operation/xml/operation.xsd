@@ -1,0 +1,189 @@
+<?xml version="1.0"?>
+<xs:schema
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:fern="http://www.geoneric.eu/fern"
+  targetNamespace="http://www.geoneric.eu/fern"
+>
+
+  <xs:complexType
+    name="Operations">
+    <xs:sequence
+      minOccurs="0"
+      maxOccurs="unbounded">
+      <xs:element
+        name="Operation"
+        type="fern:Operation"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType
+    name="Operation">
+    <xs:sequence>
+      <xs:element
+        name="Name"
+        type="xs:string"/>
+      <xs:element
+        name="Description"
+        type="xs:string"/>
+      <xs:element
+        name="Parameters"
+        type="fern:Parameters"/>
+      <xs:element
+        name="Results"
+        type="fern:Results"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType
+    name="Parameters">
+    <xs:sequence
+      minOccurs="0"
+      maxOccurs="unbounded">
+      <xs:element
+        name="Parameter"
+        type="fern:Parameter"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType
+    name="Results">
+    <xs:sequence
+      minOccurs="0"
+      maxOccurs="unbounded">
+      <xs:element
+        name="Result"
+        type="fern:Result"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType
+    name="Parameter">
+    <xs:sequence>
+    <xs:element
+      name="Name"
+      type="xs:string"/>
+    <xs:element
+      name="Description"
+      type="xs:string"/>
+    <xs:element
+      name="DataTypes"
+      type="fern:DataTypes"/>
+    <xs:element
+      name="ValueTypes"
+      type="fern:ValueTypes"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType
+    name="Result">
+    <xs:sequence>
+    <xs:element
+      name="Name"
+      type="xs:string"/>
+    <xs:element
+      name="Description"
+      type="xs:string"/>
+    <xs:element
+      name="DataType"
+      type="xs:string"/>
+      <!--
+      type="fern:DataType"/>
+      -->
+    <xs:element
+      name="ValueType"
+      type="xs:string"/>
+      <!--
+      type="fern:ValueType"/>
+      -->
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType
+    name="DataTypes">
+    <xs:sequence
+      maxOccurs="unbounded">
+      <xs:element
+        name="DataType"
+        type="xs:string"/>
+        <!--
+        type="fern:DataType"/>
+        -->
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType
+    name="DataType">
+    <!--
+      Whenever changing this list, update code in
+      - DataType.h
+      - XmlParser.cc
+    -->
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Constant"/>
+      <xs:enumeration value="StaticField"/>
+      <!--
+      <xs:enumeration value="Point"/>
+      <xs:enumeration value="Line"/>
+      <xs:enumeration value="Polygon"/>
+      <xs:enumeration value="Feature"/>
+      -->
+      <!--
+      <xs:enumeration value="Value"/>
+      <xs:enumeration value="String"/>
+      <xs:enumeration value="Raster"/>
+      <xs:enumeration value="Feature"/>
+      <xs:enumeration value="Spatial"/>
+      -->
+      <xs:enumeration value="All"/>
+      <!--
+      <xs:pattern value="Number|String|Raster|Feature|Spatial|All"/>
+      -->
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType
+    name="ValueTypes">
+    <xs:sequence
+      minOccurs="0"
+      maxOccurs="unbounded">
+      <xs:element
+        name="ValueType"
+        type="xs:string"/>
+        <!--
+        type="fern:ValueType"/>
+        -->
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType
+    name="ValueType">
+    <!--
+      Whenever changing this list, update code in
+      - ValueType.h
+      - XmlParser.cc
+    -->
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="UInt8"/>
+      <xs:enumeration value="Int8"/>
+      <xs:enumeration value="UInt16"/>
+      <xs:enumeration value="Int16"/>
+      <xs:enumeration value="UInt32"/>
+      <xs:enumeration value="Int32"/>
+      <xs:enumeration value="UInt64"/>
+      <xs:enumeration value="Int64"/>
+      <xs:enumeration value="Float32"/>
+      <xs:enumeration value="Float64"/>
+      <xs:enumeration value="String"/>
+      <xs:enumeration value="UnsignedInteger"/>
+      <xs:enumeration value="SignedInteger"/>
+      <xs:enumeration value="Integer"/>
+      <xs:enumeration value="Size"/>
+      <xs:enumeration value="FloatingPoint"/>
+      <xs:enumeration value="Number"/>
+      <xs:enumeration value="All"/>
+    <!--
+      <xs:pattern value="UInt8|Int8|UInt16|Int16|UInt32|Int32|UInt64|Int64|Float32|Float64|String|UnsignedInteger|SignedInteger|Integer|FloatingPoint|Number|All"/>
+      -->
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
