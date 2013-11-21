@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
-#include "fern/compiler/argument.h"
+#include "fern/interpreter/data_source.h"
+#include "fern/compiler/data_description.h"
 
 
 namespace fern {
@@ -14,7 +15,13 @@ public:
 
 protected:
 
-                   Module              (std::vector<Argument> const& arguments,
+                   Module              (std::vector<DataDescription> const&
+                                            arguments,
+                                        std::vector<std::shared_ptr<
+                                            DataSource>> const& data_sources);
+
+                   Module              (std::vector<DataDescription> const&
+                                            arguments,
                                         int argc,
                                         char** argv);
 
@@ -30,13 +37,9 @@ protected:
 
 private:
 
-    std::vector<Argument> const _arguments;
+    std::vector<DataDescription> const _arguments;
 
-    int const      _argc;
-
-    char** const   _argv;
-
-    void           parse_command_line  ();
+    std::vector<std::shared_ptr<DataSource>> _data_sources;
 
 };
 

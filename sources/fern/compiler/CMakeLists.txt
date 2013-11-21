@@ -1,16 +1,13 @@
 ADD_SUBDIRECTORY(test)
 
 SET(SOURCES
-    argument
     compile_visitor
     compiler
+    data_description
     module
 )
 ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_compiler ${SOURCES})
 TARGET_LINK_LIBRARIES(fern_compiler
-    # fern_ast_visitor
-    # fern_ast_xml
-    # fern_operation_std
-    # fern_script
-    # fern_core
+    fern_interpreter
+    ${Boost_PROGRAM_OPTIONS_LIBRARY}
 )

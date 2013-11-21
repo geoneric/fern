@@ -15,4 +15,4 @@ export LDFLAGS="-L$OBJECTS/fern/bin"
 model_to_executable.py $model_pathname $install_prefix
 
 export LD_LIBRARY_PATH=$install_prefix/bin
-$install_prefix/bin/$model_basename --help
+$install_prefix/bin/$model_basename

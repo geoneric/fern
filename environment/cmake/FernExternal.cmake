@@ -25,7 +25,7 @@ SET(Python_ADDITIONAL_VERSIONS "2.7")
 
 # Find packages. ---------------------------------------------------------------
 FIND_PACKAGE(Boost REQUIRED
-    COMPONENTS filesystem system unit_test_framework)
+    COMPONENTS filesystem program_options system unit_test_framework)
 FIND_PACKAGE(Doxygen REQUIRED)
 FIND_PACKAGE(EXPAT REQUIRED)
 FIND_PACKAGE(GDAL REQUIRED)
@@ -75,6 +75,7 @@ INCLUDE_DIRECTORIES(
 
 SET(FERN_EXTERNAL_LIBRARIES
     ${Boost_FILESYSTEM_LIBRARY}
+    ${Boost_PROGRAM_OPTIONS_LIBRARY}
     ${Boost_SYSTEM_LIBRARY}
     ${ICU_LIBRARIES}
     ${PYTHON_LIBRARIES}
