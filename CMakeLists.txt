@@ -16,6 +16,7 @@ SET(${CMAKE_PROJECT}_VERSION
 ENABLE_TESTING()
 # Doesn't work: SET(ENV{CTEST_OUTPUT_ON_FAILURE} 1)
 # SET(BOOST_TEST_RUNTIME_PARAMETERS "--log_level all")
+
 CONFIGURE_FILE(
     ${CMAKE_CURRENT_SOURCE_DIR}/CTestCustom.cmake.in
     ${CMAKE_CURRENT_BINARY_DIR}/CTestCustom.cmake
@@ -29,96 +30,11 @@ CONFIGURE_FILE(
     ${CMAKE_CURRENT_BINARY_DIR}/test_run_epilog.sh
 )
 
-# TODO Get rid of dependency on Site.cmake. We only use it for compiler
-#      settings.
 SET(CMAKE_MODULE_PATH
     $ENV{CMAKE_MODULE_PATH}
     ${CMAKE_CURRENT_SOURCE_DIR}/environment/cmake
 )
-INCLUDE(Site)
-
-IF(DEFINED ENV{PCRTEAM_PLATFORM})
-    # Configure search path to find packages.
-    SET(CMAKE_PREFIX_PATH
-        ${CMAKE_PREFIX_PATH}
-        $ENV{PCRTEAM_PLATFORM}
-        $ENV{PCRTEAM_PLATFORM}/python-2.7.6
-    )
-ENDIF()
-
-# Configure packages.
-SET(Boost_USE_STATIC_LIBS OFF)
-SET(Boost_USE_STATIC_RUNTIME OFF)
-ADD_DEFINITIONS(
-    # Use dynamic libraries.
-    -DBOOST_ALL_DYN_LINK
-    # Prevent auto-linking.
-    -DBOOST_ALL_NO_LIB
-    # # No deprecated features.
-    # -DBOOST_FILESYSTEM_NO_DEPRECATED
-)
-SET(HDF5_USE_STATIC_LIBRARIES OFF)
-SET(Python_ADDITIONAL_VERSIONS "2.7")
-
-# Find packages.
-FIND_PACKAGE(Boost REQUIRED
-    COMPONENTS filesystem system unit_test_framework)
-FIND_PACKAGE(Doxygen REQUIRED)
-FIND_PACKAGE(EXPAT REQUIRED)
-FIND_PACKAGE(GDAL REQUIRED)
-FIND_PACKAGE(HDF5 REQUIRED
-    COMPONENTS C CXX HL)
-FIND_PACKAGE(ICU REQUIRED
-    COMPONENTS i18n)
-FIND_PACKAGE(Loki REQUIRED)
-FIND_PACKAGE(NetCDF REQUIRED)
-FIND_PACKAGE(PythonLibs REQUIRED)
-FIND_PACKAGE(Readline REQUIRED)
-FIND_PACKAGE(XSD REQUIRED)
-
-# SET(LATEX_COMPILER_FLAGS
-#     # "--shell-escape
-#     "-interaction=nonstopmode --enable-write18"
-#     # "-interaction=nonstopmode --enable-write18"
-#     # CACHE STRING "Flags passed to latex."
-# )
-INCLUDE(UseLATEX)
-
-# Configure project.
-INCLUDE_DIRECTORIES(
-    SYSTEM
-    ${Boost_INCLUDE_DIRS}
-    ${EXPAT_INCLUDE_DIRS}
-    ${GDAL_INCLUDE_DIRS}
-    ${HDF5_INCLUDE_DIRS}
-    ${ICU_INCLUDE_DIRS}
-    ${PYTHON_INCLUDE_DIRS}
-    ${READLINE_INCLUDE_DIR}
-    ${XSD_INCLUDE_DIRS}
-)
-
-MACRO(ADD_PARSER_GENERATION_COMMAND
-        BASENAME)
-    CONFIGURE_FILE(
-        ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.map.in
-        ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.map
-    )
-
-    ADD_CUSTOM_COMMAND(
-        OUTPUT
-            ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}-pskel.hxx
-            ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}-pskel.cxx
-        COMMAND
-            ${XSD_EXECUTABLE} cxx-parser --xml-parser expat
-                --type-map ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.map
-                ${ARGN}
-                ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.xsd
-        DEPENDS
-            ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.map
-            ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.xsd
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    )
-ENDMACRO()
+INCLUDE(Fern)
 
 ADD_SUBDIRECTORY(documents)
 ADD_SUBDIRECTORY(sources)

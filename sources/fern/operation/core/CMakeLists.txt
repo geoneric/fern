@@ -12,9 +12,7 @@ SET(SOURCES
     result
     expression_types
 )
-ADD_LIBRARY(fern_operation_core
-    ${SOURCES}
-)
+ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_operation_core ${SOURCES})
 TARGET_LINK_LIBRARIES(fern_operation_core
     fern_feature_visitor
     fern_core

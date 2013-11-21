@@ -32,9 +32,7 @@ SET(SOURCES
     read
     write
 )
-ADD_LIBRARY(fern_operation_std
-    ${SOURCES}
-)
+ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_operation_std ${SOURCES})
 TARGET_LINK_LIBRARIES(fern_operation_std
     fern_operation_core
     fern_io

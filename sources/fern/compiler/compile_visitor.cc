@@ -113,7 +113,9 @@ void CompileVisitor::Visit(
         "    int argc,\n"
         "    char** argv)\n"
         "\n"
-        "    : fern::Module(std::vector<fern::Argument>(), argc, argv)\n"
+        "    : fern::Module(std::vector<fern::Argument>({\n"
+        "              \n"  // TODO Add arguments
+        "          }), argc, argv)\n"
         "\n"
         "{\n"
         "}\n"

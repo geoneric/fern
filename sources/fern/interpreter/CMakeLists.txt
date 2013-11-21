@@ -8,9 +8,7 @@ SET(SOURCES
     execute_visitor
     interpreter
 )
-ADD_LIBRARY(fern_interpreter
-    ${SOURCES}
-)
+ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_interpreter ${SOURCES})
 TARGET_LINK_LIBRARIES(fern_interpreter
     fern_ast_visitor
     fern_ast_xml

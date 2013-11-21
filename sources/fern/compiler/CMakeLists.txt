@@ -6,9 +6,7 @@ SET(SOURCES
     compiler
     module
 )
-ADD_LIBRARY(fern_compiler
-    ${SOURCES}
-)
+ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_compiler ${SOURCES})
 TARGET_LINK_LIBRARIES(fern_compiler
     # fern_ast_visitor
     # fern_ast_xml

@@ -14,9 +14,7 @@ SET(SOURCES
     thread_visitor
     validate_visitor
 )
-ADD_LIBRARY(fern_ast_visitor
-    ${SOURCES}
-)
+ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_ast_visitor ${SOURCES})
 TARGET_LINK_LIBRARIES(fern_ast_visitor
     fern_ast_core
 )

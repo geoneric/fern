@@ -9,9 +9,7 @@ SET(SOURCES
     hdf5_type_traits
     utils
 )
-ADD_LIBRARY(fern_io_fern
-    ${SOURCES}
-)
+ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_io_fern ${SOURCES})
 TARGET_LINK_LIBRARIES(fern_io_fern
     fern_io_core
     fern_feature_visitor

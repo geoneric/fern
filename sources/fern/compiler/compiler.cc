@@ -99,13 +99,9 @@ void Compiler::compile(
         cmake_script += String((boost::format(
             "CMAKE_MINIMUM_REQUIRED(VERSION 2.8)\n"
             "PROJECT(%1%)\n"
-
-            "IF(${CMAKE_CXX_COMPILER_ID} STREQUAL \"GNU\")\n"
-            "    SET(CMAKE_CXX_FLAGS\n"
-            "        \"${CMAKE_CXX_FLAGS} -Wall -Wextra -Wcast-qual -Wwrite-strings -Werror=strict-aliasing -std=c++11 -pedantic\"\n"
-            "    )\n"
-            "ENDIF()\n"
-
+            "SET(CMAKE_MODULE_PATH $ENV{CMAKE_MODULE_PATH})\n"
+            "INCLUDE(FernCompiler)\n"
+            "INCLUDE(FernExternal)\n"
         ) % project_name).str());
 
 
@@ -116,7 +112,6 @@ void Compiler::compile(
                 model_name
             });
             std::vector<String> link_libraries({
-                "fern_compiler"
             });
 
             cmake_script += String((boost::format(
@@ -141,7 +136,9 @@ void Compiler::compile(
                 "main"
             });
             std::vector<String> link_libraries({
-                library_target
+                library_target,
+                "fernlib",
+                "${FERN_EXTERNAL_LIBRARIES}"
             });
             cmake_script += String((boost::format(
                 "ADD_EXECUTABLE(%1%\n"

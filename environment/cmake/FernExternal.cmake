@@ -1,0 +1,85 @@
+IF(DEFINED ENV{PCRTEAM_PLATFORM})
+    # Configure search path to find packages.
+    SET(CMAKE_PREFIX_PATH
+        ${CMAKE_PREFIX_PATH}
+        $ENV{PCRTEAM_PLATFORM}
+        $ENV{PCRTEAM_PLATFORM}/python-2.7.6
+    )
+ENDIF()
+
+
+# Configure packages. ----------------------------------------------------------
+SET(Boost_USE_STATIC_LIBS OFF)
+SET(Boost_USE_STATIC_RUNTIME OFF)
+ADD_DEFINITIONS(
+    # Use dynamic libraries.
+    -DBOOST_ALL_DYN_LINK
+    # Prevent auto-linking.
+    -DBOOST_ALL_NO_LIB
+    # # No deprecated features.
+    # -DBOOST_FILESYSTEM_NO_DEPRECATED
+)
+SET(HDF5_USE_STATIC_LIBRARIES OFF)
+SET(Python_ADDITIONAL_VERSIONS "2.7")
+
+
+# Find packages. ---------------------------------------------------------------
+FIND_PACKAGE(Boost REQUIRED
+    COMPONENTS filesystem system unit_test_framework)
+FIND_PACKAGE(Doxygen REQUIRED)
+FIND_PACKAGE(EXPAT REQUIRED)
+FIND_PACKAGE(GDAL REQUIRED)
+FIND_PACKAGE(HDF5 REQUIRED
+    COMPONENTS C CXX HL)
+FIND_PACKAGE(ICU REQUIRED
+    COMPONENTS i18n)
+FIND_PACKAGE(Loki REQUIRED)
+FIND_PACKAGE(NetCDF REQUIRED)
+FIND_PACKAGE(PythonLibs REQUIRED)
+FIND_PACKAGE(Readline REQUIRED)
+FIND_PACKAGE(SZIP REQUIRED)
+FIND_PACKAGE(XSD REQUIRED)
+
+
+FIND_LIBRARY(ODBC_LIBRARY
+    NAMES odbcinst
+)
+FIND_LIBRARY(ODBC_INST_LIBRARY
+    NAMES odbcinst
+)
+SET(ODBC_LIBRARIES ${ODBC_LIBRARY} ${ODBC_INST_LIBRARY})
+IF(ODBC_LIBRARIES)
+    SET(ODBC_FOUND 1)
+ENDIF()
+
+FIND_LIBRARY(SZIP_LIBRARIES
+    NAMES szip
+)
+IF(SZIP_LIBRARIES)
+    SET(SZIP_FOUND 1)
+ENDIF()
+
+
+# Configure project. -----------------------------------------------------------
+INCLUDE_DIRECTORIES(
+    SYSTEM
+    ${Boost_INCLUDE_DIRS}
+    ${EXPAT_INCLUDE_DIRS}
+    ${GDAL_INCLUDE_DIRS}
+    ${HDF5_INCLUDE_DIRS}
+    ${ICU_INCLUDE_DIRS}
+    ${PYTHON_INCLUDE_DIRS}
+    ${READLINE_INCLUDE_DIR}
+    ${XSD_INCLUDE_DIRS}
+)
+
+SET(FERN_EXTERNAL_LIBRARIES
+    ${Boost_FILESYSTEM_LIBRARY}
+    ${Boost_SYSTEM_LIBRARY}
+    ${ICU_LIBRARIES}
+    ${PYTHON_LIBRARIES}
+    ${GDAL_LIBRARIES}
+    ${HDF5_LIBRARIES}
+    ${ODBC_LIBRARIES}
+    ${SZIP_LIBRARIES}
+)

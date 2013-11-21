@@ -6,9 +6,7 @@ SET(SOURCES
     gdal_driver
     gdal_data_type_traits;
 )
-ADD_LIBRARY(fern_io_gdal
-    ${SOURCES}
-)
+ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_io_gdal ${SOURCES})
 TARGET_LINK_LIBRARIES(fern_io_gdal
     fern_io_core
     fern_feature_visitor

@@ -5,6 +5,4 @@ SET(SOURCES
     owned_reference
     string
 )
-ADD_LIBRARY(fern_python
-    ${SOURCES}
-)
+ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_python ${SOURCES})

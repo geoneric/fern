@@ -16,9 +16,7 @@ SET(SOURCES
     validate_error
     value_types
 )
-ADD_LIBRARY(fern_core
-    ${SOURCES}
-)
+ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_core ${SOURCES})
 TARGET_LINK_LIBRARIES(fern_core
     ${Boost_FILESYSTEM_LIBRARY}
     ${Boost_SYSTEM_LIBRARY}

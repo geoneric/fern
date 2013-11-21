@@ -11,9 +11,7 @@ SET(SOURCES
     drivers
     io_client
 )
-ADD_LIBRARY(fern_io
-    ${SOURCES}
-)
+ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_io ${SOURCES})
 TARGET_LINK_LIBRARIES(fern_io
     fern_io_gdal
     fern_io_fern

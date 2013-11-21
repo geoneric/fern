@@ -6,9 +6,7 @@ SET(SOURCES
     domain
     feature
 )
-ADD_LIBRARY(fern_feature_core
-    ${SOURCES}
-)
+ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_feature_core ${SOURCES})
 TARGET_LINK_LIBRARIES(fern_feature_core
     fern_core
 )
