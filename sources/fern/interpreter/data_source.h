@@ -1,9 +1,10 @@
 #pragma once
 #include "fern/core/expression_type.h"
-#include "fern/operation/core/argument.h"
 
 
 namespace fern {
+
+class Argument;
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!

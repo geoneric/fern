@@ -12,12 +12,14 @@ ADD_DEPENDENCIES(fern
     Operation-xml.h
 )
 TARGET_LINK_LIBRARIES(fern
-    fern_compiler
-    fern_interpreter
+    fernlib
     ${READLINE_LIBRARY}
     termcap
 )
 INSTALL(
     TARGETS fern
-    RUNTIME DESTINATION bin COMPONENT Runtime
+    RUNTIME DESTINATION bin
+)
+SET(APPLICATIONS
+    "\${CMAKE_INSTALL_PREFIX}/bin/fern"
 )

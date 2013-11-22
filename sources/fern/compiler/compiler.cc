@@ -164,23 +164,6 @@ void Compiler::compile(
             ")\n"
         ) % join(installable_targets, " ")).str());
 
-        if(flags & DUMP_DRIVER) {
-            cmake_script += String((boost::format(
-                "SET(APPLICATIONS\n"
-                "    \"\\${CMAKE_INSTALL_PREFIX}/bin/%1%\"\n"
-                ")\n"
-                "SET(DIRECTORIES\n"
-                "    %2%\n"
-                ")\n"
-                "INSTALL(CODE \"\n"
-                "    INCLUDE(BundleUtilities)\n"
-                "    FIXUP_BUNDLE(\\\"${APPLICATIONS}\\\"\n"
-                "        \\\"\\\"\n"
-                "        \\\"${FERN_EXTERNAL_DIRECTORIES}\\\")\"\n"
-                "        COMPONENT Runtime)\n"
-            ) % model_name % "/tmp").str());
-        }
-
         write_file(cmake_script, cmake_file_path);
     }
 

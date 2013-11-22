@@ -85,7 +85,6 @@ void CompileVisitor::Visit(
     String model_name = Path(vertex.source_name()).filename().stem();
     String class_name = model_name;
 
-    // TODO Change location of module header to fern/module.h.
     _header = String((boost::format(
         "#pragma once\n"
         "#include \"fern/compiler/module.h\"\n"
@@ -113,7 +112,7 @@ void CompileVisitor::Visit(
         "    int argc,\n"
         "    char** argv)\n"
         "\n"
-        "    : fern::Module(std::vector<fern::Argument>({\n"
+        "    : fern::Module(std::vector<fern::DataDescription>({\n"
         "              \n"  // TODO Add arguments
         "          }), argc, argv)\n"
         "\n"

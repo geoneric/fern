@@ -46,3 +46,13 @@ ADD_LIBRARY(fernlib SHARED
 TARGET_LINK_LIBRARIES(fernlib
     ${FERN_EXTERNAL_LIBRARIES}
 )
+INSTALL(
+    TARGETS fernlib
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+)
+INSTALL(
+    DIRECTORY core compiler interpreter
+    DESTINATION include/fern
+    FILES_MATCHING PATTERN "*.h"
+)
