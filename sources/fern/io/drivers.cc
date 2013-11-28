@@ -12,6 +12,7 @@ static std::vector<std::shared_ptr<Driver>> drivers_to_try(
     String const& name,
     String const& format)
 {
+    assert(!drivers.empty());  // Did you forget to use an IO client?
     std::vector<std::shared_ptr<Driver>> drivers;
 
     if(!format.is_empty()) {

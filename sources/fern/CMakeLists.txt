@@ -56,3 +56,13 @@ INSTALL(
     DESTINATION include/fern
     FILES_MATCHING PATTERN "*.h"
 )
+INSTALL(
+    DIRECTORY feature/core
+    DESTINATION include/fern/feature
+    FILES_MATCHING PATTERN "*.h"
+)
+INSTALL(
+    DIRECTORY operation/core
+    DESTINATION include/fern/operation
+    FILES_MATCHING PATTERN "*.h"
+)

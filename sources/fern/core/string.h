@@ -81,6 +81,14 @@ public:
 
     std::vector<String> split          (String characters=String()) const;
 
+    template<
+        class T>
+    bool           is_convertable_to   () const;
+
+    template<
+        class T>
+    T              as                  () const;
+
 private:
 
                    String              (UnicodeString const& string);

@@ -37,4 +37,11 @@ void DatasetSync::write(
     _dataset->write_attribute(*attribute_argument.attribute(), _data_path);
 }
 
+
+std::shared_ptr<Dataset> const& DatasetSync::dataset() const
+{
+    assert(_dataset);
+    return _dataset;
+}
+
 } // namespace fern

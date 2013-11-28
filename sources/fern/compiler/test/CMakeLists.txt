@@ -1,6 +1,7 @@
 SET(TEST_NAMES
     compiler_test
     module_test
+    parse_command_line_test
 )
 
 MACRO(ADD_UNIT_TEST NAME)

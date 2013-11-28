@@ -3,6 +3,7 @@ set -e
 
 build_type="Develop"
 
+
 # Fern project. ----------------------------------------------------------------
 fern_source_directory=$FERN
 fern_binary_directory=/tmp/fern_objects
@@ -27,6 +28,7 @@ rm -fr $fern_install_prefix
 cd $fern_binary_directory
 cmake --build $fern_binary_directory --target install --config $build_type
 fixup.py $fern_install_prefix $fern_external_prefix
+
 
 # Model project. ---------------------------------------------------------------
 model_basename=bla

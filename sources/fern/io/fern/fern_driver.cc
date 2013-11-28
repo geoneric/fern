@@ -51,8 +51,19 @@ bool FernDriver::can_open_for_update(
 bool FernDriver::can_open_for_overwrite(
     String const& name)
 {
-    return (file_exists(name) && can_open_for_update(name)) ||
-        directory_is_writable(Path(name).parent_path());
+    bool result = false;
+
+    try {
+        open_file(name, OpenMode::OVERWRITE);
+        result = true;
+    }
+    catch(...) {
+    }
+
+    return result;
+
+    // return (file_exists(name) && can_open_for_update(name)) ||
+    //     directory_is_writable(Path(name).parent_path());
 }
 
 

@@ -2,6 +2,7 @@
 #include <memory>
 #include <unicode/ustring.h>
 #include <unicode/regex.h>
+#include <boost/lexical_cast.hpp>
 
 
 namespace {
@@ -346,6 +347,39 @@ String& String::replace(
     findAndReplace(old_string, new_string);
     return *this;
 }
+
+
+template<
+    class T>
+bool String::is_convertable_to() const
+{
+    bool result = false;
+
+    try {
+        boost::lexical_cast<T>(encode_in_utf8());
+        result = true;
+    }
+    catch(boost::bad_lexical_cast const&) {
+    }
+
+    return result;
+}
+
+
+template<
+    class T>
+T String::as() const
+{
+    return is_convertable_to<T>()
+        ? boost::lexical_cast<T>(encode_in_utf8())
+        : T();
+}
+
+
+template bool String::is_convertable_to<double>() const;
+template bool String::is_convertable_to<int64_t>() const;
+template double String::as<double>() const;
+template int64_t String::as<int64_t>() const;
 
 
 //! Return the concatenation of \a lhs and \a rhs.

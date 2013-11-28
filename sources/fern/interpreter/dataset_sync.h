@@ -37,6 +37,8 @@ public:
 
     void           write               (Argument const& argument);
 
+    std::shared_ptr<Dataset> const& dataset() const;
+
 private:
 
     Path const     _data_path;

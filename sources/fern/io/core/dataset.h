@@ -20,6 +20,10 @@ class Dataset
 
 public:
 
+    String const&  name                () const;
+
+    OpenMode       open_mode           () const;
+
     //! Return the number of features in the dataset.
     /*!
         Nested features are not included in the count.
@@ -56,10 +60,6 @@ protected:
     Dataset&       operator=           (Dataset&&)=delete;
 
     virtual        ~Dataset            ()=default;
-
-    String const&  name                () const;
-
-    OpenMode       open_mode           () const;
 
 private:
 

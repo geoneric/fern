@@ -1,0 +1,132 @@
+#include "fern/compiler/parse_command_line.h"
+#include "fern/io/drivers.h"
+#include "fern/interpreter/data_sources.h"
+#include "fern/interpreter/data_syncs.h"
+
+
+namespace fern {
+namespace {
+
+//! Return the data source corresponding with the \a value passed in.
+/*!
+  \param     argument
+  \param     value Data name or value of data to use as source. This name can
+             point to a feature, domain, attribute, ...
+  \exception .
+  \warning   .
+  \sa        .
+*/
+std::shared_ptr<DataSource> data_source(
+    DataDescription const& /* argument */,
+    String const& value)
+{
+    // First, check if the string passed in is a data name pointing to
+    // existing data.
+    // If not, determine the value's type and treat it as a constant.
+    std::shared_ptr<DataSource> result;
+
+    // If the dataset exists, it is assumed that the data path exists too.
+    // If not, than that is an error. We don't need to test the data path
+    // here.
+    DataName data_name(value);
+    if(dataset_exists(data_name.database_pathname(), OpenMode::READ)) {
+        result.reset(new DatasetSource(data_name));
+    }
+
+    if(value.is_convertable_to<int64_t>()) {
+        result.reset(new ConstantSource<int64_t>(value.as<int64_t>()));
+    }
+    else if(value.is_convertable_to<double>()) {
+        result.reset(new ConstantSource<double>(value.as<double>()));
+    }
+    else {
+        result.reset(new ConstantSource<String>(value));
+    }
+
+    assert(result);
+    return result;
+}
+
+
+std::shared_ptr<DataSync> data_sync(
+    DataDescription const& /* argument */,
+    String const& value)
+{
+    // The value passed in must be the name of a data sync that can be opened.
+    return std::shared_ptr<DataSync>(new DatasetSync(DataName(value)));
+}
+
+} // Anonymous namespace
+
+
+//! Parse the command line arguments and return collections of data sources and syncs.
+/*!
+  \param     argc Argument count.
+  \param     argv Argument vector.
+  \param     arguments Properties of arguments.
+  \param     arguments Properties of results.
+  \exception std::invalid_argument When there are more command line arguments
+             passed in compared to the \a arguments and \a results passed in.
+  \warning   .
+  \sa        .
+
+  For each argument in \a arguments, a command line argument is searched. This
+  command line argument is converted to a data source.
+
+  For each result in \a results, a command line argument searched. This command
+  line argument is converted to a data sync.
+
+  This function does not try to check whether there are enough arguments and
+  whether data sources are valid, exist, etc. That is the job of the caller.
+*/
+std::tuple<
+    std::vector<std::shared_ptr<DataSource>>,
+    std::vector<std::shared_ptr<DataSync>>>
+parse_command_line(
+    int argc,
+    char** argv,
+    std::vector<DataDescription> const& arguments,
+    std::vector<DataDescription> const& results)
+{
+    assert(argc >= 1);  // First argument is the exe's name.
+    size_t nr_remaining_command_line_arguments = argc - 1;
+    char** current_command_line_argument = argv + 1;
+
+    // Parse command line.
+    // - Start with creating data sources.
+    // - Continue creating data syncs.
+
+    std::vector<std::shared_ptr<DataSource>> data_sources;
+    std::vector<std::shared_ptr<DataSync>> data_syncs;
+
+    for(auto argument: arguments) {
+        if(nr_remaining_command_line_arguments == 0u) {
+            break;
+        }
+
+        data_sources.push_back(data_source(argument,
+            *current_command_line_argument));
+        --nr_remaining_command_line_arguments;
+        ++current_command_line_argument;
+    }
+
+    for(auto result: results) {
+        if(nr_remaining_command_line_arguments == 0u) {
+            break;
+        }
+
+        data_syncs.push_back(data_sync(result,
+            *current_command_line_argument));
+        --nr_remaining_command_line_arguments;
+        ++current_command_line_argument;
+    }
+
+    if(nr_remaining_command_line_arguments > 0u) {
+        // TODO Message.
+        throw std::invalid_argument("Too many command line arguments provided");
+    }
+
+    return std::make_tuple(data_sources, data_syncs);
+}
+
+} // Namespace fern
