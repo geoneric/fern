@@ -4,6 +4,13 @@ set -e
 build_type="Develop"
 
 
+function execute_command() {
+    command=$1
+    echo $command
+    $command
+}
+
+
 # Fern project. ----------------------------------------------------------------
 fern_source_directory=$FERN
 fern_binary_directory=/tmp/fern_objects
@@ -51,5 +58,7 @@ model_to_executable.py $model_pathname $model_install_prefix
 cp $fern_install_prefix/lib/*fernlib*.so $model_install_prefix/lib
 fixup.py $model_install_prefix $fern_external_prefix
 
-# Sanity test.
-$model_install_prefix/bin/$model_basename
+# Sanity tests. Output dataset should contain '5'.
+execute_command \
+    "$model_install_prefix/bin/$model_basename -5 result.frn:my_result"
+execute_command "fern describe result.frn"
