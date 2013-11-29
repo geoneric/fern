@@ -21,8 +21,6 @@ class IOClient:
 
 public:
 
-protected:
-
                    IOClient            ();
 
                    IOClient            (IOClient const&)=delete;

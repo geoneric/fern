@@ -1,5 +1,6 @@
 #pragma once
 #include "fern/ast/visitor/ast_visitor.h"
+#include "fern/operation/core/operations.h"
 
 
 namespace fern {
@@ -10,7 +11,8 @@ class CompileVisitor:
 
 public:
 
-                   CompileVisitor      (String const& header_filename);
+                   CompileVisitor      (OperationsPtr const& operations,
+                                        String const& header_filename);
 
                    ~CompileVisitor     ();
 
@@ -28,9 +30,17 @@ public:
 
 private:
 
+    OperationsPtr  _operations;
+
     String         _header_filename;
 
     String         _header;
+
+    //! A statement of C++ code.
+    String         _statement;
+
+    //! The C++ code of the translated tree.
+    std::vector<String> _body;
 
     String         _module;
 
@@ -63,6 +73,8 @@ private:
     void           Visit               (NumberVertex<double>& vertex);
 
     void           Visit               (OperationVertex& vertex);
+
+    void           Visit               (StatementVertex& vertex);
 
     void           Visit               (StringVertex& vertex);
 

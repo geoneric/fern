@@ -12,14 +12,16 @@ class Module
 
 public:
 
+    std::vector<DataDescription> const&
+                   arguments           () const;
+
+    std::vector<DataDescription> const&
+                   results             () const;
+
     virtual void   run                 (std::vector<std::shared_ptr<
                                             DataSource>> const& data_sources,
                                         std::vector<std::shared_ptr<
-                                            DataSync>> const& data_syncs);
-
-    std::vector<DataDescription> const& arguments() const;
-
-    std::vector<DataDescription> const& results() const;
+                                            DataSync>> const& data_syncs) const=0;
 
 protected:
 
@@ -27,13 +29,6 @@ protected:
                                             arguments,
                                         std::vector<DataDescription> const&
                                             results);
-                                        // std::vector<std::shared_ptr<
-                                        //     DataSource>> const& data_sources);
-
-    //                Module              (std::vector<DataDescription> const&
-    //                                         arguments,
-    //                                     int argc,
-    //                                     char** argv);
 
     virtual        ~Module             ()=default;
 
@@ -45,13 +40,17 @@ protected:
 
     Module&        operator=           (Module const&)=delete;
 
+    void           check_sources_and_syncs(
+                                        std::vector<std::shared_ptr<
+                                            DataSource>> const& data_sources,
+                                        std::vector<std::shared_ptr<
+                                            DataSync>> const& data_syncs) const;
+
 private:
 
     std::vector<DataDescription> const _arguments;
 
     std::vector<DataDescription> const _results;
-
-    // std::vector<std::shared_ptr<DataSource>> _data_sources;
 
 };
 

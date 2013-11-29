@@ -23,8 +23,6 @@ public:
 
 BOOST_FIXTURE_TEST_SUITE(parse_command_line, Support)
 
-// BOOST_AUTO_TEST_SUITE(parse_command_line)
-
 BOOST_AUTO_TEST_CASE(parse_command_line)
 {
     using namespace fern;

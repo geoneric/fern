@@ -98,6 +98,8 @@ protected:
 
     virtual void   Visit               (SentinelVertex& vertex);
 
+    virtual void   Visit               (StatementVertex& vertex);
+
     virtual void   Visit               (SubscriptVertex& vertex);
 
     virtual void   Visit               (WhileVertex& vertex);
@@ -129,8 +131,6 @@ private:
     virtual void   Visit               (NumberVertex<double>& vertex);
 
     virtual void   Visit               (OperatorVertex& vertex);
-
-    virtual void   Visit               (StatementVertex& vertex);
 
     virtual void   Visit               (StringVertex& vertex);
 

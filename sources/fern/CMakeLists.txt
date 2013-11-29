@@ -51,18 +51,11 @@ INSTALL(
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION lib
 )
+
+# Install all header for now. Otherwise we have to keep tweaking the install
+# rules.
 INSTALL(
-    DIRECTORY core compiler interpreter
+    DIRECTORY .
     DESTINATION include/fern
-    FILES_MATCHING PATTERN "*.h"
-)
-INSTALL(
-    DIRECTORY feature/core
-    DESTINATION include/fern/feature
-    FILES_MATCHING PATTERN "*.h"
-)
-INSTALL(
-    DIRECTORY operation/core
-    DESTINATION include/fern/operation
     FILES_MATCHING PATTERN "*.h"
 )

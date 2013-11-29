@@ -1,5 +1,6 @@
 #include "fern/compiler/compiler.h"
 #include "fern/io/core/file.h"
+#include "fern/operation/std/operations.h"
 #include "fern/compiler/compile_visitor.h"
 
 
@@ -83,7 +84,7 @@ void Compiler::compile(
         }
     }
 
-    CompileVisitor visitor(header_path.filename());
+    CompileVisitor visitor(operations(), header_path.filename());
     module_vertex->Accept(visitor);
 
     write_file(visitor.header(), header_path);
@@ -175,17 +176,19 @@ void Compiler::compile(
             "#include <cstdlib>\n"
             "#include <iostream>\n"
             "#include \"fern/core/exception.h\"\n"
+            "#include \"fern/io/io_client.h\"\n"
             "#include \"fern/compiler/parse_command_line.h\"\n"
             "#include \"%1%\"\n"
             "\n"
             "\n"
             "int main(\n"
-            "        int argc,\n"
-            "        char** argv)\n"
+            "    int argc,\n"
+            "    char** argv)\n"
             "{\n"
             "    int status = EXIT_FAILURE;\n"
             "\n"
             "    try {\n"
+            "        fern::IOClient io_client;\n"
             "        %2% module;\n"
             "        std::vector<std::shared_ptr<fern::DataSource>> sources;\n"
             "        std::vector<std::shared_ptr<fern::DataSync>> syncs;\n"
