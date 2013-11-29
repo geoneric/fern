@@ -29,6 +29,10 @@ BOOST_AUTO_TEST_CASE(raster_1)
     BOOST_CHECK(dataset.contains_feature("/raster-1"));
     BOOST_CHECK(dataset.contains_attribute("/raster-1/raster-1"));
 
+    auto feature_names = dataset.feature_names();
+    BOOST_REQUIRE_EQUAL(feature_names.size(), 1u);
+    BOOST_CHECK_EQUAL(feature_names[0], "raster-1");
+
     // Read the feature containing the attribute.
     {
         std::shared_ptr<fern::Feature> feature = dataset.read_feature(
@@ -61,6 +65,15 @@ BOOST_AUTO_TEST_CASE(raster_1)
         // BOOST_CHECK_EQUAL(value[1][1], -9999);
         BOOST_CHECK_EQUAL(value[2][0], 1);
         BOOST_CHECK_EQUAL(value[2][1], 2);
+    }
+
+    // Open the attribute.
+    {
+        fern::FieldAttributePtr<int32_t> attribute =
+            std::dynamic_pointer_cast<fern::FieldAttribute<int32_t>>(
+                dataset.open_attribute("/raster-1/raster-1"));
+        BOOST_REQUIRE(attribute);
+        BOOST_REQUIRE_EQUAL(attribute->size(), 0u);
     }
 
     // Read the attribute.

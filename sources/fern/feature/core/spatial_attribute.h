@@ -37,7 +37,8 @@ public:
 
                    ~SpatialAttribute   ()=default;
 
-    GID            add                 (typename Domain::Geometry const& geometry,
+    GID            add                 (typename Domain::Geometry const&
+                                            geometry,
                                         Value const& value);
 
     bool           empty               () const;

@@ -24,7 +24,7 @@ void show_general_help()
         "commands:\n"
         "  execute             Execute script\n"
         "  compile             Compile script\n"
-        "  describe            Describe script\n"
+        "  describe            Describe data\n"
         "  import              Import data\n"
         "\n"
         "See 'fern COMMAND --help' for more information on a specific command.\n"

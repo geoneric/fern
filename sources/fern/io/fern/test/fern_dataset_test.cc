@@ -44,6 +44,22 @@ BOOST_AUTO_TEST_CASE(write_and_read)
         BOOST_CHECK_EQUAL(dataset->nr_attributes("planets"), 1u);
         BOOST_CHECK(dataset->contains_feature("planets"));
         BOOST_CHECK(dataset->contains_attribute("planets/gravity"));
+
+        auto feature_names = dataset->feature_names();
+        BOOST_REQUIRE_EQUAL(feature_names.size(), 1u);
+        BOOST_CHECK_EQUAL(feature_names[0], "planets");
+    }
+
+    // Open attribute without re-opening the dataset.
+    {
+        std::shared_ptr<fern::Attribute> attribute(dataset->open_attribute(
+            "planets/gravity"));
+        BOOST_REQUIRE(attribute);
+        std::shared_ptr<fern::ConstantAttribute<int32_t>>
+            constant_attribute(
+                std::dynamic_pointer_cast<fern::ConstantAttribute<int32_t>>(
+                    attribute));
+        BOOST_REQUIRE(constant_attribute);
     }
 
     // Read attribute without re-opening the dataset.

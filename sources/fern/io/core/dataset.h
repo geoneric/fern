@@ -30,12 +30,43 @@ public:
     */
     virtual size_t nr_features         () const=0;
 
+    virtual std::vector<String>
+                   feature_names       () const=0;
+
     virtual bool   contains_feature    (Path const& path) const=0;
 
     virtual bool   contains_attribute  (Path const& path) const=0;
 
     virtual ExpressionType
                    expression_type     (Path const& path) const=0;
+
+    //! Open a feature and return the result.
+    /*!
+      \param     path Path to the feature to be opened.
+      \exception .
+      \warning   .
+      \sa        open_attribute(Path const&)
+
+      Opening a feature differs from reading it in that no data is read. Only
+      properties are read. It is important that opening an feature is
+      efficient.
+    */
+    virtual std::shared_ptr<Feature>
+                   open_feature        (Path const& path) const=0;
+
+    //! Open an attribute and return the result.
+    /*!
+      \param     path Path to the attribute to be opened.
+      \exception .
+      \warning   .
+      \sa        open_feature(Path const&)
+
+      Opening an attribute differs from reading it in that no data is read.
+      Only properties are read. It is important that opening an attribute is
+      efficient.
+    */
+    virtual std::shared_ptr<Attribute>
+                   open_attribute      (Path const& path) const=0;
 
     virtual std::shared_ptr<Feature>
                    read_feature        (Path const& path) const=0;

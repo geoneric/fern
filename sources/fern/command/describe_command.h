@@ -1,8 +1,13 @@
 #pragma once
 #include "fern/command/command.h"
+#include "fern/io/io_client.h"
 
 
 namespace fern {
+
+class DataName;
+class Dataset;
+class Path;
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -11,6 +16,7 @@ namespace fern {
   \sa        .
 */
 class DescribeCommand:
+    private IOClient,
     public Command
 {
 
@@ -35,7 +41,13 @@ public:
 
 private:
 
-    void           describe            (ModuleVertexPtr const& tree) const;
+    void           describe            (DataName const& data_name) const;
+
+    void           describe_feature    (Dataset const& dataset,
+                                        Path const& path) const;
+
+    void           describe_attribute  (Dataset const& dataset,
+                                        Path const& path) const;
 
 };
 

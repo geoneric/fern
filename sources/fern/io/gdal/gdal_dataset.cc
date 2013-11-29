@@ -250,6 +250,12 @@ size_t GDALDataset::nr_features() const
 }
 
 
+std::vector<String> GDALDataset::feature_names() const
+{
+    return std::vector<String>{Path(this->name()).stem()};
+}
+
+
 bool GDALDataset::contains_feature(
     Path const& path) const
 {
@@ -293,6 +299,65 @@ ExpressionType GDALDataset::expression_type(
 
     return result;
 }
+
+
+std::shared_ptr<Feature> GDALDataset::open_feature(
+    Path const& /* path */) const
+{
+    std::shared_ptr<Feature> result;
+    // TODO
+    assert(false);
+    return result;
+}
+
+
+template<
+    class T>
+std::shared_ptr<FieldAttribute<T>> GDALDataset::open_attribute(
+    GDALRasterBand& /* band */) const
+{
+    FieldAttributePtr<T> attribute(new FieldAttribute<T>());
+    return attribute;
+}
+
+
+#define OPEN_CASE(                                                             \
+        value_type)                                                            \
+    case value_type: {                                                         \
+        result = open_attribute<ValueTypeTraits<value_type>::type>(*band);     \
+        break;                                                                 \
+    }
+
+std::shared_ptr<Attribute> GDALDataset::open_attribute(
+    Path const& path) const
+{
+    GDALRasterBand* band = this->band(path);
+    ValueType value_type = this->value_type(*band, path);
+
+    std::shared_ptr<Attribute> result;
+    switch(value_type) {
+        OPEN_CASE(VT_UINT8);
+        OPEN_CASE(VT_UINT16);
+        OPEN_CASE(VT_UINT32);
+        OPEN_CASE(VT_INT16);
+        OPEN_CASE(VT_INT32);
+        OPEN_CASE(VT_FLOAT32);
+        OPEN_CASE(VT_FLOAT64);
+        case VT_STRING:
+        case VT_UINT64:
+        case VT_INT8:
+        case VT_INT64: {
+            // These aren't support by gdal, so this shouldn't happen.
+            assert(false);
+            break;
+        }
+    }
+
+    assert(result);
+    return result;
+}
+
+#undef OPEN_CASE
 
 
 std::shared_ptr<Feature> GDALDataset::read_feature(
@@ -380,14 +445,14 @@ std::shared_ptr<Attribute> GDALDataset::read_attribute(
         array->set_mask(mask);
     }
 
-    FieldAttributePtr<T> attribute(new FieldAttribute<T>());
+    std::shared_ptr<FieldAttribute<T>> attribute(open_attribute<T>(band));
     typename FieldAttribute<T>::GID gid = attribute->add(box, array);
 
     return std::dynamic_pointer_cast<Attribute>(attribute);
 }
 
 
-std::shared_ptr<Attribute> GDALDataset::read_attribute(
+GDALRasterBand* GDALDataset::band(
     Path const& path) const
 {
     assert(_dataset);
@@ -403,73 +468,86 @@ std::shared_ptr<Attribute> GDALDataset::read_attribute(
 
     GDALRasterBand* band = _dataset->GetRasterBand(1);
     assert(band);
+    return band;
+}
+
+
+#define RASTER_DATA_TYPE_CASE(                                                 \
+        data_type)                                                             \
+    case data_type: {                                                          \
+        result = TypeTraits<GDALDataTypeTraits<data_type>::type>::value_type;  \
+        break;                                                                 \
+    }
+
+// TODO exception
+#define UNSUPPORTED_RASTER_DATA_TYPE_CASE(                                     \
+        data_type)                                                             \
+    case data_type: {                                                          \
+        throw IOError(this->name(),                                            \
+            Exception::messages().format_message(                              \
+                MessageId::UNSUPPORTED_VALUE_TYPE,                             \
+                path, GDALDataTypeTraits<data_type>::name));                   \
+        break;                                                                 \
+    }
+
+ValueType GDALDataset::value_type(
+    GDALRasterBand& band,
+    Path const& path) const
+{
+    ValueType result;
+
+    switch(band.GetRasterDataType()) {
+        RASTER_DATA_TYPE_CASE(GDT_Byte);
+        RASTER_DATA_TYPE_CASE(GDT_UInt16);
+        RASTER_DATA_TYPE_CASE(GDT_Int16);
+        RASTER_DATA_TYPE_CASE(GDT_UInt32);
+        RASTER_DATA_TYPE_CASE(GDT_Int32);
+        RASTER_DATA_TYPE_CASE(GDT_Float32);
+        RASTER_DATA_TYPE_CASE(GDT_Float64);
+        UNSUPPORTED_RASTER_DATA_TYPE_CASE(GDT_CInt16);
+        UNSUPPORTED_RASTER_DATA_TYPE_CASE(GDT_CInt32);
+        UNSUPPORTED_RASTER_DATA_TYPE_CASE(GDT_CFloat32);
+        UNSUPPORTED_RASTER_DATA_TYPE_CASE(GDT_CFloat64);
+        UNSUPPORTED_RASTER_DATA_TYPE_CASE(GDT_TypeCount);
+        UNSUPPORTED_RASTER_DATA_TYPE_CASE(GDT_Unknown);
+    }
+
+    return result;
+}
+
+#undef UNSUPPORTED_RASTER_DATA_TYPE_CASE
+#undef RASTER_DATA_TYPE_CASE
+
+
+#define READ_CASE(                                                             \
+        value_type)                                                            \
+    case value_type: {                                                         \
+        result = read_attribute<ValueTypeTraits<value_type>::type>(*band);     \
+        break;                                                                 \
+    }
+
+std::shared_ptr<Attribute> GDALDataset::read_attribute(
+    Path const& path) const
+{
+    GDALRasterBand* band = this->band(path);
+    ValueType value_type = this->value_type(*band, path);
 
     std::shared_ptr<Attribute> result;
-
-    switch(band->GetRasterDataType()) {
-        case GDT_Byte: {
-            result = read_attribute<uint8_t>(*band);
+    switch(value_type) {
+        READ_CASE(VT_UINT8);
+        READ_CASE(VT_UINT16);
+        READ_CASE(VT_UINT32);
+        READ_CASE(VT_INT16);
+        READ_CASE(VT_INT32);
+        READ_CASE(VT_FLOAT32);
+        READ_CASE(VT_FLOAT64);
+        case VT_STRING:
+        case VT_UINT64:
+        case VT_INT8:
+        case VT_INT64: {
+            // These aren't support by gdal, so this shouldn't happen.
+            assert(false);
             break;
-        }
-        case GDT_UInt16: {
-            result = read_attribute<uint16_t>(*band);
-            break;
-        }
-        case GDT_Int16: {
-            result = read_attribute<int16_t>(*band);
-            break;
-        }
-        case GDT_UInt32: {
-            result = read_attribute<uint32_t>(*band);
-            break;
-        }
-        case GDT_Int32: {
-            result = read_attribute<int32_t>(*band);
-            break;
-        }
-        case GDT_Float32: {
-            result = read_attribute<float>(*band);
-            break;
-        }
-        case GDT_Float64: {
-            result = read_attribute<double>(*band);
-            break;
-        }
-        case GDT_CInt16: {
-            throw IOError(this->name(),
-                Exception::messages().format_message(
-                    MessageId::UNSUPPORTED_VALUE_TYPE,
-                    path, GDALDataTypeTraits<GDT_CInt16>::name));
-        }
-        case GDT_CInt32: {
-            throw IOError(this->name(),
-                Exception::messages().format_message(
-                    MessageId::UNSUPPORTED_VALUE_TYPE,
-                    path, GDALDataTypeTraits<GDT_CInt32>::name));
-        }
-        case GDT_CFloat32: {
-            throw IOError(this->name(),
-                Exception::messages().format_message(
-                    MessageId::UNSUPPORTED_VALUE_TYPE,
-                    path, GDALDataTypeTraits<GDT_CFloat32>::name));
-        }
-        case GDT_CFloat64: {
-            throw IOError(this->name(),
-                Exception::messages().format_message(
-                    MessageId::UNSUPPORTED_VALUE_TYPE,
-                    path, GDALDataTypeTraits<GDT_CFloat64>::name));
-        }
-        case GDT_TypeCount: {
-            throw IOError(this->name(),
-                Exception::messages().format_message(
-                    MessageId::UNSUPPORTED_VALUE_TYPE,
-                    path, GDALDataTypeTraits<GDT_TypeCount>::name));
-        }
-        case GDT_Unknown: {
-            throw IOError(this->name(),
-                Exception::messages().format_message(
-                    MessageId::UNSUPPORTED_VALUE_TYPE,
-                    path, GDALDataTypeTraits<GDT_Unknown>::name));
         }
     }
 

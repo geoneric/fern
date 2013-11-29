@@ -45,11 +45,20 @@ public:
 
     size_t         nr_features         (Path const& path) const;
 
+    std::vector<String>
+                   feature_names       () const;
+
     size_t         nr_attributes       (Path const& path) const;
 
     bool           contains_feature    (Path const& path) const;
 
     bool           contains_attribute  (Path const& path) const;
+
+    std::shared_ptr<Feature>
+                   open_feature        (Path const& path) const;
+
+    std::shared_ptr<Attribute>
+                   open_attribute      (Path const& path) const;
 
     ExpressionType expression_type     (Path const& path) const;
 
@@ -70,6 +79,10 @@ public:
 private:
 
     std::shared_ptr<H5::H5File> _file;
+
+    H5::DataSet    dataset             (Path const& path) const;
+
+    ValueType      value_type          (H5::DataSet const& dataset) const;
 
     std::shared_ptr<H5::Group> group   (Path const& path) const;
 
@@ -92,15 +105,19 @@ private:
 
     template<
         class T>
-    std::shared_ptr<Attribute> read_numeric_attribute(
-                                        Path const& path,
+    std::shared_ptr<Attribute>
+                   open_attribute      (H5::DataSet const& dataset) const;
+
+    template<
+        class T>
+    std::shared_ptr<Attribute>
+                   read_constant_attribute(
                                         H5::DataSet const& dataset) const;
 
     template<
         class T>
-    std::shared_ptr<Attribute> read_constant_attribute(
-                                        Path const& path,
-                                        H5::DataSet const& dataset) const;
+    std::shared_ptr<Attribute>
+                   read_attribute      (H5::DataSet const& dataset) const;
 
 };
 

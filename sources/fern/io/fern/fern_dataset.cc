@@ -10,6 +10,10 @@
 
 
 namespace fern {
+namespace {
+
+} // Anonymous namespace
+
 
 FernDataset::FernDataset(
     String const& name,
@@ -41,6 +45,119 @@ FernDataset::~FernDataset()
 }
 
 
+H5::DataSet FernDataset::dataset(
+    Path const& path) const
+{
+    if(!contains_attribute(path)) {
+        throw IOError(this->name(),
+            Exception::messages().format_message(
+                MessageId::DOES_NOT_CONTAIN_ATTRIBUTE, path));
+    }
+
+    H5::DataSet dataset = _file->openDataSet(String(path).encode_in_utf8());
+
+    return dataset;
+}
+
+
+// TODO exception
+#define UNSUPPORTED_TYPE_CLASS_CASE(                                           \
+        type_class)                                                            \
+    case type_class: {                                                         \
+        std::cout << HDF5TypeClassTraits<type_class>::name << std::endl;       \
+        assert(false);                                                         \
+        break;                                                                 \
+    }
+
+ValueType FernDataset::value_type(
+    H5::DataSet const& dataset) const
+{
+    H5T_class_t const type_class = dataset.getTypeClass();
+    ValueType result;
+
+    switch(type_class) {
+        case H5T_INTEGER: {
+            H5::IntType const int_type = dataset.getIntType();
+            assert(int_type.getSign() == H5T_SGN_NONE ||
+                int_type.getSign() == H5T_SGN_2);
+            size_t const int_size = int_type.getSize();
+
+            if(int_type.getSign() == H5T_SGN_NONE) {
+                // Unsigned.
+                if(int_size == 1u) {
+                    result = VT_UINT8;
+                }
+                else if(int_size == 2u) {
+                    result = VT_UINT16;
+                }
+                else if(int_size == 4u) {
+                    result = VT_UINT32;
+                }
+                else if(int_size == 8u) {
+                    result = VT_UINT64;
+                }
+                else {
+                    assert(false);
+                }
+            }
+            else {
+                // Signed.
+                if(int_size == 1u) {
+                    result = VT_INT8;
+                }
+                else if(int_size == 2u) {
+                    result = VT_INT16;
+                }
+                else if(int_size == 4u) {
+                    result = VT_INT32;
+                }
+                else if(int_size == 8u) {
+                    result = VT_INT64;
+                }
+                else {
+                    // TODO Exception.
+                    assert(false);
+                }
+            }
+
+            break;
+        }
+        case H5T_FLOAT: {
+            H5::FloatType const float_type = dataset.getFloatType();
+            size_t const float_size = float_type.getSize();
+
+            if(float_size == 4u) {
+                result = VT_FLOAT32;
+            }
+            else if(float_size == 8u) {
+                result = VT_FLOAT64;
+            }
+            else {
+                // TODO Exception.
+                assert(false);
+            }
+
+            break;
+        }
+        UNSUPPORTED_TYPE_CLASS_CASE(H5T_TIME)
+        UNSUPPORTED_TYPE_CLASS_CASE(H5T_STRING)
+        UNSUPPORTED_TYPE_CLASS_CASE(H5T_NO_CLASS)
+        UNSUPPORTED_TYPE_CLASS_CASE(H5T_BITFIELD)
+        UNSUPPORTED_TYPE_CLASS_CASE(H5T_OPAQUE)
+        UNSUPPORTED_TYPE_CLASS_CASE(H5T_COMPOUND)
+        UNSUPPORTED_TYPE_CLASS_CASE(H5T_REFERENCE)
+        UNSUPPORTED_TYPE_CLASS_CASE(H5T_ENUM)
+        UNSUPPORTED_TYPE_CLASS_CASE(H5T_VLEN)
+        UNSUPPORTED_TYPE_CLASS_CASE(H5T_ARRAY)
+        UNSUPPORTED_TYPE_CLASS_CASE(H5T_NCLASSES)
+    }
+
+    return result;
+}
+
+#undef UNSUPPORTED_TYPE_CLASS_CASE
+
+
 size_t FernDataset::nr_features() const
 {
     return nr_features("/");
@@ -60,6 +177,26 @@ size_t FernDataset::nr_features(
         type = group.getObjTypeByIdx(i);
         if(type == H5G_GROUP) {
             ++result;
+        }
+    }
+
+    return result;
+}
+
+
+std::vector<String> FernDataset::feature_names() const
+{
+    Path path("/");
+    assert(contains_feature(path));
+    H5::Group group(_file->openGroup(String(path).encode_in_utf8()));
+
+    std::vector<String> result;
+    H5G_obj_t type;
+
+    for(hsize_t i = 0; i < group.getNumObjs(); ++i) {
+        type = group.getObjTypeByIdx(i);
+        if(type == H5G_GROUP) {
+            result.push_back(group.getObjnameByIdx(i));
         }
     }
 
@@ -317,42 +454,20 @@ ExpressionType FernDataset::expression_type(
 }
 
 #undef UNSUPPORTED_TYPE_CLASS_CASE
-#undef NUMBER_CASE
 
 
-std::shared_ptr<Feature> FernDataset::read_feature(
-    Path const& path) const
+std::shared_ptr<Feature> FernDataset::open_feature(
+    Path const& /* path */) const
 {
-    if(!contains_feature_by_name(path)) {
-        throw IOError(this->name(),
-            Exception::messages().format_message(
-                MessageId::DOES_NOT_CONTAIN_FEATURE, path));
-    }
-
-    std::shared_ptr<Feature> result;
-
     assert(false);
-
+    std::shared_ptr<Feature> result;
     return result;
 }
 
 
 template<
     class T>
-std::shared_ptr<Attribute> FernDataset::read_constant_attribute(
-    Path const& /* path */,
-    H5::DataSet const& dataset) const
-{
-    T value;
-    dataset.read(&value, HDF5TypeTraits<T>::data_type);
-    return std::shared_ptr<Attribute>(new ConstantAttribute<T>(value));
-}
-
-
-template<
-    class T>
-std::shared_ptr<Attribute> FernDataset::read_numeric_attribute(
-    Path const& path,
+std::shared_ptr<Attribute> FernDataset::open_attribute(
     H5::DataSet const& dataset) const
 {
     std::shared_ptr<Attribute> result;
@@ -362,7 +477,9 @@ std::shared_ptr<Attribute> FernDataset::read_numeric_attribute(
 
     switch(data_space.getSimpleExtentType()) {
         case H5S_SCALAR: {
-            result = read_constant_attribute<T>(path, dataset);
+            // This attribute contains a single constant value. We might as
+            // well read it.
+            result = read_constant_attribute<T>(dataset);
             break;
         }
         case H5S_SIMPLE: {
@@ -386,127 +503,152 @@ std::shared_ptr<Attribute> FernDataset::read_numeric_attribute(
 }
 
 
-// TODO exception
-#define UNSUPPORTED_TYPE_CLASS_CASE(                                           \
-        type_class)                                                            \
-    case type_class: {                                                         \
-        std::cout << HDF5TypeClassTraits<type_class>::name << std::endl;       \
-        assert(false);                                                         \
+#define OPEN_CASE(                                                             \
+        value_type)                                                            \
+    case value_type: {                                                         \
+        result = open_attribute<ValueTypeTraits<value_type>::type>(dataset);   \
         break;                                                                 \
     }
 
-#define NUMBER_CASE( \
-        type) \
-    result = read_numeric_attribute<type>(path, dataset);
-
-std::shared_ptr<Attribute> FernDataset::read_attribute(
+std::shared_ptr<Attribute> FernDataset::open_attribute(
     Path const& path) const
 {
-    if(!contains_attribute(path)) {
-        throw IOError(this->name(),
-            Exception::messages().format_message(
-                MessageId::DOES_NOT_CONTAIN_ATTRIBUTE, path));
-    }
+    // Open dataset.
+    // Determine value type.
+    // Open data.
+
+    H5::DataSet const dataset = this->dataset(path);
+    ValueType value_type = this->value_type(dataset);
 
     std::shared_ptr<Attribute> result;
-
-    // Open group that contains the attribute.
-    // Get properties of attribute.
-    // Determine what kind of attribute to create and create it.
-    // Read attribute and return result.
-
-    // std::shared_ptr<H5::Group> group(this->group(path.parent_path()));
-
-    // H5G_stat_t status;
-    // group->getObjinfo(pathname.encode_in_utf8(), status);
-    // result = status.type == H5G_GROUP;
-
-    H5::DataSet const dataset = _file->openDataSet(
-        String(path).encode_in_utf8());
-    H5T_class_t const type_class = dataset.getTypeClass();
-
-    switch(type_class) {
-        case H5T_INTEGER: {
-            H5::IntType const int_type = dataset.getIntType();
-            assert(int_type.getSign() == H5T_SGN_NONE ||
-                int_type.getSign() == H5T_SGN_2);
-            size_t const int_size = int_type.getSize();
-
-            if(int_type.getSign() == H5T_SGN_NONE) {
-                // Unsigned.
-                if(int_size == 1u) {
-                    NUMBER_CASE(uint8_t);
-                }
-                else if(int_size == 2u) {
-                    NUMBER_CASE(uint16_t);
-                }
-                else if(int_size == 4u) {
-                    NUMBER_CASE(uint32_t);
-                }
-                else if(int_size == 8u) {
-                    NUMBER_CASE(uint64_t);
-                }
-                else {
-                    assert(false);
-                }
-            }
-            else {
-                // Signed.
-                if(int_size == 1u) {
-                    NUMBER_CASE(int8_t);
-                }
-                else if(int_size == 2u) {
-                    NUMBER_CASE(int16_t);
-                }
-                else if(int_size == 4u) {
-                    NUMBER_CASE(int32_t);
-                }
-                else if(int_size == 8u) {
-                    NUMBER_CASE(int64_t);
-                }
-                else {
-                    // TODO Exception.
-                    assert(false);
-                }
-            }
-
+    switch(value_type) {
+        OPEN_CASE(VT_UINT8);
+        OPEN_CASE(VT_UINT16);
+        OPEN_CASE(VT_UINT32);
+        OPEN_CASE(VT_UINT64);
+        OPEN_CASE(VT_INT8);
+        OPEN_CASE(VT_INT16);
+        OPEN_CASE(VT_INT32);
+        OPEN_CASE(VT_INT64);
+        OPEN_CASE(VT_FLOAT32);
+        OPEN_CASE(VT_FLOAT64);
+        case VT_STRING: {
+            // TODO
+            assert(false);
             break;
         }
-        case H5T_FLOAT: {
-            H5::FloatType const float_type = dataset.getFloatType();
-            size_t const float_size = float_type.getSize();
+    }
+    assert(result);
+    return result;
+}
 
-            if(float_size == 4u) {
-                NUMBER_CASE(float);
-            }
-            else if(float_size == 8u) {
-                NUMBER_CASE(double);
-            }
-            else {
-                // TODO Exception.
-                assert(false);
-            }
+#undef OPEN_CASE
 
+
+std::shared_ptr<Feature> FernDataset::read_feature(
+    Path const& path) const
+{
+    if(!contains_feature_by_name(path)) {
+        throw IOError(this->name(),
+            Exception::messages().format_message(
+                MessageId::DOES_NOT_CONTAIN_FEATURE, path));
+    }
+
+    std::shared_ptr<Feature> result;
+
+    assert(false);
+
+    return result;
+}
+
+
+template<
+    class T>
+std::shared_ptr<Attribute> FernDataset::read_constant_attribute(
+    H5::DataSet const& dataset) const
+{
+    T value;
+    dataset.read(&value, HDF5TypeTraits<T>::data_type);
+    return std::shared_ptr<Attribute>(new ConstantAttribute<T>(value));
+}
+
+
+template<
+    class T>
+std::shared_ptr<Attribute> FernDataset::read_attribute(
+    H5::DataSet const& dataset) const
+{
+    std::shared_ptr<Attribute> result;
+
+    H5::DataSpace data_space = dataset.getSpace();
+    assert(data_space.isSimple());
+
+    switch(data_space.getSimpleExtentType()) {
+        case H5S_SCALAR: {
+            result = read_constant_attribute<T>(dataset);
             break;
         }
-        UNSUPPORTED_TYPE_CLASS_CASE(H5T_TIME)
-        UNSUPPORTED_TYPE_CLASS_CASE(H5T_STRING)
-        UNSUPPORTED_TYPE_CLASS_CASE(H5T_NO_CLASS)
-        UNSUPPORTED_TYPE_CLASS_CASE(H5T_BITFIELD)
-        UNSUPPORTED_TYPE_CLASS_CASE(H5T_OPAQUE)
-        UNSUPPORTED_TYPE_CLASS_CASE(H5T_COMPOUND)
-        UNSUPPORTED_TYPE_CLASS_CASE(H5T_REFERENCE)
-        UNSUPPORTED_TYPE_CLASS_CASE(H5T_ENUM)
-        UNSUPPORTED_TYPE_CLASS_CASE(H5T_VLEN)
-        UNSUPPORTED_TYPE_CLASS_CASE(H5T_ARRAY)
-        UNSUPPORTED_TYPE_CLASS_CASE(H5T_NCLASSES)
+        case H5S_SIMPLE: {
+            // TODO Implement.
+            assert(false);
+            break;
+        }
+        case H5S_NO_CLASS: {
+            // TODO Exception.
+            assert(false);
+            break;
+        }
+        case H5S_NULL: {
+            // TODO Exception.
+            assert(false);
+            break;
+        }
     }
 
     return result;
 }
 
-#undef UNSUPPORTED_TYPE_CLASS_CASE
-#undef NUMBER_CASE
+
+#define READ_CASE(                                                             \
+        value_type)                                                            \
+    case value_type: {                                                         \
+        result = read_attribute<ValueTypeTraits<value_type>::type>(dataset);   \
+        break;                                                                 \
+    }
+
+std::shared_ptr<Attribute> FernDataset::read_attribute(
+    Path const& path) const
+{
+    // Open dataset.
+    // Determine value type.
+    // Read data.
+
+    H5::DataSet const dataset = this->dataset(path);
+    ValueType value_type = this->value_type(dataset);
+
+    std::shared_ptr<Attribute> result;
+    switch(value_type) {
+        READ_CASE(VT_UINT8);
+        READ_CASE(VT_UINT16);
+        READ_CASE(VT_UINT32);
+        READ_CASE(VT_UINT64);
+        READ_CASE(VT_INT8);
+        READ_CASE(VT_INT16);
+        READ_CASE(VT_INT32);
+        READ_CASE(VT_INT64);
+        READ_CASE(VT_FLOAT32);
+        READ_CASE(VT_FLOAT64);
+        case VT_STRING: {
+            // TODO
+            assert(false);
+            break;
+        }
+    }
+    assert(result);
+    return result;
+}
+
+#undef READ_CASE
 
 
 void FernDataset::add_feature(

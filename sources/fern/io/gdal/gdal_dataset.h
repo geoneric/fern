@@ -45,11 +45,20 @@ public:
 
     size_t         nr_features         () const;
 
+    std::vector<String>
+                   feature_names       () const;
+
     bool           contains_feature    (Path const& path) const;
 
     bool           contains_attribute  (Path const& path) const;
 
     ExpressionType expression_type     (Path const& path) const;
+
+    std::shared_ptr<Feature>
+                   open_feature        (Path const& path) const;
+
+    std::shared_ptr<Attribute>
+                   open_attribute      (Path const& path) const;
 
     std::shared_ptr<Feature> read_feature(
                                         Path const& path) const;
@@ -66,10 +75,21 @@ private:
 
     ::GDALDataset* _dataset;
 
+    GDALRasterBand*
+                   band                (Path const& path) const;
+
+    ValueType      value_type          (GDALRasterBand& band,
+                                        Path const& path) const;
+
     template<
         class T>
-    std::shared_ptr<Attribute> read_attribute(
-                                        GDALRasterBand& band) const;
+    std::shared_ptr<FieldAttribute<T>>
+                   open_attribute      (GDALRasterBand& band) const;
+
+    template<
+        class T>
+    std::shared_ptr<Attribute>
+                   read_attribute      (GDALRasterBand& band) const;
 
     template<
         class T>
