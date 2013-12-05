@@ -66,9 +66,9 @@ BOOST_AUTO_TEST_CASE(create)
     BOOST_CHECK(!driver.exists(dataset_name));
 
     // Add a feature.
-    fern::PointsPtr points(new fern::Points);
+    fern::PointsPtr points(std::make_shared<fern::Points>());
     points->push_back(fern::Point(3.0, 4.0));
-    fern::PointDomainPtr domain(new fern::PointDomain(points));;
+    fern::PointDomainPtr domain(std::make_shared<fern::PointDomain>(points));
     fern::PointFeature feature("Stations", domain);
     dataSet->add_feature(feature);
 
@@ -122,9 +122,9 @@ BOOST_AUTO_TEST_CASE(remove)
 
     dataSet.reset(driver.create(dataset_name));
     BOOST_CHECK(!driver.exists(dataset_name));
-    fern::PointsPtr points(new fern::Points);
+    fern::PointsPtr points(std::make_shared<fern::Points>());
     points->push_back(fern::Point(3.0, 4.0));
-    fern::PointDomainPtr domain(new fern::PointDomain(points));;
+    fern::PointDomainPtr domain(std::make_shared<fern::PointDomain>(points));
     fern::PointFeature feature("Stations", domain);
     dataSet->add_feature(feature);
     BOOST_CHECK(driver.exists(dataset_name));

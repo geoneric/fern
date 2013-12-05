@@ -12,7 +12,7 @@ IfVertex::IfVertex(
       _condition(condition),
       _true_scope(true_scope),
       _false_scope(false_scope),
-      _sentinel(new SentinelVertex())
+      _sentinel(std::make_shared<SentinelVertex>())
 
 {
     assert(_true_scope && !_true_scope->statements().empty());

@@ -652,8 +652,8 @@ abs(input)
 
     // Constant input.
     {
-        std::shared_ptr<fern::DataSource> data_source(new
-            fern::ConstantSource<int32_t>(-9));
+        std::shared_ptr<fern::DataSource> data_source(
+            std::make_shared<fern::ConstantSource<int32_t>>(-9));
         fern::Interpreter::DataSourceSymbolTable data_source_symbol_table;
         data_source_symbol_table.push_scope();
         data_source_symbol_table.add_value("input", data_source);
@@ -675,8 +675,9 @@ abs(input)
 
     // Constant input, from file.
     {
-        std::shared_ptr<fern::DataSource> data_source(new
-            fern::DatasetSource("constant-1.gnr:earth/gravity"));
+        std::shared_ptr<fern::DataSource> data_source(
+            std::make_shared<fern::DatasetSource>(
+                "constant-1.gnr:earth/gravity"));
         fern::Interpreter::DataSourceSymbolTable data_source_symbol_table;
         data_source_symbol_table.push_scope();
         data_source_symbol_table.add_value("input", data_source);
@@ -703,8 +704,8 @@ abs(input)
 abs(input)
 abs(input)
 )";
-        std::shared_ptr<fern::DataSource> data_source(new
-            fern::ConstantSource<int32_t>(-9));
+        std::shared_ptr<fern::DataSource> data_source(
+            std::make_shared<fern::ConstantSource<int32_t>>(-9));
         fern::Interpreter::DataSourceSymbolTable data_source_symbol_table;
         data_source_symbol_table.push_scope();
         data_source_symbol_table.add_value("input", data_source);
@@ -732,10 +733,10 @@ BOOST_AUTO_TEST_CASE(execute_with_external_outputs)
         String dataset_pathname = "execute_with_external_outputs.gnr";
         std::shared_ptr<Dataset> dataset(open_dataset(dataset_pathname,
             OpenMode::OVERWRITE));
-        std::shared_ptr<DataSync> data_sync_a(new DatasetSync(dataset,
-            "my_feature/a"));
-        std::shared_ptr<DataSync> data_sync_b(new DatasetSync(dataset,
-            "my_feature/b"));
+        std::shared_ptr<DataSync> data_sync_a(std::make_shared<DatasetSync>(
+            dataset, "my_feature/a"));
+        std::shared_ptr<DataSync> data_sync_b(std::make_shared<DatasetSync>(
+            dataset, "my_feature/b"));
         Interpreter::DataSyncSymbolTable data_sync_symbol_table;
         data_sync_symbol_table.push_scope();
         data_sync_symbol_table.add_value("a", data_sync_a);

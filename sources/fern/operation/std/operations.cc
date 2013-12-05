@@ -22,13 +22,14 @@ static std::shared_ptr<Operations> operations;
 std::shared_ptr<Operations> const& operations()
 {
     if(!detail::operations) {
-        detail::operations.reset(new Operations({
-            std::shared_ptr<Operation>(new Abs()),
-            std::shared_ptr<Operation>(new Add()),
-            std::shared_ptr<Operation>(new Int32()),
-            std::shared_ptr<Operation>(new Read()),
-            std::shared_ptr<Operation>(new Write())
-        }));
+        detail::operations = std::make_shared<Operations>(
+            std::initializer_list<std::shared_ptr<Operation>>{
+                std::shared_ptr<Operation>(std::make_shared<Abs>()),
+                std::shared_ptr<Operation>(std::make_shared<Add>()),
+                std::shared_ptr<Operation>(std::make_shared<Int32>()),
+                std::shared_ptr<Operation>(std::make_shared<Read>()),
+                std::shared_ptr<Operation>(std::make_shared<Write>())
+        });
     }
 
     return detail::operations;

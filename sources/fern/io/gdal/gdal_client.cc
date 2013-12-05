@@ -44,7 +44,8 @@ void GDALClient::register_all_drivers()
         driver = driver_manager->GetDriver(i);
         driver_name = driver->GetDescription();
         assert(drivers.find(driver_name) == drivers.end());
-        drivers[driver_name] = std::shared_ptr<Driver>(new GDALDriver(driver));
+        drivers[driver_name] = std::shared_ptr<Driver>(
+            std::make_shared<GDALDriver>(driver));
     }
 }
 

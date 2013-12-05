@@ -8,7 +8,7 @@ ScopeVertex::ScopeVertex(
 
     : AstVertex(),
       _statements(statements),
-      _sentinel(new SentinelVertex())
+      _sentinel(std::make_shared<SentinelVertex>())
 
 {
 }

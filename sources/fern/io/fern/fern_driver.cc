@@ -96,7 +96,8 @@ std::shared_ptr<Dataset> FernDriver::open(
     String const& name,
     OpenMode open_mode)
 {
-    return std::shared_ptr<Dataset>(new FernDataset(name, open_mode));
+    return std::shared_ptr<Dataset>(std::make_shared<FernDataset>(name,
+        open_mode));
 }
 
 } // namespace fern

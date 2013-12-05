@@ -316,7 +316,7 @@ template<
 std::shared_ptr<FieldAttribute<T>> GDALDataset::open_attribute(
     GDALRasterBand& /* band */) const
 {
-    FieldAttributePtr<T> attribute(new FieldAttribute<T>());
+    FieldAttributePtr<T> attribute(std::make_shared<FieldAttribute<T>>());
     return attribute;
 }
 
@@ -372,7 +372,7 @@ std::shared_ptr<Feature> GDALDataset::read_feature(
     Path attribute_path = path + "/" + Path(this->name()).stem();
     assert(contains_attribute(attribute_path));
 
-    std::shared_ptr<Feature> feature(new Feature());
+    std::shared_ptr<Feature> feature(std::make_shared<Feature>());
     feature->add_attribute(String(attribute_path.filename()),
         std::dynamic_pointer_cast<Attribute>(read_attribute(attribute_path)));
 
@@ -414,7 +414,8 @@ std::shared_ptr<Attribute> GDALDataset::read_attribute(
 
     d2::Box box(south_west, north_east);
 
-    FieldValuePtr<T> array(new FieldValue<T>(extents[nr_rows][nr_cols]));
+    FieldValuePtr<T> array(std::make_shared<FieldValue<T>>(
+        extents[nr_rows][nr_cols]));
 
     assert(band.GetRasterDataType() == GDALTypeTraits<T>::data_type);
     if(band.RasterIO(GF_Read, 0, 0, nr_cols, nr_rows, array->data(), nr_cols,

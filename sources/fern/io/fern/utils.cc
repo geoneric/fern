@@ -16,9 +16,9 @@ static std::shared_ptr<H5::H5File> open_file_for_overwrite(
         H5::FileCreatPropList creation_properties =
             H5::FileCreatPropList::DEFAULT;
         H5::FileAccPropList access_properties = H5::FileAccPropList::DEFAULT;
-        result.reset(new H5::H5File(
+        result = std::make_shared<H5::H5File>(
             path.native_string().encode_in_default_encoding().c_str(),
-            access_mode, creation_properties, access_properties));
+            access_mode, creation_properties, access_properties);
         result->flush(H5F_SCOPE_GLOBAL);
     }
     catch(H5::FileIException const& /* exception */) {
@@ -45,9 +45,9 @@ static std::shared_ptr<H5::H5File> open_file_for_update(
         H5::FileCreatPropList creation_properties =
             H5::FileCreatPropList::DEFAULT;
         H5::FileAccPropList access_properties = H5::FileAccPropList::DEFAULT;
-        result.reset(new H5::H5File(
+        result = std::make_shared<H5::H5File>(
             path.native_string().encode_in_default_encoding().c_str(),
-            access_mode, creation_properties, access_properties));
+            access_mode, creation_properties, access_properties);
         result->flush(H5F_SCOPE_GLOBAL);
     }
     catch(H5::FileIException const& /* exception */) {
@@ -74,9 +74,9 @@ static std::shared_ptr<H5::H5File> open_file_for_read(
         H5::FileCreatPropList creation_properties =
             H5::FileCreatPropList::DEFAULT;
         H5::FileAccPropList access_properties = H5::FileAccPropList::DEFAULT;
-        result.reset(new H5::H5File(
+        result = std::make_shared<H5::H5File>(
             path.native_string().encode_in_default_encoding().c_str(),
-            access_mode, creation_properties, access_properties));
+            access_mode, creation_properties, access_properties);
         result->flush(H5F_SCOPE_GLOBAL);
     }
     catch(H5::FileIException const& /* exception */) {

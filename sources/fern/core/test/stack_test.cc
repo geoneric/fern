@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(stack_2)
         fern::Stack stack;
 
         // One shared pointer.
-        std::shared_ptr<std::string> value1(new std::string("5"));
+        std::shared_ptr<std::string> value1(std::make_shared<std::string>("5"));
         BOOST_CHECK_EQUAL(value1.use_count(), 1u);
 
         // Copy shared pointer to the stack.

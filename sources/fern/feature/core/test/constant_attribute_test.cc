@@ -29,7 +29,7 @@ BOOST_AUTO_TEST_CASE(array_per_box)
 
     size_t const nr_rows = 3;
     size_t const nr_cols = 2;
-    ValuePtr grid(new Value(fern::extents[nr_rows][nr_cols]));
+    ValuePtr grid = std::make_shared<Value>(fern::extents[nr_rows][nr_cols]);
     (*grid)[0][0] = -2;
     (*grid)[0][1] = -1;
     (*grid)[1][0] = 0;

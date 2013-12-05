@@ -30,13 +30,13 @@ public:
             statements)
     {
         assert(!_scope_vertex);
-        _scope_vertex.reset(new fern::ScopeVertex(statements));
+        _scope_vertex = std::make_shared<fern::ScopeVertex>(statements);
     }
 
     std::shared_ptr<fern::ModuleVertex> post_Fern()
     {
-        return std::shared_ptr<fern::ModuleVertex>(new fern::ModuleVertex(
-            _source_name, _scope_vertex));
+        return std::shared_ptr<fern::ModuleVertex>(
+            std::make_shared<fern::ModuleVertex>(_source_name, _scope_vertex));
     }
 
 private:
@@ -78,7 +78,8 @@ public:
     {
         assert(!_expressions.empty());
         return std::shared_ptr<fern::AssignmentVertex>(
-            new fern::AssignmentVertex(_expressions[0], _expressions[1]));
+            std::make_shared<fern::AssignmentVertex>(_expressions[0],
+                _expressions[1]));
     }
 
 private:
@@ -143,13 +144,13 @@ public:
         if(!_data_stack.top().true_scope) {
             assert(!statements.empty());
             assert(!_data_stack.top().false_scope);
-            _data_stack.top().true_scope.reset(new fern::ScopeVertex(
-                statements));
+            _data_stack.top().true_scope = std::make_shared<fern::ScopeVertex>(
+                statements);
         }
         else {
             assert(!_data_stack.top().false_scope);
-            _data_stack.top().false_scope.reset(new fern::ScopeVertex(
-                statements));
+            _data_stack.top().false_scope = std::make_shared<fern::ScopeVertex>(
+                statements);
         }
     }
 
@@ -158,7 +159,7 @@ public:
         assert(!_data_stack.empty());
         IfData result(_data_stack.top());
         _data_stack.pop();
-        return std::shared_ptr<fern::IfVertex>(new fern::IfVertex(
+        return std::shared_ptr<fern::IfVertex>(std::make_shared<fern::IfVertex>(
             result.condition_vertex, result.true_scope, result.false_scope));
     }
 
@@ -202,13 +203,13 @@ public:
         if(!_data_stack.top().true_scope) {
             assert(!statements.empty());
             assert(!_data_stack.top().false_scope);
-            _data_stack.top().true_scope.reset(new fern::ScopeVertex(
-                statements));
+            _data_stack.top().true_scope = std::make_shared<fern::ScopeVertex>(
+                statements);
         }
         else {
             assert(!_data_stack.top().false_scope);
-            _data_stack.top().false_scope.reset(new fern::ScopeVertex(
-                statements));
+            _data_stack.top().false_scope = std::make_shared<fern::ScopeVertex>(
+                statements);
         }
     }
 
@@ -217,8 +218,9 @@ public:
         assert(!_data_stack.empty());
         WhileData result(_data_stack.top());
         _data_stack.pop();
-        return std::shared_ptr<fern::WhileVertex>(new fern::WhileVertex(
-            result.condition_vertex, result.true_scope, result.false_scope));
+        return std::shared_ptr<fern::WhileVertex>(
+            std::make_shared<fern::WhileVertex>(result.condition_vertex,
+                result.true_scope, result.false_scope));
     }
 
 private:
@@ -267,8 +269,8 @@ public:
             const& statements)
     {
         assert(!statements.empty());
-        _data_stack.top().scope_vertex.reset(new fern::ScopeVertex(
-            statements));
+        _data_stack.top().scope_vertex = std::make_shared<fern::ScopeVertex>(
+            statements);
     }
 
     std::shared_ptr<fern::FunctionDefinitionVertex> post_FunctionDefinition()
@@ -277,7 +279,7 @@ public:
         FunctionDefinitionData result(_data_stack.top());
         _data_stack.pop();
         return std::shared_ptr<fern::FunctionDefinitionVertex>(
-            new fern::FunctionDefinitionVertex(
+            std::make_shared<fern::FunctionDefinitionVertex>(
                 result.name, result.expression_vertices, result.scope_vertex));
     }
 
@@ -323,8 +325,9 @@ public:
         _data_stack.pop();
         std::shared_ptr<fern::ReturnVertex> vertex(
             result.expression_vertex
-                ?  new fern::ReturnVertex(result.expression_vertex)
-                :  new fern::ReturnVertex());
+                ?  std::make_shared<fern::ReturnVertex>(
+                       result.expression_vertex)
+                :  std::make_shared<fern::ReturnVertex>());
         return vertex;
     }
 
@@ -552,22 +555,22 @@ public:
         switch(_size) {
             case 8: {
                 result = std::shared_ptr<fern::ExpressionVertex>(
-                    new fern::NumberVertex<int8_t>(_value));
+                    std::make_shared<fern::NumberVertex<int8_t>>(_value));
                 break;
             }
             case 16: {
                 result = std::shared_ptr<fern::ExpressionVertex>(
-                    new fern::NumberVertex<int16_t>(_value));
+                    std::make_shared<fern::NumberVertex<int16_t>>(_value));
                 break;
             }
             case 32: {
                 result = std::shared_ptr<fern::ExpressionVertex>(
-                    new fern::NumberVertex<int32_t>(_value));
+                    std::make_shared<fern::NumberVertex<int32_t>>(_value));
                 break;
             }
             case 64: {
                 result = std::shared_ptr<fern::ExpressionVertex>(
-                    new fern::NumberVertex<int64_t>(_value));
+                    std::make_shared<fern::NumberVertex<int64_t>>(_value));
                 break;
             }
             default: {
@@ -620,22 +623,22 @@ public:
         switch(_size) {
             case 8: {
                 result = std::shared_ptr<fern::ExpressionVertex>(
-                    new fern::NumberVertex<uint8_t>(_value));
+                    std::make_shared<fern::NumberVertex<uint8_t>>(_value));
                 break;
             }
             case 16: {
                 result = std::shared_ptr<fern::ExpressionVertex>(
-                    new fern::NumberVertex<uint16_t>(_value));
+                    std::make_shared<fern::NumberVertex<uint16_t>>(_value));
                 break;
             }
             case 32: {
                 result = std::shared_ptr<fern::ExpressionVertex>(
-                    new fern::NumberVertex<uint32_t>(_value));
+                    std::make_shared<fern::NumberVertex<uint32_t>>(_value));
                 break;
             }
             case 64: {
                 result = std::shared_ptr<fern::ExpressionVertex>(
-                    new fern::NumberVertex<uint64_t>(_value));
+                    std::make_shared<fern::NumberVertex<uint64_t>>(_value));
                 break;
             }
             default: {
@@ -689,13 +692,13 @@ public:
             case 32: {
                 assert(sizeof(float) == 4);
                 result = std::shared_ptr<fern::ExpressionVertex>(
-                    new fern::NumberVertex<float>(_value));
+                    std::make_shared<fern::NumberVertex<float>>(_value));
                 break;
             }
             case 64: {
                 assert(sizeof(double) == 8);
                 result = std::shared_ptr<fern::ExpressionVertex>(
-                    new fern::NumberVertex<double>(_value));
+                    std::make_shared<fern::NumberVertex<double>>(_value));
                 break;
             }
             default: {
@@ -795,7 +798,7 @@ public:
         FunctionData result(_data_stack.top());
         _data_stack.pop();
         return std::shared_ptr<fern::FunctionCallVertex>(
-            new fern::FunctionCallVertex(result.name,
+            std::make_shared<fern::FunctionCallVertex>(result.name,
                 result.expression_vertices));
     }
 
@@ -848,7 +851,7 @@ public:
         OperatorData result(_data_stack.top());
         _data_stack.pop();
         return std::shared_ptr<fern::OperatorVertex>(
-            new fern::OperatorVertex(result.name,
+            std::make_shared<fern::OperatorVertex>(result.name,
                 result.expression_vertices));
     }
 
@@ -898,7 +901,8 @@ public:
         SubscriptData result(_data_stack.top());
         _data_stack.pop();
         return std::shared_ptr<fern::SubscriptVertex>(
-            new fern::SubscriptVertex(result.expression, result.selection));
+            std::make_shared<fern::SubscriptVertex>(result.expression,
+                result.selection));
     }
 
 private:
@@ -947,7 +951,7 @@ public:
         AttributeData result(_data_stack.top());
         _data_stack.pop();
         return std::shared_ptr<fern::AttributeVertex>(
-            new fern::AttributeVertex(result.expression,
+            std::make_shared<fern::AttributeVertex>(result.expression,
                 result.member_name));
     }
 
@@ -995,7 +999,7 @@ public:
         assert(!_data_stack.empty());
         assert(!_data_stack.top().vertex);
         _data_stack.top().vertex = std::shared_ptr<fern::NameVertex>(
-            new fern::NameVertex(_data_stack.top().line,
+            std::make_shared<fern::NameVertex>(_data_stack.top().line,
                 _data_stack.top().col, fern::String(name)));
     }
 
@@ -1025,7 +1029,7 @@ public:
         assert(!_data_stack.empty());
         assert(!_data_stack.top().vertex);
         _data_stack.top().vertex = std::shared_ptr<fern::StringVertex>(
-            new fern::StringVertex(_data_stack.top().line,
+            std::make_shared<fern::StringVertex>(_data_stack.top().line,
                 _data_stack.top().col, fern::String(string)));
     }
 

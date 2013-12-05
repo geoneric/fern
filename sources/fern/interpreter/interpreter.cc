@@ -50,7 +50,7 @@ Interpreter::Interpreter()
       _xml_parser(),
       _annotate_visitor(_operations),
       _validate_visitor(),
-      _back_end(new ExecuteVisitor(_operations))
+      _back_end(std::make_shared<ExecuteVisitor>(_operations))
 
 {
 }

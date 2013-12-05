@@ -3,6 +3,7 @@
 #include <unicode/ustring.h>
 #include <unicode/regex.h>
 #include <boost/lexical_cast.hpp>
+#include "fern/core/memory.h"
 
 
 namespace {
@@ -22,7 +23,7 @@ std::string encode_in_utf8(
         // UTF-8.
         unsigned int nrCodePoints = string.countChar32();
         unsigned int maxNrBytesNeeded = 4 * nrCodePoints;
-        std::unique_ptr<char> encodedString(new char[maxNrBytesNeeded]);
+        auto encodedString(std::make_unique<char[]>(maxNrBytesNeeded));
 
         // Convert UnicodeString encoded in UTF-16 to UTF-8.
         UErrorCode status = U_ZERO_ERROR;
@@ -56,7 +57,7 @@ std::string encode_in_default_encoding(
     int32_t nr_code_units = string.length();
 
     int32_t max_nr_bytes_needed = 4 * nr_code_points;
-    std::unique_ptr<char> encoded_string(new char[max_nr_bytes_needed]);
+    auto encoded_string(std::make_unique<char[]>(max_nr_bytes_needed));
 
     int32_t nr_bytes_written = string.extract(0, nr_code_units,
         encoded_string.get(), max_nr_bytes_needed);

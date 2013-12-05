@@ -30,17 +30,17 @@ std::shared_ptr<DataSource> data_source(
     // here.
     DataName data_name(value);
     if(dataset_exists(data_name.database_pathname(), OpenMode::READ)) {
-        result.reset(new DatasetSource(data_name));
+        result = std::make_shared<DatasetSource>(data_name);
     }
 
     if(value.is_convertable_to<int64_t>()) {
-        result.reset(new ConstantSource<int64_t>(value.as<int64_t>()));
+        result = std::make_shared<ConstantSource<int64_t>>(value.as<int64_t>());
     }
     else if(value.is_convertable_to<double>()) {
-        result.reset(new ConstantSource<double>(value.as<double>()));
+        result = std::make_shared<ConstantSource<double>>(value.as<double>());
     }
     else {
-        result.reset(new ConstantSource<String>(value));
+        result = std::make_shared<ConstantSource<String>>(value);
     }
 
     assert(result);
@@ -53,7 +53,8 @@ std::shared_ptr<DataSync> data_sync(
     String const& value)
 {
     // The value passed in must be the name of a data sync that can be opened.
-    return std::shared_ptr<DataSync>(new DatasetSync(DataName(value)));
+    return std::shared_ptr<DataSync>(std::make_shared<DatasetSync>(
+        DataName(value)));
 }
 
 } // Anonymous namespace

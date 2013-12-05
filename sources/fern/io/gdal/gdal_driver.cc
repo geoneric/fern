@@ -107,7 +107,8 @@ std::shared_ptr<Dataset> GDALDriver::open(
     String const& name,
     OpenMode open_mode)
 {
-    return std::shared_ptr<Dataset>(new GDALDataset(_driver, name, open_mode));
+    return std::shared_ptr<Dataset>(std::make_shared<GDALDataset>(_driver,
+        name, open_mode));
 }
 
 } // namespace fern

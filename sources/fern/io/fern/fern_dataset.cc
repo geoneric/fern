@@ -569,7 +569,8 @@ std::shared_ptr<Attribute> FernDataset::read_constant_attribute(
 {
     T value;
     dataset.read(&value, HDF5TypeTraits<T>::data_type);
-    return std::shared_ptr<Attribute>(new ConstantAttribute<T>(value));
+    return std::shared_ptr<Attribute>(std::make_shared<ConstantAttribute<T>>(
+        value));
 }
 
 

@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE(feature)
         typedef std::shared_ptr<PointsAttribute> PointsAttributePtr;
 
         Point center_of_planet1 = { 1, 1, 1 };
-        PointsAttributePtr acceleration(new PointsAttribute());
+        PointsAttributePtr acceleration(std::make_shared<PointsAttribute>());
         acceleration->add(center_of_planet1, 1.1);
         planets.add_attribute("acceleration", acceleration);
         BOOST_CHECK_EQUAL(planets.nr_attributes(), 1);

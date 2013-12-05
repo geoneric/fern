@@ -34,7 +34,8 @@ FernClient::~FernClient()
 void FernClient::register_driver()
 {
     assert(drivers.find(_driver_name) == drivers.end());
-    drivers[_driver_name] = std::shared_ptr<Driver>(new FernDriver());
+    drivers[_driver_name] = std::shared_ptr<Driver>(
+        std::make_shared<FernDriver>());
 }
 
 

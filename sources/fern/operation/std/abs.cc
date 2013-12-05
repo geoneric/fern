@@ -15,7 +15,7 @@ std::vector<std::shared_ptr<Argument>> abs(
     T result = std::abs(attribute.values().value());
 
     return std::vector<std::shared_ptr<Argument>>({
-        std::shared_ptr<Argument>(new AttributeArgument(
+        std::shared_ptr<Argument>(std::make_shared<AttributeArgument>(
             std::make_shared<ConstantAttribute<T>>(result)))
     });
 }
@@ -26,13 +26,13 @@ template<
 std::vector<std::shared_ptr<Argument>> abs(
         FieldAttribute<T> const& attribute)
 {
-    FieldAttributePtr<T> result(new FieldAttribute<T>);
+    FieldAttributePtr<T> result(std::make_shared<FieldAttribute<T>>());
 
     for(auto const& pair: attribute.domain()) {
         FieldValue<T> const& source_array(*attribute.values().value(
             pair.first));
         assert(source_array.size() > 0);
-        FieldValuePtr<T> destination_array_ptr(new FieldValue<T>(
+        FieldValuePtr<T> destination_array_ptr(std::make_shared<FieldValue<T>>(
             extents[source_array.size()][source_array[0].size()]));
         FieldValue<T>& destination_array(*destination_array_ptr);
 
@@ -59,7 +59,7 @@ std::vector<std::shared_ptr<Argument>> abs(
     }
 
     return std::vector<std::shared_ptr<Argument>>({
-        std::shared_ptr<Argument>(new AttributeArgument(
+        std::shared_ptr<Argument>(std::make_shared<AttributeArgument>(
             result))
     });
 }

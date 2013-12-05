@@ -160,7 +160,7 @@ void ExecuteVisitor::Visit(                                                    \
     NumberVertex<type>& vertex)                                                \
 {                                                                              \
     _stack.push(                                                               \
-        std::shared_ptr<Argument>(new AttributeArgument(                       \
+        std::shared_ptr<Argument>(std::make_shared<AttributeArgument>(         \
             std::make_shared<ConstantAttribute<type>>(vertex.value()))));      \
 }
 
@@ -212,7 +212,7 @@ void ExecuteVisitor::Visit(
     // Turn the string constant into an attribute with a global domain and a
     // single value.
     _stack.push(
-        std::shared_ptr<Argument>(new AttributeArgument(
+        std::shared_ptr<Argument>(std::make_shared<AttributeArgument>(
             std::make_shared<ConstantAttribute<String>>(vertex.value()))));
 }
 

@@ -35,7 +35,8 @@ public:
 
     fern::OperationsPtr post_Operations()
     {
-        return fern::OperationsPtr(new fern::Operations(_operations));
+        return fern::OperationsPtr(std::make_shared<fern::Operations>(
+            _operations));
     }
 
 };

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <memory>
 #include "fern/configure.h"
+#include "fern/core/memory.h"
 #include "fern/command/compile_command.h"
 #include "fern/command/describe_command.h"
 #include "fern/command/execute_command.h"
@@ -80,16 +81,20 @@ int main(
 
         // A command may be given. Find out which one.
         if(std::strcmp(argv[1], "compile") == 0) {
-            command.reset(new fern::CompileCommand(argc - 1, argv + 1));
+            command = std::make_unique<fern::CompileCommand>(argc - 1,
+                argv + 1);
         }
         else if(std::strcmp(argv[1], "describe") == 0) {
-            command.reset(new fern::DescribeCommand(argc - 1, argv + 1));
+            command = std::make_unique<fern::DescribeCommand>(argc - 1,
+                argv + 1);
         }
         else if(std::strcmp(argv[1], "execute") == 0) {
-            command.reset(new fern::ExecuteCommand(argc - 1, argv + 1));
+            command = std::make_unique<fern::ExecuteCommand>(argc - 1,
+                argv + 1);
         }
         else if(std::strcmp(argv[1], "import") == 0) {
-            command.reset(new fern::ImportCommand(argc - 1, argv + 1));
+            command = std::make_unique<fern::ImportCommand>(argc - 1,
+                argv + 1);
         }
         else {
             fern::show_general_help();

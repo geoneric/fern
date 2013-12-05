@@ -43,11 +43,11 @@ OGRFeatureLayer::OGRFeatureLayer(
     switch(domain_type(_layer->GetGeomType())) {
         case Domain::PointDomain: {
             PointsPtr points;
-            _domain.reset(new PointDomain(points));
+            _domain = std::make_shared<PointDomain>(points);
         }
         case Domain::PolygonDomain: {
             PolygonsPtr polygons;
-            _domain.reset(new PolygonDomain(polygons));
+            _domain = std::make_shared<PolygonDomain>(polygons);
         }
 #ifndef NDEBUG
         default: {

@@ -27,7 +27,7 @@ std::shared_ptr<Argument> DatasetSource::read() const
 #ifndef NDEBUG
     set_data_has_been_read();
 #endif
-    return std::shared_ptr<Argument>(new AttributeArgument(
+    return std::shared_ptr<Argument>(std::make_shared<AttributeArgument>(
         _dataset->read_attribute(_data_name.data_pathname())));
 }
 

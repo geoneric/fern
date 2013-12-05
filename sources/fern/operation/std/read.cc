@@ -30,12 +30,12 @@ std::vector<std::shared_ptr<Argument>> read(
     std::vector<std::shared_ptr<Argument>> result;
     if(dataset->contains_feature(name.data_pathname())) {
         result = std::vector<std::shared_ptr<Argument>>({
-            std::shared_ptr<Argument>(new FeatureArgument(
+            std::shared_ptr<Argument>(std::make_shared<FeatureArgument>(
                 dataset->read_feature(name.data_pathname())))});
     }
     else if(dataset->contains_attribute(name.data_pathname())) {
         result = std::vector<std::shared_ptr<Argument>>({
-            std::shared_ptr<Argument>(new AttributeArgument(
+            std::shared_ptr<Argument>(std::make_shared<AttributeArgument>(
                 dataset->read_attribute(name.data_pathname())))});
     }
     else {

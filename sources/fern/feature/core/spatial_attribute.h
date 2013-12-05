@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include "fern/core/memory.h"
 #include "fern/feature/core/attribute.h"
 #include "fern/feature/core/geometry_values.h"
 
@@ -63,8 +64,8 @@ template<
     class Value>
 inline SpatialAttribute<Domain, Value>::SpatialAttribute()
 
-    : _domain(new Domain),
-      _values(new GeometryValues<typename Domain::GID, Value>)
+    : _domain(std::make_unique<Domain>()),
+      _values(std::make_unique<GeometryValues<typename Domain::GID, Value>>())
 
 {
 }

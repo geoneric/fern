@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include "fern/core/memory.h"
 #include "fern/feature/core/attribute.h"
 #include "fern/feature/core/constant_value.h"
 
@@ -51,7 +52,7 @@ template<
     class Value>
 inline ConstantAttribute<Value>::ConstantAttribute()
 
-    : _values(new ConstantValue<Value>())
+    : _values(std::make_unique<ConstantValue<Value>>())
 
 {
 }
@@ -62,7 +63,7 @@ template<
 inline ConstantAttribute<Value>::ConstantAttribute(
     Value const& value)
 
-    : _values(new ConstantValue<Value>(value))
+    : _values(std::make_unique<ConstantValue<Value>>(value))
 
 {
 }
