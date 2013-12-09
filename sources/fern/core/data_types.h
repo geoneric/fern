@@ -69,12 +69,12 @@ private:
 
     static std::vector<DataType> const DATA_TYPES;
 
-    constexpr      DataTypes           (unsigned long long bits);
+                   DataTypes           (unsigned long long bits);
 
 };
 
 
-constexpr inline DataTypes::DataTypes(
+inline DataTypes::DataTypes(
     unsigned long long bits)
 
     : FlagCollection<DataTypes, DataType, DataType::DT_LAST_DATA_TYPE + 1>(bits)

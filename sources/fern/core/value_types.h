@@ -89,12 +89,12 @@ private:
 
     static std::vector<ValueType> const VALUE_TYPES;
 
-    constexpr      ValueTypes          (unsigned long long bits);
+                   ValueTypes          (unsigned long long bits);
 
 };
 
 
-constexpr inline ValueTypes::ValueTypes(
+inline ValueTypes::ValueTypes(
     unsigned long long bits)
 
     : FlagCollection<ValueTypes, ValueType,
