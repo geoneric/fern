@@ -447,7 +447,7 @@ std::shared_ptr<Attribute> GDALDataset::read_attribute(
     }
 
     std::shared_ptr<FieldAttribute<T>> attribute(open_attribute<T>(band));
-    typename FieldAttribute<T>::GID gid = attribute->add(box, array);
+    /* typename FieldAttribute<T>::GID gid = */ attribute->add(box, array);
 
     return std::dynamic_pointer_cast<Attribute>(attribute);
 }
