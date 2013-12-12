@@ -10,7 +10,7 @@
 // std::cout << typeid(*tree->scope()->successor()).name() << std::endl;
 
 
-namespace boost {
+namespace fern {
 
 template<class T1, class T2>
 bool operator==(
@@ -20,7 +20,7 @@ bool operator==(
     return lhs == &(*rhs);
 }
 
-} // namespace boost
+} // namespace fern
 
 
 class Support
