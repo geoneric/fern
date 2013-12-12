@@ -8,6 +8,7 @@ SET(TEST_NAMES
     string_test
     symbol_table_test
     type_traits_test
+    value_types_test
 )
 
 MACRO(ADD_UNIT_TEST NAME)

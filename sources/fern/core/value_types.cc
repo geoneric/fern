@@ -4,30 +4,9 @@
 
 namespace fern {
 
-ValueTypes const ValueTypes::UNKNOWN;
-ValueTypes const ValueTypes::UINT8(1 << ValueType::VT_UINT8);
-ValueTypes const ValueTypes::INT8(1 << ValueType::VT_INT8);
-ValueTypes const ValueTypes::UINT16(1 << ValueType::VT_UINT16);
-ValueTypes const ValueTypes::INT16(1 << ValueType::VT_INT16);
-ValueTypes const ValueTypes::UINT32(1 << ValueType::VT_UINT32);
-ValueTypes const ValueTypes::INT32(1 << ValueType::VT_INT32);
-ValueTypes const ValueTypes::UINT64(1 << ValueType::VT_UINT64);
-ValueTypes const ValueTypes::INT64(1 << ValueType::VT_INT64);
-ValueTypes const ValueTypes::FLOAT32(1 << ValueType::VT_FLOAT32);
-ValueTypes const ValueTypes::FLOAT64(1 << ValueType::VT_FLOAT64);
-ValueTypes const ValueTypes::STRING(1 << ValueType::VT_STRING);
-ValueTypes const ValueTypes::UNSIGNED_INTEGER(ValueTypes::UINT8 |
-    ValueTypes::UINT16 | ValueTypes::UINT32 | ValueTypes::UINT64);
-ValueTypes const ValueTypes::SIGNED_INTEGER(ValueTypes::INT8 |
-    ValueTypes::INT16 | ValueTypes::INT32 | ValueTypes::INT64);
-ValueTypes const ValueTypes::INTEGER(ValueTypes::UNSIGNED_INTEGER |
-    ValueTypes::SIGNED_INTEGER);
-ValueTypes const ValueTypes::SIZE(ValueTypes::UINT64);
-ValueTypes const ValueTypes::FLOATING_POINT(ValueTypes::FLOAT32 |
-    ValueTypes::FLOAT64);
-ValueTypes const ValueTypes::NUMBER(ValueTypes::INTEGER |
-    ValueTypes::FLOATING_POINT);
-ValueTypes const ValueTypes::ALL(ValueTypes::NUMBER | ValueTypes::STRING);
+// The static ValueTypes members are defined in type_traits.cc. Otherwise,
+// if type_traits.cc is built before this module, it won't have the correct
+// values yet (the value_types member will all be ValueTypes::UNKNOWN).
 
 // These strings should match the ones used in the XML schema.
 static std::map<String, ValueTypes> value_type_by_string = {

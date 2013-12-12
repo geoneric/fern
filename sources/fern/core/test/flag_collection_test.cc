@@ -20,6 +20,12 @@ class MyFlagCollection:
 
 public:
 
+    static const MyFlagCollection YES;
+
+    static const MyFlagCollection NO;
+
+    static const MyFlagCollection MAYBE;
+
     MyFlagCollection()=default;
 
     MyFlagCollection(unsigned long long flags)
@@ -31,11 +37,22 @@ public:
 
 };
 
+MyFlagCollection const MyFlagCollection::YES(1 << MF_YES);
+MyFlagCollection const MyFlagCollection::NO(1 << MF_NO);
+MyFlagCollection const MyFlagCollection::MAYBE(1 << MF_MAYBE);
+
 
 BOOST_AUTO_TEST_SUITE(flag_collection)
 
 BOOST_AUTO_TEST_CASE(flag_collection)
 {
+    BOOST_CHECK_EQUAL(MyFlagCollection::YES.count(), 1u);
+    BOOST_CHECK(MyFlagCollection::YES.test(MF_YES));
+    BOOST_CHECK_EQUAL(MyFlagCollection::NO.count(), 1u);
+    BOOST_CHECK(MyFlagCollection::NO.test(MF_NO));
+    BOOST_CHECK_EQUAL(MyFlagCollection::MAYBE.count(), 1u);
+    BOOST_CHECK(MyFlagCollection::MAYBE.test(MF_MAYBE));
+
     MyFlagCollection flags;
 
     BOOST_CHECK_EQUAL(flags.count(), 0u);
