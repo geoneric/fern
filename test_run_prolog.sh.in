@@ -1,3 +1,5 @@
+set -e
+
 test_data_dir="${PROJECT_SOURCE_DIR}/data/tests"
 fern_test_dir="${CMAKE_CURRENT_BINARY_DIR}/sources/fern"
 cmake="${CMAKE_COMMAND}"
