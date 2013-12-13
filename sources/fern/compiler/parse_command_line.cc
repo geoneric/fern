@@ -105,7 +105,7 @@ parse_command_line(
             break;
         }
 
-        data_sources.push_back(data_source(argument,
+        data_sources.emplace_back(data_source(argument,
             *current_command_line_argument));
         --nr_remaining_command_line_arguments;
         ++current_command_line_argument;
@@ -116,7 +116,7 @@ parse_command_line(
             break;
         }
 
-        data_syncs.push_back(data_sync(result,
+        data_syncs.emplace_back(data_sync(result,
             *current_command_line_argument));
         --nr_remaining_command_line_arguments;
         ++current_command_line_argument;

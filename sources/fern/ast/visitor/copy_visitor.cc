@@ -32,7 +32,7 @@ void CopyVisitor::visit_statements(
         CopyVisitor visitor;
         statement->Accept(visitor);
         assert(_statement_vertex);
-        _statements.push_back(visitor._statement_vertex);
+        _statements.emplace_back(visitor._statement_vertex);
     }
 
     assert(_statements.size() == statements.size());

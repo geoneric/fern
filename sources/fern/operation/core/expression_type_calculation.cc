@@ -196,8 +196,8 @@ ExpressionType standard_expression_type(
     std::vector<DataTypes> data_types;
     std::vector<ValueTypes> value_types;
     for(auto argument_type: argument_types) {
-        data_types.push_back(argument_type.data_type());
-        value_types.push_back(argument_type.value_type());
+        data_types.emplace_back(argument_type.data_type());
+        value_types.emplace_back(argument_type.value_type());
     }
 
     return ExpressionType(

@@ -130,7 +130,7 @@ ExpressionTypes::const_iterator ExpressionTypes::end() const
 void ExpressionTypes::add(
     ExpressionType const& expression_type)
 {
-    push_back(expression_type);
+    emplace_back(expression_type);
 }
 
 

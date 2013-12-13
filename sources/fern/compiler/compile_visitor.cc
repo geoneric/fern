@@ -46,8 +46,8 @@ void CompileVisitor::Visit(
     _statement +=
         "std::vector<std::shared_ptr<fern::Argument>> results(";
     vertex.expression()->Accept(*this);
-    _body.push_back(_statement);
-    _body.push_back(boost::format(
+    _body.emplace_back(_statement);
+    _body.emplace_back(boost::format(
         "std::shared_ptr<fern::Argument> %1%(results[0])"
         ) % vertex.target()->name());
 }
@@ -125,7 +125,7 @@ void CompileVisitor::Visit(
     {
         std::vector<String> initializers;
         for(auto const& input: visitor.inputs()) {
-            initializers.push_back(boost::format(
+            initializers.emplace_back(boost::format(
                 "fern::DataDescription(\"%1%\")"
             ) % input);
         }
@@ -133,7 +133,7 @@ void CompileVisitor::Visit(
 
         initializers.clear();
         for(auto const& output: visitor.outputs()) {
-            initializers.push_back(boost::format(
+            initializers.emplace_back(boost::format(
                 "fern::DataDescription(\"%1%\")"
             ) % output->name());
         }
@@ -143,7 +143,7 @@ void CompileVisitor::Visit(
 
     // Prepare the module's inputs.
     for(size_t i = 0; i < visitor.inputs().size(); ++i) {
-        _body.push_back((boost::format(
+        _body.emplace_back((boost::format(
             "std::shared_ptr<fern::Argument> %1%(data_sources[%2%]->read());"
             ) % visitor.inputs()[i] % i).str());
     }
@@ -153,13 +153,13 @@ void CompileVisitor::Visit(
 
     // Write out the results, if needed.
     for(size_t i = 0; i < visitor.outputs().size(); ++i) {
-        _body.push_back((boost::format(
+        _body.emplace_back((boost::format(
             "if(%1% < data_syncs.size()) {"
             ) % i).str());
-        _body.push_back((boost::format(
+        _body.emplace_back((boost::format(
             "    data_syncs[%1%]->write(*%2%);"
             ) % i % visitor.outputs()[i]->name()).str());
-        _body.push_back(
+        _body.emplace_back(
             "}");
     }
 

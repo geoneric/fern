@@ -10,8 +10,8 @@
 void remove_test_files()
 {
     std::vector<fern::String> dataset_names;
-    dataset_names.push_back("test_create.shp");
-    dataset_names.push_back("test_remove.shp");
+    dataset_names.emplace_back("test_create.shp");
+    dataset_names.emplace_back("test_remove.shp");
     fern::OGRDatasetDriver driver("ESRI Shapefile");
 
     for(auto dataset_name: dataset_names) {
@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_CASE(create)
 
     // Add a feature.
     fern::PointsPtr points(std::make_shared<fern::Points>());
-    points->push_back(fern::Point(3.0, 4.0));
+    points->emplace_back(fern::Point(3.0, 4.0));
     fern::PointDomainPtr domain(std::make_shared<fern::PointDomain>(points));
     fern::PointFeature feature("Stations", domain);
     dataSet->add_feature(feature);
@@ -123,7 +123,7 @@ BOOST_AUTO_TEST_CASE(remove)
     dataSet.reset(driver.create(dataset_name));
     BOOST_CHECK(!driver.exists(dataset_name));
     fern::PointsPtr points(std::make_shared<fern::Points>());
-    points->push_back(fern::Point(3.0, 4.0));
+    points->emplace_back(fern::Point(3.0, 4.0));
     fern::PointDomainPtr domain(std::make_shared<fern::PointDomain>(points));
     fern::PointFeature feature("Stations", domain);
     dataSet->add_feature(feature);

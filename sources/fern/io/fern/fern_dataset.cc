@@ -196,7 +196,7 @@ std::vector<String> FernDataset::feature_names() const
     for(hsize_t i = 0; i < group.getNumObjs(); ++i) {
         type = group.getObjTypeByIdx(i);
         if(type == H5G_GROUP) {
-            result.push_back(group.getObjnameByIdx(i));
+            result.emplace_back(group.getObjnameByIdx(i));
         }
     }
 

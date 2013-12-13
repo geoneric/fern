@@ -62,7 +62,7 @@ public:
     void item(
         double value)
     {
-        _values.push_back(value);
+        _values.emplace_back(value);
     }
 
     std::vector<double> const& post_ContinuousValuesType()
@@ -92,14 +92,14 @@ public:
     //     double const& value)
     // {
     //     std::cout << "PositiveRealValuesType_pimpl::item1" << " " << value << std::endl;
-    //     _values.push_back(value);
+    //     _values.emplace_back(value);
     // }
 
     void item(
         double value)
     {
         assert(value > 0.0);
-        _values.push_back(value);
+        _values.emplace_back(value);
     }
 
     std::vector<double> const& post_PositiveRealValuesType()

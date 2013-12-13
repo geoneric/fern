@@ -77,12 +77,12 @@ String DataTypes::to_string() const
 
     for(DataType data_type: DataTypes::DATA_TYPES) {
         if(test(data_type)) {
-            strings.push_back(fern::to_string(data_type));
+            strings.emplace_back(fern::to_string(data_type));
         }
     }
 
     if(strings.empty()) {
-        strings.push_back("?");
+        strings.emplace_back("?");
     }
 
     return join(strings, "|");
