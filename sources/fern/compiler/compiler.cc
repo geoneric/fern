@@ -108,7 +108,7 @@ void Compiler::compile(
 
         String library_target = model_name + "_library";
         {
-            installable_targets.push_back(library_target);
+            installable_targets.emplace_back(library_target);
             std::vector<String> library_module_names({
                 model_name
             });
@@ -132,7 +132,7 @@ void Compiler::compile(
 
         if(flags & DUMP_DRIVER) {
             String driver_target = model_name + "_driver";
-            installable_targets.push_back(driver_target);
+            installable_targets.emplace_back(driver_target);
             std::vector<String> driver_module_names({
                 "main"
             });

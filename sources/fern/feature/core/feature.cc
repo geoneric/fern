@@ -32,7 +32,7 @@ std::vector<String> Feature::feature_names() const
     result.reserve(_features.size());
 
     for(auto pair: _features) {
-        result.push_back(pair.first);
+        result.emplace_back(pair.first);
     }
 
     return result;
@@ -141,7 +141,7 @@ std::vector<String> Feature::attribute_names() const
     result.reserve(_attributes.size());
 
     for(auto pair: _attributes) {
-        result.push_back(pair.first);
+        result.emplace_back(pair.first);
     }
 
     return result;

@@ -51,7 +51,7 @@ NameVertex::NameVertex(
 void NameVertex::add_definition(
     NameVertex* vertex)
 {
-    _definitions.push_back(vertex);
+    _definitions.emplace_back(vertex);
 }
 
 
@@ -71,7 +71,7 @@ void NameVertex::add_use(
     assert(vertex);
     assert(vertex != this);
     assert(name() == vertex->name());
-    _uses.push_back(vertex);
+    _uses.emplace_back(vertex);
 }
 
 

@@ -24,18 +24,18 @@ static std::vector<std::shared_ptr<Driver>> drivers_to_try(
                 format));
         }
 
-        drivers.push_back(fern::drivers.at(format));
+        drivers.emplace_back(fern::drivers.at(format));
     }
     else {
         // Make sure the Fern driver is added first. GDAL may otherwise
         // think it can read Fern formatted files, which it can't.
         if(fern::drivers.find("Fern") != fern::drivers.end()) {
-            drivers.push_back(fern::drivers.at("Fern"));
+            drivers.emplace_back(fern::drivers.at("Fern"));
         }
 
         for(auto driver: fern::drivers) {
             if(driver.second->name() != "Fern") {
-                drivers.push_back(driver.second);
+                drivers.emplace_back(driver.second);
             }
         }
     }

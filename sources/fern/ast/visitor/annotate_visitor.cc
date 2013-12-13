@@ -145,7 +145,7 @@ void AnnotateVisitor::Visit(
     std::vector<ExpressionType> argument_types;
     for(size_t i = 0; i < vertex.expressions().size(); ++i) {
         assert(!_stack.empty());
-        argument_types.push_back(_stack.top());
+        argument_types.emplace_back(_stack.top());
         _stack.pop();
     }
 

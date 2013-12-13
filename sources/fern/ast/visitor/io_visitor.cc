@@ -53,7 +53,7 @@ void IOVisitor::Visit(
         case Mode::Using: {
             if(std::find(_inputs.begin(), _inputs.end(), vertex.name()) ==
                     _inputs.end()) {
-                _inputs.push_back(vertex.name());
+                _inputs.emplace_back(vertex.name());
             }
             break;
         }
@@ -68,7 +68,7 @@ void IOVisitor::Visit(
             }
 
             _output_id_by_name[vertex.name()] = _outputs.size();
-            _outputs.push_back(&vertex);
+            _outputs.emplace_back(&vertex);
             break;
         }
     }

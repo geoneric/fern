@@ -70,7 +70,7 @@ public:
     void Expression(
         std::shared_ptr<fern::ExpressionVertex> const& vertex)
     {
-        _expressions.push_back(vertex);
+        _expressions.emplace_back(vertex);
         assert(_expressions.size() <= 2);
     }
 
@@ -106,7 +106,7 @@ private:
 //     std::shared_ptr<fern::ExpressionVertex> const& vertex)
 //   {
 //     assert(vertex);
-//     _vertices.push_back(vertex);
+//     _vertices.emplace_back(vertex);
 //   }
 // 
 //   std::vector<std::shared_ptr<fern::ExpressionVertex>>
@@ -358,7 +358,7 @@ public:
         std::shared_ptr<fern::StatementVertex> const& vertex)
     {
         assert(vertex);
-        _data_stack.top().push_back(vertex);
+        _data_stack.top().emplace_back(vertex);
     }
 
     std::vector<std::shared_ptr<fern::StatementVertex>>
@@ -502,7 +502,7 @@ public:
         std::shared_ptr<fern::ExpressionVertex> const& vertex)
     {
         assert(vertex);
-        _data_stack.top().push_back(vertex);
+        _data_stack.top().emplace_back(vertex);
     }
 
     std::vector<std::shared_ptr<fern::ExpressionVertex>>

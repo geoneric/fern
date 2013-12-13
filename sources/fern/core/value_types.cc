@@ -90,12 +90,12 @@ String ValueTypes::to_string() const
 
     for(ValueType value_type: ValueTypes::VALUE_TYPES) {
         if(test(value_type)) {
-            strings.push_back(fern::to_string(value_type));
+            strings.emplace_back(fern::to_string(value_type));
         }
     }
 
     if(strings.empty()) {
-        strings.push_back("?");
+        strings.emplace_back("?");
     }
 
     return join(strings, "|");

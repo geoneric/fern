@@ -39,8 +39,8 @@ void OptimizeVisitor::visit_statements(
             for(size_t i = 0; i < statements.size(); ++i) {
                 for(size_t j = 0; j < _superfluous_statements.size(); ++j) {
                     if(_superfluous_statements[j] == statements[i].get()) {
-                        statements_to_erase.push_back(i);
-                        superfluous_statements_to_erase.push_back(j);
+                        statements_to_erase.emplace_back(i);
+                        superfluous_statements_to_erase.emplace_back(j);
                     }
                 }
             }
@@ -79,7 +79,7 @@ void OptimizeVisitor::Visit(
             if(it != _inline_expressions.end()) {
 std::cout << "inserting " << (*it).second->name().encode_in_utf8() << std::endl;
                 // Schedule the defining statement for removal.
-                _inlined_expressions.push_back((*it).second);
+                _inlined_expressions.emplace_back((*it).second);
                 vertex.set_expression((*it).second);
                 _inline_expressions.erase(it);
             }
@@ -93,7 +93,7 @@ std::cout << "inserting " << (*it).second->name().encode_in_utf8() << std::endl;
                 _inlined_expressions.begin(), _inlined_expressions.end(),
                     vertex.expression());
             if(it != _inlined_expressions.end()) {
-                _superfluous_statements.push_back(&vertex);
+                _superfluous_statements.emplace_back(&vertex);
                 _inlined_expressions.erase(it);
             }
 

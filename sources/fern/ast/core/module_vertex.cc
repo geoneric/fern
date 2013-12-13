@@ -28,7 +28,7 @@ ModuleVertex::ModuleVertex(
 //     CopyVisitor visitor;
 //     vertex->Accept(visitor);
 //     assert(visitor.statements().size() == 1);
-//     _statements.push_back(visitor.statements()[0]);
+//     _statements.emplace_back(visitor.statements()[0]);
 //   }
 // }
 

@@ -30,7 +30,7 @@ public:
     void Operation(
         fern::OperationPtr const& operation)
     {
-        _operations.push_back(operation);
+        _operations.emplace_back(operation);
     }
 
     fern::OperationsPtr post_Operations()
@@ -127,7 +127,7 @@ public:
     void Parameter(
         fern::Parameter const& parameter)
     {
-        _parameters.push_back(parameter);
+        _parameters.emplace_back(parameter);
     }
 
     std::vector<fern::Parameter> const& post_Parameters()
@@ -221,7 +221,7 @@ public:
     void Result(
         fern::Result const& result)
     {
-        _results.push_back(result);
+        _results.emplace_back(result);
     }
 
     std::vector<fern::Result> const& post_Results()
@@ -319,7 +319,7 @@ public:
     // void DataType(
     //     fern::DataType const& data_type)
     // {
-    //     _data_types.push_back(data_type);
+    //     _data_types.emplace_back(data_type);
     // }
 
     void DataType(
@@ -387,7 +387,7 @@ public:
     // void ValueType(
     //     fern::ValueType const& value_type)
     // {
-    //     _value_types.push_back(value_type);
+    //     _value_types.emplace_back(value_type);
     // }
 
     void ValueType(

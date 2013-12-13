@@ -138,7 +138,7 @@ template<
     class T>
 inline void SymbolTable<T>::push_scope()
 {
-    _scopes.push_back(Scope<T>());
+    _scopes.emplace_back();
 }
 
 

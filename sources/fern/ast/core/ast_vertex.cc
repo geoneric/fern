@@ -39,7 +39,7 @@ AstVertex::AstVertex(
 //   // BOOST_FOREACH(AstVertex* vertex, other._successors) {
 //   //   CopyVisitor visitor;
 //   //   vertex->Accept(visitor);
-//   //   _successors.push_back(visitor.vertex());
+//   //   _successors.emplace_back(visitor.vertex());
 //   // }
 // 
 //   CopyVisitor visitor;
@@ -137,7 +137,7 @@ void AstVertex::add_successor(
     AstVertex* successor)
 {
     assert(successor);
-    _successors.push_back(successor);
+    _successors.emplace_back(successor);
 }
 
 
