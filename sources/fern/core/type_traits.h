@@ -122,9 +122,9 @@ struct TypeTraits<uint32_t>
 
     static String const name;
 
-    static uint32_t const min = std::numeric_limits<uint32_t>::min();
+    static uint32_t const min;
 
-    static uint32_t const max = std::numeric_limits<uint32_t>::max();
+    static uint32_t const max;
 };
 
 
@@ -139,9 +139,9 @@ struct TypeTraits<int64_t>
 
     static String const name;
 
-    static int64_t const min = std::numeric_limits<int64_t>::min();
+    static int64_t const min;
 
-    static int64_t const max = std::numeric_limits<int64_t>::max();
+    static int64_t const max;
 };
 
 
@@ -156,9 +156,9 @@ struct TypeTraits<uint64_t>
 
     static String const name;
 
-    static uint64_t const min = std::numeric_limits<uint64_t>::min();
+    static uint64_t const min;
 
-    static uint64_t const max = std::numeric_limits<uint64_t>::max();
+    static uint64_t const max;
 };
 
 

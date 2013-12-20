@@ -7,40 +7,11 @@
 #include <boost/mpl/sizeof.hpp>
 #include <boost/mpl/transform_view.hpp>
 #include <boost/mpl/vector.hpp>
+#include "fern/core/argument_traits.h"
+#include "fern/core/base_class.h"
 #include "fern/core/type_traits.h"
 #include "fern/core/typelist.h"
 
-
-
-// Integers:
-// - signed + signed: overflow if sign of result is different.
-// - signed + unsigned: will never overflow.
-
-
-// // Arrays.
-// for(size_t i = 0; i < size; ++i) {
-//     A1 const& value1(argument1[i]);
-//     A2 const& value2(argument2[i]);
-// 
-//     // Domain check for binary operations take all arguments into account.
-//     // Some operations need to have a look at both arguments at the same
-//     // time.
-//     if(!within_domain(value1, value2)) {
-//         // Domain is not OK. Don't set a value and mark the value as no-data.
-//         set_as_no_data(result, i);
-//     }
-//     else {
-//         // Domain is OK. Calculate and set the value.
-//         value = calculate(value1, value2);
-//         set_value(result, value, i);
-//
-//         // Range check takes all arguments and the result into account.
-//         if(!within_range(value1, value2, result)) {
-//             // Overflow or underflow. Mark the value as no-data.
-//             set_as_no_data(result, i);
-//         }
-//     }
-// }
 
 #define FERN_STATIC_ASSERT( \
         trait, \
@@ -51,14 +22,14 @@
 namespace fern {
 namespace plus {
 namespace detail {
-namespace mpl = boost::mpl;
+namespace dispatch {
 
 template<
     class A1,
     class A2,
     class A1NumberCategory,
     class A2NumberCategory>
-struct ArgumentTypeTraitsDispatch
+struct result
 {
 };
 
@@ -66,33 +37,33 @@ struct ArgumentTypeTraitsDispatch
 template<
     class A1,
     class A2>
-struct ArgumentTypeTraitsDispatch<
+struct result<
     A1,
     A2,
     unsigned_integer_tag,
     unsigned_integer_tag>
 {
     // Pick the largest type.
-    typedef mpl::vector<A1, A2> types;
-    typedef typename mpl::max_element<mpl::transform_view<types,
-        mpl::sizeof_<mpl::_1>>>::type iter;
-    typedef typename mpl::deref<typename iter::base>::type R;
+    typedef boost::mpl::vector<A1, A2> types;
+    typedef typename boost::mpl::max_element<boost::mpl::transform_view<types,
+        boost::mpl::sizeof_<boost::mpl::_1>>>::type iter;
+    typedef typename boost::mpl::deref<typename iter::base>::type type;
 };
 
 
 template<
     class A1,
     class A2>
-struct ArgumentTypeTraitsDispatch<
+struct result<
     A1,
     A2,
     signed_integer_tag, signed_integer_tag>
 {
     // Pick the largest type.
-    typedef mpl::vector<A1, A2> types;
-    typedef typename mpl::max_element<mpl::transform_view<types,
-        mpl::sizeof_<mpl::_1>>>::type iter;
-    typedef typename mpl::deref<typename iter::base>::type R;
+    typedef boost::mpl::vector<A1, A2> types;
+    typedef typename boost::mpl::max_element<boost::mpl::transform_view<types,
+        boost::mpl::sizeof_<boost::mpl::_1>>>::type iter;
+    typedef typename boost::mpl::deref<typename iter::base>::type type;
 };
 
 
@@ -110,7 +81,7 @@ constexpr auto min(
 template<
     class A1,
     class A2>
-struct ArgumentTypeTraitsDispatch<
+struct result<
     A1,
     A2,
     unsigned_integer_tag,
@@ -125,72 +96,124 @@ struct ArgumentTypeTraitsDispatch<
         size<SignedTypes>::value - 1), SignedTypes>::type Type1;
 
     // Result type is largest_type(Type1, A2)
-    typedef typename mpl::if_c<(sizeof(Type1) > sizeof(A2)), Type1, A2>::type R;
+    typedef typename boost::mpl::if_c<
+        (sizeof(Type1) > sizeof(A2)), Type1, A2>::type type;
 };
 
 
 template<
     class A1,
     class A2>
-struct ArgumentTypeTraitsDispatch<
+struct result<
     A1,
     A2,
     signed_integer_tag,
     unsigned_integer_tag>
 {
     // Switch template arguments.
-    typedef typename ArgumentTypeTraitsDispatch<A2, A1, unsigned_integer_tag,
-        signed_integer_tag>::R R;
+    typedef typename result<A2, A1, unsigned_integer_tag,
+        signed_integer_tag>::type type;
 };
 
 
 template<
     class A1,
     class A2>
-struct ArgumentTypeTraitsDispatch<
+struct result<
     A1,
     A2,
     floating_point_tag,
     floating_point_tag>
 {
     // Pick the largest type.
-    typedef mpl::vector<A1, A2> types;
-    typedef typename mpl::max_element<mpl::transform_view<types,
-        mpl::sizeof_<mpl::_1>>>::type iter;
-    typedef typename mpl::deref<typename iter::base>::type R;
-};
-
-
-template<
-    class A1,
-    class A2,
-    bool is_same>
-struct ArgumentTypeTraits
-{
+    typedef boost::mpl::vector<A1, A2> types;
+    typedef typename boost::mpl::max_element<boost::mpl::transform_view<types,
+        boost::mpl::sizeof_<boost::mpl::_1>>>::type iter;
+    typedef typename boost::mpl::deref<typename iter::base>::type type;
 };
 
 
 template<
     class A1,
     class A2>
-struct ArgumentTypeTraits<A1, A2, true>
+struct result<
+    A1,
+    A2,
+    floating_point_tag,
+    signed_integer_tag>
 {
-    // R == A1 == A2.
-    typedef A1 R;
+    // Pick the float type.
+    typedef A1 type;
 };
 
 
 template<
     class A1,
     class A2>
-struct ArgumentTypeTraits<A1, A2, false>
+struct result<
+    A1,
+    A2,
+    signed_integer_tag,
+    floating_point_tag>
 {
-    // // C++ conversion rules.
-    // typedef decltype(A1() + A2()) R;
+    // Pick the float type.
+    typedef A2 type;
+};
 
-    typedef typename ArgumentTypeTraitsDispatch<A1, A2,
+
+template<
+    class A1,
+    class A2>
+struct result<
+    A1,
+    A2,
+    floating_point_tag,
+    unsigned_integer_tag>
+{
+    // Pick the float type.
+    typedef A1 type;
+};
+
+
+template<
+    class A1,
+    class A2>
+struct result<
+    A1,
+    A2,
+    unsigned_integer_tag,
+    floating_point_tag>
+{
+    // Pick the float type.
+    typedef A2 type;
+};
+
+} // namespace dispatch
+} // namespace details
+
+
+template<
+    class A1,
+    class A2>
+struct result
+{
+    typedef typename detail::dispatch::result<A1, A2,
         typename TypeTraits<A1>::number_category,
-        typename TypeTraits<A2>::number_category>::R R;
+        typename TypeTraits<A2>::number_category>::type type;
+};
+
+
+namespace detail {
+namespace dispatch {
+
+template<
+    class A1,
+    class A2,
+    class R,
+    class A1CollectionCategory,
+    class A2CollectionCategory>
+struct plus
+{
 };
 
 
@@ -198,213 +221,313 @@ template<
     class A1,
     class A2,
     class R>
-inline constexpr bool within_integral_range(
-    A1 const& argument1,
-    A2 const& argument2,
-    R const& result,
-    std::true_type const /* is_signed */,
-    std::true_type const /* is_signed */)
+struct plus<
+    A1,
+    A2,
+    R,
+    constant_tag,
+    constant_tag>
 {
-    FERN_STATIC_ASSERT(std::is_integral, A1)
-    FERN_STATIC_ASSERT(std::is_integral, A2)
-    FERN_STATIC_ASSERT(std::is_integral, R)
-    FERN_STATIC_ASSERT(std::is_signed, A1)
-    FERN_STATIC_ASSERT(std::is_signed, A2)
-    FERN_STATIC_ASSERT(std::is_signed, R)
-
-    // signed + signed
-    // Overflow if sign of result is different.
-    return argument2 > 0 ? !(result < argument1) : !(result > argument1);
-}
+    inline static constexpr void calculate(
+        A1 const& argument1,
+        A2 const& argument2,
+        R& result)
+    {
+        result = argument1 + argument2;
+    }
+};
 
 
 template<
     class A1,
     class A2,
     class R>
-inline constexpr bool within_integral_range(
-    A1 const& argument1,
-    A2 const& /* argument2 */,
-    R const& result,
-    std::false_type const /* is_signed */,
-    std::false_type const /* is_signed */)
+struct plus<
+    A1,
+    A2,
+    R,
+    collection_tag,
+    collection_tag>
 {
-    FERN_STATIC_ASSERT(std::is_integral, A1)
-    FERN_STATIC_ASSERT(std::is_integral, A2)
-    FERN_STATIC_ASSERT(std::is_integral, R)
-    FERN_STATIC_ASSERT(std::is_unsigned, A1)
-    FERN_STATIC_ASSERT(std::is_unsigned, A2)
-    FERN_STATIC_ASSERT(std::is_unsigned, R)
+    inline static void calculate(
+        A1 const& argument1,
+        A2 const& argument2,
+        R& result)
+    {
+        typename A1::const_iterator argument1_it = argument1.begin();
+        typename A1::const_iterator argument1_end = argument1.end();
+        typename A2::const_iterator argument2_it = argument2.begin();
+        typename R::iterator result_it = result.begin();
 
-    // unsigned + unsigned
-    // Overflow if result is smaller than one of the operands.
-    return !(result < argument1);
-}
+        for(; argument1_it != argument1_end; ++argument1_it, ++argument2_it,
+                ++result_it) {
+            *result_it = *argument1_it + *argument2_it;
+        }
+    }
+};
+
+template<
+    class A1,
+    class A2,
+    class R>
+struct plus<
+    A1,
+    A2,
+    R,
+    constant_tag,
+    collection_tag>
+{
+    inline static void calculate(
+        A1 const& argument1,
+        A2 const& argument2,
+        R& result)
+    {
+        typename A2::const_iterator argument2_it = argument2.begin();
+        typename A2::const_iterator argument2_end = argument2.end();
+        typename R::iterator result_it = result.begin();
+
+        for(; argument2_it != argument2_end; ++argument2_it, ++result_it) {
+            *result_it = argument1 + *argument2_it;
+        }
+    }
+};
 
 
 template<
     class A1,
     class A2,
     class R>
-inline constexpr bool within_integral_range(
-    A1 const& argument1,
-    A2 const& argument2,
-    R const& result,
-    std::true_type const /* is_signed */,
-    std::false_type const /* is_signed */)
+struct plus<
+    A1,
+    A2,
+    R,
+    collection_tag,
+    constant_tag>
 {
-    FERN_STATIC_ASSERT(std::is_integral, A1)
-    FERN_STATIC_ASSERT(std::is_integral, A2)
-    FERN_STATIC_ASSERT(std::is_integral, R)
-    FERN_STATIC_ASSERT(std::is_signed, A1)
-    FERN_STATIC_ASSERT(std::is_unsigned, A2)
-    FERN_STATIC_ASSERT(std::is_signed, R)
+    inline static void calculate(
+        A1 const& argument1,
+        A2 const& argument2,
+        R& result)
+    {
+        plus<A2, A1, R, constant_tag, collection_tag>::calculate(argument2,
+            argument1, result);
+    }
+};
 
-    // signed + unsigned
-    // C++ will apply type promotion. R has this resulting type.
-    return within_integral_range<R, R, R>(R(argument1), R(argument2), result,
-        std::is_signed<R>(), std::is_signed<R>());
-}
+
+template<
+    class A1,
+    class A2,
+    class R,
+    class A1NumberCategory,
+    class A2NumberCategory>
+struct within_range
+{
+};
 
 
 template<
     class A1,
     class A2,
     class R>
-inline constexpr bool within_integral_range(
-    A1 const& argument1,
-    A2 const& argument2,
-    R const& result,
-    std::false_type const is_signed1,
-    std::true_type const is_signed2)
+struct within_range<
+    A1,
+    A2,
+    R,
+    unsigned_integer_tag,
+    unsigned_integer_tag>
 {
-    FERN_STATIC_ASSERT(std::is_integral, A1)
-    FERN_STATIC_ASSERT(std::is_integral, A2)
-    FERN_STATIC_ASSERT(std::is_integral, R)
-    FERN_STATIC_ASSERT(std::is_unsigned, A1)
-    FERN_STATIC_ASSERT(std::is_signed, A2)
-    FERN_STATIC_ASSERT(std::is_signed, R)
+    inline static constexpr bool calculate(
+        A1 const& argument1,
+        A2 const& /* argument2 */,
+        R const& result)
+    {
+        FERN_STATIC_ASSERT(std::is_same,
+            typename fern::plus::result<A1, A2>::type, R)
 
-    // unsigned + signed
-    // Switch arguments and forward request.
-    return within_integral_range(argument2, argument1, result, is_signed2,
-        is_signed1);
-}
+        // unsigned + unsigned
+        // Overflow if result is smaller than one of the operands.
+        return !(result < argument1);
+    }
+};
 
 
 template<
     class A1,
     class A2,
     class R>
-inline constexpr bool within_range(
-    A1 const& argument1,
-    A2 const& argument2,
-    R const& result,
-    std::true_type const /* is_integral */,
-    std::true_type const /* is_integral */)
+struct within_range<
+    A1,
+    A2,
+    R,
+    signed_integer_tag,
+    signed_integer_tag>
 {
-    FERN_STATIC_ASSERT(std::is_integral, A1)
-    FERN_STATIC_ASSERT(std::is_integral, A2)
-    FERN_STATIC_ASSERT(std::is_integral, R)
+    inline static constexpr bool calculate(
+        A1 const& argument1,
+        A2 const& argument2,
+        R const& result)
+    {
+        FERN_STATIC_ASSERT(std::is_same,
+            typename fern::plus::result<A1, A2>::type, R)
 
-    return within_integral_range<A1, A2, R>(argument1, argument2, result,
-        std::is_signed<A1>(), std::is_signed<A2>());
-}
+        // signed + signed
+        // Overflow if sign of result is different.
+        return argument2 > 0 ? !(result < argument1) : !(result > argument1);
+        // return argument1 > 0 && argument2 > 0
+        //     ? result > argument1
+        //     : result <= argument1
+        //     ;
+    }
+};
 
 
 template<
     class A1,
     class A2,
     class R>
-inline constexpr bool within_floating_point_range(
-    A1 const& /* argument1 */,
-    A2 const& /* argument2 */,
-    R const& result)
+struct within_range<
+    A1,
+    A2,
+    R,
+    unsigned_integer_tag,
+    signed_integer_tag>
 {
-    FERN_STATIC_ASSERT(std::is_floating_point, A1)
-    FERN_STATIC_ASSERT(std::is_floating_point, A2)
-    FERN_STATIC_ASSERT(std::is_floating_point, R)
-
-    // float + float
-    return std::isfinite(result);
-}
+    inline static bool calculate(
+        A1 const& argument1,
+        A2 const& argument2,
+        R const& result)
+    {
+        // unsigned + signed
+        // Switch arguments and forward request.
+        return within_range<A2, A1, R, signed_integer_tag,
+            unsigned_integer_tag>::calculate(argument2, argument1, result);
+    }
+};
 
 
 template<
     class A1,
     class A2,
     class R>
-inline constexpr bool within_range(
-    A1 const& argument1,
-    A2 const& argument2,
-    R const& result,
-    std::false_type const /* is_integral */,
-    std::false_type const /* is_integral */)
+struct within_range<
+    A1,
+    A2,
+    R,
+    signed_integer_tag,
+    unsigned_integer_tag>
 {
-    FERN_STATIC_ASSERT(std::is_floating_point, A1)
-    FERN_STATIC_ASSERT(std::is_floating_point, A2)
-    FERN_STATIC_ASSERT(std::is_floating_point, R)
+    inline static constexpr bool calculate(
+        A1 const& argument1,
+        A2 const& /* argument2 */,
+        R const& result)
+    {
+        FERN_STATIC_ASSERT(std::is_same,
+            typename fern::plus::result<A1, A2>::type, R)
 
-    return within_floating_point_range<A1, A2, R>(argument1, argument2, result);
-}
+        return argument1 > 0 ? result >= argument1 : result <= argument1;
+    }
+};
 
 
 template<
     class A1,
     class A2,
     class R>
-inline constexpr bool within_range(
-    A1 const& argument1,
-    A2 const& argument2,
-    R const& result,
-    std::true_type const /* is_integral */,
-    std::false_type const /* is_integral */)
+struct within_range<
+    A1,
+    A2,
+    R,
+    integer_tag,
+    integer_tag>
 {
-    FERN_STATIC_ASSERT(std::is_integral, A1)
-    FERN_STATIC_ASSERT(std::is_floating_point, A2)
-    FERN_STATIC_ASSERT(std::is_floating_point, R)
-    FERN_STATIC_ASSERT(std::is_same, A2, R);
-
-    // integral + float
-    // C++ will apply type promotion. R has this resulting type.
-    return within_range<R, A2, R>(R(argument1), argument2, result,
-        std::is_integral<R>(), std::is_integral<R>());
-}
+    inline static bool calculate(
+        A1 const& argument1,
+        A2 const& argument2,
+        R const& result)
+    {
+        return within_range<A1, A2, R, typename TypeTraits<A1>::number_category,
+            typename TypeTraits<A2>::number_category>::calculate(argument1,
+                argument2, result);
+    }
+};
 
 
 template<
     class A1,
     class A2,
     class R>
-inline constexpr bool within_range(
-    A1 const& argument1,
-    A2 const& argument2,
-    R const& result,
-    std::false_type const is_integral1,
-    std::true_type const is_integral2)
+struct within_range<
+    A1,
+    A2,
+    R,
+    floating_point_tag,
+    floating_point_tag>
 {
-    FERN_STATIC_ASSERT(std::is_floating_point, A1)
-    FERN_STATIC_ASSERT(std::is_integral, A2)
-    FERN_STATIC_ASSERT(std::is_floating_point, R)
-    FERN_STATIC_ASSERT(std::is_same, A1, R);
+    inline static constexpr bool calculate(
+        A1 const& /* argument1 */,
+        A2 const& /* argument2 */,
+        R const& result)
+    {
+        FERN_STATIC_ASSERT(std::is_same,
+            typename fern::plus::result<A1, A2>::type, R)
 
-    // float + integral
-    // Switch arguments and forward request.
-    return within_range(argument2, argument1, result, is_integral2,
-        is_integral1);
-}
+        return std::isfinite(result);
+    }
+};
 
+
+template<
+    class A1,
+    class A2,
+    class R>
+struct within_range<
+    A1,
+    A2,
+    R,
+    integer_tag,
+    floating_point_tag>
+{
+    inline static constexpr bool calculate(
+        A1 const& /* argument1 */,
+        A2 const& /* argument2 */,
+        R const& result)
+    {
+        FERN_STATIC_ASSERT(std::is_same,
+            typename fern::plus::result<A1, A2>::type, R)
+
+        // integral + float
+        return std::isfinite(result);
+    }
+};
+
+
+template<
+    class A1,
+    class A2,
+    class R>
+struct within_range<
+    A1,
+    A2,
+    R,
+    floating_point_tag,
+    integer_tag>
+{
+    inline static constexpr bool calculate(
+        A1 const& /* argument1 */,
+        A2 const& /* argument2 */,
+        R const& result)
+    {
+        FERN_STATIC_ASSERT(std::is_same,
+            typename fern::plus::result<A1, A2>::type, R)
+
+        // float + integral
+        return std::isfinite(result);
+    }
+};
+
+} // namespace dispatch
 } // namespace detail
-
-
-template<
-    class A1,
-    class A2>
-struct ArgumentTypeTraits
-{
-    typedef typename detail::ArgumentTypeTraits<A1, A2,
-        std::is_same<A1, A2>::value>::R R;
-};
 
 
 struct Domain
@@ -428,7 +551,7 @@ struct Range
         class A1,
         class A2,
         class R>
-    inline bool within_range(
+    inline constexpr bool within_range(
         A1 const& argument1,
         A2 const& argument2,
         R const& result) const
@@ -437,10 +560,19 @@ struct Range
         FERN_STATIC_ASSERT(std::is_arithmetic, A2)
         FERN_STATIC_ASSERT(std::is_arithmetic, R)
 
-        return detail::within_range<A1, A2, R>(argument1, argument2,
-            result, std::is_integral<A1>(), std::is_integral<A2>());
+        typedef typename base_class<typename TypeTraits<A1>::number_category,
+            integer_tag>::type a1_tag;
+        typedef typename base_class<typename TypeTraits<A2>::number_category,
+            integer_tag>::type a2_tag;
+
+        return detail::dispatch::within_range<A1, A2, R, a1_tag, a2_tag>::
+            calculate(argument1, argument2, result);
+
+        // return detail::within_range<A1, A2, R>(argument1, argument2,
+        //     result, std::is_integral<A1>(), std::is_integral<A2>());
     }
 };
+
 
 } // namespace plus
 
@@ -457,6 +589,7 @@ template<
         std::is_arithmetic<A1_>::value &&
         std::is_arithmetic<A2_>::value>::type
 >
+// TODO Add policies.
 struct Plus
 {
     //! Type of first argument value.
@@ -466,7 +599,7 @@ struct Plus
     typedef A2_ A2;
 
     //! Type of the result of the operation.
-    typedef typename plus::ArgumentTypeTraits<A1, A2>::R R;
+    typedef typename plus::result<A1, A2>::type R;
 
     //! Return the result of calculating \a argument1 plus \a argument2.
     /*!
@@ -477,11 +610,37 @@ struct Plus
         A1 const& argument1,
         A2 const& argument2) const
     {
-        return argument1 + argument2;
+        // Cast to the result type. Otherwise C++ does the promotion/conversion
+        // for us, resulting in types we don't want.
+        return static_cast<R>(argument1) + static_cast<R>(argument2);
     }
 };
 
+
+namespace algebra {
+
+// TODO Add policies.
+// TODO Make this function call Plus::calculate(...).
+template<
+    class A1,
+    class A2,
+    class R>
+void plus(
+    A1 const& argument1,
+    A2 const& argument2,
+    R& result)
+{
+    plus::detail::dispatch::plus<A1, A2, R,
+        typename ArgumentTraits<A1>::argument_category,
+        typename ArgumentTraits<A2>::argument_category>::calculate(
+            argument1, argument2, result);
+}
+
+} // namespace algebra
 } // namespace fern
+
+
+
 
 
 
@@ -632,4 +791,34 @@ struct Plus
 //     set_value(result, calculate(argument1, argument2));
 // }
 
+
+// Integers:
+// - signed + signed: overflow if sign of result is different.
+// - signed + unsigned: will never overflow.
+
+
+// // Arrays.
+// for(size_t i = 0; i < size; ++i) {
+//     A1 const& value1(argument1[i]);
+//     A2 const& value2(argument2[i]);
+// 
+//     // Domain check for binary operations take all arguments into account.
+//     // Some operations need to have a look at both arguments at the same
+//     // time.
+//     if(!within_domain(value1, value2)) {
+//         // Domain is not OK. Don't set a value and mark the value as no-data.
+//         set_as_no_data(result, i);
+//     }
+//     else {
+//         // Domain is OK. Calculate and set the value.
+//         value = calculate(value1, value2);
+//         set_value(result, value, i);
+//
+//         // Range check takes all arguments and the result into account.
+//         if(!within_range(value1, value2, result)) {
+//             // Overflow or underflow. Mark the value as no-data.
+//             set_as_no_data(result, i);
+//         }
+//     }
+// }
 
