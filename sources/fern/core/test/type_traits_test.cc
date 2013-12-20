@@ -3,9 +3,9 @@
 #include "fern/core/type_traits.h"
 
 
-BOOST_AUTO_TEST_SUITE(expression_type)
+BOOST_AUTO_TEST_SUITE(type_traits)
 
-BOOST_AUTO_TEST_CASE(expression_type)
+BOOST_AUTO_TEST_CASE(type_traits)
 {
     BOOST_CHECK_EQUAL(fern::TypeTraits<uint8_t>::value_type,
         fern::VT_UINT8);
