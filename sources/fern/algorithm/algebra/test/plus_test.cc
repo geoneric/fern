@@ -4,6 +4,273 @@
 #include "fern/algorithm/algebra/plus.h"
 
 
+BOOST_AUTO_TEST_SUITE(plus)
+
+#define verify_result_type(                                                    \
+    A1, A2, TypeWeWant)                                                        \
+{                                                                              \
+    typedef typename fern::Plus<A1, A2>::R TypeWeGet;                          \
+                                                                               \
+    BOOST_CHECK_MESSAGE((std::is_same<TypeWeGet, TypeWeWant>()),               \
+        fern::TypeTraits<TypeWeGet>::name + " != " +                           \
+        fern::TypeTraits<TypeWeWant>::name);                                   \
+}
+
+
+BOOST_AUTO_TEST_CASE(result_type)
+{
+    // uint + uint
+    // Pick largest uint type.
+    verify_result_type(uint8_t, uint8_t, uint8_t);
+    verify_result_type(uint8_t, uint16_t, uint16_t);
+    verify_result_type(uint8_t, uint32_t, uint32_t);
+    verify_result_type(uint8_t, uint64_t, uint64_t);
+
+    verify_result_type(uint16_t, uint16_t, uint16_t);
+    verify_result_type(uint16_t, uint32_t, uint32_t);
+    verify_result_type(uint16_t, uint64_t, uint64_t);
+
+    verify_result_type(uint32_t, uint32_t, uint32_t);
+    verify_result_type(uint32_t, uint64_t, uint64_t);
+
+    verify_result_type(uint64_t, uint64_t, uint64_t);
+
+    // int + int
+    // Pick largest int type.
+    verify_result_type(int8_t, int8_t, int8_t);
+    verify_result_type(int8_t, int16_t, int16_t);
+    verify_result_type(int8_t, int32_t, int32_t);
+    verify_result_type(int8_t, int64_t, int64_t);
+
+    verify_result_type(int16_t, int16_t, int16_t);
+    verify_result_type(int16_t, int32_t, int32_t);
+    verify_result_type(int16_t, int64_t, int64_t);
+
+    verify_result_type(int32_t, int32_t, int32_t);
+    verify_result_type(int32_t, int64_t, int64_t);
+
+    verify_result_type(int64_t, int64_t, int64_t);
+
+    // uint + int
+    // Pick a signed int type that can store values from both types. If there
+    // is no such type, pick int64_t.
+    verify_result_type(uint8_t, int8_t, int16_t);
+    verify_result_type(uint8_t, int16_t, int16_t);
+    verify_result_type(uint8_t, int32_t, int32_t);
+    verify_result_type(uint8_t, int64_t, int64_t);
+
+    verify_result_type(uint16_t, int8_t, int32_t);
+    verify_result_type(uint16_t, int16_t, int32_t);
+    verify_result_type(uint16_t, int32_t, int32_t);
+    verify_result_type(uint16_t, int64_t, int64_t);
+
+    verify_result_type(uint32_t, int8_t, int64_t);
+    verify_result_type(uint32_t, int16_t, int64_t);
+    verify_result_type(uint32_t, int32_t, int64_t);
+    verify_result_type(uint32_t, int64_t, int64_t);
+
+    verify_result_type(uint64_t, int8_t, int64_t);
+    verify_result_type(uint64_t, int16_t, int64_t);
+    verify_result_type(uint64_t, int32_t, int64_t);
+    verify_result_type(uint64_t, int64_t, int64_t);
+
+    // float + float
+    // Pick the largest float type.
+    verify_result_type(float, float, float);
+    verify_result_type(double, double, double);
+    verify_result_type(float, double, double);
+
+    // uint + float
+    verify_result_type(uint8_t, float, float);
+    verify_result_type(uint8_t, double, double);
+    verify_result_type(uint16_t, float, float);
+    verify_result_type(uint16_t, double, double);
+    verify_result_type(uint32_t, float, float);
+    verify_result_type(uint32_t, double, double);
+    verify_result_type(uint64_t, float, float);
+    verify_result_type(uint64_t, double, double);
+
+    // int + float
+    verify_result_type(int8_t, float, float);
+    verify_result_type(int8_t, double, double);
+    verify_result_type(int16_t, float, float);
+    verify_result_type(int16_t, double, double);
+    verify_result_type(int32_t, float, float);
+    verify_result_type(int32_t, double, double);
+    verify_result_type(int64_t, float, float);
+    verify_result_type(int64_t, double, double);
+}
+
+
+template<
+    class A1,
+    class A2,
+    class R>
+void verify_value(
+    A1 const& argument1,
+    A2 const& argument2,
+    R const& result)
+{
+    verify_result_type(A1, A2, R);
+    fern::Plus<A1, A2> operation;
+    BOOST_CHECK_EQUAL(operation(argument1, argument2), result);
+}
+
+
+BOOST_AUTO_TEST_CASE(value)
+{
+    verify_value<int8_t, int8_t, int8_t>(-5, 6, 1);
+
+    verify_value<uint16_t, int8_t>(fern::TypeTraits<uint16_t>::max, 2,
+        int32_t(fern::TypeTraits<uint16_t>::max) + int32_t(2));
+
+    verify_value<uint32_t, int8_t>(fern::TypeTraits<uint32_t>::max, 2,
+        int64_t(fern::TypeTraits<uint32_t>::max) + int64_t(2));
+
+    verify_value<uint64_t, int64_t>(
+        fern::TypeTraits<uint64_t>::max,
+        fern::TypeTraits<int64_t>::max,
+        int64_t(fern::TypeTraits<uint64_t>::max) +
+            fern::TypeTraits<int64_t>::max);
+}
+
+
+BOOST_AUTO_TEST_CASE(domain)
+{
+    fern::plus::Domain domain;
+    BOOST_CHECK(domain.within_domain(-1, 2));
+    BOOST_CHECK((domain.within_domain<uint8_t, double>(1, 2.0)));
+}
+
+
+template<
+    class A1,
+    class A2>
+void verify_range_check(
+    A1 const& argument1,
+    A2 const& argument2,
+    bool const within)
+{
+    fern::Plus<A1, A2> operation;
+    fern::plus::Range range;
+    BOOST_CHECK_EQUAL((range.within_range(argument1, argument2,
+        operation(argument1, argument2))), within);
+}
+
+
+BOOST_AUTO_TEST_CASE(range)
+{
+    int8_t const min_int8 = fern::TypeTraits<int8_t>::min;
+    int8_t const max_int8 = fern::TypeTraits<int8_t>::max;
+    uint8_t const max_uint8 = fern::TypeTraits<uint8_t>::max;
+    uint16_t const max_uint16 = fern::TypeTraits<uint16_t>::max;
+    uint32_t const max_uint32 = fern::TypeTraits<uint32_t>::max;
+    int64_t const min_int64 = fern::TypeTraits<int64_t>::min;
+    int64_t const max_int64 = fern::TypeTraits<int64_t>::max;
+    uint64_t const max_uint64 = fern::TypeTraits<uint64_t>::max;
+
+    // signed + signed
+    verify_range_check<int8_t, int8_t>(-5, 6, true);
+    verify_range_check<int8_t, int8_t>(max_int8, 1, false);
+    verify_range_check<int8_t, int8_t>(min_int8, -1, false);
+    verify_range_check<int64_t, int64_t>(min_int64, -1, false);
+
+    // unsigned + unsigned
+    verify_range_check<uint8_t, uint8_t>(5, 6, true);
+    verify_range_check<uint8_t, uint8_t>(max_uint8, 1, false);
+    verify_range_check<uint8_t, uint16_t>(max_uint8, 1, true);
+
+    // signed + unsigned
+    // unsigned + signed
+    verify_range_check<int8_t, uint8_t>(5, 6, true);
+    verify_range_check<uint8_t, int8_t>(5, 6, true);
+    verify_range_check<uint16_t, int8_t>(max_uint16, 2, true);
+    verify_range_check<uint32_t, int8_t>(max_uint32, 2, true);
+    verify_range_check<uint64_t, int64_t>(max_uint64, max_int64, false);
+
+    // float + float
+    float const max_float32 = fern::TypeTraits<float>::max;
+    verify_range_check<float, float>(5.0, 6.0, true);
+    verify_range_check<float, float>(max_float32, max_float32 * 20, false);
+
+    // float + signed
+    // unsigned + float
+    verify_range_check<float, int8_t>(5.0, 6, true);
+    verify_range_check<uint8_t, float>(5, 6.0, true);
+}
+
+
+BOOST_AUTO_TEST_CASE(argument_types)
+{
+    // Verify that we can pass in all kinds of collection types.
+
+    // constant + constant
+    {
+        uint8_t argument1(5);
+        uint8_t argument2(6);
+        typedef fern::plus::result<uint8_t, uint8_t>::type R;
+        R result;
+
+        fern::algebra::plus(argument1, argument2, result);
+
+        BOOST_CHECK_EQUAL(result, 11u);
+    }
+
+    // constant + vector
+    {
+        uint8_t argument1(5);
+        std::vector<uint8_t> argument2({1, 2, 3});
+        typedef fern::plus::result<uint8_t, uint8_t>::type R;
+        std::vector<R> result(argument2.size());
+
+        fern::algebra::plus(argument1, argument2, result);
+
+        BOOST_REQUIRE_EQUAL(result.size(), 3u);
+        BOOST_CHECK_EQUAL(result[0], 6u);
+        BOOST_CHECK_EQUAL(result[1], 7u);
+        BOOST_CHECK_EQUAL(result[2], 8u);
+    }
+
+    // vector + constant
+    {
+        std::vector<uint8_t> argument1({1, 2, 3});
+        uint8_t argument2(5);
+        typedef fern::plus::result<uint8_t, uint8_t>::type R;
+        std::vector<R> result(argument1.size());
+
+        fern::algebra::plus(argument1, argument2, result);
+
+        BOOST_REQUIRE_EQUAL(result.size(), 3u);
+        BOOST_CHECK_EQUAL(result[0], 6u);
+        BOOST_CHECK_EQUAL(result[1], 7u);
+        BOOST_CHECK_EQUAL(result[2], 8u);
+    }
+
+    // vector + vector
+    {
+        std::vector<uint8_t> argument1({1, 2, 3});
+        std::vector<uint8_t> argument2({4, 5, 6});
+        typedef fern::plus::result<uint8_t, uint8_t>::type R;
+        std::vector<R> result(argument1.size());
+
+        fern::algebra::plus(argument1, argument2, result);
+
+        BOOST_REQUIRE_EQUAL(result.size(), 3u);
+        BOOST_CHECK_EQUAL(result[0], 5u);
+        BOOST_CHECK_EQUAL(result[1], 7u);
+        BOOST_CHECK_EQUAL(result[2], 9u);
+    }
+}
+
+
+// TODO How to deal with policies.
+// BOOST_AUTO_TEST_CASE(no_data)
+// {
+// }
+
+BOOST_AUTO_TEST_SUITE_END()
+
+
 // template<
 //     class Operation,
 //     class Argument1,
@@ -46,8 +313,6 @@
 //     verify(operation, argument1, argument2, result_we_want);
 // }
 
-
-BOOST_AUTO_TEST_SUITE(plus)
 
 // BOOST_AUTO_TEST_CASE(verify_value)
 // {
@@ -110,184 +375,3 @@ BOOST_AUTO_TEST_SUITE(plus)
 // }
 
 
-template<
-    class A1,
-    class A2,
-    class TypeWeWant>
-void verify_result_type()
-{
-    typedef typename fern::Plus<A1, A2>::R TypeWeGet;
-
-    BOOST_CHECK_MESSAGE((std::is_same<TypeWeGet, TypeWeWant>()),
-        fern::TypeTraits<TypeWeGet>::name + " != " +
-        fern::TypeTraits<TypeWeWant>::name);
-}
-
-
-#define verify_result_type(                                                    \
-    A1, A2, TypeWeWant)                                                        \
-{                                                                              \
-    typedef typename fern::Plus<A1, A2>::R TypeWeGet;                          \
-                                                                               \
-    BOOST_CHECK_MESSAGE((std::is_same<TypeWeGet, TypeWeWant>()),               \
-        fern::TypeTraits<TypeWeGet>::name + " != " +                           \
-        fern::TypeTraits<TypeWeWant>::name);                                   \
-}
-
-
-BOOST_AUTO_TEST_CASE(result_type)
-{
-    // TODO This test verfies the type promotion rules. This is not specific
-    //      to plus. Put these tests elsewhere.
-
-    // uint + uint
-    // Pick largest uint type.
-    verify_result_type(uint8_t, uint8_t, uint8_t);
-    verify_result_type(uint8_t, uint16_t, uint16_t);
-    verify_result_type(uint8_t, uint32_t, uint32_t);
-    verify_result_type(uint8_t, uint64_t, uint64_t);
-
-    verify_result_type(uint16_t, uint16_t, uint16_t);
-    verify_result_type(uint16_t, uint32_t, uint32_t);
-    verify_result_type(uint16_t, uint64_t, uint64_t);
-
-    verify_result_type(uint32_t, uint32_t, uint32_t);
-    verify_result_type(uint32_t, uint64_t, uint64_t);
-
-    verify_result_type(uint64_t, uint64_t, uint64_t);
-
-    // int + int
-    // Pick largest int type.
-    verify_result_type(int8_t, int8_t, int8_t);
-    verify_result_type(int8_t, int16_t, int16_t);
-    verify_result_type(int8_t, int32_t, int32_t);
-    verify_result_type(int8_t, int64_t, int64_t);
-
-    verify_result_type(int16_t, int16_t, int16_t);
-    verify_result_type(int16_t, int32_t, int32_t);
-    verify_result_type(int16_t, int64_t, int64_t);
-
-    verify_result_type(int32_t, int32_t, int32_t);
-    verify_result_type(int32_t, int64_t, int64_t);
-
-    verify_result_type(int64_t, int64_t, int64_t);
-
-    // uint + int
-    // Pick a signed int type that can store values from both types. If there
-    // is no such type, pick int64_t.
-    verify_result_type(uint8_t, int8_t, int16_t);
-    verify_result_type(uint8_t, int16_t, int16_t);
-    verify_result_type(uint8_t, int32_t, int32_t);
-    verify_result_type(uint8_t, int64_t, int64_t);
-
-    verify_result_type(uint16_t, int8_t, int32_t);
-    verify_result_type(uint16_t, int16_t, int32_t);
-    verify_result_type(uint16_t, int32_t, int32_t);
-    verify_result_type(uint16_t, int64_t, int64_t);
-
-    verify_result_type(uint32_t, int8_t, int64_t);
-    verify_result_type(uint32_t, int16_t, int64_t);
-    verify_result_type(uint32_t, int32_t, int64_t);
-    verify_result_type(uint32_t, int64_t, int64_t);
-
-    verify_result_type(uint64_t, int8_t, int64_t);
-    verify_result_type(uint64_t, int16_t, int64_t);
-    verify_result_type(uint64_t, int32_t, int64_t);
-    verify_result_type(uint64_t, int64_t, int64_t);
-
-    // float + float
-    // Pick the largest float type.
-    verify_result_type(float, float, float);
-    verify_result_type(double, double, double);
-    verify_result_type(float, double, double);
-}
-
-
-template<
-    class A1,
-    class A2,
-    class R>
-void verify_value(
-    A1 const& argument1,
-    A2 const& argument2,
-    R const& result)
-{
-    fern::Plus<A1, A2> operation;
-    BOOST_CHECK_EQUAL(operation(argument1, argument2), result);
-}
-
-
-BOOST_AUTO_TEST_CASE(value)
-{
-    verify_value<uint16_t, int8_t>(fern::TypeTraits<uint16_t>::max, 2,
-        int32_t(fern::TypeTraits<uint16_t>::max) + int32_t(2));
-}
-
-
-BOOST_AUTO_TEST_CASE(domain)
-{
-    fern::plus::Domain domain;
-    BOOST_CHECK(domain.within_domain(-1, 2));
-    BOOST_CHECK((domain.within_domain<uint8_t, double>(1, 2.0)));
-}
-
-
-template<
-    class A1,
-    class A2>
-void verify_range_check(
-    A1 const& argument1,
-    A2 const& argument2,
-    bool const within)
-{
-    fern::Plus<A1, A2> operation;
-    fern::plus::Range range;
-    BOOST_CHECK_EQUAL((range.within_range<A1, A2>(argument1, argument2,
-        operation(argument1, argument2))), within);
-}
-
-
-// BOOST_AUTO_TEST_CASE(range)
-// {
-//     int8_t const min_int8 = fern::TypeTraits<int8_t>::min;
-//     int8_t const max_int8 = fern::TypeTraits<int8_t>::max;
-//     uint8_t const max_uint8 = fern::TypeTraits<uint8_t>::max;
-//     uint16_t const max_uint16 = fern::TypeTraits<uint16_t>::max;
-//     uint32_t const max_uint32 = fern::TypeTraits<uint32_t>::max;
-// 
-//     // signed + signed
-//     verify_range_check<int8_t, int8_t>(-5, 6, true);
-//     verify_range_check<int8_t, int8_t>(max_int8, 1, false);
-//     verify_range_check<int8_t, int8_t>(min_int8, -1, false);
-// 
-//     // unsigned + unsigned
-//     verify_range_check<uint8_t, uint8_t>(5, 6, true);
-//     verify_range_check<uint8_t, uint8_t>(max_uint8, 1, false);
-// 
-//     // signed + unsigned
-//     // unsigned + signed
-//     verify_range_check<int8_t, uint8_t>(5, 6, true);
-//     verify_range_check<uint8_t, int8_t>(5, 6, true);
-// 
-//     verify_range_check<uint16_t, int8_t>(max_uint16, 2, true);
-//     // TODO hier verder
-//     //      compileert niet. waarom niet?
-//     //      list the final promotion rules.
-//     //      uint32_t + int8_t -> uint32_t ?!
-//     //      get this promotion under control...
-//     // verify_range_check<uint32_t, int8_t>(max_uint32, 2, true);
-//     // TODO overflow examples
-// 
-//     // float + float
-//     float const max_float32 = std::numeric_limits<float>::max();
-//     verify_range_check<float, float>(5.0, 6.0, true);
-//     verify_range_check<float, float>(max_float32, max_float32 * 20, false);
-// 
-//     // float + signed
-//     // unsigned + float
-//     verify_range_check<float, int8_t>(5.0, 6, true);
-//     verify_range_check<uint8_t, float>(5, 6.0, true);
-//     // TODO overflow examples
-// }
-
-BOOST_AUTO_TEST_SUITE_END()

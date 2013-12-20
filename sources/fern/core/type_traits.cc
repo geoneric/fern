@@ -57,14 +57,20 @@ String const TypeTraits<int32_t>::name("int32");
 ValueType const TypeTraits<uint32_t>::value_type(VT_UINT32);
 ValueTypes const TypeTraits<uint32_t>::value_types(ValueTypes::UINT32);
 String const TypeTraits<uint32_t>::name("uint32");
+uint32_t const TypeTraits<uint32_t>::min(std::numeric_limits<uint32_t>::min());
+uint32_t const TypeTraits<uint32_t>::max(std::numeric_limits<uint32_t>::max());
 
 ValueType const TypeTraits<int64_t>::value_type(VT_INT64);
 ValueTypes const TypeTraits<int64_t>::value_types(ValueTypes::INT64);
 String const TypeTraits<int64_t>::name("int64");
+int64_t const TypeTraits<int64_t>::min(std::numeric_limits<int64_t>::min());
+int64_t const TypeTraits<int64_t>::max(std::numeric_limits<int64_t>::max());
 
 ValueType const TypeTraits<uint64_t>::value_type(VT_UINT64);
 ValueTypes const TypeTraits<uint64_t>::value_types(ValueTypes::UINT64);
 String const TypeTraits<uint64_t>::name("uint64");
+uint64_t const TypeTraits<uint64_t>::min(std::numeric_limits<uint64_t>::min());
+uint64_t const TypeTraits<uint64_t>::max(std::numeric_limits<uint64_t>::max());
 
 ValueType const TypeTraits<float>::value_type(VT_FLOAT32);
 ValueTypes const TypeTraits<float>::value_types(ValueTypes::FLOAT32);

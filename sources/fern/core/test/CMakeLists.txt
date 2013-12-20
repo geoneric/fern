@@ -1,4 +1,5 @@
 SET(TEST_NAMES
+    base_class_test
     data_name_test
     data_types_test
     flag_collection_test
