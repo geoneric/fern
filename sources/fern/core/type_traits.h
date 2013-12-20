@@ -5,6 +5,13 @@
 
 namespace fern {
 
+// Numeric type categories. Used in tag dispatching.
+struct integer_tag {};
+struct signed_integer_tag: public integer_tag {};
+struct unsigned_integer_tag: public integer_tag {};
+struct floating_point_tag {};
+
+
 template<
     class T>
 struct TypeTraits
@@ -18,6 +25,8 @@ struct TypeTraits
 template<>
 struct TypeTraits<int8_t>
 {
+    typedef signed_integer_tag number_category;
+
     static ValueType const value_type;
 
     static ValueTypes const value_types;
@@ -33,6 +42,8 @@ struct TypeTraits<int8_t>
 template<>
 struct TypeTraits<uint8_t>
 {
+    typedef unsigned_integer_tag number_category;
+
     static ValueType const value_type;
 
     static ValueTypes const value_types;
@@ -48,6 +59,8 @@ struct TypeTraits<uint8_t>
 template<>
 struct TypeTraits<int16_t>
 {
+    typedef signed_integer_tag number_category;
+
     static ValueType const value_type;
 
     static ValueTypes const value_types;
@@ -63,6 +76,8 @@ struct TypeTraits<int16_t>
 template<>
 struct TypeTraits<uint16_t>
 {
+    typedef unsigned_integer_tag number_category;
+
     static ValueType const value_type;
 
     static ValueTypes const value_types;
@@ -82,6 +97,8 @@ struct TypeTraits<uint16_t>
 template<>
 struct TypeTraits<int32_t>
 {
+    typedef signed_integer_tag number_category;
+
     static ValueType const value_type;
 
     static ValueTypes const value_types;
@@ -97,6 +114,8 @@ struct TypeTraits<int32_t>
 template<>
 struct TypeTraits<uint32_t>
 {
+    typedef unsigned_integer_tag number_category;
+
     static ValueType const value_type;
 
     static ValueTypes const value_types;
@@ -112,6 +131,8 @@ struct TypeTraits<uint32_t>
 template<>
 struct TypeTraits<int64_t>
 {
+    typedef signed_integer_tag number_category;
+
     static ValueType const value_type;
 
     static ValueTypes const value_types;
@@ -127,6 +148,8 @@ struct TypeTraits<int64_t>
 template<>
 struct TypeTraits<uint64_t>
 {
+    typedef unsigned_integer_tag number_category;
+
     static ValueType const value_type;
 
     static ValueTypes const value_types;
@@ -142,6 +165,8 @@ struct TypeTraits<uint64_t>
 template<>
 struct TypeTraits<float>
 {
+    typedef floating_point_tag number_category;
+
     static ValueType const value_type;
 
     static ValueTypes const value_types;
@@ -157,6 +182,8 @@ struct TypeTraits<float>
 template<>
 struct TypeTraits<double>
 {
+    typedef floating_point_tag number_category;
+
     static ValueType const value_type;
 
     static ValueTypes const value_types;

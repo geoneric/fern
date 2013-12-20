@@ -7,6 +7,7 @@ SET(TEST_NAMES
     stack_test
     string_test
     symbol_table_test
+    typelist_test
     type_traits_test
     value_types_test
 )
