@@ -2,15 +2,13 @@
 #include <algorithm>
 #include <cmath>
 #include <type_traits>
-#include <boost/mpl/max_element.hpp>
-#include <boost/mpl/placeholders.hpp>
-#include <boost/mpl/sizeof.hpp>
-#include <boost/mpl/transform_view.hpp>
-#include <boost/mpl/vector.hpp>
+#include "fern/algorithm/algebra/result_type.h"
+#include "fern/algorithm/policy/dont_mark_no_data.h"
+#include "fern/algorithm/policy/discard_domain_errors.h"
+#include "fern/algorithm/policy/discard_range_errors.h"
 #include "fern/core/argument_traits.h"
 #include "fern/core/base_class.h"
 #include "fern/core/type_traits.h"
-#include "fern/core/typelist.h"
 
 
 #define FERN_STATIC_ASSERT( \
@@ -21,188 +19,6 @@
 
 namespace fern {
 namespace plus {
-namespace detail {
-namespace dispatch {
-
-template<
-    class A1,
-    class A2,
-    class A1NumberCategory,
-    class A2NumberCategory>
-struct result
-{
-};
-
-
-template<
-    class A1,
-    class A2>
-struct result<
-    A1,
-    A2,
-    unsigned_integer_tag,
-    unsigned_integer_tag>
-{
-    // Pick the largest type.
-    typedef boost::mpl::vector<A1, A2> types;
-    typedef typename boost::mpl::max_element<boost::mpl::transform_view<types,
-        boost::mpl::sizeof_<boost::mpl::_1>>>::type iter;
-    typedef typename boost::mpl::deref<typename iter::base>::type type;
-};
-
-
-template<
-    class A1,
-    class A2>
-struct result<
-    A1,
-    A2,
-    signed_integer_tag, signed_integer_tag>
-{
-    // Pick the largest type.
-    typedef boost::mpl::vector<A1, A2> types;
-    typedef typename boost::mpl::max_element<boost::mpl::transform_view<types,
-        boost::mpl::sizeof_<boost::mpl::_1>>>::type iter;
-    typedef typename boost::mpl::deref<typename iter::base>::type type;
-};
-
-
-template<
-    class T1,
-    class T2>
-constexpr auto min(
-    T1 const& value1,
-    T2 const& value2) -> decltype(value1 < value2 ? value1 : value2)
-{
-    return value1 < value2 ? value1 : value2;
-}
-
-
-template<
-    class A1,
-    class A2>
-struct result<
-    A1,
-    A2,
-    unsigned_integer_tag,
-    signed_integer_tag>
-{
-    typedef Typelist<uint8_t, uint16_t, uint32_t, uint64_t> UnsignedTypes;
-    typedef Typelist<int8_t, int16_t, int32_t, int64_t> SignedTypes;
-
-    // Find index of A1 in list of unsigned types. Determine type of next
-    // larger type in list of signed types. -> Type1
-    typedef typename at<min(find<A1, UnsignedTypes>::value + 1,
-        size<SignedTypes>::value - 1), SignedTypes>::type Type1;
-
-    // Result type is largest_type(Type1, A2)
-    typedef typename boost::mpl::if_c<
-        (sizeof(Type1) > sizeof(A2)), Type1, A2>::type type;
-};
-
-
-template<
-    class A1,
-    class A2>
-struct result<
-    A1,
-    A2,
-    signed_integer_tag,
-    unsigned_integer_tag>
-{
-    // Switch template arguments.
-    typedef typename result<A2, A1, unsigned_integer_tag,
-        signed_integer_tag>::type type;
-};
-
-
-template<
-    class A1,
-    class A2>
-struct result<
-    A1,
-    A2,
-    floating_point_tag,
-    floating_point_tag>
-{
-    // Pick the largest type.
-    typedef boost::mpl::vector<A1, A2> types;
-    typedef typename boost::mpl::max_element<boost::mpl::transform_view<types,
-        boost::mpl::sizeof_<boost::mpl::_1>>>::type iter;
-    typedef typename boost::mpl::deref<typename iter::base>::type type;
-};
-
-
-template<
-    class A1,
-    class A2>
-struct result<
-    A1,
-    A2,
-    floating_point_tag,
-    signed_integer_tag>
-{
-    // Pick the float type.
-    typedef A1 type;
-};
-
-
-template<
-    class A1,
-    class A2>
-struct result<
-    A1,
-    A2,
-    signed_integer_tag,
-    floating_point_tag>
-{
-    // Pick the float type.
-    typedef A2 type;
-};
-
-
-template<
-    class A1,
-    class A2>
-struct result<
-    A1,
-    A2,
-    floating_point_tag,
-    unsigned_integer_tag>
-{
-    // Pick the float type.
-    typedef A1 type;
-};
-
-
-template<
-    class A1,
-    class A2>
-struct result<
-    A1,
-    A2,
-    unsigned_integer_tag,
-    floating_point_tag>
-{
-    // Pick the float type.
-    typedef A2 type;
-};
-
-} // namespace dispatch
-} // namespace details
-
-
-template<
-    class A1,
-    class A2>
-struct result
-{
-    typedef typename detail::dispatch::result<A1, A2,
-        typename TypeTraits<A1>::number_category,
-        typename TypeTraits<A2>::number_category>::type type;
-};
-
-
 namespace detail {
 namespace dispatch {
 
@@ -233,7 +49,7 @@ struct plus<
         A2 const& argument2,
         R& result)
     {
-        result = argument1 + argument2;
+        result = static_cast<R>(argument1) + static_cast<R>(argument2);
     }
 };
 
@@ -254,6 +70,9 @@ struct plus<
         A2 const& argument2,
         R& result)
     {
+        assert(argument1.size() == argument2.size());
+        result.resize(argument1.size());
+
         typename A1::const_iterator argument1_it = argument1.begin();
         typename A1::const_iterator argument1_end = argument1.end();
         typename A2::const_iterator argument2_it = argument2.begin();
@@ -261,7 +80,8 @@ struct plus<
 
         for(; argument1_it != argument1_end; ++argument1_it, ++argument2_it,
                 ++result_it) {
-            *result_it = *argument1_it + *argument2_it;
+            *result_it = static_cast<typename R::value_type>(*argument1_it) +
+                static_cast<typename R::value_type>(*argument2_it);
         }
     }
 };
@@ -282,12 +102,15 @@ struct plus<
         A2 const& argument2,
         R& result)
     {
+        result.resize(argument2.size());
+
         typename A2::const_iterator argument2_it = argument2.begin();
         typename A2::const_iterator argument2_end = argument2.end();
         typename R::iterator result_it = result.begin();
 
         for(; argument2_it != argument2_end; ++argument2_it, ++result_it) {
-            *result_it = argument1 + *argument2_it;
+            *result_it = static_cast<typename R::value_type>(argument1) +
+                static_cast<typename R::value_type>(*argument2_it);
         }
     }
 };
@@ -343,7 +166,7 @@ struct within_range<
         R const& result)
     {
         FERN_STATIC_ASSERT(std::is_same,
-            typename fern::plus::result<A1, A2>::type, R)
+            typename fern::result<A1, A2>::type, R)
 
         // unsigned + unsigned
         // Overflow if result is smaller than one of the operands.
@@ -369,15 +192,11 @@ struct within_range<
         R const& result)
     {
         FERN_STATIC_ASSERT(std::is_same,
-            typename fern::plus::result<A1, A2>::type, R)
+            typename fern::result<A1, A2>::type, R)
 
         // signed + signed
-        // Overflow if sign of result is different.
+        // Overflow/underflow if sign of result is different.
         return argument2 > 0 ? !(result < argument1) : !(result > argument1);
-        // return argument1 > 0 && argument2 > 0
-        //     ? result > argument1
-        //     : result <= argument1
-        //     ;
     }
 };
 
@@ -423,7 +242,7 @@ struct within_range<
         R const& result)
     {
         FERN_STATIC_ASSERT(std::is_same,
-            typename fern::plus::result<A1, A2>::type, R)
+            typename fern::result<A1, A2>::type, R)
 
         return argument1 > 0 ? result >= argument1 : result <= argument1;
     }
@@ -469,8 +288,7 @@ struct within_range<
         A2 const& /* argument2 */,
         R const& result)
     {
-        FERN_STATIC_ASSERT(std::is_same,
-            typename fern::plus::result<A1, A2>::type, R)
+        FERN_STATIC_ASSERT(std::is_same, typename fern::result<A1, A2>::type, R)
 
         return std::isfinite(result);
     }
@@ -493,8 +311,7 @@ struct within_range<
         A2 const& /* argument2 */,
         R const& result)
     {
-        FERN_STATIC_ASSERT(std::is_same,
-            typename fern::plus::result<A1, A2>::type, R)
+        FERN_STATIC_ASSERT(std::is_same, typename fern::result<A1, A2>::type, R)
 
         // integral + float
         return std::isfinite(result);
@@ -518,8 +335,7 @@ struct within_range<
         A2 const& /* argument2 */,
         R const& result)
     {
-        FERN_STATIC_ASSERT(std::is_same,
-            typename fern::plus::result<A1, A2>::type, R)
+        FERN_STATIC_ASSERT(std::is_same, typename fern::result<A1, A2>::type, R)
 
         // float + integral
         return std::isfinite(result);
@@ -530,26 +346,20 @@ struct within_range<
 } // namespace detail
 
 
-struct Domain
-{
-    template<
-        class A1,
-        class A2>
-    inline constexpr bool within_domain(
-        A1 const& /* argument1 */,
-        A2 const& /* argument2 */) const
-    {
-        // All values are within the domain of valid values for plus.
-        return true;
-    }
-};
+// All values are within the domain of valid values for plus.
+template<
+    class A1,
+    class A2>
+using Domain = DiscardDomainErrors<A1, A2>;
 
 
+template<
+    class A1,
+    class A2>
 struct Range
 {
+
     template<
-        class A1,
-        class A2,
         class R>
     inline constexpr bool within_range(
         A1 const& argument1,
@@ -567,73 +377,101 @@ struct Range
 
         return detail::dispatch::within_range<A1, A2, R, a1_tag, a2_tag>::
             calculate(argument1, argument2, result);
-
-        // return detail::within_range<A1, A2, R>(argument1, argument2,
-        //     result, std::is_integral<A1>(), std::is_integral<A2>());
     }
-};
 
+protected:
+
+    Range()=default;
+
+    ~Range()=default;
+
+};
 
 } // namespace plus
 
 
 //! Implementation of the plus operation, for two arithmetic types.
 /*!
-  \tparam    A1_ Type of first argument.
-  \tparam    A2_ Type of second argument.
+  \tparam    A1 Type of first argument.
+  \tparam    A2 Type of second argument.
 */
 template<
-    class A1_,
-    class A2_,
-    class = typename std::enable_if<
-        std::is_arithmetic<A1_>::value &&
-        std::is_arithmetic<A2_>::value>::type
+    class A1,
+    class A2,
+    class OutOfDomainPolicy=DiscardDomainErrors<A1, A2>,
+    class OutOfRangePolicy=DiscardRangeErrors<A1, A2>,
+    class NoDataPolicy=DontMarkNoData
 >
-// TODO Add policies.
-struct Plus
+struct Plus:
+    public OutOfDomainPolicy,
+    public OutOfRangePolicy,
+    public NoDataPolicy
 {
-    //! Type of first argument value.
-    typedef A1_ A1;
-
-    //! Type of a second argument value.
-    typedef A2_ A2;
-
     //! Type of the result of the operation.
-    typedef typename plus::result<A1, A2>::type R;
+    typedef typename result<A1, A2>::type R;
 
     //! Return the result of calculating \a argument1 plus \a argument2.
     /*!
       \param     argument1 First argument.
       \param     argument2 Second argument.
     */
-    inline constexpr R operator()(
+    inline R operator()(
         A1 const& argument1,
         A2 const& argument2) const
     {
-        // Cast to the result type. Otherwise C++ does the promotion/conversion
-        // for us, resulting in types we don't want.
-        return static_cast<R>(argument1) + static_cast<R>(argument2);
+        R result;
+        this->operator()(argument1, argument2, result);
+        return result;
+    }
+
+    inline void operator()(
+        A1 const& argument1,
+        A2 const& argument2,
+        R& result) const
+    {
+        // if(!OutOfDomainPolicy::within_domain(argument1, argument2)) {
+        //     NoDataPolicy::set_no_data(...);
+        // }
+        // else {
+        //     // calculate result.
+        // }
+
+        // if(!OutOfRangePolicy::within_range(argument1, argument2, result)) {
+        //     NoDataPolicy::set_no_data(...);
+        // }
+
+        plus::detail::dispatch::plus<A1, A2, R,
+            typename ArgumentTraits<A1>::argument_category,
+            typename ArgumentTraits<A2>::argument_category>::calculate(
+                argument1, argument2, result);
     }
 };
 
 
 namespace algebra {
 
-// TODO Add policies.
-// TODO Make this function call Plus::calculate(...).
 template<
     class A1,
-    class A2,
-    class R>
+    class A2>
 void plus(
     A1 const& argument1,
     A2 const& argument2,
-    R& result)
+    typename Plus<A1, A2>::R& result)
 {
-    plus::detail::dispatch::plus<A1, A2, R,
-        typename ArgumentTraits<A1>::argument_category,
-        typename ArgumentTraits<A2>::argument_category>::calculate(
-            argument1, argument2, result);
+    Plus<A1, A2>()(argument1, argument2, result);
+}
+
+
+template<
+    class A1,
+    class A2>
+typename Plus<A1, A2>::R plus(
+    A1 const& argument1,
+    A2 const& argument2)
+{
+    typename Plus<A1, A2>::R result;
+    Plus<A1, A2>()(argument1, argument2, result);
+    return result;
 }
 
 } // namespace algebra
