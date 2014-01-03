@@ -1,11 +1,34 @@
-#define BOOST_TEST_MODULE fern algrorithm algebra
+#define BOOST_TEST_MODULE fern algorithm algebra
+#include <cxxabi.h>
 #include <boost/test/unit_test.hpp>
 #include "fern/core/type_traits.h"
 #include "fern/algorithm/algebra/plus.h"
 
 
+std::string demangle(
+    std::string const& name)
+{
+    int status;
+    char* buffer;
+    buffer = abi::__cxa_demangle(name.c_str(), 0, 0, &status);
+    assert(status == 0);
+    std::string real_name(buffer);
+    free(buffer);
+    return real_name;
+}
+
+
+template<
+    class T>
+std::string demangled_type_name()
+{
+    return demangle(typeid(T).name());
+}
+
+
 BOOST_AUTO_TEST_SUITE(plus)
 
+// Works for types known to the TypeTraits.
 #define verify_result_type(                                                    \
     A1, A2, TypeWeWant)                                                        \
 {                                                                              \
@@ -15,6 +38,21 @@ BOOST_AUTO_TEST_SUITE(plus)
         fern::TypeTraits<TypeWeGet>::name + " != " +                           \
         fern::TypeTraits<TypeWeWant>::name);                                   \
 }
+
+
+// Works for all types.
+#define verify_result_type2(                                                   \
+    A1, A2, TypeWeWant)                                                        \
+{                                                                              \
+    typedef typename fern::Plus<A1, A2>::R TypeWeGet;                          \
+                                                                               \
+    BOOST_CHECK_MESSAGE((std::is_same<TypeWeGet, TypeWeWant>()),               \
+        demangled_type_name<TypeWeGet>() + " != " +  \
+        demangled_type_name<TypeWeWant>()); \
+}
+
+
+
 
 
 BOOST_AUTO_TEST_CASE(result_type)
@@ -99,6 +137,22 @@ BOOST_AUTO_TEST_CASE(result_type)
     verify_result_type(int32_t, double, double);
     verify_result_type(int64_t, float, float);
     verify_result_type(int64_t, double, double);
+
+    // Collections.
+    verify_result_type2(int8_t, std::vector<int8_t>, std::vector<int8_t>);
+    verify_result_type2(int8_t, std::vector<float>, std::vector<float>);
+    verify_result_type2(float, std::vector<int8_t>, std::vector<float>);
+
+    verify_result_type2(std::vector<int8_t>, int8_t, std::vector<int8_t>);
+    verify_result_type2(std::vector<float>, int8_t, std::vector<float>);
+    verify_result_type2(std::vector<int8_t>, float, std::vector<float>);
+
+    verify_result_type2(std::vector<int8_t>, std::vector<int8_t>,
+        std::vector<int8_t>);
+    verify_result_type2(std::vector<float>, std::vector<int8_t>,
+        std::vector<float>);
+    verify_result_type2(std::vector<int8_t>, std::vector<float>,
+        std::vector<float>);
 }
 
 
@@ -109,11 +163,15 @@ template<
 void verify_value(
     A1 const& argument1,
     A2 const& argument2,
-    R const& result)
+    R const& result_we_want)
 {
     verify_result_type(A1, A2, R);
     fern::Plus<A1, A2> operation;
-    BOOST_CHECK_EQUAL(operation(argument1, argument2), result);
+    BOOST_CHECK_EQUAL(operation(argument1, argument2), result_we_want);
+
+    R result_we_get;
+    operation(argument1, argument2, result_we_get);
+    BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 
 
@@ -135,12 +193,35 @@ BOOST_AUTO_TEST_CASE(value)
 }
 
 
+template<
+    class A1,
+    class A2>
+struct DomainPolicyHost:
+    public fern::plus::Domain<A1, A2>
+{
+};
+
+
 BOOST_AUTO_TEST_CASE(domain)
 {
-    fern::plus::Domain domain;
-    BOOST_CHECK(domain.within_domain(-1, 2));
-    BOOST_CHECK((domain.within_domain<uint8_t, double>(1, 2.0)));
+    {
+        DomainPolicyHost<int32_t, int32_t> domain;
+        BOOST_CHECK(domain.within_domain(-1, 2));
+    }
+    {
+        DomainPolicyHost<uint8_t, double> domain;
+        BOOST_CHECK(domain.within_domain(1, 2.0));
+    }
 }
+
+
+template<
+    class A1,
+    class A2>
+struct RangePolicyHost:
+    public fern::plus::Range<A1, A2>
+{
+};
 
 
 template<
@@ -152,7 +233,7 @@ void verify_range_check(
     bool const within)
 {
     fern::Plus<A1, A2> operation;
-    fern::plus::Range range;
+    RangePolicyHost<A1, A2> range;
     BOOST_CHECK_EQUAL((range.within_range(argument1, argument2,
         operation(argument1, argument2))), within);
 }
@@ -208,10 +289,9 @@ BOOST_AUTO_TEST_CASE(argument_types)
     {
         uint8_t argument1(5);
         uint8_t argument2(6);
-        typedef fern::plus::result<uint8_t, uint8_t>::type R;
-        R result;
+        typedef fern::result<uint8_t, uint8_t>::type R;
 
-        fern::algebra::plus(argument1, argument2, result);
+        R result = fern::algebra::plus(argument1, argument2);
 
         BOOST_CHECK_EQUAL(result, 11u);
     }
@@ -220,10 +300,10 @@ BOOST_AUTO_TEST_CASE(argument_types)
     {
         uint8_t argument1(5);
         std::vector<uint8_t> argument2({1, 2, 3});
-        typedef fern::plus::result<uint8_t, uint8_t>::type R;
-        std::vector<R> result(argument2.size());
+        typedef fern::result<uint8_t, uint8_t>::type R;
+        // std::vector<R> result(argument2.size());
 
-        fern::algebra::plus(argument1, argument2, result);
+        std::vector<R> result = fern::algebra::plus(argument1, argument2);
 
         BOOST_REQUIRE_EQUAL(result.size(), 3u);
         BOOST_CHECK_EQUAL(result[0], 6u);
@@ -235,7 +315,7 @@ BOOST_AUTO_TEST_CASE(argument_types)
     {
         std::vector<uint8_t> argument1({1, 2, 3});
         uint8_t argument2(5);
-        typedef fern::plus::result<uint8_t, uint8_t>::type R;
+        typedef fern::result<uint8_t, uint8_t>::type R;
         std::vector<R> result(argument1.size());
 
         fern::algebra::plus(argument1, argument2, result);
@@ -250,7 +330,7 @@ BOOST_AUTO_TEST_CASE(argument_types)
     {
         std::vector<uint8_t> argument1({1, 2, 3});
         std::vector<uint8_t> argument2({4, 5, 6});
-        typedef fern::plus::result<uint8_t, uint8_t>::type R;
+        typedef fern::result<uint8_t, uint8_t>::type R;
         std::vector<R> result(argument1.size());
 
         fern::algebra::plus(argument1, argument2, result);
@@ -263,10 +343,17 @@ BOOST_AUTO_TEST_CASE(argument_types)
 }
 
 
-// TODO How to deal with policies.
-// BOOST_AUTO_TEST_CASE(no_data)
-// {
-// }
+BOOST_AUTO_TEST_CASE(no_data)
+{
+    // Declare a protected, non-virtual (and usually empty) destructor
+    // for the policy, preventing policy objects from being deleted (or
+    // instantiated, for that matter).
+
+    // fern::Plus<A1, A2, fern::plus::Range> operation;
+
+
+
+}
 
 BOOST_AUTO_TEST_SUITE_END()
 
@@ -351,27 +438,6 @@ BOOST_AUTO_TEST_SUITE_END()
 //     // ResultTypeWeWant result_we_want = argument1 + argument2;
 // 
 //     // verify(operation, argument1, argument2, result_we_want);
-// }
-
-
-// std::string demangle(
-//     std::string const& name)
-// {
-//     int status;
-//     char* buffer;
-//     buffer = abi::__cxa_demangle(name.c_str(), 0, 0, &status);
-//     assert(status == 0);
-//     std::string real_name(buffer);
-//     free(buffer);
-//     return real_name;
-// }
-// 
-// 
-// template<
-//     class T>
-// std::string demangled_type_name()
-// {
-//     return demangle(typeid(T).name());
 // }
 
 
