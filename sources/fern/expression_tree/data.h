@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/variant/variant.hpp>
-#include "fern/expression_tree/array.h"
 #include "fern/expression_tree/constant.h"
+#include "fern/expression_tree/array.h"
 
 
 namespace fern {

@@ -1,6 +1,8 @@
 SET(TEST_NAMES
+    constant_test
     evaluate_visitor_test
     expression_test
+    raster_test
     stream_visitor_test
 )
 

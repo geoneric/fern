@@ -32,14 +32,14 @@ STREAM_CONSTANT(double)
 #undef STREAM_CONSTANT
 
 
-template<
-    class T>
-void stream(
-    Array<T> const& /* array */,
-    std::ostream& stream)
-{
-    stream << "array";
-}
+// template<
+//     class T>
+// void stream(
+//     Array<T> const& /* array */,
+//     std::ostream& stream)
+// {
+//     stream << "array";
+// }
 
 
 class StreamVisitor:

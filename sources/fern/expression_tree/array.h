@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <type_traits>
 
 
 namespace fern {
@@ -8,6 +9,8 @@ template<
     class Result>
 struct Array
 {
+
+    static_assert(std::is_arithmetic<Result>::value, "Type must be numeric");
 
     typedef Result value_type;
 
@@ -21,9 +24,13 @@ struct Array
     {
     }
 
-
     struct Concept
     {
+
+        // virtual const_iterator begin() const=0;
+
+        // virtual const_iterator end() const=0;
+
     };
 
     template<
@@ -38,7 +45,7 @@ struct Array
         {
         }
 
-        Container container;
+        Container const& container;
 
     };
 

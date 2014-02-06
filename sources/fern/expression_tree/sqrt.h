@@ -30,11 +30,11 @@ struct Sqrt<Constant<T>>
 };
 
 
-template<
-    class T>
-struct Sqrt<Array<T>>
-{
-    typedef Array<typename Sqrt<T>::result_type> result_type;
-};
+// template<
+//     class T>
+// struct Sqrt<Array<T>>
+// {
+//     typedef Array<typename Sqrt<T>::result_type> result_type;
+// };
 
 } // namespace fern

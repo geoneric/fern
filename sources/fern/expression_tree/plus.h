@@ -1,7 +1,7 @@
 #pragma once
 #include "fern/expression_tree/arity.h"
-#include "fern/expression_tree/array.h"
 #include "fern/expression_tree/constant.h"
+#include "fern/expression_tree/array.h"
 
 
 namespace fern {
@@ -11,6 +11,9 @@ template<
     class V>
 struct Plus
 {
+
+    static_assert(std::is_arithmetic<U>::value, "Type must be numeric");
+    static_assert(std::is_arithmetic<V>::value, "Type must be numeric");
 
     typedef U A1;
     typedef V A2;
@@ -53,9 +56,11 @@ struct Plus<Array<U>, Array<V>>
     typedef typename Plus<U, V>::Arity Arity;
 
     result_type operator()(
-        Array<U> const& argument1,
-        Array<V> const& argument2) const
+        Array<U> const& /* argument1 */,
+        Array<V> const& /* argument2 */) const
     {
+
+
         // TODO
         // Array<U>::const_iterator it1 = argument1.begin();
         // Array<U>::const_iterator end1 = argument1.end();
@@ -68,6 +73,8 @@ struct Plus<Array<U>, Array<V>>
 
         // for(Index i = 0; i != nr_
         // return argument1.container + argument2.container;
+
+        return result_type(std::vector<typename result_type::value_type>());
     }
 
 };

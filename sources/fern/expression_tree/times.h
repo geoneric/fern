@@ -34,12 +34,12 @@ struct Times<Constant<U>, Constant<V>>
 };
 
 
-template<
-    class U,
-    class V>
-struct Times<Array<U>, Array<V>>
-{
-    typedef Array<typename Times<U, V>::result_type> result_type;
-};
+// template<
+//     class U,
+//     class V>
+// struct Times<Array<U>, Array<V>>
+// {
+//     typedef Array<typename Times<U, V>::result_type> result_type;
+// };
 
 } // namespace fern

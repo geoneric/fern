@@ -31,22 +31,22 @@ struct Slope<Constant<T>>
 };
 
 
-template<
-    class T>
-struct Slope<Array<T>>
-{
-
-    typedef Array<T> A;
-    typedef Array<double> result_type;
-    typedef arity::Unary Arity;
-
-    result_type operator()(
-        Array<T> const& /* argument */) const
-    {
-        assert(false);
-        return result_type();
-    }
-
-};
+// template<
+//     class T>
+// struct Slope<Array<T>>
+// {
+// 
+//     typedef Array<T> A;
+//     typedef Array<double> result_type;
+//     typedef arity::Unary Arity;
+// 
+//     result_type operator()(
+//         Array<T> const& /* argument */) const
+//     {
+//         assert(false);
+//         return result_type();
+//     }
+// 
+// };
 
 } // namespace fern
