@@ -252,12 +252,48 @@ struct result<
 } // namespace detail
 
 
+//! Calculate the result type of combining values of types \a A1 and \a A2.
+/*!
+  \tparam    A1 Type of first value to combine.
+  \tparam    A2 Type of second value to combine.
+
+  The rules for calculating the layered type are not the same as the ones C++
+  uses itself.
+
+  When both of the types are collection types, the collection type of A1
+  determines the collection type of the result type.
+
+  If one of the types is a collection type, it determines the collection type
+  of the result type.
+
+  The table below list the rules implemented with respect to value types. The
+  order of the types doesn't matter.
+
+  A1               | A2               | type                 |
+  -----------------|------------------|----------------------|
+  floating point   | floating point   | largest of A1 and A2 |
+  unsigned integer | unsigned integer | largest of A1 and A2 |
+  singed integer   | signed integer   | largest of A1 and A2 |
+  unsigned integer | signed integer   | see below            |
+  floating point   | unsigned integer | A1                   |
+  floating point   | signed integer   | A1                   |
+
+  In case an unsigned integer and a signed integer are combined, the unsigned
+  integer is looked up in a list of unsigned integer types with increasing
+  size. Its index is increased by one and used to lookup a type in a list of
+  signed integer types with increasing size. The largest of this type and the
+  signed integer type is used as the result type.
+
+  Check the unit tests to see all this in action.
+*/
 template<
     class A1,
     class A2>
 struct result
 {
     // First dispatch on argument category, and then on value type.
+    // In case of a compiler error, make sure the argument_category trait is
+    // available for both A1 and A2.
     typedef typename detail::dispatch::result<A1, A2,
         typename ArgumentTraits<A1>::argument_category,
         typename ArgumentTraits<A2>::argument_category>::type type;

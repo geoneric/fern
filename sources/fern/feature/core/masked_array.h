@@ -1,6 +1,7 @@
 #pragma once
 #include <type_traits>
 #include "fern/feature/core/array.h"
+#include "fern/feature/core/mask.h"
 
 
 namespace fern {
@@ -37,9 +38,9 @@ public:
 
     bool           has_masked_values   () const;
 
-    Array<bool, nr_dimensions> const& mask() const;
+    Mask<nr_dimensions> const& mask    () const;
 
-    Array<bool, nr_dimensions>& mask   ();
+    Mask<nr_dimensions>& mask          ();
 
     template<
         class U>
@@ -53,7 +54,7 @@ public:
 
 private:
 
-    Array<bool, nr_dimensions> _mask;
+    Mask<nr_dimensions> _mask;
 
 };
 
@@ -97,8 +98,7 @@ inline bool MaskedArray<T, nr_dimensions>::has_masked_values() const
 template<
     class T,
     size_t nr_dimensions>
-inline Array<bool, nr_dimensions> const& MaskedArray<T, nr_dimensions>::
-    mask() const
+inline Mask<nr_dimensions> const& MaskedArray<T, nr_dimensions>::mask() const
 {
     return _mask;
 }
@@ -107,7 +107,7 @@ inline Array<bool, nr_dimensions> const& MaskedArray<T, nr_dimensions>::
 template<
     class T,
     size_t nr_dimensions>
-inline Array<bool, nr_dimensions>& MaskedArray<T, nr_dimensions>::mask()
+inline Mask<nr_dimensions>& MaskedArray<T, nr_dimensions>::mask()
 {
     return _mask;
 }

@@ -71,20 +71,34 @@ struct plus<
         R& result)
     {
         assert(argument1.size() == argument2.size());
-        result.resize(argument1.size());
+        fern::resize(result, argument1);
 
-        typename A1::const_iterator argument1_it = argument1.begin();
-        typename A1::const_iterator argument1_end = argument1.end();
-        typename A2::const_iterator argument2_it = argument2.begin();
-        typename R::iterator result_it = result.begin();
+        typename ArgumentTraits<A1>::const_iterator argument1_it =
+            fern::begin(argument1);
+        typename ArgumentTraits<A1>::const_iterator argument1_end =
+            fern::end(argument1);
+        typename ArgumentTraits<A2>::const_iterator argument2_it =
+            fern::begin(argument2);
+        typename ArgumentTraits<R>::iterator result_it = fern::begin(result);
+
+        // typename A1::const_iterator argument1_it = argument1.begin();
+        // typename A1::const_iterator argument1_end = argument1.end();
+        // typename A2::const_iterator argument2_it = argument2.begin();
+        // typename R::iterator result_it = result.begin();
 
         for(; argument1_it != argument1_end; ++argument1_it, ++argument2_it,
                 ++result_it) {
-            *result_it = static_cast<typename R::value_type>(*argument1_it) +
-                static_cast<typename R::value_type>(*argument2_it);
+            // *result_it = static_cast<typename R::value_type>(*argument1_it) +
+            //     static_cast<typename R::value_type>(*argument2_it);
+            *result_it =
+                static_cast<typename ArgumentTraits<R>::value_type>(
+                    *argument1_it) +
+                static_cast<typename ArgumentTraits<R>::value_type>(
+                    *argument2_it);
         }
     }
 };
+
 
 template<
     class A1,
@@ -102,7 +116,7 @@ struct plus<
         A2 const& argument2,
         R& result)
     {
-        result.resize(argument2.size());
+        fern::resize(result, argument2);
 
         typename A2::const_iterator argument2_it = argument2.begin();
         typename A2::const_iterator argument2_end = argument2.end();
@@ -390,7 +404,7 @@ protected:
 } // namespace plus
 
 
-//! Implementation of the plus operation, for two arithmetic types.
+//! Implementation of the plus operation, for two (collections of) arithmetic types.
 /*!
   \tparam    A1 Type of first argument.
   \tparam    A2 Type of second argument.
@@ -450,6 +464,14 @@ struct Plus:
 
 namespace algebra {
 
+//! Calculate the result of adding \a argument1 to \a argument2 and put it in \a result.
+/*!
+  \tparam    A1 Type of \a argument1.
+  \tparam    A2 Type of \a argument2.
+  \param     argument1 First argument to add.
+  \param     argument2 Second argument to add.
+  \return    Result is stored in argument \a result.
+*/
 template<
     class A1,
     class A2>
@@ -462,6 +484,14 @@ void plus(
 }
 
 
+//! Calculate the result of adding \a argument1 to \a argument2 and return the result.
+/*!
+  \tparam    A1 Type of \a argument1.
+  \tparam    A2 Type of \a argument2.
+  \param     argument1 First argument to add.
+  \param     argument2 Second argument to add.
+  \return    Result of adding \a argument1 to \a argument2.
+*/
 template<
     class A1,
     class A2>

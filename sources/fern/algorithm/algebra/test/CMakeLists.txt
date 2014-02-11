@@ -1,11 +1,13 @@
 SET(TEST_NAMES
     plus_test
+    result_type_test
 )
 
 MACRO(ADD_UNIT_TEST NAME)
     ADD_EXECUTABLE(algorithm_algebra_${NAME} ${NAME})
     TARGET_LINK_LIBRARIES(algorithm_algebra_${NAME}
         fern_core
+        fern_feature_core  # fern::extents
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
     ADD_TEST(NAME algorithm_algebra_${NAME} COMMAND algorithm_algebra_${NAME})

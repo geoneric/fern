@@ -1,159 +1,9 @@
 #define BOOST_TEST_MODULE fern algorithm algebra
-#include <cxxabi.h>
 #include <boost/test/unit_test.hpp>
-#include "fern/core/type_traits.h"
+#include "fern/algorithm/policy/policies.h"
+#include "fern/algorithm/algebra/array_traits.h"
+#include "fern/algorithm/algebra/masked_array_traits.h"
 #include "fern/algorithm/algebra/plus.h"
-
-
-std::string demangle(
-    std::string const& name)
-{
-    int status;
-    char* buffer;
-    buffer = abi::__cxa_demangle(name.c_str(), 0, 0, &status);
-    assert(status == 0);
-    std::string real_name(buffer);
-    free(buffer);
-    return real_name;
-}
-
-
-template<
-    class T>
-std::string demangled_type_name()
-{
-    return demangle(typeid(T).name());
-}
-
-
-BOOST_AUTO_TEST_SUITE(plus)
-
-// Works for types known to the TypeTraits.
-#define verify_result_type(                                                    \
-    A1, A2, TypeWeWant)                                                        \
-{                                                                              \
-    typedef typename fern::Plus<A1, A2>::R TypeWeGet;                          \
-                                                                               \
-    BOOST_CHECK_MESSAGE((std::is_same<TypeWeGet, TypeWeWant>()),               \
-        fern::TypeTraits<TypeWeGet>::name + " != " +                           \
-        fern::TypeTraits<TypeWeWant>::name);                                   \
-}
-
-
-// Works for all types.
-#define verify_result_type2(                                                   \
-    A1, A2, TypeWeWant)                                                        \
-{                                                                              \
-    typedef typename fern::Plus<A1, A2>::R TypeWeGet;                          \
-                                                                               \
-    BOOST_CHECK_MESSAGE((std::is_same<TypeWeGet, TypeWeWant>()),               \
-        demangled_type_name<TypeWeGet>() + " != " +  \
-        demangled_type_name<TypeWeWant>()); \
-}
-
-
-
-
-
-BOOST_AUTO_TEST_CASE(result_type)
-{
-    // uint + uint
-    // Pick largest uint type.
-    verify_result_type(uint8_t, uint8_t, uint8_t);
-    verify_result_type(uint8_t, uint16_t, uint16_t);
-    verify_result_type(uint8_t, uint32_t, uint32_t);
-    verify_result_type(uint8_t, uint64_t, uint64_t);
-
-    verify_result_type(uint16_t, uint16_t, uint16_t);
-    verify_result_type(uint16_t, uint32_t, uint32_t);
-    verify_result_type(uint16_t, uint64_t, uint64_t);
-
-    verify_result_type(uint32_t, uint32_t, uint32_t);
-    verify_result_type(uint32_t, uint64_t, uint64_t);
-
-    verify_result_type(uint64_t, uint64_t, uint64_t);
-
-    // int + int
-    // Pick largest int type.
-    verify_result_type(int8_t, int8_t, int8_t);
-    verify_result_type(int8_t, int16_t, int16_t);
-    verify_result_type(int8_t, int32_t, int32_t);
-    verify_result_type(int8_t, int64_t, int64_t);
-
-    verify_result_type(int16_t, int16_t, int16_t);
-    verify_result_type(int16_t, int32_t, int32_t);
-    verify_result_type(int16_t, int64_t, int64_t);
-
-    verify_result_type(int32_t, int32_t, int32_t);
-    verify_result_type(int32_t, int64_t, int64_t);
-
-    verify_result_type(int64_t, int64_t, int64_t);
-
-    // uint + int
-    // Pick a signed int type that can store values from both types. If there
-    // is no such type, pick int64_t.
-    verify_result_type(uint8_t, int8_t, int16_t);
-    verify_result_type(uint8_t, int16_t, int16_t);
-    verify_result_type(uint8_t, int32_t, int32_t);
-    verify_result_type(uint8_t, int64_t, int64_t);
-
-    verify_result_type(uint16_t, int8_t, int32_t);
-    verify_result_type(uint16_t, int16_t, int32_t);
-    verify_result_type(uint16_t, int32_t, int32_t);
-    verify_result_type(uint16_t, int64_t, int64_t);
-
-    verify_result_type(uint32_t, int8_t, int64_t);
-    verify_result_type(uint32_t, int16_t, int64_t);
-    verify_result_type(uint32_t, int32_t, int64_t);
-    verify_result_type(uint32_t, int64_t, int64_t);
-
-    verify_result_type(uint64_t, int8_t, int64_t);
-    verify_result_type(uint64_t, int16_t, int64_t);
-    verify_result_type(uint64_t, int32_t, int64_t);
-    verify_result_type(uint64_t, int64_t, int64_t);
-
-    // float + float
-    // Pick the largest float type.
-    verify_result_type(float, float, float);
-    verify_result_type(double, double, double);
-    verify_result_type(float, double, double);
-
-    // uint + float
-    verify_result_type(uint8_t, float, float);
-    verify_result_type(uint8_t, double, double);
-    verify_result_type(uint16_t, float, float);
-    verify_result_type(uint16_t, double, double);
-    verify_result_type(uint32_t, float, float);
-    verify_result_type(uint32_t, double, double);
-    verify_result_type(uint64_t, float, float);
-    verify_result_type(uint64_t, double, double);
-
-    // int + float
-    verify_result_type(int8_t, float, float);
-    verify_result_type(int8_t, double, double);
-    verify_result_type(int16_t, float, float);
-    verify_result_type(int16_t, double, double);
-    verify_result_type(int32_t, float, float);
-    verify_result_type(int32_t, double, double);
-    verify_result_type(int64_t, float, float);
-    verify_result_type(int64_t, double, double);
-
-    // Collections.
-    verify_result_type2(int8_t, std::vector<int8_t>, std::vector<int8_t>);
-    verify_result_type2(int8_t, std::vector<float>, std::vector<float>);
-    verify_result_type2(float, std::vector<int8_t>, std::vector<float>);
-
-    verify_result_type2(std::vector<int8_t>, int8_t, std::vector<int8_t>);
-    verify_result_type2(std::vector<float>, int8_t, std::vector<float>);
-    verify_result_type2(std::vector<int8_t>, float, std::vector<float>);
-
-    verify_result_type2(std::vector<int8_t>, std::vector<int8_t>,
-        std::vector<int8_t>);
-    verify_result_type2(std::vector<float>, std::vector<int8_t>,
-        std::vector<float>);
-    verify_result_type2(std::vector<int8_t>, std::vector<float>,
-        std::vector<float>);
-}
 
 
 template<
@@ -165,7 +15,7 @@ void verify_value(
     A2 const& argument2,
     R const& result_we_want)
 {
-    verify_result_type(A1, A2, R);
+    // verify_result_type(A1, A2, R);
     fern::Plus<A1, A2> operation;
     BOOST_CHECK_EQUAL(operation(argument1, argument2), result_we_want);
 
@@ -174,6 +24,8 @@ void verify_value(
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 
+
+BOOST_AUTO_TEST_SUITE(plus)
 
 BOOST_AUTO_TEST_CASE(value)
 {
@@ -340,6 +192,63 @@ BOOST_AUTO_TEST_CASE(argument_types)
         BOOST_CHECK_EQUAL(result[1], 7u);
         BOOST_CHECK_EQUAL(result[2], 9u);
     }
+
+    // array + array
+    {
+        fern::Array<int8_t, 2> argument(fern::extents[3][2]);
+        argument[0][0] = -2;
+        argument[0][1] = -1;
+        argument[1][0] =  0;
+        argument[1][1] =  9;
+        argument[2][0] =  1;
+        argument[2][1] =  2;
+        typedef fern::result<int8_t, int8_t>::type R;
+        fern::Array<R, 2> result(fern::extents[3][2]);
+
+        fern::algebra::plus(argument, argument, result);
+
+        BOOST_CHECK_EQUAL(result[0][0], -4);
+        BOOST_CHECK_EQUAL(result[0][1], -2);
+        BOOST_CHECK_EQUAL(result[1][0],  0);
+        BOOST_CHECK_EQUAL(result[1][1], 18);
+        BOOST_CHECK_EQUAL(result[2][0],  2);
+        BOOST_CHECK_EQUAL(result[2][1],  4);
+    }
+
+    // masked_array + masked_array
+    {
+        fern::MaskedArray<int8_t, 2> argument(fern::extents[3][2]);
+        argument[0][0] = -2;
+        argument[0][1] = -1;
+        argument[1][0] =  0;
+        argument.mask()[1][1] =  true;
+        argument[1][1] =  9;
+        argument[2][0] =  1;
+        argument[2][1] =  2;
+        typedef fern::result<int8_t, int8_t>::type R;
+        fern::MaskedArray<R, 2> result(fern::extents[3][2]);
+
+        fern::algebra::plus(argument, argument, result);
+
+        BOOST_CHECK(!result.mask()[0][0]);
+        BOOST_CHECK_EQUAL(result[0][0], -4);
+
+        BOOST_CHECK(!result.mask()[0][1]);
+        BOOST_CHECK_EQUAL(result[0][1], -2);
+
+        BOOST_CHECK(!result.mask()[1][0]);
+        BOOST_CHECK_EQUAL(result[1][0],  0);
+
+        // Although the input data has a mask, the default policy discards
+        // it. So the result doesn't have masked values.
+        BOOST_CHECK(!result.mask()[1][1]);
+        BOOST_CHECK_EQUAL(result[1][1], 18);
+
+        BOOST_CHECK(!result.mask()[2][0]);
+        BOOST_CHECK_EQUAL(result[2][0],  2);
+        BOOST_CHECK(!result.mask()[2][1]);
+        BOOST_CHECK_EQUAL(result[2][1],  4);
+    }
 }
 
 
@@ -351,8 +260,51 @@ BOOST_AUTO_TEST_CASE(no_data)
 
     // fern::Plus<A1, A2, fern::plus::Range> operation;
 
+    // TODO Verify that no-data is handled correctly.
 
 
+    // masked_array + masked_array
+    {
+        fern::MaskedArray<int8_t, 2> argument(fern::extents[3][2]);
+        argument[0][0] = -2;
+        argument[0][1] = -1;
+        argument[1][0] =  0;
+        argument.mask()[1][1] =  true;
+        argument[1][1] =  9;
+        argument[2][0] =  1;
+        argument[2][1] =  2;
+        typedef fern::result<int8_t, int8_t>::type R;
+        fern::MaskedArray<R, 2> result(fern::extents[3][2]);
+
+        typedef decltype(argument) A1;
+        typedef decltype(argument) A2;
+
+        fern::Plus<A1, A2,
+            fern::DiscardDomainErrors<A1, A2>,
+            fern::plus::Range<A1, A2>,
+            fern::MarkNoDataByValue<bool, fern::Mask<2>>> plus;
+
+        plus(argument, argument, result);
+        // fern::algebra::plus<(argument, argument, result);
+
+        BOOST_CHECK(!result.mask()[0][0]);
+        BOOST_CHECK_EQUAL(result[0][0], -4);
+
+        BOOST_CHECK(!result.mask()[0][1]);
+        BOOST_CHECK_EQUAL(result[0][1], -2);
+
+        BOOST_CHECK(!result.mask()[1][0]);
+        BOOST_CHECK_EQUAL(result[1][0],  0);
+
+        BOOST_CHECK( result.mask()[1][1]);
+        // Value is masked: it is undefined.
+        // BOOST_CHECK_EQUAL(result[1][1], 18);
+
+        BOOST_CHECK(!result.mask()[2][0]);
+        BOOST_CHECK_EQUAL(result[2][0],  2);
+        BOOST_CHECK(!result.mask()[2][1]);
+        BOOST_CHECK_EQUAL(result[2][1],  4);
+    }
 }
 
 BOOST_AUTO_TEST_SUITE_END()
