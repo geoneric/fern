@@ -25,15 +25,15 @@ public:
     template<class ExtentList>
                    MaskedArray         (ExtentList const& sizes);
 
-                   MaskedArray         (MaskedArray const&)=delete;
+                   MaskedArray         (MaskedArray const&)=default;
 
-    MaskedArray&   operator=           (MaskedArray const&)=delete;
+    MaskedArray&   operator=           (MaskedArray const&)=default;
 
-                   MaskedArray         (MaskedArray&&)=delete;
+                   MaskedArray         (MaskedArray&&)=default;
 
-    MaskedArray&   operator=           (MaskedArray&&)=delete;
+    MaskedArray&   operator=           (MaskedArray&&)=default;
 
-    virtual        ~MaskedArray        ();
+    virtual        ~MaskedArray        ()=default;
 
     bool           has_masked_values   () const;
 
@@ -72,14 +72,6 @@ inline MaskedArray<T, nr_dimensions>::MaskedArray(
 {
     // By default, all values are not masked.
     std::fill(_mask.data(), _mask.data() + _mask.size(), false);
-}
-
-
-template<
-    class T,
-    size_t nr_dimensions>
-inline MaskedArray<T, nr_dimensions>::~MaskedArray()
-{
 }
 
 
