@@ -2,10 +2,12 @@
 #include <memory>
 #include <boost/variant/get.hpp>
 #include "fern/expression_tree/arity.h"
+#include "fern/expression_tree/category.h"
 #include "fern/expression_tree/data.h"
 
 
 namespace fern {
+namespace expression_tree {
 
 struct Implementation
 {
@@ -91,6 +93,8 @@ struct Implementation
     };
 
     std::shared_ptr<Concept> _self;
+
 };
 
+} // namespace expression_tree
 } // namespace fern

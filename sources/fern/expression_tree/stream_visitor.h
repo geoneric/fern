@@ -4,6 +4,7 @@
 
 
 namespace fern {
+namespace expression_tree {
 
 #define STREAM_CONSTANT(                                                       \
     Type)                                                                      \
@@ -115,4 +116,5 @@ void stream(
         ;
 }
 
+} // namespace expression_tree
 } // namespace fern

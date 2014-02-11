@@ -5,6 +5,7 @@
 
 
 namespace fern {
+namespace expression_tree {
 
 template<
     class T>
@@ -20,6 +21,7 @@ struct Sqrt<Constant<T>>
     typedef Constant<T> A;
     typedef Constant<double> result_type;
 
+    typedef Local Category;
     typedef arity::Unary Arity;
 
     result_type operator()(
@@ -37,4 +39,5 @@ struct Sqrt<Constant<T>>
 //     typedef Array<typename Sqrt<T>::result_type> result_type;
 // };
 
+} // namespace expression_tree
 } // namespace fern

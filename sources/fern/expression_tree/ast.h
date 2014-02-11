@@ -5,6 +5,7 @@
 
 
 namespace fern {
+namespace expression_tree {
 
 template<
     class T>
@@ -17,9 +18,9 @@ typedef boost::variant<
     boost::recursive_wrapper<Operation<Constant<int32_t>>>,
     boost::recursive_wrapper<Operation<Constant<int64_t>>>,
     boost::recursive_wrapper<Operation<Constant<double>>>,
-    boost::recursive_wrapper<Operation<Array<int32_t>>>,
-    boost::recursive_wrapper<Operation<Array<int64_t>>>,
-    boost::recursive_wrapper<Operation<Array<double>>>
+    boost::recursive_wrapper<Operation<Raster<int32_t>>>,
+    boost::recursive_wrapper<Operation<Raster<int64_t>>>,
+    boost::recursive_wrapper<Operation<Raster<double>>>
 > Expression;
 
 
@@ -28,7 +29,7 @@ template<
 struct Operation
 {
 
-    typedef Result ResultType;
+    typedef Result result_type;
 
     Operation(
         std::string const& name,
@@ -50,4 +51,5 @@ struct Operation
 
 };
 
+} // namespace expression_tree
 } // namespace fern

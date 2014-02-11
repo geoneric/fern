@@ -10,6 +10,7 @@ MACRO(ADD_UNIT_TEST NAME)
     ADD_EXECUTABLE(expression_tree_${NAME} ${NAME})
     TARGET_LINK_LIBRARIES(expression_tree_${NAME}
         # fern_expression_tree
+        fern_feature_core  # fern::extents
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
     ADD_TEST(NAME expression_tree_${NAME} COMMAND expression_tree_${NAME})

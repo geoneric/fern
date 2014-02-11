@@ -1,8 +1,10 @@
 #pragma once
 #include <type_traits>
+#include "fern/feature/core/masked_array.h"
 
 
 namespace fern {
+namespace expression_tree {
 
 //! Wrapper class for rasters.
 /*!
@@ -12,11 +14,17 @@ template<
 struct Raster
 {
 
-    static_assert(!std::is_pointer<Result>::value, "Type must be a class");
+    // static_assert(!std::is_pointer<Result>::value, "Type must be a class");
 
-    typedef typename Result::value_type value_type;
+    typedef Result value_type;
 
-    typedef Result result_type;
+    typedef Raster<value_type> result_type;
+
+    // typedef fern::MaskedArray<Result, 2> result_type;
+
+    // typedef typename Result::value_type value_type;
+
+    // typedef Result result_type;
 
     // typedef typename Result::iterator iterator;
 
@@ -31,15 +39,15 @@ struct Raster
     // typedef typename Result::size_type size_type;
 
     Raster(
-        Result const& value)
+        MaskedArray<value_type, 2> const& value)
         : value(value)
     {
     }
 
-    explicit operator Result const&()
-    {
-        return value;
-    }
+    // explicit operator Result const&()
+    // {
+    //     return value;
+    // }
 
     // const_iterator begin() const
     // {
@@ -61,8 +69,11 @@ struct Raster
     //     return std::end(value);
     // }
 
-    Result const& value;
+    // result_type const& value;
+
+    MaskedArray<value_type, 2> value;
 
 };
 
+} // namespace expression_tree
 } // namespace fern

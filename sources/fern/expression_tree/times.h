@@ -5,6 +5,7 @@
 
 
 namespace fern {
+namespace expression_tree {
 
 template<
     class U,
@@ -23,6 +24,7 @@ struct Times<Constant<U>, Constant<V>>
     typedef Constant<V> A2;
     typedef Constant<decltype(U() * V())> result_type;
 
+    typedef Local Category;
     typedef arity::Binary Arity;
 
     result_type operator()(
@@ -42,4 +44,5 @@ struct Times<Constant<U>, Constant<V>>
 //     typedef Array<typename Times<U, V>::result_type> result_type;
 // };
 
+} // namespace expression_tree
 } // namespace fern

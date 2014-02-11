@@ -3,6 +3,7 @@
 
 
 namespace fern {
+namespace expression_tree {
 
 //! Wrapper class for constant values.
 /*!
@@ -40,4 +41,5 @@ struct Constant
 
 };
 
+} // namespace expression_tree
 } // namespace fern

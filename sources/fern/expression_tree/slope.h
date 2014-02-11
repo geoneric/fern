@@ -5,6 +5,7 @@
 
 
 namespace fern {
+namespace expression_tree {
 
 template<
     class T>
@@ -49,4 +50,5 @@ struct Slope<Constant<T>>
 // 
 // };
 
+} // namespace expression_tree
 } // namespace fern

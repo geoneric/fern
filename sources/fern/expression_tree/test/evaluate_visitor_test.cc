@@ -6,20 +6,83 @@
 #include "fern/expression_tree/sqrt.h"
 #include "fern/expression_tree/times.h"
 #include "fern/expression_tree/evaluate_visitor.h"
+#include "fern/feature/core/masked_array.h"
+
+
+namespace fern {
+namespace expression_tree {
+
+// template<
+//     class U,
+//     class V>
+// Operation<typename Plus<Raster<U>, Raster<V>>::result_type> operator+(
+//     Raster<U> const& lhs,
+//     Raster<V> const& rhs)
+// {
+//     return Operation<typename Plus<Raster<U>, Raster<V>>::result_type>(
+//         "plus",
+//         Implementation(Plus<Raster<U>, Raster<V>>()),
+//         {
+//             lhs,
+//             rhs
+//         }
+//     );
+// }
+
+
+// template<
+//     class U,
+//     class V>
+// Operation<typename Plus<Raster<U>, Raster<V>>::result_type> operator/(
+//     Operation<Raster<U>> const& lhs,
+//     Raster<V> const& rhs)
+// {
+//     return Operation<typename Plus<Raster<U>, Raster<V>>::result_type>(
+//         "plus",
+//         Implementation(Plus<Raster<U>, Raster<V>>()),
+//         {
+//             lhs,
+//             rhs
+//         }
+//     );
+// }
+
+
+template<
+    class U,
+    class V>
+Operation<typename Plus<U, V>::result_type> operator+(
+    U const& lhs,
+    V const& rhs)
+{
+    return Operation<typename Plus<U, V>::result_type>(
+        "plus",
+        Implementation(Plus<U, V>()),
+        {
+            lhs,
+            rhs
+        }
+    );
+}
+
+} // namespace expression_tree
+} // namespace fern
 
 
 BOOST_AUTO_TEST_SUITE(evaluate_visitor)
 
 BOOST_AUTO_TEST_CASE(visit_constants)
 {
+    namespace fet = fern::expression_tree;
+
     // 2
     {
-        fern::Constant<int32_t> constant(2);
+        fet::Constant<int32_t> constant(2);
         auto expression(constant);
 
         typedef decltype(expression)::result_type Result;
 
-        fern::Data result(fern::evaluate(expression));
+        fet::Data result(fet::evaluate(expression));
 
         BOOST_REQUIRE_NO_THROW(boost::get<Result>(result));
         BOOST_CHECK_EQUAL(boost::get<Result>(result).value, 2);
@@ -27,25 +90,25 @@ BOOST_AUTO_TEST_CASE(visit_constants)
 
     // 2 + 1
     {
-        fern::Constant<int32_t> expression1(2);
+        fet::Constant<int32_t> expression1(2);
         typedef decltype(expression1)::result_type Result1;
 
-        fern::Constant<int32_t> expression2(1);
+        fet::Constant<int32_t> expression2(1);
         typedef decltype(expression2)::result_type Result2;
 
-        typedef typename fern::Plus<Result1, Result2>::result_type Result3;
+        typedef typename fet::Plus<Result1, Result2>::result_type Result3;
 
-        fern::Operation<Result3> expression3(
+        fet::Operation<Result3> expression3(
             "plus",
-            fern::Implementation(
-                fern::Plus<Result1, Result2>()),
+            fet::Implementation(
+                fet::Plus<Result1, Result2>()),
             {
                 expression1,
                 expression2
             }
         );
 
-        fern::Data result(fern::evaluate(expression3));
+        fet::Data result(fet::evaluate(expression3));
 
         BOOST_REQUIRE_NO_THROW(boost::get<Result3>(result));
         BOOST_CHECK_EQUAL(boost::get<Result3>(result).value, 3);
@@ -54,20 +117,20 @@ BOOST_AUTO_TEST_CASE(visit_constants)
     // sqrt((2 + 1) * 3.0)
     {
         // 1: 2
-        fern::Constant<int32_t> expression1(2);
+        fet::Constant<int32_t> expression1(2);
         typedef decltype(expression1)::result_type Result1;
 
         // 2: 1
-        fern::Constant<int32_t> expression2(1);
+        fet::Constant<int32_t> expression2(1);
         typedef decltype(expression2)::result_type Result2;
 
         // 3: 2 + 1
-        typedef typename fern::Plus<Result1, Result2>::result_type Result3;
+        typedef typename fet::Plus<Result1, Result2>::result_type Result3;
 
-        fern::Operation<Result3> expression3(
+        fet::Operation<Result3> expression3(
             "plus",
-            fern::Implementation(
-                fern::Plus<Result1, Result2>()),
+            fet::Implementation(
+                fet::Plus<Result1, Result2>()),
             {
                 expression1,
                 expression2
@@ -75,16 +138,16 @@ BOOST_AUTO_TEST_CASE(visit_constants)
         );
 
         // 4: 3.0
-        fern::Constant<double> expression4(3.0);
+        fet::Constant<double> expression4(3.0);
         typedef decltype(expression4)::result_type Result4;
 
         // 5: (2 + 1) * 3.0
-        typedef typename fern::Times<Result3, Result4>::result_type Result5;
+        typedef typename fet::Times<Result3, Result4>::result_type Result5;
 
-        fern::Operation<Result5> expression5(
+        fet::Operation<Result5> expression5(
             "times",
-            fern::Implementation(
-                fern::Times<Result3, Result4>()),
+            fet::Implementation(
+                fet::Times<Result3, Result4>()),
             {
                 expression3,
                 expression4
@@ -92,18 +155,18 @@ BOOST_AUTO_TEST_CASE(visit_constants)
         );
 
         // 6: sqrt((2 + 1) * 3.0)
-        typedef typename fern::Sqrt<Result5>::result_type Result6;
+        typedef typename fet::Sqrt<Result5>::result_type Result6;
 
-        fern::Operation<Result6> expression6(
+        fet::Operation<Result6> expression6(
             "sqrt",
-            fern::Implementation(
-                fern::Sqrt<Result5>()),
+            fet::Implementation(
+                fet::Sqrt<Result5>()),
             {
                 expression5
             }
         );
 
-        fern::Data result(fern::evaluate(expression6));
+        fet::Data result(fet::evaluate(expression6));
 
         BOOST_REQUIRE_NO_THROW(boost::get<Result6>(result));
         BOOST_CHECK_CLOSE(boost::get<Result6>(result).value, 3.0, 1e-6);
@@ -111,74 +174,126 @@ BOOST_AUTO_TEST_CASE(visit_constants)
 }
 
 
+template<
+    class T>
+using Raster = fern::MaskedArray<T, 2>;
+
+
 BOOST_AUTO_TEST_CASE(visit_raster)
 {
+    namespace fet = fern::expression_tree;
+
     size_t const nr_rows = 3;
     size_t const nr_cols = 4;
+    auto extents(fern::extents[nr_rows][nr_cols]);
+
+    Raster<int32_t> raster1(extents);
+    raster1[0][0] = -2;
+    raster1[0][1] = -1;
+    raster1[1][0] = 0;
+    raster1.mask()[1][1] = true;
+    raster1[2][0] = 1;
+    raster1[2][1] = 2;
+
+    auto expression1 = fet::Raster<int32_t>(raster1);
+    typedef decltype(expression1)::result_type Result1;
+    static_assert(std::is_same<Result1, fet::Raster<int32_t>>::value, "");
+
+    Raster<int32_t> raster2(extents);
+    raster2[0][0] = -20;
+    raster2[0][1] = -10;
+    raster2[1][0] = 0;
+    raster2.mask()[1][1] = true;
+    raster2[2][0] = 10;
+    raster2[2][1] = 20;
+
+    auto expression2 = fet::Raster<int32_t>(raster2);
+    typedef decltype(expression2)::result_type Result2;
+    static_assert(std::is_same<Result2, fet::Raster<int32_t>>::value, "");
+
+    Raster<double> raster3(extents);
+    raster3[0][0] = 2.0;
+    raster3[0][1] = 4.0;
+    raster3[1][0] = 6.0;
+    raster3[1][1] = 8.0;
+    raster3[2][0] = 10.0;
+    raster3[2][1] = 12.0;
+
+    auto expression3 = fet::Raster<double>(raster3);
+    typedef decltype(expression3)::result_type Result3;
+    static_assert(std::is_same<Result3, fet::Raster<double>>::value, "");
 
     // raster + raster
     {
-        typedef boost::multi_array<int32_t, 2> MultiArray;
-        auto extents(boost::extents[nr_rows][nr_cols]);
+        using namespace fern::expression_tree;
 
-        MultiArray array1(extents);
-        array1[0][0] = -2;
-        array1[0][1] = -1;
-        array1[1][0] = 0;
-        array1[1][1] = 9;
-        array1[2][0] = 1;
-        array1[2][1] = 2;
+        auto operation = expression1 + expression2;
 
-        fern::Array<int32_t> expression1(array1);
-        typedef decltype(expression1)::result_type Result1;
+        fet::evaluate(operation);
+        fet::Data result(fet::evaluate(operation));
 
-        MultiArray array2(extents);
-        array2[0][0] = -2;
-        array2[0][1] = -1;
-        array2[1][0] = 0;
-        array2[1][1] = 9;
-        array2[2][0] = 1;
-        array2[2][1] = 2;
+        BOOST_REQUIRE_NO_THROW(boost::get<fet::Raster<int32_t> const&>(result));
+        fet::Raster<int32_t> const& result_raster(
+            boost::get<fet::Raster<int32_t> const&>(result));
+        Raster<int32_t> const& raster(result_raster.value);
 
-        fern::Array<int32_t> expression2(array2);
-        typedef decltype(expression2)::result_type Result2;
+        BOOST_REQUIRE_EQUAL(raster.num_dimensions(), 2);
+        BOOST_REQUIRE_EQUAL(raster.shape()[0], nr_rows);
+        BOOST_REQUIRE_EQUAL(raster.shape()[1], nr_cols);
 
-        typedef typename fern::Plus<Result1, Result2>::result_type Result3;
+        BOOST_CHECK(!raster.mask()[0][0]);
+        BOOST_CHECK_EQUAL(raster[0][0], -22);
 
-        fern::Operation<Result3> expression3(
-            "plus",
-            fern::Implementation(
-                fern::Plus<Result1, Result2>()),
-            {
-                expression1,
-                expression2
-            }
-        );
+        BOOST_CHECK(!raster.mask()[0][1]);
+        BOOST_CHECK_EQUAL(raster[0][1], -11);
 
-        fern::Data result(fern::evaluate(expression3));
+        BOOST_CHECK(!raster.mask()[1][0]);
+        BOOST_CHECK_EQUAL(raster[1][0],  0);
 
-        BOOST_REQUIRE_NO_THROW(boost::get<Result3 const&>(result));
-        // Result3 const& result_array(boost::get<Result3 const&>(result));
+        BOOST_CHECK( raster.mask()[1][1]);
 
-        // // Result3 is an Array<int32_t>. We need to get the multi_array
-        // // from its guts.
-        // typedef boost::multi_array<Result3::value_type, 2> MultiArrayResult;
+        BOOST_CHECK(!raster.mask()[2][0]);
+        BOOST_CHECK_EQUAL(raster[2][0],  11);
 
-        // // TODO Visit the tree and obtain the layered data.
-        // MultiArrayResult array3(fern::result<MultiArrayResult>(expression3));
+        BOOST_CHECK(!raster.mask()[2][1]);
+        BOOST_CHECK_EQUAL(raster[2][1],  22);
+    }
 
-        // fern::assign(expression3, array3);
+    // raster + raster + raster
+    {
+        auto operation = expression1 + expression2 + expression3;
 
-        // BOOST_REQUIRE_EQUAL(result_array.num_dimensions(), 2);
-        // BOOST_REQUIRE_EQUAL(result_array.shape()[0], 2);
-        // BOOST_REQUIRE_EQUAL(result_array.shape()[1], 3);
+        std::cout << "evaluate..." << std::endl;
+        fet::evaluate(operation);
+        std::cout << "/evaluate..." << std::endl;
+        // fet::Data result(fet::evaluate(operation));
 
-        // BOOST_CHECK_EQUAL(result_array[0][0], -4);
-        // BOOST_CHECK_EQUAL(result_array[0][1], -2);
-        // BOOST_CHECK_EQUAL(result_array[1][0],  0);
-        // BOOST_CHECK_EQUAL(result_array[1][1],  18);
-        // BOOST_CHECK_EQUAL(result_array[2][0],  2);
-        // BOOST_CHECK_EQUAL(result_array[2][1],  4);
+        // BOOST_REQUIRE_NO_THROW(boost::get<fet::Raster<double> const&>(result));
+        // fet::Raster<double> const& result_raster(
+        //     boost::get<fet::Raster<double> const&>(result));
+        // Raster<double> const& raster(result_raster.value);
+        // return;
+
+        // BOOST_REQUIRE_EQUAL(raster.num_dimensions(), 2);
+        // BOOST_REQUIRE_EQUAL(raster.shape()[0], nr_rows);
+        // BOOST_REQUIRE_EQUAL(raster.shape()[1], nr_cols);
+
+        // BOOST_CHECK(!raster.mask()[0][0]);
+        // BOOST_CHECK_EQUAL(raster[0][0], -22);
+
+        // BOOST_CHECK(!raster.mask()[0][1]);
+        // BOOST_CHECK_EQUAL(raster[0][1], -11);
+
+        // BOOST_CHECK(!raster.mask()[1][0]);
+        // BOOST_CHECK_EQUAL(raster[1][0],  0);
+
+        // BOOST_CHECK( raster.mask()[1][1]);
+
+        // BOOST_CHECK(!raster.mask()[2][0]);
+        // BOOST_CHECK_EQUAL(raster[2][0],  11);
+
+        // BOOST_CHECK(!raster.mask()[2][1]);
+        // BOOST_CHECK_EQUAL(raster[2][1],  22);
     }
 }
 

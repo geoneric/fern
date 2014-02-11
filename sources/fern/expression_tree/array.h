@@ -4,6 +4,7 @@
 
 
 namespace fern {
+namespace expression_tree {
 
 template<
     class Result>
@@ -24,12 +25,20 @@ struct Array
     {
     }
 
+    template<
+        class Container>
+    Container const& container() const
+    {
+        // If this assertion fails, you are expecting a different type of
+        // container than the one that is stored in the Model.
+        assert(dynamic_cast<Model<Container>*>(_self.get()));
+        return dynamic_cast<Model<Container> const*>(_self.get())->container;
+    }
+
     struct Concept
     {
 
-        // virtual const_iterator begin() const=0;
-
-        // virtual const_iterator end() const=0;
+        virtual ~Concept()=default;
 
     };
 
@@ -53,4 +62,5 @@ struct Array
 
 };
 
+} // namespace expression_tree
 } // namespace fern

@@ -8,7 +8,7 @@ BOOST_AUTO_TEST_SUITE(expression)
 BOOST_AUTO_TEST_CASE(constructor)
 {
     // Default constructor.
-    fern::Expression tree;
+    fern::expression_tree::Expression tree;
 
     // Constructor with 
 }

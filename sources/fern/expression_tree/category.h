@@ -3,12 +3,8 @@
 
 namespace fern {
 namespace expression_tree {
-namespace arity {
 
-class Unary {};
+class Local {};
 
-class Binary {};
-
-} // namespace arity
 } // namespace expression_tree
 } // namespace fern
