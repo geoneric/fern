@@ -76,13 +76,13 @@ struct result<
     unsigned_integer_tag,
     signed_integer_tag>
 {
-    typedef Typelist<uint8_t, uint16_t, uint32_t, uint64_t> UnsignedTypes;
-    typedef Typelist<int8_t, int16_t, int32_t, int64_t> SignedTypes;
+    typedef core::Typelist<uint8_t, uint16_t, uint32_t, uint64_t> UnsignedTypes;
+    typedef core::Typelist<int8_t, int16_t, int32_t, int64_t> SignedTypes;
 
     // Find index of A1 in list of unsigned types. Determine type of next
     // larger type in list of signed types. -> Type1
-    typedef typename at<min(find<A1, UnsignedTypes>::value + 1,
-        size<SignedTypes>::value - 1), SignedTypes>::type Type1;
+    typedef typename core::at<min(core::find<A1, UnsignedTypes>::value + 1,
+        core::size<SignedTypes>::value - 1), SignedTypes>::type Type1;
 
     // Result type is largest_type(Type1, A2)
     typedef typename boost::mpl::if_c<

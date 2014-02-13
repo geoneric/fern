@@ -1,6 +1,7 @@
 #define BOOST_TEST_MODULE fern algorithm algebra result_type
 #include <cxxabi.h>
 #include <boost/test/unit_test.hpp>
+#include "fern/core/vector_traits.h"
 #include "fern/algorithm/algebra/result_type.h"
 
 

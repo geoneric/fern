@@ -50,7 +50,8 @@ public:
 
     template<
         class U>
-    void           set_mask            (Array<U, nr_dimensions> const& mask);
+    void           set_mask            (Array<U, nr_dimensions> const& mask,
+                                        U const value_to_mask=0);
 
 private:
 
@@ -161,7 +162,7 @@ inline void MaskedArray<T, nr_dimensions>::mask(
 }
 
 
-//! Mask all cells that correspond cells containing zero in the \a mask passed in.
+//! Mask all cells that correspond cells containing \a value_to_mask in the \a mask passed in.
 /*!
   \tparam    .
   \param     .
@@ -176,17 +177,18 @@ template<
 template<
     class U>
 inline void MaskedArray<T, nr_dimensions>::set_mask(
-    Array<U, nr_dimensions> const& mask)
+    Array<U, nr_dimensions> const& mask,
+    U const value_to_mask)
 {
     static_assert(std::is_integral<U>::value, "Mask value must be integral");
     assert(mask.num_elements() == this->num_elements());
 
     U const* other_mask_data = mask.data();
-    U const mask_value(0);
+    /// U const mask_value(0);
     bool* mask_data = _mask.data();
 
     for(size_t i = 0; i < this->num_elements(); ++i) {
-        if(other_mask_data[i] == mask_value) {
+        if(other_mask_data[i] == value_to_mask) {
             mask_data[i] = true;
         }
     }

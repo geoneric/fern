@@ -10,19 +10,24 @@ class MarkNoDataByValue {
 
 public:
 
-    void           init_no_data_policy (Mask& mask,
-                                        T const& no_data_value);
+    bool           is_no_data          (size_t index) const;
 
-    void           mark                (size_t index);
+    void           mark_as_no_data     (size_t index);
+
+                   MarkNoDataByValue   (Mask& mask,
+                                        T const& no_data_value);
 
 protected:
 
-                   MarkNoDataByValue   ()=default;
+                   MarkNoDataByValue   ()=delete;
 
-                   MarkNoDataByValue   (MarkNoDataByValue&&)=delete;
+                   MarkNoDataByValue   (MarkNoDataByValue&&)=default;
 
     MarkNoDataByValue&
-                   operator=           (MarkNoDataByValue&&)=delete;
+                   operator=           (MarkNoDataByValue&&)=default;
+
+    // This class keeps a reference to a mask to update. This class doesn't
+    // copy the mask: copy construction and copy assignment are not supported.
 
                    MarkNoDataByValue   (MarkNoDataByValue const&)=delete;
 
@@ -33,7 +38,7 @@ protected:
 
 private:
 
-    Mask           _mask;
+    Mask&          _mask;
 
     T              _no_data_value;
 
@@ -43,22 +48,34 @@ private:
 template<
     class T,
     class Mask>
-inline void MarkNoDataByValue<T, Mask>::init_no_data_policy(
+inline MarkNoDataByValue<T, Mask>::MarkNoDataByValue(
     Mask& mask,
     T const& no_data_value)
+
+    : _mask(mask),
+      _no_data_value(no_data_value)
+
 {
-    _mask = mask;
-    _no_data_value = no_data_value;
 }
 
 
 template<
     class T,
     class Mask>
-inline void MarkNoDataByValue<T, Mask>::mark(
+inline bool MarkNoDataByValue<T, Mask>::is_no_data(
+    size_t index) const
+{
+    return get(_mask, index);
+}
+
+
+template<
+    class T,
+    class Mask>
+inline void MarkNoDataByValue<T, Mask>::mark_as_no_data(
     size_t index)
 {
-    _mask.set(index, _no_data_value);
+    get(_mask, index) = _no_data_value;
 }
 
 } // namespace fern

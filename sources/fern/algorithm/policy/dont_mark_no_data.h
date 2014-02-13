@@ -7,7 +7,9 @@ class DontMarkNoData {
 
 public:
 
-    static void    mark                (size_t index);
+    static constexpr bool is_no_data   (size_t index);
+
+    static void    mark_as_no_data     (size_t index);
 
 protected:
 
@@ -30,7 +32,14 @@ private:
 };
 
 
-inline void DontMarkNoData::mark(
+inline constexpr bool DontMarkNoData::is_no_data(
+    size_t /* index */)
+{
+    return false;
+}
+
+
+inline void DontMarkNoData::mark_as_no_data(
     size_t /* index */)
 {
 }

@@ -18,12 +18,24 @@ struct Mask {
     {
     }
 
-    inline void set(
-         size_t index,
-         T const& value)
+    inline T const& get(
+        size_t index) const
     {
-         assert(_values);
-         _values[index] = value;
+        return _values[index];
+    }
+
+    inline T& get(
+        size_t index)
+    {
+        return _values[index];
+    }
+
+    inline void set(
+        size_t index,
+        T const& value)
+    {
+        assert(_values);
+        _values[index] = value;
     }
 
     T* _values;
@@ -32,25 +44,36 @@ struct Mask {
 
 
 template<
-    class T,
-    class Mask>
-struct PolicyHost:
-    public fern::MarkNoDataByValue<T, Mask>
+    class T>
+T const& get(
+    Mask<T> const& mask,
+    size_t index)
 {
-};
+    return mask.get(index);
+}
+
+
+template<
+    class T>
+T& get(
+    Mask<T>& mask,
+    size_t index)
+{
+    return mask.get(index);
+}
 
 
 BOOST_AUTO_TEST_SUITE(mark_no_data)
 
 BOOST_AUTO_TEST_CASE(mark_no_data)
 {
-    PolicyHost<int32_t, Mask<int32_t>> policy;
     int32_t values[] = { 5, 4, 3, 2, 1 };
     Mask<int32_t> mask(values);
-    policy.init_no_data_policy(mask, 6);
 
-    policy.mark(0);
-    policy.mark(4);
+    fern::MarkNoDataByValue<int32_t, Mask<int32_t>> policy(mask, 6);
+
+    policy.mark_as_no_data(0);
+    policy.mark_as_no_data(4);
     BOOST_CHECK_EQUAL(values[0], 6);
     BOOST_CHECK_EQUAL(values[1], 4);
     BOOST_CHECK_EQUAL(values[2], 3);

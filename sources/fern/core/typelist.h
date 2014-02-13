@@ -4,6 +4,7 @@
 
 
 namespace fern {
+namespace core {
 namespace mpl = boost::mpl;
 
 template<
@@ -144,4 +145,5 @@ struct find<
     };
 };
 
+} // namespace core
 } // namespace fern

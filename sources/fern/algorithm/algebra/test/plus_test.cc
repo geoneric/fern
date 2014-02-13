@@ -1,8 +1,9 @@
 #define BOOST_TEST_MODULE fern algorithm algebra
 #include <boost/test/unit_test.hpp>
+#include "fern/feature/core/array_traits.h"
+#include "fern/feature/core/masked_array_traits.h"
+#include "fern/core/vector_traits.h"
 #include "fern/algorithm/policy/policies.h"
-#include "fern/algorithm/algebra/array_traits.h"
-#include "fern/algorithm/algebra/masked_array_traits.h"
 #include "fern/algorithm/algebra/plus.h"
 
 
@@ -16,8 +17,8 @@ void verify_value(
     R const& result_we_want)
 {
     // verify_result_type(A1, A2, R);
-    fern::Plus<A1, A2> operation;
-    BOOST_CHECK_EQUAL(operation(argument1, argument2), result_we_want);
+    fern::algebra::Plus<A1, A2> operation;
+    // BOOST_CHECK_EQUAL(operation(argument1, argument2), result_we_want);
 
     R result_we_get;
     operation(argument1, argument2, result_we_get);
@@ -49,7 +50,7 @@ template<
     class A1,
     class A2>
 struct DomainPolicyHost:
-    public fern::plus::Domain<A1, A2>
+    public fern::plus::OutOfDomainPolicy<A1, A2>
 {
 };
 
@@ -71,7 +72,7 @@ template<
     class A1,
     class A2>
 struct RangePolicyHost:
-    public fern::plus::Range<A1, A2>
+    public fern::plus::OutOfRangePolicy<A1, A2>
 {
 };
 
@@ -84,10 +85,13 @@ void verify_range_check(
     A2 const& argument2,
     bool const within)
 {
-    fern::Plus<A1, A2> operation;
+    fern::algebra::Plus<A1, A2> operation;
+    typename fern::algebra::Plus<A1, A2>::R result;
     RangePolicyHost<A1, A2> range;
-    BOOST_CHECK_EQUAL((range.within_range(argument1, argument2,
-        operation(argument1, argument2))), within);
+
+    operation(argument1, argument2, result);
+    BOOST_CHECK_EQUAL((range.within_range(argument1, argument2, result)),
+        within);
 }
 
 
@@ -142,8 +146,9 @@ BOOST_AUTO_TEST_CASE(argument_types)
         uint8_t argument1(5);
         uint8_t argument2(6);
         typedef fern::result<uint8_t, uint8_t>::type R;
+        R result;
 
-        R result = fern::algebra::plus(argument1, argument2);
+        fern::algebra::plus(argument1, argument2, result);
 
         BOOST_CHECK_EQUAL(result, 11u);
     }
@@ -153,9 +158,9 @@ BOOST_AUTO_TEST_CASE(argument_types)
         uint8_t argument1(5);
         std::vector<uint8_t> argument2({1, 2, 3});
         typedef fern::result<uint8_t, uint8_t>::type R;
-        // std::vector<R> result(argument2.size());
+        std::vector<R> result(argument2.size());
 
-        std::vector<R> result = fern::algebra::plus(argument1, argument2);
+        fern::algebra::plus(argument1, argument2, result);
 
         BOOST_REQUIRE_EQUAL(result.size(), 3u);
         BOOST_CHECK_EQUAL(result[0], 6u);
@@ -254,38 +259,50 @@ BOOST_AUTO_TEST_CASE(argument_types)
 
 BOOST_AUTO_TEST_CASE(no_data)
 {
-    // Declare a protected, non-virtual (and usually empty) destructor
-    // for the policy, preventing policy objects from being deleted (or
-    // instantiated, for that matter).
+    size_t const nr_rows = 3;
+    size_t const nr_cols = 2;
+    auto extents = fern::extents[nr_rows][nr_cols];
 
-    // fern::Plus<A1, A2, fern::plus::Range> operation;
+    fern::MaskedArray<int8_t, 2> argument1(extents);
+    argument1[0][0] = -2;
+    argument1[0][1] = -1;
+    argument1[1][0] =  0;
+    argument1.mask()[1][1] =  true;
+    argument1[2][0] =  1;
+    argument1[2][1] =  2;
 
-    // TODO Verify that no-data is handled correctly.
+    fern::MaskedArray<int8_t, 2> argument2(extents);
+    argument2[0][0] = -2;
+    argument2[0][1] = -1;
+    argument2[1][0] =  0;
+    argument2[1][1] =  9;
+    argument2.mask()[2][0] =  true;
+    argument2[2][1] =  2;
 
+    int8_t argument3 = 5;
 
     // masked_array + masked_array
     {
-        fern::MaskedArray<int8_t, 2> argument(fern::extents[3][2]);
-        argument[0][0] = -2;
-        argument[0][1] = -1;
-        argument[1][0] =  0;
-        argument.mask()[1][1] =  true;
-        argument[1][1] =  9;
-        argument[2][0] =  1;
-        argument[2][1] =  2;
+        // Create room for the result.
+        // Set the mask.
         typedef fern::result<int8_t, int8_t>::type R;
-        fern::MaskedArray<R, 2> result(fern::extents[3][2]);
+        fern::MaskedArray<R, 2> result(extents);
+        result.set_mask(argument1.mask(), true);
+        result.set_mask(argument2.mask(), true);
 
-        typedef decltype(argument) A1;
-        typedef decltype(argument) A2;
+        typedef decltype(argument1) A1;
+        typedef decltype(argument2) A2;
+        typedef fern::ArgumentTraits<A1>::value_type A1Value;
+        typedef fern::ArgumentTraits<A2>::value_type A2Value;
+        typedef fern::DiscardDomainErrors<A1Value, A2Value> OutOfDomainPolicy;
+        typedef fern::plus::OutOfRangePolicy<A1Value, A2Value> OutOfRangePolicy;
+        typedef fern::MarkNoDataByValue<bool, fern::Mask<2>> NoDataPolicy;
+        typedef fern::algebra::Plus<A1, A2, OutOfDomainPolicy, OutOfRangePolicy,
+            NoDataPolicy> Plus;
 
-        fern::Plus<A1, A2,
-            fern::DiscardDomainErrors<A1, A2>,
-            fern::plus::Range<A1, A2>,
-            fern::MarkNoDataByValue<bool, fern::Mask<2>>> plus;
+        Plus plus(NoDataPolicy(result.mask(), true));
 
-        plus(argument, argument, result);
-        // fern::algebra::plus<(argument, argument, result);
+        plus(argument1, argument2, result);
 
         BOOST_CHECK(!result.mask()[0][0]);
         BOOST_CHECK_EQUAL(result[0][0], -4);
@@ -300,96 +317,93 @@ BOOST_AUTO_TEST_CASE(no_data)
         // Value is masked: it is undefined.
         // BOOST_CHECK_EQUAL(result[1][1], 18);
 
-        BOOST_CHECK(!result.mask()[2][0]);
-        BOOST_CHECK_EQUAL(result[2][0],  2);
+        BOOST_CHECK(result.mask()[2][0]);
+        // Value is masked.
+        // BOOST_CHECK_EQUAL(result[2][0],  2);
+
         BOOST_CHECK(!result.mask()[2][1]);
         BOOST_CHECK_EQUAL(result[2][1],  4);
+    }
+
+    // masked_array + 5
+    {
+        // Create room for the result.
+        // Set the mask.
+        typedef fern::result<int8_t, int8_t>::type R;
+        fern::MaskedArray<R, 2> result(extents);
+        result.set_mask(argument1.mask(), true);
+
+        typedef decltype(argument1) A1;
+        typedef decltype(argument3) A2;
+        typedef fern::ArgumentTraits<A1>::value_type A1Value;
+        typedef fern::ArgumentTraits<A2>::value_type A2Value;
+        typedef fern::DiscardDomainErrors<A1Value, A2Value> OutOfDomainPolicy;
+        typedef fern::plus::OutOfRangePolicy<A1Value, A2Value> OutOfRangePolicy;
+        typedef fern::MarkNoDataByValue<bool, fern::Mask<2>> NoDataPolicy;
+        typedef fern::algebra::Plus<A1, A2, OutOfDomainPolicy, OutOfRangePolicy,
+            NoDataPolicy> Plus;
+
+        Plus plus(NoDataPolicy(result.mask(), true));
+
+        plus(argument1, argument3, result);
+
+        BOOST_CHECK(!result.mask()[0][0]);
+        BOOST_CHECK_EQUAL(result[0][0], 3);
+
+        BOOST_CHECK(!result.mask()[0][1]);
+        BOOST_CHECK_EQUAL(result[0][1], 4);
+
+        BOOST_CHECK(!result.mask()[1][0]);
+        BOOST_CHECK_EQUAL(result[1][0], 5);
+
+        BOOST_CHECK( result.mask()[1][1]);
+
+        BOOST_CHECK(!result.mask()[2][0]);
+        BOOST_CHECK_EQUAL(result[2][0], 6);
+
+        BOOST_CHECK(!result.mask()[2][1]);
+        BOOST_CHECK_EQUAL(result[2][1], 7);
+    }
+
+    // 5 + masked_array
+    {
+        // Create room for the result.
+        // Set the mask.
+        typedef fern::result<int8_t, int8_t>::type R;
+        fern::MaskedArray<R, 2> result(extents);
+        result.set_mask(argument1.mask(), true);
+
+        typedef decltype(argument3) A1;
+        typedef decltype(argument1) A2;
+        typedef fern::ArgumentTraits<A1>::value_type A1Value;
+        typedef fern::ArgumentTraits<A2>::value_type A2Value;
+        typedef fern::DiscardDomainErrors<A1Value, A2Value> OutOfDomainPolicy;
+        typedef fern::plus::OutOfRangePolicy<A1Value, A2Value> OutOfRangePolicy;
+        typedef fern::MarkNoDataByValue<bool, fern::Mask<2>> NoDataPolicy;
+        typedef fern::algebra::Plus<A1, A2, OutOfDomainPolicy, OutOfRangePolicy,
+            NoDataPolicy> Plus;
+
+        Plus plus(NoDataPolicy(result.mask(), true));
+
+        plus(argument3, argument1, result);
+
+        BOOST_CHECK(!result.mask()[0][0]);
+        BOOST_CHECK_EQUAL(result[0][0], 3);
+
+        BOOST_CHECK(!result.mask()[0][1]);
+        BOOST_CHECK_EQUAL(result[0][1], 4);
+
+        BOOST_CHECK(!result.mask()[1][0]);
+        BOOST_CHECK_EQUAL(result[1][0], 5);
+
+        BOOST_CHECK( result.mask()[1][1]);
+
+        BOOST_CHECK(!result.mask()[2][0]);
+        BOOST_CHECK_EQUAL(result[2][0], 6);
+
+        BOOST_CHECK(!result.mask()[2][1]);
+        BOOST_CHECK_EQUAL(result[2][1], 7);
     }
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
-
-// template<
-//     class Operation,
-//     class Argument1,
-//     class Argument2,
-//     class ResultTypeWeWant>
-// void verify(
-//     Operation const& operation,
-//     Argument1 const& argument1,
-//     Argument2 const& argument2,
-//     ResultTypeWeWant const& result_value_we_want)
-// {
-//     typedef decltype(operation(argument1, argument2)) ResultTypeWeGet;
-// 
-//     // Check type.
-//     BOOST_CHECK_MESSAGE((
-//         std::is_same<ResultTypeWeGet, ResultTypeWeWant >::value),
-//         typeid(ResultTypeWeGet).name() + std::string(" != ") +
-//             typeid(ResultTypeWeWant).name());
-// 
-//     // Check value.
-//     BOOST_CHECK_EQUAL(operation(argument1, argument2), result_value_we_want);
-// }
-// 
-// 
-// template<
-//     class Argument1,
-//     class Argument2>
-// void verify(
-//     Argument1 const& argument1,
-//     Argument2 const& argument2)
-// {
-//     fern::Plus<Argument1, Argument2> operation;
-// 
-//     // The result type we want is whatever the C++ rules dictate.
-//     typedef decltype(Argument1() + Argument2()) ResultTypeWeWant;
-// 
-//     // The result value we want is whatever the plus operator returns.
-//     ResultTypeWeWant result_we_want = argument1 + argument2;
-// 
-//     verify(operation, argument1, argument2, result_we_want);
-// }
-
-
-// BOOST_AUTO_TEST_CASE(verify_value)
-// {
-//     // constant + constant
-//     verify(int32_t(5), int32_t(6));
-//     verify(int16_t(-5), int32_t(6));
-//     verify(float(5), uint8_t(6));
-//     verify(double(5), double(6));
-// 
-// 
-//     // plus<int, int>
-//     // plus<vector, vector>
-//     // plus<vector, int>
-//     // plus<int, vector>
-// 
-// 
-//     // array + array
-//     // fern::Range argument1({1, 2, 3});
-//     // fern::Range argument2({1, 2, 3});
-//     // verify(int32_t(5), int32_t(6));
-// 
-// 
-//     // constant + array
-//     // array + constant
-// }
-// 
-// 
-// BOOST_AUTO_TEST_CASE(out_of_range)
-// {
-//     // fern::Plus<Argument1, Argument2, > operation;
-// 
-//     // // The result type we want is whatever the C++ rules dictate.
-//     // typedef decltype(Argument1() + Argument2()) ResultTypeWeWant;
-// 
-//     // // The result value we want is whatever the plus operator returns.
-//     // ResultTypeWeWant result_we_want = argument1 + argument2;
-// 
-//     // verify(operation, argument1, argument2, result_we_want);
-// }
-
-

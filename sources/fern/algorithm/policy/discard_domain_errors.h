@@ -16,6 +16,9 @@ class DiscardDomainErrors
 
 public:
 
+    // static_assert(std::is_arithmetic<A1>::value, "");
+    // static_assert(std::is_arithmetic<A2>::value, "");
+
     static constexpr bool
                    within_domain       (A1 const& argument1,
                                         A2 const& argument2);
