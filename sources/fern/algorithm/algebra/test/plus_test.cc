@@ -406,4 +406,24 @@ BOOST_AUTO_TEST_CASE(no_data)
     }
 }
 
+
+BOOST_AUTO_TEST_CASE(threading)
+{
+    // Create a somewhat larger array.
+    size_t const nr_rows = 300;
+    size_t const nr_cols = 200;
+    auto extents = fern::extents[nr_rows][nr_cols];
+    fern::Array<int8_t, 2> argument1(extents);
+
+    // Fill it with 0, 1, 2, 3, ...
+    std::iota(argument1.data(), argument1.data() + argument1.num_elements(), 0);
+
+    int8_t argument2 = 5;
+
+    // Create 
+
+
+
+}
+
 BOOST_AUTO_TEST_SUITE_END()

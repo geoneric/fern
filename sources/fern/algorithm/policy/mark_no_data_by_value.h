@@ -12,7 +12,21 @@ public:
 
     bool           is_no_data          (size_t index) const;
 
+    bool           is_no_data          (size_t index1,
+                                        size_t index2) const;
+
+    bool           is_no_data          (size_t index1,
+                                        size_t index2,
+                                        size_t index3) const;
+
     void           mark_as_no_data     (size_t index);
+
+    void           mark_as_no_data     (size_t index1,
+                                        size_t index2);
+
+    void           mark_as_no_data     (size_t index1,
+                                        size_t index2,
+                                        size_t index3);
 
                    MarkNoDataByValue   (Mask& mask,
                                         T const& no_data_value);
@@ -72,10 +86,56 @@ inline bool MarkNoDataByValue<T, Mask>::is_no_data(
 template<
     class T,
     class Mask>
+inline bool MarkNoDataByValue<T, Mask>::is_no_data(
+    size_t index1,
+    size_t index2) const
+{
+    return get(_mask, index1, index2);
+}
+
+
+template<
+    class T,
+    class Mask>
+inline bool MarkNoDataByValue<T, Mask>::is_no_data(
+    size_t index1,
+    size_t index2,
+    size_t index3) const
+{
+    return get(_mask, index1, index2, index3);
+}
+
+
+template<
+    class T,
+    class Mask>
 inline void MarkNoDataByValue<T, Mask>::mark_as_no_data(
     size_t index)
 {
     get(_mask, index) = _no_data_value;
+}
+
+
+template<
+    class T,
+    class Mask>
+inline void MarkNoDataByValue<T, Mask>::mark_as_no_data(
+    size_t index1,
+    size_t index2)
+{
+    get(_mask, index1, index2) = _no_data_value;
+}
+
+
+template<
+    class T,
+    class Mask>
+inline void MarkNoDataByValue<T, Mask>::mark_as_no_data(
+    size_t index1,
+    size_t index2,
+    size_t index3)
+{
+    get(_mask, index1, index2, index3) = _no_data_value;
 }
 
 } // namespace fern

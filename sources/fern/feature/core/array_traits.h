@@ -4,6 +4,37 @@
 
 
 namespace fern {
+namespace detail {
+namespace dispatch {
+
+template<
+    class T,
+    size_t nr_dimensions>
+struct ArrayCategoryTag
+{
+};
+
+
+#define ARRAY_CATEGORY_TAG(                    \
+    nr_dimensions)                             \
+template<                                      \
+    class T>                                   \
+struct ArrayCategoryTag<T, nr_dimensions>      \
+{                                              \
+                                               \
+    typedef array_##nr_dimensions##d_tag type; \
+                                               \
+};
+
+ARRAY_CATEGORY_TAG(1)
+ARRAY_CATEGORY_TAG(2)
+ARRAY_CATEGORY_TAG(3)
+
+#undef ARRAY_CATEGORY_TAG
+
+} // namespace dispatch
+} // namespace detail
+
 
 template<
     class T,
@@ -12,7 +43,8 @@ struct ArgumentTraits<
     Array<T, nr_dimensions>>
 {
 
-    typedef collection_tag argument_category;
+    typedef typename detail::dispatch::ArrayCategoryTag<T, nr_dimensions>::type
+        argument_category;
 
     template<
         class U>
@@ -22,10 +54,6 @@ struct ArgumentTraits<
     };
 
     typedef T value_type;
-
-    typedef typename Array<T, nr_dimensions>::element const* const_iterator;
-
-    typedef typename Array<T, nr_dimensions>::element* iterator;
 
 };
 
@@ -43,76 +71,90 @@ size_t size(
 template<
     class T,
     size_t nr_dimensions>
-T const& get(
+size_t size(
     Array<T, nr_dimensions> const& array,
-    size_t index)
+    size_t dimension)
 {
-    return array.data()[index];
+    assert(dimension < array.num_dimensions());
+    return array.shape()[dimension];
 }
 
 
 template<
-    class T,
-    size_t nr_dimensions>
-T& get(
-    Array<T, nr_dimensions>& array,
+    class T>
+T const& get(
+    Array<T, 1> const& array,
     size_t index)
 {
-    return array.data()[index];
+    assert(index < array.shape()[0]);
+    return array[index];
 }
 
 
-// template<
-//     class T,
-//     size_t nr_dimensions>
-// typename ArgumentTraits<Array<T, nr_dimensions>>::const_iterator begin(
-//     Array<T, nr_dimensions> const& array)
-// {
-//     return array.data();
-// }
-// 
-// 
-// template<
-//     class T,
-//     size_t nr_dimensions>
-// typename ArgumentTraits<Array<T, nr_dimensions>>::iterator begin(
-//     Array<T, nr_dimensions>& array)
-// {
-//     return array.data();
-// }
-// 
-// 
-// template<
-//     class T,
-//     size_t nr_dimensions>
-// typename ArgumentTraits<Array<T, nr_dimensions>>::const_iterator end(
-//     Array<T, nr_dimensions> const& array)
-// {
-//     return array.data() + array.num_elements();
-// }
-// 
-// 
-// template<
-//     class T,
-//     size_t nr_dimensions>
-// typename ArgumentTraits<Array<T, nr_dimensions>>::iterator end(
-//     Array<T, nr_dimensions>& array)
-// {
-//     return array.end() + array.num_elements();
-// }
-// 
-// 
-// template<
-//     class U,
-//     class V,
-//     size_t nr_dimensions>
-// void resize(
-//     Array<U, nr_dimensions>& array,
-//     Array<V, nr_dimensions> const& other_array)
-// {
-//     // array.resize(other_array.shape());
-//     static_assert(nr_dimensions == 2, "");
-//     array.resize(extents[other_array.shape()[0]][other_array.shape()[1]]);
-// }
+template<
+    class T>
+T& get(
+    Array<T, 1>& array,
+    size_t index)
+{
+    assert(index < array.shape()[0]);
+    return array[index];
+}
+
+
+template<
+    class T>
+T const& get(
+    Array<T, 2> const& array,
+    size_t index1,
+    size_t index2)
+{
+    assert(index1 < array.shape()[0]);
+    assert(index2 < array.shape()[1]);
+    return array[index1][index2];
+}
+
+
+template<
+    class T>
+T& get(
+    Array<T, 2>& array,
+    size_t index1,
+    size_t index2)
+{
+    assert(index1 < array.shape()[0]);
+    assert(index2 < array.shape()[1]);
+    return array[index1][index2];
+}
+
+
+template<
+    class T>
+T const& get(
+    Array<T, 3> const& array,
+    size_t index1,
+    size_t index2,
+    size_t index3)
+{
+    assert(index1 < array.shape()[0]);
+    assert(index2 < array.shape()[1]);
+    assert(index3 < array.shape()[2]);
+    return array[index1][index2][index3];
+}
+
+
+template<
+    class T>
+T& get(
+    Array<T, 3>& array,
+    size_t index1,
+    size_t index2,
+    size_t index3)
+{
+    assert(index1 < array.shape()[0]);
+    assert(index2 < array.shape()[1]);
+    assert(index3 < array.shape()[2]);
+    return array[index1][index2][index3];
+}
 
 } // namespace fern

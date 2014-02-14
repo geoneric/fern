@@ -11,7 +11,7 @@ struct ArgumentTraits<
     std::vector<T>>
 {
 
-    typedef collection_tag argument_category;
+    typedef array_1d_tag argument_category;
 
     template<
         class U>

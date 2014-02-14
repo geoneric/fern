@@ -5,6 +5,7 @@
 #include <boost/mpl/transform_view.hpp>
 #include <boost/mpl/vector.hpp>
 #include "fern/core/argument_traits.h"
+#include "fern/core/base_class.h"
 #include "fern/core/type_traits.h"
 #include "fern/core/typelist.h"
 
@@ -295,8 +296,10 @@ struct result
     // In case of a compiler error, make sure the argument_category trait is
     // available for both A1 and A2.
     typedef typename detail::dispatch::result<A1, A2,
-        typename ArgumentTraits<A1>::argument_category,
-        typename ArgumentTraits<A2>::argument_category>::type type;
+        typename base_class<typename ArgumentTraits<A1>::argument_category,
+            collection_tag>::type,
+        typename base_class<typename ArgumentTraits<A2>::argument_category,
+            collection_tag>::type>::type type;
 };
 
 } // namespace fern

@@ -1,7 +1,4 @@
 #pragma once
-#include <algorithm>
-#include <cmath>
-#include <type_traits>
 #include "fern/algorithm/algebra/binary_operation.h"
 #include "fern/algorithm/algebra/result_type.h"
 #include "fern/algorithm/policy/dont_mark_no_data.h"
@@ -121,8 +118,7 @@ struct within_range<
         A2 const& /* argument2 */,
         R const& result)
     {
-        FERN_STATIC_ASSERT(std::is_same,
-            typename fern::result<A1, A2>::type, R)
+        FERN_STATIC_ASSERT(std::is_same, typename fern::result<A1, A2>::type, R)
 
         return argument1 > 0 ? result >= argument1 : result <= argument1;
     }
@@ -349,6 +345,12 @@ struct Plus
         plus::Algorithm<
             typename ArgumentTraits<A1>::value_type,
             typename ArgumentTraits<A2>::value_type>,
+
+        // typename base_class<typename ArgumentTraits<A1>::argument_category,
+        //     collection_tag>::type,
+        // typename base_class<typename ArgumentTraits<A2>::argument_category,
+        //     collection_tag>::type> algorithm;
+
         typename ArgumentTraits<A1>::argument_category,
         typename ArgumentTraits<A2>::argument_category> algorithm;
 
