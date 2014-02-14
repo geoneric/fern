@@ -8,6 +8,10 @@ namespace fern {
 
 extern boost::multi_array_types::extent_gen extents;
 
+extern boost::multi_array_types::index_gen indices;
+
+typedef boost::multi_array_types::index_range Range;
+
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!

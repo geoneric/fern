@@ -36,6 +36,28 @@ ARRAY_CATEGORY_TAG(3)
 } // namespace detail
 
 
+// template<
+//     class T,
+//     size_t nr_dimensions>
+// struct ArgumentTraits<
+//     View<T, nr_dimensions>>
+// {
+// 
+//     typedef typename detail::dispatch::ArrayCategoryTag<T, nr_dimensions>::type
+//         argument_category;
+// 
+//     template<
+//         class U>
+//     struct Collection
+//     {
+//         typedef Array<T, nr_dimensions> type;
+//     };
+// 
+//     typedef T value_type;
+// 
+// };
+
+
 template<
     class T,
     size_t nr_dimensions>
@@ -56,6 +78,8 @@ struct ArgumentTraits<
     typedef T value_type;
 
 };
+
+
 
 
 template<

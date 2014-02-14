@@ -296,6 +296,10 @@ struct result
     // In case of a compiler error, make sure the argument_category trait is
     // available for both A1 and A2.
     typedef typename detail::dispatch::result<A1, A2,
+        // If A1 and/or A2 are collection types, we only need to know that they
+        // are. We don't need to know which collection exactly to dispatch to
+        // the correct result template. This helps keeping the number of
+        // class templates smaller.
         typename base_class<typename ArgumentTraits<A1>::argument_category,
             collection_tag>::type,
         typename base_class<typename ArgumentTraits<A2>::argument_category,

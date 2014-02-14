@@ -1,6 +1,7 @@
 #define BOOST_TEST_MODULE fern algorithm algebra
 #include <boost/test/unit_test.hpp>
 #include "fern/feature/core/array_traits.h"
+#include "fern/feature/core/array_view_traits.h"
 #include "fern/feature/core/masked_array_traits.h"
 #include "fern/core/vector_traits.h"
 #include "fern/algorithm/policy/policies.h"
@@ -420,9 +421,69 @@ BOOST_AUTO_TEST_CASE(threading)
 
     int8_t argument2 = 5;
 
-    // Create 
+    // Create array with values that should be in the result.
+    typedef fern::result<int8_t, int8_t>::type R;
+    fern::Array<R, 2> result_we_want(extents);
+    std::iota(result_we_want.data(), result_we_want.data() +
+        result_we_want.num_elements(), 5);
+
+    // Call plus sequenctially for 6 blocks of 100x100 cells.
+    {
+        fern::Array<R, 2> result_we_got(extents);
+
+        for(size_t r = 0; r < 3; ++r) {
+            for(size_t c = 0; c < 2; ++c) {
+                size_t row_offset = r * 100;
+                size_t col_offset = c * 100;
+
+                auto view_indices = fern::indices
+                    [fern::Range(row_offset, row_offset + 100)]
+                    [fern::Range(col_offset, col_offset + 100)];
+                fern::ArrayView<int8_t, 2> argument1_view(
+                    argument1[view_indices]);
+                fern::ArrayView<int8_t, 2> result_we_got_view(
+                    result_we_got[view_indices]);
+
+                fern::algebra::plus(argument1_view, argument2,
+                    result_we_got_view);
+            }
+        }
+
+        // Verify that the overall result is good.
+        for(size_t i = 0; i < nr_rows; ++i) {
+            for(size_t j = 0; j < nr_cols; ++j) {
+                BOOST_CHECK_EQUAL(result_we_got[i][j], result_we_want[i][j]);
+            }
+        }
+    }
+
+    // Call plus concurrently for 6 blocks of 100x100 cells.
+    {
+        fern::Array<R, 2> result_we_got(extents);
+
+        // TODO Fill a task pool with tasks.
+
+        // TODO Execute tasks in pool.
+
+        // Verify that the overall result is good.
+        for(size_t i = 0; i < nr_rows; ++i) {
+            for(size_t j = 0; j < nr_cols; ++j) {
+                // BOOST_CHECK_EQUAL(result_we_got[i][j], result_we_want[i][j]);
+            }
+        }
+    }
 
 
+
+
+    // TODO Make this work for masked arrays too. The mask policy must contain
+    //      a view too.
+
+
+
+    // TODO Think about easy ways to select execution scheme. Sequentialy or
+    //      concurrently.
+    //      Refactor this code.
 
 }
 

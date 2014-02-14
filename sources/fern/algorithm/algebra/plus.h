@@ -345,12 +345,6 @@ struct Plus
         plus::Algorithm<
             typename ArgumentTraits<A1>::value_type,
             typename ArgumentTraits<A2>::value_type>,
-
-        // typename base_class<typename ArgumentTraits<A1>::argument_category,
-        //     collection_tag>::type,
-        // typename base_class<typename ArgumentTraits<A2>::argument_category,
-        //     collection_tag>::type> algorithm;
-
         typename ArgumentTraits<A1>::argument_category,
         typename ArgumentTraits<A2>::argument_category> algorithm;
 
