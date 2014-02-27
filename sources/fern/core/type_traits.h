@@ -5,7 +5,8 @@
 
 namespace fern {
 
-// Numeric type categories. Used in tag dispatching.
+// Type categories. Used in tag dispatching.
+struct boolean_tag {};  // A boolean is not an integer in fern, it's a boolean.
 struct integer_tag {};
 struct signed_integer_tag: public integer_tag {};
 struct unsigned_integer_tag: public integer_tag {};
@@ -19,6 +20,23 @@ struct TypeTraits
     // static ValueType const value_type;
 
     // static ValueTypes const value_types;
+
+    static bool const builtin = false;
+};
+
+
+template<>
+struct TypeTraits<bool>
+{
+    typedef boolean_tag number_category;
+
+    static ValueType const value_type;
+
+    static ValueTypes const value_types;
+
+    static String const name;
+
+    static bool const builtin = true;
 };
 
 
@@ -32,6 +50,8 @@ struct TypeTraits<int8_t>
     static ValueTypes const value_types;
 
     static String const name;
+
+    static bool const builtin = true;
 
     static int8_t const min = std::numeric_limits<int8_t>::min();
 
@@ -50,6 +70,8 @@ struct TypeTraits<uint8_t>
 
     static String const name;
 
+    static bool const builtin = true;
+
     static uint8_t const min = std::numeric_limits<uint8_t>::min();
 
     static uint8_t const max = std::numeric_limits<uint8_t>::max();
@@ -67,6 +89,8 @@ struct TypeTraits<int16_t>
 
     static String const name;
 
+    static bool const builtin = true;
+
     static int16_t const min = std::numeric_limits<int16_t>::min();
 
     static int16_t const max = std::numeric_limits<int16_t>::max();
@@ -83,6 +107,8 @@ struct TypeTraits<uint16_t>
     static ValueTypes const value_types;
 
     static String const name;
+
+    static bool const builtin = true;
 
     // static uint16_t const min = std::numeric_limits<uint16_t>::min();
 
@@ -105,6 +131,8 @@ struct TypeTraits<int32_t>
 
     static String const name;
 
+    static bool const builtin = true;
+
     static int32_t const min = std::numeric_limits<int32_t>::min();
 
     static int32_t const max = std::numeric_limits<int32_t>::max();
@@ -121,6 +149,8 @@ struct TypeTraits<uint32_t>
     static ValueTypes const value_types;
 
     static String const name;
+
+    static bool const builtin = true;
 
     static uint32_t const min;
 
@@ -139,6 +169,8 @@ struct TypeTraits<int64_t>
 
     static String const name;
 
+    static bool const builtin = true;
+
     static int64_t const min;
 
     static int64_t const max;
@@ -155,6 +187,8 @@ struct TypeTraits<uint64_t>
     static ValueTypes const value_types;
 
     static String const name;
+
+    static bool const builtin = true;
 
     static uint64_t const min;
 
@@ -173,6 +207,8 @@ struct TypeTraits<float>
 
     static String const name;
 
+    static bool const builtin = true;
+
     static float const min;
 
     static float const max;
@@ -190,6 +226,8 @@ struct TypeTraits<double>
 
     static String const name;
 
+    static bool const builtin = true;
+
     static double const min;
 
     static double const max;
@@ -204,6 +242,8 @@ struct TypeTraits<String>
     static ValueTypes const value_types;
 
     static String const name;
+
+    static bool const builtin = true;
 };
 
 } // namespace fern

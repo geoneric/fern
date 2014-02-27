@@ -10,6 +10,7 @@ namespace fern {
 
 // These strings should match the ones used in the XML schema.
 static std::map<String, ValueTypes> value_type_by_string = {
+    { "Bool"          , ValueTypes::BOOL             },
     { "Uint8"         , ValueTypes::UINT8            },
     { "Int8"          , ValueTypes::INT8             },
     { "Uint16"        , ValueTypes::UINT16           },
@@ -28,6 +29,7 @@ static std::map<String, ValueTypes> value_type_by_string = {
 
 
 static std::map<ValueType, String> string_by_value_type = {
+    { ValueType::VT_BOOL            , "Bool"           },
     { ValueType::VT_UINT8           , "Uint8"          },
     { ValueType::VT_INT8            , "Int8"           },
     { ValueType::VT_UINT16          , "Uint16"         },
@@ -51,6 +53,7 @@ static String to_string(
 
 
 std::vector<ValueType> const ValueTypes::VALUE_TYPES = {
+    ValueType::VT_BOOL,
     ValueType::VT_UINT8,
     ValueType::VT_INT8,
     ValueType::VT_UINT16,

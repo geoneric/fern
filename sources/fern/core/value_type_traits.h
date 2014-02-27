@@ -13,6 +13,13 @@ struct ValueTypeTraits
 
 
 template<>
+struct ValueTypeTraits<VT_BOOL>
+{
+    typedef bool type;
+};
+
+
+template<>
 struct ValueTypeTraits<VT_UINT8>
 {
     typedef uint8_t type;

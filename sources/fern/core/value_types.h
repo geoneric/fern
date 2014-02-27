@@ -26,6 +26,8 @@ public:
     //! Unknown value type, no flag is set.
     static ValueTypes const UNKNOWN;
 
+    static ValueTypes const BOOL;
+
     static ValueTypes const UINT8;
 
     static ValueTypes const INT8;

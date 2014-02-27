@@ -69,6 +69,7 @@ void show_value(
     switch(visitor.data_type()) {
         case DT_CONSTANT: {
             switch(visitor.value_type()) {
+                SHOW_VALUE_CASE(VT_BOOL)
                 SHOW_VALUE_CASE(VT_INT8)
                 SHOW_VALUE_CASE(VT_INT16)
                 SHOW_VALUE_CASE(VT_INT32)

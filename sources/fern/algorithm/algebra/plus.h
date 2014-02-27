@@ -4,7 +4,7 @@
 #include "fern/algorithm/policy/dont_mark_no_data.h"
 #include "fern/algorithm/policy/discard_domain_errors.h"
 #include "fern/algorithm/policy/discard_range_errors.h"
-#include "fern/core/argument_traits.h"
+/// #include "fern/core/argument_traits.h"
 #include "fern/core/assert.h"
 #include "fern/core/base_class.h"
 #include "fern/core/type_traits.h"
@@ -43,7 +43,7 @@ struct within_range<
         R const& result)
     {
         FERN_STATIC_ASSERT(std::is_same,
-            typename fern::result<A1, A2>::type, R)
+            typename fern::Result<A1, A2>::type, R)
 
         // unsigned + unsigned
         // Overflow if result is smaller than one of the operands.
@@ -69,7 +69,7 @@ struct within_range<
         R const& result)
     {
         FERN_STATIC_ASSERT(std::is_same,
-            typename fern::result<A1, A2>::type, R)
+            typename fern::Result<A1, A2>::type, R)
 
         // signed + signed
         // Overflow/underflow if sign of result is different.
@@ -118,7 +118,7 @@ struct within_range<
         A2 const& /* argument2 */,
         R const& result)
     {
-        FERN_STATIC_ASSERT(std::is_same, typename fern::result<A1, A2>::type, R)
+        FERN_STATIC_ASSERT(std::is_same, typename fern::Result<A1, A2>::type, R)
 
         return argument1 > 0 ? result >= argument1 : result <= argument1;
     }
@@ -164,7 +164,7 @@ struct within_range<
         A2 const& /* argument2 */,
         R const& result)
     {
-        FERN_STATIC_ASSERT(std::is_same, typename fern::result<A1, A2>::type, R)
+        FERN_STATIC_ASSERT(std::is_same, typename fern::Result<A1, A2>::type, R)
 
         return std::isfinite(result);
     }
@@ -187,7 +187,7 @@ struct within_range<
         A2 const& /* argument2 */,
         R const& result)
     {
-        FERN_STATIC_ASSERT(std::is_same, typename fern::result<A1, A2>::type, R)
+        FERN_STATIC_ASSERT(std::is_same, typename fern::Result<A1, A2>::type, R)
 
         // integral + float
         return std::isfinite(result);
@@ -211,7 +211,7 @@ struct within_range<
         A2 const& /* argument2 */,
         R const& result)
     {
-        FERN_STATIC_ASSERT(std::is_same, typename fern::result<A1, A2>::type, R)
+        FERN_STATIC_ASSERT(std::is_same, typename fern::Result<A1, A2>::type, R)
 
         // float + integral
         return std::isfinite(result);
@@ -314,7 +314,7 @@ template<
 struct Plus
 {
     //! Type of the result of the operation.
-    typedef typename result<A1, A2>::type R;
+    typedef typename Result<A1, A2>::type R;
 
     typedef typename ArgumentTraits<A1>::value_type A1Value;
 

@@ -15,6 +15,7 @@ namespace fern {
 */
 class AttributeVisitor:
     public Loki::BaseVisitor,
+    public Loki::Visitor<ConstantAttribute<bool>, void, true>,
     public Loki::Visitor<ConstantAttribute<int8_t>, void, true>,
     public Loki::Visitor<ConstantAttribute<int16_t>, void, true>,
     public Loki::Visitor<ConstantAttribute<int32_t>, void, true>,
@@ -26,6 +27,7 @@ class AttributeVisitor:
     public Loki::Visitor<ConstantAttribute<float>, void, true>,
     public Loki::Visitor<ConstantAttribute<double>, void, true>,
     public Loki::Visitor<ConstantAttribute<String>, void, true>,
+    public Loki::Visitor<FieldAttribute<bool>, void, true>,
     public Loki::Visitor<FieldAttribute<int8_t>, void, true>,
     public Loki::Visitor<FieldAttribute<int16_t>, void, true>,
     public Loki::Visitor<FieldAttribute<int32_t>, void, true>,
@@ -43,6 +45,8 @@ class AttributeVisitor:
 public:
 
     virtual void   Visit               (Attribute const& attribute);
+
+    virtual void   Visit               (ConstantAttribute<bool> const& attribute);
 
     virtual void   Visit               (ConstantAttribute<int8_t> const& attribute);
 
@@ -65,6 +69,8 @@ public:
     virtual void   Visit               (ConstantAttribute<double> const& attribute);
 
     virtual void   Visit               (ConstantAttribute<String> const& attribute);
+
+    virtual void   Visit               (FieldAttribute<bool> const& attribute);
 
     virtual void   Visit               (FieldAttribute<int8_t> const& attribute);
 
@@ -112,6 +118,7 @@ private:
 */
 #define VISIT_ATTRIBUTES(                                                      \
         macro)                                                                 \
+    macro(bool)                                                                \
     macro(int8_t)                                                              \
     macro(int16_t)                                                             \
     macro(int32_t)                                                             \

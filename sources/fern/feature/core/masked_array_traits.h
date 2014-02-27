@@ -19,7 +19,7 @@ struct ArgumentTraits<
         class U>
     struct Collection
     {
-        typedef MaskedArray<T, nr_dimensions> type;
+        typedef MaskedArray<U, nr_dimensions> type;
     };
 
     typedef T value_type;

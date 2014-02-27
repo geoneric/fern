@@ -1,10 +1,12 @@
 #define BOOST_TEST_MODULE fern algorithm algebra
+#include <thread>
 #include <boost/test/unit_test.hpp>
 #include "fern/feature/core/array_traits.h"
 #include "fern/feature/core/array_view_traits.h"
 #include "fern/feature/core/masked_array_traits.h"
 #include "fern/core/vector_traits.h"
 #include "fern/algorithm/policy/policies.h"
+#include "fern/algorithm/algebra/equal.h"
 #include "fern/algorithm/algebra/plus.h"
 
 
@@ -146,7 +148,7 @@ BOOST_AUTO_TEST_CASE(argument_types)
     {
         uint8_t argument1(5);
         uint8_t argument2(6);
-        typedef fern::result<uint8_t, uint8_t>::type R;
+        typedef fern::Result<uint8_t, uint8_t>::type R;
         R result;
 
         fern::algebra::plus(argument1, argument2, result);
@@ -158,7 +160,7 @@ BOOST_AUTO_TEST_CASE(argument_types)
     {
         uint8_t argument1(5);
         std::vector<uint8_t> argument2({1, 2, 3});
-        typedef fern::result<uint8_t, uint8_t>::type R;
+        typedef fern::Result<uint8_t, uint8_t>::type R;
         std::vector<R> result(argument2.size());
 
         fern::algebra::plus(argument1, argument2, result);
@@ -173,7 +175,7 @@ BOOST_AUTO_TEST_CASE(argument_types)
     {
         std::vector<uint8_t> argument1({1, 2, 3});
         uint8_t argument2(5);
-        typedef fern::result<uint8_t, uint8_t>::type R;
+        typedef fern::Result<uint8_t, uint8_t>::type R;
         std::vector<R> result(argument1.size());
 
         fern::algebra::plus(argument1, argument2, result);
@@ -188,7 +190,7 @@ BOOST_AUTO_TEST_CASE(argument_types)
     {
         std::vector<uint8_t> argument1({1, 2, 3});
         std::vector<uint8_t> argument2({4, 5, 6});
-        typedef fern::result<uint8_t, uint8_t>::type R;
+        typedef fern::Result<uint8_t, uint8_t>::type R;
         std::vector<R> result(argument1.size());
 
         fern::algebra::plus(argument1, argument2, result);
@@ -208,7 +210,7 @@ BOOST_AUTO_TEST_CASE(argument_types)
         argument[1][1] =  9;
         argument[2][0] =  1;
         argument[2][1] =  2;
-        typedef fern::result<int8_t, int8_t>::type R;
+        typedef fern::Result<int8_t, int8_t>::type R;
         fern::Array<R, 2> result(fern::extents[3][2]);
 
         fern::algebra::plus(argument, argument, result);
@@ -231,7 +233,7 @@ BOOST_AUTO_TEST_CASE(argument_types)
         argument[1][1] =  9;
         argument[2][0] =  1;
         argument[2][1] =  2;
-        typedef fern::result<int8_t, int8_t>::type R;
+        typedef fern::Result<int8_t, int8_t>::type R;
         fern::MaskedArray<R, 2> result(fern::extents[3][2]);
 
         fern::algebra::plus(argument, argument, result);
@@ -286,7 +288,7 @@ BOOST_AUTO_TEST_CASE(no_data)
     {
         // Create room for the result.
         // Set the mask.
-        typedef fern::result<int8_t, int8_t>::type R;
+        typedef fern::Result<int8_t, int8_t>::type R;
         fern::MaskedArray<R, 2> result(extents);
         result.set_mask(argument1.mask(), true);
         result.set_mask(argument2.mask(), true);
@@ -330,7 +332,7 @@ BOOST_AUTO_TEST_CASE(no_data)
     {
         // Create room for the result.
         // Set the mask.
-        typedef fern::result<int8_t, int8_t>::type R;
+        typedef fern::Result<int8_t, int8_t>::type R;
         fern::MaskedArray<R, 2> result(extents);
         result.set_mask(argument1.mask(), true);
 
@@ -370,7 +372,7 @@ BOOST_AUTO_TEST_CASE(no_data)
     {
         // Create room for the result.
         // Set the mask.
-        typedef fern::result<int8_t, int8_t>::type R;
+        typedef fern::Result<int8_t, int8_t>::type R;
         fern::MaskedArray<R, 2> result(extents);
         result.set_mask(argument1.mask(), true);
 
@@ -408,11 +410,51 @@ BOOST_AUTO_TEST_CASE(no_data)
 }
 
 
+struct PlusTask
+{
+
+    template<
+        class Indices>
+    void operator()(
+        fern::Array<int8_t, 2>& argument1,
+        int8_t& argument2,
+        fern::Array<int8_t, 2>& result,
+        Indices indices) const
+    {
+        fern::ArrayView<int8_t, 2> const argument1_view(argument1[indices]);
+        fern::ArrayView<int8_t, 2> result_view(result[indices]);
+        fern::algebra::plus(argument1_view, argument2, result_view);
+    }
+
+};
+
+
+struct EqualTask
+{
+
+    template<
+        class Indices>
+    void operator()(
+        fern::Array<int8_t, 2>& argument1,
+        fern::Array<int8_t, 2>& argument2,
+        fern::Array<bool, 2>& result,
+        Indices indices) const
+    {
+        fern::ArrayView<int8_t, 2> const argument1_view(argument1[indices]);
+        fern::ArrayView<int8_t, 2> const argument2_view(argument2[indices]);
+        fern::ArrayView<bool, 2> result_view(result[indices]);
+        fern::algebra::equal(argument1_view, argument2_view, result_view);
+    }
+
+};
+
+
 BOOST_AUTO_TEST_CASE(threading)
 {
     // Create a somewhat larger array.
-    size_t const nr_rows = 300;
-    size_t const nr_cols = 200;
+    size_t const nr_rows = 6000;
+    size_t const nr_cols = 4000;
+    size_t const stride = 2000;
     auto extents = fern::extents[nr_rows][nr_cols];
     fern::Array<int8_t, 2> argument1(extents);
 
@@ -422,69 +464,127 @@ BOOST_AUTO_TEST_CASE(threading)
     int8_t argument2 = 5;
 
     // Create array with values that should be in the result.
-    typedef fern::result<int8_t, int8_t>::type R;
+    typedef fern::Result<int8_t, int8_t>::type R;
     fern::Array<R, 2> result_we_want(extents);
     std::iota(result_we_want.data(), result_we_want.data() +
         result_we_want.num_elements(), 5);
 
-    // Call plus sequenctially for 6 blocks of 100x100 cells.
+
+    // Call plus sequenctially for 6 blocks of stride x stride cells.
     {
-        fern::Array<R, 2> result_we_got(extents);
+        fern::Array<R, 2> plus_result(extents);
+        fern::Array<bool, 2> equal_result(extents);
+        PlusTask plus_task;
+        EqualTask equal_task;
 
         for(size_t r = 0; r < 3; ++r) {
             for(size_t c = 0; c < 2; ++c) {
-                size_t row_offset = r * 100;
-                size_t col_offset = c * 100;
+                size_t row_offset = r * stride;
+                size_t col_offset = c * stride;
 
                 auto view_indices = fern::indices
-                    [fern::Range(row_offset, row_offset + 100)]
-                    [fern::Range(col_offset, col_offset + 100)];
-                fern::ArrayView<int8_t, 2> argument1_view(
-                    argument1[view_indices]);
-                fern::ArrayView<int8_t, 2> result_we_got_view(
-                    result_we_got[view_indices]);
+                    [fern::Range(row_offset, row_offset + stride)]
+                    [fern::Range(col_offset, col_offset + stride)];
 
-                fern::algebra::plus(argument1_view, argument2,
-                    result_we_got_view);
+                plus_task(argument1, argument2, plus_result, view_indices);
+            }
+        }
+
+        for(size_t r = 0; r < 3; ++r) {
+            for(size_t c = 0; c < 2; ++c) {
+                size_t row_offset = r * stride;
+                size_t col_offset = c * stride;
+
+                auto view_indices = fern::indices
+                    [fern::Range(row_offset, row_offset + stride)]
+                    [fern::Range(col_offset, col_offset + stride)];
+
+                equal_task(plus_result, result_we_want, equal_result,
+                    view_indices);
             }
         }
 
         // Verify that the overall result is good.
-        for(size_t i = 0; i < nr_rows; ++i) {
-            for(size_t j = 0; j < nr_cols; ++j) {
-                BOOST_CHECK_EQUAL(result_we_got[i][j], result_we_want[i][j]);
-            }
-        }
+        BOOST_CHECK_EQUAL(std::count(equal_result.origin(),
+            equal_result.origin() + equal_result.num_elements(), true),
+            equal_result.num_elements());
     }
 
-    // Call plus concurrently for 6 blocks of 100x100 cells.
+
+    // Call plus concurrently for 6 blocks of stride x stride cells.
     {
-        fern::Array<R, 2> result_we_got(extents);
+        fern::Array<R, 2> plus_result(extents);
+        fern::Array<bool, 2> equal_result(extents);
+        PlusTask plus_task;
+        EqualTask equal_task;
 
         // TODO Fill a task pool with tasks.
 
         // TODO Execute tasks in pool.
 
-        // Verify that the overall result is good.
-        for(size_t i = 0; i < nr_rows; ++i) {
-            for(size_t j = 0; j < nr_cols; ++j) {
-                // BOOST_CHECK_EQUAL(result_we_got[i][j], result_we_want[i][j]);
+        std::vector<std::thread> threads;
+
+        for(size_t r = 0; r < 3; ++r) {
+            for(size_t c = 0; c < 2; ++c) {
+                size_t row_offset = r * stride;
+                size_t col_offset = c * stride;
+
+                auto view_indices = fern::indices
+                    [fern::Range(row_offset, row_offset + stride)]
+                    [fern::Range(col_offset, col_offset + stride)];
+
+                threads.push_back(std::thread(plus_task, std::ref(argument1),
+                    std::ref(argument2), std::ref(plus_result),
+                    view_indices));
             }
         }
+
+        for(auto& thread: threads) {
+            thread.join();
+        }
+        threads.clear();
+
+        for(size_t r = 0; r < 3; ++r) {
+            for(size_t c = 0; c < 2; ++c) {
+                size_t row_offset = r * stride;
+                size_t col_offset = c * stride;
+
+                auto view_indices = fern::indices
+                    [fern::Range(row_offset, row_offset + stride)]
+                    [fern::Range(col_offset, col_offset + stride)];
+
+                equal_task(plus_result, result_we_want, equal_result,
+                    view_indices);
+
+                threads.push_back(std::thread(equal_task, std::ref(plus_result),
+                    std::ref(result_we_want), std::ref(equal_result),
+                    view_indices));
+            }
+        }
+
+        for(auto& thread: threads) {
+            thread.join();
+        }
+        threads.clear();
+
+        // Verify that the overall result is good.
+        BOOST_CHECK_EQUAL(std::count(equal_result.origin(),
+            equal_result.origin() + equal_result.num_elements(), true),
+            equal_result.num_elements());
     }
-
-
 
 
     // TODO Make this work for masked arrays too. The mask policy must contain
     //      a view too.
 
-
-
     // TODO Think about easy ways to select execution scheme. Sequentialy or
     //      concurrently.
     //      Refactor this code.
 
+    // TODO Make a count operation that accepts two arguments. One value to
+    //      search in and one constant value to search. It sets a count
+    //      largest unsigned type on the machine? Or maybe uint64_t?. Typedef
+    //      some fern::size_t.
 }
 
 BOOST_AUTO_TEST_SUITE_END()

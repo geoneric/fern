@@ -19,7 +19,7 @@ struct ArgumentTraits<
         class U>
     struct Collection
     {
-        typedef ArrayView<T, nr_dimensions> type;
+        typedef ArrayView<U, nr_dimensions> type;
     };
 
     typedef T value_type;

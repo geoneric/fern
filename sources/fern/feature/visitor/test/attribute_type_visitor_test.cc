@@ -8,6 +8,7 @@
 #define CALL_FUNCTION_TEMPLATE_1(                                              \
         function_template,                                                     \
         argument)                                                              \
+    function_template<bool>(argument);                                         \
     function_template<int8_t>(argument);                                       \
     function_template<int16_t>(argument);                                      \
     function_template<int32_t>(argument);                                      \

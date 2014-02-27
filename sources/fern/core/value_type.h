@@ -5,6 +5,8 @@ namespace fern {
 
 enum ValueType {
 
+    VT_BOOL,
+
     VT_UINT8,
 
     VT_INT8,

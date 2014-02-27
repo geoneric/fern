@@ -3,6 +3,7 @@
 #include <utility>
 #include "fern/core/argument_traits.h"
 #include "fern/core/assert.h"
+#include "fern/core/collection_traits.h"
 
 
 namespace fern {
@@ -147,10 +148,7 @@ public:
                     NoDataPolicy::mark_as_no_data(i);
                 }
 
-                _algorithm(
-                    static_cast<typename ArgumentTraits<R>::value_type>(a1),
-                    static_cast<typename ArgumentTraits<R>::value_type>(a2),
-                    fern::get(result, i));
+                _algorithm(a1, a2, fern::get(result, i));
 
                 if(!OutOfRangePolicy::within_range(a1, a2, fern::get(
                         result, i))) {
@@ -238,10 +236,7 @@ public:
                         NoDataPolicy::mark_as_no_data(i, j);
                     }
 
-                    _algorithm(
-                        static_cast<typename ArgumentTraits<R>::value_type>(a1),
-                        static_cast<typename ArgumentTraits<R>::value_type>(a2),
-                        fern::get(result, i, j));
+                    _algorithm(a1, a2, fern::get(result, i, j));
 
                     if(!OutOfRangePolicy::within_range(a1, a2, fern::get(
                             result, i, j))) {
@@ -324,10 +319,7 @@ public:
                     NoDataPolicy::mark_as_no_data(i);
                 }
 
-                _algorithm(
-                    static_cast<typename ArgumentTraits<R>::value_type>(a1),
-                    static_cast<typename ArgumentTraits<R>::value_type>(a2),
-                    fern::get(result, i));
+                _algorithm(a1, a2, fern::get(result, i));
 
                 if(!OutOfRangePolicy::within_range(a1, a2, fern::get(
                         result, i))) {
@@ -412,10 +404,7 @@ public:
                         NoDataPolicy::mark_as_no_data(i, j);
                     }
 
-                    _algorithm(
-                        static_cast<typename ArgumentTraits<R>::value_type>(a1),
-                        static_cast<typename ArgumentTraits<R>::value_type>(a2),
-                        fern::get(result, i, j));
+                    _algorithm(a1, a2, fern::get(result, i, j));
 
                     if(!OutOfRangePolicy::within_range(a1, a2, fern::get(
                             result, i, j))) {
@@ -498,10 +487,7 @@ public:
                     NoDataPolicy::mark_as_no_data(i);
                 }
 
-                _algorithm(
-                    static_cast<typename ArgumentTraits<R>::value_type>(a1),
-                    static_cast<typename ArgumentTraits<R>::value_type>(a2),
-                    fern::get(result, i));
+                _algorithm(a1, a2, fern::get(result, i));
 
                 if(!OutOfRangePolicy::within_range(a1, a2, fern::get(
                         result, i))) {
@@ -586,10 +572,7 @@ public:
                         NoDataPolicy::mark_as_no_data(i, j);
                     }
 
-                    _algorithm(
-                        static_cast<typename ArgumentTraits<R>::value_type>(a1),
-                        static_cast<typename ArgumentTraits<R>::value_type>(a2),
-                        fern::get(result, i, j));
+                    _algorithm(a1, a2, fern::get(result, i, j));
 
                     if(!OutOfRangePolicy::within_range(a1, a2, fern::get(
                             result, i, j))) {

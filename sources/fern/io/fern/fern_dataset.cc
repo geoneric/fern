@@ -532,6 +532,7 @@ std::shared_ptr<Attribute> FernDataset::open_attribute(
         OPEN_CASE(VT_INT64);
         OPEN_CASE(VT_FLOAT32);
         OPEN_CASE(VT_FLOAT64);
+        case VT_BOOL:
         case VT_STRING: {
             // TODO
             assert(false);
@@ -639,6 +640,7 @@ std::shared_ptr<Attribute> FernDataset::read_attribute(
         READ_CASE(VT_INT64);
         READ_CASE(VT_FLOAT32);
         READ_CASE(VT_FLOAT64);
+        case VT_BOOL:
         case VT_STRING: {
             // TODO
             assert(false);
@@ -782,6 +784,7 @@ void FernDataset::write_attribute(
                 WRITE_ATTRIBUTE_CASE(VT_INT64)
                 WRITE_ATTRIBUTE_CASE(VT_FLOAT32)
                 WRITE_ATTRIBUTE_CASE(VT_FLOAT64)
+                case VT_BOOL:
                 case VT_STRING: {
                     assert(false); // Value type not supported by driver.
                     break;

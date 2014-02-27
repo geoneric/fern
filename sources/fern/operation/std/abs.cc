@@ -138,6 +138,7 @@ std::vector<std::shared_ptr<Argument>> Abs::execute(
                 CONSTANT_CASE(ValueType::VT_INT64)
                 CONSTANT_CASE(ValueType::VT_FLOAT32)
                 CONSTANT_CASE(ValueType::VT_FLOAT64)
+                case ValueType::VT_BOOL:
                 case ValueType::VT_STRING: {
                     assert(false);
                     break;
@@ -157,6 +158,7 @@ std::vector<std::shared_ptr<Argument>> Abs::execute(
                 FIELD_CASE(ValueType::VT_INT64)
                 FIELD_CASE(ValueType::VT_FLOAT32)
                 FIELD_CASE(ValueType::VT_FLOAT64)
+                case ValueType::VT_BOOL:
                 case ValueType::VT_STRING: {
                     assert(false);
                     break;

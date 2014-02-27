@@ -343,6 +343,7 @@ std::shared_ptr<Attribute> GDALDataset::open_attribute(
         OPEN_CASE(VT_INT32);
         OPEN_CASE(VT_FLOAT32);
         OPEN_CASE(VT_FLOAT64);
+        case VT_BOOL:
         case VT_STRING:
         case VT_UINT64:
         case VT_INT8:
@@ -542,6 +543,7 @@ std::shared_ptr<Attribute> GDALDataset::read_attribute(
         READ_CASE(VT_INT32);
         READ_CASE(VT_FLOAT32);
         READ_CASE(VT_FLOAT64);
+        case VT_BOOL:
         case VT_STRING:
         case VT_UINT64:
         case VT_INT8:
@@ -669,6 +671,7 @@ void GDALDataset::write_attribute(
                 WRITE_ATTRIBUTE_CASE(VT_INT32)
                 WRITE_ATTRIBUTE_CASE(VT_FLOAT32)
                 WRITE_ATTRIBUTE_CASE(VT_FLOAT64)
+                case VT_BOOL:
                 case VT_INT8:
                 case VT_UINT64:
                 case VT_INT64:

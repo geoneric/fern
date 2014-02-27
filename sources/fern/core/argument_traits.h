@@ -28,6 +28,7 @@ struct ArgumentTraits<type>                 \
     typedef type value_type;                \
 };
 
+CONSTANT_ARGUMENT_TRAITS(bool)
 CONSTANT_ARGUMENT_TRAITS(uint8_t)
 CONSTANT_ARGUMENT_TRAITS(uint16_t)
 CONSTANT_ARGUMENT_TRAITS(uint32_t)

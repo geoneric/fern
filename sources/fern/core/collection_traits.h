@@ -1,0 +1,24 @@
+#pragma once
+
+
+namespace fern {
+
+// Declarations of functions that are used in the implementation of operations.
+// These are not defined. For each collection type they need to be implemented.
+// See also vector_traits.h, array_traits.h, ...
+
+template<
+    class T>
+size_t             size                (T const& collection);
+
+template<
+    class T>
+T const&           get                 (T const& collection,
+                                        size_t index);
+
+template<
+    class T>
+T&                 get                 (T& collection,
+                                        size_t index);
+
+} // namespace fern

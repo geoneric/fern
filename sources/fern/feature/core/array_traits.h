@@ -72,7 +72,7 @@ struct ArgumentTraits<
         class U>
     struct Collection
     {
-        typedef Array<T, nr_dimensions> type;
+        typedef Array<U, nr_dimensions> type;
     };
 
     typedef T value_type;

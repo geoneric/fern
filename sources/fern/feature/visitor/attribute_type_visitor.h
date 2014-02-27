@@ -32,6 +32,8 @@ public:
 
     void           Visit               (Attribute const& attribute);
 
+    void           Visit               (ConstantAttribute<bool> const& attribute);
+
     void           Visit               (ConstantAttribute<int8_t> const& attribute);
 
     void           Visit               (ConstantAttribute<int16_t> const& attribute);
@@ -53,6 +55,8 @@ public:
     void           Visit               (ConstantAttribute<double> const& attribute);
 
     void           Visit               (ConstantAttribute<String> const& attribute);
+
+    virtual void   Visit               (FieldAttribute<bool> const& attribute);
 
     virtual void   Visit               (FieldAttribute<int8_t> const& attribute);
 
