@@ -77,6 +77,8 @@ struct ArgumentTraits<
 
     typedef T value_type;
 
+    static bool const is_masking = false;
+
 };
 
 
@@ -85,7 +87,7 @@ struct ArgumentTraits<
 template<
     class T,
     size_t nr_dimensions>
-size_t size(
+inline size_t size(
     Array<T, nr_dimensions> const& array)
 {
     return array.num_elements();
@@ -95,7 +97,7 @@ size_t size(
 template<
     class T,
     size_t nr_dimensions>
-size_t size(
+inline size_t size(
     Array<T, nr_dimensions> const& array,
     size_t dimension)
 {
@@ -106,7 +108,7 @@ size_t size(
 
 template<
     class T>
-T const& get(
+inline T const& get(
     Array<T, 1> const& array,
     size_t index)
 {
@@ -117,7 +119,7 @@ T const& get(
 
 template<
     class T>
-T& get(
+inline T& get(
     Array<T, 1>& array,
     size_t index)
 {
@@ -128,7 +130,7 @@ T& get(
 
 template<
     class T>
-T const& get(
+inline T const& get(
     Array<T, 2> const& array,
     size_t index1,
     size_t index2)
@@ -141,7 +143,7 @@ T const& get(
 
 template<
     class T>
-T& get(
+inline T& get(
     Array<T, 2>& array,
     size_t index1,
     size_t index2)
@@ -154,7 +156,7 @@ T& get(
 
 template<
     class T>
-T const& get(
+inline T const& get(
     Array<T, 3> const& array,
     size_t index1,
     size_t index2,
@@ -169,7 +171,7 @@ T const& get(
 
 template<
     class T>
-T& get(
+inline T& get(
     Array<T, 3>& array,
     size_t index1,
     size_t index2,

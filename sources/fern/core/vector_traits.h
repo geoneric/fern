@@ -26,6 +26,8 @@ struct ArgumentTraits<
 
     /// typedef typename std::vector<T>::iterator iterator;
 
+    static bool const is_masking = false;
+
 };
 
 

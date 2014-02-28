@@ -12,6 +12,12 @@ public:
 
     template<
         class A1,
+        class R>
+    static bool    within_range        (A1 const& argument1,
+                                        R const& result);
+
+    template<
+        class A1,
         class A2,
         class R>
     static bool    within_range        (A1 const& argument1,
@@ -37,6 +43,17 @@ protected:
 private:
 
 };
+
+
+template<
+    class A1,
+    class R>
+inline bool DiscardRangeErrors::within_range(
+    A1 const& /* argument1 */,
+    R const& /* result */)
+{
+    return true;
+}
 
 
 // template<

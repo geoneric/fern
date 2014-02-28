@@ -1,4 +1,6 @@
 #pragma once
+#include <boost/mpl/and.hpp>
+#include <boost/mpl/if.hpp>
 #include "fern/core/argument_traits.h"
 #include "fern/core/assert.h"
 #include "fern/core/base_class.h"
@@ -32,9 +34,29 @@ struct Result<
     constant_tag>
 {
 
-    // Both argument types are not collections. The result's type equals the
-    // value type.
-    typedef RValue type;
+    /// // Both argument types are not collections. The result's type equals the
+    /// // value type.
+    /// typedef RValue type;
+
+    typedef typename boost::mpl::if_<
+        typename boost::mpl::and_<
+            typename std::is_arithmetic<A1>::type,
+            typename std::is_arithmetic<A2>::type>::type,
+        // Both argument types are arithmetic types. The result's type equals
+        // the value type.
+        RValue,
+        typename boost::mpl::if_<
+            typename std::is_arithmetic<A1>::type,
+
+            // A2 is a type representing a constant. Select its template class
+            // in combination with the result value type.
+            typename ArgumentTraits<A2>::template Constant<RValue>::type,
+
+            // A1 is a type representing a constant. Select its template class
+            // in combination with the result value type.
+            typename ArgumentTraits<A1>::template Constant<RValue>::type>
+                ::type
+    >::type type;
 
 };
 

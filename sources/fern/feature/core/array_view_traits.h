@@ -24,6 +24,8 @@ struct ArgumentTraits<
 
     typedef T value_type;
 
+    static bool const is_masking = false;
+
 };
 
 

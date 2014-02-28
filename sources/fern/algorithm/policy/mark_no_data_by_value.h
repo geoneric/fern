@@ -10,6 +10,8 @@ class MarkNoDataByValue {
 
 public:
 
+    bool           is_no_data          () const;
+
     bool           is_no_data          (size_t index) const;
 
     bool           is_no_data          (size_t index1,
@@ -18,6 +20,8 @@ public:
     bool           is_no_data          (size_t index1,
                                         size_t index2,
                                         size_t index3) const;
+
+    void           mark_as_no_data     ();
 
     void           mark_as_no_data     (size_t index);
 
@@ -76,10 +80,19 @@ inline MarkNoDataByValue<T, Mask>::MarkNoDataByValue(
 template<
     class T,
     class Mask>
+inline bool MarkNoDataByValue<T, Mask>::is_no_data() const
+{
+    return get(_mask) == _no_data_value;
+}
+
+
+template<
+    class T,
+    class Mask>
 inline bool MarkNoDataByValue<T, Mask>::is_no_data(
     size_t index) const
 {
-    return get(_mask, index);
+    return get(_mask, index) == _no_data_value;
 }
 
 
@@ -90,7 +103,7 @@ inline bool MarkNoDataByValue<T, Mask>::is_no_data(
     size_t index1,
     size_t index2) const
 {
-    return get(_mask, index1, index2);
+    return get(_mask, index1, index2) == _no_data_value;
 }
 
 
@@ -102,7 +115,19 @@ inline bool MarkNoDataByValue<T, Mask>::is_no_data(
     size_t index2,
     size_t index3) const
 {
-    return get(_mask, index1, index2, index3);
+    return get(_mask, index1, index2, index3) == _no_data_value;
+}
+
+
+template<
+    class T,
+    class Mask>
+inline void MarkNoDataByValue<T, Mask>::mark_as_no_data()
+{
+    // In case of a compile error, make sure that get is overloaded for
+    // Mask. This is not the case for regular constants. You may need to pick
+    // a type like MaskedConstant, which supports masking.
+    get(_mask) = _no_data_value;
 }
 
 

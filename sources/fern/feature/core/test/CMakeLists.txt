@@ -2,6 +2,7 @@ SET(TEST_NAMES
     array_test
     array_value_test
     constant_attribute_test
+    masked_constant_test
     feature_test
     masked_array_test
     masked_array_value_test
