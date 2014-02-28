@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE fern algorithm algebra
+#define BOOST_TEST_MODULE fern algorithm algebra plus
 #include <thread>
 #include <boost/test/unit_test.hpp>
 #include "fern/feature/core/array_traits.h"
@@ -6,8 +6,10 @@
 #include "fern/feature/core/masked_array_traits.h"
 #include "fern/core/vector_traits.h"
 #include "fern/algorithm/policy/policies.h"
+#include "fern/algorithm/algebra/count.h"
 #include "fern/algorithm/algebra/equal.h"
 #include "fern/algorithm/algebra/plus.h"
+#include "fern/algorithm/algebra/sum.h"
 
 
 template<
@@ -421,7 +423,7 @@ struct PlusTask
         fern::Array<int8_t, 2>& result,
         Indices indices) const
     {
-        fern::ArrayView<int8_t, 2> const argument1_view(argument1[indices]);
+        fern::ArrayView<int8_t, 2> argument1_view(argument1[indices]);
         fern::ArrayView<int8_t, 2> result_view(result[indices]);
         fern::algebra::plus(argument1_view, argument2, result_view);
     }
@@ -444,6 +446,24 @@ struct EqualTask
         fern::ArrayView<int8_t, 2> const argument2_view(argument2[indices]);
         fern::ArrayView<bool, 2> result_view(result[indices]);
         fern::algebra::equal(argument1_view, argument2_view, result_view);
+    }
+
+};
+
+
+struct CountTask
+{
+
+    template<
+        class Indices>
+    void operator()(
+        fern::Array<bool, 2>& argument1,
+        bool argument2,
+        size_t& result,
+        Indices indices) const
+    {
+        fern::ArrayView<bool, 2> const argument1_view(argument1[indices]);
+        fern::algebra::count(argument1_view, argument2, result);
     }
 
 };
@@ -476,7 +496,9 @@ BOOST_AUTO_TEST_CASE(threading)
         fern::Array<bool, 2> equal_result(extents);
         PlusTask plus_task;
         EqualTask equal_task;
+        CountTask count_task;
 
+        // Add values per block.
         for(size_t r = 0; r < 3; ++r) {
             for(size_t c = 0; c < 2; ++c) {
                 size_t row_offset = r * stride;
@@ -490,6 +512,7 @@ BOOST_AUTO_TEST_CASE(threading)
             }
         }
 
+        // Compare results per block.
         for(size_t r = 0; r < 3; ++r) {
             for(size_t c = 0; c < 2; ++c) {
                 size_t row_offset = r * stride;
@@ -504,10 +527,28 @@ BOOST_AUTO_TEST_CASE(threading)
             }
         }
 
-        // Verify that the overall result is good.
-        BOOST_CHECK_EQUAL(std::count(equal_result.origin(),
-            equal_result.origin() + equal_result.num_elements(), true),
-            equal_result.num_elements());
+        // Count the number of equal values per block.
+        std::vector<size_t> count_results(6, 0);
+        size_t i = 0;
+
+        for(size_t r = 0; r < 3; ++r) {
+            for(size_t c = 0; c < 2; ++c) {
+                size_t row_offset = r * stride;
+                size_t col_offset = c * stride;
+
+                auto view_indices = fern::indices
+                    [fern::Range(row_offset, row_offset + stride)]
+                    [fern::Range(col_offset, col_offset + stride)];
+
+                count_task(equal_result, true, count_results[i], view_indices);
+                i++;
+            }
+        }
+
+        // Sum the number of equal values per block.
+        size_t sum;
+        fern::algebra::sum(count_results, sum);
+        BOOST_CHECK_EQUAL(sum, equal_result.num_elements());
     }
 
 
@@ -517,6 +558,7 @@ BOOST_AUTO_TEST_CASE(threading)
         fern::Array<bool, 2> equal_result(extents);
         PlusTask plus_task;
         EqualTask equal_task;
+        CountTask count_task;
 
         // TODO Fill a task pool with tasks.
 
@@ -534,8 +576,7 @@ BOOST_AUTO_TEST_CASE(threading)
                     [fern::Range(col_offset, col_offset + stride)];
 
                 threads.push_back(std::thread(plus_task, std::ref(argument1),
-                    std::ref(argument2), std::ref(plus_result),
-                    view_indices));
+                    std::ref(argument2), std::ref(plus_result), view_indices));
             }
         }
 
@@ -553,9 +594,6 @@ BOOST_AUTO_TEST_CASE(threading)
                     [fern::Range(row_offset, row_offset + stride)]
                     [fern::Range(col_offset, col_offset + stride)];
 
-                equal_task(plus_result, result_we_want, equal_result,
-                    view_indices);
-
                 threads.push_back(std::thread(equal_task, std::ref(plus_result),
                     std::ref(result_we_want), std::ref(equal_result),
                     view_indices));
@@ -567,12 +605,34 @@ BOOST_AUTO_TEST_CASE(threading)
         }
         threads.clear();
 
-        // Verify that the overall result is good.
-        BOOST_CHECK_EQUAL(std::count(equal_result.origin(),
-            equal_result.origin() + equal_result.num_elements(), true),
-            equal_result.num_elements());
-    }
+        std::vector<size_t> count_results(6, 0);
+        size_t i = 0;
 
+        for(size_t r = 0; r < 3; ++r) {
+            for(size_t c = 0; c < 2; ++c) {
+                size_t row_offset = r * stride;
+                size_t col_offset = c * stride;
+
+                auto view_indices = fern::indices
+                    [fern::Range(row_offset, row_offset + stride)]
+                    [fern::Range(col_offset, col_offset + stride)];
+
+                threads.push_back(std::thread(count_task,
+                    std::ref(equal_result), true, std::ref(count_results[i]),
+                    view_indices));
+                i++;
+            }
+        }
+
+        for(auto& thread: threads) {
+            thread.join();
+        }
+        threads.clear();
+
+        size_t sum;
+        fern::algebra::sum(count_results, sum);
+        BOOST_CHECK_EQUAL(sum, equal_result.num_elements());
+    }
 
     // TODO Make this work for masked arrays too. The mask policy must contain
     //      a view too.
@@ -580,11 +640,6 @@ BOOST_AUTO_TEST_CASE(threading)
     // TODO Think about easy ways to select execution scheme. Sequentialy or
     //      concurrently.
     //      Refactor this code.
-
-    // TODO Make a count operation that accepts two arguments. One value to
-    //      search in and one constant value to search. It sets a count
-    //      largest unsigned type on the machine? Or maybe uint64_t?. Typedef
-    //      some fern::size_t.
 }
 
 BOOST_AUTO_TEST_SUITE_END()

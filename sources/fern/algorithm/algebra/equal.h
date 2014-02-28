@@ -23,7 +23,7 @@ using OutOfDomainPolicy = DiscardDomainErrors<A1, A2>;
 template<
     class A1,
     class A2>
-using OutOfRangePolicy = DiscardRangeErrors<A1, A2>;
+using OutOfRangePolicy = DiscardRangeErrors; /// <A1, A2>;
 
 
 template<
@@ -66,9 +66,10 @@ template<
     class OutOfDomainPolicy=DiscardDomainErrors<
         typename ArgumentTraits<A1>::value_type,
         typename ArgumentTraits<A2>::value_type>,
-    class OutOfRangePolicy=DiscardRangeErrors<
-        typename ArgumentTraits<A1>::value_type,
-        typename ArgumentTraits<A2>::value_type>,
+    class OutOfRangePolicy=DiscardRangeErrors,
+        // <
+        // typename ArgumentTraits<A1>::value_type,
+        // typename ArgumentTraits<A2>::value_type>,
     class NoDataPolicy=DontMarkNoData
 >
 struct Equal

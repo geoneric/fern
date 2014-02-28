@@ -1,8 +1,10 @@
 SET(TEST_NAMES
+    count_test
     equal_test
     plus_test
     result_type_test
     result_value_test
+    sum_test
 )
 
 MACRO(ADD_UNIT_TEST NAME)

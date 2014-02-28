@@ -17,7 +17,7 @@ template<class A1, class A2, class R,
     class Algorithm,
     class A1CollectionCategory,
     class A2CollectionCategory>
-class BinaryOperation
+struct BinaryOperation
 {
 };
 

@@ -11,6 +11,13 @@ template<
 using boost_array_view = typename boost::array_view_gen<
     boost::multi_array<T, nr_dimensions>, nr_dimensions>::type;
 
+
+// template<
+//     class T,
+//     size_t nr_dimensions>
+// using boost_const_array_view = typename boost::const_array_view_gen<
+//     boost::multi_array<T, nr_dimensions>, nr_dimensions>::type;
+
 } // namespace detail
 
 
