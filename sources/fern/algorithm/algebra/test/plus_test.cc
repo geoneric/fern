@@ -1,5 +1,5 @@
 #define BOOST_TEST_MODULE fern algorithm algebra plus
-#include <thread>
+// #include <thread>
 #include <boost/test/unit_test.hpp>
 #include "fern/feature/core/array_traits.h"
 #include "fern/feature/core/array_view_traits.h"
@@ -8,8 +8,9 @@
 #include "fern/algorithm/policy/policies.h"
 #include "fern/algorithm/algebra/count.h"
 #include "fern/algorithm/algebra/equal.h"
+#include "fern/algorithm/algebra/executor.h"
 #include "fern/algorithm/algebra/plus.h"
-#include "fern/algorithm/algebra/sum.h"
+// #include "fern/algorithm/algebra/sum.h"
 
 
 template<
@@ -412,69 +413,11 @@ BOOST_AUTO_TEST_CASE(no_data)
 }
 
 
-struct PlusTask
-{
-
-    template<
-        class Indices>
-    void operator()(
-        fern::Array<int8_t, 2>& argument1,
-        int8_t& argument2,
-        fern::Array<int8_t, 2>& result,
-        Indices indices) const
-    {
-        fern::ArrayView<int8_t, 2> argument1_view(argument1[indices]);
-        fern::ArrayView<int8_t, 2> result_view(result[indices]);
-        fern::algebra::plus(argument1_view, argument2, result_view);
-    }
-
-};
-
-
-struct EqualTask
-{
-
-    template<
-        class Indices>
-    void operator()(
-        fern::Array<int8_t, 2>& argument1,
-        fern::Array<int8_t, 2>& argument2,
-        fern::Array<bool, 2>& result,
-        Indices indices) const
-    {
-        fern::ArrayView<int8_t, 2> const argument1_view(argument1[indices]);
-        fern::ArrayView<int8_t, 2> const argument2_view(argument2[indices]);
-        fern::ArrayView<bool, 2> result_view(result[indices]);
-        fern::algebra::equal(argument1_view, argument2_view, result_view);
-    }
-
-};
-
-
-struct CountTask
-{
-
-    template<
-        class Indices>
-    void operator()(
-        fern::Array<bool, 2>& argument1,
-        bool argument2,
-        size_t& result,
-        Indices indices) const
-    {
-        fern::ArrayView<bool, 2> const argument1_view(argument1[indices]);
-        fern::algebra::count(argument1_view, argument2, result);
-    }
-
-};
-
-
 BOOST_AUTO_TEST_CASE(threading)
 {
     // Create a somewhat larger array.
     size_t const nr_rows = 6000;
     size_t const nr_cols = 4000;
-    size_t const stride = 2000;
     auto extents = fern::extents[nr_rows][nr_cols];
     fern::Array<int8_t, 2> argument1(extents);
 
@@ -484,162 +427,50 @@ BOOST_AUTO_TEST_CASE(threading)
     int8_t argument2 = 5;
 
     // Create array with values that should be in the result.
-    typedef fern::Result<int8_t, int8_t>::type R;
-    fern::Array<R, 2> result_we_want(extents);
+    fern::Array<int8_t, 2> result_we_want(extents);
     std::iota(result_we_want.data(), result_we_want.data() +
         result_we_want.num_elements(), 5);
 
-
-    // Call plus sequenctially for 6 blocks of stride x stride cells.
     {
-        fern::Array<R, 2> plus_result(extents);
+        // Add collection and constant.
+        fern::algebra::Plus<fern::Array<int8_t, 2>, int8_t> plus;
+        fern::Array<int8_t, 2> plus_result(extents);
+
+        // Compare result with result we want.
+        fern::algebra::Equal<fern::Array<int8_t, 2>, fern::Array<int8_t, 2>>
+            equal;
         fern::Array<bool, 2> equal_result(extents);
-        PlusTask plus_task;
-        EqualTask equal_task;
-        CountTask count_task;
 
-        // Add values per block.
-        for(size_t r = 0; r < 3; ++r) {
-            for(size_t c = 0; c < 2; ++c) {
-                size_t row_offset = r * stride;
-                size_t col_offset = c * stride;
+        // Count the number of equal values.
+        fern::algebra::Count<fern::Array<bool, 2>, bool> count;
+        size_t count_result;
 
-                auto view_indices = fern::indices
-                    [fern::Range(row_offset, row_offset + stride)]
-                    [fern::Range(col_offset, col_offset + stride)];
+        // Serial.
+        {
+            fern::serial::execute(plus, argument1, argument2, plus_result);
+            fern::serial::execute(equal, plus_result, result_we_want,
+                equal_result);
+            fern::serial::execute(count, equal_result, true, count_result);
 
-                plus_task(argument1, argument2, plus_result, view_indices);
-            }
+            // Make sure the number of equal values equals the number of
+            // elements.
+            BOOST_CHECK_EQUAL(count_result, equal_result.num_elements());
         }
 
-        // Compare results per block.
-        for(size_t r = 0; r < 3; ++r) {
-            for(size_t c = 0; c < 2; ++c) {
-                size_t row_offset = r * stride;
-                size_t col_offset = c * stride;
+        // Concurrent.
+        {
+            fern::concurrent::execute(plus, argument1, argument2, plus_result);
+            fern::concurrent::execute(equal, plus_result, result_we_want,
+                equal_result);
+            fern::concurrent::execute(count, equal_result, true, count_result);
 
-                auto view_indices = fern::indices
-                    [fern::Range(row_offset, row_offset + stride)]
-                    [fern::Range(col_offset, col_offset + stride)];
-
-                equal_task(plus_result, result_we_want, equal_result,
-                    view_indices);
-            }
+            // Make sure the number of equal values equals the number of
+            // elements.
+            BOOST_CHECK_EQUAL(count_result, equal_result.num_elements());
         }
-
-        // Count the number of equal values per block.
-        std::vector<size_t> count_results(6, 0);
-        size_t i = 0;
-
-        for(size_t r = 0; r < 3; ++r) {
-            for(size_t c = 0; c < 2; ++c) {
-                size_t row_offset = r * stride;
-                size_t col_offset = c * stride;
-
-                auto view_indices = fern::indices
-                    [fern::Range(row_offset, row_offset + stride)]
-                    [fern::Range(col_offset, col_offset + stride)];
-
-                count_task(equal_result, true, count_results[i], view_indices);
-                i++;
-            }
-        }
-
-        // Sum the number of equal values per block.
-        size_t sum;
-        fern::algebra::sum(count_results, sum);
-        BOOST_CHECK_EQUAL(sum, equal_result.num_elements());
     }
 
-
-    // Call plus concurrently for 6 blocks of stride x stride cells.
-    {
-        fern::Array<R, 2> plus_result(extents);
-        fern::Array<bool, 2> equal_result(extents);
-        PlusTask plus_task;
-        EqualTask equal_task;
-        CountTask count_task;
-
-        // TODO Fill a task pool with tasks.
-
-        // TODO Execute tasks in pool.
-
-        std::vector<std::thread> threads;
-
-        for(size_t r = 0; r < 3; ++r) {
-            for(size_t c = 0; c < 2; ++c) {
-                size_t row_offset = r * stride;
-                size_t col_offset = c * stride;
-
-                auto view_indices = fern::indices
-                    [fern::Range(row_offset, row_offset + stride)]
-                    [fern::Range(col_offset, col_offset + stride)];
-
-                threads.push_back(std::thread(plus_task, std::ref(argument1),
-                    std::ref(argument2), std::ref(plus_result), view_indices));
-            }
-        }
-
-        for(auto& thread: threads) {
-            thread.join();
-        }
-        threads.clear();
-
-        for(size_t r = 0; r < 3; ++r) {
-            for(size_t c = 0; c < 2; ++c) {
-                size_t row_offset = r * stride;
-                size_t col_offset = c * stride;
-
-                auto view_indices = fern::indices
-                    [fern::Range(row_offset, row_offset + stride)]
-                    [fern::Range(col_offset, col_offset + stride)];
-
-                threads.push_back(std::thread(equal_task, std::ref(plus_result),
-                    std::ref(result_we_want), std::ref(equal_result),
-                    view_indices));
-            }
-        }
-
-        for(auto& thread: threads) {
-            thread.join();
-        }
-        threads.clear();
-
-        std::vector<size_t> count_results(6, 0);
-        size_t i = 0;
-
-        for(size_t r = 0; r < 3; ++r) {
-            for(size_t c = 0; c < 2; ++c) {
-                size_t row_offset = r * stride;
-                size_t col_offset = c * stride;
-
-                auto view_indices = fern::indices
-                    [fern::Range(row_offset, row_offset + stride)]
-                    [fern::Range(col_offset, col_offset + stride)];
-
-                threads.push_back(std::thread(count_task,
-                    std::ref(equal_result), true, std::ref(count_results[i]),
-                    view_indices));
-                i++;
-            }
-        }
-
-        for(auto& thread: threads) {
-            thread.join();
-        }
-        threads.clear();
-
-        size_t sum;
-        fern::algebra::sum(count_results, sum);
-        BOOST_CHECK_EQUAL(sum, equal_result.num_elements());
-    }
-
-    // TODO Make this work for masked arrays too. The mask policy must contain
-    //      a view too.
-
-    // TODO Think about easy ways to select execution scheme. Sequentialy or
-    //      concurrently.
-    //      Refactor this code.
+    // TODO Make this work for masked arrays too.
 }
 
 BOOST_AUTO_TEST_SUITE_END()

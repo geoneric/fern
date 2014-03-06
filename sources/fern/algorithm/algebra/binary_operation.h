@@ -224,8 +224,64 @@ public:
         size_t const size1 = fern::size(argument1, 0);
         size_t const size2 = fern::size(argument1, 1);
 
-        for(size_t i = 0; i < size1; ++i) {
-            for(size_t j = 0; j < size2; ++j) {
+        auto view_indices = std::make_tuple(
+            Range(0, size1),
+            Range(0, size2));
+
+        calculate(view_indices, argument1, argument2, result);
+
+        /// assert(fern::size(argument1, 0) == fern::size(argument2, 0));
+        /// assert(fern::size(argument1, 1) == fern::size(argument2, 1));
+        /// assert(fern::size(argument1, 0) == fern::size(result, 0));
+        /// assert(fern::size(argument1, 1) == fern::size(result, 1));
+
+        /// size_t const size1 = fern::size(argument1, 0);
+        /// size_t const size2 = fern::size(argument1, 1);
+
+        /// for(size_t i = 0; i < size1; ++i) {
+        ///     for(size_t j = 0; j < size2; ++j) {
+        ///         if(!NoDataPolicy::is_no_data(i, j)) {
+        ///             typename ArgumentTraits<A1>::value_type a1(fern::get(
+        ///                 argument1, i, j));
+        ///             typename ArgumentTraits<A2>::value_type a2(fern::get(
+        ///                 argument2, i, j));
+
+        ///             if(!OutOfDomainPolicy::within_domain(a1, a2)) {
+        ///                 NoDataPolicy::mark_as_no_data(i, j);
+        ///             }
+
+        ///             _algorithm(a1, a2, fern::get(result, i, j));
+
+        ///             if(!OutOfRangePolicy::within_range(a1, a2, fern::get(
+        ///                     result, i, j))) {
+        ///                 NoDataPolicy::mark_as_no_data(i, j);
+        ///             }
+        ///         }
+        ///     }
+        /// }
+    }
+
+    // collection + constant
+    template<
+        class Indices>
+    inline void calculate(
+        Indices const& indices,
+        A1 const& argument1,
+        A2 const& argument2,
+        R& result)
+    {
+        assert(fern::size(argument1, 0) == fern::size(argument2, 0));
+        assert(fern::size(argument1, 1) == fern::size(argument2, 1));
+        assert(fern::size(argument1, 0) == fern::size(result, 0));
+        assert(fern::size(argument1, 1) == fern::size(result, 1));
+
+        size_t const start1 = std::get<0>(indices).start();
+        size_t const finish1 = std::get<0>(indices).finish();
+        size_t const start2 = std::get<1>(indices).start();
+        size_t const finish2 = std::get<1>(indices).finish();
+
+        for(size_t i = start1; i < finish1; ++i) {
+            for(size_t j = start2; j < finish2; ++j) {
                 if(!NoDataPolicy::is_no_data(i, j)) {
                     typename ArgumentTraits<A1>::value_type a1(fern::get(
                         argument1, i, j));
@@ -560,10 +616,59 @@ public:
         size_t const size1 = fern::size(argument1, 0);
         size_t const size2 = fern::size(argument1, 1);
 
+        auto view_indices = std::make_tuple(
+            Range(0, size1),
+            Range(0, size2));
+
+        calculate(view_indices, argument1, argument2, result);
+
+        /// typename ArgumentTraits<A2>::value_type const& a2(argument2);
+
+        /// for(size_t i = 0; i < size1; ++i) {
+        ///     for(size_t j = 0; j < size2; ++j) {
+        ///         if(!NoDataPolicy::is_no_data(i, j)) {
+        ///             typename ArgumentTraits<A1>::value_type a1(fern::get(
+        ///                 argument1, i, j));
+
+        ///             if(!OutOfDomainPolicy::within_domain(a1, a2)) {
+        ///                 NoDataPolicy::mark_as_no_data(i, j);
+        ///             }
+
+        ///             _algorithm(a1, a2, fern::get(result, i, j));
+
+        ///             if(!OutOfRangePolicy::within_range(a1, a2, fern::get(
+        ///                     result, i, j))) {
+        ///                 NoDataPolicy::mark_as_no_data(i, j);
+        ///             }
+        ///         }
+        ///     }
+        /// }
+    }
+
+    // collection + constant
+    template<
+        class Indices>
+    inline void calculate(
+        Indices const& indices,
+        A1 const& argument1,
+        A2 const& argument2,
+        R& result)
+    {
+        assert(fern::size(argument1, 0) == fern::size(result, 0));
+        assert(fern::size(argument1, 1) == fern::size(result, 1));
+
+        // size_t const size1 = fern::size(argument1, 0);
+        // size_t const size2 = fern::size(argument1, 1);
+
+        size_t const start1 = std::get<0>(indices).start();
+        size_t const finish1 = std::get<0>(indices).finish();
+        size_t const start2 = std::get<1>(indices).start();
+        size_t const finish2 = std::get<1>(indices).finish();
+
         typename ArgumentTraits<A2>::value_type const& a2(argument2);
 
-        for(size_t i = 0; i < size1; ++i) {
-            for(size_t j = 0; j < size2; ++j) {
+        for(size_t i = start1; i < finish1; ++i) {
+            for(size_t j = start2; j < finish2; ++j) {
                 if(!NoDataPolicy::is_no_data(i, j)) {
                     typename ArgumentTraits<A1>::value_type a1(fern::get(
                         argument1, i, j));

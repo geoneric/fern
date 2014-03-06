@@ -1,4 +1,5 @@
 #pragma once
+#include "fern/algorithm/core/operation_traits.h"
 #include "fern/algorithm/algebra/binary_operation.h"
 #include "fern/algorithm/algebra/result_type.h"
 #include "fern/algorithm/policy/discard_domain_errors.h"
@@ -313,6 +314,9 @@ template<
 >
 struct Plus
 {
+
+    typedef local_operation_tag category;
+
     //! Type of the result of the operation.
     typedef typename Result<A1, A2>::type R;
 
@@ -338,6 +342,17 @@ struct Plus
         R& result)
     {
         algorithm.calculate(argument1, argument2, result);
+    }
+
+    template<
+        class Indices>
+    inline void operator()(
+        Indices const& indices,
+        A1 const& argument1,
+        A2 const& argument2,
+        R& result)
+    {
+        algorithm.calculate(indices, argument1, argument2, result);
     }
 
     detail::dispatch::BinaryOperation<A1, A2, R,

@@ -1,4 +1,7 @@
 #pragma once
+#include "fern/algorithm/core/operation_traits.h"
+#include "fern/algorithm/algebra/sum.h"
+#include "fern/core/assert.h"
 
 
 namespace fern {
@@ -69,12 +72,47 @@ struct Count<A1, A2, R,
         A2 const& argument2,
         R& result)
     {
+
         size_t const size1 = fern::size(argument1, 0);
         size_t const size2 = fern::size(argument1, 1);
+
+        auto view_indices = std::make_tuple(
+            Range(0, size1),
+            Range(0, size2));
+
+        calculate(view_indices, argument1, argument2, result);
+
+        /// result = 0;
+
+        /// for(size_t i = 0; i < size1; ++i) {
+        ///     for(size_t j = 0; j < size2; ++j) {
+        ///         if(fern::get(argument1, i, j) == argument2) {
+        ///             ++result;
+        ///         }
+        ///     }
+        /// }
+    }
+
+    // collection, constant
+    template<
+        class Indices>
+    inline void calculate(
+        Indices const& indices,
+        A1 const& argument1,
+        A2 const& argument2,
+        R& result)
+    {
+        // size_t const size1 = fern::size(argument1, 0);
+        // size_t const size2 = fern::size(argument1, 1);
+        size_t const start1 = std::get<0>(indices).start();
+        size_t const finish1 = std::get<0>(indices).finish();
+        size_t const start2 = std::get<1>(indices).start();
+        size_t const finish2 = std::get<1>(indices).finish();
+
         result = 0;
 
-        for(size_t i = 0; i < size1; ++i) {
-            for(size_t j = 0; j < size2; ++j) {
+        for(size_t i = start1; i < finish1; ++i) {
+            for(size_t j = start2; j < finish2; ++j) {
                 if(fern::get(argument1, i, j) == argument2) {
                     ++result;
                 }
@@ -137,6 +175,8 @@ template<
 struct Count
 {
 
+    typedef local_aggregate_operation_tag category;
+
     //! Type of the result of the operation.
     typedef size_t R;
 
@@ -155,6 +195,29 @@ struct Count
         R& result)
     {
         algorithm.calculate(argument1, argument2, result);
+    }
+
+    template<
+        class Indices>
+    inline void operator()(
+        Indices const& indices,
+        A1 const& argument1,
+        A2 const& argument2,
+        R& result)
+    {
+        algorithm.calculate(indices, argument1, argument2, result);
+    }
+
+    template<
+        class Collection>
+    inline static void aggregate(
+        Collection const& results,
+        R& result)
+    {
+        FERN_STATIC_ASSERT(std::is_arithmetic, R);
+        FERN_STATIC_ASSERT(std::is_same,
+            typename ArgumentTraits<Collection>::value_type, R);
+        sum(results, result);
     }
 
     count::detail::dispatch::Count<A1, A2, R,
