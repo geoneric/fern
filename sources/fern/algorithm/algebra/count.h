@@ -1,7 +1,8 @@
 #pragma once
+#include "fern/core/assert.h"
+#include "fern/algorithm/core/index_ranges.h"
 #include "fern/algorithm/core/operation_traits.h"
 #include "fern/algorithm/algebra/sum.h"
-#include "fern/core/assert.h"
 
 
 namespace fern {
@@ -76,21 +77,12 @@ struct Count<A1, A2, R,
         size_t const size1 = fern::size(argument1, 0);
         size_t const size2 = fern::size(argument1, 1);
 
-        auto view_indices = std::make_tuple(
-            Range(0, size1),
-            Range(0, size2));
+        auto ranges = IndexRanges<2>{
+            IndexRange(0, size1),
+            IndexRange(0, size2)
+        };
 
-        calculate(view_indices, argument1, argument2, result);
-
-        /// result = 0;
-
-        /// for(size_t i = 0; i < size1; ++i) {
-        ///     for(size_t j = 0; j < size2; ++j) {
-        ///         if(fern::get(argument1, i, j) == argument2) {
-        ///             ++result;
-        ///         }
-        ///     }
-        /// }
+        calculate(ranges, argument1, argument2, result);
     }
 
     // collection, constant
@@ -102,12 +94,10 @@ struct Count<A1, A2, R,
         A2 const& argument2,
         R& result)
     {
-        // size_t const size1 = fern::size(argument1, 0);
-        // size_t const size2 = fern::size(argument1, 1);
-        size_t const start1 = std::get<0>(indices).start();
-        size_t const finish1 = std::get<0>(indices).finish();
-        size_t const start2 = std::get<1>(indices).start();
-        size_t const finish2 = std::get<1>(indices).finish();
+        size_t const start1 = indices[0].begin();
+        size_t const finish1 = indices[0].end();
+        size_t const start2 = indices[1].begin();
+        size_t const finish2 = indices[1].end();
 
         result = 0;
 

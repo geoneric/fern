@@ -1,10 +1,10 @@
 #pragma once
-#include "fern/feature/core/masked_constant.h"
-#include "fern/algorithm/policy/discard_range_errors.h"
-#include "fern/algorithm/policy/dont_mark_no_data.h"
 #include "fern/core/assert.h"
 #include "fern/core/collection_traits.h"
 #include "fern/core/constant_traits.h"
+#include "fern/feature/core/masked_constant.h"
+#include "fern/algorithm/policy/discard_range_errors.h"
+#include "fern/algorithm/policy/dont_mark_no_data.h"
 
 
 namespace fern {

@@ -43,6 +43,7 @@ struct LocalOperationExecutor
 };
 
 
+// operation(array_2d, constant)
 template<
     class Operation,
     class A1,
@@ -73,10 +74,7 @@ struct LocalOperationExecutor<
         futures.reserve(ranges.size());
 
         for(auto const& block_range: ranges) {
-            auto view_indices = std::make_tuple(
-                Range(block_range[0].begin(), block_range[0].end()),
-                Range(block_range[1].begin(), block_range[1].end()));
-            auto function = std::bind(std::ref(operation), view_indices,
+            auto function = std::bind(std::ref(operation), block_range,
                 std::cref(argument1), std::cref(argument2), std::ref(result));
             futures.emplace_back(pool.submit(function));
         }
@@ -89,6 +87,7 @@ struct LocalOperationExecutor<
 };
 
 
+// operation(array_2d, array_2d)
 template<
     class Operation,
     class A1,
@@ -120,22 +119,13 @@ struct LocalOperationExecutor<
             size1, size2);
         std::vector<std::future<void>> futures;
         futures.reserve(ranges.size());
-        /// std::vector<std::thread> threads;
 
         for(auto const& block_range: ranges) {
-            auto view_indices = std::make_tuple(
-                Range(block_range[0].begin(), block_range[0].end()),
-                Range(block_range[1].begin(), block_range[1].end()));
-            /// threads.emplace_back(std::thread(std::ref(operation), view_indices,
-            ///     std::cref(argument1), std::cref(argument2), std::ref(result)));
-            auto function = std::bind(std::ref(operation), view_indices,
+            auto function = std::bind(std::ref(operation), block_range,
                 std::cref(argument1), std::cref(argument2), std::ref(result));
             futures.emplace_back(pool.submit(function));
         }
 
-        /// for(auto& thread: threads) {
-        ///     thread.join();
-        /// }
         for(auto& future: futures) {
             future.get();
         }
@@ -157,6 +147,7 @@ struct LocalAgregateOperationExecutor
 };
 
 
+// operation(array_2d, constant)
 template<
     class Operation,
     class A1,
@@ -188,26 +179,16 @@ struct LocalAgregateOperationExecutor<
             size1, size2);
         std::vector<std::future<void>> futures;
         futures.reserve(ranges.size());
-        /// std::vector<std::thread> threads;
         std::vector<R> results_per_block(ranges.size(), 0);
 
         for(size_t i = 0; i < ranges.size(); ++i) {
             auto const& block_range(ranges[i]);
-            auto view_indices = std::make_tuple(
-                Range(block_range[0].begin(), block_range[0].end()),
-                Range(block_range[1].begin(), block_range[1].end()));
-            /// threads.emplace_back(std::thread(std::ref(operation), view_indices,
-            ///     std::cref(argument1), std::cref(argument2),
-            ///     std::ref(results_per_block[i])));
-            auto function = std::bind(std::ref(operation), view_indices,
+            auto function = std::bind(std::ref(operation), block_range,
                 std::cref(argument1), std::cref(argument2),
                 std::ref(results_per_block[i]));
             futures.emplace_back(pool.submit(function));
         }
 
-        /// for(auto& thread: threads) {
-        ///     thread.join();
-        /// }
         for(auto& future: futures) {
             future.get();
         }

@@ -18,6 +18,8 @@ public:
 
                    FunctionWrapper     (FunctionWrapper&& other);
 
+                   FunctionWrapper     (FunctionWrapper const& other)=delete;
+
     template<
         class Function>
                    FunctionWrapper     (Function&& function);
@@ -25,10 +27,6 @@ public:
     FunctionWrapper& operator=         (FunctionWrapper&& other);
 
     FunctionWrapper& operator=         (FunctionWrapper const& other)=delete;
-
-                   FunctionWrapper     (FunctionWrapper const& other)=delete;
-
-                   // FunctionWrapper     (FunctionWrapper& other)=delete;
 
     void           operator()          ();
 

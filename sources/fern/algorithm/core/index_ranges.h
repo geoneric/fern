@@ -1,7 +1,7 @@
 #pragma once
 #include <algorithm>
-#include <cassert>
 #include <array>
+#include <cassert>
 #include "fern/algorithm/core/index_range.h"
 
 
@@ -20,7 +20,7 @@ public:
 
                    IndexRanges         (IndexRanges const& other);
 
-                   IndexRanges         (IndexRanges&& other)=delete;
+                   IndexRanges         (IndexRanges&& other);
 
                    IndexRanges         (IndexRange range1,
                                         IndexRange range2);
@@ -48,7 +48,18 @@ template<
 inline IndexRanges<nr_dimensions>::IndexRanges(
     IndexRanges const& other)
 
-    :  Base(other)
+    : Base(other)
+
+{
+}
+
+
+template<
+    size_t nr_dimensions>
+inline IndexRanges<nr_dimensions>::IndexRanges(
+    IndexRanges&& other)
+
+    : Base(std::move(other))
 
 {
 }

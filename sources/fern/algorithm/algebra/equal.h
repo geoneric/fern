@@ -1,12 +1,12 @@
 #pragma once
+#include "fern/core/argument_traits.h"
+#include "fern/core/assert.h"
 #include "fern/algorithm/core/operation_traits.h"
-#include "fern/algorithm/algebra/binary_operation.h"
-#include "fern/algorithm/algebra/result_type.h"
 #include "fern/algorithm/policy/dont_mark_no_data.h"
 #include "fern/algorithm/policy/discard_domain_errors.h"
 #include "fern/algorithm/policy/discard_range_errors.h"
-#include "fern/core/argument_traits.h"
-#include "fern/core/assert.h"
+#include "fern/algorithm/algebra/binary_operation.h"
+#include "fern/algorithm/algebra/result_type.h"
 
 
 namespace fern {

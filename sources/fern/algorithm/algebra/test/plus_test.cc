@@ -1,8 +1,6 @@
 #define BOOST_TEST_MODULE fern algorithm algebra plus
-// #include <thread>
 #include <boost/test/unit_test.hpp>
 #include "fern/feature/core/array_traits.h"
-#include "fern/feature/core/array_view_traits.h"
 #include "fern/feature/core/masked_array_traits.h"
 #include "fern/core/vector_traits.h"
 #include "fern/algorithm/policy/policies.h"
@@ -10,7 +8,6 @@
 #include "fern/algorithm/algebra/equal.h"
 #include "fern/algorithm/algebra/executor.h"
 #include "fern/algorithm/algebra/plus.h"
-// #include "fern/algorithm/algebra/sum.h"
 
 
 template<
