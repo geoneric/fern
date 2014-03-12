@@ -6,12 +6,14 @@ SET(SOURCES
     exception
     expression_type
     io_error
+    join_threads
     messages
     parse_error
     path
     script_error
     stack
     string
+    thread_pool
     type_traits
     validate_error
     value_types
