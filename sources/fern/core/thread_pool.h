@@ -84,12 +84,19 @@ inline FunctionWrapper::FunctionWrapper(
 }
 
 
+//! Thread pool.
+/*!
+  \warning   Don't create a thread pool if you don't have anything useful
+             for the threads to do. They will continuously yield and will
+             occupy the machine by doing nothing.
+  \sa        .
+*/
 class ThreadPool
 {
 
 public:
 
-                   ThreadPool          ();
+                   ThreadPool          (size_t nr_threads);
 
                    ~ThreadPool         ();
 
@@ -98,7 +105,7 @@ public:
     std::future<typename std::result_of<Function()>::type>
                    submit              (Function function);
 
-    size_t         nr_threads          () const;
+    size_t         size                () const;
 
 private:
 

@@ -13,6 +13,7 @@ SET(SOURCES
     script_error
     stack
     string
+    thread_client
     thread_pool
     type_traits
     validate_error

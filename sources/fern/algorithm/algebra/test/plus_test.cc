@@ -2,6 +2,7 @@
 #include <boost/test/unit_test.hpp>
 #include "fern/feature/core/array_traits.h"
 #include "fern/feature/core/masked_array_traits.h"
+#include "fern/core/thread_client.h"
 #include "fern/core/vector_traits.h"
 #include "fern/algorithm/policy/policies.h"
 #include "fern/algorithm/algebra/count.h"
@@ -453,6 +454,9 @@ BOOST_AUTO_TEST_CASE(threading)
             // elements.
             BOOST_CHECK_EQUAL(count_result, equal_result.num_elements());
         }
+
+        // Make sure the concurrent call have a pool to work with.
+        fern::ThreadClient client;
 
         // Concurrent.
         {

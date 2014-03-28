@@ -1,6 +1,6 @@
 #pragma once
 #include <thread>
-#include "fern/core/thread_pool.h"
+#include "fern/core/thread_client.h"
 #include "fern/algorithm/core/index_ranges.h"
 #include "fern/algorithm/core/operation_traits.h"
 
@@ -65,10 +65,10 @@ struct LocalOperationExecutor<
         R& result)
     {
         // First argument can be blocked.
-        ThreadPool pool;
+        ThreadPool& pool(ThreadClient::pool());
         size_t const size1 = fern::size(argument1, 0);
         size_t const size2 = fern::size(argument1, 1);
-        std::vector<IndexRanges<2>> ranges = index_ranges(pool.nr_threads(),
+        std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
             size1, size2);
         std::vector<std::future<void>> futures;
         futures.reserve(ranges.size());
@@ -112,10 +112,10 @@ struct LocalOperationExecutor<
         assert(fern::size(argument1, 1) == fern::size(argument2, 1));
 
         // First argument and second argument can be blocked.
-        ThreadPool pool;
+        ThreadPool& pool(ThreadClient::pool());
         size_t const size1 = fern::size(argument1, 0);
         size_t const size2 = fern::size(argument1, 1);
-        std::vector<IndexRanges<2>> ranges = index_ranges(pool.nr_threads(),
+        std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
             size1, size2);
         std::vector<std::future<void>> futures;
         futures.reserve(ranges.size());
@@ -172,10 +172,10 @@ struct LocalAgregateOperationExecutor<
         // The result of each block must be stored in a collection. This
         // collection can be aggregated to the result. The operation determines
         // how this happens.
-        ThreadPool pool;
+        ThreadPool& pool(ThreadClient::pool());
         size_t const size1 = fern::size(argument1, 0);
         size_t const size2 = fern::size(argument1, 1);
-        std::vector<IndexRanges<2>> ranges = index_ranges(pool.nr_threads(),
+        std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
             size1, size2);
         std::vector<std::future<void>> futures;
         futures.reserve(ranges.size());
