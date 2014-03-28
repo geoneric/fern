@@ -28,8 +28,39 @@ The *direction* of the vector \f$\mathbf{v} = (a, b)\f$ is the angle \f$\theta\f
 If \f$a \ne 0\f$, then \f$tan \theta = \frac{b}{a}\f$
 
 
+### gradx ###
 
+### grady ###
 
+### divergence ###
+
+### lax ###
+
+### laplacian ###
+
+http://homepages.inf.ed.ac.uk/rbf/HIPR2/log.htm :
+
+The Laplacian is a 2-D isotropic measure of the 2nd spatial derivative of an image. The Laplacian of an image highlights regions of rapid intensity change and is therefore often used for edge detection.
+
+Santiago:
+
+The laplacian operator is the second-order derivative of a scalar field, and it measures the divergence of the gradient of the scalar field (what is commonly known as the curvature in GIS analysis). It maps a scalar field to a scalar field, and is a combination of the divergence and the gradient operators.
+
+Wikipedia:
+
+The laplacian of a function \f$f\f$ is defined by:
+
+\f[
+    \Delta f = \nabla^2f = \nabla \cdot \nabla f
+\f]
+
+The laplace operator in two dimensions is given by:
+
+\f[
+    \Delta f = \frac{\delta^2 f}{\delta x^2} + \frac{\delta^2 f}{\delta y^2}
+\f]
+
+where x and y are the Cartesian coordinates.
 
 
 See also

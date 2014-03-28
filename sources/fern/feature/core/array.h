@@ -30,6 +30,10 @@ public:
 
                    Array               ()=default;
 
+                   Array               (std::initializer_list<
+                                           std::initializer_list<T>> const&
+                                              values);
+
     template<class ExtentList>
                    Array               (ExtentList const& sizes);
 
@@ -59,6 +63,26 @@ inline Array<T, nr_dimensions>::Array(
     : boost::multi_array<T, nr_dimensions>(sizes)
 
 {
+}
+
+
+template<
+    class T,
+    size_t nr_dimensions>
+inline Array<T, nr_dimensions>::Array(
+    std::initializer_list<std::initializer_list<T>> const& values)
+
+    : boost::multi_array<T, nr_dimensions>(
+          extents[values.size()][values.begin()->size()])
+
+{
+    T* it = this->data();
+
+    for(auto const& row: values) {
+        for(auto const& col: row) {
+            *it++ = col;
+        }
+    }
 }
 
 } // namespace fern

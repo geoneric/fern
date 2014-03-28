@@ -5,12 +5,10 @@ namespace fern {
 
 //! Domain policy which discards out-of-domain values.
 /*!
-  \tparam    A1 Type of first argument.
-  \tparam    A2 Type of second argument.
+  \tparam    Arguments Types of arguments.
 */
 template<
-    class A1,
-    class A2>
+    class... Arguments>
 class DiscardDomainErrors
 {
 
@@ -20,8 +18,7 @@ public:
     // static_assert(std::is_arithmetic<A2>::value, "");
 
     static constexpr bool
-                   within_domain       (A1 const& argument1,
-                                        A2 const& argument2);
+                   within_domain       (Arguments const&... arguments);
 
 protected:
 
@@ -29,10 +26,10 @@ protected:
 
                    DiscardDomainErrors (DiscardDomainErrors&&)=default;
 
+                   DiscardDomainErrors (DiscardDomainErrors const&)=default;
+
     DiscardDomainErrors&
                    operator=           (DiscardDomainErrors&&)=default;
-
-                   DiscardDomainErrors (DiscardDomainErrors const&)=default;
 
     DiscardDomainErrors&
                    operator=           (DiscardDomainErrors const&)=default;
@@ -44,16 +41,14 @@ private:
 };
 
 
-//! Check whether \a argument1 and \a argument2 fall within the domain of valid values.
+//! Check whether the arguments passed in fall within the domain of valid values.
 /*!
   \return    true
 */
 template<
-    class A1,
-    class A2>
-inline constexpr bool DiscardDomainErrors<A1, A2>::within_domain(
-    A1 const& /* argument1 */,
-    A2 const& /* argument2 */)
+    class... Arguments>
+inline constexpr bool DiscardDomainErrors<Arguments...>::within_domain(
+    Arguments const&... /* arguments */)
 {
     return true;
 }

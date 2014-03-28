@@ -37,6 +37,20 @@ BOOST_AUTO_TEST_CASE(array)
 }
 
 
+BOOST_AUTO_TEST_CASE(initializer_list)
+{
+    {
+        fern::Array<int, 2> array({
+            { 3, 4 }
+        });
+        BOOST_CHECK_EQUAL(array.shape()[0], 1);
+        BOOST_CHECK_EQUAL(array.shape()[1], 2);
+        BOOST_CHECK_EQUAL(array[0][0], 3);
+        BOOST_CHECK_EQUAL(array[0][1], 4);
+    }
+}
+
+
 BOOST_AUTO_TEST_CASE(grid)
 {
     size_t const nr_dimensions = 2;
