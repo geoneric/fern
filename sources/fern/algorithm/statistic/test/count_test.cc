@@ -1,10 +1,10 @@
 #define BOOST_TEST_MODULE fern algorithm algebra count
 #include <boost/test/unit_test.hpp>
-#include "fern/feature/core/array_traits.h"
 #include "fern/core/constant_traits.h"
-#include "fern/core/vector_traits.h"
-#include "fern/algorithm/algebra/count.h"
 #include "fern/core/typename.h"
+#include "fern/core/vector_traits.h"
+#include "fern/feature/core/array_traits.h"
+#include "fern/algorithm/statistic/count.h"
 
 
 #define verify_result_value_type(                                              \

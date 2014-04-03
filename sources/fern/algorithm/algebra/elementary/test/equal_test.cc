@@ -3,7 +3,7 @@
 #include "fern/feature/core/array_traits.h"
 #include "fern/core/constant_traits.h"
 #include "fern/core/vector_traits.h"
-#include "fern/algorithm/algebra/equal.h"
+#include "fern/algorithm/algebra/elementary/equal.h"
 #include "fern/core/typename.h"
 
 

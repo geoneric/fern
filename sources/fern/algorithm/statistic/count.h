@@ -2,7 +2,7 @@
 #include "fern/core/assert.h"
 #include "fern/algorithm/core/index_ranges.h"
 #include "fern/algorithm/core/operation_traits.h"
-#include "fern/algorithm/algebra/sum.h"
+#include "fern/algorithm/statistic/sum.h"
 
 
 namespace fern {

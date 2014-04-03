@@ -5,10 +5,10 @@
 #include "fern/core/thread_client.h"
 #include "fern/core/vector_traits.h"
 #include "fern/algorithm/policy/policies.h"
-#include "fern/algorithm/algebra/count.h"
-#include "fern/algorithm/algebra/equal.h"
+#include "fern/algorithm/statistic/count.h"
 #include "fern/algorithm/algebra/executor.h"
-#include "fern/algorithm/algebra/plus.h"
+#include "fern/algorithm/algebra/elementary/equal.h"
+#include "fern/algorithm/algebra/elementary/plus.h"
 
 
 template<

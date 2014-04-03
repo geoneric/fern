@@ -1,14 +1,14 @@
 #define BOOST_TEST_MODULE fern algorithm algebra sum
 #include <boost/test/unit_test.hpp>
+#include "fern/core/constant_traits.h"
+#include "fern/core/typename.h"
+#include "fern/core/types.h"
+#include "fern/core/vector_traits.h"
 #include "fern/feature/core/array_traits.h"
 #include "fern/feature/core/masked_array_traits.h"
 #include "fern/feature/core/masked_constant_traits.h"
-#include "fern/core/constant_traits.h"
-#include "fern/core/vector_traits.h"
-#include "fern/algorithm/algebra/sum.h"
 #include "fern/algorithm/policy/policies.h"
-#include "fern/core/typename.h"
-#include "fern/core/types.h"
+#include "fern/algorithm/statistic/sum.h"
 
 
 #define verify_result_value_type(                                              \
