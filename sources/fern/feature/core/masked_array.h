@@ -74,6 +74,8 @@ public:
     void           set_mask            (Array<U, nr_dimensions> const& mask,
                                         U const value_to_mask=0);
 
+    void           mask_all            ();
+
 private:
 
     Mask<nr_dimensions> _mask;
@@ -314,6 +316,15 @@ inline void MaskedArray<T, nr_dimensions>::set_mask(
             mask_data[i] = true;
         }
     }
+}
+
+
+template<
+    class T,
+    size_t nr_dimensions>
+inline void MaskedArray<T, nr_dimensions>::mask_all()
+{
+    _mask.fill(true);
 }
 
 } // namespace fern

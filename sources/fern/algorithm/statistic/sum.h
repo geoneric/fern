@@ -10,21 +10,21 @@ namespace sum {
 namespace detail {
 namespace dispatch {
 
-template<class Argument, class Result,
+template<class Values, class Result,
     class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
-    class A1CollectionCategory>
-struct Sum
+    class ArgumentCollectionCategory>
+class Sum
 {
 };
 
 
-template<class Argument, class Result,
+template<class Values, class Result,
     class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy>
-class Sum<Argument, Result,
+class Sum<Values, Result,
         OutOfRangePolicy,
         InputNoDataPolicy,
         OutputNoDataPolicy,
@@ -40,7 +40,7 @@ public:
 
     // This means that there cannot be overflow/underflow, so we don't need
     // to check for it.
-    FERN_STATIC_ASSERT(std::is_same, Argument, Result)
+    FERN_STATIC_ASSERT(std::is_same, Values, Result)
 
     Sum()
         : OutOfRangePolicy(),
@@ -62,11 +62,11 @@ public:
 
     // constant
     inline void calculate(
-        Argument const& argument,
+        Values const& values,
         Result& result)
     {
         if(!InputNoDataPolicy::is_no_data()) {
-            fern::get(result) = fern::get(argument);
+            fern::get(result) = fern::get(values);
         }
         else {
             OutputNoDataPolicy::mark_as_no_data();
@@ -78,11 +78,11 @@ private:
 };
 
 
-template<class Argument, class Result,
+template<class Values, class Result,
     class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy>
-class Sum<Argument, Result,
+class Sum<Values, Result,
         OutOfRangePolicy,
         InputNoDataPolicy,
         OutputNoDataPolicy,
@@ -116,23 +116,23 @@ public:
 
     // 1d array
     inline void calculate(
-        Argument const& argument,
+        Values const& values,
         Result& result)
     {
-        size_t const size = fern::size(argument);
+        size_t const size = fern::size(values);
 
         auto ranges = IndexRanges<1>{
             IndexRange(0, size)
         };
 
-        calculate(ranges, argument, result);
+        calculate(ranges, values, result);
     }
 
     template<
         class Indices>
     inline void calculate(
         Indices const& indices,
-        Argument const& argument,
+        Values const& values,
         Result& result)
     {
         size_t const begin = indices[0].begin();
@@ -140,7 +140,7 @@ public:
         bool data_seen{false};
 
         if(begin < end) {
-            typename ArgumentTraits<Argument>::value_type value;
+            typename ArgumentTraits<Values>::value_type value;
             typename ArgumentTraits<Result>::value_type tmp_result{0};
             fern::get(result) = tmp_result;
 
@@ -148,7 +148,7 @@ public:
 
                 if(!InputNoDataPolicy::is_no_data(i)) {
 
-                    value = fern::get(argument, i);
+                    value = fern::get(values, i);
                     tmp_result += value;
 
                     // lhs, rhs, lhs + rhs
@@ -175,11 +175,11 @@ private:
 };
 
 
-template<class Argument, class Result,
+template<class Values, class Result,
     class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy>
-class Sum<Argument, Result,
+class Sum<Values, Result,
         OutOfRangePolicy,
         InputNoDataPolicy,
         OutputNoDataPolicy,
@@ -213,25 +213,25 @@ public:
 
     // 2d array
     inline void calculate(
-        Argument const& argument,
+        Values const& values,
         Result& result)
     {
-        size_t const size1 = fern::size(argument, 0);
-        size_t const size2 = fern::size(argument, 1);
+        size_t const size1 = fern::size(values, 0);
+        size_t const size2 = fern::size(values, 1);
 
         auto ranges = IndexRanges<2>{
             IndexRange(0, size1),
             IndexRange(0, size2)
         };
 
-        calculate(ranges, argument, result);
+        calculate(ranges, values, result);
     }
 
     template<
         class Indices>
     inline void calculate(
         Indices const& indices,
-        Argument const& argument,
+        Values const& values,
         Result& result)
     {
 
@@ -251,7 +251,7 @@ public:
 
         if(begin1 < end1 && begin2 < end2) {
 
-            typename ArgumentTraits<Argument>::value_type value;
+            typename ArgumentTraits<Values>::value_type value;
             typename ArgumentTraits<Result>::value_type tmp_result{0};
             fern::get(result) = tmp_result;
 
@@ -260,7 +260,7 @@ public:
 
                     if(!InputNoDataPolicy::is_no_data(i, j)) {
 
-                        value = fern::get(argument, i, j);
+                        value = fern::get(values, i, j);
                         tmp_result += value;
 
                         // lhs, rhs, lhs + rhs
@@ -297,12 +297,8 @@ private:
 
 namespace statistic {
 
-//! Implementation of the sum operation.
-/*!
-  This operation calculates the result of adding all values in a collection.
-*/
 template<
-    class Argument,
+    class Values,
     class Result,
     class OutOfRangePolicy=DiscardRangeErrors,
     class InputNoDataPolicy=SkipNoData,
@@ -314,7 +310,7 @@ class Sum
 public:
 
     using category = local_aggregate_operation_tag;
-    using A = Argument;
+    using A = Values;
     using AValue = typename ArgumentTraits<A>::value_type;
     using R = Result;
     using RValue = typename ArgumentTraits<R>::value_type;
@@ -332,11 +328,6 @@ public:
     {
     }
 
-    //! Constructor taking a no-data policy.
-    /*!
-      This constructor can be used to pass in a no-data policy that is not
-      default-constructed.
-    */
     Sum(
         InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
         OutputNoDataPolicy&& output_no_data_policy)  // Universal reference.
@@ -346,14 +337,11 @@ public:
     {
     }
 
-    //! Perform the algorithm on \a argument and store the result in \a result.
-    /*!
-    */
     inline void operator()(
-        Argument const& argument,
-        Result& result)
+        A const& values,
+        R & result)
     {
-        _algorithm.calculate(argument, result);
+        _algorithm.calculate(values, result);
     }
 
 
@@ -361,28 +349,22 @@ public:
         class Indices>
     inline void operator()(
         Indices const& indices,
-        Argument const& argument,
-        Result& result)
+        A const& values,
+        R& result)
     {
-        _algorithm.calculate(indices, argument, result);
+        _algorithm.calculate(indices, values, result);
     }
 
 
-    //! Aggregate the \a results per block into a final \a result.
-    /*!
-      \tparam    Collection Type of collection with results per block.
-      \param     results Results per block.
-      \param     result Final result.
-    */
     template<
         class InputNoDataPolicy_,
         class Collection>
     inline void aggregate(
         InputNoDataPolicy_&& input_no_data_policy,  // Universal reverence.
         Collection const& results,
-        Result& result)
+        R& result)
     {
-        Sum<Collection, Result, OutOfRangePolicy, InputNoDataPolicy_,
+        Sum<Collection, R, OutOfRangePolicy, InputNoDataPolicy_,
             OutputNoDataPolicy>(
                 std::forward<InputNoDataPolicy_>(input_no_data_policy),
                 std::forward<OutputNoDataPolicy>(_algorithm))(results, result);
@@ -390,40 +372,37 @@ public:
 
 private:
 
-    //! Algorithm used to calculate results.
-    sum::detail::dispatch::Sum<Argument, Result,
+    sum::detail::dispatch::Sum<A, R,
         OutOfRangePolicy, InputNoDataPolicy, OutputNoDataPolicy,
-        typename ArgumentTraits<Argument>::argument_category> _algorithm;
+        typename ArgumentTraits<A>::argument_category> _algorithm;
 
 };
 
 
-//! Sum the values in \a argument and store the result in \a result.
+//! Sum the \a values and store the result in \a result.
 /*!
 */
 template<
-    class Argument,
+    class Values,
     class Result,
     class OutOfRangePolicy=DiscardRangeErrors,
     class InputNoDataPolicy=SkipNoData,
     class OutputNoDataPolicy=DontMarkNoData
 >
 void sum(
-    Argument const& argument,
+    Values const& values,
     Result& result)
 {
-    Sum<Argument, Result, OutOfRangePolicy, InputNoDataPolicy,
-        OutputNoDataPolicy>()(argument, result);
+    Sum<Values, Result, OutOfRangePolicy, InputNoDataPolicy,
+        OutputNoDataPolicy>()(values, result);
 }
 
 
-//! Sum the values in \a argument and store the result in \a result.
+//! Sum the \a values and store the result in \a result.
 /*!
-  Use this overload if you need to pass already constructed policies or
-  policies which have non-default constuctors.
 */
 template<
-    class Argument,
+    class Values,
     class Result,
     class OutOfRangePolicy=DiscardRangeErrors,
     class InputNoDataPolicy=SkipNoData,
@@ -432,14 +411,14 @@ template<
 void sum(
     InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
     OutputNoDataPolicy&& output_no_data_policy,  // Universal reference.
-    Argument const& argument,
+    Values const& values,
     Result& result)
 {
-    Sum<Argument, Result, OutOfRangePolicy, InputNoDataPolicy,
+    Sum<Values, Result, OutOfRangePolicy, InputNoDataPolicy,
         OutputNoDataPolicy>(
             std::forward<InputNoDataPolicy>(input_no_data_policy),
             std::forward<OutputNoDataPolicy>(output_no_data_policy))(
-                argument, result);
+                values, result);
 }
 
 } // namespace statistic

@@ -54,6 +54,8 @@ public:
 
     virtual        ~Array              ()=default;
 
+    void           fill                (T const& value);
+
 private:
 
 };
@@ -144,6 +146,16 @@ inline Array<T, nr_dimensions>::Array(
             *it++ = col;
         }
     }
+}
+
+
+template<
+    class T,
+    size_t nr_dimensions>
+inline void Array<T, nr_dimensions>::fill(
+    T const& value)
+{
+    std::fill(this->data(), this->data() + this->num_elements(), value);
 }
 
 } // namespace fern
