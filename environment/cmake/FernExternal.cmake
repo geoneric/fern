@@ -25,7 +25,7 @@ SET(Python_ADDITIONAL_VERSIONS "2.7")
 
 # Find packages. ---------------------------------------------------------------
 FIND_PACKAGE(Boost REQUIRED
-    COMPONENTS filesystem system unit_test_framework)
+    COMPONENTS filesystem system timer unit_test_framework)
 FIND_PACKAGE(Doxygen REQUIRED)
 FIND_PACKAGE(EXPAT REQUIRED)
 FIND_PACKAGE(GDAL REQUIRED)
