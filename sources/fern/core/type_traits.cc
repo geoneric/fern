@@ -1,4 +1,5 @@
 #include "fern/core/type_traits.h"
+#include <limits>
 
 
 namespace fern {
@@ -40,14 +41,20 @@ String const TypeTraits<bool>::name("bool");
 ValueType const TypeTraits<int8_t>::value_type(VT_INT8);
 ValueTypes const TypeTraits<int8_t>::value_types(ValueTypes::INT8);
 String const TypeTraits<int8_t>::name("int8");
+int8_t const TypeTraits<int8_t>::min(std::numeric_limits<int8_t>::min());
+int8_t const TypeTraits<int8_t>::max(std::numeric_limits<int8_t>::max());
 
 ValueType const TypeTraits<uint8_t>::value_type(VT_UINT8);
 ValueTypes const TypeTraits<uint8_t>::value_types(ValueTypes::UINT8);
 String const TypeTraits<uint8_t>::name("uint8");
+uint8_t const TypeTraits<uint8_t>::min(std::numeric_limits<uint8_t>::min());
+uint8_t const TypeTraits<uint8_t>::max(std::numeric_limits<uint8_t>::max());
 
 ValueType const TypeTraits<int16_t>::value_type(VT_INT16);
 ValueTypes const TypeTraits<int16_t>::value_types(ValueTypes::INT16);
 String const TypeTraits<int16_t>::name("int16");
+int16_t const TypeTraits<int16_t>::min(std::numeric_limits<int16_t>::min());
+int16_t const TypeTraits<int16_t>::max(std::numeric_limits<int16_t>::max());
 
 ValueType const TypeTraits<uint16_t>::value_type(VT_UINT16);
 ValueTypes const TypeTraits<uint16_t>::value_types(ValueTypes::UINT16);
@@ -58,6 +65,8 @@ uint16_t const TypeTraits<uint16_t>::max(std::numeric_limits<uint16_t>::max());
 ValueType const TypeTraits<int32_t>::value_type(VT_INT32);
 ValueTypes const TypeTraits<int32_t>::value_types(ValueTypes::INT32);
 String const TypeTraits<int32_t>::name("int32");
+int32_t const TypeTraits<int32_t>::min(std::numeric_limits<int32_t>::min());
+int32_t const TypeTraits<int32_t>::max(std::numeric_limits<int32_t>::max());
 
 ValueType const TypeTraits<uint32_t>::value_type(VT_UINT32);
 ValueTypes const TypeTraits<uint32_t>::value_types(ValueTypes::UINT32);

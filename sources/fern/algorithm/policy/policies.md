@@ -1,6 +1,16 @@
 Policies {#policies}
 ========
 
+Input-no-data policy
+--------------------
+TODO
+
+
+Output-no-data policy
+---------------------
+TODO
+
+
 Out-of-domain policy
 --------------------
 An out-of-domain policy's job is to test argument values and determine whether they are valid input for the operation.

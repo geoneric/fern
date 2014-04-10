@@ -29,23 +29,19 @@ public:
                                         size_t index2,
                                         size_t index3);
 
-protected:
-
                    DontMarkNoData      ()=default;
 
-                   DontMarkNoData      (DontMarkNoData&&)=delete;
+                   DontMarkNoData      (DontMarkNoData&&)=default;
 
     DontMarkNoData&
-                   operator=           (DontMarkNoData&&)=delete;
+                   operator=           (DontMarkNoData&&)=default;
 
-                   DontMarkNoData      (DontMarkNoData const&)=delete;
+                   DontMarkNoData      (DontMarkNoData const&)=default;
 
     DontMarkNoData&
-                   operator=           (DontMarkNoData const&)=delete;
+                   operator=           (DontMarkNoData const&)=default;
 
-                   ~DontMarkNoData     ()=default;
-
-private:
+    virtual        ~DontMarkNoData     ()=default;
 
 };
 

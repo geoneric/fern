@@ -6,6 +6,8 @@ SET(TEST_NAMES
     path_test
     scope_test
     stack_test
+    std_test
+    stopwatch_test
     string_test
     symbol_table_test
     typelist_test

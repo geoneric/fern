@@ -2,6 +2,7 @@
 #include <type_traits>
 #include "fern/feature/core/array.h"
 #include "fern/feature/core/mask.h"
+#include "fern/feature/core/masked_constant.h"
 
 
 namespace fern {
@@ -23,7 +24,27 @@ public:
 
                    MaskedArray         ()=default;
 
-    template<class ExtentList>
+                   MaskedArray         (size_t size,
+                                        T const& value=T());
+
+                   MaskedArray         (std::initializer_list<T> const& values);
+
+                   MaskedArray         (std::initializer_list<
+                                           std::initializer_list<T>> const&
+                                              values);
+
+                   MaskedArray         (std::vector<MaskedConstant<T>> const&
+                                           values);
+
+    // template<
+    //     template<
+    //         class>
+    //     class Container,
+    //     class Value>
+    //                MaskedArray         (Container<Value> const& container);
+
+    template<
+        class ExtentList>
                    MaskedArray         (ExtentList const& sizes);
 
                    MaskedArray         (MaskedArray const&)=default;
@@ -63,6 +84,107 @@ private:
 template<
     class T,
     size_t nr_dimensions>
+inline MaskedArray<T, nr_dimensions>::MaskedArray(
+    std::vector<MaskedConstant<T>> const& values)
+
+    : Array<T, nr_dimensions>(values.size()),
+      _mask(values.size())
+
+{
+    static_assert(nr_dimensions == 1, "");
+    assert(this->num_elements() == values.size());
+    assert(_mask.num_elements() == values.size());
+
+    typename Array<T, nr_dimensions>::value_type* value_it = this->data();
+    typename Mask<nr_dimensions>::value_type* mask_it = _mask.data();
+
+    for(typename std::vector<MaskedConstant<T>>::const_iterator container_it =
+            values.begin(); container_it != values.end();
+            ++container_it, ++value_it, ++mask_it) {
+        *value_it = (*container_it).value();
+        *mask_it = (*container_it).mask();
+    }
+}
+
+
+// template<
+//     class T,
+//     size_t nr_dimensions>
+// template<
+//     template<
+//         class>
+//     class Container,
+//     class Value>
+// inline MaskedArray<T, nr_dimensions>::MaskedArray(
+//     Container<Value> const& container)
+// 
+//     : Array<T, nr_dimensions>(container.size()),
+//       _mask(container.size())
+// 
+// {
+//     static_assert(nr_dimensions == 1, "");
+//     assert(this->num_elements() == container.size());
+//     assert(_mask.num_elements() == container.size());
+// 
+//     typename Array<T, nr_dimensions>::value_type* value_it = this->data();
+//     typename Mask<nr_dimensions>::value_type mask_it = _mask.data();
+// 
+//     for(typename Container<Value>::const_it container_it = container.begin();
+//             container_it != container.end(); ++container_it, ++value_it,
+//             ++mask_it) {
+//         *value_it = (*container_it).value();
+//         *mask_it = (*container_it).mask();
+//     }
+// }
+
+
+template<
+    class T,
+    size_t nr_dimensions>
+inline MaskedArray<T, nr_dimensions>::MaskedArray(
+    size_t size,
+    T const& value)
+
+    : Array<T, nr_dimensions>(size, value),
+      _mask(size, false)
+
+{
+}
+
+
+template<
+    class T,
+    size_t nr_dimensions>
+inline MaskedArray<T, nr_dimensions>::MaskedArray(
+    std::initializer_list<T> const& values)
+
+    : Array<T, nr_dimensions>(values),
+      _mask(extents[values.size()])
+
+{
+    // By default, all values are not masked.
+    std::fill(_mask.data(), _mask.data() + _mask.num_elements(), false);
+}
+
+
+template<
+    class T,
+    size_t nr_dimensions>
+inline MaskedArray<T, nr_dimensions>::MaskedArray(
+    std::initializer_list<std::initializer_list<T>> const& values)
+
+    : Array<T, nr_dimensions>(values),
+      _mask(extents[values.size()][values.begin()->size()])
+
+{
+    // By default, all values are not masked.
+    std::fill(_mask.data(), _mask.data() + _mask.num_elements(), false);
+}
+
+
+template<
+    class T,
+    size_t nr_dimensions>
 template<
     class ExtentList>
 inline MaskedArray<T, nr_dimensions>::MaskedArray(
@@ -73,7 +195,7 @@ inline MaskedArray<T, nr_dimensions>::MaskedArray(
 
 {
     // By default, all values are not masked.
-    std::fill(_mask.data(), _mask.data() + _mask.size(), false);
+    std::fill(_mask.data(), _mask.data() + _mask.num_elements(), false);
 }
 
 

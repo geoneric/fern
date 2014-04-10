@@ -12,6 +12,7 @@ SET(SOURCES
     path
     script_error
     stack
+    stopwatch
     string
     thread_client
     thread_pool
@@ -23,5 +24,6 @@ ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_core ${SOURCES})
 TARGET_LINK_LIBRARIES(fern_core
     ${Boost_FILESYSTEM_LIBRARY}
     ${Boost_SYSTEM_LIBRARY}
+    ${Boost_TIMER_LIBRARY}
     ${ICU_LIBRARIES}
 )

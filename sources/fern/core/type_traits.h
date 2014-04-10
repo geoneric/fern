@@ -1,5 +1,4 @@
 #pragma once
-#include <limits>
 #include "fern/core/value_types.h"
 
 
@@ -53,9 +52,9 @@ struct TypeTraits<int8_t>
 
     static bool const builtin = true;
 
-    static int8_t const min = std::numeric_limits<int8_t>::min();
+    static int8_t const min;
 
-    static int8_t const max = std::numeric_limits<int8_t>::max();
+    static int8_t const max;
 };
 
 
@@ -72,9 +71,9 @@ struct TypeTraits<uint8_t>
 
     static bool const builtin = true;
 
-    static uint8_t const min = std::numeric_limits<uint8_t>::min();
+    static uint8_t const min;
 
-    static uint8_t const max = std::numeric_limits<uint8_t>::max();
+    static uint8_t const max;
 };
 
 
@@ -91,9 +90,9 @@ struct TypeTraits<int16_t>
 
     static bool const builtin = true;
 
-    static int16_t const min = std::numeric_limits<int16_t>::min();
+    static int16_t const min;
 
-    static int16_t const max = std::numeric_limits<int16_t>::max();
+    static int16_t const max;
 };
 
 
@@ -109,10 +108,6 @@ struct TypeTraits<uint16_t>
     static String const name;
 
     static bool const builtin = true;
-
-    // static uint16_t const min = std::numeric_limits<uint16_t>::min();
-
-    // static uint16_t const max = std::numeric_limits<uint16_t>::max();
 
     static uint16_t const min;
 
@@ -133,9 +128,9 @@ struct TypeTraits<int32_t>
 
     static bool const builtin = true;
 
-    static int32_t const min = std::numeric_limits<int32_t>::min();
+    static int32_t const min;
 
-    static int32_t const max = std::numeric_limits<int32_t>::max();
+    static int32_t const max;
 };
 
 

@@ -30,9 +30,16 @@ public:
 
                    Array               ()=default;
 
+                   Array               (size_t size,
+                                        T const& value=T());
+
+                   Array               (std::initializer_list<T> const& values);
+
                    Array               (std::initializer_list<
                                            std::initializer_list<T>> const&
                                               values);
+
+                   Array               (std::vector<T> const& values);
 
     template<class ExtentList>
                    Array               (ExtentList const& sizes);
@@ -55,6 +62,38 @@ private:
 template<
     class T,
     size_t nr_dimensions>
+inline Array<T, nr_dimensions>::Array(
+    std::vector<T> const& values)
+
+    : boost::multi_array<T, nr_dimensions>(extents[values.size()])
+
+{
+    static_assert(nr_dimensions == 1, "");
+    assert(this->num_elements() == values.size());
+
+    std::copy(values.begin(), values.end(), this->data());
+}
+
+
+template<
+    class T,
+    size_t nr_dimensions>
+inline Array<T, nr_dimensions>::Array(
+    size_t size,
+    T const& value)
+
+    : boost::multi_array<T, nr_dimensions>(extents[size])
+
+{
+    static_assert(nr_dimensions == 1, "");
+
+    std::fill(this->data(), this->data() + this->num_elements(), value);
+}
+
+
+template<
+    class T,
+    size_t nr_dimensions>
 template<
     class ExtentList>
 inline Array<T, nr_dimensions>::Array(
@@ -70,12 +109,34 @@ template<
     class T,
     size_t nr_dimensions>
 inline Array<T, nr_dimensions>::Array(
+    std::initializer_list<T> const& values)
+
+    : boost::multi_array<T, nr_dimensions>(
+          extents[values.size()])
+
+{
+    static_assert(nr_dimensions == 1, "");
+
+    T* it = this->data();
+
+    for(auto const& value: values) {
+        *it++ = value;
+    }
+}
+
+
+template<
+    class T,
+    size_t nr_dimensions>
+inline Array<T, nr_dimensions>::Array(
     std::initializer_list<std::initializer_list<T>> const& values)
 
     : boost::multi_array<T, nr_dimensions>(
           extents[values.size()][values.begin()->size()])
 
 {
+    static_assert(nr_dimensions == 2, "");
+
     T* it = this->data();
 
     for(auto const& row: values) {

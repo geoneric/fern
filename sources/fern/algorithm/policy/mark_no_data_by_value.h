@@ -3,23 +3,22 @@
 
 namespace fern {
 
+//! Output no-data policy class that marks no-data given a special marker value.
+/*!
+  \tparam    Mask Collection receiving the marker values.
+
+  This class keeps a reference to a mask; it doesn't copy the mask. So, copy
+  construction and copy assignment are not supported.
+*/
 template<
-    class T,
     class Mask>
 class MarkNoDataByValue {
 
+private:
+
+    using value_type = typename ArgumentTraits<Mask>::value_type;
+
 public:
-
-    bool           is_no_data          () const;
-
-    bool           is_no_data          (size_t index) const;
-
-    bool           is_no_data          (size_t index1,
-                                        size_t index2) const;
-
-    bool           is_no_data          (size_t index1,
-                                        size_t index2,
-                                        size_t index3) const;
 
     void           mark_as_no_data     ();
 
@@ -33,42 +32,38 @@ public:
                                         size_t index3);
 
                    MarkNoDataByValue   (Mask& mask,
-                                        T const& no_data_value);
+                                        value_type const& no_data_value);
+
+    virtual        ~MarkNoDataByValue  ()=default;
 
 protected:
 
                    MarkNoDataByValue   ()=delete;
 
-                   MarkNoDataByValue   (MarkNoDataByValue&&)=default;
-
-    MarkNoDataByValue&
-                   operator=           (MarkNoDataByValue&&)=default;
-
-    // This class keeps a reference to a mask to update. This class doesn't
-    // copy the mask: copy construction and copy assignment are not supported.
-
                    MarkNoDataByValue   (MarkNoDataByValue const&)=delete;
+
+                   MarkNoDataByValue   (MarkNoDataByValue&&)=default;
 
     MarkNoDataByValue&
                    operator=           (MarkNoDataByValue const&)=delete;
 
-                   ~MarkNoDataByValue  ()=default;
+    MarkNoDataByValue&
+                   operator=           (MarkNoDataByValue&&)=default;
 
 private:
 
     Mask&          _mask;
 
-    T              _no_data_value;
+    value_type     _no_data_value;
 
 };
 
 
 template<
-    class T,
     class Mask>
-inline MarkNoDataByValue<T, Mask>::MarkNoDataByValue(
+inline MarkNoDataByValue<Mask>::MarkNoDataByValue(
     Mask& mask,
-    T const& no_data_value)
+    MarkNoDataByValue<Mask>::value_type const& no_data_value)
 
     : _mask(mask),
       _no_data_value(no_data_value)
@@ -78,63 +73,19 @@ inline MarkNoDataByValue<T, Mask>::MarkNoDataByValue(
 
 
 template<
-    class T,
     class Mask>
-inline bool MarkNoDataByValue<T, Mask>::is_no_data() const
-{
-    return get(_mask) == _no_data_value;
-}
-
-
-template<
-    class T,
-    class Mask>
-inline bool MarkNoDataByValue<T, Mask>::is_no_data(
-    size_t index) const
-{
-    return get(_mask, index) == _no_data_value;
-}
-
-
-template<
-    class T,
-    class Mask>
-inline bool MarkNoDataByValue<T, Mask>::is_no_data(
-    size_t index1,
-    size_t index2) const
-{
-    return get(_mask, index1, index2) == _no_data_value;
-}
-
-
-template<
-    class T,
-    class Mask>
-inline bool MarkNoDataByValue<T, Mask>::is_no_data(
-    size_t index1,
-    size_t index2,
-    size_t index3) const
-{
-    return get(_mask, index1, index2, index3) == _no_data_value;
-}
-
-
-template<
-    class T,
-    class Mask>
-inline void MarkNoDataByValue<T, Mask>::mark_as_no_data()
+inline void MarkNoDataByValue<Mask>::mark_as_no_data()
 {
     // In case of a compile error, make sure that get is overloaded for
-    // Mask. This is not the case for regular constants. You may need to pick
-    // a type like MaskedConstant, which supports masking.
+    // Mask. This is not the case for regular constants. You may need to
+    // pick a type like MaskedConstant, which supports masking.
     get(_mask) = _no_data_value;
 }
 
 
 template<
-    class T,
     class Mask>
-inline void MarkNoDataByValue<T, Mask>::mark_as_no_data(
+inline void MarkNoDataByValue<Mask>::mark_as_no_data(
     size_t index)
 {
     get(_mask, index) = _no_data_value;
@@ -142,9 +93,8 @@ inline void MarkNoDataByValue<T, Mask>::mark_as_no_data(
 
 
 template<
-    class T,
     class Mask>
-inline void MarkNoDataByValue<T, Mask>::mark_as_no_data(
+inline void MarkNoDataByValue<Mask>::mark_as_no_data(
     size_t index1,
     size_t index2)
 {
@@ -153,9 +103,8 @@ inline void MarkNoDataByValue<T, Mask>::mark_as_no_data(
 
 
 template<
-    class T,
     class Mask>
-inline void MarkNoDataByValue<T, Mask>::mark_as_no_data(
+inline void MarkNoDataByValue<Mask>::mark_as_no_data(
     size_t index1,
     size_t index2,
     size_t index3)

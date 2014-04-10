@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE fern algorithm algebra sum
+#define BOOST_TEST_MODULE fern algorithm statistic sum
 #include <boost/test/unit_test.hpp>
 #include "fern/core/constant_traits.h"
 #include "fern/core/typename.h"
@@ -7,73 +7,36 @@
 #include "fern/feature/core/array_traits.h"
 #include "fern/feature/core/masked_array_traits.h"
 #include "fern/feature/core/masked_constant_traits.h"
+#include "fern/algorithm/algebra/elementary/plus.h"
+#include "fern/algorithm/algebra/executor.h"
 #include "fern/algorithm/policy/policies.h"
 #include "fern/algorithm/statistic/sum.h"
-
-
-#define verify_result_value_type(                                              \
-    A1, TypeWeWant)                                                            \
-{                                                                              \
-    typedef fern::algebra::Sum<A1>::R TypeWeGet;                               \
-                                                                               \
-    BOOST_CHECK_MESSAGE((std::is_same<TypeWeGet, TypeWeWant>()),               \
-        fern::typename_<TypeWeGet>() + " != " +                                \
-        fern::typename_<TypeWeWant>());                                        \
-}
 
 
 template<
     class A1,
     class R>
 void verify_value(
-    A1 const& argument1,
+    A1 const& array,
     R const& result_we_want)
 {
-    fern::algebra::Sum<A1> operation;
     R result_we_get;
-
-    operation(argument1, result_we_get);
+    fern::statistic::sum(array, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 
 
-namespace d1 {
-
-template<
-    class T>
-using Array = fern::Array<T, 1>;
-
-} // namespace d1
-
-
-namespace d2 {
-
-template<
-    class T>
-using Array = fern::Array<T, 2>;
-
-} // namespace d2
-
-
 BOOST_AUTO_TEST_SUITE(sum)
 
-BOOST_AUTO_TEST_CASE(result_type)
+BOOST_AUTO_TEST_CASE(traits)
 {
-    verify_result_value_type(uint8_t, uint8_t);
-    // summing bools is not supported.
-    // verify_result_value_type(bool, fern::count_t);
-    verify_result_value_type(fern::float64_t, fern::float64_t);
-
-    verify_result_value_type(std::vector<uint8_t>, uint8_t);
-    verify_result_value_type(d1::Array<uint8_t>, uint8_t);
-    verify_result_value_type(d2::Array<uint8_t>, uint8_t);
-
-    verify_result_value_type(fern::MaskedConstant<uint8_t>,
-        fern::MaskedConstant<uint8_t>);
+    using Sum = fern::statistic::Sum<int32_t, int32_t>;
+    BOOST_CHECK((std::is_same<fern::OperationTraits<Sum>::category,
+        fern::local_aggregate_operation_tag>::value));
 }
 
 
-BOOST_AUTO_TEST_CASE(constants)
+BOOST_AUTO_TEST_CASE(d0_array)
 {
     verify_value<int8_t, int8_t>(-5, -5);
     verify_value<int8_t, int8_t>(-5, -5);
@@ -82,136 +45,332 @@ BOOST_AUTO_TEST_CASE(constants)
 }
 
 
-BOOST_AUTO_TEST_CASE(masked_constants)
+BOOST_AUTO_TEST_CASE(masked_d0_array)
 {
-    // Masked constant with non-masking sum.
+    using MaskedConstant = fern::MaskedConstant<int32_t>;
+    MaskedConstant constant;
+    MaskedConstant result_we_get;
+
+    // MaskedConstant with non-masking sum. ------------------------------------
+    // Constant is not masked.
+    constant.mask() = false;
+    constant.value() = 5;
+    BOOST_CHECK(!constant.mask());
+    fern::statistic::sum(constant, result_we_get);
+    BOOST_CHECK(!result_we_get.mask());
+    BOOST_CHECK_EQUAL(result_we_get.value(), 5);
+
+    // Constant is masked.
+    constant.mask() = true;
+    constant.value() = 6;
+    BOOST_CHECK(constant.mask());
+    fern::statistic::sum(constant, result_we_get);
+    BOOST_CHECK(!result_we_get.mask());
+    BOOST_CHECK_EQUAL(result_we_get.value(), 6);
+
+    // MaskedConstant with masking sum. ----------------------------------------
+    using OutOfRangePolicy = fern::DiscardRangeErrors;
+    using InputNoDataPolicy = fern::DetectNoDataByValue<bool>;
+    using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
+
+    // Constant is not masked.
+    constant.value() = 5;
+    constant.mask() = false;
+    BOOST_CHECK(!constant.mask());
+    BOOST_CHECK(!result_we_get.mask());
+    fern::statistic::sum<MaskedConstant, MaskedConstant, OutOfRangePolicy,
+        InputNoDataPolicy, OutputNoDataPolicy>(
+            InputNoDataPolicy(constant.mask(), true),
+            OutputNoDataPolicy(result_we_get.mask(), true),
+            constant, result_we_get);
+    BOOST_CHECK(!result_we_get.mask());
+    BOOST_CHECK_EQUAL(result_we_get.value(), 5);
+
+    // Constant is masked.
+    constant.value() = 6;
+    constant.mask() = true;
+    BOOST_CHECK(constant.mask());
+    BOOST_CHECK(!result_we_get.mask());
+    fern::statistic::sum<MaskedConstant, MaskedConstant, OutOfRangePolicy,
+        InputNoDataPolicy, OutputNoDataPolicy>(
+            InputNoDataPolicy(constant.mask(), true),
+            OutputNoDataPolicy(result_we_get.mask(), true),
+            constant, result_we_get);
+    BOOST_CHECK(result_we_get.mask());
+    BOOST_CHECK_EQUAL(result_we_get.value(), 5);
+}
+
+
+BOOST_AUTO_TEST_CASE(d1_array)
+{
+    // vector
     {
-        typedef fern::MaskedConstant<int32_t> A1;
-        typedef fern::algebra::Sum<A1> Sum;
-        Sum sum;
-        A1 argument1(5);
-
-        typedef Sum::R R;
-
-        {
-            R result;
-            BOOST_CHECK(!result.mask());
-
-            sum(argument1, result);
-            BOOST_CHECK(!result.mask());
-            BOOST_CHECK_EQUAL(result.value(), 5);
-        }
-
-        {
-            // Default Sum doesn't check the input nodata mask.
-            R result;
-            argument1.mask() = true;
-            argument1.value() = 6;
-            sum(argument1, result);
-            BOOST_CHECK(!result.mask());
-            BOOST_CHECK_EQUAL(result.value(), 6);
-        }
+        std::vector<int32_t> array{ 1, 2, 3, 5 };
+        int32_t result;
+        fern::statistic::sum(array, result);
+        BOOST_CHECK_EQUAL(result, 11);
     }
 
-    // Masked constant with masking sum.
+    // 1d array
     {
-        typedef fern::MaskedConstant<int32_t> A1;
-        typedef fern::MarkNoDataByValue<bool, bool> NoDataPolicy;
-        typedef fern::DiscardRangeErrors OutOfRangePolicy;
-        typedef fern::algebra::Sum<A1, OutOfRangePolicy, NoDataPolicy> Sum;
-        A1 argument1(5);
+        fern::Array<int32_t, 1> array{ 1, 2, 3, 5 };
+        int32_t result;
+        fern::statistic::sum(array, result);
+        BOOST_CHECK_EQUAL(result, 11);
+    }
 
-        typedef Sum::R R;
-        R result;
-        result.mask() = argument1.mask();
+    // empty
+    {
+        // The result value is not touched.
+        std::vector<int32_t> array;
+        int32_t result{5};
+        fern::statistic::sum(array, result);
+        BOOST_CHECK_EQUAL(result, 5);
+    }
+}
 
-        Sum sum(NoDataPolicy(result.mask(), true));
 
-        sum(argument1, result);
+BOOST_AUTO_TEST_CASE(masked_d1_array)
+{
+    using OutOfRangePolicy = fern::DiscardRangeErrors;
+    using InputNoDataPolicy = fern::DetectNoDataByValue<fern::Mask<1>>;
+    using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
+    using MaskedArray = fern::MaskedArray<int32_t, 1>;
+    using MaskedConstant = fern::MaskedConstant<int32_t>;
+
+    MaskedArray array{ 1, 2, 3, 5 };
+
+    // 1d masked array with non-masking sum
+    {
+        MaskedConstant result;
+        fern::statistic::sum(array, result);
+        BOOST_CHECK_EQUAL(result.value(), 11);
+    }
+
+    // 1d masked array with masking sum
+    {
+        array.mask()[2] = true;
+        MaskedConstant result;
+        fern::statistic::sum<MaskedArray, MaskedConstant, OutOfRangePolicy,
+            InputNoDataPolicy, OutputNoDataPolicy>(
+                InputNoDataPolicy(array.mask(), true),
+                OutputNoDataPolicy(result.mask(), true),
+                array, result);
         BOOST_CHECK(!result.mask());
-        BOOST_CHECK_EQUAL(result.value(), 5);
+        BOOST_CHECK_EQUAL(result.value(), 8);
 
-        result.mask() = true;
-        argument1.value() = 6;
-        BOOST_CHECK(sum.algorithm.is_no_data());
-        sum(argument1, result);
+        // Mask the whole input. Result must be masked too.
+        std::fill(array.mask().data(), array.mask().data() +
+            array.num_elements(), true);
+        fern::statistic::sum<MaskedArray, MaskedConstant, OutOfRangePolicy,
+            InputNoDataPolicy, OutputNoDataPolicy>(
+                InputNoDataPolicy(array.mask(), true),
+                OutputNoDataPolicy(result.mask(), true),
+                array, result);
+        BOOST_CHECK(result.mask());
+    }
+
+    // empty
+    {
+        MaskedArray empty_array;
+        MaskedConstant result{5};
+        fern::statistic::sum<MaskedArray, MaskedConstant, OutOfRangePolicy,
+            InputNoDataPolicy, OutputNoDataPolicy>(
+                InputNoDataPolicy(empty_array.mask(), true),
+                OutputNoDataPolicy(result.mask(), true),
+                empty_array, result);
         BOOST_CHECK(result.mask());
         BOOST_CHECK_EQUAL(result.value(), 5);
     }
 }
 
 
-BOOST_AUTO_TEST_CASE(collections)
+BOOST_AUTO_TEST_CASE(d2_array)
 {
-    // vector
+    // 2d array
     {
-        std::vector<int32_t> argument1 = { 1, 2, 3, 5 };
-        int32_t result;
-        fern::algebra::sum(argument1, result);
-        BOOST_CHECK_EQUAL(result, 11);
-    }
-
-    // 2D array
-    {
-        size_t const nr_rows = 3;
-        size_t const nr_cols = 2;
-        auto extents = fern::extents[nr_rows][nr_cols];
-
-        fern::Array<int8_t, 2> argument1(extents);
-        argument1[0][0] =  -2;
-        argument1[0][1] =  -1;
-        argument1[1][0] =  0;
-        argument1[1][1] =  9;
-        argument1[2][0] =  1;
-        argument1[2][1] =  2;
-
+        fern::Array<int8_t, 2> array{
+            { -2, -1 },
+            {  0,  9 },
+            {  1,  2 }
+        };
         int8_t result;
-
-        fern::algebra::sum(argument1, result);
+        fern::statistic::sum(array, result);
         BOOST_CHECK_EQUAL(result, 9);
     }
 }
 
 
-// TODO hier verder
-// BOOST_AUTO_TEST_CASE(masked_collections)
-// {
-//     // 2D masked array
-//     {
-//         size_t const nr_rows = 3;
-//         size_t const nr_cols = 2;
-//         auto extents = fern::extents[nr_rows][nr_cols];
-// 
-//         typedef fern::MaskedConstant<int8_t> A1Value;
-//         typedef fern::MaskedArray<A1Value, 2> A1;
-// 
-//         A1 argument1(extents);
-//         argument1[0][0] =  -2;
-//         argument1[0][1] =  -1;
-//         argument1[1][0] =  0;
-//         argument1[1][1] =  9;
-//         argument1[2][0] =  1;
-//         argument1[2][1] =  2;
-// 
-//         fern::MaskedConstant<int8_t> result;
-// 
-//         typedef fern::DiscardRangeErrors OutOfRangePolicy;
-//         // typedef fern::MarkNoDataByValue<bool, fern::Mask<2>> NoDataPolicy;
-//         // typedef fern::algebra::Sum<A1, OutOfRangePolicy, NoDataPolicy> Sum;
-//         // Sum sum(NoDataPolicy(argument1.mask(), true));
-// 
-//         typedef fern::algebra::Sum<A1, OutOfRangePolicy> Sum;
-//         Sum sum;
-// 
-//         sum(argument1, result);
-//         BOOST_CHECK_EQUAL(result, 9);
-// 
-//         // Mask the 9.
-//         argument1.mask()[1][1] =  true;
-// 
-//         sum(argument1, result);
-//         BOOST_CHECK_EQUAL(result, 0);
-//     }
-// }
+BOOST_AUTO_TEST_CASE(masked_d2_array)
+{
+    fern::MaskedArray<int8_t, 2> array{
+        { -2, -1 },
+        {  5,  9 },
+        {  1,  2 }
+    };
+
+    // 2d masked array with non-masking sum
+    {
+        fern::MaskedConstant<int8_t> result;
+        fern::statistic::sum(array, result);
+        BOOST_CHECK_EQUAL(result.value(), 14);
+    }
+
+    // 2d masked array with masking sum
+    {
+        using MaskedArray = fern::MaskedArray<int8_t, 2>;
+        using MaskedConstant = fern::MaskedConstant<int8_t>;
+        using OutOfRangePolicy = fern::DiscardRangeErrors;
+        using InputNoDataPolicy = fern::DetectNoDataByValue<fern::Mask<2>>;
+        using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
+
+        array.mask()[1][1] = true;
+        MaskedConstant result;
+        fern::statistic::sum<MaskedArray, MaskedConstant, OutOfRangePolicy,
+            InputNoDataPolicy, OutputNoDataPolicy>(
+                InputNoDataPolicy(array.mask(), true),
+                OutputNoDataPolicy(result.mask(), true),
+                array, result);
+        BOOST_CHECK(!result.mask());
+        BOOST_CHECK_EQUAL(result.value(), 5);
+
+        // Mask the whole input. Result must be masked too.
+        std::fill(array.mask().data(), array.mask().data() +
+            array.num_elements(), true);
+        fern::statistic::sum<MaskedArray, MaskedConstant, OutOfRangePolicy,
+            InputNoDataPolicy, OutputNoDataPolicy>(
+                InputNoDataPolicy(array.mask(), true),
+                OutputNoDataPolicy(result.mask(), true),
+                array, result);
+        BOOST_CHECK(result.mask());
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(out_of_range)
+{
+    using Array = fern::Array<int32_t, 1>;
+    Array overflow_array{ fern::TypeTraits<int32_t>::max, 1 };
+    Array underflow_array{ fern::TypeTraits<int32_t>::min, -1 };
+
+    // 1d masked array with non-masking sum
+    {
+        int32_t result;
+
+        // Integer overflow -> max + 1 == min.
+        fern::statistic::sum(overflow_array, result);
+        BOOST_CHECK_EQUAL(result, fern::TypeTraits<int32_t>::min);
+
+        // Integer underflow -> min - 1 == max.
+        fern::statistic::sum(underflow_array, result);
+        BOOST_CHECK_EQUAL(result, fern::TypeTraits<int32_t>::max);
+    }
+
+    // 1d masked array with masking sum
+    {
+        using OutOfRangePolicy = fern::plus::OutOfRangePolicy<int32_t>;
+        using InputNoDataPolicy = fern::SkipNoData;
+        using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
+
+        // fern::MaskedConstant<int32_t> result;
+        using R = fern::MaskedConstant<int32_t>;
+        R result;
+        fern::statistic::sum<Array, R, OutOfRangePolicy, InputNoDataPolicy,
+            OutputNoDataPolicy>(InputNoDataPolicy(), OutputNoDataPolicy(
+                result.mask(), true), overflow_array, result);
+        BOOST_CHECK(result.mask());
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(concurrent)
+{
+    // Create a somewhat larger array.
+    size_t const nr_rows = 6000;
+    size_t const nr_cols = 4000;
+    auto const extents = fern::extents[nr_rows][nr_cols];
+    fern::Array<int32_t, 2> argument(extents);
+    int32_t result_we_got;
+    int32_t result_we_want;
+    fern::statistic::Sum<fern::Array<int32_t, 2>, int32_t> sum;
+
+    std::iota(argument.data(), argument.data() + argument.num_elements(), 0);
+    result_we_want = std::accumulate(argument.data(), argument.data() +
+        argument.num_elements(), 0);
+
+    // Serial.
+    {
+        fern::serial::execute(sum, argument, result_we_got);
+        BOOST_CHECK_EQUAL(result_we_got, result_we_want);
+    }
+
+
+    // Concurrent.
+    {
+        fern::ThreadClient client;
+        fern::concurrent::execute(sum, argument, result_we_got);
+        BOOST_CHECK_EQUAL(result_we_got, result_we_want);
+    }
+
+    {
+        using OutOfRangePolicy = fern::plus::OutOfRangePolicy<int32_t>;
+        using InputNoDataPolicy = fern::SkipNoData;
+        using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
+        fern::MaskedConstant<int32_t> result_we_got;
+        fern::statistic::Sum<fern::Array<int32_t, 2>,
+            fern::MaskedConstant<int32_t>, OutOfRangePolicy, InputNoDataPolicy,
+            OutputNoDataPolicy> sum(
+                InputNoDataPolicy(),
+                OutputNoDataPolicy(result_we_got.mask(), true));
+
+
+        // Fill input with zeros. Put max in upper left and 1 in cell next to
+        // it. See if no-data detected by a single thread propagates through
+        // aggregation.
+        std::fill(argument.data(), argument.data() +
+            argument.num_elements(), 0);
+        argument[0][0] = fern::TypeTraits<int32_t>::max;
+        argument[0][1] = 1;
+
+        {
+            // Base case, serial.
+            result_we_got.mask() = false;
+            fern::serial::execute(sum, argument, result_we_got);
+            BOOST_CHECK(result_we_got.mask());
+        }
+
+        {
+            // Concurrent.
+            result_we_got.mask() = false;
+            fern::ThreadClient client;
+            fern::concurrent::execute(sum, argument, result_we_got);
+            BOOST_CHECK(result_we_got.mask());
+        }
+
+
+        // Fill input with zeros. Put max in upper left and 1 in lower right
+        // cell. This verifies that the aggregate operation uses the output
+        // no-data mask.
+        std::fill(argument.data(), argument.data() + argument.num_elements(),
+            0);
+        argument[0][0] = fern::TypeTraits<int32_t>::max;
+        argument[nr_rows-1][nr_cols-1] = 1;
+
+        {
+            // Base case, serial.
+            result_we_got.mask() = false;
+            fern::serial::execute(sum, argument, result_we_got);
+            BOOST_CHECK(result_we_got.mask());
+        }
+
+        {
+            // Concurrent.
+            result_we_got.mask() = false;
+            fern::ThreadClient client;
+            fern::concurrent::execute(sum, argument, result_we_got);
+            BOOST_CHECK(result_we_got.mask());
+        }
+    }
+}
 
 BOOST_AUTO_TEST_SUITE_END()

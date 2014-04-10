@@ -68,6 +68,7 @@ template<
     class T>
 inline T const& MaskedConstant<T>::value() const
 {
+    // assert(!_mask);
     return _value;
 }
 
@@ -76,6 +77,7 @@ template<
     class T>
 inline T& MaskedConstant<T>::value()
 {
+    // assert(!_mask);
     return _value;
 }
 
