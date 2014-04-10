@@ -22,6 +22,8 @@ public:
 
                    IndexRanges         (IndexRanges&& other);
 
+                   IndexRanges         (IndexRange range);
+
                    IndexRanges         (IndexRange range1,
                                         IndexRange range2);
 
@@ -68,12 +70,25 @@ inline IndexRanges<nr_dimensions>::IndexRanges(
 template<
     size_t nr_dimensions>
 inline IndexRanges<nr_dimensions>::IndexRanges(
+    IndexRange range)
+
+    :  Base{{range}}
+
+{
+    static_assert(nr_dimensions == 1, "");
+}
+
+
+template<
+    size_t nr_dimensions>
+inline IndexRanges<nr_dimensions>::IndexRanges(
     IndexRange range1,
     IndexRange range2)
 
     :  Base{{range1, range2}}
 
 {
+    static_assert(nr_dimensions == 2, "");
 }
 
 
