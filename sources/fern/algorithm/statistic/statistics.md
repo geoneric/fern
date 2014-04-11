@@ -1,8 +1,10 @@
 Statistics {#statistics}
 ==========
 
+[TOC]
 
-Count
+
+Count {#count}
 -----
 Count the number of occurences of a constant value in a collection.
 
@@ -14,7 +16,7 @@ Count the number of occurences of a constant value in a collection.
 yes      | yes      | yes      | no
 
 
-Sum
+Sum {#sum}
 ---
 Sum the values in a collection.
 
@@ -24,4 +26,3 @@ Sum the values in a collection.
 0D array | 1D array | 2D array | 3D array
 -------- | -------- | -------- | --------
 yes      | yes      | yes      | no
-
