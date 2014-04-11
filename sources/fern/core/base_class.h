@@ -30,14 +30,14 @@ struct base_class<
     BaseClass>
 {
     // This template matches if there is only one type left to test.
-    typedef typename boost::mpl::if_<
+    using type = typename boost::mpl::if_<
         // If BaseClass is a base of Class ...
         typename std::is_base_of<BaseClass, Class>::type,
         // ... use BaseClass as the result type ...
         BaseClass,
         // ... else, use the Class type itself and be done with it.
         Class
-    >::type type;
+    >::type;
 };
 
 
@@ -50,14 +50,14 @@ struct base_class<
     BaseClass,
     CLASSES...>
 {
-    typedef typename boost::mpl::if_<
+    using type = typename boost::mpl::if_<
         // If BaseClass is a base of Class ...
         typename std::is_base_of<BaseClass, Class>::type,
         // ... use BaseClass as the result type ...
         BaseClass,
         // ... else, try the next tag type.
         typename base_class<Class, CLASSES...>::type
-    >::type type;
+    >::type;
 };
 
 } // namespace fern

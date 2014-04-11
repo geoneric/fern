@@ -6,7 +6,7 @@
 #define verify_result_value_type(                                              \
     A1, A2, TypeWeWant)                                                        \
 {                                                                              \
-    typedef typename fern::ResultValue<A1, A2>::type TypeWeGet;                \
+    using TypeWeGet = typename fern::ResultValue<A1, A2>::type;                \
                                                                                \
     BOOST_CHECK_MESSAGE((std::is_same<TypeWeGet, TypeWeWant>()),               \
         fern::TypeTraits<TypeWeGet>::name + " != " +                           \

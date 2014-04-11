@@ -135,7 +135,7 @@ inline std::future<typename std::result_of<Function()>::type>
     ThreadPool::submit(
         Function function)
 {
-    typedef typename std::result_of<Function()>::type result_type;
+    using result_type = typename std::result_of<Function()>::type;
 
     std::packaged_task<result_type()> task(std::move(function));
     std::future<result_type> result(task.get_future());

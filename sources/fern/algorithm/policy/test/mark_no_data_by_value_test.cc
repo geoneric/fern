@@ -13,6 +13,8 @@ class Mask
 public:
 
     using value_type = T;
+    using reference = T&;
+    using const_reference = T const&;
 
     Mask()
         : _values(nullptr)
@@ -35,14 +37,6 @@ public:
     {
         return _values[index];
     }
-
-    /// inline void set(
-    ///     size_t index,
-    ///     T const& value)
-    /// {
-    ///     assert(_values);
-    ///     _values[index] = value;
-    /// }
 
 private:
 

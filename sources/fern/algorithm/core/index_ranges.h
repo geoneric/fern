@@ -40,7 +40,7 @@ public:
 
 private:
 
-    typedef std::array<IndexRange, nr_dimensions> Base;
+    using Base = std::array<IndexRange, nr_dimensions>;
 
 };
 

@@ -328,11 +328,11 @@ public:
         typename fern::Result<A1, A2>::type)
 
     /// //! Type of the result of the operation.
-    /// typedef typename Result<A1, A2>::type R;
+    /// using R = typename Result<A1, A2>::type;
 
-    /// typedef typename ArgumentTraits<A1>::value_type A1Value;
+    /// using A1Value = typename ArgumentTraits<A1>::value_type;
 
-    /// typedef typename ArgumentTraits<A2>::value_type A2Value;
+    /// using A2Value = typename ArgumentTraits<A2>::value_type;
 
     Plus()
         : _algorithm(plus::Algorithm<A1Value, A2Value>())

@@ -47,7 +47,7 @@ struct push_front<
     T,
     Typelist<TYPES...>>
 {
-    typedef Typelist<T, TYPES... > type;
+    using type = Typelist<T, TYPES... >;
 };
 
 
@@ -64,7 +64,7 @@ template<
 struct pop_front<
     Typelist<T, TYPES...>>
 {
-    typedef Typelist<TYPES...> type;
+    using type = Typelist<TYPES...>;
 };
 
 
@@ -83,7 +83,7 @@ struct at<
     N,
     Typelist<TYPES...>>
 {
-    typedef typename std::tuple_element<N, std::tuple<TYPES...>>::type type;
+    using type = typename std::tuple_element<N, std::tuple<TYPES...>>::type;
 };
 
 
@@ -107,7 +107,7 @@ struct find_from<
     index,
     Typelist<TYPES...>>
 {
-    typedef typename mpl::if_c<
+    using type = typename mpl::if_c<
         // If the current type equals the type to look for ...
         std::is_same<typename at<index, Typelist<TYPES...>>::type,
             TypeToFind>::value,
@@ -115,7 +115,7 @@ struct find_from<
         mpl::int_<index>,
         // ... else try the next type.
         find_from<TypeToFind, index + 1, Typelist<TYPES...>>
-    >::type type;
+    >::type;
 
     enum {
         value = type::value

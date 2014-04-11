@@ -80,12 +80,12 @@ template<
 struct Laplacian
 {
 
-    typedef neighborhood_operation_tag category;
+    using category = neighborhood_operation_tag;
 
     //! Type of the result of the operation.
-    typedef A R;
+    using R = A;
 
-    typedef typename ArgumentTraits<A>::value_type AValue;
+    using AValue = typename ArgumentTraits<A>::value_type;
 
     Laplacian()
         // : algorithm(plus::Algorithm<A1Value, A2Value>())

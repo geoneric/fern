@@ -12,7 +12,7 @@ class Scope
 
 public:
 
-    typedef typename std::map<String, Value>::const_iterator const_iterator;
+    using const_iterator = typename std::map<String, Value>::const_iterator;
 
                    Scope               ()=default;
 

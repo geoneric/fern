@@ -149,7 +149,7 @@ BOOST_AUTO_TEST_SUITE(plus)
 ///     {
 ///         uint8_t argument1(5);
 ///         uint8_t argument2(6);
-///         typedef fern::Result<uint8_t, uint8_t>::type R;
+///         using R = fern::Result<uint8_t, uint8_t>::type;
 ///         R result;
 /// 
 ///         fern::algebra::plus(argument1, argument2, result);
@@ -161,7 +161,7 @@ BOOST_AUTO_TEST_SUITE(plus)
 ///     {
 ///         uint8_t argument1(5);
 ///         std::vector<uint8_t> argument2({1, 2, 3});
-///         typedef fern::Result<uint8_t, uint8_t>::type R;
+///         using R = fern::Result<uint8_t, uint8_t>::type;
 ///         std::vector<R> result(argument2.size());
 /// 
 ///         fern::algebra::plus(argument1, argument2, result);
@@ -176,7 +176,7 @@ BOOST_AUTO_TEST_SUITE(plus)
 ///     {
 ///         std::vector<uint8_t> argument1({1, 2, 3});
 ///         uint8_t argument2(5);
-///         typedef fern::Result<uint8_t, uint8_t>::type R;
+///         using R = fern::Result<uint8_t, uint8_t>::type;
 ///         std::vector<R> result(argument1.size());
 /// 
 ///         fern::algebra::plus(argument1, argument2, result);
@@ -191,7 +191,7 @@ BOOST_AUTO_TEST_SUITE(plus)
 ///     {
 ///         std::vector<uint8_t> argument1({1, 2, 3});
 ///         std::vector<uint8_t> argument2({4, 5, 6});
-///         typedef fern::Result<uint8_t, uint8_t>::type R;
+///         using R = fern::Result<uint8_t, uint8_t>::type;
 ///         std::vector<R> result(argument1.size());
 /// 
 ///         fern::algebra::plus(argument1, argument2, result);
@@ -211,7 +211,7 @@ BOOST_AUTO_TEST_SUITE(plus)
 ///         argument[1][1] =  9;
 ///         argument[2][0] =  1;
 ///         argument[2][1] =  2;
-///         typedef fern::Result<int8_t, int8_t>::type R;
+///         using R = fern::Result<int8_t, int8_t>::type;
 ///         fern::Array<R, 2> result(fern::extents[3][2]);
 /// 
 ///         fern::algebra::plus(argument, argument, result);
@@ -234,7 +234,7 @@ BOOST_AUTO_TEST_SUITE(plus)
 ///         argument[1][1] =  9;
 ///         argument[2][0] =  1;
 ///         argument[2][1] =  2;
-///         typedef fern::Result<int8_t, int8_t>::type R;
+///         using R = fern::Result<int8_t, int8_t>::type;
 ///         fern::MaskedArray<R, 2> result(fern::extents[3][2]);
 /// 
 ///         fern::algebra::plus(argument, argument, result);
@@ -289,20 +289,20 @@ BOOST_AUTO_TEST_SUITE(plus)
 ///     {
 ///         // Create room for the result.
 ///         // Set the mask.
-///         typedef fern::Result<int8_t, int8_t>::type R;
+///         using R = fern::Result<int8_t, int8_t>::type;
 ///         fern::MaskedArray<R, 2> result(extents);
 ///         result.set_mask(argument1.mask(), true);
 ///         result.set_mask(argument2.mask(), true);
 /// 
-///         typedef decltype(argument1) A1;
-///         typedef decltype(argument2) A2;
-///         typedef fern::ArgumentTraits<A1>::value_type A1Value;
-///         typedef fern::ArgumentTraits<A2>::value_type A2Value;
-///         typedef fern::DiscardDomainErrors<A1Value, A2Value> OutOfDomainPolicy;
-///         typedef fern::plus::OutOfRangePolicy<A1Value, A2Value> OutOfRangePolicy;
-///         typedef fern::MarkNoDataByValue<bool, fern::Mask<2>> NoDataPolicy;
-///         typedef fern::algebra::Plus<A1, A2, OutOfDomainPolicy, OutOfRangePolicy,
-///             NoDataPolicy> Plus;
+///         using A1 = decltype(argument1);
+///         using A2 = decltype(argument2);
+///         using A1Value = fern::ArgumentTraits<A1>::value_type;
+///         using A2Value = fern::ArgumentTraits<A2>::value_type;
+///         using OutOfDomainPolicy = fern::DiscardDomainErrors<A1Value, A2Value>;
+///         using OutOfRangePolicy = fern::plus::OutOfRangePolicy<A1Value, A2Value>;
+///         using NoDataPolicy = fern::MarkNoDataByValue<bool, fern::Mask<2>>;
+///         using Plus = fern::algebra::Plus<A1, A2, OutOfDomainPolicy, OutOfRangePolicy,
+///             NoDataPolicy>;
 /// 
 ///         Plus plus(NoDataPolicy(result.mask(), true));
 /// 
@@ -333,19 +333,19 @@ BOOST_AUTO_TEST_SUITE(plus)
 ///     {
 ///         // Create room for the result.
 ///         // Set the mask.
-///         typedef fern::Result<int8_t, int8_t>::type R;
+///         using R = fern::Result<int8_t, int8_t>::type;
 ///         fern::MaskedArray<R, 2> result(extents);
 ///         result.set_mask(argument1.mask(), true);
 /// 
-///         typedef decltype(argument1) A1;
-///         typedef decltype(argument3) A2;
-///         typedef fern::ArgumentTraits<A1>::value_type A1Value;
-///         typedef fern::ArgumentTraits<A2>::value_type A2Value;
-///         typedef fern::DiscardDomainErrors<A1Value, A2Value> OutOfDomainPolicy;
-///         typedef fern::plus::OutOfRangePolicy<A1Value, A2Value> OutOfRangePolicy;
-///         typedef fern::MarkNoDataByValue<bool, fern::Mask<2>> NoDataPolicy;
-///         typedef fern::algebra::Plus<A1, A2, OutOfDomainPolicy, OutOfRangePolicy,
-///             NoDataPolicy> Plus;
+///         using A1 = decltype(argument1);
+///         using A2 = decltype(argument3);
+///         using A1Value = fern::ArgumentTraits<A1>::value_type;
+///         using A2Value = fern::ArgumentTraits<A2>::value_type;
+///         using OutOfDomainPolicy = fern::DiscardDomainErrors<A1Value, A2Value>;
+///         using OutOfRangePolicy = fern::plus::OutOfRangePolicy<A1Value, A2Value>;
+///         using NoDataPolicy = fern::MarkNoDataByValue<bool, fern::Mask<2>>;
+///         using Plus = fern::algebra::Plus<A1, A2, OutOfDomainPolicy, OutOfRangePolicy,
+///             NoDataPolicy>;
 /// 
 ///         Plus plus(NoDataPolicy(result.mask(), true));
 /// 
@@ -373,19 +373,19 @@ BOOST_AUTO_TEST_SUITE(plus)
 ///     {
 ///         // Create room for the result.
 ///         // Set the mask.
-///         typedef fern::Result<int8_t, int8_t>::type R;
+///         using R = fern::Result<int8_t, int8_t>::type;
 ///         fern::MaskedArray<R, 2> result(extents);
 ///         result.set_mask(argument1.mask(), true);
 /// 
-///         typedef decltype(argument3) A1;
-///         typedef decltype(argument1) A2;
-///         typedef fern::ArgumentTraits<A1>::value_type A1Value;
-///         typedef fern::ArgumentTraits<A2>::value_type A2Value;
-///         typedef fern::DiscardDomainErrors<A1Value, A2Value> OutOfDomainPolicy;
-///         typedef fern::plus::OutOfRangePolicy<A1Value, A2Value> OutOfRangePolicy;
-///         typedef fern::MarkNoDataByValue<bool, fern::Mask<2>> NoDataPolicy;
-///         typedef fern::algebra::Plus<A1, A2, OutOfDomainPolicy, OutOfRangePolicy,
-///             NoDataPolicy> Plus;
+///         using A1 = decltype(argument3);
+///         using A2 = decltype(argument1);
+///         using A1Value = fern::ArgumentTraits<A1>::value_type;
+///         using A2Value = fern::ArgumentTraits<A2>::value_type;
+///         using OutOfDomainPolicy = fern::DiscardDomainErrors<A1Value, A2Value>;
+///         using OutOfRangePolicy = fern::plus::OutOfRangePolicy<A1Value, A2Value>;
+///         using NoDataPolicy = fern::MarkNoDataByValue<bool, fern::Mask<2>>;
+///         using Plus = fern::algebra::Plus<A1, A2, OutOfDomainPolicy, OutOfRangePolicy,
+///             NoDataPolicy>;
 /// 
 ///         Plus plus(NoDataPolicy(result.mask(), true));
 /// 

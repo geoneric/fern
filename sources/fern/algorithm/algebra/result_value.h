@@ -45,13 +45,13 @@ class ResultValue<
 private:
 
     // Pick the largest type.
-    typedef boost::mpl::vector<A1, A2> types;
-    typedef typename boost::mpl::max_element<boost::mpl::transform_view<types,
-        boost::mpl::sizeof_<boost::mpl::_1>>>::type iter;
+    using types = boost::mpl::vector<A1, A2>;
+    using iter = typename boost::mpl::max_element<boost::mpl::transform_view<
+        types, boost::mpl::sizeof_<boost::mpl::_1>>>::type;
 
 public:
 
-    typedef typename boost::mpl::deref<typename iter::base>::type type;
+    using type = typename boost::mpl::deref<typename iter::base>::type;
 
 };
 
@@ -69,13 +69,13 @@ class ResultValue<
 private:
 
     // Pick the largest type.
-    typedef boost::mpl::vector<A1, A2> types;
-    typedef typename boost::mpl::max_element<boost::mpl::transform_view<types,
-        boost::mpl::sizeof_<boost::mpl::_1>>>::type iter;
+    using types = boost::mpl::vector<A1, A2>;
+    using iter = typename boost::mpl::max_element<boost::mpl::transform_view<
+        types, boost::mpl::sizeof_<boost::mpl::_1>>>::type;
 
 public:
 
-    typedef typename boost::mpl::deref<typename iter::base>::type type;
+    using type = typename boost::mpl::deref<typename iter::base>::type;
 
 };
 
@@ -103,19 +103,20 @@ class ResultValue<
 
 private:
 
-    typedef core::Typelist<uint8_t, uint16_t, uint32_t, uint64_t> UnsignedTypes;
-    typedef core::Typelist<int8_t, int16_t, int32_t, int64_t> SignedTypes;
+    using UnsignedTypes = core::Typelist<uint8_t, uint16_t, uint32_t, uint64_t>;
+    using SignedTypes = core::Typelist<int8_t, int16_t, int32_t, int64_t>;
 
     // Find index of A1 in list of unsigned types. Determine type of next
     // larger type in list of signed types. -> Type1
-    typedef typename core::at<min(core::find<A1, UnsignedTypes>::value + 1,
-        core::size<SignedTypes>::value - 1), SignedTypes>::type Type1;
+    using Type1 = typename core::at<min(
+        core::find<A1, UnsignedTypes>::value + 1,
+        core::size<SignedTypes>::value - 1), SignedTypes>::type;
 
 public:
 
     // Result type is largest_type(Type1, A2)
-    typedef typename boost::mpl::if_c<
-        (sizeof(Type1) > sizeof(A2)), Type1, A2>::type type;
+    using type = typename boost::mpl::if_c<
+        (sizeof(Type1) > sizeof(A2)), Type1, A2>::type;
 
 };
 
@@ -130,8 +131,8 @@ struct ResultValue<
     unsigned_integer_tag>
 {
     // Switch template arguments.
-    typedef typename ResultValue<A2, A1, unsigned_integer_tag,
-        signed_integer_tag>::type type;
+    using type = typename ResultValue<A2, A1, unsigned_integer_tag,
+        signed_integer_tag>::type;
 };
 
 
@@ -148,13 +149,13 @@ class ResultValue<
 private:
 
     // Pick the largest type.
-    typedef boost::mpl::vector<A1, A2> types;
-    typedef typename boost::mpl::max_element<boost::mpl::transform_view<types,
-        boost::mpl::sizeof_<boost::mpl::_1>>>::type iter;
+    using types = boost::mpl::vector<A1, A2>;
+    using iter = typename boost::mpl::max_element<boost::mpl::transform_view<
+        types, boost::mpl::sizeof_<boost::mpl::_1>>>::type;
 
 public:
 
-    typedef typename boost::mpl::deref<typename iter::base>::type type;
+    using type = typename boost::mpl::deref<typename iter::base>::type;
 
 };
 
@@ -170,7 +171,7 @@ struct ResultValue<
 {
 
     // Pick the float type.
-    typedef A1 type;
+    using type = A1;
 
 };
 
@@ -186,7 +187,7 @@ struct ResultValue<
 {
 
     // Pick the float type.
-    typedef A2 type;
+    using type = A2;
 
 };
 
@@ -202,7 +203,7 @@ struct ResultValue<
 {
 
     // Pick the float type.
-    typedef A1 type;
+    using type = A1;
 
 };
 
@@ -218,7 +219,7 @@ struct ResultValue<
 {
 
     // Pick the float type.
-    typedef A2 type;
+    using type = A2;
 
 };
 
@@ -265,9 +266,9 @@ struct ResultValue
     FERN_STATIC_ASSERT(std::is_arithmetic, A1)
     FERN_STATIC_ASSERT(std::is_arithmetic, A2)
 
-    typedef typename detail::dispatch::ResultValue<A1, A2,
+    using type = typename detail::dispatch::ResultValue<A1, A2,
         typename TypeTraits<A1>::number_category,
-        typename TypeTraits<A2>::number_category>::type type;
+        typename TypeTraits<A2>::number_category>::type;
 
 };
 

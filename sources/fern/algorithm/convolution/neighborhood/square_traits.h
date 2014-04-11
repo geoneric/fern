@@ -13,9 +13,9 @@ struct ArgumentTraits<
     Square<T, radius>>
 {
 
-    typedef array_2d_tag argument_category;
+    using argument_category = array_2d_tag;
 
-    typedef T value_type;
+    using value_type = T;
 
 };
 

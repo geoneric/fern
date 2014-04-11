@@ -1,9 +1,9 @@
 namespace fern {
 
-typedef uint64_t count_t;
+using count_t = uint64_t;
 
-typedef float float32_t;
+using float32_t = float;
 
-typedef double float64_t;
+using float64_t = double;
 
 } // namespace fern

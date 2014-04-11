@@ -27,7 +27,7 @@ struct TypeTraits
 template<>
 struct TypeTraits<bool>
 {
-    typedef boolean_tag number_category;
+    using number_category = boolean_tag;
 
     static ValueType const value_type;
 
@@ -42,7 +42,7 @@ struct TypeTraits<bool>
 template<>
 struct TypeTraits<int8_t>
 {
-    typedef signed_integer_tag number_category;
+    using number_category = signed_integer_tag;
 
     static ValueType const value_type;
 
@@ -61,7 +61,7 @@ struct TypeTraits<int8_t>
 template<>
 struct TypeTraits<uint8_t>
 {
-    typedef unsigned_integer_tag number_category;
+    using number_category = unsigned_integer_tag;
 
     static ValueType const value_type;
 
@@ -80,7 +80,7 @@ struct TypeTraits<uint8_t>
 template<>
 struct TypeTraits<int16_t>
 {
-    typedef signed_integer_tag number_category;
+    using number_category = signed_integer_tag;
 
     static ValueType const value_type;
 
@@ -99,7 +99,7 @@ struct TypeTraits<int16_t>
 template<>
 struct TypeTraits<uint16_t>
 {
-    typedef unsigned_integer_tag number_category;
+    using number_category = unsigned_integer_tag;
 
     static ValueType const value_type;
 
@@ -118,7 +118,7 @@ struct TypeTraits<uint16_t>
 template<>
 struct TypeTraits<int32_t>
 {
-    typedef signed_integer_tag number_category;
+    using number_category = signed_integer_tag;
 
     static ValueType const value_type;
 
@@ -137,7 +137,7 @@ struct TypeTraits<int32_t>
 template<>
 struct TypeTraits<uint32_t>
 {
-    typedef unsigned_integer_tag number_category;
+    using number_category = unsigned_integer_tag;
 
     static ValueType const value_type;
 
@@ -156,7 +156,7 @@ struct TypeTraits<uint32_t>
 template<>
 struct TypeTraits<int64_t>
 {
-    typedef signed_integer_tag number_category;
+    using number_category = signed_integer_tag;
 
     static ValueType const value_type;
 
@@ -175,7 +175,7 @@ struct TypeTraits<int64_t>
 template<>
 struct TypeTraits<uint64_t>
 {
-    typedef unsigned_integer_tag number_category;
+    using number_category = unsigned_integer_tag;
 
     static ValueType const value_type;
 
@@ -194,7 +194,7 @@ struct TypeTraits<uint64_t>
 template<>
 struct TypeTraits<float>
 {
-    typedef floating_point_tag number_category;
+    using number_category = floating_point_tag;
 
     static ValueType const value_type;
 
@@ -213,7 +213,7 @@ struct TypeTraits<float>
 template<>
 struct TypeTraits<double>
 {
-    typedef floating_point_tag number_category;
+    using number_category = floating_point_tag;
 
     static ValueType const value_type;
 
