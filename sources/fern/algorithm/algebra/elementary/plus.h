@@ -6,6 +6,7 @@
 #include "fern/algorithm/policy/discard_domain_errors.h"
 #include "fern/algorithm/policy/discard_range_errors.h"
 #include "fern/algorithm/policy/dont_mark_no_data.h"
+#include "fern/algorithm/policy/skip_no_data.h"
 #include "fern/algorithm/algebra/binary_operation.h"
 #include "fern/algorithm/algebra/result_type.h"
 
@@ -16,8 +17,8 @@ namespace detail {
 namespace dispatch {
 
 template<
-    class A1,
-    class A2,
+    class Values1,
+    class Values2,
     class R,
     class A1NumberCategory,
     class A2NumberCategory>
@@ -27,144 +28,147 @@ struct within_range
 
 
 template<
-    class A1,
-    class A2,
+    class Values1,
+    class Values2,
     class R>
 struct within_range<
-    A1,
-    A2,
+    Values1,
+    Values2,
     R,
     unsigned_integer_tag,
     unsigned_integer_tag>
 {
     inline static constexpr bool calculate(
-        A1 const& argument1,
-        A2 const& /* argument2 */,
+        Values1 const& values1,
+        Values2 const& /* values2 */,
         R const& result)
     {
         FERN_STATIC_ASSERT(std::is_same,
-            typename fern::Result<A1, A2>::type, R)
+            typename fern::Result<Values1, Values2>::type, R)
 
         // unsigned + unsigned
         // Overflow if result is smaller than one of the operands.
-        return !(result < argument1);
+        return !(result < values1);
     }
 };
 
 
 template<
-    class A1,
-    class A2,
+    class Values1,
+    class Values2,
     class R>
 struct within_range<
-    A1,
-    A2,
+    Values1,
+    Values2,
     R,
     signed_integer_tag,
     signed_integer_tag>
 {
     inline static constexpr bool calculate(
-        A1 const& argument1,
-        A2 const& argument2,
+        Values1 const& values1,
+        Values2 const& values2,
         R const& result)
     {
         FERN_STATIC_ASSERT(std::is_same,
-            typename fern::Result<A1, A2>::type, R)
+            typename fern::Result<Values1, Values2>::type, R)
 
         // signed + signed
         // Overflow/underflow if sign of result is different.
-        return argument2 > 0 ? !(result < argument1) : !(result > argument1);
+        return values2 > 0 ? !(result < values1) : !(result > values1);
     }
 };
 
 
 template<
-    class A1,
-    class A2,
+    class Values1,
+    class Values2,
     class R>
 struct within_range<
-    A1,
-    A2,
+    Values1,
+    Values2,
     R,
     unsigned_integer_tag,
     signed_integer_tag>
 {
     inline static bool calculate(
-        A1 const& argument1,
-        A2 const& argument2,
+        Values1 const& values1,
+        Values2 const& values2,
         R const& result)
     {
         // unsigned + signed
         // Switch arguments and forward request.
-        return within_range<A2, A1, R, signed_integer_tag,
-            unsigned_integer_tag>::calculate(argument2, argument1, result);
+        return within_range<Values2, Values1, R, signed_integer_tag,
+            unsigned_integer_tag>::calculate(values2, values1, result);
     }
 };
 
 
 template<
-    class A1,
-    class A2,
+    class Values1,
+    class Values2,
     class R>
 struct within_range<
-    A1,
-    A2,
+    Values1,
+    Values2,
     R,
     signed_integer_tag,
     unsigned_integer_tag>
 {
     inline static constexpr bool calculate(
-        A1 const& argument1,
-        A2 const& /* argument2 */,
+        Values1 const& values1,
+        Values2 const& /* values2 */,
         R const& result)
     {
-        FERN_STATIC_ASSERT(std::is_same, typename fern::Result<A1, A2>::type, R)
+        FERN_STATIC_ASSERT(std::is_same, typename fern::Result<Values1, Values2>
+            ::type, R)
 
-        return argument1 > 0 ? result >= argument1 : result <= argument1;
+        return values1 > 0 ? result >= values1 : result <= values1;
     }
 };
 
 
 template<
-    class A1,
-    class A2,
+    class Values1,
+    class Values2,
     class R>
 struct within_range<
-    A1,
-    A2,
+    Values1,
+    Values2,
     R,
     integer_tag,
     integer_tag>
 {
     inline static bool calculate(
-        A1 const& argument1,
-        A2 const& argument2,
+        Values1 const& values1,
+        Values2 const& values2,
         R const& result)
     {
-        return within_range<A1, A2, R, typename TypeTraits<A1>::number_category,
-            typename TypeTraits<A2>::number_category>::calculate(argument1,
-                argument2, result);
+        return within_range<Values1, Values2, R,
+            typename TypeTraits<Values1>::number_category,
+            typename TypeTraits<Values2>::number_category>::calculate(values1,
+                values2, result);
     }
 };
 
 
 template<
-    class A1,
-    class A2,
+    class Values1,
+    class Values2,
     class R>
 struct within_range<
-    A1,
-    A2,
+    Values1,
+    Values2,
     R,
     floating_point_tag,
     floating_point_tag>
 {
     inline static constexpr bool calculate(
-        A1 const& /* argument1 */,
-        A2 const& /* argument2 */,
+        Values1 const& /* values1 */,
+        Values2 const& /* values2 */,
         R const& result)
     {
-        FERN_STATIC_ASSERT(std::is_same, typename fern::Result<A1, A2>::type, R)
+        FERN_STATIC_ASSERT(std::is_same,
+            typename fern::Result<Values1, Values2>::type, R)
 
         return std::isfinite(result);
     }
@@ -172,22 +176,23 @@ struct within_range<
 
 
 template<
-    class A1,
-    class A2,
+    class Values1,
+    class Values2,
     class R>
 struct within_range<
-    A1,
-    A2,
+    Values1,
+    Values2,
     R,
     integer_tag,
     floating_point_tag>
 {
     inline static constexpr bool calculate(
-        A1 const& /* argument1 */,
-        A2 const& /* argument2 */,
+        Values1 const& /* values1 */,
+        Values2 const& /* values2 */,
         R const& result)
     {
-        FERN_STATIC_ASSERT(std::is_same, typename fern::Result<A1, A2>::type, R)
+        FERN_STATIC_ASSERT(std::is_same,
+            typename fern::Result<Values1, Values2>::type, R)
 
         // integral + float
         return std::isfinite(result);
@@ -196,22 +201,23 @@ struct within_range<
 
 
 template<
-    class A1,
-    class A2,
+    class Values1,
+    class Values2,
     class R>
 struct within_range<
-    A1,
-    A2,
+    Values1,
+    Values2,
     R,
     floating_point_tag,
     integer_tag>
 {
     inline static constexpr bool calculate(
-        A1 const& /* argument1 */,
-        A2 const& /* argument2 */,
+        Values1 const& /* values1 */,
+        Values2 const& /* values2 */,
         R const& result)
     {
-        FERN_STATIC_ASSERT(std::is_same, typename fern::Result<A1, A2>::type, R)
+        FERN_STATIC_ASSERT(std::is_same,
+            typename fern::Result<Values1, Values2>::type, R)
 
         // float + integral
         return std::isfinite(result);
@@ -224,38 +230,38 @@ struct within_range<
 
 // All values are within the domain of valid values for plus.
 template<
-    class A1,
-    class A2>
-using OutOfDomainPolicy = DiscardDomainErrors<A1, A2>;
+    class Values1,
+    class Values2>
+using OutOfDomainPolicy = DiscardDomainErrors;
 
 
 template<
-    class A1,
-    class A2>
+    class Values1,
+    class Values2=Values1>
 class OutOfRangePolicy
 {
 
-    FERN_STATIC_ASSERT(std::is_arithmetic, A1)
-    FERN_STATIC_ASSERT(std::is_arithmetic, A2)
+    FERN_STATIC_ASSERT(std::is_arithmetic, Values1)
+    FERN_STATIC_ASSERT(std::is_arithmetic, Values2)
 
 public:
 
     template<
         class R>
     inline constexpr bool within_range(
-        A1 const& argument1,
-        A2 const& argument2,
+        Values1 const& values1,
+        Values2 const& values2,
         R const& result) const
     {
         FERN_STATIC_ASSERT(std::is_arithmetic, R)
 
-        typedef typename base_class<typename TypeTraits<A1>::number_category,
-            integer_tag>::type a1_tag;
-        typedef typename base_class<typename TypeTraits<A2>::number_category,
-            integer_tag>::type a2_tag;
+        using values1_tag = typename base_class<
+            typename TypeTraits<Values1>::number_category, integer_tag>::type;
+        using values2_tag = typename base_class<
+            typename TypeTraits<Values2>::number_category, integer_tag>::type;
 
-        return detail::dispatch::within_range<A1, A2, R, a1_tag, a2_tag>::
-            calculate(argument1, argument2, result);
+        return detail::dispatch::within_range<Values1, Values2, R, values1_tag,
+            values2_tag>::calculate(values1, values2, result);
     }
 
 protected:
@@ -268,21 +274,22 @@ protected:
 
 
 template<
-    class A1,
-    class A2>
+    class Values1,
+    class Values2>
 struct Algorithm
 {
-    FERN_STATIC_ASSERT(std::is_arithmetic, A1)
-    FERN_STATIC_ASSERT(std::is_arithmetic, A2)
+
+    FERN_STATIC_ASSERT(std::is_arithmetic, Values1)
+    FERN_STATIC_ASSERT(std::is_arithmetic, Values2)
 
     template<
         class R>
     inline void operator()(
-        A1 const& argument1,
-        A2 const& argument2,
+        Values1 const& values1,
+        Values2 const& values2,
         R& result) const
     {
-        result = static_cast<R>(argument1) + static_cast<R>(argument2);
+        result = static_cast<R>(values1) + static_cast<R>(values2);
     }
 
 };
@@ -292,100 +299,132 @@ struct Algorithm
 
 namespace algebra {
 
-//! Implementation of the plus operation, for two (collections of) arithmetic types.
-/*!
-  \tparam    A1 Type of first argument.
-  \tparam    A2 Type of second argument.
-  \tparam    OutOfDomainPolicy Policy class for handling out-of-domain values.
-  \tparam    OutOfRangePolicy Policy class for handling out-of-range values.
-  \tparam    NoDataPolicy Policy class for handling no-data values.
-*/
 template<
-    class A1,
-    class A2,
-    class OutOfDomainPolicy=DiscardDomainErrors<
-        typename ArgumentTraits<A1>::value_type,
-        typename ArgumentTraits<A2>::value_type>,
+    class Values1,
+    class Values2,
+    class Result,
+    class OutOfDomainPolicy=DiscardDomainErrors,
     class OutOfRangePolicy=DiscardRangeErrors,
-        /// <
-        /// typename ArgumentTraits<A1>::value_type,
-        /// typename ArgumentTraits<A2>::value_type>,
-    class NoDataPolicy=DontMarkNoData
+    class InputNoDataPolicy=SkipNoData,
+    class OutputNoDataPolicy=DontMarkNoData
 >
-struct Plus
+class Plus
 {
 
-    typedef local_operation_tag category;
+public:
 
-    //! Type of the result of the operation.
-    typedef typename Result<A1, A2>::type R;
+    using category = local_operation_tag;
+    using A1 = Values1;
+    using A1Value = typename ArgumentTraits<A1>::value_type;
+    using A2 = Values2;
+    using A2Value = typename ArgumentTraits<A2>::value_type;
+    using R = Result;
+    using RValue = typename ArgumentTraits<R>::value_type;
 
-    typedef typename ArgumentTraits<A1>::value_type A1Value;
+    FERN_STATIC_ASSERT(std::is_arithmetic, A1Value)
+    FERN_STATIC_ASSERT(std::is_arithmetic, A2Value)
+    FERN_STATIC_ASSERT(std::is_arithmetic, RValue)
+    FERN_STATIC_ASSERT(std::is_same, RValue,
+        typename fern::Result<A1, A2>::type)
 
-    typedef typename ArgumentTraits<A2>::value_type A2Value;
+    /// //! Type of the result of the operation.
+    /// typedef typename Result<A1, A2>::type R;
+
+    /// typedef typename ArgumentTraits<A1>::value_type A1Value;
+
+    /// typedef typename ArgumentTraits<A2>::value_type A2Value;
 
     Plus()
-        : algorithm(plus::Algorithm<A1Value, A2Value>())
+        : _algorithm(plus::Algorithm<A1Value, A2Value>())
     {
     }
 
     Plus(
-        NoDataPolicy&& no_data_policy)
-        : algorithm(std::forward<NoDataPolicy>(no_data_policy),
+        InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
+        OutputNoDataPolicy&& output_no_data_policy)  // Universal reference.
+        : _algorithm(
+            std::forward<InputNoDataPolicy>(input_no_data_policy),
+            std::forward<OutputNoDataPolicy>(output_no_data_policy),
             plus::Algorithm<A1Value, A2Value>())
     {
     }
 
     inline void operator()(
-        A1 const& argument1,
-        A2 const& argument2,
+        A1 const& values1,
+        A2 const& values2,
         R& result)
     {
-        algorithm.calculate(argument1, argument2, result);
+        _algorithm.calculate(values1, values2, result);
     }
 
     template<
         class Indices>
     inline void operator()(
         Indices const& indices,
-        A1 const& argument1,
-        A2 const& argument2,
+        A1 const& values1,
+        A2 const& values2,
         R& result)
     {
-        algorithm.calculate(indices, argument1, argument2, result);
+        _algorithm.calculate(indices, values1, values2, result);
     }
 
+private:
+
     detail::dispatch::BinaryOperation<A1, A2, R,
-        OutOfDomainPolicy, OutOfRangePolicy, NoDataPolicy,
-        plus::Algorithm<
-            typename ArgumentTraits<A1>::value_type,
-            typename ArgumentTraits<A2>::value_type>,
+        OutOfDomainPolicy, OutOfRangePolicy, InputNoDataPolicy,
+        OutputNoDataPolicy, plus::Algorithm<A1Value, A2Value>,
         typename ArgumentTraits<A1>::argument_category,
-        typename ArgumentTraits<A2>::argument_category> algorithm;
+        typename ArgumentTraits<A2>::argument_category> _algorithm;
 
 };
 
 
-//! Calculate the result of adding \a argument1 to \a argument2 and put it in \a result.
+//! Calculate the result of adding \a values1 to \a values2 and put it in \a result.
 /*!
-  \tparam    A1 Type of \a argument1.
-  \tparam    A2 Type of \a argument2.
-  \param     argument1 First argument to add.
-  \param     argument2 Second argument to add.
-  \return    Result is stored in argument \a result.
-
-  This function uses the Plus class template with default policies for handling
-  out-of-domain values, out-of-range values and no-data.
 */
 template<
-    class A1,
-    class A2>
+    class Values1,
+    class Values2,
+    class Result,
+    class OutOfDomainPolicy=DiscardDomainErrors,
+    class OutOfRangePolicy=DiscardRangeErrors,
+    class InputNoDataPolicy=SkipNoData,
+    class OutputNoDataPolicy=DontMarkNoData
+>
 void plus(
-    A1 const& argument1,
-    A2 const& argument2,
-    typename Plus<A1, A2>::R& result)
+    Values1 const& values1,
+    Values2 const& values2,
+    Result& result)
 {
-    Plus<A1, A2>()(argument1, argument2, result);
+    Plus<Values1, Values2, Result, OutOfDomainPolicy, OutOfRangePolicy,
+        InputNoDataPolicy, OutputNoDataPolicy>()(values1, values2, result);
+}
+
+
+//! Calculate the result of adding \a values1 to \a values2 and put it in \a result.
+/*!
+*/
+template<
+    class Values1,
+    class Values2,
+    class Result,
+    class OutOfDomainPolicy=DiscardDomainErrors,
+    class OutOfRangePolicy=DiscardRangeErrors,
+    class InputNoDataPolicy=SkipNoData,
+    class OutputNoDataPolicy=DontMarkNoData
+>
+void plus(
+    InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
+    OutputNoDataPolicy&& output_no_data_policy,  // Universal reference.
+    Values1 const& values1,
+    Values2 const& values2,
+    Result& result)
+{
+    Plus<Values1, Values2, Result, OutOfDomainPolicy, OutOfRangePolicy,
+        InputNoDataPolicy, OutputNoDataPolicy>(
+            std::forward<InputNoDataPolicy>(input_no_data_policy),
+            std::forward<OutputNoDataPolicy>(output_no_data_policy))(
+        values1, values2, result);
 }
 
 } // namespace algebra

@@ -43,7 +43,7 @@ Sharpen:
      0 -1  0
 
 
-### Neighborhood ###
+### Neighborhood ###  {#neighborhood}
 The neighborhood represents the shape of the non-zero values in the kernel. There are different neighborhood shapes:
 
 - [Moore neighborhood](https://en.wikipedia.org/wiki/Moore_neighborhood)
@@ -59,6 +59,4 @@ See also
 - [Wikipedia on cellular automaton](https://en.wikipedia.org/wiki/Cellular_automata)
 - [Computer Graphics, Principles and Practice](https://en.wikipedia.org/wiki/Computer_Graphics:_Principles_and_Practice)
 - [Image Processing using 2D Convolution](http://williamson-labs.com/convolution-2d.htm)
-
-
 

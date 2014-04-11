@@ -1,5 +1,7 @@
 #pragma once
 #include "fern/core/assert.h"
+#include "fern/algorithm/core/index_ranges.h"
+#include "fern/algorithm/core/operation_traits.h"
 #include "fern/algorithm/policy/discard_range_errors.h"
 #include "fern/algorithm/policy/dont_mark_no_data.h"
 #include "fern/algorithm/policy/skip_no_data.h"
@@ -320,9 +322,6 @@ public:
     FERN_STATIC_ASSERT(!std::is_same, AValue, bool)
     FERN_STATIC_ASSERT(std::is_same, RValue, AValue)
 
-    //! Default constructor.
-    /*!
-    */
     Sum()
         : _algorithm()
     {

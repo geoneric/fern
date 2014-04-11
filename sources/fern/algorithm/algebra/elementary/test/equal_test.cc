@@ -1,21 +1,15 @@
-#define BOOST_TEST_MODULE fern algorithm algebra equal
+#define BOOST_TEST_MODULE fern algorithm algebra elementary equal
+#include <algorithm>
 #include <boost/test/unit_test.hpp>
 #include "fern/feature/core/array_traits.h"
 #include "fern/core/constant_traits.h"
-#include "fern/core/vector_traits.h"
-#include "fern/algorithm/algebra/elementary/equal.h"
 #include "fern/core/typename.h"
-
-
-#define verify_result_value_type(                                              \
-    A1, A2, TypeWeWant)                                                        \
-{                                                                              \
-    typedef fern::algebra::Equal<A1, A2>::R TypeWeGet;                         \
-                                                                               \
-    BOOST_CHECK_MESSAGE((std::is_same<TypeWeGet, TypeWeWant>()),               \
-        fern::typename_<TypeWeGet>() + " != " +                                \
-        fern::typename_<TypeWeWant>());                                        \
-}
+#include "fern/core/vector_traits.h"
+#include "fern/feature/core/masked_array_traits.h"
+#include "fern/feature/core/masked_constant_traits.h"
+#include "fern/algorithm/algebra/elementary/equal.h"
+#include "fern/algorithm/algebra/executor.h"
+#include "fern/algorithm/policy/policies.h"
 
 
 template<
@@ -23,54 +17,27 @@ template<
     class A2,
     class R>
 void verify_value(
-    A1 const& argument1,
-    A2 const& argument2,
+    A1 const& values1,
+    A2 const& values2,
     R const& result_we_want)
 {
-    fern::algebra::Equal<A1, A2> operation;
     R result_we_get;
-
-    operation(argument1, argument2, result_we_get);
+    fern::algebra::equal(values1, values2, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 
 
-namespace d1 {
-
-template<
-    class T>
-using Array = fern::Array<T, 1>;
-
-} // namespace d1
-
-
-namespace d2 {
-
-template<
-    class T>
-using Array = fern::Array<T, 2>;
-
-} // namespace d2
-
-
 BOOST_AUTO_TEST_SUITE(equal)
 
-BOOST_AUTO_TEST_CASE(result_type)
+BOOST_AUTO_TEST_CASE(traits)
 {
-    verify_result_value_type(uint8_t, uint8_t, bool);
-    verify_result_value_type(bool, bool, bool);
-    verify_result_value_type(double, int32_t, bool);
-
-    verify_result_value_type(std::vector<uint8_t>, std::vector<uint8_t>,
-        std::vector<bool>);
-    verify_result_value_type(d1::Array<uint8_t>, d1::Array<uint8_t>,
-        d1::Array<bool>);
-    verify_result_value_type(d2::Array<uint8_t>, d2::Array<uint8_t>,
-        d2::Array<bool>);
+    using Equal = fern::algebra::Equal<int32_t, int32_t, bool>;
+    BOOST_CHECK((std::is_same<fern::OperationTraits<Equal>::category,
+        fern::local_operation_tag>::value));
 }
 
 
-BOOST_AUTO_TEST_CASE(constants)
+BOOST_AUTO_TEST_CASE(d0_array_d0_array)
 {
     verify_value<int8_t, int8_t>(-5, 6, false);
     verify_value<int8_t, int8_t>(-5, -5, true);
@@ -79,68 +46,322 @@ BOOST_AUTO_TEST_CASE(constants)
 }
 
 
-BOOST_AUTO_TEST_CASE(collections)
+BOOST_AUTO_TEST_CASE(masked_d0_array_d0_array)
 {
-    size_t const nr_rows = 3;
-    size_t const nr_cols = 2;
-    auto extents = fern::extents[nr_rows][nr_cols];
+    fern::MaskedConstant<int8_t> constant1;
+    fern::MaskedConstant<int32_t> constant2;
+    fern::MaskedConstant<bool> result_we_get;
 
-    fern::Array<int8_t, 2> argument1(extents);
-    argument1[0][0] = -2;
-    argument1[0][1] = -1;
-    argument1[1][0] =  0;
-    argument1[1][1] =  9;
-    argument1[2][0] =  1;
-    argument1[2][1] =  2;
+    // MaskedConstants with non-masking equal. ---------------------------------
+    // Constants are not masked.
+    constant1.mask() = false;
+    constant1.value() = 5;
+    constant2.mask() = false;
+    constant2.value() = 5;
+    result_we_get.value() = false;
+    result_we_get.mask() = false;
+    fern::algebra::equal(constant1, constant2, result_we_get);
+    BOOST_CHECK(!result_we_get.mask());
+    BOOST_CHECK_EQUAL(result_we_get.value(), true);
 
-    fern::Array<int8_t, 2> argument2(extents);
-    argument2[0][0] = -1;
-    argument2[0][1] = -1;
-    argument2[1][0] =  0;
-    argument2[1][1] =  9;
-    argument1[2][0] =  2;
-    argument2[2][1] =  2;
+    // Constant is masked.
+    constant1.mask() = true;
+    constant1.value() = 5;
+    constant2.mask() = false;
+    constant2.value() = 5;
+    result_we_get.value() = false;
+    result_we_get.mask() = false;
+    fern::algebra::equal(constant1, constant2, result_we_get);
+    BOOST_CHECK(!result_we_get.mask());
+    BOOST_CHECK_EQUAL(result_we_get.value(), true);
 
-    int8_t argument3 = 2;
+    // MaskedConstant with masking equal. --------------------------------------
+    using OutOfDomainPolicy = fern::DiscardDomainErrors;
+    using OutOfRangePolicy = fern::DiscardRangeErrors;
+    using InputNoDataPolicy = fern::DetectNoDataByValue<bool>;
+    using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
 
-    // array == masked_array
+    // Constants are not masked.
+    constant1.mask() = false;
+    constant1.value() = 5;
+    constant2.mask() = false;
+    constant2.value() = 5;
+    result_we_get.value() = false;
+    result_we_get.mask() = constant1.mask() || constant2.mask();
+    fern::algebra::equal<fern::MaskedConstant<int8_t>,
+        fern::MaskedConstant<int32_t>, fern::MaskedConstant<bool>,
+        OutOfDomainPolicy, OutOfRangePolicy, InputNoDataPolicy,
+        OutputNoDataPolicy>(
+            InputNoDataPolicy(result_we_get.mask(), true),
+            OutputNoDataPolicy(result_we_get.mask(), true),
+            constant1, constant2, result_we_get);
+    BOOST_CHECK(!result_we_get.mask());
+    BOOST_CHECK_EQUAL(result_we_get.value(), true);
+
+    // Constants are masked.
+    constant1.value() = 5;
+    constant1.mask() = true;
+    constant2.value() = 5;
+    constant2.mask() = false;
+    result_we_get.value() = false;
+    result_we_get.mask() = constant1.mask() || constant2.mask();
+    fern::algebra::equal<fern::MaskedConstant<int8_t>,
+        fern::MaskedConstant<int32_t>, fern::MaskedConstant<bool>,
+        OutOfDomainPolicy, OutOfRangePolicy, InputNoDataPolicy,
+        OutputNoDataPolicy>(
+            InputNoDataPolicy(result_we_get.mask(), true),
+            OutputNoDataPolicy(result_we_get.mask(), true),
+            constant1, constant2, result_we_get);
+    BOOST_CHECK(result_we_get.mask());
+    BOOST_CHECK_EQUAL(result_we_get.value(), false);
+}
+
+
+BOOST_AUTO_TEST_CASE(d1_array_d1_array)
+{
+    // vector
     {
-        fern::Array<bool, 2> result(extents);
-        fern::algebra::equal(argument1, argument2, result);
-
-        BOOST_CHECK(!result[0][0]);
-        BOOST_CHECK( result[0][1]);
-        BOOST_CHECK( result[1][0]);
-        BOOST_CHECK( result[1][1]);
-        BOOST_CHECK(!result[2][0]);
-        BOOST_CHECK( result[2][1]);
+        std::vector<int32_t> array1{1, 2, 3};
+        std::vector<uint64_t> array2{1, 4, 3};
+        std::vector<bool> result(3);
+        fern::algebra::equal(array1, array2, result);
+        BOOST_CHECK_EQUAL(result[0], true);
+        BOOST_CHECK_EQUAL(result[1], false);
+        BOOST_CHECK_EQUAL(result[2], true);
     }
 
-    // array == 5
+    // 1d array
     {
-        fern::Array<bool, 2> result(extents);
-        fern::algebra::equal(argument1, argument3, result);
-
-        BOOST_CHECK(!result[0][0]);
-        BOOST_CHECK(!result[0][1]);
-        BOOST_CHECK(!result[1][0]);
-        BOOST_CHECK(!result[1][1]);
-        BOOST_CHECK( result[2][0]);
-        BOOST_CHECK( result[2][1]);
+        fern::Array<uint8_t, 1> array1{1, 2, 3};
+        fern::Array<uint16_t, 1> array2{1, 4, 3};
+        std::vector<bool> result(3);
+        fern::algebra::equal(array1, array2, result);
+        BOOST_CHECK_EQUAL(result[0], true);
+        BOOST_CHECK_EQUAL(result[1], false);
+        BOOST_CHECK_EQUAL(result[2], true);
     }
 
-    // 5 == array
+    // empty
     {
-        fern::Array<bool, 2> result(extents);
-        fern::algebra::equal(argument3, argument1, result);
-
-        BOOST_CHECK(!result[0][0]);
-        BOOST_CHECK(!result[0][1]);
-        BOOST_CHECK(!result[1][0]);
-        BOOST_CHECK(!result[1][1]);
-        BOOST_CHECK( result[2][0]);
-        BOOST_CHECK( result[2][1]);
+        std::vector<int32_t> array1;
+        std::vector<int32_t> array2;
+        std::vector<bool> result;
+        fern::algebra::equal(array1, array2, result);
+        BOOST_CHECK(result.empty());
     }
 }
+
+
+BOOST_AUTO_TEST_CASE(masked_d1_array)
+{
+    using OutOfDomainPolicy = fern::DiscardDomainErrors;
+    using OutOfRangePolicy = fern::DiscardRangeErrors;
+    using InputNoDataPolicy = fern::DetectNoDataByValue<fern::Mask<1>>;
+    using OutputNoDataPolicy = fern::MarkNoDataByValue<fern::Mask<1>>;
+
+    fern::MaskedArray<int32_t, 1> array1{1, 2, 3};
+    fern::MaskedArray<int32_t, 1> array2{1, 4, 3};
+
+    // 1d masked arrays with non-masking equal
+    {
+        fern::MaskedArray<bool, 1> result(3, false);
+        fern::algebra::equal(array1, array2, result);
+        BOOST_CHECK_EQUAL(result.mask()[0], false);
+        BOOST_CHECK_EQUAL(result.mask()[1], false);
+        BOOST_CHECK_EQUAL(result.mask()[2], false);
+        BOOST_CHECK_EQUAL(result[0], true);
+        BOOST_CHECK_EQUAL(result[1], false);
+        BOOST_CHECK_EQUAL(result[2], true);
+    }
+
+    // 1d masked arrays with masking equal
+    {
+        fern::MaskedArray<bool, 1> result(3, false);
+        result.mask()[2] = true;
+        fern::algebra::equal<
+            fern::MaskedArray<int32_t, 1>,
+            fern::MaskedArray<int32_t, 1>,
+            fern::MaskedArray<bool, 1>,
+            OutOfDomainPolicy,
+            OutOfRangePolicy,
+            InputNoDataPolicy,
+            OutputNoDataPolicy>(
+                InputNoDataPolicy(result.mask(), true),
+                OutputNoDataPolicy(result.mask(), true),
+                array1, array2, result);
+        BOOST_CHECK_EQUAL(result.mask()[0], false);
+        BOOST_CHECK_EQUAL(result.mask()[1], false);
+        BOOST_CHECK_EQUAL(result.mask()[2], true);
+        BOOST_CHECK_EQUAL(result[0], true);
+        BOOST_CHECK_EQUAL(result[1], false);
+        BOOST_CHECK_EQUAL(result[2], false);  // <-- Not touched.
+
+        // Mask the whole input. Result must be masked too.
+        result.mask_all();
+        fern::algebra::equal<
+            fern::MaskedArray<int32_t, 1>,
+            fern::MaskedArray<int32_t, 1>,
+            fern::MaskedArray<bool, 1>,
+            OutOfDomainPolicy,
+            OutOfRangePolicy,
+            InputNoDataPolicy,
+            OutputNoDataPolicy>(
+                InputNoDataPolicy(result.mask(), true),
+                OutputNoDataPolicy(result.mask(), true),
+                array1, array2, result);
+        BOOST_CHECK_EQUAL(result.mask()[0], true);
+        BOOST_CHECK_EQUAL(result.mask()[1], true);
+        BOOST_CHECK_EQUAL(result.mask()[2], true);
+    }
+
+    // empty
+    {
+        fern::MaskedArray<int32_t, 1> empty_array;
+        fern::MaskedArray<bool, 1> result;
+        fern::algebra::equal<
+            fern::MaskedArray<int32_t, 1>,
+            fern::MaskedArray<int32_t, 1>,
+            fern::MaskedArray<bool, 1>,
+            OutOfDomainPolicy,
+            OutOfRangePolicy,
+            InputNoDataPolicy,
+            OutputNoDataPolicy>(
+                InputNoDataPolicy(result.mask(), true),
+                OutputNoDataPolicy(result.mask(), true),
+                empty_array, empty_array, result);
+        BOOST_CHECK(result.empty());
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(d2_array_d2_array)
+{
+    // 2d array
+    {
+        fern::Array<int8_t, 2> array1{
+            { -2, -1 },
+            {  0,  9 },
+            {  1,  2 }
+        };
+        fern::Array<int8_t, 2> array2{
+            { -2, -1 },
+            {  5,  9 },
+            {  1,  2 }
+        };
+        fern::Array<bool, 2> result{
+            { false, false },
+            { false, false },
+            { false, false }
+        };
+        fern::algebra::equal(array1, array2, result);
+        BOOST_CHECK_EQUAL(result[0][0], true);
+        BOOST_CHECK_EQUAL(result[0][1], true);
+        BOOST_CHECK_EQUAL(result[1][0], false);
+        BOOST_CHECK_EQUAL(result[1][1], true);
+        BOOST_CHECK_EQUAL(result[2][0], true);
+        BOOST_CHECK_EQUAL(result[2][1], true);
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(masked_d2_array_d2_array)
+{
+    fern::MaskedArray<int8_t, 2> array1{
+        { -2, -1 },
+        {  0,  9 },
+        {  1,  2 }
+    };
+    fern::MaskedArray<int8_t, 2> array2{
+        { -2, -1 },
+        {  5,  9 },
+        {  1,  2 }
+    };
+
+    // 2d masked array with non-masking equal
+    {
+        fern::MaskedArray<bool, 2> result{
+            { true, true },
+            { true, true },
+            { true, true }
+        };
+        fern::algebra::equal(array1, array2, result);
+        BOOST_CHECK_EQUAL(result[0][0], true);
+        BOOST_CHECK_EQUAL(result[0][1], true);
+        BOOST_CHECK_EQUAL(result[1][0], false);
+        BOOST_CHECK_EQUAL(result[1][1], true);
+        BOOST_CHECK_EQUAL(result[2][0], true);
+        BOOST_CHECK_EQUAL(result[2][1], true);
+    }
+
+    // 2d masked arrays with masking equal
+    {
+        // TODO
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(concurrent)
+{
+    // Create a somewhat larger array.
+    size_t const nr_rows = 6000;
+    size_t const nr_cols = 4000;
+    auto const extents = fern::extents[nr_rows][nr_cols];
+    fern::Array<int32_t, 2> array1(extents);
+    fern::Array<int32_t, 2> array2(extents);
+    fern::Array<bool, 2> result(extents);
+    fern::algebra::Equal<
+        fern::Array<int32_t, 2>,
+        fern::Array<int32_t, 2>,
+        fern::Array<bool, 2>> equal;
+
+    std::iota(array1.data(), array1.data() + array1.num_elements(), 0);
+    std::iota(array2.data(), array2.data() + array2.num_elements(), 0);
+
+    // Serial.
+    {
+        result.fill(false);
+        fern::serial::execute(equal, array1, array2, result);
+        BOOST_CHECK(std::all_of(result.data(), result.data() +
+            result.num_elements(), [](bool equal){ return equal; }));
+    }
+
+    // Concurrent.
+    {
+        result.fill(false);
+        fern::ThreadClient client;
+        fern::concurrent::execute(equal, array1, array2, result);
+        BOOST_CHECK(std::all_of(result.data(), result.data() +
+            result.num_elements(), [](bool equal){ return equal; }));
+    }
+
+    {
+        using OutOfDomainPolicy = fern::DiscardDomainErrors;
+        using OutOfRangePolicy = fern::DiscardRangeErrors;
+        using InputNoDataPolicy = fern::SkipNoData;
+        using OutputNoDataPolicy = fern::MarkNoDataByValue<fern::Mask<2>>;
+
+        fern::MaskedArray<bool, 2> result(extents);
+        fern::algebra::Equal<
+            fern::Array<int32_t, 2>,
+            fern::Array<int32_t, 2>,
+            fern::MaskedArray<bool, 2>,
+            OutOfDomainPolicy,
+            OutOfRangePolicy,
+            InputNoDataPolicy,
+            OutputNoDataPolicy> equal(
+                InputNoDataPolicy(),
+                OutputNoDataPolicy(result.mask(), true));
+
+        // Verify executor can handle masked result.
+        fern::ThreadClient client;
+        fern::concurrent::execute(equal, array1, array2, result);
+        BOOST_CHECK(std::all_of(result.data(), result.data() +
+            result.num_elements(), [](bool equal){ return equal; }));
+    }
+}
+
+// TODO Test 1d array == 0d array
+//      Test 2d array == 1d array
+//      etc
 
 BOOST_AUTO_TEST_SUITE_END()

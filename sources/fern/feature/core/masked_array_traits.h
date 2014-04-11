@@ -11,17 +11,21 @@ struct ArgumentTraits<
     MaskedArray<T, nr_dimensions>>
 {
 
-    typedef typename detail::dispatch::ArrayCategoryTag<T, nr_dimensions>::type
-        argument_category;
+    using argument_category = typename detail::dispatch::ArrayCategoryTag<T,
+        nr_dimensions>::type;
 
     template<
         class U>
     struct Collection
     {
-        typedef MaskedArray<U, nr_dimensions> type;
+        using type = MaskedArray<U, nr_dimensions>;
     };
 
-    typedef T value_type;
+    using value_type = T;
+
+    using reference = T&;
+
+    using const_reference = T const&;
 
     static bool const is_masking = true;
 
@@ -52,7 +56,7 @@ inline size_t size(
 
 template<
     class T>
-inline T const& get(
+inline typename ArgumentTraits<MaskedArray<T, 1>>::const_reference get(
     MaskedArray<T, 1> const& array,
     size_t index)
 {
@@ -66,7 +70,7 @@ inline T const& get(
 
 template<
     class T>
-inline T& get(
+inline typename ArgumentTraits<MaskedArray<T, 1>>::reference get(
     MaskedArray<T, 1>& array,
     size_t index)
 {
@@ -78,7 +82,7 @@ inline T& get(
 
 template<
     class T>
-inline T const& get(
+inline typename ArgumentTraits<MaskedArray<T, 2>>::const_reference get(
     MaskedArray<T, 2> const& array,
     size_t index1,
     size_t index2)
@@ -92,7 +96,7 @@ inline T const& get(
 
 template<
     class T>
-inline T& get(
+inline typename ArgumentTraits<MaskedArray<T, 2>>::reference get(
     MaskedArray<T, 2>& array,
     size_t index1,
     size_t index2)
@@ -106,7 +110,7 @@ inline T& get(
 
 template<
     class T>
-inline T const& get(
+inline typename ArgumentTraits<MaskedArray<T, 3>>::const_reference get(
     MaskedArray<T, 3> const& array,
     size_t index1,
     size_t index2,
@@ -122,7 +126,7 @@ inline T const& get(
 
 template<
     class T>
-inline T& get(
+inline typename ArgumentTraits<MaskedArray<T, 3>>::reference get(
     MaskedArray<T, 3>& array,
     size_t index1,
     size_t index2,

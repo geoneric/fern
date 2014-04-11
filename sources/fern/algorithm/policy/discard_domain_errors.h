@@ -5,10 +5,7 @@ namespace fern {
 
 //! Domain policy which discards out-of-domain values.
 /*!
-  \tparam    Arguments Types of arguments.
 */
-template<
-    class... Arguments>
 class DiscardDomainErrors
 {
 
@@ -17,6 +14,8 @@ public:
     // static_assert(std::is_arithmetic<A1>::value, "");
     // static_assert(std::is_arithmetic<A2>::value, "");
 
+    template<
+        class... Arguments>
     static constexpr bool
                    within_domain       (Arguments const&... arguments);
 
@@ -47,7 +46,7 @@ private:
 */
 template<
     class... Arguments>
-inline constexpr bool DiscardDomainErrors<Arguments...>::within_domain(
+inline constexpr bool DiscardDomainErrors::within_domain(
     Arguments const&... /* arguments */)
 {
     return true;

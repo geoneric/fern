@@ -1,12 +1,18 @@
 #define BOOST_TEST_MODULE fern algorithm policy
 #include <boost/test/unit_test.hpp>
+#include "fern/core/argument_traits.h"
 #include "fern/core/type_traits.h"
 #include "fern/algorithm/policy/mark_no_data_by_value.h"
 
 
 template<
     class T>
-struct Mask {
+class Mask
+{
+
+public:
+
+    using value_type = T;
 
     Mask()
         : _values(nullptr)
@@ -30,13 +36,15 @@ struct Mask {
         return _values[index];
     }
 
-    inline void set(
-        size_t index,
-        T const& value)
-    {
-        assert(_values);
-        _values[index] = value;
-    }
+    /// inline void set(
+    ///     size_t index,
+    ///     T const& value)
+    /// {
+    ///     assert(_values);
+    ///     _values[index] = value;
+    /// }
+
+private:
 
     T* _values;
 
@@ -70,7 +78,7 @@ BOOST_AUTO_TEST_CASE(mark_no_data)
     int32_t values[] = { 5, 4, 3, 2, 1 };
     Mask<int32_t> mask(values);
 
-    fern::MarkNoDataByValue<int32_t, Mask<int32_t>> policy(mask, 6);
+    fern::MarkNoDataByValue<Mask<int32_t>> policy(mask, 6);
 
     policy.mark_as_no_data(0);
     policy.mark_as_no_data(4);

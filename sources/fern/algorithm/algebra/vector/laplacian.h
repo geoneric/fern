@@ -20,7 +20,7 @@ namespace laplacian {
 */
 template<
     class A>
-using OutOfDomainPolicy = DiscardDomainErrors<A>;
+using OutOfDomainPolicy = DiscardDomainErrors;
 
 
 //! The out-of-range policy for the laplacian operation.
@@ -73,7 +73,7 @@ namespace algebra {
 
 template<
     class A,
-    class OutOfDomainPolicy=DiscardDomainErrors<>,
+    class OutOfDomainPolicy=DiscardDomainErrors,
     class OutOfRangePolicy=DiscardRangeErrors,
     class NoDataPolicy=DontMarkNoData
 >
@@ -127,11 +127,11 @@ struct Laplacian
     // result = (result - (sum(kernel) * argument)) / (dx * dx);
     //
     // So, we require:
-    // - convolute
-    // - substract
-    // - sum
-    // - multiply
-    // - divide
+    // - [ ] sum: Add all values in a kernel. None of these are no-data.
+    // - [ ] substract: Substract two 2D arrays.
+    // - [ ] multiply: Multiply a constant and a 2D array.
+    // - [ ] divide: Divice a 2D array by a constant.
+    // - [ ] convolute: Convolute a 2D array by a kernel.
     //
     // Alternative is to do everything in one operation: laplacian. This will
     // be a bit more efficient, since it is more cache friendly. Let's first
