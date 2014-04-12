@@ -37,12 +37,12 @@ BOOST_AUTO_TEST_CASE(stream_visitor)
     // 4 + 5
     {
         fet::Constant<int32_t> expression1(4);
-        typedef decltype(expression1)::result_type Result1;
+        using Result1 = decltype(expression1)::result_type;
 
         fet::Constant<int64_t> expression2(5);
-        typedef decltype(expression2)::result_type Result2;
+        using Result2 = decltype(expression2)::result_type;
 
-        typedef typename fet::Plus<Result1, Result2>::result_type Result3;
+        using Result3 = typename fet::Plus<Result1, Result2>::result_type;
 
         fet::Operation<Result3> expression3(
             "plus",
@@ -64,11 +64,11 @@ BOOST_AUTO_TEST_CASE(stream_visitor)
     {
         // 4
         fet::Constant<int32_t> expression1(4);
-        typedef decltype(expression1)::result_type Result1;
+        using Result1 = decltype(expression1)::result_type;
 
         // 5
         fet::Constant<int64_t> expression2(5);
-        typedef decltype(expression2)::result_type Result2;
+        using Result2 = decltype(expression2)::result_type;
 
         // 4 + 5
         // TODO To allow for the compiler to perform compile time checks,
@@ -76,7 +76,7 @@ BOOST_AUTO_TEST_CASE(stream_visitor)
         //      means, that all expression types must be able to present their
         //      result type. Operations must be able to tell what they will
         //      output.
-        typedef typename fet::Plus<Result1, Result2>::result_type Result3;
+        using Result3 = typename fet::Plus<Result1, Result2>::result_type;
         fet::Operation<Result3> expression3(
             "plus",
             fet::Implementation(
@@ -89,8 +89,8 @@ BOOST_AUTO_TEST_CASE(stream_visitor)
 
         // 3.4
         fet::Constant<double> expression4(3.4);
-        typedef decltype(expression4)::result_type Result4;
-        typedef typename fet::Times<Result3, Result4>::result_type Result5;
+        using Result4 = decltype(expression4)::result_type;
+        using Result5 = typename fet::Times<Result3, Result4>::result_type;
 
         // (4 + 5) * 3.4
         fet::Operation<Result5> expression5(
@@ -104,7 +104,7 @@ BOOST_AUTO_TEST_CASE(stream_visitor)
         );
 
         // slope((4 + 5) * 3.4)
-        typedef typename fet::Slope<Result5>::result_type Result6;
+        using Result6 = typename fet::Slope<Result5>::result_type;
         fet::Operation<Result6> expression6(
             "slope",
             fet::Implementation(

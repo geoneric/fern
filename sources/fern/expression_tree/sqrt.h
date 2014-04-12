@@ -18,11 +18,11 @@ template<
     class T>
 struct Sqrt<Constant<T>>
 {
-    typedef Constant<T> A;
-    typedef Constant<double> result_type;
+    using A = Constant<T>;
+    using result_type = Constant<double>;
 
-    typedef Local Category;
-    typedef arity::Unary Arity;
+    using Category = Local;
+    using Arity = arity::Unary;
 
     result_type operator()(
         Constant<T> const& argument) const
@@ -36,7 +36,7 @@ struct Sqrt<Constant<T>>
 //     class T>
 // struct Sqrt<Array<T>>
 // {
-//     typedef Array<typename Sqrt<T>::result_type> result_type;
+//     using result_type = Array<typename Sqrt<T>::result_type>;
 // };
 
 } // namespace expression_tree

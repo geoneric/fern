@@ -20,7 +20,7 @@ class GeometryValues:
 
 public:
 
-    typedef typename std::map<GID, Value>::const_iterator const_iterator;
+    using const_iterator = typename std::map<GID, Value>::const_iterator;
 
                    GeometryValues      ()=default;
 

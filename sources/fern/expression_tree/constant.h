@@ -33,9 +33,9 @@ struct Constant
         return value;
     }
 
-    typedef Result value_type;
+    using value_type = Result;
 
-    typedef Constant<Result> result_type;
+    using result_type = Constant<Result>;
 
     Result value;
 

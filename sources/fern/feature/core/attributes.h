@@ -28,8 +28,8 @@ template<
     class T>
 using MaskedArrayValuePtr = std::shared_ptr<MaskedArrayValue<T>>;
 
-typedef Point<double, 1> Point;
-typedef SpatialDomain<Point> PointDomain;
+using Point = Point<double, 1>;
+using PointDomain = SpatialDomain<Point>;
 
 }
 
@@ -52,10 +52,10 @@ template<
     class T>
 using MaskedArrayValuePtr = std::shared_ptr<MaskedArrayValue<T>>;
 
-typedef Point<double, 2> Point;
-typedef Box<Point> Box;
-typedef SpatialDomain<Box> BoxDomain;
-typedef SpatialDomain<Point> PointDomain;
+using Point = Point<double, 2>;
+using Box = Box<Point>;
+using BoxDomain = SpatialDomain<Box>;
+using PointDomain = SpatialDomain<Point>;
 
 } // namespace d2
 
@@ -78,15 +78,15 @@ template<
     class T>
 using MaskedArrayValuePtr = std::shared_ptr<MaskedArrayValue<T>>;
 
-typedef Point<double, 3> Point;
-typedef Box<Point> Box;
-typedef SpatialDomain<Box> BoxDomain;
-typedef SpatialDomain<Point> PointDomain;
+using Point = Point<double, 3>;
+using Box = Box<Point>;
+using BoxDomain = SpatialDomain<Box>;
+using PointDomain = SpatialDomain<Point>;
 
 } // namespace d3
 
 
-typedef SpatialDomain<d2::Box> FieldDomain;
+using FieldDomain = SpatialDomain<d2::Box>;
 
 template<
     class T>

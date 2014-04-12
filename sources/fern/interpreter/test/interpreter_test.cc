@@ -457,12 +457,12 @@ BOOST_AUTO_TEST_CASE(execute_read_with_raster_input)
     ///     std::shared_ptr<fern::Attribute> const& attribute(
     ///         feature->attribute("raster-1"));
 
-    ///     typedef fern::Point<double, 2> Point;
-    ///     typedef fern::Box<Point> Box;
-    ///     typedef fern::SpatialDomain<Box> BoxDomain;
-    ///     typedef fern::ArrayValue<int32_t, 1> Value;
-    ///     typedef std::shared_ptr<Value> ValuePtr;
-    ///     typedef fern::SpatialAttribute<BoxDomain, ValuePtr> BoxesAttribute;
+    ///     using Point = fern::Point<double, 2>;
+    ///     using Box = fern::Box<Point>;
+    ///     using BoxDomain = fern::SpatialDomain<Box>;
+    ///     using Value = fern::ArrayValue<int32_t, 1>;
+    ///     using ValuePtr = std::shared_ptr<Value>;
+    ///     using BoxesAttribute = fern::SpatialAttribute<BoxDomain, ValuePtr>;
 
     ///     std::shared_ptr<BoxesAttribute> boxes_attribute(
     ///         std::dynamic_pointer_cast<BoxesAttribute>(attribute));

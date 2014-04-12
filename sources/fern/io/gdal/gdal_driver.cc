@@ -12,7 +12,7 @@ namespace fern {
 
 static auto deleter = [](::GDALDataset* dataset)
     { if(dataset) { GDALClose(dataset); } };
-typedef std::unique_ptr<::GDALDataset, decltype(deleter)> GDALDatasetPtr;
+using GDALDatasetPtr = std::unique_ptr<::GDALDataset, decltype(deleter)>;
 
 
 GDALDriver::GDALDriver(

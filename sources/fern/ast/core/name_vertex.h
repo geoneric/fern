@@ -57,7 +57,7 @@ private:
 
 };
 
-typedef std::shared_ptr<NameVertex> NameVertexPtr;
+using NameVertexPtr = std::shared_ptr<NameVertex>;
 
 inline std::ostream& operator<<(
     std::ostream& stream,

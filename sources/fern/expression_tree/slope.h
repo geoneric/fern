@@ -19,9 +19,9 @@ template<
 struct Slope<Constant<T>>
 {
 
-    typedef Constant<T> A;
-    typedef Constant<double> result_type;
-    typedef arity::Unary Arity;
+    using A = Constant<T>;
+    using result_type = Constant<double>;
+    using Arity = arity::Unary;
 
     result_type operator()(
         Constant<T> const& /* argument */) const
@@ -37,9 +37,9 @@ struct Slope<Constant<T>>
 // struct Slope<Array<T>>
 // {
 // 
-//     typedef Array<T> A;
-//     typedef Array<double> result_type;
-//     typedef arity::Unary Arity;
+//     using A = Array<T>;
+//     using result_type = Array<double>;
+//     using Arity = arity::Unary;
 // 
 //     result_type operator()(
 //         Array<T> const& /* argument */) const

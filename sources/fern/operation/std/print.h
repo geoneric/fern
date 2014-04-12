@@ -75,7 +75,7 @@ inline void print(
     Argument const& argument,
     std::ostream& stream)
 {
-    typedef typename DataTraits<Argument>::DataCategory category;
+    using category = typename DataTraits<Argument>::DataCategory;
     detail::print(category(), argument, stream);
 }
 

@@ -20,11 +20,11 @@ struct Plus
     static_assert(std::is_arithmetic<U>::value, "Type must be numeric");
     static_assert(std::is_arithmetic<V>::value, "Type must be numeric");
 
-    typedef U A1;
-    typedef V A2;
-    typedef decltype(U() + V()) result_type;
-    // typedef Local Category;
-    typedef arity::Binary Arity;
+    using A1 = U;
+    using A2 = V;
+    using result_type = decltype(U() + V());
+    // using Category = Local;
+    using Arity = arity::Binary;
 
 };
 
@@ -35,11 +35,11 @@ template<
 struct Plus<Constant<U>, Constant<V>>
 {
 
-    typedef Constant<U> A1;
-    typedef Constant<V> A2;
-    typedef Constant<typename Plus<U, V>::result_type> result_type;
-    // typedef typename Plus<U, V>::Category Category;
-    typedef typename Plus<U, V>::Arity Arity;
+    using A1 = Constant<U>;
+    using A2 = Constant<V>;
+    using result_type = Constant<typename Plus<U, V>::result_type>;
+    // using Category = typename Plus<U, V>::Category;
+    using Arity = typename Plus<U, V>::Arity;
 
     result_type operator()(
         Constant<U> const& argument1,
@@ -60,10 +60,10 @@ struct Plus<Constant<U>, Constant<V>>
 // struct Plus<Array<U>, Array<V>>
 // {
 // 
-//     typedef Array<U> A1;
-//     typedef Array<V> A2;
-//     typedef Array<typename Plus<U, V>::result_type> result_type;
-//     typedef typename Plus<U, V>::Arity Arity;
+//     using A1 = Array<U>;
+//     using A2 = Array<V>;
+//     using result_type = Array<typename Plus<U, V>::result_type>;
+//     using Arity = typename Plus<U, V>::Arity;
 // 
 //     result_type operator()(
 //         Array<U> const& /* argument1 */,
@@ -94,12 +94,12 @@ template<
 struct Plus<Raster<U>, Raster<V>>
 {
 
-    typedef Raster<U> A1;
-    typedef Raster<V> A2;
-    typedef typename Plus<U, V>::result_type value_type;
-    typedef Raster<value_type> result_type;
-    // typedef typename Plus<U, V>::Category Category;
-    typedef typename Plus<U, V>::Arity Arity;
+    using A1 = Raster<U>;
+    using A2 = Raster<V>;
+    using value_type = typename Plus<U, V>::result_type;
+    using result_type = Raster<value_type>;
+    // using Category = typename Plus<U, V>::Category;
+    using Arity = typename Plus<U, V>::Arity;
 
     result_type operator()(
         Raster<U> const& argument1,
@@ -151,13 +151,13 @@ template<
 struct Plus<Operation<Raster<U>>, Raster<V>>
 {
 
-    // typedef Operation<Raster<U>> A1;
-    typedef Raster<U> A1;
-    typedef Raster<V> A2;
-    typedef typename Plus<U, V>::result_type value_type;
-    typedef Raster<value_type> result_type;
-    typedef typename Plus<U, V>::Arity Arity;
-    // typedef typename Plus<U, V>::Category Category;
+    // using A1 = Operation<Raster<U>>;
+    using A1 = Raster<U>;
+    using A2 = Raster<V>;
+    using value_type = typename Plus<U, V>::result_type;
+    using result_type = Raster<value_type>;
+    using Arity = typename Plus<U, V>::Arity;
+    // using Category = typename Plus<U, V>::Category;
 
     result_type operator()(
         // Operation<Raster<U>> const& argument1,

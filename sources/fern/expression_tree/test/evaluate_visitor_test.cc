@@ -80,7 +80,7 @@ BOOST_AUTO_TEST_CASE(visit_constants)
         fet::Constant<int32_t> constant(2);
         auto expression(constant);
 
-        typedef decltype(expression)::result_type Result;
+        using Result = decltype(expression)::result_type;
 
         fet::Data result(fet::evaluate(expression));
 
@@ -91,12 +91,12 @@ BOOST_AUTO_TEST_CASE(visit_constants)
     // 2 + 1
     {
         fet::Constant<int32_t> expression1(2);
-        typedef decltype(expression1)::result_type Result1;
+        using Result1 = decltype(expression1)::result_type;
 
         fet::Constant<int32_t> expression2(1);
-        typedef decltype(expression2)::result_type Result2;
+        using Result2 = decltype(expression2)::result_type;
 
-        typedef typename fet::Plus<Result1, Result2>::result_type Result3;
+        using Result3 = typename fet::Plus<Result1, Result2>::result_type;
 
         fet::Operation<Result3> expression3(
             "plus",
@@ -118,14 +118,14 @@ BOOST_AUTO_TEST_CASE(visit_constants)
     {
         // 1: 2
         fet::Constant<int32_t> expression1(2);
-        typedef decltype(expression1)::result_type Result1;
+        using Result1 = decltype(expression1)::result_type;
 
         // 2: 1
         fet::Constant<int32_t> expression2(1);
-        typedef decltype(expression2)::result_type Result2;
+        using Result2 = decltype(expression2)::result_type;
 
         // 3: 2 + 1
-        typedef typename fet::Plus<Result1, Result2>::result_type Result3;
+        using Result3 = typename fet::Plus<Result1, Result2>::result_type;
 
         fet::Operation<Result3> expression3(
             "plus",
@@ -139,10 +139,10 @@ BOOST_AUTO_TEST_CASE(visit_constants)
 
         // 4: 3.0
         fet::Constant<double> expression4(3.0);
-        typedef decltype(expression4)::result_type Result4;
+        using Result4 = decltype(expression4)::result_type;
 
         // 5: (2 + 1) * 3.0
-        typedef typename fet::Times<Result3, Result4>::result_type Result5;
+        using Result5 = typename fet::Times<Result3, Result4>::result_type;
 
         fet::Operation<Result5> expression5(
             "times",
@@ -155,7 +155,7 @@ BOOST_AUTO_TEST_CASE(visit_constants)
         );
 
         // 6: sqrt((2 + 1) * 3.0)
-        typedef typename fet::Sqrt<Result5>::result_type Result6;
+        using Result6 = typename fet::Sqrt<Result5>::result_type;
 
         fet::Operation<Result6> expression6(
             "sqrt",
@@ -196,7 +196,7 @@ BOOST_AUTO_TEST_CASE(visit_raster)
     raster1[2][1] = 2;
 
     auto expression1 = fet::Raster<int32_t>(raster1);
-    typedef decltype(expression1)::result_type Result1;
+    using Result1 = decltype(expression1)::result_type;
     static_assert(std::is_same<Result1, fet::Raster<int32_t>>::value, "");
 
     Raster<int32_t> raster2(extents);
@@ -208,7 +208,7 @@ BOOST_AUTO_TEST_CASE(visit_raster)
     raster2[2][1] = 20;
 
     auto expression2 = fet::Raster<int32_t>(raster2);
-    typedef decltype(expression2)::result_type Result2;
+    using Result2 = decltype(expression2)::result_type;
     static_assert(std::is_same<Result2, fet::Raster<int32_t>>::value, "");
 
     Raster<double> raster3(extents);
@@ -220,7 +220,7 @@ BOOST_AUTO_TEST_CASE(visit_raster)
     raster3[2][1] = 12.0;
 
     auto expression3 = fet::Raster<double>(raster3);
-    typedef decltype(expression3)::result_type Result3;
+    using Result3 = decltype(expression3)::result_type;
     static_assert(std::is_same<Result3, fet::Raster<double>>::value, "");
 
     // raster + raster
@@ -303,13 +303,13 @@ BOOST_AUTO_TEST_CASE(visit_vector)
     {
         /// std::vector<int32_t> vector1({1, 2, 3, 4, 5});
         /// fern::Array<int32_t> expression1(vector1);
-        /// typedef decltype(expression1)::result_type Result1;
+        /// using Result1 = decltype(expression1)::result_type;
 
         /// std::vector<int32_t> vector2({10, 11, 12, 13, 14});
         /// fern::Array<int32_t> expression2(vector2);
-        /// typedef decltype(expression2)::result_type Result2;
+        /// using Result2 = decltype(expression2)::result_type;
 
-        /// typedef typename fern::Plus<Result1, Result2>::result_type Result3;
+        /// using Result3 = typename fern::Plus<Result1, Result2>::result_type;
 
         /// fern::Operation<Result3> expression3(
         ///     "plus",
@@ -338,19 +338,19 @@ BOOST_AUTO_TEST_CASE(visit_vector)
 // {
 //     // 2 + 1
 //     {
-//         typedef boost::multi_array<int32_t, 2> Array;
-//         // typedef Array::index Index;
+//         using Array = boost::multi_array<int32_t, 2>;
+//         // using Index = Array::index;
 //         auto extents(boost::extents[30000][40000]);
 // 
 //         Array array1(extents);
 //         fern::Array<int32_t> expression1(array1);
-//         typedef decltype(expression1)::result_type Result1;
+//         using Result1 = decltype(expression1)::result_type;
 // 
 //         Array array2(extents);
 //         fern::Array<int32_t> expression2(array2);
-//         typedef decltype(expression2)::result_type Result2;
+//         using Result2 = decltype(expression2)::result_type;
 // 
-//         typedef typename fern::Plus<Result1, Result2>::result_type Result3;
+//         using Result3 = typename fern::Plus<Result1, Result2>::result_type;
 // 
 //         fern::Operation<Result3> expression3(
 //             "plus",

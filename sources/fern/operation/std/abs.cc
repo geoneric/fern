@@ -98,7 +98,7 @@ ExpressionType Abs::expression_type(
 #define CONSTANT_CASE(                                                         \
         value_type)                                                            \
     case value_type: {                                                         \
-        typedef ValueTypeTraits<value_type>::type type;                        \
+        using type = ValueTypeTraits<value_type>::type;                        \
         result = abs<type>(dynamic_cast<ConstantAttribute<type> const&>(       \
             attribute));                                                       \
         break;                                                                 \
@@ -107,7 +107,7 @@ ExpressionType Abs::expression_type(
 #define FIELD_CASE(                                                            \
         value_type)                                                            \
     case value_type: {                                                         \
-        typedef ValueTypeTraits<value_type>::type type;                        \
+        using type = ValueTypeTraits<value_type>::type;                        \
         result = abs<type>(dynamic_cast<FieldAttribute<type> const&>(          \
             attribute));                                                       \
         break;                                                                 \

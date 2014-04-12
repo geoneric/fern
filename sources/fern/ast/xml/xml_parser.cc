@@ -285,8 +285,7 @@ public:
 
 private:
 
-    typedef std::vector<std::shared_ptr<fern::ExpressionVertex>>
-        ExpressionVertices;
+    using ExpressionVertices = std::vector<std::shared_ptr<fern::ExpressionVertex>>;
 
     struct FunctionDefinitionData
     {
@@ -372,8 +371,7 @@ public:
 
 private:
 
-    typedef std::vector<std::shared_ptr<fern::StatementVertex>>
-        StatementsData;
+    using StatementsData = std::vector<std::shared_ptr<fern::StatementVertex>>;
 
     std::stack<StatementsData> _data_stack;
 
@@ -516,8 +514,8 @@ public:
 
 private:
 
-    typedef std::vector<std::shared_ptr<fern::ExpressionVertex>>
-        ExpressionsData;
+    using ExpressionsData = std::vector<std::shared_ptr<
+        fern::ExpressionVertex>>;
 
     std::stack<ExpressionsData> _data_stack;
 
@@ -804,8 +802,8 @@ public:
 
 private:
 
-    typedef std::vector<std::shared_ptr<fern::ExpressionVertex>>
-        ExpressionVertices;
+    using ExpressionVertices = std::vector<std::shared_ptr<
+        fern::ExpressionVertex>>;
 
     struct FunctionData
     {
@@ -857,8 +855,8 @@ public:
 
 private:
 
-    typedef std::vector<std::shared_ptr<fern::ExpressionVertex>>
-        ExpressionVertices;
+    using ExpressionVertices = std::vector<std::shared_ptr<
+        fern::ExpressionVertex>>;
 
     struct OperatorData
     {

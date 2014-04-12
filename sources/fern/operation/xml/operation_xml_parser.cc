@@ -16,7 +16,7 @@ class Operations_pimpl:
 
 private:
 
-    typedef std::vector<std::shared_ptr<fern::Operation>> OperationsData;
+    using OperationsData = std::vector<std::shared_ptr<fern::Operation>>;
 
     OperationsData   _operations;
 

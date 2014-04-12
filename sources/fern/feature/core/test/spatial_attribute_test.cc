@@ -7,8 +7,7 @@ BOOST_AUTO_TEST_SUITE(spatial_attribute)
 
 BOOST_AUTO_TEST_CASE(int_per_box)
 {
-    typedef fern::SpatialAttribute<fern::FieldDomain, int>
-        FieldAttribute;
+    using FieldAttribute = fern::SpatialAttribute<fern::FieldDomain, int>;
 
     // // An integer value is stored per box.
     fern::d2::Point south_west;
@@ -34,10 +33,9 @@ BOOST_AUTO_TEST_CASE(int_per_box)
 BOOST_AUTO_TEST_CASE(array_per_box)
 {
     // A pointer to a 2D array is stored as value per box.
-    typedef fern::d2::ArrayValue<int> Value;
-    typedef fern::d2::ArrayValuePtr<int> ValuePtr;
-    typedef fern::SpatialAttribute<fern::FieldDomain, ValuePtr>
-        FieldAttribute;
+    using Value = fern::d2::ArrayValue<int>;
+    using ValuePtr = fern::d2::ArrayValuePtr<int>;
+    using FieldAttribute = fern::SpatialAttribute<fern::FieldDomain, ValuePtr>;
 
     fern::d2::Point south_west;
     fern::set<0>(south_west, 1.1);

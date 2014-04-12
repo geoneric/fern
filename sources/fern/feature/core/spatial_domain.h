@@ -21,11 +21,11 @@ class SpatialDomain:
 
 public:
 
-    typedef Geometry_ Geometry;
+    using Geometry = Geometry_;
 
-    typedef size_t GID;
+    using GID = size_t;
 
-    typedef typename std::map<size_t, Geometry_>::const_iterator const_iterator;
+    using const_iterator = typename std::map<size_t, Geometry_>::const_iterator;
 
                    SpatialDomain       ()=default;
 

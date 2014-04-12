@@ -16,7 +16,7 @@ template<>
 struct GDALDataTypeTraits<GDT_Byte>
 {
     static String const name;
-    typedef uint8_t type;
+    using type = uint8_t;
 };
 
 
@@ -24,7 +24,7 @@ template<>
 struct GDALDataTypeTraits<GDT_UInt16>
 {
     static String const name;
-    typedef uint16_t type;
+    using type = uint16_t;
 };
 
 
@@ -32,7 +32,7 @@ template<>
 struct GDALDataTypeTraits<GDT_Int16>
 {
     static String const name;
-    typedef int16_t type;
+    using type = int16_t;
 };
 
 
@@ -40,7 +40,7 @@ template<>
 struct GDALDataTypeTraits<GDT_UInt32>
 {
     static String const name;
-    typedef uint32_t type;
+    using type = uint32_t;
 };
 
 
@@ -48,7 +48,7 @@ template<>
 struct GDALDataTypeTraits<GDT_Int32>
 {
     static String const name;
-    typedef int32_t type;
+    using type = int32_t;
 };
 
 
@@ -56,7 +56,7 @@ template<>
 struct GDALDataTypeTraits<GDT_Float32>
 {
     static String const name;
-    typedef float type;
+    using type = float;
 };
 
 
@@ -64,7 +64,7 @@ template<>
 struct GDALDataTypeTraits<GDT_Float64>
 {
     static String const name;
-    typedef double type;
+    using type = double;
 };
 
 

@@ -63,7 +63,7 @@ template<
 inline Operations::Operations(
     Range const& operations)
 {
-    typedef typename boost::range_iterator<Range const>::type Iterator;
+    using Iterator = typename boost::range_iterator<Range const>::type;
     Iterator end = boost::end(operations);
 
     for(Iterator it = boost::begin(operations); it != end; ++it) {
@@ -74,6 +74,6 @@ inline Operations::Operations(
 }
 
 
-typedef std::shared_ptr<Operations> OperationsPtr;
+using OperationsPtr = std::shared_ptr<Operations>;
 
 } // namespace fern

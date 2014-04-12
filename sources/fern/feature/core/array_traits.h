@@ -43,17 +43,16 @@ ARRAY_CATEGORY_TAG(3)
 //     View<T, nr_dimensions>>
 // {
 // 
-//     typedef typename detail::dispatch::ArrayCategoryTag<T, nr_dimensions>::type
-//         argument_category;
+//     using argument_category = typename detail::dispatch::ArrayCategoryTag<T, nr_dimensions>::type;
 // 
 //     template<
 //         class U>
 //     struct Collection
 //     {
-//         typedef Array<T, nr_dimensions> type;
+//         using type = Array<T, nr_dimensions>;
 //     };
 // 
-//     typedef T value_type;
+//     using value_type = T;
 // 
 // };
 

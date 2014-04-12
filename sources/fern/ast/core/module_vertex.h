@@ -47,7 +47,7 @@ private:
 
 };
 
-typedef std::shared_ptr<ModuleVertex> ModuleVertexPtr;
+using ModuleVertexPtr = std::shared_ptr<ModuleVertex>;
 
 // bool               operator==          (ModuleVertex const& lhs,
 //                                         ModuleVertex const& rhs);

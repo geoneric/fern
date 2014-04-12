@@ -12,17 +12,17 @@ struct ArgumentTraits<
     ArrayView<T, nr_dimensions>>
 {
 
-    typedef typename detail::dispatch::ArrayCategoryTag<T, nr_dimensions>::type
-        argument_category;
+    using argument_category = typename detail::dispatch::ArrayCategoryTag<T,
+        nr_dimensions>::type argument_category;
 
     template<
         class U>
     struct Collection
     {
-        typedef ArrayView<U, nr_dimensions> type;
+        using type = ArrayView<U, nr_dimensions>;
     };
 
-    typedef T value_type;
+    using value_type = T;
 
     static bool const is_masking = false;
 

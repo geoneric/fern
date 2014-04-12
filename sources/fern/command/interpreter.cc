@@ -50,7 +50,7 @@ inline void show_value(
 #define SHOW_VALUE_CASE(                                                       \
         value_type)                                                            \
     case value_type: {                                                         \
-        typedef ValueTypeTraits<value_type>::type type;                        \
+        using type = ValueTypeTraits<value_type>::type;                        \
         ConstantAttribute<type> const& constant_attribute(                     \
             dynamic_cast<ConstantAttribute<type> const&>(*value));             \
         show_value<type>(constant_attribute.values().value());                 \

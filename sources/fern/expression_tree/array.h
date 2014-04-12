@@ -13,9 +13,9 @@ struct Array
 
     static_assert(std::is_arithmetic<Result>::value, "Type must be numeric");
 
-    typedef Result value_type;
+    using value_type = Result;
 
-    typedef Array<Result> result_type;
+    using result_type = Array<Result>;
 
     template<
         class Container>
