@@ -78,7 +78,7 @@ inline FunctionWrapper::FunctionWrapper(
 
     // : _concept(std::make_unique<Model<Function>>(std::move(function)))
 
-    : _concept(new Model<Function>(std::move(function)))
+    : _concept(std::make_unique<Model<Function>>(std::move(function)))
 
 {
 }
