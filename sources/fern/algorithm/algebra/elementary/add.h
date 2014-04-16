@@ -12,7 +12,7 @@
 
 
 namespace fern {
-namespace plus {
+namespace add {
 namespace detail {
 namespace dispatch {
 
@@ -228,7 +228,7 @@ struct within_range<
 } // namespace detail
 
 
-// All values are within the domain of valid values for plus.
+// All values are within the domain of valid values for add.
 template<
     class Values1,
     class Values2>
@@ -294,7 +294,7 @@ struct Algorithm
 
 };
 
-} // namespace plus
+} // namespace add
 
 
 namespace algebra {
@@ -308,7 +308,7 @@ template<
     class InputNoDataPolicy=SkipNoData,
     class OutputNoDataPolicy=DontMarkNoData
 >
-class Plus
+class Add
 {
 
 public:
@@ -334,18 +334,18 @@ public:
 
     /// using A2Value = typename ArgumentTraits<A2>::value_type;
 
-    Plus()
-        : _algorithm(plus::Algorithm<A1Value, A2Value>())
+    Add()
+        : _algorithm(add::Algorithm<A1Value, A2Value>())
     {
     }
 
-    Plus(
+    Add(
         InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
         OutputNoDataPolicy&& output_no_data_policy)  // Universal reference.
         : _algorithm(
             std::forward<InputNoDataPolicy>(input_no_data_policy),
             std::forward<OutputNoDataPolicy>(output_no_data_policy),
-            plus::Algorithm<A1Value, A2Value>())
+            add::Algorithm<A1Value, A2Value>())
     {
     }
 
@@ -372,7 +372,7 @@ private:
 
     detail::dispatch::BinaryOperation<A1, A2, R,
         OutOfDomainPolicy, OutOfRangePolicy, InputNoDataPolicy,
-        OutputNoDataPolicy, plus::Algorithm<A1Value, A2Value>,
+        OutputNoDataPolicy, add::Algorithm<A1Value, A2Value>,
         typename ArgumentTraits<A1>::argument_category,
         typename ArgumentTraits<A2>::argument_category> _algorithm;
 
@@ -391,12 +391,12 @@ template<
     class InputNoDataPolicy=SkipNoData,
     class OutputNoDataPolicy=DontMarkNoData
 >
-void plus(
+void add(
     Values1 const& values1,
     Values2 const& values2,
     Result& result)
 {
-    Plus<Values1, Values2, Result, OutOfDomainPolicy, OutOfRangePolicy,
+    Add<Values1, Values2, Result, OutOfDomainPolicy, OutOfRangePolicy,
         InputNoDataPolicy, OutputNoDataPolicy>()(values1, values2, result);
 }
 
@@ -413,14 +413,14 @@ template<
     class InputNoDataPolicy=SkipNoData,
     class OutputNoDataPolicy=DontMarkNoData
 >
-void plus(
+void add(
     InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
     OutputNoDataPolicy&& output_no_data_policy,  // Universal reference.
     Values1 const& values1,
     Values2 const& values2,
     Result& result)
 {
-    Plus<Values1, Values2, Result, OutOfDomainPolicy, OutOfRangePolicy,
+    Add<Values1, Values2, Result, OutOfDomainPolicy, OutOfRangePolicy,
         InputNoDataPolicy, OutputNoDataPolicy>(
             std::forward<InputNoDataPolicy>(input_no_data_policy),
             std::forward<OutputNoDataPolicy>(output_no_data_policy))(

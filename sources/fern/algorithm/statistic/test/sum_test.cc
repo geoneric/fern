@@ -7,7 +7,7 @@
 #include "fern/feature/core/array_traits.h"
 #include "fern/feature/core/masked_array_traits.h"
 #include "fern/feature/core/masked_constant_traits.h"
-#include "fern/algorithm/algebra/elementary/plus.h"
+#include "fern/algorithm/algebra/elementary/add.h"
 #include "fern/algorithm/algebra/executor.h"
 #include "fern/algorithm/policy/policies.h"
 #include "fern/algorithm/statistic/sum.h"
@@ -268,7 +268,7 @@ BOOST_AUTO_TEST_CASE(out_of_range)
 
     // 1d masked array with masking sum
     {
-        using OutOfRangePolicy = fern::plus::OutOfRangePolicy<int32_t>;
+        using OutOfRangePolicy = fern::add::OutOfRangePolicy<int32_t>;
         using InputNoDataPolicy = fern::SkipNoData;
         using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
 
@@ -313,7 +313,7 @@ BOOST_AUTO_TEST_CASE(concurrent)
     }
 
     {
-        using OutOfRangePolicy = fern::plus::OutOfRangePolicy<int32_t>;
+        using OutOfRangePolicy = fern::add::OutOfRangePolicy<int32_t>;
         using InputNoDataPolicy = fern::SkipNoData;
         using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
         fern::MaskedConstant<int32_t> result_we_got;

@@ -1,6 +1,6 @@
 SET(TEST_NAMES
+    add_test
     equal_test
-    plus_test
 )
 
 MACRO(ADD_UNIT_TEST NAME)
