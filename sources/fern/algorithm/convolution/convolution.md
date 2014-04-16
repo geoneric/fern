@@ -59,4 +59,3 @@ See also
 - [Wikipedia on cellular automaton](https://en.wikipedia.org/wiki/Cellular_automata)
 - [Computer Graphics, Principles and Practice](https://en.wikipedia.org/wiki/Computer_Graphics:_Principles_and_Practice)
 - [Image Processing using 2D Convolution](http://williamson-labs.com/convolution-2d.htm)
-
