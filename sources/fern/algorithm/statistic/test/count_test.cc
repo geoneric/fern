@@ -303,8 +303,10 @@ BOOST_AUTO_TEST_CASE(concurrent)
         using InputNoDataPolicy = fern::SkipNoData;
         using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
         fern::MaskedConstant<size_t> result_we_got;
-        fern::statistic::Count<fern::Array<int32_t, 2>,
-            fern::MaskedConstant<size_t>, InputNoDataPolicy,
+        fern::statistic::Count<
+            fern::Array<int32_t, 2>,
+            fern::MaskedConstant<size_t>,
+            InputNoDataPolicy,
             OutputNoDataPolicy> count(
                 InputNoDataPolicy(),
                 OutputNoDataPolicy(result_we_got.mask(), true));

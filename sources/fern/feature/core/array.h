@@ -12,6 +12,9 @@ extern boost::multi_array_types::index_gen indices;
 
 using Range = boost::multi_array_types::index_range;
 
+template<size_t nr_ranges>
+using gen_type = typename boost::detail::multi_array::extent_gen<nr_ranges>;
+
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -41,8 +44,9 @@ public:
 
                    Array               (std::vector<T> const& values);
 
-    template<class ExtentList>
-                   Array               (ExtentList const& sizes);
+    template<size_t nr_ranges>
+                   Array               (gen_type<nr_ranges> const& sizes,
+                                        T const& value=T());
 
                    Array               (Array const&)=default;
 
@@ -97,13 +101,15 @@ template<
     class T,
     size_t nr_dimensions>
 template<
-    class ExtentList>
+    size_t nr_ranges>
 inline Array<T, nr_dimensions>::Array(
-    ExtentList const& sizes)
+    gen_type<nr_ranges> const& sizes,
+    T const& value)
 
     : boost::multi_array<T, nr_dimensions>(sizes)
 
 {
+    std::fill(this->data(), this->data() + this->num_elements(), value);
 }
 
 

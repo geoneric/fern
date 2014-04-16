@@ -98,4 +98,16 @@ inline bool& MaskedConstant<T>::mask()
 }
 
 
+template<
+    class T>
+inline bool operator==(
+    MaskedConstant<T> const& lhs,
+    MaskedConstant<T> const& rhs)
+{
+    return
+        lhs.mask() == rhs.mask() &&
+        lhs.value() == rhs.value()
+        ;
+}
+
 } // namespace fern

@@ -36,16 +36,9 @@ public:
                    MaskedArray         (std::vector<MaskedConstant<T>> const&
                                            values);
 
-    // template<
-    //     template<
-    //         class>
-    //     class Container,
-    //     class Value>
-    //                MaskedArray         (Container<Value> const& container);
-
-    template<
-        class ExtentList>
-                   MaskedArray         (ExtentList const& sizes);
+    template<size_t nr_ranges>
+                   MaskedArray         (gen_type<nr_ranges> const& sizes,
+                                        T const& value=T());
 
                    MaskedArray         (MaskedArray const&)=default;
 
@@ -154,6 +147,7 @@ inline MaskedArray<T, nr_dimensions>::MaskedArray(
 }
 
 
+// By default, all values are not masked.
 template<
     class T,
     size_t nr_dimensions>
@@ -161,14 +155,14 @@ inline MaskedArray<T, nr_dimensions>::MaskedArray(
     std::initializer_list<T> const& values)
 
     : Array<T, nr_dimensions>(values),
-      _mask(extents[values.size()])
+      _mask(extents[values.size()], false)
 
 {
-    // By default, all values are not masked.
-    std::fill(_mask.data(), _mask.data() + _mask.num_elements(), false);
+    /// std::fill(_mask.data(), _mask.data() + _mask.num_elements(), false);
 }
 
 
+// By default, all values are not masked.
 template<
     class T,
     size_t nr_dimensions>
@@ -176,28 +170,28 @@ inline MaskedArray<T, nr_dimensions>::MaskedArray(
     std::initializer_list<std::initializer_list<T>> const& values)
 
     : Array<T, nr_dimensions>(values),
-      _mask(extents[values.size()][values.begin()->size()])
+      _mask(extents[values.size()][values.begin()->size()], false)
 
 {
-    // By default, all values are not masked.
-    std::fill(_mask.data(), _mask.data() + _mask.num_elements(), false);
+    /// std::fill(_mask.data(), _mask.data() + _mask.num_elements(), false);
 }
 
 
+// By default, all values are not masked.
 template<
     class T,
     size_t nr_dimensions>
 template<
-    class ExtentList>
+    size_t nr_ranges>
 inline MaskedArray<T, nr_dimensions>::MaskedArray(
-    ExtentList const& sizes)
+    gen_type<nr_ranges> const& sizes,
+    T const& value)
 
-    : Array<T, nr_dimensions>(sizes),
-      _mask(sizes)
+    : Array<T, nr_dimensions>(sizes, value),
+      _mask(sizes, false)
 
 {
-    // By default, all values are not masked.
-    std::fill(_mask.data(), _mask.data() + _mask.num_elements(), false);
+    /// std::fill(_mask.data(), _mask.data() + _mask.num_elements(), false);
 }
 
 

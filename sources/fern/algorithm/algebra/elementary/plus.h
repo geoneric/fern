@@ -325,7 +325,7 @@ public:
     FERN_STATIC_ASSERT(std::is_arithmetic, A2Value)
     FERN_STATIC_ASSERT(std::is_arithmetic, RValue)
     FERN_STATIC_ASSERT(std::is_same, RValue,
-        typename fern::Result<A1, A2>::type)
+        typename fern::Result<A1Value, A2Value>::type)
 
     /// //! Type of the result of the operation.
     /// using R = typename Result<A1, A2>::type;

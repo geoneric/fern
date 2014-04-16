@@ -1,7 +1,10 @@
-#define BOOST_TEST_MODULE fern algorithm algebra plus
+#define BOOST_TEST_MODULE fern algorithm algebra elementary plus
 #include <boost/test/unit_test.hpp>
 #include "fern/feature/core/array_traits.h"
 #include "fern/feature/core/masked_array_traits.h"
+#include "fern/feature/core/masked_constant_traits.h"
+#include "fern/feature/core/test/masked_constant.h"
+#include "fern/core/constant_traits.h"
 #include "fern/core/thread_client.h"
 #include "fern/core/vector_traits.h"
 #include "fern/algorithm/policy/policies.h"
@@ -29,8 +32,421 @@
 ///     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 /// }
 
+template<
+    class A1,
+    class A2,
+    class R>
+void verify_value(
+    A1 const& values1,
+    A2 const& values2,
+    R const& result_we_want)
+{
+    R result_we_get;
+    fern::algebra::plus(values1, values2, result_we_get);
+    BOOST_CHECK_EQUAL(result_we_get, result_we_want);
+}
+
 
 BOOST_AUTO_TEST_SUITE(plus)
+
+BOOST_AUTO_TEST_CASE(traits)
+{
+    using Plus = fern::algebra::Plus<int32_t, int32_t, int32_t>;
+    BOOST_CHECK((std::is_same<fern::OperationTraits<Plus>::category,
+        fern::local_operation_tag>::value));
+}
+
+
+BOOST_AUTO_TEST_CASE(d0_array_d0_array)
+{
+    verify_value<int8_t, int8_t, int8_t>(-5, 6, 1);
+    verify_value<int8_t, int8_t, int8_t>(-5, -5, -10);
+    verify_value<double, uint8_t, double>(-5.5, 5, -0.5);
+}
+
+
+BOOST_AUTO_TEST_CASE(masked_d0_array_d0_array)
+{
+    fern::MaskedConstant<int8_t> constant1;
+    fern::MaskedConstant<int32_t> constant2;
+    fern::MaskedConstant<int32_t> result;
+
+    // MaskedConstants with non-masking equal. ---------------------------------
+    // Constants are not masked.
+    constant1.mask() = false;
+    constant1.value() = 5;
+    constant2.mask() = false;
+    constant2.value() = 5;
+    result.value() = 9;
+    result.mask() = false;
+    fern::algebra::plus(constant1, constant2, result);
+    BOOST_CHECK(!result.mask());
+    BOOST_CHECK_EQUAL(result.value(), 10);
+
+    // Constant is masked.
+    constant1.mask() = true;
+    constant1.value() = 5;
+    constant2.mask() = false;
+    constant2.value() = 5;
+    result.value() = 9;
+    result.mask() = false;
+    fern::algebra::plus(constant1, constant2, result);
+    BOOST_CHECK(!result.mask());
+    BOOST_CHECK_EQUAL(result.value(), 10);
+
+    // MaskedConstant with masking plus. ---------------------------------------
+    using OutOfDomainPolicy = fern::DiscardDomainErrors;
+    using OutOfRangePolicy = fern::DiscardRangeErrors;
+    using InputNoDataPolicy = fern::DetectNoDataByValue<bool>;
+    using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
+
+    // Constants are not masked.
+    constant1.mask() = false;
+    constant1.value() = 5;
+    constant2.mask() = false;
+    constant2.value() = 5;
+    result.value() = 9;
+    result.mask() = false;
+    fern::algebra::plus<fern::MaskedConstant<int8_t>,
+        fern::MaskedConstant<int32_t>, fern::MaskedConstant<int32_t>,
+        OutOfDomainPolicy, OutOfRangePolicy, InputNoDataPolicy,
+        OutputNoDataPolicy>(
+            InputNoDataPolicy(result.mask(), true),
+            OutputNoDataPolicy(result.mask(), true),
+            constant1, constant2, result);
+    BOOST_CHECK(!result.mask());
+    BOOST_CHECK_EQUAL(result.value(), 10);
+
+    // Constants are masked.
+    constant1.value() = 5;
+    constant1.mask() = true;
+    constant2.value() = 5;
+    constant2.mask() = false;
+    result.value() = 9;
+    result.mask() = constant1.mask() || constant2.mask();
+    fern::algebra::plus<fern::MaskedConstant<int8_t>,
+        fern::MaskedConstant<int32_t>, fern::MaskedConstant<int32_t>,
+        OutOfDomainPolicy, OutOfRangePolicy, InputNoDataPolicy,
+        OutputNoDataPolicy>(
+            InputNoDataPolicy(result.mask(), true),
+            OutputNoDataPolicy(result.mask(), true),
+            constant1, constant2, result);
+    BOOST_CHECK(result.mask());
+    BOOST_CHECK_EQUAL(result.value(), 9);
+}
+
+
+BOOST_AUTO_TEST_CASE(d1_array_d1_array)
+{
+    // vector
+    {
+        std::vector<int32_t> array1{1, 2, 3};
+        std::vector<uint64_t> array2{1, 4, 3};
+        std::vector<int64_t> result(3);
+        fern::algebra::plus(array1, array2, result);
+        BOOST_CHECK_EQUAL(result[0], 2);
+        BOOST_CHECK_EQUAL(result[1], 6);
+        BOOST_CHECK_EQUAL(result[2], 6);
+    }
+
+    // 1d array
+    {
+        fern::Array<uint8_t, 1> array1{1, 2, 3};
+        fern::Array<uint16_t, 1> array2{1, 4, 3};
+        std::vector<uint16_t> result(3);
+        fern::algebra::plus(array1, array2, result);
+        BOOST_CHECK_EQUAL(result[0], 2);
+        BOOST_CHECK_EQUAL(result[1], 6);
+        BOOST_CHECK_EQUAL(result[2], 6);
+    }
+
+    // empty
+    {
+        std::vector<int32_t> array1;
+        std::vector<int32_t> array2;
+        std::vector<int32_t> result;
+        fern::algebra::plus(array1, array2, result);
+        BOOST_CHECK(result.empty());
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(masked_d1_array_masked_d1_array)
+{
+    using OutOfDomainPolicy = fern::DiscardDomainErrors;
+    using OutOfRangePolicy = fern::DiscardRangeErrors;
+    using InputNoDataPolicy = fern::DetectNoDataByValue<fern::Mask<1>>;
+    using OutputNoDataPolicy = fern::MarkNoDataByValue<fern::Mask<1>>;
+
+    fern::MaskedArray<int32_t, 1> array1{1, 2, 3};
+    fern::MaskedArray<int32_t, 1> array2{1, 4, 3};
+
+    // 1d masked arrays with non-masking plus
+    {
+        fern::MaskedArray<int32_t, 1> result(3);
+        fern::algebra::plus(array1, array2, result);
+        BOOST_CHECK_EQUAL(result.mask()[0], false);
+        BOOST_CHECK_EQUAL(result.mask()[1], false);
+        BOOST_CHECK_EQUAL(result.mask()[2], false);
+        BOOST_CHECK_EQUAL(result[0], 2);
+        BOOST_CHECK_EQUAL(result[1], 6);
+        BOOST_CHECK_EQUAL(result[2], 6);
+    }
+
+    // 1d masked arrays with masking plus
+    {
+        fern::MaskedArray<int32_t, 1> result(3);
+        result.mask()[2] = true;
+        fern::algebra::plus<
+            fern::MaskedArray<int32_t, 1>,
+            fern::MaskedArray<int32_t, 1>,
+            fern::MaskedArray<int32_t, 1>,
+            OutOfDomainPolicy,
+            OutOfRangePolicy,
+            InputNoDataPolicy,
+            OutputNoDataPolicy>(
+                InputNoDataPolicy(result.mask(), true),
+                OutputNoDataPolicy(result.mask(), true),
+                array1, array2, result);
+        BOOST_CHECK_EQUAL(result.mask()[0], false);
+        BOOST_CHECK_EQUAL(result.mask()[1], false);
+        BOOST_CHECK_EQUAL(result.mask()[2], true);
+        BOOST_CHECK_EQUAL(result[0], 2);
+        BOOST_CHECK_EQUAL(result[1], 6);
+        BOOST_CHECK_EQUAL(result[2], 0);  // <-- Not touched.
+
+        // Mask the whole input. Result must be masked too.
+        result.mask_all();
+        fern::algebra::plus<
+            fern::MaskedArray<int32_t, 1>,
+            fern::MaskedArray<int32_t, 1>,
+            fern::MaskedArray<int32_t, 1>,
+            OutOfDomainPolicy,
+            OutOfRangePolicy,
+            InputNoDataPolicy,
+            OutputNoDataPolicy>(
+                InputNoDataPolicy(result.mask(), true),
+                OutputNoDataPolicy(result.mask(), true),
+                array1, array2, result);
+        BOOST_CHECK_EQUAL(result.mask()[0], true);
+        BOOST_CHECK_EQUAL(result.mask()[1], true);
+        BOOST_CHECK_EQUAL(result.mask()[2], true);
+    }
+
+    // empty
+    {
+        fern::MaskedArray<int32_t, 1> empty_array;
+        fern::MaskedArray<int32_t, 1> result;
+        fern::algebra::plus<
+            fern::MaskedArray<int32_t, 1>,
+            fern::MaskedArray<int32_t, 1>,
+            fern::MaskedArray<int32_t, 1>,
+            OutOfDomainPolicy,
+            OutOfRangePolicy,
+            InputNoDataPolicy,
+            OutputNoDataPolicy>(
+                InputNoDataPolicy(result.mask(), true),
+                OutputNoDataPolicy(result.mask(), true),
+                empty_array, empty_array, result);
+        BOOST_CHECK(result.empty());
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(d2_array_d2_array)
+{
+    // 2d array
+    {
+        fern::Array<int8_t, 2> array1{
+            { -2, -1 },
+            {  0,  9 },
+            {  1,  2 }
+        };
+        fern::Array<int8_t, 2> array2{
+            { -2, -1 },
+            {  5,  9 },
+            {  1,  2 }
+        };
+        fern::Array<int8_t, 2> result{
+            { 0, 0 },
+            { 0, 0 },
+            { 0, 0 }
+        };
+        fern::algebra::plus(array1, array2, result);
+        BOOST_CHECK_EQUAL(result[0][0], -4);
+        BOOST_CHECK_EQUAL(result[0][1], -2);
+        BOOST_CHECK_EQUAL(result[1][0], 5);
+        BOOST_CHECK_EQUAL(result[1][1], 18);
+        BOOST_CHECK_EQUAL(result[2][0], 2);
+        BOOST_CHECK_EQUAL(result[2][1], 4);
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(masked_d2_array_masked_d2_array)
+{
+    fern::MaskedArray<int8_t, 2> array1{
+        { -2, -1 },
+        {  0,  9 },
+        {  1,  2 }
+    };
+    fern::MaskedArray<int8_t, 2> array2{
+        { -2, -1 },
+        {  5,  9 },
+        {  1,  2 }
+    };
+
+    // 2d masked array with non-masking plus
+    {
+        fern::MaskedArray<int8_t, 2> result{
+            { 0, 0 },
+            { 0, 0 },
+            { 0, 0 }
+        };
+        fern::algebra::plus(array1, array2, result);
+        BOOST_CHECK_EQUAL(result[0][0], -4);
+        BOOST_CHECK_EQUAL(result[0][1], -2);
+        BOOST_CHECK_EQUAL(result[1][0], 5);
+        BOOST_CHECK_EQUAL(result[1][1], 18);
+        BOOST_CHECK_EQUAL(result[2][0], 2);
+        BOOST_CHECK_EQUAL(result[2][1], 4);
+    }
+
+    // 2d masked arrays with masking plus
+    {
+        // TODO
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(concurrent_d2_array)
+{
+    size_t const nr_rows = 6000;
+    size_t const nr_cols = 4000;
+    auto const extents = fern::extents[nr_rows][nr_cols];
+    fern::Array<int32_t, 2> array1(extents);
+    fern::Array<int32_t, 2> array2(extents);
+    fern::Array<int32_t, 2> plus_result_we_get(extents);
+    fern::Array<int32_t, 2> plus_result_we_want(extents);
+    fern::Array<bool, 2> equal_result_we_get(extents, true);
+    size_t count_result_we_get;
+    size_t const count_result_we_want = nr_rows * nr_cols;
+    fern::algebra::Plus<
+        fern::Array<int32_t, 2>,
+        fern::Array<int32_t, 2>,
+        fern::Array<int32_t, 2>> plus;
+    fern::algebra::Equal<
+        fern::Array<int32_t, 2>,
+        fern::Array<int32_t, 2>,
+        fern::Array<bool, 2>> equal;
+    fern::statistic::Count<
+        fern::Array<bool, 2>,
+        size_t> count;
+
+    std::iota(array1.data(), array1.data() + array1.num_elements(), 0);
+    std::iota(array2.data(), array2.data() + array2.num_elements(), 0);
+    std::transform(array1.data(), array1.data() + array1.num_elements(),
+        plus_result_we_want.data(), [](int32_t value){ return value + value; });
+
+    // Serial.
+    {
+        fern::serial::execute(plus, array1, array2, plus_result_we_get);
+        fern::serial::execute(equal, plus_result_we_get, plus_result_we_want,
+            equal_result_we_get);
+        fern::serial::execute(count, equal_result_we_get, true,
+            count_result_we_get);
+        BOOST_CHECK_EQUAL(count_result_we_get, count_result_we_want);
+    }
+
+    // Concurrent.
+    {
+        fern::ThreadClient client;
+        fern::concurrent::execute(plus, array1, array2, plus_result_we_get);
+        fern::concurrent::execute(equal, plus_result_we_get,
+            plus_result_we_want, equal_result_we_get);
+        fern::concurrent::execute(count, equal_result_we_get, true,
+            count_result_we_get);
+        BOOST_CHECK_EQUAL(count_result_we_get, count_result_we_want);
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(concurrent_masked_d2_array)
+{
+    using OutOfDomainPolicy = fern::DiscardDomainErrors;
+    using OutOfRangePolicy = fern::DiscardRangeErrors;
+    using InputNoDataPolicy = fern::SkipNoData;
+    using OutputNoDataPolicy = fern::MarkNoDataByValue<fern::Mask<2>>;
+
+    size_t const nr_rows = 6000;
+    size_t const nr_cols = 4000;
+    auto const extents = fern::extents[nr_rows][nr_cols];
+    fern::MaskedArray<int32_t, 2> array1(extents);
+    fern::MaskedArray<int32_t, 2> array2(extents);
+    fern::MaskedArray<int32_t, 2> plus_result_we_get(extents);
+    fern::MaskedArray<int32_t, 2> plus_result_we_want(extents);
+    fern::MaskedArray<bool, 2> equal_result_we_get(extents, true);
+    fern::MaskedConstant<size_t> count_result_we_get;
+    fern::MaskedConstant<size_t> const count_result_we_want{nr_rows * nr_cols};
+    fern::algebra::Plus<
+        fern::MaskedArray<int32_t, 2>,
+        fern::MaskedArray<int32_t, 2>,
+        fern::MaskedArray<int32_t, 2>,
+        OutOfDomainPolicy,
+        OutOfRangePolicy,
+        InputNoDataPolicy,
+        OutputNoDataPolicy> plus(
+            InputNoDataPolicy(),
+            OutputNoDataPolicy(plus_result_we_get.mask(), true));
+    fern::algebra::Equal<
+        fern::MaskedArray<int32_t, 2>,
+        fern::MaskedArray<int32_t, 2>,
+        fern::MaskedArray<bool, 2>,
+        OutOfDomainPolicy,
+        OutOfRangePolicy,
+        InputNoDataPolicy,
+        OutputNoDataPolicy> equal(
+            InputNoDataPolicy(),
+            OutputNoDataPolicy(equal_result_we_get.mask(), true));
+    fern::statistic::Count<
+        fern::MaskedArray<bool, 2>,
+        fern::MaskedConstant<size_t>,
+        InputNoDataPolicy,
+        fern::MarkNoDataByValue<bool>> count(
+            InputNoDataPolicy(),
+            fern::MarkNoDataByValue<bool>(count_result_we_get.mask(), true));
+
+    std::iota(array1.data(), array1.data() + array1.num_elements(), 0);
+    std::iota(array2.data(), array2.data() + array2.num_elements(), 0);
+    std::transform(array1.data(), array1.data() + array1.num_elements(),
+        plus_result_we_want.data(), [](int32_t value){ return value + value; });
+
+    // Verify executor can handle masked result.
+    fern::ThreadClient client;
+    fern::concurrent::execute(plus, array1, array2, plus_result_we_get);
+    fern::concurrent::execute(equal, plus_result_we_get,
+        plus_result_we_want, equal_result_we_get);
+    fern::concurrent::execute(count, equal_result_we_get, true,
+        count_result_we_get);
+    BOOST_CHECK_EQUAL(count_result_we_get, count_result_we_want);
+}
+
+
+// TODO Test 1d array + 0d array
+//      Test 2d array + 1d array
+//      etc
+// TODO Stuff below.
+
+BOOST_AUTO_TEST_SUITE_END()
+
+
+
+
+
+
+
+
+
 
 /// BOOST_AUTO_TEST_CASE(value)
 /// {
@@ -435,8 +851,8 @@ BOOST_AUTO_TEST_SUITE(plus)
 ///         fern::Array<int8_t, 2> plus_result(extents);
 /// 
 ///         // Compare result with result we want.
-///         fern::algebra::Equal<fern::Array<int8_t, 2>, fern::Array<int8_t, 2>>
-///             equal;
+///         fern::algebra::Plus<fern::Array<int8_t, 2>, fern::Array<int8_t, 2>>
+///             plus;
 ///         fern::Array<bool, 2> equal_result(extents);
 /// 
 ///         // Count the number of equal values.
@@ -474,4 +890,4 @@ BOOST_AUTO_TEST_SUITE(plus)
 ///     // TODO Make this work for masked arrays too.
 /// }
 
-BOOST_AUTO_TEST_SUITE_END()
+// BOOST_AUTO_TEST_SUITE_END()
