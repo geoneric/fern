@@ -1,16 +1,16 @@
-#define BOOST_TEST_MODULE fern algorithm algebra elementary substract
+#define BOOST_TEST_MODULE fern algorithm algebra elementary subtract
 #include <boost/test/unit_test.hpp>
 #include "fern/core/constant_traits.h"
 #include "fern/core/type_traits.h"
-#include "fern/algorithm/algebra/elementary/substract.h"
+#include "fern/algorithm/algebra/elementary/subtract.h"
 
 
-BOOST_AUTO_TEST_SUITE(substract)
+BOOST_AUTO_TEST_SUITE(subtract)
 
 BOOST_AUTO_TEST_CASE(traits)
 {
-    using Substract = fern::algebra::Substract<int32_t, int32_t, int32_t>;
-    BOOST_CHECK((std::is_same<fern::OperationTraits<Substract>::category,
+    using Subtract = fern::algebra::Subtract<int32_t, int32_t, int32_t>;
+    BOOST_CHECK((std::is_same<fern::OperationTraits<Subtract>::category,
         fern::local_operation_tag>::value));
 }
 
@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_CASE(traits)
 template<
     class Value1,
     class Value2>
-using OutOfDomainPolicy = fern::substract::OutOfDomainPolicy<Value1, Value2>;
+using OutOfDomainPolicy = fern::subtract::OutOfDomainPolicy<Value1, Value2>;
 
 
 BOOST_AUTO_TEST_CASE(out_of_domain_policy)
@@ -36,7 +36,7 @@ template<
     class Value1,
     class Value2,
     class Result>
-using OutOfRangePolicy = fern::substract::OutOfRangePolicy<Value1, Value2,
+using OutOfRangePolicy = fern::subtract::OutOfRangePolicy<Value1, Value2,
     Result>;
 
 
@@ -219,7 +219,7 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::algebra::substract(value1, value2, result_we_get);
+    fern::algebra::subtract(value1, value2, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 

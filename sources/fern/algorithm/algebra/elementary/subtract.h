@@ -12,7 +12,7 @@
 
 
 namespace fern {
-namespace substract {
+namespace subtract {
 namespace detail {
 namespace dispatch {
 
@@ -240,7 +240,7 @@ struct within_range<
 } // namespace detail
 
 
-// All values are within the domain of valid values for substract.
+// All values are within the domain of valid values for subtract.
 template<
     class Value1,
     class Value2>
@@ -304,7 +304,7 @@ struct Algorithm
 
 };
 
-} // namespace substract
+} // namespace subtract
 
 
 namespace algebra {
@@ -319,7 +319,7 @@ template<
     class InputNoDataPolicy=SkipNoData,
     class OutputNoDataPolicy=DontMarkNoData
 >
-class Substract
+class Subtract
 {
 
 public:
@@ -338,18 +338,18 @@ public:
     FERN_STATIC_ASSERT(std::is_same, RValue,
         typename fern::Result<A1Value, A2Value>::type)
 
-    Substract()
-        : _algorithm(substract::Algorithm<A1Value, A2Value>())
+    Subtract()
+        : _algorithm(subtract::Algorithm<A1Value, A2Value>())
     {
     }
 
-    Substract(
+    Subtract(
         InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
         OutputNoDataPolicy&& output_no_data_policy)  // Universal reference.
         : _algorithm(
             std::forward<InputNoDataPolicy>(input_no_data_policy),
             std::forward<OutputNoDataPolicy>(output_no_data_policy),
-            substract::Algorithm<A1Value, A2Value>())
+            subtract::Algorithm<A1Value, A2Value>())
     {
     }
 
@@ -376,14 +376,14 @@ private:
 
     detail::dispatch::BinaryOperation<A1, A2, R,
         OutOfDomainPolicy, OutOfRangePolicy, InputNoDataPolicy,
-        OutputNoDataPolicy, substract::Algorithm<A1Value, A2Value>,
+        OutputNoDataPolicy, subtract::Algorithm<A1Value, A2Value>,
         typename ArgumentTraits<A1>::argument_category,
         typename ArgumentTraits<A2>::argument_category> _algorithm;
 
 };
 
 
-//! Calculate the result of substracting \a values2 from \a values1 and put it in \a result.
+//! Calculate the result of subtracting \a values2 from \a values1 and put it in \a result.
 /*!
 */
 template<
@@ -396,12 +396,12 @@ template<
     class InputNoDataPolicy=SkipNoData,
     class OutputNoDataPolicy=DontMarkNoData
 >
-void substract(
+void subtract(
     Values1 const& values1,
     Values2 const& values2,
     Result& result)
 {
-    Substract<Values1, Values2, Result, OutOfDomainPolicy, OutOfRangePolicy,
+    Subtract<Values1, Values2, Result, OutOfDomainPolicy, OutOfRangePolicy,
         InputNoDataPolicy, OutputNoDataPolicy>()(values1, values2, result);
 }
 
@@ -419,14 +419,14 @@ template<
     class InputNoDataPolicy=SkipNoData,
     class OutputNoDataPolicy=DontMarkNoData
 >
-void substract(
+void subtract(
     InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
     OutputNoDataPolicy&& output_no_data_policy,  // Universal reference.
     Values1 const& values1,
     Values2 const& values2,
     Result& result)
 {
-    Substract<Values1, Values2, Result, OutOfDomainPolicy, OutOfRangePolicy,
+    Subtract<Values1, Values2, Result, OutOfDomainPolicy, OutOfRangePolicy,
         InputNoDataPolicy, OutputNoDataPolicy>(
             std::forward<InputNoDataPolicy>(input_no_data_policy),
             std::forward<OutputNoDataPolicy>(output_no_data_policy))(
