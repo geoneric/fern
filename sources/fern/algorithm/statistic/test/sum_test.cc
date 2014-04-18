@@ -69,7 +69,6 @@ BOOST_AUTO_TEST_CASE(masked_d0_array)
     BOOST_CHECK_EQUAL(result_we_get.value(), 6);
 
     // MaskedConstant with masking sum. ----------------------------------------
-    using OutOfRangePolicy = fern::DiscardRangeErrors;
     using InputNoDataPolicy = fern::DetectNoDataByValue<bool>;
     using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
 
@@ -78,7 +77,8 @@ BOOST_AUTO_TEST_CASE(masked_d0_array)
     constant.mask() = false;
     BOOST_CHECK(!constant.mask());
     BOOST_CHECK(!result_we_get.mask());
-    fern::statistic::sum<MaskedConstant, MaskedConstant, OutOfRangePolicy,
+    fern::statistic::sum<MaskedConstant, MaskedConstant,
+        fern::binary::DiscardRangeErrors,
         InputNoDataPolicy, OutputNoDataPolicy>(
             InputNoDataPolicy(constant.mask(), true),
             OutputNoDataPolicy(result_we_get.mask(), true),
@@ -91,7 +91,8 @@ BOOST_AUTO_TEST_CASE(masked_d0_array)
     constant.mask() = true;
     BOOST_CHECK(constant.mask());
     BOOST_CHECK(!result_we_get.mask());
-    fern::statistic::sum<MaskedConstant, MaskedConstant, OutOfRangePolicy,
+    fern::statistic::sum<MaskedConstant, MaskedConstant,
+        fern::binary::DiscardRangeErrors,
         InputNoDataPolicy, OutputNoDataPolicy>(
             InputNoDataPolicy(constant.mask(), true),
             OutputNoDataPolicy(result_we_get.mask(), true),
@@ -132,7 +133,6 @@ BOOST_AUTO_TEST_CASE(d1_array)
 
 BOOST_AUTO_TEST_CASE(masked_d1_array)
 {
-    using OutOfRangePolicy = fern::DiscardRangeErrors;
     using InputNoDataPolicy = fern::DetectNoDataByValue<fern::Mask<1>>;
     using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
     using MaskedArray = fern::MaskedArray<int32_t, 1>;
@@ -151,7 +151,8 @@ BOOST_AUTO_TEST_CASE(masked_d1_array)
     {
         array.mask()[2] = true;
         MaskedConstant result;
-        fern::statistic::sum<MaskedArray, MaskedConstant, OutOfRangePolicy,
+        fern::statistic::sum<MaskedArray, MaskedConstant,
+            fern::binary::DiscardRangeErrors,
             InputNoDataPolicy, OutputNoDataPolicy>(
                 InputNoDataPolicy(array.mask(), true),
                 OutputNoDataPolicy(result.mask(), true),
@@ -162,7 +163,8 @@ BOOST_AUTO_TEST_CASE(masked_d1_array)
         // Mask the whole input. Result must be masked too.
         std::fill(array.mask().data(), array.mask().data() +
             array.num_elements(), true);
-        fern::statistic::sum<MaskedArray, MaskedConstant, OutOfRangePolicy,
+        fern::statistic::sum<MaskedArray, MaskedConstant,
+            fern::binary::DiscardRangeErrors,
             InputNoDataPolicy, OutputNoDataPolicy>(
                 InputNoDataPolicy(array.mask(), true),
                 OutputNoDataPolicy(result.mask(), true),
@@ -174,7 +176,8 @@ BOOST_AUTO_TEST_CASE(masked_d1_array)
     {
         MaskedArray empty_array;
         MaskedConstant result{5};
-        fern::statistic::sum<MaskedArray, MaskedConstant, OutOfRangePolicy,
+        fern::statistic::sum<MaskedArray, MaskedConstant,
+            fern::binary::DiscardRangeErrors,
             InputNoDataPolicy, OutputNoDataPolicy>(
                 InputNoDataPolicy(empty_array.mask(), true),
                 OutputNoDataPolicy(result.mask(), true),
@@ -220,13 +223,13 @@ BOOST_AUTO_TEST_CASE(masked_d2_array)
     {
         using MaskedArray = fern::MaskedArray<int8_t, 2>;
         using MaskedConstant = fern::MaskedConstant<int8_t>;
-        using OutOfRangePolicy = fern::DiscardRangeErrors;
         using InputNoDataPolicy = fern::DetectNoDataByValue<fern::Mask<2>>;
         using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
 
         array.mask()[1][1] = true;
         MaskedConstant result;
-        fern::statistic::sum<MaskedArray, MaskedConstant, OutOfRangePolicy,
+        fern::statistic::sum<MaskedArray, MaskedConstant,
+            fern::binary::DiscardRangeErrors,
             InputNoDataPolicy, OutputNoDataPolicy>(
                 InputNoDataPolicy(array.mask(), true),
                 OutputNoDataPolicy(result.mask(), true),
@@ -237,7 +240,8 @@ BOOST_AUTO_TEST_CASE(masked_d2_array)
         // Mask the whole input. Result must be masked too.
         std::fill(array.mask().data(), array.mask().data() +
             array.num_elements(), true);
-        fern::statistic::sum<MaskedArray, MaskedConstant, OutOfRangePolicy,
+        fern::statistic::sum<MaskedArray, MaskedConstant,
+            fern::binary::DiscardRangeErrors,
             InputNoDataPolicy, OutputNoDataPolicy>(
                 InputNoDataPolicy(array.mask(), true),
                 OutputNoDataPolicy(result.mask(), true),
@@ -268,16 +272,16 @@ BOOST_AUTO_TEST_CASE(out_of_range)
 
     // 1d masked array with masking sum
     {
-        using OutOfRangePolicy = fern::add::OutOfRangePolicy<int32_t>;
         using InputNoDataPolicy = fern::SkipNoData;
         using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
 
         // fern::MaskedConstant<int32_t> result;
         using R = fern::MaskedConstant<int32_t>;
         R result;
-        fern::statistic::sum<Array, R, OutOfRangePolicy, InputNoDataPolicy,
-            OutputNoDataPolicy>(InputNoDataPolicy(), OutputNoDataPolicy(
-                result.mask(), true), overflow_array, result);
+        fern::statistic::sum<Array, R, fern::add::OutOfRangePolicy,
+            InputNoDataPolicy, OutputNoDataPolicy>(
+                InputNoDataPolicy(), OutputNoDataPolicy(result.mask(), true),
+                    overflow_array, result);
         BOOST_CHECK(result.mask());
     }
 }
@@ -313,13 +317,12 @@ BOOST_AUTO_TEST_CASE(concurrent)
     }
 
     {
-        using OutOfRangePolicy = fern::add::OutOfRangePolicy<int32_t>;
         using InputNoDataPolicy = fern::SkipNoData;
         using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
         fern::MaskedConstant<int32_t> result_we_got;
         fern::statistic::Sum<fern::Array<int32_t, 2>,
-            fern::MaskedConstant<int32_t>, OutOfRangePolicy, InputNoDataPolicy,
-            OutputNoDataPolicy> sum(
+            fern::MaskedConstant<int32_t>, fern::add::OutOfRangePolicy,
+            InputNoDataPolicy, OutputNoDataPolicy> sum(
                 InputNoDataPolicy(),
                 OutputNoDataPolicy(result_we_got.mask(), true));
 

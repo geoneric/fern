@@ -15,17 +15,17 @@ namespace equal {
 
 // All values are within the domain of valid values for equal.
 template<
-    class Values1,
-    class Values2>
-using OutOfDomainPolicy = DiscardDomainErrors;
+    class Value1,
+    class Value2>
+using OutOfDomainPolicy = DiscardDomainErrors<Value1, Value2>;
 
 
 // All values are within the range of valid values for equal (given the bool
 // output value type and the algorithm).
 template<
-    class Values1,
-    class Values2>
-using OutOfRangePolicy = DiscardRangeErrors;
+    class Value1,
+    class Value2>
+using OutOfRangePolicy = DiscardRangeErrors<Value1, Value2>;
 
 
 template<
@@ -54,8 +54,9 @@ template<
     class Values1,
     class Values2,
     class Result,
-    class OutOfDomainPolicy=DiscardDomainErrors,
-    class OutOfRangePolicy=DiscardRangeErrors,
+    template<class, class> class OutOfDomainPolicy=binary::DiscardDomainErrors,
+    template<class, class, class> class OutOfRangePolicy=
+        binary::DiscardRangeErrors,
     class InputNoDataPolicy=SkipNoData,
     class OutputNoDataPolicy=DontMarkNoData
 >
@@ -134,8 +135,9 @@ template<
     class Values1,
     class Values2,
     class Result,
-    class OutOfDomainPolicy=DiscardDomainErrors,
-    class OutOfRangePolicy=DiscardRangeErrors,
+    template<class, class> class OutOfDomainPolicy=binary::DiscardDomainErrors,
+    template<class, class, class> class OutOfRangePolicy=
+        binary::DiscardRangeErrors,
     class InputNoDataPolicy=SkipNoData,
     class OutputNoDataPolicy=DontMarkNoData
 >
@@ -156,8 +158,9 @@ template<
     class Values1,
     class Values2,
     class Result,
-    class OutOfDomainPolicy=DiscardDomainErrors,
-    class OutOfRangePolicy=DiscardRangeErrors,
+    template<class, class> class OutOfDomainPolicy=binary::DiscardDomainErrors,
+    template<class, class, class> class OutOfRangePolicy=
+        binary::DiscardRangeErrors,
     class InputNoDataPolicy=SkipNoData,
     class OutputNoDataPolicy=DontMarkNoData
 >

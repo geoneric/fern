@@ -3,72 +3,34 @@
 
 namespace fern {
 
-// template<
-//     class A1,
-//     class A2>
+template<
+    class... Parameters>
 class DiscardRangeErrors {
 
 public:
 
-    template<
-        class A1,
-        class R>
-    static bool    within_range        (A1 const& argument1,
-                                        R const& result);
-
-    template<
-        class A1,
-        class A2,
-        class R>
-    static bool    within_range        (A1 const& argument1,
-                                        A2 const& argument2,
-                                        R const& result);
-
-protected:
-
-                   DiscardRangeErrors  ()=default;
-
-                   DiscardRangeErrors  (DiscardRangeErrors&&)=delete;
-
-    DiscardRangeErrors&
-                   operator=           (DiscardRangeErrors&&)=delete;
-
-                   DiscardRangeErrors  (DiscardRangeErrors const&)=delete;
-
-    DiscardRangeErrors&
-                   operator=           (DiscardRangeErrors const&)=delete;
-
-                   ~DiscardRangeErrors ()=default;
-
-private:
+    static constexpr bool
+                   within_range        (Parameters const&... parameters);
 
 };
 
 
 template<
-    class A1,
-    class R>
-inline bool DiscardRangeErrors::within_range(
-    A1 const& /* argument1 */,
-    R const& /* result */)
+    class... Parameters>
+inline constexpr bool DiscardRangeErrors<Parameters...>::within_range(
+    Parameters const&... /* parameters */)
 {
     return true;
 }
 
 
-// template<
-//     class A1,
-//     class A2>
+namespace binary {
+
 template<
-    class A1,
-    class A2,
-    class R>
-inline bool DiscardRangeErrors/* <A1, A2> */::within_range(
-    A1 const& /* argument1 */,
-    A2 const& /* argument2 */,
-    R const& /* result */)
-{
-    return true;
-}
+    class Value1,
+    class Value2,
+    class Result>
+using DiscardRangeErrors = DiscardRangeErrors<Value1, Value2, Result>;
 
+} // namespace binary
 } // namespace fern

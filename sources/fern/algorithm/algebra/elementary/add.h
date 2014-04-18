@@ -17,8 +17,8 @@ namespace detail {
 namespace dispatch {
 
 template<
-    class Values1,
-    class Values2,
+    class Value1,
+    class Value2,
     class R,
     class A1NumberCategory,
     class A2NumberCategory>
@@ -28,147 +28,147 @@ struct within_range
 
 
 template<
-    class Values1,
-    class Values2,
-    class R>
+    class Value1,
+    class Value2,
+    class Result>
 struct within_range<
-    Values1,
-    Values2,
-    R,
+    Value1,
+    Value2,
+    Result,
     unsigned_integer_tag,
     unsigned_integer_tag>
 {
     inline static constexpr bool calculate(
-        Values1 const& values1,
-        Values2 const& /* values2 */,
-        R const& result)
+        Value1 const& value1,
+        Value2 const& /* value2 */,
+        Result const& result)
     {
         FERN_STATIC_ASSERT(std::is_same,
-            typename fern::Result<Values1, Values2>::type, R)
+            typename fern::Result<Value1, Value2>::type, Result)
 
         // unsigned + unsigned
         // Overflow if result is smaller than one of the operands.
-        return !(result < values1);
+        return !(result < value1);
     }
 };
 
 
 template<
-    class Values1,
-    class Values2,
-    class R>
+    class Value1,
+    class Value2,
+    class Result>
 struct within_range<
-    Values1,
-    Values2,
-    R,
+    Value1,
+    Value2,
+    Result,
     signed_integer_tag,
     signed_integer_tag>
 {
     inline static constexpr bool calculate(
-        Values1 const& values1,
-        Values2 const& values2,
-        R const& result)
+        Value1 const& value1,
+        Value2 const& value2,
+        Result const& result)
     {
         FERN_STATIC_ASSERT(std::is_same,
-            typename fern::Result<Values1, Values2>::type, R)
+            typename fern::Result<Value1, Value2>::type, Result)
 
         // signed + signed
         // Overflow/underflow if sign of result is different.
-        return values2 > 0 ? !(result < values1) : !(result > values1);
+        return value2 > 0 ? !(result < value1) : !(result > value1);
     }
 };
 
 
 template<
-    class Values1,
-    class Values2,
-    class R>
+    class Value1,
+    class Value2,
+    class Result>
 struct within_range<
-    Values1,
-    Values2,
-    R,
+    Value1,
+    Value2,
+    Result,
     unsigned_integer_tag,
     signed_integer_tag>
 {
     inline static bool calculate(
-        Values1 const& values1,
-        Values2 const& values2,
-        R const& result)
+        Value1 const& value1,
+        Value2 const& value2,
+        Result const& result)
     {
         // unsigned + signed
         // Switch arguments and forward request.
-        return within_range<Values2, Values1, R, signed_integer_tag,
-            unsigned_integer_tag>::calculate(values2, values1, result);
+        return within_range<Value2, Value1, Result, signed_integer_tag,
+            unsigned_integer_tag>::calculate(value2, value1, result);
     }
 };
 
 
 template<
-    class Values1,
-    class Values2,
-    class R>
+    class Value1,
+    class Value2,
+    class Result>
 struct within_range<
-    Values1,
-    Values2,
-    R,
+    Value1,
+    Value2,
+    Result,
     signed_integer_tag,
     unsigned_integer_tag>
 {
     inline static constexpr bool calculate(
-        Values1 const& values1,
-        Values2 const& /* values2 */,
-        R const& result)
+        Value1 const& value1,
+        Value2 const& /* value2 */,
+        Result const& result)
     {
-        FERN_STATIC_ASSERT(std::is_same, typename fern::Result<Values1, Values2>
-            ::type, R)
+        FERN_STATIC_ASSERT(std::is_same, typename fern::Result<Value1, Value2>
+            ::type, Result)
 
-        return values1 > 0 ? result >= values1 : result <= values1;
+        return value1 > 0 ? result >= value1 : result <= value1;
     }
 };
 
 
 template<
-    class Values1,
-    class Values2,
-    class R>
+    class Value1,
+    class Value2,
+    class Result>
 struct within_range<
-    Values1,
-    Values2,
-    R,
+    Value1,
+    Value2,
+    Result,
     integer_tag,
     integer_tag>
 {
     inline static bool calculate(
-        Values1 const& values1,
-        Values2 const& values2,
-        R const& result)
+        Value1 const& value1,
+        Value2 const& value2,
+        Result const& result)
     {
-        return within_range<Values1, Values2, R,
-            typename TypeTraits<Values1>::number_category,
-            typename TypeTraits<Values2>::number_category>::calculate(values1,
-                values2, result);
+        return within_range<Value1, Value2, Result,
+            typename TypeTraits<Value1>::number_category,
+            typename TypeTraits<Value2>::number_category>::calculate(value1,
+                value2, result);
     }
 };
 
 
 template<
-    class Values1,
-    class Values2,
-    class R>
+    class Value1,
+    class Value2,
+    class Result>
 struct within_range<
-    Values1,
-    Values2,
-    R,
+    Value1,
+    Value2,
+    Result,
     floating_point_tag,
     floating_point_tag>
 {
     inline static constexpr bool calculate(
-        Values1 const& /* values1 */,
-        Values2 const& /* values2 */,
-        R const& result)
+        Value1 const& /* value1 */,
+        Value2 const& /* value2 */,
+        Result const& result)
     {
         FERN_STATIC_ASSERT(std::is_same,
-            typename fern::Result<Values1, Values2>::type, R)
+            typename fern::Result<Value1, Value2>::type, Result)
 
         return std::isfinite(result);
     }
@@ -176,51 +176,53 @@ struct within_range<
 
 
 template<
-    class Values1,
-    class Values2,
-    class R>
+    class Value1,
+    class Value2,
+    class Result>
 struct within_range<
-    Values1,
-    Values2,
-    R,
+    Value1,
+    Value2,
+    Result,
     integer_tag,
     floating_point_tag>
 {
     inline static constexpr bool calculate(
-        Values1 const& /* values1 */,
-        Values2 const& /* values2 */,
-        R const& result)
+        Value1 const& /* value1 */,
+        Value2 const& /* value2 */,
+        Result const& result)
     {
         FERN_STATIC_ASSERT(std::is_same,
-            typename fern::Result<Values1, Values2>::type, R)
+            typename fern::Result<Value1, Value2>::type, Result)
+        assert(std::isfinite(result));
 
         // integral + float
-        return std::isfinite(result);
+        return true;
     }
 };
 
 
 template<
-    class Values1,
-    class Values2,
-    class R>
+    class Value1,
+    class Value2,
+    class Result>
 struct within_range<
-    Values1,
-    Values2,
-    R,
+    Value1,
+    Value2,
+    Result,
     floating_point_tag,
     integer_tag>
 {
     inline static constexpr bool calculate(
-        Values1 const& /* values1 */,
-        Values2 const& /* values2 */,
-        R const& result)
+        Value1 const& /* value1 */,
+        Value2 const& /* values2 */,
+        Result const& result)
     {
         FERN_STATIC_ASSERT(std::is_same,
-            typename fern::Result<Values1, Values2>::type, R)
+            typename fern::Result<Value1, Value2>::type, Result)
+        assert(std::isfinite(result));
 
         // float + integral
-        return std::isfinite(result);
+        return true;
     }
 };
 
@@ -230,38 +232,36 @@ struct within_range<
 
 // All values are within the domain of valid values for add.
 template<
-    class Values1,
-    class Values2>
-using OutOfDomainPolicy = DiscardDomainErrors;
+    class Value1,
+    class Value2>
+using OutOfDomainPolicy = DiscardDomainErrors<Value1, Value2>;
 
 
 template<
-    class Values1,
-    class Values2=Values1>
+    class Value1,
+    class Value2,
+    class Result>
 class OutOfRangePolicy
 {
 
-    FERN_STATIC_ASSERT(std::is_arithmetic, Values1)
-    FERN_STATIC_ASSERT(std::is_arithmetic, Values2)
+    FERN_STATIC_ASSERT(std::is_arithmetic, Value1)
+    FERN_STATIC_ASSERT(std::is_arithmetic, Value2)
+    FERN_STATIC_ASSERT(std::is_arithmetic, Result)
 
 public:
 
-    template<
-        class R>
     inline constexpr bool within_range(
-        Values1 const& values1,
-        Values2 const& values2,
-        R const& result) const
+        Value1 const& value1,
+        Value2 const& value2,
+        Result const& result) const
     {
-        FERN_STATIC_ASSERT(std::is_arithmetic, R)
+        using value1_tag = typename base_class<
+            typename TypeTraits<Value1>::number_category, integer_tag>::type;
+        using value2_tag = typename base_class<
+            typename TypeTraits<Value2>::number_category, integer_tag>::type;
 
-        using values1_tag = typename base_class<
-            typename TypeTraits<Values1>::number_category, integer_tag>::type;
-        using values2_tag = typename base_class<
-            typename TypeTraits<Values2>::number_category, integer_tag>::type;
-
-        return detail::dispatch::within_range<Values1, Values2, R, values1_tag,
-            values2_tag>::calculate(values1, values2, result);
+        return detail::dispatch::within_range<Value1, Value2, Result,
+            value1_tag, value2_tag>::calculate(value1, value2, result);
     }
 
 protected:
@@ -274,22 +274,22 @@ protected:
 
 
 template<
-    class Values1,
-    class Values2>
+    class Value1,
+    class Value2>
 struct Algorithm
 {
 
-    FERN_STATIC_ASSERT(std::is_arithmetic, Values1)
-    FERN_STATIC_ASSERT(std::is_arithmetic, Values2)
+    FERN_STATIC_ASSERT(std::is_arithmetic, Value1)
+    FERN_STATIC_ASSERT(std::is_arithmetic, Value2)
 
     template<
-        class R>
+        class Result>
     inline void operator()(
-        Values1 const& values1,
-        Values2 const& values2,
-        R& result) const
+        Value1 const& value1,
+        Value2 const& value2,
+        Result& result) const
     {
-        result = static_cast<R>(values1) + static_cast<R>(values2);
+        result = static_cast<Result>(value1) + static_cast<Result>(value2);
     }
 
 };
@@ -303,8 +303,9 @@ template<
     class Values1,
     class Values2,
     class Result,
-    class OutOfDomainPolicy=DiscardDomainErrors,
-    class OutOfRangePolicy=DiscardRangeErrors,
+    template<class, class> class OutOfDomainPolicy=binary::DiscardDomainErrors,
+    template<class, class, class> class OutOfRangePolicy=
+        binary::DiscardRangeErrors,
     class InputNoDataPolicy=SkipNoData,
     class OutputNoDataPolicy=DontMarkNoData
 >
@@ -326,13 +327,6 @@ public:
     FERN_STATIC_ASSERT(std::is_arithmetic, RValue)
     FERN_STATIC_ASSERT(std::is_same, RValue,
         typename fern::Result<A1Value, A2Value>::type)
-
-    /// //! Type of the result of the operation.
-    /// using R = typename Result<A1, A2>::type;
-
-    /// using A1Value = typename ArgumentTraits<A1>::value_type;
-
-    /// using A2Value = typename ArgumentTraits<A2>::value_type;
 
     Add()
         : _algorithm(add::Algorithm<A1Value, A2Value>())
@@ -386,8 +380,9 @@ template<
     class Values1,
     class Values2,
     class Result,
-    class OutOfDomainPolicy=DiscardDomainErrors,
-    class OutOfRangePolicy=DiscardRangeErrors,
+    template<class, class> class OutOfDomainPolicy=binary::DiscardDomainErrors,
+    template<class, class, class> class OutOfRangePolicy=
+        binary::DiscardRangeErrors,
     class InputNoDataPolicy=SkipNoData,
     class OutputNoDataPolicy=DontMarkNoData
 >
@@ -408,8 +403,9 @@ template<
     class Values1,
     class Values2,
     class Result,
-    class OutOfDomainPolicy=DiscardDomainErrors,
-    class OutOfRangePolicy=DiscardRangeErrors,
+    template<class, class> class OutOfDomainPolicy=binary::DiscardDomainErrors,
+    template<class, class, class> class OutOfRangePolicy=
+        binary::DiscardRangeErrors,
     class InputNoDataPolicy=SkipNoData,
     class OutputNoDataPolicy=DontMarkNoData
 >

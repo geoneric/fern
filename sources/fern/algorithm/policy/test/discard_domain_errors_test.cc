@@ -8,17 +8,17 @@ BOOST_AUTO_TEST_SUITE(discard_no_data)
 BOOST_AUTO_TEST_CASE(test)
 {
     {
-        fern::DiscardDomainErrors policy;
+        fern::DiscardDomainErrors<> policy;
         BOOST_CHECK(policy.within_domain());
     }
 
     {
-        fern::DiscardDomainErrors policy;
+        fern::DiscardDomainErrors<int32_t> policy;
         BOOST_CHECK(policy.within_domain(5));
     }
 
     {
-        fern::DiscardDomainErrors policy;
+        fern::DiscardDomainErrors<int32_t, int32_t> policy;
         BOOST_CHECK(policy.within_domain(5, 6));
     }
 }

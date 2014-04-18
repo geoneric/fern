@@ -20,7 +20,7 @@ namespace laplacian {
 */
 template<
     class A>
-using OutOfDomainPolicy = DiscardDomainErrors;
+using OutOfDomainPolicy = DiscardDomainErrors<A>;
 
 
 //! The out-of-range policy for the laplacian operation.
@@ -73,8 +73,9 @@ namespace algebra {
 
 template<
     class A,
-    class OutOfDomainPolicy=DiscardDomainErrors,
-    class OutOfRangePolicy=DiscardRangeErrors,
+    class OutOfDomainPolicy=DiscardDomainErrors<value_type<A>>,
+    // TODO Last value type must be of result.
+    class OutOfRangePolicy=DiscardRangeErrors<value_type<A>, value_type<A>>,
     class NoDataPolicy=DontMarkNoData
 >
 struct Laplacian

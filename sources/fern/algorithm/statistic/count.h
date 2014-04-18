@@ -303,7 +303,7 @@ public:
         Collection const& results,
         R& result)
     {
-        Sum<Collection, R, DiscardRangeErrors, InputNoDataPolicy_,
+        Sum<Collection, R, binary::DiscardRangeErrors, InputNoDataPolicy_,
             OutputNoDataPolicy>(
                 std::forward<InputNoDataPolicy_>(input_no_data_policy),
                 std::forward<OutputNoDataPolicy>(_algorithm))(results, result);
@@ -337,8 +337,8 @@ void count(
     typename ArgumentTraits<Values>::value_type const& value,
     Result& result)
 {
-    Count<Values, Result, InputNoDataPolicy, OutputNoDataPolicy>()(values, value,
-        result);
+    Count<Values, Result, InputNoDataPolicy, OutputNoDataPolicy>()(values,
+        value, result);
 }
 
 

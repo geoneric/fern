@@ -241,4 +241,20 @@ struct TypeTraits<String>
     static bool const builtin = true;
 };
 
+
+template<
+    class T>
+T min()
+{
+  return TypeTraits<T>::min;
+}
+
+
+template<
+    class T>
+T max()
+{
+  return TypeTraits<T>::max;
+}
+
 } // namespace fern

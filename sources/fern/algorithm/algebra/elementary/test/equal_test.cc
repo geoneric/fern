@@ -76,8 +76,6 @@ BOOST_AUTO_TEST_CASE(masked_d0_array_d0_array)
     BOOST_CHECK_EQUAL(result_we_get.value(), true);
 
     // MaskedConstant with masking equal. --------------------------------------
-    using OutOfDomainPolicy = fern::DiscardDomainErrors;
-    using OutOfRangePolicy = fern::DiscardRangeErrors;
     using InputNoDataPolicy = fern::DetectNoDataByValue<bool>;
     using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
 
@@ -90,7 +88,8 @@ BOOST_AUTO_TEST_CASE(masked_d0_array_d0_array)
     result_we_get.mask() = constant1.mask() || constant2.mask();
     fern::algebra::equal<fern::MaskedConstant<int8_t>,
         fern::MaskedConstant<int32_t>, fern::MaskedConstant<bool>,
-        OutOfDomainPolicy, OutOfRangePolicy, InputNoDataPolicy,
+        fern::binary::DiscardDomainErrors, fern::binary::DiscardRangeErrors,
+        InputNoDataPolicy,
         OutputNoDataPolicy>(
             InputNoDataPolicy(result_we_get.mask(), true),
             OutputNoDataPolicy(result_we_get.mask(), true),
@@ -107,7 +106,8 @@ BOOST_AUTO_TEST_CASE(masked_d0_array_d0_array)
     result_we_get.mask() = constant1.mask() || constant2.mask();
     fern::algebra::equal<fern::MaskedConstant<int8_t>,
         fern::MaskedConstant<int32_t>, fern::MaskedConstant<bool>,
-        OutOfDomainPolicy, OutOfRangePolicy, InputNoDataPolicy,
+        fern::binary::DiscardDomainErrors, fern::binary::DiscardRangeErrors,
+        InputNoDataPolicy,
         OutputNoDataPolicy>(
             InputNoDataPolicy(result_we_get.mask(), true),
             OutputNoDataPolicy(result_we_get.mask(), true),
@@ -154,8 +154,6 @@ BOOST_AUTO_TEST_CASE(d1_array_d1_array)
 
 BOOST_AUTO_TEST_CASE(masked_d1_array)
 {
-    using OutOfDomainPolicy = fern::DiscardDomainErrors;
-    using OutOfRangePolicy = fern::DiscardRangeErrors;
     using InputNoDataPolicy = fern::DetectNoDataByValue<fern::Mask<1>>;
     using OutputNoDataPolicy = fern::MarkNoDataByValue<fern::Mask<1>>;
 
@@ -182,8 +180,8 @@ BOOST_AUTO_TEST_CASE(masked_d1_array)
             fern::MaskedArray<int32_t, 1>,
             fern::MaskedArray<int32_t, 1>,
             fern::MaskedArray<bool, 1>,
-            OutOfDomainPolicy,
-            OutOfRangePolicy,
+            fern::binary::DiscardDomainErrors,
+            fern::binary::DiscardRangeErrors,
             InputNoDataPolicy,
             OutputNoDataPolicy>(
                 InputNoDataPolicy(result.mask(), true),
@@ -202,8 +200,8 @@ BOOST_AUTO_TEST_CASE(masked_d1_array)
             fern::MaskedArray<int32_t, 1>,
             fern::MaskedArray<int32_t, 1>,
             fern::MaskedArray<bool, 1>,
-            OutOfDomainPolicy,
-            OutOfRangePolicy,
+            fern::binary::DiscardDomainErrors,
+            fern::binary::DiscardRangeErrors,
             InputNoDataPolicy,
             OutputNoDataPolicy>(
                 InputNoDataPolicy(result.mask(), true),
@@ -222,8 +220,8 @@ BOOST_AUTO_TEST_CASE(masked_d1_array)
             fern::MaskedArray<int32_t, 1>,
             fern::MaskedArray<int32_t, 1>,
             fern::MaskedArray<bool, 1>,
-            OutOfDomainPolicy,
-            OutOfRangePolicy,
+            fern::binary::DiscardDomainErrors,
+            fern::binary::DiscardRangeErrors,
             InputNoDataPolicy,
             OutputNoDataPolicy>(
                 InputNoDataPolicy(result.mask(), true),
@@ -335,8 +333,6 @@ BOOST_AUTO_TEST_CASE(concurrent)
     }
 
     {
-        using OutOfDomainPolicy = fern::DiscardDomainErrors;
-        using OutOfRangePolicy = fern::DiscardRangeErrors;
         using InputNoDataPolicy = fern::SkipNoData;
         using OutputNoDataPolicy = fern::MarkNoDataByValue<fern::Mask<2>>;
 
@@ -345,8 +341,8 @@ BOOST_AUTO_TEST_CASE(concurrent)
             fern::Array<int32_t, 2>,
             fern::Array<int32_t, 2>,
             fern::MaskedArray<bool, 2>,
-            OutOfDomainPolicy,
-            OutOfRangePolicy,
+            fern::binary::DiscardDomainErrors,
+            fern::binary::DiscardRangeErrors,
             InputNoDataPolicy,
             OutputNoDataPolicy> equal(
                 InputNoDataPolicy(),

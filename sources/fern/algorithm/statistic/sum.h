@@ -13,7 +13,7 @@ namespace detail {
 namespace dispatch {
 
 template<class Values, class Result,
-    class OutOfRangePolicy,
+    template<class, class, class> class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class ArgumentCollectionCategory>
@@ -23,7 +23,7 @@ class Sum
 
 
 template<class Values, class Result,
-    class OutOfRangePolicy,
+    template<class, class, class> class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy>
 class Sum<Values, Result,
@@ -32,7 +32,8 @@ class Sum<Values, Result,
         OutputNoDataPolicy,
         array_0d_tag>:
 
-    public OutOfRangePolicy,
+    public OutOfRangePolicy<value_type<Values>, value_type<Values>,
+        value_type<Result>>,
     public InputNoDataPolicy,
     public OutputNoDataPolicy
 
@@ -45,7 +46,8 @@ public:
     FERN_STATIC_ASSERT(std::is_same, Values, Result)
 
     Sum()
-        : OutOfRangePolicy(),
+        : OutOfRangePolicy<value_type<Values>, value_type<Values>,
+              value_type<Result>>(),
           InputNoDataPolicy(),
           OutputNoDataPolicy()
     {
@@ -54,7 +56,8 @@ public:
     Sum(
         InputNoDataPolicy&& input_no_data_policy,
         OutputNoDataPolicy&& output_no_data_policy)
-        : OutOfRangePolicy(),
+        : OutOfRangePolicy<value_type<Values>, value_type<Values>,
+              value_type<Result>>(),
           InputNoDataPolicy(std::forward<InputNoDataPolicy>(
               input_no_data_policy)),
           OutputNoDataPolicy(std::forward<OutputNoDataPolicy>(
@@ -67,11 +70,14 @@ public:
         Values const& values,
         Result& result)
     {
-        if(!InputNoDataPolicy::is_no_data()) {
+        using INDP = InputNoDataPolicy;
+        using ONDP = OutputNoDataPolicy;
+
+        if(!INDP::is_no_data()) {
             fern::get(result) = fern::get(values);
         }
         else {
-            OutputNoDataPolicy::mark_as_no_data();
+            ONDP::mark_as_no_data();
         }
     }
 
@@ -81,7 +87,7 @@ private:
 
 
 template<class Values, class Result,
-    class OutOfRangePolicy,
+    template<class, class, class> class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy>
 class Sum<Values, Result,
@@ -90,7 +96,8 @@ class Sum<Values, Result,
         OutputNoDataPolicy,
         array_1d_tag>:
 
-    public OutOfRangePolicy,
+    public OutOfRangePolicy<value_type<Values>, value_type<Values>,
+        value_type<Result>>,
     public InputNoDataPolicy,
     public OutputNoDataPolicy
 
@@ -99,7 +106,8 @@ class Sum<Values, Result,
 public:
 
     Sum()
-        : OutOfRangePolicy(),
+        : OutOfRangePolicy<value_type<Values>, value_type<Values>,
+              value_type<Result>>(),
           InputNoDataPolicy(),
           OutputNoDataPolicy()
     {
@@ -108,7 +116,8 @@ public:
     Sum(
         InputNoDataPolicy&& input_no_data_policy,
         OutputNoDataPolicy&& output_no_data_policy)
-        : OutOfRangePolicy(),
+        : OutOfRangePolicy<value_type<Values>, value_type<Values>,
+              value_type<Result>>(),
           InputNoDataPolicy(std::forward<InputNoDataPolicy>(
               input_no_data_policy)),
           OutputNoDataPolicy(std::forward<OutputNoDataPolicy>(
@@ -137,26 +146,31 @@ public:
         Values const& values,
         Result& result)
     {
+        using INDP = InputNoDataPolicy;
+        using ONDP = OutputNoDataPolicy;
+        using OORP = OutOfRangePolicy<value_type<Values>, value_type<Values>,
+            value_type<Result>>;
+
         size_t const begin = indices[0].begin();
         size_t const end = indices[0].end();
         bool data_seen{false};
 
         if(begin < end) {
-            typename ArgumentTraits<Values>::value_type value;
-            typename ArgumentTraits<Result>::value_type tmp_result{0};
+            value_type<Values> value;
+            value_type<Result> tmp_result{0};
             fern::get(result) = tmp_result;
 
             for(size_t i = begin; i < end; ++i) {
 
-                if(!InputNoDataPolicy::is_no_data(i)) {
+                if(!INDP::is_no_data(i)) {
 
                     value = fern::get(values, i);
                     tmp_result += value;
 
                     // lhs, rhs, lhs + rhs
-                    if(!OutOfRangePolicy::within_range(fern::get(result), value,
+                    if(!OORP::within_range(fern::get(result), value,
                             tmp_result)) {
-                        OutputNoDataPolicy::mark_as_no_data();
+                        ONDP::mark_as_no_data();
                         break;
                     }
 
@@ -168,7 +182,7 @@ public:
         }
 
         if(!data_seen) {
-            OutputNoDataPolicy::mark_as_no_data();
+            ONDP::mark_as_no_data();
         }
     }
 
@@ -178,7 +192,7 @@ private:
 
 
 template<class Values, class Result,
-    class OutOfRangePolicy,
+    template<class, class, class> class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy>
 class Sum<Values, Result,
@@ -187,7 +201,8 @@ class Sum<Values, Result,
         OutputNoDataPolicy,
         array_2d_tag>:
 
-    public OutOfRangePolicy,
+    public OutOfRangePolicy<value_type<Values>, value_type<Values>,
+        value_type<Result>>,
     public InputNoDataPolicy,
     public OutputNoDataPolicy
 
@@ -196,7 +211,8 @@ class Sum<Values, Result,
 public:
 
     Sum()
-        : OutOfRangePolicy(),
+        : OutOfRangePolicy<value_type<Values>, value_type<Values>,
+              value_type<Result>>(),
           InputNoDataPolicy(),
           OutputNoDataPolicy()
     {
@@ -205,7 +221,8 @@ public:
     Sum(
         InputNoDataPolicy&& input_no_data_policy,
         OutputNoDataPolicy&& output_no_data_policy)
-        : OutOfRangePolicy(),
+        : OutOfRangePolicy<value_type<Values>, value_type<Values>,
+              value_type<Result>>(),
           InputNoDataPolicy(std::forward<InputNoDataPolicy>(
               input_no_data_policy)),
           OutputNoDataPolicy(std::forward<OutputNoDataPolicy>(
@@ -245,6 +262,11 @@ public:
         /// while(index != indexend)
         ///     sum += data[index++];
 
+        using INDP = InputNoDataPolicy;
+        using ONDP = OutputNoDataPolicy;
+        using OORP = OutOfRangePolicy<value_type<Values>, value_type<Values>,
+            value_type<Result>>;
+
         size_t const begin1 = indices[0].begin();
         size_t const end1 = indices[0].end();
         size_t const begin2 = indices[1].begin();
@@ -253,22 +275,22 @@ public:
 
         if(begin1 < end1 && begin2 < end2) {
 
-            typename ArgumentTraits<Values>::value_type value;
-            typename ArgumentTraits<Result>::value_type tmp_result{0};
+            value_type<Values> value;
+            value_type<Result> tmp_result{0};
             fern::get(result) = tmp_result;
 
             for(size_t i = begin1; i < end1; ++i) {
                 for(size_t j = begin2; j < end2; ++j) {
 
-                    if(!InputNoDataPolicy::is_no_data(i, j)) {
+                    if(!INDP::is_no_data(i, j)) {
 
                         value = fern::get(values, i, j);
                         tmp_result += value;
 
                         // lhs, rhs, lhs + rhs
-                        if(!OutOfRangePolicy::within_range(fern::get(result),
+                        if(!OORP::within_range(fern::get(result),
                                 value, tmp_result)) {
-                            OutputNoDataPolicy::mark_as_no_data();
+                            ONDP::mark_as_no_data();
                             break;
                         }
 
@@ -284,7 +306,7 @@ public:
         }
 
         if(!data_seen) {
-            OutputNoDataPolicy::mark_as_no_data();
+            ONDP::mark_as_no_data();
         }
     }
 
@@ -302,7 +324,8 @@ namespace statistic {
 template<
     class Values,
     class Result,
-    class OutOfRangePolicy=DiscardRangeErrors,
+    template<class, class, class> class OutOfRangePolicy=
+        binary::DiscardRangeErrors,
     class InputNoDataPolicy=SkipNoData,
     class OutputNoDataPolicy=DontMarkNoData
 >
@@ -313,9 +336,9 @@ public:
 
     using category = local_aggregate_operation_tag;
     using A = Values;
-    using AValue = typename ArgumentTraits<A>::value_type;
+    using AValue = value_type<A>;
     using R = Result;
-    using RValue = typename ArgumentTraits<R>::value_type;
+    using RValue = value_type<R>;
 
     FERN_STATIC_ASSERT(std::is_arithmetic, AValue)
     // We see boolean more as nominal values than as integers. You can't sum'em.
@@ -384,7 +407,8 @@ private:
 template<
     class Values,
     class Result,
-    class OutOfRangePolicy=DiscardRangeErrors,
+    template<class, class, class> class OutOfRangePolicy=
+        binary::DiscardRangeErrors,
     class InputNoDataPolicy=SkipNoData,
     class OutputNoDataPolicy=DontMarkNoData
 >
@@ -403,7 +427,8 @@ void sum(
 template<
     class Values,
     class Result,
-    class OutOfRangePolicy=DiscardRangeErrors,
+    template<class, class, class> class OutOfRangePolicy=
+        binary::DiscardRangeErrors,
     class InputNoDataPolicy=SkipNoData,
     class OutputNoDataPolicy=DontMarkNoData
 >

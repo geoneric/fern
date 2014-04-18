@@ -11,7 +11,6 @@ namespace fern {
 /// struct array_2d_tag: collection_tag {};
 /// struct array_3d_tag: collection_tag {};
 
-
 template<
     class T>
 struct ArgumentTraits
@@ -27,5 +26,15 @@ struct ArgumentTraits
     using const_reference = typename T::const_reference;
 
 };
+
+
+template<
+    class T>
+using value_type = typename ArgumentTraits<T>::value_type;
+
+
+template<
+    class T>
+using const_reference = typename ArgumentTraits<T>::const_reference;
 
 } // namespace fern

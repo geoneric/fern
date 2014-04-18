@@ -5,51 +5,40 @@ namespace fern {
 
 //! Domain policy which discards out-of-domain values.
 /*!
+    Use this class if you don't need to test an algorithm's arguments for
+    being out of domain. This can be because you are certain the argument
+    values are within the algorithm's domain and you don't want to spend
+    processor cycles testing values anyway. Or maybe the algorithm just
+    accepts all values being passed to it, like default addition.
 */
+template<
+    class... Parameters>
 class DiscardDomainErrors
 {
 
 public:
 
-    // static_assert(std::is_arithmetic<A1>::value, "");
-    // static_assert(std::is_arithmetic<A2>::value, "");
-
-    template<
-        class... Arguments>
     static constexpr bool
-                   within_domain       (Arguments const&... arguments);
-
-protected:
-
-                   DiscardDomainErrors ()=default;
-
-                   DiscardDomainErrors (DiscardDomainErrors&&)=default;
-
-                   DiscardDomainErrors (DiscardDomainErrors const&)=default;
-
-    DiscardDomainErrors&
-                   operator=           (DiscardDomainErrors&&)=default;
-
-    DiscardDomainErrors&
-                   operator=           (DiscardDomainErrors const&)=default;
-
-                   ~DiscardDomainErrors()=default;
-
-private:
+                   within_domain       (Parameters const&... parameters);
 
 };
 
 
-//! Check whether the arguments passed in fall within the domain of valid values.
-/*!
-  \return    true
-*/
 template<
-    class... Arguments>
-inline constexpr bool DiscardDomainErrors::within_domain(
-    Arguments const&... /* arguments */)
+    class... Parameters>
+inline constexpr bool DiscardDomainErrors<Parameters...>::within_domain(
+    Parameters const&... /* parameters */)
 {
     return true;
 }
 
+
+namespace binary {
+
+template<
+    class Value1,
+    class Value2>
+using DiscardDomainErrors = DiscardDomainErrors<Value1, Value2>;
+
+} // namespace binary
 } // namespace fern

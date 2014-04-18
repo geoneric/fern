@@ -95,8 +95,6 @@ BOOST_AUTO_TEST_CASE(masked_d0_array_d0_array)
     BOOST_CHECK_EQUAL(result.value(), 10);
 
     // MaskedConstant with masking add. ----------------------------------------
-    using OutOfDomainPolicy = fern::DiscardDomainErrors;
-    using OutOfRangePolicy = fern::DiscardRangeErrors;
     using InputNoDataPolicy = fern::DetectNoDataByValue<bool>;
     using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
 
@@ -109,7 +107,7 @@ BOOST_AUTO_TEST_CASE(masked_d0_array_d0_array)
     result.mask() = false;
     fern::algebra::add<fern::MaskedConstant<int8_t>,
         fern::MaskedConstant<int32_t>, fern::MaskedConstant<int32_t>,
-        OutOfDomainPolicy, OutOfRangePolicy, InputNoDataPolicy,
+        fern::binary::DiscardDomainErrors, fern::binary::DiscardRangeErrors, InputNoDataPolicy,
         OutputNoDataPolicy>(
             InputNoDataPolicy(result.mask(), true),
             OutputNoDataPolicy(result.mask(), true),
@@ -126,7 +124,7 @@ BOOST_AUTO_TEST_CASE(masked_d0_array_d0_array)
     result.mask() = constant1.mask() || constant2.mask();
     fern::algebra::add<fern::MaskedConstant<int8_t>,
         fern::MaskedConstant<int32_t>, fern::MaskedConstant<int32_t>,
-        OutOfDomainPolicy, OutOfRangePolicy, InputNoDataPolicy,
+        fern::binary::DiscardDomainErrors, fern::binary::DiscardRangeErrors, InputNoDataPolicy,
         OutputNoDataPolicy>(
             InputNoDataPolicy(result.mask(), true),
             OutputNoDataPolicy(result.mask(), true),
@@ -173,8 +171,6 @@ BOOST_AUTO_TEST_CASE(d1_array_d1_array)
 
 BOOST_AUTO_TEST_CASE(masked_d1_array_masked_d1_array)
 {
-    using OutOfDomainPolicy = fern::DiscardDomainErrors;
-    using OutOfRangePolicy = fern::DiscardRangeErrors;
     using InputNoDataPolicy = fern::DetectNoDataByValue<fern::Mask<1>>;
     using OutputNoDataPolicy = fern::MarkNoDataByValue<fern::Mask<1>>;
 
@@ -201,8 +197,8 @@ BOOST_AUTO_TEST_CASE(masked_d1_array_masked_d1_array)
             fern::MaskedArray<int32_t, 1>,
             fern::MaskedArray<int32_t, 1>,
             fern::MaskedArray<int32_t, 1>,
-            OutOfDomainPolicy,
-            OutOfRangePolicy,
+            fern::binary::DiscardDomainErrors,
+            fern::binary::DiscardRangeErrors,
             InputNoDataPolicy,
             OutputNoDataPolicy>(
                 InputNoDataPolicy(result.mask(), true),
@@ -221,8 +217,8 @@ BOOST_AUTO_TEST_CASE(masked_d1_array_masked_d1_array)
             fern::MaskedArray<int32_t, 1>,
             fern::MaskedArray<int32_t, 1>,
             fern::MaskedArray<int32_t, 1>,
-            OutOfDomainPolicy,
-            OutOfRangePolicy,
+            fern::binary::DiscardDomainErrors,
+            fern::binary::DiscardRangeErrors,
             InputNoDataPolicy,
             OutputNoDataPolicy>(
                 InputNoDataPolicy(result.mask(), true),
@@ -241,8 +237,8 @@ BOOST_AUTO_TEST_CASE(masked_d1_array_masked_d1_array)
             fern::MaskedArray<int32_t, 1>,
             fern::MaskedArray<int32_t, 1>,
             fern::MaskedArray<int32_t, 1>,
-            OutOfDomainPolicy,
-            OutOfRangePolicy,
+            fern::binary::DiscardDomainErrors,
+            fern::binary::DiscardRangeErrors,
             InputNoDataPolicy,
             OutputNoDataPolicy>(
                 InputNoDataPolicy(result.mask(), true),
@@ -373,8 +369,6 @@ BOOST_AUTO_TEST_CASE(concurrent_d2_array)
 
 BOOST_AUTO_TEST_CASE(concurrent_masked_d2_array)
 {
-    using OutOfDomainPolicy = fern::DiscardDomainErrors;
-    using OutOfRangePolicy = fern::DiscardRangeErrors;
     using InputNoDataPolicy = fern::SkipNoData;
     using OutputNoDataPolicy = fern::MarkNoDataByValue<fern::Mask<2>>;
 
@@ -392,8 +386,8 @@ BOOST_AUTO_TEST_CASE(concurrent_masked_d2_array)
         fern::MaskedArray<int32_t, 2>,
         fern::MaskedArray<int32_t, 2>,
         fern::MaskedArray<int32_t, 2>,
-        OutOfDomainPolicy,
-        OutOfRangePolicy,
+        fern::binary::DiscardDomainErrors,
+        fern::binary::DiscardRangeErrors,
         InputNoDataPolicy,
         OutputNoDataPolicy> add(
             InputNoDataPolicy(),
@@ -402,8 +396,8 @@ BOOST_AUTO_TEST_CASE(concurrent_masked_d2_array)
         fern::MaskedArray<int32_t, 2>,
         fern::MaskedArray<int32_t, 2>,
         fern::MaskedArray<bool, 2>,
-        OutOfDomainPolicy,
-        OutOfRangePolicy,
+        fern::binary::DiscardDomainErrors,
+        fern::binary::DiscardRangeErrors,
         InputNoDataPolicy,
         OutputNoDataPolicy> equal(
             InputNoDataPolicy(),
