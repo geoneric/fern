@@ -5,7 +5,7 @@ Statistics {#statistics}
 
 
 Count {#count}
------
+=====
 Count the number of occurences of a constant value in a collection.
 
 - [fern::statistic::count](@ref fern::statistic::count)
@@ -17,7 +17,7 @@ yes      | yes      | yes      | no
 
 
 Sum {#sum}
----
+===
 Sum the values in a collection.
 
 - [fern::statistic::sum](@ref fern::statistic::sum)

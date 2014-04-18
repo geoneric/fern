@@ -1,6 +1,9 @@
 Vector algebra  {#vector_algebra}
 ==============
 
+[TOC]
+
+
 Operations to implement:
 
 - (lax)
@@ -11,8 +14,8 @@ Operations to implement:
 - gradient
 
 
-Theory
-------
+Theory {#theory}
+======
 The *directed line segment* from point \f$P\f$ to \f$Q\f$, denoted by \f$\overrightarrow{PQ}\f$, is the straight-line segment that extents from \f$P\f$ to \f$Q\f$. \f$\overrightarrow{PQ}\f$ and \f$\overleftarrow{QP}\f$ are different since they point in opposite directions.
 
 Point \f$P\f$ is called the *initial point* of the segment and point \f$Q\f$ is called the *terminal point*. Two important properties of a directed line segment are its magnitude (length) and its direction. If two directed line segments \f$\overrightarrow{PQ}\f$ and \f$\overrightarrow{RS}\f$ have the same magnitude and direction, they are said to be *equivalent*, no matter where they are located with respect to the origin.
@@ -63,8 +66,8 @@ The laplace operator in two dimensions is given by:
 where x and y are the Cartesian coordinates.
 
 
-See also
---------
+See also {#see_also}
+========
 - [Wikipedia on vector calculus](https://en.wikipedia.org/wiki/Vector_calculus)
 - Laplace
     - [Laplace operator](http://en.wikipedia.org/wiki/Laplace_operator)
