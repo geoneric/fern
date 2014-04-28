@@ -40,12 +40,56 @@ using OutOfRangePolicy = fern::subtract::OutOfRangePolicy<Value1, Value2,
     Result>;
 
 
+template<
+    class Value1,
+    class Value2,
+    class Result>
+using Algorithm = fern::subtract::Algorithm<Value1, Value2>;
+
+
+template<
+    class Value1,
+    class Value2,
+    class Result>
+void verify_within_range(
+    Value1 const& value1,
+    Value2 const& value2,
+    bool out_of_range)
+{
+    OutOfRangePolicy<Value1, Value2, Result> policy;
+    Algorithm<Value1, Value2, Result> algorithm;
+    Result result;
+    algorithm(value1, value2, result);
+    BOOST_CHECK_EQUAL(policy.within_range(value1, value2, result),
+        out_of_range);
+}
+
+
+template<
+    class Value1,
+    class Value2,
+    class Result>
+struct VerifyWithinRange
+{
+    bool operator()(
+        Value1 const& value1,
+        Value2 const& value2)
+    {
+        OutOfRangePolicy<Value1, Value2, Result> policy;
+        Algorithm<Value1, Value2, Result> algorithm;
+        Result result;
+        algorithm(value1, value2, result);
+        return policy.within_range(value1, value2, result);
+    }
+};
+
+
 BOOST_AUTO_TEST_CASE(out_of_range_policy)
 {
     auto max_int32 = fern::max<int32_t>();
     auto min_int32 = fern::min<int32_t>();
     auto max_int64 = fern::max<int64_t>();
-    // auto min_int64 = fern::min<int64_t>();
+    auto min_int64 = fern::min<int64_t>();
     auto max_uint32 = fern::max<uint32_t>();
     auto min_uint32 = fern::min<uint32_t>();
     auto max_uint64 = fern::max<uint64_t>();
@@ -116,43 +160,24 @@ BOOST_AUTO_TEST_CASE(out_of_range_policy)
     {
         // signed - unsigned
         {
-            OutOfRangePolicy<int32_t, uint32_t, int64_t> policy;
-            BOOST_CHECK(policy.within_range(5, 6, -1));
-            BOOST_CHECK(policy.within_range(-5, 6, -11));
-            BOOST_CHECK(policy.within_range(0, 0, 0));
-            BOOST_CHECK(policy.within_range(max_int32, max_uint32,
-                static_cast<int64_t>(max_int32) -
-                static_cast<int64_t>(max_uint32)));
-            BOOST_CHECK(policy.within_range(max_int32, -max_uint32,
-                static_cast<int64_t>(max_int32) -
-                static_cast<int64_t>(-max_uint32)));
-            BOOST_CHECK(policy.within_range(min_int32, max_uint32,
-                static_cast<int64_t>(min_int32) -
-                static_cast<int64_t>(max_uint32)));
-            BOOST_CHECK(policy.within_range(min_int32, -max_uint32,
-                static_cast<int64_t>(min_int32) -
-                static_cast<int64_t>(-max_uint32)));
-            BOOST_CHECK(policy.within_range(max_int32, min_uint32,
-                static_cast<int64_t>(max_int32) -
-                static_cast<int64_t>(min_uint32)));
-            BOOST_CHECK(policy.within_range(max_int32, -min_uint32,
-                static_cast<int64_t>(max_int32) -
-                static_cast<int64_t>(-min_uint32)));
+            VerifyWithinRange<int32_t, uint32_t, int64_t> verify;
+            BOOST_CHECK_EQUAL(verify(5, 6), true);
+            BOOST_CHECK_EQUAL(verify(-5, 6), true);
+            BOOST_CHECK_EQUAL(verify(0, 0), true);
+
+            BOOST_CHECK_EQUAL(verify(max_int32, max_uint32), true);
+            BOOST_CHECK_EQUAL(verify(min_int32, max_uint32), true);
+            BOOST_CHECK_EQUAL(verify(max_int32, min_uint32), true);
         }
 
         {
-            OutOfRangePolicy<int64_t, uint32_t, int64_t> policy;
-            BOOST_CHECK(policy.within_range(5, 6, -1));
-            BOOST_CHECK(policy.within_range(-5, 6, -11));
-            BOOST_CHECK(policy.within_range(0, 0, 0));
-
-            // TODO
-
-            // BOOST_CHECK(!policy.within_range(1, max_int64,
-            //     static_cast<int64_t>(1) + max_int64));
+            VerifyWithinRange<int64_t, uint32_t, int64_t> verify;
+            BOOST_CHECK_EQUAL(verify(5, 6), true);
+            BOOST_CHECK_EQUAL(verify(-5, 6), true);
+            BOOST_CHECK_EQUAL(verify(0, 0), true);
+            BOOST_CHECK_EQUAL(verify(min_int64, 1), false);
+            BOOST_CHECK_EQUAL(verify(-1, max_uint32), true);
         }
-
-        // TODO
     }
 
     {

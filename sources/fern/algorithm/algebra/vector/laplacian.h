@@ -129,7 +129,7 @@ struct Laplacian
     //
     // So, we require:
     // - [*] sum: Add all values in a kernel. None of these are no-data.
-    // - [ ] substract: Substract two 2D arrays.
+    // - [*] subtract: Subtract two 2D arrays.
     // - [ ] multiply: Multiply a constant and a 2D array.
     // - [ ] divide: Divice a 2D array by a constant.
     // - [*] convolute: Convolute a 2D array by a kernel.
