@@ -4,6 +4,7 @@
 #include "fern/core/argument_traits.h"
 #include "fern/core/assert.h"
 #include "fern/core/collection_traits.h"
+#include "fern/core/constant_traits.h"
 #include "fern/algorithm/core/index_ranges.h"
 
 

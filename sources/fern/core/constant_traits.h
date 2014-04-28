@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 #include "fern/core/argument_traits.h"
 
 
