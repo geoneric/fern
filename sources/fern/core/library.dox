@@ -5,7 +5,7 @@ This library contains code that is of general use to the other libraries.
 
 \section core_dependencies Dependencies
 
-  - ICU libraries: fern String subclasses it.
+  - TODO
 */
 
 // vim:syntax=cpp
