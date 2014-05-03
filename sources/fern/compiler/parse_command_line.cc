@@ -29,7 +29,8 @@ std::shared_ptr<DataSource> data_source(
     // If not, than that is an error. We don't need to test the data path
     // here.
     DataName data_name(value);
-    if(dataset_exists(data_name.database_pathname(), OpenMode::READ)) {
+    if(dataset_exists(data_name.database_pathname().generic_string(),
+            OpenMode::READ)) {
         result = std::make_shared<DatasetSource>(data_name);
     }
 

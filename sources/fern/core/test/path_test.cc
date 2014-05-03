@@ -13,16 +13,16 @@ BOOST_AUTO_TEST_CASE(names)
     path = "a/b/c";
     names = path.names();
     BOOST_REQUIRE_EQUAL(names.size(), 3u);
-    BOOST_CHECK_EQUAL(names[0], "a");
-    BOOST_CHECK_EQUAL(names[1], "b");
-    BOOST_CHECK_EQUAL(names[2], "c");
+    BOOST_CHECK_EQUAL(names[0], fern::String("a"));
+    BOOST_CHECK_EQUAL(names[1], fern::String("b"));
+    BOOST_CHECK_EQUAL(names[2], fern::String("c"));
 
     path = "/a/b/c/";
     names = path.names();
     BOOST_REQUIRE_EQUAL(names.size(), 3u);
-    BOOST_CHECK_EQUAL(names[0], "a");
-    BOOST_CHECK_EQUAL(names[1], "b");
-    BOOST_CHECK_EQUAL(names[2], "c");
+    BOOST_CHECK_EQUAL(names[0], fern::String("a"));
+    BOOST_CHECK_EQUAL(names[1], fern::String("b"));
+    BOOST_CHECK_EQUAL(names[2], fern::String("c"));
 
     path = "/";
     names = path.names();
@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE(names)
     path = "/\\/";
     names = path.names();
     BOOST_REQUIRE_EQUAL(names.size(), 1u);
-    BOOST_CHECK_EQUAL(names[0], "\\");
+    BOOST_CHECK_EQUAL(names[0], fern::String("\\"));
 }
 
 

@@ -8,7 +8,7 @@ StringVertex::StringVertex(
     int col_id,
     String const& value)
 
-    : ExpressionVertex(line_nr, col_id, "\"" + value + "\""),
+    : ExpressionVertex(line_nr, col_id, String("\"") + value + String("\"")),
       _value(value)
 
 {

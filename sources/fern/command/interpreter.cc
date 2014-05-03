@@ -180,7 +180,7 @@ void enter_interpreter()
     // doesn't exists, which is OK.
     std::string history_filename((
         fern::String::decode_from_default_encoding(std::getenv("HOME")) +
-        "/.fern").encode_in_default_encoding());
+        String("/.fern")).encode_in_default_encoding());
     /* int result = */ read_history(history_filename.c_str());
 
     while(true) {

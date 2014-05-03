@@ -34,7 +34,7 @@ static std::vector<std::shared_ptr<Driver>> drivers_to_try(
         }
 
         for(auto driver: fern::drivers) {
-            if(driver.second->name() != "Fern") {
+            if(driver.second->name() != String("Fern")) {
                 drivers.emplace_back(driver.second);
             }
         }

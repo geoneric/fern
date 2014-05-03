@@ -9,7 +9,8 @@ DatasetSource::DatasetSource(
     DataName const& data_name)
 
     : _data_name(data_name),
-      _dataset(open_dataset(_data_name.database_pathname(), OpenMode::READ)),
+      _dataset(open_dataset(_data_name.database_pathname().generic_string(),
+          OpenMode::READ)),
       _expression_type(_dataset->expression_type(_data_name.data_pathname()))
 
 {

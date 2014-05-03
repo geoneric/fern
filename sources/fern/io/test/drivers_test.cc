@@ -37,8 +37,8 @@ BOOST_AUTO_TEST_CASE(drivers)
         }
         catch(IOError const& exception) {
             String message = exception.message();
-            BOOST_CHECK_EQUAL(message,
-                "IO error handling ../does_not_exist.gnr: Cannot be read");
+            BOOST_CHECK_EQUAL(message, String(
+                "IO error handling ../does_not_exist.gnr: Cannot be read"));
         }
     }
 }
@@ -58,8 +58,8 @@ BOOST_AUTO_TEST_CASE(errors)
         }
         catch(IOError const& exception) {
             String message = exception.message();
-            BOOST_CHECK_EQUAL(message,
-                "IO error handling ../does_not_exist.gnr: Does not exist");
+            BOOST_CHECK_EQUAL(message, String(
+                "IO error handling ../does_not_exist.gnr: Does not exist"));
         }
 
         // When opening for update, the dataset must already exist.
@@ -69,8 +69,8 @@ BOOST_AUTO_TEST_CASE(errors)
         }
         catch(IOError const& exception) {
             String message = exception.message();
-            BOOST_CHECK_EQUAL(message,
-                "IO error handling ../does_not_exist.gnr: Does not exist");
+            BOOST_CHECK_EQUAL(message, String(
+                "IO error handling ../does_not_exist.gnr: Does not exist"));
         }
 
         // When opening for read, the dataset must be readable.
@@ -80,8 +80,8 @@ BOOST_AUTO_TEST_CASE(errors)
         }
         catch(IOError const& exception) {
             String message = exception.message();
-            BOOST_CHECK_EQUAL(message,
-                "IO error handling write_only.gnr: Cannot be read");
+            BOOST_CHECK_EQUAL(message, String(
+                "IO error handling write_only.gnr: Cannot be read"));
         }
     }
 }

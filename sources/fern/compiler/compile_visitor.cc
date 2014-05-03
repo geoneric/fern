@@ -164,7 +164,8 @@ void CompileVisitor::Visit(
     }
 
     // Now put the new module's code in the header and module strings.
-    String model_name = Path(vertex.source_name()).filename().stem();
+    String model_name =
+        Path(vertex.source_name()).filename().stem().generic_string();
     String class_name = model_name;
 
     _header = String((boost::format(
@@ -233,7 +234,8 @@ void CompileVisitor::Visit(
     ) % _header_filename % class_name
       % arguments_initializer_list
       % results_initializer_list
-      % (join(_body, ";\n    ") + (!_body.empty() ? ";" : ""))).str());
+      % (join(_body, ";\n    ") +
+            (!_body.empty() ? String(";") : String("")))).str());
 }
 
 

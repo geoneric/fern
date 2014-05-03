@@ -274,8 +274,6 @@ public:
             value1_tag, value2_tag>::calculate(value1, value2, result);
     }
 
-protected:
-
     OutOfRangePolicy()=default;
 
     ~OutOfRangePolicy()=default;

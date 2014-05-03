@@ -10,7 +10,7 @@ String annotate_expression_label(
     String const& name,
     ExpressionVertex const& vertex)
 {
-    String label = name + "\\n";
+    String label = name + String("\\n");
 
     ExpressionTypes const& expression_types(vertex.expression_types());
     if(expression_types.is_empty()) {
@@ -24,8 +24,8 @@ String annotate_expression_label(
         String value_types = expression_types[0].value_type().to_string();
 
         label +=
-            "dt: " + data_types + "\\n"
-            "vt: " + value_types;
+            String("dt: ") + data_types + String("\\n") +
+            String("vt: ") + value_types;
     }
 
     return label;
@@ -58,9 +58,9 @@ void AstDotVisitor::add_ast_vertex(
 {
     assert(_mode == Mode::ConnectingAst);
     add_script(
-        String(boost::format("\"%1%\"") % &source_vertex) + " -> " +
-        String(boost::format("\"%1%\"") % &target_vertex) + " ["
-        "];\n"
+        String(boost::format("\"%1%\"") % &source_vertex) + String(" -> ") +
+        String(boost::format("\"%1%\"") % &target_vertex) + String(" [") +
+        String("];\n")
     );
 }
 
@@ -99,13 +99,14 @@ void AstDotVisitor::add_cfg_vertices(
     assert(_mode == Mode::ConnectingCfg);
     for(auto successor: source_vertex.successors()) {
         add_script(
-            String(boost::format("\"%1%\"") % &source_vertex) + " -> " +
-            String(boost::format("\"%1%\"") % successor) + " ["
-                "color=\"/spectral11/3\", "
-                "constraint=false, "
-                "style=dashed, "
-                "penwidth=2.0"
-            "];\n"
+            String(boost::format("\"%1%\"") % &source_vertex) + String(" -> ") +
+            String(boost::format("\"%1%\"") % successor) + String(" [") +
+                String(
+                    "color=\"/spectral11/3\", "
+                    "constraint=false, "
+                    "style=dashed, "
+                    "penwidth=2.0"
+                "];\n")
         );
     }
 }
@@ -117,13 +118,14 @@ void AstDotVisitor::add_use_vertices(
     assert(_mode == Mode::ConnectingUses);
     for(auto use: vertex.uses()) {
         add_script(
-            String(boost::format("\"%1%\"") % &vertex) + " -> " +
-            String(boost::format("\"%1%\"") % use) + " ["
-              "color=\"/spectral11/8\", "
-              "constraint=false, "
-              "style=dashed, "
-              "penwidth=2.0"
-            "];\n"
+            String(boost::format("\"%1%\"") % &vertex) + String(" -> ") +
+            String(boost::format("\"%1%\"") % use) + String(" [") +
+              String(
+                  "color=\"/spectral11/8\", "
+                  "constraint=false, "
+                  "style=dashed, "
+                  "penwidth=2.0"
+              "];\n")
         );
     }
 }
@@ -390,7 +392,7 @@ void AstDotVisitor::Visit(
         case Mode::Declaring: {
             add_script(
                 String(boost::format("\"%1%\"") % &vertex) +
-                " [label=\"If\", shape=diamond];\n"
+                String(" [label=\"If\", shape=diamond];\n")
             );
             break;
         }
@@ -546,8 +548,8 @@ void AstDotVisitor::Visit(
         case Mode::Declaring: {
             add_script(
                 String(boost::format("\"%1%\"") % &vertex) +
-                " [label=\"\\\"" + vertex.value() +
-                "\\\"\", fontname=courier, shape=box];\n"
+                String(" [label=\"\\\"") + vertex.value() +
+                String("\\\"\", fontname=courier, shape=box];\n")
             );
             break;
         }
@@ -572,7 +574,7 @@ void AstDotVisitor::Visit(
         case Mode::Declaring: {
             add_script(
                 String(boost::format("\"%1%\"") % &vertex) +
-                " [label=\"While\", shape=diamond];\n"
+                String(" [label=\"While\", shape=diamond];\n")
             );
             break;
         }

@@ -21,8 +21,6 @@ public:
 
                    Path                ()=default;
 
-    // explicit       Path                (boost::filesystem::path const& path);
-
                    Path                (String const& string);
 
                    Path                (char const* string);
@@ -42,8 +40,6 @@ public:
     bool           operator==          (Path const& path) const;
 
     Path&          operator/=          (Path const& path);
-
-                   operator String     () const;
 
     String         generic_string      () const;
 
@@ -67,6 +63,9 @@ private:
 
 };
 
+
+Path               operator+           (Path const& lhs,
+                                        Path const& rhs);
 
 Path               operator/           (Path const& lhs,
                                         Path const& rhs);

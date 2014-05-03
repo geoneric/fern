@@ -1,7 +1,8 @@
 #pragma once
 #include <iostream>
+#include <string>
+#include <vector>
 #include <boost/format.hpp>
-#include <unicode/unistr.h>
 
 
 namespace fern {
@@ -21,7 +22,7 @@ namespace fern {
         this.
 */
 class String:
-    private UnicodeString
+    public std::string
 {
 
     friend class DataName;
@@ -91,7 +92,7 @@ public:
 
 private:
 
-                   String              (UnicodeString const& string);
+    using Base = std::string;
 
     String&        strip_begin         (String const& characters);
 

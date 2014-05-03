@@ -52,10 +52,10 @@ a = foo(b, c, a, d, b)
     auto inputs = visitor.inputs();
     BOOST_REQUIRE_EQUAL(inputs.size(), 4u);
 
-    BOOST_CHECK_EQUAL(inputs[0], "b");
-    BOOST_CHECK_EQUAL(inputs[1], "c");
-    BOOST_CHECK_EQUAL(inputs[2], "a");
-    BOOST_CHECK_EQUAL(inputs[3], "d");
+    BOOST_CHECK_EQUAL(inputs[0], String("b"));
+    BOOST_CHECK_EQUAL(inputs[1], String("c"));
+    BOOST_CHECK_EQUAL(inputs[2], String("a"));
+    BOOST_CHECK_EQUAL(inputs[3], String("d"));
 }
 
 

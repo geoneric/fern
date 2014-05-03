@@ -1,13 +1,16 @@
 #include "fern/core/data_name.h"
-#include <unicode/regex.h>
+#include <regex>
 
 
 namespace fern {
 
-static UErrorCode status;
+/// static UErrorCode status;
 // No starting /:
-// static RegexMatcher matcher("([^:]+)(?::(?!/)(.+)?)?", 0, status);
-static RegexMatcher matcher("([^:]+)(?::(.+)?)?", 0, status);
+/// // static RegexMatcher matcher("([^:]+)(?::(?!/)(.+)?)?", 0, status);
+/// // static RegexMatcher matcher("([^:]+)(?::(.+)?)?", 0, status);
+// <database pathname>:<data pathname>
+static std::regex regular_expression(R"(([^:]+)(?::(.+)?)?)");
+
 
 
 DataName::DataName(
@@ -27,24 +30,19 @@ DataName::DataName(
 
 {
     String database_pathname, data_pathname;
+    std::smatch match;
 
-    // http://userguide.icu-project.org/strings/regexp
-    assert(!U_FAILURE(status));
-
-    matcher.reset(string);
-    if(!matcher.matches(status)) {
+    if(!std::regex_match(static_cast<std::string const&>(string), match,
+            regular_expression)) {
         assert(false);
         // TODO raise exception.
     }
 
-    assert(!U_FAILURE(status));
+    assert(match.size() >= 2);
+    database_pathname = match[1].str();
 
-    database_pathname = matcher.group(1, status);
-    assert(!U_FAILURE(status));
-
-    if(matcher.groupCount() > 1) {
-        data_pathname = matcher.group(2, status);
-        assert(!U_FAILURE(status));
+    if(match.size() > 2) {
+        data_pathname = match[2].str();
     }
 
     // Remove trailing occurences of path separator.
@@ -60,7 +58,7 @@ DataName::DataName(
         data_pathname = "/";
     }
     else if(!data_pathname.starts_with("/")) {
-        data_pathname = "/" + data_pathname;
+        data_pathname = String("/") + data_pathname;
     }
 
     _database_pathname = database_pathname;

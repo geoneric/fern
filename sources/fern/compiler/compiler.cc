@@ -48,17 +48,19 @@ void Compiler::compile(
     // Parse module into a syntax tree.
     // TODO Once it is possible to parse modules, make sure not to recurse into
     //      modules here.
-    ModuleVertexPtr module_vertex = _interpreter.parse_file(source_module_path);
+    ModuleVertexPtr module_vertex = _interpreter.parse_file(
+        source_module_path.generic_string());
     assert(module_vertex);
 
     // TODO Exception.
     assert(directory_is_writable(destination_module_path));
 
-    String model_name = Path(module_vertex->source_name()).filename().stem();
+    String model_name =
+        Path(module_vertex->source_name()).filename().stem().generic_string();
     Path header_path = destination_module_path /
-        (model_name + "." + _header_extension);
+        (model_name + String(".") + _header_extension);
     Path module_path = destination_module_path /
-        (model_name + "." + _module_extension);
+        (model_name + String(".") + _module_extension);
 
     {
         bool can_overwrite_existing_file = file_exists(header_path) &&
@@ -84,7 +86,8 @@ void Compiler::compile(
         }
     }
 
-    CompileVisitor visitor(operations(), header_path.filename());
+    CompileVisitor visitor(operations(),
+        header_path.filename().generic_string());
     module_vertex->Accept(visitor);
 
     write_file(visitor.header(), header_path);
@@ -106,7 +109,7 @@ void Compiler::compile(
         ) % project_name).str());
 
 
-        String library_target = model_name + "_library";
+        String library_target = model_name + String("_library");
         {
             installable_targets.emplace_back(library_target);
             std::vector<String> library_module_names({
@@ -131,7 +134,7 @@ void Compiler::compile(
         }
 
         if(flags & DUMP_DRIVER) {
-            String driver_target = model_name + "_driver";
+            String driver_target = model_name + String("_driver");
             installable_targets.emplace_back(driver_target);
             std::vector<String> driver_module_names({
                 "main"

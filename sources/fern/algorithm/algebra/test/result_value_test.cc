@@ -9,7 +9,7 @@
     using TypeWeGet = typename fern::ResultValue<A1, A2>::type;                \
                                                                                \
     BOOST_CHECK_MESSAGE((std::is_same<TypeWeGet, TypeWeWant>()),               \
-        fern::TypeTraits<TypeWeGet>::name + " != " +                           \
+        fern::TypeTraits<TypeWeGet>::name + fern::String(" != ") +             \
         fern::TypeTraits<TypeWeWant>::name);                                   \
 }
 

@@ -28,17 +28,19 @@ void FlowgraphDotVisitor::add_flowgraph_vertex(
     if(!source_vertex.definitions().empty()) {
         for(auto definition: source_vertex.definitions()) {
             add_script(
-                String(boost::format("\"%1%\"") % definition) + " -> " +
-                String(boost::format("\"%1%\"") % &target_vertex) + " ["
-                "];\n"
+                String(boost::format("\"%1%\"") % definition) +
+                String(" -> ") +
+                String(boost::format("\"%1%\"") % &target_vertex) +
+                String(" [];\n")
             );
         }
     }
     else {
         add_script(
-            String(boost::format("\"%1%\"") % &source_vertex) + " -> " +
-            String(boost::format("\"%1%\"") % &target_vertex) + " ["
-            "];\n"
+            String(boost::format("\"%1%\"") % &source_vertex) +
+            String(" -> ") +
+            String(boost::format("\"%1%\"") % &target_vertex) +
+            String(" [];\n")
         );
     }
 }
@@ -78,9 +80,10 @@ void FlowgraphDotVisitor::add_flowgraph_vertex(
     /// _definition = 0;
 
     add_script(
-        String(boost::format("\"%1%\"") % &source_vertex) + " -> " +
-        String(boost::format("\"%1%\"") % &target_vertex) + " ["
-        "];\n"
+        String(boost::format("\"%1%\"") % &source_vertex) +
+        String(" -> ") +
+        String(boost::format("\"%1%\"") % &target_vertex) +
+        String(" [];\n")
     );
 }
 
@@ -126,7 +129,8 @@ void FlowgraphDotVisitor::Visit(
         case Mode::Declaring: {
             add_script(
                 String(boost::format("\"%1%\"") % &vertex) +
-                " [label=\"" + vertex.name() + "\", shape=triangle];\n"
+                String(" [label=\"") + vertex.name() +
+                String("\", shape=triangle];\n")
             );
             break;
         }
@@ -152,7 +156,7 @@ void FlowgraphDotVisitor::Visit(
         case Mode::Declaring: {
             add_script(
                 String(boost::format("\"%1%\"") % &vertex) +
-                " [label=\"If\", shape=diamond];\n"
+                String(" [label=\"If\", shape=diamond];\n")
             );
             break;
         }
@@ -211,7 +215,7 @@ void FlowgraphDotVisitor::Visit(
                     vertex.definitions().end()) {
                 add_script(
                     String(boost::format("\"%1%\"") % &vertex) +
-                    " [label=\"" + vertex.name() + "\"];\n"
+                    String(" [label=\"") + vertex.name() + String("\"];\n")
                 );
             }
             break;
@@ -230,7 +234,8 @@ void FlowgraphDotVisitor::Visit(
         case Mode::Declaring: {
             add_script(
                 String(boost::format("\"%1%\"") % &vertex) +
-                " [label=\"" + vertex.symbol() + "\", shape=triangle];\n"
+                String(" [label=\"") + vertex.symbol() +
+                String("\", shape=triangle];\n")
             );
             break;
         }
@@ -254,8 +259,9 @@ void FlowgraphDotVisitor::Visit(
         case Mode::Declaring: {
             add_script(
                 String(boost::format("\"%1%\"") % &vertex) +
-                " [label=\"" + String(boost::format("%1%") % vertex.value()) +
-                "\", fontname=courier, shape=box];\n"
+                String(" [label=\"") +
+                String(boost::format("%1%") % vertex.value()) +
+                String("\", fontname=courier, shape=box];\n")
             );
             break;
         }
@@ -344,7 +350,8 @@ void FlowgraphDotVisitor::Visit(
             // TODO Implement symbol member.
             add_script(
                 String(boost::format("\"%1%\"") % &vertex) +
-                " [label=\"" + vertex.symbol() + "\", shape=triangle];\n"
+                String(" [label=\"") + vertex.symbol() +
+                String("\", shape=triangle];\n")
             );
             break;
         }
@@ -369,8 +376,8 @@ void FlowgraphDotVisitor::Visit(
         case Mode::Declaring: {
             add_script(
                 String(boost::format("\"%1%\"") % &vertex) +
-                " [label=\"\\\"" + vertex.value() +
-                "\\\"\", fontname=courier, shape=box];\n"
+                String(" [label=\"\\\"") + vertex.value() +
+                String("\\\"\", fontname=courier, shape=box];\n")
             );
             break;
         }

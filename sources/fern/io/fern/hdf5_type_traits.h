@@ -1,5 +1,5 @@
 #pragma once
-#include <cpp/H5Cpp.h>
+#include <H5Cpp.h>
 
 
 namespace fern {

@@ -19,51 +19,51 @@ BOOST_AUTO_TEST_CASE(strip)
     fern::String string;
 
     string = fern::String("bla").strip();
-    BOOST_CHECK_EQUAL(string, "bla");
+    BOOST_CHECK_EQUAL(string, fern::String("bla"));
 
     string = fern::String("bla").strip("\n");
-    BOOST_CHECK_EQUAL(string, "bla");
+    BOOST_CHECK_EQUAL(string, fern::String("bla"));
 
     string = fern::String("bla\n").strip();
-    BOOST_CHECK_EQUAL(string, "bla");
+    BOOST_CHECK_EQUAL(string, fern::String("bla"));
 
     string = fern::String("bla\n").strip("\n");
-    BOOST_CHECK_EQUAL(string, "bla");
+    BOOST_CHECK_EQUAL(string, fern::String("bla"));
 
     string = fern::String("\nbla").strip();
-    BOOST_CHECK_EQUAL(string, "bla");
+    BOOST_CHECK_EQUAL(string, fern::String("bla"));
 
     string = fern::String("\nbla").strip("\n");
-    BOOST_CHECK_EQUAL(string, "bla");
+    BOOST_CHECK_EQUAL(string, fern::String("bla"));
 
     string = fern::String("\nbla\n").strip();
-    BOOST_CHECK_EQUAL(string, "bla");
+    BOOST_CHECK_EQUAL(string, fern::String("bla"));
 
     string = fern::String("\nbla\n").strip("\n");
-    BOOST_CHECK_EQUAL(string, "bla");
+    BOOST_CHECK_EQUAL(string, fern::String("bla"));
 
     // Strip with argument preserves whitespace.
     string = fern::String("\n bla \n").strip("\n");
-    BOOST_CHECK_EQUAL(string, " bla ");
+    BOOST_CHECK_EQUAL(string, fern::String(" bla "));
 
     // Default strip doesn't preserve whitespace.
     string = fern::String("\n bla \n").strip();
-    BOOST_CHECK_EQUAL(string, "bla");
+    BOOST_CHECK_EQUAL(string, fern::String("bla"));
 
     string = fern::String("bla bla").strip("ba");
-    BOOST_CHECK_EQUAL(string, "la bl");
+    BOOST_CHECK_EQUAL(string, fern::String("la bl"));
 
     string = fern::String("").strip();
-    BOOST_CHECK_EQUAL(string, "");
+    BOOST_CHECK_EQUAL(string, fern::String(""));
 
     string = fern::String("").strip("");
-    BOOST_CHECK_EQUAL(string, "");
+    BOOST_CHECK_EQUAL(string, fern::String(""));
 
     string = fern::String("").strip("x");
-    BOOST_CHECK_EQUAL(string, "");
+    BOOST_CHECK_EQUAL(string, fern::String(""));
 
     string = fern::String("øaø").strip("ø");
-    BOOST_CHECK_EQUAL(string, "a");
+    BOOST_CHECK_EQUAL(string, fern::String("a"));
 }
 
 
@@ -72,16 +72,16 @@ BOOST_AUTO_TEST_CASE(replace)
     fern::String string;
 
     string = fern::String("<string>").replace("<", "&lt;");
-    BOOST_CHECK_EQUAL(string, "&lt;string>");
+    BOOST_CHECK_EQUAL(string, fern::String("&lt;string>"));
 
     string = fern::String("//").replace("//", "/");
-    BOOST_CHECK_EQUAL(string, "/");
+    BOOST_CHECK_EQUAL(string, fern::String("/"));
 
     string = fern::String("///").replace("//", "/");
-    BOOST_CHECK_EQUAL(string, "//");
+    BOOST_CHECK_EQUAL(string, fern::String("//"));
 
     string = fern::String("////").replace("//", "/");
-    BOOST_CHECK_EQUAL(string, "//");
+    BOOST_CHECK_EQUAL(string, fern::String("//"));
 }
 
 
@@ -106,16 +106,16 @@ BOOST_AUTO_TEST_CASE(split)
     BOOST_CHECK(words.empty());
 
     string = fern::String("abxcd");
-    words = string.split("x+");
+    words = string.split("x");
     BOOST_REQUIRE_EQUAL(words.size(), 2u);
-    BOOST_CHECK_EQUAL(words[0], "ab");
-    BOOST_CHECK_EQUAL(words[1], "cd");
+    BOOST_CHECK_EQUAL(words[0], fern::String("ab"));
+    BOOST_CHECK_EQUAL(words[1], fern::String("cd"));
 
     string = fern::String("xxabxxcdxx");
-    words = string.split("x+");
+    words = string.split("x");
     BOOST_REQUIRE_EQUAL(words.size(), 2u);
-    BOOST_CHECK_EQUAL(words[0], "ab");
-    BOOST_CHECK_EQUAL(words[1], "cd");
+    BOOST_CHECK_EQUAL(words[0], fern::String("ab"));
+    BOOST_CHECK_EQUAL(words[1], fern::String("cd"));
 }
 
 

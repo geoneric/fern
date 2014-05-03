@@ -21,7 +21,8 @@ std::vector<std::shared_ptr<Argument>> read(
     // - Assume the name refers to a raster that can be read by gdal.
 
     DataName name(value.values().value());
-    std::shared_ptr<Dataset> dataset(open_dataset(name.database_pathname(),
+    std::shared_ptr<Dataset> dataset(
+        open_dataset(name.database_pathname().generic_string(),
         OpenMode::READ));
     assert(dataset);
 
@@ -40,7 +41,7 @@ std::vector<std::shared_ptr<Argument>> read(
     }
     else {
         // TODO Shouldn't this be detected earlier?! Annotate/validate?!
-        throw IOError(name.database_pathname(),
+        throw IOError(name.database_pathname().generic_string(),
             Exception::messages().format_message(
                 MessageId::DOES_NOT_CONTAIN_DATA, name.data_pathname()));
     }

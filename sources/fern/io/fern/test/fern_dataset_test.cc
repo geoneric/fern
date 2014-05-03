@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE(write_and_read)
 
         auto feature_names = dataset->feature_names();
         BOOST_REQUIRE_EQUAL(feature_names.size(), 1u);
-        BOOST_CHECK_EQUAL(feature_names[0], "planets");
+        BOOST_CHECK_EQUAL(feature_names[0], fern::String("planets"));
     }
 
     // Open attribute without re-opening the dataset.
@@ -123,8 +123,9 @@ BOOST_AUTO_TEST_CASE(errors)
         catch(IOError const& exception) {
             String message = exception.message();
             BOOST_CHECK_EQUAL(message,
-                "IO error handling constant-1.gnr: "
-                "Does not contain feature: blahdiblah");
+                String(
+                    "IO error handling constant-1.gnr: "
+                    "Does not contain feature: blahdiblah"));
         }
 
         try {
@@ -133,9 +134,9 @@ BOOST_AUTO_TEST_CASE(errors)
         }
         catch(IOError const& exception) {
             String message = exception.message();
-            BOOST_CHECK_EQUAL(message,
+            BOOST_CHECK_EQUAL(message, String(
                 "IO error handling constant-1.gnr: "
-                "Does not contain attribute: blahdiblah");
+                "Does not contain attribute: blahdiblah"));
         }
     }
 }

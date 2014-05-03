@@ -9,7 +9,7 @@ DatasetSync::DatasetSync(
     DataName const& data_name)
 
     : _data_path(data_name.data_pathname()),
-      _dataset(open_dataset(data_name.database_pathname(),
+      _dataset(open_dataset(data_name.database_pathname().generic_string(),
           OpenMode::OVERWRITE))
 
 {
