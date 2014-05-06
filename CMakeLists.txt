@@ -17,10 +17,12 @@ ENABLE_TESTING()
 # Doesn't work: SET(ENV{CTEST_OUTPUT_ON_FAILURE} 1)
 # SET(BOOST_TEST_RUNTIME_PARAMETERS "--log_level all")
 
-CONFIGURE_FILE(
-    ${CMAKE_CURRENT_SOURCE_DIR}/CTestCustom.cmake.in
-    ${CMAKE_CURRENT_BINARY_DIR}/CTestCustom.cmake
-)
+IF(NOT FERN_ALGORITHM_ONLY)
+    CONFIGURE_FILE(
+        ${CMAKE_CURRENT_SOURCE_DIR}/CTestCustom.cmake.in
+        ${CMAKE_CURRENT_BINARY_DIR}/CTestCustom.cmake
+    )
+ENDIF()
 CONFIGURE_FILE(
     ${CMAKE_CURRENT_SOURCE_DIR}/test_run_prolog.sh.in
     ${CMAKE_CURRENT_BINARY_DIR}/test_run_prolog.sh

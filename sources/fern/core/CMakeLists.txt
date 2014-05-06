@@ -25,6 +25,7 @@ TARGET_LINK_LIBRARIES(fern_core
     ${Boost_FILESYSTEM_LIBRARY}
     ${Boost_SYSTEM_LIBRARY}
     ${Boost_TIMER_LIBRARY}
+    stdc++
 )
 IF(FERN_ALGORITHM_ONLY)
     INSTALL(TARGETS fern_core

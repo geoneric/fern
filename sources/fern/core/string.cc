@@ -65,6 +65,21 @@ String String::decode_from_default_encoding(
 }
 
 
+//! Return string decoded from platform's default codepage.
+/*!
+  \param     string String to copy into the new string, incoded in platform's
+             default codepage.
+  \return    New String instance.
+  \todo      Implement.
+*/
+String String::decode_from_default_encoding(
+    std::wstring const& /* string */)
+{
+    assert(false);
+    return String("");
+}
+
+
 //! Constructor.
 /*!
   \param     string String to copy into the new string, encoded in UTF8.

@@ -35,6 +35,9 @@ public:
     static String  decode_from_default_encoding(
                                         std::string const& string);
 
+    static String  decode_from_default_encoding(
+                                        std::wstring const& string);
+
                    String              ()=default;
 
                    String              (char const* string);

@@ -51,7 +51,7 @@ String Path::generic_string() const
 */
 String Path::native_string() const
 {
-    return String(native());
+    return String::decode_from_default_encoding(native());
 }
 
 
