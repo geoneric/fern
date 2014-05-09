@@ -17,8 +17,14 @@ IF(FERN_BOOST_REQUIRED)
         -DBOOST_ALL_DYN_LINK
         # Prevent auto-linking.
         -DBOOST_ALL_NO_LIB
+
         # # No deprecated features.
         # -DBOOST_FILESYSTEM_NO_DEPRECATED
+
+        # -DBOOST_CHRONO_DONT_PROVIDE_HYBRID_ERROR_HANDLING
+        # -DBOOST_CHRONO_HEADER_ONLY
+
+        # -DBOOST_DISABLE_ASSERTS  <---- !!!
     )
     FIND_PACKAGE(Boost REQUIRED
         COMPONENTS ${FERN_BOOST_COMPONENTS})
