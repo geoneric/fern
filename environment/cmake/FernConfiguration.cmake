@@ -30,5 +30,12 @@ ENDIF()
 
 
 INCLUDE(CheckIncludeFile)
+INCLUDE(CheckSymbolExists)
 
+
+# This header is used by the malloc_test tool sources.
 CHECK_INCLUDE_FILE(malloc.h FERN_MALLOC_H_EXISTS)
+IF(FERN_MALLOC_H_EXISTS)
+   CHECK_SYMBOL_EXISTS(M_TRIM_THRESHOLD malloc.h
+       FERN_REQUIRED_MALLOC_SYMBOLS_AVAILABLE)
+ENDIF()
