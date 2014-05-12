@@ -6,3 +6,4 @@
 #include "fern/algorithm/policy/detect_no_data_by_value.h"
 #include "fern/algorithm/policy/dont_mark_no_data.h"
 #include "fern/algorithm/policy/mark_no_data_by_value.h"
+#include "fern/algorithm/policy/skip_no_data.h"
