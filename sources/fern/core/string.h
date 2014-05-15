@@ -95,6 +95,11 @@ public:
 
 private:
 
+    // WARNING
+    // std::string is not meant to be inherited from. It doesn't have any
+    // virtual functions. Don't add data members here. Our destructor will
+    // never be called to destruct them.
+
     using Base = std::string;
 
     String&        strip_begin         (String const& characters);
