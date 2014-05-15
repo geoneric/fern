@@ -3,6 +3,7 @@
 #include "fern/core/assert.h"
 #include "fern/algorithm/core/operation_categories.h"
 #include "fern/algorithm/policy/policies.h"
+#include "fern/algorithm/algebra/vector/detail/laplacian.h"
 
 
 namespace fern {
@@ -24,18 +25,19 @@ using OutOfDomainPolicy = DiscardDomainErrors<A>;
   The result of the laplacian operation is a floating point. This policy
   verifies whether the result value is finite.
 */
+template<
+    class Result>
 class OutOfRangePolicy
 {
 
+    FERN_STATIC_ASSERT(std::is_arithmetic, Result)
+    FERN_STATIC_ASSERT(std::is_floating_point, Result)
+
 public:
 
-    template<
-        class R>
-    static constexpr bool within_range(
-        R const& result)
+    inline bool within_range(
+        Result const& result) const
     {
-        FERN_STATIC_ASSERT(std::is_floating_point, R)
-
         return std::isfinite(result);
     }
 
@@ -43,21 +45,19 @@ public:
 
 
 /// template<
-///     class A1,
-///     class A2>
+///     class Value>
 /// struct Algorithm
 /// {
-///     FERN_STATIC_ASSERT(std::is_arithmetic, A1)
-///     FERN_STATIC_ASSERT(std::is_arithmetic, A2)
+/// 
+///     // FERN_STATIC_ASSERT(std::is_arithmetic, Value)
 /// 
 ///     template<
 ///         class R>
 ///     inline void operator()(
-///         A1 const& argument1,
-///         A2 const& argument2,
+///         Value const& argument,
 ///         R& result) const
 ///     {
-///         result = static_cast<R>(argument1) + static_cast<R>(argument2);
+///         // result = static_cast<R>(argument1) + static_cast<R>(argument2);
 ///     }
 /// 
 /// };
@@ -68,40 +68,60 @@ public:
 namespace algebra {
 
 template<
-    class A,
-    class OutOfDomainPolicy=DiscardDomainErrors<value_type<A>>,
-    // TODO Last value type must be of result.
-    class OutOfRangePolicy=DiscardRangeErrors<value_type<A>, value_type<A>>,
-    class NoDataPolicy=DontMarkNoData
+    class Values,
+    class Result,
+    template<class> class OutOfDomainPolicy=unary::DiscardDomainErrors,
+    template<class, class> class OutOfRangePolicy=unary::DiscardRangeErrors,
+    class InputNoDataPolicy=SkipNoData,
+    class OutputNoDataPolicy=DontMarkNoData
 >
-struct Laplacian
+class Laplacian
 {
 
+public:
+
     using category = neighborhood_operation_tag;
+    using A = Values;
+    using AValue = value_type<A>;
+    using R = Result;
+    using RValue = value_type<R>;
 
-    //! Type of the result of the operation.
-    using R = A;
-
-    using AValue = typename ArgumentTraits<A>::value_type;
+    FERN_STATIC_ASSERT(std::is_arithmetic, AValue)
+    FERN_STATIC_ASSERT(std::is_arithmetic, RValue)
+    FERN_STATIC_ASSERT(std::is_same, AValue, RValue)
 
     Laplacian()
-        // : algorithm(plus::Algorithm<A1Value, A2Value>())
+        : _algorithm()
     {
     }
 
-    explicit Laplacian(
-        NoDataPolicy&& no_data_policy)
-        // : algorithm(std::forward<NoDataPolicy>(no_data_policy),
-        //     plus::Algorithm<A1Value, A2Value>())
+    Laplacian(
+        InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
+        OutputNoDataPolicy&& output_no_data_policy)  // Universal reference.
+        : _algorithm(
+            std::forward<InputNoDataPolicy>(input_no_data_policy),
+            std::forward<OutputNoDataPolicy>(output_no_data_policy))
     {
     }
 
     inline void operator()(
-        A const& /* argument */,
-        R& /* result */)
+        A const& values,
+        R& result)
     {
-        // algorithm.calculate(argument1, argument2, result);
+        _algorithm.calculate(values, result);
     }
+
+    template<
+        class Indices>
+    inline void operator()(
+        Indices const& indices,
+        A const& values,
+        R& result)
+    {
+        _algorithm.calculate(indices, values, result);
+    }
+
+private:
 
     // Laplacian as implemented in PCRaster is
     // - A convolution with this kernel:
@@ -127,7 +147,7 @@ struct Laplacian
     // - [*] sum: Add all values in a kernel. None of these are no-data.
     // - [*] subtract: Subtract two 2D arrays.
     // - [*] multiply: Multiply a constant and a 2D array.
-    // - [*] divide: Divice a 2D array by a constant.
+    // - [*] divide: Divide a 2D array by a constant.
     // - [*] convolute: Convolute a 2D array by a kernel.
     //
     // Alternative is to do everything in one operation: laplacian. This will
@@ -138,46 +158,52 @@ struct Laplacian
     // We need dx, which is the cell length. So we need something else to be
     // passed in than a 2D array.
 
-    // template<
-    //     class Indices>
-    // inline void operator()(
-    //     Indices const& indices,
-    //     A1 const& argument1,
-    //     A2 const& argument2,
-    //     R& result)
-    // {
-    //     algorithm.calculate(indices, argument1, argument2, result);
-    // }
-
-    // detail::dispatch::BinaryOperation<A1, A2, R,
-    //     OutOfDomainPolicy, OutOfRangePolicy, NoDataPolicy,
-    //     plus::Algorithm<
-    //         typename ArgumentTraits<A1>::value_type,
-    //         typename ArgumentTraits<A2>::value_type>,
-    //     typename ArgumentTraits<A1>::argument_category,
-    //     typename ArgumentTraits<A2>::argument_category> algorithm;
+    laplacian::detail::dispatch::Laplacian<A, R,
+        InputNoDataPolicy, OutputNoDataPolicy,
+        typename ArgumentTraits<A>::argument_category> _algorithm;
 
 };
 
 
-//! Calculate the result of adding \a argument1 to \a argument2 and put it in \a result.
-/*!
-  \tparam    A1 Type of \a argument1.
-  \tparam    A2 Type of \a argument2.
-  \param     argument1 First argument to add.
-  \param     argument2 Second argument to add.
-  \return    Result is stored in argument \a result.
+template<
+    class Values,
+    class Result,
+    template<class> class OutOfDomainPolicy=unary::DiscardDomainErrors,
+    template<class, class> class OutOfRangePolicy=unary::DiscardRangeErrors,
+    class InputNoDataPolicy=SkipNoData,
+    class OutputNoDataPolicy=DontMarkNoData
+>
+void laplacian(
+    Values const& values,
+    Result& result)
+{
+    Laplacian<Values, Result, OutOfDomainPolicy, OutOfRangePolicy,
+        InputNoDataPolicy, OutputNoDataPolicy>()(values, result);
+}
 
-  This function uses the Plus class template with default policies for handling
-  out-of-domain values, out-of-range values and no-data.
+
+/*!
+  \overload
 */
 template<
-    class A>
+    class Values,
+    class Result,
+    template<class> class OutOfDomainPolicy=unary::DiscardDomainErrors,
+    template<class, class> class OutOfRangePolicy=unary::DiscardRangeErrors,
+    class InputNoDataPolicy=SkipNoData,
+    class OutputNoDataPolicy=DontMarkNoData
+>
 void laplacian(
-    A const& argument,
-    typename Laplacian<A>::R& result)
+    InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
+    OutputNoDataPolicy&& output_no_data_policy,  // Universal reference.
+    Values const& values,
+    Result& result)
 {
-    Laplacian<A>()(argument, result);
+    Laplacian<Values, Result, OutOfDomainPolicy, OutOfRangePolicy,
+        InputNoDataPolicy, OutputNoDataPolicy>(
+            std::forward<InputNoDataPolicy>(input_no_data_policy),
+            std::forward<OutputNoDataPolicy>(output_no_data_policy))(
+        values, result);
 }
 
 } // namespace algebra

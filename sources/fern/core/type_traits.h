@@ -207,6 +207,10 @@ struct TypeTraits<float>
     static float const min;
 
     static float const max;
+
+    static float const nan;
+
+    static float const infinity;
 };
 
 
@@ -226,6 +230,10 @@ struct TypeTraits<double>
     static double const min;
 
     static double const max;
+
+    static double const nan;
+
+    static double const infinity;
 };
 
 
@@ -255,6 +263,22 @@ template<
 T max()
 {
   return TypeTraits<T>::max;
+}
+
+
+template<
+    class T>
+T nan()
+{
+  return TypeTraits<T>::nan;
+}
+
+
+template<
+    class T>
+T infinity()
+{
+  return TypeTraits<T>::infinity;
 }
 
 } // namespace fern

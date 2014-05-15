@@ -33,6 +33,15 @@ inline constexpr bool DiscardDomainErrors<Parameters...>::within_domain(
 }
 
 
+namespace unary {
+
+template<
+    class Value>
+using DiscardDomainErrors = DiscardDomainErrors<Value>;
+
+} // namespace binary
+
+
 namespace binary {
 
 template<

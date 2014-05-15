@@ -91,12 +91,19 @@ ValueTypes const TypeTraits<float>::value_types(ValueTypes::FLOAT32);
 String const TypeTraits<float>::name("float32");
 float const TypeTraits<float>::min(std::numeric_limits<float>::min());
 float const TypeTraits<float>::max(std::numeric_limits<float>::max());
+static_assert(std::numeric_limits<float>::has_quiet_NaN, "");
+float const TypeTraits<float>::nan(std::numeric_limits<float>::quiet_NaN());
+float const TypeTraits<float>::infinity(std::numeric_limits<float>::infinity());
 
 ValueType const TypeTraits<double>::value_type(VT_FLOAT64);
 ValueTypes const TypeTraits<double>::value_types(ValueTypes::FLOAT64);
 String const TypeTraits<double>::name("float64");
 double const TypeTraits<double>::min(std::numeric_limits<double>::min());
 double const TypeTraits<double>::max(std::numeric_limits<double>::max());
+static_assert(std::numeric_limits<double>::has_quiet_NaN, "");
+double const TypeTraits<double>::nan(std::numeric_limits<double>::quiet_NaN());
+double const TypeTraits<double>::infinity(
+    std::numeric_limits<double>::infinity());
 
 ValueType const TypeTraits<String>::value_type(VT_STRING);
 ValueTypes const TypeTraits<String>::value_types(ValueTypes::STRING);

@@ -3,6 +3,7 @@
 #include "fern/core/constant_traits.h"
 #include "fern/core/type_traits.h"
 #include "fern/core/types.h"
+#include "fern/algorithm/core/operation_traits.h"
 #include "fern/algorithm/algebra/elementary/divide.h"
 
 
