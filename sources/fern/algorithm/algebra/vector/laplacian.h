@@ -1,13 +1,9 @@
 #pragma once
-#include "fern/core/assert.h"
 #include "fern/core/argument_traits.h"
+#include "fern/core/assert.h"
 #include "fern/algorithm/core/operation_categories.h"
-#include "fern/algorithm/policy/discard_domain_errors.h"
-#include "fern/algorithm/policy/discard_range_errors.h"
-#include "fern/algorithm/policy/dont_mark_no_data.h"
+#include "fern/algorithm/policy/policies.h"
 
-
-// https://en.wikipedia.org/wiki/Vector_calculus
 
 namespace fern {
 namespace laplacian {
@@ -130,8 +126,8 @@ struct Laplacian
     // So, we require:
     // - [*] sum: Add all values in a kernel. None of these are no-data.
     // - [*] subtract: Subtract two 2D arrays.
-    // - [ ] multiply: Multiply a constant and a 2D array.
-    // - [ ] divide: Divice a 2D array by a constant.
+    // - [*] multiply: Multiply a constant and a 2D array.
+    // - [*] divide: Divice a 2D array by a constant.
     // - [*] convolute: Convolute a 2D array by a kernel.
     //
     // Alternative is to do everything in one operation: laplacian. This will

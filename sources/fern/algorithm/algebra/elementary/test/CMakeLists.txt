@@ -1,6 +1,8 @@
 SET(TEST_NAMES
     add_test
+    divide_test
     equal_test
+    multiply_test
     subtract_test
 )
 
@@ -9,7 +11,7 @@ MACRO(ADD_UNIT_TEST NAME)
     TARGET_LINK_LIBRARIES(algorithm_algebra_elementary_${NAME}
         fern_core
         fern_algorithm_core
-        fern_feature_core  # fern::extents
+        fern_feature_core
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
     ADD_TEST(

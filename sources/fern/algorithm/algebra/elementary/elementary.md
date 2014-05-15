@@ -19,12 +19,12 @@ Add the values in two collections.
 yes      | yes      | yes      | yes
 
 
-Substract {#substract}
----------
-Substract the values in two collections.
+Subtract {#subtract}
+--------
+Subtract the values in two collections.
 
-- [fern::algebra::substract](@ref fern::algebra::substract)
-- [fern::algebra::Substract](@ref fern::algebra::Substract)
+- [fern::algebra::subtract](@ref fern::algebra::subtract)
+- [fern::algebra::Subtract](@ref fern::algebra::Subtract)
 
 0D array | 1D array | 2D array | 3D array
 -------- | -------- | -------- | --------
@@ -37,6 +37,8 @@ Multiply the values in two collections.
 
 - [fern::algebra::multiply](@ref fern::algebra::multiply)
 - [fern::algebra::Multiply](@ref fern::algebra::Multiply)
+- [fern::multiply::OutOfDomainPolicy](@ref fern::multiply::OutOfDomainPolicy)
+- [fern::multiply::OutOfRangePolicy](@ref fern::multiply::OutOfRangePolicy)
 
 0D array | 1D array | 2D array | 3D array
 -------- | -------- | -------- | --------
