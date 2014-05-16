@@ -3,12 +3,24 @@ CONFIGURE_FILE(
     ${CMAKE_CURRENT_BINARY_DIR}/configure.h
 )
 
-IF(FERN_ALGORITHM_ONLY)
-    ADD_SUBDIRECTORY(algorithm)
-    ADD_SUBDIRECTORY(core)
-    ADD_SUBDIRECTORY(feature)
+ADD_TARGET_CONDITIONALLY(algorithm algorithm)
+ADD_TARGET_CONDITIONALLY(ast ast)
+ADD_TARGET_CONDITIONALLY(back_end back_end)
+ADD_TARGET_CONDITIONALLY(command command)
+ADD_TARGET_CONDITIONALLY(compiler compiler)
+ADD_TARGET_CONDITIONALLY(core core)
+ADD_TARGET_CONDITIONALLY(example example)
+ADD_TARGET_CONDITIONALLY(expression_tree expression_tree)
+ADD_TARGET_CONDITIONALLY(feature feature)
+ADD_TARGET_CONDITIONALLY(interpreter interpreter)
+ADD_TARGET_CONDITIONALLY(io io)
+ADD_TARGET_CONDITIONALLY(operation operation)
+ADD_TARGET_CONDITIONALLY(python python)
+ADD_TARGET_CONDITIONALLY(script script)
+ADD_TARGET_CONDITIONALLY(uncertainty uncertainty)
 
-    # Install all header for now. Otherwise we have to keep tweaking the
+IF(FERN_ALGORITHM_ONLY)
+    # Install all headers for now. Otherwise we have to keep tweaking the
     # install rules.
     INSTALL(
         DIRECTORY algorithm core
@@ -16,22 +28,6 @@ IF(FERN_ALGORITHM_ONLY)
         FILES_MATCHING PATTERN "*.h"
     )
 ELSE()
-    ADD_SUBDIRECTORY(algorithm)
-    ADD_SUBDIRECTORY(ast)
-    ADD_SUBDIRECTORY(back_end)
-    ADD_SUBDIRECTORY(command)
-    ADD_SUBDIRECTORY(compiler)
-    ADD_SUBDIRECTORY(core)
-    ADD_SUBDIRECTORY(example)
-    ADD_SUBDIRECTORY(expression_tree)
-    ADD_SUBDIRECTORY(feature)
-    ADD_SUBDIRECTORY(interpreter)
-    ADD_SUBDIRECTORY(io)
-    ADD_SUBDIRECTORY(operation)
-    ADD_SUBDIRECTORY(python)
-    ADD_SUBDIRECTORY(script)
-    ADD_SUBDIRECTORY(uncertainty)
-
     # set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--export-all-symbols")
     # For executables, you can use:
     # ADD_EXECUTABLE(NAME_OF_EXECUTABLE $ $)
