@@ -48,7 +48,7 @@ public:
 
     MaskedArray&   operator=           (MaskedArray&&)=default;
 
-    virtual        ~MaskedArray        ()=default;
+                   ~MaskedArray        ()=default;
 
     bool           has_masked_values   () const;
 

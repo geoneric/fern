@@ -1,5 +1,7 @@
 #pragma once
 #include "fern/core/assert.h"
+#include "fern/core/base_class.h"
+#include "fern/algorithm/convolution/divide_by_weights.h"
 
 
 namespace fern {
@@ -7,6 +9,8 @@ namespace detail {
 
 //! Convolve \a source with \a kernel and write the result to \a destination.
 /*!
+  \tparam    NormalizePolicy Policy used to handle the normalization of the
+             convolution result by the kernel weights.
   \tparam    SourceImage Type of source image.
   \tparam    Kernel Type of convolution kernel.
   \tparam    DestinationImage Type of destination image.
@@ -36,6 +40,7 @@ namespace detail {
   calculation.
 */
 template<
+    class NormalizePolicy,
     class SourceImage,
     class Kernel,
     class DestinationImage>
@@ -106,11 +111,14 @@ void convolve(
     }
 
     assert(count != 0);
-    get(destination, row_source, col_source) = value / count;
+    // get(destination, row_source, col_source) = value / count;
+    get(destination, row_source, col_source) = NormalizePolicy::normalize(
+        value, count);
 }
 
 
 template<
+    class NormalizePolicy,
     class SourceImage,
     class Kernel,
     class DestinationImage>
@@ -136,7 +144,7 @@ void convolve_north_west_corner(
 
         for(size_t col_source = 0; col_source < radius_; ++col_source) {
 
-            convolve(source, kernel, destination,
+            convolve<NormalizePolicy>(source, kernel, destination,
                 row_source, col_source,
                 first_row_source, first_col_source,
                 first_row_kernel, first_col_kernel,
@@ -153,6 +161,7 @@ void convolve_north_west_corner(
 
 
 template<
+    class NormalizePolicy,
     class SourceImage,
     class Kernel,
     class DestinationImage>
@@ -174,13 +183,13 @@ void convolve_north_east_corner(
     // which some cells are outside of the kernel.
     for(size_t row_source = 0; row_source < radius_; ++row_source) {
 
-        first_col_source = nr_cols_source - radius_ - 2;
+        first_col_source = nr_cols_source - radius_ - radius_;
         nr_cols_kernel = radius_ + radius_;
 
         for(size_t col_source = nr_cols_source - radius_;
                 col_source < nr_cols_source; ++col_source) {
 
-            convolve(source, kernel, destination,
+            convolve<NormalizePolicy>(source, kernel, destination,
                 row_source, col_source,
                 first_row_source, first_col_source,
                 first_row_kernel, first_col_kernel,
@@ -197,6 +206,7 @@ void convolve_north_east_corner(
 
 
 template<
+    class NormalizePolicy,
     class SourceImage,
     class Kernel,
     class DestinationImage>
@@ -207,7 +217,7 @@ void convolve_south_west_corner(
 {
     size_t const radius_{radius(kernel)};
     size_t const nr_rows_source{size(source, 0)};
-    size_t first_row_source{nr_rows_source - radius_ - 2};
+    size_t first_row_source{nr_rows_source - radius_ - radius_};
     size_t const first_col_source{0};
     size_t const first_row_kernel{0};
     size_t first_col_kernel;
@@ -224,7 +234,7 @@ void convolve_south_west_corner(
 
         for(size_t col_source = 0; col_source < radius_; ++col_source) {
 
-            convolve(source, kernel, destination,
+            convolve<NormalizePolicy>(source, kernel, destination,
                 row_source, col_source,
                 first_row_source, first_col_source,
                 first_row_kernel, first_col_kernel,
@@ -241,6 +251,7 @@ void convolve_south_west_corner(
 
 
 template<
+    class NormalizePolicy,
     class SourceImage,
     class Kernel,
     class DestinationImage>
@@ -252,7 +263,7 @@ void convolve_south_east_corner(
     size_t const radius_{radius(kernel)};
     size_t const nr_rows_source{size(source, 0)};
     size_t const nr_cols_source{size(source, 1)};
-    size_t first_row_source{nr_rows_source - radius_ - 2};
+    size_t first_row_source{nr_rows_source - radius_ - radius_};
     size_t first_col_source;
     size_t const first_row_kernel{0};
     size_t const first_col_kernel{0};
@@ -264,13 +275,13 @@ void convolve_south_east_corner(
     for(size_t row_source = nr_rows_source - radius_;
             row_source < nr_rows_source; ++row_source) {
 
-        first_col_source = nr_cols_source - radius_ - 2;
+        first_col_source = nr_cols_source - radius_ - radius_;
         nr_cols_kernel = radius_ + radius_;
 
         for(size_t col_source = nr_cols_source - radius_;
                 col_source < nr_cols_source; ++col_source) {
 
-            convolve(source, kernel, destination,
+            convolve<NormalizePolicy>(source, kernel, destination,
                 row_source, col_source,
                 first_row_source, first_col_source,
                 first_row_kernel, first_col_kernel,
@@ -287,6 +298,7 @@ void convolve_south_east_corner(
 
 
 template<
+    class NormalizePolicy,
     class SourceImage,
     class Kernel,
     class DestinationImage>
@@ -313,7 +325,7 @@ void convolve_north_side(
         for(size_t col_source = radius_; col_source <
                 nr_cols_source - radius_; ++col_source) {
 
-            convolve(source, kernel, destination,
+            convolve<NormalizePolicy>(source, kernel, destination,
                 row_source, col_source,
                 first_row_source, first_col_source,
                 first_row_kernel, first_col_kernel,
@@ -329,6 +341,7 @@ void convolve_north_side(
 
 
 template<
+    class NormalizePolicy,
     class SourceImage,
     class Kernel,
     class DestinationImage>
@@ -356,7 +369,7 @@ void convolve_west_side(
 
         for(size_t col_source = 0; col_source < radius_; ++col_source) {
 
-            convolve(source, kernel, destination,
+            convolve<NormalizePolicy>(source, kernel, destination,
                 row_source, col_source,
                 first_row_source, first_col_source,
                 first_row_kernel, first_col_kernel,
@@ -372,6 +385,7 @@ void convolve_west_side(
 
 
 template<
+    class NormalizePolicy,
     class SourceImage,
     class Kernel,
     class DestinationImage>
@@ -395,13 +409,13 @@ void convolve_east_side(
     for(size_t row_source = radius_; row_source < nr_rows_source - radius_;
             ++row_source) {
 
-        first_col_source = nr_cols_source - radius_ - 2;
+        first_col_source = nr_cols_source - radius_ - radius_;
         nr_cols_kernel = radius_ + radius_;
 
         for(size_t col_source = nr_cols_source - radius_;
                 col_source < nr_cols_source; ++col_source) {
 
-            convolve(source, kernel, destination,
+            convolve<NormalizePolicy>(source, kernel, destination,
                 row_source, col_source,
                 first_row_source, first_col_source,
                 first_row_kernel, first_col_kernel,
@@ -417,6 +431,7 @@ void convolve_east_side(
 
 
 template<
+    class NormalizePolicy,
     class SourceImage,
     class Kernel,
     class DestinationImage>
@@ -428,7 +443,7 @@ void convolve_south_side(
     size_t const radius_{radius(kernel)};
     size_t const nr_cols_source{size(source, 1)};
     size_t const nr_rows_source{size(source, 0)};
-    size_t first_row_source{nr_rows_source - radius_ - 2};
+    size_t first_row_source{nr_rows_source - radius_ - radius_};
     size_t first_col_source;
     size_t const first_row_kernel{0};
     size_t const first_col_kernel{0};
@@ -445,7 +460,7 @@ void convolve_south_side(
         for(size_t col_source = radius_; col_source < nr_cols_source - radius_;
                 ++col_source) {
 
-            convolve(source, kernel, destination,
+            convolve<NormalizePolicy>(source, kernel, destination,
                 row_source, col_source,
                 first_row_source, first_col_source,
                 first_row_kernel, first_col_kernel,
@@ -461,6 +476,7 @@ void convolve_south_side(
 
 
 template<
+    class NormalizePolicy,
     class SourceImage,
     class Kernel,
     class DestinationImage>
@@ -489,7 +505,7 @@ void convolve_inner_part(
         for(size_t col_source = radius_; col_source < nr_cols_source - radius_;
                 ++col_source) {
 
-            convolve(source, kernel, destination,
+            convolve<NormalizePolicy>(source, kernel, destination,
                 row_source, col_source,
                 first_row_source, first_col_source,
                 first_row_kernel, first_col_kernel,
@@ -505,7 +521,14 @@ void convolve_inner_part(
 } // namespace detail
 
 
+//! Convolve \a source by \a kernel and write results to \a destination.
+/*!
+  \param[in] source Image to read values from to convolve.
+  \param[in] kernel Kernel containing the weights to use.
+  \param[out] destination Image to write calculated values to.
+*/
 template<
+    class NormalizePolicy=DivideByWeights,
     class SourceImage,
     class Kernel,
     class DestinationImage>
@@ -515,12 +538,17 @@ void convolve(
     DestinationImage& destination)
 {
     FERN_STATIC_ASSERT(std::is_same,
-        typename ArgumentTraits<SourceImage>::argument_category, array_2d_tag);
+        typename base_class<
+            typename ArgumentTraits<SourceImage>::argument_category,
+            array_2d_tag>::type,
+        array_2d_tag);
     FERN_STATIC_ASSERT(std::is_same,
         typename ArgumentTraits<Kernel>::argument_category, array_2d_tag);
     FERN_STATIC_ASSERT(std::is_same,
-        typename ArgumentTraits<DestinationImage>::argument_category,
-            array_2d_tag);
+        typename base_class<
+            typename ArgumentTraits<DestinationImage>::argument_category,
+            array_2d_tag>::type,
+        array_2d_tag);
 
     assert(size(source) == size(destination));
     assert(size(kernel) > 0u);
@@ -551,23 +579,30 @@ void convolve(
     // are missing.
 
     // Corners.
-    detail::convolve_north_west_corner(source, kernel, destination);
-    detail::convolve_north_east_corner(source, kernel, destination);
-    detail::convolve_south_west_corner(source, kernel, destination);
-    detail::convolve_south_east_corner(source, kernel, destination);
+    detail::convolve_north_west_corner<NormalizePolicy>(source, kernel,
+        destination);
+    detail::convolve_north_east_corner<NormalizePolicy>(source, kernel,
+        destination);
+    detail::convolve_south_west_corner<NormalizePolicy>(source, kernel,
+        destination);
+    detail::convolve_south_east_corner<NormalizePolicy>(source, kernel,
+        destination);
 
-    // Sides.
-    detail::convolve_north_side(source, kernel, destination);
-    detail::convolve_west_side(source, kernel, destination);
-    detail::convolve_east_side(source, kernel, destination);
-    detail::convolve_south_side(source, kernel, destination);
+    /// // Sides.
+    detail::convolve_north_side<NormalizePolicy>(source, kernel, destination);
+    detail::convolve_west_side<NormalizePolicy>(source, kernel, destination);
+    detail::convolve_east_side<NormalizePolicy>(source, kernel, destination);
+    detail::convolve_south_side<NormalizePolicy>(source, kernel, destination);
 
     // Inner part.
-    detail::convolve_inner_part(source, kernel, destination);
+    detail::convolve_inner_part<NormalizePolicy>(source, kernel, destination);
 
 
     // TODO Incorporate the domain, range and no-data policies.
 
+    // TODO Add support for policies:
+    // - DontDivideByWeights
+    // - DivideByWeights (default)
 
     // TODO Think about how to parallelize this stuff.
 }

@@ -11,6 +11,7 @@ BOOST_AUTO_TEST_SUITE(convolve)
 
 BOOST_AUTO_TEST_CASE(convolve)
 {
+    // Kernel with radius 2.
     {
         // Create input array:
         // +----+----+----+----+----+----+
@@ -185,6 +186,44 @@ BOOST_AUTO_TEST_CASE(convolve)
         // Make sure all cells in the result have a new value.
         BOOST_CHECK_EQUAL(std::count(result.data(), result.data() +
             result.num_elements(), 0), 0);
+    }
+
+    // Kernel with radius 1.
+    // This used to crash.
+    {
+        // Create input array:
+        // +----+----+----+----+----+----+
+        // |  0 |  1 |  2 |  3 |  4 |  5 |
+        // +----+----+----+----+----+----+
+        // |  6 |  7 |  8 |  9 | 10 | 11 |
+        // +----+----+----+----+----+----+
+        // | 12 | 13 | 14 | 15 | 16 | 17 |
+        // +----+----+----+----+----+----+
+        // | 18 | 19 | 20 | 21 | 22 | 23 |
+        // +----+----+----+----+----+----+
+        // | 24 | 25 | 26 | 27 | 28 | 29 |
+        // +----+----+----+----+----+----+
+        // | 30 | 31 | 32 | 33 | 34 | 35 |
+        // +----+----+----+----+----+----+
+        // | 36 | 37 | 38 | 39 | 40 | 41 |
+        // +----+----+----+----+----+----+
+        size_t const nr_rows = 7;
+        size_t const nr_cols = 6;
+        auto extents = fern::extents[nr_rows][nr_cols];
+        fern::Array<double, 2> argument(extents);
+        std::iota(argument.data(), argument.data() + argument.num_elements(),
+            0);
+
+        // Calculate local average.
+        // Define kernel shape and weights.
+        fern::Square<int, 1> kernel({
+            {1, 1, 1},
+            {1, 1, 1},
+            {1, 1, 1}
+        });
+
+        fern::Array<double, 2> result(extents);
+        fern::convolve(argument, kernel, result);
     }
 }
 

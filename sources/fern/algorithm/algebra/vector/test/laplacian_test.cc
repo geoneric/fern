@@ -3,8 +3,7 @@
 #include "fern/core/constant_traits.h"
 #include "fern/core/type_traits.h"
 #include "fern/core/types.h"
-#include "fern/feature/core/array.h"
-#include "fern/feature/core/array_traits.h"
+#include "fern/feature/core/masked_raster_traits.h"
 #include "fern/algorithm/core/operation_traits.h"
 #include "fern/algorithm/algebra/vector/laplacian.h"
 
@@ -64,8 +63,54 @@ void verify_value(
 }
 
 
+template<
+    class T>
+using MaskedRaster = fern::MaskedRaster<T, 2>;
+
+
 BOOST_AUTO_TEST_CASE(algorithm)
 {
+    // Create input raster:
+    // +----+----+----+----+
+    // |  0 |  1 |  2 |  3 |
+    // +----+----+----+----+
+    // |  4 |  5 |  6 |  7 |
+    // +----+----+----+----+
+    // |  8 |  9 | 10 | 11 |
+    // +----+----+----+----+
+    // | 12 | 13 | 14 | 15 |
+    // +----+----+----+----+
+    // | 16 | 17 | 18 | 19 |
+    // +----+----+----+----+
+    size_t const nr_rows = 5;
+    size_t const nr_cols = 4;
+    auto extents = fern::extents[nr_rows][nr_cols];
+
+    double const cell_size = 1.0;
+    double const cell_width = cell_size;
+    double const cell_height = cell_size;
+    double const west = 0.0;
+    double const north = 0.0;
+
+    MaskedRaster<double>::Transformation transformation{{west, cell_width,
+        north, cell_height}};
+    MaskedRaster<double> raster(extents, transformation);
+
+    std::iota(raster.data(), raster.data() + raster.num_elements(), 0);
+
+    // Calculate laplacian.
+    MaskedRaster<double> result(extents, transformation);
+    fern::algebra::laplacian(raster, result);
+
+
+    // Verify the result.
+
+
+
+
+
+    // BOOST_CHECK_EQUAL(fern::get(result, 0, 0), 5);
+
     // fern::algebra::laplacian(values, results_we_get);
 }
 

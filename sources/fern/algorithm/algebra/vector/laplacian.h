@@ -132,7 +132,7 @@ private:
     //   +---+---+---+
     //   | 2 | 3 | 2 |
     //   +---+---+---+
-    //   - But without dividing by the sum of weights!
+    //   - But without dividing by the sum of weights! FilterPolicy.
     //   - In case no-data is encountered, the value of the center is used.
     //     Not sure if we want that. Maybe optional. FilterPolicy.
     //     I would think that no data and their corresponding filter weights

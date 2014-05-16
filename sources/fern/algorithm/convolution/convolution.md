@@ -4,7 +4,22 @@ Convolution  {#convolution}
 [TOC]
 
 
-Theory {#theory}
+Code {#convolution_code}
+====
+
+Algorithms {#convolution_algorithms}
+----------
+- [fern::convolve](@ref fern::convolve)
+
+Policies {#convolution_policies}
+--------
+
+Neighborhoods {#convolution_neighborhoods}
+-------------
+- [fern::Square](@ref fern::Square)
+
+
+Theory {#convolution_theory}
 ======
 Computer Graphics, Principles and Practice:
 
@@ -20,7 +35,7 @@ The kernel is applied to the image by placing the kernel over the image to be co
 
 The sum of all these products is tabulated and divided by the kernel's normalizer. This result is placed into the new image at the position of the kernel's center. The kernel is translated to the next pixel position and the process repeats until all image pixels have been processed.
 
-Kernel {#kernel}
+Kernel {#convolution_kernel}
 ------
 In image processing, a kernel is a small matrix that contains weights to be used to calculate new values based on a source image. For each pixel, the kernel is positioned with the center of the kernel on the current pixel. Surrounding pixels are weighted by the weights in the corresponding kernel cells, and the result is used as the value for the current pixel.
 
@@ -47,7 +62,7 @@ Sharpen:
      0 -1  0
 
 
-Neighborhood {#neighborhood}
+Neighborhood {#convolution_neighborhood}
 ------------
 The neighborhood represents the shape of the non-zero values in the kernel. There are different neighborhood shapes:
 
@@ -57,7 +72,7 @@ The neighborhood represents the shape of the non-zero values in the kernel. Ther
 - Circle.
 
 
-See also {#see_also}
+See also {#convolution_see_also}
 ========
 - [Wikipedia on convolution](https://en.wikipedia.org/wiki/Convolution)
 - [Wikipedia on image processing kernel](https://en.wikipedia.org/wiki/Kernel_(image_processing)
