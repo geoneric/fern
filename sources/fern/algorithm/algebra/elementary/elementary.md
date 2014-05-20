@@ -7,6 +7,14 @@ Elementary algebra {#elementary_algebra}
 Arithmethic {#arithmetic}
 ===========
 
+Absolute {#absolute}
+--------
+Calculate the absolute value of each value in a collection.
+
+- [fern::algebra::absolute](@ref fern::algebra::absolute)
+- [fern::algebra::Absolute](@ref fern::algebra::Absolute)
+
+
 Add {#add}
 ---
 Add the values in two collections.

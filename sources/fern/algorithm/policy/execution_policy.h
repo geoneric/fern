@@ -11,8 +11,8 @@ class SequentialExecutionPolicy;
 class ParallelExecutionPolicy;
 
 
-constexpr SequentialExecutionPolicy seq = SequentialExecutionPolicy();
+constexpr SequentialExecutionPolicy sequential = SequentialExecutionPolicy();
 
-constexpr ParallelExecutionPolicy par = ParallelExecutionPolicy();
+constexpr ParallelExecutionPolicy parallel = ParallelExecutionPolicy();
 
 } // namespace fern

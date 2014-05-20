@@ -1,4 +1,5 @@
 #pragma once
+#include "fern/core/assert.h"
 #include "fern/core/base_class.h"
 #include "fern/algorithm/core/operation_traits.h"
 #include "fern/algorithm/policy/policies.h"
@@ -144,8 +145,12 @@ private:
     detail::dispatch::BinaryOperation<A1, A2, R,
         OutOfDomainPolicy, OutOfRangePolicy, InputNoDataPolicy,
         OutputNoDataPolicy, subtract::Algorithm<A1Value, A2Value>,
-        typename ArgumentTraits<A1>::argument_category,
-        typename ArgumentTraits<A2>::argument_category> _algorithm;
+        typename base_class<
+            typename ArgumentTraits<A1>::argument_category,
+            array_2d_tag>::type,
+        typename base_class<
+            typename ArgumentTraits<A2>::argument_category,
+            array_2d_tag>::type> _algorithm;
 
 };
 

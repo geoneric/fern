@@ -12,9 +12,8 @@ BOOST_AUTO_TEST_CASE(raster)
     size_t const nr_cols = 4;
     auto extents = fern::extents[nr_rows][nr_cols];
 
-    double const cell_size = 1.0;
-    double const cell_width = cell_size;
-    double const cell_height = cell_size;
+    double const cell_width = 4.0;
+    double const cell_height = 5.0;
     double const west = 0.0;
     double const north = 0.0;
     using MaskedRaster = fern::MaskedRaster<int, 2>;
@@ -25,6 +24,11 @@ BOOST_AUTO_TEST_CASE(raster)
 
     BOOST_CHECK_EQUAL(raster[0][0], 0);
     BOOST_CHECK_EQUAL(raster[1][0], nr_cols);
+
+    BOOST_CHECK_EQUAL(raster.transformation()[0], west);
+    BOOST_CHECK_EQUAL(raster.transformation()[1], cell_width);
+    BOOST_CHECK_EQUAL(raster.transformation()[2], north);
+    BOOST_CHECK_EQUAL(raster.transformation()[3], cell_height);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

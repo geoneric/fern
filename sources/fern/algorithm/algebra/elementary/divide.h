@@ -158,8 +158,12 @@ private:
     detail::dispatch::BinaryOperation<A1, A2, R,
         OutOfDomainPolicy, OutOfRangePolicy, InputNoDataPolicy,
         OutputNoDataPolicy, divide::Algorithm<A1Value, A2Value>,
-        typename ArgumentTraits<A1>::argument_category,
-        typename ArgumentTraits<A2>::argument_category> _algorithm;
+        typename base_class<
+            typename ArgumentTraits<A1>::argument_category,
+            array_2d_tag>::type,
+        typename base_class<
+            typename ArgumentTraits<A2>::argument_category,
+            array_2d_tag>::type> _algorithm;
 
 };
 

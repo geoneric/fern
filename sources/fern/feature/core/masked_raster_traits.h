@@ -83,6 +83,15 @@ inline typename ArgumentTraits<MaskedRaster<T, 1>>::reference get(
 
 template<
     class T>
+inline double cell_area(
+    MaskedRaster<T, 2> const& raster)
+{
+    return raster.transformation()[1] * raster.transformation()[3];
+}
+
+
+template<
+    class T>
 inline typename ArgumentTraits<MaskedRaster<T, 2>>::const_reference get(
     MaskedRaster<T, 2> const& raster,
     size_t index1,
@@ -139,5 +148,6 @@ inline typename ArgumentTraits<MaskedRaster<T, 3>>::reference get(
     // assert(!raster.mask()[index1][index2][index3]);
     return raster[index1][index2][index3];
 }
+
 
 } // namespace fern

@@ -1,4 +1,5 @@
 SET(TEST_NAMES
+    unary_operation_test
     result_type_test
     result_value_test
 )

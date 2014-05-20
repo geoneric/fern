@@ -122,8 +122,12 @@ private:
         OutOfDomainPolicy, OutOfRangePolicy, InputNoDataPolicy,
         OutputNoDataPolicy, equal::Algorithm<A1ConstReference,
             A2ConstReference, RReference>,
-        typename ArgumentTraits<A1>::argument_category,
-        typename ArgumentTraits<A2>::argument_category> _algorithm;
+        typename base_class<
+            typename ArgumentTraits<A1>::argument_category,
+            array_2d_tag>::type,
+        typename base_class<
+            typename ArgumentTraits<A2>::argument_category,
+            array_2d_tag>::type> _algorithm;
 
 };
 

@@ -24,6 +24,15 @@ inline constexpr bool DiscardRangeErrors<Parameters...>::within_range(
 }
 
 
+namespace nullary {
+
+template<
+    class Result>
+using DiscardRangeErrors = DiscardRangeErrors<Result>;
+
+} // namespace nullary
+
+
 namespace unary {
 
 template<

@@ -6,6 +6,7 @@ Algebra {#algebra}
 
 Categories {#categories}
 ==========
+- @ref boolean_algebra
 - @ref elementary_algebra
 - @ref vector_algebra
 

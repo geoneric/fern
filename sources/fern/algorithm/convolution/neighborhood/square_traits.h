@@ -24,6 +24,28 @@ template<
     class T,
     size_t radius>
 inline constexpr size_t size(
+    Square<T, radius> const& square)
+{
+    return width(square) * height(square);
+}
+
+
+template<
+    class T,
+    size_t radius>
+inline constexpr size_t size(
+    Square<T, radius> const& /* square */,
+    size_t /* dimension */)
+{
+    // assert(dimension < 2);
+    return radius;
+}
+
+
+template<
+    class T,
+    size_t radius>
+inline constexpr size_t width(
     Square<T, radius> const& /* square */)
 {
     return Square<T, radius>::size();
@@ -33,20 +55,10 @@ inline constexpr size_t size(
 template<
     class T,
     size_t radius>
-inline constexpr size_t width(
-    Square<T, radius> const& square)
-{
-    return size(square);
-}
-
-
-template<
-    class T,
-    size_t radius>
 inline constexpr size_t height(
-    Square<T, radius> const& square)
+    Square<T, radius> const& /* square */)
 {
-    return size(square);
+    return Square<T, radius>::size();
 }
 
 
@@ -68,8 +80,8 @@ inline T const& get(
     size_t index1,
     size_t index2)
 {
-    assert(index1 < size(square));
-    assert(index2 < size(square));
+    assert(index1 < width(square));
+    assert(index2 < height(square));  // height == width
     return square[index1][index2];
 }
 

@@ -51,19 +51,6 @@ BOOST_AUTO_TEST_CASE(out_of_range_policy)
 
 
 template<
-    class Values,
-    class Results>
-void verify_value(
-    Values const& values,
-    Results const& results_we_want)
-{
-    Results results_we_get;
-    fern::algebra::laplacian(values, results_we_get);
-    // BOOST_CHECK_EQUAL(results_we_get, results_we_want);
-}
-
-
-template<
     class T>
 using MaskedRaster = fern::MaskedRaster<T, 2>;
 
@@ -86,9 +73,8 @@ BOOST_AUTO_TEST_CASE(algorithm)
     size_t const nr_cols = 4;
     auto extents = fern::extents[nr_rows][nr_cols];
 
-    double const cell_size = 1.0;
-    double const cell_width = cell_size;
-    double const cell_height = cell_size;
+    double const cell_width = 2.0;
+    double const cell_height = 3.0;
     double const west = 0.0;
     double const north = 0.0;
 
@@ -100,53 +86,39 @@ BOOST_AUTO_TEST_CASE(algorithm)
 
     // Calculate laplacian.
     MaskedRaster<double> result(extents, transformation);
-    fern::algebra::laplacian(raster, result);
 
+    // Without masking input and output values.
+    {
+        fern::algebra::laplacian(raster, result);
 
-    // Verify the result.
+        // Verify the result.
+        BOOST_CHECK_EQUAL(fern::get(result, 0, 0),
+            (25.0 - (8.0 * 0.0)) / 6.0);
+        BOOST_CHECK_EQUAL(fern::get(result, 1, 1),
+            (100.0 - (20.0 * 5.0)) / 6.0);
+    }
 
+    using InputNoDataPolicy = fern::DetectNoDataByValue<fern::Mask<2>>;
+    using OutputNoDataPolicy = fern::MarkNoDataByValue<fern::Mask<2>>;
 
+    // With masking input and output values.
+    {
+        result.fill(999.0);
+        result.mask().fill(false);
+        result.mask()[1][1] = true;
+        fern::algebra::laplacian(
+            InputNoDataPolicy(result.mask(), true),
+            OutputNoDataPolicy(result.mask(), true),
+            raster, result);
 
-
-
-    // BOOST_CHECK_EQUAL(fern::get(result, 0, 0), 5);
-
-    // fern::algebra::laplacian(values, results_we_get);
+        // Verify the result.
+        // TODO Laplacian must use the policies.
+        BOOST_CHECK_EQUAL(fern::get(result.mask(), 0, 0), false);
+        BOOST_CHECK_EQUAL(fern::get(result.mask(), 1, 1), true);
+        BOOST_CHECK_EQUAL(fern::get(result, 0, 0),
+            (15.0 - (6.0 * 0.0)) / 6.0);
+        BOOST_CHECK_EQUAL(fern::get(result, 1, 1), 999.0);
+    }
 }
-
-
-/// BOOST_AUTO_TEST_CASE(algebra)
-/// {
-///     // Create input array:
-///     // +----+----+----+----+
-///     // |  0 |  1 |  2 |  3 |
-///     // +----+----+----+----+
-///     // |  4 |  5 |  6 |  7 |
-///     // +----+----+----+----+
-///     // |  8 |  9 | 10 | 11 |
-///     // +----+----+----+----+
-///     // | 12 | 13 | 14 | 15 |
-///     // +----+----+----+----+
-///     // | 16 | 17 | 18 | 19 |
-///     // +----+----+----+----+
-///     size_t const nr_rows = 5;
-///     size_t const nr_cols = 4;
-///     auto extents = fern::extents[nr_rows][nr_cols];
-///     fern::Array<double, 2> argument(extents);
-///     std::iota(argument.data(), argument.data() + argument.num_elements(), 0);
-/// 
-///     // Calculate laplacian.
-///     fern::Array<double, 2> result(extents);
-///     fern::algebra::laplacian(argument, result);
-/// 
-///     // Verify the result.
-/// 
-/// 
-///     // BOOST_CHECK_EQUAL(fern::get(result, 0, 0), 5);
-/// 
-/// 
-/// 
-/// 
-/// }
 
 BOOST_AUTO_TEST_SUITE_END()

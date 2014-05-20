@@ -1,7 +1,10 @@
 #define BOOST_TEST_MODULE fern algorithm convolution convolve
 #include <boost/test/unit_test.hpp>
-#include "fern/feature/core/array.h"
-#include "fern/feature/core/array_traits.h"
+#include "fern/core/constant_traits.h"
+#include "fern/core/types.h"
+#include "fern/feature/core/masked_array_traits.h"
+#include "fern/algorithm/algebra/elementary/equal.h"
+#include "fern/algorithm/statistic/count.h"
 #include "fern/algorithm/convolution/neighborhood/square.h"
 #include "fern/algorithm/convolution/neighborhood/square_traits.h"
 #include "fern/algorithm/convolution/convolve.h"
@@ -47,7 +50,7 @@ BOOST_AUTO_TEST_CASE(convolve)
         });
 
         fern::Array<double, 2> result(extents);
-        fern::convolve(argument, kernel, result);
+        fern::convolution::convolve(argument, kernel, result);
 
         // Compare results.
         // Upper left corner. --------------------------------------------------
@@ -223,12 +226,157 @@ BOOST_AUTO_TEST_CASE(convolve)
         });
 
         fern::Array<double, 2> result(extents);
-        fern::convolve(argument, kernel, result);
+        fern::convolution::convolve(argument, kernel, result);
     }
 }
 
-// TODO Out of domain.
-// TODO Out of range.
-// TODO No-data.
+
+template<
+    class Result>
+using OutOfRangePolicy = fern::convolve::OutOfRangePolicy<Result>;
+
+
+BOOST_AUTO_TEST_CASE(out_of_range_policy)
+{
+    // Make sure that out of range can be detected and that no-data can be
+    // written when it happens.
+
+    {
+        auto min_float32 = fern::min<fern::f32>();
+        auto max_float32 = fern::max<fern::f32>();
+
+        OutOfRangePolicy<fern::f32> policy;
+        BOOST_CHECK(policy.within_range(5.0));
+        BOOST_CHECK(policy.within_range(-5.0));
+        BOOST_CHECK(policy.within_range(0.0));
+        BOOST_CHECK(policy.within_range(min_float32));
+        BOOST_CHECK(policy.within_range(max_float32));
+        BOOST_CHECK(!policy.within_range(2 * max_float32));
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(no_data_policies)
+{
+    // Make sure that input no-data is detected and handled correctly.
+    using InputNoDataPolicy = fern::DetectNoDataByValue<fern::Mask<2>>;
+    using OutputNoDataPolicy = fern::MarkNoDataByValue<fern::Mask<2>>;
+
+    size_t const nr_rows = 3;
+    size_t const nr_cols = 3;
+    auto extents = fern::extents[nr_rows][nr_cols];
+
+    // Local average kernel.
+    fern::Square<int, 1> kernel_1({
+        {1, 1, 1},
+        {1, 1, 1},
+        {1, 1, 1}
+    });
+
+    fern::Square<int, 1> kernel_2({
+        {2, 2, 2},
+        {2, 2, 2},
+        {2, 2, 2}
+    });
+
+
+    // Source image with a few masked values.
+    {
+        // +---+---+---+
+        // | 0 | 1 | 2 |
+        // +---+---+---+
+        // | 3 | X | 5 |
+        // +---+---+---+
+        // | 6 | 7 | 8 |
+        // +---+---+---+
+        fern::MaskedArray<double, 2> source(extents);
+        std::iota(source.data(), source.data() + source.num_elements(), 0);
+        source.mask()[1][1] = true;
+        fern::MaskedArray<double, 2> destination(extents);
+        destination.fill(999.9);
+
+        fern::convolution::convolve<
+            fern::MaskedArray<double, 2>,
+            fern::Square<int, 1>,
+            fern::MaskedArray<double, 2>,
+            fern::DivideByWeights,
+            fern::nullary::DiscardRangeErrors,
+            InputNoDataPolicy,
+            OutputNoDataPolicy>(
+                InputNoDataPolicy(source.mask(), true),
+                OutputNoDataPolicy(destination.mask(), true),
+                source, kernel_1, destination);
+
+        // Verify mask.
+        size_t nr_masked_cells{0};
+        fern::statistic::count(destination.mask(), true, nr_masked_cells);
+        BOOST_CHECK_EQUAL(nr_masked_cells, 1);
+        BOOST_CHECK(destination.mask()[1][1]);
+
+        // Verify values.
+        fern::Array<double, 2> result_we_want({
+            { 4.0/3.0, 11.0/5.0,  8.0/3.0},
+            {17.0/5.0, 999.9   , 23.0/5.0},
+            {16.0/3.0, 29.0/5.0, 20.0/3.0}
+        });
+        fern::Array<bool, 2> equal_cells(extents);
+        fern::algebra::equal(destination, result_we_want, equal_cells);
+
+        size_t nr_equal_cells{0};
+        fern::statistic::count(equal_cells, true, nr_equal_cells);
+        BOOST_CHECK_EQUAL(nr_equal_cells, 9);
+    }
+
+
+    // Source image with lots of masked values.
+    {
+        fern::MaskedArray<double, 2> source(extents);
+        std::iota(source.data(), source.data() + source.num_elements(), 0);
+        source.mask_all();
+        fern::MaskedArray<double, 2> destination(extents);
+
+        fern::convolution::convolve<
+            fern::MaskedArray<double, 2>,
+            fern::Square<int, 1>,
+            fern::MaskedArray<double, 2>,
+            fern::DivideByWeights,
+            fern::nullary::DiscardRangeErrors,
+            InputNoDataPolicy,
+            OutputNoDataPolicy>(
+                InputNoDataPolicy(source.mask(), true),
+                OutputNoDataPolicy(destination.mask(), true),
+                source, kernel_1, destination);
+
+        size_t nr_masked_cells;
+        fern::statistic::count(destination.mask(), true, nr_masked_cells);
+        BOOST_CHECK_EQUAL(nr_masked_cells, nr_rows * nr_cols);
+    }
+
+    // Source image with very large values. Convolving these should result
+    // in out-оf-range values. It must be possible to detect these and mark
+    // them as no-data in the result.
+    {
+        fern::MaskedArray<double, 2> source(extents);
+        std::fill(source.data(), source.data() + source.num_elements(),
+            fern::max<double>());
+        fern::MaskedArray<double, 2> destination(extents);
+
+        fern::convolution::convolve<
+            fern::MaskedArray<double, 2>,
+            fern::Square<int, 1>,
+            fern::MaskedArray<double, 2>,
+            fern::DivideByWeights,
+            fern::convolve::OutOfRangePolicy,
+            InputNoDataPolicy,
+            OutputNoDataPolicy>(
+                InputNoDataPolicy(source.mask(), true),
+                OutputNoDataPolicy(destination.mask(), true),
+                source, kernel_2, destination);
+
+        size_t nr_masked_cells;
+        fern::statistic::count(destination.mask(), true, nr_masked_cells);
+        BOOST_CHECK_EQUAL(nr_masked_cells, nr_rows * nr_cols);
+    }
+}
 
 BOOST_AUTO_TEST_SUITE_END()

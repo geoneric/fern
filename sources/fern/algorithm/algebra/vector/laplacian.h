@@ -142,6 +142,8 @@ private:
     //
     // convolute(argument, kernel, result);
     // result = (result - (sum(kernel) * argument)) / (dx * dx);
+    // result = ((convolve(arg, kernel) -
+    //              (convolve(defined(arg), kernel(1)) * arg)) / cell_area
     //
     // So, we require:
     // - [*] sum: Add all values in a kernel. None of these are no-data.

@@ -48,9 +48,12 @@ public:
                    MaskedRaster        (gen_type<nr_ranges> const& sizes,
                                         Transformation const& transformation);
 
+    Transformation const&
+                   transformation      () const;
+
 private:
 
-    Transformation _tranformation;
+    Transformation _transformation;
 
 };
 
@@ -65,9 +68,19 @@ inline MaskedRaster<T, nr_dimensions>::MaskedRaster(
     Transformation const& transformation)
 
     : MaskedArray<T, nr_dimensions>(sizes),
-      _tranformation(transformation)
+      _transformation(transformation)
 
 {
+}
+
+
+template<
+    class T,
+    size_t nr_dimensions>
+inline typename MaskedRaster<T, nr_dimensions>::Transformation const&
+    MaskedRaster<T, nr_dimensions>::transformation() const
+{
+    return _transformation;
 }
 
 } // namespace fern

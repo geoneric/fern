@@ -5,10 +5,17 @@ Policies {#policies}
 
 
 Policies are used to customize algorithms with respect to:
+- How to execute: [execution policy](#execution_policy).
 - How to detect no-data in the inputs: [input-no-data policy](#input_no_data_policy).
 - How to write no-data to the outputs: [output-no-data policy](#output_no_data_policy).
 - How to determine whether input values are in the algorithm's domain: [out-of-domain policy](#out_of_domain_policy).
 - How to determine whether an algorithm's result value is in the domain of the result's value type: [out-of-range policy](#out_of_range_policy).
+
+
+Execution policy {#execution_policy}
+================
+- [SequentialExecutionPolicy](@ref fern::SequentialExecutionPolicy)
+- [ParallelExecutionPolicy](@ref fern::ParallelExecutionPolicy)
 
 
 Input-no-data policy {#input_no_data_policy}

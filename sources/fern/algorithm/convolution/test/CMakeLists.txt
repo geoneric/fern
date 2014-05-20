@@ -5,6 +5,7 @@ SET(TEST_NAMES
 MACRO(ADD_UNIT_TEST NAME)
     ADD_EXECUTABLE(algorithm_convolution_${NAME} ${NAME})
     TARGET_LINK_LIBRARIES(algorithm_convolution_${NAME}
+        fern_algorithm_core
         fern_feature_core
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )

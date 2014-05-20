@@ -1,4 +1,5 @@
 #pragma once
+#include "fern/feature/core/array_traits.h"
 #include "fern/feature/core/masked_array.h"
 
 
