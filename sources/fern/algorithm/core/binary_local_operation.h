@@ -20,7 +20,7 @@ template<class Values1, class Values2, class Result,
     class Algorithm,
     class A1CollectionCategory,
     class Values2CollectionCategory>
-struct BinaryOperation
+struct BinaryLocalOperation
 {
 };
 
@@ -31,7 +31,7 @@ template<class Values1, class Values2, class Result,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class Algorithm>
-class BinaryOperation<Values1, Values2, Result,
+class BinaryLocalOperation<Values1, Values2, Result,
         OutOfDomainPolicy,
         OutOfRangePolicy,
         InputNoDataPolicy,
@@ -53,7 +53,7 @@ class BinaryOperation<Values1, Values2, Result,
 
 public:
 
-    BinaryOperation(
+    BinaryLocalOperation(
         Algorithm const& algorithm)
         : OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>(),
           OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
@@ -64,7 +64,7 @@ public:
     {
     }
 
-    BinaryOperation(
+    BinaryLocalOperation(
         InputNoDataPolicy&& input_no_data_policy,
         OutputNoDataPolicy&& output_no_data_policy,
         Algorithm const& algorithm)
@@ -105,7 +105,7 @@ template<class Values1, class Values2, class Result,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class Algorithm>
-class BinaryOperation<Values1, Values2, Result,
+class BinaryLocalOperation<Values1, Values2, Result,
         OutOfDomainPolicy,
         OutOfRangePolicy,
         InputNoDataPolicy,
@@ -127,7 +127,7 @@ class BinaryOperation<Values1, Values2, Result,
 
 public:
 
-    BinaryOperation(
+    BinaryLocalOperation(
         Algorithm const& algorithm)
         : OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>(),
           OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
@@ -138,7 +138,7 @@ public:
     {
     }
 
-    BinaryOperation(
+    BinaryLocalOperation(
         InputNoDataPolicy&& input_no_data_policy,
         OutputNoDataPolicy&& output_no_data_policy,
         Algorithm const& algorithm)
@@ -202,7 +202,7 @@ template<class Values1, class Values2, class Result,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class Algorithm>
-class BinaryOperation<Values1, Values2, Result,
+class BinaryLocalOperation<Values1, Values2, Result,
         OutOfDomainPolicy,
         OutOfRangePolicy,
         InputNoDataPolicy,
@@ -224,7 +224,7 @@ class BinaryOperation<Values1, Values2, Result,
 
 public:
 
-    BinaryOperation(
+    BinaryLocalOperation(
         Algorithm const& algorithm)
         : OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>(),
           OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
@@ -235,7 +235,7 @@ public:
     {
     }
 
-    BinaryOperation(
+    BinaryLocalOperation(
         InputNoDataPolicy&& input_no_data_policy,
         OutputNoDataPolicy&& output_no_data_policy,
         Algorithm const& algorithm)
@@ -331,7 +331,7 @@ template<class Values1, class Values2, class Result,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class Algorithm>
-class BinaryOperation<Values1, Values2, Result,
+class BinaryLocalOperation<Values1, Values2, Result,
         OutOfDomainPolicy,
         OutOfRangePolicy,
         InputNoDataPolicy,
@@ -353,7 +353,7 @@ class BinaryOperation<Values1, Values2, Result,
 
 public:
 
-    BinaryOperation(
+    BinaryLocalOperation(
         Algorithm const& algorithm)
         : OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>(),
           OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
@@ -364,7 +364,7 @@ public:
     {
     }
 
-    BinaryOperation(
+    BinaryLocalOperation(
         InputNoDataPolicy&& input_no_data_policy,
         OutputNoDataPolicy&& output_no_data_policy,
         Algorithm const& algorithm)
@@ -428,7 +428,7 @@ template<class Values1, class Values2, class Result,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class Algorithm>
-class BinaryOperation<Values1, Values2, Result,
+class BinaryLocalOperation<Values1, Values2, Result,
         OutOfDomainPolicy,
         OutOfRangePolicy,
         InputNoDataPolicy,
@@ -450,7 +450,7 @@ class BinaryOperation<Values1, Values2, Result,
 
 public:
 
-    BinaryOperation(
+    BinaryLocalOperation(
         Algorithm const& algorithm)
         : OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>(),
           OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
@@ -461,7 +461,7 @@ public:
     {
     }
 
-    BinaryOperation(
+    BinaryLocalOperation(
         InputNoDataPolicy&& input_no_data_policy,
         OutputNoDataPolicy&& output_no_data_policy,
         Algorithm const& algorithm)
@@ -529,7 +529,7 @@ template<class Values1, class Values2, class Result,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class Algorithm>
-class BinaryOperation<Values1, Values2, Result,
+class BinaryLocalOperation<Values1, Values2, Result,
         OutOfDomainPolicy,
         OutOfRangePolicy,
         InputNoDataPolicy,
@@ -551,7 +551,7 @@ class BinaryOperation<Values1, Values2, Result,
 
 public:
 
-    BinaryOperation(
+    BinaryLocalOperation(
         Algorithm const& algorithm)
         : OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>(),
           OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
@@ -562,7 +562,7 @@ public:
     {
     }
 
-    BinaryOperation(
+    BinaryLocalOperation(
         InputNoDataPolicy&& input_no_data_policy,
         OutputNoDataPolicy&& output_no_data_policy,
         Algorithm const& algorithm)
@@ -626,7 +626,7 @@ template<class Values1, class Values2, class Result,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class Algorithm>
-class BinaryOperation<Values1, Values2, Result,
+class BinaryLocalOperation<Values1, Values2, Result,
         OutOfDomainPolicy,
         OutOfRangePolicy,
         InputNoDataPolicy,
@@ -648,7 +648,7 @@ class BinaryOperation<Values1, Values2, Result,
 
 public:
 
-    BinaryOperation(
+    BinaryLocalOperation(
         Algorithm const& algorithm)
         : OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>(),
           OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
@@ -659,7 +659,7 @@ public:
     {
     }
 
-    BinaryOperation(
+    BinaryLocalOperation(
         InputNoDataPolicy&& input_no_data_policy,
         OutputNoDataPolicy&& output_no_data_policy,
         Algorithm const& algorithm)
