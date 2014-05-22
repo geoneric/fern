@@ -78,18 +78,25 @@ inline FunctionWrapper::FunctionWrapper(
 
     // : _concept(std::make_unique<Model<Function>>(std::move(function)))
 
-    : _concept(new Model<Function>(std::move(function)))
+    : _concept(std::make_unique<Model<Function>>(std::move(function)))
 
 {
 }
 
 
+//! Thread pool.
+/*!
+  \warning   Don't create a thread pool if you don't have anything useful
+             for the threads to do. They will continuously yield and will
+             occupy the machine by doing nothing.
+  \sa        .
+*/
 class ThreadPool
 {
 
 public:
 
-                   ThreadPool          ();
+                   ThreadPool          (size_t nr_threads);
 
                    ~ThreadPool         ();
 
@@ -98,7 +105,7 @@ public:
     std::future<typename std::result_of<Function()>::type>
                    submit              (Function function);
 
-    size_t         nr_threads          () const;
+    size_t         size                () const;
 
 private:
 
@@ -128,7 +135,7 @@ inline std::future<typename std::result_of<Function()>::type>
     ThreadPool::submit(
         Function function)
 {
-    typedef typename std::result_of<Function()>::type result_type;
+    using result_type = typename std::result_of<Function()>::type;
 
     std::packaged_task<result_type()> task(std::move(function));
     std::future<result_type> result(task.get_future());

@@ -24,9 +24,9 @@ class Interpreter
 
 public:
 
-    typedef SymbolTable<std::shared_ptr<DataSource>> DataSourceSymbolTable;
+    using DataSourceSymbolTable = SymbolTable<std::shared_ptr<DataSource>>;
 
-    typedef SymbolTable<std::shared_ptr<DataSync>> DataSyncSymbolTable;
+    using DataSyncSymbolTable =  SymbolTable<std::shared_ptr<DataSync>>;
 
                    Interpreter         ();
 

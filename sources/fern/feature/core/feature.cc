@@ -47,9 +47,9 @@ std::vector<String> Feature::feature_names() const
 bool Feature::contains_feature(
     Path const& path) const
 {
-    return String(path.parent_path()).is_empty()
-        ? _features.find(path) != _features.end()
-        : static_cast<bool>(feature(path))
+    return path.parent_path().generic_string().is_empty()
+        ? _features.find(path.generic_string()) != _features.end()
+        : static_cast<bool>(feature(path.generic_string()))
         ;
 }
 
@@ -72,8 +72,8 @@ void Feature::add_feature(
 #ifndef NDEBUG
     auto result =
 #endif
-    parent_feature->_features.insert(std::make_pair(String(path.filename()),
-        feature));
+    parent_feature->_features.insert(std::make_pair(
+        path.filename().generic_string(), feature));
 
     assert(result.second);
 }
@@ -156,9 +156,9 @@ std::vector<String> Feature::attribute_names() const
 bool Feature::contains_attribute(
     Path const& path) const
 {
-    return String(path.parent_path()).is_empty()
-        ? _attributes.find(path) != _attributes.end()
-        : static_cast<bool>(attribute(path))
+    return path.parent_path().generic_string().is_empty()
+        ? _attributes.find(path.generic_string()) != _attributes.end()
+        : static_cast<bool>(attribute(path.generic_string()))
         ;
 }
 
@@ -181,8 +181,8 @@ void Feature::add_attribute(
 #ifndef NDEBUG
     auto result =
 #endif
-    parent_feature->_attributes.insert(std::make_pair(String(path.filename()),
-        attribute));
+    parent_feature->_attributes.insert(std::make_pair(
+        path.filename().generic_string(), attribute));
 
     assert(result.second);
 }
@@ -195,16 +195,17 @@ void Feature::add_attribute(
 std::shared_ptr<Attribute> Feature::attribute(
     Path const& path) const
 {
-    return parent_feature(path)->_attributes.at(path.filename());
+    return parent_feature(path)->_attributes.at(
+        path.filename().generic_string());
 }
 
 
 Feature* Feature::parent_feature(
     Path const& path)
 {
-    assert(String(path.parent_path()).is_empty() ||
+    assert(path.parent_path().generic_string().is_empty() ||
         contains_feature(path.parent_path()));
-    return String(path.parent_path()).is_empty()
+    return path.parent_path().generic_string().is_empty()
         ? this : feature(path.parent_path()).get();
 }
 
@@ -212,9 +213,9 @@ Feature* Feature::parent_feature(
 Feature const* Feature::parent_feature(
     Path const& path) const
 {
-    assert(String(path.parent_path()).is_empty() ||
+    assert(path.parent_path().generic_string().is_empty() ||
         contains_feature(path.parent_path()));
-    return String(path.parent_path()).is_empty()
+    return path.parent_path().generic_string().is_empty()
         ? this : feature(path.parent_path()).get();
 }
 

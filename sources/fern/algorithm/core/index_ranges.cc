@@ -5,7 +5,7 @@ namespace fern {
 
 //! Determine index ranges to use for partitioning a 2D array using \a nr_threads available worker threads.
 /*!
-  \param     nr_threads Number of worker threads.
+  \param     nr_threads Number of worker threads. Must be larger than 0.
   \param     size1 Amount of values in the first dimension.
   \param     size2 Amount of values in the second dimension.
   \return    Collection of IndexRanges instances of partitioned blocks.
@@ -20,6 +20,8 @@ std::vector<IndexRanges<2>> index_ranges(
     size_t const size1,
     size_t const size2)
 {
+    assert(nr_threads != 0);
+
     // Assuming the last size is the size of the dimension whose elements
     // are adjacent to each other in memory.
     size_t const block_width = size2;

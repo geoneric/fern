@@ -50,7 +50,7 @@ inline void show_value(
 #define SHOW_VALUE_CASE(                                                       \
         value_type)                                                            \
     case value_type: {                                                         \
-        typedef ValueTypeTraits<value_type>::type type;                        \
+        using type = ValueTypeTraits<value_type>::type;                        \
         ConstantAttribute<type> const& constant_attribute(                     \
             dynamic_cast<ConstantAttribute<type> const&>(*value));             \
         show_value<type>(constant_attribute.values().value());                 \
@@ -180,7 +180,7 @@ void enter_interpreter()
     // doesn't exists, which is OK.
     std::string history_filename((
         fern::String::decode_from_default_encoding(std::getenv("HOME")) +
-        "/.fern").encode_in_default_encoding());
+        String("/.fern")).encode_in_default_encoding());
     /* int result = */ read_history(history_filename.c_str());
 
     while(true) {

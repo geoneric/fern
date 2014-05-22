@@ -1,4 +1,5 @@
 #include "fern/io/fern/fern_dataset.h"
+#include <hdf/hdf.h>
 #include "fern/core/data_name.h"
 #include "fern/core/io_error.h"
 #include "fern/core/type_traits.h"
@@ -54,7 +55,8 @@ H5::DataSet FernDataset::dataset(
                 MessageId::DOES_NOT_CONTAIN_ATTRIBUTE, path));
     }
 
-    H5::DataSet dataset = _file->openDataSet(String(path).encode_in_utf8());
+    H5::DataSet dataset = _file->openDataSet(
+        path.generic_string().encode_in_utf8());
 
     return dataset;
 }
@@ -168,7 +170,7 @@ size_t FernDataset::nr_features(
         Path const& path) const
 {
     assert(contains_feature(path));
-    H5::Group group(_file->openGroup(String(path).encode_in_utf8()));
+    H5::Group group(_file->openGroup(path.generic_string().encode_in_utf8()));
 
     size_t result = 0;
     H5G_obj_t type;
@@ -188,7 +190,7 @@ std::vector<String> FernDataset::feature_names() const
 {
     Path path("/");
     assert(contains_feature(path));
-    H5::Group group(_file->openGroup(String(path).encode_in_utf8()));
+    H5::Group group(_file->openGroup(path.generic_string().encode_in_utf8()));
 
     std::vector<String> result;
     H5G_obj_t type;
@@ -208,7 +210,7 @@ size_t FernDataset::nr_attributes(
         Path const& path) const
 {
     assert(contains_feature(path));
-    H5::Group group(_file->openGroup(String(path).encode_in_utf8()));
+    H5::Group group(_file->openGroup(path.generic_string().encode_in_utf8()));
 
     size_t result = 0;
     H5G_obj_t type;
@@ -238,7 +240,7 @@ bool FernDataset::contains_feature(
     bool result = true;
 
     for(auto const& name: names) {
-        pathname += "/" + name;
+        pathname += String("/") + name;
 
         if(!contains_feature_by_name(pathname)) {
             result = false;
@@ -277,10 +279,10 @@ bool FernDataset::contains_feature_by_name(
 bool FernDataset::contains_attribute(
     Path const& path) const
 {
-    return String(path.parent_path()).is_empty()
-        ? contains_attribute_by_name(path)
+    return path.parent_path().generic_string().is_empty()
+        ? contains_attribute_by_name(path.generic_string())
         : contains_feature(path.parent_path()) &&
-              contains_attribute_by_name(path);
+              contains_attribute_by_name(path.generic_string());
 }
 
 
@@ -370,7 +372,7 @@ ExpressionType FernDataset::expression_type(
 
     ExpressionType result;
     H5::DataSet const dataset = _file->openDataSet(
-        String(path).encode_in_utf8());
+        path.generic_string().encode_in_utf8());
     H5T_class_t const type_class = dataset.getTypeClass();
 
     switch(type_class) {
@@ -549,7 +551,7 @@ std::shared_ptr<Attribute> FernDataset::open_attribute(
 std::shared_ptr<Feature> FernDataset::read_feature(
     Path const& path) const
 {
-    if(!contains_feature_by_name(path)) {
+    if(!contains_feature_by_name(path.generic_string())) {
         throw IOError(this->name(),
             Exception::messages().format_message(
                 MessageId::DOES_NOT_CONTAIN_FEATURE, path));
@@ -672,7 +674,7 @@ void FernDataset::add_feature(
     String feature_pathname;
 
     for(auto const& name: names) {
-        feature_pathname += "/" + name;
+        feature_pathname += String("/") + name;
 
         if(!contains_feature_by_name(feature_pathname)) {
             _file->createGroup(feature_pathname.encode_in_utf8());
@@ -685,7 +687,7 @@ std::shared_ptr<H5::Group> FernDataset::group(
         Path const& path) const
 {
     return std::make_shared<H5::Group>(
-        _file->openGroup(String(path).encode_in_utf8()));
+        _file->openGroup(path.generic_string().encode_in_utf8()));
 }
 
 
@@ -700,7 +702,7 @@ void FernDataset::write_attribute(
     assert(_file);
 
     Path feature_path(path.parent_path());
-    assert(!String(feature_path).is_empty());
+    assert(!feature_path.generic_string().is_empty());
 
     if(!contains_feature(feature_path)) {
         add_feature(feature_path);
@@ -708,9 +710,9 @@ void FernDataset::write_attribute(
 
     std::shared_ptr<H5::Group> group(this->group(feature_path));
     H5::DataSet dataset;
-    String attribute_name(path.filename());
+    String attribute_name(path.filename().generic_string());
 
-    if(!contains_attribute_by_name(path)) {
+    if(!contains_attribute_by_name(path.generic_string())) {
         // Create new dataset for a scalar value. Destination value has native
         // type. When reading on a different platform, this may require a
         // conversion to another endianess.

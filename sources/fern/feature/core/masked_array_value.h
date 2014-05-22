@@ -23,8 +23,8 @@ public:
 
                    MaskedArrayValue    ()=default;
 
-    template<class ExtentList>
-                   MaskedArrayValue    (ExtentList const& sizes);
+    template<size_t nr_ranges>
+                   MaskedArrayValue    (gen_type<nr_ranges> const& sizes);
 
                    MaskedArrayValue    (MaskedArrayValue const&)=delete;
 
@@ -45,9 +45,9 @@ template<
     class T,
     size_t nr_dimensions>
 template<
-    class ExtentList>
+    size_t nr_ranges>
 inline MaskedArrayValue<T, nr_dimensions>::MaskedArrayValue(
-    ExtentList const& sizes)
+    gen_type<nr_ranges> const& sizes)
 
     : MaskedArray<T, nr_dimensions>(sizes),
       Value()

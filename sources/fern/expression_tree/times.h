@@ -20,12 +20,12 @@ template<
     class V>
 struct Times<Constant<U>, Constant<V>>
 {
-    typedef Constant<U> A1;
-    typedef Constant<V> A2;
-    typedef Constant<decltype(U() * V())> result_type;
+    using A1 = Constant<U>;
+    using A2 = Constant<V>;
+    using result_type = Constant<decltype(U() * V())>;
 
-    typedef Local Category;
-    typedef arity::Binary Arity;
+    using Category = Local;
+    using Arity = arity::Binary;
 
     result_type operator()(
         Constant<U> const& argument1,
@@ -41,7 +41,7 @@ struct Times<Constant<U>, Constant<V>>
 //     class V>
 // struct Times<Array<U>, Array<V>>
 // {
-//     typedef Array<typename Times<U, V>::result_type> result_type;
+//     using result_type = Array<typename Times<U, V>::result_type>;
 // };
 
 } // namespace expression_tree

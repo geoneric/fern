@@ -22,7 +22,7 @@ template<                                      \
 struct ArrayCategoryTag<T, nr_dimensions>      \
 {                                              \
                                                \
-    typedef array_##nr_dimensions##d_tag type; \
+    using type = array_##nr_dimensions##d_tag; \
                                                \
 };
 
@@ -43,17 +43,16 @@ ARRAY_CATEGORY_TAG(3)
 //     View<T, nr_dimensions>>
 // {
 // 
-//     typedef typename detail::dispatch::ArrayCategoryTag<T, nr_dimensions>::type
-//         argument_category;
+//     using argument_category = typename detail::dispatch::ArrayCategoryTag<T, nr_dimensions>::type;
 // 
 //     template<
 //         class U>
 //     struct Collection
 //     {
-//         typedef Array<T, nr_dimensions> type;
+//         using type = Array<T, nr_dimensions>;
 //     };
 // 
-//     typedef T value_type;
+//     using value_type = T;
 // 
 // };
 
@@ -65,23 +64,25 @@ struct ArgumentTraits<
     Array<T, nr_dimensions>>
 {
 
-    typedef typename detail::dispatch::ArrayCategoryTag<T, nr_dimensions>::type
-        argument_category;
+    using argument_category = typename detail::dispatch::ArrayCategoryTag<T,
+        nr_dimensions>::type;
 
     template<
         class U>
     struct Collection
     {
-        typedef Array<U, nr_dimensions> type;
+        using type = Array<U, nr_dimensions>;
     };
 
-    typedef T value_type;
+    using value_type = T;
+
+    using reference = T&;
+
+    using const_reference = T const&;
 
     static bool const is_masking = false;
 
 };
-
-
 
 
 template<
@@ -108,7 +109,7 @@ inline size_t size(
 
 template<
     class T>
-inline T const& get(
+inline typename ArgumentTraits<Array<T, 1>>::const_reference get(
     Array<T, 1> const& array,
     size_t index)
 {
@@ -119,7 +120,7 @@ inline T const& get(
 
 template<
     class T>
-inline T& get(
+inline typename ArgumentTraits<Array<T, 1>>::reference get(
     Array<T, 1>& array,
     size_t index)
 {
@@ -130,7 +131,7 @@ inline T& get(
 
 template<
     class T>
-inline T const& get(
+inline typename ArgumentTraits<Array<T, 2>>::const_reference get(
     Array<T, 2> const& array,
     size_t index1,
     size_t index2)
@@ -143,7 +144,7 @@ inline T const& get(
 
 template<
     class T>
-inline T& get(
+inline typename ArgumentTraits<Array<T, 2>>::reference get(
     Array<T, 2>& array,
     size_t index1,
     size_t index2)
@@ -156,7 +157,7 @@ inline T& get(
 
 template<
     class T>
-inline T const& get(
+inline typename ArgumentTraits<Array<T, 3>>::const_reference get(
     Array<T, 3> const& array,
     size_t index1,
     size_t index2,
@@ -171,7 +172,7 @@ inline T const& get(
 
 template<
     class T>
-inline T& get(
+inline typename ArgumentTraits<Array<T, 3>>::const_reference get(
     Array<T, 3>& array,
     size_t index1,
     size_t index2,

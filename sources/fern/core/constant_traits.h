@@ -1,4 +1,6 @@
 #pragma once
+#include <cstdint>
+#include "fern/core/argument_traits.h"
 
 
 namespace fern {
@@ -16,41 +18,45 @@ template<
 T&                 get                 (T& constant);
 
 
-#define CONSTANT_ARGUMENT_TRAITS(           \
-    T)                                      \
-template<>                                  \
-struct ArgumentTraits<T>                    \
-{                                           \
-                                            \
-    typedef constant_tag argument_category; \
-                                            \
-    template<                               \
-        class U>                            \
-    struct Constant                         \
-    {                                       \
-        typedef U type;                     \
-    };                                      \
-                                            \
-    typedef T value_type;                   \
-                                            \
-    static bool const is_masking = false;   \
-                                            \
-};                                          \
-                                            \
-                                            \
-template<>                                  \
-inline T const& get(                        \
-    T const& constant)                      \
-{                                           \
-    return constant;                        \
-}                                           \
-                                            \
-                                            \
-template<>                                  \
-inline T& get(                              \
-    T& constant)                            \
-{                                           \
-    return constant;                        \
+#define CONSTANT_ARGUMENT_TRAITS(                           \
+    T)                                                      \
+template<>                                                  \
+struct ArgumentTraits<T>                                    \
+{                                                           \
+                                                            \
+    using argument_category = constant_tag;                 \
+                                                            \
+    template<                                               \
+        class U>                                            \
+    struct Constant                                         \
+    {                                                       \
+        using type = U;                                     \
+    };                                                      \
+                                                            \
+    using value_type = T;                                   \
+                                                            \
+    using reference = T&;                                   \
+                                                            \
+    using const_reference = T const&;                       \
+                                                            \
+    static bool const is_masking = false;                   \
+                                                            \
+};                                                          \
+                                                            \
+                                                            \
+template<>                                                  \
+inline typename ArgumentTraits<T>::const_reference get(     \
+    typename ArgumentTraits<T>::value_type const& constant) \
+{                                                           \
+    return constant;                                        \
+}                                                           \
+                                                            \
+                                                            \
+template<>                                                  \
+inline typename ArgumentTraits<T>::reference get(           \
+    typename ArgumentTraits<T>::value_type& constant)       \
+{                                                           \
+    return constant;                                        \
 }
 
 

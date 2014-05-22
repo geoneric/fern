@@ -117,7 +117,7 @@ BOOST_AUTO_TEST_CASE(parse_command_line)
         std::shared_ptr<DatasetSync> sync(
             std::dynamic_pointer_cast<DatasetSync>(data_syncs[0]));
         BOOST_REQUIRE(sync);
-        BOOST_CHECK_EQUAL(sync->dataset()->name(), "result.frn");
+        BOOST_CHECK_EQUAL(sync->dataset()->name(), fern::String("result.frn"));
         BOOST_CHECK(sync->dataset()->open_mode() == OpenMode::OVERWRITE);
     }
 

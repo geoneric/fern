@@ -19,7 +19,7 @@ class IndexRange
 
 public:
 
-    typedef size_t index;
+    using index = size_t;
 
                    IndexRange          ();
 

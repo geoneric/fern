@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_CASE(raster_1)
 
     auto feature_names = dataset.feature_names();
     BOOST_REQUIRE_EQUAL(feature_names.size(), 1u);
-    BOOST_CHECK_EQUAL(feature_names[0], "raster-1");
+    BOOST_CHECK_EQUAL(feature_names[0], fern::String("raster-1"));
 
     // Read the feature containing the attribute.
     {
@@ -163,9 +163,9 @@ BOOST_AUTO_TEST_CASE(errors)
         }
         catch(fern::IOError const& exception) {
             fern::String message = exception.message();
-            BOOST_CHECK_EQUAL(message,
+            BOOST_CHECK_EQUAL(message, fern::String(
                 "IO error handling raster-1.asc: "
-                "Does not contain feature: blahdiblah");
+                "Does not contain feature: blahdiblah"));
         }
 
         try {
@@ -174,9 +174,9 @@ BOOST_AUTO_TEST_CASE(errors)
         }
         catch(fern::IOError const& exception) {
             fern::String message = exception.message();
-            BOOST_CHECK_EQUAL(message,
+            BOOST_CHECK_EQUAL(message, fern::String(
                 "IO error handling raster-1.asc: "
-                "Does not contain attribute: blahdiblah");
+                "Does not contain attribute: blahdiblah"));
         }
     }
 }

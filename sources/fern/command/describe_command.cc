@@ -56,12 +56,13 @@ void DescribeCommand::describe_attribute(
 void DescribeCommand::describe(
     DataName const& data_name) const
 {
-    if(!dataset_exists(data_name.database_pathname(), OpenMode::READ)) {
+    if(!dataset_exists(data_name.database_pathname().generic_string(),
+            OpenMode::READ)) {
         std::cout << "Dataset does not exist\n";
     }
     else {
-        auto dataset = open_dataset(data_name.database_pathname(),
-            OpenMode::READ);
+        auto dataset = open_dataset(
+            data_name.database_pathname().generic_string(), OpenMode::READ);
         assert(dataset);
 
         if(!data_name.data_pathname().is_empty()) {

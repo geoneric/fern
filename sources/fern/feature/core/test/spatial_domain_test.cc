@@ -37,9 +37,9 @@ BOOST_AUTO_TEST_SUITE(spatial_domain)
 
 BOOST_AUTO_TEST_CASE(spatial_domain)
 {
-    typedef fern::Point<double, 2> Point;
-    typedef fern::Box<Point> Box;
-    typedef fern::SpatialDomain<Box> BoxDomain;
+    using Point = fern::Point<double, 2>;
+    using Box = fern::Box<Point>;
+    using BoxDomain = fern::SpatialDomain<Box>;
 
     BoxDomain spatial_domain;
 

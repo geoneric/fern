@@ -16,7 +16,7 @@ BOOST_AUTO_TEST_SUITE(collect_no_data_indices)
 
 BOOST_AUTO_TEST_CASE(collect_no_data_indices)
 {
-    typedef std::vector<size_t> IndexContainer;
+    using IndexContainer = std::vector<size_t>;
     PolicyHost<IndexContainer> policy;
 
     policy.mark(0);

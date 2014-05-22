@@ -14,6 +14,9 @@ public:
 
     explicit       MaskedConstant      (T const& value);
 
+                   MaskedConstant      (T const& value,
+                                        bool mask);
+
                    MaskedConstant      (MaskedConstant const&)=default;
 
     MaskedConstant& operator=          (MaskedConstant const&)=default;
@@ -45,8 +48,7 @@ template<
     class T>
 inline MaskedConstant<T>::MaskedConstant()
 
-    : _value(),
-      _mask(false)
+    : MaskedConstant(T(), false)
 
 {
 }
@@ -57,8 +59,20 @@ template<
 inline MaskedConstant<T>::MaskedConstant(
     T const& value)
 
+    : MaskedConstant(value, false)
+
+{
+}
+
+
+template<
+    class T>
+inline MaskedConstant<T>::MaskedConstant(
+    T const& value,
+    bool mask)
+
     : _value(value),
-      _mask(false)
+      _mask(mask)
 
 {
 }
@@ -68,6 +82,7 @@ template<
     class T>
 inline T const& MaskedConstant<T>::value() const
 {
+    // assert(!_mask);
     return _value;
 }
 
@@ -76,6 +91,7 @@ template<
     class T>
 inline T& MaskedConstant<T>::value()
 {
+    // assert(!_mask);
     return _value;
 }
 
@@ -95,5 +111,17 @@ inline bool& MaskedConstant<T>::mask()
     return _mask;
 }
 
+
+template<
+    class T>
+inline bool operator==(
+    MaskedConstant<T> const& lhs,
+    MaskedConstant<T> const& rhs)
+{
+    return
+        lhs.mask() == rhs.mask() &&
+        lhs.value() == rhs.value()
+        ;
+}
 
 } // namespace fern

@@ -41,11 +41,11 @@ BOOST_AUTO_TEST_CASE(feature)
     {
         fern::Feature planets;
 
-        typedef int Value;
-        typedef fern::Point<int, 3> Point;
-        typedef fern::SpatialAttribute<fern::SpatialDomain<Point>,
-            Value> PointsAttribute;
-        typedef std::shared_ptr<PointsAttribute> PointsAttributePtr;
+        using Value = int;
+        using Point = fern::Point<int, 3>;
+        using PointsAttribute = fern::SpatialAttribute<fern::SpatialDomain<
+            Point>, Value>;
+        using PointsAttributePtr = std::shared_ptr<PointsAttribute>;
 
         Point center_of_planet1 = { 1, 1, 1 };
         PointsAttributePtr acceleration(std::make_shared<PointsAttribute>());

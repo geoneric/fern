@@ -133,7 +133,7 @@ void ModuleVisitor::Visit(
 void ModuleVisitor::Visit(
     StringVertex& vertex)
 {
-    _module += "\"" + vertex.value() + "\"";
+    _module += String("\"") + vertex.value() + String("\"");
 }
 
 

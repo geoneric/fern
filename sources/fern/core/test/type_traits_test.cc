@@ -15,7 +15,7 @@ BOOST_AUTO_TEST_CASE(type_traits)
     BOOST_CHECK_EQUAL(fern::TypeTraits<uint8_t>::value_types,
         fern::ValueTypes::UINT8);
     BOOST_CHECK_EQUAL(fern::TypeTraits<uint8_t>::value_types.to_string(),
-        "Uint8");
+        fern::String("Uint8"));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

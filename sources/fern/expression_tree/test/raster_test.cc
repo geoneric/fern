@@ -13,7 +13,7 @@ BOOST_AUTO_TEST_CASE(use_cases)
 
     // // A raster modelled by a 2D Boost multi array.
     // {
-    //     typedef boost::multi_array<int32_t, 2> Array;
+    //     using Array = boost::multi_array<int32_t, 2>;
     //     auto extents(boost::extents[nr_rows][nr_cols]);
     //     Array array(extents);
 
@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE(use_cases)
 
     // // A raster modelled by a 2D C array.
     // {
-    //     typedef int32_t* Array;
+    //     using Array = int32_t*;
     //     std::unique_ptr<int32_t> array(new int32_t[nr_rows * nr_cols]);
 
     //     fern::Raster<Array> raster(array);

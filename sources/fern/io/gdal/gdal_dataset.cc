@@ -252,7 +252,7 @@ size_t GDALDataset::nr_features() const
 
 std::vector<String> GDALDataset::feature_names() const
 {
-    return std::vector<String>{Path(this->name()).stem()};
+    return std::vector<String>{Path(this->name()).stem().generic_string()};
 }
 
 
@@ -261,7 +261,8 @@ bool GDALDataset::contains_feature(
 {
     // GDAL raster datasets contain one root feature, but no sub-features.
     // /<raster>
-    return path == String("/") + String(Path(this->name()).stem());
+    return path == Path(String("/") + Path(
+        this->name()).stem().generic_string());
 }
 
 
@@ -272,8 +273,8 @@ bool GDALDataset::contains_attribute(
     // dataset without leading path and extension. It is prefixed by the path
     // to the feature, which is also named after the raster.
     // /<raster>/<raster>
-    return Path("/" + String(Path(this->name()).stem()) + "/" +
-        String(Path(this->name()).stem())) == path;
+    return Path(String("/") + Path(this->name()).stem().generic_string() +
+        String("/") + Path(this->name()).stem().generic_string()) == path;
 }
 
 
@@ -370,11 +371,11 @@ std::shared_ptr<Feature> GDALDataset::read_feature(
                 MessageId::DOES_NOT_CONTAIN_FEATURE, path));
     }
 
-    Path attribute_path = path + "/" + Path(this->name()).stem();
+    Path attribute_path = path / Path(this->name()).stem();
     assert(contains_attribute(attribute_path));
 
     std::shared_ptr<Feature> feature(std::make_shared<Feature>());
-    feature->add_attribute(String(attribute_path.filename()),
+    feature->add_attribute(attribute_path.filename().generic_string(),
         std::dynamic_pointer_cast<Attribute>(read_attribute(attribute_path)));
 
     return feature;

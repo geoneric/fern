@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include <cpp/H5Cpp.h>
+#include <H5Cpp.h>
 #include "fern/core/path.h"
 #include "fern/io/core/open_mode.h"
 

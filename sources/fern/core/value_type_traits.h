@@ -15,84 +15,84 @@ struct ValueTypeTraits
 template<>
 struct ValueTypeTraits<VT_BOOL>
 {
-    typedef bool type;
+    using type = bool;
 };
 
 
 template<>
 struct ValueTypeTraits<VT_UINT8>
 {
-    typedef uint8_t type;
+    using type = uint8_t;
 };
 
 
 template<>
 struct ValueTypeTraits<VT_INT8>
 {
-    typedef int8_t type;
+    using type = int8_t;
 };
 
 
 template<>
 struct ValueTypeTraits<VT_UINT16>
 {
-    typedef uint16_t type;
+    using type = uint16_t;
 };
 
 
 template<>
 struct ValueTypeTraits<VT_INT16>
 {
-    typedef int16_t type;
+    using type = int16_t;
 };
 
 
 template<>
 struct ValueTypeTraits<VT_UINT32>
 {
-    typedef uint32_t type;
+    using type = uint32_t;
 };
 
 
 template<>
 struct ValueTypeTraits<VT_INT32>
 {
-    typedef int32_t type;
+    using type = int32_t;
 };
 
 
 template<>
 struct ValueTypeTraits<VT_UINT64>
 {
-    typedef uint64_t type;
+    using type = uint64_t;
 };
 
 
 template<>
 struct ValueTypeTraits<VT_INT64>
 {
-    typedef int64_t type;
+    using type = int64_t;
 };
 
 
 template<>
 struct ValueTypeTraits<VT_FLOAT32>
 {
-    typedef float type;
+    using type = float;
 };
 
 
 template<>
 struct ValueTypeTraits<VT_FLOAT64>
 {
-    typedef double type;
+    using type = double;
 };
 
 
 template<>
 struct ValueTypeTraits<VT_STRING>
 {
-    typedef String type;
+    using type = String;
 };
 
 } // namespace fern

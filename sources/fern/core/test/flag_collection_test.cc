@@ -15,8 +15,8 @@ class MyFlagCollection:
     public fern::FlagCollection<MyFlagCollection, MyFlags, MF_NR_MY_FLAGS>
 {
 
-    typedef fern::FlagCollection<MyFlagCollection, MyFlags, MF_NR_MY_FLAGS>
-        Base;
+    using Base = fern::FlagCollection<MyFlagCollection, MyFlags,
+        MF_NR_MY_FLAGS>;
 
 public:
 

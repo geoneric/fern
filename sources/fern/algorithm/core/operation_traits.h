@@ -8,7 +8,7 @@ template<
     class Operation>
 struct OperationTraits
 {
-    typedef typename Operation::category category;
+    using category = typename Operation::category;
 };
 
 } // namespace fern

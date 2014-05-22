@@ -36,9 +36,9 @@ struct Result<
 
     /// // Both argument types are not collections. The result's type equals the
     /// // value type.
-    /// typedef RValue type;
+    /// using type = RValue;
 
-    typedef typename boost::mpl::if_<
+    using type = typename boost::mpl::if_<
         typename boost::mpl::and_<
             typename std::is_arithmetic<A1>::type,
             typename std::is_arithmetic<A2>::type>::type,
@@ -56,7 +56,7 @@ struct Result<
             // in combination with the result value type.
             typename ArgumentTraits<A1>::template Constant<RValue>::type>
                 ::type
-    >::type type;
+    >::type;
 
 };
 
@@ -75,7 +75,7 @@ struct Result<
 
     // Use collection template class of first argument as the template class
     // of the result.
-    typedef typename ArgumentTraits<A1>::template Collection<RValue>::type type;
+    using type = typename ArgumentTraits<A1>::template Collection<RValue>::type;
 
 };
 
@@ -94,7 +94,7 @@ struct Result<
 
     // Use collection template class of second argument as the template class
     // of the result.
-    typedef typename ArgumentTraits<A2>::template Collection<RValue>::type type;
+    using type = typename ArgumentTraits<A2>::template Collection<RValue>::type;
 
 };
 
@@ -113,7 +113,7 @@ struct Result<
 
     // Use collection template class of first argument as the template class
     // of the result.
-    typedef typename ArgumentTraits<A1>::template Collection<RValue>::type type;
+    using type = typename ArgumentTraits<A1>::template Collection<RValue>::type;
 
 };
 
@@ -150,17 +150,17 @@ class Result
 private:
 
     FERN_STATIC_ASSERT(std::is_arithmetic, RValue)
-    typedef RValue value_type;
+    using value_type = RValue;
 
 public:
 
     // Determine type of result. This type differs from value_type if one of the
     // argument types is a collection.
-    typedef typename detail::dispatch::Result<A1, A2, value_type,
+    using type = typename detail::dispatch::Result<A1, A2, value_type,
         typename base_class<typename ArgumentTraits<A1>::argument_category,
             collection_tag>::type,
         typename base_class<typename ArgumentTraits<A2>::argument_category,
-            collection_tag>::type>::type type;
+            collection_tag>::type>::type;
 
 };
 

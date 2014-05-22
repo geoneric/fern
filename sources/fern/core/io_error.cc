@@ -1,4 +1,5 @@
 #include "fern/core/io_error.h"
+#include <cstring>
 
 
 namespace fern {

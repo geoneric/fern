@@ -16,27 +16,27 @@ struct Raster
 
     // static_assert(!std::is_pointer<Result>::value, "Type must be a class");
 
-    typedef Result value_type;
+    using value_type = Result;
 
-    typedef Raster<value_type> result_type;
+    using result_type = Raster<value_type>;
 
-    // typedef fern::MaskedArray<Result, 2> result_type;
+    // using result_type = fern::MaskedArray<Result, 2>;
 
-    // typedef typename Result::value_type value_type;
+    // using value_type = typename Result::value_type;
 
-    // typedef Result result_type;
+    // using result_type = Result;
 
-    // typedef typename Result::iterator iterator;
+    // using iterator = typename Result::iterator;
 
-    // typedef typename Result::const_iterator const_iterator;
+    // using const_iterator = typename Result::const_iterator;
 
-    // typedef typename Result::reference reference;
+    // using reference = typename Result::reference;
 
-    // typedef typename Result::const_reference const_reference;
+    // using const_reference = typename Result::const_reference;
 
-    // typedef typename Result::difference_type difference_type;
+    // using difference_type = typename Result::difference_type;
 
-    // typedef typename Result::size_type size_type;
+    // using size_type = typename Result::size_type;
 
     Raster(
         MaskedArray<value_type, 2> const& value)

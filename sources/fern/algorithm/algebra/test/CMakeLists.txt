@@ -1,10 +1,7 @@
 SET(TEST_NAMES
-    count_test
-    equal_test
-    plus_test
+    unary_operation_test
     result_type_test
     result_value_test
-    sum_test
 )
 
 MACRO(ADD_UNIT_TEST NAME)
@@ -15,7 +12,9 @@ MACRO(ADD_UNIT_TEST NAME)
         fern_feature_core  # fern::extents
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
-    ADD_TEST(NAME algorithm_algebra_${NAME} COMMAND algorithm_algebra_${NAME})
+    ADD_TEST(
+        NAME algorithm_algebra_${NAME}
+        COMMAND algorithm_algebra_${NAME})
 ENDMACRO()
 
 FOREACH(NAME ${TEST_NAMES})

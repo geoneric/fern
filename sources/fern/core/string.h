@@ -1,7 +1,8 @@
 #pragma once
 #include <iostream>
+#include <string>
+#include <vector>
 #include <boost/format.hpp>
-#include <unicode/unistr.h>
 
 
 namespace fern {
@@ -21,7 +22,7 @@ namespace fern {
         this.
 */
 class String:
-    private UnicodeString
+    public std::string
 {
 
     friend class DataName;
@@ -33,6 +34,9 @@ public:
 
     static String  decode_from_default_encoding(
                                         std::string const& string);
+
+    static String  decode_from_default_encoding(
+                                        std::wstring const& string);
 
                    String              ()=default;
 
@@ -91,7 +95,12 @@ public:
 
 private:
 
-                   String              (UnicodeString const& string);
+    // WARNING
+    // std::string is not meant to be inherited from. It doesn't have any
+    // virtual functions. Don't add data members here. Our destructor will
+    // never be called to destruct them.
+
+    using Base = std::string;
 
     String&        strip_begin         (String const& characters);
 

@@ -27,7 +27,7 @@ class SymbolTable
 public:
 
     //! Type for scope levels.
-    typedef typename std::vector<Scope<T>>::size_type size_type;
+    using size_type = typename std::vector<Scope<T>>::size_type;
 
     //! Construct an empty symbol table.
     /*!

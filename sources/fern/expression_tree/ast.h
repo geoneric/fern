@@ -13,7 +13,7 @@ struct Operation;
 
 
 // One of the expressions.
-typedef boost::variant<
+using Expression = boost::variant<
     Data,
     boost::recursive_wrapper<Operation<Constant<int32_t>>>,
     boost::recursive_wrapper<Operation<Constant<int64_t>>>,
@@ -21,7 +21,7 @@ typedef boost::variant<
     boost::recursive_wrapper<Operation<Raster<int32_t>>>,
     boost::recursive_wrapper<Operation<Raster<int64_t>>>,
     boost::recursive_wrapper<Operation<Raster<double>>>
-> Expression;
+>;
 
 
 template<
@@ -29,7 +29,7 @@ template<
 struct Operation
 {
 
-    typedef Result result_type;
+    using result_type = Result;
 
     Operation(
         std::string const& name,

@@ -11,7 +11,7 @@ BOOST_AUTO_TEST_CASE(scoping)
 {
     using namespace fern;
 
-    typedef SymbolTable<boost::any> SymbolTable;
+    using SymbolTable = SymbolTable<boost::any>;
 
     SymbolTable table;
     String name("a");

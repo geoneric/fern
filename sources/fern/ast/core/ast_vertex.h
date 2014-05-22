@@ -10,8 +10,8 @@ namespace fern {
 class ExpressionVertex;
 class StatementVertex;
 
-typedef std::vector<std::shared_ptr<ExpressionVertex>> ExpressionVertices;
-typedef std::vector<std::shared_ptr<StatementVertex>> StatementVertices;
+using ExpressionVertices = std::vector<std::shared_ptr<ExpressionVertex>>;
+using StatementVertices = std::vector<std::shared_ptr<StatementVertex>>;
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -25,13 +25,13 @@ class AstVertex:
 
 private:
 
-    typedef std::vector<AstVertex*> AstVertices;
+    using AstVertices = std::vector<AstVertex*>;
 
 public:
 
     LOKI_DEFINE_VISITABLE()
 
-    typedef AstVertices::size_type size_type;
+    using size_type = AstVertices::size_type;
 
     virtual        ~AstVertex          ()=default;
 

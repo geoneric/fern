@@ -11,20 +11,20 @@ struct ArgumentTraits<
     std::vector<T>>
 {
 
-    typedef array_1d_tag argument_category;
+    using argument_category = array_1d_tag;
 
     template<
         class U>
     struct Collection
     {
-        typedef std::vector<U> type;
+        using type = std::vector<U>;
     };
 
-    typedef T value_type;
+    using value_type = typename std::vector<T>::value_type;
 
-    /// typedef typename std::vector<T>::const_iterator const_iterator;
+    using reference = typename std::vector<T>::reference;
 
-    /// typedef typename std::vector<T>::iterator iterator;
+    using const_reference = typename std::vector<T>::const_reference;
 
     static bool const is_masking = false;
 
@@ -33,7 +33,7 @@ struct ArgumentTraits<
 
 template<
     class T>
-size_t size(
+inline size_t size(
     std::vector<T> const& vector)
 {
     return vector.size();
@@ -42,7 +42,7 @@ size_t size(
 
 template<
     class T>
-T const& get(
+inline typename ArgumentTraits<std::vector<T>>::const_reference get(
     std::vector<T> const& vector,
     size_t index)
 {
@@ -52,7 +52,7 @@ T const& get(
 
 template<
     class T>
-T& get(
+inline typename ArgumentTraits<std::vector<T>>::reference get(
     std::vector<T>& vector,
     size_t index)
 {

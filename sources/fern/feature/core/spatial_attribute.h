@@ -24,7 +24,7 @@ public:
 
     LOKI_DEFINE_CONST_VISITABLE()
 
-    typedef typename Domain::GID GID;
+    using GID = typename Domain::GID;
 
                    SpatialAttribute    ();
 

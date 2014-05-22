@@ -11,68 +11,68 @@ BOOST_AUTO_TEST_CASE(constructor)
 
     {
         DataName name("dataset:path");
-        BOOST_CHECK_EQUAL(String(name.database_pathname()), "dataset");
-        BOOST_CHECK_EQUAL(String(name.data_pathname()), "/path");
+        BOOST_CHECK_EQUAL(name.database_pathname(), Path("dataset"));
+        BOOST_CHECK_EQUAL(name.data_pathname(), Path("/path"));
     }
 
     {
         DataName name("dataset:/path");
-        BOOST_CHECK_EQUAL(String(name.database_pathname()), "dataset");
-        BOOST_CHECK_EQUAL(String(name.data_pathname()), "/path");
+        BOOST_CHECK_EQUAL(name.database_pathname(), Path("dataset"));
+        BOOST_CHECK_EQUAL(name.data_pathname(), Path("/path"));
     }
 
     {
         DataName name("dataset");
-        BOOST_CHECK_EQUAL(String(name.database_pathname()), "dataset");
-        BOOST_CHECK_EQUAL(String(name.data_pathname()), "/");
+        BOOST_CHECK_EQUAL(name.database_pathname(), Path("dataset"));
+        BOOST_CHECK_EQUAL(name.data_pathname(), Path("/"));
     }
 
     {
         DataName name("dataset:");
-        BOOST_CHECK_EQUAL(String(name.database_pathname()), "dataset");
-        BOOST_CHECK_EQUAL(String(name.data_pathname()), "/");
+        BOOST_CHECK_EQUAL(name.database_pathname(), Path("dataset"));
+        BOOST_CHECK_EQUAL(name.data_pathname(), Path("/"));
     }
 
     {
         DataName name("dataset:/");
-        BOOST_CHECK_EQUAL(String(name.database_pathname()), "dataset");
-        BOOST_CHECK_EQUAL(String(name.data_pathname()), "/");
+        BOOST_CHECK_EQUAL(name.database_pathname(), Path("dataset"));
+        BOOST_CHECK_EQUAL(name.data_pathname(), Path("/"));
     }
 
     {
         DataName name("dataset:path:to");
-        BOOST_CHECK_EQUAL(String(name.database_pathname()), "dataset");
-        BOOST_CHECK_EQUAL(String(name.data_pathname()), "/path:to");
+        BOOST_CHECK_EQUAL(name.database_pathname(), Path("dataset"));
+        BOOST_CHECK_EQUAL(name.data_pathname(), Path("/path:to"));
     }
 
     {
         DataName name("dataset:/path:to");
-        BOOST_CHECK_EQUAL(String(name.database_pathname()), "dataset");
-        BOOST_CHECK_EQUAL(String(name.data_pathname()), "/path:to");
+        BOOST_CHECK_EQUAL(name.database_pathname(), Path("dataset"));
+        BOOST_CHECK_EQUAL(name.data_pathname(), Path("/path:to"));
     }
 
     {
         DataName name("dataset:path/to");
-        BOOST_CHECK_EQUAL(String(name.database_pathname()), "dataset");
-        BOOST_CHECK_EQUAL(String(name.data_pathname()), "/path/to");
+        BOOST_CHECK_EQUAL(name.database_pathname(), Path("dataset"));
+        BOOST_CHECK_EQUAL(name.data_pathname(), Path("/path/to"));
     }
 
     {
         DataName name("dataset:/path/to");
-        BOOST_CHECK_EQUAL(String(name.database_pathname()), "dataset");
-        BOOST_CHECK_EQUAL(String(name.data_pathname()), "/path/to");
+        BOOST_CHECK_EQUAL(name.database_pathname(), Path("dataset"));
+        BOOST_CHECK_EQUAL(name.data_pathname(), Path("/path/to"));
     }
 
     {
         DataName name("dataset:path/////to//");
-        BOOST_CHECK_EQUAL(String(name.database_pathname()), "dataset");
-        BOOST_CHECK_EQUAL(String(name.data_pathname()), "/path/to");
+        BOOST_CHECK_EQUAL(name.database_pathname(), Path("dataset"));
+        BOOST_CHECK_EQUAL(name.data_pathname(), Path("/path/to"));
     }
 
     {
         DataName name("dataset:///path/////to//");
-        BOOST_CHECK_EQUAL(String(name.database_pathname()), "dataset");
-        BOOST_CHECK_EQUAL(String(name.data_pathname()), "/path/to");
+        BOOST_CHECK_EQUAL(name.database_pathname(), Path("dataset"));
+        BOOST_CHECK_EQUAL(name.data_pathname(), Path("/path/to"));
     }
 }
 

@@ -31,7 +31,7 @@ inline typename std::enable_if<
 make_unique(
     std::size_t n)
 {
-    typedef typename std::remove_extent<T>::type RT;
+    using RT = typename std::remove_extent<T>::type;
     return std::unique_ptr<T>(new RT[n]);
 }
 

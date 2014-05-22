@@ -10,16 +10,20 @@ template<
 struct ArgumentTraits<MaskedConstant<T>>
 {
 
-    typedef constant_tag argument_category;
+    using argument_category = constant_tag;
 
     template<
         class U>
     struct Constant
     {
-        typedef MaskedConstant<U> type;
+        using type = MaskedConstant<U>;
     };
 
-    typedef T value_type;
+    using value_type = T;
+
+    using reference = T&;
+
+    using const_reference = T const&;
 
     static bool const is_masking = true;
 
@@ -28,7 +32,7 @@ struct ArgumentTraits<MaskedConstant<T>>
 
 template<
     class T>
-inline T const& get(
+inline typename ArgumentTraits<MaskedConstant<T>>::const_reference get(
     MaskedConstant<T> const& constant)
 {
     return constant.value();
@@ -37,7 +41,7 @@ inline T const& get(
 
 template<
     class T>
-inline T& get(
+inline typename ArgumentTraits<MaskedConstant<T>>::reference get(
     MaskedConstant<T>& constant)
 {
     return constant.value();

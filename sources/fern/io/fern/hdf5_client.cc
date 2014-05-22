@@ -1,5 +1,5 @@
 #include "fern/io/fern/hdf5_client.h"
-#include <cpp/H5Cpp.h>
+#include <H5Cpp.h>
 #include "fern/io/drivers.h"
 
 

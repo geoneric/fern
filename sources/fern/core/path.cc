@@ -3,16 +3,6 @@
 
 namespace fern {
 
-// Path::Path(
-//     boost::filesystem::path const& path)
-// 
-//     : boost::filesystem::path(path)
-// 
-// {
-// }
-
-
-
 Path::Path(
     String const& string)
 
@@ -31,14 +21,6 @@ Path::Path(
 }
 
 
-// Path& Path::operator=(
-//     String const& string)
-// {
-//     boost::filesystem::path::operator=(string.encode_in_default_encoding());
-//     return *this;
-// }
-
-
 Path Path::stem() const
 {
     return Path(boost::filesystem::path::stem().generic_string());
@@ -50,16 +32,6 @@ bool Path::operator==(
 {
     return dynamic_cast<boost::filesystem::path const&>(*this) ==
         dynamic_cast<boost::filesystem::path const&>(path);
-}
-
-
-//! Returns the path as a string, formatted according to the generic conventions.
-/*!
-  \sa        generic_string(), native_string()
-*/
-Path::operator String() const
-{
-    return generic_string();
 }
 
 
@@ -79,7 +51,7 @@ String Path::generic_string() const
 */
 String Path::native_string() const
 {
-    return String(native());
+    return String::decode_from_default_encoding(native());
 }
 
 
@@ -142,7 +114,7 @@ std::ostream& operator<<(
     std::ostream& stream,
     Path const& path)
 {
-    stream << String(path);
+    stream << path.generic_string();
     return stream;
 }
 

@@ -5,57 +5,56 @@ namespace fern {
 
 //! Domain policy which discards out-of-domain values.
 /*!
-  \tparam    A1 Type of first argument.
-  \tparam    A2 Type of second argument.
+    Use this class if you don't need to test an algorithm's arguments for
+    being out of domain. This can be because you are certain the argument
+    values are within the algorithm's domain and you don't want to spend
+    processor cycles testing values anyway. Or maybe the algorithm just
+    accepts all values being passed to it, like default addition.
 */
 template<
-    class A1,
-    class A2>
+    class... Parameters>
 class DiscardDomainErrors
 {
 
 public:
 
-    // static_assert(std::is_arithmetic<A1>::value, "");
-    // static_assert(std::is_arithmetic<A2>::value, "");
-
     static constexpr bool
-                   within_domain       (A1 const& argument1,
-                                        A2 const& argument2);
-
-protected:
-
-                   DiscardDomainErrors ()=default;
-
-                   DiscardDomainErrors (DiscardDomainErrors&&)=default;
-
-    DiscardDomainErrors&
-                   operator=           (DiscardDomainErrors&&)=default;
-
-                   DiscardDomainErrors (DiscardDomainErrors const&)=default;
-
-    DiscardDomainErrors&
-                   operator=           (DiscardDomainErrors const&)=default;
-
-                   ~DiscardDomainErrors()=default;
-
-private:
+                   within_domain       (Parameters const&... parameters);
 
 };
 
 
-//! Check whether \a argument1 and \a argument2 fall within the domain of valid values.
-/*!
-  \return    true
-*/
 template<
-    class A1,
-    class A2>
-inline constexpr bool DiscardDomainErrors<A1, A2>::within_domain(
-    A1 const& /* argument1 */,
-    A2 const& /* argument2 */)
+    class... Parameters>
+inline constexpr bool DiscardDomainErrors<Parameters...>::within_domain(
+    Parameters const&... /* parameters */)
 {
     return true;
 }
 
+
+namespace nullary {
+
+using DiscardDomainErrors = DiscardDomainErrors<>;
+
+} // namespace nullary
+
+
+namespace unary {
+
+template<
+    class Value>
+using DiscardDomainErrors = DiscardDomainErrors<Value>;
+
+} // namespace binary
+
+
+namespace binary {
+
+template<
+    class Value1,
+    class Value2>
+using DiscardDomainErrors = DiscardDomainErrors<Value1, Value2>;
+
+} // namespace binary
 } // namespace fern

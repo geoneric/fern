@@ -1,4 +1,6 @@
 #include "fern/core/thread_pool.h"
+#include <cassert>
+#include <iostream>
 
 
 namespace fern {
@@ -29,16 +31,17 @@ void FunctionWrapper::operator()()
 }
 
 
-ThreadPool::ThreadPool()
+ThreadPool::ThreadPool(
+    size_t nr_threads)
 
     : _done(false),
       _joiner(_threads)
 
 {
-    size_t thread_count = std::thread::hardware_concurrency();
+    assert(nr_threads > 0);
 
     try {
-        for(size_t i = 0; i < thread_count; ++i) {
+        for(size_t i = 0; i < nr_threads; ++i) {
             _threads.emplace_back(&ThreadPool::worker_thread, this);
         }
     }
@@ -55,7 +58,7 @@ ThreadPool::~ThreadPool()
 }
 
 
-size_t ThreadPool::nr_threads() const
+size_t ThreadPool::size() const
 {
     return _threads.size();
 }
@@ -67,9 +70,12 @@ void ThreadPool::worker_thread()
         FunctionWrapper task;
 
         if(_work_queue.try_pop(task)) {
+            // Allright! We actually have something useful to do.
             task();
         }
         else {
+            // No tasks in the queue, so hint the implementation to allow
+            // other threads to run.
             std::this_thread::yield();
         }
     }

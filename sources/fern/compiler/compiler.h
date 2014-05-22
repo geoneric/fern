@@ -30,7 +30,7 @@ public:
         DUMP_CMAKE = 1<<2
     };
 
-    typedef int Flags;
+    using Flags = int;
 
                    Compiler            (String const& header_extension,
                                         String const& module_extension);

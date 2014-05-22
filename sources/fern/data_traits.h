@@ -15,7 +15,7 @@ struct DataTraits
 {
     // If not specialized below, assume that the category is RangeTag.
     // Compiler error otherwise.
-    typedef RangeTag DataCategory;
+    using DataCategory = RangeTag;
 };
 
 
@@ -23,7 +23,7 @@ struct DataTraits
 template<> \
 struct DataTraits<type> \
 { \
-    typedef ConstantTag DataCategory; \
+    using DataCategory = ConstantTag; \
 };
 
 SPECIALIZE_DATA_TRAITS_FOR_SCALAR(int8_t)

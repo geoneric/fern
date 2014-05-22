@@ -15,15 +15,15 @@ class Raster
 {
 private:
 
-    typedef std::array<ValueType, nr_rows_ * nr_cols_> Array;
+    using Array = std::array<ValueType, nr_rows_ * nr_cols_>;
 
     Array            _cells;
 
 public:
 
-    typedef typename Array::iterator iterator;
+    using iterator = typename Array::iterator;
 
-    typedef typename Array::const_iterator const_iterator;
+    using const_iterator = typename Array::const_iterator;
 
     static size_t nr_rows()
     {
@@ -93,7 +93,7 @@ template<
     size_t nr_cols>
 struct DataTraits<Raster<ValueType, nr_rows, nr_cols>>
 {
-    typedef RasterTag DataCategory;
+    using DataCategory = RasterTag;
 };
 
 } // namespace fern
@@ -107,8 +107,8 @@ template<
     size_t nr_cols>
 struct range_const_iterator<fern::Raster<ValueType, nr_rows, nr_cols>>
 {
-    typedef typename
-        fern::Raster<ValueType, nr_rows, nr_cols>::const_iterator type;
+    using type = typename fern::Raster<ValueType, nr_rows, nr_cols>
+        ::const_iterator;
 };
 
 
@@ -118,8 +118,7 @@ template<
     size_t nr_cols>
 struct range_mutable_iterator<fern::Raster<ValueType, nr_rows, nr_cols>>
 {
-    typedef typename
-        fern::Raster<ValueType, nr_rows, nr_cols>::iterator type;
+    using type = typename fern::Raster<ValueType, nr_rows, nr_cols>::iterator;
 };
 
 } // namespace boost

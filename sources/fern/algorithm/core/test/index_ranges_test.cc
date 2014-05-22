@@ -106,6 +106,16 @@ BOOST_AUTO_TEST_CASE(index_ranges)
                 fern::IndexRange(0, 200)));
     }
 
+    // One thread.
+    {
+        auto ranges = fern::index_ranges(1, 100, 200);
+        BOOST_CHECK_EQUAL(ranges.size(), 1);
+        BOOST_CHECK_EQUAL(ranges[0],
+            fern::IndexRanges<2>(
+                fern::IndexRange(0, 100),
+                fern::IndexRange(0, 200)));
+    }
+
     // No values.
     {
         auto ranges = fern::index_ranges(3, 0, 200);

@@ -9,8 +9,8 @@ BOOST_AUTO_TEST_SUITE(constant_attribute)
 BOOST_AUTO_TEST_CASE(int_)
 {
     // An integer value is stored.
-    typedef int Value;
-    typedef fern::ConstantAttribute<Value> Attribute;
+    using Value = int;
+    using Attribute = fern::ConstantAttribute<Value>;
 
     Value value = 5;
 
@@ -23,9 +23,9 @@ BOOST_AUTO_TEST_CASE(int_)
 BOOST_AUTO_TEST_CASE(array_per_box)
 {
     // A pointer to a 2D array is stored.
-    typedef fern::ArrayValue<int, 2> Value;
-    typedef std::shared_ptr<fern::ArrayValue<int, 2>> ValuePtr;
-    typedef fern::ConstantAttribute<ValuePtr> Attribute;
+    using Value = fern::ArrayValue<int, 2>;
+    using ValuePtr = std::shared_ptr<fern::ArrayValue<int, 2>>;
+    using Attribute = fern::ConstantAttribute<ValuePtr>;
 
     size_t const nr_rows = 3;
     size_t const nr_cols = 2;

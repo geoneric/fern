@@ -1,5 +1,4 @@
 #pragma once
-#include <limits>
 #include "fern/core/value_types.h"
 
 
@@ -28,7 +27,7 @@ struct TypeTraits
 template<>
 struct TypeTraits<bool>
 {
-    typedef boolean_tag number_category;
+    using number_category = boolean_tag;
 
     static ValueType const value_type;
 
@@ -43,7 +42,7 @@ struct TypeTraits<bool>
 template<>
 struct TypeTraits<int8_t>
 {
-    typedef signed_integer_tag number_category;
+    using number_category = signed_integer_tag;
 
     static ValueType const value_type;
 
@@ -53,16 +52,16 @@ struct TypeTraits<int8_t>
 
     static bool const builtin = true;
 
-    static int8_t const min = std::numeric_limits<int8_t>::min();
+    static int8_t const min;
 
-    static int8_t const max = std::numeric_limits<int8_t>::max();
+    static int8_t const max;
 };
 
 
 template<>
 struct TypeTraits<uint8_t>
 {
-    typedef unsigned_integer_tag number_category;
+    using number_category = unsigned_integer_tag;
 
     static ValueType const value_type;
 
@@ -72,16 +71,16 @@ struct TypeTraits<uint8_t>
 
     static bool const builtin = true;
 
-    static uint8_t const min = std::numeric_limits<uint8_t>::min();
+    static uint8_t const min;
 
-    static uint8_t const max = std::numeric_limits<uint8_t>::max();
+    static uint8_t const max;
 };
 
 
 template<>
 struct TypeTraits<int16_t>
 {
-    typedef signed_integer_tag number_category;
+    using number_category = signed_integer_tag;
 
     static ValueType const value_type;
 
@@ -91,16 +90,16 @@ struct TypeTraits<int16_t>
 
     static bool const builtin = true;
 
-    static int16_t const min = std::numeric_limits<int16_t>::min();
+    static int16_t const min;
 
-    static int16_t const max = std::numeric_limits<int16_t>::max();
+    static int16_t const max;
 };
 
 
 template<>
 struct TypeTraits<uint16_t>
 {
-    typedef unsigned_integer_tag number_category;
+    using number_category = unsigned_integer_tag;
 
     static ValueType const value_type;
 
@@ -109,10 +108,6 @@ struct TypeTraits<uint16_t>
     static String const name;
 
     static bool const builtin = true;
-
-    // static uint16_t const min = std::numeric_limits<uint16_t>::min();
-
-    // static uint16_t const max = std::numeric_limits<uint16_t>::max();
 
     static uint16_t const min;
 
@@ -123,7 +118,7 @@ struct TypeTraits<uint16_t>
 template<>
 struct TypeTraits<int32_t>
 {
-    typedef signed_integer_tag number_category;
+    using number_category = signed_integer_tag;
 
     static ValueType const value_type;
 
@@ -133,16 +128,16 @@ struct TypeTraits<int32_t>
 
     static bool const builtin = true;
 
-    static int32_t const min = std::numeric_limits<int32_t>::min();
+    static int32_t const min;
 
-    static int32_t const max = std::numeric_limits<int32_t>::max();
+    static int32_t const max;
 };
 
 
 template<>
 struct TypeTraits<uint32_t>
 {
-    typedef unsigned_integer_tag number_category;
+    using number_category = unsigned_integer_tag;
 
     static ValueType const value_type;
 
@@ -161,7 +156,7 @@ struct TypeTraits<uint32_t>
 template<>
 struct TypeTraits<int64_t>
 {
-    typedef signed_integer_tag number_category;
+    using number_category = signed_integer_tag;
 
     static ValueType const value_type;
 
@@ -180,7 +175,7 @@ struct TypeTraits<int64_t>
 template<>
 struct TypeTraits<uint64_t>
 {
-    typedef unsigned_integer_tag number_category;
+    using number_category = unsigned_integer_tag;
 
     static ValueType const value_type;
 
@@ -199,7 +194,7 @@ struct TypeTraits<uint64_t>
 template<>
 struct TypeTraits<float>
 {
-    typedef floating_point_tag number_category;
+    using number_category = floating_point_tag;
 
     static ValueType const value_type;
 
@@ -212,13 +207,17 @@ struct TypeTraits<float>
     static float const min;
 
     static float const max;
+
+    static float const nan;
+
+    static float const infinity;
 };
 
 
 template<>
 struct TypeTraits<double>
 {
-    typedef floating_point_tag number_category;
+    using number_category = floating_point_tag;
 
     static ValueType const value_type;
 
@@ -231,6 +230,10 @@ struct TypeTraits<double>
     static double const min;
 
     static double const max;
+
+    static double const nan;
+
+    static double const infinity;
 };
 
 
@@ -245,5 +248,37 @@ struct TypeTraits<String>
 
     static bool const builtin = true;
 };
+
+
+template<
+    class T>
+T min()
+{
+  return TypeTraits<T>::min;
+}
+
+
+template<
+    class T>
+T max()
+{
+  return TypeTraits<T>::max;
+}
+
+
+template<
+    class T>
+T nan()
+{
+  return TypeTraits<T>::nan;
+}
+
+
+template<
+    class T>
+T infinity()
+{
+  return TypeTraits<T>::infinity;
+}
 
 } // namespace fern

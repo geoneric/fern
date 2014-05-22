@@ -94,8 +94,8 @@ BOOST_AUTO_TEST_CASE(parse_string)
     }
     catch(fern::ParseError const& exception) {
         fern::String message = exception.message();
-        BOOST_CHECK_EQUAL(message,
-            "Error parsing <string>:1:7:a = b c: invalid syntax");
+        BOOST_CHECK_EQUAL(message, fern::String(
+            "Error parsing <string>:1:7:a = b c: invalid syntax"));
     }
 }
 
@@ -123,8 +123,8 @@ BOOST_AUTO_TEST_CASE(parse_file)
     }
     catch(fern::ParseError const& exception) {
         fern::String message = exception.message();
-        BOOST_CHECK_EQUAL(message,
-            "Error parsing invalid-1.ran:1:7:a = b c: invalid syntax");
+        BOOST_CHECK_EQUAL(message, fern::String(
+            "Error parsing invalid-1.ran:1:7:a = b c: invalid syntax"));
     }
 
     // Unreadable file, io error.
@@ -134,8 +134,8 @@ BOOST_AUTO_TEST_CASE(parse_file)
     }
     catch(fern::IOError const& exception) {
         fern::String message = exception.message();
-        BOOST_CHECK_EQUAL(message,
-            "IO error handling valid-1_unreadable.ran: Permission denied");
+        BOOST_CHECK_EQUAL(message, fern::String(
+            "IO error handling valid-1_unreadable.ran: Permission denied"));
     }
 }
 
@@ -154,8 +154,8 @@ BOOST_AUTO_TEST_CASE(validate)
     }
     catch(fern::ValidateError const& exception) {
         fern::String message = exception.message();
-        BOOST_CHECK_EQUAL(message,
-            "valid-1.ran:3:4: Undefined identifier: b");
+        BOOST_CHECK_EQUAL(message, fern::String(
+            "valid-1.ran:3:4: Undefined identifier: b"));
     }
 
     vertex = interpreter.parse_file("valid-2.ran");
@@ -167,8 +167,8 @@ BOOST_AUTO_TEST_CASE(validate)
     }
     catch(fern::ValidateError const& exception) {
         fern::String message = exception.message();
-        BOOST_CHECK_EQUAL(message,
-            "valid-2.ran:4:4: Undefined operation: does_not_exist");
+        BOOST_CHECK_EQUAL(message, fern::String(
+            "valid-2.ran:4:4: Undefined operation: does_not_exist"));
     }
 
     // String with unknown operation.
@@ -181,8 +181,8 @@ BOOST_AUTO_TEST_CASE(validate)
     }
     catch(fern::ValidateError const& exception) {
         fern::String message = exception.message();
-        BOOST_CHECK_EQUAL(message,
-            "<string>:1:4: Undefined operation: blah");
+        BOOST_CHECK_EQUAL(message, fern::String(
+            "<string>:1:4: Undefined operation: blah"));
     }
 
     // Verify that calling user-defined operation doesn't throw.
@@ -229,9 +229,9 @@ foo(5)
     }
     catch(fern::ValidateError const& exception) {
         fern::String message = exception.message();
-        BOOST_CHECK_EQUAL(message,
+        BOOST_CHECK_EQUAL(message, fern::String(
             "<string>:1:0: Wrong number of arguments for operation: abs: "
-            "1 required, but 2 provided");
+            "1 required, but 2 provided"));
     }
 
     // Operation with wrong type of argument.
@@ -244,11 +244,11 @@ foo(5)
     }
     catch(fern::ValidateError const& exception) {
         fern::String message = exception.message();
-        BOOST_CHECK_EQUAL(message,
+        BOOST_CHECK_EQUAL(message, fern::String(
             "<string>:1:0: Wrong type of argument 1 provided for operation: "
             "abs: Constant|StaticField/Uint8|Int8|Uint16|Int16|Uint32|Int32|"
             "Uint64|Int64|Float32|Float64 required, but Constant/String "
-            "provided");
+            "provided"));
     }
 }
 
@@ -457,12 +457,12 @@ BOOST_AUTO_TEST_CASE(execute_read_with_raster_input)
     ///     std::shared_ptr<fern::Attribute> const& attribute(
     ///         feature->attribute("raster-1"));
 
-    ///     typedef fern::Point<double, 2> Point;
-    ///     typedef fern::Box<Point> Box;
-    ///     typedef fern::SpatialDomain<Box> BoxDomain;
-    ///     typedef fern::ArrayValue<int32_t, 1> Value;
-    ///     typedef std::shared_ptr<Value> ValuePtr;
-    ///     typedef fern::SpatialAttribute<BoxDomain, ValuePtr> BoxesAttribute;
+    ///     using Point = fern::Point<double, 2>;
+    ///     using Box = fern::Box<Point>;
+    ///     using BoxDomain = fern::SpatialDomain<Box>;
+    ///     using Value = fern::ArrayValue<int32_t, 1>;
+    ///     using ValuePtr = std::shared_ptr<Value>;
+    ///     using BoxesAttribute = fern::SpatialAttribute<BoxDomain, ValuePtr>;
 
     ///     std::shared_ptr<BoxesAttribute> boxes_attribute(
     ///         std::dynamic_pointer_cast<BoxesAttribute>(attribute));

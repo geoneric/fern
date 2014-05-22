@@ -23,8 +23,8 @@ public:
 
                    ArrayValue          ()=default;
 
-    template<class ExtentList>
-                   ArrayValue          (ExtentList const& sizes);
+    template<size_t nr_ranges>
+                   ArrayValue          (gen_type<nr_ranges> const& sizes);
 
                    ArrayValue          (ArrayValue const&)=delete;
 
@@ -45,9 +45,9 @@ template<
     class T,
     size_t nr_dimensions>
 template<
-    class ExtentList>
+    size_t nr_ranges>
 inline ArrayValue<T, nr_dimensions>::ArrayValue(
-    ExtentList const& sizes)
+    gen_type<nr_ranges> const& sizes)
 
     : Array<T, nr_dimensions>(sizes),
       Value()

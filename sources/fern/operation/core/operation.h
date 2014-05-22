@@ -74,6 +74,6 @@ private:
 };
 
 
-typedef std::shared_ptr<Operation> OperationPtr;
+using OperationPtr = std::shared_ptr<Operation>;
 
 } // namespace fern

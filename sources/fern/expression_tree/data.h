@@ -8,7 +8,7 @@
 namespace fern {
 namespace expression_tree {
 
-typedef boost::variant<
+using Data = boost::variant<
     Constant<int32_t>,
     Constant<int64_t>,
     Constant<double>,
@@ -18,7 +18,7 @@ typedef boost::variant<
     Raster<int32_t>,
     Raster<int64_t>,
     Raster<double>
-> Data;
+>;
 
 } // expression_tree
 } // namespace fern

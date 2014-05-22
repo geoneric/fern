@@ -21,17 +21,17 @@ std::vector<std::shared_ptr<Argument>> write(
     DataName data_name(name);
     std::shared_ptr<Dataset> dataset;
 
-    if(!dataset_exists(data_name.database_pathname(), OpenMode::UPDATE,
-            format_name)) {
-        dataset = open_dataset(data_name.database_pathname(),
+    if(!dataset_exists(data_name.database_pathname().generic_string(),
+            OpenMode::UPDATE, format_name)) {
+        dataset = open_dataset(data_name.database_pathname().generic_string(),
             OpenMode::OVERWRITE, format_name);
     }
     else {
-        dataset = open_dataset(data_name.database_pathname(), OpenMode::UPDATE,
-            format_name);
+        dataset = open_dataset(data_name.database_pathname().generic_string(),
+            OpenMode::UPDATE, format_name);
     }
 
-    String attribute_name = data_name.data_pathname();
+    String attribute_name = data_name.data_pathname().generic_string();
 
     // if(attribute_name == "/") {
     //     // Short hand notation is used for the attribute name.
