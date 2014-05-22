@@ -2,7 +2,7 @@
 #include "fern/core/assert.h"
 #include "fern/core/base_class.h"
 #include "fern/algorithm/core/operation_traits.h"
-#include "fern/algorithm/core/unary_operation.h"
+#include "fern/algorithm/core/unary_local_operation.h"
 #include "fern/algorithm/policy/policies.h"
 #include "fern/algorithm/algebra/elementary/detail/absolute.h"
 
@@ -120,7 +120,7 @@ public:
 
 private:
 
-    detail::dispatch::UnaryOperation<A, R,
+    detail::dispatch::UnaryLocalOperation<A, R,
         OutOfDomainPolicy, OutOfRangePolicy, InputNoDataPolicy,
         OutputNoDataPolicy, absolute::Algorithm<AValue>,
         typename base_class<

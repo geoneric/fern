@@ -2,7 +2,7 @@ SET(TEST_NAMES
     cast_test
     index_range_test
     index_ranges_test
-    unary_operation_test
+    unary_local_operation_test
 )
 
 MACRO(ADD_UNIT_TEST NAME)

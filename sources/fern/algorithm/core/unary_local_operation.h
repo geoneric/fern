@@ -15,7 +15,7 @@ template<class Values, class Result,
     class OutputNoDataPolicy,
     class Algorithm,
     class ValuesCollectionCategory>
-class UnaryOperation
+class UnaryLocalOperation
 {
 };
 
@@ -26,7 +26,7 @@ template<class Values, class Result,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class Algorithm>
-class UnaryOperation<Values, Result,
+class UnaryLocalOperation<Values, Result,
         OutOfDomainPolicy,
         OutOfRangePolicy,
         InputNoDataPolicy,
@@ -43,7 +43,7 @@ class UnaryOperation<Values, Result,
 
 public:
 
-    UnaryOperation(
+    UnaryLocalOperation(
         Algorithm const& algorithm)
         : OutOfDomainPolicy<value_type<Values>>(),
           OutOfRangePolicy<value_type<Values>, value_type<Result>>(),
@@ -53,7 +53,7 @@ public:
     {
     }
 
-    UnaryOperation(
+    UnaryLocalOperation(
         InputNoDataPolicy&& input_no_data_policy,
         OutputNoDataPolicy&& output_no_data_policy,
         Algorithm const& algorithm)
@@ -92,7 +92,7 @@ template<class Values, class Result,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class Algorithm>
-class UnaryOperation<Values, Result,
+class UnaryLocalOperation<Values, Result,
         OutOfDomainPolicy,
         OutOfRangePolicy,
         InputNoDataPolicy,
@@ -111,7 +111,7 @@ class UnaryOperation<Values, Result,
 
 public:
 
-    UnaryOperation(
+    UnaryLocalOperation(
         Algorithm const& algorithm)
         : OutOfDomainPolicy<value_type<Values>>(),
           OutOfRangePolicy<value_type<Values>, value_type<Result>>(),
@@ -121,7 +121,7 @@ public:
     {
     }
 
-    UnaryOperation(
+    UnaryLocalOperation(
         InputNoDataPolicy&& input_no_data_policy,
         OutputNoDataPolicy&& output_no_data_policy,
         Algorithm const& algorithm)
@@ -179,7 +179,7 @@ template<class Values, class Result,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class Algorithm>
-class UnaryOperation<Values, Result,
+class UnaryLocalOperation<Values, Result,
         OutOfDomainPolicy,
         OutOfRangePolicy,
         InputNoDataPolicy,
@@ -198,7 +198,7 @@ class UnaryOperation<Values, Result,
 
 public:
 
-    UnaryOperation(
+    UnaryLocalOperation(
         Algorithm const& algorithm)
         : OutOfDomainPolicy<value_type<Values>>(),
           OutOfRangePolicy<value_type<Values>, value_type<Result>>(),
@@ -208,7 +208,7 @@ public:
     {
     }
 
-    UnaryOperation(
+    UnaryLocalOperation(
         InputNoDataPolicy&& input_no_data_policy,
         OutputNoDataPolicy&& output_no_data_policy,
         Algorithm const& algorithm)
