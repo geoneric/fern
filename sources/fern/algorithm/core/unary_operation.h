@@ -1,10 +1,6 @@
 #pragma once
-/// #include <type_traits>
-/// #include <utility>
 #include "fern/core/argument_traits.h"
-/// #include "fern/core/assert.h"
 #include "fern/core/collection_traits.h"
-/// #include "fern/core/constant_traits.h"
 #include "fern/algorithm/core/index_ranges.h"
 
 
@@ -36,7 +32,7 @@ class UnaryOperation<Values, Result,
         InputNoDataPolicy,
         OutputNoDataPolicy,
         Algorithm,
-        constant_tag>:
+        array_0d_tag>:
 
     public OutOfDomainPolicy<value_type<Values>>,
     public OutOfRangePolicy<value_type<Values>, value_type<Result>>,
@@ -226,7 +222,7 @@ public:
     {
     }
 
-    // collection + collection
+    // f(collection)
     void calculate(
         Values const& values,
         Result& result)
@@ -245,7 +241,7 @@ public:
         calculate(ranges, values, result);
     }
 
-    // collection + constant
+    // f(collection)
     template<
         class Indices>
     inline void calculate(
