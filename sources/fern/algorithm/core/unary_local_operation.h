@@ -1,10 +1,6 @@
 #pragma once
-/// #include <type_traits>
-/// #include <utility>
 #include "fern/core/argument_traits.h"
-/// #include "fern/core/assert.h"
 #include "fern/core/collection_traits.h"
-/// #include "fern/core/constant_traits.h"
 #include "fern/algorithm/core/index_ranges.h"
 
 
@@ -19,7 +15,7 @@ template<class Values, class Result,
     class OutputNoDataPolicy,
     class Algorithm,
     class ValuesCollectionCategory>
-class UnaryOperation
+class UnaryLocalOperation
 {
 };
 
@@ -30,13 +26,13 @@ template<class Values, class Result,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class Algorithm>
-class UnaryOperation<Values, Result,
+class UnaryLocalOperation<Values, Result,
         OutOfDomainPolicy,
         OutOfRangePolicy,
         InputNoDataPolicy,
         OutputNoDataPolicy,
         Algorithm,
-        constant_tag>:
+        array_0d_tag>:
 
     public OutOfDomainPolicy<value_type<Values>>,
     public OutOfRangePolicy<value_type<Values>, value_type<Result>>,
@@ -47,7 +43,7 @@ class UnaryOperation<Values, Result,
 
 public:
 
-    UnaryOperation(
+    UnaryLocalOperation(
         Algorithm const& algorithm)
         : OutOfDomainPolicy<value_type<Values>>(),
           OutOfRangePolicy<value_type<Values>, value_type<Result>>(),
@@ -57,7 +53,7 @@ public:
     {
     }
 
-    UnaryOperation(
+    UnaryLocalOperation(
         InputNoDataPolicy&& input_no_data_policy,
         OutputNoDataPolicy&& output_no_data_policy,
         Algorithm const& algorithm)
@@ -96,7 +92,7 @@ template<class Values, class Result,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class Algorithm>
-class UnaryOperation<Values, Result,
+class UnaryLocalOperation<Values, Result,
         OutOfDomainPolicy,
         OutOfRangePolicy,
         InputNoDataPolicy,
@@ -115,7 +111,7 @@ class UnaryOperation<Values, Result,
 
 public:
 
-    UnaryOperation(
+    UnaryLocalOperation(
         Algorithm const& algorithm)
         : OutOfDomainPolicy<value_type<Values>>(),
           OutOfRangePolicy<value_type<Values>, value_type<Result>>(),
@@ -125,7 +121,7 @@ public:
     {
     }
 
-    UnaryOperation(
+    UnaryLocalOperation(
         InputNoDataPolicy&& input_no_data_policy,
         OutputNoDataPolicy&& output_no_data_policy,
         Algorithm const& algorithm)
@@ -183,7 +179,7 @@ template<class Values, class Result,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class Algorithm>
-class UnaryOperation<Values, Result,
+class UnaryLocalOperation<Values, Result,
         OutOfDomainPolicy,
         OutOfRangePolicy,
         InputNoDataPolicy,
@@ -202,7 +198,7 @@ class UnaryOperation<Values, Result,
 
 public:
 
-    UnaryOperation(
+    UnaryLocalOperation(
         Algorithm const& algorithm)
         : OutOfDomainPolicy<value_type<Values>>(),
           OutOfRangePolicy<value_type<Values>, value_type<Result>>(),
@@ -212,7 +208,7 @@ public:
     {
     }
 
-    UnaryOperation(
+    UnaryLocalOperation(
         InputNoDataPolicy&& input_no_data_policy,
         OutputNoDataPolicy&& output_no_data_policy,
         Algorithm const& algorithm)
@@ -226,7 +222,7 @@ public:
     {
     }
 
-    // collection + collection
+    // f(collection)
     void calculate(
         Values const& values,
         Result& result)
@@ -245,7 +241,7 @@ public:
         calculate(ranges, values, result);
     }
 
-    // collection + constant
+    // f(collection)
     template<
         class Indices>
     inline void calculate(

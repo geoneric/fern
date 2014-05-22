@@ -22,7 +22,8 @@ template<
     class InputNoDataPolicy=fern::SkipNoData,
     class OutputNoDataPolicy=fern::DontMarkNoData
 >
-using UnaryOperation = fern::detail::dispatch::UnaryOperation<Argument, Result,
+using UnaryLocalOperation = fern::detail::dispatch::UnaryLocalOperation<
+    Argument, Result,
     fern::absolute::OutOfDomainPolicy, fern::absolute::OutOfRangePolicy,
     InputNoDataPolicy, OutputNoDataPolicy,
     Algorithm<ArgumentValue>,
@@ -38,7 +39,8 @@ BOOST_AUTO_TEST_CASE(array_0d)
 
     Argument argument;
     Result result;
-    UnaryOperation<Argument, Result> operation{Algorithm<ArgumentValue>()};
+    UnaryLocalOperation<Argument, Result> operation{
+        Algorithm<ArgumentValue>()};
 
     argument = -5;
     result = 3;
@@ -54,7 +56,7 @@ BOOST_AUTO_TEST_CASE(array_0d_masked)
 
     Argument argument;
     Result result;
-    UnaryOperation<Argument, Result,
+    UnaryLocalOperation<Argument, Result,
         fern::DetectNoDataByValue<bool>,
         fern::MarkNoDataByValue<bool>> operation(
             fern::DetectNoDataByValue<bool>(result.mask(), true),
@@ -94,7 +96,8 @@ BOOST_AUTO_TEST_CASE(array_1d)
 
         Argument argument{-5, 0, 5};
         Result result{3, 3, 3};
-        UnaryOperation<Argument, Result> operation{Algorithm<ArgumentValue>()};
+        UnaryLocalOperation<Argument, Result> operation{
+            Algorithm<ArgumentValue>()};
         operation.calculate(argument, result);
         BOOST_REQUIRE_EQUAL(result[0], 5);
         BOOST_REQUIRE_EQUAL(result[1], 0);
@@ -108,7 +111,8 @@ BOOST_AUTO_TEST_CASE(array_1d)
 
         Argument argument{-5, 0, 5};
         Result result{3, 3, 3};
-        UnaryOperation<Argument, Result> operation{Algorithm<ArgumentValue>()};
+        UnaryLocalOperation<Argument, Result> operation{
+            Algorithm<ArgumentValue>()};
         operation.calculate(argument, result);
         BOOST_REQUIRE_EQUAL(result[0], 5);
         BOOST_REQUIRE_EQUAL(result[1], 0);
@@ -122,7 +126,8 @@ BOOST_AUTO_TEST_CASE(array_1d)
 
         Argument argument;
         Result result;
-        UnaryOperation<Argument, Result> operation{Algorithm<ArgumentValue>()};
+        UnaryLocalOperation<Argument, Result> operation{
+            Algorithm<ArgumentValue>()};
         operation.calculate(argument, result);
         BOOST_CHECK(result.empty());
     }
@@ -139,7 +144,7 @@ BOOST_AUTO_TEST_CASE(array_1d_masked)
     {
         Argument argument{-5, 0, 5};
         Result result(3);
-        UnaryOperation<Argument, Result,
+        UnaryLocalOperation<Argument, Result,
             InputNoDataPolicy, OutputNoDataPolicy> operation(
                 InputNoDataPolicy(result.mask(), true),
                 OutputNoDataPolicy(result.mask(), true),
@@ -169,7 +174,7 @@ BOOST_AUTO_TEST_CASE(array_1d_masked)
     {
         Argument argument;
         Result result;
-        UnaryOperation<Argument, Result,
+        UnaryLocalOperation<Argument, Result,
             InputNoDataPolicy, OutputNoDataPolicy> operation(
                 InputNoDataPolicy(result.mask(), true),
                 OutputNoDataPolicy(result.mask(), true),
@@ -196,7 +201,8 @@ BOOST_AUTO_TEST_CASE(array_2d)
         { 3, 3 },
         { 3, 3 }
     };
-    UnaryOperation<Argument, Result> operation{Algorithm<ArgumentValue>()};
+    UnaryLocalOperation<Argument, Result> operation{
+        Algorithm<ArgumentValue>()};
     operation.calculate(argument, result);
     BOOST_CHECK_EQUAL(result[0][0], 2);
     BOOST_CHECK_EQUAL(result[0][1], 1);
@@ -225,7 +231,7 @@ BOOST_AUTO_TEST_CASE(array_2d_masked)
             { 3, 3 },
             { 3, 3 }
         };
-        UnaryOperation<Argument, Result,
+        UnaryLocalOperation<Argument, Result,
             InputNoDataPolicy, OutputNoDataPolicy> operation(
                 InputNoDataPolicy(result.mask(), true),
                 OutputNoDataPolicy(result.mask(), true),
@@ -267,7 +273,7 @@ BOOST_AUTO_TEST_CASE(array_2d_masked)
     {
         Argument argument;
         Result result;
-        UnaryOperation<Argument, Result,
+        UnaryLocalOperation<Argument, Result,
             InputNoDataPolicy, OutputNoDataPolicy> operation(
                 InputNoDataPolicy(result.mask(), true),
                 OutputNoDataPolicy(result.mask(), true),
