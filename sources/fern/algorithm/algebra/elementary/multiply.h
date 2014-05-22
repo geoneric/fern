@@ -1,6 +1,6 @@
 #pragma once
 #include "fern/core/base_class.h"
-#include "fern/algorithm/core/binary_operation.h"
+#include "fern/algorithm/core/binary_local_operation.h"
 #include "fern/algorithm/core/operation_traits.h"
 #include "fern/algorithm/policy/policies.h"
 #include "fern/algorithm/algebra/elementary/detail/multiply.h"
@@ -143,7 +143,7 @@ public:
 
 private:
 
-    detail::dispatch::BinaryOperation<A1, A2, R,
+    detail::dispatch::BinaryLocalOperation<A1, A2, R,
         OutOfDomainPolicy, OutOfRangePolicy, InputNoDataPolicy,
         OutputNoDataPolicy, multiply::Algorithm<A1Value, A2Value>,
         typename base_class<
