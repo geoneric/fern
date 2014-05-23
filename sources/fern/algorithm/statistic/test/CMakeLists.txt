@@ -1,5 +1,7 @@
 SET(TEST_NAMES
     count_test
+    unary_min_test
+    unary_max_test
     sum_test
 )
 

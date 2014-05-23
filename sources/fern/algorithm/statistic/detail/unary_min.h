@@ -2,20 +2,21 @@
 #include <utility>
 #include "fern/core/argument_categories.h"
 #include "fern/core/argument_traits.h"
+#include "fern/core/assert.h"
 #include "fern/core/collection_traits.h"
 #include "fern/algorithm/core/index_ranges.h"
 
 
 namespace fern {
-namespace count {
+namespace unary_min {
 namespace detail {
 namespace dispatch {
 
 template<class Values, class Result,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
-    class ArrayCollectionCategory>
-class Count
+    class ArgumentCollectionCategory>
+class UnaryMin
 {
 };
 
@@ -23,7 +24,7 @@ class Count
 template<class Values, class Result,
     class InputNoDataPolicy,
     class OutputNoDataPolicy>
-class Count<Values, Result,
+class UnaryMin<Values, Result,
         InputNoDataPolicy,
         OutputNoDataPolicy,
         array_0d_tag>:
@@ -33,15 +34,17 @@ class Count<Values, Result,
 
 {
 
+    FERN_STATIC_ASSERT(std::is_same, Values, Result)
+
 public:
 
-    Count()
+    UnaryMin()
         : InputNoDataPolicy(),
           OutputNoDataPolicy()
     {
     }
 
-    Count(
+    UnaryMin(
         InputNoDataPolicy&& input_no_data_policy,
         OutputNoDataPolicy&& output_no_data_policy)
         : InputNoDataPolicy(std::forward<InputNoDataPolicy>(
@@ -51,17 +54,16 @@ public:
     {
     }
 
-    // 0d array
+    // constant
     inline void calculate(
         Values const& values,
-        typename ArgumentTraits<Values>::value_type const& value,
         Result& result)
     {
         using INDP = InputNoDataPolicy;
         using ONDP = OutputNoDataPolicy;
 
         if(!INDP::is_no_data()) {
-            fern::get(result) = fern::get(values) == fern::get(value) ? 1 : 0;
+            fern::get(result) = fern::get(values);
         }
         else {
             ONDP::mark_as_no_data();
@@ -74,7 +76,7 @@ public:
 template<class Values, class Result,
     class InputNoDataPolicy,
     class OutputNoDataPolicy>
-class Count<Values, Result,
+class UnaryMin<Values, Result,
         InputNoDataPolicy,
         OutputNoDataPolicy,
         array_1d_tag>:
@@ -84,15 +86,17 @@ class Count<Values, Result,
 
 {
 
+    FERN_STATIC_ASSERT(std::is_same, value_type<Values>, Result)
+
 public:
 
-    Count()
+    UnaryMin()
         : InputNoDataPolicy(),
           OutputNoDataPolicy()
     {
     }
 
-    Count(
+    UnaryMin(
         InputNoDataPolicy&& input_no_data_policy,
         OutputNoDataPolicy&& output_no_data_policy)
         : InputNoDataPolicy(std::forward<InputNoDataPolicy>(
@@ -105,7 +109,6 @@ public:
     // 1d array
     inline void calculate(
         Values const& values,
-        typename ArgumentTraits<Values>::value_type const& value,
         Result& result)
     {
         size_t const size = fern::size(values);
@@ -114,7 +117,7 @@ public:
             IndexRange(0, size)
         };
 
-        calculate(ranges, values, value, result);
+        calculate(ranges, values, result);
     }
 
     template<
@@ -122,31 +125,39 @@ public:
     inline void calculate(
         Indices const& indices,
         Values const& values,
-        typename ArgumentTraits<Values>::value_type const& value,
         Result& result)
     {
+        using INDP = InputNoDataPolicy;
+        using ONDP = OutputNoDataPolicy;
+
         size_t const begin = indices[0].begin();
         size_t const end = indices[0].end();
         bool data_seen{false};
 
         if(begin < end) {
 
-            typename ArgumentTraits<Result>::value_type& count =
-                fern::get(result);
-            count = 0;
-
             for(size_t i = begin; i < end; ++i) {
 
-                if(!InputNoDataPolicy::is_no_data(i)) {
+                if(!INDP::is_no_data(i)) {
 
-                    count += fern::get(values, i) == value ? 1 : 0;
+                    // Initialize result with first value.
+                    result = fern::get(values, i);
                     data_seen = true;
+
+                    for(++i; i < end; ++i) {
+
+                        if(!INDP::is_no_data(i)) {
+                            // Update result with minimum of current value
+                            // and this new value.
+                            result = std::min(result, fern::get(values, i));
+                        }
+                    }
                 }
             }
         }
 
         if(!data_seen) {
-            OutputNoDataPolicy::mark_as_no_data();
+            ONDP::mark_as_no_data();
         }
     }
 
@@ -156,7 +167,7 @@ public:
 template<class Values, class Result,
     class InputNoDataPolicy,
     class OutputNoDataPolicy>
-class Count<Values, Result,
+class UnaryMin<Values, Result,
         InputNoDataPolicy,
         OutputNoDataPolicy,
         array_2d_tag>:
@@ -166,15 +177,17 @@ class Count<Values, Result,
 
 {
 
+    FERN_STATIC_ASSERT(std::is_same, value_type<Values>, Result)
+
 public:
 
-    Count()
+    UnaryMin()
         : InputNoDataPolicy(),
           OutputNoDataPolicy()
     {
     }
 
-    Count(
+    UnaryMin(
         InputNoDataPolicy&& input_no_data_policy,
         OutputNoDataPolicy&& output_no_data_policy)
         : InputNoDataPolicy(std::forward<InputNoDataPolicy>(
@@ -187,7 +200,6 @@ public:
     // 2d array
     inline void calculate(
         Values const& values,
-        typename ArgumentTraits<Values>::value_type const& value,
         Result& result)
     {
         size_t const size1 = fern::size(values, 0);
@@ -198,7 +210,7 @@ public:
             IndexRange(0, size2)
         };
 
-        calculate(ranges, values, value, result);
+        calculate(ranges, values, result);
     }
 
     template<
@@ -206,9 +218,11 @@ public:
     inline void calculate(
         Indices const& indices,
         Values const& values,
-        typename ArgumentTraits<Values>::value_type const& value,
         Result& result)
     {
+        using INDP = InputNoDataPolicy;
+        using ONDP = OutputNoDataPolicy;
+
         size_t const begin1 = indices[0].begin();
         size_t const end1 = indices[0].end();
         size_t const begin2 = indices[1].begin();
@@ -217,24 +231,33 @@ public:
 
         if(begin1 < end1 && begin2 < end2) {
 
-            typename ArgumentTraits<Result>::value_type& count =
-                fern::get(result);
-            count = 0;
-
             for(size_t i = begin1; i < end1; ++i) {
                 for(size_t j = begin2; j < end2; ++j) {
 
-                    if(!InputNoDataPolicy::is_no_data(i, j)) {
+                    if(!INDP::is_no_data(i, j)) {
 
-                        count += fern::get(values, i, j) == value ? 1 : 0;
+                        // Initialize result with first value.
+                        result = fern::get(values, i, j);
                         data_seen = true;
+
+                        for(; i < end1; ++i) {
+                            for(++j; j < end2; ++j) {
+
+                                if(!INDP::is_no_data(i, j)) {
+                                    // Update result with minimum of current
+                                    // value and this new value.
+                                    result = std::min(result,
+                                        fern::get(values, i, j));
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
 
         if(!data_seen) {
-            OutputNoDataPolicy::mark_as_no_data();
+            ONDP::mark_as_no_data();
         }
     }
 
@@ -242,5 +265,5 @@ public:
 
 } // namespace dispatch
 } // namespace detail
-} // namespace count
+} // namespace unary_min
 } // namespace fern
