@@ -26,3 +26,17 @@ Sum the values in a collection.
 0D array | 1D array | 2D array | 3D array
 -------- | -------- | -------- | --------
 yes      | yes      | yes      | no
+
+
+Unary min {#unary_min}
+=========
+
+- [fern::statistic::unary_min](@ref fern::statistic::unary_min)
+- [fern::statistic::UnaryMin](@ref fern::statistic::UnaryMin)
+
+
+Unary max {#unary_max}
+=========
+
+- [fern::statistic::unary_max](@ref fern::statistic::unary_max)
+- [fern::statistic::UnaryMax](@ref fern::statistic::UnaryMax)
