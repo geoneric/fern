@@ -1,4 +1,9 @@
 #pragma once
+#include <utility>
+#include "fern/core/argument_categories.h"
+#include "fern/core/argument_traits.h"
+#include "fern/core/collection_traits.h"
+#include "fern/algorithm/core/index_ranges.h"
 
 
 namespace fern {

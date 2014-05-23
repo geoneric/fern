@@ -1,7 +1,9 @@
 #pragma once
 #include <thread>
 #include <boost/mpl/if.hpp>
+#include "fern/core/collection_traits.h"
 #include "fern/core/thread_client.h"
+#include "fern/feature/core/masked_array.h"
 #include "fern/algorithm/core/index_ranges.h"
 #include "fern/algorithm/core/operation_traits.h"
 #include "fern/algorithm/policy/detect_no_data_by_value.h"

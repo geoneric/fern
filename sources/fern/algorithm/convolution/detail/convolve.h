@@ -1,4 +1,9 @@
 #pragma once
+#include <cassert>
+#include <cmath>
+#include <cstddef>
+#include <utility>
+#include <type_traits>
 #include "fern/core/assert.h"
 #include "fern/core/argument_traits.h"
 

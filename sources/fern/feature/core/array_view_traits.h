@@ -13,7 +13,7 @@ struct ArgumentTraits<
 {
 
     using argument_category = typename detail::dispatch::ArrayCategoryTag<T,
-        nr_dimensions>::type argument_category;
+        nr_dimensions>::type;
 
     template<
         class U>

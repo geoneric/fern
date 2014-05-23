@@ -1,4 +1,5 @@
 #pragma once
+#include <cstddef>
 
 
 namespace fern {
@@ -10,6 +11,16 @@ namespace fern {
 template<
     class T>
 size_t             size                (T const& collection);
+
+// For constant only.
+template<
+    class T>
+T const&           get                 (T const&);
+
+// For constant only.
+template<
+    class T>
+T&                 get                 (T&);
 
 template<
     class T>

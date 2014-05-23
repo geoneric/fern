@@ -13,8 +13,6 @@ struct ArgumentTraits<example::Raster<T>>
 
     using value_type = T;
 
-    // using reference = T&;
-
     using const_reference = T const&;
 
     using argument_category = array_2d_tag;

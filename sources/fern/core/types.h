@@ -1,3 +1,6 @@
+#include <cstdint>
+
+
 namespace fern {
 
 using count_t = uint64_t;
