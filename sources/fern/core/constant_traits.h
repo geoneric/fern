@@ -1,22 +1,10 @@
 #pragma once
 #include <cstdint>
 #include "fern/core/argument_traits.h"
+#include "fern/core/collection_traits.h"
 
 
 namespace fern {
-
-// Declarations of functions that are used in the implementation of operations.
-// These are not defined. For each constant type they need to be implemented.
-// See also argument_traits.h, masked_array_traits.h, ...
-
-template<
-    class T>
-T const&           get                 (T const& constant);
-
-template<
-    class T>
-T&                 get                 (T& constant);
-
 
 #define CONSTANT_ARGUMENT_TRAITS(                           \
     T)                                                      \

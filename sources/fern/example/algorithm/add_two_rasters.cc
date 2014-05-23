@@ -7,6 +7,7 @@
 #include <cstdlib>
 
 // Include the relevant traits before including the algorithm.
+#include "fern/core/constant_traits.h"
 #include "fern/example/algorithm/raster_traits.h"
 #include "fern/algorithm/algebra/elementary/add.h"
 

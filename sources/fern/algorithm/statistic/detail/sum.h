@@ -1,5 +1,9 @@
 #pragma once
+#include <utility>
+#include "fern/core/argument_categories.h"
+#include "fern/core/argument_traits.h"
 #include "fern/core/assert.h"
+#include "fern/core/collection_traits.h"
 #include "fern/algorithm/core/index_ranges.h"
 
 
@@ -296,7 +300,7 @@ public:
                     }
                 }
 
-                // TODO We need to break again! The inner breaks breaks only
+                // TODO We need to break again! The inner break breaks only
                 //      the inner for loop.
             }
         }

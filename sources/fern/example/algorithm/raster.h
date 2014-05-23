@@ -12,11 +12,6 @@ class Raster
 
 public:
 
-    // using value_type = T;
-    // using reference = T&;
-    // using const_reference = T const&;
-    // using argument_category = 
-
                    Raster              (size_t nr_rows,
                                         size_t nr_cols);
 

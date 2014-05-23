@@ -3,6 +3,7 @@
 #include <boost/mpl/sizeof.hpp>
 #include <boost/mpl/transform_view.hpp>
 #include <boost/mpl/vector.hpp>
+#include "fern/core/type_traits.h"
 #include "fern/core/typelist.h"
 
 

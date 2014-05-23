@@ -1,4 +1,6 @@
 #pragma once
+#include <cstddef>
+#include "fern/core/argument_traits.h"
 
 
 namespace fern {
