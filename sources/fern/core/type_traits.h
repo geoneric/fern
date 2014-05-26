@@ -1,4 +1,5 @@
 #pragma once
+#include <boost/math/constants/constants.hpp>
 #include "fern/core/value_types.h"
 
 
@@ -279,6 +280,22 @@ template<
 T infinity()
 {
   return TypeTraits<T>::infinity;
+}
+
+
+template<
+    class T>
+T pi()
+{
+  return boost::math::constants::pi<T>();
+}
+
+
+template<
+    class T>
+T half_pi()
+{
+  return boost::math::constants::half_pi<T>();
 }
 
 } // namespace fern
