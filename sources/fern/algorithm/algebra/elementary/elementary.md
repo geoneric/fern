@@ -22,21 +22,13 @@ Add the values in two collections.
 - [fern::algebra::add](@ref fern::algebra::add)
 - [fern::algebra::Add](@ref fern::algebra::Add)
 
-0D array | 1D array | 2D array | 3D array
--------- | -------- | -------- | --------
-yes      | yes      | yes      | yes
 
+Divide {#divide}
+------
+Divide the values in a collection by the values in another collection.
 
-Subtract {#subtract}
---------
-Subtract the values in two collections.
-
-- [fern::algebra::subtract](@ref fern::algebra::subtract)
-- [fern::algebra::Subtract](@ref fern::algebra::Subtract)
-
-0D array | 1D array | 2D array | 3D array
--------- | -------- | -------- | --------
-yes      | yes      | yes      | yes
+- [fern::algebra::divide](@ref fern::algebra::divide)
+- [fern::algebra::Divide](@ref fern::algebra::Divide)
 
 
 Multiply {#multiply}
@@ -48,21 +40,19 @@ Multiply the values in two collections.
 - [fern::multiply::OutOfDomainPolicy](@ref fern::multiply::OutOfDomainPolicy)
 - [fern::multiply::OutOfRangePolicy](@ref fern::multiply::OutOfRangePolicy)
 
-0D array | 1D array | 2D array | 3D array
--------- | -------- | -------- | --------
-yes      | yes      | yes      | yes
+
+Sqrt {#sqrt}
+----
+- [fern::algebra::sqrt](@ref fern::algebra::sqrt)
+- [fern::algebra::Sqrt](@ref fern::algebra::Sqrt)
 
 
-Divide {#divide}
-------
-Divide the values in a collection by the values in another collection.
+Subtract {#subtract}
+--------
+Subtract the values in two collections.
 
-- [fern::algebra::divide](@ref fern::algebra::divide)
-- [fern::algebra::Divide](@ref fern::algebra::Divide)
-
-0D array | 1D array | 2D array | 3D array
--------- | -------- | -------- | --------
-yes      | yes      | yes      | yes
+- [fern::algebra::subtract](@ref fern::algebra::subtract)
+- [fern::algebra::Subtract](@ref fern::algebra::Subtract)
 
 
 Comparison {#comparison}
@@ -74,10 +64,6 @@ Compare the values in two collections.
 
 - [fern::algebra::equal](@ref fern::algebra::equal)
 - [fern::algebra::Equal](@ref fern::algebra::Equal)
-
-0D array | 1D array | 2D array | 3D array
--------- | -------- | -------- | --------
-yes      | yes      | yes      | yes
 
 
 See also {#see_also}
