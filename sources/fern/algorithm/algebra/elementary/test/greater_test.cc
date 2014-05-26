@@ -1,15 +1,15 @@
-#define BOOST_TEST_MODULE fern algorithm algebra elementary less_than
+#define BOOST_TEST_MODULE fern algorithm algebra elementary greater
 #include <boost/test/unit_test.hpp>
 #include "fern/core/constant_traits.h"
-#include "fern/algorithm/algebra/elementary/less_than.h"
+#include "fern/algorithm/algebra/elementary/greater.h"
 
 
-BOOST_AUTO_TEST_SUITE(less_than)
+BOOST_AUTO_TEST_SUITE(greater)
 
 BOOST_AUTO_TEST_CASE(traits)
 {
-    using LessThan = fern::algebra::LessThan<float, float, bool>;
-    BOOST_CHECK((std::is_same<fern::OperationTraits<LessThan>::category,
+    using Greater = fern::algebra::Greater<float, float, bool>;
+    BOOST_CHECK((std::is_same<fern::OperationTraits<Greater>::category,
         fern::local_operation_tag>::value));
 }
 
@@ -24,7 +24,7 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::algebra::less_than(value1, value2, result_we_get);
+    fern::algebra::greater(value1, value2, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 
@@ -35,11 +35,11 @@ BOOST_AUTO_TEST_CASE(algorithm)
     verify_value<float, float, bool>(1.0f, 1.0f, false);
     verify_value<float, float, bool>(-1.0f, -1.0f, false);
 
-    verify_value<int, int, bool>(1, 2, true);
-    verify_value<int, int, bool>(2, 1, false);
+    verify_value<int, int, bool>(1, 2, false);
+    verify_value<int, int, bool>(2, 1, true);
 
-    verify_value<int, int, bool>(-1, -2, false);
-    verify_value<int, int, bool>(-2, -1, true);
+    verify_value<int, int, bool>(-1, -2, true);
+    verify_value<int, int, bool>(-2, -1, false);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

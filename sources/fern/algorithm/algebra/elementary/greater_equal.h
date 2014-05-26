@@ -7,7 +7,7 @@
 
 
 namespace fern {
-namespace less_equal_than {
+namespace greater_equal {
 
 template<
     class Value1,
@@ -21,12 +21,12 @@ struct Algorithm
         Value2 const& value2,
         Result& result) const
     {
-        result = value1 <= value2;
+        result = value1 >= value2;
     }
 
 };
 
-} // namespace less_equal_than
+} // namespace greater_equal
 
 
 namespace algebra {
@@ -38,7 +38,7 @@ template<
     class InputNoDataPolicy=SkipNoData,
     class OutputNoDataPolicy=DontMarkNoData
 >
-class LessEqualThan
+class GreaterEqual
 {
 
 public:
@@ -61,19 +61,19 @@ public:
     FERN_STATIC_ASSERT(std::is_arithmetic, RValue)
     FERN_STATIC_ASSERT(std::is_same, RValue, bool)
 
-    LessEqualThan()
-        : _algorithm(less_equal_than::Algorithm<A1ConstReference,
+    GreaterEqual()
+        : _algorithm(greater_equal::Algorithm<A1ConstReference,
               A2ConstReference, RReference>())
     {
     }
 
-    LessEqualThan(
+    GreaterEqual(
         InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
         OutputNoDataPolicy&& output_no_data_policy)  // Universal reference.
         : _algorithm(
             std::forward<InputNoDataPolicy>(input_no_data_policy),
             std::forward<OutputNoDataPolicy>(output_no_data_policy),
-            less_equal_than::Algorithm<A1ConstReference, A2ConstReference,
+            greater_equal::Algorithm<A1ConstReference, A2ConstReference,
                 RReference>())
     {
     }
@@ -101,7 +101,7 @@ private:
 
     detail::dispatch::BinaryLocalOperation<A1, A2, R,
         binary::DiscardDomainErrors, binary::DiscardRangeErrors,
-        InputNoDataPolicy, OutputNoDataPolicy, less_equal_than::Algorithm<
+        InputNoDataPolicy, OutputNoDataPolicy, greater_equal::Algorithm<
             A1ConstReference, A2ConstReference, RReference>,
         typename base_class<
             typename ArgumentTraits<A1>::argument_category,
@@ -120,12 +120,12 @@ template<
     class InputNoDataPolicy=SkipNoData,
     class OutputNoDataPolicy=DontMarkNoData
 >
-void less_equal_than(
+void greater_equal(
     Values1 const& values1,
     Values2 const& values2,
     Result& result)
 {
-    LessEqualThan<Values1, Values2, Result, InputNoDataPolicy,
+    GreaterEqual<Values1, Values2, Result, InputNoDataPolicy,
         OutputNoDataPolicy>()(values1, values2, result);
 }
 
@@ -137,14 +137,14 @@ template<
     class InputNoDataPolicy=SkipNoData,
     class OutputNoDataPolicy=DontMarkNoData
 >
-void less_equal_than(
+void greater_equal(
     InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
     OutputNoDataPolicy&& output_no_data_policy,  // Universal reference.
     Values1 const& values1,
     Values2 const& values2,
     Result& result)
 {
-    LessEqualThan<Values1, Values2, Result, InputNoDataPolicy,
+    GreaterEqual<Values1, Values2, Result, InputNoDataPolicy,
         OutputNoDataPolicy>(
             std::forward<InputNoDataPolicy>(input_no_data_policy),
             std::forward<OutputNoDataPolicy>(output_no_data_policy))(
