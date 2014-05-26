@@ -58,12 +58,40 @@ Subtract the values in two collections.
 Comparison {#comparison}
 ==========
 
+Greater Than {#greater_than}
+------------
+
+- [fern::algebra::greater_than](@ref fern::algebra::greater_than)
+- [fern::algebra::GreaterThan](@ref fern::algebra::GreaterThan)
+
+
+Greater Than Equal {#greater_than_equal}
+------------------
+
+- [fern::algebra::greater_than_equal](@ref fern::algebra::greater_than_equal)
+- [fern::algebra::GreaterThanEqual](@ref fern::algebra::GreaterThanEqual)
+
+
 Equal {#equal}
 -----
 Compare the values in two collections.
 
 - [fern::algebra::equal](@ref fern::algebra::equal)
 - [fern::algebra::Equal](@ref fern::algebra::Equal)
+
+
+Less Than {#less_than}
+---------
+
+- [fern::algebra::less_than](@ref fern::algebra::less_than)
+- [fern::algebra::LessThan](@ref fern::algebra::LessThan)
+
+
+Less Than Equal {#less_than_equal}
+---------------
+
+- [fern::algebra::less_than_equal](@ref fern::algebra::less_than_equal)
+- [fern::algebra::LessThanEqual](@ref fern::algebra::LessThanEqual)
 
 
 See also {#see_also}

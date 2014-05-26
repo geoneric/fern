@@ -3,6 +3,7 @@ SET(TEST_NAMES
     add_test
     divide_test
     equal_test
+    greater_than_test
     multiply_test
     sqrt_test
     subtract_test
