@@ -1,7 +1,6 @@
 #define BOOST_TEST_MODULE fern algorithm trigonometry tan
 #include <boost/test/unit_test.hpp>
 #include "fern/core/constant_traits.h"
-#include "fern/core/type_traits.h"
 #include "fern/algorithm/trigonometry/tan.h"
 
 
