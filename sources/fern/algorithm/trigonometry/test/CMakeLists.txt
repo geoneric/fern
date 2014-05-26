@@ -1,5 +1,8 @@
 SET(TEST_NAMES
     atan_test
+    cos_test
+    sin_test
+    tan_test
 )
 
 MACRO(ADD_UNIT_TEST NAME)

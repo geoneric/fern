@@ -290,4 +290,12 @@ T pi()
   return boost::math::constants::pi<T>();
 }
 
+
+template<
+    class T>
+T half_pi()
+{
+  return boost::math::constants::half_pi<T>();
+}
+
 } // namespace fern
