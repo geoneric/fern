@@ -4,6 +4,7 @@
 #include "fern/algorithm/core/operation_traits.h"
 #include "fern/algorithm/policy/policies.h"
 #include "fern/algorithm/convolution/divide_by_weights.h"
+#include "fern/algorithm/convolution/skip_no_data.h"
 #include "fern/algorithm/convolution/detail/convolve.h"
 
 
@@ -24,7 +25,8 @@ template<
     class SourceImage,
     class Kernel,
     class DestinationImage,
-    class NormalizePolicy=DivideByWeights,
+    class NormalizePolicy=convolve::DivideByWeights,
+    class UseInCaseOfNoDataPolicy=convolve::SkipNoData,
     template<class> class OutOfRangePolicy=nullary::DiscardRangeErrors,
     class InputNoDataPolicy=SkipNoData,
     class OutputNoDataPolicy=DontMarkNoData
@@ -34,7 +36,7 @@ class Convolve
 
 public:
 
-    using category = neighborhood_operation_tag;
+    using category = focal_operation_tag;
     using A1 = SourceImage;
     using A1Value = value_type<A1>;
     using A2 = Kernel;
@@ -84,8 +86,8 @@ public:
 private:
 
     convolve::detail::dispatch::Convolve<A1, A2, R,
-        NormalizePolicy, OutOfRangePolicy, InputNoDataPolicy,
-        OutputNoDataPolicy,
+        NormalizePolicy, UseInCaseOfNoDataPolicy, OutOfRangePolicy,
+        InputNoDataPolicy, OutputNoDataPolicy,
         typename base_class<
             typename ArgumentTraits<A1>::argument_category,
             array_2d_tag>::type,
@@ -110,7 +112,8 @@ template<
     class SourceImage,
     class Kernel,
     class DestinationImage,
-    class NormalizePolicy=DivideByWeights,
+    class NormalizePolicy=convolve::DivideByWeights,
+    class UseInCaseOfNoDataPolicy=convolve::SkipNoData,
     template<class> class OutOfRangePolicy=nullary::DiscardRangeErrors,
     class InputNoDataPolicy=SkipNoData,
     class OutputNoDataPolicy=DontMarkNoData
@@ -122,8 +125,8 @@ void convolve(
     DestinationImage& destination)
 {
     Convolve<SourceImage, Kernel, DestinationImage, NormalizePolicy,
-        OutOfRangePolicy, InputNoDataPolicy, OutputNoDataPolicy>()(
-            source, kernel, destination);
+        UseInCaseOfNoDataPolicy, OutOfRangePolicy, InputNoDataPolicy,
+        OutputNoDataPolicy>()(source, kernel, destination);
 }
 
 
@@ -135,7 +138,8 @@ template<
     class SourceImage,
     class Kernel,
     class DestinationImage,
-    class NormalizePolicy=DivideByWeights,
+    class NormalizePolicy=convolve::DivideByWeights,
+    class UseInCaseOfNoDataPolicy=convolve::SkipNoData,
     template<class> class OutOfRangePolicy=nullary::DiscardRangeErrors,
     class InputNoDataPolicy=SkipNoData,
     class OutputNoDataPolicy=DontMarkNoData
@@ -149,7 +153,8 @@ void convolve(
     DestinationImage& destination)
 {
     Convolve<SourceImage, Kernel, DestinationImage, NormalizePolicy,
-        OutOfRangePolicy, InputNoDataPolicy, OutputNoDataPolicy>(
+        UseInCaseOfNoDataPolicy, OutOfRangePolicy, InputNoDataPolicy,
+        OutputNoDataPolicy>(
             std::forward<InputNoDataPolicy>(input_no_data_policy),
             std::forward<OutputNoDataPolicy>(output_no_data_policy))(
                 source, kernel, destination);

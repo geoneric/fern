@@ -8,6 +8,7 @@ Categories {#algorithms_categories}
 ==========
 - @ref algebra
 - @ref convolution
+- @ref spatial_algorithms
 - @ref statistics
 - @ref trigonometry
 

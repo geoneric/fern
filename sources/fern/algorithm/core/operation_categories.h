@@ -23,9 +23,13 @@ struct local_operation_tag {};
 */
 struct local_aggregate_operation_tag: local_operation_tag {};
 
-struct neighborhood_operation_tag {};
+//! Focal operations use the local value(s) and the surrounding values to determine the output value.
+/*!
+*/
+struct focal_operation_tag {};
 
-// struct global_operation_tag {};
-// struct zonal_operation_tag {};
+struct zonal_operation_tag {};
+
+struct global_operation_tag {};
 
 } // namespace fern

@@ -32,6 +32,7 @@ namespace dispatch {
 
 template<class SourceImage, class Kernel, class DestinationImage,
     class NormalizePolicy,
+    class UseInCaseOfNoDataPolicy,
     template<class> class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
@@ -46,12 +47,14 @@ class Convolve
 
 template<class SourceImage, class Kernel, class DestinationImage,
     class NormalizePolicy,
+    class UseInCaseOfNoDataPolicy,
     template<class> class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy
 >
 class Convolve<SourceImage, Kernel, DestinationImage,
         NormalizePolicy,
+        UseInCaseOfNoDataPolicy,
         OutOfRangePolicy,
         InputNoDataPolicy,
         OutputNoDataPolicy,
@@ -220,10 +223,13 @@ private:
 
         typename ArgumentTraits<SourceImage>::value_type value{0};
         typename ArgumentTraits<Kernel>::value_type count{0};
+        typename ArgumentTraits<SourceImage>::value_type alt_value{0};
 
         using INDP = InputNoDataPolicy;
         using ONDP = OutputNoDataPolicy;
         using OORP = OutOfRangePolicy<value_type<DestinationImage>>;
+
+        bool value_seen{false};
 
         if(INDP::is_no_data(row_source, col_source)) {
             ONDP::mark_as_no_data(row_source, col_source);
@@ -232,9 +238,22 @@ private:
             // Iterate over the kernel, or a piece thereof.
             for(size_t row = 0; row < nr_rows_kernel; ++row) {
                 for(size_t col = 0; col < nr_cols_kernel; ++col) {
-
-                    if(!INDP::is_no_data(first_row_source + row,
+                    if(INDP::is_no_data(first_row_source + row,
                             first_col_source + col)) {
+                        if(UseInCaseOfNoDataPolicy::value(
+                                static_cast<INDP const&>(*this),
+                                source, size(source, 0), size(source, 1),
+                                first_row_source + row, first_col_source + col,
+                                alt_value)) {
+                            value += alt_value *
+                                get(kernel, first_row_kernel + row,
+                                    first_col_kernel + col);
+                            count += get(kernel, first_row_kernel + row,
+                                first_col_kernel + col);
+                            value_seen = true;
+                        }
+                    }
+                    else {
                         value +=
                             get(kernel, first_row_kernel + row,
                                 first_col_kernel + col) *
@@ -243,6 +262,7 @@ private:
                         count +=
                             get(kernel, first_row_kernel + row,
                                 first_col_kernel + col);
+                        value_seen = true;
                     }
                 }
             }
@@ -251,7 +271,7 @@ private:
         // The result can go out of range when the convolution results in an
         // infinite value. Normalizing such a value makes no sense.
 
-        if(count == 0 || !OORP::within_range(value)) {
+        if(!value_seen || !OORP::within_range(value)) {
             ONDP::mark_as_no_data(row_source, col_source);
         }
         else {

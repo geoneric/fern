@@ -80,7 +80,7 @@ class Laplacian
 
 public:
 
-    using category = neighborhood_operation_tag;
+    using category = focal_operation_tag;
     using A = Values;
     using AValue = value_type<A>;
     using R = Result;

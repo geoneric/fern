@@ -5,7 +5,8 @@ namespace fern {
 
 template<
     class... Parameters>
-class DiscardRangeErrors {
+class DiscardRangeErrors
+{
 
 public:
 

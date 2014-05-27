@@ -79,7 +79,7 @@ public:
 
         // TODO In case of no-data, the center value must be used.
         convolution::convolve<Values, Square<Float, 1>, Result,
-            DontDivideByWeights>(values, kernel, result);
+            convolve::DontDivideByWeights>(values, kernel, result);
 
 
         // Calculate the sum of the kernel weights. This equals the convolution
@@ -97,8 +97,8 @@ public:
 
         Array<Float, 2> sum_of_weights(extents);
         convolution::convolve<Array<Float, 2>, Square<Float, 1>,
-            Array<Float, 2>, DontDivideByWeights>(inverted_mask_as_floats,
-            kernel, sum_of_weights);
+            Array<Float, 2>, convolve::DontDivideByWeights>(
+                inverted_mask_as_floats, kernel, sum_of_weights);
 
 
         // Multiply the values by the sum of weights.

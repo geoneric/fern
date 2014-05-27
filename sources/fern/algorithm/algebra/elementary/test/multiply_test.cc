@@ -52,24 +52,6 @@ template<
     class Value1,
     class Value2,
     class Result>
-void verify_within_range(
-    Value1 const& value1,
-    Value2 const& value2,
-    bool out_of_range)
-{
-    OutOfRangePolicy<Value1, Value2, Result> policy;
-    Algorithm<Value1, Value2, Result> algorithm;
-    Result result;
-    algorithm(value1, value2, result);
-    BOOST_CHECK_EQUAL(policy.within_range(value1, value2, result),
-        out_of_range);
-}
-
-
-template<
-    class Value1,
-    class Value2,
-    class Result>
 struct VerifyWithinRange
 {
     bool operator()(

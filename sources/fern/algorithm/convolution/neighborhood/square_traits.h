@@ -17,6 +17,10 @@ struct ArgumentTraits<
 
     using value_type = T;
 
+    using reference = T&;
+
+    using const_reference = T const&;
+
 };
 
 
@@ -37,8 +41,7 @@ inline constexpr size_t size(
     Square<T, radius> const& /* square */,
     size_t /* dimension */)
 {
-    // assert(dimension < 2);
-    return radius;
+    return Square<T, radius>::size();
 }
 
 
@@ -75,8 +78,22 @@ inline constexpr size_t radius(
 template<
     class T,
     size_t radius>
-inline T const& get(
+inline typename ArgumentTraits<Square<T, radius>>::const_reference get(
     Square<T, radius> const& square,
+    size_t index1,
+    size_t index2)
+{
+    assert(index1 < width(square));
+    assert(index2 < height(square));  // height == width
+    return square[index1][index2];
+}
+
+
+template<
+    class T,
+    size_t radius>
+inline typename ArgumentTraits<Square<T, radius>>::reference get(
+    Square<T, radius>& square,
     size_t index1,
     size_t index2)
 {

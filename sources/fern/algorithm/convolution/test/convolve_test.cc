@@ -8,6 +8,7 @@
 #include "fern/algorithm/convolution/neighborhood/square.h"
 #include "fern/algorithm/convolution/neighborhood/square_traits.h"
 #include "fern/algorithm/convolution/convolve.h"
+#include "fern/algorithm/convolution/replace_no_data_by_focal_average.h"
 
 
 BOOST_AUTO_TEST_SUITE(convolve)
@@ -287,44 +288,102 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
         // +---+---+---+
         // | 3 | X | 5 |
         // +---+---+---+
-        // | 6 | 7 | 8 |
+        // | X | 7 | 8 |
         // +---+---+---+
         fern::MaskedArray<double, 2> source(extents);
         std::iota(source.data(), source.data() + source.num_elements(), 0);
         source.mask()[1][1] = true;
+        source.mask()[2][0] = true;
         fern::MaskedArray<double, 2> destination(extents);
-        destination.fill(999.9);
 
-        fern::convolution::convolve<
-            fern::MaskedArray<double, 2>,
-            fern::Square<int, 1>,
-            fern::MaskedArray<double, 2>,
-            fern::DivideByWeights,
-            fern::nullary::DiscardRangeErrors,
-            InputNoDataPolicy,
-            OutputNoDataPolicy>(
-                InputNoDataPolicy(source.mask(), true),
-                OutputNoDataPolicy(destination.mask(), true),
-                source, kernel_1, destination);
+        // Skip no-data.
+        {
+            fern::MaskedArray<double, 2> destination(extents);
+            destination.fill(999.9);
+            fern::convolution::convolve<
+                fern::MaskedArray<double, 2>,
+                fern::Square<int, 1>,
+                fern::MaskedArray<double, 2>,
+                fern::convolve::DivideByWeights,
+                fern::convolve::SkipNoData,
+                fern::nullary::DiscardRangeErrors,
+                InputNoDataPolicy,
+                OutputNoDataPolicy>(
+                    InputNoDataPolicy(source.mask(), true),
+                    OutputNoDataPolicy(destination.mask(), true),
+                    source, kernel_1, destination);
 
-        // Verify mask.
-        size_t nr_masked_cells{0};
-        fern::statistic::count(destination.mask(), true, nr_masked_cells);
-        BOOST_CHECK_EQUAL(nr_masked_cells, 1);
-        BOOST_CHECK(destination.mask()[1][1]);
+            // Verify mask.
+            size_t nr_masked_cells{0};
+            fern::statistic::count(destination.mask(), true, nr_masked_cells);
+            BOOST_CHECK_EQUAL(nr_masked_cells, 2);
+            BOOST_CHECK(destination.mask()[1][1]);
+            BOOST_CHECK(destination.mask()[2][0]);
 
-        // Verify values.
-        fern::Array<double, 2> result_we_want({
-            { 4.0/3.0, 11.0/5.0,  8.0/3.0},
-            {17.0/5.0, 999.9   , 23.0/5.0},
-            {16.0/3.0, 29.0/5.0, 20.0/3.0}
-        });
-        fern::Array<bool, 2> equal_cells(extents);
-        fern::algebra::equal(destination, result_we_want, equal_cells);
+            // Verify values.
+            fern::Array<double, 2> result_we_want({
+                { 4.0/3.0, 11.0/5.0,  8.0/3.0},
+                {11.0/4.0,    999.9, 23.0/5.0},
+                {   999.9, 23.0/4.0, 20.0/3.0}
+            });
+            fern::Array<bool, 2> equal_cells(extents);
+            fern::algebra::equal(destination, result_we_want, equal_cells);
 
-        size_t nr_equal_cells{0};
-        fern::statistic::count(equal_cells, true, nr_equal_cells);
-        BOOST_CHECK_EQUAL(nr_equal_cells, 9);
+            size_t nr_equal_cells{0};
+            fern::statistic::count(equal_cells, true, nr_equal_cells);
+            BOOST_CHECK_EQUAL(nr_equal_cells, 9);
+        }
+
+        // Replace no-data by focal average.
+        {
+            // Focal average of the no-data cells is
+            // - 26/7
+            // - 10/2
+            // +-----+--------+---+
+            // |  0  |     1  | 2 |
+            // +-----+--------+---+
+            // |  3  | (26/7) | 5 |
+            // +-----+--------+---+
+            // | (5) |     7  | 8 |
+            // +-----+--------+---+
+            fern::MaskedArray<double, 2> destination(extents);
+            destination.fill(999.9);
+            fern::convolution::convolve<
+                fern::MaskedArray<double, 2>,
+                fern::Square<int, 1>,
+                fern::MaskedArray<double, 2>,
+                fern::convolve::DivideByWeights,
+                fern::convolve::ReplaceNoDataByFocalAverage,
+                fern::nullary::DiscardRangeErrors,
+                InputNoDataPolicy,
+                OutputNoDataPolicy>(
+                    InputNoDataPolicy(source.mask(), true),
+                    OutputNoDataPolicy(destination.mask(), true),
+                    source, kernel_1, destination);
+
+            // Verify mask.
+            size_t nr_masked_cells{0};
+            fern::statistic::count(destination.mask(), true, nr_masked_cells);
+            BOOST_CHECK_EQUAL(nr_masked_cells, 2);
+            BOOST_CHECK(destination.mask()[1][1]);
+            BOOST_CHECK(destination.mask()[2][0]);
+
+            // Verify values.
+            double const v1 = 26.0 / 7.0;
+            double const v2 = 10.0 / 2.0;
+            fern::Array<double, 2> result_we_want({
+                {       (4.0 + v1)/4.0,      (11.0 + v1)/6.0,   (8.0 + v1)/4.0},
+                { (11.0 + v1 + v2)/6.0,                999.9,  (23.0 + v1)/6.0},
+                {                999.9, (23.0 + v1 + v2)/6.0,  (20.0 + v1)/4.0}
+            });
+
+            fern::Array<bool, 2> equal_cells(extents);
+            fern::algebra::equal(destination, result_we_want, equal_cells);
+
+            size_t nr_equal_cells{0};
+            fern::statistic::count(equal_cells, true, nr_equal_cells);
+            BOOST_CHECK_EQUAL(nr_equal_cells, 9);
+        }
     }
 
 
@@ -339,7 +398,8 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
             fern::MaskedArray<double, 2>,
             fern::Square<int, 1>,
             fern::MaskedArray<double, 2>,
-            fern::DivideByWeights,
+            fern::convolve::DivideByWeights,
+            fern::convolve::SkipNoData,
             fern::nullary::DiscardRangeErrors,
             InputNoDataPolicy,
             OutputNoDataPolicy>(
@@ -365,7 +425,8 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
             fern::MaskedArray<double, 2>,
             fern::Square<int, 1>,
             fern::MaskedArray<double, 2>,
-            fern::DivideByWeights,
+            fern::convolve::DivideByWeights,
+            fern::convolve::SkipNoData,
             fern::convolve::OutOfRangePolicy,
             InputNoDataPolicy,
             OutputNoDataPolicy>(

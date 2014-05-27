@@ -4,7 +4,6 @@
 #include "fern/core/type_traits.h"
 #include "fern/core/types.h"
 #include "fern/feature/core/masked_raster_traits.h"
-#include "fern/algorithm/core/operation_traits.h"
 #include "fern/algorithm/algebra/vector/laplacian.h"
 
 
@@ -14,7 +13,7 @@ BOOST_AUTO_TEST_CASE(traits)
 {
     using Laplacian = fern::algebra::Laplacian<fern::f32, fern::f32>;
     BOOST_CHECK((std::is_same<fern::OperationTraits<Laplacian>::category,
-        fern::neighborhood_operation_tag>::value));
+        fern::focal_operation_tag>::value));
 }
 
 
