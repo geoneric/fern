@@ -1,0 +1,89 @@
+#pragma once
+
+
+namespace fern {
+namespace convolve {
+
+class SkipOutOfImage
+{
+
+public:
+
+    template<class InputNoDataPolicy, class SourceImage, class Value>
+    static constexpr bool
+                   value_north_west    (InputNoDataPolicy const&
+                                            input_no_data_policy,
+                                        SourceImage const& source,
+                                        size_t const out_of_image_kernel_row,
+                                        size_t const out_of_image_kernel_col,
+                                        size_t const first_row_kernel,
+                                        size_t const first_col_kernel,
+                                        size_t const nr_rows_kernel,
+                                        size_t const nr_cols_kernel,
+                                        size_t const first_row_source,
+                                        size_t const first_col_source,
+                                        Value& value);
+
+    template<class InputNoDataPolicy, class SourceImage, class Value>
+    static constexpr bool
+                   value_north_east    (InputNoDataPolicy const&
+                                            input_no_data_policy,
+                                        SourceImage const& source,
+                                        size_t const out_of_image_kernel_row,
+                                        size_t const out_of_image_kernel_col,
+                                        size_t const first_row_kernel,
+                                        size_t const first_col_kernel,
+                                        size_t const nr_rows_kernel,
+                                        size_t const nr_cols_kernel,
+                                        size_t const first_row_source,
+                                        size_t const first_col_source,
+                                        Value& value);
+
+};
+
+
+template<
+    class InputNoDataPolicy,
+    class SourceImage,
+    class Value
+>
+inline constexpr bool SkipOutOfImage::value_north_west(
+        InputNoDataPolicy const& /* input_no_data_policy */,
+        SourceImage const& /* source */,
+        size_t const /* out_of_image_kernel_row */,
+        size_t const /* out_of_image_kernel_col */,
+        size_t const /* first_row_kernel */,
+        size_t const /* first_col_kernel */,
+        size_t const /* nr_rows_kernel */,
+        size_t const /* nr_cols_kernel */,
+        size_t const /* first_row_source */,
+        size_t const /* first_col_source */,
+        Value& /* value */)
+{
+    return false;
+}
+
+
+template<
+    class InputNoDataPolicy,
+    class SourceImage,
+    class Value
+>
+inline constexpr bool SkipOutOfImage::value_north_east(
+        InputNoDataPolicy const& /* input_no_data_policy */,
+        SourceImage const& /* source */,
+        size_t const /* out_of_image_kernel_row */,
+        size_t const /* out_of_image_kernel_col */,
+        size_t const /* first_row_kernel */,
+        size_t const /* first_col_kernel */,
+        size_t const /* nr_rows_kernel */,
+        size_t const /* nr_cols_kernel */,
+        size_t const /* first_row_source */,
+        size_t const /* first_col_source */,
+        Value& /* value */)
+{
+    return false;
+}
+
+} // namespace convolve
+} // namespace fern

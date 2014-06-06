@@ -103,12 +103,8 @@ private:
         binary::DiscardDomainErrors, binary::DiscardRangeErrors,
         InputNoDataPolicy, OutputNoDataPolicy, greater::Algorithm<
             A1ConstReference, A2ConstReference, RReference>,
-        typename base_class<
-            typename ArgumentTraits<A1>::argument_category,
-            array_2d_tag>::type,
-        typename base_class<
-            typename ArgumentTraits<A2>::argument_category,
-            array_2d_tag>::type> _algorithm;
+        base_class<argument_category<A1>, array_2d_tag>,
+        base_class<argument_category<A2>, array_2d_tag>> _algorithm;
 
 };
 

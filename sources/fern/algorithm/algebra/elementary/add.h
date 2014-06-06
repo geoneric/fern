@@ -146,12 +146,8 @@ private:
     detail::dispatch::BinaryLocalOperation<A1, A2, R,
         OutOfDomainPolicy, OutOfRangePolicy, InputNoDataPolicy,
         OutputNoDataPolicy, add::Algorithm<A1Value, A2Value>,
-        typename base_class<
-            typename ArgumentTraits<A1>::argument_category,
-            array_2d_tag>::type,
-        typename base_class<
-            typename ArgumentTraits<A2>::argument_category,
-            array_2d_tag>::type> _algorithm;
+        base_class<argument_category<A1>, array_2d_tag>,
+        base_class<argument_category<A2>, array_2d_tag>> _algorithm;
 
 };
 

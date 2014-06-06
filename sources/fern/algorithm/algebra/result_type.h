@@ -157,10 +157,8 @@ public:
     // Determine type of result. This type differs from value_type if one of the
     // argument types is a collection.
     using type = typename detail::dispatch::Result<A1, A2, value_type,
-        typename base_class<typename ArgumentTraits<A1>::argument_category,
-            collection_tag>::type,
-        typename base_class<typename ArgumentTraits<A2>::argument_category,
-            collection_tag>::type>::type;
+        base_class<argument_category<A1>, collection_tag>,
+        base_class<argument_category<A2>, collection_tag>>::type;
 
 };
 
