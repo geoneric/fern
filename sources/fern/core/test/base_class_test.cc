@@ -19,18 +19,16 @@ BOOST_AUTO_TEST_SUITE(base_class)
 
 BOOST_AUTO_TEST_CASE(base_class)
 {
-    BOOST_CHECK((std::is_same<fern::base_class<pear_tag, pear_tag>::type,
-        pear_tag>::value));
-    BOOST_CHECK((std::is_same<fern::base_class<pear_tag, pome_tag>::type,
-        pome_tag>::value));
-    BOOST_CHECK((std::is_same<fern::base_class<pear_tag, citrus_tag>::type,
-        pear_tag>::value));
     BOOST_CHECK((std::is_same<
-        fern::base_class<pear_tag, pome_tag, citrus_tag>::type,
-        pome_tag>::value));
+        fern::base_class<pear_tag, pear_tag>, pear_tag>::value));
     BOOST_CHECK((std::is_same<
-        fern::base_class<pear_tag, citrus_tag, pome_tag>::type,
-        pome_tag>::value));
+        fern::base_class<pear_tag, pome_tag>, pome_tag>::value));
+    BOOST_CHECK((std::is_same<
+        fern::base_class<pear_tag, citrus_tag>, pear_tag>::value));
+    BOOST_CHECK((std::is_same<
+        fern::base_class<pear_tag, pome_tag, citrus_tag>, pome_tag>::value));
+    BOOST_CHECK((std::is_same<
+        fern::base_class<pear_tag, citrus_tag, pome_tag>, pome_tag>::value));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

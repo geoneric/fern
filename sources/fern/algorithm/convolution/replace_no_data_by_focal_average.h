@@ -1,4 +1,6 @@
 #pragma once
+#include <cassert>
+#include <cstddef>
 
 
 namespace fern {
