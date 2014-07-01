@@ -77,12 +77,6 @@ public:
             {2, 3, 2}
         });
 
-        // TODO In case of no-data, the center value must be used.
-        //      This is preprocessing, not part of convolution!
-
-        /// convolution::convolve<Values, Square<Float, 1>, Result,
-        ///     convolve::DontDivideByWeights>(values, kernel, result);
-
         convolution::convolve<
             convolve::SkipNoData,
             convolve::DontDivideByWeights,
@@ -109,10 +103,6 @@ public:
         core::cast(inverted_mask, inverted_mask_as_floats);
 
         Array<Float, 2> sum_of_weights(extents);
-        /// convolution::convolve<Array<Float, 2>, Square<Float, 1>,
-        ///     Array<Float, 2>, convolve::DontDivideByWeights>(
-        ///         inverted_mask_as_floats, kernel, sum_of_weights);
-
         convolution::convolve<
             convolve::SkipNoData,
             convolve::DontDivideByWeights,
