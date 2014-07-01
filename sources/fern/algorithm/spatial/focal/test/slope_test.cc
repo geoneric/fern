@@ -134,18 +134,26 @@ BOOST_AUTO_TEST_CASE(algorithm)
         OutputNoDataPolicy(result_we_get.mask(), true),
         raster, result_we_get);
 
-    // TODO
-    // for(size_t r = 1; r < nr_rows - 1; ++r) {
-    //     for(size_t c = 1; c < nr_cols - 1; ++c) {
-    //         if((r == 0 && c == 3) || (r == 1 && c == 3) || (r == 1 && c == 4)) {
-    //             BOOST_CHECK(result_we_get.mask()[r][c]);
-    //         }
-    //         else {
-    //             BOOST_CHECK_CLOSE(result_we_get[r][c], result_we_want[r][c],
-    //                 1e-0);
-    //         }
-    //     }
-    // }
+    for(size_t r = 0; r < nr_rows; ++r) {
+        for(size_t c = 0; c < nr_cols; ++c) {
+            if((r == 0 && c == 3) || (r == 1 && c == 3) || (r == 1 && c == 4)) {
+                BOOST_CHECK(result_we_get.mask()[r][c]);
+            }
+            else {
+                // TODO These are failing:
+                // 0, 2
+                // 0, 4
+                // 1, 2
+                // 2, 2
+                // 2, 3
+                // 2, 4
+                // That is because the no-data cells aren't replaced by
+                // a local average yet.
+                BOOST_CHECK_CLOSE(result_we_get[r][c], result_we_want[r][c],
+                    1e-0);
+            }
+        }
+    }
 }
 
 BOOST_AUTO_TEST_SUITE_END()

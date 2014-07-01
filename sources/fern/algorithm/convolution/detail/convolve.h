@@ -21,8 +21,8 @@ struct OutOfRangePolicy
 
     FERN_STATIC_ASSERT(std::is_floating_point, Result)
 
-    inline bool within_range(
-        Result const& result) const
+    inline static bool within_range(
+        Result const& result)
     {
         return std::isfinite(result);
     }
@@ -800,6 +800,62 @@ struct ConvolveNorthEastCorner
 };
 
 
+template<
+    bool weigh_values
+>
+struct ConvolveSouthWestCorner
+{
+};
+
+
+template<
+    bool weigh_values
+>
+struct ConvolveSouthEastCorner
+{
+};
+
+
+template<
+    bool weigh_values
+>
+struct ConvolveNorthSide
+{
+};
+
+
+template<
+    bool weigh_values
+>
+struct ConvolveWestSide
+{
+};
+
+
+template<
+    bool weigh_values
+>
+struct ConvolveEastSide
+{
+};
+
+
+template<
+    bool weigh_values
+>
+struct ConvolveSouthSide
+{
+};
+
+
+template<
+    bool weigh_values
+>
+struct ConvolveInnerPart
+{
+};
+
+
 template<>
 struct ConvolveNorthWestCorner<true>
 {
@@ -1015,19 +1071,6 @@ struct ConvolveNorthEastCorner<true>
             for(size_t col_source = nr_cols_source - radius_;
                     col_source < nr_cols_source; ++col_source) {
 
-// std::cout << "\n";
-// std::cout << "src              : " << row_source << " "
-//                                    << col_source << std::endl;
-// std::cout << "first_src        : " << first_row_source << " "
-//                                    << first_col_source << std::endl;
-// std::cout << "first_krnl       : " << first_row_kernel << " "
-//                                    << first_col_kernel << std::endl;
-// std::cout << "nr_rows_krnl     : " << nr_rows_kernel << std::endl;
-// std::cout << "nr_cols_krnl     : " << nr_cols_kernel << std::endl;
-// 
-// std::cout << "nr_rws_out_of_img: " << nr_rows_outside_of_image << std::endl;
-// std::cout << "nr_cls_out_of_img: " << nr_cols_outside_of_image << std::endl;
-
                 sum_of_values = 0;
                 sum_of_weights = 0;
                 value_seen = false;
@@ -1119,154 +1162,964 @@ struct ConvolveNorthEastCorner<true>
 
 };
 
+
+template<>
+struct ConvolveSouthWestCorner<true>
+{
+
+    template<
+        class NormalizePolicy,
+        class OutOfImagePolicy,
+        template<class> class OutOfRangePolicy,
+        class InputNoDataPolicy,
+        class OutputNoDataPolicy,
+        class SourceImage,
+        class Kernel,
+        class DestinationImage>
+    static void apply(
+        InputNoDataPolicy&& input_no_data_policy,
+        OutputNoDataPolicy&& output_no_data_policy,
+        SourceImage const& source,
+        Kernel const& kernel,
+        DestinationImage& destination)
+    {
+        size_t const radius_{radius(kernel)};
+        size_t const nr_rows_source{size(source, 0)};
+        size_t first_row_source = nr_rows_source - radius_ - radius_;
+        size_t const first_col_source{0};
+        size_t const first_row_kernel{0};
+        size_t first_col_kernel;
+        size_t nr_rows_kernel = radius_ + radius_;
+        size_t nr_cols_kernel;
+        size_t nr_rows_outside_of_image;
+        size_t nr_cols_outside_of_image;
+
+        value_type<SourceImage> sum_of_values;
+        value_type<Kernel> sum_of_weights;
+        value_type<SourceImage> out_of_image_value;
+
+        using OORP = OutOfRangePolicy<value_type<DestinationImage>>;
+        using NP = NormalizePolicy;
+
+        bool value_seen;
+
+        // Loop over all cells that are situated in the south west corner
+        // and for which some cells are outside of the kernel.
+        for(size_t row_source = nr_rows_source - radius_;
+                row_source < nr_rows_source; ++row_source) {
+
+            first_col_kernel = radius_;
+            nr_cols_kernel = radius_ + 1;
+            nr_cols_outside_of_image = radius_;
+
+            for(size_t col_source = 0; col_source < radius_; ++col_source) {
+
+                sum_of_values = 0;
+                sum_of_weights = 0;
+                value_seen = false;
+
+                if(input_no_data_policy.is_no_data(row_source, col_source)) {
+                    output_no_data_policy.mark_as_no_data(row_source,
+                        col_source);
+                }
+                else {
+                    // Handle cells positioned in the kernel, but outside of
+                    // the source image.
+                    for(size_t out_of_image_kernel_row = 0;
+                            out_of_image_kernel_row < size(kernel, 0);
+                            ++out_of_image_kernel_row) {
+                        for(size_t out_of_image_kernel_col = 0;
+                                out_of_image_kernel_col < size(kernel, 1);
+                                    ++out_of_image_kernel_col) {
+                            if(out_of_image_kernel_row >= nr_rows_kernel ||
+                                out_of_image_kernel_col < first_col_kernel) {
+
+                                if(OutOfImagePolicy::value_south_west(
+                                        input_no_data_policy,
+                                        source,
+                                        out_of_image_kernel_row,
+                                        out_of_image_kernel_col,
+                                        first_row_kernel, first_col_kernel,
+                                        nr_rows_kernel, nr_cols_kernel,
+                                        first_row_source, first_col_source,
+                                        out_of_image_value)) {
+                                    sum_of_values += out_of_image_value *
+                                        get(kernel,
+                                            out_of_image_kernel_row,
+                                            out_of_image_kernel_col);
+                                    sum_of_weights += get(kernel,
+                                        out_of_image_kernel_row,
+                                        out_of_image_kernel_col);
+                                    value_seen = true;
+                                }
+                            }
+                        }
+                    }
+
+                    // Handle cells positioned in the kernel, and in the source
+                    // image.
+                    for(size_t row = 0; row < nr_rows_kernel; ++row) {
+                        for(size_t col = 0; col < nr_cols_kernel; ++col) {
+                            if(!input_no_data_policy.is_no_data(
+                                    first_row_source + row,
+                                    first_col_source + col)) {
+                                sum_of_values +=
+                                    get(kernel, first_row_kernel + row,
+                                        first_col_kernel + col) *
+                                    get(source, first_row_source + row,
+                                        first_col_source + col);
+                                sum_of_weights +=
+                                    get(kernel, first_row_kernel + row,
+                                        first_col_kernel + col);
+                                value_seen = true;
+                            }
+                        }
+                    }
+                }
+
+
+                // The result can go out of range when the convolution
+                // results in an infinite value. Normalizing such a
+                // value makes no sense.
+
+                // TODO OutOfRangePolicy must handle integral results too.
+                if(!value_seen || !OORP::within_range(sum_of_values)) {
+                    output_no_data_policy.mark_as_no_data(row_source,
+                        col_source);
+                }
+                else {
+                    get(destination, row_source, col_source) =
+                        NP::normalize(sum_of_values, sum_of_weights);
+                }
+
+                --first_col_kernel;
+                ++nr_cols_kernel;
+                --nr_cols_outside_of_image;
+            }
+
+            ++first_row_source;
+            --nr_rows_kernel;
+            ++nr_rows_outside_of_image;
+        }
+    }
+
+};
+
+
+template<>
+struct ConvolveSouthEastCorner<true>
+{
+
+    template<
+        class NormalizePolicy,
+        class OutOfImagePolicy,
+        template<class> class OutOfRangePolicy,
+        class InputNoDataPolicy,
+        class OutputNoDataPolicy,
+        class SourceImage,
+        class Kernel,
+        class DestinationImage>
+    static void apply(
+        InputNoDataPolicy&& input_no_data_policy,
+        OutputNoDataPolicy&& output_no_data_policy,
+        SourceImage const& source,
+        Kernel const& kernel,
+        DestinationImage& destination)
+    {
+        size_t const radius_{radius(kernel)};
+        size_t const nr_rows_source{size(source, 0)};
+        size_t const nr_cols_source{size(source, 1)};
+        size_t first_row_source = nr_rows_source - radius_ - radius_;
+        size_t first_col_source;
+        size_t const first_row_kernel{0};
+        size_t const first_col_kernel{0};
+        size_t nr_rows_kernel = radius_ + radius_;
+        size_t nr_cols_kernel;
+        size_t nr_rows_outside_of_image;
+        size_t nr_cols_outside_of_image;
+
+        value_type<SourceImage> sum_of_values;
+        value_type<Kernel> sum_of_weights;
+        value_type<SourceImage> out_of_image_value;
+
+        using OORP = OutOfRangePolicy<value_type<DestinationImage>>;
+        using NP = NormalizePolicy;
+
+        bool value_seen;
+
+        // Loop over all cells that are situated in the south west corner
+        // and for which some cells are outside of the kernel.
+        for(size_t row_source = nr_rows_source - radius_;
+                row_source < nr_rows_source; ++row_source) {
+
+            first_col_source = nr_cols_source - radius_ - radius_;
+            nr_cols_kernel = radius_ + radius_;
+            nr_cols_outside_of_image = 1;
+
+            for(size_t col_source = nr_cols_source - radius_;
+                    col_source < nr_cols_source; ++col_source) {
+
+                sum_of_values = 0;
+                sum_of_weights = 0;
+                value_seen = false;
+
+                if(input_no_data_policy.is_no_data(row_source, col_source)) {
+                    output_no_data_policy.mark_as_no_data(row_source,
+                        col_source);
+                }
+                else {
+                    // Handle cells positioned in the kernel, but outside of
+                    // the source image.
+                    for(size_t out_of_image_kernel_row = 0;
+                            out_of_image_kernel_row < size(kernel, 0);
+                            ++out_of_image_kernel_row) {
+                        for(size_t out_of_image_kernel_col = 0;
+                                out_of_image_kernel_col < size(kernel, 1);
+                                    ++out_of_image_kernel_col) {
+
+                            if(out_of_image_kernel_row >= nr_rows_kernel ||
+                                out_of_image_kernel_col >= nr_cols_kernel) {
+
+                                if(OutOfImagePolicy::value_south_east(
+                                        input_no_data_policy,
+                                        source,
+                                        out_of_image_kernel_row,
+                                        out_of_image_kernel_col,
+                                        first_row_kernel, first_col_kernel,
+                                        nr_rows_kernel, nr_cols_kernel,
+                                        first_row_source, first_col_source,
+                                        out_of_image_value)) {
+                                    sum_of_values += out_of_image_value *
+                                        get(kernel,
+                                            out_of_image_kernel_row,
+                                            out_of_image_kernel_col);
+                                    sum_of_weights += get(kernel,
+                                        out_of_image_kernel_row,
+                                        out_of_image_kernel_col);
+                                    value_seen = true;
+                                }
+                            }
+                        }
+                    }
+
+                    // Handle cells positioned in the kernel, and in the source
+                    // image.
+                    for(size_t row = 0; row < nr_rows_kernel; ++row) {
+                        for(size_t col = 0; col < nr_cols_kernel; ++col) {
+                            if(!input_no_data_policy.is_no_data(
+                                    first_row_source + row,
+                                    first_col_source + col)) {
+                                sum_of_values +=
+                                    get(kernel, first_row_kernel + row,
+                                        first_col_kernel + col) *
+                                    get(source, first_row_source + row,
+                                        first_col_source + col);
+                                sum_of_weights +=
+                                    get(kernel, first_row_kernel + row,
+                                        first_col_kernel + col);
+                                value_seen = true;
+                            }
+                        }
+                    }
+                }
+
+
+                // The result can go out of range when the convolution
+                // results in an infinite value. Normalizing such a
+                // value makes no sense.
+
+                // TODO OutOfRangePolicy must handle integral results too.
+                if(!value_seen || !OORP::within_range(sum_of_values)) {
+                    output_no_data_policy.mark_as_no_data(row_source,
+                        col_source);
+                }
+                else {
+                    get(destination, row_source, col_source) =
+                        NP::normalize(sum_of_values, sum_of_weights);
+                }
+
+                ++first_col_source;
+                --nr_cols_kernel;
+                ++nr_cols_outside_of_image;
+            }
+
+            ++first_row_source;
+            --nr_rows_kernel;
+            ++nr_rows_outside_of_image;
+        }
+    }
+
+};
+
+
+template<>
+struct ConvolveNorthSide<true>
+{
+
+    template<
+        class NormalizePolicy,
+        class OutOfImagePolicy,
+        template<class> class OutOfRangePolicy,
+        class InputNoDataPolicy,
+        class OutputNoDataPolicy,
+        class SourceImage,
+        class Kernel,
+        class DestinationImage>
+    static void apply(
+        InputNoDataPolicy&& input_no_data_policy,
+        OutputNoDataPolicy&& output_no_data_policy,
+        SourceImage const& source,
+        Kernel const& kernel,
+        DestinationImage& destination)
+    {
+        size_t const radius_{radius(kernel)};
+        size_t const nr_cols_source{size(source, 1)};
+        size_t const first_row_source{0};
+        size_t first_col_source;
+        size_t first_row_kernel{radius_};
+        size_t const first_col_kernel{0};
+        size_t nr_rows_kernel{radius_ + 1};
+        size_t const nr_cols_kernel{width(kernel)};
+        size_t nr_rows_outside_of_image{radius_};
+
+        value_type<SourceImage> sum_of_values;
+        value_type<Kernel> sum_of_weights;
+        value_type<SourceImage> out_of_image_value;
+
+        using OORP = OutOfRangePolicy<value_type<DestinationImage>>;
+        using NP = NormalizePolicy;
+
+        bool value_seen;
+
+        // Loop over all cells that are situated in the north side and for
+        // which some cells are outside of the kernel.
+        for(size_t row_source = 0; row_source < radius_; ++row_source) {
+
+            first_col_source = 0;
+
+            for(size_t col_source = radius_; col_source <
+                    nr_cols_source - radius_; ++col_source) {
+
+                sum_of_values = 0;
+                sum_of_weights = 0;
+                value_seen = false;
+
+                if(input_no_data_policy.is_no_data(row_source, col_source)) {
+                    output_no_data_policy.mark_as_no_data(row_source,
+                        col_source);
+                }
+                else {
+                    // Handle cells positioned in the kernel, but outside of
+                    // the source image.
+                    for(size_t out_of_image_kernel_row = 0;
+                            out_of_image_kernel_row < size(kernel, 0);
+                            ++out_of_image_kernel_row) {
+                        for(size_t out_of_image_kernel_col = 0;
+                                out_of_image_kernel_col < size(kernel, 1);
+                                ++out_of_image_kernel_col) {
+
+                            assert(out_of_image_kernel_col >= first_col_kernel);
+
+                            if(out_of_image_kernel_row < first_row_kernel) {
+
+                                if(OutOfImagePolicy::value_north(
+                                        input_no_data_policy,
+                                        source,
+                                        out_of_image_kernel_row,
+                                        out_of_image_kernel_col,
+                                        first_row_kernel, first_col_kernel,
+                                        nr_rows_kernel, nr_cols_kernel,
+                                        first_row_source, first_col_source,
+                                        out_of_image_value)) {
+                                    sum_of_values += out_of_image_value *
+                                        get(kernel,
+                                            out_of_image_kernel_row,
+                                            out_of_image_kernel_col);
+                                    sum_of_weights += get(kernel,
+                                        out_of_image_kernel_row,
+                                        out_of_image_kernel_col);
+                                    value_seen = true;
+                                }
+                            }
+                        }
+                    }
+
+                    // Handle cells positioned in the kernel, and in the source
+                    // image.
+                    for(size_t row = 0; row < nr_rows_kernel; ++row) {
+                        for(size_t col = 0; col < nr_cols_kernel; ++col) {
+                            if(!input_no_data_policy.is_no_data(
+                                    first_row_source + row,
+                                    first_col_source + col)) {
+                                sum_of_values +=
+                                    get(kernel, first_row_kernel + row,
+                                        first_col_kernel + col) *
+                                    get(source, first_row_source + row,
+                                        first_col_source + col);
+                                sum_of_weights +=
+                                    get(kernel, first_row_kernel + row,
+                                        first_col_kernel + col);
+                                value_seen = true;
+                            }
+                        }
+                    }
+                }
+
+
+                // The result can go out of range when the convolution
+                // results in an infinite value. Normalizing such a
+                // value makes no sense.
+
+                // TODO OutOfRangePolicy must handle integral results too.
+                if(!value_seen || !OORP::within_range(sum_of_values)) {
+                    output_no_data_policy.mark_as_no_data(row_source,
+                        col_source);
+                }
+                else {
+                    get(destination, row_source, col_source) =
+                        NP::normalize(sum_of_values, sum_of_weights);
+                }
+
+                ++first_col_source;
+            }
+
+            --first_row_kernel;
+            ++nr_rows_kernel;
+            --nr_rows_outside_of_image;
+        }
+    }
+
+};
+
+
+template<>
+struct ConvolveWestSide<true>
+{
+
+    template<
+        class NormalizePolicy,
+        class OutOfImagePolicy,
+        template<class> class OutOfRangePolicy,
+        class InputNoDataPolicy,
+        class OutputNoDataPolicy,
+        class SourceImage,
+        class Kernel,
+        class DestinationImage>
+    static void apply(
+        InputNoDataPolicy&& input_no_data_policy,
+        OutputNoDataPolicy&& output_no_data_policy,
+        SourceImage const& source,
+        Kernel const& kernel,
+        DestinationImage& destination)
+    {
+        size_t const radius_{radius(kernel)};
+        size_t const nr_rows_source{size(source, 0)};
+        size_t first_row_source{0};
+        size_t const first_col_source{0};
+        size_t const first_row_kernel{0};
+        size_t first_col_kernel;
+        size_t const nr_rows_kernel{height(kernel)};
+        size_t nr_cols_kernel;
+        size_t nr_cols_outside_of_image;
+
+        value_type<SourceImage> sum_of_values;
+        value_type<Kernel> sum_of_weights;
+        value_type<SourceImage> out_of_image_value;
+
+        using OORP = OutOfRangePolicy<value_type<DestinationImage>>;
+        using NP = NormalizePolicy;
+
+        bool value_seen;
+
+        // Loop over all cells that are situated in the west side and for
+        // which some cells are outside of the kernel.
+        for(size_t row_source = radius_; row_source <
+                nr_rows_source - radius_; ++row_source) {
+
+            first_col_kernel = radius_;
+            nr_cols_kernel = radius_ + 1;
+            nr_cols_outside_of_image = radius_;
+
+            for(size_t col_source = 0; col_source < radius_; ++col_source) {
+
+                sum_of_values = 0;
+                sum_of_weights = 0;
+                value_seen = false;
+
+                if(input_no_data_policy.is_no_data(row_source, col_source)) {
+                    output_no_data_policy.mark_as_no_data(row_source,
+                        col_source);
+                }
+                else {
+                    // Handle cells positioned in the kernel, but outside of
+                    // the source image.
+                    for(size_t out_of_image_kernel_row = 0;
+                            out_of_image_kernel_row < size(kernel, 0);
+                            ++out_of_image_kernel_row) {
+                        for(size_t out_of_image_kernel_col = 0;
+                                out_of_image_kernel_col < size(kernel, 1);
+                                ++out_of_image_kernel_col) {
+
+                            assert(out_of_image_kernel_row >= first_row_kernel);
+
+                            if(out_of_image_kernel_col < first_col_kernel) {
+
+                                if(OutOfImagePolicy::value_west(
+                                        input_no_data_policy,
+                                        source,
+                                        out_of_image_kernel_row,
+                                        out_of_image_kernel_col,
+                                        first_row_kernel, first_col_kernel,
+                                        nr_rows_kernel, nr_cols_kernel,
+                                        first_row_source, first_col_source,
+                                        out_of_image_value)) {
+                                    sum_of_values += out_of_image_value *
+                                        get(kernel,
+                                            out_of_image_kernel_row,
+                                            out_of_image_kernel_col);
+                                    sum_of_weights += get(kernel,
+                                        out_of_image_kernel_row,
+                                        out_of_image_kernel_col);
+                                    value_seen = true;
+                                }
+                            }
+                        }
+                    }
+
+                    // Handle cells positioned in the kernel, and in the source
+                    // image.
+                    for(size_t row = 0; row < nr_rows_kernel; ++row) {
+                        for(size_t col = 0; col < nr_cols_kernel; ++col) {
+                            if(!input_no_data_policy.is_no_data(
+                                    first_row_source + row,
+                                    first_col_source + col)) {
+                                sum_of_values +=
+                                    get(kernel, first_row_kernel + row,
+                                        first_col_kernel + col) *
+                                    get(source, first_row_source + row,
+                                        first_col_source + col);
+                                sum_of_weights +=
+                                    get(kernel, first_row_kernel + row,
+                                        first_col_kernel + col);
+                                value_seen = true;
+                            }
+                        }
+                    }
+                }
+
+
+                // The result can go out of range when the convolution
+                // results in an infinite value. Normalizing such a
+                // value makes no sense.
+
+                // TODO OutOfRangePolicy must handle integral results too.
+                if(!value_seen || !OORP::within_range(sum_of_values)) {
+                    output_no_data_policy.mark_as_no_data(row_source,
+                        col_source);
+                }
+                else {
+                    get(destination, row_source, col_source) =
+                        NP::normalize(sum_of_values, sum_of_weights);
+                }
+
+                --first_col_kernel;
+                ++nr_cols_kernel;
+                --nr_cols_outside_of_image;
+            }
+
+            ++first_row_source;
+        }
+    }
+
+};
+
+
+template<>
+struct ConvolveEastSide<true>
+{
+
+    template<
+        class NormalizePolicy,
+        class OutOfImagePolicy,
+        template<class> class OutOfRangePolicy,
+        class InputNoDataPolicy,
+        class OutputNoDataPolicy,
+        class SourceImage,
+        class Kernel,
+        class DestinationImage>
+    static void apply(
+        InputNoDataPolicy&& input_no_data_policy,
+        OutputNoDataPolicy&& output_no_data_policy,
+        SourceImage const& source,
+        Kernel const& kernel,
+        DestinationImage& destination)
+    {
+        size_t const radius_{radius(kernel)};
+        size_t const nr_rows_source{size(source, 0)};
+        size_t const nr_cols_source{size(source, 1)};
+        size_t first_row_source{0};
+        size_t first_col_source;
+        size_t const first_row_kernel{0};
+        size_t const first_col_kernel{0};
+        size_t const nr_rows_kernel{height(kernel)};
+        size_t nr_cols_kernel;
+        size_t nr_cols_outside_of_image;
+
+        value_type<SourceImage> sum_of_values;
+        value_type<Kernel> sum_of_weights;
+        value_type<SourceImage> out_of_image_value;
+
+        using OORP = OutOfRangePolicy<value_type<DestinationImage>>;
+        using NP = NormalizePolicy;
+
+        bool value_seen;
+
+        // Loop over all cells that are situated in the east side and for
+        // which some cells are outside of the kernel.
+        for(size_t row_source = radius_; row_source <
+                nr_rows_source - radius_; ++row_source) {
+
+            first_col_source = nr_cols_source - radius_ - radius_;
+            nr_cols_kernel = radius_ + radius_;
+            nr_cols_outside_of_image = 1;
+
+            for(size_t col_source = nr_cols_source - radius_;
+                    col_source < nr_cols_source; ++col_source) {
+
+                sum_of_values = 0;
+                sum_of_weights = 0;
+                value_seen = false;
+
+                if(input_no_data_policy.is_no_data(row_source, col_source)) {
+                    output_no_data_policy.mark_as_no_data(row_source,
+                        col_source);
+                }
+                else {
+                    // Handle cells positioned in the kernel, but outside of
+                    // the source image.
+                    for(size_t out_of_image_kernel_row = 0;
+                            out_of_image_kernel_row < size(kernel, 0);
+                            ++out_of_image_kernel_row) {
+                        for(size_t out_of_image_kernel_col = 0;
+                                out_of_image_kernel_col < size(kernel, 1);
+                                ++out_of_image_kernel_col) {
+
+                            assert(out_of_image_kernel_row >= first_row_kernel);
+
+                            if(out_of_image_kernel_col >= nr_cols_kernel) {
+
+                                if(OutOfImagePolicy::value_east(
+                                        input_no_data_policy,
+                                        source,
+                                        out_of_image_kernel_row,
+                                        out_of_image_kernel_col,
+                                        first_row_kernel, first_col_kernel,
+                                        nr_rows_kernel, nr_cols_kernel,
+                                        first_row_source, first_col_source,
+                                        out_of_image_value)) {
+                                    sum_of_values += out_of_image_value *
+                                        get(kernel,
+                                            out_of_image_kernel_row,
+                                            out_of_image_kernel_col);
+                                    sum_of_weights += get(kernel,
+                                        out_of_image_kernel_row,
+                                        out_of_image_kernel_col);
+                                    value_seen = true;
+                                }
+                            }
+                        }
+                    }
+
+                    // Handle cells positioned in the kernel, and in the source
+                    // image.
+                    for(size_t row = 0; row < nr_rows_kernel; ++row) {
+                        for(size_t col = 0; col < nr_cols_kernel; ++col) {
+                            if(!input_no_data_policy.is_no_data(
+                                    first_row_source + row,
+                                    first_col_source + col)) {
+                                sum_of_values +=
+                                    get(kernel, first_row_kernel + row,
+                                        first_col_kernel + col) *
+                                    get(source, first_row_source + row,
+                                        first_col_source + col);
+                                sum_of_weights +=
+                                    get(kernel, first_row_kernel + row,
+                                        first_col_kernel + col);
+                                value_seen = true;
+                            }
+                        }
+                    }
+                }
+
+
+                // The result can go out of range when the convolution
+                // results in an infinite value. Normalizing such a
+                // value makes no sense.
+
+                // TODO OutOfRangePolicy must handle integral results too.
+                if(!value_seen || !OORP::within_range(sum_of_values)) {
+                    output_no_data_policy.mark_as_no_data(row_source,
+                        col_source);
+                }
+                else {
+                    get(destination, row_source, col_source) =
+                        NP::normalize(sum_of_values, sum_of_weights);
+                }
+
+                ++first_col_source;
+                --nr_cols_kernel;
+                ++nr_cols_outside_of_image;
+            }
+
+            ++first_row_source;
+        }
+    }
+
+};
+
+
+template<>
+struct ConvolveSouthSide<true>
+{
+
+    template<
+        class NormalizePolicy,
+        class OutOfImagePolicy,
+        template<class> class OutOfRangePolicy,
+        class InputNoDataPolicy,
+        class OutputNoDataPolicy,
+        class SourceImage,
+        class Kernel,
+        class DestinationImage>
+    static void apply(
+        InputNoDataPolicy&& input_no_data_policy,
+        OutputNoDataPolicy&& output_no_data_policy,
+        SourceImage const& source,
+        Kernel const& kernel,
+        DestinationImage& destination)
+    {
+        size_t const radius_{radius(kernel)};
+        size_t const nr_rows_source{size(source, 0)};
+        size_t const nr_cols_source{size(source, 1)};
+        size_t first_row_source{nr_rows_source - radius_ - radius_};
+        size_t first_col_source;
+        size_t const first_row_kernel{0};
+        size_t const first_col_kernel{0};
+        size_t nr_rows_kernel{radius_ + radius_};
+        size_t const nr_cols_kernel{width(kernel)};
+        size_t nr_rows_outside_of_image{1};
+
+        value_type<SourceImage> sum_of_values;
+        value_type<Kernel> sum_of_weights;
+        value_type<SourceImage> out_of_image_value;
+
+        using OORP = OutOfRangePolicy<value_type<DestinationImage>>;
+        using NP = NormalizePolicy;
+
+        bool value_seen;
+
+        // Loop over all cells that are situated in the south side and for
+        // which some cells are outside of the kernel.
+        for(size_t row_source = nr_rows_source - radius_;
+                row_source < nr_rows_source; ++row_source) {
+
+            first_col_source = 0;
+
+            for(size_t col_source = radius_; col_source <
+                    nr_cols_source - radius_; ++col_source) {
+
+                sum_of_values = 0;
+                sum_of_weights = 0;
+                value_seen = false;
+
+                if(input_no_data_policy.is_no_data(row_source, col_source)) {
+                    output_no_data_policy.mark_as_no_data(row_source,
+                        col_source);
+                }
+                else {
+                    // Handle cells positioned in the kernel, but outside of
+                    // the source image.
+                    for(size_t out_of_image_kernel_row = 0;
+                            out_of_image_kernel_row < size(kernel, 0);
+                            ++out_of_image_kernel_row) {
+                        for(size_t out_of_image_kernel_col = 0;
+                                out_of_image_kernel_col < size(kernel, 1);
+                                ++out_of_image_kernel_col) {
+
+                            assert(out_of_image_kernel_col >= first_col_kernel);
+
+                            if(out_of_image_kernel_row >= nr_rows_kernel) {
+
+                                if(OutOfImagePolicy::value_south(
+                                        input_no_data_policy,
+                                        source,
+                                        out_of_image_kernel_row,
+                                        out_of_image_kernel_col,
+                                        first_row_kernel, first_col_kernel,
+                                        nr_rows_kernel, nr_cols_kernel,
+                                        first_row_source, first_col_source,
+                                        out_of_image_value)) {
+                                    sum_of_values += out_of_image_value *
+                                        get(kernel,
+                                            out_of_image_kernel_row,
+                                            out_of_image_kernel_col);
+                                    sum_of_weights += get(kernel,
+                                        out_of_image_kernel_row,
+                                        out_of_image_kernel_col);
+                                    value_seen = true;
+                                }
+                            }
+                        }
+                    }
+
+                    // Handle cells positioned in the kernel, and in the source
+                    // image.
+                    for(size_t row = 0; row < nr_rows_kernel; ++row) {
+                        for(size_t col = 0; col < nr_cols_kernel; ++col) {
+                            if(!input_no_data_policy.is_no_data(
+                                    first_row_source + row,
+                                    first_col_source + col)) {
+                                sum_of_values +=
+                                    get(kernel, first_row_kernel + row,
+                                        first_col_kernel + col) *
+                                    get(source, first_row_source + row,
+                                        first_col_source + col);
+                                sum_of_weights +=
+                                    get(kernel, first_row_kernel + row,
+                                        first_col_kernel + col);
+                                value_seen = true;
+                            }
+                        }
+                    }
+                }
+
+
+                // The result can go out of range when the convolution
+                // results in an infinite value. Normalizing such a
+                // value makes no sense.
+
+                // TODO OutOfRangePolicy must handle integral results too.
+                if(!value_seen || !OORP::within_range(sum_of_values)) {
+                    output_no_data_policy.mark_as_no_data(row_source,
+                        col_source);
+                }
+                else {
+                    get(destination, row_source, col_source) =
+                        NP::normalize(sum_of_values, sum_of_weights);
+                }
+
+                ++first_col_source;
+            }
+
+            // --first_row_kernel;
+            ++first_row_source;
+            --nr_rows_kernel;
+            ++nr_rows_outside_of_image;
+        }
+    }
+
+};
+
+
+template<>
+struct ConvolveInnerPart<true>
+{
+
+    template<
+        class NormalizePolicy,
+        class OutOfImagePolicy,
+        template<class> class OutOfRangePolicy,
+        class InputNoDataPolicy,
+        class OutputNoDataPolicy,
+        class SourceImage,
+        class Kernel,
+        class DestinationImage>
+    static void apply(
+        InputNoDataPolicy&& input_no_data_policy,
+        OutputNoDataPolicy&& output_no_data_policy,
+        SourceImage const& source,
+        Kernel const& kernel,
+        DestinationImage& destination)
+    {
+        size_t const radius_{radius(kernel)};
+        size_t const nr_rows_source{size(source, 0)};
+        size_t const nr_cols_source{size(source, 1)};
+        size_t first_row_source{0};
+        size_t first_col_source;
+        size_t const nr_rows_kernel{height(kernel)};
+        size_t const nr_cols_kernel{width(kernel)};
+
+        value_type<SourceImage> sum_of_values;
+        value_type<Kernel> sum_of_weights;
+
+        using OORP = OutOfRangePolicy<value_type<DestinationImage>>;
+        using NP = NormalizePolicy;
+
+        bool value_seen;
+
+        // Loop over all cells that are situated in the inner part. The kernel
+        // does not extent outside of the source image.
+        for(size_t row_source = radius_; row_source <
+                nr_rows_source - radius_; ++row_source) {
+
+            first_col_source = 0;
+
+            for(size_t col_source = radius_; col_source <
+                    nr_cols_source - radius_; ++col_source) {
+
+                sum_of_values = 0;
+                sum_of_weights = 0;
+                value_seen = false;
+
+                if(input_no_data_policy.is_no_data(row_source, col_source)) {
+                    output_no_data_policy.mark_as_no_data(row_source,
+                        col_source);
+                }
+                else {
+                    // Handle cells positioned in the kernel, and in the source
+                    // image.
+                    for(size_t row = 0; row < nr_rows_kernel; ++row) {
+                        for(size_t col = 0; col < nr_cols_kernel; ++col) {
+                            if(!input_no_data_policy.is_no_data(
+                                    first_row_source + row,
+                                    first_col_source + col)) {
+                                sum_of_values +=
+                                    get(kernel, row, col) *
+                                    get(source, first_row_source + row,
+                                        first_col_source + col);
+                                sum_of_weights +=
+                                    get(kernel, row, col);
+                                value_seen = true;
+                            }
+                        }
+                    }
+                }
+
+
+                // The result can go out of range when the convolution
+                // results in an infinite value. Normalizing such a
+                // value makes no sense.
+
+                // TODO OutOfRangePolicy must handle integral results too.
+                if(!value_seen || !OORP::within_range(sum_of_values)) {
+                    output_no_data_policy.mark_as_no_data(row_source,
+                        col_source);
+                }
+                else {
+                    get(destination, row_source, col_source) =
+                        NP::normalize(sum_of_values, sum_of_weights);
+                }
+
+                ++first_col_source;
+            }
+
+            ++first_row_source;
+        }
+    }
+
+};
+
 } // namespace dispatch
-
-
-
-
-
-// template<
-//     class NormalizePolicy,
-//     class OutOfImagePolicy,
-//     template<class> class OutOfRangePolicy,
-//     class InputNoDataPolicy,
-//     class OutputNoDataPolicy,
-//     class SourceImage,
-//     class Kernel,
-//     class DestinationImage
-// >
-// void convolve_north_west_corner(
-//     InputNoDataPolicy&& input_no_data_policy,
-//     OutputNoDataPolicy&& output_no_data_policy,
-//     SourceImage const& source,
-//     Kernel const& kernel,
-//     DestinationImage& destination)
-// {
-//     size_t const radius_{radius(kernel)};
-//     size_t const first_row_source{0};
-//     size_t const first_col_source{0};
-//     size_t first_row_kernel{radius_};
-//     size_t first_col_kernel;
-//     size_t nr_rows_kernel{radius_ + 1};
-//     size_t nr_cols_kernel;
-//     size_t nr_rows_outside_of_image{radius_};
-//     size_t nr_cols_outside_of_image;
-// 
-//     value_type<SourceImage> value{0};
-//     value_type<SourceImage> out_of_image_value;
-// 
-//     // Loop over all cells that are situated in the north west corner
-//     // and for which some cells are outside of the kernel.
-//     for(size_t row_source = 0; row_source < radius_; ++row_source) {
-// 
-//         first_col_kernel = radius_;
-//         nr_cols_kernel = radius_ + 1;
-//         nr_cols_outside_of_image = radius_;
-// 
-//         for(size_t col_source = 0; col_source < radius_; ++col_source) {
-// 
-//             std::cout << "\n";
-//             std::cout << "source        : " << row_source << " " << col_source << std::endl;
-//             std::cout << "first_source  : " << first_row_source << " " << first_col_source << std::endl;
-//             std::cout << "first_kernel  : " << first_row_kernel << " " << first_col_kernel << std::endl;
-//             std::cout << "nr_rows_kernel: " << nr_rows_kernel << std::endl;
-//             std::cout << "nr_cols_kernel: " << nr_rows_kernel << std::endl;
-// 
-//             std::cout << "nr_rows_outside_of_image: " << nr_rows_outside_of_image << std::endl;
-//             std::cout << "nr_cols_outside_of_image: " << nr_cols_outside_of_image << std::endl;
-// 
-// 
-//             // We are now positioned on a cell within the image. When we
-//             // center the kernel on this cell, part of the kernel falls
-//             // outside of the kernel. The OutOfImagePolicy knows how to
-//             // calculate values for these cells. We iterate over these
-//             // positions and ask the OutOfImagePolicy to come up with values,
-//             // if any.
-//             // We pass it
-//             // - the current position
-//             // - the extent of the source image that falls within the kernel
-//             // - the distance between the current position and the position
-//             //   of the cell outside of the source image
-//             // It returns the value to use or a signal that no such value
-//             // exists. This happens when the policy doesn't want to consider
-//             // out of image cells, or when it has to base a new value upon
-//             // no-data values.
-// 
-// 
-//             for(size_t out_of_image_row = 0; out_of_image_row <
-//                     nr_rows_outside_of_image; ++out_of_image_row) {
-//                 for(size_t out_of_image_col = 0; out_of_image_col <
-//                         nr_cols_outside_of_image; ++out_of_image_col) {
-//                     std::cout << out_of_image_row << " " << out_of_image_col << std::endl;
-// 
-//                     if(OutOfImagePolicy::value(
-//                             input_no_data_policy,
-//                             source,
-//                             nr_rows_outside_of_image, nr_cols_outside_of_image,
-//                             row_source, col_source,
-//                             first_row_source, first_col_source,
-//                             first_row_kernel, first_col_kernel,
-//                             nr_rows_kernel, nr_cols_kernel,
-//                             out_of_image_value)) {
-// 
-//     // Kernels
-//     // - Cells may contain weights.
-//     //   - Values are multiplied by the weights.
-//     //   - Values are normalized using the NormalizePolicy.
-//     // - Cells may be turned on or off.
-//     //   - Values are just summed. This saves many multiplications.
-//     //   - Values are normalized using the NormalizePolicy.
-// 
-//                         aggregate_value<KernelTraits<Kernel>::weigh_values>(
-//                             out_of_image_value, get(kernel, first_row_kernel + row,
-//                                 first_col_kernel + col);
-//                         value += out_of_image *
-//                             get(kernel,
-//                                 first_row_kernel + row,
-//                                 first_col_kernel + col);
-//                         count += get(kernel,
-//                             first_row_kernel + row,
-//                             first_col_kernel + col);
-//                         value_seen = true;
-//                     }
-//                 }
-//             }
-// 
-// 
-// 
-// 
-// 
-//             // TODO hier verder. Determine values for the out of image cells.
-//             //      Use the policy to calculate new values. In case a new
-//             //      value is calculated, weigh it (or not! dispatch).
-//             //      Then handle the values within the image and calculate a
-//             //      result.
-// 
-//             // Handle part outside of the image.
-// 
-// 
-// 
-//             // Handle part within the image.
-// 
-// 
-//             // dispatch::sum(source, kernel, sum_of_values, sum_оf_weights,
-//             //     row_source, col_source,
-//             //     first_row_source, first_col_source,
-//             //     first_row_kernel, first_col_kernel,
-//             //     nr_rows_kernel, nr_cols_kernel);
-// 
-//             --first_col_kernel;
-//             ++nr_cols_kernel;
-//             --nr_cols_outside_of_image;
-//         }
-// 
-//         --first_row_kernel;
-//         ++nr_rows_kernel;
-//         --nr_rows_outside_of_image;
-//     }
-// 
-// 
-// }
 
 
 template<
@@ -1289,42 +2142,8 @@ void convolve(
     DestinationImage& destination)
 {
 
+    // TODO Specialize based on ExecutionPolicy.
 
-
-    // dispatch::Convolve<
-    //     SourceImage,
-    //     Kernel,
-    //     DestinationImage,
-    //     NormalizePolicy,
-    //     // OutOfImagePolicy,
-    //     OutOfRangePolicy,
-    //     InputNoDataPolicy,
-    //     OutputNoDataPolicy,
-    //     // OutOfImagePolicyTraits<OutOfImagePolicy>::skip,
-    //     base_class<argument_category<SourceImage>, array_2d_tag>,
-    //     base_class<argument_category<Kernel>, array_2d_tag>,
-    //     base_class<argument_category<DestinationImage>, array_2d_tag>
-    // > algorithm(
-    //     std::forward<InputNoDataPolicy>(input_no_data_policy),
-    //     std::forward<OutputNoDataPolicy>(output_no_data_policy));
-    // algorithm.calculate(source, kernel, destination);
-
-    // class NormalizePolicy,
-    // class OutOfImagePolicy,
-    // template<class> class OutOfRangePolicy,
-    // class ExecutionPolicy,
-    // class InputNoDataPolicy,
-    // class OutputNoDataPolicy,
-    // class SourceImage,
-    // class Kernel,
-    // class DestinationImage
-
-    // How to handle out of image values.
-    // - Create a masked temp raster with the size of the kernel.
-    // - Copy source values, 'invent' out of image values.
-    // - Mmm, how to handle no-data.
-    // - Maybe just implement all logic in each of these functions and
-    //   explicitly handle the out of image values.
 
     // Corners.
     dispatch::ConvolveNorthWestCorner<KernelTraits<Kernel>::weigh_values>::
@@ -1339,26 +2158,52 @@ void convolve(
                 std::forward<InputNoDataPolicy>(input_no_data_policy),
                 std::forward<OutputNoDataPolicy>(output_no_data_policy),
                 source, kernel, destination);
+    dispatch::ConvolveSouthWestCorner<KernelTraits<Kernel>::weigh_values>::
+        template apply<NormalizePolicy,
+            OutOfImagePolicy, OutOfRangePolicy>(
+                std::forward<InputNoDataPolicy>(input_no_data_policy),
+                std::forward<OutputNoDataPolicy>(output_no_data_policy),
+                source, kernel, destination);
+    dispatch::ConvolveSouthEastCorner<KernelTraits<Kernel>::weigh_values>::
+        template apply<NormalizePolicy,
+            OutOfImagePolicy, OutOfRangePolicy>(
+                std::forward<InputNoDataPolicy>(input_no_data_policy),
+                std::forward<OutputNoDataPolicy>(output_no_data_policy),
+                source, kernel, destination);
 
+    // Sides.
+    dispatch::ConvolveNorthSide<KernelTraits<Kernel>::weigh_values>::
+        template apply<NormalizePolicy,
+            OutOfImagePolicy, OutOfRangePolicy>(
+                std::forward<InputNoDataPolicy>(input_no_data_policy),
+                std::forward<OutputNoDataPolicy>(output_no_data_policy),
+                source, kernel, destination);
+    dispatch::ConvolveWestSide<KernelTraits<Kernel>::weigh_values>::
+        template apply<NormalizePolicy,
+            OutOfImagePolicy, OutOfRangePolicy>(
+                std::forward<InputNoDataPolicy>(input_no_data_policy),
+                std::forward<OutputNoDataPolicy>(output_no_data_policy),
+                source, kernel, destination);
+    dispatch::ConvolveEastSide<KernelTraits<Kernel>::weigh_values>::
+        template apply<NormalizePolicy,
+            OutOfImagePolicy, OutOfRangePolicy>(
+                std::forward<InputNoDataPolicy>(input_no_data_policy),
+                std::forward<OutputNoDataPolicy>(output_no_data_policy),
+                source, kernel, destination);
+    dispatch::ConvolveSouthSide<KernelTraits<Kernel>::weigh_values>::
+        template apply<NormalizePolicy,
+            OutOfImagePolicy, OutOfRangePolicy>(
+                std::forward<InputNoDataPolicy>(input_no_data_policy),
+                std::forward<OutputNoDataPolicy>(output_no_data_policy),
+                source, kernel, destination);
 
-    // convolve_north_west_corner<NormalizePolicy,
-    //     OutOfImagePolicy, OutOfRangePolicy>(input_no_data_policy,
-    //         output_no_data_policy, source, kernel, destination);
-
-    /// convolve_north_east_corner(source, kernel, destination);
-    /// convolve_south_west_corner(source, kernel, destination);
-    /// convolve_south_east_corner(source, kernel, destination);
-
-    /// // Sides.
-    /// convolve_north_side(source, kernel, destination);
-    /// convolve_west_side(source, kernel, destination);
-    /// convolve_east_side(source, kernel, destination);
-    /// convolve_south_side(source, kernel, destination);
-
-    /// // Inner part.
-    /// convolve_inner_part(source, kernel, destination);
-
-
+    // Inner part.
+    dispatch::ConvolveInnerPart<KernelTraits<Kernel>::weigh_values>::
+        template apply<NormalizePolicy,
+            OutOfImagePolicy, OutOfRangePolicy>(
+                std::forward<InputNoDataPolicy>(input_no_data_policy),
+                std::forward<OutputNoDataPolicy>(output_no_data_policy),
+                source, kernel, destination);
 
 
 
@@ -1381,7 +2226,7 @@ void convolve(
     // - Cells may contain weights.
     //   - Values are multiplied by the weights.
     //   - Values are normalized using the NormalizePolicy.
-    // - Cells may be turned on or off.
+    // - Cells may be turned on or off. 'boolean weights'
     //   - Values are just summed. This saves many multiplications.
     //   - Values are normalized using the NormalizePolicy.
     //
@@ -1390,7 +2235,7 @@ void convolve(
     // ----------------------------------------------------------------------
 
     // NormalizePolicy:
-    // - What to do with the aggregated value that fall within the kernel?
+    // - What to do with the aggregated values that fall within the kernel?
     //   - Divide by the sum of weights.
     //   - Don't divide by the sum of weights.
 
@@ -1402,13 +2247,8 @@ void convolve(
     // This triggers a split in the algorithms.
     // ----------------------------------------
 
-    // It is important to have the iteration logic in one place.
-    // - Add support for handling out of image border.
-    // - When calling the main convolve function, it should dispatch, based
-    //   on weigh_values.
-
-    // In case the user wants to use a buffer with preprocessed, or no-data
-    // replaced values, there must be a way to fill the buffer with values.
+    // In case the user wants to use a buffer with preprocessed,
+    // there must be a way to fill the buffer with values.
     // This is probably the responsibility of the BufferPolicy. Create
     // overloads with and without this policy. The buffer policy must fill
     // the buffer before we pass it to convolve instead of the source image.

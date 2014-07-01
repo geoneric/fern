@@ -110,16 +110,34 @@ public:
         auto extents = fern::extents[size(values, 0)][size(values, 1)];
 
         MaskedArray<Float, 2> dz_dx(extents);
-        convolution::convolve<Values, Square<Float, 1>, MaskedArray<Float, 2>,
+        /// convolution::convolve<Values, Square<Float, 1>, MaskedArray<Float, 2>,
+        ///     convolve::DontDivideByWeights,
+        ///     convolve::ReplaceNoDataByFocalAverage>(values, dz_dx_kernel, dz_dx);
+
+        // TODO Preprocess input: replace no-data by focal average.
+        convolution::convolve<
             convolve::DontDivideByWeights,
-            convolve::ReplaceNoDataByFocalAverage>(values, dz_dx_kernel, dz_dx);
+            convolve::ReplaceOutOfImageByFocalAverage,
+            convolve::OutOfRangePolicy>(
+                static_cast<InputNoDataPolicy&>(*this),
+                static_cast<OutputNoDataPolicy&>(*this),
+                fern::sequential, values, dz_dx_kernel, dz_dx);
 
         algebra::divide(dz_dx, 8 * cell_size(values, 0), dz_dx);
 
         MaskedArray<Float, 2> dz_dy(extents);
-        convolution::convolve<Values, Square<Float, 1>, MaskedArray<Float, 2>,
+        /// convolution::convolve<Values, Square<Float, 1>, MaskedArray<Float, 2>,
+        ///     convolve::DontDivideByWeights,
+        ///     convolve::ReplaceNoDataByFocalAverage>(values, dz_dy_kernel, dz_dy);
+
+        // TODO Preprocess input: replace no-data by focal average.
+        convolution::convolve<
             convolve::DontDivideByWeights,
-            convolve::ReplaceNoDataByFocalAverage>(values, dz_dy_kernel, dz_dy);
+            convolve::ReplaceOutOfImageByFocalAverage,
+            convolve::OutOfRangePolicy>(
+                static_cast<InputNoDataPolicy&>(*this),
+                static_cast<OutputNoDataPolicy&>(*this),
+                fern::sequential, values, dz_dy_kernel, dz_dy);
 
         algebra::divide(dz_dy, 8 * cell_size(values, 1), dz_dy);
 
