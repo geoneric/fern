@@ -104,9 +104,7 @@ private:
     detail::dispatch::UnaryLocalOperation<A, R,
         OutOfDomainPolicy, OutOfRangePolicy, InputNoDataPolicy,
         OutputNoDataPolicy, not_::Algorithm<AValue>,
-        typename base_class<
-            typename ArgumentTraits<A>::argument_category,
-            array_2d_tag>::type> _algorithm;
+        base_class<argument_category<A>, array_2d_tag>> _algorithm;
 
 };
 

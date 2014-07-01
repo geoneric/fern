@@ -3,6 +3,7 @@
 
 
 namespace fern {
+namespace detail {
 
 //! Determine which of the \a CLASSES passed in is a base class of \a Class.
 /*!
@@ -59,5 +60,13 @@ struct base_class<
         typename base_class<Class, CLASSES...>::type
     >::type;
 };
+
+} // namespace detail
+
+
+template<
+    class Class,
+    class... CLASSES>
+using base_class = typename detail::base_class<Class, CLASSES...>::type;
 
 } // namespace fern

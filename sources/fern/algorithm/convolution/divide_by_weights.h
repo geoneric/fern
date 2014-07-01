@@ -2,6 +2,7 @@
 
 
 namespace fern {
+namespace convolve {
 
 class DivideByWeights
 {
@@ -26,4 +27,5 @@ inline Value DivideByWeights::normalize(
     return value / count;
 }
 
+} // namespace convolve
 } // namespace fern

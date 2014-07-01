@@ -1,13 +1,51 @@
 #pragma once
-#include "fern/core/assert.h"
+#include <cmath>
 #include "fern/core/base_class.h"
-#include "fern/algorithm/core/operation_traits.h"
 #include "fern/algorithm/core/binary_local_operation.h"
+#include "fern/algorithm/core/operation_traits.h"
 #include "fern/algorithm/policy/policies.h"
 
 
 namespace fern {
-namespace greater {
+namespace pow {
+
+template<
+    class Base,
+    class Exponent
+>
+class OutOfDomainPolicy
+{
+
+public:
+
+    inline bool within_domain(
+        Base const& base,
+        Exponent const& exponent) const
+    {
+        if(base < Base(0)) {
+            Base integral, fractional;
+            fractional = std::modf(exponent, &integral);
+
+            if(fractional != Base(0)) {
+                return false;
+            }
+        }
+        else if(base == Base(0) && exponent < Exponent(0)) {
+            return false;
+        }
+
+        return true;
+    }
+
+};
+
+
+template<
+    class Value1,
+    class Value2,
+    class Result>
+using OutOfRangePolicy = DetectOutOfRangeByErrno<Value1, Value2, Result>;
+
 
 template<
     class Value1,
@@ -16,17 +54,22 @@ template<
 struct Algorithm
 {
 
+    FERN_STATIC_ASSERT(std::is_floating_point, Value1)
+    FERN_STATIC_ASSERT(std::is_same, Value2, Value1)
+
     inline void operator()(
         Value1 const& value1,
         Value2 const& value2,
         Result& result) const
     {
-        result = value1 > value2;
+        errno = 0;
+        result = std::pow(static_cast<Result>(value1),
+            static_cast<Result>(value2));
     }
 
 };
 
-} // namespace greater
+} // namespace pow
 
 
 namespace algebra {
@@ -35,46 +78,41 @@ template<
     class Values1,
     class Values2,
     class Result,
+    template<class, class> class OutOfDomainPolicy=binary::DiscardDomainErrors,
+    template<class, class, class> class OutOfRangePolicy=
+        binary::DiscardRangeErrors,
     class InputNoDataPolicy=SkipNoData,
     class OutputNoDataPolicy=DontMarkNoData
 >
-class Greater
+class Pow
 {
 
 public:
 
     using category = local_operation_tag;
     using A1 = Values1;
-    using A1Value = typename ArgumentTraits<A1>::value_type;
-    using A1ConstReference = typename ArgumentTraits<A1>::const_reference;
+    using A1Value = value_type<A1>;
     using A2 = Values2;
-    using A2Value = typename ArgumentTraits<A2>::value_type;
-    using A2ConstReference = typename ArgumentTraits<A2>::const_reference;
+    using A2Value = value_type<A2>;
     using R = Result;
-    using RValue = typename ArgumentTraits<R>::value_type;
-    using RReference = typename ArgumentTraits<R>::reference;
+    using RValue = value_type<R>;
 
-    FERN_STATIC_ASSERT(std::is_arithmetic, A1Value)
-    FERN_STATIC_ASSERT(!std::is_same, A1Value, bool)
-    FERN_STATIC_ASSERT(std::is_arithmetic, A2Value)
-    FERN_STATIC_ASSERT(!std::is_same, A2Value, bool)
-    FERN_STATIC_ASSERT(std::is_arithmetic, RValue)
-    FERN_STATIC_ASSERT(std::is_same, RValue, bool)
+    FERN_STATIC_ASSERT(std::is_floating_point, A1Value)
+    FERN_STATIC_ASSERT(std::is_same, A2Value, A1Value)
+    FERN_STATIC_ASSERT(std::is_same, RValue, A1Value)
 
-    Greater()
-        : _algorithm(greater::Algorithm<A1ConstReference, A2ConstReference,
-              RReference>())
+    Pow()
+        : _algorithm(pow::Algorithm<A1Value, A2Value, RValue>())
     {
     }
 
-    Greater(
+    Pow(
         InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
         OutputNoDataPolicy&& output_no_data_policy)  // Universal reference.
         : _algorithm(
             std::forward<InputNoDataPolicy>(input_no_data_policy),
             std::forward<OutputNoDataPolicy>(output_no_data_policy),
-            greater::Algorithm<A1ConstReference, A2ConstReference,
-                RReference>())
+            pow::Algorithm<A1Value, A2Value, RValue>())
     {
     }
 
@@ -100,9 +138,8 @@ public:
 private:
 
     detail::dispatch::BinaryLocalOperation<A1, A2, R,
-        binary::DiscardDomainErrors, binary::DiscardRangeErrors,
-        InputNoDataPolicy, OutputNoDataPolicy, greater::Algorithm<
-            A1ConstReference, A2ConstReference, RReference>,
+        OutOfDomainPolicy, OutOfRangePolicy, InputNoDataPolicy,
+        OutputNoDataPolicy, pow::Algorithm<A1Value, A2Value, RValue>,
         base_class<argument_category<A1>, array_2d_tag>,
         base_class<argument_category<A2>, array_2d_tag>> _algorithm;
 
@@ -113,16 +150,19 @@ template<
     class Values1,
     class Values2,
     class Result,
+    template<class, class> class OutOfDomainPolicy=binary::DiscardDomainErrors,
+    template<class, class, class> class OutOfRangePolicy=
+        binary::DiscardRangeErrors,
     class InputNoDataPolicy=SkipNoData,
     class OutputNoDataPolicy=DontMarkNoData
 >
-void greater(
+void pow(
     Values1 const& values1,
     Values2 const& values2,
     Result& result)
 {
-    Greater<Values1, Values2, Result, InputNoDataPolicy,
-        OutputNoDataPolicy>()(values1, values2, result);
+    Pow<Values1, Values2, Result, OutOfDomainPolicy, OutOfRangePolicy,
+        InputNoDataPolicy, OutputNoDataPolicy>()(values1, values2, result);
 }
 
 
@@ -130,18 +170,21 @@ template<
     class Values1,
     class Values2,
     class Result,
+    template<class, class> class OutOfDomainPolicy=binary::DiscardDomainErrors,
+    template<class, class, class> class OutOfRangePolicy=
+        binary::DiscardRangeErrors,
     class InputNoDataPolicy=SkipNoData,
     class OutputNoDataPolicy=DontMarkNoData
 >
-void greater(
+void pow(
     InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
     OutputNoDataPolicy&& output_no_data_policy,  // Universal reference.
     Values1 const& values1,
     Values2 const& values2,
     Result& result)
 {
-    Greater<Values1, Values2, Result, InputNoDataPolicy,
-        OutputNoDataPolicy>(
+    Pow<Values1, Values2, Result, OutOfDomainPolicy, OutOfRangePolicy,
+        InputNoDataPolicy, OutputNoDataPolicy>(
             std::forward<InputNoDataPolicy>(input_no_data_policy),
             std::forward<OutputNoDataPolicy>(output_no_data_policy))(
         values1, values2, result);

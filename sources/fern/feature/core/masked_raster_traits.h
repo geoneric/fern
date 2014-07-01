@@ -83,6 +83,17 @@ inline typename ArgumentTraits<MaskedRaster<T, 1>>::reference get(
 
 template<
     class T>
+inline double cell_size(
+    MaskedRaster<T, 2> const& raster,
+    size_t index)
+{
+    assert(index == 0 || index == 1);
+    return raster.transformation()[index == 0 ? 1 : 3];
+}
+
+
+template<
+    class T>
 inline double cell_area(
     MaskedRaster<T, 2> const& raster)
 {

@@ -19,6 +19,8 @@ public:
 
     T const*       operator[]          (size_t index) const;
 
+    T*             operator[]          (size_t index);
+
     static constexpr size_t  size      ();
 
 private:
@@ -61,6 +63,17 @@ template<
     size_t radius>
 inline T const* Square<T, radius>::operator[](
     size_t index) const
+{
+    assert(index < _size);
+    return _weights[index];
+}
+
+
+template<
+    class T,
+    size_t radius>
+inline T* Square<T, radius>::operator[](
+    size_t index)
 {
     assert(index < _size);
     return _weights[index];

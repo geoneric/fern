@@ -31,8 +31,7 @@ public:
         Value const& value,
         Result const& result) const
     {
-        using value_tag = typename base_class<
-            typename TypeTraits<Value>::number_category, integer_tag>::type;
+        using value_tag = base_class<number_category<Value>, integer_tag>;
 
         return detail::dispatch::within_range<Value, Result, value_tag>::
             calculate(value, result);
@@ -123,9 +122,7 @@ private:
     detail::dispatch::UnaryLocalOperation<A, R,
         OutOfDomainPolicy, OutOfRangePolicy, InputNoDataPolicy,
         OutputNoDataPolicy, absolute::Algorithm<AValue>,
-        typename base_class<
-            typename ArgumentTraits<A>::argument_category,
-            array_2d_tag>::type> _algorithm;
+        base_class<argument_category<A>, array_2d_tag>> _algorithm;
 
 };
 

@@ -78,9 +78,22 @@ public:
         });
 
         // TODO In case of no-data, the center value must be used.
-        convolution::convolve<Values, Square<Float, 1>, Result,
-            DontDivideByWeights>(values, kernel, result);
+        //      This is preprocessing, not part of convolution!
 
+        /// convolution::convolve<Values, Square<Float, 1>, Result,
+        ///     convolve::DontDivideByWeights>(values, kernel, result);
+
+        convolution::convolve<
+            convolve::SkipNoData,
+            convolve::DontDivideByWeights,
+            convolve::SkipOutOfImage,
+            // TODO: How to select this one based on the policy passed into
+            //       laplacian?
+            convolve::OutOfRangePolicy>(
+                static_cast<InputNoDataPolicy&>(*this),
+                static_cast<OutputNoDataPolicy&>(*this),
+                fern::sequential,  // TODO Use policy passed into laplacian.
+                values, kernel, result);
 
         // Calculate the sum of the kernel weights. This equals the convolution
         // of the mask (inverted and converted to integers), by the kernel
@@ -96,10 +109,21 @@ public:
         core::cast(inverted_mask, inverted_mask_as_floats);
 
         Array<Float, 2> sum_of_weights(extents);
-        convolution::convolve<Array<Float, 2>, Square<Float, 1>,
-            Array<Float, 2>, DontDivideByWeights>(inverted_mask_as_floats,
-            kernel, sum_of_weights);
+        /// convolution::convolve<Array<Float, 2>, Square<Float, 1>,
+        ///     Array<Float, 2>, convolve::DontDivideByWeights>(
+        ///         inverted_mask_as_floats, kernel, sum_of_weights);
 
+        convolution::convolve<
+            convolve::SkipNoData,
+            convolve::DontDivideByWeights,
+            convolve::SkipOutOfImage,
+            // TODO: How to select this one based on the policy passed into
+            //       laplacian?
+            convolve::OutOfRangePolicy>(
+                static_cast<InputNoDataPolicy&>(*this),
+                static_cast<OutputNoDataPolicy&>(*this),
+                fern::sequential,  // TODO Use policy passed into laplacian.
+                inverted_mask_as_floats, kernel, sum_of_weights);
 
         // Multiply the values by the sum of weights.
         MaskedRaster<Float, 2> multiplied_values(extents,

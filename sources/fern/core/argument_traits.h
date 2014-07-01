@@ -30,4 +30,9 @@ template<
     class T>
 using const_reference = typename ArgumentTraits<T>::const_reference;
 
+
+template<
+    class T>
+using argument_category = typename ArgumentTraits<T>::argument_category;
+
 } // namespace fern

@@ -2,6 +2,7 @@
 
 
 namespace fern {
+namespace convolve {
 
 class DontDivideByWeights
 {
@@ -26,4 +27,5 @@ inline Value DontDivideByWeights::normalize(
     return value;
 }
 
+} // namespace convolve
 } // namespace fern

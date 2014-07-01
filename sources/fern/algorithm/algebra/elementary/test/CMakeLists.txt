@@ -8,6 +8,7 @@ SET(TEST_NAMES
     less_test
     less_equal_test
     multiply_test
+    pow_test
     sqrt_test
     subtract_test
 )

@@ -1,0 +1,15 @@
+#pragma once
+#include <type_traits>
+#include "fern/core/argument_traits.h"
+
+
+namespace fern {
+
+template<
+    class Kernel>
+struct KernelTraits
+{
+    static bool const weigh_values{!std::is_same<value_type<Kernel>, bool>()};
+};
+
+} // namespace fern

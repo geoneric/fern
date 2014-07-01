@@ -298,4 +298,9 @@ T half_pi()
   return boost::math::constants::half_pi<T>();
 }
 
+
+template<
+    class T>
+using number_category = typename TypeTraits<T>::number_category;
+
 } // namespace fern
