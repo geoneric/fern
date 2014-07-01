@@ -290,4 +290,265 @@ private:
 
 } // namespace dispatch
 } // namespace detail
+
+
+namespace detail {
+namespace dispatch2 {
+
+template<
+    class Algorithm,
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class ExecutionPolicy,
+    class Value,
+    class Result,
+    class ValueCollectionCategory>
+class UnaryLocalOperation
+{
+};
+
+
+template<
+    class Algorithm,
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class ExecutionPolicy,
+    class Value,
+    class Result>
+struct UnaryLocalOperation<
+    Algorithm,
+    OutOfDomainPolicy,
+    OutOfRangePolicy,
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    ExecutionPolicy,
+    Value,
+    Result,
+    array_0d_tag>
+
+{
+
+    // f(0d array)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        ExecutionPolicy const& /* execution_policy */,
+        Value const& value,
+        Result& result)
+    {
+        // Don't do anything if the input value is no-data. We assume
+        // that input no-data values are already marked as such in the
+        // result.
+        if(!input_no_data_policy.is_no_data()) {
+            const_reference<Value> v(fern::get(value));
+
+            if(!OutOfDomainPolicy::within_domain(v)) {
+                // Input value is out of domain. Mark result value as
+                // no-data. Don't change the result value.
+                output_no_data_policy.mark_as_no_data();
+            }
+            else {
+                Algorithm algorithm;
+                reference<Value> r(fern::get(result));
+
+                algorithm(v, r);
+
+                if(!OutOfRangePolicy::within_range(v, r)) {
+                    // Result value is out-of-range. Mark result value as
+                    // no-data. Result value contains the out-of-range
+                    // value (this may be overriden by
+                    // output_no_data_policy, depending on its
+                    // implementation).
+                    output_no_data_policy.mark_as_no_data();
+                }
+            }
+        }
+    }
+
+};
+
+
+template<
+    class Algorithm,
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class ExecutionPolicy,
+    class Value,
+    class Result>
+struct UnaryLocalOperation<
+    Algorithm,
+    OutOfDomainPolicy,
+    OutOfRangePolicy,
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    ExecutionPolicy,
+    Value,
+    Result,
+    array_1d_tag>
+
+{
+
+    // f(1d array)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        ExecutionPolicy const& /* execution_policy */,
+        Value const& value,
+        Result& result)
+    {
+        assert(fern::size(value) == fern::size(result));
+
+        size_t const size = fern::size(value);
+        Algorithm algorithm;
+
+        for(size_t i = 0; i < size; ++i) {
+
+            // Don't do anything if the input value is no-data. We assume
+            // that input no-data values are already marked as such in the
+            // result.
+            if(!input_no_data_policy.is_no_data(i)) {
+                const_reference<Value> v(fern::get(value, i));
+
+                if(!OutOfDomainPolicy::within_domain(v)) {
+                    // Input value is out of domain. Mark result value as
+                    // no-data. Don't change the result value.
+                    output_no_data_policy.mark_as_no_data(i);
+                }
+                else {
+                    reference<Value> r(fern::get(result, i));
+
+                    algorithm(v, r);
+
+                    if(!OutOfRangePolicy::within_range(v, r)) {
+                        // Result value is out-of-range. Mark result value as
+                        // no-data. Result value contains the out-of-range
+                        // value (this may be overriden by
+                        // output_no_data_policy, depending on its
+                        // implementation).
+                        output_no_data_policy.mark_as_no_data(i);
+                    }
+                }
+            }
+        }
+    }
+
+};
+
+
+template<
+    class Algorithm,
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class ExecutionPolicy,
+    class Value,
+    class Result>
+struct UnaryLocalOperation<
+    Algorithm,
+    OutOfDomainPolicy,
+    OutOfRangePolicy,
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    ExecutionPolicy,
+    Value,
+    Result,
+    array_2d_tag>
+
+{
+
+    // f(2d array)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        ExecutionPolicy const& /* execution_policy */,
+        Value const& value,
+        Result& result)
+    {
+        assert(fern::size(value, 0) == fern::size(result, 0));
+        assert(fern::size(value, 1) == fern::size(result, 1));
+
+        size_t const start1 = 0;
+        size_t const finish1 = fern::size(result, 0);
+        size_t const start2 = 0;
+        size_t const finish2 = fern::size(result, 1);
+        Algorithm algorithm;
+
+        for(size_t i = start1; i < finish1; ++i) {
+            for(size_t j = start2; j < finish2; ++j) {
+
+                // Don't do anything if the input value is no-data. We assume
+                // that input no-data values are already marked as such in the
+                // result.
+                if(!input_no_data_policy.is_no_data(i, j)) {
+                    const_reference<Value> v(fern::get(value, i, j));
+
+                    if(!OutOfDomainPolicy::within_domain(v)) {
+                        // Input value is out of domain. Mark result value as
+                        // no-data. Don't change the result value.
+                        output_no_data_policy.mark_as_no_data(i, j);
+                    }
+                    else {
+                        reference<Value> r(fern::get(result, i, j));
+
+                        algorithm(v, r);
+
+                        if(!OutOfRangePolicy::within_range(v, r)) {
+                            // Result value is out-of-range. Mark result
+                            // value as no-data. Result value contains the
+                            // out-of-range value (this may be overriden
+                            // by output_no_data_policy, depending on its
+                            // implementation).
+                            output_no_data_policy.mark_as_no_data(i, j);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+};
+
+
+} // namespace dispatch2
+} // namespace detail
+
+
+template<
+    template<class> class Algorithm,
+    template<class> class OutOfDomainPolicy,
+    template<class, class> class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class ExecutionPolicy,
+    class Value,
+    class Result
+>
+void unary_local_operation(
+    InputNoDataPolicy const& input_no_data_policy,
+    OutputNoDataPolicy& output_no_data_policy,
+    ExecutionPolicy const& execution_policy,
+    Value const& value,
+    Result& result)
+{
+    detail::dispatch2::UnaryLocalOperation<
+        Algorithm<value_type<Value>>,
+        OutOfDomainPolicy<value_type<Value>>,
+        OutOfRangePolicy<value_type<Value>, value_type<Result>>,
+        InputNoDataPolicy,
+        OutputNoDataPolicy,
+        ExecutionPolicy,
+        Value,
+        Result,
+        base_class<argument_category<Value>, array_2d_tag>>::apply(
+            input_no_data_policy, output_no_data_policy, execution_policy,
+            value, result);
+}
+
 } // namespace fern
