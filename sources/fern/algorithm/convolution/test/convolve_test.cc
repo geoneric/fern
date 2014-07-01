@@ -197,6 +197,7 @@ BOOST_AUTO_TEST_CASE(convolve)
 
         // Convolute while calculating values for out-of-image cells.
         {
+            using AlternativeForNoDataPolicy=fern::convolve::SkipNoData;
             using NormalizePolicy=fern::convolve::DivideByWeights;
             using OutOfImagePolicy=
                 fern::convolve::ReplaceOutOfImageByFocalAverage;
@@ -205,6 +206,7 @@ BOOST_AUTO_TEST_CASE(convolve)
 
             fern::Array<double, 2> result(extents);
             fern::convolution::convolve<
+                AlternativeForNoDataPolicy,
                 NormalizePolicy,
                 OutOfImagePolicy,
                 fern::nullary::DiscardRangeErrors,
@@ -409,6 +411,7 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
             fern::MaskedArray<double, 2> destination(extents);
             destination.fill(999.9);
             fern::convolution::convolve<
+                fern::convolve::SkipNoData,
                 fern::convolve::DivideByWeights,
                 fern::convolve::SkipOutOfImage,
                 fern::nullary::DiscardRangeErrors>(
@@ -497,6 +500,7 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
         fern::MaskedArray<double, 2> destination(extents);
 
         fern::convolution::convolve<
+            fern::convolve::SkipNoData,
             fern::convolve::DivideByWeights,
             fern::convolve::SkipOutOfImage,
             fern::nullary::DiscardRangeErrors>(
@@ -519,6 +523,7 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
         fern::MaskedArray<double, 2> destination(extents);
 
         fern::convolution::convolve<
+            fern::convolve::SkipNoData,
             fern::convolve::DivideByWeights,
             fern::convolve::SkipOutOfImage,
             fern::convolve::OutOfRangePolicy>(

@@ -47,6 +47,7 @@ inline bool ReplaceNoDataByFocalAverage::value(
     size_t const last_col = col < nr_cols - 1 ? col + 1 : col;
 
     size_t count = 0;
+
     for(size_t r = first_row; r <= last_row; ++r) {
         for(size_t c = first_col; c <= last_col; ++c) {
             if(!(r == row && c == col)) {
@@ -60,6 +61,10 @@ inline bool ReplaceNoDataByFocalAverage::value(
 
     // At least the focal cell must be non-no-data. Otherwise it would have
     // been skipped entirely and we wouldn't be here.
+    // -> But in case the radius of the convolution kernel is larger than 1,
+    // the focal cell is not surrounding cell row, col. It is possible that
+    // cell row, col is surrounded by only no-data.
+    // TODO Handle this once this assertion fails for the first time.
     assert(count > 0u);
     value /= count;
 

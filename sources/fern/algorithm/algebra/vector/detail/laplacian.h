@@ -84,6 +84,7 @@ public:
         ///     convolve::DontDivideByWeights>(values, kernel, result);
 
         convolution::convolve<
+            convolve::SkipNoData,
             convolve::DontDivideByWeights,
             convolve::SkipOutOfImage,
             // TODO: How to select this one based on the policy passed into
@@ -113,6 +114,7 @@ public:
         ///         inverted_mask_as_floats, kernel, sum_of_weights);
 
         convolution::convolve<
+            convolve::SkipNoData,
             convolve::DontDivideByWeights,
             convolve::SkipOutOfImage,
             // TODO: How to select this one based on the policy passed into

@@ -140,15 +140,6 @@ BOOST_AUTO_TEST_CASE(algorithm)
                 BOOST_CHECK(result_we_get.mask()[r][c]);
             }
             else {
-                // TODO These are failing:
-                // 0, 2
-                // 0, 4
-                // 1, 2
-                // 2, 2
-                // 2, 3
-                // 2, 4
-                // That is because the no-data cells aren't replaced by
-                // a local average yet.
                 BOOST_CHECK_CLOSE(result_we_get[r][c], result_we_want[r][c],
                     1e-0);
             }

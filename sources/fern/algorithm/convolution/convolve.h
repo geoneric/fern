@@ -17,86 +17,6 @@ using OutOfRangePolicy = detail::OutOfRangePolicy<Result>;
 
 namespace convolution {
 
-/// template<
-///     // class ExecutionPolicy,
-///     class SourceImage,
-///     class Kernel,
-///     class DestinationImage,
-///     class NormalizePolicy=convolve::DivideByWeights,
-///     template<class> class OutOfRangePolicy=nullary::DiscardRangeErrors,
-///     class InputNoDataPolicy=SkipNoData,
-///     class OutputNoDataPolicy=DontMarkNoData
-/// >
-/// class Convolve
-/// {
-/// 
-/// public:
-/// 
-///     using category = focal_operation_tag;
-///     using A1 = SourceImage;
-///     using A1Value = value_type<A1>;
-///     using A2 = Kernel;
-///     using A2Value = value_type<A2>;
-///     using R = DestinationImage;
-///     using RValue = value_type<R>;
-/// 
-///     FERN_STATIC_ASSERT(std::is_arithmetic, A1Value)
-///     FERN_STATIC_ASSERT(std::is_arithmetic, A2Value)
-///     FERN_STATIC_ASSERT(std::is_arithmetic, RValue)
-/// 
-///     FERN_STATIC_ASSERT(std::is_floating_point, A1Value)
-///     FERN_STATIC_ASSERT(std::is_floating_point, RValue)
-/// 
-///     Convolve()
-///         : _algorithm()
-///     {
-///     }
-/// 
-///     Convolve(
-///         InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
-///         OutputNoDataPolicy&& output_no_data_policy)  // Universal reference.
-///         : _algorithm(
-///             std::forward<InputNoDataPolicy>(input_no_data_policy),
-///             std::forward<OutputNoDataPolicy>(output_no_data_policy))
-///     {
-///     }
-/// 
-///     inline void operator()(
-///         A1 const& source_image,
-///         A2 const& kernel,
-///         R& destination_image)
-///     {
-///         _algorithm.calculate(source_image, kernel, destination_image);
-///     }
-/// 
-///     // template<
-///     //     class Indices>
-///     // inline void operator()(
-///     //     Indices const& indices,
-///     //     A const& values,
-///     //     R& result)
-///     // {
-///     //     _algorithm.calculate(indices, values, result);
-///     // }
-/// 
-/// private:
-/// 
-///     convolve::detail::dispatch::Convolve<A1, A2, R,
-///         NormalizePolicy, OutOfRangePolicy,
-///         InputNoDataPolicy, OutputNoDataPolicy,
-///         typename base_class<
-///             typename ArgumentTraits<A1>::argument_category,
-///             array_2d_tag>::type,
-///         typename base_class<
-///             typename ArgumentTraits<A2>::argument_category,
-///             array_2d_tag>::type,
-///         typename base_class<
-///             typename ArgumentTraits<R>::argument_category,
-///             array_2d_tag>::type> _algorithm;
-/// 
-/// };
-
-
 //! Convolve \a source by \a kernel and write results to \a destination.
 /*!
   \param[in] source Image to read values from to convolve.
@@ -104,6 +24,7 @@ namespace convolution {
   \param[out] destination Image to write calculated values to.
 */
 template<
+    class AlternativeForNoDataPolicy,
     class NormalizePolicy,
     class OutOfImagePolicy,
     template<class> class OutOfRangePolicy,
@@ -134,6 +55,7 @@ void convolve(
     FERN_STATIC_ASSERT(std::is_floating_point, DestinationValue)
 
     convolve::detail::convolve<
+        AlternativeForNoDataPolicy,
         NormalizePolicy,
         OutOfImagePolicy,
         OutOfRangePolicy>(
@@ -152,6 +74,7 @@ void convolve(
     \todo Mention default policies.
 */
 template<
+    class AlternativeForNoDataPolicy,
     class NormalizePolicy,
     class OutOfImagePolicy,
     template<class> class OutOfRangePolicy,
@@ -168,8 +91,8 @@ void convolve(
     Kernel const& kernel,
     DestinationImage& destination)
 {
-    convolve<NormalizePolicy, OutOfImagePolicy,
-        OutOfRangePolicy /* , InputNoDataPolicy, OutputNoDataPolicy */>(
+    convolve<AlternativeForNoDataPolicy, NormalizePolicy, OutOfImagePolicy,
+        OutOfRangePolicy>(
             InputNoDataPolicy(), OutputNoDataPolicy(),
             std::forward<ExecutionPolicy>(execution_policy),
             source, kernel, destination);
@@ -195,14 +118,14 @@ void convolve(
     Kernel const& kernel,
     DestinationImage& destination)
 {
+    using AlternativeForNoDataPolicy=convolve::SkipNoData;
     using NormalizePolicy=convolve::DivideByWeights;
     using OutOfImagePolicy=convolve::SkipOutOfImage;
     using InputNoDataPolicy=SkipNoData;
     using OutputNoDataPolicy=DontMarkNoData;
 
-    convolve<NormalizePolicy, OutOfImagePolicy,
-        nullary::DiscardRangeErrors /* , ExecutionPolicy, InputNoDataPolicy,
-        OutputNoDataPolicy */>(
+    convolve<AlternativeForNoDataPolicy, NormalizePolicy, OutOfImagePolicy,
+        nullary::DiscardRangeErrors>(
             InputNoDataPolicy(), OutputNoDataPolicy(),
             std::forward<ExecutionPolicy>(execution_policy),
             source, kernel, destination);
