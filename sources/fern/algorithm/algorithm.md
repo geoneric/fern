@@ -4,14 +4,15 @@ Algorithms {#algorithms}
 [TOC]
 
 
-Categories {#algorithms_categories}
+Categories
 ==========
 - @ref algebra
 - @ref convolution
+- @ref core
 - @ref spatial_algorithms
 - @ref statistics
 - @ref trigonometry
 
-Support code {#algorithms_support_code}
+Support code
 ============
 - @ref policies

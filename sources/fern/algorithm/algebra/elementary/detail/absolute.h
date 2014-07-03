@@ -1,10 +1,10 @@
 #pragma once
 #include <cmath>  // abs(float)
 #include <cstdlib>  // abs(int)
-#include "fern/algorithm/policy/policies.h"
-#include "fern/algorithm/core/unary_local_operation.h"
 #include "fern/core/assert.h"
 #include "fern/core/type_traits.h"
+#include "fern/algorithm/core/unary_local_operation.h"
+#include "fern/algorithm/policy/policies.h"
 
 
 namespace fern {
@@ -135,12 +135,11 @@ void absolute(
     Value const& value,
     Result& result)
 {
-    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Value>)
-    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Result>)
-
-    unary_local_operation<Algorithm, unary::DiscardDomainErrors,
-        OutOfRangePolicy>(input_no_data_policy, output_no_data_policy,
-            execution_policy, value, result);
+    unary_local_operation<Algorithm,
+        unary::DiscardDomainErrors, OutOfRangePolicy>(
+            input_no_data_policy, output_no_data_policy,
+            execution_policy,
+            value, result);
 }
 
 } // namespace detail

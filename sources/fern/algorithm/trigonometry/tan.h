@@ -1,11 +1,8 @@
 #pragma once
-#include <cmath>
 #include "fern/core/assert.h"
-#include "fern/core/base_class.h"
 #include "fern/core/type_traits.h"
-#include "fern/algorithm/core/operation_traits.h"
-#include "fern/algorithm/core/unary_local_operation.h"
 #include "fern/algorithm/policy/policies.h"
+#include "fern/algorithm/trigonometry/detail/tan.h"
 
 
 namespace fern {
@@ -48,129 +45,69 @@ public:
 
 };
 
-
-template<
-    class Value>
-struct Algorithm
-{
-
-    FERN_STATIC_ASSERT(std::is_floating_point, Value)
-
-    template<
-        class Result>
-    inline void operator()(
-        Value const& value,
-        Result& result) const
-    {
-        FERN_STATIC_ASSERT(std::is_same, Result, Value)
-
-        result = std::tan(value);
-    }
-
-};
-
 } // namespace tan
 
 
 namespace trigonometry {
 
 template<
-    class Values,
-    class Result,
-    template<class> class OutOfDomainPolicy=unary::DiscardDomainErrors,
-    class InputNoDataPolicy=SkipNoData,
-    class OutputNoDataPolicy=DontMarkNoData
->
-class Tan
-{
-
-public:
-
-    using category = local_operation_tag;
-    using A = Values;
-    using AValue = value_type<A>;
-    using R = Result;
-    using RValue = value_type<R>;
-
-    FERN_STATIC_ASSERT(std::is_floating_point, AValue)
-    FERN_STATIC_ASSERT(std::is_same, RValue, AValue)
-
-    Tan()
-        : _algorithm(tan::Algorithm<AValue>())
-    {
-    }
-
-    Tan(
-        InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
-        OutputNoDataPolicy&& output_no_data_policy)  // Universal reference.
-        : _algorithm(
-            std::forward<InputNoDataPolicy>(input_no_data_policy),
-            std::forward<OutputNoDataPolicy>(output_no_data_policy),
-            tan::Algorithm<AValue>())
-    {
-    }
-
-    inline void operator()(
-        A const& values,
-        R& result)
-    {
-        _algorithm.calculate(values, result);
-    }
-
-    template<
-        class Indices>
-    inline void operator()(
-        Indices const& indices,
-        A const& values,
-        R& result)
-    {
-        _algorithm.calculate(indices, values, result);
-    }
-
-private:
-
-    detail::dispatch::UnaryLocalOperation<A, R,
-        OutOfDomainPolicy, unary::DiscardRangeErrors,
-        InputNoDataPolicy, OutputNoDataPolicy, tan::Algorithm<AValue>,
-        base_class<argument_category<A>, array_2d_tag>> _algorithm;
-
-};
-
-
-template<
+    template<class> class OutOfDomainPolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class ExecutionPolicy,
     class Value,
-    class Result,
-    template<class> class OutOfDomainPolicy=unary::DiscardDomainErrors,
-    class InputNoDataPolicy=SkipNoData,
-    class OutputNoDataPolicy=DontMarkNoData
+    class Result
 >
 void tan(
-    Value const& values,
+    InputNoDataPolicy const& input_no_data_policy,
+    OutputNoDataPolicy& output_no_data_policy,
+    ExecutionPolicy const& execution_policy,
+    Value const& value,
     Result& result)
 {
-    Tan<Value, Result, OutOfDomainPolicy,
-        InputNoDataPolicy, OutputNoDataPolicy>()(values, result);
+    FERN_STATIC_ASSERT(std::is_floating_point, value_type<Value>)
+    FERN_STATIC_ASSERT(std::is_same, value_type<Result>, value_type<Value>)
+
+    tan::detail::tan<OutOfDomainPolicy>(input_no_data_policy,
+        output_no_data_policy, execution_policy, value, result);
 }
 
 
 template<
+    template<class> class OutOfDomainPolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class ExecutionPolicy,
     class Value,
-    class Result,
-    template<class> class OutOfDomainPolicy=unary::DiscardDomainErrors,
-    class InputNoDataPolicy=SkipNoData,
-    class OutputNoDataPolicy=DontMarkNoData
+    class Result
 >
 void tan(
-    InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
-    OutputNoDataPolicy&& output_no_data_policy,  // Universal reference.
-    Value const& values,
+    ExecutionPolicy const& execution_policy,
+    Value const& value,
     Result& result)
 {
-    Tan<Value, Result, OutOfDomainPolicy,
-        InputNoDataPolicy, OutputNoDataPolicy>(
-            std::forward<InputNoDataPolicy>(input_no_data_policy),
-            std::forward<OutputNoDataPolicy>(output_no_data_policy))(
-        values, result);
+    OutputNoDataPolicy output_no_data_policy;
+    tan<OutOfDomainPolicy>(InputNoDataPolicy(), output_no_data_policy,
+        execution_policy, value, result);
+}
+
+
+template<
+    class ExecutionPolicy,
+    class Value,
+    class Result
+>
+void tan(
+    ExecutionPolicy const& execution_policy,
+    Value const& value,
+    Result& result)
+{
+    using InputNoDataPolicy = SkipNoData;
+    using OutputNoDataPolicy = DontMarkNoData;
+
+    OutputNoDataPolicy output_no_data_policy;
+    tan<unary::DiscardDomainErrors>(InputNoDataPolicy(), output_no_data_policy,
+        execution_policy, value, result);
 }
 
 } // namespace trigonometry

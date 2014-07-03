@@ -7,12 +7,11 @@ Elementary algebra {#elementary_algebra}
 Arithmethic {#arithmetic}
 ===========
 
-Absolute {#absolute}
+absolute {#absolute}
 --------
 Calculate the absolute value of each value in a collection.
 
 - [fern::algebra::absolute](@ref fern::algebra::absolute)
-- [fern::algebra::Absolute](@ref fern::algebra::Absolute)
 
 
 Add {#add}
@@ -41,10 +40,9 @@ Multiply the values in two collections.
 - [fern::multiply::OutOfRangePolicy](@ref fern::multiply::OutOfRangePolicy)
 
 
-Sqrt {#sqrt}
+sqrt {#sqrt}
 ----
 - [fern::algebra::sqrt](@ref fern::algebra::sqrt)
-- [fern::algebra::Sqrt](@ref fern::algebra::Sqrt)
 
 
 Subtract {#subtract}

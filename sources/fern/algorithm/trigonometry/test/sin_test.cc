@@ -7,14 +7,6 @@
 
 BOOST_AUTO_TEST_SUITE(sin_)
 
-BOOST_AUTO_TEST_CASE(traits)
-{
-    using Sin = fern::trigonometry::Sin<float, float>;
-    BOOST_CHECK((std::is_same<fern::OperationTraits<Sin>::category,
-        fern::local_operation_tag>::value));
-}
-
-
 template<
     class Value>
 using OutOfDomainPolicy = fern::sin::OutOfDomainPolicy<Value>;
@@ -36,18 +28,12 @@ BOOST_AUTO_TEST_CASE(out_of_domain_policy)
 template<
     class Value,
     class Result>
-using Algorithm = fern::sin::Algorithm<Value>;
-
-
-template<
-    class Value,
-    class Result>
 void verify_value(
     Value const& value,
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::trigonometry::sin(value, result_we_get);
+    fern::trigonometry::sin(fern::sequential, value, result_we_get);
     BOOST_CHECK_CLOSE(1.0 + result_we_get, 1.0 + result_we_want, 1e-10);
 }
 

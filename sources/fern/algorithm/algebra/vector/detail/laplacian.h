@@ -96,11 +96,20 @@ public:
 
         // Determine which cells have a valid value.
         Array<bool, 2> inverted_mask(extents);
-        algebra::not_(values.mask(), inverted_mask);
+        algebra::not_(
+            static_cast<InputNoDataPolicy&>(*this),
+            static_cast<OutputNoDataPolicy&>(*this),
+            fern::sequential,  // TODO Use policy passed into laplacian.
+            values.mask(), inverted_mask);
 
         // Cast array of bool to array of floats.
         Array<Float, 2> inverted_mask_as_floats(extents);
-        core::cast(inverted_mask, inverted_mask_as_floats);
+        // TODO Out of range handling depends on output not data policy.
+        core::cast<cast::OutOfRangePolicy>(
+            static_cast<InputNoDataPolicy&>(*this),
+            static_cast<OutputNoDataPolicy&>(*this),
+            fern::sequential,  // TODO Use policy passed into laplacian.
+            inverted_mask, inverted_mask_as_floats);
 
         Array<Float, 2> sum_of_weights(extents);
         convolution::convolve<
