@@ -248,7 +248,7 @@ BOOST_AUTO_TEST_CASE(array_0d_masked)
 /// }
 
 
-BOOST_AUTO_TEST_CASE(array_1d)
+BOOST_AUTO_TEST_CASE(array_1d_sequential)
 {
     using InputNoDataPolicy = fern::SkipNoData;
     using OutputNoDataPolicy = fern::DontMarkNoData;
@@ -312,6 +312,78 @@ BOOST_AUTO_TEST_CASE(array_1d)
                 InputNoDataPolicy(),
                 output_no_data_policy,
                 fern::sequential, argument, result);
+
+        BOOST_CHECK(result.empty());
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(array_1d_parallel)
+{
+    using InputNoDataPolicy = fern::SkipNoData;
+    using OutputNoDataPolicy = fern::DontMarkNoData;
+
+    OutputNoDataPolicy output_no_data_policy;
+
+    fern::ThreadClient client(2);
+
+    // vector
+    {
+        using Argument = std::vector<ArgumentValue>;
+        using Result = std::vector<ResultValue>;
+
+        Argument argument{-5, 0, 5};
+        Result result{3, 3, 3};
+
+        fern::unary_local_operation<
+            Algorithm,
+            fern::unary::DiscardDomainErrors,
+            fern::unary::DiscardRangeErrors>(
+                InputNoDataPolicy(),
+                output_no_data_policy,
+                fern::parallel, argument, result);
+
+        BOOST_REQUIRE_EQUAL(result[0], 5);
+        BOOST_REQUIRE_EQUAL(result[1], 0);
+        BOOST_REQUIRE_EQUAL(result[2], 5);
+    }
+
+    // 1d array
+    {
+        using Argument = fern::Array<ArgumentValue, 1>;
+        using Result = fern::Array<ResultValue, 1>;
+
+        Argument argument{-5, 0, 5};
+        Result result{3, 3, 3};
+
+        fern::unary_local_operation<
+            Algorithm,
+            fern::unary::DiscardDomainErrors,
+            fern::unary::DiscardRangeErrors>(
+                InputNoDataPolicy(),
+                output_no_data_policy,
+                fern::parallel, argument, result);
+
+        BOOST_REQUIRE_EQUAL(result[0], 5);
+        BOOST_REQUIRE_EQUAL(result[1], 0);
+        BOOST_REQUIRE_EQUAL(result[2], 5);
+    }
+
+    // empty
+    {
+        using Argument = std::vector<ArgumentValue>;
+        using Result = std::vector<ResultValue>;
+
+        Argument argument;
+        Result result;
+
+        fern::unary_local_operation<
+            Algorithm,
+            fern::unary::DiscardDomainErrors,
+            fern::unary::DiscardRangeErrors>(
+                InputNoDataPolicy(),
+                output_no_data_policy,
+                fern::parallel, argument, result);
 
         BOOST_CHECK(result.empty());
     }

@@ -2,6 +2,7 @@
 #include "fern/core/argument_traits.h"
 #include "fern/core/assert.h"
 #include "fern/core/collection_traits.h"
+#include "fern/core/thread_client.h"
 #include "fern/algorithm/core/index_ranges.h"
 
 
@@ -301,9 +302,9 @@ template<
     class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
-    class ExecutionPolicy,
     class Value,
     class Result,
+    class ExecutionPolicy,
     class ValueCollectionCategory>
 class UnaryLocalOperation
 {
@@ -316,18 +317,18 @@ template<
     class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
-    class ExecutionPolicy,
     class Value,
-    class Result>
+    class Result,
+    class ExecutionPolicy>
 struct UnaryLocalOperation<
     Algorithm,
     OutOfDomainPolicy,
     OutOfRangePolicy,
     InputNoDataPolicy,
     OutputNoDataPolicy,
-    ExecutionPolicy,
     Value,
     Result,
+    ExecutionPolicy,
     array_0d_tag>
 
 {
@@ -373,12 +374,59 @@ struct UnaryLocalOperation<
 
 
 template<
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
+    class Algorithm,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class Value,
+    class Result>
+void operation_1d(
+    Algorithm const& algorithm,
+    InputNoDataPolicy const& input_no_data_policy,
+    OutputNoDataPolicy& output_no_data_policy,
+    IndexRanges<1> const& index_ranges,
+    Value const& value,
+    Result& result)
+{
+    for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+
+        // Don't do anything if the input value is no-data. We assume
+        // that input no-data values are already marked as such in the
+        // result.
+        if(!input_no_data_policy.is_no_data(i)) {
+            const_reference<Value> v(fern::get(value, i));
+
+            if(!OutOfDomainPolicy::within_domain(v)) {
+                // Input value is out of domain. Mark result value as
+                // no-data. Don't change the result value.
+                output_no_data_policy.mark_as_no_data(i);
+            }
+            else {
+                reference<Value> r(fern::get(result, i));
+
+                algorithm(v, r);
+
+                if(!OutOfRangePolicy::within_range(v, r)) {
+                    // Result value is out-of-range. Mark result value as
+                    // no-data. Result value contains the out-of-range
+                    // value (this may be overriden by
+                    // output_no_data_policy, depending on its
+                    // implementation).
+                    output_no_data_policy.mark_as_no_data(i);
+                }
+            }
+        }
+    }
+}
+
+
+template<
     class Algorithm,
     class OutOfDomainPolicy,
     class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
-    class ExecutionPolicy,
     class Value,
     class Result>
 struct UnaryLocalOperation<
@@ -387,9 +435,9 @@ struct UnaryLocalOperation<
     OutOfRangePolicy,
     InputNoDataPolicy,
     OutputNoDataPolicy,
-    ExecutionPolicy,
     Value,
     Result,
+    SequentialExecutionPolicy,
     array_1d_tag>
 
 {
@@ -398,43 +446,77 @@ struct UnaryLocalOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy const& /* execution_policy */,
         Value const& value,
         Result& result)
     {
         assert(fern::size(value) == fern::size(result));
 
-        size_t const size = fern::size(value);
         Algorithm algorithm;
 
-        for(size_t i = 0; i < size; ++i) {
+        operation_1d<OutOfDomainPolicy, OutOfRangePolicy>(algorithm,
+            input_no_data_policy, output_no_data_policy,
+            IndexRanges<1>{IndexRange(0, fern::size(value))}, value, result);
+    }
 
-            // Don't do anything if the input value is no-data. We assume
-            // that input no-data values are already marked as such in the
-            // result.
-            if(!input_no_data_policy.is_no_data(i)) {
-                const_reference<Value> v(fern::get(value, i));
+};
 
-                if(!OutOfDomainPolicy::within_domain(v)) {
-                    // Input value is out of domain. Mark result value as
-                    // no-data. Don't change the result value.
-                    output_no_data_policy.mark_as_no_data(i);
-                }
-                else {
-                    reference<Value> r(fern::get(result, i));
 
-                    algorithm(v, r);
+template<
+    class Algorithm,
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class Value,
+    class Result>
+struct UnaryLocalOperation<
+    Algorithm,
+    OutOfDomainPolicy,
+    OutOfRangePolicy,
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Value,
+    Result,
+    ParallelExecutionPolicy,
+    array_1d_tag>
 
-                    if(!OutOfRangePolicy::within_range(v, r)) {
-                        // Result value is out-of-range. Mark result value as
-                        // no-data. Result value contains the out-of-range
-                        // value (this may be overriden by
-                        // output_no_data_policy, depending on its
-                        // implementation).
-                        output_no_data_policy.mark_as_no_data(i);
-                    }
-                }
-            }
+{
+
+    // f(1d array)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        ParallelExecutionPolicy const& /* execution_policy */,
+        Value const& value,
+        Result& result)
+    {
+        assert(fern::size(value) == fern::size(result));
+
+        ThreadPool& pool(ThreadClient::pool());
+        size_t const size = fern::size(value);
+        std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size);
+        std::vector<std::future<void>> futures;
+        futures.reserve(ranges.size());
+
+        Algorithm algorithm;
+
+        for(auto const& block_range: ranges) {
+            auto function = std::bind(
+                operation_1d<
+                    OutOfDomainPolicy, OutOfRangePolicy,
+                    Algorithm,
+                    InputNoDataPolicy, OutputNoDataPolicy,
+                    Value, Result>,
+                std::cref(algorithm),
+                std::cref(input_no_data_policy),
+                std::ref(output_no_data_policy), std::cref(block_range),
+                std::cref(value), std::ref(result));
+            futures.emplace_back(pool.submit(function));
+        }
+
+        for(auto& future: futures) {
+            future.get();
         }
     }
 
@@ -447,7 +529,6 @@ template<
     class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
-    class ExecutionPolicy,
     class Value,
     class Result>
 struct UnaryLocalOperation<
@@ -456,9 +537,9 @@ struct UnaryLocalOperation<
     OutOfRangePolicy,
     InputNoDataPolicy,
     OutputNoDataPolicy,
-    ExecutionPolicy,
     Value,
     Result,
+    SequentialExecutionPolicy,
     array_2d_tag>
 
 {
@@ -467,7 +548,7 @@ struct UnaryLocalOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy const& /* execution_policy */,
         Value const& value,
         Result& result)
     {
@@ -515,7 +596,6 @@ struct UnaryLocalOperation<
 
 };
 
-
 } // namespace dispatch2
 } // namespace detail
 
@@ -543,9 +623,9 @@ void unary_local_operation(
         OutOfRangePolicy<value_type<Value>, value_type<Result>>,
         InputNoDataPolicy,
         OutputNoDataPolicy,
-        ExecutionPolicy,
         Value,
         Result,
+        ExecutionPolicy,
         base_class<argument_category<Value>, array_2d_tag>>::apply(
             input_no_data_policy, output_no_data_policy, execution_policy,
             value, result);
