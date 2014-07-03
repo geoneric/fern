@@ -4,6 +4,10 @@
 
 namespace fern {
 
+//! Default construct an IndexRange instance.
+/*!
+    The begin and end indices are default initialized.
+*/
 IndexRange::IndexRange()
 
     : _begin(),
@@ -13,6 +17,12 @@ IndexRange::IndexRange()
 }
 
 
+//! Construct an IndexRange instance.
+/*!
+  \param     begin Begin index of range.
+  \param     end End index of range.
+  \warning   \a begin must be >= \a end
+*/
 IndexRange::IndexRange(
     index begin,
     index end)
@@ -44,12 +54,19 @@ IndexRange::index IndexRange::end() const
 }
 
 
+//! Return whether or not the range is empty.
+/*!
+    The range is considered empty if the end index equals the begin index.
+*/
 bool IndexRange::empty() const
 {
     return _begin == _end;
 }
 
 
+//! Return whether or not \a lhs equals \a rhs.
+/*!
+*/
 bool operator==(
     IndexRange const& lhs,
     IndexRange const& rhs)
@@ -61,6 +78,9 @@ bool operator==(
 }
 
 
+//! Return whether or not \a lhs does not equal \a rhs.
+/*!
+*/
 bool operator!=(
     IndexRange const& lhs,
     IndexRange const& rhs)
@@ -72,6 +92,9 @@ bool operator!=(
 }
 
 
+//! Write \a range to an output \a stream.
+/*!
+*/
 std::ostream& operator<<(
     std::ostream& stream,
     IndexRange const& range)

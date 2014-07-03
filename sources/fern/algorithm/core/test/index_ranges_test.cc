@@ -49,7 +49,72 @@ BOOST_AUTO_TEST_CASE(constructor)
 }
 
 
-BOOST_AUTO_TEST_CASE(index_ranges)
+BOOST_AUTO_TEST_CASE(index_ranges_1)
+{
+    // Array is evenly divisable between the number of worker threads.
+    {
+        auto ranges = fern::index_ranges(4, 100);
+        BOOST_CHECK_EQUAL(ranges.size(), 4);
+        BOOST_CHECK_EQUAL(ranges[0],
+            fern::IndexRanges<1>(
+                fern::IndexRange(0, 25)));
+        BOOST_CHECK_EQUAL(ranges[1],
+            fern::IndexRanges<1>(
+                fern::IndexRange(25, 50)));
+        BOOST_CHECK_EQUAL(ranges[2],
+            fern::IndexRanges<1>(
+                fern::IndexRange(50, 75)));
+        BOOST_CHECK_EQUAL(ranges[3],
+            fern::IndexRanges<1>(
+                fern::IndexRange(75, 100)));
+    }
+
+    // Array is not evenly divisable between the number of worker threads.
+    // There are remaining values.
+    {
+        auto ranges = fern::index_ranges(3, 100);
+        BOOST_CHECK_EQUAL(ranges.size(), 4);
+        BOOST_CHECK_EQUAL(ranges[0],
+            fern::IndexRanges<1>(
+                fern::IndexRange(0, 33)));
+        BOOST_CHECK_EQUAL(ranges[1],
+            fern::IndexRanges<1>(
+                fern::IndexRange(33, 66)));
+        BOOST_CHECK_EQUAL(ranges[2],
+            fern::IndexRanges<1>(
+                fern::IndexRange(66, 99)));
+        BOOST_CHECK_EQUAL(ranges[3],
+            fern::IndexRanges<1>(
+                fern::IndexRange(99, 100)));
+    }
+
+    // More threads than values.
+    {
+        auto ranges = fern::index_ranges(3, 2);
+        BOOST_CHECK_EQUAL(ranges.size(), 1);
+        BOOST_CHECK_EQUAL(ranges[0],
+            fern::IndexRanges<1>(
+                fern::IndexRange(0, 2)));
+    }
+
+    // One thread.
+    {
+        auto ranges = fern::index_ranges(1, 100);
+        BOOST_CHECK_EQUAL(ranges.size(), 1);
+        BOOST_CHECK_EQUAL(ranges[0],
+            fern::IndexRanges<1>(
+                fern::IndexRange(0, 100)));
+    }
+
+    // No values.
+    {
+        auto ranges = fern::index_ranges(3, 0);
+        BOOST_CHECK_EQUAL(ranges.size(), 0);
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(index_ranges_2)
 {
     // Array is evenly divisable between the number of worker threads.
     {

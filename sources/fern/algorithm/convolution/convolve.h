@@ -118,11 +118,11 @@ void convolve(
     Kernel const& kernel,
     DestinationImage& destination)
 {
-    using AlternativeForNoDataPolicy=convolve::SkipNoData;
-    using NormalizePolicy=convolve::DivideByWeights;
-    using OutOfImagePolicy=convolve::SkipOutOfImage;
-    using InputNoDataPolicy=SkipNoData;
-    using OutputNoDataPolicy=DontMarkNoData;
+    using AlternativeForNoDataPolicy = convolve::SkipNoData;
+    using NormalizePolicy = convolve::DivideByWeights;
+    using OutOfImagePolicy = convolve::SkipOutOfImage;
+    using InputNoDataPolicy = SkipNoData;
+    using OutputNoDataPolicy = DontMarkNoData;
 
     convolve<AlternativeForNoDataPolicy, NormalizePolicy, OutOfImagePolicy,
         nullary::DiscardRangeErrors>(
