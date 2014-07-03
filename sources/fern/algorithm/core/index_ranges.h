@@ -7,6 +7,14 @@
 
 namespace fern {
 
+//! The IndexRanges class represents a collection of index ranges for multiple dimensions.
+/*!
+    This is useful for defining a multi-dimensional subset of (array)
+    dimensions.
+
+    \tparam nr_dimensions Number of dimensions to store an index range for.
+    \sa     IndexRange
+*/
 template<
     size_t nr_dimensions>
 class IndexRanges:
@@ -16,6 +24,7 @@ class IndexRanges:
 
 public:
 
+    //! Default constuct an instance.
                    IndexRanges         ()=default;
 
                    IndexRanges         (IndexRanges const& other);
@@ -45,6 +54,9 @@ private:
 };
 
 
+//! Copy construct an inѕtance.
+/*!
+*/
 template<
     size_t nr_dimensions>
 inline IndexRanges<nr_dimensions>::IndexRanges(
@@ -56,6 +68,9 @@ inline IndexRanges<nr_dimensions>::IndexRanges(
 }
 
 
+//! Move construct and instance.
+/*!
+*/
 template<
     size_t nr_dimensions>
 inline IndexRanges<nr_dimensions>::IndexRanges(
@@ -67,6 +82,11 @@ inline IndexRanges<nr_dimensions>::IndexRanges(
 }
 
 
+//! Construct an instance based on a single index range.
+/*!
+  \param     range Index range to use for the dimension.
+  \warning   \a nr_dimensions must be 1.
+*/
 template<
     size_t nr_dimensions>
 inline IndexRanges<nr_dimensions>::IndexRanges(
@@ -79,6 +99,12 @@ inline IndexRanges<nr_dimensions>::IndexRanges(
 }
 
 
+//! Construct an instance based on two index ranges.
+/*!
+  \param     range1 Index range to use for first dimension.
+  \param     range2 Index range to use for second dimension.
+  \warning   \a nr_dimensions must be 2.
+*/
 template<
     size_t nr_dimensions>
 inline IndexRanges<nr_dimensions>::IndexRanges(
@@ -92,6 +118,9 @@ inline IndexRanges<nr_dimensions>::IndexRanges(
 }
 
 
+//! Move assign \a other to this instance.
+/*!
+*/
 template<
     size_t nr_dimensions>
 inline IndexRanges<nr_dimensions>& IndexRanges<nr_dimensions>::operator=(
@@ -102,6 +131,11 @@ inline IndexRanges<nr_dimensions>& IndexRanges<nr_dimensions>::operator=(
 }
 
 
+//! Subscript instance by \a index.
+/*!
+  \return    The index range of dimension \a index.
+  \exception \a index must be smaller than \a nr_dimensions.
+*/
 template<
     size_t nr_dimensions>
 inline IndexRange const& IndexRanges<nr_dimensions>::operator[](
@@ -126,6 +160,9 @@ inline bool IndexRanges<nr_dimensions>::empty() const
 }
 
 
+//! Return whether \a lhs and \a rhs are equal.
+/*!
+*/
 template<
     size_t nr_dimensions>
 inline bool operator==(
@@ -142,6 +179,9 @@ inline bool operator==(
 }
 
 
+//! Return whether \a lhs and \a rhs are not equal.
+/*!
+*/
 template<
     size_t nr_dimensions>
 inline bool operator!=(
@@ -152,6 +192,9 @@ inline bool operator!=(
 }
 
 
+//! Write \a ranges to output \a stream.
+/*!
+*/
 template<
     size_t nr_dimensions>
 inline std::ostream& operator<<(
@@ -169,6 +212,10 @@ inline std::ostream& operator<<(
     return stream;
 }
 
+
+std::vector<IndexRanges<1>>
+                   index_ranges        (size_t const nr_blocks,
+                                        size_t const size1);
 
 std::vector<IndexRanges<2>>
                    index_ranges        (size_t const nr_blocks,
