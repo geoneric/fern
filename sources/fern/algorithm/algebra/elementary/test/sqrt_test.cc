@@ -6,14 +6,6 @@
 
 BOOST_AUTO_TEST_SUITE(sqrt_)
 
-BOOST_AUTO_TEST_CASE(traits)
-{
-    using Sqrt = fern::algebra::Sqrt<float, float>;
-    BOOST_CHECK((std::is_same<fern::OperationTraits<Sqrt>::category,
-        fern::local_operation_tag>::value));
-}
-
-
 template<
     class Value>
 using OutOfDomainPolicy = fern::sqrt::OutOfDomainPolicy<Value>;
@@ -34,18 +26,12 @@ BOOST_AUTO_TEST_CASE(out_of_domain_policy)
 template<
     class Value,
     class Result>
-using Algorithm = fern::sqrt::Algorithm<Value>;
-
-
-template<
-    class Value,
-    class Result>
 void verify_value(
     Value const& value,
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::algebra::sqrt(value, result_we_get);
+    fern::algebra::sqrt(fern::sequential, value, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 

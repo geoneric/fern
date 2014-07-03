@@ -12,11 +12,6 @@ Defined {#defined}
 Determine which values in a collection have a valid value.
 
 - [fern::algebra::defined](@ref fern::algebra::defined)
-- [fern::algebra::Defined](@ref fern::algebra::Defined)
-
-0D array | 1D array | 2D array | 3D array
--------- | -------- | -------- | --------
-yes      | yes      | yes      | yes
 
 
 Basic {#basic}
@@ -32,8 +27,7 @@ TODO
 
 not, negation
 -------------
-- [fern::algebra::not](@ref fern::algebra::not)
-- [fern::algebra::Not](@ref fern::algebra::Not)
+- [fern::algebra::not_](@ref fern::algebra::not_)
 
 
 Derived {#derived}

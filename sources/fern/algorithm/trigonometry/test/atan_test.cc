@@ -7,20 +7,6 @@
 
 BOOST_AUTO_TEST_SUITE(atan_)
 
-BOOST_AUTO_TEST_CASE(traits)
-{
-    using ATan = fern::trigonometry::ATan<float, float>;
-    BOOST_CHECK((std::is_same<fern::OperationTraits<ATan>::category,
-        fern::local_operation_tag>::value));
-}
-
-
-template<
-    class Value,
-    class Result>
-using Algorithm = fern::atan::Algorithm<Value>;
-
-
 template<
     class Value,
     class Result>
@@ -29,7 +15,7 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::trigonometry::atan(value, result_we_get);
+    fern::trigonometry::atan(fern::sequential, value, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 

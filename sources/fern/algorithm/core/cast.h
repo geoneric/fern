@@ -1,20 +1,12 @@
 #pragma once
 #include "fern/core/assert.h"
 #include "fern/core/base_class.h"
-#include "fern/algorithm/core/operation_traits.h"
-#include "fern/algorithm/core/unary_local_operation.h"
 #include "fern/algorithm/policy/policies.h"
 #include "fern/algorithm/core/detail/cast.h"
 
 
 namespace fern {
 namespace cast {
-
-// All values are within the domain of valid values for cast.
-template<
-    class Value>
-using OutOfDomainPolicy = DiscardDomainErrors<Value>;
-
 
 template<
     class Value,
@@ -27,9 +19,9 @@ class OutOfRangePolicy
 
 public:
 
-    inline bool within_range(
+    inline static bool within_range(
         Value const& value,
-        Result const& result) const
+        Result const& result)
     {
         using value_tag =  base_class<number_category<Value>, integer_tag>;
         using result_tag = base_class<number_category<Result>, integer_tag>;
@@ -41,129 +33,69 @@ public:
 };
 
 
-template<
-    class Value>
-struct Algorithm
-{
-
-    FERN_STATIC_ASSERT(std::is_arithmetic, Value)
-
-    template<
-        class R>
-    inline void operator()(
-        Value const& value,
-        R& result) const
-    {
-        result = static_cast<R>(value);
-    }
-
-};
-
 } // namespace cast
 
 
 namespace core {
 
 template<
-    class Values,
-    class Result,
-    template<class> class OutOfDomainPolicy=unary::DiscardDomainErrors,
-    template<class, class> class OutOfRangePolicy=unary::DiscardRangeErrors,
-    class InputNoDataPolicy=SkipNoData,
-    class OutputNoDataPolicy=DontMarkNoData
->
-class Cast
-{
-
-public:
-
-    using category = local_operation_tag;
-    using A = Values;
-    using AValue = value_type<A>;
-    using R = Result;
-    using RValue = value_type<R>;
-
-    FERN_STATIC_ASSERT(std::is_arithmetic, AValue)
-    FERN_STATIC_ASSERT(std::is_arithmetic, RValue)
-
-    Cast()
-        : _algorithm(cast::Algorithm<AValue>())
-    {
-    }
-
-    Cast(
-        InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
-        OutputNoDataPolicy&& output_no_data_policy)  // Universal reference.
-        : _algorithm(
-            std::forward<InputNoDataPolicy>(input_no_data_policy),
-            std::forward<OutputNoDataPolicy>(output_no_data_policy),
-            cast::Algorithm<AValue>())
-    {
-    }
-
-    inline void operator()(
-        A const& values,
-        R& result)
-    {
-        _algorithm.calculate(values, result);
-    }
-
-    template<
-        class Indices>
-    inline void operator()(
-        Indices const& indices,
-        A const& values,
-        R& result)
-    {
-        _algorithm.calculate(indices, values, result);
-    }
-
-private:
-
-    detail::dispatch::UnaryLocalOperation<A, R,
-        OutOfDomainPolicy, OutOfRangePolicy, InputNoDataPolicy,
-        OutputNoDataPolicy, cast::Algorithm<AValue>,
-        base_class<argument_category<A>, array_2d_tag>> _algorithm;
-
-};
-
-
-template<
+    template<class, class> class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class ExecutionPolicy,
     class Value,
-    class Result,
-    template<class> class OutOfDomainPolicy=unary::DiscardDomainErrors,
-    template<class, class> class OutOfRangePolicy=unary::DiscardRangeErrors,
-    class InputNoDataPolicy=SkipNoData,
-    class OutputNoDataPolicy=DontMarkNoData
+    class Result
 >
 void cast(
-    Value const& values,
+    InputNoDataPolicy const& input_no_data_policy,
+    OutputNoDataPolicy& output_no_data_policy,
+    ExecutionPolicy const& execution_policy,
+    Value const& value,
     Result& result)
 {
-    Cast<Value, Result, OutOfDomainPolicy, OutOfRangePolicy,
-        InputNoDataPolicy, OutputNoDataPolicy>()(values, result);
+    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Value>)
+    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Result>)
+
+    cast::detail::cast<OutOfRangePolicy>(input_no_data_policy,
+        output_no_data_policy, execution_policy, value, result);
 }
 
 
 template<
+    template<class, class> class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class ExecutionPolicy,
     class Value,
-    class Result,
-    template<class> class OutOfDomainPolicy=unary::DiscardDomainErrors,
-    template<class, class> class OutOfRangePolicy=unary::DiscardRangeErrors,
-    class InputNoDataPolicy=SkipNoData,
-    class OutputNoDataPolicy=DontMarkNoData
+    class Result
 >
 void cast(
-    InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
-    OutputNoDataPolicy&& output_no_data_policy,  // Universal reference.
-    Value const& values,
+    ExecutionPolicy const& execution_policy,
+    Value const& value,
     Result& result)
 {
-    Cast<Value, Result, OutOfDomainPolicy, OutOfRangePolicy,
-        InputNoDataPolicy, OutputNoDataPolicy>(
-            std::forward<InputNoDataPolicy>(input_no_data_policy),
-            std::forward<OutputNoDataPolicy>(output_no_data_policy))(
-        values, result);
+    OutputNoDataPolicy output_no_data_policy;
+    cast<OutOfRangePolicy>(InputNoDataPolicy(), output_no_data_policy,
+        execution_policy, value, result);
+}
+
+
+template<
+    class ExecutionPolicy,
+    class Value,
+    class Result
+>
+void cast(
+    ExecutionPolicy const& execution_policy,
+    Value const& value,
+    Result& result)
+{
+    using InputNoDataPolicy = SkipNoData;
+    using OutputNoDataPolicy = DontMarkNoData;
+
+    OutputNoDataPolicy output_no_data_policy;
+    cast<unary::DiscardRangeErrors>(InputNoDataPolicy(),
+        output_no_data_policy, execution_policy, value, result);
 }
 
 } // namespace core

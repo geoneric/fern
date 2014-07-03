@@ -2,46 +2,15 @@
 #include <boost/test/unit_test.hpp>
 #include "fern/core/constant_traits.h"
 #include "fern/core/types.h"
-// #include "fern/core/type_traits.h"
 #include "fern/algorithm/core/cast.h"
 
 
 BOOST_AUTO_TEST_SUITE(cast)
 
-BOOST_AUTO_TEST_CASE(traits)
-{
-    using Cast = fern::core::Cast<int32_t, int32_t>;
-    BOOST_CHECK((std::is_same<fern::OperationTraits<Cast>::category,
-        fern::local_operation_tag>::value));
-}
-
-
-template<
-    class Value>
-using OutOfDomainPolicy = fern::cast::OutOfDomainPolicy<Value>;
-
-
-BOOST_AUTO_TEST_CASE(out_of_domain_policy)
-{
-    {
-        OutOfDomainPolicy<int32_t> policy;
-        BOOST_CHECK(policy.within_domain(5));
-        BOOST_CHECK(policy.within_domain(-5));
-        BOOST_CHECK(policy.within_domain(0));
-    }
-}
-
-
 template<
     class Value,
     class Result>
 using OutOfRangePolicy = fern::cast::OutOfRangePolicy<Value, Result>;
-
-
-template<
-    class Value,
-    class Result>
-using Algorithm = fern::cast::Algorithm<Value>;
 
 
 template<
@@ -53,9 +22,8 @@ struct VerifyWithinRange
         Value const& value)
     {
         OutOfRangePolicy<Value, Result> policy;
-        Algorithm<Value, Result> algorithm;
         Result result;
-        algorithm(value, result);
+        fern::core::cast(fern::sequential, value, result);
         return policy.within_range(value, result);
     }
 };
@@ -107,7 +75,7 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::core::cast(value, result_we_get);
+    fern::core::cast(fern::sequential, value, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 

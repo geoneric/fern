@@ -117,7 +117,8 @@ public:
             convolve::OutOfRangePolicy>(
                 static_cast<InputNoDataPolicy&>(*this),
                 static_cast<OutputNoDataPolicy&>(*this),
-                fern::sequential, values, dz_dx_kernel, dz_dx);
+                sequential,  // TODO Depends on exec policy passed into slope.
+                values, dz_dx_kernel, dz_dx);
 
         algebra::divide(dz_dx, 8 * cell_size(values, 0), dz_dx);
 
@@ -137,7 +138,16 @@ public:
         algebra::pow(dz_dx, Float(2), dz_dx);
         algebra::pow(dz_dy, Float(2), dz_dy);
         algebra::add(dz_dx, dz_dy, result);
-        algebra::sqrt(result, result);
+        /// algebra::sqrt(result, result);
+
+        // TODO Whether or not to detect out of domain values depends on
+        //      output no-data policy passed in. Will sqrt succeed if input
+        //      < 0?
+        algebra::sqrt<sqrt::OutOfDomainPolicy>(
+            static_cast<InputNoDataPolicy&>(*this),
+            static_cast<OutputNoDataPolicy&>(*this),
+            sequential,  // TODO Depends on exec policy passed into slope.
+            result, result);
     }
 
 };

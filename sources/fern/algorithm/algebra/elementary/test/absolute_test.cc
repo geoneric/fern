@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE(out_of_range_policy)
 template<
     class Value,
     class Result>
-void verify_value2(
+void verify_value(
     Value const& value,
     Result const& result_we_want)
 {
@@ -83,18 +83,18 @@ void verify_value2(
 }
 
 
-BOOST_AUTO_TEST_CASE(absolute)
+BOOST_AUTO_TEST_CASE(algorithm)
 {
-    verify_value2<int8_t, int8_t>( 5, 5);
-    verify_value2<int8_t, int8_t>(-5, 5);
-    verify_value2<int8_t, int8_t>( 0, 0);
+    verify_value<int8_t, int8_t>( 5, 5);
+    verify_value<int8_t, int8_t>(-5, 5);
+    verify_value<int8_t, int8_t>( 0, 0);
 
-    verify_value2<uint8_t,uint8_t>(5, 5);
-    verify_value2<uint8_t,uint8_t>(0, 0);
+    verify_value<uint8_t,uint8_t>(5, 5);
+    verify_value<uint8_t,uint8_t>(0, 0);
 
-    verify_value2<double, double>( 5.5, 5.5);
-    verify_value2<double, double>(-5.5, 5.5);
-    verify_value2<double, double>( 0.0, 0.0);
+    verify_value<double, double>( 5.5, 5.5);
+    verify_value<double, double>(-5.5, 5.5);
+    verify_value<double, double>( 0.0, 0.0);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
