@@ -5,4 +5,5 @@ ADD_EXECUTABLE(add_two_rasters
 )
 TARGET_LINK_LIBRARIES(add_two_rasters
     fern_algorithm_core
+    fern_core
 )

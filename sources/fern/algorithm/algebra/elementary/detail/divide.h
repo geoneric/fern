@@ -2,6 +2,7 @@
 #include <cmath>
 #include "fern/core/assert.h"
 #include "fern/core/type_traits.h"
+#include "fern/algorithm/core/binary_local_operation.h"
 #include "fern/algorithm/algebra/result_type.h"
 
 
@@ -220,6 +221,56 @@ struct within_range<
 };
 
 } // namespace dispatch
+
+
+template<
+    class Value1,
+    class Value2>
+struct Algorithm
+{
+
+    FERN_STATIC_ASSERT(std::is_arithmetic, Value1)
+    FERN_STATIC_ASSERT(std::is_arithmetic, Value2)
+
+    template<
+        class R>
+    inline void operator()(
+        Value1 const& value1,
+        Value2 const& value2,
+        R& result) const
+    {
+        assert(!value2 == Value2(0));
+        result = static_cast<R>(value1) / static_cast<R>(value2);
+    }
+
+};
+
+
+template<
+    template<class, class> class OutOfDomainPolicy,
+    template<class, class, class> class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class ExecutionPolicy,
+    class Value1,
+    class Value2,
+    class Result
+>
+void divide(
+    InputNoDataPolicy const& input_no_data_policy,
+    OutputNoDataPolicy& output_no_data_policy,
+    ExecutionPolicy const& execution_policy,
+    Value1 const& value1,
+    Value2 const& value2,
+    Result& result)
+{
+    binary_local_operation<Algorithm,
+        binary::DiscardDomainErrors, OutOfRangePolicy>(
+            input_no_data_policy, output_no_data_policy,
+            execution_policy,
+            value1, value2, result);
+}
+
 } // namespace detail
 } // namespace divide
 } // namespace fern

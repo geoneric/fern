@@ -8,6 +8,7 @@
 
 // Include the relevant traits before including the algorithm.
 #include "fern/core/constant_traits.h"
+#include "fern/core/thread_client.h"
 #include "fern/example/algorithm/raster_traits.h"
 #include "fern/algorithm/algebra/elementary/add.h"
 
@@ -18,8 +19,8 @@ int main(
 {
     using namespace example;
 
-    size_t const nr_rows{600};
-    size_t const nr_cols{400};
+    size_t const nr_rows{6000};
+    size_t const nr_cols{4000};
 
     Raster<int32_t> raster1(nr_rows, nr_cols);
     Raster<int32_t> raster2(nr_rows, nr_cols);
@@ -32,7 +33,10 @@ int main(
     std::fill(raster2.values().begin(), raster2.values().end(), 5);
 
     // [5, 6, 7, 8, ...]
-    fern::algebra::add(raster1, raster2, raster3);
+    {
+        fern::ThreadClient client;
+        fern::algebra::add(fern::parallel, raster1, raster2, raster3);
+    }
 
     assert(raster3.values()[100] == 100 + 5);
 

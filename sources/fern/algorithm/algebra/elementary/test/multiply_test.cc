@@ -8,44 +8,12 @@
 
 BOOST_AUTO_TEST_SUITE(multiply)
 
-BOOST_AUTO_TEST_CASE(traits)
-{
-    using Multiply = fern::algebra::Multiply<int32_t, int32_t, int32_t>;
-    BOOST_CHECK((std::is_same<fern::OperationTraits<Multiply>::category,
-        fern::local_operation_tag>::value));
-}
-
-
-template<
-    class Value1,
-    class Value2>
-using OutOfDomainPolicy = fern::multiply::OutOfDomainPolicy<Value1, Value2>;
-
-
-BOOST_AUTO_TEST_CASE(out_of_domain_policy)
-{
-    {
-        OutOfDomainPolicy<int32_t, int32_t> policy;
-        BOOST_CHECK(policy.within_domain(5, 6));
-        BOOST_CHECK(policy.within_domain(-5, -6));
-        BOOST_CHECK(policy.within_domain(0, 0));
-    }
-}
-
-
 template<
     class Value1,
     class Value2,
     class Result>
 using OutOfRangePolicy = fern::multiply::OutOfRangePolicy<Value1, Value2,
     Result>;
-
-
-template<
-    class Value1,
-    class Value2,
-    class Result>
-using Algorithm = fern::multiply::Algorithm<Value1, Value2>;
 
 
 template<
@@ -59,9 +27,10 @@ struct VerifyWithinRange
         Value2 const& value2)
     {
         OutOfRangePolicy<Value1, Value2, Result> policy;
-        Algorithm<Value1, Value2, Result> algorithm;
         Result result;
-        algorithm(value1, value2, result);
+
+        fern::algebra::multiply(fern::sequential, value1, value2, result);
+
         return policy.within_range(value1, value2, result);
     }
 };
@@ -203,7 +172,7 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::algebra::multiply(value1, value2, result_we_get);
+    fern::algebra::multiply(fern::sequential, value1, value2, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 

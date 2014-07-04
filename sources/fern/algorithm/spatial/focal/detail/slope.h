@@ -120,7 +120,13 @@ public:
                 sequential,  // TODO Depends on exec policy passed into slope.
                 values, dz_dx_kernel, dz_dx);
 
-        algebra::divide(dz_dx, 8 * cell_size(values, 0), dz_dx);
+        algebra::divide<
+            fern::divide::OutOfDomainPolicy,  // TODO Pick correct policy.
+            fern::divide::OutOfRangePolicy>(  // TODO Pick correct policy.
+            static_cast<InputNoDataPolicy&>(*this),
+            static_cast<OutputNoDataPolicy&>(*this),
+            fern::sequential,  // TODO Use policy passed into slope.
+            dz_dx, 8 * cell_size(values, 0), dz_dx);
 
         MaskedArray<Float, 2> dz_dy(extents);
 
@@ -133,12 +139,36 @@ public:
                 static_cast<OutputNoDataPolicy&>(*this),
                 fern::sequential, values, dz_dy_kernel, dz_dy);
 
-        algebra::divide(dz_dy, 8 * cell_size(values, 1), dz_dy);
+        algebra::divide<
+            fern::divide::OutOfDomainPolicy,  // TODO Pick correct policy.
+            fern::divide::OutOfRangePolicy>(  // TODO Pick correct policy.
+            static_cast<InputNoDataPolicy&>(*this),
+            static_cast<OutputNoDataPolicy&>(*this),
+            fern::sequential,  // TODO Use policy passed into slope.
+            dz_dy, 8 * cell_size(values, 1), dz_dy);
 
-        algebra::pow(dz_dx, Float(2), dz_dx);
-        algebra::pow(dz_dy, Float(2), dz_dy);
-        algebra::add(dz_dx, dz_dy, result);
-        /// algebra::sqrt(result, result);
+        algebra::pow<
+            pow::OutOfDomainPolicy,  // TODO Pick correct policy.
+            pow::OutOfRangePolicy>(  // TODO Pick correct policy.
+            static_cast<InputNoDataPolicy&>(*this),
+            static_cast<OutputNoDataPolicy&>(*this),
+            fern::sequential,  // TODO Use policy passed into slope.
+            dz_dx, Float(2), dz_dx);
+
+        algebra::pow<
+            pow::OutOfDomainPolicy,  // TODO Pick correct policy.
+            pow::OutOfRangePolicy>(  // TODO Pick correct policy.
+            static_cast<InputNoDataPolicy&>(*this),
+            static_cast<OutputNoDataPolicy&>(*this),
+            fern::sequential,  // TODO Use policy passed into slope.
+            dz_dy, Float(2), dz_dy);
+
+        algebra::add<
+            fern::add::OutOfRangePolicy>(  // TODO Pick correct policy.
+            static_cast<InputNoDataPolicy&>(*this),
+            static_cast<OutputNoDataPolicy&>(*this),
+            fern::sequential,  // TODO Use policy passed in.
+            dz_dx, dz_dy, result);
 
         // TODO Whether or not to detect out of domain values depends on
         //      output no-data policy passed in. Will sqrt succeed if input
