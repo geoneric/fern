@@ -7,14 +7,6 @@
 
 BOOST_AUTO_TEST_SUITE(pow_)
 
-BOOST_AUTO_TEST_CASE(traits)
-{
-    using Pow = fern::algebra::Pow<float, float, float>;
-    BOOST_CHECK((std::is_same<fern::OperationTraits<Pow>::category,
-        fern::local_operation_tag>::value));
-}
-
-
 template<
     class Value1,
     class Value2>
@@ -38,13 +30,6 @@ template<
     class Value1,
     class Value2,
     class Result>
-using Algorithm = fern::pow::Algorithm<Value1, Value2, Result>;
-
-
-template<
-    class Value1,
-    class Value2,
-    class Result>
 using OutOfRangePolicy = fern::pow::OutOfRangePolicy<Value1, Value2, Result>;
 
 
@@ -59,9 +44,10 @@ struct VerifyWithinRange
         Value2 const& value2)
     {
         OutOfRangePolicy<Value1, Value2, Result> policy;
-        Algorithm<Value1, Value2, Result> algorithm;
         Result result;
-        algorithm(value1, value2, result);
+
+        fern::algebra::pow(fern::sequential, value1, value2, result);
+
         return policy.within_range(value1, value2, result);
     }
 };
@@ -90,7 +76,7 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::algebra::pow(value1, value2, result_we_get);
+    fern::algebra::pow(fern::sequential, value1, value2, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 

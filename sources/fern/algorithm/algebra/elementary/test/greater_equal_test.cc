@@ -6,14 +6,6 @@
 
 BOOST_AUTO_TEST_SUITE(greater_equal)
 
-BOOST_AUTO_TEST_CASE(traits)
-{
-    using GreaterEqual = fern::algebra::GreaterEqual<float, float, bool>;
-    BOOST_CHECK((std::is_same<fern::OperationTraits<GreaterEqual>::category,
-        fern::local_operation_tag>::value));
-}
-
-
 template<
     class Value1,
     class Value2,
@@ -24,7 +16,8 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::algebra::greater_equal(value1, value2, result_we_get);
+    fern::algebra::greater_equal(fern::sequential, value1, value2,
+        result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 

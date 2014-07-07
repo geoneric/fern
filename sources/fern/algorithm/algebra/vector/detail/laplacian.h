@@ -127,14 +127,30 @@ public:
         // Multiply the values by the sum of weights.
         MaskedRaster<Float, 2> multiplied_values(extents,
             result.transformation());
-        algebra::multiply(sum_of_weights, values, multiplied_values);
+        algebra::multiply<
+            fern::multiply::OutOfRangePolicy>(  // TODO Pick correct policy.
+            static_cast<InputNoDataPolicy&>(*this),
+            static_cast<OutputNoDataPolicy&>(*this),
+            fern::sequential,  // TODO Use policy passed into laplacian.
+            sum_of_weights, values, multiplied_values);
 
         // Subtract the convolution result by the multiplied values.
         // Result subtracted_results;
-        algebra::subtract(result, multiplied_values, result);
+        algebra::subtract<
+            fern::subtract::OutOfRangePolicy>(  // TODO Pick correct policy.
+            static_cast<InputNoDataPolicy&>(*this),
+            static_cast<OutputNoDataPolicy&>(*this),
+            fern::sequential,  // TODO Use policy passed into laplacian.
+            result, multiplied_values, result);
 
         // Divide subtracted results by the area of the cells.
-        algebra::divide(result, cell_area(values), result);
+        algebra::divide<
+            fern::divide::OutOfDomainPolicy,  // TODO Pick correct policy.
+            fern::divide::OutOfRangePolicy>(  // TODO Pick correct policy.
+            static_cast<InputNoDataPolicy&>(*this),
+            static_cast<OutputNoDataPolicy&>(*this),
+            fern::sequential,  // TODO Use policy passed into laplacian.
+            result, cell_area(values), result);
     }
 
 };

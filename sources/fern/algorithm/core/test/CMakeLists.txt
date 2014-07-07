@@ -1,4 +1,5 @@
 SET(TEST_NAMES
+    binary_local_operation_test
     cast_test
     index_range_test
     index_ranges_test

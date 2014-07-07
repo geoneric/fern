@@ -1,36 +1,10 @@
 #define BOOST_TEST_MODULE fern algorithm algebra elementary subtract
 #include <boost/test/unit_test.hpp>
 #include "fern/core/constant_traits.h"
-#include "fern/core/type_traits.h"
 #include "fern/algorithm/algebra/elementary/subtract.h"
 
 
 BOOST_AUTO_TEST_SUITE(subtract)
-
-BOOST_AUTO_TEST_CASE(traits)
-{
-    using Subtract = fern::algebra::Subtract<int32_t, int32_t, int32_t>;
-    BOOST_CHECK((std::is_same<fern::OperationTraits<Subtract>::category,
-        fern::local_operation_tag>::value));
-}
-
-
-template<
-    class Value1,
-    class Value2>
-using OutOfDomainPolicy = fern::subtract::OutOfDomainPolicy<Value1, Value2>;
-
-
-BOOST_AUTO_TEST_CASE(out_of_domain_policy)
-{
-    {
-        OutOfDomainPolicy<int32_t, int32_t> policy;
-        BOOST_CHECK(policy.within_domain(5, 6));
-        BOOST_CHECK(policy.within_domain(-5, -6));
-        BOOST_CHECK(policy.within_domain(0, 0));
-    }
-}
-
 
 template<
     class Value1,
@@ -44,31 +18,6 @@ template<
     class Value1,
     class Value2,
     class Result>
-using Algorithm = fern::subtract::Algorithm<Value1, Value2>;
-
-
-template<
-    class Value1,
-    class Value2,
-    class Result>
-void verify_within_range(
-    Value1 const& value1,
-    Value2 const& value2,
-    bool out_of_range)
-{
-    OutOfRangePolicy<Value1, Value2, Result> policy;
-    Algorithm<Value1, Value2, Result> algorithm;
-    Result result;
-    algorithm(value1, value2, result);
-    BOOST_CHECK_EQUAL(policy.within_range(value1, value2, result),
-        out_of_range);
-}
-
-
-template<
-    class Value1,
-    class Value2,
-    class Result>
 struct VerifyWithinRange
 {
     bool operator()(
@@ -76,9 +25,10 @@ struct VerifyWithinRange
         Value2 const& value2)
     {
         OutOfRangePolicy<Value1, Value2, Result> policy;
-        Algorithm<Value1, Value2, Result> algorithm;
         Result result;
-        algorithm(value1, value2, result);
+
+        fern::algebra::subtract(fern::sequential, value1, value2, result);
+
         return policy.within_range(value1, value2, result);
     }
 };
@@ -244,7 +194,7 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::algebra::subtract(value1, value2, result_we_get);
+    fern::algebra::subtract(fern::sequential, value1, value2, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 

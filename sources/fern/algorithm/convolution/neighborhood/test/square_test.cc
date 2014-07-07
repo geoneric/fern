@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE(verify_use_in_algorithm)
             {7, 8, 9}
         });
 
-        fern::algebra::multiply(square, 2, square);
+        fern::algebra::multiply(fern::sequential, square, 2, square);
 
         BOOST_CHECK_EQUAL(square[0][0], 2);
         BOOST_CHECK_EQUAL(square[0][1], 4);

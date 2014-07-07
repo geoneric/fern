@@ -3,747 +3,1002 @@
 #include <utility>
 #include "fern/core/argument_traits.h"
 #include "fern/core/assert.h"
+#include "fern/core/base_class.h"
 #include "fern/core/collection_traits.h"
+#include "fern/core/thread_client.h"
 #include "fern/algorithm/core/index_ranges.h"
+#include "fern/algorithm/policy/execution_policy.h"
 
 
 namespace fern {
 namespace detail {
+
+template<
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
+    class Algorithm,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class Value1,
+    class Value2,
+    class Result>
+void operation_0d_0d(
+    Algorithm const& algorithm,
+    InputNoDataPolicy const& input_no_data_policy,
+    OutputNoDataPolicy& output_no_data_policy,
+    Value1 const& value1,
+    Value2 const& value2,
+    Result& result)
+{
+    // Don't do anything if the input value is no-data. We assume
+    // that input no-data values are already marked as such in the
+    // result.
+    if(!input_no_data_policy.is_no_data()) {
+        const_reference<Value1> v1(fern::get(value1));
+        const_reference<Value2> v2(fern::get(value2));
+
+        if(!OutOfDomainPolicy::within_domain(v1, v2)) {
+            // Input value is out of domain. Mark result value as
+            // no-data. Don't change the result value.
+            output_no_data_policy.mark_as_no_data();
+        }
+        else {
+            reference<Result> r(fern::get(result));
+
+            algorithm(v1, v2, r);
+
+            if(!OutOfRangePolicy::within_range(v1, v2, r)) {
+                // Result value is out-of-range. Mark result value as
+                // no-data. Result value contains the out-of-range
+                // value (this may be overriden by
+                // output_no_data_policy, depending on its
+                // implementation).
+                output_no_data_policy.mark_as_no_data();
+            }
+        }
+    }
+}
+
+
+template<
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
+    class Algorithm,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class Value1,
+    class Value2,
+    class Result>
+void operation_1d_0d(
+    Algorithm const& algorithm,
+    InputNoDataPolicy const& input_no_data_policy,
+    OutputNoDataPolicy& output_no_data_policy,
+    IndexRanges<1> const& index_ranges,
+    Value1 const& value1,
+    Value2 const& value2,
+    Result& result)
+{
+    for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+
+        // Don't do anything if the input value is no-data. We assume
+        // that input no-data values are already marked as such in the
+        // result.
+        if(!input_no_data_policy.is_no_data(i)) {
+            const_reference<Value1> v1(fern::get(value1, i));
+            const_reference<Value2> v2(fern::get(value2));
+
+            if(!OutOfDomainPolicy::within_domain(v1, v2)) {
+                // Input value is out of domain. Mark result value as
+                // no-data. Don't change the result value.
+                output_no_data_policy.mark_as_no_data(i);
+            }
+            else {
+                reference<Result> r(fern::get(result, i));
+
+                algorithm(v1, v2, r);
+
+                if(!OutOfRangePolicy::within_range(v1, v2, r)) {
+                    // Result value is out-of-range. Mark result value as
+                    // no-data. Result value contains the out-of-range
+                    // value (this may be overriden by
+                    // output_no_data_policy, depending on its
+                    // implementation).
+                    output_no_data_policy.mark_as_no_data(i);
+                }
+            }
+        }
+    }
+}
+
+
+template<
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
+    class Algorithm,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class Value1,
+    class Value2,
+    class Result>
+void operation_0d_1d(
+    Algorithm const& algorithm,
+    InputNoDataPolicy const& input_no_data_policy,
+    OutputNoDataPolicy& output_no_data_policy,
+    IndexRanges<1> const& index_ranges,
+    Value1 const& value1,
+    Value2 const& value2,
+    Result& result)
+{
+    for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+
+        // Don't do anything if the input value is no-data. We assume
+        // that input no-data values are already marked as such in the
+        // result.
+        if(!input_no_data_policy.is_no_data(i)) {
+            const_reference<Value1> v1(fern::get(value1));
+            const_reference<Value1> v2(fern::get(value2, i));
+
+            if(!OutOfDomainPolicy::within_domain(v1, v2)) {
+                // Input value is out of domain. Mark result value as
+                // no-data. Don't change the result value.
+                output_no_data_policy.mark_as_no_data(i);
+            }
+            else {
+                reference<Result> r(fern::get(result, i));
+
+                algorithm(v1, v2, r);
+
+                if(!OutOfRangePolicy::within_range(v1, v2, r)) {
+                    // Result value is out-of-range. Mark result value as
+                    // no-data. Result value contains the out-of-range
+                    // value (this may be overriden by
+                    // output_no_data_policy, depending on its
+                    // implementation).
+                    output_no_data_policy.mark_as_no_data(i);
+                }
+            }
+        }
+    }
+}
+
+
+template<
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
+    class Algorithm,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class Value1,
+    class Value2,
+    class Result>
+void operation_2d_0d(
+    Algorithm const& algorithm,
+    InputNoDataPolicy const& input_no_data_policy,
+    OutputNoDataPolicy& output_no_data_policy,
+    IndexRanges<2> const& index_ranges,
+    Value1 const& value1,
+    Value2 const& value2,
+    Result& result)
+{
+    for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+        for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
+                ++j) {
+
+            // Don't do anything if the input value is no-data. We assume
+            // that input no-data values are already marked as such in the
+            // result.
+            if(!input_no_data_policy.is_no_data(i, j)) {
+                const_reference<Value1> v1(fern::get(value1, i, j));
+                const_reference<Value2> v2(fern::get(value2));
+
+                if(!OutOfDomainPolicy::within_domain(v1, v2)) {
+                    // Input value is out of domain. Mark result value as
+                    // no-data. Don't change the result value.
+                    output_no_data_policy.mark_as_no_data(i, j);
+                }
+                else {
+                    reference<Result> r(fern::get(result, i, j));
+
+                    algorithm(v1, v2, r);
+
+                    if(!OutOfRangePolicy::within_range(v1, v2, r)) {
+                        // Result value is out-of-range. Mark result value as
+                        // no-data. Result value contains the out-of-range
+                        // value (this may be overriden by
+                        // output_no_data_policy, depending on its
+                        // implementation).
+                        output_no_data_policy.mark_as_no_data(i, j);
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+template<
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
+    class Algorithm,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class Value1,
+    class Value2,
+    class Result>
+void operation_0d_2d(
+    Algorithm const& algorithm,
+    InputNoDataPolicy const& input_no_data_policy,
+    OutputNoDataPolicy& output_no_data_policy,
+    IndexRanges<2> const& index_ranges,
+    Value1 const& value1,
+    Value2 const& value2,
+    Result& result)
+{
+    for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+        for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
+                ++j) {
+
+            // Don't do anything if the input value is no-data. We assume
+            // that input no-data values are already marked as such in the
+            // result.
+            if(!input_no_data_policy.is_no_data(i, j)) {
+                const_reference<Value1> v1(fern::get(value1));
+                const_reference<Value2> v2(fern::get(value2, i, j));
+
+                if(!OutOfDomainPolicy::within_domain(v1, v2)) {
+                    // Input value is out of domain. Mark result value as
+                    // no-data. Don't change the result value.
+                    output_no_data_policy.mark_as_no_data(i, j);
+                }
+                else {
+                    reference<Result> r(fern::get(result, i, j));
+
+                    algorithm(v1, v2, r);
+
+                    if(!OutOfRangePolicy::within_range(v1, v2, r)) {
+                        // Result value is out-of-range. Mark result value as
+                        // no-data. Result value contains the out-of-range
+                        // value (this may be overriden by
+                        // output_no_data_policy, depending on its
+                        // implementation).
+                        output_no_data_policy.mark_as_no_data(i, j);
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+template<
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
+    class Algorithm,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class Value1,
+    class Value2,
+    class Result>
+void operation_2d_2d(
+    Algorithm const& algorithm,
+    InputNoDataPolicy const& input_no_data_policy,
+    OutputNoDataPolicy& output_no_data_policy,
+    IndexRanges<2> const& index_ranges,
+    Value1 const& value1,
+    Value2 const& value2,
+    Result& result)
+{
+    for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+        for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
+                ++j) {
+
+            // Don't do anything if the input value is no-data. We assume
+            // that input no-data values are already marked as such in the
+            // result.
+            if(!input_no_data_policy.is_no_data(i, j)) {
+                const_reference<Value1> v1(fern::get(value1, i, j));
+                const_reference<Value2> v2(fern::get(value2, i, j));
+
+                if(!OutOfDomainPolicy::within_domain(v1, v2)) {
+                    // Input value is out of domain. Mark result value as
+                    // no-data. Don't change the result value.
+                    output_no_data_policy.mark_as_no_data(i, j);
+                }
+                else {
+                    reference<Result> r(fern::get(result, i, j));
+
+                    algorithm(v1, v2, r);
+
+                    if(!OutOfRangePolicy::within_range(v1, v2, r)) {
+                        // Result value is out-of-range. Mark result value as
+                        // no-data. Result value contains the out-of-range
+                        // value (this may be overriden by
+                        // output_no_data_policy, depending on its
+                        // implementation).
+                        output_no_data_policy.mark_as_no_data(i, j);
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 namespace dispatch {
 
-template<class Values1, class Values2, class Result,
-    template<class, class> class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
+template<
     class Algorithm,
-    class A1CollectionCategory,
-    class Values2CollectionCategory>
-struct BinaryLocalOperation
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class Value1,
+    class Value2,
+    class Result,
+    class ExecutionPolicy,
+    class Value1CollectionCategory,
+    class Value2CollectionCategory>
+class BinaryLocalOperation
 {
 };
 
 
-template<class Values1, class Values2, class Result,
-    template<class, class> class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
+template<
+    class Algorithm,
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
-    class Algorithm>
-class BinaryLocalOperation<Values1, Values2, Result,
-        OutOfDomainPolicy,
-        OutOfRangePolicy,
-        InputNoDataPolicy,
-        OutputNoDataPolicy,
-        Algorithm,
-        constant_tag,
-        constant_tag>:
-
-    public OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>,
-    public OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
-        value_type<Result>>,
-    public InputNoDataPolicy,
-    public OutputNoDataPolicy
+    class Value1,
+    class Value2,
+    class Result,
+    class ExecutionPolicy>
+struct BinaryLocalOperation<
+    Algorithm,
+    OutOfDomainPolicy,
+    OutOfRangePolicy,
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Value1,
+    Value2,
+    Result,
+    ExecutionPolicy,
+    array_0d_tag,
+    array_0d_tag>
 
 {
 
-    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Values1>)
-    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Values2>)
-
-public:
-
-    BinaryLocalOperation(
-        Algorithm const& algorithm)
-        : OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>(),
-          OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
-              value_type<Result>>(),
-          InputNoDataPolicy(),
-          OutputNoDataPolicy(),
-          _algorithm(algorithm)
-    {
-    }
-
-    BinaryLocalOperation(
-        InputNoDataPolicy&& input_no_data_policy,
-        OutputNoDataPolicy&& output_no_data_policy,
-        Algorithm const& algorithm)
-        : OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>(),
-          OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
-              value_type<Result>>(),
-          InputNoDataPolicy(std::forward<InputNoDataPolicy>(
-              input_no_data_policy)),
-          OutputNoDataPolicy(std::forward<OutputNoDataPolicy>(
-              output_no_data_policy)),
-          _algorithm(algorithm)
-    {
-    }
-
-    // constant + constant
-    inline void calculate(
-        Values1 const& values1,
-        Values2 const& values2,
+    // f(0d array, 0d array)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        ExecutionPolicy const& /* execution_policy */,
+        Value1 const& value1,
+        Value2 const& value2,
         Result& result)
     {
-        using INDP = InputNoDataPolicy;
+        Algorithm algorithm;
 
-        if(!INDP::is_no_data()) {
-            _algorithm(get(values1), get(values2), get(result));
-        }
+        operation_0d_0d<OutOfDomainPolicy, OutOfRangePolicy>(algorithm,
+            input_no_data_policy, output_no_data_policy, value1, value2,
+            result);
     }
-
-private:
-
-    Algorithm      _algorithm;
 
 };
 
 
-template<class Values1, class Values2, class Result,
-    template<class, class> class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
+template<
+    class Algorithm,
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
-    class Algorithm>
-class BinaryLocalOperation<Values1, Values2, Result,
-        OutOfDomainPolicy,
-        OutOfRangePolicy,
-        InputNoDataPolicy,
-        OutputNoDataPolicy,
-        Algorithm,
-        array_1d_tag,
-        array_1d_tag>:
-
-    public OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>,
-    public OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
-        value_type<Result>>,
-    public InputNoDataPolicy,
-    public OutputNoDataPolicy
+    class Value1,
+    class Value2,
+    class Result>
+struct BinaryLocalOperation<
+    Algorithm,
+    OutOfDomainPolicy,
+    OutOfRangePolicy,
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Value1,
+    Value2,
+    Result,
+    SequentialExecutionPolicy,
+    array_1d_tag,
+    array_0d_tag>
 
 {
 
-    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Values1>)
-    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Values2>)
-
-public:
-
-    BinaryLocalOperation(
-        Algorithm const& algorithm)
-        : OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>(),
-          OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
-              value_type<Result>>(),
-          InputNoDataPolicy(),
-          OutputNoDataPolicy(),
-          _algorithm(algorithm)
-    {
-    }
-
-    BinaryLocalOperation(
-        InputNoDataPolicy&& input_no_data_policy,
-        OutputNoDataPolicy&& output_no_data_policy,
-        Algorithm const& algorithm)
-        : OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>(),
-          OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
-              value_type<Result>>(),
-          InputNoDataPolicy(std::forward<InputNoDataPolicy>(
-              input_no_data_policy)),
-          OutputNoDataPolicy(std::forward<OutputNoDataPolicy>(
-              output_no_data_policy)),
-          _algorithm(algorithm)
-    {
-    }
-
-    // collection + collection
-    void calculate(
-        Values1 const& values1,
-        Values2 const& values2,
+    // f(1d array, 0d array)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        SequentialExecutionPolicy const& /* execution_policy */,
+        Value1 const& value1,
+        Value2 const& value2,
         Result& result)
     {
-        assert(fern::size(values1) == fern::size(values2));
-        assert(fern::size(values1) == fern::size(result));
+        assert(fern::size(value1) == fern::size(result));
 
-        using INDP = InputNoDataPolicy;
-        using ONDP = OutputNoDataPolicy;
-        using OODP = OutOfDomainPolicy<value_type<Values1>,
-            value_type<Values2>>;
-        using OORP = OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
-            value_type<Result>>;
+        Algorithm algorithm;
 
-        size_t const size = fern::size(values1);
-
-        for(size_t i = 0; i < size; ++i) {
-            if(!INDP::is_no_data(i)) {
-                const_reference<Values1> a1(fern::get(values1, i));
-                const_reference<Values2> a2(fern::get(values2, i));
-
-                if(!OODP::within_domain(a1, a2)) {
-                    ONDP::mark_as_no_data(i);
-                }
-
-                _algorithm(a1, a2, fern::get(result, i));
-
-                if(!OORP::within_range(a1, a2, fern::get(result, i))) {
-                    ONDP::mark_as_no_data(i);
-                }
-            }
-        }
+        operation_1d_0d<OutOfDomainPolicy, OutOfRangePolicy>(algorithm,
+            input_no_data_policy, output_no_data_policy,
+            IndexRanges<1>{IndexRange(0, fern::size(value1))}, value1, value2,
+            result);
     }
-
-private:
-
-    Algorithm _algorithm;
 
 };
 
 
-template<class Values1, class Values2, class Result,
-    template<class, class> class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
+template<
+    class Algorithm,
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
-    class Algorithm>
-class BinaryLocalOperation<Values1, Values2, Result,
-        OutOfDomainPolicy,
-        OutOfRangePolicy,
-        InputNoDataPolicy,
-        OutputNoDataPolicy,
-        Algorithm,
-        array_2d_tag,
-        array_2d_tag>:
-
-    public OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>,
-    public OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
-        value_type<Result>>,
-    public InputNoDataPolicy,
-    public OutputNoDataPolicy
+    class Value1,
+    class Value2,
+    class Result>
+struct BinaryLocalOperation<
+    Algorithm,
+    OutOfDomainPolicy,
+    OutOfRangePolicy,
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Value1,
+    Value2,
+    Result,
+    ParallelExecutionPolicy,
+    array_1d_tag,
+    array_0d_tag>
 
 {
 
-    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Values1>)
-    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Values2>)
-
-public:
-
-    BinaryLocalOperation(
-        Algorithm const& algorithm)
-        : OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>(),
-          OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
-              value_type<Result>>(),
-          InputNoDataPolicy(),
-          OutputNoDataPolicy(),
-          _algorithm(algorithm)
-    {
-    }
-
-    BinaryLocalOperation(
-        InputNoDataPolicy&& input_no_data_policy,
-        OutputNoDataPolicy&& output_no_data_policy,
-        Algorithm const& algorithm)
-        : OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>(),
-          OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
-              value_type<Result>>(),
-          InputNoDataPolicy(std::forward<InputNoDataPolicy>(
-              input_no_data_policy)),
-          OutputNoDataPolicy(std::forward<OutputNoDataPolicy>(
-              output_no_data_policy)),
-          _algorithm(algorithm)
-    {
-    }
-
-    // collection + collection
-    void calculate(
-        Values1 const& values1,
-        Values2 const& values2,
+    // f(1d array, 0d array)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        ParallelExecutionPolicy const& /* execution_policy */,
+        Value1 const& value1,
+        Value2 const& value2,
         Result& result)
     {
-        assert(fern::size(values1, 0) == fern::size(values2, 0));
-        assert(fern::size(values1, 1) == fern::size(values2, 1));
-        assert(fern::size(values1, 0) == fern::size(result, 0));
-        assert(fern::size(values1, 1) == fern::size(result, 1));
+        assert(fern::size(value1) == fern::size(result));
 
-        size_t const size1 = fern::size(values1, 0);
-        size_t const size2 = fern::size(values1, 1);
+        ThreadPool& pool(ThreadClient::pool());
+        size_t const size = fern::size(value1);
+        std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size);
+        std::vector<std::future<void>> futures;
+        futures.reserve(ranges.size());
 
-        auto ranges = IndexRanges<2>{
-            IndexRange(0, size1),
-            IndexRange(0, size2)
-        };
+        Algorithm algorithm;
 
-        calculate(ranges, values1, values2, result);
-    }
+        for(auto const& block_range: ranges) {
+            auto function = std::bind(
+                operation_1d_0d<
+                    OutOfDomainPolicy, OutOfRangePolicy,
+                    Algorithm,
+                    InputNoDataPolicy, OutputNoDataPolicy,
+                    Value1, Value2, Result>,
+                std::cref(algorithm),
+                std::cref(input_no_data_policy),
+                std::ref(output_no_data_policy), std::cref(block_range),
+                std::cref(value1), std::cref(value2), std::ref(result));
+            futures.emplace_back(pool.submit(function));
+        }
 
-    // collection + constant
-    template<
-        class Indices>
-    inline void calculate(
-        Indices const& indices,
-        Values1 const& values1,
-        Values2 const& values2,
-        Result& result)
-    {
-        assert(fern::size(values1, 0) == fern::size(values2, 0));
-        assert(fern::size(values1, 1) == fern::size(values2, 1));
-        assert(fern::size(values1, 0) == fern::size(result, 0));
-        assert(fern::size(values1, 1) == fern::size(result, 1));
-
-        using INDP = InputNoDataPolicy;
-        using ONDP = OutputNoDataPolicy;
-        using OODP = OutOfDomainPolicy<value_type<Values1>,
-            value_type<Values2>>;
-        using OORP = OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
-            value_type<Result>>;
-
-        size_t const start1 = indices[0].begin();
-        size_t const finish1 = indices[0].end();
-        size_t const start2 = indices[1].begin();
-        size_t const finish2 = indices[1].end();
-
-        for(size_t i = start1; i < finish1; ++i) {
-            for(size_t j = start2; j < finish2; ++j) {
-                if(!INDP::is_no_data(i, j)) {
-                    const_reference<Values1> a1(fern::get(values1, i, j));
-                    const_reference<Values2> a2(fern::get(values2, i, j));
-
-                    if(!OODP::within_domain(a1, a2)) {
-                        ONDP::mark_as_no_data(i, j);
-                    }
-
-                    _algorithm(a1, a2, fern::get(result, i, j));
-
-                    if(!OORP::within_range(a1, a2, fern::get(result, i, j))) {
-                        ONDP::mark_as_no_data(i, j);
-                    }
-                }
-            }
+        for(auto& future: futures) {
+            future.get();
         }
     }
-
-private:
-
-    Algorithm _algorithm;
 
 };
 
 
-template<class Values1, class Values2, class Result,
-    template<class, class> class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
+template<
+    class Algorithm,
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
-    class Algorithm>
-class BinaryLocalOperation<Values1, Values2, Result,
-        OutOfDomainPolicy,
-        OutOfRangePolicy,
-        InputNoDataPolicy,
-        OutputNoDataPolicy,
-        Algorithm,
-        constant_tag,
-        array_1d_tag>:
-
-    public OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>,
-    public OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
-        value_type<Result>>,
-    public InputNoDataPolicy,
-    public OutputNoDataPolicy
+    class Value1,
+    class Value2,
+    class Result>
+struct BinaryLocalOperation<
+    Algorithm,
+    OutOfDomainPolicy,
+    OutOfRangePolicy,
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Value1,
+    Value2,
+    Result,
+    SequentialExecutionPolicy,
+    array_0d_tag,
+    array_1d_tag>
 
 {
 
-    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Values1>)
-    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Values2>)
-
-public:
-
-    BinaryLocalOperation(
-        Algorithm const& algorithm)
-        : OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>(),
-          OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
-              value_type<Result>>(),
-          InputNoDataPolicy(),
-          OutputNoDataPolicy(),
-          _algorithm(algorithm)
-    {
-    }
-
-    BinaryLocalOperation(
-        InputNoDataPolicy&& input_no_data_policy,
-        OutputNoDataPolicy&& output_no_data_policy,
-        Algorithm const& algorithm)
-        : OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>(),
-          OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
-              value_type<Result>>(),
-          InputNoDataPolicy(std::forward<InputNoDataPolicy>(
-              input_no_data_policy)),
-          OutputNoDataPolicy(std::forward<OutputNoDataPolicy>(
-              output_no_data_policy)),
-          _algorithm(algorithm)
-    {
-    }
-
-    // constant + collection
-    inline void calculate(
-        Values1 const& values1,
-        Values2 const& values2,
+    // f(0d array, 1d array)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        SequentialExecutionPolicy const& /* execution_policy */,
+        Value1 const& value1,
+        Value2 const& value2,
         Result& result)
     {
-        assert(fern::size(values2) == fern::size(result));
+        assert(fern::size(value2) == fern::size(result));
 
-        using INDP = InputNoDataPolicy;
-        using ONDP = OutputNoDataPolicy;
-        using OODP = OutOfDomainPolicy<value_type<Values1>,
-            value_type<Values2>>;
-        using OORP = OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
-            value_type<Result>>;
+        Algorithm algorithm;
 
-        size_t const size = fern::size(values2);
-
-        const_reference<Values1> a1(fern::get(values1));
-
-        for(size_t i = 0; i < size; ++i) {
-            if(!INDP::is_no_data(i)) {
-                const_reference<Values2> a2(fern::get(values2, i));
-
-                if(!OODP::within_domain(a1, a2)) {
-                    ONDP::mark_as_no_data(i);
-                }
-
-                _algorithm(a1, a2, fern::get(result, i));
-
-                if(!OORP::within_range(a1, a2, fern::get(result, i))) {
-                    ONDP::mark_as_no_data(i);
-                }
-            }
-        }
+        operation_0d_1d<OutOfDomainPolicy, OutOfRangePolicy>(algorithm,
+            input_no_data_policy, output_no_data_policy,
+            IndexRanges<1>{IndexRange(0, fern::size(value2))}, value1, value2,
+            result);
     }
-
-private:
-
-    Algorithm      _algorithm;
 
 };
 
 
-template<class Values1, class Values2, class Result,
-    template<class, class> class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
+template<
+    class Algorithm,
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
-    class Algorithm>
-class BinaryLocalOperation<Values1, Values2, Result,
-        OutOfDomainPolicy,
-        OutOfRangePolicy,
-        InputNoDataPolicy,
-        OutputNoDataPolicy,
-        Algorithm,
-        constant_tag,
-        array_2d_tag>:
-
-    public OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>,
-    public OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
-        value_type<Result>>,
-    public InputNoDataPolicy,
-    public OutputNoDataPolicy
+    class Value1,
+    class Value2,
+    class Result>
+struct BinaryLocalOperation<
+    Algorithm,
+    OutOfDomainPolicy,
+    OutOfRangePolicy,
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Value1,
+    Value2,
+    Result,
+    ParallelExecutionPolicy,
+    array_0d_tag,
+    array_1d_tag>
 
 {
 
-    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Values1>)
-    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Values2>)
-
-public:
-
-    BinaryLocalOperation(
-        Algorithm const& algorithm)
-        : OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>(),
-          OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
-              value_type<Result>>(),
-          InputNoDataPolicy(),
-          OutputNoDataPolicy(),
-          _algorithm(algorithm)
-    {
-    }
-
-    BinaryLocalOperation(
-        InputNoDataPolicy&& input_no_data_policy,
-        OutputNoDataPolicy&& output_no_data_policy,
-        Algorithm const& algorithm)
-        : OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>(),
-          OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
-              value_type<Result>>(),
-          InputNoDataPolicy(std::forward<InputNoDataPolicy>(
-              input_no_data_policy)),
-          OutputNoDataPolicy(std::forward<OutputNoDataPolicy>(
-              output_no_data_policy)),
-          _algorithm(algorithm)
-    {
-    }
-
-    // constant + collection
-    inline void calculate(
-        Values1 const& values1,
-        Values2 const& values2,
+    // f(0d array, 1d array)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        ParallelExecutionPolicy const& /* execution_policy */,
+        Value1 const& value1,
+        Value2 const& value2,
         Result& result)
     {
-        assert(fern::size(values2, 0) == fern::size(result, 0));
-        assert(fern::size(values2, 1) == fern::size(result, 1));
+        ThreadPool& pool(ThreadClient::pool());
+        size_t const size = fern::size(value2);
+        std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size);
+        std::vector<std::future<void>> futures;
+        futures.reserve(ranges.size());
 
-        using INDP = InputNoDataPolicy;
-        using ONDP = OutputNoDataPolicy;
-        using OODP = OutOfDomainPolicy<value_type<Values1>,
-            value_type<Values2>>;
-        using OORP = OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
-            value_type<Result>>;
+        Algorithm algorithm;
 
-        size_t const size1 = fern::size(values2, 0);
-        size_t const size2 = fern::size(values2, 1);
+        for(auto const& block_range: ranges) {
+            auto function = std::bind(
+                operation_0d_1d<
+                    OutOfDomainPolicy, OutOfRangePolicy,
+                    Algorithm,
+                    InputNoDataPolicy, OutputNoDataPolicy,
+                    Value1, Value2, Result>,
+                std::cref(algorithm),
+                std::cref(input_no_data_policy),
+                std::ref(output_no_data_policy), std::cref(block_range),
+                std::cref(value1), std::cref(value2), std::ref(result));
+            futures.emplace_back(pool.submit(function));
+        }
 
-        const_reference<Values1> a1(fern::get(values1));
-
-        for(size_t i = 0; i < size1; ++i) {
-            for(size_t j = 0; j < size2; ++j) {
-                if(!INDP::is_no_data(i, j)) {
-                    const_reference<Values2> a2(fern::get(values2, i, j));
-
-                    if(!OODP::within_domain(a1, a2)) {
-                        ONDP::mark_as_no_data(i, j);
-                    }
-
-                    _algorithm(a1, a2, fern::get(result, i, j));
-
-                    if(!OORP::within_range(a1, a2, fern::get(result, i, j))) {
-                        ONDP::mark_as_no_data(i, j);
-                    }
-                }
-            }
+        for(auto& future: futures) {
+            future.get();
         }
     }
-
-private:
-
-    Algorithm      _algorithm;
 
 };
 
 
-template<class Values1, class Values2, class Result,
-    template<class, class> class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
+template<
+    class Algorithm,
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
-    class Algorithm>
-class BinaryLocalOperation<Values1, Values2, Result,
-        OutOfDomainPolicy,
-        OutOfRangePolicy,
-        InputNoDataPolicy,
-        OutputNoDataPolicy,
-        Algorithm,
-        array_1d_tag,
-        constant_tag>:
-
-    public OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>,
-    public OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
-        value_type<Result>>,
-    public InputNoDataPolicy,
-    public OutputNoDataPolicy
+    class Value1,
+    class Value2,
+    class Result>
+struct BinaryLocalOperation<
+    Algorithm,
+    OutOfDomainPolicy,
+    OutOfRangePolicy,
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Value1,
+    Value2,
+    Result,
+    SequentialExecutionPolicy,
+    array_2d_tag,
+    array_0d_tag>
 
 {
 
-    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Values1>)
-    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Values2>)
-
-public:
-
-    BinaryLocalOperation(
-        Algorithm const& algorithm)
-        : OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>(),
-          OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
-              value_type<Result>>(),
-          InputNoDataPolicy(),
-          OutputNoDataPolicy(),
-          _algorithm(algorithm)
-    {
-    }
-
-    BinaryLocalOperation(
-        InputNoDataPolicy&& input_no_data_policy,
-        OutputNoDataPolicy&& output_no_data_policy,
-        Algorithm const& algorithm)
-        : OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>(),
-          OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
-              value_type<Result>>(),
-          InputNoDataPolicy(std::forward<InputNoDataPolicy>(
-              input_no_data_policy)),
-          OutputNoDataPolicy(std::forward<OutputNoDataPolicy>(
-              output_no_data_policy)),
-          _algorithm(algorithm)
-    {
-    }
-
-    // collection + constant
-    inline void calculate(
-        Values1 const& values1,
-        Values2 const& values2,
+    // f(2d array, 0d array)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        SequentialExecutionPolicy const& /* execution_policy */,
+        Value1 const& value1,
+        Value2 const& value2,
         Result& result)
     {
-        assert(fern::size(values1) == fern::size(result));
+        assert(fern::size(value1, 0) == fern::size(result, 0));
+        assert(fern::size(value1, 1) == fern::size(result, 1));
 
-        using INDP = InputNoDataPolicy;
-        using ONDP = OutputNoDataPolicy;
-        using OODP = OutOfDomainPolicy<value_type<Values1>,
-            value_type<Values2>>;
-        using OORP = OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
-            value_type<Result>>;
+        Algorithm algorithm;
 
-        size_t const size = fern::size(values1);
-
-        const_reference<Values2> a2(fern::get(values2));
-
-        for(size_t i = 0; i < size; ++i) {
-            if(!INDP::is_no_data(i)) {
-                const_reference<Values1> a1(fern::get(values1, i));
-
-                if(!OODP::within_domain(a1, a2)) {
-                    ONDP::mark_as_no_data(i);
-                }
-
-                _algorithm(a1, a2, fern::get(result, i));
-
-                if(!OORP::within_range(a1, a2, fern::get(result, i))) {
-                    ONDP::mark_as_no_data(i);
-                }
-            }
-        }
+        operation_2d_0d<OutOfDomainPolicy, OutOfRangePolicy>(algorithm,
+            input_no_data_policy, output_no_data_policy,
+            IndexRanges<2>{
+                IndexRange(0, fern::size(value1, 0)),
+                IndexRange(0, fern::size(value1, 1))
+            }, value1, value2, result);
     }
-
-private:
-
-    Algorithm      _algorithm;
 
 };
 
 
-template<class Values1, class Values2, class Result,
-    template<class, class> class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
+template<
+    class Algorithm,
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
-    class Algorithm>
-class BinaryLocalOperation<Values1, Values2, Result,
-        OutOfDomainPolicy,
-        OutOfRangePolicy,
-        InputNoDataPolicy,
-        OutputNoDataPolicy,
-        Algorithm,
-        array_2d_tag,
-        constant_tag>:
-
-    public OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>,
-    public OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
-        value_type<Result>>,
-    public InputNoDataPolicy,
-    public OutputNoDataPolicy
+    class Value1,
+    class Value2,
+    class Result>
+struct BinaryLocalOperation<
+    Algorithm,
+    OutOfDomainPolicy,
+    OutOfRangePolicy,
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Value1,
+    Value2,
+    Result,
+    ParallelExecutionPolicy,
+    array_2d_tag,
+    array_0d_tag>
 
 {
 
-    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Values1>)
-    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Values2>)
-
-public:
-
-    BinaryLocalOperation(
-        Algorithm const& algorithm)
-        : OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>(),
-          OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
-              value_type<Result>>(),
-          InputNoDataPolicy(),
-          OutputNoDataPolicy(),
-          _algorithm(algorithm)
-    {
-    }
-
-    BinaryLocalOperation(
-        InputNoDataPolicy&& input_no_data_policy,
-        OutputNoDataPolicy&& output_no_data_policy,
-        Algorithm const& algorithm)
-        : OutOfDomainPolicy<value_type<Values1>, value_type<Values2>>(),
-          OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
-              value_type<Result>>(),
-          InputNoDataPolicy(std::forward<InputNoDataPolicy>(
-              input_no_data_policy)),
-          OutputNoDataPolicy(std::forward<OutputNoDataPolicy>(
-              output_no_data_policy)),
-          _algorithm(algorithm)
-    {
-    }
-
-    // collection + constant
-    inline void calculate(
-        Values1 const& values1,
-        Values2 const& values2,
+    // f(2d array, 0d array)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        ParallelExecutionPolicy const& /* execution_policy */,
+        Value1 const& value1,
+        Value2 const& value2,
         Result& result)
     {
-        assert(fern::size(values1, 0) == fern::size(result, 0));
-        assert(fern::size(values1, 1) == fern::size(result, 1));
+        assert(fern::size(value1, 0) == fern::size(result, 0));
+        assert(fern::size(value1, 1) == fern::size(result, 1));
 
-        size_t const size1 = fern::size(values1, 0);
-        size_t const size2 = fern::size(values1, 1);
+        ThreadPool& pool(ThreadClient::pool());
+        size_t const size1 = fern::size(value1, 0);
+        size_t const size2 = fern::size(value1, 1);
+        std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
+            size1, size2);
+        std::vector<std::future<void>> futures;
+        futures.reserve(ranges.size());
 
-        auto ranges = IndexRanges<2>{
-            IndexRange(0, size1),
-            IndexRange(0, size2)
-        };
+        Algorithm algorithm;
 
-        calculate(ranges, values1, values2, result);
-    }
+        for(auto const& block_range: ranges) {
+            auto function = std::bind(
+                operation_2d_0d<
+                    OutOfDomainPolicy, OutOfRangePolicy,
+                    Algorithm,
+                    InputNoDataPolicy, OutputNoDataPolicy,
+                    Value1, Value2, Result>,
+                std::cref(algorithm),
+                std::cref(input_no_data_policy),
+                std::ref(output_no_data_policy), std::cref(block_range),
+                std::cref(value1), std::cref(value2), std::ref(result));
+            futures.emplace_back(pool.submit(function));
+        }
 
-    // collection + constant
-    template<
-        class Indices>
-    inline void calculate(
-        Indices const& indices,
-        Values1 const& values1,
-        Values2 const& values2,
-        Result& result)
-    {
-        assert(fern::size(values1, 0) == fern::size(result, 0));
-        assert(fern::size(values1, 1) == fern::size(result, 1));
-
-        using INDP = InputNoDataPolicy;
-        using ONDP = OutputNoDataPolicy;
-        using OODP = OutOfDomainPolicy<value_type<Values1>,
-            value_type<Values2>>;
-        using OORP = OutOfRangePolicy<value_type<Values1>, value_type<Values2>,
-            value_type<Result>>;
-
-        size_t const start1 = indices[0].begin();
-        size_t const finish1 = indices[0].end();
-        size_t const start2 = indices[1].begin();
-        size_t const finish2 = indices[1].end();
-
-        const_reference<Values2> a2(fern::get(values2));
-
-        for(size_t i = start1; i < finish1; ++i) {
-            for(size_t j = start2; j < finish2; ++j) {
-                if(!INDP::is_no_data(i, j)) {
-                    const_reference<Values1> a1(fern::get(values1, i, j));
-
-                    if(!OODP::within_domain(a1, a2)) {
-                        ONDP::mark_as_no_data(i, j);
-                    }
-
-                    _algorithm(a1, a2, fern::get(result, i, j));
-
-                    if(!OORP::within_range(a1, a2, fern::get(result, i, j))) {
-                        ONDP::mark_as_no_data(i, j);
-                    }
-                }
-            }
+        for(auto& future: futures) {
+            future.get();
         }
     }
 
-private:
+};
 
-    Algorithm      _algorithm;
+
+template<
+    class Algorithm,
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class Value1,
+    class Value2,
+    class Result>
+struct BinaryLocalOperation<
+    Algorithm,
+    OutOfDomainPolicy,
+    OutOfRangePolicy,
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Value1,
+    Value2,
+    Result,
+    SequentialExecutionPolicy,
+    array_0d_tag,
+    array_2d_tag>
+
+{
+
+    // f(0d array, 2d array)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        SequentialExecutionPolicy const& /* execution_policy */,
+        Value1 const& value1,
+        Value2 const& value2,
+        Result& result)
+    {
+        assert(fern::size(value2, 0) == fern::size(result, 0));
+        assert(fern::size(value2, 1) == fern::size(result, 1));
+
+        Algorithm algorithm;
+
+        operation_0d_2d<OutOfDomainPolicy, OutOfRangePolicy>(algorithm,
+            input_no_data_policy, output_no_data_policy,
+            IndexRanges<2>{
+                IndexRange(0, fern::size(value2, 0)),
+                IndexRange(0, fern::size(value2, 1))
+            }, value1, value2, result);
+    }
+
+};
+
+
+template<
+    class Algorithm,
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class Value1,
+    class Value2,
+    class Result>
+struct BinaryLocalOperation<
+    Algorithm,
+    OutOfDomainPolicy,
+    OutOfRangePolicy,
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Value1,
+    Value2,
+    Result,
+    ParallelExecutionPolicy,
+    array_0d_tag,
+    array_2d_tag>
+
+{
+
+    // f(0d array, 2d array)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        ParallelExecutionPolicy const& /* execution_policy */,
+        Value1 const& value1,
+        Value2 const& value2,
+        Result& result)
+    {
+        assert(fern::size(value2, 0) == fern::size(result, 0));
+        assert(fern::size(value2, 1) == fern::size(result, 1));
+
+        ThreadPool& pool(ThreadClient::pool());
+        size_t const size1 = fern::size(value2, 0);
+        size_t const size2 = fern::size(value2, 1);
+        std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
+            size1, size2);
+        std::vector<std::future<void>> futures;
+        futures.reserve(ranges.size());
+
+        Algorithm algorithm;
+
+        for(auto const& block_range: ranges) {
+            auto function = std::bind(
+                operation_0d_2d<
+                    OutOfDomainPolicy, OutOfRangePolicy,
+                    Algorithm,
+                    InputNoDataPolicy, OutputNoDataPolicy,
+                    Value1, Value2, Result>,
+                std::cref(algorithm),
+                std::cref(input_no_data_policy),
+                std::ref(output_no_data_policy), std::cref(block_range),
+                std::cref(value1), std::cref(value2), std::ref(result));
+            futures.emplace_back(pool.submit(function));
+        }
+
+        for(auto& future: futures) {
+            future.get();
+        }
+    }
+
+};
+
+
+template<
+    class Algorithm,
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class Value1,
+    class Value2,
+    class Result>
+struct BinaryLocalOperation<
+    Algorithm,
+    OutOfDomainPolicy,
+    OutOfRangePolicy,
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Value1,
+    Value2,
+    Result,
+    SequentialExecutionPolicy,
+    array_2d_tag,
+    array_2d_tag>
+
+{
+
+    // f(2d array, 2d array)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        SequentialExecutionPolicy const& /* execution_policy */,
+        Value1 const& value1,
+        Value2 const& value2,
+        Result& result)
+    {
+        assert(fern::size(value1, 0) == fern::size(value2, 0));
+        assert(fern::size(value1, 1) == fern::size(value2, 1));
+        assert(fern::size(value1, 0) == fern::size(result, 0));
+        assert(fern::size(value1, 1) == fern::size(result, 1));
+
+        Algorithm algorithm;
+
+        operation_2d_2d<OutOfDomainPolicy, OutOfRangePolicy>(algorithm,
+            input_no_data_policy, output_no_data_policy,
+            IndexRanges<2>{
+                IndexRange(0, fern::size(value1, 0)),
+                IndexRange(0, fern::size(value1, 1))
+            }, value1, value2, result);
+    }
+
+};
+
+
+template<
+    class Algorithm,
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class Value1,
+    class Value2,
+    class Result>
+struct BinaryLocalOperation<
+    Algorithm,
+    OutOfDomainPolicy,
+    OutOfRangePolicy,
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Value1,
+    Value2,
+    Result,
+    ParallelExecutionPolicy,
+    array_2d_tag,
+    array_2d_tag>
+
+{
+
+    // f(2d array, 2d array)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        ParallelExecutionPolicy const& /* execution_policy */,
+        Value1 const& value1,
+        Value2 const& value2,
+        Result& result)
+    {
+        assert(fern::size(value1, 0) == fern::size(value2, 0));
+        assert(fern::size(value1, 1) == fern::size(value2, 1));
+        assert(fern::size(value1, 0) == fern::size(result, 0));
+        assert(fern::size(value1, 1) == fern::size(result, 1));
+
+        ThreadPool& pool(ThreadClient::pool());
+        size_t const size1 = fern::size(value1, 0);
+        size_t const size2 = fern::size(value1, 1);
+        std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
+            size1, size2);
+        std::vector<std::future<void>> futures;
+        futures.reserve(ranges.size());
+
+        Algorithm algorithm;
+
+        for(auto const& block_range: ranges) {
+            auto function = std::bind(
+                operation_2d_2d<
+                    OutOfDomainPolicy, OutOfRangePolicy,
+                    Algorithm,
+                    InputNoDataPolicy, OutputNoDataPolicy,
+                    Value1, Value2, Result>,
+                std::cref(algorithm),
+                std::cref(input_no_data_policy),
+                std::ref(output_no_data_policy), std::cref(block_range),
+                std::cref(value1), std::cref(value2), std::ref(result));
+            futures.emplace_back(pool.submit(function));
+        }
+
+        for(auto& future: futures) {
+            future.get();
+        }
+    }
 
 };
 
 } // namespace dispatch
 } // namespace detail
+
+
+template<
+    template<class, class> class Algorithm,
+    template<class, class> class OutOfDomainPolicy,
+    template<class, class, class> class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class ExecutionPolicy,
+    class Value1,
+    class Value2,
+    class Result
+>
+void binary_local_operation(
+    InputNoDataPolicy const& input_no_data_policy,
+    OutputNoDataPolicy& output_no_data_policy,
+    ExecutionPolicy const& execution_policy,
+    Value1 const& value1,
+    Value2 const& value2,
+    Result& result)
+{
+    detail::dispatch::BinaryLocalOperation<
+        Algorithm<value_type<Value1>, value_type<Value2>>,
+        OutOfDomainPolicy<value_type<Value1>, value_type<Value2>>,
+        OutOfRangePolicy<value_type<Value1>, value_type<Value2>,
+            value_type<Result>>,
+        InputNoDataPolicy,
+        OutputNoDataPolicy,
+        Value1,
+        Value2,
+        Result,
+        ExecutionPolicy,
+        base_class<argument_category<Value1>, array_2d_tag>,
+        base_class<argument_category<Value2>, array_2d_tag>>::apply(
+            input_no_data_policy, output_no_data_policy, execution_policy,
+            value1, value2, result);
+}
+
 } // namespace fern
