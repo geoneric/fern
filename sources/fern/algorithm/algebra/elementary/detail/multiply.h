@@ -2,6 +2,7 @@
 #include <cmath>
 #include "fern/core/assert.h"
 #include "fern/core/type_traits.h"
+#include "fern/algorithm/policy/policies.h"
 #include "fern/algorithm/core/binary_local_operation.h"
 #include "fern/algorithm/algebra/result_type.h"
 

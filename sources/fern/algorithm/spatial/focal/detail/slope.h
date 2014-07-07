@@ -1,20 +1,11 @@
 #pragma once
-#include <utility>
+#include "fern/core/argument_categories.h"
 #include "fern/core/assert.h"
 #include "fern/core/value_type.h"
-#include "fern/core/argument_categories.h"
-#include "fern/core/argument_traits.h"
-#include "fern/core/assert.h"
-// #include "fern/core/collection_traits.h"
 #include "fern/feature/core/array_traits.h"
 #include "fern/feature/core/masked_array_traits.h"
 #include "fern/algorithm/convolution/neighborhood/square_traits.h"
-#include "fern/algorithm/core/index_ranges.h"
-#include "fern/algorithm/algebra/elementary/add.h"
-#include "fern/algorithm/algebra/elementary/divide.h"
-#include "fern/algorithm/algebra/elementary/multiply.h"
-#include "fern/algorithm/algebra/elementary/pow.h"
-#include "fern/algorithm/algebra/elementary/sqrt.h"
+#include "fern/algorithm/algebra/elementary.h"
 #include "fern/algorithm/convolution/convolve.h"
 #include "fern/algorithm/convolution/policies.h"
 
@@ -24,73 +15,49 @@ namespace slope {
 namespace detail {
 namespace dispatch {
 
-template<class Values, class Result,
+template<
+    class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
-    class ArgumentCollectionCategory>
+    class Value,
+    class Result,
+    class ExecutionPolicy,
+    class ValueCollectionCategory>
 class Slope
 {
 };
 
 
-template<class Values, class Result,
+template<
+    class OutOfRangePolicy,
     class InputNoDataPolicy,
-    class OutputNoDataPolicy>
-class Slope<Values, Result,
-        InputNoDataPolicy,
-        OutputNoDataPolicy,
-        raster_2d_tag>:
-
-    public InputNoDataPolicy,
-    public OutputNoDataPolicy
+    class OutputNoDataPolicy,
+    class Value,
+    class Result,
+    class ExecutionPolicy>
+struct Slope<
+    OutOfRangePolicy,
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Value,
+    Result,
+    ExecutionPolicy,
+    array_2d_tag>
 
 {
 
-    FERN_STATIC_ASSERT(std::is_floating_point, value_type<Values>)
-    FERN_STATIC_ASSERT(std::is_same, value_type<Values>, value_type<Result>)
-
-public:
-
-    Slope()
-        : InputNoDataPolicy(),
-          OutputNoDataPolicy()
-    {
-    }
-
-    Slope(
-        InputNoDataPolicy&& input_no_data_policy,
-        OutputNoDataPolicy&& output_no_data_policy)
-        : InputNoDataPolicy(std::forward<InputNoDataPolicy>(
-              input_no_data_policy)),
-          OutputNoDataPolicy(std::forward<OutputNoDataPolicy>(
-              output_no_data_policy))
-    {
-    }
-
-    // 2d array
-    inline void calculate(
-        Values const& values,
+    // f(2d array)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        ExecutionPolicy const& execution_policy,
+        Value const& value,
         Result& result)
     {
-        size_t const size1 = fern::size(values, 0);
-        size_t const size2 = fern::size(values, 1);
+        assert(fern::size(value, 0) == fern::size(result, 0));
+        assert(fern::size(value, 1) == fern::size(result, 1));
 
-        auto ranges = IndexRanges<2>{
-            IndexRange(0, size1),
-            IndexRange(0, size2)
-        };
-
-        calculate(ranges, values, result);
-    }
-
-    template<
-        class Indices>
-    inline void calculate(
-        Indices const& /* indices */,
-        Values const& values,
-        Result& result)
-    {
-        using Float = value_type<Values>;
+        using Float = value_type<Value>;
         FERN_STATIC_ASSERT(std::is_floating_point, Float)
 
         // dz_dx: convolve using this kernel.
@@ -107,7 +74,7 @@ public:
             {1, 2, 1}
         });
 
-        auto extents = fern::extents[size(values, 0)][size(values, 1)];
+        auto extents = fern::extents[size(value, 0)][size(value, 1)];
 
         MaskedArray<Float, 2> dz_dx(extents);
         convolution::convolve<
@@ -115,18 +82,14 @@ public:
             convolve::DontDivideByWeights,
             convolve::ReplaceOutOfImageByFocalAverage,
             convolve::OutOfRangePolicy>(
-                static_cast<InputNoDataPolicy&>(*this),
-                static_cast<OutputNoDataPolicy&>(*this),
-                sequential,  // TODO Depends on exec policy passed into slope.
-                values, dz_dx_kernel, dz_dx);
+                input_no_data_policy, output_no_data_policy, execution_policy,
+                value, dz_dx_kernel, dz_dx);
 
         algebra::divide<
             fern::divide::OutOfDomainPolicy,  // TODO Pick correct policy.
             fern::divide::OutOfRangePolicy>(  // TODO Pick correct policy.
-            static_cast<InputNoDataPolicy&>(*this),
-            static_cast<OutputNoDataPolicy&>(*this),
-            fern::sequential,  // TODO Use policy passed into slope.
-            dz_dx, 8 * cell_size(values, 0), dz_dx);
+                input_no_data_policy, output_no_data_policy, execution_policy,
+                dz_dx, 8 * cell_size(value, 0), dz_dx);
 
         MaskedArray<Float, 2> dz_dy(extents);
 
@@ -135,54 +98,72 @@ public:
             convolve::DontDivideByWeights,
             convolve::ReplaceOutOfImageByFocalAverage,
             convolve::OutOfRangePolicy>(
-                static_cast<InputNoDataPolicy&>(*this),
-                static_cast<OutputNoDataPolicy&>(*this),
-                fern::sequential, values, dz_dy_kernel, dz_dy);
+                input_no_data_policy, output_no_data_policy, execution_policy,
+                value, dz_dy_kernel, dz_dy);
 
         algebra::divide<
             fern::divide::OutOfDomainPolicy,  // TODO Pick correct policy.
             fern::divide::OutOfRangePolicy>(  // TODO Pick correct policy.
-            static_cast<InputNoDataPolicy&>(*this),
-            static_cast<OutputNoDataPolicy&>(*this),
-            fern::sequential,  // TODO Use policy passed into slope.
-            dz_dy, 8 * cell_size(values, 1), dz_dy);
+                input_no_data_policy, output_no_data_policy, execution_policy,
+                dz_dy, 8 * cell_size(value, 1), dz_dy);
 
         algebra::pow<
             pow::OutOfDomainPolicy,  // TODO Pick correct policy.
             pow::OutOfRangePolicy>(  // TODO Pick correct policy.
-            static_cast<InputNoDataPolicy&>(*this),
-            static_cast<OutputNoDataPolicy&>(*this),
-            fern::sequential,  // TODO Use policy passed into slope.
-            dz_dx, Float(2), dz_dx);
+                input_no_data_policy, output_no_data_policy, execution_policy,
+                dz_dx, Float(2), dz_dx);
 
         algebra::pow<
             pow::OutOfDomainPolicy,  // TODO Pick correct policy.
             pow::OutOfRangePolicy>(  // TODO Pick correct policy.
-            static_cast<InputNoDataPolicy&>(*this),
-            static_cast<OutputNoDataPolicy&>(*this),
-            fern::sequential,  // TODO Use policy passed into slope.
-            dz_dy, Float(2), dz_dy);
+                input_no_data_policy, output_no_data_policy, execution_policy,
+                dz_dy, Float(2), dz_dy);
 
         algebra::add<
             fern::add::OutOfRangePolicy>(  // TODO Pick correct policy.
-            static_cast<InputNoDataPolicy&>(*this),
-            static_cast<OutputNoDataPolicy&>(*this),
-            fern::sequential,  // TODO Use policy passed in.
-            dz_dx, dz_dy, result);
+                input_no_data_policy, output_no_data_policy, execution_policy,
+                dz_dx, dz_dy, result);
 
         // TODO Whether or not to detect out of domain values depends on
         //      output no-data policy passed in. Will sqrt succeed if input
         //      < 0?
         algebra::sqrt<sqrt::OutOfDomainPolicy>(
-            static_cast<InputNoDataPolicy&>(*this),
-            static_cast<OutputNoDataPolicy&>(*this),
-            sequential,  // TODO Depends on exec policy passed into slope.
+            input_no_data_policy, output_no_data_policy, execution_policy,
             result, result);
     }
 
 };
 
 } // namespace dispatch
+
+
+template<
+    template<class, class> class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class ExecutionPolicy,
+    class Value,
+    class Result
+>
+void slope(
+    InputNoDataPolicy const& input_no_data_policy,
+    OutputNoDataPolicy& output_no_data_policy,
+    ExecutionPolicy const& execution_policy,
+    Value const& value,
+    Result& result)
+{
+    dispatch::Slope<
+        OutOfRangePolicy<value_type<Value>, value_type<Result>>,
+        InputNoDataPolicy,
+        OutputNoDataPolicy,
+        Value,
+        Result,
+        ExecutionPolicy,
+        base_class<argument_category<Value>, array_2d_tag>>::apply(
+            input_no_data_policy, output_no_data_policy, execution_policy,
+            value, result);
+}
+
 } // namespace detail
 } // namespace slope
 } // namespace fern

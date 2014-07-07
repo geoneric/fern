@@ -1,8 +1,8 @@
 #pragma once
 #include <cmath>
 #include "fern/core/assert.h"
-#include "fern/algorithm/core/unary_local_operation.h"
 #include "fern/algorithm/policy/policies.h"
+#include "fern/algorithm/core/unary_local_operation.h"
 
 
 namespace fern {
