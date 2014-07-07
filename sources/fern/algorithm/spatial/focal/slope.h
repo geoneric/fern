@@ -1,5 +1,5 @@
 #pragma once
-#include "fern/algorithm/core/operation_traits.h"
+#include "fern/core/assert.h"
 #include "fern/algorithm/policy/policies.h"
 #include "fern/algorithm/spatial/focal/detail/slope.h"
 
@@ -8,6 +8,7 @@ namespace fern {
 namespace slope {
 
 template<
+    class Value,
     class Result>
 class OutOfRangePolicy
 {
@@ -27,114 +28,67 @@ public:
 
 } // namespace slope
 
+
 namespace spatial {
 
 template<
-    class Values,
-    class Result,
-    class InputNoDataPolicy=SkipNoData,
-    class OutputNoDataPolicy=DontMarkNoData
->
-class Slope
-{
-
-public:
-
-    using category = focal_operation_tag;
-    using A = Values;
-    using AValue = value_type<A>;
-    using R = Result;
-    using RValue = value_type<R>;
-
-    FERN_STATIC_ASSERT(std::is_floating_point, AValue)
-    FERN_STATIC_ASSERT(std::is_same, RValue, AValue)
-
-    Slope()
-        : _algorithm()
-    {
-    }
-
-    Slope(
-        InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
-        OutputNoDataPolicy&& output_no_data_policy)  // Universal reference.
-        : _algorithm(
-              std::forward<InputNoDataPolicy>(input_no_data_policy),
-              std::forward<OutputNoDataPolicy>(output_no_data_policy))
-    {
-    }
-
-    inline void operator()(
-        A const& values,
-        R & result)
-    {
-        _algorithm.calculate(values, result);
-    }
-
-
-    template<
-        class Indices>
-    inline void operator()(
-        Indices const& indices,
-        A const& values,
-        R& result)
-    {
-        _algorithm.calculate(indices, values, result);
-    }
-
-
-    template<
-        class InputNoDataPolicy_,
-        class Collection>
-    inline void aggregate(
-        InputNoDataPolicy_&& input_no_data_policy,  // Universal reverence.
-        Collection const& results,
-        R& result)
-    {
-        Slope<Collection, R, InputNoDataPolicy_, OutputNoDataPolicy>(
-            std::forward<InputNoDataPolicy_>(input_no_data_policy),
-            std::forward<OutputNoDataPolicy>(_algorithm))(results, result);
-    }
-
-private:
-
-    slope::detail::dispatch::Slope<A, R,
-        InputNoDataPolicy, OutputNoDataPolicy,
-        typename ArgumentTraits<A>::argument_category> _algorithm;
-
-};
-
-
-template<
-    class Values,
-    class Result,
-    class InputNoDataPolicy=SkipNoData,
-    class OutputNoDataPolicy=DontMarkNoData
+    template<class, class> class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class ExecutionPolicy,
+    class Value,
+    class Result
 >
 void slope(
-    Values const& values,
+    InputNoDataPolicy const& input_no_data_policy,
+    OutputNoDataPolicy& output_no_data_policy,
+    ExecutionPolicy const& execution_policy,
+    Value const& value,
     Result& result)
 {
-    Slope<Values, Result, InputNoDataPolicy, OutputNoDataPolicy>()(
-        values, result);
+    FERN_STATIC_ASSERT(std::is_floating_point, value_type<Value>)
+    FERN_STATIC_ASSERT(std::is_same, value_type<Result>, value_type<Value>)
+
+    slope::detail::slope<OutOfRangePolicy>(input_no_data_policy,
+        output_no_data_policy, execution_policy, value, result);
 }
 
 
 template<
-    class Values,
-    class Result,
-    class InputNoDataPolicy=SkipNoData,
-    class OutputNoDataPolicy=DontMarkNoData
+    template<class, class> class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class ExecutionPolicy,
+    class Value,
+    class Result
 >
 void slope(
-    InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
-    OutputNoDataPolicy&& output_no_data_policy,  // Universal reference.
-    Values const& values,
+    ExecutionPolicy const& execution_policy,
+    Value const& value,
     Result& result)
 {
-    Slope<Values, Result, InputNoDataPolicy, OutputNoDataPolicy>(
-        std::forward<InputNoDataPolicy>(input_no_data_policy),
-        std::forward<OutputNoDataPolicy>(output_no_data_policy))(
-            values, result);
+    OutputNoDataPolicy output_no_data_policy;
+    slope<OutOfRangePolicy>(InputNoDataPolicy(), output_no_data_policy,
+        execution_policy, value, result);
+}
+
+
+template<
+    class ExecutionPolicy,
+    class Value,
+    class Result
+>
+void slope(
+    ExecutionPolicy const& execution_policy,
+    Value const& value,
+    Result& result)
+{
+    using InputNoDataPolicy = SkipNoData;
+    using OutputNoDataPolicy = DontMarkNoData;
+
+    OutputNoDataPolicy output_no_data_policy;
+    slope<unary::DiscardRangeErrors>(InputNoDataPolicy(),
+        output_no_data_policy, execution_policy, value, result);
 }
 
 } // namespace spatial

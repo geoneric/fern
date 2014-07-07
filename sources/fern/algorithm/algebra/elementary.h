@@ -1,0 +1,13 @@
+#pragma once
+#include "fern/algorithm/algebra/elementary/absolute.h"
+#include "fern/algorithm/algebra/elementary/add.h"
+#include "fern/algorithm/algebra/elementary/divide.h"
+#include "fern/algorithm/algebra/elementary/equal.h"
+#include "fern/algorithm/algebra/elementary/greater_equal.h"
+#include "fern/algorithm/algebra/elementary/greater.h"
+#include "fern/algorithm/algebra/elementary/less_equal.h"
+#include "fern/algorithm/algebra/elementary/less.h"
+#include "fern/algorithm/algebra/elementary/multiply.h"
+#include "fern/algorithm/algebra/elementary/pow.h"
+#include "fern/algorithm/algebra/elementary/sqrt.h"
+#include "fern/algorithm/algebra/elementary/subtract.h"

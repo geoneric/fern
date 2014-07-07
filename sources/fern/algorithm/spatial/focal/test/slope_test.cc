@@ -10,23 +10,16 @@
 
 BOOST_AUTO_TEST_SUITE(slope)
 
-BOOST_AUTO_TEST_CASE(traits)
-{
-    using Slope = fern::spatial::Slope<float, float>;
-    BOOST_CHECK((std::is_same<fern::OperationTraits<Slope>::category,
-        fern::focal_operation_tag>::value));
-}
-
-
 template<
+    class Value,
     class Result>
-using OutOfRangePolicy = fern::slope::OutOfRangePolicy<Result>;
+using OutOfRangePolicy = fern::slope::OutOfRangePolicy<Value, Result>;
 
 
 BOOST_AUTO_TEST_CASE(out_of_range_policy)
 {
     {
-        OutOfRangePolicy<fern::float32_t> policy;
+        OutOfRangePolicy<fern::float32_t, fern::float32_t> policy;
         BOOST_CHECK(policy.within_range(4.5));
         BOOST_CHECK(!policy.within_range(fern::nan<fern::float32_t>()));
         BOOST_CHECK(!policy.within_range(fern::infinity<fern::float32_t>()));
@@ -129,9 +122,12 @@ BOOST_AUTO_TEST_CASE(algorithm)
     using InputNoDataPolicy = fern::DetectNoDataByValue<fern::Mask<2>>;
     using OutputNoDataPolicy = fern::MarkNoDataByValue<fern::Mask<2>>;
 
-    fern::spatial::slope(
+    OutputNoDataPolicy output_no_data_policy(result_we_get.mask(), true);
+
+    fern::spatial::slope<fern::unary::DiscardRangeErrors>(
         InputNoDataPolicy(raster.mask(), true),
-        OutputNoDataPolicy(result_we_get.mask(), true),
+        output_no_data_policy,
+        fern::sequential,
         raster, result_we_get);
 
     for(size_t r = 0; r < nr_rows; ++r) {
