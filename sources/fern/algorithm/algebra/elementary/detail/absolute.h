@@ -109,12 +109,12 @@ struct Algorithm
     FERN_STATIC_ASSERT(std::is_arithmetic, Value)
 
     template<
-        class R>
+        class Result>
     inline void operator()(
         Value const& value,
-        R& result) const
+        Result& result) const
     {
-        result = static_cast<R>(std::abs(value));
+        result = static_cast<Result>(std::abs(value));
     }
 
 };

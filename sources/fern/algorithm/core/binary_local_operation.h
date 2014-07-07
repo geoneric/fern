@@ -3,6 +3,7 @@
 #include <utility>
 #include "fern/core/argument_traits.h"
 #include "fern/core/assert.h"
+#include "fern/core/base_class.h"
 #include "fern/core/collection_traits.h"
 #include "fern/core/thread_client.h"
 #include "fern/algorithm/core/index_ranges.h"

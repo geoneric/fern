@@ -3,6 +3,7 @@
 #include "fern/core/constant_traits.h"
 #include "fern/algorithm/algebra/elementary/add.h"
 
+
 BOOST_AUTO_TEST_SUITE(add)
 
 template<

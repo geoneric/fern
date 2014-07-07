@@ -434,7 +434,8 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
                 {   999.9, 23.0/4.0, 20.0/3.0}
             });
             fern::Array<bool, 2> equal_cells(extents);
-            fern::algebra::equal(destination, result_we_want, equal_cells);
+            fern::algebra::equal(fern::sequential, destination, result_we_want,
+                equal_cells);
 
             size_t nr_equal_cells{0};
             fern::statistic::count(equal_cells, true, nr_equal_cells);

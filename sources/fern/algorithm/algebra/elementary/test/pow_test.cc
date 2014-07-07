@@ -81,8 +81,6 @@ void verify_value(
 }
 
 
-
-
 BOOST_AUTO_TEST_CASE(algorithm)
 {
     verify_value<float, float, float>( 0.0f, 0.0f, 1.0f);
