@@ -15,6 +15,7 @@ namespace convolve {
 namespace detail {
 
 template<
+    class Value,
     class Result>
 struct OutOfRangePolicy
 {
@@ -112,7 +113,7 @@ struct ConvolveNorthWestCorner<true>
         class AlternativeForNoDataPolicy,
         class NormalizePolicy,
         class OutOfImagePolicy,
-        template<class> class OutOfRangePolicy,
+        template<class, class> class OutOfRangePolicy,
         class InputNoDataPolicy,
         class OutputNoDataPolicy,
         class SourceImage,
@@ -140,7 +141,8 @@ struct ConvolveNorthWestCorner<true>
         value_type<SourceImage> out_of_image_value;
         value_type<SourceImage> alternative_value;
 
-        using OORP = OutOfRangePolicy<value_type<DestinationImage>>;
+        using OORP = OutOfRangePolicy<value_type<SourceImage>,
+            value_type<DestinationImage>>;
         using NP = NormalizePolicy;
         using AFNP = AlternativeForNoDataPolicy;
 
@@ -284,7 +286,7 @@ struct ConvolveNorthEastCorner<true>
         class AlternativeForNoDataPolicy,
         class NormalizePolicy,
         class OutOfImagePolicy,
-        template<class> class OutOfRangePolicy,
+        template<class, class> class OutOfRangePolicy,
         class InputNoDataPolicy,
         class OutputNoDataPolicy,
         class SourceImage,
@@ -313,7 +315,8 @@ struct ConvolveNorthEastCorner<true>
         value_type<SourceImage> out_of_image_value;
         value_type<SourceImage> alternative_value;
 
-        using OORP = OutOfRangePolicy<value_type<DestinationImage>>;
+        using OORP = OutOfRangePolicy<value_type<SourceImage>,
+            value_type<DestinationImage>>;
         using NP = NormalizePolicy;
         using AFNP = AlternativeForNoDataPolicy;
 
@@ -448,7 +451,7 @@ struct ConvolveSouthWestCorner<true>
         class AlternativeForNoDataPolicy,
         class NormalizePolicy,
         class OutOfImagePolicy,
-        template<class> class OutOfRangePolicy,
+        template<class, class> class OutOfRangePolicy,
         class InputNoDataPolicy,
         class OutputNoDataPolicy,
         class SourceImage,
@@ -477,7 +480,8 @@ struct ConvolveSouthWestCorner<true>
         value_type<SourceImage> out_of_image_value;
         value_type<SourceImage> alternative_value;
 
-        using OORP = OutOfRangePolicy<value_type<DestinationImage>>;
+        using OORP = OutOfRangePolicy<value_type<SourceImage>,
+            value_type<DestinationImage>>;
         using NP = NormalizePolicy;
         using AFNP = AlternativeForNoDataPolicy;
 
@@ -612,7 +616,7 @@ struct ConvolveSouthEastCorner<true>
         class AlternativeForNoDataPolicy,
         class NormalizePolicy,
         class OutOfImagePolicy,
-        template<class> class OutOfRangePolicy,
+        template<class, class> class OutOfRangePolicy,
         class InputNoDataPolicy,
         class OutputNoDataPolicy,
         class SourceImage,
@@ -642,7 +646,8 @@ struct ConvolveSouthEastCorner<true>
         value_type<SourceImage> out_of_image_value;
         value_type<SourceImage> alternative_value;
 
-        using OORP = OutOfRangePolicy<value_type<DestinationImage>>;
+        using OORP = OutOfRangePolicy<value_type<SourceImage>,
+            value_type<DestinationImage>>;
         using NP = NormalizePolicy;
         using AFNP = AlternativeForNoDataPolicy;
 
@@ -779,7 +784,7 @@ struct ConvolveNorthSide<true>
         class AlternativeForNoDataPolicy,
         class NormalizePolicy,
         class OutOfImagePolicy,
-        template<class> class OutOfRangePolicy,
+        template<class, class> class OutOfRangePolicy,
         class InputNoDataPolicy,
         class OutputNoDataPolicy,
         class SourceImage,
@@ -807,7 +812,8 @@ struct ConvolveNorthSide<true>
         value_type<SourceImage> out_of_image_value;
         value_type<SourceImage> alternative_value;
 
-        using OORP = OutOfRangePolicy<value_type<DestinationImage>>;
+        using OORP = OutOfRangePolicy<value_type<SourceImage>,
+            value_type<DestinationImage>>;
         using NP = NormalizePolicy;
         using AFNP = AlternativeForNoDataPolicy;
 
@@ -940,7 +946,7 @@ struct ConvolveWestSide<true>
         class AlternativeForNoDataPolicy,
         class NormalizePolicy,
         class OutOfImagePolicy,
-        template<class> class OutOfRangePolicy,
+        template<class, class> class OutOfRangePolicy,
         class InputNoDataPolicy,
         class OutputNoDataPolicy,
         class SourceImage,
@@ -968,7 +974,8 @@ struct ConvolveWestSide<true>
         value_type<SourceImage> out_of_image_value;
         value_type<SourceImage> alternative_value;
 
-        using OORP = OutOfRangePolicy<value_type<DestinationImage>>;
+        using OORP = OutOfRangePolicy<value_type<SourceImage>,
+            value_type<DestinationImage>>;
         using NP = NormalizePolicy;
         using AFNP = AlternativeForNoDataPolicy;
 
@@ -1103,7 +1110,7 @@ struct ConvolveEastSide<true>
         class AlternativeForNoDataPolicy,
         class NormalizePolicy,
         class OutOfImagePolicy,
-        template<class> class OutOfRangePolicy,
+        template<class, class> class OutOfRangePolicy,
         class InputNoDataPolicy,
         class OutputNoDataPolicy,
         class SourceImage,
@@ -1132,7 +1139,8 @@ struct ConvolveEastSide<true>
         value_type<SourceImage> out_of_image_value;
         value_type<SourceImage> alternative_value;
 
-        using OORP = OutOfRangePolicy<value_type<DestinationImage>>;
+        using OORP = OutOfRangePolicy<value_type<SourceImage>,
+            value_type<DestinationImage>>;
         using NP = NormalizePolicy;
         using AFNP = AlternativeForNoDataPolicy;
 
@@ -1268,7 +1276,7 @@ struct ConvolveSouthSide<true>
         class AlternativeForNoDataPolicy,
         class NormalizePolicy,
         class OutOfImagePolicy,
-        template<class> class OutOfRangePolicy,
+        template<class, class> class OutOfRangePolicy,
         class InputNoDataPolicy,
         class OutputNoDataPolicy,
         class SourceImage,
@@ -1297,7 +1305,8 @@ struct ConvolveSouthSide<true>
         value_type<SourceImage> out_of_image_value;
         value_type<SourceImage> alternative_value;
 
-        using OORP = OutOfRangePolicy<value_type<DestinationImage>>;
+        using OORP = OutOfRangePolicy<value_type<SourceImage>,
+            value_type<DestinationImage>>;
         using NP = NormalizePolicy;
         using AFNP = AlternativeForNoDataPolicy;
 
@@ -1432,7 +1441,7 @@ struct ConvolveInnerPart<true>
         class AlternativeForNoDataPolicy,
         class NormalizePolicy,
         class OutOfImagePolicy,
-        template<class> class OutOfRangePolicy,
+        template<class, class> class OutOfRangePolicy,
         class InputNoDataPolicy,
         class OutputNoDataPolicy,
         class SourceImage,
@@ -1457,7 +1466,8 @@ struct ConvolveInnerPart<true>
         value_type<Kernel> sum_of_weights;
         value_type<SourceImage> alternative_value;
 
-        using OORP = OutOfRangePolicy<value_type<DestinationImage>>;
+        using OORP = OutOfRangePolicy<value_type<SourceImage>,
+            value_type<DestinationImage>>;
         using NP = NormalizePolicy;
         using AFNP = AlternativeForNoDataPolicy;
 
@@ -1547,7 +1557,7 @@ template<
     class AlternativeForNoDataPolicy,
     class NormalizePolicy,
     class OutOfImagePolicy,
-    template<class> class OutOfRangePolicy,
+    template<class, class> class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class ExecutionPolicy,

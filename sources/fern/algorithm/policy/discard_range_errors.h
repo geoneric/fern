@@ -1,4 +1,5 @@
 #pragma once
+#include "fern/core/parameter_pack.h"
 
 
 namespace fern {
@@ -10,10 +11,25 @@ class DiscardRangeErrors
 
 public:
 
+    //! Type of result parameter.
+    using LastParameter = typename last_type<Parameters...>::type;
+
+    static constexpr bool
+                   within_range        (LastParameter const& parameter);
+
     static constexpr bool
                    within_range        (Parameters const&... parameters);
 
 };
+
+
+template<
+    class... Parameters>
+inline constexpr bool DiscardRangeErrors<Parameters...>::within_range(
+    LastParameter const& /* parameter */)
+{
+    return true;
+}
 
 
 template<

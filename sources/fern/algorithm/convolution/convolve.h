@@ -9,8 +9,9 @@ namespace fern {
 namespace convolve {
 
 template<
+    class Value,
     class Result>
-using OutOfRangePolicy = detail::OutOfRangePolicy<Result>;
+using OutOfRangePolicy = detail::OutOfRangePolicy<Value, Result>;
 
 } // namespace convolve
 
@@ -27,7 +28,7 @@ template<
     class AlternativeForNoDataPolicy,
     class NormalizePolicy,
     class OutOfImagePolicy,
-    template<class> class OutOfRangePolicy,
+    template<class, class> class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class ExecutionPolicy,
@@ -77,7 +78,7 @@ template<
     class AlternativeForNoDataPolicy,
     class NormalizePolicy,
     class OutOfImagePolicy,
-    template<class> class OutOfRangePolicy,
+    template<class, class> class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class ExecutionPolicy,
@@ -125,7 +126,7 @@ void convolve(
     using OutputNoDataPolicy = DontMarkNoData;
 
     convolve<AlternativeForNoDataPolicy, NormalizePolicy, OutOfImagePolicy,
-        nullary::DiscardRangeErrors>(
+        unary::DiscardRangeErrors>(
             InputNoDataPolicy(), OutputNoDataPolicy(),
             std::forward<ExecutionPolicy>(execution_policy),
             source, kernel, destination);
