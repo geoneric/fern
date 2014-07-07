@@ -209,7 +209,7 @@ BOOST_AUTO_TEST_CASE(convolve)
                 AlternativeForNoDataPolicy,
                 NormalizePolicy,
                 OutOfImagePolicy,
-                fern::nullary::DiscardRangeErrors,
+                fern::unary::DiscardRangeErrors,
                 InputNoDataPolicy,
                 OutputNoDataPolicy>(fern::sequential, argument, kernel, result);
 
@@ -343,8 +343,9 @@ BOOST_AUTO_TEST_CASE(convolve)
 
 
 template<
+    class Value,
     class Result>
-using OutOfRangePolicy = fern::convolve::OutOfRangePolicy<Result>;
+using OutOfRangePolicy = fern::convolve::OutOfRangePolicy<Value, Result>;
 
 
 BOOST_AUTO_TEST_CASE(out_of_range_policy)
@@ -356,7 +357,7 @@ BOOST_AUTO_TEST_CASE(out_of_range_policy)
         auto min_float32 = fern::min<fern::f32>();
         auto max_float32 = fern::max<fern::f32>();
 
-        OutOfRangePolicy<fern::f32> policy;
+        OutOfRangePolicy<fern::f32, fern::f32> policy;
         BOOST_CHECK(policy.within_range(5.0));
         BOOST_CHECK(policy.within_range(-5.0));
         BOOST_CHECK(policy.within_range(0.0));
@@ -414,7 +415,7 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
                 fern::convolve::SkipNoData,
                 fern::convolve::DivideByWeights,
                 fern::convolve::SkipOutOfImage,
-                fern::nullary::DiscardRangeErrors>(
+                fern::unary::DiscardRangeErrors>(
                     InputNoDataPolicy(source.mask(), true),
                     OutputNoDataPolicy(destination.mask(), true),
                     fern::sequential,
@@ -460,7 +461,7 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
         ///     fern::convolution::convolve<
         ///         fern::convolve::DivideByWeights,
         ///         fern::convolve::SkipOutOfImage,
-        ///         fern::nullary::DiscardRangeErrors>(
+        ///         fern::unary::DiscardRangeErrors>(
         ///         fern::convolve::ReplaceNoDataByFocalAverage,
         ///             fern::sequential,
         ///             InputNoDataPolicy(source.mask(), true),
@@ -504,7 +505,7 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
             fern::convolve::SkipNoData,
             fern::convolve::DivideByWeights,
             fern::convolve::SkipOutOfImage,
-            fern::nullary::DiscardRangeErrors>(
+            fern::unary::DiscardRangeErrors>(
                 InputNoDataPolicy(source.mask(), true),
                 OutputNoDataPolicy(destination.mask(), true),
                 fern::sequential, source, kernel_1, destination);

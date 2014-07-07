@@ -9,42 +9,21 @@
 
 BOOST_AUTO_TEST_SUITE(lapacian)
 
-BOOST_AUTO_TEST_CASE(traits)
-{
-    using Laplacian = fern::algebra::Laplacian<fern::f32, fern::f32>;
-    BOOST_CHECK((std::is_same<fern::OperationTraits<Laplacian>::category,
-        fern::focal_operation_tag>::value));
-}
-
-
 template<
-    class Value>
-using OutOfDomainPolicy = fern::laplacian::OutOfDomainPolicy<Value>;
-
-
-BOOST_AUTO_TEST_CASE(out_of_domain_policy)
-{
-    {
-        OutOfDomainPolicy<fern::float32_t> policy;
-        BOOST_CHECK(policy.within_domain(5.0));
-        BOOST_CHECK(policy.within_domain(-5.0));
-        BOOST_CHECK(policy.within_domain(0.0));
-    }
-}
-
-
-template<
+    class Value,
     class Result>
-using OutOfRangePolicy = fern::laplacian::OutOfRangePolicy<Result>;
+using OutOfRangePolicy = fern::laplacian::OutOfRangePolicy<Value, Result>;
 
 
 BOOST_AUTO_TEST_CASE(out_of_range_policy)
 {
     {
-        OutOfRangePolicy<fern::float32_t> policy;
-        BOOST_CHECK(policy.within_range(4.5));
-        BOOST_CHECK(!policy.within_range(fern::nan<fern::float32_t>()));
-        BOOST_CHECK(!policy.within_range(fern::infinity<fern::float32_t>()));
+        OutOfRangePolicy<fern::float32_t, fern::float32_t> policy;
+        BOOST_CHECK(policy.within_range(123.456, 4.5));
+        BOOST_CHECK(!policy.within_range(123.456,
+            fern::nan<fern::float32_t>()));
+        BOOST_CHECK(!policy.within_range(123.456,
+            fern::infinity<fern::float32_t>()));
     }
 }
 
@@ -88,7 +67,7 @@ BOOST_AUTO_TEST_CASE(algorithm)
 
     // Without masking input and output values.
     {
-        fern::algebra::laplacian(raster, result);
+        fern::algebra::laplacian(fern::sequential, raster, result);
 
         // Verify the result.
         BOOST_CHECK_EQUAL(fern::get(result, 0, 0),
@@ -105,18 +84,21 @@ BOOST_AUTO_TEST_CASE(algorithm)
         result.fill(999.0);
         result.mask().fill(false);
         result.mask()[1][1] = true;
-        fern::algebra::laplacian(
-            InputNoDataPolicy(raster.mask(), true),
-            OutputNoDataPolicy(result.mask(), true),
+
+        OutputNoDataPolicy output_no_data_policy(result.mask(), true);
+
+        fern::algebra::laplacian<fern::laplacian::OutOfRangePolicy>(
+            InputNoDataPolicy(result.mask(), true),
+            output_no_data_policy,
+            fern::sequential,
             raster, result);
 
         // Verify the result.
-        // TODO Laplacian must use the policies.
         BOOST_CHECK_EQUAL(fern::get(result.mask(), 0, 0), false);
-        /// BOOST_CHECK_EQUAL(fern::get(result.mask(), 1, 1), true);
-        /// BOOST_CHECK_EQUAL(fern::get(result, 0, 0),
-        ///     (15.0 - (6.0 * 0.0)) / 6.0);
-        /// BOOST_CHECK_EQUAL(fern::get(result, 1, 1), 999.0);
+        BOOST_CHECK_EQUAL(fern::get(result.mask(), 1, 1), true);
+        BOOST_CHECK_EQUAL(fern::get(result, 0, 0),
+            (15.0 - (6.0 * 0.0)) / 6.0);
+        BOOST_CHECK_EQUAL(fern::get(result, 1, 1), 999.0);
     }
 }
 
