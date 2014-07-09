@@ -7,7 +7,11 @@
 
 // This program can be used to test whether page faults occur.
 int main(
+#ifndef NDEBUG
     int argc,
+#else
+    int /* argc */,
+#endif
     char** argv)
 {
     assert(argc == 2);

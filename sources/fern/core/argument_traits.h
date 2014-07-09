@@ -27,6 +27,12 @@ using value_type = typename ArgumentTraits<T>::value_type;
 
 
 template<
+    class U,
+    class V>
+using Collection = typename ArgumentTraits<U>::template Collection<V>::type;
+
+
+template<
     class T>
 using const_reference = typename ArgumentTraits<T>::const_reference;
 

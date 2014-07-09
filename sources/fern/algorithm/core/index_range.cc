@@ -64,6 +64,12 @@ bool IndexRange::empty() const
 }
 
 
+size_t IndexRange::size() const
+{
+    return _end - _begin;
+}
+
+
 //! Return whether or not \a lhs equals \a rhs.
 /*!
 */

@@ -192,7 +192,12 @@ struct within_range<
     inline static bool calculate(
         Value1 const& /* value1 */,
         Value2 const& /* value2 */,
-        Result const& result)
+#ifndef NDEBUG
+        Result const& result
+#else
+        Result const& /* result */
+#endif
+        )
     {
         FERN_STATIC_ASSERT(std::is_same,
             typename fern::Result<Value1, Value2>::type, Result)
@@ -219,7 +224,12 @@ struct within_range<
     inline static bool calculate(
         Value1 const& /* value1 */,
         Value2 const& /* values2 */,
-        Result const& result)
+#ifndef NDEBUG
+        Result const& result
+#else
+        Result const& /* result */
+#endif
+        )
     {
         FERN_STATIC_ASSERT(std::is_same,
             typename fern::Result<Value1, Value2>::type, Result)

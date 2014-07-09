@@ -165,9 +165,15 @@ void write_expressions_node(
 void write_call_node(
     expr_ty const function,
     asdl_seq const* arguments,
+#ifndef NDEBUG
     asdl_seq const* keywords,
     expr_ty const starargs,
     expr_ty const kwargs,
+#else
+    asdl_seq const*,
+    expr_ty const,
+    expr_ty const,
+#endif
     fern::String& xml)
 {
     assert(keywords == 0 || keywords->size == 0); // TODO Support keywords.
@@ -888,8 +894,10 @@ fern::String python_ast_to_xml(
             case Interactive_kind:
             case Suite_kind: {
                 // TODO Error message.
+#ifndef NDEBUG
                 bool implemented = false;
                 assert(implemented);
+#endif
                 break;
             }
         }

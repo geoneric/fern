@@ -10,6 +10,18 @@ namespace add {
 
 template<
     class Value1,
+    class Value2>
+using result_type = typename fern::Result<Value1, Value2>::type;
+
+
+template<
+    class Value1,
+    class Value2>
+using result_value_type = value_type<result_type<Value1, Value2>>;
+
+
+template<
+    class Value1,
     class Value2,
     class Result>
 class OutOfRangePolicy

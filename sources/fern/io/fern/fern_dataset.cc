@@ -75,7 +75,7 @@ ValueType FernDataset::value_type(
     H5::DataSet const& dataset) const
 {
     H5T_class_t const type_class = dataset.getTypeClass();
-    ValueType result;
+    ValueType result{};
 
     switch(type_class) {
         case H5T_INTEGER: {

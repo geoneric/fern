@@ -87,7 +87,11 @@ size_t Operation::arity() const
 
 
 ExpressionType Operation::expression_type(
+#ifndef NDEBUG
     size_t index,
+#else
+    size_t /* index */,
+#endif
     std::vector<ExpressionType> const& /* argument_types */) const
 {
     assert(_results.size() == 0);

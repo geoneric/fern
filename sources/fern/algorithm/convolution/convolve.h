@@ -37,9 +37,9 @@ template<
     class DestinationImage
 >
 void convolve(
-    InputNoDataPolicy&& input_no_data_policy,
-    OutputNoDataPolicy&& output_no_data_policy,
-    ExecutionPolicy&& execution_policy,
+    InputNoDataPolicy const& input_no_data_policy,
+    OutputNoDataPolicy& output_no_data_policy,
+    ExecutionPolicy const& execution_policy,
     SourceImage const& source,
     Kernel const& kernel,
     DestinationImage& destination)
@@ -60,9 +60,8 @@ void convolve(
         NormalizePolicy,
         OutOfImagePolicy,
         OutOfRangePolicy>(
-            std::forward<InputNoDataPolicy>(input_no_data_policy),
-            std::forward<OutputNoDataPolicy>(output_no_data_policy),
-            std::forward<ExecutionPolicy>(execution_policy),
+            input_no_data_policy, output_no_data_policy,
+            execution_policy,
             source, kernel, destination);
 }
 
@@ -87,15 +86,17 @@ template<
     class DestinationImage
 >
 void convolve(
-    ExecutionPolicy&& execution_policy,
+    ExecutionPolicy const& execution_policy,
     SourceImage const& source,
     Kernel const& kernel,
     DestinationImage& destination)
 {
+    OutputNoDataPolicy output_no_data_policy;
+
     convolve<AlternativeForNoDataPolicy, NormalizePolicy, OutOfImagePolicy,
         OutOfRangePolicy>(
-            InputNoDataPolicy(), OutputNoDataPolicy(),
-            std::forward<ExecutionPolicy>(execution_policy),
+            InputNoDataPolicy(), output_no_data_policy,
+            execution_policy,
             source, kernel, destination);
 }
 
@@ -114,7 +115,7 @@ template<
     class DestinationImage
 >
 void convolve(
-    ExecutionPolicy&& execution_policy,
+    ExecutionPolicy const& execution_policy,
     SourceImage const& source,
     Kernel const& kernel,
     DestinationImage& destination)
@@ -125,10 +126,12 @@ void convolve(
     using InputNoDataPolicy = SkipNoData;
     using OutputNoDataPolicy = DontMarkNoData;
 
+    OutputNoDataPolicy output_no_data_policy;
+
     convolve<AlternativeForNoDataPolicy, NormalizePolicy, OutOfImagePolicy,
         unary::DiscardRangeErrors>(
-            InputNoDataPolicy(), OutputNoDataPolicy(),
-            std::forward<ExecutionPolicy>(execution_policy),
+            InputNoDataPolicy(), output_no_data_policy,
+            execution_policy,
             source, kernel, destination);
 }
 

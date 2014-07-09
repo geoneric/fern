@@ -69,6 +69,9 @@ struct within_range<
 
         // signed + signed
         // Overflow/underflow if sign of result is different.
+        // This only works if overflow wraps, which is not guaranteed.
+        // See http://www.airs.com/blog/archives/120 and gcc's
+        // -fno-strict-overflow argument.
         return value2 > 0 ? !(result < value1) : !(result > value1);
     }
 };
