@@ -2,12 +2,15 @@
 #include <cassert>
 #include <cmath>
 #include <cstddef>
-#include <utility>
+#include <functional>
 #include <type_traits>
+#include "fern/algorithm/core/index_ranges.h"
+#include "fern/algorithm/convolution/neighborhood/square_traits.h"
 #include "fern/algorithm/convolution/kernel_traits.h"
 #include "fern/core/assert.h"
 #include "fern/core/argument_traits.h"
 #include "fern/core/base_class.h"
+#include "fern/core/thread_client.h"
 
 
 namespace fern {
@@ -120,8 +123,8 @@ struct ConvolveNorthWestCorner<true>
         class Kernel,
         class DestinationImage>
     static void apply(
-        InputNoDataPolicy&& input_no_data_policy,
-        OutputNoDataPolicy&& output_no_data_policy,
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
         SourceImage const& source,
         Kernel const& kernel,
         DestinationImage& destination)
@@ -293,8 +296,8 @@ struct ConvolveNorthEastCorner<true>
         class Kernel,
         class DestinationImage>
     static void apply(
-        InputNoDataPolicy&& input_no_data_policy,
-        OutputNoDataPolicy&& output_no_data_policy,
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
         SourceImage const& source,
         Kernel const& kernel,
         DestinationImage& destination)
@@ -458,8 +461,8 @@ struct ConvolveSouthWestCorner<true>
         class Kernel,
         class DestinationImage>
     static void apply(
-        InputNoDataPolicy&& input_no_data_policy,
-        OutputNoDataPolicy&& output_no_data_policy,
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
         SourceImage const& source,
         Kernel const& kernel,
         DestinationImage& destination)
@@ -623,8 +626,8 @@ struct ConvolveSouthEastCorner<true>
         class Kernel,
         class DestinationImage>
     static void apply(
-        InputNoDataPolicy&& input_no_data_policy,
-        OutputNoDataPolicy&& output_no_data_policy,
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
         SourceImage const& source,
         Kernel const& kernel,
         DestinationImage& destination)
@@ -791,8 +794,8 @@ struct ConvolveNorthSide<true>
         class Kernel,
         class DestinationImage>
     static void apply(
-        InputNoDataPolicy&& input_no_data_policy,
-        OutputNoDataPolicy&& output_no_data_policy,
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
         SourceImage const& source,
         Kernel const& kernel,
         DestinationImage& destination)
@@ -953,8 +956,8 @@ struct ConvolveWestSide<true>
         class Kernel,
         class DestinationImage>
     static void apply(
-        InputNoDataPolicy&& input_no_data_policy,
-        OutputNoDataPolicy&& output_no_data_policy,
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
         SourceImage const& source,
         Kernel const& kernel,
         DestinationImage& destination)
@@ -1117,8 +1120,8 @@ struct ConvolveEastSide<true>
         class Kernel,
         class DestinationImage>
     static void apply(
-        InputNoDataPolicy&& input_no_data_policy,
-        OutputNoDataPolicy&& output_no_data_policy,
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
         SourceImage const& source,
         Kernel const& kernel,
         DestinationImage& destination)
@@ -1283,8 +1286,8 @@ struct ConvolveSouthSide<true>
         class Kernel,
         class DestinationImage>
     static void apply(
-        InputNoDataPolicy&& input_no_data_policy,
-        OutputNoDataPolicy&& output_no_data_policy,
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
         SourceImage const& source,
         Kernel const& kernel,
         DestinationImage& destination)
@@ -1440,7 +1443,6 @@ struct ConvolveInnerPart<true>
     template<
         class AlternativeForNoDataPolicy,
         class NormalizePolicy,
-        class OutOfImagePolicy,
         template<class, class> class OutOfRangePolicy,
         class InputNoDataPolicy,
         class OutputNoDataPolicy,
@@ -1448,16 +1450,15 @@ struct ConvolveInnerPart<true>
         class Kernel,
         class DestinationImage>
     static void apply(
-        InputNoDataPolicy&& input_no_data_policy,
-        OutputNoDataPolicy&& output_no_data_policy,
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        IndexRanges<2> const& index_ranges,
         SourceImage const& source,
         Kernel const& kernel,
         DestinationImage& destination)
     {
         size_t const radius_{radius(kernel)};
-        size_t const nr_rows_source{size(source, 0)};
-        size_t const nr_cols_source{size(source, 1)};
-        size_t first_row_source{0};
+        size_t first_row_source{index_ranges[0].begin() - radius_};
         size_t first_col_source;
         size_t const nr_rows_kernel{height(kernel)};
         size_t const nr_cols_kernel{width(kernel)};
@@ -1475,13 +1476,13 @@ struct ConvolveInnerPart<true>
 
         // Loop over all cells that are situated in the inner part. The kernel
         // does not extent outside of the source image.
-        for(size_t row_source = radius_; row_source <
-                nr_rows_source - radius_; ++row_source) {
+        for(size_t row_source = index_ranges[0].begin(); row_source <
+                index_ranges[0].end(); ++row_source) {
 
-            first_col_source = 0;
+            first_col_source = index_ranges[1].begin() - radius_;
 
-            for(size_t col_source = radius_; col_source <
-                    nr_cols_source - radius_; ++col_source) {
+            for(size_t col_source = index_ranges[1].begin(); col_source <
+                    index_ranges[1].end(); ++col_source) {
 
                 sum_of_values = 0;
                 sum_of_weights = 0;
@@ -1502,8 +1503,8 @@ struct ConvolveInnerPart<true>
                                 if(AFNP::value(
                                         input_no_data_policy,
                                         source,
-                                        size(source, 0),
-                                        size(source, 1),
+                                        fern::size(source, 0),
+                                        fern::size(source, 1),
                                         first_row_source + row,
                                         first_col_source + col,
                                         alternative_value)) {
@@ -1550,6 +1551,230 @@ struct ConvolveInnerPart<true>
 
 };
 
+
+template<
+    class AlternativeForNoDataPolicy,
+    class NormalizePolicy,
+    class OutOfImagePolicy,
+    template<class, class> class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class SourceImage,
+    class Kernel,
+    class DestinationImage,
+    class ExecutionPolicy>
+struct Convolve
+{
+};
+
+
+template<
+    class AlternativeForNoDataPolicy,
+    class NormalizePolicy,
+    class OutOfImagePolicy,
+    template<class, class> class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class SourceImage,
+    class Kernel,
+    class DestinationImage>
+struct Convolve<
+    AlternativeForNoDataPolicy,
+    NormalizePolicy,
+    OutOfImagePolicy,
+    OutOfRangePolicy,
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    SourceImage,
+    Kernel,
+    DestinationImage,
+    SequentialExecutionPolicy>
+{
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        SequentialExecutionPolicy const& /* execution_policy */,
+        SourceImage const& source,
+        Kernel const& kernel,
+        DestinationImage& destination)
+    {
+        // Corners.
+        dispatch::ConvolveNorthWestCorner<KernelTraits<Kernel>::weigh_values>::
+            template apply<AlternativeForNoDataPolicy, NormalizePolicy,
+                OutOfImagePolicy, OutOfRangePolicy>(
+                    input_no_data_policy, output_no_data_policy,
+                    source, kernel, destination);
+        dispatch::ConvolveNorthEastCorner<KernelTraits<Kernel>::weigh_values>::
+            template apply<AlternativeForNoDataPolicy, NormalizePolicy,
+                OutOfImagePolicy, OutOfRangePolicy>(
+                    input_no_data_policy, output_no_data_policy,
+                    source, kernel, destination);
+        dispatch::ConvolveSouthWestCorner<KernelTraits<Kernel>::weigh_values>::
+            template apply<AlternativeForNoDataPolicy, NormalizePolicy,
+                OutOfImagePolicy, OutOfRangePolicy>(
+                    input_no_data_policy, output_no_data_policy,
+                    source, kernel, destination);
+        dispatch::ConvolveSouthEastCorner<KernelTraits<Kernel>::weigh_values>::
+            template apply<AlternativeForNoDataPolicy, NormalizePolicy,
+                OutOfImagePolicy, OutOfRangePolicy>(
+                    input_no_data_policy, output_no_data_policy,
+                    source, kernel, destination);
+
+        // Sides.
+        dispatch::ConvolveNorthSide<KernelTraits<Kernel>::weigh_values>::
+            template apply<AlternativeForNoDataPolicy, NormalizePolicy,
+                OutOfImagePolicy, OutOfRangePolicy>(
+                    input_no_data_policy, output_no_data_policy,
+                    source, kernel, destination);
+        dispatch::ConvolveWestSide<KernelTraits<Kernel>::weigh_values>::
+            template apply<AlternativeForNoDataPolicy, NormalizePolicy,
+                OutOfImagePolicy, OutOfRangePolicy>(
+                    input_no_data_policy, output_no_data_policy,
+                    source, kernel, destination);
+        dispatch::ConvolveEastSide<KernelTraits<Kernel>::weigh_values>::
+            template apply<AlternativeForNoDataPolicy, NormalizePolicy,
+                OutOfImagePolicy, OutOfRangePolicy>(
+                    input_no_data_policy, output_no_data_policy,
+                    source, kernel, destination);
+        dispatch::ConvolveSouthSide<KernelTraits<Kernel>::weigh_values>::
+            template apply<AlternativeForNoDataPolicy, NormalizePolicy,
+                OutOfImagePolicy, OutOfRangePolicy>(
+                    input_no_data_policy, output_no_data_policy,
+                    source, kernel, destination);
+
+        // Inner part.
+        dispatch::ConvolveInnerPart<KernelTraits<Kernel>::weigh_values>::
+            template apply<AlternativeForNoDataPolicy, NormalizePolicy,
+                OutOfRangePolicy>(
+                    input_no_data_policy, output_no_data_policy,
+                    IndexRanges<2>{
+                        IndexRange(fern::radius(kernel),
+                            fern::size(source, 0) - fern::radius(kernel)),
+                        IndexRange(fern::radius(kernel),
+                            fern::size(source, 1) - fern::radius(kernel))},
+                    source, kernel, destination);
+    }
+
+};
+
+
+#define CREATE_BORDER_TASK(                                                    \
+    part)                                                                      \
+{                                                                              \
+    auto function = std::bind((BorderFunction)                                 \
+        dispatch::Convolve##part<                                              \
+            KernelTraits<Kernel>::weigh_values>::template                      \
+                apply<AlternativeForNoDataPolicy, NormalizePolicy,             \
+                    OutOfImagePolicy, OutOfRangePolicy>,                       \
+        std::cref(input_no_data_policy),                                       \
+        std::ref(output_no_data_policy),                                       \
+        std::cref(source), std::cref(kernel), std::ref(destination));          \
+    futures.emplace_back(pool.submit(function));                               \
+}
+
+#define CREATE_INNER_PART_TASK(                                                \
+    index_ranges)                                                              \
+{                                                                              \
+    auto function = std::bind((InnerPartFunction)                              \
+        dispatch::ConvolveInnerPart<                                           \
+            KernelTraits<Kernel>::weigh_values>::template                      \
+                apply<AlternativeForNoDataPolicy, NormalizePolicy,             \
+                    OutOfRangePolicy>,                                         \
+        std::cref(input_no_data_policy),                                       \
+        std::ref(output_no_data_policy),                                       \
+        std::cref(index_ranges),                                               \
+        std::cref(source), std::cref(kernel), std::ref(destination));          \
+    futures.emplace_back(pool.submit(function));                               \
+}
+
+
+template<
+    class AlternativeForNoDataPolicy,
+    class NormalizePolicy,
+    class OutOfImagePolicy,
+    template<class, class> class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class SourceImage,
+    class Kernel,
+    class DestinationImage>
+struct Convolve<
+    AlternativeForNoDataPolicy,
+    NormalizePolicy,
+    OutOfImagePolicy,
+    OutOfRangePolicy,
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    SourceImage,
+    Kernel,
+    DestinationImage,
+    ParallelExecutionPolicy>
+{
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        ParallelExecutionPolicy const& /* execution_policy */,
+        SourceImage const& source,
+        Kernel const& kernel,
+        DestinationImage& destination)
+    {
+        ThreadPool& pool(ThreadClient::pool());
+        std::vector<std::future<void>> futures;
+
+        using BorderFunction = void(*)(InputNoDataPolicy const&,
+            OutputNoDataPolicy&, SourceImage const&, Kernel const&,
+            DestinationImage&);
+        using InnerPartFunction = void(*)(InputNoDataPolicy const&,
+            OutputNoDataPolicy&, IndexRanges<2> const&, SourceImage const&,
+            Kernel const&, DestinationImage&);
+
+        // Corners.
+        CREATE_BORDER_TASK(NorthWestCorner)
+        CREATE_BORDER_TASK(NorthEastCorner)
+        CREATE_BORDER_TASK(SouthWestCorner)
+        CREATE_BORDER_TASK(SouthEastCorner)
+
+        // Sides.
+        CREATE_BORDER_TASK(NorthSide)
+        CREATE_BORDER_TASK(WestSide)
+        CREATE_BORDER_TASK(EastSide)
+        CREATE_BORDER_TASK(SouthSide)
+
+        // Inner part.
+        // Divide the inner part in a number of pieces that can be handled
+        // concurrently.
+        assert(fern::size(source, 0) == fern::size(destination, 0));
+        assert(fern::size(source, 1) == fern::size(destination, 1));
+        assert(2 * fern::radius(kernel) <= fern::size(source, 0));
+        assert(2 * fern::radius(kernel) <= fern::size(source, 1));
+
+        size_t const size1 = fern::size(source, 0) - 2 * fern::radius(kernel);
+        size_t const size2 = fern::size(source, 1) - 2 * fern::radius(kernel);
+        std::vector<IndexRanges<2>> index_ranges = fern::index_ranges(
+            pool.size(), size1, size2);
+
+        for(auto& ranges: index_ranges) {
+            // Offset indices by the radius of the kernel.
+            ranges = IndexRanges<2>{
+                IndexRange(
+                    ranges[0].begin() + fern::radius(kernel),
+                    ranges[0].end() + fern::radius(kernel)),
+                IndexRange(
+                    ranges[1].begin() + fern::radius(kernel),
+                    ranges[1].end() + fern::radius(kernel))};
+            CREATE_INNER_PART_TASK(ranges);
+        }
+
+        for(auto& future: futures) {
+            future.get();
+        }
+    }
+
+};
+
+#undef CREATE_BORDER_TASK
+#undef CREATE_INNER_PART_TASK
+
 } // namespace dispatch
 
 
@@ -1566,76 +1791,20 @@ template<
     class DestinationImage
 >
 void convolve(
-    InputNoDataPolicy&& input_no_data_policy,
-    OutputNoDataPolicy&& output_no_data_policy,
-    ExecutionPolicy&& /* execution_policy */,
+    InputNoDataPolicy const& input_no_data_policy,
+    OutputNoDataPolicy& output_no_data_policy,
+    ExecutionPolicy const& execution_policy,
     SourceImage const& source,
     Kernel const& kernel,
     DestinationImage& destination)
 {
-
-    // TODO Specialize based on ExecutionPolicy.
-
-
-    // Corners.
-    dispatch::ConvolveNorthWestCorner<KernelTraits<Kernel>::weigh_values>::
-        template apply<AlternativeForNoDataPolicy, NormalizePolicy,
-            OutOfImagePolicy, OutOfRangePolicy>(
-                std::forward<InputNoDataPolicy>(input_no_data_policy),
-                std::forward<OutputNoDataPolicy>(output_no_data_policy),
-                source, kernel, destination);
-    dispatch::ConvolveNorthEastCorner<KernelTraits<Kernel>::weigh_values>::
-        template apply<AlternativeForNoDataPolicy, NormalizePolicy,
-            OutOfImagePolicy, OutOfRangePolicy>(
-                std::forward<InputNoDataPolicy>(input_no_data_policy),
-                std::forward<OutputNoDataPolicy>(output_no_data_policy),
-                source, kernel, destination);
-    dispatch::ConvolveSouthWestCorner<KernelTraits<Kernel>::weigh_values>::
-        template apply<AlternativeForNoDataPolicy, NormalizePolicy,
-            OutOfImagePolicy, OutOfRangePolicy>(
-                std::forward<InputNoDataPolicy>(input_no_data_policy),
-                std::forward<OutputNoDataPolicy>(output_no_data_policy),
-                source, kernel, destination);
-    dispatch::ConvolveSouthEastCorner<KernelTraits<Kernel>::weigh_values>::
-        template apply<AlternativeForNoDataPolicy, NormalizePolicy,
-            OutOfImagePolicy, OutOfRangePolicy>(
-                std::forward<InputNoDataPolicy>(input_no_data_policy),
-                std::forward<OutputNoDataPolicy>(output_no_data_policy),
-                source, kernel, destination);
-
-    // Sides.
-    dispatch::ConvolveNorthSide<KernelTraits<Kernel>::weigh_values>::
-        template apply<AlternativeForNoDataPolicy, NormalizePolicy,
-            OutOfImagePolicy, OutOfRangePolicy>(
-                std::forward<InputNoDataPolicy>(input_no_data_policy),
-                std::forward<OutputNoDataPolicy>(output_no_data_policy),
-                source, kernel, destination);
-    dispatch::ConvolveWestSide<KernelTraits<Kernel>::weigh_values>::
-        template apply<AlternativeForNoDataPolicy, NormalizePolicy,
-            OutOfImagePolicy, OutOfRangePolicy>(
-                std::forward<InputNoDataPolicy>(input_no_data_policy),
-                std::forward<OutputNoDataPolicy>(output_no_data_policy),
-                source, kernel, destination);
-    dispatch::ConvolveEastSide<KernelTraits<Kernel>::weigh_values>::
-        template apply<AlternativeForNoDataPolicy, NormalizePolicy,
-            OutOfImagePolicy, OutOfRangePolicy>(
-                std::forward<InputNoDataPolicy>(input_no_data_policy),
-                std::forward<OutputNoDataPolicy>(output_no_data_policy),
-                source, kernel, destination);
-    dispatch::ConvolveSouthSide<KernelTraits<Kernel>::weigh_values>::
-        template apply<AlternativeForNoDataPolicy, NormalizePolicy,
-            OutOfImagePolicy, OutOfRangePolicy>(
-                std::forward<InputNoDataPolicy>(input_no_data_policy),
-                std::forward<OutputNoDataPolicy>(output_no_data_policy),
-                source, kernel, destination);
-
-    // Inner part.
-    dispatch::ConvolveInnerPart<KernelTraits<Kernel>::weigh_values>::
-        template apply<AlternativeForNoDataPolicy, NormalizePolicy,
-            OutOfImagePolicy, OutOfRangePolicy>(
-                std::forward<InputNoDataPolicy>(input_no_data_policy),
-                std::forward<OutputNoDataPolicy>(output_no_data_policy),
-                source, kernel, destination);
+    // Dispatch on execution policy.
+    dispatch::Convolve<AlternativeForNoDataPolicy, NormalizePolicy,
+        OutOfImagePolicy, OutOfRangePolicy, InputNoDataPolicy,
+        OutputNoDataPolicy, SourceImage, Kernel, DestinationImage,
+        ExecutionPolicy>::apply(
+            input_no_data_policy, output_no_data_policy, execution_policy,
+            source, kernel, destination);
 
 
 
@@ -1699,173 +1868,3 @@ void convolve(
 } // namespace detail
 } // namespace convolve
 } // namespace fern
-
-
-/// template<
-///     // class ExecutionPolicy,
-///     class SourceImage,
-///     class Kernel,
-///     class DestinationImage,
-///     class NormalizePolicy=convolve::DivideByWeights,
-///     template<class> class OutOfRangePolicy=nullary::DiscardRangeErrors,
-///     class InputNoDataPolicy=SkipNoData,
-///     class OutputNoDataPolicy=DontMarkNoData
-/// >
-/// class Convolve
-/// {
-/// 
-/// public:
-/// 
-///     using category = focal_operation_tag;
-///     using A1 = SourceImage;
-///     using A1Value = value_type<A1>;
-///     using A2 = Kernel;
-///     using A2Value = value_type<A2>;
-///     using R = DestinationImage;
-///     using RValue = value_type<R>;
-/// 
-///     FERN_STATIC_ASSERT(std::is_arithmetic, A1Value)
-///     FERN_STATIC_ASSERT(std::is_arithmetic, A2Value)
-///     FERN_STATIC_ASSERT(std::is_arithmetic, RValue)
-/// 
-///     FERN_STATIC_ASSERT(std::is_floating_point, A1Value)
-///     FERN_STATIC_ASSERT(std::is_floating_point, RValue)
-/// 
-///     Convolve()
-///         : _algorithm()
-///     {
-///     }
-/// 
-///     Convolve(
-///         InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
-///         OutputNoDataPolicy&& output_no_data_policy)  // Universal reference.
-///         : _algorithm(
-///             std::forward<InputNoDataPolicy>(input_no_data_policy),
-///             std::forward<OutputNoDataPolicy>(output_no_data_policy))
-///     {
-///     }
-/// 
-///     inline void operator()(
-///         A1 const& source_image,
-///         A2 const& kernel,
-///         R& destination_image)
-///     {
-///         _algorithm.calculate(source_image, kernel, destination_image);
-///     }
-/// 
-///     // template<
-///     //     class Indices>
-///     // inline void operator()(
-///     //     Indices const& indices,
-///     //     A const& values,
-///     //     R& result)
-///     // {
-///     //     _algorithm.calculate(indices, values, result);
-///     // }
-/// 
-/// private:
-/// 
-///     convolve::detail::dispatch::Convolve<A1, A2, R,
-///         NormalizePolicy, OutOfRangePolicy,
-///         InputNoDataPolicy, OutputNoDataPolicy,
-///         typename base_class<
-///             typename ArgumentTraits<A1>::argument_category,
-///             array_2d_tag>::type,
-///         typename base_class<
-///             typename ArgumentTraits<A2>::argument_category,
-///             array_2d_tag>::type,
-///         typename base_class<
-///             typename ArgumentTraits<R>::argument_category,
-///             array_2d_tag>::type> _algorithm;
-/// 
-/// };
-
-
-///         assert(size(source) == size(destination));
-///         assert(size(kernel) > 0);
-///         assert(width(kernel) % 2u == 1u);
-///         assert(height(kernel) % 2u == 1u);
-///         assert(radius(kernel) > 0u);
-/// 
-///         // Apply kernel on the various sections of the source image.
-///         // We divide the source image in 9 section, which differ with
-///         // respect to the number of source cells that fall within the
-///         // kernel neighborhood:
-///         // - 4 Corners: missing cells on two sides.
-///         //     - north-west corner
-///         //     - north-east corner
-///         //     - south-west corner
-///         //     - south-east corner
-///         // - 4 Sides, between the corners: missing cells on one side.
-///         //     - north side
-///         //     - west side
-///         //     - east side
-///         //     - south side
-///         // - Center: no missing cells.
-///         // For each section of the source image, we call a seperate
-///         // function that will handle the section. This code knows exactly
-///         // were the missing cells are located. This save us lots of checks
-///         // that aren't necessary. For example, when processing the west
-///         // side of the source image, the logic can assume that the north,
-///         // east and south side of the kernel are located within the source
-///         // image. Only at the west side of the kernel some cells are missing.
-///     //! Convolve \a source with \a kernel and write the result to \a destination.
-///     /*!
-///       \tparam    NormalizePolicy Policy used to handle the normalization of the
-///                  convolution result by the kernel weights.
-///       \tparam    SourceImage Type of source image.
-///       \tparam    Kernel Type of convolution kernel.
-///       \tparam    DestinationImage Type of destination image.
-///       \param     source Source image.
-///       \param     kernel Convolution kernel.
-///       \param     destination Destination image.
-///       \param     row_source Index of row to calculate value for.
-///       \param     col_source Index of column to calculate value for.
-///       \param     first_row_source Index of first row in source image to use.
-///       \param     first_col_source Index of first column in source image to use.
-///       \param     first_row_kernel Index of first row in kernel to use.
-///       \param     first_col_kernel Index of first column in kernel to use.
-///       \param     nr_rows_kernel Number of rows in kernel to use.
-///       \param     nr_cols_kernel Number of columns in kernel to use.
-/// 
-///       This function calculates a value for a single cell in \a destination. This
-///       cell is positioned at \a row_source, \a col_source. The new value is
-///       calculated based on the values in \a source and the \a kernel weights.
-/// 
-///       When the kernel is positioned on the cell to calculate a value for, some
-///       cells in the \a source may fall outside of the kernel. This means that we
-///       may not have values for all cells in the kernel. The caller can configure
-///       this by passing \a first_row_source, \a first_col_source,
-///       \a first_row_kernel, \a first_col_kernel, \a nr_rows_kernel,
-///       \a nr_cols_kernel appropriately. These arguments configure a section of
-///       the source and kernel for which the \a source has values to use
-///       during the calculation.
-///     */
-/// 
-///         // Verify dimensions of source and destination images are equal
-///         assert(size(source, 0) == size(destination, 0));
-///         assert(size(source, 1) == size(destination, 1));
-/// 
-///         assert(nr_rows_kernel > 0);
-///         assert(nr_cols_kernel > 0);
-/// 
-///         // Verify kernel section is positioned within source image.
-///         assert(first_row_source < size(source, 0));
-///         assert(first_col_source < size(source, 1));
-///         assert(first_row_source + nr_rows_kernel <= size(source, 0));
-///         assert(first_col_source + nr_cols_kernel <= size(source, 1));
-/// 
-///         // Verify kernel section is positioned within kernel.
-///         assert(first_row_kernel < height(kernel));
-///         assert(first_col_kernel < width(kernel));
-///         assert(first_row_kernel + nr_rows_kernel <= height(kernel));
-///         assert(first_col_kernel + nr_cols_kernel <= width(kernel));
-/// 
-///         // Verify cell to calculate for is positioned within kernel section of
-///         // source image.
-///         assert(row_source >= first_row_source);
-///         assert(row_source < first_row_source + nr_rows_kernel);
-///         assert(col_source >= first_col_source);
-///         assert(col_source < first_col_source + nr_cols_kernel);
-
-

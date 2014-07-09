@@ -36,12 +36,19 @@ ExpressionType Int32::expression_type(
 
 
 std::vector<std::shared_ptr<Argument>> Int32::execute(
-    std::vector<std::shared_ptr<Argument>> const& arguments) const
+#ifndef NDEBUG
+    std::vector<std::shared_ptr<Argument>> const& arguments
+#else
+    std::vector<std::shared_ptr<Argument>> const& /* arguments */
+#endif
+    ) const
 {
     assert(arguments.size() == 1);
     assert(arguments[0]->argument_type() == ArgumentType::AT_ATTRIBUTE);
 
     assert(false);
+
+    return std::vector<std::shared_ptr<Argument>>();
 }
 
 } // namespace fern

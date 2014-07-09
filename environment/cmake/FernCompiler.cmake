@@ -31,8 +31,15 @@ INCLUDE(CheckCXXCompilerFlag)
 
 IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR
         ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
+    # The code assumes integer overflow and underflow wraps. This is not
+    # guaranteed by the standard. Gcc may assume overflow/underflow will not
+    # happen and optimize the code accordingly. That's why we added
+    # -fno-strict-overflow. It would be better if we don't assume
+    # over/underflow wraps.
+    # See http://www.airs.com/blog/archives/120
+    # See out of range policy of add algorithm for signed integrals.
     SET(CMAKE_CXX_FLAGS
-        "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wcast-qual -Wwrite-strings -Werror=strict-aliasing -std=c++11 -pedantic"
+        "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wcast-qual -Wwrite-strings -Werror=strict-aliasing -std=c++11 -pedantic -fno-strict-overflow"
     )
 ENDIF()
 

@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE(d0_array_d0_array)
             output_no_data_policy,
             fern::sequential, argument1, argument2, result);
 
-    BOOST_REQUIRE_EQUAL(result, -11);
+    BOOST_CHECK_EQUAL(result, -11);
 
     result = 3;
 
@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE(d0_array_d0_array)
             output_no_data_policy,
             fern::parallel, argument1, argument2, result);
 
-    BOOST_REQUIRE_EQUAL(result, -11);
+    BOOST_CHECK_EQUAL(result, -11);
 }
 
 
@@ -96,8 +96,8 @@ BOOST_AUTO_TEST_CASE(masked_d0_array_d0_array)
                 output_no_data_policy,
                 fern::sequential, argument1, argument2, result);
 
-        BOOST_REQUIRE_EQUAL(result.mask(), false);
-        BOOST_REQUIRE_EQUAL(result.value(), -11);
+        BOOST_CHECK_EQUAL(result.mask(), false);
+        BOOST_CHECK_EQUAL(result.value(), -11);
     }
 
     // Input is masked.
@@ -120,8 +120,8 @@ BOOST_AUTO_TEST_CASE(masked_d0_array_d0_array)
                 output_no_data_policy,
                 fern::sequential, argument1, argument2, result);
 
-        BOOST_REQUIRE_EQUAL(result.mask(), true);
-        BOOST_REQUIRE_EQUAL(result.value(), 3);
+        BOOST_CHECK_EQUAL(result.mask(), true);
+        BOOST_CHECK_EQUAL(result.value(), 3);
     }
 
     // Input is out of domain.
@@ -148,11 +148,11 @@ BOOST_AUTO_TEST_CASE(masked_d0_array_d0_array)
                 output_no_data_policy,
                 fern::sequential, argument1, argument2, result);
 
-        BOOST_REQUIRE_EQUAL(result.mask(), true);
+        BOOST_CHECK_EQUAL(result.mask(), true);
 
         // Result value is max<ArgumentValue> + 1, which equals
         // min<ArgumentValue>.
-        BOOST_REQUIRE_EQUAL(result.value(), fern::min<ArgumentValue>());
+        BOOST_CHECK_EQUAL(result.value(), fern::min<ArgumentValue>());
     }
 }
 
@@ -182,9 +182,9 @@ BOOST_AUTO_TEST_CASE(d1_array_d0_array_sequential)
                 output_no_data_policy,
                 fern::sequential, argument1, argument2, result);
 
-        BOOST_REQUIRE_EQUAL(result[0], 1);
-        BOOST_REQUIRE_EQUAL(result[1], 6);
-        BOOST_REQUIRE_EQUAL(result[2], 11);
+        BOOST_CHECK_EQUAL(result[0], 1);
+        BOOST_CHECK_EQUAL(result[1], 6);
+        BOOST_CHECK_EQUAL(result[2], 11);
 
         std::fill(result.begin(), result.end(), 3);
 
@@ -197,9 +197,9 @@ BOOST_AUTO_TEST_CASE(d1_array_d0_array_sequential)
                 output_no_data_policy,
                 fern::sequential, argument2, argument1, result);
 
-        BOOST_REQUIRE_EQUAL(result[0], 1);
-        BOOST_REQUIRE_EQUAL(result[1], 6);
-        BOOST_REQUIRE_EQUAL(result[2], 11);
+        BOOST_CHECK_EQUAL(result[0], 1);
+        BOOST_CHECK_EQUAL(result[1], 6);
+        BOOST_CHECK_EQUAL(result[2], 11);
     }
 
     // 1d array
@@ -220,9 +220,9 @@ BOOST_AUTO_TEST_CASE(d1_array_d0_array_sequential)
                 output_no_data_policy,
                 fern::sequential, argument1, argument2, result);
 
-        BOOST_REQUIRE_EQUAL(result[0], 1);
-        BOOST_REQUIRE_EQUAL(result[1], 6);
-        BOOST_REQUIRE_EQUAL(result[2], 11);
+        BOOST_CHECK_EQUAL(result[0], 1);
+        BOOST_CHECK_EQUAL(result[1], 6);
+        BOOST_CHECK_EQUAL(result[2], 11);
     }
 
     // empty
@@ -232,7 +232,7 @@ BOOST_AUTO_TEST_CASE(d1_array_d0_array_sequential)
         using Result = std::vector<ResultValue>;
 
         Argument1 argument1;
-        Argument2 argument2;
+        Argument2 argument2{};
         Result result;
 
         fern::binary_local_operation<

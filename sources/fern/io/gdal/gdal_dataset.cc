@@ -497,7 +497,7 @@ ValueType GDALDataset::value_type(
     GDALRasterBand& band,
     Path const& path) const
 {
-    ValueType result;
+    ValueType result{};
 
     switch(band.GetRasterDataType()) {
         RASTER_DATA_TYPE_CASE(GDT_Byte);
@@ -564,7 +564,12 @@ template<
     class T>
 void GDALDataset::write_attribute(
     FieldAttribute<T> const& field,
-    Path const& path)
+#ifndef NDEBUG
+    Path const& path
+#else
+    Path const& /* path */
+#endif
+    )
 {
     assert((_dataset && (open_mode() == OpenMode::UPDATE)) ||
         (!_dataset && (open_mode() == OpenMode::OVERWRITE)));

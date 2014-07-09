@@ -74,7 +74,11 @@ Read::Read()
 
 
 ExpressionType Read::expression_type(
+#ifndef NDEBUG
     size_t index,
+#else
+    size_t /* index */,
+#endif
     std::vector<ExpressionType> const& /* argument_types */) const
 {
     assert(index == 0);

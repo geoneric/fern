@@ -263,9 +263,9 @@ BOOST_AUTO_TEST_CASE(visit_raster)
     {
         auto operation = expression1 + expression2 + expression3;
 
-        std::cout << "evaluate..." << std::endl;
+        // std::cout << "evaluate..." << std::endl;
         fet::evaluate(operation);
-        std::cout << "/evaluate..." << std::endl;
+        // std::cout << "/evaluate..." << std::endl;
         // fet::Data result(fet::evaluate(operation));
 
         // BOOST_REQUIRE_NO_THROW(boost::get<fet::Raster<double> const&>(result));
