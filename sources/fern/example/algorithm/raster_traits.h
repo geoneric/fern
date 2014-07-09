@@ -11,6 +11,13 @@ template<
 struct ArgumentTraits<example::Raster<T>>
 {
 
+    template<
+        class U>
+    struct Collection
+    {
+        using type = example::Raster<U>;
+    };
+
     using value_type = T;
 
     using const_reference = T const&;
@@ -52,6 +59,16 @@ T& get(
     size_t col)
 {
     return raster.values()[row * raster.nr_cols() + col];
+}
+
+
+template<
+    class T>
+double cell_size(
+    example::Raster<T> const& raster,
+    size_t /* index */)
+{
+    return raster.cell_size();
 }
 
 } // namespace fern

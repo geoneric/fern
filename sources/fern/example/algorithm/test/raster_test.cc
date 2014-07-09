@@ -8,9 +8,10 @@ BOOST_AUTO_TEST_SUITE(raster)
 
 BOOST_AUTO_TEST_CASE(constructor)
 {
+    size_t const cell_size = 5.0;
     size_t const nr_rows = 600;
     size_t const nr_cols = 400;
-    example::Raster<int32_t> raster1(nr_rows, nr_cols);
+    example::Raster<int32_t> raster1(cell_size, nr_rows, nr_cols);
     std::iota(raster1.values().begin(), raster1.values().end(), 0);
 }
 

@@ -4,6 +4,7 @@ ADD_EXECUTABLE(add_two_rasters
     raster
 )
 TARGET_LINK_LIBRARIES(add_two_rasters
+    fern_feature_core
     fern_algorithm_core
     fern_core
 )

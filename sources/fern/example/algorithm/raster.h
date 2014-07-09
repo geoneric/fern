@@ -12,13 +12,22 @@ class Raster
 
 public:
 
-                   Raster              (size_t nr_rows,
+                   Raster              ();
+
+                   Raster              (Raster&& other);
+
+                   Raster              (double cell_size,
+                                        size_t nr_rows,
                                         size_t nr_cols);
+
+    Raster<T>&     operator=           (Raster<T>&& other);
 
     std::vector<T>& values             ();
 
     std::vector<T> const&
                     values             () const;
+
+    double          cell_size          () const;
 
     size_t          nr_rows            () const;
 
@@ -26,9 +35,11 @@ public:
 
 private:
 
-    size_t const   _nr_rows;
+    double          _cell_size;
 
-    size_t const   _nr_cols;
+    size_t          _nr_rows;
+
+    size_t          _nr_cols;
 
     std::vector<T> _values;
 
@@ -37,15 +48,57 @@ private:
 
 template<
     class T>
+Raster<T>::Raster()
+
+    : _cell_size(),
+      _nr_rows(),
+      _nr_cols(),
+      _values()
+
+{
+}
+
+
+template<
+    class T>
+Raster<T>::Raster(Raster&& other)
+
+    : _cell_size(other._cell_size),
+      _nr_rows(other._nr_rows),
+      _nr_cols(other._nr_cols),
+      _values(std::move(other._values))
+
+{
+}
+
+
+template<
+    class T>
 Raster<T>::Raster(
+    double cell_size,
     size_t nr_rows,
     size_t nr_cols)
 
-    : _nr_rows(nr_rows),
+    : _cell_size(cell_size),
+      _nr_rows(nr_rows),
       _nr_cols(nr_cols),
       _values(nr_rows * nr_cols)
 
 {
+}
+
+
+template<
+    class T>
+Raster<T>& Raster<T>::operator=(
+    Raster<T>&& other)
+{
+    _cell_size = other._cell_size;
+    _nr_rows = other._nr_rows;
+    _nr_cols = other._nr_cols;
+    _values = std::move(other._values);
+
+    return *this;
 }
 
 
@@ -62,6 +115,14 @@ template<
 std::vector<T> const& Raster<T>::values() const
 {
     return _values;
+}
+
+
+template<
+    class T>
+double Raster<T>::cell_size() const
+{
+    return _cell_size;
 }
 
 
