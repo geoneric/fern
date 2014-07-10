@@ -965,6 +965,18 @@ struct BinaryLocalOperation<
 } // namespace detail
 
 
+//! Function that executes a binary local operation.
+/*!
+    \tparam        Algorithm Class template of the operation to execute.
+    \param[in]     value1 First input to pass to the operation.
+    \param[in]     value2 Second input to pass to the operation.
+    \param[out]    result Output that is written by the operation.
+    \sa            fern::unary_local_operation
+
+    This function supports handling 0d, 1d and 2d values.
+
+    This function supports sequential and parallel execution of the operation.
+*/
 template<
     template<class, class> class Algorithm,
     template<class, class> class OutOfDomainPolicy,

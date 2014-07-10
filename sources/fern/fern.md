@@ -2,5 +2,5 @@ Fern {#mainpage}
 ====
 
 - @ref features
-- @ref algorithms
+- @ref fern_algorithm
 - @ref examples

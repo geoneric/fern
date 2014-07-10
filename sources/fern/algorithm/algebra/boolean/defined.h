@@ -114,9 +114,6 @@ private:
 };
 
 
-//! Determine which values are valid.
-/*!
-*/
 template<
     class Values,
     class Result,
@@ -134,9 +131,6 @@ void defined(
 }
 
 
-/*!
-  \overload
-*/
 template<
     class Values,
     class Result,

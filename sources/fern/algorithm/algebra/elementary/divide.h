@@ -7,17 +7,47 @@
 namespace fern {
 namespace divide {
 
+//! Determine the result type when dividing instances of \a Value1 with \a Value2.
 /*!
-    The denominator cannot be zero. Otherwise all values are within the domain
-    of valid values for divide.
+    \sa            fern::divide::result_value_type, fern::Result
+*/
+template<
+    class Value1,
+    class Value2>
+using result_type = typename fern::Result<Value1, Value2>::type;
+
+
+//! Determine the result value type when dividing instances of \a Value1 with \a Value2.
+/*!
+  \sa              fern::divide::result_type
+*/
+template<
+    class Value1,
+    class Value2>
+using result_value_type = typename fern::Result<value_type<Value1>,
+    value_type<Value2>>::type;
+
+
+//! Out of domain policy for fern::algebra::divide algorithm.
+/*!
+    The denominator (\a value2) cannot be zero. Otherwise all values are
+    within the domain of valid values for divide.
+
+    The value types of \a value1 and \a value2 must be arithmetic and not
+    `bool`.
+
+    \sa            @ref fern_algorithm_policies_out_of_domain_policy
 */
 template<
     class Value1,
     class Value2>
 class OutOfDomainPolicy
 {
-    FERN_STATIC_ASSERT(std::is_arithmetic, Value1)
-    FERN_STATIC_ASSERT(std::is_arithmetic, Value2)
+
+    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Value1>)
+    FERN_STATIC_ASSERT(!std::is_same, value_type<Value1>, bool)
+    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Value2>)
+    FERN_STATIC_ASSERT(!std::is_same, value_type<Value2>, bool)
 
 public:
 
@@ -31,6 +61,18 @@ public:
 };
 
 
+//! Out of range policy for fern::algebra::divide algorithm.
+/*!
+    The logic for determining whether divide's result is out of range depends
+    on the types involved (unsigned integers, signed integers, floating
+    points) and their sizes.
+
+    The value types of \a value1 and \a value2 must be arithmetic and not
+    `bool`. The value type of \a result must be equal to
+    fern::divide::result_value_type<Value1, Value2>.
+
+    \sa            @ref fern_algorithm_policies_out_of_range_policy
+*/
 template<
     class Value1,
     class Value2,
@@ -38,9 +80,13 @@ template<
 class OutOfRangePolicy
 {
 
-    FERN_STATIC_ASSERT(std::is_arithmetic, Value1)
-    FERN_STATIC_ASSERT(std::is_arithmetic, Value2)
-    FERN_STATIC_ASSERT(std::is_arithmetic, Result)
+    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Value1>)
+    FERN_STATIC_ASSERT(!std::is_same, value_type<Value1>, bool)
+    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Value2>)
+    FERN_STATIC_ASSERT(!std::is_same, value_type<Value2>, bool)
+    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Result>)
+    FERN_STATIC_ASSERT(std::is_same, value_type<Result>,
+        divide::result_value_type<Value1, Value2>)
 
 public:
 
@@ -63,6 +109,18 @@ public:
 
 namespace algebra {
 
+//! Divide \a value1 by \a value2 and write the result to \a result.
+/*!
+    \sa            fern::divide::OutOfDomainPolicy,
+                   fern::divide::OutOfRangePolicy,
+                   fern::divide::result_type,
+                   fern::divide::result_value_type,
+                   fern::binary_local_operation
+
+    The value types of \a value1 and \a value2 must be arithmetic and not
+    `bool`. The value type of \a result must be equal to
+    fern::divide::result_value_type<Value1, Value2>.
+*/
 template<
     template<class, class> class OutOfDomainPolicy,
     template<class, class, class> class OutOfRangePolicy,
@@ -82,10 +140,12 @@ void divide(
     Result& result)
 {
     FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Value1>)
+    FERN_STATIC_ASSERT(!std::is_same, value_type<Value1>, bool)
     FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Value2>)
+    FERN_STATIC_ASSERT(!std::is_same, value_type<Value2>, bool)
     FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Result>)
     FERN_STATIC_ASSERT(std::is_same, value_type<Result>,
-        typename fern::Result<value_type<Value1>, value_type<Value2>>::type)
+        divide::result_value_type<Value1, Value2>)
 
     divide::detail::divide<OutOfDomainPolicy, OutOfRangePolicy>(
         input_no_data_policy, output_no_data_policy, execution_policy,
@@ -93,6 +153,9 @@ void divide(
 }
 
 
+/*!
+  \overload
+*/
 template<
     template<class, class> class OutOfDomainPolicy,
     template<class, class, class> class OutOfRangePolicy,
@@ -115,6 +178,9 @@ void divide(
 }
 
 
+/*!
+  \overload
+*/
 template<
     class ExecutionPolicy,
     class Value1,

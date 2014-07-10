@@ -36,6 +36,13 @@ public:
 
 namespace algebra {
 
+//! Determine the absolute value of \a value and write the result to \a result.
+/*!
+    \sa            fern::unary_local_operation.
+
+    The value type of \a value must be arithmetic and not `bool`. The value
+    type of \a result must be equal to the value type of \a value.
+*/
 template<
     template<class, class> class OutOfRangePolicy,
     class InputNoDataPolicy,
@@ -52,6 +59,7 @@ void absolute(
     Result& result)
 {
     FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Value>)
+    FERN_STATIC_ASSERT(!std::is_same, value_type<Value>, bool)
     FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Result>)
 
     absolute::detail::absolute<OutOfRangePolicy>(input_no_data_policy,
@@ -59,6 +67,9 @@ void absolute(
 }
 
 
+/*!
+  \overload
+*/
 template<
     template<class, class> class OutOfRangePolicy,
     class InputNoDataPolicy,
@@ -78,6 +89,9 @@ void absolute(
 }
 
 
+/*!
+  \overload
+*/
 template<
     class ExecutionPolicy,
     class Value,

@@ -1,16 +1,12 @@
-Algebra {#algebra}
+Algebra {#fern_algorithm_algebra}
 =======
 
-[TOC]
+- Categories
 
+    - @ref fern_algorithm_algebra_boolean
+    - @ref fern_algorithm_algebra_elementary
+    - @ref vector_algebra
 
-Categories {#algebra_categories}
-==========
-- @ref boolean_algebra
-- @ref elementary_algebra
-- @ref vector_algebra
+- See also
 
-
-See also {#algebra_see_also}
-========
-- [Wikipedia on algebra](https://en.wikipedia.org/wiki/Algebra)
+    - [Wikipedia on algebra](https://en.wikipedia.org/wiki/Algebra)
