@@ -8,6 +8,7 @@ unset _devenv
 
 source "$_profiles/common" $1
 source "$_profiles/DevEnv"
+unset CMAKE_MODULE_PATH
 unset _profiles
 
 export FERN="$PROJECTS/`\ls $PROJECTS | \grep -i \"^fern$\"`"
