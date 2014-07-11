@@ -8,6 +8,15 @@
 namespace fern {
 namespace cast {
 
+//! Out-of-range policy for fern::cast algorithm.
+/*!
+    A source input value is considered out-of-range if the value cannot be
+    represented by the target type.
+
+    The value type of \a value and \a result must be arithmetic.
+
+    \sa            @ref fern_algorithm_policies_out_of_range_policy
+*/
 template<
     class Value,
     class Result>
@@ -32,20 +41,25 @@ public:
 
 };
 
-
 } // namespace cast
 
 
 namespace core {
 
+//! Cast \a value and write the result to \a result.
+/*!
+    \sa            fern::cast::OutOfRangePolicy,
+                   fern::unary_local_operation
+
+    The value type of \a value and \a result must be arithmetic.
+*/
 template<
     template<class, class> class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class ExecutionPolicy,
     class Value,
-    class Result
->
+    class Result>
 void cast(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -61,14 +75,16 @@ void cast(
 }
 
 
+/*!
+  \overload
+*/
 template<
     template<class, class> class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class ExecutionPolicy,
     class Value,
-    class Result
->
+    class Result>
 void cast(
     ExecutionPolicy const& execution_policy,
     Value const& value,
@@ -80,11 +96,13 @@ void cast(
 }
 
 
+/*!
+  \overload
+*/
 template<
     class ExecutionPolicy,
     class Value,
-    class Result
->
+    class Result>
 void cast(
     ExecutionPolicy const& execution_policy,
     Value const& value,

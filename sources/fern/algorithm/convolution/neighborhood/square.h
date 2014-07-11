@@ -5,6 +5,12 @@
 
 namespace fern {
 
+//! Class for square neighborhoods.
+/*!
+  \tparam    T Type of values to store in the neighborhood.
+  \tparam    radius Radius of the neighborhood. A radius of 1 results in a
+             3x3 square. Square neighborhoods always have an odd size.
+*/
 template<
     class T,
     size_t radius>
@@ -32,6 +38,11 @@ private:
 };
 
 
+//! Return the size of the square.
+/*!
+  The size is the length of each side of the square. The number returned is
+  always odd.
+*/
 template<
     class T,
     size_t radius>
@@ -41,6 +52,12 @@ inline constexpr size_t  Square<T, radius>::size()
 }
 
 
+//! Construct a square given \a weights.
+/*!
+  \param     weights Weights to store in the square.
+  \warning   \a weights must have the same number of rows as columns. This
+             number must be equal to 2 * \a radius + 1.
+*/
 template<
     class T,
     size_t radius>
@@ -58,6 +75,9 @@ inline Square<T, radius>::Square(
 }
 
 
+//! Return the weight at index \a index.
+/*!
+*/
 template<
     class T,
     size_t radius>
@@ -69,6 +89,9 @@ inline T const* Square<T, radius>::operator[](
 }
 
 
+//! Return the weight at index \a index.
+/*!
+*/
 template<
     class T,
     size_t radius>

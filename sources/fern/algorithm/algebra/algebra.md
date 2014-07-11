@@ -5,7 +5,7 @@ Algebra {#fern_algorithm_algebra}
 
     - @ref fern_algorithm_algebra_boolean
     - @ref fern_algorithm_algebra_elementary
-    - @ref vector_algebra
+    - @ref fern_algorithm_algebra_vector
 
 - See also
 

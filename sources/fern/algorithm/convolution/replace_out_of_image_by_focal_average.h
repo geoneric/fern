@@ -6,17 +6,10 @@
 namespace fern {
 namespace convolve {
 
-// We want to calculate the average of the 8 surrounding cells. There may
-// be no cells with valid values. This happens if
-// - The current out_of_image cell is too far from the source image.
-// - None of the image cells that do fall in our little neighborhood
-//   contain valid values.
-
-// In the individual functions, we first figure out where the current out of
-// image cell is situated compared to the sides of the source image. All
-// coordinates are unsigned integers, so we must be careful not to 
-// cause an underflow.
-
+//! OutOfImagePolicy which calculates focal average for out-of-image values.
+/*!
+    \sa            @ref fern_algorithm_convolution_policies
+*/
 class ReplaceOutOfImageByFocalAverage
 {
 

@@ -13,8 +13,8 @@ See the folowing pages for more information:
 - Categories
 
     - @ref fern_algorithm_algebra
-    - @ref convolution
-    - @ref core
+    - @ref fern_algorithm_convolution
+    - @ref fern_algorithm_core
     - @ref spatial_algorithms
     - @ref statistics
     - @ref trigonometry

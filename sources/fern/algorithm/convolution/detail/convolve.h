@@ -23,6 +23,7 @@ template<
 struct OutOfRangePolicy
 {
 
+    FERN_STATIC_ASSERT(std::is_floating_point, Value)
     FERN_STATIC_ASSERT(std::is_floating_point, Result)
 
     inline static bool within_range(

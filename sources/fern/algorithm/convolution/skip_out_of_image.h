@@ -5,6 +5,10 @@
 namespace fern {
 namespace convolve {
 
+//! OutOfImagePolicy which treats out-of-image values as no-data.
+/*!
+    \sa            @ref fern_algorithm_convolution_policies
+*/
 class SkipOutOfImage
 {
 

@@ -4,6 +4,10 @@
 namespace fern {
 namespace convolve {
 
+//! NormalizePolicy which does not normalize convoluted values.
+/*!
+    \sa            @ref fern_algorithm_convolution_policies
+*/
 class DontDivideByWeights
 {
 

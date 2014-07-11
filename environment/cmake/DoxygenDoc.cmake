@@ -25,7 +25,7 @@ SET(DOXYGEN_TEMPLATE "
     HAVE_DOT                = YES
     INCLUDE_GRAPH           = YES
     ENABLE_PREPROCESSING    = YES
-    SEARCH_INCLUDEЅ         = YES
+    SEARCH_INCLUDES         = YES
 ")
 
 CONFIGURE_FILE(

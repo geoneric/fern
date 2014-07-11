@@ -4,6 +4,10 @@
 namespace fern {
 namespace convolve {
 
+//! NormalizePolicy which normalizes convoluted values by the sum of the kernel weights.
+/*!
+    \sa            @ref fern_algorithm_convolution_policies
+*/
 class DivideByWeights
 {
 

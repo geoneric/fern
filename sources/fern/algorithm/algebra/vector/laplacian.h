@@ -1,5 +1,4 @@
 #pragma once
-/// #include "fern/core/argument_traits.h"
 #include "fern/core/assert.h"
 #include "fern/algorithm/policy/policies.h"
 #include "fern/algorithm/algebra/vector/detail/laplacian.h"
@@ -38,156 +37,42 @@ public:
 
 namespace algebra {
 
-/// template<
-///     class Values,
-///     class Result,
-///     template<class> class OutOfDomainPolicy=unary::DiscardDomainErrors,
-///     template<class, class> class OutOfRangePolicy=unary::DiscardRangeErrors,
-///     class InputNoDataPolicy=SkipNoData,
-///     class OutputNoDataPolicy=DontMarkNoData
-/// >
-/// class Laplacian
-/// {
-/// 
-/// public:
-/// 
-///     using category = focal_operation_tag;
-///     using A = Values;
-///     using AValue = value_type<A>;
-///     using R = Result;
-///     using RValue = value_type<R>;
-/// 
-///     FERN_STATIC_ASSERT(std::is_arithmetic, AValue)
-///     FERN_STATIC_ASSERT(std::is_arithmetic, RValue)
-///     FERN_STATIC_ASSERT(std::is_same, AValue, RValue)
-/// 
-///     Laplacian()
-///         : _algorithm()
-///     {
-///     }
-/// 
-///     Laplacian(
-///         InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
-///         OutputNoDataPolicy&& output_no_data_policy)  // Universal reference.
-///         : _algorithm(
-///             std::forward<InputNoDataPolicy>(input_no_data_policy),
-///             std::forward<OutputNoDataPolicy>(output_no_data_policy))
-///     {
-///     }
-/// 
-///     inline void operator()(
-///         A const& values,
-///         R& result)
-///     {
-///         _algorithm.calculate(values, result);
-///     }
-/// 
-///     template<
-///         class Indices>
-///     inline void operator()(
-///         Indices const& indices,
-///         A const& values,
-///         R& result)
-///     {
-///         _algorithm.calculate(indices, values, result);
-///     }
-/// 
-/// private:
-/// 
-///     // Laplacian as implemented in PCRaster is
-///     // - A convolution with this kernel:
-///     //   +---+---+---+
-///     //   | 2 | 3 | 2 |
-///     //   +---+---+---+
-///     //   | 3 | 0 | 3 |
-///     //   +---+---+---+
-///     //   | 2 | 3 | 2 |
-///     //   +---+---+---+
-///     //   - But without dividing by the sum of weights! FilterPolicy.
-///     //   - In case no-data is encountered, the value of the center is used.
-///     //     Not sure if we want that. Maybe optional. FilterPolicy.
-///     //     I would think that no data and their corresponding filter weights
-///     //     must be skipped.
-///     // - Substracted by the sum_of_weights * center value.
-///     // - Divided by dx * dx.
-///     //
-///     // convolute(argument, kernel, result);
-///     // result = (result - (sum(kernel) * argument)) / (dx * dx);
-///     // result = ((convolve(arg, kernel) -
-///     //              (convolve(defined(arg), kernel(1)) * arg)) / cell_area
-///     //
-///     // So, we require:
-///     // - [*] sum: Add all values in a kernel. None of these are no-data.
-///     // - [*] subtract: Subtract two 2D arrays.
-///     // - [*] multiply: Multiply a constant and a 2D array.
-///     // - [*] divide: Divide a 2D array by a constant.
-///     // - [*] convolute: Convolute a 2D array by a kernel.
-///     //
-///     // Alternative is to do everything in one operation: laplacian. This will
-///     // be a bit more efficient, since it is more cache friendly. Let's first
-///     // create one based on basic operations and optimize if needed (compare
-///     // with PCRaster).
-///     //
-///     // We need dx, which is the cell length. So we need something else to be
-///     // passed in than a 2D array.
-/// 
-///     laplacian::detail::dispatch::Laplacian<A, R,
-///         InputNoDataPolicy, OutputNoDataPolicy,
-///         typename ArgumentTraits<A>::argument_category> _algorithm;
-/// 
-/// };
-/// 
-/// 
-/// template<
-///     class Values,
-///     class Result,
-///     template<class> class OutOfDomainPolicy=unary::DiscardDomainErrors,
-///     template<class, class> class OutOfRangePolicy=unary::DiscardRangeErrors,
-///     class InputNoDataPolicy=SkipNoData,
-///     class OutputNoDataPolicy=DontMarkNoData
-/// >
-/// void laplacian(
-///     Values const& values,
-///     Result& result)
-/// {
-///     Laplacian<Values, Result, OutOfDomainPolicy, OutOfRangePolicy,
-///         InputNoDataPolicy, OutputNoDataPolicy>()(values, result);
-/// }
-/// 
-/// 
-/// /*!
-///   \overload
-/// */
-/// template<
-///     class Values,
-///     class Result,
-///     template<class> class OutOfDomainPolicy=unary::DiscardDomainErrors,
-///     template<class, class> class OutOfRangePolicy=unary::DiscardRangeErrors,
-///     class InputNoDataPolicy=SkipNoData,
-///     class OutputNoDataPolicy=DontMarkNoData
-/// >
-/// void laplacian(
-///     InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
-///     OutputNoDataPolicy&& output_no_data_policy,  // Universal reference.
-///     Values const& values,
-///     Result& result)
-/// {
-///     Laplacian<Values, Result, OutOfDomainPolicy, OutOfRangePolicy,
-///         InputNoDataPolicy, OutputNoDataPolicy>(
-///             std::forward<InputNoDataPolicy>(input_no_data_policy),
-///             std::forward<OutputNoDataPolicy>(output_no_data_policy))(
-///         values, result);
-/// }
+//! Calculate the laplacian of \a value and write the result to \a result.
+/*!
+    The algorithm implemented is similar to [the one implemented in PCRaster]
+    (https://sourceforge.net/p/pcraster/pcrtree2/ci/master/tree/sources/calc/vf.c).
 
+    In short/pseudo code, the algorithm:
 
+    \code
+    convolve(value, kernel, result);
+    result = (result - (sum(kernel) * value)) / cell_area;
+    result = ((convolve(value, kernel) -
+        (convolve(defined(value), kernel(1)) * value)) / cell_area;
+    \endcode
+
+    Kernel:
+
+    \code
+    +---+---+---+
+    | 2 | 3 | 2 |
+    +---+---+---+
+    | 3 | 0 | 3 |
+    +---+---+---+
+    | 2 | 3 | 2 |
+    +---+---+---+
+    \endcode
+
+    The value type of \a value and \a result must be floating point and the
+    same.
+*/
 template<
     template<class, class> class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class ExecutionPolicy,
     class Value,
-    class Result
->
+    class Result>
 void laplacian(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -204,14 +89,16 @@ void laplacian(
 }
 
 
+/*!
+  \overload
+*/
 template<
     template<class, class> class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class ExecutionPolicy,
     class Value,
-    class Result
->
+    class Result>
 void laplacian(
     ExecutionPolicy const& execution_policy,
     Value const& value,
@@ -223,11 +110,13 @@ void laplacian(
 }
 
 
+/*!
+  \overload
+*/
 template<
     class ExecutionPolicy,
     class Value,
-    class Result
->
+    class Result>
 void laplacian(
     ExecutionPolicy const& execution_policy,
     Value const& value,

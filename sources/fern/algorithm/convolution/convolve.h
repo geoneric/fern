@@ -8,6 +8,15 @@
 namespace fern {
 namespace convolve {
 
+//! Out-of-range policy for fern::convolution::convolve algorithm.
+/*!
+    The result of the convolution operation is a floating point. This policy
+    verifies whether the result value is finite.
+
+    \a Value and \a Result must be floating point.
+
+    \sa            @ref fern_algorithm_policies_out_of_range_policy
+*/
 template<
     class Value,
     class Result>
@@ -18,11 +27,19 @@ using OutOfRangePolicy = detail::OutOfRangePolicy<Value, Result>;
 
 namespace convolution {
 
-//! Convolve \a source by \a kernel and write results to \a destination.
+//! Convolve \a source by \a kernel and write the result to \a destination.
 /*!
-  \param[in] source Image to read values from to convolve.
-  \param[in] kernel Kernel containing the weights to use.
-  \param[out] destination Image to write calculated values to.
+    \param[in] source Image to read values from to convolve.
+    \param[in] kernel Kernel containing the weights to use.
+    \param[out] destination Image to write calculated values to.
+    \sa         fern::convolve::OutOfRangePolicy
+
+    This is a very flexible algorithm. It is written in terms of a number of
+    [policies that handle configurable aspects of convolution]
+    (@ref fern_algorithm_convolution_policies).
+
+    The value types of \a source and \a destination must be floating point.
+    The value type of \a kernel must be arithmetic.
 */
 template<
     class AlternativeForNoDataPolicy,
@@ -44,16 +61,9 @@ void convolve(
     Kernel const& kernel,
     DestinationImage& destination)
 {
-    using SourceValue = value_type<SourceImage>;
-    using KernelValue = value_type<Kernel>;
-    using DestinationValue = value_type<DestinationImage>;
-
-    FERN_STATIC_ASSERT(std::is_arithmetic, SourceValue)
-    FERN_STATIC_ASSERT(std::is_arithmetic, KernelValue)
-    FERN_STATIC_ASSERT(std::is_arithmetic, DestinationValue)
-
-    FERN_STATIC_ASSERT(std::is_floating_point, SourceValue)
-    FERN_STATIC_ASSERT(std::is_floating_point, DestinationValue)
+    FERN_STATIC_ASSERT(std::is_floating_point, value_type<SourceImage>)
+    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Kernel>)
+    FERN_STATIC_ASSERT(std::is_floating_point, value_type<DestinationImage>)
 
     convolve::detail::convolve<
         AlternativeForNoDataPolicy,
@@ -68,10 +78,6 @@ void convolve(
 
 /*!
     \overload
-
-    Use this overload to for passing the types of non-default policies.
-
-    \todo Mention default policies.
 */
 template<
     class AlternativeForNoDataPolicy,
@@ -104,9 +110,16 @@ void convolve(
 /*!
     \overload
 
-    Use this overload if the default policies are fine.
+    Use this overload if the default policies are fine. The default policies
+    used are:
 
-    \todo Mention default policies.
+    Policy                     | Implementation
+    -------------------------- | --------------
+    AlternativeForNoDataPolicy | fern::convolve::SkipNoData
+    NormalizePolicy            | fern::convolve::DivideByWeights
+    OutOfImagePolicy           | fern::convolve::SkipOutOfImage
+    InputNoDataPolicy          | fern::SkipNoData (as always)
+    OutputNoDataPolicy         | fern::DontMarkNoData (as always)
 */
 template<
     class ExecutionPolicy,
