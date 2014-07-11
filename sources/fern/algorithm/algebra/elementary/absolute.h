@@ -82,7 +82,7 @@ void absolute(
 
 
 /*!
-  \overload
+    \overload
 */
 template<
     template<class, class> class OutOfRangePolicy,
@@ -104,7 +104,7 @@ void absolute(
 
 
 /*!
-  \overload
+    \overload
 */
 template<
     class ExecutionPolicy,

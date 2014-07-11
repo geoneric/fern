@@ -15,9 +15,9 @@ See the folowing pages for more information:
     - @ref fern_algorithm_algebra
     - @ref fern_algorithm_convolution
     - @ref fern_algorithm_core
-    - @ref spatial_algorithms
-    - @ref statistics
-    - @ref trigonometry
+    - @ref fern_algorithm_spatial
+    - @ref fern_algorithm_statistics
+    - @ref fern_algorithm_trigonometry
 
 - Support code
 

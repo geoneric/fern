@@ -1,9 +1,6 @@
-Spatial algorithms {#spatial_algorithms}
-==================
+Spatial            {#fern_algorithm_spatial}
+=======
 
-[TOC]
-
-
-Categories {#spatial_algorithms_categories}
-==========
-- @ref focal_spatial_algorithms
+Name                 | Description
+-------------------- | -----------
+fern::spatial::slope | Calculate the slope of a value.

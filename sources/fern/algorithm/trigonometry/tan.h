@@ -8,9 +8,19 @@
 namespace fern {
 namespace tan {
 
+//! Out-of-domain policy for fern::trigonometry::tan algorithm.
+/*!
+    Positive or negative infinity is considered out-of-domain for sin.
+
+    Valid input values for tan are finite and not divisable by an odd number
+    of times 0.5 * π.
+
+    \a Value must be a floating point.
+
+    \sa            @ref fern_algorithm_policies_out_of_domain_policy
+*/
 template<
-    class Value
->
+    class Value>
 class OutOfDomainPolicy
 {
 
@@ -21,9 +31,6 @@ public:
     inline bool within_domain(
         Value const& value) const
     {
-        // - value must be finite and
-        // - value must not be divisable by an odd number of times 0.5 * pi.
-
         if(!std::isfinite(value)) {
             // All bets are off.
             return false;
@@ -50,14 +57,20 @@ public:
 
 namespace trigonometry {
 
+//! Calculate the tangent of \a value and write the result to \a result.
+/*!
+    \sa            fern::tan::OutOfDomainPolicy, fern::unary_local_operation
+
+    The value types of \a value and \a result must be floating point and the
+    same.
+*/
 template<
     template<class> class OutOfDomainPolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class ExecutionPolicy,
     class Value,
-    class Result
->
+    class Result>
 void tan(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -73,14 +86,16 @@ void tan(
 }
 
 
+/*!
+    \overload
+*/
 template<
     template<class> class OutOfDomainPolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class ExecutionPolicy,
     class Value,
-    class Result
->
+    class Result>
 void tan(
     ExecutionPolicy const& execution_policy,
     Value const& value,
@@ -92,11 +107,13 @@ void tan(
 }
 
 
+/*!
+    \overload
+*/
 template<
     class ExecutionPolicy,
     class Value,
-    class Result
->
+    class Result>
 void tan(
     ExecutionPolicy const& execution_policy,
     Value const& value,
