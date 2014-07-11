@@ -10,7 +10,8 @@ SET(DOXYGEN_TEMPLATE "
     EXTRACT_ALL             = YES
     EXTRACT_PRIVATE         = NO
     EXTRACT_STATIC          = NO
-    SOURCE_BROWSER          = YES
+    SOURCE_BROWSER          = NO
+    VERBATIM_HEADERS        = NO
     FILE_PATTERNS           = *.h *.hpp *.hxx *.c *.cc *.cpp *.cxx *.dox *.md
     EXCLUDE_PATTERNS        = *Test.h *Test.cc *_test.cc
     EXPAND_ONLY_PREDEF      = NO
