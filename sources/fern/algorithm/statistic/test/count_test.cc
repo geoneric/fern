@@ -251,8 +251,8 @@ BOOST_AUTO_TEST_CASE(masked_d2_array)
 BOOST_AUTO_TEST_CASE(concurrent)
 {
     // Create a somewhat larger array.
-    size_t const nr_rows = 6000;
-    size_t const nr_cols = 4000;
+    size_t const nr_rows = 600;
+    size_t const nr_cols = 400;
     auto const extents = fern::extents[nr_rows][nr_cols];
     fern::Array<int32_t, 2> argument(extents);
     size_t result_we_got;
@@ -263,6 +263,7 @@ BOOST_AUTO_TEST_CASE(concurrent)
 
     // Serial.
     {
+        result_we_got = 9;
         fern::statistic::count(fern::sequential, argument, 5, result_we_got);
         BOOST_CHECK_EQUAL(result_we_got, result_we_want);
     }
@@ -270,6 +271,7 @@ BOOST_AUTO_TEST_CASE(concurrent)
     // Concurrent.
     {
         fern::ThreadClient client;
+        result_we_got = 9;
         fern::statistic::count(fern::parallel, argument, 5, result_we_got);
         BOOST_CHECK_EQUAL(result_we_got, result_we_want);
     }

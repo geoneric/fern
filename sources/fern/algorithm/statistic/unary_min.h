@@ -1,5 +1,4 @@
 #pragma once
-#include "fern/algorithm/core/operation_traits.h"
 #include "fern/algorithm/policy/policies.h"
 #include "fern/algorithm/statistic/detail/unary_min.h"
 
@@ -7,115 +6,77 @@
 namespace fern {
 namespace statistic {
 
+//! Determine the minimum value of \a value and write the result to \a result.
+/*!
+    \sa            fern::unary_aggregate_operation
+
+    The value type of \a value must be arithmetic and not `bool`. The value
+    type of \a result must be equal to the value type of \a value.
+*/
 template<
-    class Values,
-    class Result,
-    class InputNoDataPolicy=SkipNoData,
-    class OutputNoDataPolicy=DontMarkNoData
->
-class UnaryMin
-{
-
-public:
-
-    using category = local_aggregate_operation_tag;
-    using A = Values;
-    using AValue = value_type<A>;
-    using R = Result;
-    using RValue = value_type<R>;
-
-    FERN_STATIC_ASSERT(std::is_arithmetic, AValue)
-    // We see boolean more as nominal values than as integers. You can't min'em.
-    FERN_STATIC_ASSERT(!std::is_same, AValue, bool)
-    FERN_STATIC_ASSERT(std::is_same, R, RValue)
-    FERN_STATIC_ASSERT(std::is_same, RValue, AValue)
-
-    UnaryMin()
-        : _algorithm()
-    {
-    }
-
-    UnaryMin(
-        InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
-        OutputNoDataPolicy&& output_no_data_policy)  // Universal reference.
-        : _algorithm(
-              std::forward<InputNoDataPolicy>(input_no_data_policy),
-              std::forward<OutputNoDataPolicy>(output_no_data_policy))
-    {
-    }
-
-    inline void operator()(
-        A const& values,
-        R & result)
-    {
-        _algorithm.calculate(values, result);
-    }
-
-
-    template<
-        class Indices>
-    inline void operator()(
-        Indices const& indices,
-        A const& values,
-        R& result)
-    {
-        _algorithm.calculate(indices, values, result);
-    }
-
-
-    template<
-        class InputNoDataPolicy_,
-        class Collection>
-    inline void aggregate(
-        InputNoDataPolicy_&& input_no_data_policy,  // Universal reverence.
-        Collection const& results,
-        R& result)
-    {
-        UnaryMin<Collection, R, InputNoDataPolicy_, OutputNoDataPolicy>(
-            std::forward<InputNoDataPolicy_>(input_no_data_policy),
-            std::forward<OutputNoDataPolicy>(_algorithm))(results, result);
-    }
-
-private:
-
-    unary_min::detail::dispatch::UnaryMin<A, R,
-        InputNoDataPolicy, OutputNoDataPolicy,
-        typename ArgumentTraits<A>::argument_category> _algorithm;
-
-};
-
-
-template<
-    class Values,
-    class Result,
-    class InputNoDataPolicy=SkipNoData,
-    class OutputNoDataPolicy=DontMarkNoData
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class ExecutionPolicy,
+    class Value,
+    class Result
 >
 void unary_min(
-    Values const& values,
+    InputNoDataPolicy const& input_no_data_policy,
+    OutputNoDataPolicy& output_no_data_policy,
+    ExecutionPolicy const& execution_policy,
+    Value const& value,
     Result& result)
 {
-    UnaryMin<Values, Result, InputNoDataPolicy, OutputNoDataPolicy>()(
-        values, result);
+    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Value>)
+    FERN_STATIC_ASSERT(!std::is_same, value_type<Value>, bool)
+    FERN_STATIC_ASSERT(std::is_same, value_type<Result>, Result)
+    FERN_STATIC_ASSERT(std::is_same, value_type<Result>, value_type<Value>)
+
+    unary_min::detail::unary_min<>(input_no_data_policy, output_no_data_policy,
+        execution_policy, value, result);
 }
 
 
+/*!
+    \overload
+*/
 template<
-    class Values,
-    class Result,
-    class InputNoDataPolicy=SkipNoData,
-    class OutputNoDataPolicy=DontMarkNoData
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class ExecutionPolicy,
+    class Value,
+    class Result
 >
 void unary_min(
-    InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
-    OutputNoDataPolicy&& output_no_data_policy,  // Universal reference.
-    Values const& values,
+    ExecutionPolicy const& execution_policy,
+    Value const& value,
     Result& result)
 {
-    UnaryMin<Values, Result, InputNoDataPolicy, OutputNoDataPolicy>(
-        std::forward<InputNoDataPolicy>(input_no_data_policy),
-        std::forward<OutputNoDataPolicy>(output_no_data_policy))(
-            values, result);
+    OutputNoDataPolicy output_no_data_policy;
+    unary_min<>(InputNoDataPolicy(), output_no_data_policy, execution_policy,
+        value, result);
+}
+
+
+/*!
+    \overload
+*/
+template<
+    class ExecutionPolicy,
+    class Value,
+    class Result
+>
+void unary_min(
+    ExecutionPolicy const& execution_policy,
+    Value const& value,
+    Result& result)
+{
+    using InputNoDataPolicy = SkipNoData;
+    using OutputNoDataPolicy = DontMarkNoData;
+
+    OutputNoDataPolicy output_no_data_policy;
+    unary_min<>(InputNoDataPolicy(), output_no_data_policy, execution_policy,
+        value, result);
 }
 
 } // namespace statistic

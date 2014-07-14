@@ -8,14 +8,6 @@
 
 BOOST_AUTO_TEST_SUITE(unary_min)
 
-BOOST_AUTO_TEST_CASE(traits)
-{
-    using UnaryMin = fern::statistic::UnaryMin<int32_t, int32_t>;
-    BOOST_CHECK((std::is_same<fern::OperationTraits<UnaryMin>::category,
-        fern::local_aggregate_operation_tag>::value));
-}
-
-
 template<
     class Value,
     class Result>
@@ -24,7 +16,7 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::statistic::unary_min(value, result_we_get);
+    fern::statistic::unary_min(fern::sequential, value, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 
