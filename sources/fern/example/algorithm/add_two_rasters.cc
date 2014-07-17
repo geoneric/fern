@@ -9,6 +9,22 @@
 #include "fern/example/algorithm/operator.h"
 
 
+namespace example {
+
+// Execution policy to use.
+fern::ExecutionPolicy execution_policy = fern::parallel;
+
+// In case the execution policy is fern::parallel, we need to create a
+// ThreadClient instance. This will, in turn, create a thread pool which is
+// used by the parallel algorithms.
+// In case the execution policy is fern::sequential, we don't need to create
+// a ThreadClient instance. In fact, we shouldn't, for reasons explained in
+// the ThreadPool class documentation.
+fern::ThreadClient client;
+
+}
+
+
 int main(
     int /* argc */,
     char** /* argv */)

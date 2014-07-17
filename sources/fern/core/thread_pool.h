@@ -2,94 +2,20 @@
 #include <future>
 #include <thread>
 #include <vector>
+#include "fern/core/detail/function_wrapper.h"
 #include "fern/core/join_threads.h"
-#include "fern/core/memory.h"
 #include "fern/core/thread_safe_queue.h"
 
 
 namespace fern {
 
-class FunctionWrapper
-{
-
-public:
-
-                   FunctionWrapper     ()=default;
-
-                   FunctionWrapper     (FunctionWrapper&& other);
-
-                   FunctionWrapper     (FunctionWrapper const& other)=delete;
-
-    template<
-        class Function>
-                   FunctionWrapper     (Function&& function);
-
-    FunctionWrapper& operator=         (FunctionWrapper&& other);
-
-    FunctionWrapper& operator=         (FunctionWrapper const& other)=delete;
-
-    void           operator()          ();
-
-private:
-
-    struct Concept
-    {
-
-        virtual ~Concept()
-        {
-        }
-
-        virtual void call()=0;
-
-    };
-
-    template<
-        class Function>
-    struct Model:
-        public Concept
-    {
-
-        Model(
-            Function&& function)
-
-            : _function(std::move(function))
-
-        {
-        }
-
-        void call()
-        {
-            _function();
-        }
-
-        Function   _function;
-
-    };
-
-    std::unique_ptr<Concept> _concept;
-
-};
-
-
-template<
-    class Function>
-inline FunctionWrapper::FunctionWrapper(
-    Function&& function)
-
-    // : _concept(std::make_unique<Model<Function>>(std::move(function)))
-
-    : _concept(std::make_unique<Model<Function>>(std::move(function)))
-
-{
-}
-
-
 //! Thread pool.
 /*!
-  \warning   Don't create a thread pool if you don't have anything useful
-             for the threads to do. They will continuously yield and will
-             occupy the machine by doing nothing.
-  \sa        .
+    A thread pool is like a collection of conveyor belts: you can put tasks on
+    them or not, but the belts will always run and consume energy. Don't create
+    a thread pool if you don't have anything useful for the threads to do.
+
+    \sa            ThreadClient
 */
 class ThreadPool
 {
@@ -111,7 +37,7 @@ private:
 
     std::atomic_bool _done;
 
-    ThreadSafeQueue<FunctionWrapper> _work_queue;
+    ThreadSafeQueue<detail::FunctionWrapper> _work_queue;
 
     std::vector<std::thread> _threads;
 

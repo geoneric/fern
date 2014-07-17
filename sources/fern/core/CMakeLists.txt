@@ -3,6 +3,7 @@ ADD_SUBDIRECTORY(test)
 SET(SOURCES
     data_name
     data_types
+    detail/function_wrapper
     exception
     expression_type
     io_error

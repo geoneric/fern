@@ -4,12 +4,21 @@
 
 namespace fern {
 
+//! Class for managing resources used by threading.
+/*!
+    \warning       See ThreadPool docs.
+    \sa            ThreadPool
+
+    Instantiating this class will create a thread pool that can be used for
+    executing concurrent tasks.
+*/
 class ThreadClient
 {
 
 public:
 
-    static ThreadPool& pool            ();
+    static ThreadPool&
+                   pool                ();
 
                    ThreadClient        (size_t nr_threads=
                                           std::thread::hardware_concurrency());
