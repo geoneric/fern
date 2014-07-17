@@ -420,10 +420,91 @@ struct UnaryLocalOperation<
 
 };
 
+
+template<
+    class Algorithm,
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class Value,
+    class Result>
+struct UnaryLocalOperation<
+    Algorithm,
+    OutOfDomainPolicy,
+    OutOfRangePolicy,
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Value,
+    Result,
+    ExecutionPolicy,
+    array_2d_tag>
+
+{
+
+    // f(2d array)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        ExecutionPolicy const& execution_policy,
+        Value const& value,
+        Result& result)
+    {
+        switch(execution_policy.which()) {
+            case detail::sequential_execution_policy_id: {
+                detail::dispatch::UnaryLocalOperation<
+                    Algorithm,
+                    OutOfDomainPolicy,
+                    OutOfRangePolicy,
+                    InputNoDataPolicy,
+                    OutputNoDataPolicy,
+                    Value,
+                    Result,
+                    SequentialExecutionPolicy,
+                    array_2d_tag>::apply(
+                        input_no_data_policy, output_no_data_policy,
+                        detail::get_policy<SequentialExecutionPolicy>(
+                            execution_policy),
+                        value, result);
+                break;
+            }
+            case detail::parallel_execution_policy_id: {
+                detail::dispatch::UnaryLocalOperation<
+                    Algorithm,
+                    OutOfDomainPolicy,
+                    OutOfRangePolicy,
+                    InputNoDataPolicy,
+                    OutputNoDataPolicy,
+                    Value,
+                    Result,
+                    ParallelExecutionPolicy,
+                    array_2d_tag>::apply(
+                        input_no_data_policy, output_no_data_policy,
+                        detail::get_policy<ParallelExecutionPolicy>(
+                            execution_policy),
+                        value, result);
+                break;
+            }
+        }
+    }
+
+};
+
 } // namespace dispatch
 } // namespace detail
 
 
+//! Function that executes a unary local operation.
+/*!
+    \tparam        Algorithm Class template of the operation to execute.
+    \param[in]     value Input to pass to the operation.
+    \param[out]    result Output that is written by the operation.
+    \sa            fern::binary_local_operation
+
+    This function supports handling 0d, 1d and 2d values.
+
+    This function supports sequential and parallel execution of the operation.
+*/
 template<
     template<class> class Algorithm,
     template<class> class OutOfDomainPolicy,

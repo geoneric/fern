@@ -10,6 +10,10 @@
 
 namespace example {
 
+// Execution policy to use by the algorithms: sequential or parallel.
+extern fern::ExecutionPolicy execution_policy;
+
+
 template<
     class Value1,
     class Value2>
@@ -25,9 +29,6 @@ fern::add::result_type<Value1, Value2> add(
 
     fern::add::result_type<Value1, Value2> result(
         fern::cell_size(lhs, 0), fern::size(lhs, 0), fern::size(lhs, 1));
-
-    auto execution_policy(fern::parallel);
-    fern::ThreadClient client;
 
     fern::algebra::add(execution_policy, lhs, rhs, result);
 
@@ -48,9 +49,6 @@ fern::Collection<Value, ResultValueType> cast(
         fern::size(value, 0),
         fern::size(value, 1));
 
-    auto execution_policy(fern::parallel);
-    fern::ThreadClient client;
-
     fern::core::cast(execution_policy, value, result);
 
     return std::move(result);
@@ -66,9 +64,6 @@ fern::Collection<Value, fern::value_type<Value>> slope(
 
     fern::Collection<Value, fern::value_type<Value>> result(
         fern::cell_size(value, 0), fern::size(value, 0), fern::size(value, 1));
-
-    auto execution_policy(fern::parallel);
-    fern::ThreadClient client;
 
     fern::spatial::slope(execution_policy, value, result);
 

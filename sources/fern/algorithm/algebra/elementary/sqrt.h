@@ -7,9 +7,17 @@
 namespace fern {
 namespace sqrt {
 
+//! Out of domain policy for fern::algebra::sqrt algorithm.
+/*!
+    Values smaller than 0 are considered out-of-domain.
+
+    The value types of \a value and \a result must be floating point and
+    the same.
+
+    \sa            @ref fern_algorithm_policies_out_of_domain_policy
+*/
 template<
-    class Value
->
+    class Value>
 class OutOfDomainPolicy
 {
 
@@ -31,6 +39,13 @@ public:
 
 namespace algebra {
 
+//! Calculate the square root of \a value and write the result to \a result.
+/*!
+    \sa            fern::sqrt::OutOfDomainPolicy, fern::unary_local_operation
+
+    The value types of \a value and \a result must be floating point and the
+    same.
+*/
 template<
     template<class> class OutOfDomainPolicy,
     class InputNoDataPolicy,
@@ -54,6 +69,9 @@ void sqrt(
 }
 
 
+/*!
+  \overload
+*/
 template<
     template<class> class OutOfDomainPolicy,
     class InputNoDataPolicy,
@@ -73,6 +91,9 @@ void sqrt(
 }
 
 
+/*!
+  \overload
+*/
 template<
     class ExecutionPolicy,
     class Value,

@@ -5,13 +5,14 @@
 
 
 namespace fern {
-namespace not_ {
-
-} // namespace not
-
-
 namespace algebra {
 
+//! Negate \a value and write the result to \a result.
+/*!
+    \sa            fern::unary_local_operation.
+
+    The value types of \a value and \a result must be `bool`.
+*/
 template<
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
@@ -34,6 +35,9 @@ void not_(
 }
 
 
+/*!
+  \overload
+*/
 template<
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
@@ -52,6 +56,9 @@ void not_(
 }
 
 
+/*!
+  \overload
+*/
 template<
     class ExecutionPolicy,
     class Value,

@@ -7,14 +7,19 @@
 namespace fern {
 namespace slope {
 
+//! The out-of-range policy for the slope operation.
+/*!
+  The result of the slope operation is a floating point. This policy
+  verifies whether the result value is finite.
+*/
 template<
     class Value,
     class Result>
 class OutOfRangePolicy
 {
 
-    FERN_STATIC_ASSERT(std::is_arithmetic, Result)
-    FERN_STATIC_ASSERT(std::is_floating_point, Result)
+    FERN_STATIC_ASSERT(std::is_floating_point, value_type<Value>)
+    FERN_STATIC_ASSERT(std::is_same, value_type<Result>, value_type<Value>)
 
 public:
 
@@ -31,6 +36,41 @@ public:
 
 namespace spatial {
 
+//! Calculate the slope of \a value and write the result to \a result.
+/*!
+    This algorithm implements Horne's slope algorithm. In pseudo-code this
+    works as folows:
+
+    \code
+    dz_dx = convolve(value, dz_dx_kernel) / (8 * cell_size)
+    dz_dy = convolve(value, dz_dy_kernel) / (8 * cell_size)
+    result = sqrt(pow(dz_dx, 2) + pow(dz_dy, 2))
+    \endcode
+
+    where dz_dx_kernel is:
+
+    \code
+    +----+----+----+
+    |  1 |  0 | -1 |
+    +----+----+----+
+    |  2 |  0 | -2 |
+    +----+----+----+
+    |  1 |  0 | -1 |
+    +----+----+----+
+    \endcode
+
+    and dz_dy_kernel is:
+
+    \code
+    +----+----+----+
+    | -1 | -2 | -1 |
+    +----+----+----+
+    |  0 |  0 |  0 |
+    +----+----+----+
+    |  1 |  2 |  1 |
+    +----+----+----+
+    \endcode
+*/
 template<
     template<class, class> class OutOfRangePolicy,
     class InputNoDataPolicy,
@@ -54,6 +94,9 @@ void slope(
 }
 
 
+/*!
+  \overload
+*/
 template<
     template<class, class> class OutOfRangePolicy,
     class InputNoDataPolicy,
@@ -73,6 +116,9 @@ void slope(
 }
 
 
+/*!
+  \overload
+*/
 template<
     class ExecutionPolicy,
     class Value,

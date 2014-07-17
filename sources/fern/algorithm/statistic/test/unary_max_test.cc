@@ -8,14 +8,6 @@
 
 BOOST_AUTO_TEST_SUITE(unary_max)
 
-BOOST_AUTO_TEST_CASE(traits)
-{
-    using UnaryMax = fern::statistic::UnaryMax<int32_t, int32_t>;
-    BOOST_CHECK((std::is_same<fern::OperationTraits<UnaryMax>::category,
-        fern::local_aggregate_operation_tag>::value));
-}
-
-
 template<
     class Value,
     class Result>
@@ -24,7 +16,7 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::statistic::unary_max(value, result_we_get);
+    fern::statistic::unary_max(fern::sequential, value, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 

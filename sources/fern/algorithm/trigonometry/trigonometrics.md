@@ -1,34 +1,15 @@
-Trigonometry {#trigonometry}
+Trigonometry       {#fern_algorithm_trigonometry}
 ============
 
-[TOC]
+Name                     | Description
+------------------------ | -----------
+fern::trigonometry::atan | Calculate arc-tangent.
+fern::trigonometry::cos  | Calculate cosine.
+fern::trigonometry::sin  | Calculate the sine.
+fern::trigonometry::tan  | Calculate the tangent.
 
 
-ATan {#trigonometry_atan}
-====
+See also
 
-- [fern::trigonometry::atan](@ref fern::trigonometry::atan)
-
-
-Cos {#trigonometry_cos}
-===
-
-- [fern::trigonometry::cos](@ref fern::trigonometry::cos)
-
-
-Sin {#trigonometry_sin}
-===
-
-- [fern::trigonometry::sin](@ref fern::trigonometry::sin)
-
-
-Tan {#trigonometry_tan}
-===
-
-- [fern::trigonometry::tan](@ref fern::trigonometry::tan)
-
-
-See also {#trigonometry_see_also}
-========
 - [Wikipedia on trigonometry](http://en.wikipedia.org/wiki/Trigonometry)
 - [Wikipedia on trigonometric functions](http://en.wikipedia.org/wiki/Trigonometric_functions)

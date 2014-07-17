@@ -23,6 +23,7 @@ template<
 struct OutOfRangePolicy
 {
 
+    FERN_STATIC_ASSERT(std::is_floating_point, Value)
     FERN_STATIC_ASSERT(std::is_floating_point, Result)
 
     inline static bool within_range(
@@ -1590,6 +1591,7 @@ struct Convolve<
     DestinationImage,
     SequentialExecutionPolicy>
 {
+
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
@@ -1710,6 +1712,7 @@ struct Convolve<
     DestinationImage,
     ParallelExecutionPolicy>
 {
+
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
@@ -1774,6 +1777,66 @@ struct Convolve<
 
 #undef CREATE_BORDER_TASK
 #undef CREATE_INNER_PART_TASK
+
+
+template<
+    class AlternativeForNoDataPolicy,
+    class NormalizePolicy,
+    class OutOfImagePolicy,
+    template<class, class> class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class SourceImage,
+    class Kernel,
+    class DestinationImage>
+struct Convolve<
+    AlternativeForNoDataPolicy,
+    NormalizePolicy,
+    OutOfImagePolicy,
+    OutOfRangePolicy,
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    SourceImage,
+    Kernel,
+    DestinationImage,
+    ExecutionPolicy>
+{
+
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        ExecutionPolicy const& execution_policy,
+        SourceImage const& source,
+        Kernel const& kernel,
+        DestinationImage& destination)
+    {
+        switch(execution_policy.which()) {
+            case fern::detail::sequential_execution_policy_id: {
+                Convolve<AlternativeForNoDataPolicy, NormalizePolicy,
+                    OutOfImagePolicy, OutOfRangePolicy, InputNoDataPolicy,
+                    OutputNoDataPolicy, SourceImage, Kernel, DestinationImage,
+                    SequentialExecutionPolicy>::apply(
+                        input_no_data_policy, output_no_data_policy,
+                        fern::detail::get_policy<SequentialExecutionPolicy>(
+                            execution_policy),
+                        source, kernel, destination);
+                break;
+            }
+            case fern::detail::parallel_execution_policy_id: {
+                Convolve<AlternativeForNoDataPolicy, NormalizePolicy,
+                    OutOfImagePolicy, OutOfRangePolicy, InputNoDataPolicy,
+                    OutputNoDataPolicy, SourceImage, Kernel, DestinationImage,
+                    ParallelExecutionPolicy>::apply(
+                        input_no_data_policy, output_no_data_policy,
+                        fern::detail::get_policy<ParallelExecutionPolicy>(
+                            execution_policy),
+                        source, kernel, destination);
+                break;
+            }
+        }
+    }
+
+};
 
 } // namespace dispatch
 

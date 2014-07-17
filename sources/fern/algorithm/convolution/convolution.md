@@ -1,25 +1,68 @@
-Convolution  {#convolution}
+Convolution        {#fern_algorithm_convolution}
 ===========
 
 [TOC]
 
 
-Code {#convolution_code}
+Code               {#fern_algorithm_convolution_code}
 ====
 
-Algorithms {#convolution_algorithms}
+Algorithms         {#fern_algorithm_convolution_algorithms}
 ----------
-- [fern::convolve](@ref fern::convolve)
 
-Policies {#convolution_policies}
+Name                        | Description
+--------------------------- | -----------
+fern::convolution::convolve | Convolve a value.
+
+
+Policies           {#fern_algorithm_convolution_policies}
 --------
+The folowing policies are used in the implementation of
+fern::convolution::convolve. They make it possible to configure the algorithm
+for different uses.
 
-Neighborhoods {#convolution_neighborhoods}
+- `AlternativeForNoDataPolicy`
+
+    When the algorithm encounters no-data, this policy determines how to
+    handle it. It allows no-data to be replaced by another value.
+
+    - fern::convolve::SkipNoData
+    - fern::convolve::ReplaceNoDataByFocalAverage
+
+- `NormalizePolicy`
+
+    In convolution, values are multiplied by kernel weights. This policy
+    determines how to normalize these values. Often, the sum of multiplied
+    values need to be normalized by dividing it by the sum of kernel weights.
+    Other normalization schemes are possible, though.
+
+    - fern::convolve::DivideByWeights
+    - fern::convolve::DontDivideByWeights
+
+- `OutOfImagePolicy`
+
+    When handling the borders of the image, part of the kernel is positioned
+    outside of the image. This policy determines how to handle these image
+    values. Often, they need to be handled in the same way as no-data values
+    in the image. But other approaches are possible.
+
+    - fern::convolve::SkipOutOfImage
+    - fern::convolve::ReplaceOutOfImageByFocalAverage
+
+The algorithm uses more policies, but these are the [general policies]
+(@ref fern_algorithm_policies) used also in the implementation of other
+algorithms.
+
+
+Neighborhoods      {#fern_algorithm_convolution_neighborhoods}
 -------------
-- [fern::Square](@ref fern::Square)
+
+Name         | Description
+------------ | -----------
+fern::Square | Square neighborhood
 
 
-Theory {#convolution_theory}
+Theory             {#fern_algorithm_convolution_theory}
 ======
 Computer Graphics, Principles and Practice:
 
@@ -35,7 +78,7 @@ The kernel is applied to the image by placing the kernel over the image to be co
 
 The sum of all these products is tabulated and divided by the kernel's normalizer. This result is placed into the new image at the position of the kernel's center. The kernel is translated to the next pixel position and the process repeats until all image pixels have been processed.
 
-Kernel {#convolution_kernel}
+Kernel             {#fern_algorithm_convolution_kernel}
 ------
 In image processing, a kernel is a small matrix that contains weights to be used to calculate new values based on a source image. For each pixel, the kernel is positioned with the center of the kernel on the current pixel. Surrounding pixels are weighted by the weights in the corresponding kernel cells, and the result is used as the value for the current pixel.
 
@@ -62,7 +105,7 @@ Sharpen:
      0 -1  0
 
 
-Neighborhood {#convolution_neighborhood}
+Neighborhood       {#fern_algorithm_convolution_neighborhood}
 ------------
 The neighborhood represents the shape of the non-zero values in the kernel. There are different neighborhood shapes:
 
@@ -72,7 +115,7 @@ The neighborhood represents the shape of the non-zero values in the kernel. Ther
 - Circle.
 
 
-See also {#convolution_see_also}
+See also           {#fern_algorithm_convolution_see_also}
 ========
 - [Wikipedia on convolution](https://en.wikipedia.org/wiki/Convolution)
 - [Wikipedia on image processing kernel](https://en.wikipedia.org/wiki/Kernel_(image_processing)

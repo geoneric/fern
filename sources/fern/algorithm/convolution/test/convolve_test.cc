@@ -479,7 +479,8 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
 
             // Verify mask.
             size_t nr_masked_cells{0};
-            fern::statistic::count(destination.mask(), true, nr_masked_cells);
+            fern::statistic::count(fern::sequential, destination.mask(),
+                true, nr_masked_cells);
             BOOST_CHECK_EQUAL(nr_masked_cells, 2);
             BOOST_CHECK(destination.mask()[1][1]);
             BOOST_CHECK(destination.mask()[2][0]);
@@ -495,7 +496,8 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
                 equal_cells);
 
             size_t nr_equal_cells{0};
-            fern::statistic::count(equal_cells, true, nr_equal_cells);
+            fern::statistic::count(fern::sequential, equal_cells, true,
+                nr_equal_cells);
             BOOST_CHECK_EQUAL(nr_equal_cells, 9);
         }
 
@@ -568,7 +570,8 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
                 fern::sequential, source, kernel_1, destination);
 
         size_t nr_masked_cells;
-        fern::statistic::count(destination.mask(), true, nr_masked_cells);
+        fern::statistic::count(fern::sequential, destination.mask(), true,
+            nr_masked_cells);
         BOOST_CHECK_EQUAL(nr_masked_cells, nr_rows * nr_cols);
     }
 
@@ -592,7 +595,8 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
                 fern::sequential, source, kernel_2, destination);
 
         size_t nr_masked_cells;
-        fern::statistic::count(destination.mask(), true, nr_masked_cells);
+        fern::statistic::count(fern::sequential, destination.mask(), true,
+            nr_masked_cells);
         BOOST_CHECK_EQUAL(nr_masked_cells, nr_rows * nr_cols);
     }
 }

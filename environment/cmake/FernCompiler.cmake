@@ -39,7 +39,7 @@ IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR
     # See http://www.airs.com/blog/archives/120
     # See out of range policy of add algorithm for signed integrals.
     SET(CMAKE_CXX_FLAGS
-        "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wcast-qual -Wwrite-strings -Werror=strict-aliasing -std=c++11 -pedantic -fno-strict-overflow"
+        "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wcast-qual -Wwrite-strings -Werror=strict-aliasing -std=c++11 -pedantic -fno-strict-overflow -ftemplate-backtrace-limit=0"
     )
 ENDIF()
 

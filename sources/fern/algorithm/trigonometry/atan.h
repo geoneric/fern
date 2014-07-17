@@ -5,20 +5,21 @@
 
 
 namespace fern {
-namespace atan {
-
-} // namespace atan
-
-
 namespace trigonometry {
 
+//! Calculate the arc tangent of \a value and write the result to \a result.
+/*!
+    \sa            fern::unary_local_operation
+
+    The value types of \a value and \a result must be floating point and the
+    same.
+*/
 template<
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class ExecutionPolicy,
     class Value,
-    class Result
->
+    class Result>
 void atan(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -34,13 +35,15 @@ void atan(
 }
 
 
+/*!
+    \overload
+*/
 template<
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class ExecutionPolicy,
     class Value,
-    class Result
->
+    class Result>
 void atan(
     ExecutionPolicy const& execution_policy,
     Value const& value,
@@ -52,11 +55,13 @@ void atan(
 }
 
 
+/*!
+    \overload
+*/
 template<
     class ExecutionPolicy,
     class Value,
-    class Result
->
+    class Result>
 void atan(
     ExecutionPolicy const& execution_policy,
     Value const& value,

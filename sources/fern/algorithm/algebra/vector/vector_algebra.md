@@ -1,7 +1,15 @@
-Vector algebra  {#vector_algebra}
+Vector algebra  {#fern_algorithm_algebra_vector}
 ==============
 
 [TOC]
+
+
+Code  {#fern_algorithm_algebra_vector_code}
+====
+
+Name                     | Description
+------------------------ | -----------
+fern::algebra::laplacian | Calculate the laplacian value.
 
 
 Operations to implement:
@@ -14,7 +22,7 @@ Operations to implement:
 - gradient
 
 
-Theory {#theory}
+Theory  {#fern_algorithm_algebra_vector_theory}
 ======
 The *directed line segment* from point \f$P\f$ to \f$Q\f$, denoted by \f$\overrightarrow{PQ}\f$, is the straight-line segment that extents from \f$P\f$ to \f$Q\f$. \f$\overrightarrow{PQ}\f$ and \f$\overleftarrow{QP}\f$ are different since they point in opposite directions.
 
@@ -66,7 +74,7 @@ The laplace operator in two dimensions is given by:
 where x and y are the Cartesian coordinates.
 
 
-See also {#see_also}
+See also  {#fern_algorithm_algebra_vector_see_also}
 ========
 - [Wikipedia on vector calculus](https://en.wikipedia.org/wiki/Vector_calculus)
 - Laplace

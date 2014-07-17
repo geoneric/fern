@@ -5,6 +5,10 @@
 namespace fern {
 namespace convolve {
 
+//! AlternativeForNoDataPolicy which discards no-data values.
+/*!
+    \sa            @ref fern_algorithm_convolution_policies
+*/
 class SkipNoData
 {
 

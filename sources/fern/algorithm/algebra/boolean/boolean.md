@@ -1,39 +1,13 @@
-Boolean algebra {#boolean_algebra}
+Boolean algebra {#fern_algorithm_algebra_boolean}
 ===============
 
-[TOC]
+Name                | Description
+------------------- | -----------
+and                 | Conjunction
+or                  | Disjunction
+fern::algebra::not_ | Negation
 
 
-Related {#related}
-=======
+See also
 
-Defined {#defined}
--------
-Determine which values in a collection have a valid value.
-
-- [fern::algebra::defined](@ref fern::algebra::defined)
-
-
-Basic {#basic}
-=====
-
-and, conjunction
-----------------
-TODO
-
-or, disjunction
----------------
-TODO
-
-not, negation
--------------
-- [fern::algebra::not_](@ref fern::algebra::not_)
-
-
-Derived {#derived}
-=======
-
-
-See also {#see_also}
-========
 - [Wikipedia on boolean algebra](https://en.wikipedia.org/wiki/Boolean_algebra)

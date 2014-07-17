@@ -1,134 +1,94 @@
 #pragma once
-#include "fern/algorithm/core/operation_traits.h"
-#include "fern/algorithm/policy/policies.h"
+#include "fern/algorithm/algebra/elementary/add.h"
 #include "fern/algorithm/statistic/detail/sum.h"
 
 
 namespace fern {
+namespace sum {
+
+template<
+    class Value1,
+    class Value2,
+    class Result>
+using OutOfRangePolicy = add::OutOfRangePolicy<Value1, Value2, Result>;
+
+} // namespace sum
+
+
 namespace statistic {
 
-template<
-    class Values,
-    class Result,
-    template<class, class, class> class OutOfRangePolicy=
-        binary::DiscardRangeErrors,
-    class InputNoDataPolicy=SkipNoData,
-    class OutputNoDataPolicy=DontMarkNoData
->
-class Sum
-{
-
-public:
-
-    using category = local_aggregate_operation_tag;
-    using A = Values;
-    using AValue = value_type<A>;
-    using R = Result;
-    using RValue = value_type<R>;
-
-    FERN_STATIC_ASSERT(std::is_arithmetic, AValue)
-    // We see boolean more as nominal values than as integers. You can't sum'em.
-    FERN_STATIC_ASSERT(!std::is_same, AValue, bool)
-    FERN_STATIC_ASSERT(std::is_same, RValue, AValue)
-
-    Sum()
-        : _algorithm()
-    {
-    }
-
-    Sum(
-        InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
-        OutputNoDataPolicy&& output_no_data_policy)  // Universal reference.
-        : _algorithm(
-              std::forward<InputNoDataPolicy>(input_no_data_policy),
-              std::forward<OutputNoDataPolicy>(output_no_data_policy))
-    {
-    }
-
-    inline void operator()(
-        A const& values,
-        R & result)
-    {
-        _algorithm.calculate(values, result);
-    }
-
-
-    template<
-        class Indices>
-    inline void operator()(
-        Indices const& indices,
-        A const& values,
-        R& result)
-    {
-        _algorithm.calculate(indices, values, result);
-    }
-
-
-    template<
-        class InputNoDataPolicy_,
-        class Collection>
-    inline void aggregate(
-        InputNoDataPolicy_&& input_no_data_policy,  // Universal reverence.
-        Collection const& results,
-        R& result)
-    {
-        Sum<Collection, R, OutOfRangePolicy, InputNoDataPolicy_,
-            OutputNoDataPolicy>(
-                std::forward<InputNoDataPolicy_>(input_no_data_policy),
-                std::forward<OutputNoDataPolicy>(_algorithm))(results, result);
-    }
-
-private:
-
-    sum::detail::dispatch::Sum<A, R,
-        OutOfRangePolicy, InputNoDataPolicy, OutputNoDataPolicy,
-        typename ArgumentTraits<A>::argument_category> _algorithm;
-
-};
-
-
-//! Sum the \a values and store the result in \a result.
+//! Calculate the sum of \a value and write the result to \a result.
 /*!
+    \sa            fern::unary_aggregate_operation
+
+    The value type of \a value must be arithmetic and not `bool`. The value
+    type of \a result must be equal to the value type of \a value.
 */
 template<
-    class Values,
-    class Result,
-    template<class, class, class> class OutOfRangePolicy=
-        binary::DiscardRangeErrors,
-    class InputNoDataPolicy=SkipNoData,
-    class OutputNoDataPolicy=DontMarkNoData
+    template<class, class, class> class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class ExecutionPolicy,
+    class Value,
+    class Result
 >
 void sum(
-    Values const& values,
+    InputNoDataPolicy const& input_no_data_policy,
+    OutputNoDataPolicy& output_no_data_policy,
+    ExecutionPolicy const& execution_policy,
+    Value const& value,
     Result& result)
 {
-    Sum<Values, Result, OutOfRangePolicy, InputNoDataPolicy,
-        OutputNoDataPolicy>()(values, result);
+    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Value>)
+    FERN_STATIC_ASSERT(!std::is_same, value_type<Value>, bool)
+    FERN_STATIC_ASSERT(std::is_same, value_type<Result>, value_type<Value>)
+
+    sum::detail::sum<OutOfRangePolicy>(input_no_data_policy,
+        output_no_data_policy, execution_policy, value, result);
 }
 
 
-//! Sum the \a values and store the result in \a result.
 /*!
+    \overload
 */
 template<
-    class Values,
-    class Result,
-    template<class, class, class> class OutOfRangePolicy=
-        binary::DiscardRangeErrors,
-    class InputNoDataPolicy=SkipNoData,
-    class OutputNoDataPolicy=DontMarkNoData
+    template<class, class, class> class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class ExecutionPolicy,
+    class Value,
+    class Result
 >
 void sum(
-    InputNoDataPolicy&& input_no_data_policy,  // Universal reference.
-    OutputNoDataPolicy&& output_no_data_policy,  // Universal reference.
-    Values const& values,
+    ExecutionPolicy const& execution_policy,
+    Value const& value,
     Result& result)
 {
-    Sum<Values, Result, OutOfRangePolicy, InputNoDataPolicy,
-        OutputNoDataPolicy>(
-            std::forward<InputNoDataPolicy>(input_no_data_policy),
-            std::forward<OutputNoDataPolicy>(output_no_data_policy))(
-                values, result);
+    OutputNoDataPolicy output_no_data_policy;
+    sum<OutOfRangePolicy>(InputNoDataPolicy(), output_no_data_policy,
+        execution_policy, value, result);
+}
+
+
+/*!
+    \overload
+*/
+template<
+    class ExecutionPolicy,
+    class Value,
+    class Result
+>
+void sum(
+    ExecutionPolicy const& execution_policy,
+    Value const& value,
+    Result& result)
+{
+    using InputNoDataPolicy = SkipNoData;
+    using OutputNoDataPolicy = DontMarkNoData;
+
+    OutputNoDataPolicy output_no_data_policy;
+    sum<binary::DiscardRangeErrors>(InputNoDataPolicy(),
+        output_no_data_policy, execution_policy, value, result);
 }
 
 } // namespace statistic

@@ -7,12 +7,26 @@
 namespace fern {
 namespace pow {
 
+//! Out of domain policy for fern::algebra::pow algorithm.
+/*!
+    In the folowing cases, within_domain(Base const&, Exponent const&)
+    returns false:
+    - \a base < 0 and \a base's exponent is not 0.
+    - \a base == 0 and \a exponent < 0.
+
+    The value types of \a base and \a exponent must be floating point and
+    the same.
+
+    \sa            @ref fern_algorithm_policies_out_of_domain_policy
+*/
 template<
     class Base,
-    class Exponent
->
+    class Exponent>
 class OutOfDomainPolicy
 {
+
+    FERN_STATIC_ASSERT(std::is_floating_point, value_type<Base>)
+    FERN_STATIC_ASSERT(std::is_same, value_type<Exponent>, value_type<Base>)
 
 public:
 
@@ -38,76 +52,98 @@ public:
 };
 
 
+//! Out of range policy for fern::algebra::pow algorithm.
+/*!
+    The value types of \a base and \a exponent must be floating point and
+    the same.
+
+    \sa            fern::DetectOutOfRangeByErrno,
+                   @ref fern_algorithm_policies_out_of_range_policy
+*/
 template<
-    class Value1,
-    class Value2,
+    class Base,
+    class Exponent,
     class Result>
-using OutOfRangePolicy = DetectOutOfRangeByErrno<Value1, Value2, Result>;
+using OutOfRangePolicy = DetectOutOfRangeByErrno<Base, Exponent, Result>;
 
 } // namespace pow
 
 
 namespace algebra {
 
+//! Raise \a base to the power of \a exponent and write the result to \a result.
+/*!
+    \sa            fern::pow::OutOfDomainPolicy, fern::pow::OutOfRangePolicy,
+                   fern::binary_local_operation
+
+    The value types of \a base, \a exponent and \a result must be floating
+    point and the same.
+*/
 template<
     template<class, class> class OutOfDomainPolicy,
     template<class, class, class> class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class ExecutionPolicy,
-    class Value1,
-    class Value2,
+    class Base,
+    class Exponent,
     class Result
 >
 void pow(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
     ExecutionPolicy const& execution_policy,
-    Value1 const& value1,
-    Value2 const& value2,
+    Base const& base,
+    Exponent const& exponent,
     Result& result)
 {
-    FERN_STATIC_ASSERT(std::is_floating_point, value_type<Value1>)
-    FERN_STATIC_ASSERT(std::is_same, value_type<Value2>, value_type<Value1>)
-    FERN_STATIC_ASSERT(std::is_same, value_type<Result>, value_type<Value1>)
+    FERN_STATIC_ASSERT(std::is_floating_point, value_type<Base>)
+    FERN_STATIC_ASSERT(std::is_same, value_type<Exponent>, value_type<Base>)
+    FERN_STATIC_ASSERT(std::is_same, value_type<Result>, value_type<Base>)
 
     pow::detail::pow<OutOfDomainPolicy, OutOfRangePolicy>(input_no_data_policy,
-        output_no_data_policy, execution_policy, value1, value2, result);
+        output_no_data_policy, execution_policy, base, exponent, result);
 }
 
 
+/*!
+  \overload
+*/
 template<
     template<class, class> class OutOfDomainPolicy,
     template<class, class, class> class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class ExecutionPolicy,
-    class Value1,
-    class Value2,
+    class Base,
+    class Exponent,
     class Result
 >
 void pow(
     ExecutionPolicy const& execution_policy,
-    Value1 const& value1,
-    Value2 const& value2,
+    Base const& base,
+    Exponent const& exponent,
     Result& result)
 {
     OutputNoDataPolicy output_no_data_policy;
     pow<OutOfDomainPolicy, OutOfRangePolicy>(InputNoDataPolicy(),
-        output_no_data_policy, execution_policy, value1, value2, result);
+        output_no_data_policy, execution_policy, base, exponent, result);
 }
 
 
+/*!
+  \overload
+*/
 template<
     class ExecutionPolicy,
-    class Value1,
-    class Value2,
+    class Base,
+    class Exponent,
     class Result
 >
 void pow(
     ExecutionPolicy const& execution_policy,
-    Value1 const& value1,
-    Value2 const& value2,
+    Base const& base,
+    Exponent const& exponent,
     Result& result)
 {
     using InputNoDataPolicy = SkipNoData;
@@ -116,7 +152,7 @@ void pow(
     OutputNoDataPolicy output_no_data_policy;
     pow<binary::DiscardDomainErrors, binary::DiscardRangeErrors>(
         InputNoDataPolicy(), output_no_data_policy, execution_policy,
-        value1, value2, result);
+        base, exponent, result);
 }
 
 } // namespace algebra
