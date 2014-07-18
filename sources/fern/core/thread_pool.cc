@@ -21,7 +21,6 @@ ThreadPool::ThreadPool(
       _joiner(_threads)
 
 {
-    std::cout << "thread_pool construct" << std::endl;
     assert(nr_threads > 0);
 
     try {
@@ -41,7 +40,6 @@ ThreadPool::ThreadPool(
 */
 ThreadPool::~ThreadPool()
 {
-    std::cout << "thread_pool destruct" << std::endl;
     _done = true;
 }
 

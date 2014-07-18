@@ -24,7 +24,6 @@ ThreadPool& ThreadClient::pool()
 ThreadClient::ThreadClient(
     size_t nr_threads)
 {
-    std::cout << "thread_client construct" << std::endl;
     // Instantiate the thread pool only once.
     // Note, that the pointer to the pool is created, but the pool itself
     // isn't. The pointer is a static variable.
@@ -36,7 +35,6 @@ ThreadClient::ThreadClient(
 
 ThreadClient::~ThreadClient()
 {
-    std::cout << "thread_client destruct" << std::endl;
     // The pointer to the pool is a static variable.  The pool itself may or
     // may not be destructed already. This depends on whether we are static
     // or not and if so, the order of destruction.
