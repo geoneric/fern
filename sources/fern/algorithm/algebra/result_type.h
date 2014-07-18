@@ -2,6 +2,7 @@
 #include <boost/mpl/and.hpp>
 #include <boost/mpl/if.hpp>
 #include "fern/core/argument_traits.h"
+#include "fern/core/constant_traits.h"
 #include "fern/core/assert.h"
 #include "fern/core/base_class.h"
 #include "fern/algorithm/algebra/result_value.h"
