@@ -71,4 +71,15 @@ double cell_size(
     return raster.cell_size();
 }
 
+
+template<
+    class T,
+    class U>
+example::Raster<T> clone(
+    example::Raster<U> const& raster)
+{
+    return std::move(example::Raster<T>(raster.cell_size(), raster.nr_rows(),
+        raster.nr_cols()));
+}
+
 } // namespace fern
