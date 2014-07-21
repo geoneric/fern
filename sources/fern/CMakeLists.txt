@@ -59,6 +59,7 @@ ELSE()
     )
     INSTALL(
         TARGETS fernlib
+        EXPORT fern_targets
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib
     )
