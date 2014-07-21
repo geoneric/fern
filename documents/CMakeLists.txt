@@ -5,6 +5,7 @@ IF(NOT FERN_ALGORITHM_ONLY)
         # CACHE STRING "Flags passed to latex."
     )
     INCLUDE(UseLATEX)
-
-    ADD_SUBDIRECTORY(texts)
 ENDIF()
+
+ADD_SUBDIRECTORY(manual)
+ADD_SUBDIRECTORY(texts)
