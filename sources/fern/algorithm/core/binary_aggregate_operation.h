@@ -128,25 +128,6 @@ void operation_2d(
     size_t const end2 = index_ranges[1].end();
     bool data_seen{false};
 
-    /// if(begin1 < end1 && begin2 < end2) {
-
-    ///     value_type<Result>& count = fern::get(result);
-    ///     count = 0;
-
-    ///     for(size_t i = begin1; i < end1; ++i) {
-    ///         for(size_t j = begin2; j < end2; ++j) {
-
-    ///             if(!input_no_data_policy.is_no_data(i, j)) {
-
-    ///                 /// count += fern::get(values, i, j) == value ? 1 : 0;
-    ///                 algorithm(fern::get(values, i, j), fern::get(value),
-    ///                     count);
-    ///                 data_seen = true;
-    ///             }
-    ///         }
-    ///     }
-    /// }
-
     if(begin1 < end1 && begin2 < end2) {
 
         value_type<Result> tmp_result;
