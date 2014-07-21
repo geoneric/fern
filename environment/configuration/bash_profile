@@ -17,6 +17,8 @@ _basename=`basename $FERN`
 export PATH=$FERN/environment/scripts:$OBJECTS/$_basename/bin:$PATH
 unset _basename
 
+export FERN_CMAKE_ARGUMENTS="-DFERN_ALGORITHM_ONLY=TRUE"
+
 cd $FERN
 setPromptForProject fern $BUILD_TYPE
 
