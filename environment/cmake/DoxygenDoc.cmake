@@ -40,8 +40,8 @@ CONFIGURE_FILE(
 #     DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
 # )
 
-# This target is *always considered out of date*. No, that's annoying.
-ADD_CUSTOM_TARGET(cpp_doc # ALL
+# This target is *always considered out of date*.
+ADD_CUSTOM_TARGET(cpp_doc ALL
     COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile 2>&1 | grep --invert-match "QGDict::hashAsciiKey: Invalid null key"
     DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
 
