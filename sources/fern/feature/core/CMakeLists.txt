@@ -17,7 +17,9 @@ TARGET_LINK_LIBRARIES(fern_feature_core
     fern_core
 )
 IF(FERN_ALGORITHM_ONLY)
-    INSTALL(TARGETS fern_feature_core
+    INSTALL(
+        TARGETS fern_feature_core
+        EXPORT fern_targets
         ARCHIVE DESTINATION lib
     )
 ENDIF()
