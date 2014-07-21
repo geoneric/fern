@@ -935,6 +935,82 @@ struct BinaryLocalOperation<
     Value1,
     Value2,
     Result,
+    ExecutionPolicy,
+    array_0d_tag,
+    array_2d_tag>
+
+{
+
+    // f(0d array, 2d array)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        ExecutionPolicy const& execution_policy,
+        Value1 const& value1,
+        Value2 const& value2,
+        Result& result)
+    {
+        switch(execution_policy.which()) {
+            case detail::sequential_execution_policy_id: {
+                BinaryLocalOperation<
+                    Algorithm,
+                    OutOfDomainPolicy,
+                    OutOfRangePolicy,
+                    InputNoDataPolicy,
+                    OutputNoDataPolicy,
+                    Value1,
+                    Value2,
+                    Result,
+                    SequentialExecutionPolicy,
+                    array_0d_tag, array_2d_tag>::apply(
+                        input_no_data_policy, output_no_data_policy,
+                        detail::get_policy<SequentialExecutionPolicy>(
+                            execution_policy),
+                        value1, value2, result);
+                break;
+            }
+            case detail::parallel_execution_policy_id: {
+                BinaryLocalOperation<
+                    Algorithm,
+                    OutOfDomainPolicy,
+                    OutOfRangePolicy,
+                    InputNoDataPolicy,
+                    OutputNoDataPolicy,
+                    Value1,
+                    Value2,
+                    Result,
+                    ParallelExecutionPolicy,
+                    array_0d_tag, array_2d_tag>::apply(
+                        input_no_data_policy, output_no_data_policy,
+                        detail::get_policy<ParallelExecutionPolicy>(
+                            execution_policy),
+                        value1, value2, result);
+                break;
+            }
+        }
+    }
+
+};
+
+
+template<
+    class Algorithm,
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class Value1,
+    class Value2,
+    class Result>
+struct BinaryLocalOperation<
+    Algorithm,
+    OutOfDomainPolicy,
+    OutOfRangePolicy,
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Value1,
+    Value2,
+    Result,
     SequentialExecutionPolicy,
     array_2d_tag,
     array_2d_tag>
