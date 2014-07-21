@@ -5,9 +5,7 @@ SET(TEST_NAMES
 MACRO(ADD_UNIT_TEST NAME)
     ADD_EXECUTABLE(algorithm_algebra_boolean_${NAME} ${NAME})
     TARGET_LINK_LIBRARIES(algorithm_algebra_boolean_${NAME}
-        # fern_core
-        # fern_algorithm_core
-        # fern_feature_core
+        stdc++
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
     ADD_TEST(
