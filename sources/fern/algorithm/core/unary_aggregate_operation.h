@@ -547,6 +547,78 @@ struct UnaryAggregateOperation<
 
 };
 
+
+template<
+    class Algorithm,
+    class Aggregator,
+    class OutOfDomainPolicy,
+    template<class, class, class> class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class Value,
+    class Result>
+struct UnaryAggregateOperation<
+    Algorithm,
+    Aggregator,
+    OutOfDomainPolicy,
+    OutOfRangePolicy,
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Value,
+    Result,
+    ExecutionPolicy,
+    array_2d_tag>
+{
+
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        ExecutionPolicy const& execution_policy,
+        Value const& value,
+        Result& result)
+    {
+        switch(execution_policy.which()) {
+            case fern::detail::sequential_execution_policy_id: {
+                UnaryAggregateOperation<
+                    Algorithm,
+                    Aggregator,
+                    OutOfDomainPolicy,
+                    OutOfRangePolicy,
+                    InputNoDataPolicy,
+                    OutputNoDataPolicy,
+                    Value,
+                    Result,
+                    SequentialExecutionPolicy,
+                    array_2d_tag>::apply(
+                        input_no_data_policy, output_no_data_policy,
+                        fern::detail::get_policy<SequentialExecutionPolicy>(
+                            execution_policy),
+                        value, result);
+                break;
+            }
+            case fern::detail::parallel_execution_policy_id: {
+                UnaryAggregateOperation<
+                    Algorithm,
+                    Aggregator,
+                    OutOfDomainPolicy,
+                    OutOfRangePolicy,
+                    InputNoDataPolicy,
+                    OutputNoDataPolicy,
+                    Value,
+                    Result,
+                    ParallelExecutionPolicy,
+                    array_2d_tag>::apply(
+                        input_no_data_policy, output_no_data_policy,
+                        fern::detail::get_policy<ParallelExecutionPolicy>(
+                            execution_policy),
+                        value, result);
+                break;
+            }
+        }
+    }
+
+};
+
 } // namespace dispatch
 } // namespace detail
 } // namespace unary_aggregate_operation_

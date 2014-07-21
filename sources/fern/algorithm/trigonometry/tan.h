@@ -28,8 +28,8 @@ class OutOfDomainPolicy
 
 public:
 
-    inline bool within_domain(
-        Value const& value) const
+    inline static bool within_domain(
+        Value const& value)
     {
         if(!std::isfinite(value)) {
             // All bets are off.

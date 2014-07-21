@@ -12,7 +12,7 @@ namespace algebra {
     \sa            fern::binary_local_operation
 
     The value types of \a value1 and \a value2 must be arithmetic and not
-    `bool`. The value type of \a result must be `bool`.
+    `bool`. The value type of \a result must be arithmetic.
 */
 template<
     class InputNoDataPolicy,
@@ -33,7 +33,7 @@ void equal(
     FERN_STATIC_ASSERT(!std::is_same, value_type<Value1>, bool)
     FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Value2>)
     FERN_STATIC_ASSERT(!std::is_same, value_type<Value2>, bool)
-    FERN_STATIC_ASSERT(std::is_same, value_type<Result>, bool)
+    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Result>)
 
     equal::detail::equal<>(input_no_data_policy, output_no_data_policy,
         execution_policy, value1, value2, result);

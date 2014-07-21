@@ -29,7 +29,6 @@ void unary_min(
 {
     FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Value>)
     FERN_STATIC_ASSERT(!std::is_same, value_type<Value>, bool)
-    FERN_STATIC_ASSERT(std::is_same, value_type<Result>, Result)
     FERN_STATIC_ASSERT(std::is_same, value_type<Result>, value_type<Value>)
 
     unary_min::detail::unary_min<>(input_no_data_policy, output_no_data_policy,

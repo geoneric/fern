@@ -11,7 +11,7 @@ namespace algebra {
 /*!
     \sa            fern::unary_local_operation.
 
-    The value types of \a value and \a result must be `bool`.
+    The value types of \a value and \a result must be arithmetic.
 */
 template<
     class InputNoDataPolicy,
@@ -27,8 +27,8 @@ void not_(
     Value const& value,
     Result& result)
 {
-    FERN_STATIC_ASSERT(std::is_same, value_type<Value>, bool)
-    FERN_STATIC_ASSERT(std::is_same, value_type<Result>, bool)
+    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Value>)
+    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Result>)
 
     not_::detail::not_<>(input_no_data_policy,
         output_no_data_policy, execution_policy, value, result);

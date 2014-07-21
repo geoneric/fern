@@ -13,8 +13,6 @@ template<
 struct Algorithm
 {
 
-    FERN_STATIC_ASSERT(std::is_same, Value, bool)
-
     template<
         class R>
     inline void operator()(

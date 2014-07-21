@@ -1,6 +1,4 @@
 #pragma once
-#include <type_traits>
-#include <utility>
 #include "fern/core/argument_traits.h"
 #include "fern/core/assert.h"
 #include "fern/core/base_class.h"
