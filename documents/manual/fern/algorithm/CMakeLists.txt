@@ -1,6 +1,12 @@
-MESSAGE("yaaaah")
+ADD_SUBDIRECTORY(source)
 SET(SPHINX_SOURCES
     index.rst
+    introduction.rst
+    tutorial.rst
+    what_s_new.rst
+    source/tutorial_divide-1.cc
+    source/tutorial_divide-2.cc
+    source/tutorial_divide-3.cc
 )
 SET(SPHINX_TARGET
     manual_fern_algorithm

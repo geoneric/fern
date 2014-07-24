@@ -169,6 +169,57 @@ template<
     class Value1,
     class Value2,
     class Result>
+void operation_1d_1d(
+    Algorithm const& algorithm,
+    InputNoDataPolicy const& input_no_data_policy,
+    OutputNoDataPolicy& output_no_data_policy,
+    IndexRanges<1> const& index_ranges,
+    Value1 const& value1,
+    Value2 const& value2,
+    Result& result)
+{
+    for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+
+        // Don't do anything if the input value is no-data. We assume
+        // that input no-data values are already marked as such in the
+        // result.
+        if(!input_no_data_policy.is_no_data(i)) {
+            const_reference<Value1> v1(fern::get(value1, i));
+            const_reference<Value1> v2(fern::get(value2, i));
+
+            if(!OutOfDomainPolicy::within_domain(v1, v2)) {
+                // Input value is out of domain. Mark result value as
+                // no-data. Don't change the result value.
+                output_no_data_policy.mark_as_no_data(i);
+            }
+            else {
+                reference<Result> r(fern::get(result, i));
+
+                algorithm(v1, v2, r);
+
+                if(!OutOfRangePolicy::within_range(v1, v2, r)) {
+                    // Result value is out-of-range. Mark result value as
+                    // no-data. Result value contains the out-of-range
+                    // value (this may be overriden by
+                    // output_no_data_policy, depending on its
+                    // implementation).
+                    output_no_data_policy.mark_as_no_data(i);
+                }
+            }
+        }
+    }
+}
+
+
+template<
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
+    class Algorithm,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class Value1,
+    class Value2,
+    class Result>
 void operation_2d_0d(
     Algorithm const& algorithm,
     InputNoDataPolicy const& input_no_data_policy,
@@ -586,6 +637,119 @@ struct BinaryLocalOperation<
         for(auto const& block_range: ranges) {
             auto function = std::bind(
                 operation_0d_1d<
+                    OutOfDomainPolicy, OutOfRangePolicy,
+                    Algorithm,
+                    InputNoDataPolicy, OutputNoDataPolicy,
+                    Value1, Value2, Result>,
+                std::cref(algorithm),
+                std::cref(input_no_data_policy),
+                std::ref(output_no_data_policy), std::cref(block_range),
+                std::cref(value1), std::cref(value2), std::ref(result));
+            futures.emplace_back(pool.submit(function));
+        }
+
+        for(auto& future: futures) {
+            future.get();
+        }
+    }
+
+};
+
+
+template<
+    class Algorithm,
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class Value1,
+    class Value2,
+    class Result>
+struct BinaryLocalOperation<
+    Algorithm,
+    OutOfDomainPolicy,
+    OutOfRangePolicy,
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Value1,
+    Value2,
+    Result,
+    SequentialExecutionPolicy,
+    array_1d_tag,
+    array_1d_tag>
+
+{
+
+    // f(1d array, 1d array)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        SequentialExecutionPolicy const& /* execution_policy */,
+        Value1 const& value1,
+        Value2 const& value2,
+        Result& result)
+    {
+        assert(fern::size(value1) == fern::size(value2));
+        assert(fern::size(value2) == fern::size(result));
+
+        Algorithm algorithm;
+
+        operation_1d_1d<OutOfDomainPolicy, OutOfRangePolicy>(algorithm,
+            input_no_data_policy, output_no_data_policy,
+            IndexRanges<1>{IndexRange(0, fern::size(value1))}, value1, value2,
+            result);
+    }
+
+};
+
+
+template<
+    class Algorithm,
+    class OutOfDomainPolicy,
+    class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class Value1,
+    class Value2,
+    class Result>
+struct BinaryLocalOperation<
+    Algorithm,
+    OutOfDomainPolicy,
+    OutOfRangePolicy,
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Value1,
+    Value2,
+    Result,
+    ParallelExecutionPolicy,
+    array_1d_tag,
+    array_1d_tag>
+
+{
+
+    // f(0d array, 1d array)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        ParallelExecutionPolicy const& /* execution_policy */,
+        Value1 const& value1,
+        Value2 const& value2,
+        Result& result)
+    {
+        assert(fern::size(value1) == fern::size(value2));
+        assert(fern::size(value2) == fern::size(result));
+
+        ThreadPool& pool(ThreadClient::pool());
+        size_t const size = fern::size(value1);
+        std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size);
+        std::vector<std::future<void>> futures;
+        futures.reserve(ranges.size());
+
+        Algorithm algorithm;
+
+        for(auto const& block_range: ranges) {
+            auto function = std::bind(
+                operation_1d_1d<
                     OutOfDomainPolicy, OutOfRangePolicy,
                     Algorithm,
                     InputNoDataPolicy, OutputNoDataPolicy,
