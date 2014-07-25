@@ -2,15 +2,21 @@ INCLUDE_DIRECTORIES(
     ${CMAKE_SOURCE_DIR}/sources
 )
 ADD_SUBDIRECTORY(test)
+
 ADD_EXECUTABLE(tutorial_divide-1
     tutorial_divide-1
 )
+TARGET_LINK_LIBRARIES(tutorial_divide-1
+    stdc++
+)
+
 ADD_EXECUTABLE(tutorial_divide-2
     tutorial_divide-2
 )
 TARGET_LINK_LIBRARIES(tutorial_divide-2
     fern_algorithm_core
 )
+
 ADD_EXECUTABLE(tutorial_divide-3
     tutorial_divide-3
 )
