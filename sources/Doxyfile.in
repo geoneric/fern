@@ -1,9 +1,7 @@
 PROJECT_NAME            = ${PROJECT_NAME}
 PROJECT_BRIEF           = www.geoneric.eu
 # TODO PROJECT_LOGO            = ...
-INPUT                   = ${CMAKE_CURRENT_SOURCE_DIR}/fern \
-                          ${CMAKE_CURRENT_BINARY_DIR}/fern
-                          # ${XSD_INCLUDE_DIRS}/xsd/cxx
+INPUT                   = ${FERN_DOXYGEN_INPUT}
 ${DOXYGEN_TEMPLATE}
 EXCLUDE_PATTERNS        = */detail/* \
                           *_test.cc \
