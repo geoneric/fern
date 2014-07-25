@@ -24,7 +24,7 @@ ENDFOREACH()
 FOREACH(NAME _build _static _templates)
     ADD_CUSTOM_COMMAND(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${NAME}
-        COMMAND ${CMAKE_COMMAND} -E ${CMAKE_MAKE_PROGRAM}
+        COMMAND ${CMAKE_COMMAND} -E make_directory
             ${CMAKE_CURRENT_BINARY_DIR}/${NAME}
     )
 ENDFOREACH()
