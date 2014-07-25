@@ -42,7 +42,9 @@ CONFIGURE_FILE(
 
 # This target is *always considered out of date*.
 ADD_CUSTOM_TARGET(cpp_doc ALL
-    COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile 2>&1 | grep --invert-match "QGDict::hashAsciiKey: Invalid null key"
+    COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+    # Doesn't work on Windows / mingw32. CMake thinks this results in an error.
+    # 2>&1 | grep --invert-match "QGDict::hashAsciiKey: Invalid null key"
     DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
 
     # DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/html/index.html
