@@ -64,7 +64,24 @@ template<
     class Base,
     class Exponent,
     class Result>
-using OutOfRangePolicy = DetectOutOfRangeByErrno<Base, Exponent, Result>;
+class OutOfRangePolicy
+{
+
+    FERN_STATIC_ASSERT(std::is_floating_point, value_type<Base>)
+    FERN_STATIC_ASSERT(std::is_same, value_type<Exponent>, value_type<Base>)
+    FERN_STATIC_ASSERT(std::is_same, value_type<Result>, value_type<Base>)
+
+public:
+
+    inline static bool within_range(
+        Base const& /* base */,
+        Exponent const& /* exponent */,
+        Result const& result)
+    {
+        return std::isfinite(result);
+    }
+
+};
 
 } // namespace pow
 
