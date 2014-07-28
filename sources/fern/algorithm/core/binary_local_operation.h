@@ -48,7 +48,7 @@ void operation_0d_0d(
             if(!OutOfRangePolicy::within_range(v1, v2, r)) {
                 // Result value is out-of-range. Mark result value as
                 // no-data. Result value contains the out-of-range
-                // value (this may be overriden by
+                // value (this may be overridden by
                 // output_no_data_policy, depending on its
                 // implementation).
                 output_no_data_policy.mark_as_no_data();
@@ -98,7 +98,7 @@ void operation_1d_0d(
                 if(!OutOfRangePolicy::within_range(v1, v2, r)) {
                     // Result value is out-of-range. Mark result value as
                     // no-data. Result value contains the out-of-range
-                    // value (this may be overriden by
+                    // value (this may be overridden by
                     // output_no_data_policy, depending on its
                     // implementation).
                     output_no_data_policy.mark_as_no_data(i);
@@ -149,7 +149,7 @@ void operation_0d_1d(
                 if(!OutOfRangePolicy::within_range(v1, v2, r)) {
                     // Result value is out-of-range. Mark result value as
                     // no-data. Result value contains the out-of-range
-                    // value (this may be overriden by
+                    // value (this may be overridden by
                     // output_no_data_policy, depending on its
                     // implementation).
                     output_no_data_policy.mark_as_no_data(i);
@@ -200,7 +200,7 @@ void operation_1d_1d(
                 if(!OutOfRangePolicy::within_range(v1, v2, r)) {
                     // Result value is out-of-range. Mark result value as
                     // no-data. Result value contains the out-of-range
-                    // value (this may be overriden by
+                    // value (this may be overridden by
                     // output_no_data_policy, depending on its
                     // implementation).
                     output_no_data_policy.mark_as_no_data(i);
@@ -253,7 +253,7 @@ void operation_2d_0d(
                     if(!OutOfRangePolicy::within_range(v1, v2, r)) {
                         // Result value is out-of-range. Mark result value as
                         // no-data. Result value contains the out-of-range
-                        // value (this may be overriden by
+                        // value (this may be overridden by
                         // output_no_data_policy, depending on its
                         // implementation).
                         output_no_data_policy.mark_as_no_data(i, j);
@@ -307,7 +307,7 @@ void operation_0d_2d(
                     if(!OutOfRangePolicy::within_range(v1, v2, r)) {
                         // Result value is out-of-range. Mark result value as
                         // no-data. Result value contains the out-of-range
-                        // value (this may be overriden by
+                        // value (this may be overridden by
                         // output_no_data_policy, depending on its
                         // implementation).
                         output_no_data_policy.mark_as_no_data(i, j);
@@ -361,7 +361,7 @@ void operation_2d_2d(
                     if(!OutOfRangePolicy::within_range(v1, v2, r)) {
                         // Result value is out-of-range. Mark result value as
                         // no-data. Result value contains the out-of-range
-                        // value (this may be overriden by
+                        // value (this may be overridden by
                         // output_no_data_policy, depending on its
                         // implementation).
                         output_no_data_policy.mark_as_no_data(i, j);
@@ -1361,7 +1361,7 @@ struct BinaryLocalOperation<
     \param[in]     value1 First input to pass to the operation.
     \param[in]     value2 Second input to pass to the operation.
     \param[out]    result Output that is written by the operation.
-    \sa            fern::unary_local_operation
+    \sa            fern::nullary_local_operation, fern::unary_local_operation
 
     This function supports handling 0d, 1d and 2d values.
 

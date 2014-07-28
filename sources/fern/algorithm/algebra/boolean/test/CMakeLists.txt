@@ -1,4 +1,5 @@
 SET(TEST_NAMES
+    defined_test
     not_test
 )
 

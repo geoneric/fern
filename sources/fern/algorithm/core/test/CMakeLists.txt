@@ -3,6 +3,8 @@ SET(TEST_NAMES
     cast_test
     index_range_test
     index_ranges_test
+    fill_test
+    nullary_local_operation_test
     unary_local_operation_test
 )
 
