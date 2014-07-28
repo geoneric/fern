@@ -82,6 +82,17 @@ inline typename ArgumentTraits<MaskedRaster<T, 1>>::reference get(
 
 
 template<
+    class U,
+    class V>
+inline MaskedRaster<U, 1> clone(
+    MaskedRaster<V, 1> const& raster)
+{
+    return std::move(MaskedRaster<U, 1>(extents[raster.shape()[0]],
+        raster.transformation()));
+}
+
+
+template<
     class T>
 inline double cell_size(
     MaskedRaster<T, 2> const& raster,
@@ -130,6 +141,18 @@ inline typename ArgumentTraits<MaskedRaster<T, 2>>::reference get(
 
 
 template<
+    class U,
+    class V>
+inline MaskedRaster<U, 2> clone(
+    MaskedRaster<V, 2> const& raster)
+{
+    return std::move(MaskedRaster<U, 2>(
+        extents[raster.shape()[0]][raster.shape()[1]],
+        raster.transformation()));
+}
+
+
+template<
     class T>
 inline typename ArgumentTraits<MaskedRaster<T, 3>>::const_reference get(
     MaskedRaster<T, 3> const& raster,
@@ -164,11 +187,11 @@ inline typename ArgumentTraits<MaskedRaster<T, 3>>::reference get(
 template<
     class U,
     class V>
-inline MaskedRaster<U, 2> clone(
-    MaskedRaster<V, 2> const& raster)
+inline MaskedRaster<U, 3> clone(
+    MaskedRaster<V, 3> const& raster)
 {
-    return std::move(MaskedRaster<U, 2>(
-        extents[raster.shape()[0]][raster.shape()[1]],
+    return std::move(MaskedRaster<U, 3>(
+        extents[raster.shape()[0]][raster.shape()[1],raster.shape()[2]],
         raster.transformation()));
 }
 

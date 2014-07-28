@@ -6,7 +6,6 @@
 #include "fern/core/value_type.h"
 #include "fern/feature/core/array_traits.h"
 #include "fern/feature/core/masked_array_traits.h"
-/// #include "fern/feature/core/masked_array.h"
 #include "fern/feature/core/masked_raster.h"
 #include "fern/algorithm/core/cast.h"
 #include "fern/algorithm/convolution/convolve.h"
@@ -36,55 +35,6 @@ template<
 class Laplacian
 {
 };
-
-
-/// template<
-///     template<class, class> class Template1,
-///     template<class, class> class Template2,
-///     bool condition
-/// >
-/// struct SelectIf
-/// {
-/// };
-/// 
-/// 
-/// template<
-///     template<class, class> class Template1,
-///     template<class, class> class Template2
-/// >
-/// struct SelectIf<
-///     Template1,
-///     Template2,
-///     true>
-/// {
-///     template<class V1, class V2>
-///     using Template = Template1<V1, V2>;
-/// };
-/// 
-/// 
-/// template<
-///     template<class, class> class Template1,
-///     template<class, class> class Template2
-/// >
-/// struct SelectIf<
-///     Template1,
-///     Template2,
-///     false>
-/// {
-///     template<class V1, class V2>
-///     using Template = Template2<V1, V2>;
-/// };
-/// 
-/// 
-/// template<class Value, class Result>
-/// using OutOfRangePolicy1 = SelectIf<convolve::OutOfRangePolicy, convolve::OutOfRangePolicy, true>::Template<Value, Result>;
-
-
-// typename SelectIf<
-//     unary::DiscardRangeErrors,
-//     convolve::OutOfRangePolicy,
-//     std::is_same<OutputNoDataPolicy, DontMarkNoData>::value>
-//     .template ::Template Bla;
 
 
 template<
@@ -138,8 +88,8 @@ struct Laplacian<
                 value, kernel, result);
 
         // Calculate the sum of the kernel weights. This equals the convolution
-        // of the mask (inverted and converted to integers), by the kernel
-        // used above, and without normalizing by the kernel weights.
+        // of the mask (inverted) by the kernel used above, without
+        // normalizing by the kernel weights.
         auto extents = fern::extents[size(value, 0)][size(value, 1)];
 
         // Determine which cells have a valid (non-no-data) value. The result
