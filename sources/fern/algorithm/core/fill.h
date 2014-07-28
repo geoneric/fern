@@ -9,7 +9,7 @@ namespace core {
 
 //! Fill \a result with \a value.
 /*!
-    \sa            fern::unary_local_operation
+    \sa            fern::unary_disaggregate_operation
 
     The value type of \a Result must be equal to \a Value.
 */

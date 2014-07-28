@@ -5,6 +5,7 @@ SET(TEST_NAMES
     index_ranges_test
     fill_test
     nullary_local_operation_test
+    unary_disaggregate_operation_test
     unary_local_operation_test
 )
 

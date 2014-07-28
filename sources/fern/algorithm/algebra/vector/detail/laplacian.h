@@ -1,10 +1,12 @@
 #pragma once
 #include <utility>
 #include "fern/core/assert.h"
+#include "fern/core/clone.h"
 #include "fern/core/thread_client.h"
 #include "fern/core/value_type.h"
 #include "fern/feature/core/array_traits.h"
-#include "fern/feature/core/masked_array.h"
+#include "fern/feature/core/masked_array_traits.h"
+/// #include "fern/feature/core/masked_array.h"
 #include "fern/feature/core/masked_raster.h"
 #include "fern/algorithm/core/cast.h"
 #include "fern/algorithm/convolution/convolve.h"
@@ -13,8 +15,9 @@
 #include "fern/algorithm/algebra/elementary/divide.h"
 #include "fern/algorithm/algebra/elementary/multiply.h"
 #include "fern/algorithm/algebra/elementary/subtract.h"
-#include "fern/algorithm/algebra/boolean/not.h"
+#include "fern/algorithm/algebra/boolean/defined.h"
 #include "fern/algorithm/statistic/sum.h"
+#include "fern/algorithm/statistic/unary_max.h"
 
 
 namespace fern {
@@ -139,34 +142,38 @@ struct Laplacian<
         // used above, and without normalizing by the kernel weights.
         auto extents = fern::extents[size(value, 0)][size(value, 1)];
 
-        // Determine which cells have a valid value.
-        Array<bool, 2> inverted_mask(extents);
-        algebra::not_(
-            input_no_data_policy, output_no_data_policy, execution_policy,
-            value.mask(), inverted_mask);
+        // Determine which cells have a valid (non-no-data) value. The result
+        // will not contain no-data. All elements have a valid value (true or
+        // false.
+        Array<bool, 2> defined(extents);
+        algebra::defined(input_no_data_policy, execution_policy, defined);
 
-        // Cast array of bool to array of floats.
-        Array<Float, 2> inverted_mask_as_floats(extents);
-        // TODO: Select OutOfRange policy based on the
-        //       output-no-data-policy passed in.
-        core::cast<cast::OutOfRangePolicy>(
-            input_no_data_policy, output_no_data_policy, execution_policy,
-            inverted_mask, inverted_mask_as_floats);
+        // Cast array of bool to array of floats. It is not needed to take
+        // no-data and range errors into account.
+        Array<Float, 2> defined_as_floats(extents);
+        core::cast<>(execution_policy, defined, defined_as_floats);
 
+        // It is not needed to take range errors into account. The max value
+        // calculate per cells is sum(kernel) -> 20.
         Array<Float, 2> sum_of_weights(extents);
         convolution::convolve<
             convolve::SkipNoData,
             convolve::DontDivideByWeights,
             convolve::SkipOutOfImage,
-            // TODO: Select OutOfRange policy based on the
-            //       output-no-data-policy passed in.
-            convolve::OutOfRangePolicy>(
+            unary::DiscardRangeErrors>(
                 input_no_data_policy, output_no_data_policy, execution_policy,
-                inverted_mask_as_floats, kernel, sum_of_weights);
+                defined_as_floats, kernel, sum_of_weights);
+
+#ifndef NDEBUG
+        {
+            Float max;
+            statistic::unary_max(execution_policy, sum_of_weights, max);
+            assert(max <= 20.0);
+        }
+#endif
 
         // Multiply the values by the sum of weights.
-        MaskedRaster<Float, 2> multiplied_values(extents,
-            result.transformation());
+        auto multiplied_values = clone<Float>(result);
         algebra::multiply<
             // TODO: Select OutOfRange policy based on the
             //       output-no-data-policy passed in.

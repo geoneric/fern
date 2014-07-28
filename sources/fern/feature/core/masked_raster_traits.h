@@ -161,4 +161,15 @@ inline typename ArgumentTraits<MaskedRaster<T, 3>>::reference get(
 }
 
 
+template<
+    class U,
+    class V>
+inline MaskedRaster<U, 2> clone(
+    MaskedRaster<V, 2> const& raster)
+{
+    return std::move(MaskedRaster<U, 2>(
+        extents[raster.shape()[0]][raster.shape()[1]],
+        raster.transformation()));
+}
+
 } // namespace fern

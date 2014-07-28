@@ -1,7 +1,7 @@
 #pragma once
 #include "fern/core/assert.h"
 #include "fern/core/type_traits.h"
-#include "fern/algorithm/core/unary_local_operation.h"
+#include "fern/algorithm/core/unary_disaggregate_operation.h"
 #include "fern/algorithm/policy/policies.h"
 
 
@@ -42,7 +42,7 @@ void fill(
     Value const& value,
     Result& result)
 {
-    unary_local_operation<Algorithm,
+    unary_disaggregate_operation<Algorithm,
         unary::DiscardDomainErrors, unary::DiscardRangeErrors>(
             input_no_data_policy, output_no_data_policy,
             execution_policy,
