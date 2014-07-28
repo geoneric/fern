@@ -92,7 +92,6 @@ struct Slope<
                 dz_dx, 8 * cell_size(value, 0), dz_dx);
 
         MaskedArray<Float, 2> dz_dy(extents);
-
         convolution::convolve<
             convolve::ReplaceNoDataByFocalAverage,
             convolve::DontDivideByWeights,
