@@ -407,7 +407,7 @@ struct BinaryAggregateOperation<
         //     values, value, result);
 
         ThreadPool& pool(ThreadClient::pool());
-        size_t const size = fern::size(value);
+        size_t const size = fern::size(values);
         std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size);
         std::vector<std::future<void>> futures;
         futures.reserve(ranges.size());
@@ -445,6 +445,79 @@ struct BinaryAggregateOperation<
             apply<OutOfRangePolicy>(
                 aggregator, output_no_data_policy, execution_policy,
                 results_per_block, result);
+    }
+
+};
+
+
+template<
+    class Algorithm,
+    class Aggregator,
+    class OutOfDomainPolicy,
+    template<class, class, class> class OutOfRangePolicy,
+    class InputNoDataPolicy,
+    class OutputNoDataPolicy,
+    class Value,
+    class Result>
+struct BinaryAggregateOperation<
+    Algorithm,
+    Aggregator,
+    OutOfDomainPolicy,
+    OutOfRangePolicy,
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Value,
+    Result,
+    ExecutionPolicy,
+    array_1d_tag>
+{
+
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        ExecutionPolicy const& execution_policy,
+        Value const& values,
+        value_type<Value> const& value,
+        Result& result)
+    {
+        switch(execution_policy.which()) {
+            case fern::detail::sequential_execution_policy_id: {
+                detail::dispatch::BinaryAggregateOperation<
+                    Algorithm,
+                    Aggregator,
+                    OutOfDomainPolicy,
+                    OutOfRangePolicy,
+                    InputNoDataPolicy,
+                    OutputNoDataPolicy,
+                    Value,
+                    Result,
+                    SequentialExecutionPolicy,
+                    array_1d_tag>::apply(
+                        input_no_data_policy, output_no_data_policy,
+                        fern::detail::get_policy<SequentialExecutionPolicy>(
+                            execution_policy),
+                        values, value, result);
+                break;
+            }
+            case fern::detail::parallel_execution_policy_id: {
+                detail::dispatch::BinaryAggregateOperation<
+                    Algorithm,
+                    Aggregator,
+                    OutOfDomainPolicy,
+                    OutOfRangePolicy,
+                    InputNoDataPolicy,
+                    OutputNoDataPolicy,
+                    Value,
+                    Result,
+                    ParallelExecutionPolicy,
+                    array_1d_tag>::apply(
+                        input_no_data_policy, output_no_data_policy,
+                        fern::detail::get_policy<ParallelExecutionPolicy>(
+                            execution_policy),
+                        values, value, result);
+                break;
+            }
+        }
     }
 
 };
