@@ -82,6 +82,8 @@ struct ArgumentTraits<
 
     static bool const is_masking = false;
 
+    static size_t const rank = nr_dimensions;
+
 };
 
 
@@ -130,6 +132,27 @@ inline typename ArgumentTraits<Array<T, 1>>::reference get(
 
 
 template<
+    class U,
+    class V>
+inline Array<U, 1> clone(
+    Array<V, 1> const& array)
+{
+    return std::move(Array<U, 1>(extents[array.shape()[0]]));
+}
+
+
+template<
+    class U,
+    class V>
+inline Array<U, 1> clone(
+    Array<V, 1> const& array,
+    U const& value)
+{
+    return std::move(Array<U, 1>(extents[array.shape()[0]], value));
+}
+
+
+template<
     class T>
 inline typename ArgumentTraits<Array<T, 2>>::const_reference get(
     Array<T, 2> const& array,
@@ -152,6 +175,28 @@ inline typename ArgumentTraits<Array<T, 2>>::reference get(
     assert(index1 < array.shape()[0]);
     assert(index2 < array.shape()[1]);
     return array[index1][index2];
+}
+
+
+template<
+    class U,
+    class V>
+inline Array<U, 2> clone(
+    Array<V, 2> const& array)
+{
+    return std::move(Array<U, 2>(extents[array.shape()[0]][array.shape()[1]]));
+}
+
+
+template<
+    class U,
+    class V>
+inline Array<U, 2> clone(
+    Array<V, 2> const& array,
+    U const& value)
+{
+    return std::move(Array<U, 2>(extents[array.shape()[0]][array.shape()[1]],
+        value));
 }
 
 
@@ -182,6 +227,30 @@ inline typename ArgumentTraits<Array<T, 3>>::const_reference get(
     assert(index2 < array.shape()[1]);
     assert(index3 < array.shape()[2]);
     return array[index1][index2][index3];
+}
+
+
+template<
+    class U,
+    class V>
+inline Array<U, 3> clone(
+    Array<V, 3> const& array)
+{
+    return std::move(Array<U, 3>(
+        extents[array.shape()[0]][array.shape()[1]][array.shape()[2]]));
+}
+
+
+template<
+    class U,
+    class V>
+inline Array<U, 3> clone(
+    Array<V, 3> const& array,
+    U const& value)
+{
+    return std::move(Array<U, 3>(
+        extents[array.shape()[0]][array.shape()[1]][array.shape()[2]],
+        value));
 }
 
 } // namespace fern

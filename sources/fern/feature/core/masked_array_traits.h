@@ -30,6 +30,8 @@ struct ArgumentTraits<
 
     static bool const is_masking = true;
 
+    static size_t const rank = nr_dimensions;
+
 };
 
 
@@ -82,6 +84,27 @@ inline typename ArgumentTraits<MaskedArray<T, 1>>::reference get(
 
 
 template<
+    class U,
+    class V>
+inline MaskedArray<U, 1> clone(
+    MaskedArray<V, 1> const& array)
+{
+    return std::move(MaskedArray<U, 1>(extents[array.shape()[0]]));
+}
+
+
+template<
+    class U,
+    class V>
+inline MaskedArray<U, 1> clone(
+    MaskedArray<V, 1> const& array,
+    U const& value)
+{
+    return std::move(MaskedArray<U, 1>(extents[array.shape()[0]], value));
+}
+
+
+template<
     class T>
 inline typename ArgumentTraits<MaskedArray<T, 2>>::const_reference get(
     MaskedArray<T, 2> const& array,
@@ -106,6 +129,29 @@ inline typename ArgumentTraits<MaskedArray<T, 2>>::reference get(
     assert(index2 < array.shape()[1]);
     // assert(!array.mask()[index1][index2]);
     return array[index1][index2];
+}
+
+
+template<
+    class U,
+    class V>
+inline MaskedArray<U, 2> clone(
+    MaskedArray<V, 2> const& array)
+{
+    return std::move(MaskedArray<U, 2>(
+        extents[array.shape()[0]][array.shape()[1]]));
+}
+
+
+template<
+    class U,
+    class V>
+inline MaskedArray<U, 2> clone(
+    MaskedArray<V, 2> const& array,
+    U const& value)
+{
+    return std::move(MaskedArray<U, 2>(
+        extents[array.shape()[0]][array.shape()[1]], value));
 }
 
 
@@ -138,6 +184,29 @@ inline typename ArgumentTraits<MaskedArray<T, 3>>::reference get(
     assert(index3 < array.shape()[2]);
     // assert(!array.mask()[index1][index2][index3]);
     return array[index1][index2][index3];
+}
+
+
+template<
+    class U,
+    class V>
+inline MaskedArray<U, 3> clone(
+    MaskedArray<V, 3> const& array)
+{
+    return std::move(MaskedArray<U, 3>(
+        extents[array.shape()[0]][array.shape()[1]][array.shape()[1]]));
+}
+
+
+template<
+    class U,
+    class V>
+inline MaskedArray<U, 3> clone(
+    MaskedArray<V, 3> const& array,
+    U const& value)
+{
+    return std::move(MaskedArray<U, 3>(
+        extents[array.shape()[0]][array.shape()[1]][array.shape()[2]], value));
 }
 
 } // namespace fern
