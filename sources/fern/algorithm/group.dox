@@ -1,0 +1,57 @@
+/*!
+    \defgroup algorithm Algorithms
+*/
+
+
+/*!
+    \defgroup algebra Algebraic algorithms
+    \ingroup  algorithm
+*/
+
+
+/*!
+    \defgroup boolean Boolean operations
+    \ingroup  algebra
+*/
+
+
+/*!
+    \defgroup elementary Elementary operations
+    \ingroup  algebra
+*/
+
+
+/*!
+    \defgroup vector Vector operations
+    \ingroup  algebra
+*/
+
+
+/*!
+    \defgroup convolution Convolution algorithms
+    \ingroup  algorithm
+*/
+
+
+/*!
+    \defgroup core Core algorithms
+    \ingroup  algorithm
+*/
+
+
+/*!
+    \defgroup spatial Spatial algorithms
+    \ingroup  algorithm
+*/
+
+
+/*!
+    \defgroup statistic Statistical algorithms
+    \ingroup  algorithm
+*/
+
+
+/*!
+    \defgroup trigonometry Trigonometrical algorithms
+    \ingroup  algorithm
+*/
