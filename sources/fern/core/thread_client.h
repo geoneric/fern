@@ -17,11 +17,13 @@ class ThreadClient
 
 public:
 
+    static size_t  hardware_concurrency();
+
     static ThreadPool&
                    pool                ();
 
                    ThreadClient        (size_t nr_threads=
-                                          std::thread::hardware_concurrency());
+                                          hardware_concurrency());
 
                    ~ThreadClient       ();
 
