@@ -48,6 +48,7 @@ namespace core {
 
 //! Cast \a value and write the result to \a result.
 /*!
+    \ingroup       core
     \sa            fern::cast::OutOfRangePolicy,
                    fern::unary_local_operation
 
@@ -76,7 +77,8 @@ void cast(
 
 
 /*!
-  \overload
+    \ingroup       core
+    \overload
 */
 template<
     template<class, class> class OutOfRangePolicy,
@@ -97,7 +99,8 @@ void cast(
 
 
 /*!
-  \overload
+    \ingroup       core
+    \overload
 */
 template<
     class ExecutionPolicy,

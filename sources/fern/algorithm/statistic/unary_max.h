@@ -8,6 +8,7 @@ namespace statistic {
 
 //! Determine the maximum value of \a value and write the result to \a result.
 /*!
+    \ingroup       statistic
     \sa            fern::unary_aggregate_operation
 
     The value type of \a value must be arithmetic and not `bool`. The value
@@ -37,6 +38,7 @@ void unary_max(
 
 
 /*!
+    \ingroup       statistic
     \overload
 */
 template<
@@ -58,6 +60,7 @@ void unary_max(
 
 
 /*!
+    \ingroup       statistic
     \overload
 */
 template<

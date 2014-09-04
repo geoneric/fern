@@ -38,6 +38,8 @@ namespace spatial {
 
 //! Calculate the slope of \a value and write the result to \a result.
 /*!
+    \ingroup       spatial
+
     This algorithm implements Horne's slope algorithm (Horn, B.K.P. (1981)
     Hill shading and the reflectance map. Proceedings of IEEE 69(1), 14-47).
     In pseudo-code this works as folows:
@@ -96,7 +98,8 @@ void slope(
 
 
 /*!
-  \overload
+    \ingroup       spatial
+    \overload
 */
 template<
     template<class, class> class OutOfRangePolicy,
@@ -118,7 +121,8 @@ void slope(
 
 
 /*!
-  \overload
+    \ingroup       spatial
+    \overload
 */
 template<
     class ExecutionPolicy,

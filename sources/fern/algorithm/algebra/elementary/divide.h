@@ -111,6 +111,7 @@ namespace algebra {
 
 //! Divide \a value1 by \a value2 and write the result to \a result.
 /*!
+    \ingroup       elementary
     \sa            fern::divide::OutOfDomainPolicy,
                    fern::divide::OutOfRangePolicy,
                    fern::divide::result_type,
@@ -154,7 +155,8 @@ void divide(
 
 
 /*!
-  \overload
+    \ingroup       elementary
+    \overload
 */
 template<
     template<class, class> class OutOfDomainPolicy,
@@ -179,7 +181,8 @@ void divide(
 
 
 /*!
-  \overload
+    \ingroup       elementary
+    \overload
 */
 template<
     class ExecutionPolicy,

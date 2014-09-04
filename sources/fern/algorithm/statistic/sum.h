@@ -19,6 +19,7 @@ namespace statistic {
 
 //! Calculate the sum of \a value and write the result to \a result.
 /*!
+    \ingroup       statistic
     \sa            fern::unary_aggregate_operation
 
     The value type of \a value must be arithmetic and not `bool`. The value
@@ -49,6 +50,7 @@ void sum(
 
 
 /*!
+    \ingroup       statistic
     \overload
 */
 template<
@@ -71,6 +73,7 @@ void sum(
 
 
 /*!
+    \ingroup       statistic
     \overload
 */
 template<

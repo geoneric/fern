@@ -9,6 +9,7 @@ namespace algebra {
 
 //! Negate \a value and write the result to \a result.
 /*!
+    \ingroup       boolean
     \sa            fern::unary_local_operation.
 
     The value types of \a value and \a result must be arithmetic.
@@ -36,7 +37,8 @@ void not_(
 
 
 /*!
-  \overload
+    \ingroup       boolean
+    \overload
 */
 template<
     class InputNoDataPolicy,
@@ -57,7 +59,8 @@ void not_(
 
 
 /*!
-  \overload
+    \ingroup       boolean
+    \overload
 */
 template<
     class ExecutionPolicy,

@@ -80,6 +80,7 @@ namespace algebra {
 
 //! Subtract \a value2 to \a value1 and write the result to \a result.
 /*!
+    \ingroup       elementary
     \sa            fern::subtract::OutOfRangePolicy,
                    fern::subtract::result_type,
                    fern::subtract::result_value_type,
@@ -120,7 +121,8 @@ void subtract(
 
 
 /*!
-  \overload
+    \ingroup       elementary
+    \overload
 */
 template<
     template<class, class, class> class OutOfRangePolicy,
@@ -144,7 +146,8 @@ void subtract(
 
 
 /*!
-  \overload
+    \ingroup       elementary
+    \overload
 */
 template<
     class ExecutionPolicy,

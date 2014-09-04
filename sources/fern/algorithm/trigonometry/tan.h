@@ -59,6 +59,7 @@ namespace trigonometry {
 
 //! Calculate the tangent of \a value and write the result to \a result.
 /*!
+    \ingroup       trigonometry
     \sa            fern::tan::OutOfDomainPolicy, fern::unary_local_operation
 
     The value types of \a value and \a result must be floating point and the
@@ -87,6 +88,7 @@ void tan(
 
 
 /*!
+    \ingroup       trigonometry
     \overload
 */
 template<
@@ -108,6 +110,7 @@ void tan(
 
 
 /*!
+    \ingroup       trigonometry
     \overload
 */
 template<

@@ -7,6 +7,7 @@ namespace statistic {
 
 //! Determine how many occurrences of \a value2 are in \a value1 and write the result to \a result.
 /*!
+    \ingroup       statistic
     \sa            fern::binary_aggregate_operation
 
     The value type of \a value must be arithmetic. The value
@@ -36,6 +37,7 @@ void count(
 
 
 /*!
+    \ingroup       statistic
     \overload
 */
 template<
@@ -58,6 +60,7 @@ void count(
 
 
 /*!
+    \ingroup       statistic
     \overload
 */
 template<

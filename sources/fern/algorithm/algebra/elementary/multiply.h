@@ -78,6 +78,7 @@ namespace algebra {
 
 //! Multiply \a value1 by \a value2 and write the result to \a result.
 /*!
+    \ingroup       elementary
     \sa            fern::multiply::OutOfRangePolicy,
                    fern::multiply::result_type,
                    fern::multiply::result_value_type,
@@ -118,7 +119,8 @@ void multiply(
 
 
 /*!
-  \overload
+    \ingroup       elementary
+    \overload
 */
 template<
     template<class, class, class> class OutOfRangePolicy,
@@ -142,7 +144,8 @@ void multiply(
 
 
 /*!
-  \overload
+    \ingroup       elementary
+    \overload
 */
 template<
     class ExecutionPolicy,

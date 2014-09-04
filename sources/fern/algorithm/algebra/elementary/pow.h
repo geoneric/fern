@@ -90,6 +90,7 @@ namespace algebra {
 
 //! Raise \a base to the power of \a exponent and write the result to \a result.
 /*!
+    \ingroup       elementary
     \sa            fern::pow::OutOfDomainPolicy, fern::pow::OutOfRangePolicy,
                    fern::binary_local_operation
 
@@ -124,7 +125,8 @@ void pow(
 
 
 /*!
-  \overload
+    \ingroup       elementary
+    \overload
 */
 template<
     template<class, class> class OutOfDomainPolicy,
@@ -149,7 +151,8 @@ void pow(
 
 
 /*!
-  \overload
+    \ingroup       elementary
+    \overload
 */
 template<
     class ExecutionPolicy,
