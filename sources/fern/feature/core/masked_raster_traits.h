@@ -30,6 +30,8 @@ struct ArgumentTraits<
 
     static bool const is_masking = true;
 
+    static size_t const rank = nr_dimensions;
+
 };
 
 
