@@ -3,6 +3,7 @@ IF(FERN_ALGORITHM_ONLY)
         base_class_test
         data_types_test
         flag_collection_test
+        point_test
         scope_test
         stack_test
         std_test
@@ -19,6 +20,7 @@ ELSE()
         data_types_test
         flag_collection_test
         path_test
+        point_test
         scope_test
         stack_test
         std_test
