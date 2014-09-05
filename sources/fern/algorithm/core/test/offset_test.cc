@@ -694,4 +694,141 @@ BOOST_AUTO_TEST_CASE(array_2d_fill_value_masked_parallel)
     test_array_2d_fill_value_masked(fern::parallel);
 }
 
+
+BOOST_AUTO_TEST_CASE(pcraster_example_1)
+{
+    // First example from the PCRaster manual page for shift/shift0.
+    size_t const nr_rows{5};
+    size_t const nr_cols{5};
+
+    fern::MaskedArray<int, 2> values({
+        {0,  -1, 1, -30,  0},
+        {2, 999, 1,   2, -3},
+        {3,   2, 3,   4,  2},
+        {0,   0, 2,  40,  2},
+        {1,  -2, 4,   7,  1}
+    });
+    values.mask()[1][1] = true;
+
+    fern::MaskedArray<int, 2> result_we_want({
+        {999,   1,   2,   -3, 999},
+        {  2,   3,   4,    2, 999},
+        {  0,   2,  40,    2, 999},
+        { -2,   4,   7,    1, 999},
+        {999, 999, 999,  999, 999}
+    });
+    result_we_want.mask()[0][0] = true;
+    for(size_t row = 0; row < nr_rows; ++row) {
+        result_we_want.mask()[row][nr_cols-1] = true;
+    }
+    for(size_t col = 0; col < nr_cols; ++col) {
+        result_we_want.mask()[nr_rows-1][col] = true;
+    }
+
+    fern::MaskedArray<int, 2> result_we_got(fern::extents[nr_rows][nr_cols],
+        999);
+
+    fern::Point<int, 2> offset(-1, -1);
+
+    fern::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
+        values.mask(), true);
+    fern::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
+        result_we_got.mask(), true);
+
+    fern::core::offset(input_no_data_policy, output_no_data_policy,
+        fern::sequential, values, offset, result_we_got);
+
+    BOOST_CHECK(equal(fern::sequential, result_we_got, result_we_want));
+}
+
+
+BOOST_AUTO_TEST_CASE(pcraster_example_2)
+{
+    // First example from the PCRaster manual page for shift/shift0.
+    size_t const nr_rows{5};
+    size_t const nr_cols{5};
+
+    fern::MaskedArray<int, 2> values({
+        {0,  -1, 1, -30,  0},
+        {2, 999, 1,   2, -3},
+        {3,   2, 3,   4,  2},
+        {0,   0, 2,  40,  2},
+        {1,  -2, 4,   7,  1}
+    });
+    values.mask()[1][1] = true;
+
+    fern::MaskedArray<int, 2> result_we_want({
+        {999, 999, 999, 999,  999},
+        {999,   0,   -1,  1,  -30},
+        {999,   2,  999,  1,    2},
+        {999,   3,    2,  3,    4},
+        {999,   0,    0,  2,   40}
+    });
+    result_we_want.mask()[2][2] = true;
+    for(size_t row = 0; row < nr_rows; ++row) {
+        result_we_want.mask()[row][0] = true;
+    }
+    for(size_t col = 0; col < nr_cols; ++col) {
+        result_we_want.mask()[0][col] = true;
+    }
+
+    fern::MaskedArray<int, 2> result_we_got(fern::extents[nr_rows][nr_cols],
+        999);
+
+    fern::Point<int, 2> offset(1, 1);
+
+    fern::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
+        values.mask(), true);
+    fern::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
+        result_we_got.mask(), true);
+
+    fern::core::offset(input_no_data_policy, output_no_data_policy,
+        fern::sequential, values, offset, result_we_got);
+
+    BOOST_CHECK(equal(fern::sequential, result_we_got, result_we_want));
+}
+
+
+BOOST_AUTO_TEST_CASE(pcraster_example_3)
+{
+    // First example from the PCRaster manual page for shift/shift0.
+    size_t const nr_rows{5};
+    size_t const nr_cols{5};
+
+    fern::MaskedArray<int, 2> values({
+        {0,  -1, 1, -30,  0},
+        {2, 999, 1,   2, -3},
+        {3,   2, 3,   4,  2},
+        {0,   0, 2,  40,  2},
+        {1,  -2, 4,   7,  1}
+    });
+    values.mask()[1][1] = true;
+
+    fern::MaskedArray<int, 2> result_we_want({
+        {0, 0,   0, 0,   0},
+        {0, 0,  -1, 1, -30},
+        {0, 2, 999, 1,   2},
+        {0, 3,   2, 3,   4},
+        {0, 0,   0, 2,  40}
+    });
+    result_we_want.mask()[2][2] = true;
+
+    fern::MaskedArray<int, 2> result_we_got(fern::extents[nr_rows][nr_cols],
+        999);
+
+    fern::Point<int, 2> offset(1, 1);
+
+    fern::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
+        values.mask(), true);
+    fern::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
+        result_we_got.mask(), true);
+
+    int const fill_value{0};
+
+    fern::core::offset(input_no_data_policy, output_no_data_policy,
+        fern::sequential, values, offset, fill_value, result_we_got);
+
+    BOOST_CHECK(equal(fern::sequential, result_we_got, result_we_want));
+}
+
 BOOST_AUTO_TEST_SUITE_END()

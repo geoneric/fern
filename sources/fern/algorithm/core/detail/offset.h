@@ -207,13 +207,22 @@ void mark_no_data_2d(
     Value const& value,
     Offset_ const& offset_)
 {
-    IndexRange const range_to_initialize1(range_to_initialize(
-        fern::size(value, 0), fern::get<0>(offset_)));
-    IndexRange const range_to_initialize2(range_to_initialize(
-        fern::size(value, 1), fern::get<1>(offset_)));
+    size_t const size1{fern::size(value, 0)};
+    size_t const size2{fern::size(value, 1)};
+
+    IndexRange const range_to_initialize1(range_to_initialize(size1,
+        fern::get<0>(offset_)));
+    IndexRange const range_to_initialize2(range_to_initialize(size2,
+        fern::get<1>(offset_)));
 
     for(size_t i = range_to_initialize1.begin();
             i < range_to_initialize1.end(); ++i) {
+        for(size_t j = 0; j < size2; ++j) {
+            output_no_data_policy.mark_as_no_data(i, j);
+        }
+    }
+
+    for(size_t i = 0; i < size1; ++i) {
         for(size_t j = range_to_initialize2.begin();
                 j < range_to_initialize2.end(); ++j) {
             output_no_data_policy.mark_as_no_data(i, j);
@@ -230,13 +239,22 @@ void fill_value_2d(
     value_type<Result> const& fill_value,
     Result& result)
 {
-    IndexRange const range_to_initialize1(range_to_initialize(
-        fern::size(result, 0), fern::get<0>(offset_)));
-    IndexRange const range_to_initialize2(range_to_initialize(
-        fern::size(result, 1), fern::get<1>(offset_)));
+    size_t const size1{fern::size(result, 0)};
+    size_t const size2{fern::size(result, 1)};
+
+    IndexRange const range_to_initialize1(range_to_initialize(size1,
+        fern::get<0>(offset_)));
+    IndexRange const range_to_initialize2(range_to_initialize(size2,
+        fern::get<1>(offset_)));
 
     for(size_t i = range_to_initialize1.begin();
             i < range_to_initialize1.end(); ++i) {
+        for(size_t j = 0; j < size2; ++j) {
+            fern::get(result, i, j) = fill_value;
+        }
+    }
+
+    for(size_t i = 0; i < size1; ++i) {
         for(size_t j = range_to_initialize2.begin();
                 j < range_to_initialize2.end(); ++j) {
             fern::get(result, i, j) = fill_value;
