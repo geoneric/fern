@@ -6,14 +6,13 @@
 namespace fern {
 
 
-//! Class for rasters with masked values, with a cartesian coordinate system.
+//! Class for masked multidimensional rasters, with a cartesian coordinate system.
 /*!
-  \tparam    .
-  \param     .
-  \return    .
-  \exception .
-  \warning   .
-  \sa        .
+    \sa        MaskedArray
+
+    MaskedRaster extents MaskedArray with support for a Cartesian projection
+    coordinate system. A raster is an array which is positioned in a Cartesian
+    coordinate system.
 */
 template<
     class T,
