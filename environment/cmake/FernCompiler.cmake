@@ -43,6 +43,11 @@ IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR
     )
 ENDIF()
 
+SET(CMAKE_CXX_FLAGS_RELEASE
+    # Disable range checks in release builds.
+    "${CMAKE_CXX_FLAGS_RELEASE} -DBOOST_DISABLE_ASSERTS"
+)
+
 # Add the PIC compiler flag if needed.
 IF(UNIX AND NOT WIN32)
     IF(CMAKE_SIZEOF_VOID_P MATCHES "8")
