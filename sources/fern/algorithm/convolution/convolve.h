@@ -29,6 +29,7 @@ namespace convolution {
 
 //! Convolve \a source by \a kernel and write the result to \a destination.
 /*!
+    \ingroup    convolution
     \param[in] source Image to read values from to convolve.
     \param[in] kernel Kernel containing the weights to use.
     \param[out] destination Image to write calculated values to.
@@ -77,6 +78,7 @@ void convolve(
 
 
 /*!
+    \ingroup    convolution
     \overload
 */
 template<
@@ -108,6 +110,7 @@ void convolve(
 
 
 /*!
+    \ingroup    convolution
     \overload
 
     Use this overload if the default policies are fine. The default policies

@@ -9,6 +9,7 @@ namespace algebra {
 
 //! Determing which values are defined and write the result to \a result.
 /*!
+    \ingroup       boolean
     \sa            fern::nullary_local_operation.
     \warning       For each location in \a result, the \a InputNoDataPolicy
                    must be able to tell whether the input value is no-data
@@ -36,7 +37,8 @@ void defined(
 
 
 /*!
-  \overload
+    \ingroup       boolean
+    \overload
 */
 template<
     class InputNoDataPolicy,
@@ -52,7 +54,8 @@ void defined(
 
 
 /*!
-  \overload
+    \ingroup       boolean
+    \overload
 */
 template<
     class ExecutionPolicy,

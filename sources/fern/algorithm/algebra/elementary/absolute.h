@@ -51,6 +51,7 @@ namespace algebra {
 
 //! Determine the absolute value of \a value and write the result to \a result.
 /*!
+    \ingroup       elementary
     \sa            fern::absolute::OutOfRangePolicy,
                    fern::unary_local_operation
 
@@ -82,6 +83,7 @@ void absolute(
 
 
 /*!
+    \ingroup       elementary
     \overload
 */
 template<
@@ -104,6 +106,7 @@ void absolute(
 
 
 /*!
+    \ingroup       elementary
     \overload
 */
 template<

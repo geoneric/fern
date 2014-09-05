@@ -79,6 +79,7 @@ namespace algebra {
 
 //! Add \a value1 to \a value2 and write the result to \a result.
 /*!
+    \ingroup       elementary
     \sa            fern::add::OutOfRangePolicy, fern::add::result_type,
                    fern::add::result_value_type, fern::binary_local_operation
 
@@ -117,7 +118,8 @@ void add(
 
 
 /*!
-  \overload
+    \ingroup       elementary
+    \overload
 */
 template<
     template<class, class, class> class OutOfRangePolicy,
@@ -141,7 +143,8 @@ void add(
 
 
 /*!
-  \overload
+    \ingroup       elementary
+    \overload
 */
 template<
     class ExecutionPolicy,

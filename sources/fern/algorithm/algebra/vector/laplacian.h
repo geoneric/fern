@@ -65,6 +65,8 @@ namespace algebra {
 
     The value type of \a value and \a result must be floating point and the
     same.
+
+    \ingroup       vector
 */
 template<
     template<class, class> class OutOfRangePolicy,
@@ -90,7 +92,8 @@ void laplacian(
 
 
 /*!
-  \overload
+    \ingroup       vector
+    \overload
 */
 template<
     template<class, class> class OutOfRangePolicy,
@@ -111,7 +114,8 @@ void laplacian(
 
 
 /*!
-  \overload
+    \ingroup       vector
+    \overload
 */
 template<
     class ExecutionPolicy,

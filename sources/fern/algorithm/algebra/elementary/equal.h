@@ -9,10 +9,11 @@ namespace algebra {
 
 //! Determine whether \a value1 is equal to \a value2 and write the result to \a result.
 /*!
+    \ingroup       elementary
     \sa            fern::binary_local_operation
 
-    The value types of \a value1 and \a value2 must be arithmetic and not
-    `bool`. The value type of \a result must be arithmetic.
+    The value types of \a value1 and \a value2 must be arithmetic.
+    The value type of \a result must be arithmetic.
 */
 template<
     class InputNoDataPolicy,
@@ -30,9 +31,7 @@ void equal(
     Result& result)
 {
     FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Value1>)
-    FERN_STATIC_ASSERT(!std::is_same, value_type<Value1>, bool)
     FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Value2>)
-    FERN_STATIC_ASSERT(!std::is_same, value_type<Value2>, bool)
     FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Result>)
 
     equal::detail::equal<>(input_no_data_policy, output_no_data_policy,
@@ -41,7 +40,8 @@ void equal(
 
 
 /*!
-  \overload
+    \ingroup       elementary
+    \overload
 */
 template<
     class InputNoDataPolicy,
@@ -63,7 +63,8 @@ void equal(
 
 
 /*!
-  \overload
+    \ingroup       elementary
+    \overload
 */
 template<
     class ExecutionPolicy,

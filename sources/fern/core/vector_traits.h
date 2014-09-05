@@ -21,13 +21,22 @@ struct ArgumentTraits<
         using type = std::vector<U>;
     };
 
-    using value_type = typename std::vector<T>::value_type;
+    // Don't use vector's typedefs. Doing it like this will make it impossible
+    // to use vector<bool>, which is Good. vector<bool> is nasty since it
+    // doesn't store bools. Using it works out bad in combination with threads.
 
-    using reference = typename std::vector<T>::reference;
+    // typename std::vector<T>::value_type;
+    using value_type = T;
 
-    using const_reference = typename std::vector<T>::const_reference;
+    // typename std::vector<T>::reference;
+    using reference = T&;
+
+    // typename std::vector<T>::const_reference;
+    using const_reference = T const&;
 
     static bool const is_masking = false;
+
+    static size_t const rank = 1u;
 
 };
 
@@ -47,7 +56,7 @@ inline typename ArgumentTraits<std::vector<T>>::const_reference get(
     std::vector<T> const& vector,
     size_t index)
 {
-    return vector[index];
+    return *(vector.data() + index);
 }
 
 
@@ -57,7 +66,28 @@ inline typename ArgumentTraits<std::vector<T>>::reference get(
     std::vector<T>& vector,
     size_t index)
 {
-    return vector[index];
+    return *(vector.data() + index);
+}
+
+
+template<
+    class U,
+    class V>
+inline std::vector<U> clone(
+    std::vector<V> const& vector)
+{
+    return std::move(std::vector<U>(vector.size()));
+}
+
+
+template<
+    class U,
+    class V>
+inline std::vector<U> clone(
+    std::vector<V> const& vector,
+    U const& value)
+{
+    return std::move(std::vector<U>(vector.size(), value));
 }
 
 } // namespace fern

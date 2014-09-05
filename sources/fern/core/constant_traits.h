@@ -29,6 +29,8 @@ struct ArgumentTraits<T>                                    \
                                                             \
     static bool const is_masking = false;                   \
                                                             \
+    static size_t const rank = 0u;                          \
+                                                            \
 };                                                          \
                                                             \
                                                             \

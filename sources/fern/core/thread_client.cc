@@ -12,6 +12,19 @@ static std::unique_ptr<ThreadPool> thread_pool;
 } // Anonymous namespace.
 
 
+//! Return the number of concurrent threads supported by the implementation.
+/*!
+    If this number cannot be determined reliably, this function returns 1. The
+    result of this function can be used as the default size of a thread pool.
+*/
+size_t ThreadClient::hardware_concurrency()
+{
+    size_t result = std::thread::hardware_concurrency();
+
+    return result > 0u ? result: 1u;
+}
+
+
 ThreadPool& ThreadClient::pool()
 {
     // You did instantiate a ThreadClient instance, didn't you?

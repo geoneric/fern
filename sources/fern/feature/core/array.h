@@ -1,6 +1,4 @@
 #pragma once
-// TODO Disable range checks in release builds.
-// #define BOOST_DISABLE_ASSERTS
 #include <boost/multi_array.hpp>
 
 
@@ -16,11 +14,26 @@ template<size_t nr_ranges>
 using gen_type = typename boost::detail::multi_array::extent_gen<nr_ranges>;
 
 
-//! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
+//! Class for multidimensional arrays.
 /*!
-  longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
+    \sa        MaskedArray
 
-  \sa        .
+    Array is a simple class for managing multidimensional arrays.
+
+    This is how you create a 1-dimensional array:
+
+    \code
+    Array<int, 1> array(extents[size]);
+    \endcode
+
+    This is how you create a 2-dimensional array:
+
+    \code
+    Array<int, 2> array(extents[nr_rows][nr_cols]);
+    \endcode
+
+    This class extents boost::multi_array. See the Boost documentation for more
+    information.
 */
 template<
     class T,

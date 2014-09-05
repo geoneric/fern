@@ -56,6 +56,8 @@ IndexRange::index IndexRange::end() const
 
 //! Return whether or not the range is empty.
 /*!
+    \sa        size()
+
     The range is considered empty if the end index equals the begin index.
 */
 bool IndexRange::empty() const
@@ -64,6 +66,10 @@ bool IndexRange::empty() const
 }
 
 
+//! Return the number of elements in the range.
+/*!
+    \sa        empty()
+*/
 size_t IndexRange::size() const
 {
     return _end - _begin;

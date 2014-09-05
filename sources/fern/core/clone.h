@@ -32,4 +32,15 @@ template<
 Collection<Value, ValueType>
                    clone               (Value const& value);
 
+
+/*!
+    \overload
+*/
+template<
+    class ValueType,
+    class Value>
+Collection<Value, ValueType>
+                   clone               (Value const& value,
+                                        ValueType const& initial_value);
+
 } // namespace fern

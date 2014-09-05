@@ -9,6 +9,7 @@ namespace core {
 
 //! Fill \a result with \a value.
 /*!
+    \ingroup       core
     \sa            fern::unary_disaggregate_operation
 
     The value type of \a Result must be equal to \a Value.
@@ -34,7 +35,8 @@ void fill(
 
 
 /*!
-  \overload
+    \ingroup       core
+    \overload
 */
 template<
     class InputNoDataPolicy,
@@ -54,7 +56,8 @@ void fill(
 
 
 /*!
-  \overload
+    \ingroup       core
+    \overload
 */
 template<
     class ExecutionPolicy,
