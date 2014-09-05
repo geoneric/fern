@@ -34,15 +34,16 @@ bool equal(
 
 template<
     class ExecutionPolicy,
-    class Value>
+    class Value,
+    size_t nr_dimensions>
 bool equal(
     ExecutionPolicy const& execution_policy,
-    fern::MaskedArray<Value, 1> const& value1,
-    fern::MaskedArray<Value, 1> const& value2)
+    fern::MaskedArray<Value, nr_dimensions> const& value1,
+    fern::MaskedArray<Value, nr_dimensions> const& value2)
 {
     bool values_are_the_same = equal(execution_policy,
-            dynamic_cast<fern::Array<Value, 1> const&>(value1),
-            dynamic_cast<fern::Array<Value, 1> const&>(value2));
+            dynamic_cast<fern::Array<Value, nr_dimensions> const&>(value1),
+            dynamic_cast<fern::Array<Value, nr_dimensions> const&>(value2));
     bool mask_is_the_same = equal(execution_policy,
             value1.mask(),
             value2.mask());
@@ -53,14 +54,15 @@ bool equal(
     return values_are_the_same && mask_is_the_same;
 }
 
+
 void test_array_1d(
     fern::ExecutionPolicy const& execution_policy)
 {
     size_t const nr_threads{fern::ThreadClient::hardware_concurrency()};
-    size_t const nr_values{100 * nr_threads};
-    std::vector<int> values(nr_values);
-    std::vector<int> result_we_want(nr_values);
-    std::vector<int> result_we_got(nr_values);
+    size_t const nr_elements{10 * nr_threads};
+    std::vector<int> values(nr_elements);
+    std::vector<int> result_we_want(nr_elements);
+    std::vector<int> result_we_got(nr_elements);
 
     std::iota(values.begin(), values.end(), 0);
 
@@ -92,7 +94,7 @@ void test_array_1d(
     }
 
     {
-        fern::Point<int, 1> offset{static_cast<int>(nr_values) + 100};
+        fern::Point<int, 1> offset{static_cast<int>(nr_elements) + 10};
 
         // -9, -9, ..., -9, -9
         std::fill(result_we_want.begin(), result_we_want.end(), -9);
@@ -120,7 +122,7 @@ void test_array_1d(
     }
 
     {
-        fern::Point<int, 1> offset{-static_cast<int>(nr_values + 100)};
+        fern::Point<int, 1> offset{-static_cast<int>(nr_elements + 10)};
 
         // -9, -9, ..., -9, -9
         std::fill(result_we_want.begin(), result_we_want.end(), -9);
@@ -150,25 +152,26 @@ void test_array_1d_masked(
     fern::ExecutionPolicy const& execution_policy)
 {
     size_t const nr_threads{fern::ThreadClient::hardware_concurrency()};
-    size_t const nr_values{100 * nr_threads};
-    fern::MaskedArray<int, 1> values(nr_values);
-    fern::MaskedArray<int, 1> result_we_want(nr_values);
-    fern::MaskedArray<int, 1> result_we_got(nr_values);
+    size_t const nr_elements{10 * nr_threads};
+    fern::MaskedArray<int, 1> values(nr_elements);
+    fern::MaskedArray<int, 1> result_we_want(nr_elements);
+    fern::MaskedArray<int, 1> result_we_got(nr_elements);
 
     fern::DetectNoDataByValue<fern::Mask<1>> input_no_data_policy(
         values.mask(), true);
     fern::MarkNoDataByValue<fern::Mask<1>> output_no_data_policy(
         result_we_got.mask(), true);
 
-    std::iota(values.data(), values.data() + nr_values, 0);
+    std::iota(values.data(), values.data() + nr_elements, 0);
     values.mask()[1] = true;
 
     {
         fern::Point<int, 1> offset{0};
 
         // 0, -9, 2, ..., n - 1
-        std::iota(result_we_want.data(), result_we_want.data() + nr_values, 0);
-        result_we_want.data()[1] = -9;
+        std::iota(result_we_want.data(), result_we_want.data() + nr_elements,
+            0);
+        result_we_want[1] = -9;
         result_we_want.mask()[1] = true;
         result_we_got.fill(-9);
         result_we_got.mask().fill(false);
@@ -184,7 +187,7 @@ void test_array_1d_masked(
 
         // -9, -9, 0, -9, 1, ..., n - 3
         std::iota(result_we_want.data() + fern::get<0>(offset),
-            result_we_want.data() + nr_values, 0);
+            result_we_want.data() + nr_elements, 0);
         std::fill(result_we_want.data(), result_we_want.data() +
             fern::get<0>(offset), -9);
         result_we_want.data()[fern::get<0>(offset) + 1] = -9;
@@ -201,7 +204,7 @@ void test_array_1d_masked(
     }
 
     {
-        fern::Point<int, 1> offset{static_cast<int>(nr_values + 100)};
+        fern::Point<int, 1> offset{static_cast<int>(nr_elements + 10)};
 
         // -9, -9, ..., -9, -9
         result_we_want.fill(-9);
@@ -219,15 +222,15 @@ void test_array_1d_masked(
         fern::Point<int, 1> offset{-2};
 
         // 2, 3, ..., n - 1, -9, -9
-        std::iota(result_we_want.data(), result_we_want.data() + nr_values +
+        std::iota(result_we_want.data(), result_we_want.data() + nr_elements +
             fern::get<0>(offset), std::abs(fern::get<0>(offset)));
-        std::fill(result_we_want.data() + nr_values + fern::get<0>(offset),
-            result_we_want.data() + nr_values, -9);
+        std::fill(result_we_want.data() + nr_elements + fern::get<0>(offset),
+            result_we_want.data() + nr_elements, -9);
         // false, false, ..., false, true, true
         std::fill(result_we_want.mask().data(), result_we_want.mask().data() +
-            nr_values + fern::get<0>(offset), false);
-        std::fill(result_we_want.mask().data() + nr_values +
-            fern::get<0>(offset), result_we_want.mask().data() + nr_values,
+            nr_elements + fern::get<0>(offset), false);
+        std::fill(result_we_want.mask().data() + nr_elements +
+            fern::get<0>(offset), result_we_want.mask().data() + nr_elements,
             true);
         result_we_got.fill(-9);
         result_we_got.mask().fill(false);
@@ -239,7 +242,7 @@ void test_array_1d_masked(
     }
 
     {
-        fern::Point<int, 1> offset{-static_cast<int>(nr_values + 100)};
+        fern::Point<int, 1> offset{-static_cast<int>(nr_elements + 10)};
 
         // -9, -9, ..., -9, -9
         result_we_want.fill(-9);
@@ -273,10 +276,10 @@ void test_array_1d_fill_value(
     fern::ExecutionPolicy const& execution_policy)
 {
     size_t const nr_threads{fern::ThreadClient::hardware_concurrency()};
-    size_t const nr_values{100 * nr_threads};
-    std::vector<int> values(nr_values);
-    std::vector<int> result_we_want(nr_values);
-    std::vector<int> result_we_got(nr_values);
+    size_t const nr_elements{10 * nr_threads};
+    std::vector<int> values(nr_elements);
+    std::vector<int> result_we_want(nr_elements);
+    std::vector<int> result_we_got(nr_elements);
     int const fill_value{5};
 
     std::iota(values.begin(), values.end(), 0);
@@ -311,7 +314,7 @@ void test_array_1d_fill_value(
     }
 
     {
-        fern::Point<int, 1> offset{static_cast<int>(nr_values) + 100};
+        fern::Point<int, 1> offset{static_cast<int>(nr_elements) + 10};
 
         // 5, 5, ..., 5, 5
         std::fill(result_we_want.begin(), result_we_want.end(), fill_value);
@@ -341,7 +344,7 @@ void test_array_1d_fill_value(
     }
 
     {
-        fern::Point<int, 1> offset{-static_cast<int>(nr_values + 100)};
+        fern::Point<int, 1> offset{-static_cast<int>(nr_elements + 10)};
 
         // 5, 5, ..., 5, 5
         std::fill(result_we_want.begin(), result_we_want.end(), fill_value);
@@ -372,10 +375,10 @@ void test_array_1d_fill_value_masked(
     fern::ExecutionPolicy const& execution_policy)
 {
     size_t const nr_threads{fern::ThreadClient::hardware_concurrency()};
-    size_t const nr_values{100 * nr_threads};
-    fern::MaskedArray<int, 1> values(nr_values);
-    fern::MaskedArray<int, 1> result_we_want(nr_values);
-    fern::MaskedArray<int, 1> result_we_got(nr_values);
+    size_t const nr_elements{10 * nr_threads};
+    fern::MaskedArray<int, 1> values(nr_elements);
+    fern::MaskedArray<int, 1> result_we_want(nr_elements);
+    fern::MaskedArray<int, 1> result_we_got(nr_elements);
     int const fill_value{5};
 
     fern::DetectNoDataByValue<fern::Mask<1>> input_no_data_policy(
@@ -383,14 +386,14 @@ void test_array_1d_fill_value_masked(
     fern::MarkNoDataByValue<fern::Mask<1>> output_no_data_policy(
         result_we_got.mask(), true);
 
-    std::iota(values.data(), values.data() + nr_values, 0);
+    std::iota(values.data(), values.data() + nr_elements, 0);
     values.mask()[1] = true;
 
     {
         fern::Point<int, 1> offset{0};
 
         // 0, -9, 2, ..., n - 1
-        std::iota(result_we_want.data(), result_we_want.data() + nr_values, 0);
+        std::iota(result_we_want.data(), result_we_want.data() + nr_elements, 0);
         result_we_want.data()[1] = -9;
         result_we_want.mask()[1] = true;
         result_we_got.fill(-9);
@@ -407,7 +410,7 @@ void test_array_1d_fill_value_masked(
 
         // 5, 5, 0, -9, 1, ..., n - 3
         std::iota(result_we_want.data() + fern::get<0>(offset),
-            result_we_want.data() + nr_values, 0);
+            result_we_want.data() + nr_elements, 0);
         std::fill(result_we_want.data(), result_we_want.data() +
             fern::get<0>(offset), fill_value);
         result_we_want.data()[fern::get<0>(offset) + 1] = -9;
@@ -425,7 +428,7 @@ void test_array_1d_fill_value_masked(
     }
 
     {
-        fern::Point<int, 1> offset{static_cast<int>(nr_values + 100)};
+        fern::Point<int, 1> offset{static_cast<int>(nr_elements + 10)};
 
         // 5, 5, ..., 5, 5
         result_we_want.fill(fill_value);
@@ -444,13 +447,13 @@ void test_array_1d_fill_value_masked(
         fern::Point<int, 1> offset{-2};
 
         // 2, 3, ..., n - 1, 5, 5
-        std::iota(result_we_want.data(), result_we_want.data() + nr_values +
+        std::iota(result_we_want.data(), result_we_want.data() + nr_elements +
             fern::get<0>(offset), std::abs(fern::get<0>(offset)));
-        std::fill(result_we_want.data() + nr_values + fern::get<0>(offset),
-            result_we_want.data() + nr_values, fill_value);
+        std::fill(result_we_want.data() + nr_elements + fern::get<0>(offset),
+            result_we_want.data() + nr_elements, fill_value);
         // false, false, ..., false, false, false
         std::fill(result_we_want.mask().data(), result_we_want.mask().data() +
-            nr_values, false);
+            nr_elements, false);
         result_we_got.fill(-9);
         result_we_got.mask().fill(false);
 
@@ -461,7 +464,7 @@ void test_array_1d_fill_value_masked(
     }
 
     {
-        fern::Point<int, 1> offset{-static_cast<int>(nr_values + 100)};
+        fern::Point<int, 1> offset{-static_cast<int>(nr_elements + 10)};
 
         // 5, 5, ..., 5, 5
         result_we_want.fill(fill_value);
@@ -491,8 +494,204 @@ BOOST_AUTO_TEST_CASE(array_1d_fill_value_masked_parallel)
 }
 
 
-// TODO 2d
+void test_array_2d(
+    fern::ExecutionPolicy const& execution_policy)
+{
+    size_t const nr_threads{fern::ThreadClient::hardware_concurrency()};
+    size_t const nr_rows{30 * nr_threads};
+    size_t const nr_cols{20 * nr_threads};
+    size_t const nr_elements{nr_rows * nr_cols};
+
+    fern::Array<int, 2> values(fern::extents[nr_rows][nr_cols]);
+    fern::Array<int, 2> result_we_want(fern::extents[nr_rows][nr_cols]);
+    fern::Array<int, 2> result_we_got(fern::extents[nr_rows][nr_cols]);
+
+    std::iota(values.data(), values.data() + nr_elements, 0);
+
+    {
+        fern::Point<int, 2> offset(0, 0);
+
+        // 0, 1, ..., n - 1
+        std::iota(result_we_want.data(), result_we_want.data() + nr_elements,
+            0);
+        std::fill(result_we_got.data(), result_we_got.data() + nr_elements, -9);
+
+        fern::core::offset(execution_policy, values, offset, result_we_got);
+
+        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+    }
+
+    // TODO Add tests.
+}
 
 
+BOOST_AUTO_TEST_CASE(array_2d_sequential)
+{
+    test_array_2d(fern::sequential);
+}
+
+
+BOOST_AUTO_TEST_CASE(array_2d_parallel)
+{
+    fern::ThreadClient client;
+    test_array_2d(fern::parallel);
+}
+
+
+void test_array_2d_masked(
+    fern::ExecutionPolicy const& execution_policy)
+{
+    size_t const nr_threads{fern::ThreadClient::hardware_concurrency()};
+    size_t const nr_rows{30 * nr_threads};
+    size_t const nr_cols{20 * nr_threads};
+    size_t const nr_elements{nr_rows * nr_cols};
+
+    fern::MaskedArray<int, 2> values(fern::extents[nr_rows][nr_cols]);
+    fern::MaskedArray<int, 2> result_we_want(fern::extents[nr_rows][nr_cols]);
+    fern::MaskedArray<int, 2> result_we_got(fern::extents[nr_rows][nr_cols]);
+
+    fern::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
+        values.mask(), true);
+    fern::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
+        result_we_got.mask(), true);
+
+    std::iota(values.data(), values.data() + nr_elements, 0);
+    values.mask()[1][2] = true;
+
+    {
+        fern::Point<int, 2> offset(0, 0);
+
+        // 0, -9, 2, ..., n - 1
+        std::iota(result_we_want.data(), result_we_want.data() + nr_elements,
+            0);
+        result_we_want[1][2] = -9;
+        result_we_want.mask()[1][2] = true;
+        result_we_got.fill(-9);
+        result_we_got.mask().fill(false);
+
+        fern::core::offset(input_no_data_policy, output_no_data_policy,
+            execution_policy, values, offset, result_we_got);
+
+        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+    }
+
+    // TODO Add tests.
+}
+
+
+BOOST_AUTO_TEST_CASE(array_2d_masked_sequential)
+{
+    test_array_2d_masked(fern::sequential);
+}
+
+
+BOOST_AUTO_TEST_CASE(array_2d_masked_parallel)
+{
+    fern::ThreadClient client;
+    test_array_2d_masked(fern::parallel);
+}
+
+
+void test_array_2d_fill_value(
+    fern::ExecutionPolicy const& execution_policy)
+{
+    size_t const nr_threads{fern::ThreadClient::hardware_concurrency()};
+    size_t const nr_rows{30 * nr_threads};
+    size_t const nr_cols{20 * nr_threads};
+    size_t const nr_elements{nr_rows * nr_cols};
+
+    fern::Array<int, 2> values(fern::extents[nr_rows][nr_cols]);
+    fern::Array<int, 2> result_we_want(fern::extents[nr_rows][nr_cols]);
+    fern::Array<int, 2> result_we_got(fern::extents[nr_rows][nr_cols]);
+
+    int const fill_value{5};
+
+    std::iota(values.data(), values.data() + nr_elements, 0);
+
+    {
+        fern::Point<int, 2> offset(0, 0);
+
+        // 0, 1, ..., n - 1
+        std::iota(result_we_want.data(), result_we_want.data() + nr_elements,
+            0);
+        std::fill(result_we_got.data(), result_we_got.data() + nr_elements, -9);
+
+        fern::core::offset(execution_policy, values, offset, fill_value,
+            result_we_got);
+
+        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+    }
+
+    // TODO Add tests.
+}
+
+
+BOOST_AUTO_TEST_CASE(array_2d_fill_value_sequential)
+{
+    test_array_2d_fill_value(fern::sequential);
+}
+
+
+BOOST_AUTO_TEST_CASE(array_2d_fill_value_parallel)
+{
+    fern::ThreadClient client;
+    test_array_2d_fill_value(fern::parallel);
+}
+
+
+void test_array_2d_fill_value_masked(
+    fern::ExecutionPolicy const& execution_policy)
+{
+    size_t const nr_threads{fern::ThreadClient::hardware_concurrency()};
+    size_t const nr_rows{30 * nr_threads};
+    size_t const nr_cols{20 * nr_threads};
+    size_t const nr_elements{nr_rows * nr_cols};
+
+    fern::MaskedArray<int, 2> values(fern::extents[nr_rows][nr_cols]);
+    fern::MaskedArray<int, 2> result_we_want(fern::extents[nr_rows][nr_cols]);
+    fern::MaskedArray<int, 2> result_we_got(fern::extents[nr_rows][nr_cols]);
+
+    int const fill_value{5};
+
+    fern::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
+        values.mask(), true);
+    fern::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
+        result_we_got.mask(), true);
+
+    std::iota(values.data(), values.data() + nr_elements, 0);
+    values.mask()[1][2] = true;
+
+    {
+        fern::Point<int, 2> offset(0, 0);
+
+        // 0, -9, 2, ..., n - 1
+        std::iota(result_we_want.data(), result_we_want.data() + nr_elements,
+            0);
+        result_we_want[1][2] = -9;
+        result_we_want.mask()[1][2] = true;
+        result_we_got.fill(-9);
+        result_we_got.mask().fill(false);
+
+        fern::core::offset(input_no_data_policy, output_no_data_policy,
+            execution_policy, values, offset, fill_value, result_we_got);
+
+        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+    }
+
+    // TODO Add tests.
+}
+
+
+BOOST_AUTO_TEST_CASE(array_2d_fill_value_masked_sequential)
+{
+    test_array_2d_fill_value_masked(fern::sequential);
+}
+
+
+BOOST_AUTO_TEST_CASE(array_2d_fill_value_masked_parallel)
+{
+    fern::ThreadClient client;
+    test_array_2d_fill_value_masked(fern::parallel);
+}
 
 BOOST_AUTO_TEST_SUITE_END()
