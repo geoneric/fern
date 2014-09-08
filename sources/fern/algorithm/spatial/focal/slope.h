@@ -39,6 +39,7 @@ namespace spatial {
 //! Calculate the slope of \a value and write the result to \a result.
 /*!
     \ingroup       spatial
+    \sa            fern::slope::OutOfRangePolicy
 
     This algorithm implements Horne's slope algorithm (Horn, B.K.P. (1981)
     Hill shading and the reflectance map. Proceedings of IEEE 69(1), 14-47).

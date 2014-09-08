@@ -2,8 +2,6 @@
 #include "fern/core/argument_categories.h"
 #include "fern/core/assert.h"
 #include "fern/core/value_type.h"
-#include "fern/feature/core/array_traits.h"
-#include "fern/feature/core/masked_array_traits.h"
 #include "fern/algorithm/convolution/neighborhood/square_traits.h"
 #include "fern/algorithm/algebra/elementary.h"
 #include "fern/algorithm/convolution/convolve.h"
@@ -54,6 +52,18 @@ struct Slope<
         Value const& value,
         Result& result)
     {
+        // TODO The implementation of slope uses other algorithms. These other
+        //      algorithms have out-of-domain and out-of-range policies, and
+        //      currently, the algorithm-specific policies are used. But the
+        //      default, non-checking policies could also be used, but then
+        //      we don't know of out-of-domain/out-of-range situation occured
+        //      during the calculations.
+        //      How to choose which policies to use for the algorithms we call
+        //      here? If slope's output_no_data_policy doesn't do anything, it
+        //      makes no sense to check for out-of-domain/out-of-range, because
+        //      we can't mark this in the result.
+        //      Slope itself doesn't have out-of-domain policy.
+        //      Slope has an out-of-range policy, but it isn't used yet.
         assert(fern::size(value, 0) == fern::size(result, 0));
         assert(fern::size(value, 1) == fern::size(result, 1));
 
@@ -74,14 +84,12 @@ struct Slope<
             {1, 2, 1}
         });
 
-        auto extents = fern::extents[size(value, 0)][size(value, 1)];
-
-        MaskedArray<Float, 2> dz_dx(extents);
+        auto dz_dx(clone<Float>(value));
         convolution::convolve<
             convolve::ReplaceNoDataByFocalAverage,
             convolve::DontDivideByWeights,
             convolve::ReplaceOutOfImageByFocalAverage,
-            convolve::OutOfRangePolicy>(
+            convolve::OutOfRangePolicy>(  // TODO Pick correct policy.
                 input_no_data_policy, output_no_data_policy, execution_policy,
                 value, dz_dx_kernel, dz_dx);
 
@@ -91,12 +99,12 @@ struct Slope<
                 input_no_data_policy, output_no_data_policy, execution_policy,
                 dz_dx, 8 * cell_size(value, 0), dz_dx);
 
-        MaskedArray<Float, 2> dz_dy(extents);
+        auto dz_dy(clone<Float>(value));
         convolution::convolve<
             convolve::ReplaceNoDataByFocalAverage,
             convolve::DontDivideByWeights,
             convolve::ReplaceOutOfImageByFocalAverage,
-            convolve::OutOfRangePolicy>(
+            convolve::OutOfRangePolicy>(  // TODO Pick correct policy.
                 input_no_data_policy, output_no_data_policy, execution_policy,
                 value, dz_dy_kernel, dz_dy);
 
@@ -126,7 +134,7 @@ struct Slope<
         // TODO Whether or not to detect out of domain values depends on
         //      output no-data policy passed in. Will sqrt succeed if input
         //      < 0?
-        algebra::sqrt<sqrt::OutOfDomainPolicy>(
+        algebra::sqrt<sqrt::OutOfDomainPolicy>(  // TODO Pick correct policy.
             input_no_data_policy, output_no_data_policy, execution_policy,
             result, result);
     }
