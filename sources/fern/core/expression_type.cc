@@ -1,4 +1,5 @@
 #include "fern/core/expression_type.h"
+#include <cassert>
 
 
 namespace fern {
