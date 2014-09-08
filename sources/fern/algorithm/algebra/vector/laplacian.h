@@ -67,6 +67,7 @@ namespace algebra {
     same.
 
     \ingroup       vector
+    \sa            fern::laplacian::OutOfRangePolicy
 */
 template<
     template<class, class> class OutOfRangePolicy,

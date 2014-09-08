@@ -66,6 +66,8 @@ struct Laplacian<
         assert(fern::size(value, 0) == fern::size(result, 0));
         assert(fern::size(value, 1) == fern::size(result, 1));
 
+        // TODO See also comments in detail/slope.h.
+
         using Float = value_type<Value>;
         FERN_STATIC_ASSERT(std::is_floating_point, Float)
 
