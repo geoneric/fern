@@ -9,6 +9,7 @@ MACRO(ADD_UNIT_TEST NAME)
         # fern_algorithm_core
         # fern_feature_core  # fern::extents
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+        stdc++
     )
     ADD_TEST(
         NAME example_algorithm_${NAME}
