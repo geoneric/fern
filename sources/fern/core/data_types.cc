@@ -1,4 +1,5 @@
 #include "fern/core/data_types.h"
+#include <cassert>
 #include <map>
 
 
