@@ -1,4 +1,5 @@
 #pragma once
+#include <cassert>
 #include <cxxabi.h>
 #include "fern/core/type_traits.h"
 

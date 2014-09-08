@@ -1,4 +1,5 @@
 #pragma once
+#include <cassert>
 #include "fern/feature/core/raster_traits.h"
 #include "fern/feature/core/masked_raster.h"
 

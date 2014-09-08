@@ -1,4 +1,5 @@
 #pragma once
+#include <cassert>
 #include <map>
 #include "fern/core/string.h"
 

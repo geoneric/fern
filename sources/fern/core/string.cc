@@ -1,5 +1,6 @@
 #include "fern/core/string.h"
 #include <algorithm>
+#include <cassert>
 #include <iterator>
 #include <regex>
 #include <boost/algorithm/string/join.hpp>

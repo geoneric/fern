@@ -1,4 +1,5 @@
 #include "fern/core/parse_error.h"
+#include <cassert>
 
 
 namespace fern {

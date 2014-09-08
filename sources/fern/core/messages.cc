@@ -1,4 +1,5 @@
 #include "fern/core/messages.h"
+#include <cassert>
 
 
 namespace fern {

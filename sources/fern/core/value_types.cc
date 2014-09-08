@@ -1,4 +1,5 @@
 #include "fern/core/value_types.h"
+#include <cassert>
 #include <map>
 
 

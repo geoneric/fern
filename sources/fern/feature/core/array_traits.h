@@ -1,4 +1,5 @@
 #pragma once
+#include <cassert>
 #include "fern/core/argument_traits.h"
 #include "fern/feature/core/array.h"
 
