@@ -18,7 +18,7 @@ namespace algebra {
     Whether or not a value is defind depends on the input-not-data policy.
     Therefore, this algorithm doesn't need a value to be passed in.
 
-    The value type of \a result must be integral.
+    The value type of \a result must be arithmetic.
 */
 template<
     class InputNoDataPolicy,
@@ -30,7 +30,7 @@ void defined(
     ExecutionPolicy const& execution_policy,
     Result& result)
 {
-    FERN_STATIC_ASSERT(std::is_integral, value_type<Result>)
+    FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Result>)
 
     defined::detail::defined<>(input_no_data_policy, execution_policy, result);
 }
