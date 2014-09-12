@@ -30,10 +30,11 @@ namespace convolution {
 //! Convolve \a source by \a kernel and write the result to \a destination.
 /*!
     \ingroup    convolution
-    \param[in] source Image to read values from to convolve.
-    \param[in] kernel Kernel containing the weights to use.
+    \param[in]  source Image to read values from to convolve.
+    \param[in]  kernel Kernel containing the weights to use.
     \param[out] destination Image to write calculated values to.
-    \sa         fern::convolve::OutOfRangePolicy
+    \sa         fern::convolve::OutOfRangePolicy,
+                @ref fern_algorithm_convolution
 
     This is a very flexible algorithm. It is written in terms of a number of
     [policies that handle configurable aspects of convolution]

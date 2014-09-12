@@ -50,7 +50,8 @@ namespace core {
 /*!
     \ingroup       core
     \sa            fern::cast::OutOfRangePolicy,
-                   fern::unary_local_operation
+                   fern::unary_local_operation,
+                   @ref fern_algorithm_core
 
     The value type of \a value and \a result must be arithmetic.
 */

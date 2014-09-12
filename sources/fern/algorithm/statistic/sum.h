@@ -20,7 +20,8 @@ namespace statistic {
 //! Calculate the sum of \a value and write the result to \a result.
 /*!
     \ingroup       statistic
-    \sa            fern::unary_aggregate_operation
+    \sa            fern::unary_aggregate_operation,
+                   @ref fern_algorithm_statistics
 
     The value type of \a value must be arithmetic and not `bool`. The value
     type of \a result must be equal to the value type of \a value.

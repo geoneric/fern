@@ -10,7 +10,8 @@ namespace algebra {
 //! Determine the boolean and result of \a value1 and \a value2 and write the result to \a result.
 /*!
     \ingroup       boolean
-    \sa            fern::binary_local_operation.
+    \sa            fern::binary_local_operation,
+                   @ref fern_algorithm_algebra_boolean
 
     The value types of \a value1, \a value2 and \a result must be arithmetic.
 */

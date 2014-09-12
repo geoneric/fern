@@ -92,7 +92,8 @@ namespace algebra {
 /*!
     \ingroup       elementary
     \sa            fern::pow::OutOfDomainPolicy, fern::pow::OutOfRangePolicy,
-                   fern::binary_local_operation
+                   fern::binary_local_operation,
+                   @ref fern_algorithm_algebra_elementary
 
     The value types of \a base, \a exponent and \a result must be floating
     point and the same.

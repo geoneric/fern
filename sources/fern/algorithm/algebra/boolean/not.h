@@ -10,7 +10,8 @@ namespace algebra {
 //! Negate \a value and write the result to \a result.
 /*!
     \ingroup       boolean
-    \sa            fern::unary_local_operation.
+    \sa            fern::unary_local_operation,
+                   @ref fern_algorithm_algebra_boolean
 
     The value types of \a value and \a result must be arithmetic.
 */

@@ -10,6 +10,7 @@ namespace core {
 //! Conditionally assign \a true_value to \a result.
 /*!
     \ingroup       core
+    \sa            @ref fern_algorithm_core
 
     All elements in \a condition that evaluate to true are assigned to the
     \a result. All other elements in result are handled by the
@@ -95,6 +96,7 @@ void if_(
 //! Conditionally assign \a true_value or \a false_value to \a result.
 /*!
     \ingroup       core
+    \sa            @ref fern_algorithm_core
 
     All elements in \a condition that evaluate to true are assigned the
     corresponding element from \a true_value. All elements in \a condition

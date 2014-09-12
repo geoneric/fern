@@ -42,7 +42,8 @@ namespace algebra {
 //! Calculate the square root of \a value and write the result to \a result.
 /*!
     \ingroup       elementary
-    \sa            fern::sqrt::OutOfDomainPolicy, fern::unary_local_operation
+    \sa            fern::sqrt::OutOfDomainPolicy, fern::unary_local_operation,
+                   @ref fern_algorithm_algebra_elementary
 
     The value types of \a value and \a result must be floating point and the
     same.

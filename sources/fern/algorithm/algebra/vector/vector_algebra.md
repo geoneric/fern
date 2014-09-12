@@ -3,24 +3,7 @@ Vector algebra  {#fern_algorithm_algebra_vector}
 
 [TOC]
 
-
-Code  {#fern_algorithm_algebra_vector_code}
-====
-
-Name                     | Description
------------------------- | -----------
-fern::algebra::laplacian | Calculate the laplacian value.
-
-
-Operations to implement:
-
-- (lax)
-- gradx, grady
-- laplacian
-- dot product
-- diversion
-- gradient
-
+Algorithms: \ref vector
 
 Theory  {#fern_algorithm_algebra_vector_theory}
 ======

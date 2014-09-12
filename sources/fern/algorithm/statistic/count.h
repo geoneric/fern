@@ -8,7 +8,8 @@ namespace statistic {
 //! Determine how many occurrences of \a value2 are in \a value1 and write the result to \a result.
 /*!
     \ingroup       statistic
-    \sa            fern::binary_aggregate_operation
+    \sa            fern::binary_aggregate_operation,
+                   @ref fern_algorithm_statistics
 
     The value type of \a value must be arithmetic. The value
     type of \a result must be integral.

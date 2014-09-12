@@ -53,7 +53,8 @@ namespace algebra {
 /*!
     \ingroup       elementary
     \sa            fern::absolute::OutOfRangePolicy,
-                   fern::unary_local_operation
+                   fern::unary_local_operation,
+                   @ref fern_algorithm_algebra_elementary
 
     The value type of \a value must be arithmetic and not `bool`. The value
     type of \a result must be equal to the value type of \a value.

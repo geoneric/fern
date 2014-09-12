@@ -10,7 +10,8 @@ namespace core {
 //! Fill \a result with \a value.
 /*!
     \ingroup       core
-    \sa            fern::unary_disaggregate_operation
+    \sa            fern::unary_disaggregate_operation,
+                   @ref fern_algorithm_core
 
     The value type of \a Result must be equal to \a Value.
 */

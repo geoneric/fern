@@ -10,7 +10,8 @@ namespace algebra {
 //! Determing which values are defined and write the result to \a result.
 /*!
     \ingroup       boolean
-    \sa            fern::nullary_local_operation.
+    \sa            fern::nullary_local_operation,
+                   @ref fern_algorithm_algebra_boolean
     \warning       For each location in \a result, the \a InputNoDataPolicy
                    must be able to tell whether the input value is no-data
                    or not.

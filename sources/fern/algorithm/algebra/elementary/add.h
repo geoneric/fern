@@ -81,7 +81,8 @@ namespace algebra {
 /*!
     \ingroup       elementary
     \sa            fern::add::OutOfRangePolicy, fern::add::result_type,
-                   fern::add::result_value_type, fern::binary_local_operation
+                   fern::add::result_value_type, fern::binary_local_operation,
+                   @ref fern_algorithm_algebra_elementary
 
     The value types of \a value1 and \a value2 must be arithmetic and not
     `bool`. The value type of \a result must be equal to

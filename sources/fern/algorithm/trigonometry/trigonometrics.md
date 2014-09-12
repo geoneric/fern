@@ -1,12 +1,7 @@
 Trigonometry       {#fern_algorithm_trigonometry}
 ============
 
-Name                     | Description
------------------------- | -----------
-fern::trigonometry::atan | Calculate arc-tangent.
-fern::trigonometry::cos  | Calculate cosine.
-fern::trigonometry::sin  | Calculate the sine.
-fern::trigonometry::tan  | Calculate the tangent.
+Algorithms: \ref trigonometry
 
 
 See also

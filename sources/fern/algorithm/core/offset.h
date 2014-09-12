@@ -10,6 +10,7 @@ namespace core {
 //! Offset the elements in \a value by \a offset_ and write the result to \a result.
 /*!
     \ingroup       core
+    \sa            @ref fern_algorithm_core
 
     Elements in \a result that have no corresponding value in \a value, will
     be handled by \a output_no_data_policy.
@@ -100,6 +101,7 @@ void offset(
 //! Offset the elements in \a value by \a offset_ and write the result to \a result.
 /*!
     \ingroup       core
+    \sa            @ref fern_algorithm_core
 
     Elements in \a result that have no corresponding value in \a value, will
     be assigned the \a fill_value.

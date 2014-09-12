@@ -10,7 +10,8 @@ namespace trigonometry {
 //! Calculate the arc tangent of \a value and write the result to \a result.
 /*!
     \ingroup       trigonometry
-    \sa            fern::unary_local_operation
+    \sa            fern::unary_local_operation,
+                   @ref fern_algorithm_trigonometry
 
     The value types of \a value and \a result must be floating point and the
     same.

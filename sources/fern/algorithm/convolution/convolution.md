@@ -3,17 +3,11 @@ Convolution        {#fern_algorithm_convolution}
 
 [TOC]
 
+Algorithms: \ref convolution
+
 
 Code               {#fern_algorithm_convolution_code}
 ====
-
-Algorithms         {#fern_algorithm_convolution_algorithms}
-----------
-
-Name                        | Description
---------------------------- | -----------
-fern::convolution::convolve | Convolve a value.
-
 
 Policies           {#fern_algorithm_convolution_policies}
 --------
