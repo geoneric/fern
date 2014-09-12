@@ -5,7 +5,7 @@
 #include "fern/core/constant_traits.h"
 #include "fern/core/assert.h"
 #include "fern/core/base_class.h"
-#include "fern/algorithm/algebra/result_value.h"
+#include "fern/algorithm/core/result_value.h"
 
 
 namespace fern {
@@ -162,5 +162,11 @@ public:
         base_class<argument_category<A2>, collection_tag>>::type;
 
 };
+
+
+template<
+    class A1,
+    class A2>
+using result_type = typename Result<A1, A2>::type;
 
 } // namespace fern

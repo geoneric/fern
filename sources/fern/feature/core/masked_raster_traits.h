@@ -23,6 +23,13 @@ struct ArgumentTraits<
         using type = MaskedRaster<U, nr_dimensions>;
     };
 
+    template<
+        class U>
+    struct Clone
+    {
+        using type = MaskedRaster<U, nr_dimensions>;
+    };
+
     using value_type = T;
 
     using reference = T&;

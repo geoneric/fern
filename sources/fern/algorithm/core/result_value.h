@@ -1,7 +1,7 @@
 #pragma once
 #include "fern/core/assert.h"
 #include "fern/core/type_traits.h"
-#include "fern/algorithm/algebra/detail/result_value.h"
+#include "fern/algorithm/core/detail/result_value.h"
 
 
 namespace fern {

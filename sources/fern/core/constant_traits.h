@@ -21,6 +21,13 @@ struct ArgumentTraits<T>                                    \
         using type = U;                                     \
     };                                                      \
                                                             \
+    template<                                               \
+        class U>                                            \
+    struct Clone                                            \
+    {                                                       \
+        using type = U;                                     \
+    };                                                      \
+                                                            \
     using value_type = T;                                   \
                                                             \
     using reference = T&;                                   \
@@ -63,5 +70,35 @@ CONSTANT_ARGUMENT_TRAITS(float)
 CONSTANT_ARGUMENT_TRAITS(double)
 
 #undef CONSTANT_ARGUMENT_TRAITS
+
+
+template<
+    class T>
+inline size_t size(
+    T const& /* constant */)
+{
+    return 1u;
+}
+
+
+template<
+    class U,
+    class V>
+inline U clone(
+    V const& /* constant */)
+{
+    return U{};
+}
+
+
+template<
+    class U,
+    class V>
+inline U clone(
+    V const& /* value */,
+    U const& value)
+{
+    return U{value};
+}
 
 } // namespace fern

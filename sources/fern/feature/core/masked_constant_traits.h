@@ -19,6 +19,13 @@ struct ArgumentTraits<MaskedConstant<T>>
         using type = MaskedConstant<U>;
     };
 
+    template<
+        class U>
+    struct Clone
+    {
+        using type = MaskedConstant<U>;
+    };
+
     using value_type = T;
 
     using reference = T&;

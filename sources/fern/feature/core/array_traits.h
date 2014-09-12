@@ -75,6 +75,13 @@ struct ArgumentTraits<
         using type = Array<U, nr_dimensions>;
     };
 
+    template<
+        class U>
+    struct Clone
+    {
+        using type = Array<U, nr_dimensions>;
+    };
+
     using value_type = T;
 
     using reference = T&;

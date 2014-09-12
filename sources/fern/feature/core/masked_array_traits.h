@@ -22,6 +22,13 @@ struct ArgumentTraits<
         using type = MaskedArray<U, nr_dimensions>;
     };
 
+    template<
+        class U>
+    struct Clone
+    {
+        using type = MaskedArray<U, nr_dimensions>;
+    };
+
     using value_type = T;
 
     using reference = T&;
