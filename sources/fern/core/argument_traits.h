@@ -34,6 +34,12 @@ using Collection = typename ArgumentTraits<U>::template Collection<V>::type;
 
 
 template<
+    class U,
+    class V>
+using clone_type = typename ArgumentTraits<U>::template Clone<V>::type;
+
+
+template<
     class T>
 using const_reference = typename ArgumentTraits<T>::const_reference;
 
