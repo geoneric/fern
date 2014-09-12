@@ -1,6 +1,6 @@
-#define BOOST_TEST_MODULE fern algorithm algebra result_type
+#define BOOST_TEST_MODULE fern algorithm core result_type
 #include <boost/test/unit_test.hpp>
-#include "fern/algorithm/algebra/result_type.h"
+#include "fern/algorithm/core/result_type.h"
 #include "fern/feature/core/masked_constant_traits.h"
 #include "fern/core/constant_traits.h"
 #include "fern/core/typename.h"

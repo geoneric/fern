@@ -1,11 +1,14 @@
 SET(TEST_NAMES
     binary_local_operation_test
     cast_test
+    if_test
     index_range_test
     index_ranges_test
     fill_test
     nullary_local_operation_test
     offset_test
+    result_type_test
+    result_value_test
     unary_disaggregate_operation_test
     unary_local_operation_test
 )

@@ -1,6 +1,6 @@
-#define BOOST_TEST_MODULE fern algorithm algebra result_value
+#define BOOST_TEST_MODULE fern algorithm core result_value
 #include <boost/test/unit_test.hpp>
-#include "fern/algorithm/algebra/result_value.h"
+#include "fern/algorithm/core/result_value.h"
 
 
 #define verify_result_value_type(                                              \
