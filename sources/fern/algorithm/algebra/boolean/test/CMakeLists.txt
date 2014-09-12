@@ -1,6 +1,7 @@
 SET(TEST_NAMES
     defined_test
     not_test
+    or_test
 )
 
 MACRO(ADD_UNIT_TEST NAME)

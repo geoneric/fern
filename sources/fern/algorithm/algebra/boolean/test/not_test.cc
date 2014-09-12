@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE fern algorithm algebra boolean not
+#define BOOST_TEST_MODULE fern algorithm algebra boolean not_
 #include <boost/test/unit_test.hpp>
 #include "fern/core/constant_traits.h"
 #include "fern/core/type_traits.h"
