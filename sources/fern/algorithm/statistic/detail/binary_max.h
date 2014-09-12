@@ -5,7 +5,7 @@
 
 
 namespace fern {
-namespace binary_min {
+namespace binary_max {
 namespace detail {
 
 template<
@@ -21,7 +21,7 @@ struct Algorithm
         Value2 const& value2,
         Result& result) const
     {
-        result = std::min(value1, value2);
+        result = std::max(value1, value2);
     }
 
 };
@@ -34,7 +34,7 @@ template<
     class Value1,
     class Value2,
     class Result>
-void binary_min(
+void binary_max(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
     ExecutionPolicy const& execution_policy,
@@ -49,5 +49,5 @@ void binary_min(
 }
 
 } // namespace detail
-} // namespace binary_min
+} // namespace binary_max
 } // namespace fern
