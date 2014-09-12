@@ -1,5 +1,6 @@
 SET(TEST_NAMES
     binary_min_test
+    binary_max_test
     count_test
     unary_min_test
     unary_max_test
