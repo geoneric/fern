@@ -21,6 +21,8 @@ public:
 
     MaskedConstant& operator=          (MaskedConstant const&)=default;
 
+    MaskedConstant& operator=          (T const& value);
+
                    MaskedConstant      (MaskedConstant&&)=default;
 
     MaskedConstant& operator=          (MaskedConstant&&)=default;
@@ -75,6 +77,17 @@ inline MaskedConstant<T>::MaskedConstant(
       _mask(mask)
 
 {
+}
+
+
+template<
+    class T>
+inline MaskedConstant<T>& MaskedConstant<T>::operator=(
+    T const& value)
+{
+    _value = value;
+
+    return *this;
 }
 
 
