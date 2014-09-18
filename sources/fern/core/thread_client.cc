@@ -1,7 +1,7 @@
 #include "fern/core/thread_client.h"
 #include <cassert>
 #include <iostream>
-#include "fern/core/memory.h"
+#include <memory>
 
 
 namespace fern {

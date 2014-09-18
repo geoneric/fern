@@ -1,6 +1,6 @@
 #pragma once
 #include <algorithm>
-#include "fern/core/memory.h"
+#include <memory>
 
 
 namespace fern {

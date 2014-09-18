@@ -1,6 +1,5 @@
 #pragma once
 #include <memory>
-#include "fern/core/memory.h"
 #include "fern/feature/core/attribute.h"
 #include "fern/feature/core/constant_value.h"
 
