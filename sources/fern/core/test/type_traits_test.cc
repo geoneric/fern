@@ -18,4 +18,14 @@ BOOST_AUTO_TEST_CASE(type_traits)
         fern::String("Uint8"));
 }
 
+
+BOOST_AUTO_TEST_CASE(are_same)
+{
+    BOOST_CHECK( (fern::are_same<int>::value));
+    BOOST_CHECK(!(fern::are_same<int, float>::value));
+    BOOST_CHECK( (fern::are_same<int, int>::value));
+    BOOST_CHECK( (fern::are_same<int, int, int>::value));
+    BOOST_CHECK(!(fern::are_same<int, int, int, double>::value));
+}
+
 BOOST_AUTO_TEST_SUITE_END()

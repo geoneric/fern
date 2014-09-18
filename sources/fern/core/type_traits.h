@@ -303,4 +303,22 @@ template<
     class T>
 using number_category = typename TypeTraits<T>::number_category;
 
+
+template<class... T>
+struct are_same;
+
+template<class T>
+struct are_same<T>: std::true_type { };
+
+template<class T>
+struct are_same<T, T>: std::true_type { };
+
+template<class T, class U>
+struct are_same<T, U>: std::false_type { };
+
+template<class T, class U, class... V>
+struct are_same<T, U, V...>: std::conditional<
+    are_same<T, U>::value && are_same<U, V...>::value,
+    std::true_type, std::false_type>::type { };
+
 } // namespace fern
