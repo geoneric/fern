@@ -1,10 +1,6 @@
 #pragma once
 #include "fern/core/argument_traits.h"
-#include "fern/algorithm/core/result_type.h"
-/// #include "fern/core/base_class.h"
-/// #include "fern/core/collection_traits.h"
 #include "fern/core/thread_client.h"
-/// #include "fern/core/type_traits.h"
 #include "fern/algorithm/core/index_ranges.h"
 #include "fern/algorithm/policy/execution_policy.h"
 

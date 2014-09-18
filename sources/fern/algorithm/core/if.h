@@ -2,6 +2,7 @@
 #include "fern/core/assert.h"
 #include "fern/algorithm/policy/policies.h"
 #include "fern/algorithm/core/detail/if.h"
+#include "fern/algorithm/core/result_type.h"
 
 
 namespace fern {
