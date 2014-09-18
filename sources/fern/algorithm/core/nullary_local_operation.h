@@ -399,7 +399,8 @@ struct NullaryLocalOperation<
 /*!
     \tparam        Algorithm Class of the operation to execute.
     \param[out]    result Output that is written by the operation.
-    \sa            fern::unary_local_operation, fern::binary_local_operation
+    \sa            fern::unary_local_operation, fern::binary_local_operation,
+                   fern::n_ary_local_operation
 
     This function supports handling 0d, 1d and 2d values.
 

@@ -1437,7 +1437,8 @@ struct BinaryLocalOperation<
     \param[in]     value1 First input to pass to the operation.
     \param[in]     value2 Second input to pass to the operation.
     \param[out]    result Output that is written by the operation.
-    \sa            fern::nullary_local_operation, fern::unary_local_operation
+    \sa            fern::nullary_local_operation, fern::unary_local_operation,
+                   fern::n_ary_local_operation
 
     This function supports handling 0d, 1d and 2d values.
 
