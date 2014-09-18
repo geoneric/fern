@@ -32,6 +32,11 @@ public:
 
     virtual        ~SkipNoData         ()=default;
 
+    template<
+        size_t index>
+    SkipNoData const&
+                   get                 () const;
+
 };
 
 
@@ -62,6 +67,14 @@ inline constexpr bool SkipNoData::is_no_data(
     size_t /* index3 */)
 {
     return false;
+}
+
+
+template<
+    size_t index>
+inline SkipNoData const& SkipNoData::get() const
+{
+    return *this;
 }
 
 } // namespace fern
