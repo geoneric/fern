@@ -1,4 +1,6 @@
 #pragma once
+#include <iostream>
+#include "fern/feature/core/masked_constant.h"
 #include "fern/algorithm/algebra/elementary/equal.h"
 #include "fern/algorithm/statistic/count.h"
 
@@ -48,3 +50,16 @@ bool equal(
 }
 
 
+namespace fern {
+
+template<
+    class T>
+inline std::ostream& operator<<(
+    std::ostream& stream,
+    fern::MaskedConstant<T> const& constant)
+{
+    stream << constant.value() << (constant.mask() ? "(masked)" : "");
+    return stream;
+}
+
+}
