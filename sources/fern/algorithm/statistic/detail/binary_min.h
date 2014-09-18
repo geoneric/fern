@@ -46,6 +46,13 @@ void binary_min(
         binary::DiscardDomainErrors, binary::DiscardRangeErrors>(
             input_no_data_policy, output_no_data_policy, execution_policy,
             value1, value2, result);
+
+    // TODO
+    /// n_ary_local_operation<Algorithm,
+    ///     binary::DiscardDomainErrors, binary::DiscardRangeErrors>(
+    ///         input_no_data_policy, output_no_data_policy,
+    ///         execution_policy,
+    ///         result, std::forward<Values>(values)...);
 }
 
 } // namespace detail
