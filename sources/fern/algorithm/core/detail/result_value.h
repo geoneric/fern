@@ -37,6 +37,23 @@ template<
 class ResultValue<
     A1,
     A2,
+    boolean_tag,
+    boolean_tag>
+{
+
+public:
+
+    using type = bool;
+
+};
+
+
+template<
+    class A1,
+    class A2>
+class ResultValue<
+    A1,
+    A2,
     unsigned_integer_tag,
     unsigned_integer_tag>
 {

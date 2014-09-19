@@ -102,7 +102,8 @@ BOOST_AUTO_TEST_CASE(array_2d_masked_0d)
     fern::core::cover(input_no_data_policy, output_no_data_policy,
         execution_policy, value1, value2, result_we_got);
 
-    BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+    BOOST_CHECK(fern::compare(execution_policy, result_we_got,
+        result_we_want));
 }
 
 
@@ -216,7 +217,8 @@ BOOST_AUTO_TEST_CASE(array_2d_masked_2d)
             execution_policy, result_we_got1, value3, result_we_got2);
     }
 
-    BOOST_CHECK(equal(execution_policy, result_we_got2, result_we_want));
+    BOOST_CHECK(fern::compare(execution_policy, result_we_got2,
+        result_we_want));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

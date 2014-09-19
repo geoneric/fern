@@ -47,6 +47,11 @@ public:
                    MaskedRaster        (gen_type<nr_ranges> const& sizes,
                                         Transformation const& transformation);
 
+    template<size_t nr_ranges>
+                   MaskedRaster        (gen_type<nr_ranges> const& sizes,
+                                        Transformation const& transformation,
+                                        T const& value);
+
     Transformation const&
                    transformation      () const;
 
@@ -67,6 +72,23 @@ inline MaskedRaster<T, nr_dimensions>::MaskedRaster(
     Transformation const& transformation)
 
     : MaskedArray<T, nr_dimensions>(sizes),
+      _transformation(transformation)
+
+{
+}
+
+
+template<
+    class T,
+    size_t nr_dimensions>
+template<
+    size_t nr_ranges>
+inline MaskedRaster<T, nr_dimensions>::MaskedRaster(
+    gen_type<nr_ranges> const& sizes,
+    Transformation const& transformation,
+    T const& value)
+
+    : MaskedArray<T, nr_dimensions>(sizes, value),
       _transformation(transformation)
 
 {

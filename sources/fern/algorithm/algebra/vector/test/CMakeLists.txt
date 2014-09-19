@@ -1,4 +1,5 @@
 SET(TEST_NAMES
+    gradient_test
     laplacian_test
 )
 

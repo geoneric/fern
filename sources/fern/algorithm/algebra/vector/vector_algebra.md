@@ -63,3 +63,5 @@ See also  {#fern_algorithm_algebra_vector_see_also}
 - Laplace
     - [Laplace operator](http://en.wikipedia.org/wiki/Laplace_operator)
     - [Discrete laplace operator](http://en.wikipedia.org/wiki/Discrete_Laplace_operator)
+- Gradient
+    - [Gradient](http://en.wikipedia.org/wiki/Gradient)
