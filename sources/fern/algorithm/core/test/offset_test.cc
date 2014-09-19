@@ -29,7 +29,8 @@ void test_array_1d(
 
         fern::core::offset(execution_policy, values, offset, result_we_got);
 
-        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+        BOOST_CHECK(fern::compare(execution_policy, result_we_got,
+            result_we_want));
     }
 
     {
@@ -44,7 +45,8 @@ void test_array_1d(
 
         fern::core::offset(execution_policy, values, offset, result_we_got);
 
-        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+        BOOST_CHECK(fern::compare(execution_policy, result_we_got,
+            result_we_want));
     }
 
     {
@@ -56,7 +58,8 @@ void test_array_1d(
 
         fern::core::offset(execution_policy, values, offset, result_we_got);
 
-        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+        BOOST_CHECK(fern::compare(execution_policy, result_we_got,
+            result_we_want));
     }
 
     {
@@ -72,7 +75,8 @@ void test_array_1d(
 
         fern::core::offset(execution_policy, values, offset, result_we_got);
 
-        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+        BOOST_CHECK(fern::compare(execution_policy, result_we_got,
+            result_we_want));
     }
 
     {
@@ -84,7 +88,8 @@ void test_array_1d(
 
         fern::core::offset(execution_policy, values, offset, result_we_got);
 
-        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+        BOOST_CHECK(fern::compare(execution_policy, result_we_got,
+            result_we_want));
     }
 }
 
@@ -133,7 +138,8 @@ void test_array_1d_masked(
         fern::core::offset(input_no_data_policy, output_no_data_policy,
             execution_policy, values, offset, result_we_got);
 
-        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+        BOOST_CHECK(fern::compare(execution_policy, result_we_got,
+            result_we_want));
     }
 
     {
@@ -154,7 +160,8 @@ void test_array_1d_masked(
         fern::core::offset(input_no_data_policy, output_no_data_policy,
             execution_policy, values, offset, result_we_got);
 
-        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+        BOOST_CHECK(fern::compare(execution_policy, result_we_got,
+            result_we_want));
     }
 
     {
@@ -169,7 +176,8 @@ void test_array_1d_masked(
         fern::core::offset(input_no_data_policy, output_no_data_policy,
             execution_policy, values, offset, result_we_got);
 
-        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+        BOOST_CHECK(fern::compare(execution_policy, result_we_got,
+            result_we_want));
     }
 
     {
@@ -192,7 +200,8 @@ void test_array_1d_masked(
         fern::core::offset(input_no_data_policy, output_no_data_policy,
             execution_policy, values, offset, result_we_got);
 
-        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+        BOOST_CHECK(fern::compare(execution_policy, result_we_got,
+            result_we_want));
     }
 
     {
@@ -208,7 +217,8 @@ void test_array_1d_masked(
         fern::core::offset(input_no_data_policy, output_no_data_policy,
             execution_policy, values, offset, result_we_got);
 
-        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+        BOOST_CHECK(fern::compare(execution_policy, result_we_got,
+            result_we_want));
     }
 }
 
@@ -248,7 +258,8 @@ void test_array_1d_fill_value(
         fern::core::offset(execution_policy, values, offset, fill_value,
             result_we_got);
 
-        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+        BOOST_CHECK(fern::compare(execution_policy, result_we_got,
+            result_we_want));
     }
 
     {
@@ -264,7 +275,8 @@ void test_array_1d_fill_value(
         fern::core::offset(execution_policy, values, offset, fill_value,
             result_we_got);
 
-        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+        BOOST_CHECK(fern::compare(execution_policy, result_we_got,
+            result_we_want));
     }
 
     {
@@ -277,7 +289,8 @@ void test_array_1d_fill_value(
         fern::core::offset(execution_policy, values, offset, fill_value,
             result_we_got);
 
-        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+        BOOST_CHECK(fern::compare(execution_policy, result_we_got,
+            result_we_want));
     }
 
     {
@@ -294,7 +307,8 @@ void test_array_1d_fill_value(
         fern::core::offset(execution_policy, values, offset, fill_value,
             result_we_got);
 
-        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+        BOOST_CHECK(fern::compare(execution_policy, result_we_got,
+            result_we_want));
     }
 
     {
@@ -307,7 +321,8 @@ void test_array_1d_fill_value(
         fern::core::offset(execution_policy, values, offset, fill_value,
             result_we_got);
 
-        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+        BOOST_CHECK(fern::compare(execution_policy, result_we_got,
+            result_we_want));
     }
 }
 
@@ -356,7 +371,8 @@ void test_array_1d_fill_value_masked(
         fern::core::offset(input_no_data_policy, output_no_data_policy,
             execution_policy, values, offset, fill_value, result_we_got);
 
-        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+        BOOST_CHECK(fern::compare(execution_policy, result_we_got,
+            result_we_want));
     }
 
     {
@@ -378,7 +394,8 @@ void test_array_1d_fill_value_masked(
         fern::core::offset(input_no_data_policy, output_no_data_policy,
             execution_policy, values, offset, fill_value, result_we_got);
 
-        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+        BOOST_CHECK(fern::compare(execution_policy, result_we_got,
+            result_we_want));
     }
 
     {
@@ -394,7 +411,8 @@ void test_array_1d_fill_value_masked(
         fern::core::offset(input_no_data_policy, output_no_data_policy,
             execution_policy, values, offset, fill_value, result_we_got);
 
-        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+        BOOST_CHECK(fern::compare(execution_policy, result_we_got,
+            result_we_want));
     }
 
     {
@@ -414,7 +432,8 @@ void test_array_1d_fill_value_masked(
         fern::core::offset(input_no_data_policy, output_no_data_policy,
             execution_policy, values, offset, fill_value, result_we_got);
 
-        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+        BOOST_CHECK(fern::compare(execution_policy, result_we_got,
+            result_we_want));
     }
 
     {
@@ -430,7 +449,8 @@ void test_array_1d_fill_value_masked(
         fern::core::offset(input_no_data_policy, output_no_data_policy,
             execution_policy, values, offset, fill_value, result_we_got);
 
-        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+        BOOST_CHECK(fern::compare(execution_policy, result_we_got,
+            result_we_want));
     }
 }
 
@@ -472,7 +492,8 @@ void test_array_2d(
 
         fern::core::offset(execution_policy, values, offset, result_we_got);
 
-        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+        BOOST_CHECK(fern::compare(execution_policy, result_we_got,
+            result_we_want));
     }
 
     // TODO Add tests.
@@ -526,7 +547,8 @@ void test_array_2d_masked(
         fern::core::offset(input_no_data_policy, output_no_data_policy,
             execution_policy, values, offset, result_we_got);
 
-        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+        BOOST_CHECK(fern::compare(execution_policy, result_we_got,
+            result_we_want));
     }
 
     // TODO Add tests.
@@ -573,7 +595,8 @@ void test_array_2d_fill_value(
         fern::core::offset(execution_policy, values, offset, fill_value,
             result_we_got);
 
-        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+        BOOST_CHECK(fern::compare(execution_policy, result_we_got,
+            result_we_want));
     }
 
     // TODO Add tests.
@@ -629,7 +652,8 @@ void test_array_2d_fill_value_masked(
         fern::core::offset(input_no_data_policy, output_no_data_policy,
             execution_policy, values, offset, fill_value, result_we_got);
 
-        BOOST_CHECK(equal(execution_policy, result_we_got, result_we_want));
+        BOOST_CHECK(fern::compare(execution_policy, result_we_got,
+            result_we_want));
     }
 
     // TODO Add tests.
@@ -692,7 +716,8 @@ BOOST_AUTO_TEST_CASE(pcraster_example_1)
     fern::core::offset(input_no_data_policy, output_no_data_policy,
         fern::sequential, values, offset, result_we_got);
 
-    BOOST_CHECK(equal(fern::sequential, result_we_got, result_we_want));
+    BOOST_CHECK(fern::compare(fern::sequential, result_we_got,
+        result_we_want));
 }
 
 
@@ -739,7 +764,8 @@ BOOST_AUTO_TEST_CASE(pcraster_example_2)
     fern::core::offset(input_no_data_policy, output_no_data_policy,
         fern::sequential, values, offset, result_we_got);
 
-    BOOST_CHECK(equal(fern::sequential, result_we_got, result_we_want));
+    BOOST_CHECK(fern::compare(fern::sequential, result_we_got,
+        result_we_want));
 }
 
 
@@ -782,7 +808,8 @@ BOOST_AUTO_TEST_CASE(pcraster_example_3)
     fern::core::offset(input_no_data_policy, output_no_data_policy,
         fern::sequential, values, offset, fill_value, result_we_got);
 
-    BOOST_CHECK(equal(fern::sequential, result_we_got, result_we_want));
+    BOOST_CHECK(fern::compare(fern::sequential, result_we_got,
+        result_we_want));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
