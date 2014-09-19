@@ -103,6 +103,19 @@ inline MaskedRaster<U, 1> clone(
 
 
 template<
+    class U,
+    class V>
+inline MaskedRaster<U, 1> clone(
+    MaskedRaster<V, 1> const& raster,
+    U const& value)
+{
+    return std::move(MaskedRaster<U, 1>(extents[raster.shape()[0]],
+        raster.transformation(),
+        value));
+}
+
+
+template<
     class T>
 inline double cell_size(
     MaskedRaster<T, 2> const& raster,
@@ -163,6 +176,20 @@ inline MaskedRaster<U, 2> clone(
 
 
 template<
+    class U,
+    class V>
+inline MaskedRaster<U, 2> clone(
+    MaskedRaster<V, 2> const& raster,
+    U const& value)
+{
+    return std::move(MaskedRaster<U, 2>(
+        extents[raster.shape()[0]][raster.shape()[1]],
+        raster.transformation(),
+        value));
+}
+
+
+template<
     class T>
 inline typename ArgumentTraits<MaskedRaster<T, 3>>::const_reference get(
     MaskedRaster<T, 3> const& raster,
@@ -203,6 +230,20 @@ inline MaskedRaster<U, 3> clone(
     return std::move(MaskedRaster<U, 3>(
         extents[raster.shape()[0]][raster.shape()[1],raster.shape()[2]],
         raster.transformation()));
+}
+
+
+template<
+    class U,
+    class V>
+inline MaskedRaster<U, 3> clone(
+    MaskedRaster<V, 3> const& raster,
+    U const& value)
+{
+    return std::move(MaskedRaster<U, 3>(
+        extents[raster.shape()[0]][raster.shape()[1],raster.shape()[2]],
+        raster.transformation(),
+        value));
 }
 
 } // namespace fern
