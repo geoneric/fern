@@ -46,16 +46,19 @@ BOOST_AUTO_TEST_CASE(algorithm)
 
     // Calculate gradient_x.
     {
-        MaskedRaster result_we_got(extents, transformation);
+        MaskedRaster result_we_got(extents, transformation, -9.0);
         MaskedRaster result_we_want(extents, transformation);
-        result_we_want[0][1] = (2.0 - 1.0) / cell_width;
-        result_we_want[0][2] = (2.0 - 1.0) / cell_width;
-        result_we_want[1][0] = 0.0;
-        result_we_want[1][2] = 0.0;
-        result_we_want[2][0] = (7.0 - 6.0) / cell_width;
-        result_we_want[2][1] = (7.0 - 6.0) / cell_width;
-        result_we_want[3][0] = (10.0 - 9.0) / cell_width;
-        result_we_want[3][1] = (11.0 - 9.0) / (2 * cell_width);
+        result_we_want[0][0] =  -9.0;
+        result_we_want[0][1] = ( 2.0 - 1.0 ) / cell_width;
+        result_we_want[0][2] = ( 2.0 - 1.0 ) / cell_width;
+        result_we_want[1][0] =   0.0;
+        result_we_want[1][1] =  -9.0;
+        result_we_want[1][2] =   0.0;
+        result_we_want[2][0] = ( 7.0 - 6.0 ) / cell_width;
+        result_we_want[2][1] = ( 7.0 - 6.0 ) / cell_width;
+        result_we_want[2][2] =  -9.0;
+        result_we_want[3][0] = (10.0 - 9.0 ) / cell_width;
+        result_we_want[3][1] = (11.0 - 9.0 ) / (2 * cell_width);
         result_we_want[3][2] = (11.0 - 10.0) / cell_width;
         result_we_want.mask()[0][0] = true;
         result_we_want.mask()[1][1] = true;
@@ -70,6 +73,40 @@ BOOST_AUTO_TEST_CASE(algorithm)
             result_we_got.mask(), true);
 
         fern::algebra::gradient_x(input_no_data_policy, output_no_data_policy,
+            execution_policy, raster, result_we_got);
+        BOOST_CHECK(fern::compare(execution_policy, result_we_got,
+            result_we_want));
+    }
+
+    // Calculate gradient_y.
+    {
+        MaskedRaster result_we_got(extents, transformation, -9.0);
+        MaskedRaster result_we_want(extents, transformation);
+        result_we_want[0][0] =  -9.0;
+        result_we_want[0][1] =   0.0;
+        result_we_want[0][2] = ( 5.0 - 2.0) / cell_height;
+        result_we_want[1][0] = ( 6.0 - 3.0) / cell_height;
+        result_we_want[1][1] =  -9.0;
+        result_we_want[1][2] = ( 5.0 - 2.0) / cell_height;
+        result_we_want[2][0] = ( 9.0 - 3.0) / (2 * cell_height);
+        result_we_want[2][1] = (10.0 - 7.0) / cell_height;
+        result_we_want[2][2] =  -9.0;
+        result_we_want[3][0] = ( 9.0 - 6.0) / cell_height;
+        result_we_want[3][1] = (10.0 - 7.0) / cell_height;
+        result_we_want[3][2] =   0.0;
+        result_we_want.mask()[0][0] = true;
+        result_we_want.mask()[1][1] = true;
+        result_we_want.mask()[2][2] = true;
+
+        fern::core::if_(execution_policy, raster.mask(), true,
+            result_we_got.mask());
+
+        fern::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
+            result_we_got.mask(), true);
+        fern::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
+            result_we_got.mask(), true);
+
+        fern::algebra::gradient_y(input_no_data_policy, output_no_data_policy,
             execution_policy, raster, result_we_got);
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
             result_we_want));
