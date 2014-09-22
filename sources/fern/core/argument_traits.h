@@ -61,4 +61,9 @@ inline constexpr size_t rank()
     return ArgumentTraits<T>::rank;
 }
 
+
+template<
+    class T>
+size_t             size                (T const& value);
+
 } // namespace fern
