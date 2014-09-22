@@ -1,7 +1,9 @@
 #pragma once
 #include <algorithm>
 #include "fern/core/base_class.h"
+#include "fern/core/raster_traits.h"
 #include "fern/core/thread_client.h"
+#include "fern/algorithm/policy/execution_policy.h"
 #include "fern/algorithm/core/index_ranges.h"
 
 
