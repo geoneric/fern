@@ -1,6 +1,7 @@
 SET(TEST_NAMES
     gradient_test
     laplacian_test
+    lax_test
 )
 
 MACRO(ADD_UNIT_TEST NAME)

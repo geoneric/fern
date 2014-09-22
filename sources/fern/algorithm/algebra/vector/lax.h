@@ -5,7 +5,6 @@
 
 
 namespace fern {
-
 namespace algebra {
 
 //! Calculate the lax of \a value and write the result to \a result.
@@ -48,7 +47,7 @@ void lax(
     OutputNoDataPolicy& output_no_data_policy,
     ExecutionPolicy const& execution_policy,
     Value const& value,
-    Value const& fraction,
+    value_type<Value> const& fraction,
     Result& result)
 {
     FERN_STATIC_ASSERT(std::is_floating_point, value_type<Value>)
@@ -72,7 +71,7 @@ template<
 void lax(
     ExecutionPolicy const& execution_policy,
     Value const& value,
-    Value const& fraction,
+    value_type<Value> const& fraction,
     Result& result)
 {
     OutputNoDataPolicy output_no_data_policy;
@@ -92,7 +91,7 @@ template<
 void lax(
     ExecutionPolicy const& execution_policy,
     Value const& value,
-    Value const& fraction,
+    value_type<Value> const& fraction,
     Result& result)
 {
     using InputNoDataPolicy = SkipNoData;
@@ -105,95 +104,3 @@ void lax(
 
 } // namespace algebra
 } // namespace fern
-
-
-/// /* lax(): a window average filter similar to Lax scheme, used to avoid
-///  * numerical instability
-///  * */
-/// int vf_lax(
-///     MAP_REAL8* result,          // 2d
-///     MAP_REAL8 const* input,     // 2d
-///     MAP_REAL8 const* fractMap)  // 0d
-/// {
-///     double cellv, othercellv, gg, hh;
-/// 
-///     // get the nonspatial
-///     double frac;
-///     fractMap->Get(&frac, 0, 0, fractMap);
-/// 
-///     int nrows  = result->NrRows(result);
-///     int ncols  = result->NrCols(result);
-/// 
-///     // pseudo code:
-///     // convolution(raster, kernel, result);
-///     // times(result, fraction, result);
-///     // times(raster, 1 - fraction, times_result);
-///     // add(result, times_result, result);
-/// 
-///     // -> Iterate over all cells.
-///     for(int r = 0; r < nrows; ++r) {
-///         for(int c = 0; c < ncols; ++c) {
-/// 
-///             gg = 0;
-///             hh = 0;
-/// 
-///             // -> Current cell value in cellv.
-///             if(input->Get(&cellv, r, c, input) &&
-///                    fractMap->Get(&frac, r, c, fractMap)) {
-/// 
-///                 // -> Get upper left value.
-///                 if(input->Get(&othercellv, r - 1, c - 1, input)) {
-///                     gg = gg + 2 * othercellv;
-///                     hh = hh + 2;
-///                 }
-/// 
-///                 if(input->Get(&othercellv, r - 1, c + 0, input)) {
-///                     gg = gg + 3 * othercellv;
-///                     hh = hh + 3;
-///                 }
-/// 
-///                 if(input->Get(&othercellv, r - 1, c + 1, input)) {
-///                     gg = gg + 2 * othercellv;
-///                     hh = hh + 2;
-///                 }
-/// 
-/// 
-///                 if(input->Get(&othercellv, r + 0, c - 1, input)) {
-///                     gg = gg + 3 * othercellv;
-///                     hh = hh + 3;
-///                 }
-/// 
-///                 if(input->Get(&othercellv, r + 0, c + 1, input)) {
-///                     gg = gg + 3 * othercellv;
-///                     hh = hh + 3;
-///                 }
-/// 
-/// 
-///                 if(input->Get(&othercellv, r + 1, c - 1, input)) {
-///                     gg = gg + 2 * othercellv;
-///                     hh = hh + 2;
-///                 }
-/// 
-///                 if(input->Get(&othercellv, r + 1, c + 0, input)) {
-///                     gg = gg + 3 * othercellv;
-///                     hh = hh + 3;
-///                 }
-/// 
-///                 if(input->Get(&othercellv, r + 1, c + 1, input)) {
-///                     gg = gg + 2 * othercellv;
-///                     hh = hh + 2;
-///                 }
-/// 
-///                 result->Put(
-///                     (1 - frac) * cellv +
-///                     frac * (gg / hh),
-///                     r, c, result);
-///             }
-///             else {
-///                 result->PutMV(r, c, result);
-///             }
-///         }
-///     }
-/// 
-///     return 0;
-/// }

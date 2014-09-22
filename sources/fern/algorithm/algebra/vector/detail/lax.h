@@ -1,21 +1,12 @@
 #pragma once
 #include "fern/core/assert.h"
-/// #include "fern/core/clone.h"
-/// #include "fern/core/thread_client.h"
-/// #include "fern/core/value_type.h"
-/// #include "fern/feature/core/array_traits.h"
-/// #include "fern/feature/core/masked_array_traits.h"
-/// #include "fern/feature/core/masked_raster.h"
-/// #include "fern/algorithm/core/cast.h"
-/// #include "fern/algorithm/convolution/convolve.h"
-/// #include "fern/algorithm/convolution/dont_divide_by_weights.h"
-/// #include "fern/algorithm/convolution/neighborhood/square_traits.h"
-/// #include "fern/algorithm/algebra/elementary/divide.h"
-/// #include "fern/algorithm/algebra/elementary/multiply.h"
-/// #include "fern/algorithm/algebra/elementary/subtract.h"
-/// #include "fern/algorithm/algebra/boolean/defined.h"
-/// #include "fern/algorithm/statistic/sum.h"
-/// #include "fern/algorithm/statistic/unary_max.h"
+#include "fern/core/base_class.h"
+#include "fern/core/clone.h"
+#include "fern/core/value_type.h"
+#include "fern/algorithm/convolution/convolve.h"
+#include "fern/algorithm/convolution/neighborhood/square_traits.h"
+#include "fern/algorithm/algebra/elementary/add.h"
+#include "fern/algorithm/algebra/elementary/multiply.h"
 
 
 namespace fern {
@@ -24,7 +15,6 @@ namespace detail {
 namespace dispatch {
 
 template<
-    class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class Value,
@@ -37,14 +27,12 @@ class Lax
 
 
 template<
-    class OutOfRangePolicy,
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
     class Value,
     class Result,
     class ExecutionPolicy>
 struct Lax<
-    OutOfRangePolicy,
     InputNoDataPolicy,
     OutputNoDataPolicy,
     Value,
@@ -60,7 +48,7 @@ struct Lax<
         OutputNoDataPolicy& output_no_data_policy,
         ExecutionPolicy const& execution_policy,
         Value const& value,
-        Value const& fraction,
+        value_type<Value> const& fraction,
         Result& result)
     {
         assert(fern::size(value, 0) == fern::size(result, 0));
@@ -79,79 +67,40 @@ struct Lax<
             {2, 3, 2}
         });
 
-///         convolution::convolve<
-///             convolve::SkipNoData,
-///             convolve::DontDivideByWeights,
-///             convolve::SkipOutOfImage,
-///             // TODO: Select OutOfRange policy based on the
-///             //       output-no-data-policy passed in.
-///             convolve::OutOfRangePolicy>(
-///                 input_no_data_policy, output_no_data_policy, execution_policy,
-///                 value, kernel, result);
-/// 
-///         // Calculate the sum of the kernel weights. This equals the convolution
-///         // of the mask (inverted) by the kernel used above, without
-///         // normalizing by the kernel weights.
-///         auto extents = fern::extents[size(value, 0)][size(value, 1)];
-/// 
-///         // Determine which cells have a valid (non-no-data) value. The result
-///         // will not contain no-data. All elements have a valid value (true or
-///         // false.
-///         Array<bool, 2> defined(extents);
-///         algebra::defined(input_no_data_policy, execution_policy, defined);
-/// 
-///         // Cast array of bool to array of floats. It is not needed to take
-///         // no-data and range errors into account.
-///         Array<Float, 2> defined_as_floats(extents);
-///         core::cast<>(execution_policy, defined, defined_as_floats);
-/// 
-///         // It is not needed to take range errors into account. The max value
-///         // calculate per cells is sum(kernel) -> 20.
-///         Array<Float, 2> sum_of_weights(extents);
-///         convolution::convolve<
-///             convolve::SkipNoData,
-///             convolve::DontDivideByWeights,
-///             convolve::SkipOutOfImage,
-///             unary::DiscardRangeErrors>(
-///                 input_no_data_policy, output_no_data_policy, execution_policy,
-///                 defined_as_floats, kernel, sum_of_weights);
-/// 
-/// #ifndef NDEBUG
-///         {
-///             Float max;
-///             statistic::unary_max(execution_policy, sum_of_weights, max);
-///             assert(max <= 20.0);
-///         }
-/// #endif
-/// 
-///         // Multiply the values by the sum of weights.
-///         auto multiplied_values = clone<Float>(result);
-///         algebra::multiply<
-///             // TODO: Select OutOfRange policy based on the
-///             //       output-no-data-policy passed in.
-///             fern::multiply::OutOfRangePolicy>(
-///                 input_no_data_policy, output_no_data_policy, execution_policy,
-///                 sum_of_weights, value, multiplied_values);
-/// 
-///         // Subtract the convolution result by the multiplied values.
-///         // Result subtracted_results;
-///         algebra::subtract<
-///             // TODO: Select OutOfRange policy based on the
-///             //       output-no-data-policy passed in.
-///             fern::subtract::OutOfRangePolicy>(
-///                 input_no_data_policy, output_no_data_policy, execution_policy,
-///                 result, multiplied_values, result);
-/// 
-///         // Divide subtracted results by the area of the cells.
-///         algebra::divide<
-///             // TODO: Select OutOfDomain policy based on the
-///             //       output-no-data-policy passed in.
-///             // TODO: Select OutOfRange policy based on the
-///             //       output-no-data-policy passed in.
-///             fern::divide::OutOfDomainPolicy,
-///             fern::divide::OutOfRangePolicy>(
-///                 input_no_data_policy, output_no_data_policy, execution_policy,
-///                 result, cell_area(value), result);
+        // result = (1 - f) * value + f * convolution(value, kernel);
+
+        convolution::convolve<
+            convolve::SkipNoData,
+            convolve::DivideByWeights,
+            convolve::SkipOutOfImage,
+            // TODO: Select OutOfRange policy based on the
+            //       output-no-data-policy passed in.
+            convolve::OutOfRangePolicy>(
+                input_no_data_policy, output_no_data_policy, execution_policy,
+                value, kernel, result);
+
+        algebra::multiply<
+            // TODO: Select OutOfRange policy based on the
+            //       output-no-data-policy passed in.
+            fern::multiply::OutOfRangePolicy>(
+                input_no_data_policy, output_no_data_policy, execution_policy,
+                fraction, result, result);
+
+
+        auto multiplied_values = clone<Float>(result);
+        algebra::multiply<
+            // TODO: Select OutOfRange policy based on the
+            //       output-no-data-policy passed in.
+            fern::multiply::OutOfRangePolicy>(
+                input_no_data_policy, output_no_data_policy, execution_policy,
+                (1.0 - fraction), value, multiplied_values);
+
+        algebra::add<
+            // TODO: Select OutOfRange policy based on the
+            //       output-no-data-policy passed in.
+            fern::add::OutOfRangePolicy>(
+                input_no_data_policy, output_no_data_policy, execution_policy,
+                multiplied_values, result, result);
     }
 
 };
@@ -171,7 +120,7 @@ void lax(
     OutputNoDataPolicy& output_no_data_policy,
     ExecutionPolicy const& execution_policy,
     Value const& value,
-    Value const& fraction,
+    value_type<Value> const& fraction,
     Result& result)
 {
     dispatch::Lax<
