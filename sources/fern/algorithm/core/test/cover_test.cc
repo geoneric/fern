@@ -9,30 +9,6 @@
 
 BOOST_AUTO_TEST_SUITE(cover)
 
-/// template<
-///     class Result,
-///     class ...Values>
-/// void verify_value(
-///     Result const& result_we_want,
-///     Values&&... values)
-/// {
-///     Result result_we_get;
-///     fern::core::cover<>(fern::sequential, result_we_get,
-///         std::forward<Values>(values)...);
-///     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
-/// }
-/// 
-/// 
-/// BOOST_AUTO_TEST_CASE(algorithm)
-/// {
-///     {
-///         verify_value<>( 4, 4, 5);
-///         verify_value<>( 5, 5, 4);
-///         verify_value<>( 4, 4, 3, 5);
-///     }
-/// }
-
-
 template<
     class Value1,
     class Value2,
