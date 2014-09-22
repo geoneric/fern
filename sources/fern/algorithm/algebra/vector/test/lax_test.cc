@@ -1,37 +1,11 @@
-#define BOOST_TEST_MODULE fern algorithm algebra vector laplacian
+#define BOOST_TEST_MODULE fern algorithm algebra vector lax
 #include <boost/test/unit_test.hpp>
-#include "fern/core/constant_traits.h"
-#include "fern/core/type_traits.h"
-#include "fern/core/types.h"
+#include "fern/feature/core/array_traits.h"
 #include "fern/feature/core/masked_raster_traits.h"
-#include "fern/algorithm/algebra/vector/laplacian.h"
+#include "fern/algorithm/algebra/vector/lax.h"
 
 
-BOOST_AUTO_TEST_SUITE(laplacian)
-
-template<
-    class Value,
-    class Result>
-using OutOfRangePolicy = fern::laplacian::OutOfRangePolicy<Value, Result>;
-
-
-BOOST_AUTO_TEST_CASE(out_of_range_policy)
-{
-    {
-        OutOfRangePolicy<fern::float32_t, fern::float32_t> policy;
-        BOOST_CHECK(policy.within_range(123.456, 4.5));
-        BOOST_CHECK(!policy.within_range(123.456,
-            fern::nan<fern::float32_t>()));
-        BOOST_CHECK(!policy.within_range(123.456,
-            fern::infinity<fern::float32_t>()));
-    }
-}
-
-
-template<
-    class T>
-using MaskedRaster = fern::MaskedRaster<T, 2>;
-
+BOOST_AUTO_TEST_SUITE(lax)
 
 BOOST_AUTO_TEST_CASE(algorithm)
 {
@@ -56,24 +30,28 @@ BOOST_AUTO_TEST_CASE(algorithm)
     double const west = 0.0;
     double const north = 0.0;
 
-    MaskedRaster<double>::Transformation transformation{{west, cell_width,
+    using MaskedRaster = fern::MaskedRaster<double, 2>;
+
+    MaskedRaster::Transformation transformation{{west, cell_width,
         north, cell_height}};
-    MaskedRaster<double> raster(extents, transformation);
+    MaskedRaster raster(extents, transformation);
 
     std::iota(raster.data(), raster.data() + raster.num_elements(), 0);
 
-    // Calculate laplacian.
-    MaskedRaster<double> result(extents, transformation);
+    double const fraction = 0.6;
+
+    // Calculate lax.
+    MaskedRaster result(extents, transformation);
 
     // Without masking input and output values.
     {
-        fern::algebra::laplacian(fern::sequential, raster, result);
+        fern::algebra::lax(fern::sequential, raster, fraction, result);
 
-        // Verify the result.
+        /// // Verify the result.
         BOOST_CHECK_EQUAL(fern::get(result, 0, 0),
-            (25.0 - (8.0 * 0.0)) / 6.0);
+            ((1.0 - fraction) * 0.0) + (fraction * 25.0 / 8.0));
         BOOST_CHECK_EQUAL(fern::get(result, 1, 1),
-            (100.0 - (20.0 * 5.0)) / 6.0);
+            ((1.0 - fraction) * 5.0) + (fraction * 100.0 / 20.0));
     }
 
     using InputNoDataPolicy = fern::DetectNoDataByValue<fern::Mask<2>>;
@@ -85,19 +63,21 @@ BOOST_AUTO_TEST_CASE(algorithm)
         result.mask().fill(false);
         result.mask()[1][1] = true;
 
+        InputNoDataPolicy input_no_data_policy(result.mask(), true);
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
-        fern::algebra::laplacian<fern::laplacian::OutOfRangePolicy>(
-            InputNoDataPolicy(result.mask(), true),
+        fern::algebra::lax(
+            input_no_data_policy,
             output_no_data_policy,
             fern::sequential,
-            raster, result);
+            raster, fraction, result);
 
         // Verify the result.
         BOOST_CHECK_EQUAL(fern::get(result.mask(), 0, 0), false);
-        BOOST_CHECK_EQUAL(fern::get(result.mask(), 1, 1), true);
         BOOST_CHECK_EQUAL(fern::get(result, 0, 0),
-            (15.0 - (6.0 * 0.0)) / 6.0);
+            ((1.0 - fraction) * 0.0) + (fraction * 15.0 / 6.0));
+
+        BOOST_CHECK_EQUAL(fern::get(result.mask(), 1, 1), true);
         BOOST_CHECK_EQUAL(fern::get(result, 1, 1), 999.0);
     }
 }
