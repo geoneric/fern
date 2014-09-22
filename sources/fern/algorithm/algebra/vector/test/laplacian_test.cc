@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE fern algorithm algebra vector lapacian
+#define BOOST_TEST_MODULE fern algorithm algebra vector laplacian
 #include <boost/test/unit_test.hpp>
 #include "fern/core/constant_traits.h"
 #include "fern/core/type_traits.h"
@@ -7,7 +7,7 @@
 #include "fern/algorithm/algebra/vector/laplacian.h"
 
 
-BOOST_AUTO_TEST_SUITE(lapacian)
+BOOST_AUTO_TEST_SUITE(laplacian)
 
 template<
     class Value,
