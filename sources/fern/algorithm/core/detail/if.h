@@ -483,7 +483,7 @@ struct IfThenElseByArgumentCategory<
             auto function = std::bind(
                 if_then_else_2d_0d_0d<
                     InputNoDataPolicy, OutputNoDataPolicy,
-                    Condition, TrueValue, Result>,
+                    Condition, TrueValue, FalseValue, Result>,
                 std::cref(input_no_data_policy),
                 std::ref(output_no_data_policy), std::cref(block_range),
                 std::cref(condition), std::cref(true_value),

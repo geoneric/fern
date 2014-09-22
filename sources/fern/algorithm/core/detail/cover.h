@@ -233,7 +233,8 @@ struct CoverByArgumentCategory<
 
         for(auto const& block_range: ranges) {
             auto function = std::bind(
-                cover_2d_0d,
+                cover_2d_0d<InputNoDataPolicy, OutputNoDataPolicy,
+                    Value1, Value2, Result>,
                 std::cref(input_no_data_policy),
                 std::ref(output_no_data_policy), std::cref(block_range),
                 std::cref(value1), std::cref(value2), std::ref(result));
@@ -330,7 +331,8 @@ struct CoverByArgumentCategory<
 
         for(auto const& block_range: ranges) {
             auto function = std::bind(
-                cover_2d_2d,
+                cover_2d_2d<InputNoDataPolicy, OutputNoDataPolicy,
+                    Value1, Value2, Result>,
                 std::cref(input_no_data_policy),
                 std::ref(output_no_data_policy), std::cref(block_range),
                 std::cref(value1), std::cref(value2), std::ref(result));
