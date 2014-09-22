@@ -2,11 +2,8 @@
 #include <utility>
 #include "fern/core/assert.h"
 #include "fern/core/clone.h"
-#include "fern/core/thread_client.h"
 #include "fern/core/value_type.h"
 #include "fern/feature/core/array_traits.h"
-#include "fern/feature/core/masked_array_traits.h"
-#include "fern/feature/core/masked_raster.h"
 #include "fern/algorithm/core/cast.h"
 #include "fern/algorithm/convolution/convolve.h"
 #include "fern/algorithm/convolution/dont_divide_by_weights.h"
