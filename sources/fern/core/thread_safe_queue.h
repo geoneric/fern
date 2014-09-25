@@ -1,5 +1,5 @@
 #pragma once
-#include <condition_variable>
+// #include <condition_variable>
 // #include <memory>
 #include <mutex>
 #include <queue>
@@ -26,7 +26,7 @@ public:
 
     // std::shared_ptr<T> try_pop         ();
 
-    // bool           empty               () const;
+    bool           empty               () const;
 
 private:
 
@@ -34,7 +34,7 @@ private:
 
     std::queue<T> _data_queue;
 
-    std::condition_variable _data_condition;
+    // std::condition_variable _data_condition;
 
 };
 
@@ -53,7 +53,7 @@ void ThreadSafeQueue<T>::push(
 {
     std::lock_guard<std::mutex> lock(_mutex);
     _data_queue.push(std::move(value));
-    _data_condition.notify_one();
+    // _data_condition.notify_one();
 }
 
 
@@ -72,6 +72,15 @@ bool ThreadSafeQueue<T>::try_pop(
     _data_queue.pop();
 
     return true;
+}
+
+
+template<
+    class T>
+bool ThreadSafeQueue<T>::empty() const
+{
+    std::lock_guard<std::mutex> lock(_mutex);
+    return _data_queue.empty();
 }
 
 } // namespace fern

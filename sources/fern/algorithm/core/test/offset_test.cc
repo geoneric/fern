@@ -7,7 +7,7 @@
 #include "fern/algorithm/core/test/test_utils.h"
 
 
-BOOST_AUTO_TEST_SUITE(offset)
+BOOST_FIXTURE_TEST_SUITE(offset, fern::ThreadClient)
 
 void test_array_1d(
     fern::ExecutionPolicy const& execution_policy)
@@ -102,7 +102,7 @@ BOOST_AUTO_TEST_CASE(array_1d_sequential)
 
 BOOST_AUTO_TEST_CASE(array_1d_parallel)
 {
-    fern::ThreadClient client;
+    // fern::ThreadClient client;
     test_array_1d(fern::parallel);
 }
 
@@ -231,7 +231,7 @@ BOOST_AUTO_TEST_CASE(array_1d_masked_sequential)
 
 BOOST_AUTO_TEST_CASE(array_1d_masked_parallel)
 {
-    fern::ThreadClient client;
+    // fern::ThreadClient client;
     test_array_1d_masked(fern::parallel);
 }
 
@@ -335,7 +335,7 @@ BOOST_AUTO_TEST_CASE(array_1d_fill_value_sequential)
 
 BOOST_AUTO_TEST_CASE(array_1d_fill_value_parallel)
 {
-    fern::ThreadClient client;
+    // fern::ThreadClient client;
     test_array_1d_fill_value(fern::parallel);
 }
 
@@ -463,7 +463,7 @@ BOOST_AUTO_TEST_CASE(array_1d_fill_value_masked_sequential)
 
 BOOST_AUTO_TEST_CASE(array_1d_fill_value_masked_parallel)
 {
-    fern::ThreadClient client;
+    // fern::ThreadClient client;
     test_array_1d_fill_value_masked(fern::parallel);
 }
 
@@ -508,7 +508,7 @@ BOOST_AUTO_TEST_CASE(array_2d_sequential)
 
 BOOST_AUTO_TEST_CASE(array_2d_parallel)
 {
-    fern::ThreadClient client;
+    // fern::ThreadClient client;
     test_array_2d(fern::parallel);
 }
 
@@ -563,7 +563,7 @@ BOOST_AUTO_TEST_CASE(array_2d_masked_sequential)
 
 BOOST_AUTO_TEST_CASE(array_2d_masked_parallel)
 {
-    fern::ThreadClient client;
+    // fern::ThreadClient client;
     test_array_2d_masked(fern::parallel);
 }
 
@@ -611,7 +611,7 @@ BOOST_AUTO_TEST_CASE(array_2d_fill_value_sequential)
 
 BOOST_AUTO_TEST_CASE(array_2d_fill_value_parallel)
 {
-    fern::ThreadClient client;
+    // fern::ThreadClient client;
     test_array_2d_fill_value(fern::parallel);
 }
 
@@ -668,7 +668,7 @@ BOOST_AUTO_TEST_CASE(array_2d_fill_value_masked_sequential)
 
 BOOST_AUTO_TEST_CASE(array_2d_fill_value_masked_parallel)
 {
-    fern::ThreadClient client;
+    // fern::ThreadClient client;
     test_array_2d_fill_value_masked(fern::parallel);
 }
 

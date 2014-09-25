@@ -22,7 +22,7 @@ void verify_value(
 }
 
 
-BOOST_AUTO_TEST_SUITE(count)
+BOOST_FIXTURE_TEST_SUITE(count, fern::ThreadClient)
 
 BOOST_AUTO_TEST_CASE(d0_array)
 {
@@ -270,7 +270,6 @@ BOOST_AUTO_TEST_CASE(concurrent)
 
     // Concurrent.
     {
-        fern::ThreadClient client;
         result_we_got = 9;
         fern::statistic::count(fern::parallel, argument, 5, result_we_got);
         BOOST_CHECK_EQUAL(result_we_got, result_we_want);
@@ -283,7 +282,6 @@ BOOST_AUTO_TEST_CASE(concurrent)
         OutputNoDataPolicy output_no_data_policy(result_we_got.mask(), true);
 
         // Verify executor can handle masked result.
-        fern::ThreadClient client;
         fern::statistic::count(
             InputNoDataPolicy(), output_no_data_policy,
             fern::parallel, argument, 5, result_we_got);

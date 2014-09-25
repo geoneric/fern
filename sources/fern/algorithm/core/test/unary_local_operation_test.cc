@@ -8,6 +8,19 @@
 #include "fern/algorithm/algebra/elementary/absolute.h"
 
 
+struct Fixture
+{
+
+    Fixture()
+        : _thread_client(2)
+    {
+    }
+
+    fern::ThreadClient _thread_client;
+
+};
+
+
 using ArgumentValue = int32_t;
 using ResultValue = int32_t;
 
@@ -23,7 +36,7 @@ template<
 using OutOfRangePolicy = fern::absolute::OutOfRangePolicy<Value, Result>;
 
 
-BOOST_AUTO_TEST_SUITE(unary_local_operation)
+BOOST_FIXTURE_TEST_SUITE(unary_local_operation, Fixture)
 
 BOOST_AUTO_TEST_CASE(array_0d)
 {
@@ -221,8 +234,6 @@ BOOST_AUTO_TEST_CASE(array_1d_parallel)
 
     OutputNoDataPolicy output_no_data_policy;
 
-    fern::ThreadClient client(2);
-
     // vector
     {
         using Argument = std::vector<ArgumentValue>;
@@ -402,8 +413,6 @@ BOOST_AUTO_TEST_CASE(array_2d_parallel)
     using Result = fern::Array<ResultValue, 2>;
 
     OutputNoDataPolicy output_no_data_policy;
-
-    fern::ThreadClient client(2);
 
     Argument argument{
         { -2, -1 },

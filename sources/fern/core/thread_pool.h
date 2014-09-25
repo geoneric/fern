@@ -1,4 +1,5 @@
 #pragma once
+#include <condition_variable>
 #include <future>
 #include <thread>
 #include <vector>
@@ -6,14 +7,19 @@
 #include "fern/core/join_threads.h"
 #include "fern/core/thread_safe_queue.h"
 
+#include <iostream>
+
 
 namespace fern {
 
 //! Thread pool.
 /*!
-    A thread pool is like a collection of conveyor belts: you can put tasks on
-    them or not, but the belts will always run and consume energy. Don't create
-    a thread pool if you don't have anything useful for the threads to do.
+    This thread pool contains a collection of threads that will pop tasks
+    from a queue of tasks and execute them. In case there are no tasks
+    to execute, threads will sleep until a new task is added to the queue.
+    This means that it is OK to construct a ThreadPool instance without
+    submitting tasks to it. The worker threads won't burn CPU cycles in
+    that case.
 
     \sa            ThreadClient
 */
@@ -35,15 +41,27 @@ public:
 
 private:
 
+    //! Variable to signal worker threads to stop executing new tasks.
     std::atomic_bool _done;
 
+    //! Condition variable to block threads when there are not tasks.
+    std::condition_variable _work_condition;
+
+    //! Mutex used to protect access to _done and _work_condition.
+    std::mutex     _mutex;
+
+    //! Queue with tasks to execute.
     ThreadSafeQueue<detail::FunctionWrapper> _work_queue;
 
+    //! Collection of worker threads.
     std::vector<std::thread> _threads;
 
+    //! Utility member that will join all worker threads.
     JoinThreads    _joiner;
 
-    void           worker_thread       ();
+    /// void           execute_task_or_yield();
+
+    void           execute_task_or_wait ();
 
 };
 
@@ -66,6 +84,12 @@ inline std::future<typename std::result_of<Function()>::type>
     std::packaged_task<result_type()> task(std::move(function));
     std::future<result_type> result(task.get_future());
     _work_queue.push(std::move(task));
+
+    // Notify a waiting thread (if there is any), that there is a new
+    // task to perform.
+    // We are not locking the mutex here. The thread that is being woken up
+    // will try to acquire the lock and we don't want to keep her waiting.
+    _work_condition.notify_one();
 
     return result;
 }
