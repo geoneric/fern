@@ -9,7 +9,7 @@
 #include "fern/algorithm/core/test/test_utils.h"
 
 
-BOOST_AUTO_TEST_SUITE(if_)
+BOOST_FIXTURE_TEST_SUITE(if_, fern::ThreadClient)
 
 void test_array_0d_0d_0d(
     fern::ExecutionPolicy const& execution_policy)
@@ -69,7 +69,6 @@ BOOST_AUTO_TEST_CASE(array_0d_0d_0d_sequential)
 
 BOOST_AUTO_TEST_CASE(array_0d_0d_0d_parallel)
 {
-    fern::ThreadClient client;
     test_array_0d_0d_0d(fern::parallel);
 }
 
@@ -146,7 +145,6 @@ BOOST_AUTO_TEST_CASE(array_0d_0d_0d_masked_sequential)
 
 BOOST_AUTO_TEST_CASE(array_0d_0d_0d_masked_parallel)
 {
-    fern::ThreadClient client;
     test_array_0d_0d_0d_masked(fern::parallel);
 }
 
@@ -234,7 +232,6 @@ BOOST_AUTO_TEST_CASE(array_2d_2d_2d_sequential)
 
 BOOST_AUTO_TEST_CASE(array_2d_2d_2d_parallel)
 {
-    fern::ThreadClient client;
     test_array_2d_2d_2d(fern::parallel);
 }
 
@@ -388,7 +385,6 @@ BOOST_AUTO_TEST_CASE(array_2d_2d_2d_masked_sequential)
 
 BOOST_AUTO_TEST_CASE(array_2d_2d_2d_masked_parallel)
 {
-    fern::ThreadClient client;
     test_array_2d_2d_2d_masked(fern::parallel);
 }
 

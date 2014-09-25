@@ -18,8 +18,7 @@ fern::ExecutionPolicy execution_policy = fern::parallel;
 // ThreadClient instance. This will, in turn, create a thread pool which is
 // used by the parallel algorithms.
 // In case the execution policy is fern::sequential, we don't need to create
-// a ThreadClient instance. In fact, we shouldn't, for reasons explained in
-// the ThreadPool class documentation.
+// a ThreadClient instance, although it doesn't hurt.
 fern::ThreadClient client;
 
 }

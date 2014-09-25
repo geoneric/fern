@@ -21,7 +21,7 @@ void verify_value(
 }
 
 
-BOOST_AUTO_TEST_SUITE(sum)
+BOOST_FIXTURE_TEST_SUITE(sum, fern::ThreadClient)
 
 BOOST_AUTO_TEST_CASE(d0_array)
 {
@@ -284,7 +284,6 @@ BOOST_AUTO_TEST_CASE(concurrent)
 
     // Concurrent.
     {
-        fern::ThreadClient client;
         fern::statistic::sum(fern::parallel, argument, result_we_got);
         BOOST_CHECK_EQUAL(result_we_got, result_we_want);
     }
@@ -316,7 +315,6 @@ BOOST_AUTO_TEST_CASE(concurrent)
         {
             // Concurrent.
             result_we_got.mask() = false;
-            fern::ThreadClient client;
             fern::statistic::sum<fern::sum::OutOfRangePolicy>(
                 InputNoDataPolicy(), output_no_data_policy,
                 fern::parallel, argument, result_we_got);
@@ -344,7 +342,6 @@ BOOST_AUTO_TEST_CASE(concurrent)
         {
             // Concurrent.
             result_we_got.mask() = false;
-            fern::ThreadClient client;
             fern::statistic::sum<fern::sum::OutOfRangePolicy>(
                 InputNoDataPolicy(), output_no_data_policy,
                 fern::parallel, argument, result_we_got);

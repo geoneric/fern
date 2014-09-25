@@ -11,7 +11,7 @@
 #include "fern/algorithm/convolution/replace_no_data_by_focal_average.h"
 
 
-BOOST_AUTO_TEST_SUITE(convolve)
+BOOST_FIXTURE_TEST_SUITE(convolve, fern::ThreadClient)
 
 void compare_result1(
     fern::Array<double, 2> const& result)
@@ -294,7 +294,6 @@ BOOST_AUTO_TEST_CASE(convolve)
             // Parallel.
             {
                 fern::Array<double, 2> result(extents);
-                fern::ThreadClient client;
                 fern::convolution::convolve(fern::parallel, argument, kernel,
                     result);
                 compare_result1(result);
@@ -327,7 +326,6 @@ BOOST_AUTO_TEST_CASE(convolve)
             // Parallel.
             {
                 fern::Array<double, 2> result(extents);
-                fern::ThreadClient client;
                 fern::convolution::convolve<
                     AlternativeForNoDataPolicy,
                     NormalizePolicy,
@@ -385,7 +383,6 @@ BOOST_AUTO_TEST_CASE(convolve)
         // Parallel.
         {
             fern::Array<double, 2> result(extents);
-            fern::ThreadClient client;
             fern::convolution::convolve(fern::parallel, argument, kernel,
                 result);
         }

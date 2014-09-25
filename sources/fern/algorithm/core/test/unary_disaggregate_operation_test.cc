@@ -8,6 +8,19 @@
 #include "fern/algorithm/algebra/boolean/defined.h"
 
 
+struct Fixture
+{
+
+    Fixture()
+        : _thread_client(2)
+    {
+    }
+
+    fern::ThreadClient _thread_client;
+
+};
+
+
 using ArgumentValue = int32_t;
 using ResultValue = int32_t;
 
@@ -16,7 +29,7 @@ template<
 using Algorithm = fern::fill::detail::Algorithm<Value>;
 
 
-BOOST_AUTO_TEST_SUITE(unary_disaggregate_operation)
+BOOST_FIXTURE_TEST_SUITE(unary_disaggregate_operation, Fixture)
 
 BOOST_AUTO_TEST_CASE(array_0d)
 {
@@ -170,8 +183,6 @@ BOOST_AUTO_TEST_CASE(array_1d_parallel)
     Argument argument{5};
 
     OutputNoDataPolicy output_no_data_policy;
-
-    fern::ThreadClient client(2);
 
     // vector
     {
@@ -330,8 +341,6 @@ BOOST_AUTO_TEST_CASE(array_2d_parallel)
     using Result = fern::Array<ResultValue, 2>;
 
     OutputNoDataPolicy output_no_data_policy;
-
-    fern::ThreadClient client(2);
 
     Argument argument{5};
     Result result{
