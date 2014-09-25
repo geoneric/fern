@@ -109,4 +109,32 @@ inline std::ostream& operator<<(
     return stream;
 }
 
+
+inline std::ostream& operator<<(
+    std::ostream& stream,
+    uint8_t const& value)
+{
+    stream << static_cast<int64_t>(value);
+    return stream;
 }
+
+}
+
+
+namespace boost {
+namespace test_tools {
+namespace tt_detail {
+
+// http://stackoverflow.com/questions/17572583/boost-check-fails-to-compile-operator-for-custom-types
+template<>
+inline std::ostream& operator<<(
+    std::ostream& stream,
+    print_helper_t<uint8_t> const& print_helper)
+{
+    stream << static_cast<int16_t>(print_helper.m_t);
+    return stream;
+}
+
+} // namespace tt_detail
+} // namespace test_tools
+} // namespace boost

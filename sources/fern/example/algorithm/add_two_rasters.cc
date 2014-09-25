@@ -3,8 +3,8 @@
 // - User-defined raster class: example::Raster
 // - Glue code to allow passing rasters to algorithm: example::ArgumentTraits
 // - Operators to support nice syntax.
-
 #include <cstdlib>
+#include <numeric>
 #include "fern/example/algorithm/operation.h"
 #include "fern/example/algorithm/operator.h"
 

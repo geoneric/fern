@@ -110,9 +110,9 @@ struct within_range<
     unsigned_integer_tag>
 {
     inline static constexpr bool calculate(
-        Value1 const& value1,
-        Value2 const& value2,
-        Result const& result)
+        Value1 const& /* value1 */,
+        Value2 const& /* value2 */,
+        Result const& /* result */)
     {
         FERN_STATIC_ASSERT(std::is_same, typename fern::Result<Value1, Value2>
             ::type, Result)
@@ -240,7 +240,7 @@ struct Algorithm
         Value2 const& value2,
         R& result) const
     {
-        assert(!value2 == Value2(0));
+        assert(value2 != Value2(0));
         result = static_cast<R>(value1) / static_cast<R>(value2);
     }
 

@@ -25,11 +25,11 @@ static void cover_0d_0d(
     Result& result)
 {
     if(!input_no_data_policy.is_no_data()) {
-        if(!input_no_data_policy.get<0>().is_no_data()) {
+        if(!input_no_data_policy.template get<0>().is_no_data()) {
             fern::get(result) = fern::get(value1);
         }
         else {
-            assert(!input_no_data_policy.get<1>().is_no_data());
+            assert(!input_no_data_policy.template get<1>().is_no_data());
             fern::get(result) = fern::get(value2);
         }
     }
@@ -56,11 +56,12 @@ static void cover_2d_0d(
 
             if(!input_no_data_policy.is_no_data(i, j)) {
 
-                if(!input_no_data_policy.get<0>().is_no_data(i, j)) {
+                if(!input_no_data_policy.template get<0>().is_no_data(i, j)) {
                     fern::get(result, i, j) = fern::get(value1, i, j);
                 }
                 else {
-                    assert(!input_no_data_policy.get<1>().is_no_data());
+                    assert(!
+                        input_no_data_policy.template get<1>().is_no_data());
                     fern::get(result, i, j) = fern::get(value2);
                 }
             }
@@ -89,11 +90,12 @@ static void cover_2d_2d(
 
             if(!input_no_data_policy.is_no_data(i, j)) {
 
-                if(!input_no_data_policy.get<0>().is_no_data(i, j)) {
+                if(!input_no_data_policy.template get<0>().is_no_data(i, j)) {
                     fern::get(result, i, j) = fern::get(value1, i, j);
                 }
                 else {
-                    assert(!input_no_data_policy.get<1>().is_no_data(i, j));
+                    assert(!input_no_data_policy.template get<1>().is_no_data(
+                        i, j));
                     fern::get(result, i, j) = fern::get(value2, i, j);
                 }
             }

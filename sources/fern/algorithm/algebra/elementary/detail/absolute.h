@@ -98,6 +98,62 @@ struct within_range<
     }
 };
 
+
+template<
+    class Value,
+    class Enable=void>
+struct AlgorithmByValueType
+{
+
+    /// static_assert(false, "Not implemented");
+
+};
+
+
+template<
+    class Value>
+struct AlgorithmByValueType<
+    Value,
+    typename std::enable_if<std::is_unsigned<Value>::value>::type>
+{
+
+    FERN_STATIC_ASSERT(std::is_arithmetic, Value)
+    FERN_STATIC_ASSERT(std::is_unsigned, Value)
+
+    template<
+        class Result>
+    inline static void apply(
+        Value const& value,
+        Result& result)
+    {
+        // Taking the absolute value of an unsigned integer is a no-op.
+        result = static_cast<Result>(value);
+    }
+
+};
+
+
+template<
+    class Value>
+struct AlgorithmByValueType<
+    Value,
+    typename std::enable_if<!std::is_unsigned<Value>::value>::type>
+{
+
+    FERN_STATIC_ASSERT(std::is_arithmetic, Value)
+    FERN_STATIC_ASSERT(!std::is_unsigned, Value)
+
+    template<
+        class Result>
+    inline static void apply(
+        Value const& value,
+        Result& result)
+    {
+        result = static_cast<Result>(std::abs(value));
+    }
+
+};
+
 } // namespace dispatch
 
 
@@ -106,15 +162,13 @@ template<
 struct Algorithm
 {
 
-    FERN_STATIC_ASSERT(std::is_arithmetic, Value)
-
     template<
         class Result>
     inline void operator()(
         Value const& value,
         Result& result) const
     {
-        result = static_cast<Result>(std::abs(value));
+        dispatch::AlgorithmByValueType<Value>::apply(value, result);
     }
 
 };

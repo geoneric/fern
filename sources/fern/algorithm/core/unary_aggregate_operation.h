@@ -226,8 +226,8 @@ struct Aggregate<
         // Accumulate the results into one single result.
         // The final result is not masking, so the results aren't
         // either.
-        aggregator.apply<OutOfRangePolicy>(SkipNoData(), output_no_data_policy,
-            sequential, results_, result);
+        aggregator.template apply<OutOfRangePolicy>(SkipNoData(),
+            output_no_data_policy, sequential, results_, result);
     }
 
 };
@@ -256,7 +256,7 @@ struct Aggregate<
 
         // Accumulate the results into one single result.
         // The final result is masking, so the results are also.
-        aggregator.apply<OutOfRangePolicy>(
+        aggregator.template apply<OutOfRangePolicy>(
             DetectNoDataByValue<Mask<1>>(results_.mask(), true),
             output_no_data_policy, sequential, results_, result);
     }

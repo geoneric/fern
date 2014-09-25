@@ -1,5 +1,5 @@
 #define BOOST_TEST_MODULE fern example algorithm raster
-#include <algorithm>
+#include <numeric>
 #include <boost/test/unit_test.hpp>
 #include "fern/example/algorithm/raster.h"
 

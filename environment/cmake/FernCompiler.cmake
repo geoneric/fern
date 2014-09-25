@@ -29,6 +29,7 @@ ENDIF()
 
 INCLUDE(CheckCXXCompilerFlag)
 
+
 IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR
         ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
     # The code assumes integer overflow and underflow wraps. This is not
@@ -39,9 +40,20 @@ IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR
     # See http://www.airs.com/blog/archives/120
     # See out of range policy of add algorithm for signed integrals.
     SET(CMAKE_CXX_FLAGS
-        "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wcast-qual -Wwrite-strings -Werror=strict-aliasing -std=c++14 -pedantic -fno-strict-overflow -ftemplate-backtrace-limit=0"
+        "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wcast-qual -Wwrite-strings -Werror=strict-aliasing -pedantic -fno-strict-overflow -ftemplate-backtrace-limit=0"
     )
 ENDIF()
+
+IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
+    SET(CMAKE_CXX_FLAGS
+        "${CMAKE_CXX_FLAGS} -std=c++14"
+    )
+ELSEIF(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
+    SET(CMAKE_CXX_FLAGS
+        "${CMAKE_CXX_FLAGS} -stdlib=libc++ -std=c++1y"
+    )
+ENDIF()
+
 
 SET(CMAKE_CXX_FLAGS_RELEASE
     # Disable range checks in release builds.

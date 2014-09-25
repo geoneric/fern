@@ -1,6 +1,7 @@
 #define BOOST_TEST_MODULE fern algorithm algebra elementary subtract
 #include <boost/test/unit_test.hpp>
 #include "fern/core/constant_traits.h"
+#include "fern/algorithm/core/test/test_utils.h"
 #include "fern/algorithm/algebra/elementary/subtract.h"
 
 

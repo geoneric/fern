@@ -2,7 +2,6 @@
 #include <iostream>
 #include <memory>
 #include "fern/configure.h"
-#include "fern/core/memory.h"
 #include "fern/command/compile_command.h"
 #include "fern/command/describe_command.h"
 #include "fern/command/execute_command.h"
@@ -37,7 +36,8 @@ void show_general_help()
 void show_build()
 {
     std::cout << FERN_BUILD_TYPE << " build (" << __DATE__ << ")\n"
-        << FERN_ARCHITECTURE << ", "
+        // TODO Make this FERN_TARGET_ARCHITECTURE.
+        // << FERN_ARCHITECTURE << ", "
         << FERN_SYSTEM << ", "
         << FERN_CXX_COMPILER
         << "\n";

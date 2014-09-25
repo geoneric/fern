@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <array>
 #include <cassert>
+#include <vector>
 #include "fern/algorithm/core/index_range.h"
 
 

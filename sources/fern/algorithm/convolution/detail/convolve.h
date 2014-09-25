@@ -477,7 +477,7 @@ struct ConvolveSouthWestCorner<true>
         size_t first_col_kernel;
         size_t nr_rows_kernel = radius_ + radius_;
         size_t nr_cols_kernel;
-        size_t nr_rows_outside_of_image;
+        size_t nr_rows_outside_of_image{0};
         size_t nr_cols_outside_of_image;
 
         value_type<SourceImage> sum_of_values;
@@ -643,7 +643,7 @@ struct ConvolveSouthEastCorner<true>
         size_t const first_col_kernel{0};
         size_t nr_rows_kernel = radius_ + radius_;
         size_t nr_cols_kernel;
-        size_t nr_rows_outside_of_image;
+        size_t nr_rows_outside_of_image{0};
         size_t nr_cols_outside_of_image;
 
         value_type<SourceImage> sum_of_values;
