@@ -246,7 +246,7 @@ BOOST_AUTO_TEST_CASE(out_of_range)
 
     // 1d masked array with masking sum
     {
-        using InputNoDataPolicy = fern::SkipNoData;
+        using InputNoDataPolicy = fern::SkipNoData<>;
         using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
 
         // fern::MaskedConstant<int32_t> result;
@@ -289,7 +289,7 @@ BOOST_AUTO_TEST_CASE(concurrent)
     }
 
     {
-        using InputNoDataPolicy = fern::SkipNoData;
+        using InputNoDataPolicy = fern::SkipNoData<>;
         using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
         fern::MaskedConstant<int32_t> result_we_got;
 

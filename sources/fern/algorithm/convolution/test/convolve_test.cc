@@ -306,7 +306,7 @@ BOOST_AUTO_TEST_CASE(convolve)
             using NormalizePolicy=fern::convolve::DivideByWeights;
             using OutOfImagePolicy=
                 fern::convolve::ReplaceOutOfImageByFocalAverage;
-            using InputNoDataPolicy=fern::SkipNoData;
+            using InputNoDataPolicy=fern::SkipNoData<>;
             using OutputNoDataPolicy=fern::DontMarkNoData;
 
             // Sequential.

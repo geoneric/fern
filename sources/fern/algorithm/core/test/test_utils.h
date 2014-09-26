@@ -33,6 +33,26 @@ bool compare(
 
 template<
     class ExecutionPolicy,
+    class Value>
+bool compare(
+    ExecutionPolicy const& execution_policy,
+    MaskedConstant<Value> const& value1,
+    MaskedConstant<Value> const& value2)
+{
+    bool values_are_the_same = compare(execution_policy,
+            value1.value(), value2.value());
+    bool mask_is_the_same = compare(execution_policy,
+            value1.mask(), value2.mask());
+
+    BOOST_CHECK(values_are_the_same);
+    BOOST_CHECK(mask_is_the_same);
+
+    return values_are_the_same && mask_is_the_same;
+}
+
+
+template<
+    class ExecutionPolicy,
     class Value,
     size_t nr_dimensions>
 bool compare(
@@ -88,6 +108,26 @@ inline std::ostream& operator<<(
 }
 
 
+template<
+    class T,
+    size_t nr_dimensions>
+inline std::ostream& operator<<(
+    std::ostream& stream,
+    MaskedArray<T, nr_dimensions> const& array)
+{
+    for(size_t r = 0; r < fern::size(array, 0); ++r) {
+        for(size_t c = 0; c < fern::size(array, 1); ++c) {
+            stream
+                << (array.mask()[r][c] ? "(" : " ")
+                << std::setw(5) << array[r][c]
+                << (array.mask()[r][c] ? ")" : " ")
+                << " ";
+        }
+        stream << "\n";
+    }
+
+    return stream;
+}
 template<
     class T,
     size_t nr_dimensions>
