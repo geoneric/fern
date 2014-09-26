@@ -1,5 +1,4 @@
 #pragma once
-/// #include "fern/core/assert.h"
 #include "fern/algorithm/policy/policies.h"
 #include "fern/algorithm/core/detail/unite_no_data.h"
 
@@ -7,23 +6,22 @@
 namespace fern {
 namespace core {
 
-/// //! Offset the elements in \a value by \a offset_ and write the result to \a result.
-/// /*!
-///     \ingroup       core
-///     \sa            @ref fern_algorithm_core
-/// 
-///     Elements in \a result that have no corresponding value in \a value, will
-///     be handled by \a output_no_data_policy.
-/// 
-///     A positive offset will offset the elements towards higher indices. In case
-///     of a 1D array, for example, a positive offset will offset the elements
-///     towards the end of the array.
-/// 
-///     - The dimensionality of \a value must be larger than 0.
-///     - The \a offset_ must have the same dimensionality as \a value.
-///     - The value type of \a Result must be equal to \a Value.
-///     - The value type of \a Offset must be signed integral.
-/// */
+//! Unite the no-data of \a value1 and \a value2 and store the results in result.
+/*!
+    \ingroup       core
+    \sa            @ref fern_algorithm_core
+
+    Uniting no-data means that if an element from \a value1 or \a value2
+    contains a no-data, \a result will contain a no-data. This is a useful
+    operation when preparing the inputs for other algorithms. A lot of
+    algorithms assume that the result already contains no-data for those
+    elements for which one of the inputs contains a no-data.
+
+    \a value1, \a value2 and \a result are not used. They may, of course,
+    be used by the no-data policies passed in.
+
+    The value types of \a value1, \a value2 and \a result are not relevant.
+*/
 template<
     class InputNoDataPolicy,
     class OutputNoDataPolicy,
@@ -39,13 +37,6 @@ void unite_no_data(
     Value2 const& value2,
     Result& result)
 {
-    /// FERN_STATIC_ASSERT(std::is_same, value_type<Result>, value_type<Value>)
-    /// FERN_STATIC_ASSERT(std::is_integral, value_type<Offset>)
-    /// FERN_STATIC_ASSERT(std::is_signed, value_type<Offset>)
-    /// static_assert(rank<Value>() > 0, "Rank must be larger than 0");
-    /// static_assert(rank<Value>() == rank<Offset>(),
-    ///     "Rank of offset must equal rank of value");
-
     unite_no_data::detail::unite_no_data<>(input_no_data_policy,
         output_no_data_policy, execution_policy, value1, value2, result);
 }

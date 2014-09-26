@@ -113,6 +113,26 @@ template<
     size_t nr_dimensions>
 inline std::ostream& operator<<(
     std::ostream& stream,
+    MaskedArray<T, nr_dimensions> const& array)
+{
+    for(size_t r = 0; r < fern::size(array, 0); ++r) {
+        for(size_t c = 0; c < fern::size(array, 1); ++c) {
+            stream
+                << (array.mask()[r][c] ? "(" : " ")
+                << std::setw(5) << array[r][c]
+                << (array.mask()[r][c] ? ")" : " ")
+                << " ";
+        }
+        stream << "\n";
+    }
+
+    return stream;
+}
+template<
+    class T,
+    size_t nr_dimensions>
+inline std::ostream& operator<<(
+    std::ostream& stream,
     MaskedRaster<T, nr_dimensions> const& raster)
 {
     for(size_t r = 0; r < fern::size(raster, 0); ++r) {
