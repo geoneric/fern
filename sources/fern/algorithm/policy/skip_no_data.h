@@ -1,10 +1,15 @@
 #pragma once
 #include <cstddef>
+#include "fern/algorithm/policy/input_no_data_policies.h"
 
 
 namespace fern {
 
-class SkipNoData {
+template<
+    class... ArgumentNoDataPolicies>
+class SkipNoData:
+    public InputNoDataPolicies<ArgumentNoDataPolicies...>
+{
 
 public:
 
@@ -19,41 +24,47 @@ public:
                                         size_t index2,
                                         size_t index3);
 
-                   SkipNoData          ()=default;
+                   SkipNoData          (ArgumentNoDataPolicies&&... policies);
 
-                   SkipNoData          (SkipNoData const&)=default;
+                   SkipNoData          (SkipNoData const&)=delete;
 
                    SkipNoData          (SkipNoData&&)=default;
 
     SkipNoData&
-                   operator=           (SkipNoData const&)=default;
+                   operator=           (SkipNoData const&)=delete;
 
     SkipNoData&    operator=           (SkipNoData&&)=default;
 
-    virtual        ~SkipNoData         ()=default;
+                   ~SkipNoData         ()=default;
 
-    template<
-        size_t index>
-    SkipNoData const&
-                   get                 () const;
+    /// template<
+    ///     size_t index>
+    /// SkipNoData const&
+    ///                get                 () const;
 
 };
 
 
-inline constexpr bool SkipNoData::is_no_data()
+template<
+    class... ArgumentNoDataPolicies>
+inline constexpr bool SkipNoData<ArgumentNoDataPolicies...>::is_no_data()
 {
     return false;
 }
 
 
-inline constexpr bool SkipNoData::is_no_data(
+template<
+    class... ArgumentNoDataPolicies>
+inline constexpr bool SkipNoData<ArgumentNoDataPolicies...>::is_no_data(
     size_t /* index */)
 {
     return false;
 }
 
 
-inline constexpr bool SkipNoData::is_no_data(
+template<
+    class... ArgumentNoDataPolicies>
+inline constexpr bool SkipNoData<ArgumentNoDataPolicies...>::is_no_data(
     size_t /* index1 */,
     size_t /* index2 */)
 {
@@ -61,7 +72,9 @@ inline constexpr bool SkipNoData::is_no_data(
 }
 
 
-inline constexpr bool SkipNoData::is_no_data(
+template<
+    class... ArgumentNoDataPolicies>
+inline constexpr bool SkipNoData<ArgumentNoDataPolicies...>::is_no_data(
     size_t /* index1 */,
     size_t /* index2 */,
     size_t /* index3 */)
@@ -70,11 +83,23 @@ inline constexpr bool SkipNoData::is_no_data(
 }
 
 
+/// template<
+///     size_t index>
+/// inline SkipNoData const& SkipNoData::get() const
+/// {
+///     return *this;
+/// }
+
+
 template<
-    size_t index>
-inline SkipNoData const& SkipNoData::get() const
+    class... ArgumentNoDataPolicies>
+inline SkipNoData<ArgumentNoDataPolicies...>::SkipNoData(
+    ArgumentNoDataPolicies&&... policies)
+
+    : InputNoDataPolicies<ArgumentNoDataPolicies...>(
+          std::forward<ArgumentNoDataPolicies>(policies)...)
+
 {
-    return *this;
 }
 
 } // namespace fern

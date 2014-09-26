@@ -66,7 +66,7 @@ void defined(
     ExecutionPolicy const& execution_policy,
     Result& result)
 {
-    using InputNoDataPolicy = SkipNoData;
+    using InputNoDataPolicy = SkipNoData<>;
 
     defined<>(InputNoDataPolicy(), execution_policy, result);
 }

@@ -93,12 +93,12 @@ void cover(
     Value2 const& value2,
     Result& result)
 {
-    using InputNoDataPolicy = SkipNoData;
+    using InputNoDataPolicy = SkipNoData<SkipNoData<>, SkipNoData<>>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
-    cover<>(InputNoDataPolicy(), output_no_data_policy, execution_policy,
-        value1, value2, result);
+    cover<>(InputNoDataPolicy(SkipNoData<>(), SkipNoData<>()),
+        output_no_data_policy, execution_policy, value1, value2, result);
 }
 
 } // namespace core

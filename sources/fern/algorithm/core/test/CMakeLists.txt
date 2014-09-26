@@ -12,6 +12,7 @@ SET(TEST_NAMES
     result_value_test
     unary_disaggregate_operation_test
     unary_local_operation_test
+    unite_no_data_test
 )
 
 MACRO(ADD_UNIT_TEST NAME)

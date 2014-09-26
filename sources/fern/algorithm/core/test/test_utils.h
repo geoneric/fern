@@ -33,6 +33,26 @@ bool compare(
 
 template<
     class ExecutionPolicy,
+    class Value>
+bool compare(
+    ExecutionPolicy const& execution_policy,
+    MaskedConstant<Value> const& value1,
+    MaskedConstant<Value> const& value2)
+{
+    bool values_are_the_same = compare(execution_policy,
+            value1.value(), value2.value());
+    bool mask_is_the_same = compare(execution_policy,
+            value1.mask(), value2.mask());
+
+    BOOST_CHECK(values_are_the_same);
+    BOOST_CHECK(mask_is_the_same);
+
+    return values_are_the_same && mask_is_the_same;
+}
+
+
+template<
+    class ExecutionPolicy,
     class Value,
     size_t nr_dimensions>
 bool compare(

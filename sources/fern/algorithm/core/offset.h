@@ -89,7 +89,7 @@ void offset(
     Offset const& offset_,
     Result& result)
 {
-    using InputNoDataPolicy = SkipNoData;
+    using InputNoDataPolicy = SkipNoData<>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
@@ -184,7 +184,7 @@ void offset(
     value_type<Result> const& fill_value,
     Result& result)
 {
-    using InputNoDataPolicy = SkipNoData;
+    using InputNoDataPolicy = SkipNoData<>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;

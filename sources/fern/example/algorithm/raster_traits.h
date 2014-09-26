@@ -24,7 +24,7 @@ struct ArgumentTraits<example::Raster<T>>
 
     using reference = T&;
 
-    using argument_category = array_2d_tag;
+    using argument_category = raster_2d_tag;
 
 };
 

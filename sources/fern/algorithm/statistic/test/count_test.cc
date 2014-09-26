@@ -276,7 +276,7 @@ BOOST_AUTO_TEST_CASE(concurrent)
     }
 
     {
-        using InputNoDataPolicy = fern::SkipNoData;
+        using InputNoDataPolicy = fern::SkipNoData<>;
         using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
         fern::MaskedConstant<size_t> result_we_got;
         OutputNoDataPolicy output_no_data_policy(result_we_got.mask(), true);

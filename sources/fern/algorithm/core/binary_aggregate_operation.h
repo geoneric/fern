@@ -233,7 +233,7 @@ struct Aggregate<
         // Accumulate the results into one single result.
         // The final result is not masking, so the results aren't
         // either.
-        aggregator.template apply<OutOfRangePolicy>(SkipNoData(),
+        aggregator.template apply<OutOfRangePolicy>(SkipNoData<>(),
             output_no_data_policy, sequential, results_, result);
     }
 

@@ -30,7 +30,7 @@ BOOST_FIXTURE_TEST_SUITE(nullary_local_operation, Fixture)
 
 BOOST_AUTO_TEST_CASE(array_0d)
 {
-    using InputNoDataPolicy = fern::SkipNoData;
+    using InputNoDataPolicy = fern::SkipNoData<>;
     using OutputNoDataPolicy = fern::DontMarkNoData;
     using Result = ResultValue;
 
@@ -96,7 +96,7 @@ BOOST_AUTO_TEST_CASE(array_0d_masked)
 
 BOOST_AUTO_TEST_CASE(array_1d_sequential)
 {
-    using InputNoDataPolicy = fern::SkipNoData;
+    using InputNoDataPolicy = fern::SkipNoData<>;
     using OutputNoDataPolicy = fern::DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
@@ -148,7 +148,7 @@ BOOST_AUTO_TEST_CASE(array_1d_sequential)
 
 BOOST_AUTO_TEST_CASE(array_1d_parallel)
 {
-    using InputNoDataPolicy = fern::SkipNoData;
+    using InputNoDataPolicy = fern::SkipNoData<>;
     using OutputNoDataPolicy = fern::DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
@@ -256,7 +256,7 @@ BOOST_AUTO_TEST_CASE(array_1d_masked)
 
 BOOST_AUTO_TEST_CASE(array_2d_sequential)
 {
-    using InputNoDataPolicy = fern::SkipNoData;
+    using InputNoDataPolicy = fern::SkipNoData<>;
     using OutputNoDataPolicy = fern::DontMarkNoData;
     using Result = fern::Array<ResultValue, 2>;
 
@@ -283,7 +283,7 @@ BOOST_AUTO_TEST_CASE(array_2d_sequential)
 
 BOOST_AUTO_TEST_CASE(array_2d_parallel)
 {
-    using InputNoDataPolicy = fern::SkipNoData;
+    using InputNoDataPolicy = fern::SkipNoData<>;
     using OutputNoDataPolicy = fern::DontMarkNoData;
     using Result = fern::Array<ResultValue, 2>;
 

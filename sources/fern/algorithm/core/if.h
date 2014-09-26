@@ -85,7 +85,7 @@ void if_(
     TrueValue const& true_value,
     Result& result)
 {
-    using InputNoDataPolicy = SkipNoData;
+    using InputNoDataPolicy = SkipNoData<>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
@@ -184,7 +184,7 @@ void if_(
     FalseValue const& false_value,
     Result& result)
 {
-    using InputNoDataPolicy = SkipNoData;
+    using InputNoDataPolicy = SkipNoData<>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;

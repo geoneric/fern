@@ -6,7 +6,6 @@ namespace fern {
 
 //! Class for managing resources used by threading.
 /*!
-    \warning       See ThreadPool docs.
     \sa            ThreadPool
 
     Instantiating this class will create a thread pool that can be used for

@@ -43,11 +43,11 @@ BOOST_AUTO_TEST_CASE(array_2d_masked_0d)
 
     fern::DetectNoDataByValue<fern::Mask<2>> value1_input_no_data_policy(
         value1.mask(), true);
-    fern::SkipNoData value2_input_no_data_policy;
+    fern::SkipNoData<> value2_input_no_data_policy;
 
     fern::DetectNoDataByValue<fern::Mask<2>,
         fern::DetectNoDataByValue<fern::Mask<2>>,
-        fern::SkipNoData> input_no_data_policy(result_we_got.mask(), true,
+        fern::SkipNoData<>> input_no_data_policy(result_we_got.mask(), true,
             std::move(value1_input_no_data_policy),
             std::move(value2_input_no_data_policy));
     fern::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(

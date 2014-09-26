@@ -74,7 +74,7 @@ void unary_max(
     Value const& value,
     Result& result)
 {
-    using InputNoDataPolicy = SkipNoData;
+    using InputNoDataPolicy = SkipNoData<>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;

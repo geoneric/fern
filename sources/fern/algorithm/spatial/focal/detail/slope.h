@@ -40,7 +40,7 @@ struct Slope<
     Value,
     Result,
     ExecutionPolicy,
-    array_2d_tag>
+    raster_2d_tag>
 
 {
 
@@ -166,7 +166,7 @@ void slope(
         Value,
         Result,
         ExecutionPolicy,
-        base_class<argument_category<Value>, array_2d_tag>>::apply(
+        base_class<argument_category<Value>, raster_2d_tag>>::apply(
             input_no_data_policy, output_no_data_policy, execution_policy,
             value, result);
 }
