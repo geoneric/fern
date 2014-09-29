@@ -5,6 +5,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace unite_no_data {
 namespace detail {
 
@@ -244,7 +245,7 @@ struct UniteNoDataByExecutionPolicy<
         Result& result)
     {
         switch(execution_policy.which()) {
-            case fern::detail::sequential_execution_policy_id: {
+            case fern::algorithm::detail::sequential_execution_policy_id: {
                 UniteNoDataByArgumentCategory<
                     InputNoDataPolicy,
                     OutputNoDataPolicy,
@@ -256,12 +257,12 @@ struct UniteNoDataByExecutionPolicy<
                     base_class<argument_category<Value2>, array_2d_tag>>
                         ::apply(
                             input_no_data_policy, output_no_data_policy,
-                            fern::detail::get_policy<SequentialExecutionPolicy>(
-                                execution_policy),
+                            fern::algorithm::detail::get_policy<
+                                SequentialExecutionPolicy>(execution_policy),
                             value1, value2, result);
                 break;
             }
-            case fern::detail::parallel_execution_policy_id: {
+            case fern::algorithm::detail::parallel_execution_policy_id: {
                 UniteNoDataByArgumentCategory<
                     InputNoDataPolicy,
                     OutputNoDataPolicy,
@@ -273,8 +274,8 @@ struct UniteNoDataByExecutionPolicy<
                     base_class<argument_category<Value2>, array_2d_tag>>
                         ::apply(
                             input_no_data_policy, output_no_data_policy,
-                            fern::detail::get_policy<ParallelExecutionPolicy>(
-                                execution_policy),
+                            fern::algorithm::detail::get_policy<
+                                ParallelExecutionPolicy>(execution_policy),
                             value1, value2, result);
                 break;
             }
@@ -309,4 +310,5 @@ void unite_no_data(
 
 } // namespace detail
 } // namespace unite_no_data
+} // namespace algorithm
 } // namespace fern

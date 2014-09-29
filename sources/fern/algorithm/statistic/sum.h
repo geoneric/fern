@@ -4,6 +4,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace sum {
 
 template<
@@ -96,4 +97,5 @@ void sum(
 }
 
 } // namespace statistic
+} // namespace algorithm
 } // namespace fern

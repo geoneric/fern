@@ -5,6 +5,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace algebra {
 
 //! Determing which values are defined and write the result to \a result.
@@ -72,4 +73,5 @@ void defined(
 }
 
 } // namespace algebra
+} // namespace algorithm
 } // namespace fern

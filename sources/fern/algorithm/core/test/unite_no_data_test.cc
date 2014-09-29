@@ -8,10 +8,13 @@
 #include "fern/algorithm/core/test/test_utils.h"
 
 
+namespace fa = fern::algorithm;
+
+
 BOOST_FIXTURE_TEST_SUITE(unite_no_data, fern::ThreadClient)
 
 void test_array_0d_0d(
-    fern::ExecutionPolicy const& execution_policy)
+    fa::ExecutionPolicy const& execution_policy)
 {
     int value1;
     int value2;
@@ -24,14 +27,14 @@ void test_array_0d_0d(
 
         result_we_want = -9;
         result_we_got = -9;
-        fern::core::unite_no_data(execution_policy, value1, value2,
+        fa::core::unite_no_data(execution_policy, value1, value2,
             result_we_got);
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
             result_we_want));
 
         result_we_want = -9;
         result_we_got = -9;
-        fern::core::unite_no_data(execution_policy, value1, value2,
+        fa::core::unite_no_data(execution_policy, value1, value2,
             result_we_got);
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
             result_we_want));
@@ -41,30 +44,30 @@ void test_array_0d_0d(
 
 BOOST_AUTO_TEST_CASE(array_0d_0d_sequential)
 {
-    test_array_0d_0d(fern::sequential);
+    test_array_0d_0d(fa::sequential);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_0d_0d_parallel)
 {
-    test_array_0d_0d(fern::parallel);
+    test_array_0d_0d(fa::parallel);
 }
 
 
 void test_array_0d_0d_masked(
-    fern::ExecutionPolicy const& execution_policy)
+    fa::ExecutionPolicy const& execution_policy)
 {
     fern::MaskedConstant<int> value1;
     fern::MaskedConstant<int> value2;
     fern::MaskedConstant<int> result_we_want;
     fern::MaskedConstant<int> result_we_got;
 
-    fern::SkipNoData<
-        fern::DetectNoDataByValue<bool>,
-        fern::DetectNoDataByValue<bool>> input_no_data_policy(
-            fern::DetectNoDataByValue<bool>(value1.mask(), true),
-            fern::DetectNoDataByValue<bool>(value2.mask(), true));
-    fern::MarkNoDataByValue<bool> output_no_data_policy(result_we_got.mask(),
+    fa::SkipNoData<
+        fa::DetectNoDataByValue<bool>,
+        fa::DetectNoDataByValue<bool>> input_no_data_policy(
+            fa::DetectNoDataByValue<bool>(value1.mask(), true),
+            fa::DetectNoDataByValue<bool>(value2.mask(), true));
+    fa::MarkNoDataByValue<bool> output_no_data_policy(result_we_got.mask(),
         true);
 
     // unite(false, false) -> false
@@ -77,7 +80,7 @@ void test_array_0d_0d_masked(
         result_we_want = fern::MaskedConstant<int>(-9, false);
         result_we_got = -9;
         result_we_got.mask() = false;
-        fern::core::unite_no_data(input_no_data_policy, output_no_data_policy,
+        fa::core::unite_no_data(input_no_data_policy, output_no_data_policy,
             execution_policy, value1, value2, result_we_got);
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
             result_we_want));
@@ -93,7 +96,7 @@ void test_array_0d_0d_masked(
         result_we_want = fern::MaskedConstant<int>(-9, true);
         result_we_got = -9;
         result_we_got.mask() = false;
-        fern::core::unite_no_data(input_no_data_policy, output_no_data_policy,
+        fa::core::unite_no_data(input_no_data_policy, output_no_data_policy,
             execution_policy, value1, value2, result_we_got);
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
             result_we_want));
@@ -109,7 +112,7 @@ void test_array_0d_0d_masked(
         result_we_want = fern::MaskedConstant<int>(-9, true);
         result_we_got = -9;
         result_we_got.mask() = false;
-        fern::core::unite_no_data(input_no_data_policy, output_no_data_policy,
+        fa::core::unite_no_data(input_no_data_policy, output_no_data_policy,
             execution_policy, value1, value2, result_we_got);
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
             result_we_want));
@@ -125,7 +128,7 @@ void test_array_0d_0d_masked(
         result_we_want = fern::MaskedConstant<int>(-9, true);
         result_we_got = -9;
         result_we_got.mask() = false;
-        fern::core::unite_no_data(input_no_data_policy, output_no_data_policy,
+        fa::core::unite_no_data(input_no_data_policy, output_no_data_policy,
             execution_policy, value1, value2, result_we_got);
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
             result_we_want));
@@ -135,13 +138,13 @@ void test_array_0d_0d_masked(
 
 BOOST_AUTO_TEST_CASE(array_0d_0d_masked_sequential)
 {
-    test_array_0d_0d_masked(fern::sequential);
+    test_array_0d_0d_masked(fa::sequential);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_0d_0d_masked_parallel)
 {
-    test_array_0d_0d_masked(fern::parallel);
+    test_array_0d_0d_masked(fa::parallel);
 }
 
 
@@ -149,7 +152,7 @@ BOOST_AUTO_TEST_CASE(array_0d_0d_masked_parallel)
 
 
 void test_array_2d_2d(
-    fern::ExecutionPolicy const& execution_policy)
+    fa::ExecutionPolicy const& execution_policy)
 {
     size_t const nr_threads{fern::ThreadClient::hardware_concurrency()};
     size_t const nr_rows{30 * nr_threads};
@@ -171,25 +174,25 @@ void test_array_2d_2d(
     result_we_want.fill(-9);
 
     result_we_got.fill(-9);
-    fern::core::unite_no_data(execution_policy, value1, value2, result_we_got);
+    fa::core::unite_no_data(execution_policy, value1, value2, result_we_got);
     BOOST_CHECK(fern::compare(execution_policy, result_we_got, result_we_want));
 }
 
 
 BOOST_AUTO_TEST_CASE(array_2d_2d_sequential)
 {
-    test_array_2d_2d(fern::sequential);
+    test_array_2d_2d(fa::sequential);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_2d_2d_parallel)
 {
-    test_array_2d_2d(fern::parallel);
+    test_array_2d_2d(fa::parallel);
 }
 
 
 void test_array_2d_2d_masked(
-    fern::ExecutionPolicy const& execution_policy)
+    fa::ExecutionPolicy const& execution_policy)
 {
     size_t const nr_threads{fern::ThreadClient::hardware_concurrency()};
     size_t const nr_rows{3 * nr_threads};
@@ -200,12 +203,12 @@ void test_array_2d_2d_masked(
     fern::MaskedArray<int, 2> value2(fern::extents[nr_rows][nr_cols]);
     fern::MaskedArray<int, 2> result_we_got(fern::extents[nr_rows][nr_cols]);
 
-    fern::SkipNoData<
-        fern::DetectNoDataByValue<fern::Mask<2>>,
-        fern::DetectNoDataByValue<fern::Mask<2>>> input_no_data_policy(
-            fern::DetectNoDataByValue<fern::Mask<2>>(value1.mask(), true),
-            fern::DetectNoDataByValue<fern::Mask<2>>(value2.mask(), true));
-    fern::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
+    fa::SkipNoData<
+        fa::DetectNoDataByValue<fern::Mask<2>>,
+        fa::DetectNoDataByValue<fern::Mask<2>>> input_no_data_policy(
+            fa::DetectNoDataByValue<fern::Mask<2>>(value1.mask(), true),
+            fa::DetectNoDataByValue<fern::Mask<2>>(value2.mask(), true));
+    fa::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
         result_we_got.mask(), true);
 
     // Fill value1: 0, 1, 2, ...
@@ -242,7 +245,7 @@ void test_array_2d_2d_masked(
     }
 
     result_we_got.fill(-9);
-    fern::core::unite_no_data(input_no_data_policy, output_no_data_policy,
+    fa::core::unite_no_data(input_no_data_policy, output_no_data_policy,
         execution_policy, value1, value2, result_we_got);
     BOOST_CHECK(fern::compare(execution_policy, result_we_got, result_we_want));
 }
@@ -250,13 +253,13 @@ void test_array_2d_2d_masked(
 
 BOOST_AUTO_TEST_CASE(array_2d_2d_masked_sequential)
 {
-    test_array_2d_2d_masked(fern::sequential);
+    test_array_2d_2d_masked(fa::sequential);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_2d_2d_masked_parallel)
 {
-    test_array_2d_2d_masked(fern::parallel);
+    test_array_2d_2d_masked(fa::parallel);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

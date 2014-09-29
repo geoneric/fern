@@ -17,6 +17,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace laplacian {
 namespace detail {
 namespace dispatch {
@@ -126,7 +127,7 @@ struct Laplacian<
         algebra::multiply<
             // TODO: Select OutOfRange policy based on the
             //       output-no-data-policy passed in.
-            fern::multiply::OutOfRangePolicy>(
+            algorithm::multiply::OutOfRangePolicy>(
                 input_no_data_policy, output_no_data_policy, execution_policy,
                 sum_of_weights, value, multiplied_values);
 
@@ -135,7 +136,7 @@ struct Laplacian<
         algebra::subtract<
             // TODO: Select OutOfRange policy based on the
             //       output-no-data-policy passed in.
-            fern::subtract::OutOfRangePolicy>(
+            algorithm::subtract::OutOfRangePolicy>(
                 input_no_data_policy, output_no_data_policy, execution_policy,
                 result, multiplied_values, result);
 
@@ -145,8 +146,8 @@ struct Laplacian<
             //       output-no-data-policy passed in.
             // TODO: Select OutOfRange policy based on the
             //       output-no-data-policy passed in.
-            fern::divide::OutOfDomainPolicy,
-            fern::divide::OutOfRangePolicy>(
+            algorithm::divide::OutOfDomainPolicy,
+            algorithm::divide::OutOfRangePolicy>(
                 input_no_data_policy, output_no_data_policy, execution_policy,
                 result, cell_area(value), result);
     }
@@ -185,4 +186,5 @@ void laplacian(
 
 } // namespace detail
 } // namespace laplacian
+} // namespace algorithm
 } // namespace fern

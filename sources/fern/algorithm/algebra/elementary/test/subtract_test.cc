@@ -5,13 +5,16 @@
 #include "fern/algorithm/algebra/elementary/subtract.h"
 
 
+namespace fa = fern::algorithm;
+
+
 BOOST_AUTO_TEST_SUITE(subtract)
 
 template<
     class Value1,
     class Value2,
     class Result>
-using OutOfRangePolicy = fern::subtract::OutOfRangePolicy<Value1, Value2,
+using OutOfRangePolicy = fa::subtract::OutOfRangePolicy<Value1, Value2,
     Result>;
 
 
@@ -28,7 +31,7 @@ struct VerifyWithinRange
         OutOfRangePolicy<Value1, Value2, Result> policy;
         Result result;
 
-        fern::algebra::subtract(fern::sequential, value1, value2, result);
+        fa::algebra::subtract(fa::sequential, value1, value2, result);
 
         return policy.within_range(value1, value2, result);
     }
@@ -195,7 +198,7 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::algebra::subtract(fern::sequential, value1, value2, result_we_get);
+    fa::algebra::subtract(fa::sequential, value1, value2, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 

@@ -5,6 +5,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace algebra {
 
 //! Calculate the gradient in x of \a value and write the result to \a result.
@@ -163,4 +164,5 @@ void gradient_y(
 }
 
 } // namespace algebra
+} // namespace algorithm
 } // namespace fern

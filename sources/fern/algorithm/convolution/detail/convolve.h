@@ -15,6 +15,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace convolve {
 namespace detail {
 
@@ -1754,8 +1755,8 @@ struct Convolve<
 
         size_t const size1 = fern::size(source, 0) - 2 * fern::radius(kernel);
         size_t const size2 = fern::size(source, 1) - 2 * fern::radius(kernel);
-        std::vector<IndexRanges<2>> index_ranges = fern::index_ranges(
-            pool.size(), size1, size2);
+        std::vector<IndexRanges<2>> index_ranges =
+            fern::algorithm::index_ranges(pool.size(), size1, size2);
 
         for(auto& ranges: index_ranges) {
             // Offset indices by the radius of the kernel.
@@ -1812,25 +1813,25 @@ struct Convolve<
         DestinationImage& destination)
     {
         switch(execution_policy.which()) {
-            case fern::detail::sequential_execution_policy_id: {
+            case fern::algorithm::detail::sequential_execution_policy_id: {
                 Convolve<AlternativeForNoDataPolicy, NormalizePolicy,
                     OutOfImagePolicy, OutOfRangePolicy, InputNoDataPolicy,
                     OutputNoDataPolicy, SourceImage, Kernel, DestinationImage,
                     SequentialExecutionPolicy>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        fern::detail::get_policy<SequentialExecutionPolicy>(
-                            execution_policy),
+                        fern::algorithm::detail::get_policy<
+                            SequentialExecutionPolicy>(execution_policy),
                         source, kernel, destination);
                 break;
             }
-            case fern::detail::parallel_execution_policy_id: {
+            case fern::algorithm::detail::parallel_execution_policy_id: {
                 Convolve<AlternativeForNoDataPolicy, NormalizePolicy,
                     OutOfImagePolicy, OutOfRangePolicy, InputNoDataPolicy,
                     OutputNoDataPolicy, SourceImage, Kernel, DestinationImage,
                     ParallelExecutionPolicy>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        fern::detail::get_policy<ParallelExecutionPolicy>(
-                            execution_policy),
+                        fern::algorithm::detail::get_policy<
+                            ParallelExecutionPolicy>(execution_policy),
                         source, kernel, destination);
                 break;
             }
@@ -1931,4 +1932,5 @@ void convolve(
 
 } // namespace detail
 } // namespace convolve
+} // namespace algorithm
 } // namespace fern

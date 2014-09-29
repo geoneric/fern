@@ -6,6 +6,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace core {
 
 //! Conditionally assign \a true_value to \a result.
@@ -193,4 +194,5 @@ void if_(
 }
 
 } // namespace core
+} // namespace algorithm
 } // namespace fern

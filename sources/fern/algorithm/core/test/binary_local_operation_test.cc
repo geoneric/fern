@@ -8,6 +8,8 @@
 #include "fern/algorithm/algebra/elementary/add.h"
 
 
+namespace fa = fern::algorithm;
+
 using ArgumentValue = int32_t;
 using ResultValue = int32_t;
 
@@ -15,22 +17,22 @@ template<
     class Value1,
     class Value2
 >
-using Algorithm = fern::add::detail::Algorithm<Value1, Value2>;
+using Algorithm = fa::add::detail::Algorithm<Value1, Value2>;
 
 template<
     class Value1,
     class Value2,
     class Result
 >
-using OutOfRangePolicy = fern::add::OutOfRangePolicy<Value1, Value2, Result>;
+using OutOfRangePolicy = fa::add::OutOfRangePolicy<Value1, Value2, Result>;
 
 
 BOOST_AUTO_TEST_SUITE(binary_local_operation)
 
 BOOST_AUTO_TEST_CASE(d0_array_d0_array)
 {
-    using InputNoDataPolicy = fern::SkipNoData<>;
-    using OutputNoDataPolicy = fern::DontMarkNoData;
+    using InputNoDataPolicy = fa::SkipNoData<>;
+    using OutputNoDataPolicy = fa::DontMarkNoData;
     using Argument1 = ArgumentValue;
     using Argument2 = ArgumentValue;
     using Result = ResultValue;
@@ -40,25 +42,25 @@ BOOST_AUTO_TEST_CASE(d0_array_d0_array)
     Argument2 argument2{-6};
     Result result{3};
 
-    fern::binary_local_operation<
+    fa::binary_local_operation<
         Algorithm,
-        fern::binary::DiscardDomainErrors,
-        fern::binary::DiscardRangeErrors>(
+        fa::binary::DiscardDomainErrors,
+        fa::binary::DiscardRangeErrors>(
             InputNoDataPolicy(),
             output_no_data_policy,
-            fern::sequential, argument1, argument2, result);
+            fa::sequential, argument1, argument2, result);
 
     BOOST_CHECK_EQUAL(result, -11);
 
     result = 3;
 
-    fern::binary_local_operation<
+    fa::binary_local_operation<
         Algorithm,
-        fern::binary::DiscardDomainErrors,
-        fern::binary::DiscardRangeErrors>(
+        fa::binary::DiscardDomainErrors,
+        fa::binary::DiscardRangeErrors>(
             InputNoDataPolicy(),
             output_no_data_policy,
-            fern::parallel, argument1, argument2, result);
+            fa::parallel, argument1, argument2, result);
 
     BOOST_CHECK_EQUAL(result, -11);
 }
@@ -66,8 +68,8 @@ BOOST_AUTO_TEST_CASE(d0_array_d0_array)
 
 BOOST_AUTO_TEST_CASE(masked_d0_array_d0_array)
 {
-    using InputNoDataPolicy = fern::DetectNoDataByValue<bool>;
-    using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
+    using InputNoDataPolicy = fa::DetectNoDataByValue<bool>;
+    using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
     using Argument1 = fern::MaskedConstant<ArgumentValue>;
     using Argument2 = fern::MaskedConstant<ArgumentValue>;
     using Result = fern::MaskedConstant<ResultValue>;
@@ -88,13 +90,13 @@ BOOST_AUTO_TEST_CASE(masked_d0_array_d0_array)
         InputNoDataPolicy input_no_data_policy(result.mask(), true);
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
-        fern::binary_local_operation<
+        fa::binary_local_operation<
             Algorithm,
-            fern::binary::DiscardDomainErrors,
-            fern::binary::DiscardRangeErrors>(
+            fa::binary::DiscardDomainErrors,
+            fa::binary::DiscardRangeErrors>(
                 input_no_data_policy,
                 output_no_data_policy,
-                fern::sequential, argument1, argument2, result);
+                fa::sequential, argument1, argument2, result);
 
         BOOST_CHECK_EQUAL(result.mask(), false);
         BOOST_CHECK_EQUAL(result.value(), -11);
@@ -112,13 +114,13 @@ BOOST_AUTO_TEST_CASE(masked_d0_array_d0_array)
         InputNoDataPolicy input_no_data_policy(result.mask(), true);
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
-        fern::binary_local_operation<
+        fa::binary_local_operation<
             Algorithm,
-            fern::binary::DiscardDomainErrors,
-            fern::binary::DiscardRangeErrors>(
+            fa::binary::DiscardDomainErrors,
+            fa::binary::DiscardRangeErrors>(
                 input_no_data_policy,
                 output_no_data_policy,
-                fern::sequential, argument1, argument2, result);
+                fa::sequential, argument1, argument2, result);
 
         BOOST_CHECK_EQUAL(result.mask(), true);
         BOOST_CHECK_EQUAL(result.value(), 3);
@@ -140,13 +142,13 @@ BOOST_AUTO_TEST_CASE(masked_d0_array_d0_array)
 
         InputNoDataPolicy input_no_data_policy(result.mask(), true);
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
-        fern::binary_local_operation<
+        fa::binary_local_operation<
             Algorithm,
-            fern::binary::DiscardDomainErrors,
+            fa::binary::DiscardDomainErrors,
             OutOfRangePolicy>(
                 input_no_data_policy,
                 output_no_data_policy,
-                fern::sequential, argument1, argument2, result);
+                fa::sequential, argument1, argument2, result);
 
         BOOST_CHECK_EQUAL(result.mask(), true);
 
@@ -159,8 +161,8 @@ BOOST_AUTO_TEST_CASE(masked_d0_array_d0_array)
 
 BOOST_AUTO_TEST_CASE(d1_array_d0_array_sequential)
 {
-    using InputNoDataPolicy = fern::SkipNoData<>;
-    using OutputNoDataPolicy = fern::DontMarkNoData;
+    using InputNoDataPolicy = fa::SkipNoData<>;
+    using OutputNoDataPolicy = fa::DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
 
@@ -174,13 +176,13 @@ BOOST_AUTO_TEST_CASE(d1_array_d0_array_sequential)
         Argument2 argument2{6};
         Result result{3, 3, 3};
 
-        fern::binary_local_operation<
+        fa::binary_local_operation<
             Algorithm,
-            fern::binary::DiscardDomainErrors,
-            fern::binary::DiscardRangeErrors>(
+            fa::binary::DiscardDomainErrors,
+            fa::binary::DiscardRangeErrors>(
                 InputNoDataPolicy(),
                 output_no_data_policy,
-                fern::sequential, argument1, argument2, result);
+                fa::sequential, argument1, argument2, result);
 
         BOOST_CHECK_EQUAL(result[0], 1);
         BOOST_CHECK_EQUAL(result[1], 6);
@@ -189,13 +191,13 @@ BOOST_AUTO_TEST_CASE(d1_array_d0_array_sequential)
         std::fill(result.begin(), result.end(), 3);
 
         // Switch arguments.
-        fern::binary_local_operation<
+        fa::binary_local_operation<
             Algorithm,
-            fern::binary::DiscardDomainErrors,
-            fern::binary::DiscardRangeErrors>(
+            fa::binary::DiscardDomainErrors,
+            fa::binary::DiscardRangeErrors>(
                 InputNoDataPolicy(),
                 output_no_data_policy,
-                fern::sequential, argument2, argument1, result);
+                fa::sequential, argument2, argument1, result);
 
         BOOST_CHECK_EQUAL(result[0], 1);
         BOOST_CHECK_EQUAL(result[1], 6);
@@ -212,13 +214,13 @@ BOOST_AUTO_TEST_CASE(d1_array_d0_array_sequential)
         Argument2 argument2{6};
         Result result{3, 3, 3};
 
-        fern::binary_local_operation<
+        fa::binary_local_operation<
             Algorithm,
-            fern::binary::DiscardDomainErrors,
-            fern::binary::DiscardRangeErrors>(
+            fa::binary::DiscardDomainErrors,
+            fa::binary::DiscardRangeErrors>(
                 InputNoDataPolicy(),
                 output_no_data_policy,
-                fern::sequential, argument1, argument2, result);
+                fa::sequential, argument1, argument2, result);
 
         BOOST_CHECK_EQUAL(result[0], 1);
         BOOST_CHECK_EQUAL(result[1], 6);
@@ -235,13 +237,13 @@ BOOST_AUTO_TEST_CASE(d1_array_d0_array_sequential)
         Argument2 argument2{};
         Result result;
 
-        fern::binary_local_operation<
+        fa::binary_local_operation<
             Algorithm,
-            fern::binary::DiscardDomainErrors,
-            fern::binary::DiscardRangeErrors>(
+            fa::binary::DiscardDomainErrors,
+            fa::binary::DiscardRangeErrors>(
                 InputNoDataPolicy(),
                 output_no_data_policy,
-                fern::sequential, argument1, argument2, result);
+                fa::sequential, argument1, argument2, result);
 
         BOOST_CHECK(result.empty());
     }
@@ -265,13 +267,13 @@ BOOST_AUTO_TEST_CASE(d1_array_d0_array_sequential)
 ///         Argument argument{-5, 0, 5};
 ///         Result result{3, 3, 3};
 /// 
-///         fern::unary_local_operation<
+///         fa::unary_local_operation<
 ///             Algorithm,
 ///             fern::unary::DiscardDomainErrors,
 ///             fern::unary::DiscardRangeErrors>(
 ///                 InputNoDataPolicy(),
 ///                 output_no_data_policy,
-///                 fern::parallel, argument, result);
+///                 fa::parallel, argument, result);
 /// 
 ///         BOOST_REQUIRE_EQUAL(result[0], 5);
 ///         BOOST_REQUIRE_EQUAL(result[1], 0);
@@ -286,13 +288,13 @@ BOOST_AUTO_TEST_CASE(d1_array_d0_array_sequential)
 ///         Argument argument{-5, 0, 5};
 ///         Result result{3, 3, 3};
 /// 
-///         fern::unary_local_operation<
+///         fa::unary_local_operation<
 ///             Algorithm,
 ///             fern::unary::DiscardDomainErrors,
 ///             fern::unary::DiscardRangeErrors>(
 ///                 InputNoDataPolicy(),
 ///                 output_no_data_policy,
-///                 fern::parallel, argument, result);
+///                 fa::parallel, argument, result);
 /// 
 ///         BOOST_REQUIRE_EQUAL(result[0], 5);
 ///         BOOST_REQUIRE_EQUAL(result[1], 0);
@@ -307,13 +309,13 @@ BOOST_AUTO_TEST_CASE(d1_array_d0_array_sequential)
 ///         Argument argument;
 ///         Result result;
 /// 
-///         fern::unary_local_operation<
+///         fa::unary_local_operation<
 ///             Algorithm,
 ///             fern::unary::DiscardDomainErrors,
 ///             fern::unary::DiscardRangeErrors>(
 ///                 InputNoDataPolicy(),
 ///                 output_no_data_policy,
-///                 fern::parallel, argument, result);
+///                 fa::parallel, argument, result);
 /// 
 ///         BOOST_CHECK(result.empty());
 ///     }

@@ -4,11 +4,14 @@
 #include "fern/algorithm/trigonometry/tan.h"
 
 
+namespace fa = fern::algorithm;
+
+
 BOOST_AUTO_TEST_SUITE(tan_)
 
 template<
     class Value>
-using OutOfDomainPolicy = fern::tan::OutOfDomainPolicy<Value>;
+using OutOfDomainPolicy = fa::tan::OutOfDomainPolicy<Value>;
 
 
 BOOST_AUTO_TEST_CASE(out_of_domain_policy)
@@ -41,7 +44,7 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::trigonometry::tan(fern::sequential, value, result_we_get);
+    fa::trigonometry::tan(fa::sequential, value, result_we_get);
     BOOST_CHECK_CLOSE(1.0 + result_we_get, 1.0 + result_we_want, 1e-10);
 }
 

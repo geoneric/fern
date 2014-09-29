@@ -8,6 +8,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace gradient {
 namespace detail {
 
@@ -505,7 +506,7 @@ struct GradientX<
         Result& result)
     {
         switch(execution_policy.which()) {
-            case fern::detail::sequential_execution_policy_id: {
+            case fern::algorithm::detail::sequential_execution_policy_id: {
                 GradientXByArgumentCategory<
                     InputNoDataPolicy,
                     OutputNoDataPolicy,
@@ -515,11 +516,12 @@ struct GradientX<
                     base_class<argument_category<Value>, raster_2d_tag>>
                         ::apply(
                             input_no_data_policy, output_no_data_policy,
-                            fern::detail::get_policy<SequentialExecutionPolicy>(
-                                execution_policy), value, result);
+                            fern::algorithm::detail::get_policy<
+                                SequentialExecutionPolicy>(execution_policy),
+                            value, result);
                 break;
             }
-            case fern::detail::parallel_execution_policy_id: {
+            case fern::algorithm::detail::parallel_execution_policy_id: {
                 GradientXByArgumentCategory<
                     InputNoDataPolicy,
                     OutputNoDataPolicy,
@@ -529,8 +531,9 @@ struct GradientX<
                     base_class<argument_category<Value>, raster_2d_tag>>
                         ::apply(
                             input_no_data_policy, output_no_data_policy,
-                            fern::detail::get_policy<ParallelExecutionPolicy>(
-                                execution_policy), value, result);
+                            fern::algorithm::detail::get_policy<
+                                ParallelExecutionPolicy>(execution_policy),
+                            value, result);
                 break;
             }
         }
@@ -592,7 +595,7 @@ struct GradientY<
         Result& result)
     {
         switch(execution_policy.which()) {
-            case fern::detail::sequential_execution_policy_id: {
+            case fern::algorithm::detail::sequential_execution_policy_id: {
                 GradientYByArgumentCategory<
                     InputNoDataPolicy,
                     OutputNoDataPolicy,
@@ -602,11 +605,12 @@ struct GradientY<
                     base_class<argument_category<Value>, raster_2d_tag>>
                         ::apply(
                             input_no_data_policy, output_no_data_policy,
-                            fern::detail::get_policy<SequentialExecutionPolicy>(
-                                execution_policy), value, result);
+                            fern::algorithm::detail::get_policy<
+                                SequentialExecutionPolicy>(execution_policy),
+                            value, result);
                 break;
             }
-            case fern::detail::parallel_execution_policy_id: {
+            case fern::algorithm::detail::parallel_execution_policy_id: {
                 GradientYByArgumentCategory<
                     InputNoDataPolicy,
                     OutputNoDataPolicy,
@@ -616,8 +620,9 @@ struct GradientY<
                     base_class<argument_category<Value>, raster_2d_tag>>
                         ::apply(
                             input_no_data_policy, output_no_data_policy,
-                            fern::detail::get_policy<ParallelExecutionPolicy>(
-                                execution_policy), value, result);
+                            fern::algorithm::detail::get_policy<
+                                ParallelExecutionPolicy>(execution_policy),
+                            value, result);
                 break;
             }
         }
@@ -679,4 +684,5 @@ void gradient_y(
 
 } // namespace detail
 } // namespace gradient
+} // namespace algorithm
 } // namespace fern

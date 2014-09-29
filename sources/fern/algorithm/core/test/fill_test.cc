@@ -6,12 +6,15 @@
 #include "fern/algorithm/statistic/count.h"
 
 
+namespace fa = fern::algorithm;
+
+
 BOOST_AUTO_TEST_SUITE(fill)
 
 BOOST_AUTO_TEST_CASE(array_0d)
 {
     int result = 5;
-    fern::core::fill(fern::sequential, 3, result);
+    fa::core::fill(fa::sequential, 3, result);
     BOOST_CHECK_EQUAL(result, 3);
 }
 
@@ -19,10 +22,10 @@ BOOST_AUTO_TEST_CASE(array_0d)
 BOOST_AUTO_TEST_CASE(array_1d)
 {
     std::vector<int> result = { 1, 2, 3, 4, 5 };
-    fern::core::fill(fern::sequential, 3, result);
+    fa::core::fill(fa::sequential, 3, result);
 
     size_t count;
-    fern::statistic::count(fern::sequential, result, 3, count);
+    fa::statistic::count(fa::sequential, result, 3, count);
     BOOST_CHECK_EQUAL(count, 5);
 }
 

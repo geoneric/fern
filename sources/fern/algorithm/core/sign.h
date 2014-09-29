@@ -3,6 +3,7 @@
 
 
 namespace fern {
+namespace algorithm {
 
 template<
     typename T>
@@ -35,4 +36,5 @@ inline constexpr int sign(
     return sign(x, std::is_signed<T>());
 }
 
+} // namespace algorithm
 } // namespace fern

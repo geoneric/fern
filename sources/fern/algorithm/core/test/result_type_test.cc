@@ -7,10 +7,13 @@
 #include "fern/core/vector_traits.h"
 
 
+namespace fa = fern::algorithm;
+
+
 #define verify_result_type(                                                    \
     A1, A2, TypeWeWant)                                                        \
 {                                                                              \
-    using TypeWeGet = typename fern::Result<A1, A2>::type;                     \
+    using TypeWeGet = typename fa::Result<A1, A2>::type;                       \
                                                                                \
     BOOST_CHECK_MESSAGE((std::is_same<TypeWeGet, TypeWeWant>()),               \
         fern::typename_<TypeWeGet>() + fern::String(" != ") +  \

@@ -4,6 +4,9 @@
 #include "fern/algorithm/algebra/elementary/less_equal.h"
 
 
+namespace fa = fern::algorithm;
+
+
 BOOST_AUTO_TEST_SUITE(less_equal)
 
 template<
@@ -16,7 +19,7 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::algebra::less_equal(fern::sequential, value1, value2, result_we_get);
+    fa::algebra::less_equal(fa::sequential, value1, value2, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 

@@ -6,6 +6,9 @@
 #include "fern/algorithm/statistic/binary_min.h"
 
 
+namespace fa = fern::algorithm;
+
+
 BOOST_AUTO_TEST_SUITE(binary_min)
 
 template<
@@ -18,7 +21,7 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::statistic::binary_min(fern::sequential, value1, value2,
+    fa::statistic::binary_min(fa::sequential, value1, value2,
         result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }

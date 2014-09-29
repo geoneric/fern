@@ -9,6 +9,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace detail {
 
 template<
@@ -537,4 +538,5 @@ void unary_local_operation(
             value, result);
 }
 
+} // namespace algorithm
 } // namespace fern

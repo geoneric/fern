@@ -5,6 +5,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace core {
 
 //! Fill \a result with \a value.
@@ -78,4 +79,5 @@ void fill(
 }
 
 } // namespace core
+} // namespace algorithm
 } // namespace fern

@@ -5,6 +5,7 @@
 
 
 namespace fern {
+namespace algorithm {
 
 //! Template class for calculating a result value type based on two argument types.
 /*!
@@ -51,4 +52,5 @@ struct ResultValue
 
 };
 
+} // namespace algorithm
 } // namespace fern

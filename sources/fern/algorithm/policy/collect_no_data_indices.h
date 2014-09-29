@@ -3,6 +3,7 @@
 
 
 namespace fern {
+namespace algorithm {
 
 template<
     class Collection>
@@ -54,4 +55,5 @@ inline Collection const& CollectNoDataIndices<Collection>::indices() const
     return _indices;
 }
 
+} // namespace algorithm
 } // namespace fern

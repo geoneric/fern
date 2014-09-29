@@ -8,6 +8,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace detail {
 namespace dispatch {
 
@@ -119,14 +120,15 @@ class ResultValue<
 
 private:
 
-    using UnsignedTypes = core::Typelist<uint8_t, uint16_t, uint32_t, uint64_t>;
-    using SignedTypes = core::Typelist<int8_t, int16_t, int32_t, int64_t>;
+    using UnsignedTypes = fern::core::Typelist<uint8_t, uint16_t, uint32_t,
+        uint64_t>;
+    using SignedTypes = fern::core::Typelist<int8_t, int16_t, int32_t, int64_t>;
 
     // Find index of A1 in list of unsigned types. Determine type of next
     // larger type in list of signed types. -> Type1
-    using Type1 = typename core::at<min(
-        core::find<A1, UnsignedTypes>::value + 1,
-        core::size<SignedTypes>::value - 1), SignedTypes>::type;
+    using Type1 = typename fern::core::at<min(
+        fern::core::find<A1, UnsignedTypes>::value + 1,
+        fern::core::size<SignedTypes>::value - 1), SignedTypes>::type;
 
 public:
 
@@ -241,4 +243,5 @@ struct ResultValue<
 
 } // namespace dispatch
 } // namespace detail
+} // namespace algorithm
 } // namespace fern

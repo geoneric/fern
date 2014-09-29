@@ -4,6 +4,7 @@
 
 
 namespace fern {
+namespace algorithm {
 
 //! Base class for storing input no-data policies of algorithm arguments.
 /*!
@@ -68,4 +69,5 @@ inline auto const& InputNoDataPolicies<NoDataPolicies...>::get() const
         std::tuple<NoDataPolicies...> const&>(*this));
 }
 
+} // namespace algorithm
 } // namespace fern

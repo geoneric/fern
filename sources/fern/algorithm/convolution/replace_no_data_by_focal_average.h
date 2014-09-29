@@ -4,6 +4,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace convolve {
 
 //! AlternativeForNoDataPolicy which replaces no-data values by the focal average.
@@ -76,4 +77,5 @@ inline bool ReplaceNoDataByFocalAverage::value(
 }
 
 } // namespace convolve
+} // namespace algorithm
 } // namespace fern

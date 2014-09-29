@@ -8,6 +8,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace binary_aggregate_operation_ {
 namespace detail {
 
@@ -481,7 +482,7 @@ struct BinaryAggregateOperation<
         Result& result)
     {
         switch(execution_policy.which()) {
-            case fern::detail::sequential_execution_policy_id: {
+            case fern::algorithm::detail::sequential_execution_policy_id: {
                 detail::dispatch::BinaryAggregateOperation<
                     Algorithm,
                     Aggregator,
@@ -494,12 +495,12 @@ struct BinaryAggregateOperation<
                     SequentialExecutionPolicy,
                     array_1d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        fern::detail::get_policy<SequentialExecutionPolicy>(
-                            execution_policy),
+                        fern::algorithm::detail::get_policy<
+                            SequentialExecutionPolicy>(execution_policy),
                         values, value, result);
                 break;
             }
-            case fern::detail::parallel_execution_policy_id: {
+            case fern::algorithm::detail::parallel_execution_policy_id: {
                 detail::dispatch::BinaryAggregateOperation<
                     Algorithm,
                     Aggregator,
@@ -512,8 +513,8 @@ struct BinaryAggregateOperation<
                     ParallelExecutionPolicy,
                     array_1d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        fern::detail::get_policy<ParallelExecutionPolicy>(
-                            execution_policy),
+                        fern::algorithm::detail::get_policy<
+                            ParallelExecutionPolicy>(execution_policy),
                         values, value, result);
                 break;
             }
@@ -673,7 +674,7 @@ struct BinaryAggregateOperation<
         Result& result)
     {
         switch(execution_policy.which()) {
-            case fern::detail::sequential_execution_policy_id: {
+            case fern::algorithm::detail::sequential_execution_policy_id: {
                 detail::dispatch::BinaryAggregateOperation<
                     Algorithm,
                     Aggregator,
@@ -686,12 +687,12 @@ struct BinaryAggregateOperation<
                     SequentialExecutionPolicy,
                     array_2d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        fern::detail::get_policy<SequentialExecutionPolicy>(
-                            execution_policy),
+                        fern::algorithm::detail::get_policy<
+                            SequentialExecutionPolicy>(execution_policy),
                         values, value, result);
                 break;
             }
-            case fern::detail::parallel_execution_policy_id: {
+            case fern::algorithm::detail::parallel_execution_policy_id: {
                 detail::dispatch::BinaryAggregateOperation<
                     Algorithm,
                     Aggregator,
@@ -704,8 +705,8 @@ struct BinaryAggregateOperation<
                     ParallelExecutionPolicy,
                     array_2d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        fern::detail::get_policy<ParallelExecutionPolicy>(
-                            execution_policy),
+                        fern::algorithm::detail::get_policy<
+                            ParallelExecutionPolicy>(execution_policy),
                         values, value, result);
                 break;
             }
@@ -753,4 +754,5 @@ void binary_aggregate_operation(
             values, value, result);
 }
 
+} // namespace algorithm
 } // namespace fern

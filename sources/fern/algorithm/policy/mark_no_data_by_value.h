@@ -4,6 +4,7 @@
 
 
 namespace fern {
+namespace algorithm {
 
 //! Output no-data policy class that marks no-data given a special marker value.
 /*!
@@ -114,4 +115,5 @@ inline void MarkNoDataByValue<Mask>::mark_as_no_data(
     get(_mask, index1, index2, index3) = _no_data_value;
 }
 
+} // namespace algorithm
 } // namespace fern

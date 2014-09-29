@@ -7,10 +7,13 @@
 #include "fern/algorithm/core/test/test_utils.h"
 
 
+namespace fa = fern::algorithm;
+
+
 BOOST_FIXTURE_TEST_SUITE(offset, fern::ThreadClient)
 
 void test_array_1d(
-    fern::ExecutionPolicy const& execution_policy)
+    fa::ExecutionPolicy const& execution_policy)
 {
     size_t const nr_threads{fern::ThreadClient::hardware_concurrency()};
     size_t const nr_elements{10 * nr_threads};
@@ -27,7 +30,7 @@ void test_array_1d(
         std::iota(result_we_want.begin(), result_we_want.end(), 0);
         std::fill(result_we_got.begin(), result_we_got.end(), -9);
 
-        fern::core::offset(execution_policy, values, offset, result_we_got);
+        fa::core::offset(execution_policy, values, offset, result_we_got);
 
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
             result_we_want));
@@ -43,7 +46,7 @@ void test_array_1d(
             fern::get<0>(offset), -9);
         std::fill(result_we_got.begin(), result_we_got.end(), -9);
 
-        fern::core::offset(execution_policy, values, offset, result_we_got);
+        fa::core::offset(execution_policy, values, offset, result_we_got);
 
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
             result_we_want));
@@ -56,7 +59,7 @@ void test_array_1d(
         std::fill(result_we_want.begin(), result_we_want.end(), -9);
         std::fill(result_we_got.begin(), result_we_got.end(), -9);
 
-        fern::core::offset(execution_policy, values, offset, result_we_got);
+        fa::core::offset(execution_policy, values, offset, result_we_got);
 
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
             result_we_want));
@@ -73,7 +76,7 @@ void test_array_1d(
             result_we_want.end(), -9);
         std::fill(result_we_got.begin(), result_we_got.end(), -9);
 
-        fern::core::offset(execution_policy, values, offset, result_we_got);
+        fa::core::offset(execution_policy, values, offset, result_we_got);
 
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
             result_we_want));
@@ -86,7 +89,7 @@ void test_array_1d(
         std::fill(result_we_want.begin(), result_we_want.end(), -9);
         std::fill(result_we_got.begin(), result_we_got.end(), -9);
 
-        fern::core::offset(execution_policy, values, offset, result_we_got);
+        fa::core::offset(execution_policy, values, offset, result_we_got);
 
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
             result_we_want));
@@ -96,19 +99,19 @@ void test_array_1d(
 
 BOOST_AUTO_TEST_CASE(array_1d_sequential)
 {
-    test_array_1d(fern::sequential);
+    test_array_1d(fa::sequential);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_1d_parallel)
 {
     // fern::ThreadClient client;
-    test_array_1d(fern::parallel);
+    test_array_1d(fa::parallel);
 }
 
 
 void test_array_1d_masked(
-    fern::ExecutionPolicy const& execution_policy)
+    fa::ExecutionPolicy const& execution_policy)
 {
     size_t const nr_threads{fern::ThreadClient::hardware_concurrency()};
     size_t const nr_elements{10 * nr_threads};
@@ -116,9 +119,9 @@ void test_array_1d_masked(
     fern::MaskedArray<int, 1> result_we_want(nr_elements);
     fern::MaskedArray<int, 1> result_we_got(nr_elements);
 
-    fern::DetectNoDataByValue<fern::Mask<1>> input_no_data_policy(
+    fa::DetectNoDataByValue<fern::Mask<1>> input_no_data_policy(
         values.mask(), true);
-    fern::MarkNoDataByValue<fern::Mask<1>> output_no_data_policy(
+    fa::MarkNoDataByValue<fern::Mask<1>> output_no_data_policy(
         result_we_got.mask(), true);
 
     std::iota(values.data(), values.data() + nr_elements, 0);
@@ -135,7 +138,7 @@ void test_array_1d_masked(
         result_we_got.fill(-9);
         result_we_got.mask().fill(false);
 
-        fern::core::offset(input_no_data_policy, output_no_data_policy,
+        fa::core::offset(input_no_data_policy, output_no_data_policy,
             execution_policy, values, offset, result_we_got);
 
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
@@ -157,7 +160,7 @@ void test_array_1d_masked(
         result_we_got.fill(-9);
         result_we_got.mask().fill(false);
 
-        fern::core::offset(input_no_data_policy, output_no_data_policy,
+        fa::core::offset(input_no_data_policy, output_no_data_policy,
             execution_policy, values, offset, result_we_got);
 
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
@@ -173,7 +176,7 @@ void test_array_1d_masked(
         result_we_got.fill(-9);
         result_we_got.mask().fill(false);
 
-        fern::core::offset(input_no_data_policy, output_no_data_policy,
+        fa::core::offset(input_no_data_policy, output_no_data_policy,
             execution_policy, values, offset, result_we_got);
 
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
@@ -197,7 +200,7 @@ void test_array_1d_masked(
         result_we_got.fill(-9);
         result_we_got.mask().fill(false);
 
-        fern::core::offset(input_no_data_policy, output_no_data_policy,
+        fa::core::offset(input_no_data_policy, output_no_data_policy,
             execution_policy, values, offset, result_we_got);
 
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
@@ -214,7 +217,7 @@ void test_array_1d_masked(
         result_we_got.fill(-9);
         result_we_got.mask().fill(false);
 
-        fern::core::offset(input_no_data_policy, output_no_data_policy,
+        fa::core::offset(input_no_data_policy, output_no_data_policy,
             execution_policy, values, offset, result_we_got);
 
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
@@ -225,19 +228,19 @@ void test_array_1d_masked(
 
 BOOST_AUTO_TEST_CASE(array_1d_masked_sequential)
 {
-    test_array_1d_masked(fern::sequential);
+    test_array_1d_masked(fa::sequential);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_1d_masked_parallel)
 {
     // fern::ThreadClient client;
-    test_array_1d_masked(fern::parallel);
+    test_array_1d_masked(fa::parallel);
 }
 
 
 void test_array_1d_fill_value(
-    fern::ExecutionPolicy const& execution_policy)
+    fa::ExecutionPolicy const& execution_policy)
 {
     size_t const nr_threads{fern::ThreadClient::hardware_concurrency()};
     size_t const nr_elements{10 * nr_threads};
@@ -255,7 +258,7 @@ void test_array_1d_fill_value(
         std::iota(result_we_want.begin(), result_we_want.end(), 0);
         std::fill(result_we_got.begin(), result_we_got.end(), -9);
 
-        fern::core::offset(execution_policy, values, offset, fill_value,
+        fa::core::offset(execution_policy, values, offset, fill_value,
             result_we_got);
 
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
@@ -272,7 +275,7 @@ void test_array_1d_fill_value(
             fern::get<0>(offset), fill_value);
         std::fill(result_we_got.begin(), result_we_got.end(), -9);
 
-        fern::core::offset(execution_policy, values, offset, fill_value,
+        fa::core::offset(execution_policy, values, offset, fill_value,
             result_we_got);
 
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
@@ -286,7 +289,7 @@ void test_array_1d_fill_value(
         std::fill(result_we_want.begin(), result_we_want.end(), fill_value);
         std::fill(result_we_got.begin(), result_we_got.end(), -9);
 
-        fern::core::offset(execution_policy, values, offset, fill_value,
+        fa::core::offset(execution_policy, values, offset, fill_value,
             result_we_got);
 
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
@@ -304,7 +307,7 @@ void test_array_1d_fill_value(
             result_we_want.end(), fill_value);
         std::fill(result_we_got.begin(), result_we_got.end(), -9);
 
-        fern::core::offset(execution_policy, values, offset, fill_value,
+        fa::core::offset(execution_policy, values, offset, fill_value,
             result_we_got);
 
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
@@ -318,7 +321,7 @@ void test_array_1d_fill_value(
         std::fill(result_we_want.begin(), result_we_want.end(), fill_value);
         std::fill(result_we_got.begin(), result_we_got.end(), -9);
 
-        fern::core::offset(execution_policy, values, offset, fill_value,
+        fa::core::offset(execution_policy, values, offset, fill_value,
             result_we_got);
 
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
@@ -329,19 +332,19 @@ void test_array_1d_fill_value(
 
 BOOST_AUTO_TEST_CASE(array_1d_fill_value_sequential)
 {
-    test_array_1d_fill_value(fern::sequential);
+    test_array_1d_fill_value(fa::sequential);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_1d_fill_value_parallel)
 {
     // fern::ThreadClient client;
-    test_array_1d_fill_value(fern::parallel);
+    test_array_1d_fill_value(fa::parallel);
 }
 
 
 void test_array_1d_fill_value_masked(
-    fern::ExecutionPolicy const& execution_policy)
+    fa::ExecutionPolicy const& execution_policy)
 {
     size_t const nr_threads{fern::ThreadClient::hardware_concurrency()};
     size_t const nr_elements{10 * nr_threads};
@@ -350,9 +353,9 @@ void test_array_1d_fill_value_masked(
     fern::MaskedArray<int, 1> result_we_got(nr_elements);
     int const fill_value{5};
 
-    fern::DetectNoDataByValue<fern::Mask<1>> input_no_data_policy(
+    fa::DetectNoDataByValue<fern::Mask<1>> input_no_data_policy(
         values.mask(), true);
-    fern::MarkNoDataByValue<fern::Mask<1>> output_no_data_policy(
+    fa::MarkNoDataByValue<fern::Mask<1>> output_no_data_policy(
         result_we_got.mask(), true);
 
     std::iota(values.data(), values.data() + nr_elements, 0);
@@ -368,7 +371,7 @@ void test_array_1d_fill_value_masked(
         result_we_got.fill(-9);
         result_we_got.mask().fill(false);
 
-        fern::core::offset(input_no_data_policy, output_no_data_policy,
+        fa::core::offset(input_no_data_policy, output_no_data_policy,
             execution_policy, values, offset, fill_value, result_we_got);
 
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
@@ -391,7 +394,7 @@ void test_array_1d_fill_value_masked(
         result_we_got.fill(-9);
         result_we_got.mask().fill(false);
 
-        fern::core::offset(input_no_data_policy, output_no_data_policy,
+        fa::core::offset(input_no_data_policy, output_no_data_policy,
             execution_policy, values, offset, fill_value, result_we_got);
 
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
@@ -408,7 +411,7 @@ void test_array_1d_fill_value_masked(
         result_we_got.fill(-9);
         result_we_got.mask().fill(false);
 
-        fern::core::offset(input_no_data_policy, output_no_data_policy,
+        fa::core::offset(input_no_data_policy, output_no_data_policy,
             execution_policy, values, offset, fill_value, result_we_got);
 
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
@@ -429,7 +432,7 @@ void test_array_1d_fill_value_masked(
         result_we_got.fill(-9);
         result_we_got.mask().fill(false);
 
-        fern::core::offset(input_no_data_policy, output_no_data_policy,
+        fa::core::offset(input_no_data_policy, output_no_data_policy,
             execution_policy, values, offset, fill_value, result_we_got);
 
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
@@ -446,7 +449,7 @@ void test_array_1d_fill_value_masked(
         result_we_got.fill(-9);
         result_we_got.mask().fill(false);
 
-        fern::core::offset(input_no_data_policy, output_no_data_policy,
+        fa::core::offset(input_no_data_policy, output_no_data_policy,
             execution_policy, values, offset, fill_value, result_we_got);
 
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
@@ -457,19 +460,19 @@ void test_array_1d_fill_value_masked(
 
 BOOST_AUTO_TEST_CASE(array_1d_fill_value_masked_sequential)
 {
-    test_array_1d_fill_value_masked(fern::sequential);
+    test_array_1d_fill_value_masked(fa::sequential);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_1d_fill_value_masked_parallel)
 {
     // fern::ThreadClient client;
-    test_array_1d_fill_value_masked(fern::parallel);
+    test_array_1d_fill_value_masked(fa::parallel);
 }
 
 
 void test_array_2d(
-    fern::ExecutionPolicy const& execution_policy)
+    fa::ExecutionPolicy const& execution_policy)
 {
     size_t const nr_threads{fern::ThreadClient::hardware_concurrency()};
     size_t const nr_rows{30 * nr_threads};
@@ -490,7 +493,7 @@ void test_array_2d(
             0);
         std::fill(result_we_got.data(), result_we_got.data() + nr_elements, -9);
 
-        fern::core::offset(execution_policy, values, offset, result_we_got);
+        fa::core::offset(execution_policy, values, offset, result_we_got);
 
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
             result_we_want));
@@ -502,19 +505,19 @@ void test_array_2d(
 
 BOOST_AUTO_TEST_CASE(array_2d_sequential)
 {
-    test_array_2d(fern::sequential);
+    test_array_2d(fa::sequential);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_2d_parallel)
 {
     // fern::ThreadClient client;
-    test_array_2d(fern::parallel);
+    test_array_2d(fa::parallel);
 }
 
 
 void test_array_2d_masked(
-    fern::ExecutionPolicy const& execution_policy)
+    fa::ExecutionPolicy const& execution_policy)
 {
     size_t const nr_threads{fern::ThreadClient::hardware_concurrency()};
     size_t const nr_rows{30 * nr_threads};
@@ -525,9 +528,9 @@ void test_array_2d_masked(
     fern::MaskedArray<int, 2> result_we_want(fern::extents[nr_rows][nr_cols]);
     fern::MaskedArray<int, 2> result_we_got(fern::extents[nr_rows][nr_cols]);
 
-    fern::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
+    fa::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
         values.mask(), true);
-    fern::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
+    fa::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
         result_we_got.mask(), true);
 
     std::iota(values.data(), values.data() + nr_elements, 0);
@@ -544,7 +547,7 @@ void test_array_2d_masked(
         result_we_got.fill(-9);
         result_we_got.mask().fill(false);
 
-        fern::core::offset(input_no_data_policy, output_no_data_policy,
+        fa::core::offset(input_no_data_policy, output_no_data_policy,
             execution_policy, values, offset, result_we_got);
 
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
@@ -557,19 +560,19 @@ void test_array_2d_masked(
 
 BOOST_AUTO_TEST_CASE(array_2d_masked_sequential)
 {
-    test_array_2d_masked(fern::sequential);
+    test_array_2d_masked(fa::sequential);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_2d_masked_parallel)
 {
     // fern::ThreadClient client;
-    test_array_2d_masked(fern::parallel);
+    test_array_2d_masked(fa::parallel);
 }
 
 
 void test_array_2d_fill_value(
-    fern::ExecutionPolicy const& execution_policy)
+    fa::ExecutionPolicy const& execution_policy)
 {
     size_t const nr_threads{fern::ThreadClient::hardware_concurrency()};
     size_t const nr_rows{30 * nr_threads};
@@ -592,7 +595,7 @@ void test_array_2d_fill_value(
             0);
         std::fill(result_we_got.data(), result_we_got.data() + nr_elements, -9);
 
-        fern::core::offset(execution_policy, values, offset, fill_value,
+        fa::core::offset(execution_policy, values, offset, fill_value,
             result_we_got);
 
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
@@ -605,19 +608,19 @@ void test_array_2d_fill_value(
 
 BOOST_AUTO_TEST_CASE(array_2d_fill_value_sequential)
 {
-    test_array_2d_fill_value(fern::sequential);
+    test_array_2d_fill_value(fa::sequential);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_2d_fill_value_parallel)
 {
     // fern::ThreadClient client;
-    test_array_2d_fill_value(fern::parallel);
+    test_array_2d_fill_value(fa::parallel);
 }
 
 
 void test_array_2d_fill_value_masked(
-    fern::ExecutionPolicy const& execution_policy)
+    fa::ExecutionPolicy const& execution_policy)
 {
     size_t const nr_threads{fern::ThreadClient::hardware_concurrency()};
     size_t const nr_rows{30 * nr_threads};
@@ -630,9 +633,9 @@ void test_array_2d_fill_value_masked(
 
     int const fill_value{5};
 
-    fern::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
+    fa::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
         values.mask(), true);
-    fern::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
+    fa::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
         result_we_got.mask(), true);
 
     std::iota(values.data(), values.data() + nr_elements, 0);
@@ -649,7 +652,7 @@ void test_array_2d_fill_value_masked(
         result_we_got.fill(-9);
         result_we_got.mask().fill(false);
 
-        fern::core::offset(input_no_data_policy, output_no_data_policy,
+        fa::core::offset(input_no_data_policy, output_no_data_policy,
             execution_policy, values, offset, fill_value, result_we_got);
 
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
@@ -662,14 +665,14 @@ void test_array_2d_fill_value_masked(
 
 BOOST_AUTO_TEST_CASE(array_2d_fill_value_masked_sequential)
 {
-    test_array_2d_fill_value_masked(fern::sequential);
+    test_array_2d_fill_value_masked(fa::sequential);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_2d_fill_value_masked_parallel)
 {
     // fern::ThreadClient client;
-    test_array_2d_fill_value_masked(fern::parallel);
+    test_array_2d_fill_value_masked(fa::parallel);
 }
 
 
@@ -708,15 +711,15 @@ BOOST_AUTO_TEST_CASE(pcraster_example_1)
 
     fern::Point<int, 2> offset(-1, -1);
 
-    fern::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
+    fa::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
         values.mask(), true);
-    fern::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
+    fa::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
         result_we_got.mask(), true);
 
-    fern::core::offset(input_no_data_policy, output_no_data_policy,
-        fern::sequential, values, offset, result_we_got);
+    fa::core::offset(input_no_data_policy, output_no_data_policy,
+        fa::sequential, values, offset, result_we_got);
 
-    BOOST_CHECK(fern::compare(fern::sequential, result_we_got,
+    BOOST_CHECK(fern::compare(fa::sequential, result_we_got,
         result_we_want));
 }
 
@@ -756,15 +759,15 @@ BOOST_AUTO_TEST_CASE(pcraster_example_2)
 
     fern::Point<int, 2> offset(1, 1);
 
-    fern::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
+    fa::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
         values.mask(), true);
-    fern::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
+    fa::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
         result_we_got.mask(), true);
 
-    fern::core::offset(input_no_data_policy, output_no_data_policy,
-        fern::sequential, values, offset, result_we_got);
+    fa::core::offset(input_no_data_policy, output_no_data_policy,
+        fa::sequential, values, offset, result_we_got);
 
-    BOOST_CHECK(fern::compare(fern::sequential, result_we_got,
+    BOOST_CHECK(fern::compare(fa::sequential, result_we_got,
         result_we_want));
 }
 
@@ -798,17 +801,17 @@ BOOST_AUTO_TEST_CASE(pcraster_example_3)
 
     fern::Point<int, 2> offset(1, 1);
 
-    fern::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
+    fa::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
         values.mask(), true);
-    fern::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
+    fa::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
         result_we_got.mask(), true);
 
     int const fill_value{0};
 
-    fern::core::offset(input_no_data_policy, output_no_data_policy,
-        fern::sequential, values, offset, fill_value, result_we_got);
+    fa::core::offset(input_no_data_policy, output_no_data_policy,
+        fa::sequential, values, offset, fill_value, result_we_got);
 
-    BOOST_CHECK(fern::compare(fern::sequential, result_we_got,
+    BOOST_CHECK(fern::compare(fa::sequential, result_we_got,
         result_we_want));
 }
 

@@ -6,6 +6,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace subtract {
 
 //! Determine the result type when subtracting instances of \a Value2 from \a Value1.
@@ -15,7 +16,7 @@ namespace subtract {
 template<
     class Value1,
     class Value2>
-using result_type = typename fern::Result<Value1, Value2>::type;
+using result_type = typename fern::algorithm::Result<Value1, Value2>::type;
 
 
 //! Determine the result value type when subtracting instances of \a Value2 from \a Value1.
@@ -25,7 +26,7 @@ using result_type = typename fern::Result<Value1, Value2>::type;
 template<
     class Value1,
     class Value2>
-using result_value_type = typename fern::Result<value_type<Value1>,
+using result_value_type = typename fern::algorithm::Result<value_type<Value1>,
     value_type<Value2>>::type;
 
 
@@ -171,4 +172,5 @@ void subtract(
 }
 
 } // namespace algebra
+} // namespace algorithm
 } // namespace fern

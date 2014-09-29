@@ -6,6 +6,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace equal {
 namespace detail {
 
@@ -53,4 +54,5 @@ void equal(
 
 } // namespace detail
 } // namespace equal
+} // namespace algorithm
 } // namespace fern

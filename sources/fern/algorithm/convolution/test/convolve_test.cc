@@ -13,6 +13,9 @@
 
 BOOST_FIXTURE_TEST_SUITE(convolve, fern::ThreadClient)
 
+namespace fa = fern::algorithm;
+
+
 void compare_result1(
     fern::Array<double, 2> const& result)
 {
@@ -286,7 +289,7 @@ BOOST_AUTO_TEST_CASE(convolve)
             // Sequential.
             {
                 fern::Array<double, 2> result(extents);
-                fern::convolution::convolve(fern::sequential, argument, kernel,
+                fa::convolution::convolve(fa::sequential, argument, kernel,
                     result);
                 compare_result1(result);
             }
@@ -294,7 +297,7 @@ BOOST_AUTO_TEST_CASE(convolve)
             // Parallel.
             {
                 fern::Array<double, 2> result(extents);
-                fern::convolution::convolve(fern::parallel, argument, kernel,
+                fa::convolution::convolve(fa::parallel, argument, kernel,
                     result);
                 compare_result1(result);
             }
@@ -302,23 +305,23 @@ BOOST_AUTO_TEST_CASE(convolve)
 
         // Convolute while calculating values for out-of-image cells.
         {
-            using AlternativeForNoDataPolicy=fern::convolve::SkipNoData;
-            using NormalizePolicy=fern::convolve::DivideByWeights;
+            using AlternativeForNoDataPolicy=fa::convolve::SkipNoData;
+            using NormalizePolicy=fa::convolve::DivideByWeights;
             using OutOfImagePolicy=
-                fern::convolve::ReplaceOutOfImageByFocalAverage;
-            using InputNoDataPolicy=fern::SkipNoData<>;
-            using OutputNoDataPolicy=fern::DontMarkNoData;
+                fa::convolve::ReplaceOutOfImageByFocalAverage;
+            using InputNoDataPolicy=fa::SkipNoData<>;
+            using OutputNoDataPolicy=fa::DontMarkNoData;
 
             // Sequential.
             {
                 fern::Array<double, 2> result(extents);
-                fern::convolution::convolve<
+                fa::convolution::convolve<
                     AlternativeForNoDataPolicy,
                     NormalizePolicy,
                     OutOfImagePolicy,
-                    fern::unary::DiscardRangeErrors,
+                    fa::unary::DiscardRangeErrors,
                     InputNoDataPolicy,
-                    OutputNoDataPolicy>(fern::sequential, argument, kernel,
+                    OutputNoDataPolicy>(fa::sequential, argument, kernel,
                         result);
                 compare_result2(result);
             }
@@ -326,13 +329,13 @@ BOOST_AUTO_TEST_CASE(convolve)
             // Parallel.
             {
                 fern::Array<double, 2> result(extents);
-                fern::convolution::convolve<
+                fa::convolution::convolve<
                     AlternativeForNoDataPolicy,
                     NormalizePolicy,
                     OutOfImagePolicy,
-                    fern::unary::DiscardRangeErrors,
+                    fa::unary::DiscardRangeErrors,
                     InputNoDataPolicy,
-                    OutputNoDataPolicy>(fern::parallel, argument, kernel,
+                    OutputNoDataPolicy>(fa::parallel, argument, kernel,
                         result);
                 compare_result2(result);
             }
@@ -376,14 +379,14 @@ BOOST_AUTO_TEST_CASE(convolve)
         // Sequential.
         {
             fern::Array<double, 2> result(extents);
-            fern::convolution::convolve(fern::sequential, argument, kernel,
+            fa::convolution::convolve(fa::sequential, argument, kernel,
                 result);
         }
 
         // Parallel.
         {
             fern::Array<double, 2> result(extents);
-            fern::convolution::convolve(fern::parallel, argument, kernel,
+            fa::convolution::convolve(fa::parallel, argument, kernel,
                 result);
         }
     }
@@ -397,7 +400,7 @@ BOOST_AUTO_TEST_CASE(convolve)
 template<
     class Value,
     class Result>
-using OutOfRangePolicy = fern::convolve::OutOfRangePolicy<Value, Result>;
+using OutOfRangePolicy = fa::convolve::OutOfRangePolicy<Value, Result>;
 
 
 BOOST_AUTO_TEST_CASE(out_of_range_policy)
@@ -423,8 +426,8 @@ BOOST_AUTO_TEST_CASE(out_of_range_policy)
 BOOST_AUTO_TEST_CASE(no_data_policies)
 {
     // Make sure that input no-data is detected and handled correctly.
-    using InputNoDataPolicy = fern::DetectNoDataByValue<fern::Mask<2>>;
-    using OutputNoDataPolicy = fern::MarkNoDataByValue<fern::Mask<2>>;
+    using InputNoDataPolicy = fa::DetectNoDataByValue<fern::Mask<2>>;
+    using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<2>>;
 
     size_t const nr_rows = 3;
     size_t const nr_cols = 3;
@@ -464,19 +467,19 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
             fern::MaskedArray<double, 2> destination(extents);
             destination.fill(999.9);
             OutputNoDataPolicy output_no_data_policy(destination.mask(), true);
-            fern::convolution::convolve<
-                fern::convolve::SkipNoData,
-                fern::convolve::DivideByWeights,
-                fern::convolve::SkipOutOfImage,
-                fern::unary::DiscardRangeErrors>(
+            fa::convolution::convolve<
+                fa::convolve::SkipNoData,
+                fa::convolve::DivideByWeights,
+                fa::convolve::SkipOutOfImage,
+                fa::unary::DiscardRangeErrors>(
                     InputNoDataPolicy(source.mask(), true),
                     output_no_data_policy,
-                    fern::sequential,
+                    fa::sequential,
                     source, kernel_1, destination);
 
             // Verify mask.
             size_t nr_masked_cells{0};
-            fern::statistic::count(fern::sequential, destination.mask(),
+            fa::statistic::count(fa::sequential, destination.mask(),
                 true, nr_masked_cells);
             BOOST_CHECK_EQUAL(nr_masked_cells, 2);
             BOOST_CHECK(destination.mask()[1][1]);
@@ -489,11 +492,11 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
                 {   999.9, 23.0/4.0, 20.0/3.0}
             });
             fern::Array<bool, 2> equal_cells(extents);
-            fern::algebra::equal(fern::sequential, destination, result_we_want,
+            fa::algebra::equal(fa::sequential, destination, result_we_want,
                 equal_cells);
 
             size_t nr_equal_cells{0};
-            fern::statistic::count(fern::sequential, equal_cells, true,
+            fa::statistic::count(fa::sequential, equal_cells, true,
                 nr_equal_cells);
             BOOST_CHECK_EQUAL(nr_equal_cells, 9);
         }
@@ -513,19 +516,19 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
         ///     // +-----+--------+---+
         ///     fern::MaskedArray<double, 2> destination(extents);
         ///     destination.fill(999.9);
-        ///     fern::convolution::convolve<
-        ///         fern::convolve::DivideByWeights,
-        ///         fern::convolve::SkipOutOfImage,
+        ///     fa::convolution::convolve<
+        ///         fa::convolve::DivideByWeights,
+        ///         fa::convolve::SkipOutOfImage,
         ///         fern::unary::DiscardRangeErrors>(
-        ///         fern::convolve::ReplaceNoDataByFocalAverage,
-        ///             fern::sequential,
+        ///         fa::convolve::ReplaceNoDataByFocalAverage,
+        ///             fa::sequential,
         ///             InputNoDataPolicy(source.mask(), true),
         ///             OutputNoDataPolicy(destination.mask(), true),
         ///             source, kernel_1, destination);
 
         ///     // Verify mask.
         ///     size_t nr_masked_cells{0};
-        ///     fern::statistic::count(destination.mask(), true, nr_masked_cells);
+        ///     fa::statistic::count(destination.mask(), true, nr_masked_cells);
         ///     BOOST_CHECK_EQUAL(nr_masked_cells, 2);
         ///     BOOST_CHECK(destination.mask()[1][1]);
         ///     BOOST_CHECK(destination.mask()[2][0]);
@@ -540,10 +543,10 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
         ///     });
 
         ///     fern::Array<bool, 2> equal_cells(extents);
-        ///     fern::algebra::equal(destination, result_we_want, equal_cells);
+        ///     fa::algebra::equal(destination, result_we_want, equal_cells);
 
         ///     size_t nr_equal_cells{0};
-        ///     fern::statistic::count(equal_cells, true, nr_equal_cells);
+        ///     fa::statistic::count(equal_cells, true, nr_equal_cells);
         ///     BOOST_CHECK_EQUAL(nr_equal_cells, 9);
         /// }
     }
@@ -557,17 +560,17 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
         fern::MaskedArray<double, 2> destination(extents);
         OutputNoDataPolicy output_no_data_policy(destination.mask(), true);
 
-        fern::convolution::convolve<
-            fern::convolve::SkipNoData,
-            fern::convolve::DivideByWeights,
-            fern::convolve::SkipOutOfImage,
-            fern::unary::DiscardRangeErrors>(
+        fa::convolution::convolve<
+            fa::convolve::SkipNoData,
+            fa::convolve::DivideByWeights,
+            fa::convolve::SkipOutOfImage,
+            fa::unary::DiscardRangeErrors>(
                 InputNoDataPolicy(source.mask(), true),
                 output_no_data_policy,
-                fern::sequential, source, kernel_1, destination);
+                fa::sequential, source, kernel_1, destination);
 
         size_t nr_masked_cells;
-        fern::statistic::count(fern::sequential, destination.mask(), true,
+        fa::statistic::count(fa::sequential, destination.mask(), true,
             nr_masked_cells);
         BOOST_CHECK_EQUAL(nr_masked_cells, nr_rows * nr_cols);
     }
@@ -582,17 +585,17 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
         fern::MaskedArray<double, 2> destination(extents);
         OutputNoDataPolicy output_no_data_policy(destination.mask(), true);
 
-        fern::convolution::convolve<
-            fern::convolve::SkipNoData,
-            fern::convolve::DivideByWeights,
-            fern::convolve::SkipOutOfImage,
-            fern::convolve::OutOfRangePolicy>(
+        fa::convolution::convolve<
+            fa::convolve::SkipNoData,
+            fa::convolve::DivideByWeights,
+            fa::convolve::SkipOutOfImage,
+            fa::convolve::OutOfRangePolicy>(
                 InputNoDataPolicy(source.mask(), true),
                 output_no_data_policy,
-                fern::sequential, source, kernel_2, destination);
+                fa::sequential, source, kernel_2, destination);
 
         size_t nr_masked_cells;
-        fern::statistic::count(fern::sequential, destination.mask(), true,
+        fa::statistic::count(fa::sequential, destination.mask(), true,
             nr_masked_cells);
         BOOST_CHECK_EQUAL(nr_masked_cells, nr_rows * nr_cols);
     }

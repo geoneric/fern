@@ -3,9 +3,11 @@
 
 int main()
 {
+    namespace fa = fern::algorithm;
+
     double value1 = 1.0;
     double value2 = 2.0;
     double result;
 
-    fern::algebra::divide(fern::sequential, value1, value2, result);
+    fa::algebra::divide(fa::sequential, value1, value2, result);
 }

@@ -12,7 +12,7 @@
 namespace example {
 
 // Execution policy to use.
-fern::ExecutionPolicy execution_policy = fern::parallel;
+fern::algorithm::ExecutionPolicy execution_policy = fern::algorithm::parallel;
 
 // In case the execution policy is fern::parallel, we need to create a
 // ThreadClient instance. This will, in turn, create a thread pool which is

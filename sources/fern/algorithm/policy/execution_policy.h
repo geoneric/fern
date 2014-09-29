@@ -3,6 +3,7 @@
 
 
 namespace fern {
+namespace algorithm {
 
 //! Execution policy class for sequential execution of algorithms.
 /*!
@@ -87,4 +88,5 @@ inline ConcreteExecutionPolicy const& get_policy(
 }
 
 } // namespace detail
+} // namespace algorithm
 } // namespace fern

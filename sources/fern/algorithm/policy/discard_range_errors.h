@@ -3,6 +3,7 @@
 
 
 namespace fern {
+namespace algorithm {
 
 template<
     class... Parameters>
@@ -69,4 +70,5 @@ template<
 using DiscardRangeErrors = DiscardRangeErrors<Value1, Value2, Result>;
 
 } // namespace binary
+} // namespace algorithm
 } // namespace fern

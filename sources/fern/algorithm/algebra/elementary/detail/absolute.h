@@ -8,6 +8,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace absolute {
 namespace detail {
 namespace dispatch {
@@ -198,4 +199,5 @@ void absolute(
 
 } // namespace detail
 } // namespace absolute
+} // namespace algorithm
 } // namespace fern

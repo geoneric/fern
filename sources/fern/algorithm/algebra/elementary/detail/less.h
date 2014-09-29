@@ -6,6 +6,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace less {
 namespace detail {
 
@@ -53,4 +54,5 @@ void less(
 
 } // namespace detail
 } // namespace less
+} // namespace algorithm
 } // namespace fern

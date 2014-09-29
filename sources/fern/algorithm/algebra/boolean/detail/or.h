@@ -4,6 +4,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace or_ {
 namespace detail {
 
@@ -51,4 +52,5 @@ void or_(
 
 } // namespace detail
 } // namespace or_
+} // namespace algorithm
 } // namespace fern

@@ -5,6 +5,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace count {
 namespace detail {
 
@@ -90,4 +91,5 @@ void count(
 
 } // namespace detail
 } // namespace count
+} // namespace algorithm
 } // namespace fern

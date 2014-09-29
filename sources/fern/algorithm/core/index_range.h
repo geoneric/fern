@@ -4,6 +4,7 @@
 
 
 namespace fern {
+namespace algorithm {
 
 //! The IndexRange class represents a range of (array) indices for one (array) dimension.
 /*!
@@ -52,4 +53,5 @@ bool               operator!=          (IndexRange const& lhs,
 std::ostream&      operator<<          (std::ostream& stream,
                                         IndexRange const& range);
 
+} // namespace algorithm
 } // namespace fern

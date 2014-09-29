@@ -4,6 +4,9 @@
 #include "fern/algorithm/algebra/elementary/greater.h"
 
 
+namespace fa = fern::algorithm;
+
+
 BOOST_AUTO_TEST_SUITE(greater)
 
 template<
@@ -16,7 +19,7 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::algebra::greater(fern::sequential, value1, value2, result_we_get);
+    fa::algebra::greater(fa::sequential, value1, value2, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 

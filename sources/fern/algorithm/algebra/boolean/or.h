@@ -5,6 +5,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace algebra {
 
 //! Determine the boolean or result of \a value1 and \a value2 and write the result to \a result.
@@ -89,4 +90,5 @@ void or_(
 }
 
 } // namespace algebra
+} // namespace algorithm
 } // namespace fern

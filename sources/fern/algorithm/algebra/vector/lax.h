@@ -5,6 +5,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace algebra {
 
 //! Calculate the lax of \a value and write the result to \a result.
@@ -103,4 +104,5 @@ void lax(
 }
 
 } // namespace algebra
+} // namespace algorithm
 } // namespace fern

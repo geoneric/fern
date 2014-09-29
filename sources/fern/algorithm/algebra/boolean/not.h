@@ -5,6 +5,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace algebra {
 
 //! Negate \a value and write the result to \a result.
@@ -82,4 +83,5 @@ void not_(
 }
 
 } // namespace algebra
+} // namespace algorithm
 } // namespace fern

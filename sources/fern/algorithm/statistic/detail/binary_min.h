@@ -6,6 +6,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace binary_min {
 namespace detail {
 
@@ -58,4 +59,5 @@ void binary_min(
 
 } // namespace detail
 } // namespace binary_min
+} // namespace algorithm
 } // namespace fern

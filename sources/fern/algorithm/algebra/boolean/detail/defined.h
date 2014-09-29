@@ -6,6 +6,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace defined {
 namespace detail {
 
@@ -36,7 +37,8 @@ void defined(
     // 1. Whatever the input-no-data policy, fill result with false.
     // 2. Let algorithm return true for each non-no-data value.
 
-    fern::core::fill(execution_policy, value_type<Result>(0), result);
+    fern::algorithm::core::fill(execution_policy, value_type<Result>(0),
+        result);
 
     using OutputNoDataPolicy = DontMarkNoData;
 
@@ -47,4 +49,5 @@ void defined(
 
 } // namespace detail
 } // namespace defined
+} // namespace algorithm
 } // namespace fern

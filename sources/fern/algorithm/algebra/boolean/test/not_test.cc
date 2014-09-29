@@ -5,6 +5,9 @@
 #include "fern/algorithm/algebra/boolean/not.h"
 
 
+namespace fa = fern::algorithm;
+
+
 BOOST_AUTO_TEST_SUITE(not_)
 
 template<
@@ -15,7 +18,7 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::algebra::not_(fern::sequential, value, result_we_get);
+    fa::algebra::not_(fa::sequential, value, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 

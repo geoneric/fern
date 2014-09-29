@@ -6,6 +6,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace cast {
 namespace detail {
 namespace dispatch {
@@ -222,4 +223,5 @@ void cast(
 
 } // namespace detail
 } // namespace cast
+} // namespace algorithm
 } // namespace fern

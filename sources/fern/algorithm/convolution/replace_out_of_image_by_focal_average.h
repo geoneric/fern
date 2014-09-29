@@ -4,6 +4,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace convolve {
 
 //! OutOfImagePolicy which calculates focal average for out-of-image values.
@@ -867,4 +868,5 @@ inline bool ReplaceOutOfImageByFocalAverage::value_south(
 }
 
 } // namespace convolve
+} // namespace algorithm
 } // namespace fern

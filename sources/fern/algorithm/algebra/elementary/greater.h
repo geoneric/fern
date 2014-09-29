@@ -5,6 +5,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace algebra {
 
 //! Determine whether \a value1 is greater than \a value2 and write the result to \a result.
@@ -89,4 +90,5 @@ void greater(
 }
 
 } // namespace algebra
+} // namespace algorithm
 } // namespace fern

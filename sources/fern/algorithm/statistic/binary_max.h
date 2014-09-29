@@ -4,6 +4,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace statistic {
 
 //! Determine the elementwise maximum value of \a value1 and \a value2 and write the result to \a result.
@@ -92,4 +93,5 @@ void binary_max(
 }
 
 } // namespace statistic
+} // namespace algorithm
 } // namespace fern

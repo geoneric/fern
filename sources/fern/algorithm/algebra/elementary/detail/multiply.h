@@ -8,6 +8,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace multiply {
 namespace detail {
 namespace dispatch {
@@ -40,7 +41,7 @@ struct within_range<
         Result const& /* result */)
     {
         FERN_STATIC_ASSERT(std::is_same,
-            typename fern::Result<Value1, Value2>::type, Result)
+            typename fern::algorithm::Result<Value1, Value2>::type, Result)
 
         // TODO Optimization: depending on the types involved, overflow can
         //      never happen.
@@ -68,7 +69,7 @@ struct within_range<
         Result const& /* result */)
     {
         FERN_STATIC_ASSERT(std::is_same,
-            typename fern::Result<Value1, Value2>::type, Result)
+            typename fern::algorithm::Result<Value1, Value2>::type, Result)
 
         // TODO Optimization: depending on the types involved, overflow can
         //      never happen.
@@ -117,8 +118,8 @@ struct within_range<
         Value2 const& value2,
         Result const& /* result */)
     {
-        FERN_STATIC_ASSERT(std::is_same, typename fern::Result<Value1, Value2>
-            ::type, Result)
+        FERN_STATIC_ASSERT(std::is_same, typename fern::algorithm::Result<
+            Value1, Value2>::type, Result)
 
         // TODO Optimization: depending on the types involved, overflow can
         //      never happen.
@@ -203,7 +204,7 @@ struct within_range<
         Result const& result)
     {
         FERN_STATIC_ASSERT(std::is_same,
-            typename fern::Result<Value1, Value2>::type, Result)
+            typename fern::algorithm::Result<Value1, Value2>::type, Result)
 
         // float * float
         return std::isfinite(result);
@@ -228,7 +229,7 @@ struct within_range<
         Result const& result)
     {
         FERN_STATIC_ASSERT(std::is_same,
-            typename fern::Result<Value1, Value2>::type, Result)
+            typename fern::algorithm::Result<Value1, Value2>::type, Result)
 
         // integral * float
         return std::isfinite(result);
@@ -253,7 +254,7 @@ struct within_range<
         Result const& result)
     {
         FERN_STATIC_ASSERT(std::is_same,
-            typename fern::Result<Value1, Value2>::type, Result)
+            typename fern::algorithm::Result<Value1, Value2>::type, Result)
 
         // float * integral
         return std::isfinite(result);
@@ -311,4 +312,5 @@ void multiply(
 
 } // namespace detail
 } // namespace multiply
+} // namespace algorithm
 } // namespace fern

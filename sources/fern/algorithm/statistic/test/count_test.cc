@@ -8,6 +8,9 @@
 #include "fern/algorithm/statistic/count.h"
 
 
+namespace fa = fern::algorithm;
+
+
 template<
     class A,
     class R>
@@ -17,7 +20,7 @@ void verify_value(
     R const& result_we_want)
 {
     R result_we_get;
-    fern::statistic::count(fern::sequential, array, value, result_we_get);
+    fa::statistic::count(fa::sequential, array, value, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 
@@ -45,7 +48,7 @@ BOOST_AUTO_TEST_CASE(masked_d0_array)
     result_we_get.value() = 9;
     result_we_get.mask() = false;
     BOOST_CHECK(!constant.mask());
-    fern::statistic::count(fern::sequential, constant, 5, result_we_get);
+    fa::statistic::count(fa::sequential, constant, 5, result_we_get);
     BOOST_CHECK(!result_we_get.mask());
     BOOST_CHECK_EQUAL(result_we_get.value(), 1);
 
@@ -55,13 +58,13 @@ BOOST_AUTO_TEST_CASE(masked_d0_array)
     result_we_get.value() = 9;
     result_we_get.mask() = false;
     BOOST_CHECK(constant.mask());
-    fern::statistic::count(fern::sequential, constant, 5, result_we_get);
+    fa::statistic::count(fa::sequential, constant, 5, result_we_get);
     BOOST_CHECK(!result_we_get.mask());
     BOOST_CHECK_EQUAL(result_we_get.value(), 1);
 
     // MaskedConstant with masking count. --------------------------------------
-    using InputNoDataPolicy = fern::DetectNoDataByValue<bool>;
-    using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
+    using InputNoDataPolicy = fa::DetectNoDataByValue<bool>;
+    using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
 
     // Constant is not masked.
     constant.value() = 5;
@@ -71,10 +74,10 @@ BOOST_AUTO_TEST_CASE(masked_d0_array)
     BOOST_CHECK(!constant.mask());
     BOOST_CHECK(!result_we_get.mask());
     OutputNoDataPolicy output_no_data_policy(result_we_get.mask(), true);
-    fern::statistic::count(
+    fa::statistic::count(
             InputNoDataPolicy(constant.mask(), true),
             output_no_data_policy,
-            fern::sequential,
+            fa::sequential,
             constant, 5, result_we_get);
     BOOST_CHECK(!result_we_get.mask());
     BOOST_CHECK_EQUAL(result_we_get.value(), 1);
@@ -86,10 +89,10 @@ BOOST_AUTO_TEST_CASE(masked_d0_array)
     result_we_get.mask() = false;
     BOOST_CHECK(constant.mask());
     BOOST_CHECK(!result_we_get.mask());
-    fern::statistic::count(
+    fa::statistic::count(
             InputNoDataPolicy(constant.mask(), true),
             output_no_data_policy,
-            fern::sequential,
+            fa::sequential,
             constant, 5, result_we_get);
     BOOST_CHECK(result_we_get.mask());
     BOOST_CHECK_EQUAL(result_we_get.value(), 9);
@@ -103,14 +106,14 @@ BOOST_AUTO_TEST_CASE(d1_array)
     // vector
     {
         std::vector<int32_t> array{ 1, 2, 3, 5 };
-        fern::statistic::count(fern::sequential, array, 2, result);
+        fa::statistic::count(fa::sequential, array, 2, result);
         BOOST_CHECK_EQUAL(result, 1);
     }
 
     // 1d array
     {
         fern::Array<int32_t, 1> array{ 1, 2, 2, 5 };
-        fern::statistic::count(fern::sequential, array, 2, result);
+        fa::statistic::count(fa::sequential, array, 2, result);
         BOOST_CHECK_EQUAL(result, 2);
     }
 
@@ -119,7 +122,7 @@ BOOST_AUTO_TEST_CASE(d1_array)
         // The result value is not touched.
         std::vector<int32_t> array;
         result = 5;
-        fern::statistic::count(fern::sequential, array, 2, result);
+        fa::statistic::count(fa::sequential, array, 2, result);
         BOOST_CHECK_EQUAL(result, 5);
     }
 }
@@ -127,8 +130,8 @@ BOOST_AUTO_TEST_CASE(d1_array)
 
 BOOST_AUTO_TEST_CASE(masked_d1_array)
 {
-    using InputNoDataPolicy = fern::DetectNoDataByValue<fern::Mask<1>>;
-    using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
+    using InputNoDataPolicy = fa::DetectNoDataByValue<fern::Mask<1>>;
+    using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
 
     fern::MaskedArray<int32_t, 1> array{ 1, 2, 3, 5 };
     fern::MaskedConstant<size_t> result;
@@ -137,7 +140,7 @@ BOOST_AUTO_TEST_CASE(masked_d1_array)
     {
         result.value() = 9;
         result.mask() = false;
-        fern::statistic::count(fern::sequential, array, 2, result);
+        fa::statistic::count(fa::sequential, array, 2, result);
         BOOST_CHECK_EQUAL(result.value(), 1);
     }
 
@@ -147,19 +150,19 @@ BOOST_AUTO_TEST_CASE(masked_d1_array)
         result.value() = 9;
         result.mask() = false;
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
-        fern::statistic::count(
+        fa::statistic::count(
                 InputNoDataPolicy(array.mask(), true),
                 output_no_data_policy,
-                fern::sequential, array, 2, result);
+                fa::sequential, array, 2, result);
         BOOST_CHECK(!result.mask());
         BOOST_CHECK_EQUAL(result.value(), 1);
 
         // Mask the whole input. Result must be masked too.
         array.mask_all();
-        fern::statistic::count(
+        fa::statistic::count(
                 InputNoDataPolicy(array.mask(), true),
                 output_no_data_policy,
-                fern::sequential, array, 2, result);
+                fa::sequential, array, 2, result);
         BOOST_CHECK(result.mask());
     }
 
@@ -169,10 +172,10 @@ BOOST_AUTO_TEST_CASE(masked_d1_array)
         result.value() = 9;
         result.mask() = false;
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
-        fern::statistic::count(
+        fa::statistic::count(
                 InputNoDataPolicy(empty_array.mask(), true),
                 output_no_data_policy,
-                fern::sequential, empty_array, 2, result);
+                fa::sequential, empty_array, 2, result);
         BOOST_CHECK(result.mask());
         BOOST_CHECK_EQUAL(result.value(), 9);
     }
@@ -189,7 +192,7 @@ BOOST_AUTO_TEST_CASE(d2_array)
             {  1,  2 }
         };
         size_t result;
-        fern::statistic::count(fern::sequential, array, 1, result);
+        fa::statistic::count(fa::sequential, array, 1, result);
         BOOST_CHECK_EQUAL(result, 1);
     }
 }
@@ -206,15 +209,15 @@ BOOST_AUTO_TEST_CASE(masked_d2_array)
     // 2d masked array with non-masking count
     {
         fern::MaskedConstant<size_t> result;
-        fern::statistic::count(fern::sequential, array, -2, result);
+        fa::statistic::count(fa::sequential, array, -2, result);
         BOOST_CHECK(!result.mask());
         BOOST_CHECK_EQUAL(result.value(), 1);
     }
 
     // 2d masked array with masking count
     {
-        using InputNoDataPolicy = fern::DetectNoDataByValue<fern::Mask<2>>;
-        using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
+        using InputNoDataPolicy = fa::DetectNoDataByValue<fern::Mask<2>>;
+        using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
 
         // Mask the 9.
         array.mask()[1][1] = true;
@@ -222,17 +225,17 @@ BOOST_AUTO_TEST_CASE(masked_d2_array)
         // Count 2's.
         fern::MaskedConstant<size_t> result;
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
-        fern::statistic::count(
+        fa::statistic::count(
                 InputNoDataPolicy(array.mask(), true), output_no_data_policy,
-                fern::sequential, array, 2, result);
+                fa::sequential, array, 2, result);
         BOOST_CHECK(!result.mask());
         BOOST_CHECK_EQUAL(result.value(), 1);
 
         // Count 9's. The one present is not visible, so the result is 0.
         result.value() = 999;
-        fern::statistic::count(
+        fa::statistic::count(
                 InputNoDataPolicy(array.mask(), true), output_no_data_policy,
-                fern::sequential, array, 9, result);
+                fa::sequential, array, 9, result);
         BOOST_CHECK(!result.mask());
         BOOST_CHECK_EQUAL(result.value(), 0);
 
@@ -240,9 +243,9 @@ BOOST_AUTO_TEST_CASE(masked_d2_array)
         array.mask_all();
         result.mask() = false;
         result.value() = 999;
-        fern::statistic::count(
+        fa::statistic::count(
                 InputNoDataPolicy(array.mask(), true), output_no_data_policy,
-                fern::sequential, array, 9, result);
+                fa::sequential, array, 9, result);
         BOOST_CHECK(result.mask());
     }
 }
@@ -264,27 +267,27 @@ BOOST_AUTO_TEST_CASE(concurrent)
     // Serial.
     {
         result_we_got = 9;
-        fern::statistic::count(fern::sequential, argument, 5, result_we_got);
+        fa::statistic::count(fa::sequential, argument, 5, result_we_got);
         BOOST_CHECK_EQUAL(result_we_got, result_we_want);
     }
 
     // Concurrent.
     {
         result_we_got = 9;
-        fern::statistic::count(fern::parallel, argument, 5, result_we_got);
+        fa::statistic::count(fa::parallel, argument, 5, result_we_got);
         BOOST_CHECK_EQUAL(result_we_got, result_we_want);
     }
 
     {
-        using InputNoDataPolicy = fern::SkipNoData<>;
-        using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
+        using InputNoDataPolicy = fa::SkipNoData<>;
+        using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
         fern::MaskedConstant<size_t> result_we_got;
         OutputNoDataPolicy output_no_data_policy(result_we_got.mask(), true);
 
         // Verify executor can handle masked result.
-        fern::statistic::count(
+        fa::statistic::count(
             InputNoDataPolicy(), output_no_data_policy,
-            fern::parallel, argument, 5, result_we_got);
+            fa::parallel, argument, 5, result_we_got);
     }
 }
 

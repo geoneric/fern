@@ -6,6 +6,9 @@
 #include "fern/algorithm/algebra/boolean/defined.h"
 
 
+namespace fa = fern::algorithm;
+
+
 BOOST_AUTO_TEST_SUITE(defined)
 
 template<
@@ -16,7 +19,7 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::algebra::defined(fern::sequential, result_we_get);
+    fa::algebra::defined(fa::sequential, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 

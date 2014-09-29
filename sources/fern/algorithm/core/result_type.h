@@ -9,6 +9,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace detail {
 namespace dispatch {
 
@@ -142,7 +143,7 @@ struct Result<
 template<
     class A1,
     class A2,
-    class RValue=typename fern::ResultValue<
+    class RValue=typename ResultValue<
         typename ArgumentTraits<A1>::value_type,
         typename ArgumentTraits<A2>::value_type>::type>
 class Result
@@ -169,4 +170,5 @@ template<
     class A2>
 using result_type = typename Result<A1, A2>::type;
 
+} // namespace algorithm
 } // namespace fern

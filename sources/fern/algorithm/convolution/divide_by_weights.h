@@ -2,6 +2,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace convolve {
 
 //! NormalizePolicy which normalizes convoluted values by the sum of the kernel weights.
@@ -32,4 +33,5 @@ inline Value DivideByWeights::normalize(
 }
 
 } // namespace convolve
+} // namespace algorithm
 } // namespace fern

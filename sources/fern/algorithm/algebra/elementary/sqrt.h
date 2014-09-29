@@ -5,6 +5,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace sqrt {
 
 //! Out of domain policy for fern::algebra::sqrt algorithm.
@@ -117,4 +118,5 @@ void sqrt(
 }
 
 } // namespace algebra
+} // namespace algorithm
 } // namespace fern

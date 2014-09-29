@@ -5,6 +5,9 @@
 #include "fern/algorithm/algebra/vector/lax.h"
 
 
+namespace fa = fern::algorithm;
+
+
 BOOST_AUTO_TEST_SUITE(lax)
 
 BOOST_AUTO_TEST_CASE(algorithm)
@@ -45,7 +48,7 @@ BOOST_AUTO_TEST_CASE(algorithm)
 
     // Without masking input and output values.
     {
-        fern::algebra::lax(fern::sequential, raster, fraction, result);
+        fa::algebra::lax(fa::sequential, raster, fraction, result);
 
         /// // Verify the result.
         BOOST_CHECK_EQUAL(fern::get(result, 0, 0),
@@ -54,8 +57,8 @@ BOOST_AUTO_TEST_CASE(algorithm)
             ((1.0 - fraction) * 5.0) + (fraction * 100.0 / 20.0));
     }
 
-    using InputNoDataPolicy = fern::DetectNoDataByValue<fern::Mask<2>>;
-    using OutputNoDataPolicy = fern::MarkNoDataByValue<fern::Mask<2>>;
+    using InputNoDataPolicy = fa::DetectNoDataByValue<fern::Mask<2>>;
+    using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<2>>;
 
     // With masking input and output values.
     {
@@ -66,10 +69,10 @@ BOOST_AUTO_TEST_CASE(algorithm)
         InputNoDataPolicy input_no_data_policy(result.mask(), true);
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
-        fern::algebra::lax(
+        fa::algebra::lax(
             input_no_data_policy,
             output_no_data_policy,
-            fern::sequential,
+            fa::sequential,
             raster, fraction, result);
 
         // Verify the result.

@@ -3,6 +3,7 @@
 
 
 namespace fern {
+namespace algorithm {
 
 class DontMarkNoData {
 
@@ -102,4 +103,5 @@ inline void DontMarkNoData::mark_as_no_data(
 {
 }
 
+} // namespace algorithm
 } // namespace fern

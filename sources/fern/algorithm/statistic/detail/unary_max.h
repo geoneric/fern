@@ -4,6 +4,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace unary_max {
 namespace detail {
 
@@ -99,4 +100,5 @@ void unary_max(
 
 } // namespace detail
 } // namespace unary_max
+} // namespace algorithm
 } // namespace fern

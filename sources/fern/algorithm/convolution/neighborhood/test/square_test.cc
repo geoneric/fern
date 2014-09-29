@@ -5,6 +5,9 @@
 #include "fern/algorithm/algebra/elementary/multiply.h"
 
 
+namespace fa = fern::algorithm;
+
+
 BOOST_AUTO_TEST_SUITE(square)
 
 BOOST_AUTO_TEST_CASE(square)
@@ -35,7 +38,7 @@ BOOST_AUTO_TEST_CASE(verify_use_in_algorithm)
             {7, 8, 9}
         });
 
-        fern::algebra::multiply(fern::sequential, square, 2, square);
+        fa::algebra::multiply(fa::sequential, square, 2, square);
 
         BOOST_CHECK_EQUAL(square[0][0], 2);
         BOOST_CHECK_EQUAL(square[0][1], 4);

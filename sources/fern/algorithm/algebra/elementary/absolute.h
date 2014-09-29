@@ -6,6 +6,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace absolute {
 
 //! Out of range policy for fern::algebra::absolute algorithm.
@@ -129,4 +130,5 @@ void absolute(
 }
 
 } // namespace algebra
+} // namespace algorithm
 } // namespace fern

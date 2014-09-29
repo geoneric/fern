@@ -72,7 +72,7 @@ BOOST_AUTO_TEST_CASE(mark_no_data)
     int32_t values[] = { 5, 4, 3, 2, 1 };
     Mask<int32_t> mask(values);
 
-    fern::MarkNoDataByValue<Mask<int32_t>> policy(mask, 6);
+    fern::algorithm::MarkNoDataByValue<Mask<int32_t>> policy(mask, 6);
 
     policy.mark_as_no_data(0);
     policy.mark_as_no_data(4);

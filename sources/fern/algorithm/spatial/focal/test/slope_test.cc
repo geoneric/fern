@@ -8,12 +8,15 @@
 #include "fern/algorithm/spatial/focal/slope.h"
 
 
+namespace fa = fern::algorithm;
+
+
 BOOST_AUTO_TEST_SUITE(slope)
 
 template<
     class Value,
     class Result>
-using OutOfRangePolicy = fern::slope::OutOfRangePolicy<Value, Result>;
+using OutOfRangePolicy = fa::slope::OutOfRangePolicy<Value, Result>;
 
 
 BOOST_AUTO_TEST_CASE(out_of_range_policy)
@@ -119,15 +122,15 @@ BOOST_AUTO_TEST_CASE(algorithm)
     // Calculate slope.
     MaskedRaster<double> result_we_get(extents, transformation);
 
-    using InputNoDataPolicy = fern::DetectNoDataByValue<fern::Mask<2>>;
-    using OutputNoDataPolicy = fern::MarkNoDataByValue<fern::Mask<2>>;
+    using InputNoDataPolicy = fa::DetectNoDataByValue<fern::Mask<2>>;
+    using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<2>>;
 
     OutputNoDataPolicy output_no_data_policy(result_we_get.mask(), true);
 
-    fern::spatial::slope<fern::unary::DiscardRangeErrors>(
+    fa::spatial::slope<fa::unary::DiscardRangeErrors>(
         InputNoDataPolicy(raster.mask(), true),
         output_no_data_policy,
-        fern::sequential,
+        fa::sequential,
         raster, result_we_get);
 
     for(size_t r = 0; r < nr_rows; ++r) {

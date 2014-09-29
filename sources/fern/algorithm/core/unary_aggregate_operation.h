@@ -8,6 +8,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace unary_aggregate_operation_ {
 namespace detail {
 
@@ -578,7 +579,7 @@ struct UnaryAggregateOperation<
         Result& result)
     {
         switch(execution_policy.which()) {
-            case fern::detail::sequential_execution_policy_id: {
+            case fern::algorithm::detail::sequential_execution_policy_id: {
                 UnaryAggregateOperation<
                     Algorithm,
                     Aggregator,
@@ -591,12 +592,12 @@ struct UnaryAggregateOperation<
                     SequentialExecutionPolicy,
                     array_2d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        fern::detail::get_policy<SequentialExecutionPolicy>(
-                            execution_policy),
+                        fern::algorithm::detail::get_policy<
+                            SequentialExecutionPolicy>(execution_policy),
                         value, result);
                 break;
             }
-            case fern::detail::parallel_execution_policy_id: {
+            case fern::algorithm::detail::parallel_execution_policy_id: {
                 UnaryAggregateOperation<
                     Algorithm,
                     Aggregator,
@@ -609,8 +610,8 @@ struct UnaryAggregateOperation<
                     ParallelExecutionPolicy,
                     array_2d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        fern::detail::get_policy<ParallelExecutionPolicy>(
-                            execution_policy),
+                        fern::algorithm::detail::get_policy<
+                            ParallelExecutionPolicy>(execution_policy),
                         value, result);
                 break;
             }
@@ -669,4 +670,5 @@ void unary_aggregate_operation(
             value, result);
 }
 
+} // namespace algorithm
 } // namespace fern

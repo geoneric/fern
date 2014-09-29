@@ -9,6 +9,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace detail {
 
 template<
@@ -1480,4 +1481,5 @@ void binary_local_operation(
             value1, value2, result);
 }
 
+} // namespace algorithm
 } // namespace fern

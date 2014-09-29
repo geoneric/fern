@@ -4,6 +4,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace unary_min {
 namespace detail {
 
@@ -99,4 +100,5 @@ void unary_min(
 
 } // namespace detail
 } // namespace unary_min
+} // namespace algorithm
 } // namespace fern
