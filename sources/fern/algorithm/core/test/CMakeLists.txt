@@ -5,6 +5,7 @@ SET(TEST_NAMES
     if_test
     index_range_test
     index_ranges_test
+    intersect_no_data_test
     fill_test
     nullary_local_operation_test
     offset_test
