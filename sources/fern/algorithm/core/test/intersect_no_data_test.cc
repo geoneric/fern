@@ -1,14 +1,14 @@
-#define BOOST_TEST_MODULE fern algorithm core unite_no_data
+#define BOOST_TEST_MODULE fern algorithm core intersect_no_data
 #include <boost/test/unit_test.hpp>
 #include "fern/core/constant_traits.h"
 #include "fern/feature/core/array_traits.h"
 #include "fern/feature/core/masked_array_traits.h"
 #include "fern/feature/core/masked_constant_traits.h"
-#include "fern/algorithm/core/unite_no_data.h"
+#include "fern/algorithm/core/intersect_no_data.h"
 #include "fern/algorithm/core/test/test_utils.h"
 
 
-BOOST_FIXTURE_TEST_SUITE(unite_no_data, fern::ThreadClient)
+BOOST_FIXTURE_TEST_SUITE(intersect_no_data, fern::ThreadClient)
 
 void test_array_0d_0d(
     fern::ExecutionPolicy const& execution_policy)
@@ -24,14 +24,14 @@ void test_array_0d_0d(
 
         result_we_want = -9;
         result_we_got = -9;
-        fern::core::unite_no_data(execution_policy, value1, value2,
+        fern::core::intersect_no_data(execution_policy, value1, value2,
             result_we_got);
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
             result_we_want));
 
         result_we_want = -9;
         result_we_got = -9;
-        fern::core::unite_no_data(execution_policy, value1, value2,
+        fern::core::intersect_no_data(execution_policy, value1, value2,
             result_we_got);
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
             result_we_want));
@@ -67,7 +67,7 @@ void test_array_0d_0d_masked(
     fern::MarkNoDataByValue<bool> output_no_data_policy(result_we_got.mask(),
         true);
 
-    // unite(false, false) -> false
+    // intersect(false, false) -> false
     {
         value1 = 5;
         value1.mask() = false;
@@ -77,45 +77,47 @@ void test_array_0d_0d_masked(
         result_we_want = fern::MaskedConstant<int>(-9, false);
         result_we_got = -9;
         result_we_got.mask() = false;
-        fern::core::unite_no_data(input_no_data_policy, output_no_data_policy,
+        fern::core::intersect_no_data(input_no_data_policy, output_no_data_policy,
             execution_policy, value1, value2, result_we_got);
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
             result_we_want));
     }
 
-    // unite(true, false) -> true
+    // intersect(true, false) -> false
     {
         value1 = 5;
         value1.mask() = true;
         value2 = 6;
         value2.mask() = false;
 
-        result_we_want = fern::MaskedConstant<int>(-9, true);
+        result_we_want = fern::MaskedConstant<int>(-9, false);
         result_we_got = -9;
         result_we_got.mask() = false;
-        fern::core::unite_no_data(input_no_data_policy, output_no_data_policy,
-            execution_policy, value1, value2, result_we_got);
+        fern::core::intersect_no_data(input_no_data_policy,
+            output_no_data_policy, execution_policy, value1, value2,
+            result_we_got);
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
             result_we_want));
     }
 
-    // unite(false, true) -> true
+    // intersect(false, true) -> false
     {
         value1 = 5;
         value1.mask() = false;
         value2 = 6;
         value2.mask() = true;
 
-        result_we_want = fern::MaskedConstant<int>(-9, true);
+        result_we_want = fern::MaskedConstant<int>(-9, false);
         result_we_got = -9;
         result_we_got.mask() = false;
-        fern::core::unite_no_data(input_no_data_policy, output_no_data_policy,
-            execution_policy, value1, value2, result_we_got);
+        fern::core::intersect_no_data(input_no_data_policy,
+            output_no_data_policy, execution_policy, value1, value2,
+            result_we_got);
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
             result_we_want));
     }
 
-    // unite(true, true) -> true
+    // intersect(true, true) -> true
     {
         value1 = 5;
         value1.mask() = true;
@@ -125,8 +127,9 @@ void test_array_0d_0d_masked(
         result_we_want = fern::MaskedConstant<int>(-9, true);
         result_we_got = -9;
         result_we_got.mask() = false;
-        fern::core::unite_no_data(input_no_data_policy, output_no_data_policy,
-            execution_policy, value1, value2, result_we_got);
+        fern::core::intersect_no_data(input_no_data_policy,
+            output_no_data_policy, execution_policy, value1, value2,
+            result_we_got);
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
             result_we_want));
     }
@@ -171,7 +174,8 @@ void test_array_2d_2d(
     result_we_want.fill(-9);
 
     result_we_got.fill(-9);
-    fern::core::unite_no_data(execution_policy, value1, value2, result_we_got);
+    fern::core::intersect_no_data(execution_policy, value1, value2,
+        result_we_got);
     BOOST_CHECK(fern::compare(execution_policy, result_we_got, result_we_want));
 }
 
@@ -227,7 +231,7 @@ void test_array_2d_2d_masked(
     }
 
     // Fill result_we_want.
-    // Mask all cells for which value1 or value2 are masked.
+    // Mask all cells for which value1 and value2 are masked.
     fern::MaskedArray<int, 2> result_we_want(fern::extents[nr_rows][nr_cols]);
     result_we_want.fill(-9);
     {
@@ -238,11 +242,11 @@ void test_array_2d_2d_masked(
             [&](bool const& /* value */) {
                 ++value1_mask_it;
                 ++value2_mask_it;
-                return *(value1_mask_it-1) || *(value2_mask_it-1); });
+                return *(value1_mask_it-1) && *(value2_mask_it-1); });
     }
 
     result_we_got.fill(-9);
-    fern::core::unite_no_data(input_no_data_policy, output_no_data_policy,
+    fern::core::intersect_no_data(input_no_data_policy, output_no_data_policy,
         execution_policy, value1, value2, result_we_got);
     BOOST_CHECK(fern::compare(execution_policy, result_we_got, result_we_want));
 }

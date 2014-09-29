@@ -5,7 +5,7 @@
 
 
 namespace fern {
-namespace unite_no_data {
+namespace intersect_no_data {
 namespace detail {
 
 template<
@@ -14,7 +14,7 @@ template<
     class Value1,
     class Value2,
     class Result>
-void unite_no_data_0d_0d(
+void intersect_no_data_0d_0d(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
     Value1 const& /* value1 */,
@@ -22,7 +22,7 @@ void unite_no_data_0d_0d(
     Result& /* result */)
 {
     if(!input_no_data_policy.is_no_data()) {
-        if(input_no_data_policy.get<0>().is_no_data() ||
+        if(input_no_data_policy.get<0>().is_no_data() &&
                 input_no_data_policy.get<1>().is_no_data()) {
             output_no_data_policy.mark_as_no_data();
         }
@@ -36,7 +36,7 @@ template<
     class Value1,
     class Value2,
     class Result>
-void unite_no_data_2d_2d(
+void intersect_no_data_2d_2d(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
     IndexRanges<2> const& index_ranges,
@@ -49,7 +49,7 @@ void unite_no_data_2d_2d(
                 ++j) {
 
             if(!input_no_data_policy.is_no_data(i, j)) {
-                if(input_no_data_policy.get<0>().is_no_data(i, j) ||
+                if(input_no_data_policy.get<0>().is_no_data(i, j) &&
                         input_no_data_policy.get<1>().is_no_data(i, j)) {
                     output_no_data_policy.mark_as_no_data(i, j);
                 }
@@ -70,7 +70,7 @@ template<
     class ExecutionPolicy,
     class Value1CollectionCategory,
     class Value2CollectionCategory>
-struct UniteNoDataByArgumentCategory
+struct IntersectNoDataByArgumentCategory
 {
 };
 
@@ -82,7 +82,7 @@ template<
     class Value2,
     class Result,
     class ExecutionPolicy>
-struct UniteNoDataByArgumentCategory<
+struct IntersectNoDataByArgumentCategory<
     InputNoDataPolicy,
     OutputNoDataPolicy,
     Value1,
@@ -101,7 +101,7 @@ struct UniteNoDataByArgumentCategory<
         Value2 const& value2,
         Result& result)
     {
-        unite_no_data_0d_0d(input_no_data_policy, output_no_data_policy,
+        intersect_no_data_0d_0d(input_no_data_policy, output_no_data_policy,
             value1, value2, result);
     }
 
@@ -117,7 +117,7 @@ template<
     class Value1,
     class Value2,
     class Result>
-struct UniteNoDataByArgumentCategory<
+struct IntersectNoDataByArgumentCategory<
     InputNoDataPolicy,
     OutputNoDataPolicy,
     Value1,
@@ -141,7 +141,7 @@ struct UniteNoDataByArgumentCategory<
         assert(fern::size(value2, 0) == fern::size(result, 0));
         assert(fern::size(value2, 1) == fern::size(result, 1));
 
-        unite_no_data_2d_2d(input_no_data_policy, output_no_data_policy,
+        intersect_no_data_2d_2d(input_no_data_policy, output_no_data_policy,
             IndexRanges<2>{
                 IndexRange(0, fern::size(result, 0)),
                 IndexRange(0, fern::size(result, 1)),
@@ -157,7 +157,7 @@ template<
     class Value1,
     class Value2,
     class Result>
-struct UniteNoDataByArgumentCategory<
+struct IntersectNoDataByArgumentCategory<
     InputNoDataPolicy,
     OutputNoDataPolicy,
     Value1,
@@ -191,7 +191,7 @@ struct UniteNoDataByArgumentCategory<
 
         for(auto const& block_range: ranges) {
             auto function = std::bind(
-                unite_no_data_2d_2d<
+                intersect_no_data_2d_2d<
                     InputNoDataPolicy, OutputNoDataPolicy,
                     Value1, Value2, Result>,
                 std::cref(input_no_data_policy),
@@ -215,7 +215,7 @@ template<
     class Value2,
     class Result,
     class ExecutionPolicy>
-class UniteNoDataByExecutionPolicy
+class IntersectNoDataByExecutionPolicy
 {
 };
 
@@ -226,7 +226,7 @@ template<
     class Value1,
     class Value2,
     class Result>
-struct UniteNoDataByExecutionPolicy<
+struct IntersectNoDataByExecutionPolicy<
     InputNoDataPolicy,
     OutputNoDataPolicy,
     Value1,
@@ -245,7 +245,7 @@ struct UniteNoDataByExecutionPolicy<
     {
         switch(execution_policy.which()) {
             case fern::detail::sequential_execution_policy_id: {
-                UniteNoDataByArgumentCategory<
+                IntersectNoDataByArgumentCategory<
                     InputNoDataPolicy,
                     OutputNoDataPolicy,
                     Value1,
@@ -262,7 +262,7 @@ struct UniteNoDataByExecutionPolicy<
                 break;
             }
             case fern::detail::parallel_execution_policy_id: {
-                UniteNoDataByArgumentCategory<
+                IntersectNoDataByArgumentCategory<
                     InputNoDataPolicy,
                     OutputNoDataPolicy,
                     Value1,
@@ -293,7 +293,7 @@ template<
     class Value1,
     class Value2,
     class Result>
-void unite_no_data(
+void intersect_no_data(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
     ExecutionPolicy const& execution_policy,
@@ -301,12 +301,12 @@ void unite_no_data(
     Value2 const& value2,
     Result& result)
 {
-    dispatch::UniteNoDataByExecutionPolicy<InputNoDataPolicy,
+    dispatch::IntersectNoDataByExecutionPolicy<InputNoDataPolicy,
         OutputNoDataPolicy, Value1, Value2, Result, ExecutionPolicy>::
             apply(input_no_data_policy, output_no_data_policy,
                 execution_policy, value1, value2, result);
 }
 
 } // namespace detail
-} // namespace unite_no_data
+} // namespace intersect_no_data
 } // namespace fern
