@@ -2,6 +2,7 @@
 
 
 namespace fern {
+namespace algorithm {
 
 //! Determine index ranges to use for partitioning a 1D array using \a nr_threads available worker threads.
 /*!
@@ -88,4 +89,5 @@ std::vector<IndexRanges<2>> index_ranges(
     return std::move(ranges);
 }
 
+} // namespace algorithm
 } // namespace fern

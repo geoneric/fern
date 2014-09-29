@@ -6,6 +6,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace cast {
 
 //! Out-of-range policy for fern::cast algorithm.
@@ -121,4 +122,5 @@ void cast(
 }
 
 } // namespace core
+} // namespace algorithm
 } // namespace fern

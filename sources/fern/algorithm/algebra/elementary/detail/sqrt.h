@@ -6,6 +6,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace sqrt {
 namespace detail {
 
@@ -54,4 +55,5 @@ void sqrt(
 
 } // namespace detail
 } // namespace sqrt
+} // namespace algorithm
 } // namespace fern

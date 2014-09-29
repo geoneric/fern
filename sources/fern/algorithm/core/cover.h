@@ -6,6 +6,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace core {
 
 //! Per position, select the first non-no-data element from \a value1 and \a value2, and write it to \a result.
@@ -102,4 +103,5 @@ void cover(
 }
 
 } // namespace core
+} // namespace algorithm
 } // namespace fern

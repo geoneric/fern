@@ -4,6 +4,8 @@
 
 int main()
 {
+    namespace fa = fern::algorithm;
+
     fern::Array<double, 2> value1 = {
         { 1.0, 2.0 },
         { 3.0, 4.0 },
@@ -12,5 +14,5 @@ int main()
     double value2 = 9.0;
     fern::Array<double, 2> result(fern::extents[2][3]);
 
-    fern::algebra::divide(fern::sequential, value1, value2, result);
+    fa::algebra::divide(fa::sequential, value1, value2, result);
 }

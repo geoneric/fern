@@ -5,6 +5,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace laplacian {
 
 //! The out-of-range policy for the laplacian operation.
@@ -137,4 +138,5 @@ void laplacian(
 }
 
 } // namespace algebra
+} // namespace algorithm
 } // namespace fern

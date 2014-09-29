@@ -3,6 +3,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace statistic {
 
 //! Determine how many occurrences of \a value2 are in \a value1 and write the result to \a result.
@@ -84,4 +85,5 @@ void count(
 }
 
 } // namespace statistic
+} // namespace algorithm
 } // namespace fern

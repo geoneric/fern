@@ -2,6 +2,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace convolve {
 
 //! NormalizePolicy which does not normalize convoluted values.
@@ -32,4 +33,5 @@ inline Value DontDivideByWeights::normalize(
 }
 
 } // namespace convolve
+} // namespace algorithm
 } // namespace fern

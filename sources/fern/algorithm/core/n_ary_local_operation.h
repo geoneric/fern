@@ -3,6 +3,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace detail {
 namespace dispatch {
 
@@ -177,4 +178,5 @@ void n_ary_local_operation(
             result, std::forward<Values>(values)...);
 }
 
+} // namespace algorithm
 } // namespace fern

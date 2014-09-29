@@ -6,6 +6,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace sin {
 namespace detail {
 
@@ -54,4 +55,5 @@ void sin(
 
 } // namespace detail
 } // namespace sin
+} // namespace algorithm
 } // namespace fern

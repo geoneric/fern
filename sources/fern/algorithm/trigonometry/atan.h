@@ -5,6 +5,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace trigonometry {
 
 //! Calculate the arc tangent of \a value and write the result to \a result.
@@ -80,4 +81,5 @@ void atan(
 }
 
 } // namespace trigonometry
+} // namespace algorithm
 } // namespace fern

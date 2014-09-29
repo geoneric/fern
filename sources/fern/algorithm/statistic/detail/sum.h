@@ -5,6 +5,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace sum {
 namespace detail {
 
@@ -102,4 +103,5 @@ void sum(
 
 } // namespace detail
 } // namespace sum
+} // namespace algorithm
 } // namespace fern

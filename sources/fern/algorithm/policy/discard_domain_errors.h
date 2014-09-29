@@ -2,6 +2,7 @@
 
 
 namespace fern {
+namespace algorithm {
 
 //! Domain policy which discards out-of-domain values.
 /*!
@@ -57,4 +58,5 @@ template<
 using DiscardDomainErrors = DiscardDomainErrors<Value1, Value2>;
 
 } // namespace binary
+} // namespace algorithm
 } // namespace fern

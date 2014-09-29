@@ -6,6 +6,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace binary_max {
 namespace detail {
 
@@ -51,4 +52,5 @@ void binary_max(
 
 } // namespace detail
 } // namespace binary_max
+} // namespace algorithm
 } // namespace fern

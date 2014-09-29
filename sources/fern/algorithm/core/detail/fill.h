@@ -6,6 +6,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace fill {
 namespace detail {
 
@@ -51,4 +52,5 @@ void fill(
 
 } // namespace detail
 } // namespace fill
+} // namespace algorithm
 } // namespace fern

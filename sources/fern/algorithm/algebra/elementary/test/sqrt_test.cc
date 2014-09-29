@@ -4,11 +4,14 @@
 #include "fern/algorithm/algebra/elementary/sqrt.h"
 
 
+namespace fa = fern::algorithm;
+
+
 BOOST_AUTO_TEST_SUITE(sqrt_)
 
 template<
     class Value>
-using OutOfDomainPolicy = fern::sqrt::OutOfDomainPolicy<Value>;
+using OutOfDomainPolicy = fa::sqrt::OutOfDomainPolicy<Value>;
 
 
 BOOST_AUTO_TEST_CASE(out_of_domain_policy)
@@ -31,7 +34,7 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::algebra::sqrt(fern::sequential, value, result_we_get);
+    fa::algebra::sqrt(fa::sequential, value, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 

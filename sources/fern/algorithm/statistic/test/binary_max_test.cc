@@ -6,6 +6,9 @@
 #include "fern/algorithm/statistic/binary_max.h"
 
 
+namespace fa = fern::algorithm;
+
+
 BOOST_AUTO_TEST_SUITE(binary_max)
 
 template<
@@ -18,7 +21,7 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::statistic::binary_max(fern::sequential, value1, value2,
+    fa::statistic::binary_max(fa::sequential, value1, value2,
         result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }

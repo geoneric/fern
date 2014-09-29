@@ -5,6 +5,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace sin {
 
 //! Out-of-domain policy for fern::trigonometry::sin algorithm.
@@ -112,4 +113,5 @@ void sin(
 }
 
 } // namespace trigonometry
+} // namespace algorithm
 } // namespace fern

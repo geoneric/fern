@@ -4,6 +4,7 @@
 
 
 namespace fern {
+namespace algorithm {
 
 template<
     class Kernel>
@@ -12,4 +13,5 @@ struct KernelTraits
     static bool const weigh_values{!std::is_same<value_type<Kernel>, bool>()};
 };
 
+} // namespace algorithm
 } // namespace fern

@@ -8,6 +8,9 @@
 #include "fern/algorithm/core/test/test_utils.h"
 
 
+namespace fa = fern::algorithm;
+
+
 BOOST_AUTO_TEST_SUITE(gradient)
 
 BOOST_AUTO_TEST_CASE(algorithm)
@@ -42,7 +45,7 @@ BOOST_AUTO_TEST_CASE(algorithm)
     raster.mask()[1][1] = true;
     raster.mask()[2][2] = true;
 
-    fern::ExecutionPolicy const& execution_policy = fern::sequential;
+    fa::ExecutionPolicy const& execution_policy = fa::sequential;
 
     // Calculate gradient_x.
     {
@@ -64,15 +67,15 @@ BOOST_AUTO_TEST_CASE(algorithm)
         result_we_want.mask()[1][1] = true;
         result_we_want.mask()[2][2] = true;
 
-        fern::core::if_(execution_policy, raster.mask(), true,
+        fa::core::if_(execution_policy, raster.mask(), true,
             result_we_got.mask());
 
-        fern::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
+        fa::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
             result_we_got.mask(), true);
-        fern::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
+        fa::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
             result_we_got.mask(), true);
 
-        fern::algebra::gradient_x(input_no_data_policy, output_no_data_policy,
+        fa::algebra::gradient_x(input_no_data_policy, output_no_data_policy,
             execution_policy, raster, result_we_got);
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
             result_we_want));
@@ -98,15 +101,15 @@ BOOST_AUTO_TEST_CASE(algorithm)
         result_we_want.mask()[1][1] = true;
         result_we_want.mask()[2][2] = true;
 
-        fern::core::if_(execution_policy, raster.mask(), true,
+        fa::core::if_(execution_policy, raster.mask(), true,
             result_we_got.mask());
 
-        fern::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
+        fa::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
             result_we_got.mask(), true);
-        fern::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
+        fa::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
             result_we_got.mask(), true);
 
-        fern::algebra::gradient_y(input_no_data_policy, output_no_data_policy,
+        fa::algebra::gradient_y(input_no_data_policy, output_no_data_policy,
             execution_policy, raster, result_we_got);
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
             result_we_want));

@@ -6,6 +6,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace cos {
 namespace detail {
 
@@ -54,4 +55,5 @@ void cos(
 
 } // namespace detail
 } // namespace cos
+} // namespace algorithm
 } // namespace fern

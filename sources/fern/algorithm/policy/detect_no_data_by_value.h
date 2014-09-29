@@ -6,6 +6,7 @@
 
 
 namespace fern {
+namespace algorithm {
 
 //! Input no-data policy class that detect no-data given a special marker value.
 /*!
@@ -127,4 +128,5 @@ inline bool DetectNoDataByValue<Mask, ArgumentNoDataPolicies...>::is_no_data(
     return get(_mask, index1, index2, index3) == _no_data_value;
 }
 
+} // namespace algorithm
 } // namespace fern

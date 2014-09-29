@@ -9,10 +9,13 @@
 
 BOOST_AUTO_TEST_SUITE(divide)
 
+namespace fa = fern::algorithm;
+
+
 template<
     class Value1,
     class Value2>
-using OutOfDomainPolicy = fern::divide::OutOfDomainPolicy<Value1, Value2>;
+using OutOfDomainPolicy = fa::divide::OutOfDomainPolicy<Value1, Value2>;
 
 
 BOOST_AUTO_TEST_CASE(out_of_domain_policy)
@@ -32,7 +35,7 @@ template<
     class Value1,
     class Value2,
     class Result>
-using OutOfRangePolicy = fern::divide::OutOfRangePolicy<Value1, Value2,
+using OutOfRangePolicy = fa::divide::OutOfRangePolicy<Value1, Value2,
     Result>;
 
 
@@ -49,7 +52,7 @@ struct VerifyWithinRange
         OutOfRangePolicy<Value1, Value2, Result> policy;
         Result result;
 
-        fern::algebra::divide(fern::sequential, value1, value2, result);
+        fa::algebra::divide(fa::sequential, value1, value2, result);
 
         return policy.within_range(value1, value2, result);
     }
@@ -221,7 +224,7 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::algebra::divide(fern::sequential, value1, value2, result_we_get);
+    fa::algebra::divide(fa::sequential, value1, value2, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 

@@ -6,6 +6,9 @@
 #include "fern/algorithm/statistic/unary_max.h"
 
 
+namespace fa = fern::algorithm;
+
+
 BOOST_AUTO_TEST_SUITE(unary_max)
 
 template<
@@ -16,7 +19,7 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::statistic::unary_max(fern::sequential, value, result_we_get);
+    fa::statistic::unary_max(fa::sequential, value, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 

@@ -5,6 +5,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace algebra {
 
 //! Determine whether \a value1 is equal to \a value2 and write the result to \a result.
@@ -87,4 +88,5 @@ void equal(
 }
 
 } // namespace algebra
+} // namespace algorithm
 } // namespace fern

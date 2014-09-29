@@ -6,6 +6,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace convolve {
 
 //! Out-of-range policy for fern::convolution::convolve algorithm.
@@ -153,4 +154,5 @@ void convolve(
 }
 
 } // namespace convolution
+} // namespace algorithm
 } // namespace fern

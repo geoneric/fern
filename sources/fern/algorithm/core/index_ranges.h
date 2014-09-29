@@ -7,6 +7,7 @@
 
 
 namespace fern {
+namespace algorithm {
 
 //! The IndexRanges class represents a collection of index ranges for multiple dimensions.
 /*!
@@ -223,4 +224,5 @@ std::vector<IndexRanges<2>>
                                         size_t const size1,
                                         size_t const size2);
 
+} // namespace algorithm
 } // namespace fern

@@ -9,10 +9,13 @@
 
 BOOST_AUTO_TEST_SUITE(laplacian)
 
+namespace fa = fern::algorithm;
+
+
 template<
     class Value,
     class Result>
-using OutOfRangePolicy = fern::laplacian::OutOfRangePolicy<Value, Result>;
+using OutOfRangePolicy = fa::laplacian::OutOfRangePolicy<Value, Result>;
 
 
 BOOST_AUTO_TEST_CASE(out_of_range_policy)
@@ -67,7 +70,7 @@ BOOST_AUTO_TEST_CASE(algorithm)
 
     // Without masking input and output values.
     {
-        fern::algebra::laplacian(fern::sequential, raster, result);
+        fa::algebra::laplacian(fa::sequential, raster, result);
 
         // Verify the result.
         BOOST_CHECK_EQUAL(fern::get(result, 0, 0),
@@ -76,8 +79,8 @@ BOOST_AUTO_TEST_CASE(algorithm)
             (100.0 - (20.0 * 5.0)) / 6.0);
     }
 
-    using InputNoDataPolicy = fern::DetectNoDataByValue<fern::Mask<2>>;
-    using OutputNoDataPolicy = fern::MarkNoDataByValue<fern::Mask<2>>;
+    using InputNoDataPolicy = fa::DetectNoDataByValue<fern::Mask<2>>;
+    using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<2>>;
 
     // With masking input and output values.
     {
@@ -87,10 +90,10 @@ BOOST_AUTO_TEST_CASE(algorithm)
 
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
-        fern::algebra::laplacian<fern::laplacian::OutOfRangePolicy>(
+        fa::algebra::laplacian<fa::laplacian::OutOfRangePolicy>(
             InputNoDataPolicy(result.mask(), true),
             output_no_data_policy,
-            fern::sequential,
+            fa::sequential,
             raster, result);
 
         // Verify the result.

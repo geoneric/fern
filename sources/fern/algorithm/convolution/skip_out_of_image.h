@@ -3,6 +3,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace convolve {
 
 //! OutOfImagePolicy which treats out-of-image values as no-data.
@@ -313,4 +314,5 @@ inline constexpr bool SkipOutOfImage::value_south(
 }
 
 } // namespace convolve
+} // namespace algorithm
 } // namespace fern

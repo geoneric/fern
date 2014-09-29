@@ -5,6 +5,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace pow {
 
 //! Out of domain policy for fern::algebra::pow algorithm.
@@ -177,4 +178,5 @@ void pow(
 }
 
 } // namespace algebra
+} // namespace algorithm
 } // namespace fern

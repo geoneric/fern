@@ -7,10 +7,13 @@
 
 BOOST_AUTO_TEST_SUITE(cast)
 
+namespace fa = fern::algorithm;
+
+
 template<
     class Value,
     class Result>
-using OutOfRangePolicy = fern::cast::OutOfRangePolicy<Value, Result>;
+using OutOfRangePolicy = fa::cast::OutOfRangePolicy<Value, Result>;
 
 
 template<
@@ -23,7 +26,7 @@ struct VerifyWithinRange
     {
         OutOfRangePolicy<Value, Result> policy;
         Result result;
-        fern::core::cast(fern::sequential, value, result);
+        fa::core::cast(fa::sequential, value, result);
         return policy.within_range(value, result);
     }
 };
@@ -75,7 +78,7 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::core::cast(fern::sequential, value, result_we_get);
+    fa::core::cast(fa::sequential, value, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 

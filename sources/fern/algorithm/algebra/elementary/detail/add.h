@@ -7,6 +7,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace add {
 namespace detail {
 namespace dispatch {
@@ -39,7 +40,7 @@ struct within_range<
         Result const& result)
     {
         FERN_STATIC_ASSERT(std::is_same,
-            typename fern::Result<Value1, Value2>::type, Result)
+            typename fern::algorithm::Result<Value1, Value2>::type, Result)
 
         // unsigned + unsigned
         // Overflow if result is smaller than one of the operands.
@@ -65,7 +66,7 @@ struct within_range<
         Result const& result)
     {
         FERN_STATIC_ASSERT(std::is_same,
-            typename fern::Result<Value1, Value2>::type, Result)
+            typename fern::algorithm::Result<Value1, Value2>::type, Result)
 
         // signed + signed
         // Overflow/underflow if sign of result is different.
@@ -117,8 +118,8 @@ struct within_range<
         Value2 const& /* value2 */,
         Result const& result)
     {
-        FERN_STATIC_ASSERT(std::is_same, typename fern::Result<Value1, Value2>
-            ::type, Result)
+        FERN_STATIC_ASSERT(std::is_same, typename fern::algorithm::Result<
+            Value1, Value2>::type, Result)
 
         return value1 > 0 ? result >= value1 : result <= value1;
     }
@@ -166,7 +167,7 @@ struct within_range<
         Result const& result)
     {
         FERN_STATIC_ASSERT(std::is_same,
-            typename fern::Result<Value1, Value2>::type, Result)
+            typename fern::algorithm::Result<Value1, Value2>::type, Result)
 
         return std::isfinite(result);
     }
@@ -190,7 +191,7 @@ struct within_range<
         Result const& result)
     {
         FERN_STATIC_ASSERT(std::is_same,
-            typename fern::Result<Value1, Value2>::type, Result)
+            typename fern::algorithm::Result<Value1, Value2>::type, Result)
         assert(std::isfinite(result));
 
         // integral + float
@@ -216,7 +217,7 @@ struct within_range<
         Result const& result)
     {
         FERN_STATIC_ASSERT(std::is_same,
-            typename fern::Result<Value1, Value2>::type, Result)
+            typename fern::algorithm::Result<Value1, Value2>::type, Result)
         assert(std::isfinite(result));
 
         // float + integral
@@ -275,4 +276,5 @@ void add(
 
 } // namespace detail
 } // namespace add
+} // namespace algorithm
 } // namespace fern

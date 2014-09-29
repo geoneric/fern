@@ -4,6 +4,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace statistic {
 
 //! Determine the maximum value of \a value and write the result to \a result.
@@ -83,4 +84,5 @@ void unary_max(
 }
 
 } // namespace statistic
+} // namespace algorithm
 } // namespace fern

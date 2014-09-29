@@ -4,6 +4,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace core {
 
 //! Unite the no-data of \a value1 and \a value2 and store the results in result.
@@ -89,4 +90,5 @@ void unite_no_data(
 }
 
 } // namespace core
+} // namespace algorithm
 } // namespace fern

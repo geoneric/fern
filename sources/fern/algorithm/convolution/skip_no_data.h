@@ -3,6 +3,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace convolve {
 
 //! AlternativeForNoDataPolicy which discards no-data values.
@@ -46,4 +47,5 @@ inline constexpr bool SkipNoData::value(
 }
 
 } // namespace convolve
+} // namespace algorithm
 } // namespace fern

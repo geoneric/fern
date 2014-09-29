@@ -7,6 +7,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace pow {
 namespace detail {
 
@@ -59,4 +60,5 @@ void pow(
 
 } // namespace detail
 } // namespace pow
+} // namespace algorithm
 } // namespace fern

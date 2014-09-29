@@ -7,12 +7,15 @@
 #include "fern/algorithm/algebra/elementary/absolute.h"
 
 
+namespace fa = fern::algorithm;
+
+
 BOOST_AUTO_TEST_SUITE(absolute)
 
 template<
     class Value,
     class Result>
-using OutOfRangePolicy = fern::absolute::OutOfRangePolicy<Value, Result>;
+using OutOfRangePolicy = fa::absolute::OutOfRangePolicy<Value, Result>;
 
 
 template<
@@ -24,7 +27,7 @@ struct VerifyWithinRange
         Value const& value)
     {
         Result result;
-        fern::algebra::absolute<>(fern::sequential, value, result);
+        fa::algebra::absolute<>(fa::sequential, value, result);
 
         OutOfRangePolicy<Value, Result> policy;
 
@@ -79,7 +82,7 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::algebra::absolute(fern::sequential, value, result_we_get);
+    fa::algebra::absolute(fa::sequential, value, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 

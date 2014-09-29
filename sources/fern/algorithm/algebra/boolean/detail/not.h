@@ -4,6 +4,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace not_ {
 namespace detail {
 
@@ -47,4 +48,5 @@ void not_(
 
 } // namespace detail
 } // namespace not_
+} // namespace algorithm
 } // namespace fern

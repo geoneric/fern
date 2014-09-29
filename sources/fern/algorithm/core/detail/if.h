@@ -8,6 +8,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace if_ {
 namespace detail {
 
@@ -746,7 +747,7 @@ struct IfThenByExecutionPolicy<
         Result& result)
     {
         switch(execution_policy.which()) {
-            case fern::detail::sequential_execution_policy_id: {
+            case fern::algorithm::detail::sequential_execution_policy_id: {
                 IfThenByArgumentCategory<
                     InputNoDataPolicy,
                     OutputNoDataPolicy,
@@ -757,13 +758,13 @@ struct IfThenByExecutionPolicy<
                     base_class<argument_category<Condition>, array_2d_tag>,
                     base_class<argument_category<TrueValue>, array_2d_tag>>
                         ::apply(
-                        input_no_data_policy, output_no_data_policy,
-                        fern::detail::get_policy<SequentialExecutionPolicy>(
-                            execution_policy),
-                        condition, true_value, result);
+                            input_no_data_policy, output_no_data_policy,
+                            fern::algorithm::detail::get_policy<
+                                SequentialExecutionPolicy>(execution_policy),
+                            condition, true_value, result);
                 break;
             }
-            case fern::detail::parallel_execution_policy_id: {
+            case fern::algorithm::detail::parallel_execution_policy_id: {
                 IfThenByArgumentCategory<
                     InputNoDataPolicy,
                     OutputNoDataPolicy,
@@ -775,8 +776,8 @@ struct IfThenByExecutionPolicy<
                     base_class<argument_category<TrueValue>, array_2d_tag>>
                         ::apply(
                             input_no_data_policy, output_no_data_policy,
-                            fern::detail::get_policy<ParallelExecutionPolicy>(
-                                execution_policy),
+                            fern::algorithm::detail::get_policy<
+                                ParallelExecutionPolicy>(execution_policy),
                             condition, true_value, result);
                 break;
             }
@@ -826,7 +827,7 @@ struct IfThenElseByExecutionPolicy<
         Result& result)
     {
         switch(execution_policy.which()) {
-            case fern::detail::sequential_execution_policy_id: {
+            case fern::algorithm::detail::sequential_execution_policy_id: {
                 IfThenElseByArgumentCategory<
                     InputNoDataPolicy,
                     OutputNoDataPolicy,
@@ -840,12 +841,12 @@ struct IfThenElseByExecutionPolicy<
                     base_class<argument_category<FalseValue>, array_2d_tag>>
                         ::apply(
                         input_no_data_policy, output_no_data_policy,
-                        fern::detail::get_policy<SequentialExecutionPolicy>(
-                            execution_policy),
+                        fern::algorithm::detail::get_policy<
+                            SequentialExecutionPolicy>(execution_policy),
                         condition, true_value, false_value, result);
                 break;
             }
-            case fern::detail::parallel_execution_policy_id: {
+            case fern::algorithm::detail::parallel_execution_policy_id: {
                 IfThenElseByArgumentCategory<
                     InputNoDataPolicy,
                     OutputNoDataPolicy,
@@ -859,8 +860,8 @@ struct IfThenElseByExecutionPolicy<
                     base_class<argument_category<FalseValue>, array_2d_tag>>
                         ::apply(
                             input_no_data_policy, output_no_data_policy,
-                            fern::detail::get_policy<ParallelExecutionPolicy>(
-                                execution_policy),
+                            fern::algorithm::detail::get_policy<
+                                ParallelExecutionPolicy>(execution_policy),
                             condition, true_value, false_value, result);
                 break;
             }
@@ -919,4 +920,5 @@ void if_(
 
 } // namespace detail
 } // namespace if_
+} // namespace algorithm
 } // namespace fern

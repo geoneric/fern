@@ -5,6 +5,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace algebra {
 
 //! Determine whether \a value1 is less than \a value2 and write the result to \a result.
@@ -89,4 +90,5 @@ void less(
 }
 
 } // namespace algebra
+} // namespace algorithm
 } // namespace fern

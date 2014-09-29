@@ -5,6 +5,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace slope {
 
 //! The out-of-range policy for the slope operation.
@@ -145,4 +146,5 @@ void slope(
 }
 
 } // namespace spatial
+} // namespace algorithm
 } // namespace fern

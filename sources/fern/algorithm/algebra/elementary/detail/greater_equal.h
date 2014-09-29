@@ -6,6 +6,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace greater_equal {
 namespace detail {
 
@@ -53,4 +54,5 @@ void greater_equal(
 
 } // namespace detail
 } // namespace greater_equal
+} // namespace algorithm
 } // namespace fern

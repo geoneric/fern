@@ -8,6 +8,9 @@
 #include "fern/algorithm/algebra/boolean/defined.h"
 
 
+namespace fa = fern::algorithm;
+
+
 struct Fixture
 {
 
@@ -26,15 +29,15 @@ using ResultValue = int32_t;
 
 template<
     class Value>
-using Algorithm = fern::fill::detail::Algorithm<Value>;
+using Algorithm = fa::fill::detail::Algorithm<Value>;
 
 
 BOOST_FIXTURE_TEST_SUITE(unary_disaggregate_operation, Fixture)
 
 BOOST_AUTO_TEST_CASE(array_0d)
 {
-    using InputNoDataPolicy = fern::SkipNoData<>;
-    using OutputNoDataPolicy = fern::DontMarkNoData;
+    using InputNoDataPolicy = fa::SkipNoData<>;
+    using OutputNoDataPolicy = fa::DontMarkNoData;
     using Argument = ArgumentValue;
     using Result = ResultValue;
 
@@ -42,21 +45,21 @@ BOOST_AUTO_TEST_CASE(array_0d)
     Argument value{5};
     Result result{3};
 
-    fern::unary_disaggregate_operation<Algorithm,
-        fern::unary::DiscardDomainErrors,
-        fern::unary::DiscardRangeErrors>(
+    fa::unary_disaggregate_operation<Algorithm,
+        fa::unary::DiscardDomainErrors,
+        fa::unary::DiscardRangeErrors>(
             InputNoDataPolicy(), output_no_data_policy,
-            fern::sequential, value, result);
+            fa::sequential, value, result);
 
     BOOST_REQUIRE_EQUAL(result, 5);
 
     result = 3;
 
-    fern::unary_disaggregate_operation<Algorithm,
-        fern::unary::DiscardDomainErrors,
-        fern::unary::DiscardRangeErrors>(
+    fa::unary_disaggregate_operation<Algorithm,
+        fa::unary::DiscardDomainErrors,
+        fa::unary::DiscardRangeErrors>(
             InputNoDataPolicy(), output_no_data_policy,
-            fern::parallel, value, result);
+            fa::parallel, value, result);
 
     BOOST_REQUIRE_EQUAL(result, 5);
 }
@@ -64,8 +67,8 @@ BOOST_AUTO_TEST_CASE(array_0d)
 
 BOOST_AUTO_TEST_CASE(array_0d_masked)
 {
-    using InputNoDataPolicy = fern::DetectNoDataByValue<bool>;
-    using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
+    using InputNoDataPolicy = fa::DetectNoDataByValue<bool>;
+    using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
     using Argument = fern::MaskedConstant<ArgumentValue>;
     using Result = fern::MaskedConstant<ResultValue>;
 
@@ -82,11 +85,11 @@ BOOST_AUTO_TEST_CASE(array_0d_masked)
         InputNoDataPolicy input_no_data_policy(result.mask(), true);
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
-        fern::unary_disaggregate_operation<Algorithm,
-            fern::unary::DiscardDomainErrors,
-            fern::unary::DiscardRangeErrors>(
+        fa::unary_disaggregate_operation<Algorithm,
+            fa::unary::DiscardDomainErrors,
+            fa::unary::DiscardRangeErrors>(
                 input_no_data_policy, output_no_data_policy,
-                fern::sequential, argument, result);
+                fa::sequential, argument, result);
 
         BOOST_REQUIRE_EQUAL(result.mask(), false);
         BOOST_REQUIRE_EQUAL(result.value(), 5);
@@ -101,11 +104,11 @@ BOOST_AUTO_TEST_CASE(array_0d_masked)
 
         InputNoDataPolicy input_no_data_policy(result.mask(), true);
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
-        fern::unary_disaggregate_operation<Algorithm,
-            fern::unary::DiscardDomainErrors,
-            fern::unary::DiscardRangeErrors>(
+        fa::unary_disaggregate_operation<Algorithm,
+            fa::unary::DiscardDomainErrors,
+            fa::unary::DiscardRangeErrors>(
                 input_no_data_policy, output_no_data_policy,
-                fern::sequential, argument, result);
+                fa::sequential, argument, result);
 
         BOOST_REQUIRE_EQUAL(result.mask(), true);
         BOOST_REQUIRE_EQUAL(result.value(), 3);
@@ -116,8 +119,8 @@ BOOST_AUTO_TEST_CASE(array_0d_masked)
 BOOST_AUTO_TEST_CASE(array_1d_sequential)
 {
     using Argument = ArgumentValue;
-    using InputNoDataPolicy = fern::SkipNoData<>;
-    using OutputNoDataPolicy = fern::DontMarkNoData;
+    using InputNoDataPolicy = fa::SkipNoData<>;
+    using OutputNoDataPolicy = fa::DontMarkNoData;
 
     Argument argument{5};
 
@@ -129,11 +132,11 @@ BOOST_AUTO_TEST_CASE(array_1d_sequential)
 
         Result result{3, 3, 3};
 
-        fern::unary_disaggregate_operation<Algorithm,
-            fern::unary::DiscardDomainErrors,
-            fern::unary::DiscardRangeErrors>(
+        fa::unary_disaggregate_operation<Algorithm,
+            fa::unary::DiscardDomainErrors,
+            fa::unary::DiscardRangeErrors>(
                 InputNoDataPolicy(), output_no_data_policy,
-                fern::sequential, argument, result);
+                fa::sequential, argument, result);
 
         BOOST_REQUIRE_EQUAL(result[0], 5);
         BOOST_REQUIRE_EQUAL(result[1], 5);
@@ -146,11 +149,11 @@ BOOST_AUTO_TEST_CASE(array_1d_sequential)
 
         Result result{3, 3, 3};
 
-        fern::unary_disaggregate_operation<Algorithm,
-            fern::unary::DiscardDomainErrors,
-            fern::unary::DiscardRangeErrors>(
+        fa::unary_disaggregate_operation<Algorithm,
+            fa::unary::DiscardDomainErrors,
+            fa::unary::DiscardRangeErrors>(
                 InputNoDataPolicy(), output_no_data_policy,
-                fern::sequential, argument, result);
+                fa::sequential, argument, result);
 
         BOOST_REQUIRE_EQUAL(result[0], 5);
         BOOST_REQUIRE_EQUAL(result[1], 5);
@@ -163,11 +166,11 @@ BOOST_AUTO_TEST_CASE(array_1d_sequential)
 
         Result result;
 
-        fern::unary_disaggregate_operation<Algorithm,
-            fern::unary::DiscardDomainErrors,
-            fern::unary::DiscardRangeErrors>(
+        fa::unary_disaggregate_operation<Algorithm,
+            fa::unary::DiscardDomainErrors,
+            fa::unary::DiscardRangeErrors>(
                 InputNoDataPolicy(), output_no_data_policy,
-                fern::sequential, argument, result);
+                fa::sequential, argument, result);
 
         BOOST_CHECK(result.empty());
     }
@@ -177,8 +180,8 @@ BOOST_AUTO_TEST_CASE(array_1d_sequential)
 BOOST_AUTO_TEST_CASE(array_1d_parallel)
 {
     using Argument = ArgumentValue;
-    using InputNoDataPolicy = fern::SkipNoData<>;
-    using OutputNoDataPolicy = fern::DontMarkNoData;
+    using InputNoDataPolicy = fa::SkipNoData<>;
+    using OutputNoDataPolicy = fa::DontMarkNoData;
 
     Argument argument{5};
 
@@ -190,11 +193,11 @@ BOOST_AUTO_TEST_CASE(array_1d_parallel)
 
         Result result{3, 3, 3};
 
-        fern::unary_disaggregate_operation<Algorithm,
-            fern::unary::DiscardDomainErrors,
-            fern::unary::DiscardRangeErrors>(
+        fa::unary_disaggregate_operation<Algorithm,
+            fa::unary::DiscardDomainErrors,
+            fa::unary::DiscardRangeErrors>(
                 InputNoDataPolicy(), output_no_data_policy,
-                fern::parallel, argument, result);
+                fa::parallel, argument, result);
 
         BOOST_REQUIRE_EQUAL(result[0], 5);
         BOOST_REQUIRE_EQUAL(result[1], 5);
@@ -207,11 +210,11 @@ BOOST_AUTO_TEST_CASE(array_1d_parallel)
 
         Result result{3, 3, 3};
 
-        fern::unary_disaggregate_operation<Algorithm,
-            fern::unary::DiscardDomainErrors,
-            fern::unary::DiscardRangeErrors>(
+        fa::unary_disaggregate_operation<Algorithm,
+            fa::unary::DiscardDomainErrors,
+            fa::unary::DiscardRangeErrors>(
                 InputNoDataPolicy(), output_no_data_policy,
-                fern::parallel, argument, result);
+                fa::parallel, argument, result);
 
         BOOST_REQUIRE_EQUAL(result[0], 5);
         BOOST_REQUIRE_EQUAL(result[1], 5);
@@ -224,11 +227,11 @@ BOOST_AUTO_TEST_CASE(array_1d_parallel)
 
         Result result;
 
-        fern::unary_disaggregate_operation<Algorithm,
-            fern::unary::DiscardDomainErrors,
-            fern::unary::DiscardRangeErrors>(
+        fa::unary_disaggregate_operation<Algorithm,
+            fa::unary::DiscardDomainErrors,
+            fa::unary::DiscardRangeErrors>(
                 InputNoDataPolicy(), output_no_data_policy,
-                fern::parallel, argument, result);
+                fa::parallel, argument, result);
 
         BOOST_CHECK(result.empty());
     }
@@ -239,8 +242,8 @@ BOOST_AUTO_TEST_CASE(array_1d_masked)
 {
     using Argument = fern::MaskedConstant<ArgumentValue>;
     using Result = fern::MaskedArray<ResultValue, 1>;
-    using InputNoDataPolicy = fern::DetectNoDataByValue<bool>;
-    using OutputNoDataPolicy = fern::MarkNoDataByValue<fern::Mask<1>>;
+    using InputNoDataPolicy = fa::DetectNoDataByValue<bool>;
+    using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<1>>;
 
 
     {
@@ -252,11 +255,11 @@ BOOST_AUTO_TEST_CASE(array_1d_masked)
 
         result.fill(3);
 
-        fern::unary_disaggregate_operation<Algorithm,
-            fern::unary::DiscardDomainErrors,
-            fern::unary::DiscardRangeErrors>(
+        fa::unary_disaggregate_operation<Algorithm,
+            fa::unary::DiscardDomainErrors,
+            fa::unary::DiscardRangeErrors>(
                 input_no_data_policy, output_no_data_policy,
-                fern::sequential, argument, result);
+                fa::sequential, argument, result);
 
         BOOST_REQUIRE_EQUAL(result.mask()[0], false);
         BOOST_REQUIRE_EQUAL(result.mask()[1], false);
@@ -269,11 +272,11 @@ BOOST_AUTO_TEST_CASE(array_1d_masked)
         result.fill(3);
         result.mask().fill(argument.mask());
 
-        fern::unary_disaggregate_operation<Algorithm,
-            fern::unary::DiscardDomainErrors,
-            fern::unary::DiscardRangeErrors>(
+        fa::unary_disaggregate_operation<Algorithm,
+            fa::unary::DiscardDomainErrors,
+            fa::unary::DiscardRangeErrors>(
                 input_no_data_policy, output_no_data_policy,
-                fern::sequential, argument, result);
+                fa::sequential, argument, result);
 
         BOOST_REQUIRE_EQUAL(result.mask()[0], true);
         BOOST_REQUIRE_EQUAL(result.mask()[1], true);
@@ -291,11 +294,11 @@ BOOST_AUTO_TEST_CASE(array_1d_masked)
         InputNoDataPolicy input_no_data_policy(argument.mask(), true);
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
-        fern::unary_disaggregate_operation<Algorithm,
-            fern::unary::DiscardDomainErrors,
-            fern::unary::DiscardRangeErrors>(
+        fa::unary_disaggregate_operation<Algorithm,
+            fa::unary::DiscardDomainErrors,
+            fa::unary::DiscardRangeErrors>(
                 input_no_data_policy, output_no_data_policy,
-                fern::sequential, argument, result);
+                fa::sequential, argument, result);
 
         BOOST_CHECK(result.empty());
     }
@@ -304,8 +307,8 @@ BOOST_AUTO_TEST_CASE(array_1d_masked)
 
 BOOST_AUTO_TEST_CASE(array_2d_sequential)
 {
-    using InputNoDataPolicy = fern::SkipNoData<>;
-    using OutputNoDataPolicy = fern::DontMarkNoData;
+    using InputNoDataPolicy = fa::SkipNoData<>;
+    using OutputNoDataPolicy = fa::DontMarkNoData;
     using Argument = ArgumentValue;
     using Result = fern::Array<ResultValue, 2>;
 
@@ -318,11 +321,11 @@ BOOST_AUTO_TEST_CASE(array_2d_sequential)
         { 3, 3 }
     };
 
-    fern::unary_disaggregate_operation<Algorithm,
-        fern::unary::DiscardDomainErrors,
-        fern::unary::DiscardRangeErrors>(
+    fa::unary_disaggregate_operation<Algorithm,
+        fa::unary::DiscardDomainErrors,
+        fa::unary::DiscardRangeErrors>(
             InputNoDataPolicy(), output_no_data_policy,
-            fern::sequential, argument, result);
+            fa::sequential, argument, result);
 
     BOOST_CHECK_EQUAL(result[0][0], 5);
     BOOST_CHECK_EQUAL(result[0][1], 5);
@@ -335,8 +338,8 @@ BOOST_AUTO_TEST_CASE(array_2d_sequential)
 
 BOOST_AUTO_TEST_CASE(array_2d_parallel)
 {
-    using InputNoDataPolicy = fern::SkipNoData<>;
-    using OutputNoDataPolicy = fern::DontMarkNoData;
+    using InputNoDataPolicy = fa::SkipNoData<>;
+    using OutputNoDataPolicy = fa::DontMarkNoData;
     using Argument = ArgumentValue;
     using Result = fern::Array<ResultValue, 2>;
 
@@ -349,11 +352,11 @@ BOOST_AUTO_TEST_CASE(array_2d_parallel)
         { 3, 3 }
     };
 
-    fern::unary_disaggregate_operation<Algorithm,
-        fern::unary::DiscardDomainErrors,
-        fern::unary::DiscardRangeErrors>(
+    fa::unary_disaggregate_operation<Algorithm,
+        fa::unary::DiscardDomainErrors,
+        fa::unary::DiscardRangeErrors>(
             InputNoDataPolicy(), output_no_data_policy,
-            fern::parallel, argument, result);
+            fa::parallel, argument, result);
 
     BOOST_CHECK_EQUAL(result[0][0], 5);
     BOOST_CHECK_EQUAL(result[0][1], 5);
@@ -368,8 +371,8 @@ BOOST_AUTO_TEST_CASE(array_2d_masked)
 {
     using Argument = fern::MaskedConstant<ArgumentValue>;
     using Result = fern::MaskedArray<ResultValue, 2>;
-    using InputNoDataPolicy = fern::DetectNoDataByValue<bool>;
-    using OutputNoDataPolicy = fern::MarkNoDataByValue<fern::Mask<2>>;
+    using InputNoDataPolicy = fa::DetectNoDataByValue<bool>;
+    using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<2>>;
 
     {
         Argument argument{5};
@@ -384,11 +387,11 @@ BOOST_AUTO_TEST_CASE(array_2d_masked)
 
         result.fill(3);
 
-        fern::unary_disaggregate_operation<Algorithm,
-            fern::unary::DiscardDomainErrors,
-            fern::unary::DiscardRangeErrors>(
+        fa::unary_disaggregate_operation<Algorithm,
+            fa::unary::DiscardDomainErrors,
+            fa::unary::DiscardRangeErrors>(
                 input_no_data_policy, output_no_data_policy,
-                fern::sequential, argument, result);
+                fa::sequential, argument, result);
 
         BOOST_REQUIRE_EQUAL(result.mask()[0][0], false);
         BOOST_REQUIRE_EQUAL(result.mask()[0][0], false);
@@ -407,11 +410,11 @@ BOOST_AUTO_TEST_CASE(array_2d_masked)
         result.fill(3);
         result.mask().fill(argument.mask());
 
-        fern::unary_disaggregate_operation<Algorithm,
-            fern::unary::DiscardDomainErrors,
-            fern::unary::DiscardRangeErrors>(
+        fa::unary_disaggregate_operation<Algorithm,
+            fa::unary::DiscardDomainErrors,
+            fa::unary::DiscardRangeErrors>(
                 input_no_data_policy, output_no_data_policy,
-                fern::sequential, argument, result);
+                fa::sequential, argument, result);
 
         BOOST_REQUIRE_EQUAL(result.mask()[0][0], true);
         BOOST_REQUIRE_EQUAL(result.mask()[0][0], true);
@@ -435,11 +438,11 @@ BOOST_AUTO_TEST_CASE(array_2d_masked)
         InputNoDataPolicy input_no_data_policy(argument.mask(), true);
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
-        fern::unary_disaggregate_operation<Algorithm,
-            fern::unary::DiscardDomainErrors,
-            fern::unary::DiscardRangeErrors>(
+        fa::unary_disaggregate_operation<Algorithm,
+            fa::unary::DiscardDomainErrors,
+            fa::unary::DiscardRangeErrors>(
                 input_no_data_policy, output_no_data_policy,
-                fern::sequential, argument, result);
+                fa::sequential, argument, result);
 
         BOOST_CHECK(result.empty());
     }

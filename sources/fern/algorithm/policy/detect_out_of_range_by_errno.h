@@ -3,6 +3,7 @@
 
 
 namespace fern {
+namespace algorithm {
 
 template<
     class... Parameters>
@@ -25,4 +26,5 @@ inline constexpr bool DetectOutOfRangeByErrno<Parameters...>::within_range(
     return errno != ERANGE;
 }
 
+} // namespace algorithm
 } // namespace fern

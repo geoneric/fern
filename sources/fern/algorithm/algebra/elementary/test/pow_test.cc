@@ -5,12 +5,15 @@
 #include "fern/algorithm/algebra/elementary/pow.h"
 
 
+namespace fa = fern::algorithm;
+
+
 BOOST_AUTO_TEST_SUITE(pow_)
 
 template<
     class Value1,
     class Value2>
-using OutOfDomainPolicy = fern::pow::OutOfDomainPolicy<Value1, Value2>;
+using OutOfDomainPolicy = fa::pow::OutOfDomainPolicy<Value1, Value2>;
 
 
 BOOST_AUTO_TEST_CASE(out_of_domain_policy)
@@ -30,7 +33,7 @@ template<
     class Value1,
     class Value2,
     class Result>
-using OutOfRangePolicy = fern::pow::OutOfRangePolicy<Value1, Value2, Result>;
+using OutOfRangePolicy = fa::pow::OutOfRangePolicy<Value1, Value2, Result>;
 
 
 template<
@@ -46,7 +49,7 @@ struct VerifyWithinRange
         OutOfRangePolicy<Value1, Value2, Result> policy;
         Result result;
 
-        fern::algebra::pow(fern::sequential, value1, value2, result);
+        fa::algebra::pow(fa::sequential, value1, value2, result);
 
         return policy.within_range(value1, value2, result);
     }
@@ -76,7 +79,7 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::algebra::pow(fern::sequential, value1, value2, result_we_get);
+    fa::algebra::pow(fa::sequential, value1, value2, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 

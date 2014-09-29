@@ -2,6 +2,7 @@
 
 
 namespace fern {
+namespace algorithm {
 
 // Operation categories. Used in tag dispatching.
 
@@ -32,4 +33,5 @@ struct zonal_operation_tag {};
 
 struct global_operation_tag {};
 
+} // namespace algorithm
 } // namespace fern

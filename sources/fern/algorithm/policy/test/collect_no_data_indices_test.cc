@@ -7,7 +7,7 @@
 template<
     class Collection>
 struct PolicyHost:
-    public fern::CollectNoDataIndices<Collection>
+    public fern::algorithm::CollectNoDataIndices<Collection>
 {
 };
 

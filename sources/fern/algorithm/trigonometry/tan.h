@@ -6,6 +6,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace tan {
 
 //! Out-of-domain policy for fern::trigonometry::tan algorithm.
@@ -132,4 +133,5 @@ void tan(
 }
 
 } // namespace trigonometry
+} // namespace algorithm
 } // namespace fern

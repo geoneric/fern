@@ -6,6 +6,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace atan {
 namespace detail {
 
@@ -53,4 +54,5 @@ void atan(
 
 } // namespace detail
 } // namespace atan
+} // namespace algorithm
 } // namespace fern

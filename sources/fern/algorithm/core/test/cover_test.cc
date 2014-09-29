@@ -7,6 +7,9 @@
 #include "fern/algorithm/core/test/test_utils.h"
 
 
+namespace fa = fern::algorithm;
+
+
 BOOST_AUTO_TEST_SUITE(cover)
 
 template<
@@ -19,7 +22,7 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::core::cover<>(fern::sequential, value1, value2, result_we_get);
+    fa::core::cover<>(fa::sequential, value1, value2, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 
@@ -41,16 +44,16 @@ BOOST_AUTO_TEST_CASE(array_2d_masked_0d)
     int const value2{3};
     fern::MaskedArray<int, 2> result_we_got(fern::extents[nr_rows][nr_cols]);
 
-    fern::DetectNoDataByValue<fern::Mask<2>> value1_input_no_data_policy(
+    fa::DetectNoDataByValue<fern::Mask<2>> value1_input_no_data_policy(
         value1.mask(), true);
-    fern::SkipNoData<> value2_input_no_data_policy;
+    fa::SkipNoData<> value2_input_no_data_policy;
 
-    fern::DetectNoDataByValue<fern::Mask<2>,
-        fern::DetectNoDataByValue<fern::Mask<2>>,
-        fern::SkipNoData<>> input_no_data_policy(result_we_got.mask(), true,
+    fa::DetectNoDataByValue<fern::Mask<2>,
+        fa::DetectNoDataByValue<fern::Mask<2>>,
+        fa::SkipNoData<>> input_no_data_policy(result_we_got.mask(), true,
             std::move(value1_input_no_data_policy),
             std::move(value2_input_no_data_policy));
-    fern::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
+    fa::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
         result_we_got.mask(), true);
 
 
@@ -73,9 +76,9 @@ BOOST_AUTO_TEST_CASE(array_2d_masked_0d)
     result_we_want[2][1] = value1[2][1];
     result_we_want[2][2] = value1[2][2];
 
-    auto const& execution_policy(fern::sequential);
+    auto const& execution_policy(fa::sequential);
 
-    fern::core::cover(input_no_data_policy, output_no_data_policy,
+    fa::core::cover(input_no_data_policy, output_no_data_policy,
         execution_policy, value1, value2, result_we_got);
 
     BOOST_CHECK(fern::compare(execution_policy, result_we_got,
@@ -154,42 +157,42 @@ BOOST_AUTO_TEST_CASE(array_2d_masked_2d)
     result_we_want.mask()[2][0] = true;
 
 
-    auto const& execution_policy(fern::sequential);
+    auto const& execution_policy(fa::sequential);
 
-    fern::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
+    fa::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
         result_we_got1.mask(), true);
 
     // result1 = cover(value1, value2)
     {
-        fern::DetectNoDataByValue<fern::Mask<2>,
-            fern::DetectNoDataByValue<fern::Mask<2>>,
-            fern::DetectNoDataByValue<fern::Mask<2>>> input_no_data_policy(
+        fa::DetectNoDataByValue<fern::Mask<2>,
+            fa::DetectNoDataByValue<fern::Mask<2>>,
+            fa::DetectNoDataByValue<fern::Mask<2>>> input_no_data_policy(
                 result_we_got1.mask(), true,
-                fern::DetectNoDataByValue<fern::Mask<2>>(value1.mask(), true),
-                fern::DetectNoDataByValue<fern::Mask<2>>(value2.mask(), true));
+                fa::DetectNoDataByValue<fern::Mask<2>>(value1.mask(), true),
+                fa::DetectNoDataByValue<fern::Mask<2>>(value2.mask(), true));
 
-        fern::algebra::and_(execution_policy, value1.mask(), value2.mask(),
+        fa::algebra::and_(execution_policy, value1.mask(), value2.mask(),
             result_we_got1.mask());
 
-        fern::core::cover(input_no_data_policy, output_no_data_policy,
+        fa::core::cover(input_no_data_policy, output_no_data_policy,
             execution_policy, value1, value2, result_we_got1);
 
     }
 
     // result2 = cover(result1, value3)
     {
-        fern::DetectNoDataByValue<fern::Mask<2>,
-            fern::DetectNoDataByValue<fern::Mask<2>>,
-            fern::DetectNoDataByValue<fern::Mask<2>>> input_no_data_policy(
+        fa::DetectNoDataByValue<fern::Mask<2>,
+            fa::DetectNoDataByValue<fern::Mask<2>>,
+            fa::DetectNoDataByValue<fern::Mask<2>>> input_no_data_policy(
                 result_we_got2.mask(), true,
-                fern::DetectNoDataByValue<fern::Mask<2>>(result_we_got1.mask(),
+                fa::DetectNoDataByValue<fern::Mask<2>>(result_we_got1.mask(),
                     true),
-                fern::DetectNoDataByValue<fern::Mask<2>>(value3.mask(), true));
+                fa::DetectNoDataByValue<fern::Mask<2>>(value3.mask(), true));
 
-        fern::algebra::and_(execution_policy, result_we_got1.mask(),
+        fa::algebra::and_(execution_policy, result_we_got1.mask(),
             value3.mask(), result_we_got2.mask());
 
-        fern::core::cover(input_no_data_policy, output_no_data_policy,
+        fa::core::cover(input_no_data_policy, output_no_data_policy,
             execution_policy, result_we_got1, value3, result_we_got2);
     }
 

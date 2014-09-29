@@ -3,6 +3,7 @@
 
 
 namespace fern {
+namespace algorithm {
 
 //! Default construct an IndexRange instance.
 /*!
@@ -115,4 +116,5 @@ std::ostream& operator<<(
     return stream;
 }
 
+} // namespace algorithm
 } // namespace fern

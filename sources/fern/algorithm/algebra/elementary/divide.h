@@ -5,16 +5,17 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace divide {
 
 //! Determine the result type when dividing instances of \a Value1 with \a Value2.
 /*!
-    \sa            fern::divide::result_value_type, fern::Result
+    \sa            fern::divide::result_value_type, fern::algorithm::Result
 */
 template<
     class Value1,
     class Value2>
-using result_type = typename fern::Result<Value1, Value2>::type;
+using result_type = typename fern::algorithm::Result<Value1, Value2>::type;
 
 
 //! Determine the result value type when dividing instances of \a Value1 with \a Value2.
@@ -24,7 +25,7 @@ using result_type = typename fern::Result<Value1, Value2>::type;
 template<
     class Value1,
     class Value2>
-using result_value_type = typename fern::Result<value_type<Value1>,
+using result_value_type = typename fern::algorithm::Result<value_type<Value1>,
     value_type<Value2>>::type;
 
 
@@ -207,4 +208,5 @@ void divide(
 }
 
 } // namespace algebra
+} // namespace algorithm
 } // namespace fern

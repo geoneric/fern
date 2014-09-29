@@ -5,6 +5,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace core {
 
 //! Offset the elements in \a value by \a offset_ and write the result to \a result.
@@ -193,4 +194,5 @@ void offset(
 }
 
 } // namespace core
+} // namespace algorithm
 } // namespace fern

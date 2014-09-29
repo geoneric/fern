@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace lax {
 namespace detail {
 namespace dispatch {
@@ -82,7 +83,7 @@ struct Lax<
         algebra::multiply<
             // TODO: Select OutOfRange policy based on the
             //       output-no-data-policy passed in.
-            fern::multiply::OutOfRangePolicy>(
+            algorithm::multiply::OutOfRangePolicy>(
                 input_no_data_policy, output_no_data_policy, execution_policy,
                 fraction, result, result);
 
@@ -91,14 +92,14 @@ struct Lax<
         algebra::multiply<
             // TODO: Select OutOfRange policy based on the
             //       output-no-data-policy passed in.
-            fern::multiply::OutOfRangePolicy>(
+            algorithm::multiply::OutOfRangePolicy>(
                 input_no_data_policy, output_no_data_policy, execution_policy,
                 (1.0 - fraction), value, multiplied_values);
 
         algebra::add<
             // TODO: Select OutOfRange policy based on the
             //       output-no-data-policy passed in.
-            fern::add::OutOfRangePolicy>(
+            algorithm::add::OutOfRangePolicy>(
                 input_no_data_policy, output_no_data_policy, execution_policy,
                 multiplied_values, result, result);
     }
@@ -136,4 +137,5 @@ void lax(
 
 } // namespace detail
 } // namespace lax
+} // namespace algorithm
 } // namespace fern

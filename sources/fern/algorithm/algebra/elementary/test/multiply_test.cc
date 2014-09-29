@@ -7,13 +7,16 @@
 #include "fern/algorithm/algebra/elementary/multiply.h"
 
 
+namespace fa = fern::algorithm;
+
+
 BOOST_AUTO_TEST_SUITE(multiply)
 
 template<
     class Value1,
     class Value2,
     class Result>
-using OutOfRangePolicy = fern::multiply::OutOfRangePolicy<Value1, Value2,
+using OutOfRangePolicy = fa::multiply::OutOfRangePolicy<Value1, Value2,
     Result>;
 
 
@@ -30,7 +33,7 @@ struct VerifyWithinRange
         OutOfRangePolicy<Value1, Value2, Result> policy;
         Result result;
 
-        fern::algebra::multiply(fern::sequential, value1, value2, result);
+        fa::algebra::multiply(fa::sequential, value1, value2, result);
 
         return policy.within_range(value1, value2, result);
     }
@@ -173,7 +176,7 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fern::algebra::multiply(fern::sequential, value1, value2, result_we_get);
+    fa::algebra::multiply(fa::sequential, value1, value2, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 

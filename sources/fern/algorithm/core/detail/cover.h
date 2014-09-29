@@ -8,6 +8,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace cover {
 namespace detail {
 
@@ -407,7 +408,7 @@ struct CoverByExecutionPolicy<
         Result& result)
     {
         switch(execution_policy.which()) {
-            case fern::detail::sequential_execution_policy_id: {
+            case fern::algorithm::detail::sequential_execution_policy_id: {
                 CoverByArgumentCategory<
                     InputNoDataPolicy,
                     OutputNoDataPolicy,
@@ -419,11 +420,12 @@ struct CoverByExecutionPolicy<
                     base_class<argument_category<Value2>, array_2d_tag>>
                         ::apply(
                             input_no_data_policy, output_no_data_policy,
-                            fern::detail::get_policy<SequentialExecutionPolicy>(
-                                execution_policy), value1, value2, result);
+                            fern::algorithm::detail::get_policy<
+                                SequentialExecutionPolicy>(execution_policy),
+                            value1, value2, result);
                 break;
             }
-            case fern::detail::parallel_execution_policy_id: {
+            case fern::algorithm::detail::parallel_execution_policy_id: {
                 CoverByArgumentCategory<
                     InputNoDataPolicy,
                     OutputNoDataPolicy,
@@ -435,8 +437,9 @@ struct CoverByExecutionPolicy<
                     base_class<argument_category<Value2>, array_2d_tag>>
                         ::apply(
                             input_no_data_policy, output_no_data_policy,
-                            fern::detail::get_policy<ParallelExecutionPolicy>(
-                                execution_policy), value1, value2, result);
+                            fern::algorithm::detail::get_policy<
+                                ParallelExecutionPolicy>(execution_policy),
+                            value1, value2, result);
                 break;
             }
         }
@@ -470,4 +473,5 @@ static void cover(
 
 } // namespace detail
 } // namespace cover
+} // namespace algorithm
 } // namespace fern

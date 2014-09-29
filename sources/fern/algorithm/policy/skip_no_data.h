@@ -4,6 +4,7 @@
 
 
 namespace fern {
+namespace algorithm {
 
 template<
     class... ArgumentNoDataPolicies>
@@ -102,4 +103,5 @@ inline SkipNoData<ArgumentNoDataPolicies...>::SkipNoData(
 {
 }
 
+} // namespace algorithm
 } // namespace fern

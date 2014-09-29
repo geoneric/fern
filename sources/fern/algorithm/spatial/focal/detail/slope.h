@@ -9,6 +9,7 @@
 
 
 namespace fern {
+namespace algorithm {
 namespace slope {
 namespace detail {
 namespace dispatch {
@@ -94,8 +95,8 @@ struct Slope<
                 value, dz_dx_kernel, dz_dx);
 
         algebra::divide<
-            fern::divide::OutOfDomainPolicy,  // TODO Pick correct policy.
-            fern::divide::OutOfRangePolicy>(  // TODO Pick correct policy.
+            divide::OutOfDomainPolicy,  // TODO Pick correct policy.
+            divide::OutOfRangePolicy>(  // TODO Pick correct policy.
                 input_no_data_policy, output_no_data_policy, execution_policy,
                 dz_dx, 8 * cell_size(value, 0), dz_dx);
 
@@ -109,8 +110,8 @@ struct Slope<
                 value, dz_dy_kernel, dz_dy);
 
         algebra::divide<
-            fern::divide::OutOfDomainPolicy,  // TODO Pick correct policy.
-            fern::divide::OutOfRangePolicy>(  // TODO Pick correct policy.
+            divide::OutOfDomainPolicy,  // TODO Pick correct policy.
+            divide::OutOfRangePolicy>(  // TODO Pick correct policy.
                 input_no_data_policy, output_no_data_policy, execution_policy,
                 dz_dy, 8 * cell_size(value, 1), dz_dy);
 
@@ -127,7 +128,7 @@ struct Slope<
                 dz_dy, Float(2), dz_dy);
 
         algebra::add<
-            fern::add::OutOfRangePolicy>(  // TODO Pick correct policy.
+            add::OutOfRangePolicy>(  // TODO Pick correct policy.
                 input_no_data_policy, output_no_data_policy, execution_policy,
                 dz_dx, dz_dy, result);
 
@@ -173,4 +174,5 @@ void slope(
 
 } // namespace detail
 } // namespace slope
+} // namespace algorithm
 } // namespace fern
