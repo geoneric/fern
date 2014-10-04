@@ -24,9 +24,9 @@ BOOST_AUTO_TEST_CASE(array_1d)
     std::vector<int> result = { 1, 2, 3, 4, 5 };
     fa::core::fill(fa::sequential, 3, result);
 
-    size_t count;
+    uint64_t count;
     fa::statistic::count(fa::sequential, result, 3, count);
-    BOOST_CHECK_EQUAL(count, 5);
+    BOOST_CHECK_EQUAL(count, 5u);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

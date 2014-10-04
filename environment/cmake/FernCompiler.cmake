@@ -42,6 +42,11 @@ IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR
     SET(CMAKE_CXX_FLAGS
         "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wcast-qual -Wwrite-strings -Werror=strict-aliasing -pedantic -fno-strict-overflow -ftemplate-backtrace-limit=0"
     )
+    IF(APPLE)
+        SET(CMAKE_CXX_FLAGS
+            "${CMAKE_CXX_FLAGS} -Wno-unused-local-typedefs"
+        )
+    ENDIF()
 ENDIF()
 
 IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")

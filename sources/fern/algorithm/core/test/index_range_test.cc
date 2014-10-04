@@ -14,24 +14,24 @@ BOOST_AUTO_TEST_CASE(constructor)
         fa::IndexRange range;
 
         BOOST_CHECK(range.empty());
-        BOOST_CHECK_EQUAL(range.begin(), 0);
-        BOOST_CHECK_EQUAL(range.end(), 0);
+        BOOST_CHECK_EQUAL(range.begin(), 0u);
+        BOOST_CHECK_EQUAL(range.end(), 0u);
     }
 
     {
         fa::IndexRange range(3, 6);
 
         BOOST_CHECK(!range.empty());
-        BOOST_CHECK_EQUAL(range.begin(), 3);
-        BOOST_CHECK_EQUAL(range.end(), 6);
+        BOOST_CHECK_EQUAL(range.begin(), 3u);
+        BOOST_CHECK_EQUAL(range.end(), 6u);
     }
 
     {
         fa::IndexRange range(5, 5);
 
         BOOST_CHECK(range.empty());
-        BOOST_CHECK_EQUAL(range.begin(), 5);
-        BOOST_CHECK_EQUAL(range.end(), 5);
+        BOOST_CHECK_EQUAL(range.begin(), 5u);
+        BOOST_CHECK_EQUAL(range.end(), 5u);
     }
 }
 
