@@ -15,11 +15,11 @@ BOOST_AUTO_TEST_CASE(constructor)
 
         BOOST_CHECK(ranges.empty());
         BOOST_CHECK(ranges[0].empty());
-        BOOST_CHECK_EQUAL(ranges[0].begin(), 0);
-        BOOST_CHECK_EQUAL(ranges[0].end(), 0);
+        BOOST_CHECK_EQUAL(ranges[0].begin(), 0u);
+        BOOST_CHECK_EQUAL(ranges[0].end(), 0u);
         BOOST_CHECK(ranges[1].empty());
-        BOOST_CHECK_EQUAL(ranges[1].begin(), 0);
-        BOOST_CHECK_EQUAL(ranges[1].end(), 0);
+        BOOST_CHECK_EQUAL(ranges[1].begin(), 0u);
+        BOOST_CHECK_EQUAL(ranges[1].end(), 0u);
     }
 
     {
@@ -29,11 +29,11 @@ BOOST_AUTO_TEST_CASE(constructor)
 
         BOOST_CHECK(ranges.empty());
         BOOST_CHECK(ranges[0].empty());
-        BOOST_CHECK_EQUAL(ranges[0].begin(), 5);
-        BOOST_CHECK_EQUAL(ranges[0].end(), 5);
+        BOOST_CHECK_EQUAL(ranges[0].begin(), 5u);
+        BOOST_CHECK_EQUAL(ranges[0].end(), 5u);
         BOOST_CHECK(!ranges[1].empty());
-        BOOST_CHECK_EQUAL(ranges[1].begin(), 3);
-        BOOST_CHECK_EQUAL(ranges[1].end(), 4);
+        BOOST_CHECK_EQUAL(ranges[1].begin(), 3u);
+        BOOST_CHECK_EQUAL(ranges[1].end(), 4u);
     }
 
     {
@@ -43,11 +43,11 @@ BOOST_AUTO_TEST_CASE(constructor)
 
         BOOST_CHECK(!ranges.empty());
         BOOST_CHECK(!ranges[0].empty());
-        BOOST_CHECK_EQUAL(ranges[0].begin(), 5);
-        BOOST_CHECK_EQUAL(ranges[0].end(), 9);
+        BOOST_CHECK_EQUAL(ranges[0].begin(), 5u);
+        BOOST_CHECK_EQUAL(ranges[0].end(), 9u);
         BOOST_CHECK(!ranges[1].empty());
-        BOOST_CHECK_EQUAL(ranges[1].begin(), 3);
-        BOOST_CHECK_EQUAL(ranges[1].end(), 4);
+        BOOST_CHECK_EQUAL(ranges[1].begin(), 3u);
+        BOOST_CHECK_EQUAL(ranges[1].end(), 4u);
     }
 }
 
@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE(index_ranges_1)
     // Array is evenly divisable between the number of worker threads.
     {
         auto ranges = fa::index_ranges(4, 100);
-        BOOST_CHECK_EQUAL(ranges.size(), 4);
+        BOOST_CHECK_EQUAL(ranges.size(), 4u);
         BOOST_CHECK_EQUAL(ranges[0],
             fa::IndexRanges<1>(
                 fa::IndexRange(0, 25)));
@@ -76,7 +76,7 @@ BOOST_AUTO_TEST_CASE(index_ranges_1)
     // There are remaining values.
     {
         auto ranges = fa::index_ranges(3, 100);
-        BOOST_CHECK_EQUAL(ranges.size(), 4);
+        BOOST_CHECK_EQUAL(ranges.size(), 4u);
         BOOST_CHECK_EQUAL(ranges[0],
             fa::IndexRanges<1>(
                 fa::IndexRange(0, 33)));
@@ -94,7 +94,7 @@ BOOST_AUTO_TEST_CASE(index_ranges_1)
     // More threads than values.
     {
         auto ranges = fa::index_ranges(3, 2);
-        BOOST_CHECK_EQUAL(ranges.size(), 1);
+        BOOST_CHECK_EQUAL(ranges.size(), 1u);
         BOOST_CHECK_EQUAL(ranges[0],
             fa::IndexRanges<1>(
                 fa::IndexRange(0, 2)));
@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_CASE(index_ranges_1)
     // One thread.
     {
         auto ranges = fa::index_ranges(1, 100);
-        BOOST_CHECK_EQUAL(ranges.size(), 1);
+        BOOST_CHECK_EQUAL(ranges.size(), 1u);
         BOOST_CHECK_EQUAL(ranges[0],
             fa::IndexRanges<1>(
                 fa::IndexRange(0, 100)));
@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE(index_ranges_1)
     // No values.
     {
         auto ranges = fa::index_ranges(3, 0);
-        BOOST_CHECK_EQUAL(ranges.size(), 0);
+        BOOST_CHECK_EQUAL(ranges.size(), 0u);
     }
 }
 
@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE(index_ranges_2)
     // Array is evenly divisable between the number of worker threads.
     {
         auto ranges = fa::index_ranges(4, 100, 200);
-        BOOST_CHECK_EQUAL(ranges.size(), 4);
+        BOOST_CHECK_EQUAL(ranges.size(), 4u);
         BOOST_CHECK_EQUAL(ranges[0],
             fa::IndexRanges<2>(
                 fa::IndexRange(0, 25),
@@ -145,7 +145,7 @@ BOOST_AUTO_TEST_CASE(index_ranges_2)
     // There are remaining values.
     {
         auto ranges = fa::index_ranges(3, 100, 200);
-        BOOST_CHECK_EQUAL(ranges.size(), 4);
+        BOOST_CHECK_EQUAL(ranges.size(), 4u);
         BOOST_CHECK_EQUAL(ranges[0],
             fa::IndexRanges<2>(
                 fa::IndexRange(0, 33),
@@ -167,7 +167,7 @@ BOOST_AUTO_TEST_CASE(index_ranges_2)
     // More threads than values.
     {
         auto ranges = fa::index_ranges(3, 2, 200);
-        BOOST_CHECK_EQUAL(ranges.size(), 1);
+        BOOST_CHECK_EQUAL(ranges.size(), 1u);
         BOOST_CHECK_EQUAL(ranges[0],
             fa::IndexRanges<2>(
                 fa::IndexRange(0, 2),
@@ -177,7 +177,7 @@ BOOST_AUTO_TEST_CASE(index_ranges_2)
     // One thread.
     {
         auto ranges = fa::index_ranges(1, 100, 200);
-        BOOST_CHECK_EQUAL(ranges.size(), 1);
+        BOOST_CHECK_EQUAL(ranges.size(), 1u);
         BOOST_CHECK_EQUAL(ranges[0],
             fa::IndexRanges<2>(
                 fa::IndexRange(0, 100),
@@ -187,7 +187,7 @@ BOOST_AUTO_TEST_CASE(index_ranges_2)
     // No values.
     {
         auto ranges = fa::index_ranges(3, 0, 200);
-        BOOST_CHECK_EQUAL(ranges.size(), 0);
+        BOOST_CHECK_EQUAL(ranges.size(), 0u);
     }
 }
 
