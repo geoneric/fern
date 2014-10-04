@@ -29,17 +29,17 @@ BOOST_FIXTURE_TEST_SUITE(count, fern::ThreadClient)
 
 BOOST_AUTO_TEST_CASE(d0_array)
 {
-    verify_value<int8_t, size_t>(-5, 6, 0u);
-    verify_value<int8_t, size_t>(-5, -5, 1u);
-    verify_value<double, size_t>(-5.5, -5.5, 1u);
-    verify_value<double, size_t>(-5.5, -5.4, 0u);
+    verify_value<int8_t, uint64_t>(-5, 6, 0u);
+    verify_value<int8_t, uint64_t>(-5, -5, 1u);
+    verify_value<double, uint64_t>(-5.5, -5.5, 1u);
+    verify_value<double, uint64_t>(-5.5, -5.4, 0u);
 }
 
 
 BOOST_AUTO_TEST_CASE(masked_d0_array)
 {
     fern::MaskedConstant<int32_t> constant;
-    fern::MaskedConstant<size_t> result_we_get;
+    fern::MaskedConstant<uint64_t> result_we_get;
 
     // MaskedConstant with non-masking count. ----------------------------------
     // Constant is not masked.
@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE(masked_d0_array)
     BOOST_CHECK(!constant.mask());
     fa::statistic::count(fa::sequential, constant, 5, result_we_get);
     BOOST_CHECK(!result_we_get.mask());
-    BOOST_CHECK_EQUAL(result_we_get.value(), 1);
+    BOOST_CHECK_EQUAL(result_we_get.value(), 1u);
 
     // Constant is masked.
     constant.mask() = true;
@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE(masked_d0_array)
     BOOST_CHECK(constant.mask());
     fa::statistic::count(fa::sequential, constant, 5, result_we_get);
     BOOST_CHECK(!result_we_get.mask());
-    BOOST_CHECK_EQUAL(result_we_get.value(), 1);
+    BOOST_CHECK_EQUAL(result_we_get.value(), 1u);
 
     // MaskedConstant with masking count. --------------------------------------
     using InputNoDataPolicy = fa::DetectNoDataByValue<bool>;
@@ -80,7 +80,7 @@ BOOST_AUTO_TEST_CASE(masked_d0_array)
             fa::sequential,
             constant, 5, result_we_get);
     BOOST_CHECK(!result_we_get.mask());
-    BOOST_CHECK_EQUAL(result_we_get.value(), 1);
+    BOOST_CHECK_EQUAL(result_we_get.value(), 1u);
 
     // Constant is masked.
     constant.value() = 5;
@@ -95,26 +95,26 @@ BOOST_AUTO_TEST_CASE(masked_d0_array)
             fa::sequential,
             constant, 5, result_we_get);
     BOOST_CHECK(result_we_get.mask());
-    BOOST_CHECK_EQUAL(result_we_get.value(), 9);
+    BOOST_CHECK_EQUAL(result_we_get.value(), 9u);
 }
 
 
 BOOST_AUTO_TEST_CASE(d1_array)
 {
-    size_t result;
+    uint64_t result;
 
     // vector
     {
         std::vector<int32_t> array{ 1, 2, 3, 5 };
         fa::statistic::count(fa::sequential, array, 2, result);
-        BOOST_CHECK_EQUAL(result, 1);
+        BOOST_CHECK_EQUAL(result, 1u);
     }
 
     // 1d array
     {
         fern::Array<int32_t, 1> array{ 1, 2, 2, 5 };
         fa::statistic::count(fa::sequential, array, 2, result);
-        BOOST_CHECK_EQUAL(result, 2);
+        BOOST_CHECK_EQUAL(result, 2u);
     }
 
     // empty
@@ -123,7 +123,7 @@ BOOST_AUTO_TEST_CASE(d1_array)
         std::vector<int32_t> array;
         result = 5;
         fa::statistic::count(fa::sequential, array, 2, result);
-        BOOST_CHECK_EQUAL(result, 5);
+        BOOST_CHECK_EQUAL(result, 5u);
     }
 }
 
@@ -141,7 +141,7 @@ BOOST_AUTO_TEST_CASE(masked_d1_array)
         result.value() = 9;
         result.mask() = false;
         fa::statistic::count(fa::sequential, array, 2, result);
-        BOOST_CHECK_EQUAL(result.value(), 1);
+        BOOST_CHECK_EQUAL(result.value(), 1u);
     }
 
     // 1d masked array with masking count
@@ -155,7 +155,7 @@ BOOST_AUTO_TEST_CASE(masked_d1_array)
                 output_no_data_policy,
                 fa::sequential, array, 2, result);
         BOOST_CHECK(!result.mask());
-        BOOST_CHECK_EQUAL(result.value(), 1);
+        BOOST_CHECK_EQUAL(result.value(), 1u);
 
         // Mask the whole input. Result must be masked too.
         array.mask_all();
@@ -177,7 +177,7 @@ BOOST_AUTO_TEST_CASE(masked_d1_array)
                 output_no_data_policy,
                 fa::sequential, empty_array, 2, result);
         BOOST_CHECK(result.mask());
-        BOOST_CHECK_EQUAL(result.value(), 9);
+        BOOST_CHECK_EQUAL(result.value(), 9u);
     }
 }
 
@@ -191,9 +191,9 @@ BOOST_AUTO_TEST_CASE(d2_array)
             {  0,  9 },
             {  1,  2 }
         };
-        size_t result;
+        uint64_t result;
         fa::statistic::count(fa::sequential, array, 1, result);
-        BOOST_CHECK_EQUAL(result, 1);
+        BOOST_CHECK_EQUAL(result, 1u);
     }
 }
 
@@ -208,10 +208,10 @@ BOOST_AUTO_TEST_CASE(masked_d2_array)
 
     // 2d masked array with non-masking count
     {
-        fern::MaskedConstant<size_t> result;
+        fern::MaskedConstant<uint64_t> result;
         fa::statistic::count(fa::sequential, array, -2, result);
         BOOST_CHECK(!result.mask());
-        BOOST_CHECK_EQUAL(result.value(), 1);
+        BOOST_CHECK_EQUAL(result.value(), 1u);
     }
 
     // 2d masked array with masking count
@@ -223,13 +223,13 @@ BOOST_AUTO_TEST_CASE(masked_d2_array)
         array.mask()[1][1] = true;
 
         // Count 2's.
-        fern::MaskedConstant<size_t> result;
+        fern::MaskedConstant<uint64_t> result;
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
         fa::statistic::count(
                 InputNoDataPolicy(array.mask(), true), output_no_data_policy,
                 fa::sequential, array, 2, result);
         BOOST_CHECK(!result.mask());
-        BOOST_CHECK_EQUAL(result.value(), 1);
+        BOOST_CHECK_EQUAL(result.value(), 1u);
 
         // Count 9's. The one present is not visible, so the result is 0.
         result.value() = 999;
@@ -237,7 +237,7 @@ BOOST_AUTO_TEST_CASE(masked_d2_array)
                 InputNoDataPolicy(array.mask(), true), output_no_data_policy,
                 fa::sequential, array, 9, result);
         BOOST_CHECK(!result.mask());
-        BOOST_CHECK_EQUAL(result.value(), 0);
+        BOOST_CHECK_EQUAL(result.value(), 0u);
 
         // Mask the whole input. Result must be masked too.
         array.mask_all();
@@ -258,8 +258,8 @@ BOOST_AUTO_TEST_CASE(concurrent)
     size_t const nr_cols = 400;
     auto const extents = fern::extents[nr_rows][nr_cols];
     fern::Array<int32_t, 2> argument(extents);
-    size_t result_we_got;
-    size_t result_we_want;
+    uint64_t result_we_got;
+    uint64_t result_we_want;
 
     std::iota(argument.data(), argument.data() + argument.num_elements(), 0);
     result_we_want = 1;

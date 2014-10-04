@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE(raster)
     std::iota(raster.data(), raster.data() + raster.num_elements(), 0);
 
     BOOST_CHECK_EQUAL(raster[0][0], 0);
-    BOOST_CHECK_EQUAL(raster[1][0], nr_cols);
+    BOOST_CHECK_EQUAL(raster[1][0], static_cast<int>(nr_cols));
 
     BOOST_CHECK_EQUAL(raster.transformation()[0], west);
     BOOST_CHECK_EQUAL(raster.transformation()[1], cell_width);
