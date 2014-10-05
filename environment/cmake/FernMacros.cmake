@@ -127,3 +127,36 @@ MACRO(VERIFY_HEADERS_ARE_SELF_SUFFICIENT)
         ENDIF()
     ENDFOREACH()
 ENDMACRO()
+
+
+# TODO Can we somehow configure the extension to end up in bin/python instead
+# TODO of bin? Currently we cannot have a dll and a python extension
+# TODO both named bla. On Windows the import lib of the python extension will
+# TODO conflict with the import lib of the dll.
+MACRO(CONFIGURE_PYTHON_EXTENSION
+        EXTENTION_TARGET
+        EXTENSION_NAME)
+    SET_TARGET_PROPERTIES(${EXTENTION_TARGET}
+        PROPERTIES
+            OUTPUT_NAME "${EXTENSION_NAME}"
+    )
+
+    # Configure suffix and prefix, depending on the Python OS conventions.
+    SET_TARGET_PROPERTIES(${EXTENTION_TARGET}
+        PROPERTIES
+            PREFIX ""
+    )
+
+    IF(WIN32)
+        SET_TARGET_PROPERTIES(${EXTENTION_TARGET}
+            PROPERTIES
+                DEBUG_POSTFIX "_d"
+                SUFFIX ".pyd"
+        )
+    ELSE(WIN32)
+        SET_TARGET_PROPERTIES(${EXTENTION_TARGET}
+            PROPERTIES
+                SUFFIX ".so"
+        )
+    ENDIF(WIN32)
+ENDMACRO()
