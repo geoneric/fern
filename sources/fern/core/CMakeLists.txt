@@ -28,7 +28,7 @@ TARGET_LINK_LIBRARIES(fern_core
     ${Boost_TIMER_LIBRARY}
     stdc++
 )
-IF(FERN_ALGORITHM_ONLY)
+IF(FERN_ALGORITHM)
     INSTALL(
         TARGETS fern_core
         EXPORT fern_targets

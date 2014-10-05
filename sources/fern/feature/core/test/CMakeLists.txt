@@ -1,24 +1,25 @@
-IF(FERN_ALGORITHM_ONLY)
+IF(FERN_ALGORITHM)
     SET(TEST_NAMES
         array_test
         masked_array_test
         masked_constant_test
         masked_raster_test
-    )
-ELSE()
-    SET(TEST_NAMES
-        array_test
-        array_value_test
-        constant_attribute_test
-        feature_test
-        masked_array_test
-        masked_array_value_test
-        masked_constant_test
-        masked_raster_test
-        spatial_attribute_test
-        spatial_domain_test
     )
 ENDIF()
+### ELSE()
+###     SET(TEST_NAMES
+###         array_test
+###         array_value_test
+###         constant_attribute_test
+###         feature_test
+###         masked_array_test
+###         masked_array_value_test
+###         masked_constant_test
+###         masked_raster_test
+###         spatial_attribute_test
+###         spatial_domain_test
+###     )
+### ENDIF()
 
 MACRO(ADD_UNIT_TEST NAME)
     ADD_EXECUTABLE(feature_core_${NAME} ${NAME})
