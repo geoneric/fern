@@ -21,7 +21,7 @@ bool compare(
 
     algorithm::algebra::equal(execution_policy, value1, value2, equal_result);
 
-    size_t nr_equal_values;
+    uint64_t nr_equal_values;
 
     algorithm::statistic::count(execution_policy, equal_result, 1,
         nr_equal_values);
