@@ -9,14 +9,17 @@ namespace fern {
 namespace algorithm {
 namespace convolve {
 
-//! Out-of-range policy for fern::convolution::convolve algorithm.
 /*!
+    @ingroup    fern_algorithm_convolution_group
+    @brief      Out-of-range policy for fern::algorithm::convolution::convolve
+                algorithm.
+    @sa         @ref fern_algorithm_policies_out_of_range_policy
+
     The result of the convolution operation is a floating point. This policy
     verifies whether the result value is finite.
 
-    \a Value and \a Result must be floating point.
+    - @a Value and @a Result must be floating point.
 
-    \sa            @ref fern_algorithm_policies_out_of_range_policy
 */
 template<
     class Value,
@@ -28,21 +31,21 @@ using OutOfRangePolicy = detail::OutOfRangePolicy<Value, Result>;
 
 namespace convolution {
 
-//! Convolve \a source by \a kernel and write the result to \a destination.
 /*!
-    \ingroup    convolution
-    \param[in]  source Image to read values from to convolve.
-    \param[in]  kernel Kernel containing the weights to use.
-    \param[out] destination Image to write calculated values to.
-    \sa         fern::convolve::OutOfRangePolicy,
-                @ref fern_algorithm_convolution
+    @ingroup    fern_algorithm_convolution_group
+    @brief      Convolve @a source by @a kernel and write the result to
+                @a destination.
+    @param[in]  source Image to read values from to convolve.
+    @param[in]  kernel Kernel containing the weights to use.
+    @param[out] destination Image to write calculated values to.
+    @sa         fern::algorithm::convolve::OutOfRangePolicy
 
     This is a very flexible algorithm. It is written in terms of a number of
     [policies that handle configurable aspects of convolution]
     (@ref fern_algorithm_convolution_policies).
 
-    The value types of \a source and \a destination must be floating point.
-    The value type of \a kernel must be arithmetic.
+    - The value types of @a source and @a destination must be floating point.
+    - The value type of @a kernel must be arithmetic.
 */
 template<
     class AlternativeForNoDataPolicy,
@@ -80,8 +83,8 @@ void convolve(
 
 
 /*!
-    \ingroup    convolution
-    \overload
+    @ingroup    fern_algorithm_convolution_group
+    @overload
 */
 template<
     class AlternativeForNoDataPolicy,
@@ -112,8 +115,8 @@ void convolve(
 
 
 /*!
-    \ingroup    convolution
-    \overload
+    @ingroup    fern_algorithm_convolution_group
+    @overload
 
     Use this overload if the default policies are fine. The default policies
     used are:

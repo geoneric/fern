@@ -6,12 +6,14 @@
 namespace fern {
 namespace algorithm {
 
-//! Output no-data policy class that marks no-data given a special marker value.
 /*!
-  \tparam    Mask Collection receiving the marker values.
+    @ingroup    fern_algorithm_policy_group
+    @brief      Output no-data policy class that marks no-data given a
+                special marker value.
+    @tparam     Mask Collection receiving the marker values.
 
-  This class keeps a reference to a mask; it doesn't copy the mask. So, copy
-  construction and copy assignment are not supported.
+    This class keeps a reference to a mask; it doesn't copy the mask. So,
+    copy construction and copy assignment are not supported.
 */
 template<
     class Mask>

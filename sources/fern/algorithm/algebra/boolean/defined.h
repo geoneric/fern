@@ -8,19 +8,19 @@ namespace fern {
 namespace algorithm {
 namespace algebra {
 
-//! Determing which values are defined and write the result to \a result.
 /*!
-    \ingroup       boolean
-    \sa            fern::nullary_local_operation,
-                   @ref fern_algorithm_algebra_boolean
-    \warning       For each location in \a result, the \a InputNoDataPolicy
-                   must be able to tell whether the input value is no-data
-                   or not.
+    @ingroup    fern_algorithm_algebra_boole_group
+    @brief      Determing which values are defined and write the result to
+                @a result.
+    @warning    For each location in @a result, the @a InputNoDataPolicy
+                must be able to tell whether the input value is no-data
+                or not.
+    @sa         fern::algorithm::nullary_local_operation
 
     Whether or not a value is defind depends on the input-not-data policy.
     Therefore, this algorithm doesn't need a value to be passed in.
 
-    The value type of \a result must be arithmetic.
+    The value type of @a result must be arithmetic.
 */
 template<
     class InputNoDataPolicy,
@@ -39,8 +39,8 @@ void defined(
 
 
 /*!
-    \ingroup       boolean
-    \overload
+    @ingroup    fern_algorithm_algebra_boole_group
+    @overload
 */
 template<
     class InputNoDataPolicy,
@@ -56,8 +56,8 @@ void defined(
 
 
 /*!
-    \ingroup       boolean
-    \overload
+    @ingroup    fern_algorithm_algebra_boole_group
+    @overload
 */
 template<
     class ExecutionPolicy,

@@ -9,16 +9,16 @@ namespace fern {
 namespace algorithm {
 namespace core {
 
-//! Per position, select the first non-no-data element from \a value1 and \a value2, and write it to \a result.
 /*!
-    \ingroup       core
-    \sa            fern::binary_local_operation,
-                   @ref fern_algorithm_core
+    @ingroup    fern_algorithm_core_group
+    @brief      Per position, select the first non-no-data element from
+                @a value1 and @a value2, and write it to @a result.
+    @sa         fern::algorithm::binary_local_operation
 
-    - Value types of \a Value1, \a Value2 and \a Result must be arithmetic.
-    - Value types of \a Value1, \a Value2 and \a Result must be the same.
-    - The clone type of \a Result must equal the clone type of
-      combining \a Value1 and \a Value2. See fern::Result.
+    - Value types of @a Value1, @a Value2 and @a Result must be arithmetic.
+    - Value types of @a Value1, @a Value2 and @a Result must be the same.
+    - The clone type of @a Result must equal the clone type of
+      combining @a Value1 and @a Value2. See fern::algorithm::Result.
 */
 template<
     class InputNoDataPolicy,
@@ -57,8 +57,8 @@ void cover(
 
 
 /*!
-    \ingroup       core
-    \overload
+    @ingroup    fern_algorithm_core_group
+    @overload
 */
 template<
     class InputNoDataPolicy,
@@ -80,8 +80,8 @@ void cover(
 
 
 /*!
-    \ingroup       core
-    \overload
+    @ingroup    fern_algorithm_core_group
+    @overload
 */
 template<
     class ExecutionPolicy,

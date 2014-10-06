@@ -5,9 +5,10 @@ namespace fern {
 namespace algorithm {
 namespace convolve {
 
-//! NormalizePolicy which does not normalize convoluted values.
 /*!
-    \sa            @ref fern_algorithm_convolution_policies
+    @ingroup    fern_algorithm_convolution_group
+    @brief      NormalizePolicy which does not normalize convoluted values.
+    @sa         @ref fern_algorithm_convolution_policies
 */
 class DontDivideByWeights
 {

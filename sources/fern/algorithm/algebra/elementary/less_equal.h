@@ -8,14 +8,14 @@ namespace fern {
 namespace algorithm {
 namespace algebra {
 
-//! Determine whether \a value1 is less than or equal to \a value2 and write the result to \a result.
 /*!
-    \ingroup       elementary
-    \sa            fern::binary_local_operation,
-                   @ref fern_algorithm_algebra_elementary
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @brief      Determine whether @a value1 is less than or equal to
+                @a value2 and write the result to @a result.
+    @sa         fern::algorithm::binary_local_operation
 
-    The value types of \a value1 and \a value2 must be arithmetic and not
-    `bool`. The value type of \a result must be arithmetic.
+    The value types of @a value1 and @a value2 must be arithmetic and not
+    `bool`. The value type of @a result must be arithmetic.
 */
 template<
     class InputNoDataPolicy,
@@ -44,8 +44,8 @@ void less_equal(
 
 
 /*!
-    \ingroup       elementary
-    \overload
+    @ingroup       fern_algorithm_algebra_elementary_group
+    @overload
 */
 template<
     class InputNoDataPolicy,
@@ -67,8 +67,8 @@ void less_equal(
 
 
 /*!
-    \ingroup       elementary
-    \overload
+    @ingroup       fern_algorithm_algebra_elementary_group
+    @overload
 */
 template<
     class ExecutionPolicy,

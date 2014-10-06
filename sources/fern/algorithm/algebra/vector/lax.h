@@ -8,20 +8,23 @@ namespace fern {
 namespace algorithm {
 namespace algebra {
 
-//! Calculate the lax of \a value and write the result to \a result.
 /*!
+    @ingroup    fern_algorithm_algebra_vector_group
+    @brief      Calculate the lax of @a value and write the result to
+                @a result.
+
     The algorithm implemented is similar to [the one implemented in PCRaster]
     (https://sourceforge.net/p/pcraster/pcrtree2/ci/master/tree/sources/calc/vf.c).
 
     In short/pseudo code, the algorithm:
 
-    \code
+    @code
     result = (1 - fraction) * value + fraction * convolution(value, kernel);
-    \endcode
+    @endcode
 
     Kernel:
 
-    \code
+    @code
     +---+---+---+
     | 2 | 3 | 2 |
     +---+---+---+
@@ -29,13 +32,10 @@ namespace algebra {
     +---+---+---+
     | 2 | 3 | 2 |
     +---+---+---+
-    \endcode
+    @endcode
 
-    The value type of \a Value and \a Result must be floating point and the
+    The value type of @a Value and @a Result must be floating point and the
     same.
-
-    \ingroup       vector
-    \sa            @ref fern_algorithm_algebra_vector
 */
 template<
     class InputNoDataPolicy,
@@ -60,8 +60,8 @@ void lax(
 
 
 /*!
-    \ingroup       vector
-    \overload
+    @ingroup    fern_algorithm_algebra_vector_group
+    @overload
 */
 template<
     class InputNoDataPolicy,
@@ -82,8 +82,8 @@ void lax(
 
 
 /*!
-    \ingroup       vector
-    \overload
+    @ingroup    fern_algorithm_algebra_vector_group
+    @overload
 */
 template<
     class ExecutionPolicy,

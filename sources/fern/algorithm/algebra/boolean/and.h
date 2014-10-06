@@ -8,13 +8,13 @@ namespace fern {
 namespace algorithm {
 namespace algebra {
 
-//! Determine the boolean and result of \a value1 and \a value2 and write the result to \a result.
 /*!
-    \ingroup       boolean
-    \sa            fern::binary_local_operation,
-                   @ref fern_algorithm_algebra_boolean
+    @brief      Determine the boolean and result of @a value1 and @a value2
+                and write the result to @a result.
+    @ingroup    fern_algorithm_algebra_boole_group
+    @sa         fern::algorithm::binary_local_operation
 
-    The value types of \a value1, \a value2 and \a result must be arithmetic.
+    The value types of @a value1, @a value2 and @a result must be arithmetic.
 */
 template<
     class InputNoDataPolicy,
@@ -42,8 +42,8 @@ void and_(
 
 
 /*!
-    \ingroup       boolean
-    \overload
+    @ingroup    fern_algorithm_algebra_boole_group
+    @overload
 */
 template<
     class InputNoDataPolicy,
@@ -66,8 +66,8 @@ void and_(
 
 
 /*!
-    \ingroup       boolean
-    \overload
+    @ingroup    fern_algorithm_algebra_boole_group
+    @overload
 */
 template<
     class ExecutionPolicy,

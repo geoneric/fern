@@ -5,6 +5,9 @@
 namespace fern {
 namespace algorithm {
 
+/*!
+    @ingroup    fern_algorithm_policy_group
+*/
 class DontMarkNoData {
 
 public:

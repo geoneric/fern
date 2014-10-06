@@ -8,10 +8,12 @@ namespace fern {
 namespace algorithm {
 namespace laplacian {
 
-//! The out-of-range policy for the laplacian operation.
 /*!
-  The result of the laplacian operation is a floating point. This policy
-  verifies whether the result value is finite.
+    @ingroup    fern_algorithm_algebra_vector_group
+    @brief      The out-of-range policy for the laplacian operation.
+
+    The result of the laplacian operation is a floating point. This policy
+    verifies whether the result value is finite.
 */
 template<
     class Value,
@@ -38,23 +40,27 @@ public:
 
 namespace algebra {
 
-//! Calculate the laplacian of \a value and write the result to \a result.
 /*!
+    @ingroup    fern_algorithm_algebra_vector_group
+    @brief      Calculate the laplacian of @a value and write the result to
+                @a result.
+    @sa         fern::algorithm::laplacian::OutOfRangePolicy
+
     The algorithm implemented is similar to [the one implemented in PCRaster]
     (https://sourceforge.net/p/pcraster/pcrtree2/ci/master/tree/sources/calc/vf.c).
 
     In short/pseudo code, the algorithm:
 
-    \code
+    @code
     convolve(value, kernel, result);
     result = (result - (sum(kernel) * value)) / cell_area;
     result = ((convolve(value, kernel) -
         (convolve(defined(value), kernel(1)) * value)) / cell_area;
-    \endcode
+    @endcode
 
     Kernel:
 
-    \code
+    @code
     +---+---+---+
     | 2 | 3 | 2 |
     +---+---+---+
@@ -62,14 +68,10 @@ namespace algebra {
     +---+---+---+
     | 2 | 3 | 2 |
     +---+---+---+
-    \endcode
+    @endcode
 
-    The value type of \a value and \a result must be floating point and the
+    The value type of @a value and @a result must be floating point and the
     same.
-
-    \ingroup       vector
-    \sa            fern::laplacian::OutOfRangePolicy,
-                   @ref fern_algorithm_algebra_vector
 */
 template<
     template<class, class> class OutOfRangePolicy,
@@ -95,8 +97,8 @@ void laplacian(
 
 
 /*!
-    \ingroup       vector
-    \overload
+    @ingroup    fern_algorithm_algebra_vector_group
+    @overload
 */
 template<
     template<class, class> class OutOfRangePolicy,
@@ -117,8 +119,8 @@ void laplacian(
 
 
 /*!
-    \ingroup       vector
-    \overload
+    @ingroup    fern_algorithm_algebra_vector_group
+    @overload
 */
 template<
     class ExecutionPolicy,

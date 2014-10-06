@@ -8,12 +8,14 @@
 namespace fern {
 namespace algorithm {
 
-//! Input no-data policy class that detect no-data given a special marker value.
 /*!
-  \tparam    Mask Collection containing the marker values.
+    @ingroup    fern_algorithm_policy_group
+    @brief      Input no-data policy class that detect no-data given a
+                special marker value.
+    @tparam     Mask Collection containing the marker values.
 
-  This class keeps a reference to a mask; it doesn't copy the mask. So, copy
-  construction and copy assignment are not supported.
+    This class keeps a reference to a mask; it doesn't copy the mask. So,
+    copy construction and copy assignment are not supported.
 */
 template<
     class Mask,

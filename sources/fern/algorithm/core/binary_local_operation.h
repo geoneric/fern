@@ -1432,14 +1432,16 @@ struct BinaryLocalOperation<
 } // namespace detail
 
 
-//! Function that executes a binary local operation.
 /*!
-    \tparam        Algorithm Class template of the operation to execute.
-    \param[in]     value1 First input to pass to the operation.
-    \param[in]     value2 Second input to pass to the operation.
-    \param[out]    result Output that is written by the operation.
-    \sa            fern::nullary_local_operation, fern::unary_local_operation,
-                   fern::n_ary_local_operation
+    @ingroup    fern_algorithm_core_group
+    @brief      Function that executes a binary local operation.
+    @tparam     Algorithm Class template of the operation to execute.
+    @param[in]  value1 First input to pass to the operation.
+    @param[in]  value2 Second input to pass to the operation.
+    @param[out] result Output that is written by the operation.
+    @sa         fern::algorithm::nullary_local_operation,
+                fern::algorithm::unary_local_operation,
+                fern::algorithm::n_ary_local_operation
 
     This function supports handling 0d, 1d and 2d values.
 

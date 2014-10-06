@@ -5,9 +5,11 @@ namespace fern {
 namespace algorithm {
 namespace convolve {
 
-//! NormalizePolicy which normalizes convoluted values by the sum of the kernel weights.
 /*!
-    \sa            @ref fern_algorithm_convolution_policies
+    @ingroup    fern_algorithm_convolution_group
+    @brief      NormalizePolicy which normalizes convoluted values by the
+                sum of the kernel weights.
+    @sa         @ref fern_algorithm_convolution_policies
 */
 class DivideByWeights
 {

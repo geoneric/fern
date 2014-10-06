@@ -9,17 +9,20 @@ namespace fern {
 namespace algorithm {
 namespace absolute {
 
-//! Out of range policy for fern::algebra::absolute algorithm.
 /*!
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @brief      Out of range policy for fern::algorithm::algebra::absolute
+                algorithm.
+    @sa         @ref fern_algorithm_policies_out_of_range_policy
+
     The logic for determining whether absolute's result is out of range depends
     on the types involved (unsigned integers, signed integers, floating
     points) and their sizes.
 
-    The value types of \a value1 and \a value2 must be arithmetic and not
-    `bool`. The value type of \a result must be equal to
-    fern::add::result_value_type<Value1, Value2>.
-
-    \sa            @ref fern_algorithm_policies_out_of_range_policy
+    - The value types of @a value1 and @a value2 must be arithmetic and not
+      `bool`.
+    - The value type of @a result must be equal to
+      fern::add::result_value_type<Value1, Value2>.
 */
 template<
     class Value,
@@ -50,15 +53,15 @@ public:
 
 namespace algebra {
 
-//! Determine the absolute value of \a value and write the result to \a result.
 /*!
-    \ingroup       elementary
-    \sa            fern::absolute::OutOfRangePolicy,
-                   fern::unary_local_operation,
-                   @ref fern_algorithm_algebra_elementary
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @brief      Determine the absolute value of @a value and write the
+                result to @a result.
+    @sa         fern::algorithm::absolute::OutOfRangePolicy,
+                fern::algorithm::unary_local_operation
 
-    The value type of \a value must be arithmetic and not `bool`. The value
-    type of \a result must be equal to the value type of \a value.
+    The value type of @a value must be arithmetic and not `bool`. The value
+    type of @a result must be equal to the value type of @a value.
 */
 template<
     template<class, class> class OutOfRangePolicy,
@@ -85,8 +88,8 @@ void absolute(
 
 
 /*!
-    \ingroup       elementary
-    \overload
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @overload
 */
 template<
     template<class, class> class OutOfRangePolicy,
@@ -108,8 +111,8 @@ void absolute(
 
 
 /*!
-    \ingroup       elementary
-    \overload
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @overload
 */
 template<
     class ExecutionPolicy,

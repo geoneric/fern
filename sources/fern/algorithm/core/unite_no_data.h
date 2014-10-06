@@ -7,21 +7,21 @@ namespace fern {
 namespace algorithm {
 namespace core {
 
-//! Unite the no-data of \a value1 and \a value2 and store the results in result.
 /*!
-    \ingroup       core
-    \sa            @ref fern_algorithm_core
+    @ingroup    fern_algorithm_core_group
+    @brief      Unite the no-data of @a value1 and @a value2 and store
+                the results in result.
 
-    Uniting no-data means that if an element from \a value1 or \a value2
-    contains a no-data, \a result will contain a no-data. This is a useful
+    Uniting no-data means that if an element from @a value1 or @a value2
+    contains a no-data, @a result will contain a no-data. This is a useful
     operation when preparing the inputs for other algorithms. A lot of
     algorithms assume that the result already contains no-data for those
     elements for which one of the inputs contains a no-data.
 
-    \a value1, \a value2 and \a result are not used. They may, of course,
+    @a value1, @a value2 and @a result are not used. They may, of course,
     be used by the no-data policies passed in.
 
-    The value types of \a value1, \a value2 and \a result are not relevant.
+    - The value types of @a value1, @a value2 and @a result are not relevant.
 */
 template<
     class InputNoDataPolicy,
@@ -44,8 +44,8 @@ void unite_no_data(
 
 
 /*!
-    \ingroup       core
-    \overload
+    @ingroup    fern_algorithm_core_group
+    @overload
 */
 template<
     class InputNoDataPolicy,
@@ -67,8 +67,8 @@ void unite_no_data(
 
 
 /*!
-    \ingroup       core
-    \overload
+    @ingroup    fern_algorithm_core_group
+    @overload
 */
 template<
     class ExecutionPolicy,

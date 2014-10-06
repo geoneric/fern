@@ -5,6 +5,9 @@
 namespace fern {
 namespace algorithm {
 
+/*!
+    @ingroup    fern_algorithm_policy_group
+*/
 template<
     class... Parameters>
 class DiscardRangeErrors

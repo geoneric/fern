@@ -7,9 +7,11 @@ namespace fern {
 namespace algorithm {
 namespace convolve {
 
-//! OutOfImagePolicy which calculates focal average for out-of-image values.
 /*!
-    \sa            @ref fern_algorithm_convolution_policies
+    @ingroup    fern_algorithm_convolution_group
+    @brief      OutOfImagePolicy which calculates focal average for
+                out-of-image values.
+    @sa         @ref fern_algorithm_convolution_policies
 */
 class ReplaceOutOfImageByFocalAverage
 {

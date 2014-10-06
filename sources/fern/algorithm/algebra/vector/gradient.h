@@ -8,17 +8,17 @@ namespace fern {
 namespace algorithm {
 namespace algebra {
 
-//! Calculate the gradient in x of \a value and write the result to \a result.
 /*!
+    @ingroup    fern_algorithm_algebra_vector_group
+    @brief      Calculate the gradient in x of @a value and write the result
+                to @a result.
+
     The algorithm implemented is similar to [the one implemented in PCRaster]
     (https://sourceforge.net/p/pcraster/pcrtree2/ci/master/tree/sources/calc/vf.c).
 
-    - The value type of \a value must be floating point.
-    - Value type of \a result must equal the value type of \a result.
-    - \a value and \a result must be rasters.
-
-    \ingroup       vector
-    \sa            @ref fern_algorithm_algebra_vector
+    - The value type of @a value must be floating point.
+    - Value type of @a result must equal the value type of @a result.
+    - @a value and @a result must be rasters.
 */
 template<
     class InputNoDataPolicy,
@@ -44,8 +44,8 @@ void gradient_x(
 
 
 /*!
-    \ingroup       vector
-    \overload
+    @ingroup    fern_algorithm_algebra_vector_group
+    @overload
 */
 template<
     class InputNoDataPolicy,
@@ -65,8 +65,8 @@ void gradient_x(
 
 
 /*!
-    \ingroup       vector
-    \overload
+    @ingroup    fern_algorithm_algebra_vector_group
+    @overload
 */
 template<
     class ExecutionPolicy,
@@ -86,17 +86,17 @@ void gradient_x(
 }
 
 
-//! Calculate the gradient in y of \a value and write the result to \a result.
 /*!
+    @ingroup    fern_algorithm_algebra_vector_group
+    @brief      Calculate the gradient in y of @a value and write the result
+                to @a result.
+
     The algorithm implemented is similar to [the one implemented in PCRaster]
     (https://sourceforge.net/p/pcraster/pcrtree2/ci/master/tree/sources/calc/vf.c).
 
-    - The value type of \a value must be floating point.
-    - Value type of \a result must equal the value type of \a result.
-    - \a value and \a result must be rasters.
-
-    \ingroup       vector
-    \sa            @ref fern_algorithm_algebra_vector
+    - The value type of @a value must be floating point.
+    - Value type of @a result must equal the value type of @a result.
+    - @a value and @a result must be rasters.
 */
 template<
     class InputNoDataPolicy,
@@ -122,8 +122,8 @@ void gradient_y(
 
 
 /*!
-    \ingroup       vector
-    \overload
+    @ingroup    fern_algorithm_algebra_vector_group
+    @overload
 */
 template<
     class InputNoDataPolicy,
@@ -143,8 +143,8 @@ void gradient_y(
 
 
 /*!
-    \ingroup       vector
-    \overload
+    @ingroup    fern_algorithm_algebra_vector_group
+    @overload
 */
 template<
     class ExecutionPolicy,

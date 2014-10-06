@@ -7,9 +7,10 @@ namespace fern {
 namespace algorithm {
 namespace convolve {
 
-//! AlternativeForNoDataPolicy which replaces no-data values by the focal average.
 /*!
-    \sa            @ref fern_algorithm_convolution_policies
+    @brief      AlternativeForNoDataPolicy which replaces no-data values
+                by the focal average.
+    @sa         @ref fern_algorithm_convolution_policies
 */
 class ReplaceNoDataByFocalAverage
 {

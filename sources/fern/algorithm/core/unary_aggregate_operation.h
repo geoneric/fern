@@ -625,13 +625,14 @@ struct UnaryAggregateOperation<
 } // namespace unary_aggregate_operation_
 
 
-//! Function that executes a unary aggregate operation.
 /*!
-    \tparam        Algorithm Class template of the operation to execute.
-    \tparam        Aggregator Class of the aggregator.
-    \param[in]     value Input to pass to the operation.
-    \param[out]    result Output that is written by the operation.
-    \sa            fern::binary_aggregate_operation
+    @ingroup    fern_algorithm_core_group
+    @brief      Function that executes a unary aggregate operation.
+    @tparam     Algorithm Class template of the operation to execute.
+    @tparam     Aggregator Class of the aggregator.
+    @param[in]  value Input to pass to the operation.
+    @param[out] result Output that is written by the operation.
+    @sa         fern::algorithm::binary_aggregate_operation
 
     This function supports handling 0d, 1d and 2d values.
 

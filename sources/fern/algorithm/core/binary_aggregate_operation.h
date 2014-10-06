@@ -720,6 +720,9 @@ struct BinaryAggregateOperation<
 } // namespace binary_aggregate_operation_
 
 
+/*!
+    @ingroup   fern_algorithm_core_group
+*/
 template<
     template<class> class Algorithm,
     class Aggregator,

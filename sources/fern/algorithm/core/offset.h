@@ -8,22 +8,22 @@ namespace fern {
 namespace algorithm {
 namespace core {
 
-//! Offset the elements in \a value by \a offset_ and write the result to \a result.
 /*!
-    \ingroup       core
-    \sa            @ref fern_algorithm_core
+    @ingroup    fern_algorithm_core_group
+    @brief      Offset the elements in @a value by @a offset_ and write
+                the result to @a result.
 
-    Elements in \a result that have no corresponding value in \a value, will
-    be handled by \a output_no_data_policy.
+    Elements in @a result that have no corresponding value in @a value, will
+    be handled by @a output_no_data_policy.
 
     A positive offset will offset the elements towards higher indices. In case
     of a 1D array, for example, a positive offset will offset the elements
     towards the end of the array.
 
-    - The dimensionality of \a value must be larger than 0.
-    - The \a offset_ must have the same dimensionality as \a value.
-    - The value type of \a Result must be equal to \a Value.
-    - The value type of \a Offset must be signed integral.
+    - The dimensionality of @a value must be larger than 0.
+    - The @a offset_ must have the same dimensionality as @a value.
+    - The value type of @a Result must be equal to @a Value.
+    - The value type of @a Offset must be signed integral.
 */
 template<
     class InputNoDataPolicy,
@@ -53,8 +53,8 @@ void offset(
 
 
 /*!
-    \ingroup       core
-    \overload
+    @ingroup    fern_algorithm_core_group
+    @overload
 */
 template<
     class InputNoDataPolicy,
@@ -76,8 +76,8 @@ void offset(
 
 
 /*!
-    \ingroup       core
-    \overload
+    @ingroup    fern_algorithm_core_group
+    @overload
 */
 template<
     class ExecutionPolicy,
@@ -99,22 +99,22 @@ void offset(
 }
 
 
-//! Offset the elements in \a value by \a offset_ and write the result to \a result.
 /*!
-    \ingroup       core
-    \sa            @ref fern_algorithm_core
+    @ingroup    fern_algorithm_core_group
+    @brief      Offset the elements in @a value by @a offset_ and write
+                the result to @a result.
 
-    Elements in \a result that have no corresponding value in \a value, will
-    be assigned the \a fill_value.
+    Elements in @a result that have no corresponding value in @a value, will
+    be assigned the @a fill_value.
 
     A positive offset will offset the elements towards higher indices. In case
     of a 1D array, for example, a positive offset will offset the elements
     towards the end of the array.
 
-    - The dimensionality of \a value must be larger than 0.
-    - The \a offset_ must have the same dimensionality as \a value.
-    - The value type of \a Result must be equal to \a Value.
-    - The value type of \a Offset must be signed integral.
+    - The dimensionality of @a value must be larger than 0.
+    - The @a offset_ must have the same dimensionality as @a value.
+    - The value type of @a Result must be equal to @a Value.
+    - The value type of @a Offset must be signed integral.
 */
 template<
     class InputNoDataPolicy,
@@ -146,8 +146,8 @@ void offset(
 
 
 /*!
-    \ingroup       core
-    \overload
+    @ingroup    fern_algorithm_core_group
+    @overload
 */
 template<
     class InputNoDataPolicy,
@@ -170,8 +170,8 @@ void offset(
 
 
 /*!
-    \ingroup       core
-    \overload
+    @ingroup    fern_algorithm_core_group
+    @overload
 */
 template<
     class ExecutionPolicy,

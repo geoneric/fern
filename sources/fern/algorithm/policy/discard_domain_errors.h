@@ -4,8 +4,10 @@
 namespace fern {
 namespace algorithm {
 
-//! Domain policy which discards out-of-domain values.
 /*!
+    @ingroup    fern_algorithm_policy_group
+    @brief      Domain policy which discards out-of-domain values.
+
     Use this class if you don't need to test an algorithm's arguments for
     being out of domain. This can be because you are certain the argument
     values are within the algorithm's domain and you don't want to spend

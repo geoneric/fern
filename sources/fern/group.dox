@@ -1,0 +1,4 @@
+/*!
+    @brief    Parent group of all other groups
+    @defgroup fern_group Fern
+*/

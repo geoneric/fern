@@ -1,61 +1,450 @@
 /*!
-    \defgroup algorithm Algorithms
+    @brief      Parent group containing algorithm sub-groups
+    @defgroup   fern_algorithm_group Algorithm
+    @ingroup    fern_group
 
-    Fern.Algorithm is a library of algorithms for data manipulation. These
-    algorithms are implemented in terms of policies and type traits, to make
-    them useable in as many contexts as possible.
+
+    Fern.Algorithm is a library of algorithms for data manipulation.
+    The algorithms have been classified in various categories.
+    Each algorithm is configurable using policies. Most/all algorithms have
+    overloads that allow them to be called with default policies. Default
+    policies
+    are always those policies that do not do anything. For example, the default
+    policy for testing input value for no-data is the
+    fern::algorithm::SkipNoData policy, which does not incur any overhead.
+
+    See also:
+
+    - @ref fern_algorithm_policies
 */
 
 
 /*!
-    \defgroup algebra Algebra algorithms
-    \ingroup  algorithm
+    @brief      Group containing algorithm policy classes
+    @defgroup   fern_algorithm_policy_group Algorithm policies
+    @ingroup    fern_algorithm_group
+
+
+    Algorithm policies {#fern_algorithm_policies}
+    ==================
+
+    Policies are used to customize algorithms with respect to:
+    - How to execute: [execution policy](#execution_policy).
+    - How to detect no-data in the inputs: [input-no-data policy](#input_no_data_policy).
+    - How to write no-data to the outputs: [output-no-data policy](#output_no_data_policy).
+    - How to determine whether input values are in the algorithm's domain: [out-of-domain policy](#out_of_domain_policy).
+    - How to determine whether an algorithm's result value is in the domain of the result's value type: [out-of-range policy](#out_of_range_policy).
+
+
+    Execution policy {#fern_algorithm_policies_execution_policy}
+    ================
+    - [SequentialExecutionPolicy](@ref fern::algorithm::SequentialExecutionPolicy)
+    - [ParallelExecutionPolicy](@ref fern::algorithm::ParallelExecutionPolicy)
+
+
+    Input-no-data policy {#fern_algorithm_policies_input_no_data_policy}
+    ====================
+    Input-no-data policies test the input for no-data. Most algorithms
+    treat no-data different from valid values. For example, algorithms
+    like fern::algorithm::add don't calculate a value for elements for
+    which one of the input arguments contains a no-data element.
+
+
+    Algorithms testing at least one input element
+    ---------------------------------------------
+    Most algorithms use a no-data policy to test whether *at least one*
+    of the input arguments contains a no-data element. This means that
+    before calling such an algorithm, the no-data elements of all the
+    input arguments must be merged into the result. An input no-data
+    policy can then be created with this information passed in.
+
+    TODO: Example
+
+
+    Algorithms testing all input elements
+    -------------------------------------
+    Some algorithms need to be able to test each input element individualy
+    for no-data. In these cases, multiple  input no-data policy need to
+    be passed to the main input no-data policy: one for each input.
+
+    TODO: Example
+
+
+    Output-no-data policy {#fern_algorithm_policies_output_no_data_policy}
+    =====================
+    TODO
+
+
+    Out-of-domain policy {#fern_algorithm_policies_out_of_domain_policy}
+    ====================
+    An out-of-domain policy's job is to test argument values and
+    determine whether they are valid input for the algorithm. For
+    example, the out-of-domain policy of the square root algorithm
+    (fern::algorithm::sqrt::OutOfDomainPolicy) tests whether the argument value
+    is not negative. Out-of-domain policies slow down an algorithm,
+    because they need to perform tests for each value calculated. If
+    you do not need to test for out-of-domain input values, you can
+    use fern::algorithm::DiscardDomainErrors.
+
+
+    ~~~~{.c}
+    // Policy for a binary algorithm.
+    MyPolicy<double, double> policy;
+    if(policy.within_domain(value1, value2)) {
+        // OK, algorithm should be able to handle argument values.
+        // Call algorithm with these values.
+    }
+    else {
+        // Operation can't handle these values.
+        // Exception, set no-data, ...
+    }
+    ~~~~
+
+    - [DiscardDomainErrors](@ref fern::algorithm::DiscardDomainErrors)
+
+
+    Out-of-range policy {#fern_algorithm_policies_out_of_range_policy}
+    ===================
+    An out-of-range policy's job is to test result values and determine
+    whether they fit within the result's value type. For example,
+    adding two large integral values may result is a value that is
+    larger than the resulting integer value type. In the case of
+    the add algorithm (fern::algorithm::algebra::add), the out-of-range
+    policy (fern::algorithm::add::OutOfRangePolicy) needs the argument
+    values as well as the result value to be able to determine whether
+    the result is out of range. This is because when integral values
+    go out of range, they *wrap*, eg: adding two large integral value
+    results in a negative value.
+
+    ~~~~{.c}
+    // Policy for a unary algorithm.
+    MyOutOfRangePolicy policy;
+    if(policy.within_range(value, result)) {
+        // OK, algorithm calculated a result that fits the result's value type.
+        // Use the value.
+    }
+    else {
+        // Operation's result value falls outside the range of the result's
+        // value type.
+        // Exception, set no-data, ...
+    }
+    ~~~~
+
+    - [DiscardRangeErrors](@ref fern::algorithm::DiscardRangeErrors)
+
+
+    See also {#fern_algorithm_policies_see_also}
+    ========
+    - [Wikipedia on policy-based design](http://en.wikipedia.org/wiki/Policy-based_design)
+    - Domain
+        - [Wikipedia on arithmetic overflow](https://en.wikipedia.org/wiki/Arithmetic_overflow)
+        - [Wikipedia on arithmetic underflow](https://en.wikipedia.org/wiki/Arithmetic_underflow)
+        - [Wikipedia on integer overflow](https://en.wikipedia.org/wiki/Integer_overflow)
+    - Range
+        - [Wikipedia on range in computer science](https://en.wikipedia.org/wiki/Range_(computer_science))
+        - [Wikipedia on range in mathematics](https://en.wikipedia.org/wiki/Range_(mathematics))
 */
 
 
 /*!
-    \defgroup boolean Boole algorithms
-    \ingroup  algebra
+    @brief      Parent group containing groups related to algebra
+    @defgroup   fern_algorithm_algebra_group Algebra algorithms
+    @ingroup    fern_algorithm_group
+
+
+    See also:
+
+    - [Wikipedia on algebra](https://en.wikipedia.org/wiki/Algebra)
 */
 
 
 /*!
-    \defgroup elementary Elementary algorithms
-    \ingroup  algebra
+    @brief      Group containing Boole algebra algorithms
+    @defgroup   fern_algorithm_algebra_boole_group Boole algorithms
+    @ingroup    fern_algorithm_algebra_group
+
+
+    See also:
+
+    - [Wikipedia on boolean algebra](https://en.wikipedia.org/wiki/Boolean_algebra)
 */
 
 
 /*!
-    \defgroup vector Vector algorithms
-    \ingroup  algebra
+    @brief      Group containing elementary algebra algorithms
+    @defgroup   fern_algorithm_algebra_elementary_group Elementary algorithms
+    @ingroup    fern_algorithm_algebra_group
+
+
+    See also:
+
+    - [Wikipedia on elementary algebra](https://en.wikipedia.org/wiki/Elementary_algebra)
 */
 
 
 /*!
-    \defgroup convolution Convolution algorithms
-    \ingroup  algorithm
+    @brief      Group containing vector algebra algorithms
+    @defgroup   fern_algorithm_algebra_vector_group Vector algorithms
+    @ingroup    fern_algorithm_algebra_group
+
+
+    Theory
+    ======
+    The *directed line segment* from point \f$P\f$ to \f$Q\f$, denoted
+    by \f$\overrightarrow{PQ}\f$, is the straight-line segment that
+    extents from \f$P\f$ to \f$Q\f$. \f$\overrightarrow{PQ}\f$ and
+    \f$\overleftarrow{QP}\f$ are different since they point in opposite
+    directions.
+
+    Point \f$P\f$ is called the *initial point* of the segment and point
+    \f$Q\f$ is called the *terminal point*. Two important properties
+    of a directed line segment are its magnitude (length) and its
+    direction. If two directed line segments \f$\overrightarrow{PQ}\f$
+    and \f$\overrightarrow{RS}\f$ have the same magnitude and direction,
+    they are said to be *equivalent*, no matter where they are located
+    with respect to the origin.
+
+    The set of all directed line segments equivalent to a given directed
+    line segment is called a *vector*.
+
+    A *vector* \f$\mathbf{v}\f$ in the xy-plane is an ordered pair of
+    real numbers \f$(a, b)\f$. The number \f$a\f$ and \f$b\f$ are called
+    the *components* of the vector \f$\mathbf{v}\f$. The *zero vector*
+    is the vector \f$(0, 0)\f$ and is denoted by \f$\mathbf{0}\f$. Two
+    vectors are equal if their corresponding components are equal. That
+    is, \f$(a, b) == (c, d)\f$ if \f$a == c\f$ and \f$b == d\f$.
+
+    \f$|\mathbf{v}| = \f$ magnitude of \f$\mathbf{v} = \sqrt{a^2 + b^2}\f$.
+
+    The *direction* of the vector \f$\mathbf{v} = (a, b)\f$ is the angle
+    \f$\theta\f$, measured in radians, that the vector makes with the
+    positive x-axis. By convention \f$0 \le \theta < 2\pi\f$.
+
+    If \f$a \ne 0\f$, then \f$tan \theta = \frac{b}{a}\f$
+
+
+    ### gradx ###
+
+    ### grady ###
+
+    ### divergence ###
+
+    ### lax ###
+
+    ### laplacian ###
+
+    http://homepages.inf.ed.ac.uk/rbf/HIPR2/log.htm :
+
+    The Laplacian is a 2-D isotropic measure of the 2nd spatial derivative
+    of an image. The Laplacian of an image highlights regions of rapid
+    intensity change and is therefore often used for edge detection.
+
+    Santiago:
+
+    The laplacian operator is the second-order derivative of a scalar
+    field, and it measures the divergence of the gradient of the scalar
+    field (what is commonly known as the curvature in GIS analysis). It
+    maps a scalar field to a scalar field, and is a combination of the
+    divergence and the gradient operators.
+
+    Wikipedia:
+
+    The laplacian of a function \f$f\f$ is defined by:
+
+    \f[
+        \Delta f = \nabla^2f = \nabla \cdot \nabla f
+    \f]
+
+    The laplace operator in two dimensions is given by:
+
+    \f[
+        \Delta f = \frac{\delta^2 f}{\delta x^2} + \frac{\delta^2 f}{\delta y^2}
+    \f]
+
+    where x and y are the Cartesian coordinates.
+
+
+    See also
+    ========
+    - [Wikipedia on vector calculus](https://en.wikipedia.org/wiki/Vector_calculus)
+    - Laplace
+        - [Laplace operator](http://en.wikipedia.org/wiki/Laplace_operator)
+        - [Discrete laplace operator](http://en.wikipedia.org/wiki/Discrete_Laplace_operator)
+    - Gradient
+        - [Gradient](http://en.wikipedia.org/wiki/Gradient)
 */
 
 
 /*!
-    \defgroup core Core algorithms
-    \ingroup  algorithm
+    @brief      Group containing convolution algorithms
+    @defgroup   fern_algorithm_convolution_group Convolution algorithms
+    @ingroup    fern_algorithm_group
+
+
+    Code               {#fern_algorithm_convolution_code}
+    ====
+
+    Policies           {#fern_algorithm_convolution_policies}
+    --------
+    The folowing policies are used in the implementation of
+    fern::algorithm::convolution::convolve. They make it possible to
+    configure the algorithm for different uses.
+
+    - `AlternativeForNoDataPolicy`
+
+        When the algorithm encounters no-data, this policy determines how to
+        handle it. It allows no-data to be replaced by another value.
+
+        - fern::algorithm::convolve::SkipNoData
+        - fern::algorithm::convolve::ReplaceNoDataByFocalAverage
+
+    - `NormalizePolicy`
+
+        In convolution, values are multiplied by kernel weights. This
+        policy determines how to normalize these values. Often, the
+        sum of multiplied values need to be normalized by dividing it
+        by the sum of kernel weights. Other normalization schemes are
+        possible, though.
+
+        - fern::algorithm::convolve::DivideByWeights
+        - fern::algorithm::convolve::DontDivideByWeights
+
+    - `OutOfImagePolicy`
+
+        When handling the borders of the image, part of the kernel is
+        positioned outside of the image. This policy determines how to
+        handle these image values. Often, they need to be handled in the
+        same way as no-data values in the image. But other approaches
+        are possible.
+
+        - fern::algorithm::convolve::SkipOutOfImage
+        - fern::algorithm::convolve::ReplaceOutOfImageByFocalAverage
+
+    The algorithm uses more policies, but these are the [general policies]
+    (@ref fern_algorithm_policies) used also in the implementation of other
+    algorithms.
+
+
+    Neighborhoods      {#fern_algorithm_convolution_neighborhoods}
+    -------------
+
+    Name                    | Description
+    ----------------------- | -----------
+    fern::algorithm::Square | Square neighborhood
+
+
+    Theory             {#fern_algorithm_convolution_theory}
+    ======
+    Computer Graphics, Principles and Practice:
+
+    The convolution of two signals \f$f(x)\f$ and \f$g(x)\f$, written as
+    \f$f(x) * g(x)\f$, is a new signal \f$h(x)\f$ defined as follows. The
+    value of \f$h(x)\f$ at each point is the integral of the product
+    of \f$f(x)\f$ with the filter function \f$g(x)\f$ flipped about its
+    vertical axis and shifted such that its origin is at that point. This
+    corresponds to taking a weighted average of the neighborhood around
+    each point of the signal \f$f(x)\f$, weighted by a flipped copy
+    of filter \f$g(x)\f$ positioned at the point, and using it for the
+    value of \f$h(x)\f$ at the point.
+
+    The size of the neighborhood is determined by the size of the domain
+    over which the filter is nonzero. This is know as the filter's
+    *support*, and a filter that is nonzero over a finite domain is said
+    to have *finite support*.
+
+    Image Processing using 2D Convolution:
+
+    The size of the kernel, the numbers within it, and a single normalizer
+    value define the operation that is applied to the image.
+
+    The kernel is applied to the image by placing the kernel over the
+    image to be convolved and sliding it around to center it over every
+    pixel in the original image. At each placement the numbers (pixel
+    values) from the original image are multiplied by the kernel number
+    that is currently aligned above it.
+
+    The sum of all these products is tabulated and divided by the kernel's
+    normalizer. This result is placed into the new image at the position
+    of the kernel's center. The kernel is translated to the next pixel
+    position and the process repeats until all image pixels have been
+    processed.
+
+    Kernel             {#fern_algorithm_convolution_kernel}
+    ------
+    In image processing, a kernel is a small matrix that contains weights
+    to be used to calculate new values based on a source image. For each
+    pixel, the kernel is positioned with the center of the kernel on the
+    current pixel. Surrounding pixels are weighted by the weights in the
+    corresponding kernel cells, and the result is used as the value for
+    the current pixel.
+
+    Synonyms: convolution kernel, convolution filer, convolution matrix, mask
+
+    Examples:
+
+    A 3x3 kernel that copies the input to the output:
+
+        0 0 0
+        0 1 0
+        0 0 0
+
+    A 3x3 kernel that blurs the input image:
+
+        1 1 1
+        1 1 1
+        1 1 1
+
+    Sharpen:
+
+         0 -1  0
+        -1  5 -1
+         0 -1  0
+
+
+    Neighborhood       {#fern_algorithm_convolution_neighborhood}
+    ------------
+    The neighborhood represents the shape of the non-zero values in the
+    kernel. There are different neighborhood shapes:
+
+    - [Moore neighborhood](https://en.wikipedia.org/wiki/Moore_neighborhood)
+    - [(Extended) Von Neumann neighborhood](https://en.wikipedia.org/wiki/Von_Neumann_neighborhood)
+    - Square.
+    - Circle.
+
+
+    See also           {#fern_algorithm_convolution_see_also}
+    ========
+    - [Wikipedia on convolution](https://en.wikipedia.org/wiki/Convolution)
+    - [Wikipedia on image processing kernel](https://en.wikipedia.org/wiki/Kernel_(image_processing)
+    - [Wikipedia on cellular automaton](https://en.wikipedia.org/wiki/Cellular_automata)
+    - [Computer Graphics, Principles and Practice](https://en.wikipedia.org/wiki/Computer_Graphics:_Principles_and_Practice)
+    - [Image Processing using 2D Convolution](http://williamson-labs.com/convolution-2d.htm)
 */
 
 
 /*!
-    \defgroup spatial Space algorithms
-    \ingroup  algorithm
+    @brief      Group containing core algorithms
+    @defgroup   fern_algorithm_core_group Core algorithms
+    @ingroup    fern_algorithm_group
 */
 
 
 /*!
-    \defgroup statistic Statistics algorithms
-    \ingroup  algorithm
+    @brief      Group containing space algorithms
+    @defgroup   fern_algorithm_spatial_group Space algorithms
+    @ingroup    fern_algorithm_group
 */
 
 
 /*!
-    \defgroup trigonometry Trigonometry algorithms
-    \ingroup  algorithm
+    @brief      Group containing statistic algorithms
+    @defgroup   fern_algorithm_statistic_group Statistics algorithms
+    @ingroup    fern_algorithm_group
+*/
+
+
+/*!
+    @brief      Group containing trigonometry algorithms
+    @defgroup   fern_algorithm_trigonometry_group Trigonometry algorithms
+    @ingroup    fern_algorithm_group
 */

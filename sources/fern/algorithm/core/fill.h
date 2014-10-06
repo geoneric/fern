@@ -8,13 +8,12 @@ namespace fern {
 namespace algorithm {
 namespace core {
 
-//! Fill \a result with \a value.
 /*!
-    \ingroup       core
-    \sa            fern::unary_disaggregate_operation,
-                   @ref fern_algorithm_core
+    @ingroup    fern_algorithm_core_group
+    @brief      Fill @a result with @a value.
+    @sa         fern::algorithm::unary_disaggregate_operation
 
-    The value type of \a Result must be equal to \a Value.
+    - The value type of @a Result must be equal to @a Value.
 */
 template<
     class InputNoDataPolicy,
@@ -37,8 +36,8 @@ void fill(
 
 
 /*!
-    \ingroup       core
-    \overload
+    @ingroup    fern_algorithm_core_group
+    @overload
 */
 template<
     class InputNoDataPolicy,
@@ -58,8 +57,8 @@ void fill(
 
 
 /*!
-    \ingroup       core
-    \overload
+    @ingroup    fern_algorithm_core_group
+    @overload
 */
 template<
     class ExecutionPolicy,

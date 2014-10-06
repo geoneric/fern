@@ -8,9 +8,12 @@ namespace fern {
 namespace algorithm {
 namespace divide {
 
-//! Determine the result type when dividing instances of \a Value1 with \a Value2.
 /*!
-    \sa            fern::divide::result_value_type, fern::algorithm::Result
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @brief      Determine the result type when dividing instances of
+                @a Value1 with @a Value2.
+    @sa         fern::algorithm::divide::result_value_type,
+                fern::algorithm::Result
 */
 template<
     class Value1,
@@ -18,9 +21,11 @@ template<
 using result_type = typename fern::algorithm::Result<Value1, Value2>::type;
 
 
-//! Determine the result value type when dividing instances of \a Value1 with \a Value2.
 /*!
-  \sa              fern::divide::result_type
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @brief      Determine the result value type when dividing instances of
+                @a Value1 with @a Value2.
+    @sa         fern::divide::result_type
 */
 template<
     class Value1,
@@ -29,15 +34,17 @@ using result_value_type = typename fern::algorithm::Result<value_type<Value1>,
     value_type<Value2>>::type;
 
 
-//! Out of domain policy for fern::algebra::divide algorithm.
 /*!
-    The denominator (\a value2) cannot be zero. Otherwise all values are
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @brief      Out of domain policy for fern::algorithm::algebra::divide
+                algorithm.
+    @sa         @ref fern_algorithm_policies_out_of_domain_policy
+
+    The denominator (@a value2) cannot be zero. Otherwise all values are
     within the domain of valid values for divide.
 
-    The value types of \a value1 and \a value2 must be arithmetic and not
+    The value types of @a value1 and @a value2 must be arithmetic and not
     `bool`.
-
-    \sa            @ref fern_algorithm_policies_out_of_domain_policy
 */
 template<
     class Value1,
@@ -62,17 +69,18 @@ public:
 };
 
 
-//! Out of range policy for fern::algebra::divide algorithm.
 /*!
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @brief      Out of range policy for fern::algebra::divide algorithm.
+    @sa         @ref fern_algorithm_policies_out_of_range_policy
+
     The logic for determining whether divide's result is out of range depends
     on the types involved (unsigned integers, signed integers, floating
     points) and their sizes.
 
-    The value types of \a value1 and \a value2 must be arithmetic and not
-    `bool`. The value type of \a result must be equal to
+    The value types of @a value1 and @a value2 must be arithmetic and not
+    `bool`. The value type of @a result must be equal to
     fern::divide::result_value_type<Value1, Value2>.
-
-    \sa            @ref fern_algorithm_policies_out_of_range_policy
 */
 template<
     class Value1,
@@ -110,18 +118,17 @@ public:
 
 namespace algebra {
 
-//! Divide \a value1 by \a value2 and write the result to \a result.
 /*!
-    \ingroup       elementary
-    \sa            fern::divide::OutOfDomainPolicy,
-                   fern::divide::OutOfRangePolicy,
-                   fern::divide::result_type,
-                   fern::divide::result_value_type,
-                   fern::binary_local_operation,
-                   @ref fern_algorithm_algebra_elementary
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @brief      Divide @a value1 by @a value2 and write the result to @a result.
+    @sa         fern::algorithm::divide::OutOfDomainPolicy,
+                fern::algorithm::divide::OutOfRangePolicy,
+                fern::algorithm::divide::result_type,
+                fern::algorithm::divide::result_value_type,
+                fern::algorithm::binary_local_operation
 
-    The value types of \a value1 and \a value2 must be arithmetic and not
-    `bool`. The value type of \a result must be equal to
+    The value types of @a value1 and @a value2 must be arithmetic and not
+    `bool`. The value type of @a result must be equal to
     fern::divide::result_value_type<Value1, Value2>.
 */
 template<
@@ -157,8 +164,8 @@ void divide(
 
 
 /*!
-    \ingroup       elementary
-    \overload
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @overload
 */
 template<
     template<class, class> class OutOfDomainPolicy,
@@ -183,8 +190,8 @@ void divide(
 
 
 /*!
-    \ingroup       elementary
-    \overload
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @overload
 */
 template<
     class ExecutionPolicy,

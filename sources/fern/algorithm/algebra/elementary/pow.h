@@ -8,17 +8,19 @@ namespace fern {
 namespace algorithm {
 namespace pow {
 
-//! Out of domain policy for fern::algebra::pow algorithm.
 /*!
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @brief      Out of domain policy for fern::algorithm::algebra::pow
+                algorithm.
+    @sa         @ref fern_algorithm_policies_out_of_domain_policy
+
     In the folowing cases, within_domain(Base const&, Exponent const&)
     returns false:
-    - \a base < 0 and \a base's exponent is not 0.
-    - \a base == 0 and \a exponent < 0.
+    - @a base < 0 and @a base's exponent is not 0.
+    - @a base == 0 and @a exponent < 0.
 
-    The value types of \a base and \a exponent must be floating point and
+    The value types of @a base and @a exponent must be floating point and
     the same.
-
-    \sa            @ref fern_algorithm_policies_out_of_domain_policy
 */
 template<
     class Base,
@@ -53,13 +55,14 @@ public:
 };
 
 
-//! Out of range policy for fern::algebra::pow algorithm.
 /*!
-    The value types of \a base and \a exponent must be floating point and
-    the same.
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @brief      Out of range policy for fern::algorithm::algebra::pow algorithm.
+    @sa         fern::algorithm::DetectOutOfRangeByErrno,
+                @ref fern_algorithm_policies_out_of_range_policy
 
-    \sa            fern::DetectOutOfRangeByErrno,
-                   @ref fern_algorithm_policies_out_of_range_policy
+    The value types of @a base and @a exponent must be floating point and
+    the same.
 */
 template<
     class Base,
@@ -89,14 +92,15 @@ public:
 
 namespace algebra {
 
-//! Raise \a base to the power of \a exponent and write the result to \a result.
 /*!
-    \ingroup       elementary
-    \sa            fern::pow::OutOfDomainPolicy, fern::pow::OutOfRangePolicy,
-                   fern::binary_local_operation,
-                   @ref fern_algorithm_algebra_elementary
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @brief      Raise @a base to the power of @a exponent and write the
+                result to @a result.
+    @sa         fern::algorithm::pow::OutOfDomainPolicy,
+                fern::algorithm::pow::OutOfRangePolicy,
+                fern::algorithm::binary_local_operation
 
-    The value types of \a base, \a exponent and \a result must be floating
+    The value types of @a base, @a exponent and @a result must be floating
     point and the same.
 */
 template<
@@ -127,8 +131,8 @@ void pow(
 
 
 /*!
-    \ingroup       elementary
-    \overload
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @overload
 */
 template<
     template<class, class> class OutOfDomainPolicy,
@@ -153,8 +157,8 @@ void pow(
 
 
 /*!
-    \ingroup       elementary
-    \overload
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @overload
 */
 template<
     class ExecutionPolicy,

@@ -6,14 +6,17 @@
 namespace fern {
 namespace algorithm {
 
-//! The IndexRange class represents a range of (array) indices for one (array) dimension.
 /*!
-  This is useful for defining a subset of a (array) dimension.
+    @ingroup    fern_algorithm_core_group
+    @brief      The IndexRange class represents a range of (array)
+                indices for one (array) dimension.
 
-  A range is defined by a begin index and an end index. The end index is
-  outside of the range of valid indices. An empty range is a range whose
-  begin and end indices are equal. Unless a range is empty, a begin index is
-  always smaller than an end index.
+    This is useful for defining a subset of a (array) dimension.
+
+    A range is defined by a begin index and an end index. The end index
+    is outside of the range of valid indices. An empty range is a range
+    whose begin and end indices are equal. Unless a range is empty,
+    a begin index is always smaller than an end index.
 */
 class IndexRange
 {

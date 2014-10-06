@@ -9,14 +9,15 @@ namespace fern {
 namespace algorithm {
 namespace cast {
 
-//! Out-of-range policy for fern::cast algorithm.
 /*!
+    @ingroup    fern_algorithm_core_group
+    @brief      Out-of-range policy for fern::cast algorithm.
+    @sa         @ref fern_algorithm_policies_out_of_range_policy
+
     A source input value is considered out-of-range if the value cannot be
     represented by the target type.
 
-    The value type of \a value and \a result must be arithmetic.
-
-    \sa            @ref fern_algorithm_policies_out_of_range_policy
+    The value type of @a value and @a result must be arithmetic.
 */
 template<
     class Value,
@@ -47,14 +48,13 @@ public:
 
 namespace core {
 
-//! Cast \a value and write the result to \a result.
 /*!
-    \ingroup       core
-    \sa            fern::cast::OutOfRangePolicy,
-                   fern::unary_local_operation,
-                   @ref fern_algorithm_core
+    @ingroup    fern_algorithm_core_group
+    @brief      Cast @a value and write the result to @a result.
+    @sa         fern::algorithm::cast::OutOfRangePolicy,
+                fern::algorithm::unary_local_operation
 
-    The value type of \a value and \a result must be arithmetic.
+    The value type of @a value and @a result must be arithmetic.
 */
 template<
     template<class, class> class OutOfRangePolicy,
@@ -79,8 +79,8 @@ void cast(
 
 
 /*!
-    \ingroup       core
-    \overload
+    @ingroup    fern_algorithm_core_group
+    @overload
 */
 template<
     template<class, class> class OutOfRangePolicy,
@@ -101,8 +101,8 @@ void cast(
 
 
 /*!
-    \ingroup       core
-    \overload
+    @ingroup    fern_algorithm_core_group
+    @overload
 */
 template<
     class ExecutionPolicy,

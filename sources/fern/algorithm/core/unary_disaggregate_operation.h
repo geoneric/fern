@@ -497,11 +497,12 @@ struct UnaryDisaggregateOperation<
 } // namespace unary_disaggregate_operation_
 
 
-//! Function that executes a unary disaggregating operation.
 /*!
-    \tparam        Algorithm Class template of the operation to execute.
-    \param[in]     value Input to pass to the operation.
-    \param[out]    result Output that is written by the operation.
+    @ingroup    fern_algorithm_core_group
+    @brief      Function that executes a unary disaggregating operation.
+    @tparam     Algorithm Class template of the operation to execute.
+    @param[in]  value Input to pass to the operation.
+    @param[out] result Output that is written by the operation.
 
     A disaggregating operation takes a 0D input value and writes an nD result
     value.
