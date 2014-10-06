@@ -39,8 +39,14 @@ IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR
     # over/underflow wraps.
     # See http://www.airs.com/blog/archives/120
     # See out of range policy of add algorithm for signed integrals.
+    #
+    # Add as many warning options as possible/useful:
+    # - https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
+    # TODO Maybe add:
+    # -Wconversion
+    # -Wsign-conversion
     SET(CMAKE_CXX_FLAGS
-        "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wcast-qual -Wwrite-strings -Werror=strict-aliasing -pedantic -fno-strict-overflow -ftemplate-backtrace-limit=0"
+        "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wcast-qual -Wzero-as-null-pointer-constant -Wwrite-strings -Werror=strict-aliasing -pedantic -fno-strict-overflow -ftemplate-backtrace-limit=0"
     )
     IF(APPLE)
         SET(CMAKE_CXX_FLAGS
