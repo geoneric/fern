@@ -12,7 +12,7 @@ std::string demangle(
 {
     int status;
     char* buffer;
-    buffer = abi::__cxa_demangle(name.c_str(), 0, 0, &status);
+    buffer = abi::__cxa_demangle(name.c_str(), nullptr, nullptr, &status);
     assert(status == 0);
     std::string real_name(buffer);
     free(buffer);

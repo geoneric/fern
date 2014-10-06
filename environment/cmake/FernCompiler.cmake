@@ -46,13 +46,24 @@ IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR
     # -Wconversion
     # -Wsign-conversion
     SET(CMAKE_CXX_FLAGS
-        "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wcast-qual -Wzero-as-null-pointer-constant -Wwrite-strings -Werror=strict-aliasing -pedantic -fno-strict-overflow -ftemplate-backtrace-limit=0"
+        "${CMAKE_CXX_FLAGS} -Werror -Wall -Wextra -Wcast-qual -Wzero-as-null-pointer-constant -Wwrite-strings -Werror=strict-aliasing -pedantic -fno-strict-overflow -ftemplate-backtrace-limit=0"
     )
     IF(APPLE)
         SET(CMAKE_CXX_FLAGS
             "${CMAKE_CXX_FLAGS} -Wno-unused-local-typedefs"
         )
     ENDIF()
+
+    # TODO Revisit this option. Only needed for shared libraries.
+    ### # Add the PIC compiler flag if needed.
+    ### IF(UNIX AND NOT WIN32)
+    ###     IF(CMAKE_SIZEOF_VOID_P MATCHES "8")
+    ###         CHECK_CXX_COMPILER_FLAG("-fPIC" WITH_FPIC)
+    ###         IF(WITH_FPIC)
+    ###             ADD_DEFINITIONS(-fPIC)
+    ###         ENDIF()
+    ###     ENDIF()
+    ### ENDIF()
 ENDIF()
 
 IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
@@ -63,20 +74,4 @@ ELSEIF(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
     SET(CMAKE_CXX_FLAGS
         "${CMAKE_CXX_FLAGS} -stdlib=libc++ -std=c++1y"
     )
-ENDIF()
-
-
-SET(CMAKE_CXX_FLAGS_RELEASE
-    # Disable range checks in release builds.
-    "${CMAKE_CXX_FLAGS_RELEASE} -DBOOST_DISABLE_ASSERTS"
-)
-
-# Add the PIC compiler flag if needed.
-IF(UNIX AND NOT WIN32)
-    IF(CMAKE_SIZEOF_VOID_P MATCHES "8")
-        CHECK_CXX_COMPILER_FLAG("-fPIC" WITH_FPIC)
-        IF(WITH_FPIC)
-            ADD_DEFINITIONS(-fPIC)
-        ENDIF()
-    ENDIF()
 ENDIF()
