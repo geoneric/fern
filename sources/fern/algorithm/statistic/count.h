@@ -6,14 +6,14 @@ namespace fern {
 namespace algorithm {
 namespace statistic {
 
-//! Determine how many occurrences of \a value2 are in \a value1 and write the result to \a result.
 /*!
-    \ingroup       statistic
-    \sa            fern::binary_aggregate_operation,
-                   @ref fern_algorithm_statistics
+    @ingroup    fern_algorithm_statistic_group
+    @brief      Determine how many occurrences of @a value2 are in @a
+                value1 and write the result to @a result.
+    @sa         fern::algorithm::binary_aggregate_operation
 
-    The value type of \a value must be arithmetic. The value
-    type of \a result must be integral.
+    The value type of @a value must be arithmetic. The value type of @a
+    result must be integral.
 */
 template<
     class InputNoDataPolicy,
@@ -39,8 +39,8 @@ void count(
 
 
 /*!
-    \ingroup       statistic
-    \overload
+    @ingroup    fern_algorithm_statistic_group
+    @overload
 */
 template<
     class InputNoDataPolicy,
@@ -62,8 +62,8 @@ void count(
 
 
 /*!
-    \ingroup       statistic
-    \overload
+    @ingroup    fern_algorithm_statistic_group
+    @overload
 */
 template<
     class ExecutionPolicy,

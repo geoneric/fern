@@ -7,6 +7,9 @@ namespace fern {
 namespace algorithm {
 namespace sum {
 
+/*!
+    @ingroup    fern_algorithm_statistic_group
+*/
 template<
     class Value1,
     class Value2,
@@ -18,14 +21,15 @@ using OutOfRangePolicy = add::OutOfRangePolicy<Value1, Value2, Result>;
 
 namespace statistic {
 
-//! Calculate the sum of \a value and write the result to \a result.
 /*!
-    \ingroup       statistic
-    \sa            fern::unary_aggregate_operation,
-                   @ref fern_algorithm_statistics
+    @ingroup    fern_algorithm_statistic_group
+    @brief      Calculate the sum of @a value and write the result to
+                @a result.
+    @sa         fern::algorithm::unary_aggregate_operation,
+                sum::OutOfRangePolicy
 
-    The value type of \a value must be arithmetic and not `bool`. The value
-    type of \a result must be equal to the value type of \a value.
+    The value type of @a value must be arithmetic and not `bool`. The value
+    type of @a result must be equal to the value type of @a value.
 */
 template<
     template<class, class, class> class OutOfRangePolicy,
@@ -52,8 +56,8 @@ void sum(
 
 
 /*!
-    \ingroup       statistic
-    \overload
+    @ingroup    fern_algorithm_statistic_group
+    @overload
 */
 template<
     template<class, class, class> class OutOfRangePolicy,
@@ -75,8 +79,8 @@ void sum(
 
 
 /*!
-    \ingroup       statistic
-    \overload
+    @ingroup    fern_algorithm_statistic_group
+    @overload
 */
 template<
     class ExecutionPolicy,

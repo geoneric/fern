@@ -22,7 +22,7 @@ namespace absolute {
     - The value types of @a value1 and @a value2 must be arithmetic and not
       `bool`.
     - The value type of @a result must be equal to
-      fern::add::result_value_type<Value1, Value2>.
+      fern::algorithm::add::result_value_type<Value1, Value2>.
 */
 template<
     class Value,

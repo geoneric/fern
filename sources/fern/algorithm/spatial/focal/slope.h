@@ -8,10 +8,12 @@ namespace fern {
 namespace algorithm {
 namespace slope {
 
-//! The out-of-range policy for the slope operation.
 /*!
-  The result of the slope operation is a floating point. This policy
-  verifies whether the result value is finite.
+    @ingroup    fern_algorithm_space_group
+    @brief      The out-of-range policy for the slope operation.
+
+    The result of the slope operation is a floating point. This policy
+    verifies whether the result value is finite.
 */
 template<
     class Value,
@@ -37,25 +39,25 @@ public:
 
 namespace spatial {
 
-//! Calculate the slope of \a value and write the result to \a result.
 /*!
-    \ingroup       spatial
-    \sa            fern::slope::OutOfRangePolicy,
-                   @ref fern_algorithm_spatial
+    @ingroup    fern_algorithm_space_group
+    @brief      Calculate the slope of @a value and write the result to
+                @a result.
+    @sa         fern::algorithm::slope::OutOfRangePolicy
 
     This algorithm implements Horne's slope algorithm (Horn, B.K.P. (1981)
     Hill shading and the reflectance map. Proceedings of IEEE 69(1), 14-47).
     In pseudo-code this works as folows:
 
-    \code
+    @code
     dz_dx = convolve(value, dz_dx_kernel) / (8 * cell_size)
     dz_dy = convolve(value, dz_dy_kernel) / (8 * cell_size)
     result = sqrt(pow(dz_dx, 2) + pow(dz_dy, 2))
-    \endcode
+    @endcode
 
     where dz_dx_kernel is:
 
-    \code
+    @code
     +----+----+----+
     |  1 |  0 | -1 |
     +----+----+----+
@@ -63,11 +65,11 @@ namespace spatial {
     +----+----+----+
     |  1 |  0 | -1 |
     +----+----+----+
-    \endcode
+    @endcode
 
     and dz_dy_kernel is:
 
-    \code
+    @code
     +----+----+----+
     | -1 | -2 | -1 |
     +----+----+----+
@@ -75,7 +77,7 @@ namespace spatial {
     +----+----+----+
     |  1 |  2 |  1 |
     +----+----+----+
-    \endcode
+    @endcode
 */
 template<
     template<class, class> class OutOfRangePolicy,
@@ -101,8 +103,8 @@ void slope(
 
 
 /*!
-    \ingroup       spatial
-    \overload
+    @ingroup    fern_algorithm_space_group
+    @overload
 */
 template<
     template<class, class> class OutOfRangePolicy,
@@ -124,8 +126,8 @@ void slope(
 
 
 /*!
-    \ingroup       spatial
-    \overload
+    @ingroup    fern_algorithm_space_group
+    @overload
 */
 template<
     class ExecutionPolicy,

@@ -1,0 +1,11 @@
+/*!
+    @brief      Group containing trigonometry algorithms
+    @defgroup   fern_algorithm_trigonometry_group Trigonometry algorithms
+    @ingroup    fern_algorithm_group
+
+
+    See also
+
+    - [Wikipedia on trigonometry](http://en.wikipedia.org/wiki/Trigonometry)
+    - [Wikipedia on trigonometric functions](http://en.wikipedia.org/wiki/Trigonometric_functions)
+*/

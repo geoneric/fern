@@ -8,13 +8,15 @@ namespace fern {
 namespace algorithm {
 namespace cos {
 
-//! Out-of-domain policy for fern::trigonometry::cos algorithm.
 /*!
+    @ingroup    fern_algorithm_trigonometry_group
+    @brief      Out-of-domain policy for fern::algorithm::trigonometry::cos
+                algorithm.
+    @sa         @ref fern_algorithm_policies_out_of_domain_policy
+
     Positive or negative infinity is considered out-of-domain for cos.
 
-    \a Value must be a floating point.
-
-    \sa            @ref fern_algorithm_policies_out_of_domain_policy
+    - @a Value must be a floating point.
 */
 template<
     class Value>
@@ -38,13 +40,13 @@ public:
 
 namespace trigonometry {
 
-//! Calculate the cosine of \a value and write the result to \a result.
+//! Calculate the cosine of @a value and write the result to @a result.
 /*!
-    \ingroup       trigonometry
-    \sa            fern::cos::OutOfDomainPolicy, fern::unary_local_operation,
-                   @ref fern_algorithm_trigonometry
+    @ingroup    fern_algorithm_trigonometry_group
+    @sa         fern::algorithm::cos::OutOfDomainPolicy,
+                fern::algorithm::unary_local_operation
 
-    The value types of \a value and \a result must be floating point and the
+    The value types of @a value and @a result must be floating point and the
     same.
 */
 template<
@@ -70,8 +72,8 @@ void cos(
 
 
 /*!
-    \ingroup       trigonometry
-    \overload
+    @ingroup    fern_algorithm_trigonometry_group
+    @overload
 */
 template<
     template<class> class OutOfDomainPolicy,
@@ -92,8 +94,8 @@ void cos(
 
 
 /*!
-    \ingroup       trigonometry
-    \overload
+    @ingroup    fern_algorithm_trigonometry_group
+    @overload
 */
 template<
     class ExecutionPolicy,

@@ -8,13 +8,13 @@ namespace fern {
 namespace algorithm {
 namespace trigonometry {
 
-//! Calculate the arc tangent of \a value and write the result to \a result.
 /*!
-    \ingroup       trigonometry
-    \sa            fern::unary_local_operation,
-                   @ref fern_algorithm_trigonometry
+    @ingroup    fern_algorithm_trigonometry_group
+    @brief      Calculate the arc tangent of @a value and write the
+                result to @a result.
+    @sa         fern::algorithm::unary_local_operation
 
-    The value types of \a value and \a result must be floating point and the
+    The value types of @a value and @a result must be floating point and the
     same.
 */
 template<
@@ -39,8 +39,8 @@ void atan(
 
 
 /*!
-    \ingroup       trigonometry
-    \overload
+    @ingroup    fern_algorithm_trigonometry_group
+    @overload
 */
 template<
     class InputNoDataPolicy,
@@ -60,8 +60,8 @@ void atan(
 
 
 /*!
-    \ingroup       trigonometry
-    \overload
+    @ingroup    fern_algorithm_trigonometry_group
+    @overload
 */
 template<
     class ExecutionPolicy,

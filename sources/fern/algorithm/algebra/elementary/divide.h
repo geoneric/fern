@@ -25,7 +25,7 @@ using result_type = typename fern::algorithm::Result<Value1, Value2>::type;
     @ingroup    fern_algorithm_algebra_elementary_group
     @brief      Determine the result value type when dividing instances of
                 @a Value1 with @a Value2.
-    @sa         fern::divide::result_type
+    @sa         fern::algorithm::divide::result_type
 */
 template<
     class Value1,
@@ -80,7 +80,7 @@ public:
 
     The value types of @a value1 and @a value2 must be arithmetic and not
     `bool`. The value type of @a result must be equal to
-    fern::divide::result_value_type<Value1, Value2>.
+    fern::algorithm::divide::result_value_type<Value1, Value2>.
 */
 template<
     class Value1,
@@ -129,7 +129,7 @@ namespace algebra {
 
     The value types of @a value1 and @a value2 must be arithmetic and not
     `bool`. The value type of @a result must be equal to
-    fern::divide::result_value_type<Value1, Value2>.
+    fern::algorithm::divide::result_value_type<Value1, Value2>.
 */
 template<
     template<class, class> class OutOfDomainPolicy,

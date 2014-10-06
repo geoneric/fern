@@ -1,0 +1,10 @@
+/*!
+    @brief      Group containing elementary algebra algorithms
+    @defgroup   fern_algorithm_algebra_elementary_group Elementary algorithms
+    @ingroup    fern_algorithm_algebra_group
+
+
+    See also:
+
+    - [Wikipedia on elementary algebra](https://en.wikipedia.org/wiki/Elementary_algebra)
+*/

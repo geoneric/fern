@@ -7,15 +7,15 @@ namespace fern {
 namespace algorithm {
 namespace statistic {
 
-//! Determine the elementwise minimum value of \a value1 and \a value2 and write the result to \a result.
 /*!
-    \ingroup       statistic
-    \sa            fern::binary_local_operation,
-                   @ref fern_algorithm_statistics
+    @ingroup    fern_algorithm_statistic_group
+    @brief      Determine the elementwise minimum value of @a value1
+                and @a value2 and write the result to @a result.
+    @sa         fern::algorithm::binary_local_operation
 
-    The value type of \a value1 and \a value2 must be arithmetic and not
-    `bool`. They must also be the same. The value
-    type of \a result must be equal to the value type of the values.
+    The value type of @a value1 and @a value2 must be arithmetic and not
+    `bool`. They must also be the same. The value type of @a result must
+    be equal to the value type of the values.
 */
 template<
     class InputNoDataPolicy,
@@ -45,8 +45,8 @@ void binary_min(
 
 
 /*!
-    \ingroup       statistic
-    \overload
+    @ingroup    fern_algorithm_statistic_group
+    @overload
 */
 template<
     class InputNoDataPolicy,
@@ -69,8 +69,8 @@ void binary_min(
 
 
 /*!
-    \ingroup       statistic
-    \overload
+    @ingroup    fern_algorithm_statistic_group
+    @overload
 */
 template<
     class ExecutionPolicy,

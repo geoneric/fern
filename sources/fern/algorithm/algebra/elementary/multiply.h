@@ -12,7 +12,8 @@ namespace multiply {
     @ingroup    fern_algorithm_algebra_elementary_group
     @brief      Determine the result type when multiplying instances of
                 @a Value1 with @a Value2.
-    @sa         fern::multiply::result_value_type, fern::algorithm::Result
+    @sa         fern::algorithm::multiply::result_value_type,
+                fern::algorithm::Result
 */
 template<
     class Value1,
@@ -24,7 +25,7 @@ using result_type = typename fern::algorithm::Result<Value1, Value2>::type;
     @ingroup    fern_algorithm_algebra_elementary_group
     @brief      Determine the result value type when multiplying instances
                 of @a Value1 with @a Value2.
-    @sa         fern::multiply::result_type
+    @sa         fern::algorithm::multiply::result_type
 */
 template<
     class Value1,
@@ -35,7 +36,8 @@ using result_value_type = typename fern::algorithm::Result<value_type<Value1>,
 
 /*!
     @ingroup    fern_algorithm_algebra_elementary_group
-    @brief      Out of range policy for fern::algebra::multiply algorithm.
+    @brief      Out of range policy for fern::algorithm::algebra::multiply
+                algorithm.
     @sa         @ref fern_algorithm_policies_out_of_range_policy
 
     The logic for determining whether multiply's result is out of range depends
@@ -44,7 +46,7 @@ using result_value_type = typename fern::algorithm::Result<value_type<Value1>,
 
     The value types of @a value1 and @a value2 must be arithmetic and not
     `bool`. The value type of @a result must be equal to
-    fern::multiply::result_value_type<Value1, Value2>.
+    fern::algorithm::multiply::result_value_type<Value1, Value2>.
 */
 template<
     class Value1,
