@@ -1,28 +1,32 @@
 /*!
     \defgroup algorithm Algorithms
+
+    Fern.Algorithm is a library of algorithms for data manipulation. These
+    algorithms are implemented in terms of policies and type traits, to make
+    them useable in as many contexts as possible.
 */
 
 
 /*!
-    \defgroup algebra Algebraic algorithms
+    \defgroup algebra Algebra algorithms
     \ingroup  algorithm
 */
 
 
 /*!
-    \defgroup boolean Boolean operations
+    \defgroup boolean Boole algorithms
     \ingroup  algebra
 */
 
 
 /*!
-    \defgroup elementary Elementary operations
+    \defgroup elementary Elementary algorithms
     \ingroup  algebra
 */
 
 
 /*!
-    \defgroup vector Vector operations
+    \defgroup vector Vector algorithms
     \ingroup  algebra
 */
 
@@ -40,18 +44,18 @@
 
 
 /*!
-    \defgroup spatial Spatial algorithms
+    \defgroup spatial Space algorithms
     \ingroup  algorithm
 */
 
 
 /*!
-    \defgroup statistic Statistical algorithms
+    \defgroup statistic Statistics algorithms
     \ingroup  algorithm
 */
 
 
 /*!
-    \defgroup trigonometry Trigonometrical algorithms
+    \defgroup trigonometry Trigonometry algorithms
     \ingroup  algorithm
 */
