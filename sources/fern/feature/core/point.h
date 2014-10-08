@@ -7,9 +7,9 @@
 namespace fern {
 
 template<
-    class CoordinateType,
+    typename CoordinateType,
     size_t nr_dimensions,
-    class CoordinateSystem=boost::geometry::cs::cartesian>
+    typename CoordinateSystem=boost::geometry::cs::cartesian>
 using Point = boost::geometry::model::point<CoordinateType, nr_dimensions,
     CoordinateSystem>;
 

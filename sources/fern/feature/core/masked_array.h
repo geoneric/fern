@@ -14,7 +14,7 @@ namespace fern {
     MaskedArray extents Array with support for masking elements.
 */
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 class MaskedArray:
     public Array<T, nr_dimensions>
@@ -57,13 +57,13 @@ public:
     Mask<nr_dimensions>& mask          ();
 
     template<
-        class U>
+        typename U>
     void           mask                (Array<U, nr_dimensions>& mask) const;
 
     void           set_mask            (T const& value);
 
     template<
-        class U>
+        typename U>
     void           set_mask            (Array<U, nr_dimensions> const& mask,
                                         U const value_to_mask=0);
 
@@ -77,7 +77,7 @@ private:
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 inline MaskedArray<T, nr_dimensions>::MaskedArray(
     std::vector<MaskedConstant<T>> const& values)
@@ -103,13 +103,13 @@ inline MaskedArray<T, nr_dimensions>::MaskedArray(
 
 
 // template<
-//     class T,
+//     typename T,
 //     size_t nr_dimensions>
 // template<
 //     template<
-//         class>
+//         typename>
 //     class Container,
-//     class Value>
+//     typename Value>
 // inline MaskedArray<T, nr_dimensions>::MaskedArray(
 //     Container<Value> const& container)
 // 
@@ -134,7 +134,7 @@ inline MaskedArray<T, nr_dimensions>::MaskedArray(
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 inline MaskedArray<T, nr_dimensions>::MaskedArray(
     size_t size,
@@ -149,7 +149,7 @@ inline MaskedArray<T, nr_dimensions>::MaskedArray(
 
 // By default, all values are not masked.
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 inline MaskedArray<T, nr_dimensions>::MaskedArray(
     std::initializer_list<T> const& values)
@@ -164,7 +164,7 @@ inline MaskedArray<T, nr_dimensions>::MaskedArray(
 
 // By default, all values are not masked.
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 inline MaskedArray<T, nr_dimensions>::MaskedArray(
     std::initializer_list<std::initializer_list<T>> const& values)
@@ -179,7 +179,7 @@ inline MaskedArray<T, nr_dimensions>::MaskedArray(
 
 // By default, all values are not masked.
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 template<
     size_t nr_ranges>
@@ -196,7 +196,7 @@ inline MaskedArray<T, nr_dimensions>::MaskedArray(
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 inline bool MaskedArray<T, nr_dimensions>::has_masked_values() const
 {
@@ -215,7 +215,7 @@ inline bool MaskedArray<T, nr_dimensions>::has_masked_values() const
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 inline Mask<nr_dimensions> const& MaskedArray<T, nr_dimensions>::mask() const
 {
@@ -224,7 +224,7 @@ inline Mask<nr_dimensions> const& MaskedArray<T, nr_dimensions>::mask() const
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 inline Mask<nr_dimensions>& MaskedArray<T, nr_dimensions>::mask()
 {
@@ -242,7 +242,7 @@ inline Mask<nr_dimensions>& MaskedArray<T, nr_dimensions>::mask()
   \sa        .
 */
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 inline void MaskedArray<T, nr_dimensions>::set_mask(
     T const& value)
@@ -259,10 +259,10 @@ inline void MaskedArray<T, nr_dimensions>::set_mask(
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 template<
-    class U>
+    typename U>
 inline void MaskedArray<T, nr_dimensions>::mask(
     Array<U, nr_dimensions>& mask) const
 {
@@ -290,10 +290,10 @@ inline void MaskedArray<T, nr_dimensions>::mask(
   \sa        .
 */
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 template<
-    class U>
+    typename U>
 inline void MaskedArray<T, nr_dimensions>::set_mask(
     Array<U, nr_dimensions> const& mask,
     U const value_to_mask)
@@ -314,7 +314,7 @@ inline void MaskedArray<T, nr_dimensions>::set_mask(
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 inline void MaskedArray<T, nr_dimensions>::mask_all()
 {

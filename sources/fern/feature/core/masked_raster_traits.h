@@ -7,7 +7,7 @@
 namespace fern {
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 struct ArgumentTraits<
     MaskedRaster<T, nr_dimensions>>
@@ -17,14 +17,14 @@ struct ArgumentTraits<
         nr_dimensions>::type;
 
     template<
-        class U>
+        typename U>
     struct Collection
     {
         using type = MaskedRaster<U, nr_dimensions>;
     };
 
     template<
-        class U>
+        typename U>
     struct Clone
     {
         using type = MaskedRaster<U, nr_dimensions>;
@@ -44,7 +44,7 @@ struct ArgumentTraits<
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 inline size_t size(
     MaskedRaster<T, nr_dimensions> const& raster)
@@ -54,7 +54,7 @@ inline size_t size(
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 inline size_t size(
     MaskedRaster<T, nr_dimensions> const& raster,
@@ -66,7 +66,7 @@ inline size_t size(
 
 
 template<
-    class T>
+    typename T>
 inline typename ArgumentTraits<MaskedRaster<T, 1>>::const_reference get(
     MaskedRaster<T, 1> const& raster,
     size_t index)
@@ -80,7 +80,7 @@ inline typename ArgumentTraits<MaskedRaster<T, 1>>::const_reference get(
 
 
 template<
-    class T>
+    typename T>
 inline typename ArgumentTraits<MaskedRaster<T, 1>>::reference get(
     MaskedRaster<T, 1>& raster,
     size_t index)
@@ -92,8 +92,8 @@ inline typename ArgumentTraits<MaskedRaster<T, 1>>::reference get(
 
 
 template<
-    class U,
-    class V>
+    typename U,
+    typename V>
 inline MaskedRaster<U, 1> clone(
     MaskedRaster<V, 1> const& raster)
 {
@@ -103,8 +103,8 @@ inline MaskedRaster<U, 1> clone(
 
 
 template<
-    class U,
-    class V>
+    typename U,
+    typename V>
 inline MaskedRaster<U, 1> clone(
     MaskedRaster<V, 1> const& raster,
     U const& value)
@@ -116,7 +116,7 @@ inline MaskedRaster<U, 1> clone(
 
 
 template<
-    class T>
+    typename T>
 inline double cell_size(
     MaskedRaster<T, 2> const& raster,
     size_t index)
@@ -127,7 +127,7 @@ inline double cell_size(
 
 
 template<
-    class T>
+    typename T>
 inline double cell_area(
     MaskedRaster<T, 2> const& raster)
 {
@@ -136,7 +136,7 @@ inline double cell_area(
 
 
 template<
-    class T>
+    typename T>
 inline typename ArgumentTraits<MaskedRaster<T, 2>>::const_reference get(
     MaskedRaster<T, 2> const& raster,
     size_t index1,
@@ -150,7 +150,7 @@ inline typename ArgumentTraits<MaskedRaster<T, 2>>::const_reference get(
 
 
 template<
-    class T>
+    typename T>
 inline typename ArgumentTraits<MaskedRaster<T, 2>>::reference get(
     MaskedRaster<T, 2>& raster,
     size_t index1,
@@ -164,8 +164,8 @@ inline typename ArgumentTraits<MaskedRaster<T, 2>>::reference get(
 
 
 template<
-    class U,
-    class V>
+    typename U,
+    typename V>
 inline MaskedRaster<U, 2> clone(
     MaskedRaster<V, 2> const& raster)
 {
@@ -176,8 +176,8 @@ inline MaskedRaster<U, 2> clone(
 
 
 template<
-    class U,
-    class V>
+    typename U,
+    typename V>
 inline MaskedRaster<U, 2> clone(
     MaskedRaster<V, 2> const& raster,
     U const& value)
@@ -190,7 +190,7 @@ inline MaskedRaster<U, 2> clone(
 
 
 template<
-    class T>
+    typename T>
 inline typename ArgumentTraits<MaskedRaster<T, 3>>::const_reference get(
     MaskedRaster<T, 3> const& raster,
     size_t index1,
@@ -206,7 +206,7 @@ inline typename ArgumentTraits<MaskedRaster<T, 3>>::const_reference get(
 
 
 template<
-    class T>
+    typename T>
 inline typename ArgumentTraits<MaskedRaster<T, 3>>::reference get(
     MaskedRaster<T, 3>& raster,
     size_t index1,
@@ -222,8 +222,8 @@ inline typename ArgumentTraits<MaskedRaster<T, 3>>::reference get(
 
 
 template<
-    class U,
-    class V>
+    typename U,
+    typename V>
 inline MaskedRaster<U, 3> clone(
     MaskedRaster<V, 3> const& raster)
 {
@@ -234,8 +234,8 @@ inline MaskedRaster<U, 3> clone(
 
 
 template<
-    class U,
-    class V>
+    typename U,
+    typename V>
 inline MaskedRaster<U, 3> clone(
     MaskedRaster<V, 3> const& raster,
     U const& value)

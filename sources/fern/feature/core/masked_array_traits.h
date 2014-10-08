@@ -6,7 +6,7 @@
 namespace fern {
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 struct ArgumentTraits<
     MaskedArray<T, nr_dimensions>>
@@ -16,14 +16,14 @@ struct ArgumentTraits<
         nr_dimensions>::type;
 
     template<
-        class U>
+        typename U>
     struct Collection
     {
         using type = MaskedArray<U, nr_dimensions>;
     };
 
     template<
-        class U>
+        typename U>
     struct Clone
     {
         using type = MaskedArray<U, nr_dimensions>;
@@ -43,7 +43,7 @@ struct ArgumentTraits<
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 inline size_t size(
     MaskedArray<T, nr_dimensions> const& array)
@@ -53,7 +53,7 @@ inline size_t size(
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 inline size_t size(
     MaskedArray<T, nr_dimensions> const& array,
@@ -65,7 +65,7 @@ inline size_t size(
 
 
 template<
-    class T>
+    typename T>
 inline typename ArgumentTraits<MaskedArray<T, 1>>::const_reference get(
     MaskedArray<T, 1> const& array,
     size_t index)
@@ -79,7 +79,7 @@ inline typename ArgumentTraits<MaskedArray<T, 1>>::const_reference get(
 
 
 template<
-    class T>
+    typename T>
 inline typename ArgumentTraits<MaskedArray<T, 1>>::reference get(
     MaskedArray<T, 1>& array,
     size_t index)
@@ -91,8 +91,8 @@ inline typename ArgumentTraits<MaskedArray<T, 1>>::reference get(
 
 
 template<
-    class U,
-    class V>
+    typename U,
+    typename V>
 inline MaskedArray<U, 1> clone(
     MaskedArray<V, 1> const& array)
 {
@@ -101,8 +101,8 @@ inline MaskedArray<U, 1> clone(
 
 
 template<
-    class U,
-    class V>
+    typename U,
+    typename V>
 inline MaskedArray<U, 1> clone(
     MaskedArray<V, 1> const& array,
     U const& value)
@@ -112,7 +112,7 @@ inline MaskedArray<U, 1> clone(
 
 
 template<
-    class T>
+    typename T>
 inline typename ArgumentTraits<MaskedArray<T, 2>>::const_reference get(
     MaskedArray<T, 2> const& array,
     size_t index1,
@@ -126,7 +126,7 @@ inline typename ArgumentTraits<MaskedArray<T, 2>>::const_reference get(
 
 
 template<
-    class T>
+    typename T>
 inline typename ArgumentTraits<MaskedArray<T, 2>>::reference get(
     MaskedArray<T, 2>& array,
     size_t index1,
@@ -140,8 +140,8 @@ inline typename ArgumentTraits<MaskedArray<T, 2>>::reference get(
 
 
 template<
-    class U,
-    class V>
+    typename U,
+    typename V>
 inline MaskedArray<U, 2> clone(
     MaskedArray<V, 2> const& array)
 {
@@ -151,8 +151,8 @@ inline MaskedArray<U, 2> clone(
 
 
 template<
-    class U,
-    class V>
+    typename U,
+    typename V>
 inline MaskedArray<U, 2> clone(
     MaskedArray<V, 2> const& array,
     U const& value)
@@ -163,7 +163,7 @@ inline MaskedArray<U, 2> clone(
 
 
 template<
-    class T>
+    typename T>
 inline typename ArgumentTraits<MaskedArray<T, 3>>::const_reference get(
     MaskedArray<T, 3> const& array,
     size_t index1,
@@ -179,7 +179,7 @@ inline typename ArgumentTraits<MaskedArray<T, 3>>::const_reference get(
 
 
 template<
-    class T>
+    typename T>
 inline typename ArgumentTraits<MaskedArray<T, 3>>::reference get(
     MaskedArray<T, 3>& array,
     size_t index1,
@@ -195,8 +195,8 @@ inline typename ArgumentTraits<MaskedArray<T, 3>>::reference get(
 
 
 template<
-    class U,
-    class V>
+    typename U,
+    typename V>
 inline MaskedArray<U, 3> clone(
     MaskedArray<V, 3> const& array)
 {
@@ -206,8 +206,8 @@ inline MaskedArray<U, 3> clone(
 
 
 template<
-    class U,
-    class V>
+    typename U,
+    typename V>
 inline MaskedArray<U, 3> clone(
     MaskedArray<V, 3> const& array,
     U const& value)

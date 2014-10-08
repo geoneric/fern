@@ -13,8 +13,8 @@ namespace fern {
   \sa        .
 */
 template<
-    class Domain,
-    class Value>
+    typename Domain,
+    typename Value>
 class SpatialAttribute:
     public Attribute
 {
@@ -59,8 +59,8 @@ private:
 
 
 template<
-    class Domain,
-    class Value>
+    typename Domain,
+    typename Value>
 inline SpatialAttribute<Domain, Value>::SpatialAttribute()
 
     : _domain(std::make_unique<Domain>()),
@@ -71,8 +71,8 @@ inline SpatialAttribute<Domain, Value>::SpatialAttribute()
 
 
 template<
-    class Domain,
-    class Value>
+    typename Domain,
+    typename Value>
 inline auto SpatialAttribute<Domain, Value>::add(
     typename Domain::Geometry const& geometry,
     Value const& value) -> GID
@@ -87,8 +87,8 @@ inline auto SpatialAttribute<Domain, Value>::add(
 
 
 template<
-    class Domain,
-    class Value>
+    typename Domain,
+    typename Value>
 inline Domain const&  SpatialAttribute<Domain, Value>::domain() const
 {
     return *_domain;
@@ -96,8 +96,8 @@ inline Domain const&  SpatialAttribute<Domain, Value>::domain() const
 
 
 template<
-    class Domain,
-    class Value>
+    typename Domain,
+    typename Value>
 inline GeometryValues<typename Domain::GID, Value> const&
     SpatialAttribute<Domain, Value>::values() const
 {
@@ -106,8 +106,8 @@ inline GeometryValues<typename Domain::GID, Value> const&
 
 
 template<
-    class Domain,
-    class Value>
+    typename Domain,
+    typename Value>
 bool SpatialAttribute<Domain, Value>::empty() const
 {
     assert((domain().empty() == values().empty()) || values().empty());
@@ -117,8 +117,8 @@ bool SpatialAttribute<Domain, Value>::empty() const
 
 
 template<
-    class Domain,
-    class Value>
+    typename Domain,
+    typename Value>
 size_t SpatialAttribute<Domain, Value>::size() const
 {
     assert((domain().size() == values().size()) || values().empty());

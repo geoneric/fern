@@ -15,8 +15,8 @@ extern fern::algorithm::ExecutionPolicy execution_policy;
 
 
 template<
-    class Value1,
-    class Value2>
+    typename Value1,
+    typename Value2>
 fern::algorithm::add::result_type<Value1, Value2> add(
     Value1 const& lhs,
     Value2 const& rhs)
@@ -37,8 +37,8 @@ fern::algorithm::add::result_type<Value1, Value2> add(
 
 
 template<
-    class ResultValueType,
-    class Value>
+    typename ResultValueType,
+    typename Value>
 fern::Collection<Value, ResultValueType> cast(
     Value const& value)
 {
@@ -56,7 +56,7 @@ fern::Collection<Value, ResultValueType> cast(
 
 
 template<
-    class Value>
+    typename Value>
 fern::Collection<Value, fern::value_type<Value>> slope(
     Value const& value)
 {

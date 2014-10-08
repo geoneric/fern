@@ -6,21 +6,21 @@
 namespace fern {
 
 template<
-    class T>
+    typename T>
 struct ArgumentTraits<MaskedConstant<T>>
 {
 
     using argument_category = constant_tag;
 
     template<
-        class U>
+        typename U>
     struct Constant
     {
         using type = MaskedConstant<U>;
     };
 
     template<
-        class U>
+        typename U>
     struct Clone
     {
         using type = MaskedConstant<U>;
@@ -40,7 +40,7 @@ struct ArgumentTraits<MaskedConstant<T>>
 
 
 template<
-    class T>
+    typename T>
 inline typename ArgumentTraits<MaskedConstant<T>>::const_reference get(
     MaskedConstant<T> const& constant)
 {
@@ -49,7 +49,7 @@ inline typename ArgumentTraits<MaskedConstant<T>>::const_reference get(
 
 
 template<
-    class T>
+    typename T>
 inline typename ArgumentTraits<MaskedConstant<T>>::reference get(
     MaskedConstant<T>& constant)
 {

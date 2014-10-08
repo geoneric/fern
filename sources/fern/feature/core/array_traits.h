@@ -9,7 +9,7 @@ namespace detail {
 namespace dispatch {
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 struct ArrayCategoryTag
 {
@@ -19,7 +19,7 @@ struct ArrayCategoryTag
 #define ARRAY_CATEGORY_TAG(                    \
     nr_dimensions)                             \
 template<                                      \
-    class T>                                   \
+    typename T>                                \
 struct ArrayCategoryTag<T, nr_dimensions>      \
 {                                              \
                                                \
@@ -38,7 +38,7 @@ ARRAY_CATEGORY_TAG(3)
 
 
 // template<
-//     class T,
+//     typename T,
 //     size_t nr_dimensions>
 // struct ArgumentTraits<
 //     View<T, nr_dimensions>>
@@ -47,7 +47,7 @@ ARRAY_CATEGORY_TAG(3)
 //     using argument_category = typename detail::dispatch::ArrayCategoryTag<T, nr_dimensions>::type;
 // 
 //     template<
-//         class U>
+//         typename U>
 //     struct Collection
 //     {
 //         using type = Array<T, nr_dimensions>;
@@ -59,7 +59,7 @@ ARRAY_CATEGORY_TAG(3)
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 struct ArgumentTraits<
     Array<T, nr_dimensions>>
@@ -69,14 +69,14 @@ struct ArgumentTraits<
         nr_dimensions>::type;
 
     template<
-        class U>
+        typename U>
     struct Collection
     {
         using type = Array<U, nr_dimensions>;
     };
 
     template<
-        class U>
+        typename U>
     struct Clone
     {
         using type = Array<U, nr_dimensions>;
@@ -96,7 +96,7 @@ struct ArgumentTraits<
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 inline size_t size(
     Array<T, nr_dimensions> const& array)
@@ -106,7 +106,7 @@ inline size_t size(
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 inline size_t size(
     Array<T, nr_dimensions> const& array,
@@ -118,7 +118,7 @@ inline size_t size(
 
 
 template<
-    class T>
+    typename T>
 inline typename ArgumentTraits<Array<T, 1>>::const_reference get(
     Array<T, 1> const& array,
     size_t index)
@@ -129,7 +129,7 @@ inline typename ArgumentTraits<Array<T, 1>>::const_reference get(
 
 
 template<
-    class T>
+    typename T>
 inline typename ArgumentTraits<Array<T, 1>>::reference get(
     Array<T, 1>& array,
     size_t index)
@@ -140,8 +140,8 @@ inline typename ArgumentTraits<Array<T, 1>>::reference get(
 
 
 template<
-    class U,
-    class V>
+    typename U,
+    typename V>
 inline Array<U, 1> clone(
     Array<V, 1> const& array)
 {
@@ -150,8 +150,8 @@ inline Array<U, 1> clone(
 
 
 template<
-    class U,
-    class V>
+    typename U,
+    typename V>
 inline Array<U, 1> clone(
     Array<V, 1> const& array,
     U const& value)
@@ -161,7 +161,7 @@ inline Array<U, 1> clone(
 
 
 template<
-    class T>
+    typename T>
 inline typename ArgumentTraits<Array<T, 2>>::const_reference get(
     Array<T, 2> const& array,
     size_t index1,
@@ -174,7 +174,7 @@ inline typename ArgumentTraits<Array<T, 2>>::const_reference get(
 
 
 template<
-    class T>
+    typename T>
 inline typename ArgumentTraits<Array<T, 2>>::reference get(
     Array<T, 2>& array,
     size_t index1,
@@ -187,8 +187,8 @@ inline typename ArgumentTraits<Array<T, 2>>::reference get(
 
 
 template<
-    class U,
-    class V>
+    typename U,
+    typename V>
 inline Array<U, 2> clone(
     Array<V, 2> const& array)
 {
@@ -197,8 +197,8 @@ inline Array<U, 2> clone(
 
 
 template<
-    class U,
-    class V>
+    typename U,
+    typename V>
 inline Array<U, 2> clone(
     Array<V, 2> const& array,
     U const& value)
@@ -209,7 +209,7 @@ inline Array<U, 2> clone(
 
 
 template<
-    class T>
+    typename T>
 inline typename ArgumentTraits<Array<T, 3>>::const_reference get(
     Array<T, 3> const& array,
     size_t index1,
@@ -224,7 +224,7 @@ inline typename ArgumentTraits<Array<T, 3>>::const_reference get(
 
 
 template<
-    class T>
+    typename T>
 inline typename ArgumentTraits<Array<T, 3>>::const_reference get(
     Array<T, 3>& array,
     size_t index1,
@@ -239,8 +239,8 @@ inline typename ArgumentTraits<Array<T, 3>>::const_reference get(
 
 
 template<
-    class U,
-    class V>
+    typename U,
+    typename V>
 inline Array<U, 3> clone(
     Array<V, 3> const& array)
 {
@@ -250,8 +250,8 @@ inline Array<U, 3> clone(
 
 
 template<
-    class U,
-    class V>
+    typename U,
+    typename V>
 inline Array<U, 3> clone(
     Array<V, 3> const& array,
     U const& value)

@@ -6,7 +6,7 @@
 namespace example {
 
 template<
-    class T>
+    typename T>
 class Raster
 {
 
@@ -47,7 +47,7 @@ private:
 
 
 template<
-    class T>
+    typename T>
 Raster<T>::Raster()
 
     : _cell_size(),
@@ -60,7 +60,7 @@ Raster<T>::Raster()
 
 
 template<
-    class T>
+    typename T>
 Raster<T>::Raster(Raster&& other)
 
     : _cell_size(other._cell_size),
@@ -73,7 +73,7 @@ Raster<T>::Raster(Raster&& other)
 
 
 template<
-    class T>
+    typename T>
 Raster<T>::Raster(
     double cell_size,
     size_t nr_rows,
@@ -89,7 +89,7 @@ Raster<T>::Raster(
 
 
 template<
-    class T>
+    typename T>
 Raster<T>& Raster<T>::operator=(
     Raster<T>&& other)
 {
@@ -103,7 +103,7 @@ Raster<T>& Raster<T>::operator=(
 
 
 template<
-    class T>
+    typename T>
 std::vector<T>& Raster<T>::values()
 {
     return _values;
@@ -111,7 +111,7 @@ std::vector<T>& Raster<T>::values()
 
 
 template<
-    class T>
+    typename T>
 std::vector<T> const& Raster<T>::values() const
 {
     return _values;
@@ -119,7 +119,7 @@ std::vector<T> const& Raster<T>::values() const
 
 
 template<
-    class T>
+    typename T>
 double Raster<T>::cell_size() const
 {
     return _cell_size;
@@ -127,7 +127,7 @@ double Raster<T>::cell_size() const
 
 
 template<
-    class T>
+    typename T>
 size_t Raster<T>::nr_rows() const
 {
     return _nr_rows;
@@ -135,7 +135,7 @@ size_t Raster<T>::nr_rows() const
 
 
 template<
-    class T>
+    typename T>
 size_t Raster<T>::nr_cols() const
 {
     return _nr_cols;

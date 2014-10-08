@@ -13,19 +13,19 @@ namespace fern {
 namespace d1 {
 
 template<
-    class T>
+    typename T>
 using ArrayValue = ArrayValue<T, 1>;
 
 template<
-    class T>
+    typename T>
 using ArrayValuePtr = std::shared_ptr<ArrayValue<T>>;
 
 template<
-    class T>
+    typename T>
 using MaskedArrayValue = MaskedArrayValue<T, 1>;
 
 template<
-    class T>
+    typename T>
 using MaskedArrayValuePtr = std::shared_ptr<MaskedArrayValue<T>>;
 
 using Point = Point<double, 1>;
@@ -37,19 +37,19 @@ using PointDomain = SpatialDomain<Point>;
 namespace d2 {
 
 template<
-    class T>
+    typename T>
 using ArrayValue = ArrayValue<T, 2>;
 
 template<
-    class T>
+    typename T>
 using ArrayValuePtr = std::shared_ptr<ArrayValue<T>>;
 
 template<
-    class T>
+    typename T>
 using MaskedArrayValue = MaskedArrayValue<T, 2>;
 
 template<
-    class T>
+    typename T>
 using MaskedArrayValuePtr = std::shared_ptr<MaskedArrayValue<T>>;
 
 using Point = Point<double, 2>;
@@ -63,19 +63,19 @@ using PointDomain = SpatialDomain<Point>;
 namespace d3 {
 
 template<
-    class T>
+    typename T>
 using ArrayValue = ArrayValue<T, 3>;
 
 template<
-    class T>
+    typename T>
 using ArrayValuePtr = std::shared_ptr<ArrayValue<T>>;
 
 template<
-    class T>
+    typename T>
 using MaskedArrayValue = MaskedArrayValue<T, 3>;
 
 template<
-    class T>
+    typename T>
 using MaskedArrayValuePtr = std::shared_ptr<MaskedArrayValue<T>>;
 
 using Point = Point<double, 3>;
@@ -89,19 +89,19 @@ using PointDomain = SpatialDomain<Point>;
 using FieldDomain = SpatialDomain<d2::Box>;
 
 template<
-    class T>
+    typename T>
 using FieldValue = d2::MaskedArrayValue<T>;
 
 template<
-    class T>
+    typename T>
 using FieldValuePtr = std::shared_ptr<FieldValue<T>>;
 
 template<
-    class T>
+    typename T>
 using FieldAttribute = SpatialAttribute<FieldDomain, FieldValuePtr<T>>;
 
 template<
-    class T>
+    typename T>
 using FieldAttributePtr = std::shared_ptr<FieldAttribute<T>>;
 
 } // namespace fern

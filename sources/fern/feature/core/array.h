@@ -36,7 +36,7 @@ using gen_type = typename boost::detail::multi_array::extent_gen<nr_ranges>;
     information.
 */
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 class Array:
     public boost::multi_array<T, nr_dimensions>
@@ -79,7 +79,7 @@ private:
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 inline Array<T, nr_dimensions>::Array(
     std::vector<T> const& values)
@@ -95,7 +95,7 @@ inline Array<T, nr_dimensions>::Array(
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 inline Array<T, nr_dimensions>::Array(
     size_t size,
@@ -111,7 +111,7 @@ inline Array<T, nr_dimensions>::Array(
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 template<
     size_t nr_ranges>
@@ -127,7 +127,7 @@ inline Array<T, nr_dimensions>::Array(
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 inline Array<T, nr_dimensions>::Array(
     std::initializer_list<T> const& values)
@@ -147,7 +147,7 @@ inline Array<T, nr_dimensions>::Array(
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 inline Array<T, nr_dimensions>::Array(
     std::initializer_list<std::initializer_list<T>> const& values)
@@ -169,7 +169,7 @@ inline Array<T, nr_dimensions>::Array(
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 inline void Array<T, nr_dimensions>::fill(
     T const& value)

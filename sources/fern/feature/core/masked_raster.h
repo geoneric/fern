@@ -15,7 +15,7 @@ namespace fern {
     coordinate system.
 */
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 class MaskedRaster:
     public MaskedArray<T, nr_dimensions>
@@ -63,7 +63,7 @@ private:
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 template<
     size_t nr_ranges>
@@ -79,7 +79,7 @@ inline MaskedRaster<T, nr_dimensions>::MaskedRaster(
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 template<
     size_t nr_ranges>
@@ -96,7 +96,7 @@ inline MaskedRaster<T, nr_dimensions>::MaskedRaster(
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 inline typename MaskedRaster<T, nr_dimensions>::Transformation const&
     MaskedRaster<T, nr_dimensions>::transformation() const
