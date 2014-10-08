@@ -13,11 +13,11 @@ namespace cover {
 namespace detail {
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 static void cover_0d_0d(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& /* output_no_data_policy */,
@@ -38,11 +38,11 @@ static void cover_0d_0d(
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 static void cover_2d_0d(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& /* output_no_data_policy */,
@@ -72,11 +72,11 @@ static void cover_2d_0d(
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 static void cover_2d_2d(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& /* output_no_data_policy */,
@@ -108,26 +108,26 @@ static void cover_2d_2d(
 namespace dispatch {
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result,
-    class ExecutionPolicy,
-    class Value1CollectionCategory,
-    class Value2CollectionCategory>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result,
+    typename ExecutionPolicy,
+    typename Value1CollectionCategory,
+    typename Value2CollectionCategory>
 struct CoverByArgumentCategory
 {
 };
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result,
-    class ExecutionPolicy>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result,
+    typename ExecutionPolicy>
 struct CoverByArgumentCategory<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -159,11 +159,11 @@ struct CoverByArgumentCategory<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct CoverByArgumentCategory<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -198,11 +198,11 @@ struct CoverByArgumentCategory<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct CoverByArgumentCategory<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -253,11 +253,11 @@ struct CoverByArgumentCategory<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct CoverByArgumentCategory<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -294,11 +294,11 @@ struct CoverByArgumentCategory<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct CoverByArgumentCategory<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -351,12 +351,12 @@ struct CoverByArgumentCategory<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result,
-    class ExecutionPolicy>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result,
+    typename ExecutionPolicy>
 struct CoverByExecutionPolicy
 {
 
@@ -385,11 +385,11 @@ struct CoverByExecutionPolicy
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct CoverByExecutionPolicy<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -451,12 +451,12 @@ struct CoverByExecutionPolicy<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 static void cover(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,

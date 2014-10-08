@@ -23,7 +23,7 @@ namespace tan {
     - @a Value must be a floating point.
 */
 template<
-    class Value>
+    typename Value>
 class OutOfDomainPolicy
 {
 
@@ -71,12 +71,12 @@ namespace trigonometry {
     same.
 */
 template<
-    template<class> class OutOfDomainPolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result>
+    template<typename> class OutOfDomainPolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result>
 void tan(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -97,12 +97,12 @@ void tan(
     @overload
 */
 template<
-    template<class> class OutOfDomainPolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result>
+    template<typename> class OutOfDomainPolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result>
 void tan(
     ExecutionPolicy const& execution_policy,
     Value const& value,
@@ -119,9 +119,9 @@ void tan(
     @overload
 */
 template<
-    class ExecutionPolicy,
-    class Value,
-    class Result>
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result>
 void tan(
     ExecutionPolicy const& execution_policy,
     Value const& value,

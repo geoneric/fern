@@ -16,7 +16,7 @@ namespace algorithm {
     copy construction and copy assignment are not supported.
 */
 template<
-    class Mask>
+    typename Mask>
 class MarkNoDataByValue {
 
 private:
@@ -65,7 +65,7 @@ private:
 
 
 template<
-    class Mask>
+    typename Mask>
 inline MarkNoDataByValue<Mask>::MarkNoDataByValue(
     Mask& mask,
     MarkNoDataByValue<Mask>::value_type const& no_data_value)
@@ -78,7 +78,7 @@ inline MarkNoDataByValue<Mask>::MarkNoDataByValue(
 
 
 template<
-    class Mask>
+    typename Mask>
 inline void MarkNoDataByValue<Mask>::mark_as_no_data()
 {
     // In case of a compile error, make sure that get is overloaded for
@@ -89,7 +89,7 @@ inline void MarkNoDataByValue<Mask>::mark_as_no_data()
 
 
 template<
-    class Mask>
+    typename Mask>
 inline void MarkNoDataByValue<Mask>::mark_as_no_data(
     size_t index)
 {
@@ -98,7 +98,7 @@ inline void MarkNoDataByValue<Mask>::mark_as_no_data(
 
 
 template<
-    class Mask>
+    typename Mask>
 inline void MarkNoDataByValue<Mask>::mark_as_no_data(
     size_t index1,
     size_t index2)
@@ -108,7 +108,7 @@ inline void MarkNoDataByValue<Mask>::mark_as_no_data(
 
 
 template<
-    class Mask>
+    typename Mask>
 inline void MarkNoDataByValue<Mask>::mark_as_no_data(
     size_t index1,
     size_t index2,

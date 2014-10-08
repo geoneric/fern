@@ -16,7 +16,7 @@ class DivideByWeights
 
 public:
 
-    template<class Value, class Count>
+    template<typename Value, typename Count>
     static Value   normalize           (Value const& value,
                                         Count const& count);
 
@@ -24,8 +24,8 @@ public:
 
 
 template<
-    class Value,
-    class Count
+    typename Value,
+    typename Count
 >
 inline Value DivideByWeights::normalize(
         Value const& value,

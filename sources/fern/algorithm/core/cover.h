@@ -21,12 +21,12 @@ namespace core {
       combining @a Value1 and @a Value2. See fern::algorithm::Result.
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 void cover(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -61,12 +61,12 @@ void cover(
     @overload
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 void cover(
     ExecutionPolicy const& execution_policy,
     Value1 const& value1,
@@ -84,10 +84,10 @@ void cover(
     @overload
 */
 template<
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 void cover(
     ExecutionPolicy const& execution_policy,
     Value1 const& value1,

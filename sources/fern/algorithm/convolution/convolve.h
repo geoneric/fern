@@ -22,8 +22,8 @@ namespace convolve {
 
 */
 template<
-    class Value,
-    class Result>
+    typename Value,
+    typename Result>
 using OutOfRangePolicy = detail::OutOfRangePolicy<Value, Result>;
 
 } // namespace convolve
@@ -48,16 +48,16 @@ namespace convolution {
     - The value type of @a kernel must be arithmetic.
 */
 template<
-    class AlternativeForNoDataPolicy,
-    class NormalizePolicy,
-    class OutOfImagePolicy,
-    template<class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class SourceImage,
-    class Kernel,
-    class DestinationImage
+    typename AlternativeForNoDataPolicy,
+    typename NormalizePolicy,
+    typename OutOfImagePolicy,
+    template<typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename SourceImage,
+    typename Kernel,
+    typename DestinationImage
 >
 void convolve(
     InputNoDataPolicy const& input_no_data_policy,
@@ -87,16 +87,16 @@ void convolve(
     @overload
 */
 template<
-    class AlternativeForNoDataPolicy,
-    class NormalizePolicy,
-    class OutOfImagePolicy,
-    template<class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class SourceImage,
-    class Kernel,
-    class DestinationImage
+    typename AlternativeForNoDataPolicy,
+    typename NormalizePolicy,
+    typename OutOfImagePolicy,
+    template<typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename SourceImage,
+    typename Kernel,
+    typename DestinationImage
 >
 void convolve(
     ExecutionPolicy const& execution_policy,
@@ -130,10 +130,10 @@ void convolve(
     OutputNoDataPolicy         | fern::DontMarkNoData (as always)
 */
 template<
-    class ExecutionPolicy,
-    class SourceImage,
-    class Kernel,
-    class DestinationImage
+    typename ExecutionPolicy,
+    typename SourceImage,
+    typename Kernel,
+    typename DestinationImage
 >
 void convolve(
     ExecutionPolicy const& execution_policy,

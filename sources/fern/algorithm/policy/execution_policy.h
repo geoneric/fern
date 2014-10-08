@@ -72,7 +72,7 @@ size_t const parallel_execution_policy_id = 1;
 
 
 template<
-    class ConcreteExecutionPolicy>
+    typename ConcreteExecutionPolicy>
 inline ConcreteExecutionPolicy& get_policy(
     ExecutionPolicy& policy)
 {
@@ -83,7 +83,7 @@ inline ConcreteExecutionPolicy& get_policy(
 
 
 template<
-    class ConcreteExecutionPolicy>
+    typename ConcreteExecutionPolicy>
 inline ConcreteExecutionPolicy const& get_policy(
     ExecutionPolicy const& policy)
 {

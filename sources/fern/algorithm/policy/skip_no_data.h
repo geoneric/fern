@@ -15,7 +15,7 @@ namespace algorithm {
     Use this policy whenever the input does not contain no-data.
 */
 template<
-    class... ArgumentNoDataPolicies>
+    typename... ArgumentNoDataPolicies>
 class SkipNoData:
     public InputNoDataPolicies<ArgumentNoDataPolicies...>
 {
@@ -55,7 +55,7 @@ public:
     This method is called in case of a 0D input.
 */
 template<
-    class... ArgumentNoDataPolicies>
+    typename... ArgumentNoDataPolicies>
 inline constexpr bool SkipNoData<ArgumentNoDataPolicies...>::is_no_data()
 {
     return false;
@@ -69,7 +69,7 @@ inline constexpr bool SkipNoData<ArgumentNoDataPolicies...>::is_no_data()
     This method is called in case of a 1D input.
 */
 template<
-    class... ArgumentNoDataPolicies>
+    typename... ArgumentNoDataPolicies>
 inline constexpr bool SkipNoData<ArgumentNoDataPolicies...>::is_no_data(
     size_t /* index */)
 {
@@ -85,7 +85,7 @@ inline constexpr bool SkipNoData<ArgumentNoDataPolicies...>::is_no_data(
     This method is called in case of a 2D input.
 */
 template<
-    class... ArgumentNoDataPolicies>
+    typename... ArgumentNoDataPolicies>
 inline constexpr bool SkipNoData<ArgumentNoDataPolicies...>::is_no_data(
     size_t /* index1 */,
     size_t /* index2 */)
@@ -103,7 +103,7 @@ inline constexpr bool SkipNoData<ArgumentNoDataPolicies...>::is_no_data(
     This method is called in case of a 3D input.
 */
 template<
-    class... ArgumentNoDataPolicies>
+    typename... ArgumentNoDataPolicies>
 inline constexpr bool SkipNoData<ArgumentNoDataPolicies...>::is_no_data(
     size_t /* index1 */,
     size_t /* index2 */,
@@ -123,7 +123,7 @@ inline constexpr bool SkipNoData<ArgumentNoDataPolicies...>::is_no_data(
     input. Often, they only need to know the union of the input no-data.
 */
 template<
-    class... ArgumentNoDataPolicies>
+    typename... ArgumentNoDataPolicies>
 inline SkipNoData<ArgumentNoDataPolicies...>::SkipNoData(
     ArgumentNoDataPolicies&&... policies)
 

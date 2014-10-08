@@ -18,8 +18,8 @@ namespace algorithm {
     copy construction and copy assignment are not supported.
 */
 template<
-    class Mask,
-    class... ArgumentNoDataPolicies>
+    typename Mask,
+    typename... ArgumentNoDataPolicies>
 class DetectNoDataByValue:
     public InputNoDataPolicies<ArgumentNoDataPolicies...>
 {
@@ -71,8 +71,8 @@ private:
 
 
 template<
-    class Mask,
-    class... ArgumentNoDataPolicies>
+    typename Mask,
+    typename... ArgumentNoDataPolicies>
 inline DetectNoDataByValue<Mask, ArgumentNoDataPolicies...>::
         DetectNoDataByValue(
     Mask const& mask,
@@ -89,8 +89,8 @@ inline DetectNoDataByValue<Mask, ArgumentNoDataPolicies...>::
 
 
 template<
-    class Mask,
-    class... ArgumentNoDataPolicies>
+    typename Mask,
+    typename... ArgumentNoDataPolicies>
 inline bool DetectNoDataByValue<Mask, ArgumentNoDataPolicies...>
         ::is_no_data() const
 {
@@ -99,8 +99,8 @@ inline bool DetectNoDataByValue<Mask, ArgumentNoDataPolicies...>
 
 
 template<
-    class Mask,
-    class... ArgumentNoDataPolicies>
+    typename Mask,
+    typename... ArgumentNoDataPolicies>
 inline bool DetectNoDataByValue<Mask, ArgumentNoDataPolicies...>::is_no_data(
     size_t index) const
 {
@@ -109,8 +109,8 @@ inline bool DetectNoDataByValue<Mask, ArgumentNoDataPolicies...>::is_no_data(
 
 
 template<
-    class Mask,
-    class... ArgumentNoDataPolicies>
+    typename Mask,
+    typename... ArgumentNoDataPolicies>
 inline bool DetectNoDataByValue<Mask, ArgumentNoDataPolicies...>::is_no_data(
     size_t index1,
     size_t index2) const
@@ -120,8 +120,8 @@ inline bool DetectNoDataByValue<Mask, ArgumentNoDataPolicies...>::is_no_data(
 
 
 template<
-    class Mask,
-    class... ArgumentNoDataPolicies>
+    typename Mask,
+    typename... ArgumentNoDataPolicies>
 inline bool DetectNoDataByValue<Mask, ArgumentNoDataPolicies...>::is_no_data(
     size_t index1,
     size_t index2,

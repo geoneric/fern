@@ -24,12 +24,12 @@ namespace core {
     - The value types of @a value1, @a value2 and @a result are not relevant.
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 void unite_no_data(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -48,12 +48,12 @@ void unite_no_data(
     @overload
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 void unite_no_data(
     ExecutionPolicy const& execution_policy,
     Value1 const& value1,
@@ -71,10 +71,10 @@ void unite_no_data(
     @overload
 */
 template<
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 void unite_no_data(
     ExecutionPolicy const& execution_policy,
     Value1 const& value1,

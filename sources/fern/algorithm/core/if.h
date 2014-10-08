@@ -23,12 +23,12 @@ namespace core {
       combining @a Condition and @a TrueValue. See fern::algorithm::Result.
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Condition,
-    class TrueValue,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename Result>
 void if_(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -52,12 +52,12 @@ void if_(
     @overload
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Condition,
-    class TrueValue,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename Result>
 void if_(
     ExecutionPolicy const& execution_policy,
     Condition const& condition,
@@ -75,10 +75,10 @@ void if_(
     @overload
 */
 template<
-    class ExecutionPolicy,
-    class Condition,
-    class TrueValue,
-    class Result>
+    typename ExecutionPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename Result>
 void if_(
     ExecutionPolicy const& execution_policy,
     Condition const& condition,
@@ -113,13 +113,13 @@ void if_(
       fern::algorithm::Result.
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Condition,
-    class TrueValue,
-    class FalseValue,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename FalseValue,
+    typename Result>
 void if_(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -148,13 +148,13 @@ void if_(
     @overload
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Condition,
-    class TrueValue,
-    class FalseValue,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename FalseValue,
+    typename Result>
 void if_(
     ExecutionPolicy const& execution_policy,
     Condition const& condition,
@@ -173,11 +173,11 @@ void if_(
     @overload
 */
 template<
-    class ExecutionPolicy,
-    class Condition,
-    class TrueValue,
-    class FalseValue,
-    class Result>
+    typename ExecutionPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename FalseValue,
+    typename Result>
 void if_(
     ExecutionPolicy const& execution_policy,
     Condition const& condition,

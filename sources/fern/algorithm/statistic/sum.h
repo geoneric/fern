@@ -11,9 +11,9 @@ namespace sum {
     @ingroup    fern_algorithm_statistic_group
 */
 template<
-    class Value1,
-    class Value2,
-    class Result>
+    typename Value1,
+    typename Value2,
+    typename Result>
 using OutOfRangePolicy = add::OutOfRangePolicy<Value1, Value2, Result>;
 
 } // namespace sum
@@ -32,12 +32,12 @@ namespace statistic {
     type of @a result must be equal to the value type of @a value.
 */
 template<
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void sum(
     InputNoDataPolicy const& input_no_data_policy,
@@ -60,12 +60,12 @@ void sum(
     @overload
 */
 template<
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void sum(
     ExecutionPolicy const& execution_policy,
@@ -83,9 +83,9 @@ void sum(
     @overload
 */
 template<
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void sum(
     ExecutionPolicy const& execution_policy,

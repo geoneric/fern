@@ -23,8 +23,8 @@ namespace pow {
     the same.
 */
 template<
-    class Base,
-    class Exponent>
+    typename Base,
+    typename Exponent>
 class OutOfDomainPolicy
 {
 
@@ -65,9 +65,9 @@ public:
     the same.
 */
 template<
-    class Base,
-    class Exponent,
-    class Result>
+    typename Base,
+    typename Exponent,
+    typename Result>
 class OutOfRangePolicy
 {
 
@@ -104,14 +104,14 @@ namespace algebra {
     point and the same.
 */
 template<
-    template<class, class> class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Base,
-    class Exponent,
-    class Result
+    template<typename, typename> class OutOfDomainPolicy,
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Base,
+    typename Exponent,
+    typename Result
 >
 void pow(
     InputNoDataPolicy const& input_no_data_policy,
@@ -135,14 +135,14 @@ void pow(
     @overload
 */
 template<
-    template<class, class> class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Base,
-    class Exponent,
-    class Result
+    template<typename, typename> class OutOfDomainPolicy,
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Base,
+    typename Exponent,
+    typename Result
 >
 void pow(
     ExecutionPolicy const& execution_policy,
@@ -161,10 +161,10 @@ void pow(
     @overload
 */
 template<
-    class ExecutionPolicy,
-    class Base,
-    class Exponent,
-    class Result
+    typename ExecutionPolicy,
+    typename Base,
+    typename Exponent,
+    typename Result
 >
 void pow(
     ExecutionPolicy const& execution_policy,

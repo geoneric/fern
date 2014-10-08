@@ -9,12 +9,12 @@ namespace not_ {
 namespace detail {
 
 template<
-    class Value>
+    typename Value>
 struct Algorithm
 {
 
     template<
-        class R>
+        typename R>
     inline void operator()(
         Value const& value,
         R& result) const
@@ -26,11 +26,11 @@ struct Algorithm
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void not_(
     InputNoDataPolicy const& input_no_data_policy,

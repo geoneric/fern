@@ -9,13 +9,13 @@ namespace or_ {
 namespace detail {
 
 template<
-    class Value1,
-    class Value2>
+    typename Value1,
+    typename Value2>
 struct Algorithm
 {
 
     template<
-        class Result>
+        typename Result>
     inline void operator()(
         Value1 const& value1,
         Value2 const& value2,
@@ -28,12 +28,12 @@ struct Algorithm
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result
 >
 void or_(
     InputNoDataPolicy const& input_no_data_policy,

@@ -23,9 +23,9 @@ namespace algebra {
     The value type of @a result must be arithmetic.
 */
 template<
-    class InputNoDataPolicy,
-    class ExecutionPolicy,
-    class Result
+    typename InputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Result
 >
 void defined(
     InputNoDataPolicy const& input_no_data_policy,
@@ -43,9 +43,9 @@ void defined(
     @overload
 */
 template<
-    class InputNoDataPolicy,
-    class ExecutionPolicy,
-    class Result
+    typename InputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Result
 >
 void defined(
     ExecutionPolicy const& execution_policy,
@@ -60,8 +60,8 @@ void defined(
     @overload
 */
 template<
-    class ExecutionPolicy,
-    class Result
+    typename ExecutionPolicy,
+    typename Result
 >
 void defined(
     ExecutionPolicy const& execution_policy,

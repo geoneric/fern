@@ -12,8 +12,8 @@ namespace pow {
 namespace detail {
 
 template<
-    class Value1,
-    class Value2>
+    typename Value1,
+    typename Value2>
 struct Algorithm
 {
 
@@ -21,7 +21,7 @@ struct Algorithm
     FERN_STATIC_ASSERT(std::is_same, Value2, Value1)
 
     template<
-        class R>
+        typename R>
     inline void operator()(
         Value1 const& value1,
         Value2 const& value2,
@@ -35,14 +35,14 @@ struct Algorithm
 
 
 template<
-    template<class, class> class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result
+    template<typename, typename> class OutOfDomainPolicy,
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result
 >
 void pow(
     InputNoDataPolicy const& input_no_data_policy,

@@ -14,20 +14,20 @@ namespace detail {
 namespace dispatch {
 
 template<
-    class A1,
-    class A2,
-    class RValue,
-    class A1ArgumentCategory,
-    class A2ArgumentCategory>
+    typename A1,
+    typename A2,
+    typename RValue,
+    typename A1ArgumentCategory,
+    typename A2ArgumentCategory>
 struct Result
 {
 };
 
 
 template<
-    class A1,
-    class A2,
-    class RValue>
+    typename A1,
+    typename A2,
+    typename RValue>
 struct Result<
     A1,
     A2,
@@ -64,9 +64,9 @@ struct Result<
 
 
 template<
-    class A1,
-    class A2,
-    class RValue>
+    typename A1,
+    typename A2,
+    typename RValue>
 struct Result<
     A1,
     A2,
@@ -83,9 +83,9 @@ struct Result<
 
 
 template<
-    class A1,
-    class A2,
-    class RValue>
+    typename A1,
+    typename A2,
+    typename RValue>
 struct Result<
     A1,
     A2,
@@ -102,9 +102,9 @@ struct Result<
 
 
 template<
-    class A1,
-    class A2,
-    class RValue>
+    typename A1,
+    typename A2,
+    typename RValue>
 struct Result<
     A1,
     A2,
@@ -143,9 +143,9 @@ struct Result<
    Check the unit tests to see all this in action.
 */
 template<
-    class A1,
-    class A2,
-    class RValue=typename ResultValue<
+    typename A1,
+    typename A2,
+    typename RValue=typename ResultValue<
         typename ArgumentTraits<A1>::value_type,
         typename ArgumentTraits<A2>::value_type>::type>
 class Result
@@ -168,8 +168,8 @@ public:
 
 
 template<
-    class A1,
-    class A2>
+    typename A1,
+    typename A2>
 using result_type = typename Result<A1, A2>::type;
 
 } // namespace algorithm

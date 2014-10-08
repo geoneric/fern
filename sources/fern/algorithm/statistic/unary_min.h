@@ -17,11 +17,11 @@ namespace statistic {
     type of @a result must be equal to the value type of @a value.
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void unary_min(
     InputNoDataPolicy const& input_no_data_policy,
@@ -44,11 +44,11 @@ void unary_min(
     @overload
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void unary_min(
     ExecutionPolicy const& execution_policy,
@@ -66,9 +66,9 @@ void unary_min(
     @overload
 */
 template<
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void unary_min(
     ExecutionPolicy const& execution_policy,

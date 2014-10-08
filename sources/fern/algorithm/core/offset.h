@@ -26,12 +26,12 @@ namespace core {
     - The value type of @a Offset must be signed integral.
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Offset,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Offset,
+    typename Result>
 void offset(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -57,12 +57,12 @@ void offset(
     @overload
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Offset,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Offset,
+    typename Result>
 void offset(
     ExecutionPolicy const& execution_policy,
     Value const& value,
@@ -80,10 +80,10 @@ void offset(
     @overload
 */
 template<
-    class ExecutionPolicy,
-    class Value,
-    class Offset,
-    class Result>
+    typename ExecutionPolicy,
+    typename Value,
+    typename Offset,
+    typename Result>
 void offset(
     ExecutionPolicy const& execution_policy,
     Value const& value,
@@ -117,12 +117,12 @@ void offset(
     - The value type of @a Offset must be signed integral.
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Offset,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Offset,
+    typename Result>
 void offset(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -150,12 +150,12 @@ void offset(
     @overload
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Offset,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Offset,
+    typename Result>
 void offset(
     ExecutionPolicy const& execution_policy,
     Value const& value,
@@ -174,10 +174,10 @@ void offset(
     @overload
 */
 template<
-    class ExecutionPolicy,
-    class Value,
-    class Offset,
-    class Result>
+    typename ExecutionPolicy,
+    typename Value,
+    typename Offset,
+    typename Result>
 void offset(
     ExecutionPolicy const& execution_policy,
     Value const& value,

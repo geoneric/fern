@@ -16,8 +16,8 @@ namespace divide {
                 fern::algorithm::Result
 */
 template<
-    class Value1,
-    class Value2>
+    typename Value1,
+    typename Value2>
 using result_type = typename fern::algorithm::Result<Value1, Value2>::type;
 
 
@@ -28,8 +28,8 @@ using result_type = typename fern::algorithm::Result<Value1, Value2>::type;
     @sa         fern::algorithm::divide::result_type
 */
 template<
-    class Value1,
-    class Value2>
+    typename Value1,
+    typename Value2>
 using result_value_type = typename fern::algorithm::Result<value_type<Value1>,
     value_type<Value2>>::type;
 
@@ -47,8 +47,8 @@ using result_value_type = typename fern::algorithm::Result<value_type<Value1>,
     `bool`.
 */
 template<
-    class Value1,
-    class Value2>
+    typename Value1,
+    typename Value2>
 class OutOfDomainPolicy
 {
 
@@ -83,9 +83,9 @@ public:
     fern::algorithm::divide::result_value_type<Value1, Value2>.
 */
 template<
-    class Value1,
-    class Value2,
-    class Result>
+    typename Value1,
+    typename Value2,
+    typename Result>
 class OutOfRangePolicy
 {
 
@@ -132,14 +132,14 @@ namespace algebra {
     fern::algorithm::divide::result_value_type<Value1, Value2>.
 */
 template<
-    template<class, class> class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result
+    template<typename, typename> class OutOfDomainPolicy,
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result
 >
 void divide(
     InputNoDataPolicy const& input_no_data_policy,
@@ -168,14 +168,14 @@ void divide(
     @overload
 */
 template<
-    template<class, class> class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result
+    template<typename, typename> class OutOfDomainPolicy,
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result
 >
 void divide(
     ExecutionPolicy const& execution_policy,
@@ -194,10 +194,10 @@ void divide(
     @overload
 */
 template<
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result
 >
 void divide(
     ExecutionPolicy const& execution_policy,

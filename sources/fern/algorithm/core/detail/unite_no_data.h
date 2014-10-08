@@ -10,11 +10,11 @@ namespace unite_no_data {
 namespace detail {
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 void unite_no_data_0d_0d(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -32,11 +32,11 @@ void unite_no_data_0d_0d(
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 void unite_no_data_2d_2d(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -63,26 +63,26 @@ void unite_no_data_2d_2d(
 namespace dispatch {
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result,
-    class ExecutionPolicy,
-    class Value1CollectionCategory,
-    class Value2CollectionCategory>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result,
+    typename ExecutionPolicy,
+    typename Value1CollectionCategory,
+    typename Value2CollectionCategory>
 struct UniteNoDataByArgumentCategory
 {
 };
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result,
-    class ExecutionPolicy>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result,
+    typename ExecutionPolicy>
 struct UniteNoDataByArgumentCategory<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -113,11 +113,11 @@ struct UniteNoDataByArgumentCategory<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct UniteNoDataByArgumentCategory<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -153,11 +153,11 @@ struct UniteNoDataByArgumentCategory<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct UniteNoDataByArgumentCategory<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -210,23 +210,23 @@ struct UniteNoDataByArgumentCategory<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result,
-    class ExecutionPolicy>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result,
+    typename ExecutionPolicy>
 class UniteNoDataByExecutionPolicy
 {
 };
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct UniteNoDataByExecutionPolicy<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -288,12 +288,12 @@ struct UniteNoDataByExecutionPolicy<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 void unite_no_data(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,

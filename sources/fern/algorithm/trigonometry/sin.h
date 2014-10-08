@@ -19,7 +19,7 @@ namespace sin {
     - @a Value must be a floating point.
 */
 template<
-    class Value>
+    typename Value>
 class OutOfDomainPolicy
 {
 
@@ -51,12 +51,12 @@ namespace trigonometry {
     same.
 */
 template<
-    template<class> class OutOfDomainPolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result>
+    template<typename> class OutOfDomainPolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result>
 void sin(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -77,12 +77,12 @@ void sin(
     @overload
 */
 template<
-    template<class> class OutOfDomainPolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result>
+    template<typename> class OutOfDomainPolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result>
 void sin(
     ExecutionPolicy const& execution_policy,
     Value const& value,
@@ -99,9 +99,9 @@ void sin(
     @overload
 */
 template<
-    class ExecutionPolicy,
-    class Value,
-    class Result>
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result>
 void sin(
     ExecutionPolicy const& execution_policy,
     Value const& value,

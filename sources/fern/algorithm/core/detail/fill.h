@@ -11,12 +11,12 @@ namespace fill {
 namespace detail {
 
 template<
-    class Value>
+    typename Value>
 struct Algorithm
 {
 
     template<
-        class Result>
+        typename Result>
     inline void operator()(
         Value const& value,
         Result& result) const
@@ -30,11 +30,11 @@ struct Algorithm
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void fill(
     InputNoDataPolicy const& input_no_data_policy,

@@ -20,8 +20,8 @@ namespace cast {
     The value type of @a value and @a result must be arithmetic.
 */
 template<
-    class Value,
-    class Result>
+    typename Value,
+    typename Result>
 class OutOfRangePolicy
 {
 
@@ -57,12 +57,12 @@ namespace core {
     The value type of @a value and @a result must be arithmetic.
 */
 template<
-    template<class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result>
+    template<typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result>
 void cast(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -83,12 +83,12 @@ void cast(
     @overload
 */
 template<
-    template<class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result>
+    template<typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result>
 void cast(
     ExecutionPolicy const& execution_policy,
     Value const& value,
@@ -105,9 +105,9 @@ void cast(
     @overload
 */
 template<
-    class ExecutionPolicy,
-    class Value,
-    class Result>
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result>
 void cast(
     ExecutionPolicy const& execution_policy,
     Value const& value,

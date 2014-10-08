@@ -6,7 +6,7 @@ namespace fern {
 namespace algorithm {
 
 template<
-    class Collection>
+    typename Collection>
 class CollectNoDataIndices {
 
 public:
@@ -40,7 +40,7 @@ private:
 
 
 template<
-    class Collection>
+    typename Collection>
 inline void CollectNoDataIndices<Collection>::mark(
     size_t index)
 {
@@ -49,7 +49,7 @@ inline void CollectNoDataIndices<Collection>::mark(
 
 
 template<
-    class Collection>
+    typename Collection>
 inline Collection const& CollectNoDataIndices<Collection>::indices() const
 {
     return _indices;

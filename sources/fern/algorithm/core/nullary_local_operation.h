@@ -13,10 +13,10 @@ namespace algorithm {
 namespace detail {
 
 template<
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Result>
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Result>
 void operation_0d(
     Algorithm const& algorithm,
     InputNoDataPolicy const& input_no_data_policy,
@@ -45,10 +45,10 @@ void operation_0d(
 
 
 template<
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Result>
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Result>
 void operation_1d(
     Algorithm const& algorithm,
     InputNoDataPolicy const& input_no_data_policy,
@@ -81,10 +81,10 @@ void operation_1d(
 
 
 template<
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Result>
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Result>
 void operation_2d(
     Algorithm const& algorithm,
     InputNoDataPolicy const& input_no_data_policy,
@@ -122,23 +122,23 @@ void operation_2d(
 namespace dispatch {
 
 template<
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Result,
-    class ExecutionPolicy,
-    class ValueCollectionCategory>
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Result,
+    typename ExecutionPolicy,
+    typename ValueCollectionCategory>
 class NullaryLocalOperation
 {
 };
 
 
 template<
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Result,
-    class ExecutionPolicy>
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Result,
+    typename ExecutionPolicy>
 struct NullaryLocalOperation<
     Algorithm,
     InputNoDataPolicy,
@@ -166,10 +166,10 @@ struct NullaryLocalOperation<
 
 
 template<
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Result>
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Result>
 struct NullaryLocalOperation<
     Algorithm,
     InputNoDataPolicy,
@@ -198,10 +198,10 @@ struct NullaryLocalOperation<
 
 
 template<
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Result>
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Result>
 struct NullaryLocalOperation<
     Algorithm,
     InputNoDataPolicy,
@@ -249,10 +249,10 @@ struct NullaryLocalOperation<
 
 
 template<
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Result>
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Result>
 struct NullaryLocalOperation<
     Algorithm,
     InputNoDataPolicy,
@@ -284,10 +284,10 @@ struct NullaryLocalOperation<
 
 
 template<
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Result>
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Result>
 struct NullaryLocalOperation<
     Algorithm,
     InputNoDataPolicy,
@@ -337,10 +337,10 @@ struct NullaryLocalOperation<
 
 
 template<
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Result>
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Result>
 struct NullaryLocalOperation<
     Algorithm,
     InputNoDataPolicy,
@@ -410,11 +410,11 @@ struct NullaryLocalOperation<
     This function supports sequential and parallel execution of the operation.
 */
 template<
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Result
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Result
 >
 void nullary_local_operation(
     InputNoDataPolicy const& input_no_data_policy,

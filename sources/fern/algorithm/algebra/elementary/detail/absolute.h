@@ -14,17 +14,17 @@ namespace detail {
 namespace dispatch {
 
 template<
-    class Value,
-    class R,
-    class ValueNumberCategory>
+    typename Value,
+    typename R,
+    typename ValueNumberCategory>
 struct within_range
 {
 };
 
 
 template<
-    class Value,
-    class Result>
+    typename Value,
+    typename Result>
 struct within_range<
     Value,
     Result,
@@ -41,8 +41,8 @@ struct within_range<
 
 
 template<
-    class Value,
-    class Result>
+    typename Value,
+    typename Result>
 struct within_range<
     Value,
     Result,
@@ -63,8 +63,8 @@ struct within_range<
 
 
 template<
-    class Value,
-    class Result>
+    typename Value,
+    typename Result>
 struct within_range<
     Value,
     Result,
@@ -82,8 +82,8 @@ struct within_range<
 
 
 template<
-    class Value,
-    class Result>
+    typename Value,
+    typename Result>
 struct within_range<
     Value,
     Result,
@@ -101,8 +101,8 @@ struct within_range<
 
 
 template<
-    class Value,
-    class Enable=void>
+    typename Value,
+    typename Enable=void>
 struct AlgorithmByValueType
 {
 
@@ -112,7 +112,7 @@ struct AlgorithmByValueType
 
 
 template<
-    class Value>
+    typename Value>
 struct AlgorithmByValueType<
     Value,
     typename std::enable_if<std::is_unsigned<Value>::value>::type>
@@ -122,7 +122,7 @@ struct AlgorithmByValueType<
     FERN_STATIC_ASSERT(std::is_unsigned, Value)
 
     template<
-        class Result>
+        typename Result>
     inline static void apply(
         Value const& value,
         Result& result)
@@ -135,7 +135,7 @@ struct AlgorithmByValueType<
 
 
 template<
-    class Value>
+    typename Value>
 struct AlgorithmByValueType<
     Value,
     typename std::enable_if<!std::is_unsigned<Value>::value>::type>
@@ -145,7 +145,7 @@ struct AlgorithmByValueType<
     FERN_STATIC_ASSERT(!std::is_unsigned, Value)
 
     template<
-        class Result>
+        typename Result>
     inline static void apply(
         Value const& value,
         Result& result)
@@ -159,12 +159,12 @@ struct AlgorithmByValueType<
 
 
 template<
-    class Value>
+    typename Value>
 struct Algorithm
 {
 
     template<
-        class Result>
+        typename Result>
     inline void operator()(
         Value const& value,
         Result& result) const
@@ -176,12 +176,12 @@ struct Algorithm
 
 
 template<
-    template<class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    template<typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void absolute(
     InputNoDataPolicy const& input_no_data_policy,

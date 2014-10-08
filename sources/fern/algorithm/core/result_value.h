@@ -41,8 +41,8 @@ namespace algorithm {
     Check the unit tests to see all this in action.
 */
 template<
-    class A1,
-    class A2>
+    typename A1,
+    typename A2>
 struct ResultValue
 {
 

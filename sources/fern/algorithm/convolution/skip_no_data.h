@@ -16,7 +16,7 @@ class SkipNoData
 
 public:
 
-    template<class InputNoDataPolicy, class SourceImage, class Value>
+    template<typename InputNoDataPolicy, typename SourceImage, typename Value>
     static constexpr bool
                    value               (InputNoDataPolicy const&
                                             input_no_data_policy,
@@ -31,9 +31,9 @@ public:
 
 
 template<
-    class InputNoDataPolicy,
-    class SourceImage,
-    class Value
+    typename InputNoDataPolicy,
+    typename SourceImage,
+    typename Value
 >
 inline constexpr bool SkipNoData::value(
         InputNoDataPolicy const& /* input_no_data_policy */,

@@ -17,8 +17,8 @@ namespace add {
                 fern::algorithm::Result
 */
 template<
-    class Value1,
-    class Value2>
+    typename Value1,
+    typename Value2>
 using result_type = typename fern::algorithm::Result<Value1, Value2>::type;
 
 
@@ -29,8 +29,8 @@ using result_type = typename fern::algorithm::Result<Value1, Value2>::type;
     @sa         fern::algorithm::add::result_type
 */
 template<
-    class Value1,
-    class Value2>
+    typename Value1,
+    typename Value2>
 using result_value_type = typename fern::algorithm::Result<value_type<Value1>,
     value_type<Value2>>::type;
 
@@ -49,9 +49,9 @@ using result_value_type = typename fern::algorithm::Result<value_type<Value1>,
     fern::add::result_value_type<Value1, Value2>.
 */
 template<
-    class Value1,
-    class Value2,
-    class Result>
+    typename Value1,
+    typename Value2,
+    typename Result>
 class OutOfRangePolicy
 {
 
@@ -97,13 +97,13 @@ namespace algebra {
     fern::add::result_value_type<Value1, Value2>.
 */
 template<
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result
 >
 void add(
     InputNoDataPolicy const& input_no_data_policy,
@@ -131,13 +131,13 @@ void add(
     @overload
 */
 template<
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result
 >
 void add(
     ExecutionPolicy const& execution_policy,
@@ -156,10 +156,10 @@ void add(
     @overload
 */
 template<
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result
 >
 void add(
     ExecutionPolicy const& execution_policy,

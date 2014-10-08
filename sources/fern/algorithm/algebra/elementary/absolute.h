@@ -25,8 +25,8 @@ namespace absolute {
       fern::algorithm::add::result_value_type<Value1, Value2>.
 */
 template<
-    class Value,
-    class Result>
+    typename Value,
+    typename Result>
 class OutOfRangePolicy
 {
 
@@ -64,12 +64,12 @@ namespace algebra {
     type of @a result must be equal to the value type of @a value.
 */
 template<
-    template<class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    template<typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void absolute(
     InputNoDataPolicy const& input_no_data_policy,
@@ -92,12 +92,12 @@ void absolute(
     @overload
 */
 template<
-    template<class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    template<typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void absolute(
     ExecutionPolicy const& execution_policy,
@@ -115,9 +115,9 @@ void absolute(
     @overload
 */
 template<
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void absolute(
     ExecutionPolicy const& execution_policy,

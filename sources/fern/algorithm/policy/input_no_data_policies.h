@@ -27,7 +27,7 @@ namespace algorithm {
     input no-data policy class can be used for both kinds of algorithms.
 */
 template<
-    class... NoDataPolicies>
+    typename... NoDataPolicies>
 class InputNoDataPolicies:
     private std::tuple<NoDataPolicies...>
 {
@@ -51,7 +51,7 @@ protected:
     @brief      Move-constructor.
 */
 template<
-    class... NoDataPolicies>
+    typename... NoDataPolicies>
 inline InputNoDataPolicies<NoDataPolicies...>::InputNoDataPolicies(
     NoDataPolicies&&... policies)
 
@@ -65,7 +65,7 @@ inline InputNoDataPolicies<NoDataPolicies...>::InputNoDataPolicies(
     @brief      Return the input no-data policy for the @a index -th argument.
 */
 template<
-    class... NoDataPolicies>
+    typename... NoDataPolicies>
 template<
     size_t index>
 inline auto const& InputNoDataPolicies<NoDataPolicies...>::get() const

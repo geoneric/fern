@@ -17,7 +17,7 @@ class ReplaceNoDataByFocalAverage
 
 public:
 
-    template<class InputNoDataPolicy, class SourceImage, class Value>
+    template<typename InputNoDataPolicy, typename SourceImage, typename Value>
     static bool    value               (InputNoDataPolicy const&
                                             input_no_data_policy,
                                         SourceImage const& source,
@@ -31,10 +31,9 @@ public:
 
 
 template<
-    class InputNoDataPolicy,
-    class SourceImage,
-    class Value
->
+    typename InputNoDataPolicy,
+    typename SourceImage,
+    typename Value>
 inline bool ReplaceNoDataByFocalAverage::value(
         InputNoDataPolicy const& input_no_data_policy,
         SourceImage const& source,

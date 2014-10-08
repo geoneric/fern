@@ -18,7 +18,7 @@ class ReplaceOutOfImageByFocalAverage
 
 public:
 
-    template<class InputNoDataPolicy, class SourceImage, class Value>
+    template<typename InputNoDataPolicy, typename SourceImage, typename Value>
     static bool    value_north_west    (InputNoDataPolicy const&
                                             input_no_data_policy,
                                         SourceImage const& source,
@@ -33,7 +33,7 @@ public:
                                         Value& value);
 
 
-    template<class InputNoDataPolicy, class SourceImage, class Value>
+    template<typename InputNoDataPolicy, typename SourceImage, typename Value>
     static bool    value_north_east    (InputNoDataPolicy const&
                                             input_no_data_policy,
                                         SourceImage const& source,
@@ -48,7 +48,7 @@ public:
                                         Value& value);
 
 
-    template<class InputNoDataPolicy, class SourceImage, class Value>
+    template<typename InputNoDataPolicy, typename SourceImage, typename Value>
     static bool    value_south_west    (InputNoDataPolicy const&
                                             input_no_data_policy,
                                         SourceImage const& source,
@@ -62,7 +62,7 @@ public:
                                         size_t const first_col_source,
                                         Value& value);
 
-    template<class InputNoDataPolicy, class SourceImage, class Value>
+    template<typename InputNoDataPolicy, typename SourceImage, typename Value>
     static bool    value_south_east    (InputNoDataPolicy const&
                                             input_no_data_policy,
                                         SourceImage const& source,
@@ -76,7 +76,7 @@ public:
                                         size_t const first_col_source,
                                         Value& value);
 
-    template<class InputNoDataPolicy, class SourceImage, class Value>
+    template<typename InputNoDataPolicy, typename SourceImage, typename Value>
     static bool    value_north         (InputNoDataPolicy const&
                                             input_no_data_policy,
                                         SourceImage const& source,
@@ -90,7 +90,7 @@ public:
                                         size_t const first_col_source,
                                         Value& value);
 
-    template<class InputNoDataPolicy, class SourceImage, class Value>
+    template<typename InputNoDataPolicy, typename SourceImage, typename Value>
     static bool    value_west          (InputNoDataPolicy const&
                                             input_no_data_policy,
                                         SourceImage const& source,
@@ -104,7 +104,7 @@ public:
                                         size_t const first_col_source,
                                         Value& value);
 
-    template<class InputNoDataPolicy, class SourceImage, class Value>
+    template<typename InputNoDataPolicy, typename SourceImage, typename Value>
     static bool    value_east          (InputNoDataPolicy const&
                                             input_no_data_policy,
                                         SourceImage const& source,
@@ -118,7 +118,7 @@ public:
                                         size_t const first_col_source,
                                         Value& value);
 
-    template<class InputNoDataPolicy, class SourceImage, class Value>
+    template<typename InputNoDataPolicy, typename SourceImage, typename Value>
     static bool    value_south         (InputNoDataPolicy const&
                                             input_no_data_policy,
                                         SourceImage const& source,
@@ -136,9 +136,9 @@ public:
 
 
 template<
-    class InputNoDataPolicy,
-    class SourceImage,
-    class Value
+    typename InputNoDataPolicy,
+    typename SourceImage,
+    typename Value
 >
 inline bool ReplaceOutOfImageByFocalAverage::value_north_west(
         InputNoDataPolicy const& input_no_data_policy,
@@ -254,9 +254,9 @@ inline bool ReplaceOutOfImageByFocalAverage::value_north_west(
 
 
 template<
-    class InputNoDataPolicy,
-    class SourceImage,
-    class Value
+    typename InputNoDataPolicy,
+    typename SourceImage,
+    typename Value
 >
 inline bool ReplaceOutOfImageByFocalAverage::value_north_east(
         InputNoDataPolicy const& input_no_data_policy,
@@ -380,9 +380,9 @@ inline bool ReplaceOutOfImageByFocalAverage::value_north_east(
 
 
 template<
-    class InputNoDataPolicy,
-    class SourceImage,
-    class Value
+    typename InputNoDataPolicy,
+    typename SourceImage,
+    typename Value
 >
 inline bool ReplaceOutOfImageByFocalAverage::value_south_west(
         InputNoDataPolicy const& input_no_data_policy,
@@ -504,9 +504,9 @@ inline bool ReplaceOutOfImageByFocalAverage::value_south_west(
 
 
 template<
-    class InputNoDataPolicy,
-    class SourceImage,
-    class Value
+    typename InputNoDataPolicy,
+    typename SourceImage,
+    typename Value
 >
 inline bool ReplaceOutOfImageByFocalAverage::value_south_east(
         InputNoDataPolicy const& input_no_data_policy,
@@ -630,9 +630,9 @@ inline bool ReplaceOutOfImageByFocalAverage::value_south_east(
 
 
 template<
-    class InputNoDataPolicy,
-    class SourceImage,
-    class Value
+    typename InputNoDataPolicy,
+    typename SourceImage,
+    typename Value
 >
 inline bool ReplaceOutOfImageByFocalAverage::value_north(
         InputNoDataPolicy const& input_no_data_policy,
@@ -690,9 +690,9 @@ inline bool ReplaceOutOfImageByFocalAverage::value_north(
 
 
 template<
-    class InputNoDataPolicy,
-    class SourceImage,
-    class Value
+    typename InputNoDataPolicy,
+    typename SourceImage,
+    typename Value
 >
 inline bool ReplaceOutOfImageByFocalAverage::value_west(
         InputNoDataPolicy const& input_no_data_policy,
@@ -748,9 +748,9 @@ inline bool ReplaceOutOfImageByFocalAverage::value_west(
 
 
 template<
-    class InputNoDataPolicy,
-    class SourceImage,
-    class Value
+    typename InputNoDataPolicy,
+    typename SourceImage,
+    typename Value
 >
 inline bool ReplaceOutOfImageByFocalAverage::value_east(
         InputNoDataPolicy const& input_no_data_policy,
@@ -809,9 +809,9 @@ inline bool ReplaceOutOfImageByFocalAverage::value_east(
 
 
 template<
-    class InputNoDataPolicy,
-    class SourceImage,
-    class Value
+    typename InputNoDataPolicy,
+    typename SourceImage,
+    typename Value
 >
 inline bool ReplaceOutOfImageByFocalAverage::value_south(
         InputNoDataPolicy const& input_no_data_policy,

@@ -13,11 +13,11 @@ namespace if_ {
 namespace detail {
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Condition,
-    class TrueValue,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename Result>
 void if_then_0d_0d(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -37,11 +37,11 @@ void if_then_0d_0d(
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Condition,
-    class TrueValue,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename Result>
 void if_then_2d_0d(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -69,11 +69,11 @@ void if_then_2d_0d(
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Condition,
-    class TrueValue,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename Result>
 void if_then_2d_2d(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -101,12 +101,12 @@ void if_then_2d_2d(
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Condition,
-    class TrueValue,
-    class FalseValue,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename FalseValue,
+    typename Result>
 void if_then_else_0d_0d_0d(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& /* output_no_data_policy */,
@@ -127,12 +127,12 @@ void if_then_else_0d_0d_0d(
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Condition,
-    class TrueValue,
-    class FalseValue,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename FalseValue,
+    typename Result>
 void if_then_else_2d_2d_2d(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& /* output_no_data_policy */,
@@ -161,12 +161,12 @@ void if_then_else_2d_2d_2d(
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Condition,
-    class TrueValue,
-    class FalseValue,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename FalseValue,
+    typename Result>
 void if_then_else_2d_0d_0d(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& /* output_no_data_policy */,
@@ -197,42 +197,42 @@ void if_then_else_2d_0d_0d(
 namespace dispatch {
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Condition,
-    class TrueValue,
-    class Result,
-    class ExecutionPolicy,
-    class ConditionCollectionCategory,
-    class TrueValueCollectionCategory>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename Result,
+    typename ExecutionPolicy,
+    typename ConditionCollectionCategory,
+    typename TrueValueCollectionCategory>
 class IfThenByArgumentCategory
 {
 };
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Condition,
-    class TrueValue,
-    class FalseValue,
-    class Result,
-    class ExecutionPolicy,
-    class ConditionCollectionCategory,
-    class TrueValueCollectionCategory,
-    class FalseValueCollectionCategory>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename FalseValue,
+    typename Result,
+    typename ExecutionPolicy,
+    typename ConditionCollectionCategory,
+    typename TrueValueCollectionCategory,
+    typename FalseValueCollectionCategory>
 struct IfThenElseByArgumentCategory
 {
 };
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Condition,
-    class TrueValue,
-    class Result,
-    class ExecutionPolicy>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename Result,
+    typename ExecutionPolicy>
 struct IfThenByArgumentCategory<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -261,13 +261,13 @@ struct IfThenByArgumentCategory<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Condition,
-    class TrueValue,
-    class FalseValue,
-    class Result,
-    class ExecutionPolicy>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename FalseValue,
+    typename Result,
+    typename ExecutionPolicy>
 struct IfThenElseByArgumentCategory<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -302,11 +302,11 @@ struct IfThenElseByArgumentCategory<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Condition,
-    class TrueValue,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename Result>
 struct IfThenByArgumentCategory<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -341,11 +341,11 @@ struct IfThenByArgumentCategory<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Condition,
-    class TrueValue,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename Result>
 struct IfThenByArgumentCategory<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -397,12 +397,12 @@ struct IfThenByArgumentCategory<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Condition,
-    class TrueValue,
-    class FalseValue,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename FalseValue,
+    typename Result>
 struct IfThenElseByArgumentCategory<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -440,12 +440,12 @@ struct IfThenElseByArgumentCategory<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Condition,
-    class TrueValue,
-    class FalseValue,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename FalseValue,
+    typename Result>
 struct IfThenElseByArgumentCategory<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -501,11 +501,11 @@ struct IfThenElseByArgumentCategory<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Condition,
-    class TrueValue,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename Result>
 struct IfThenByArgumentCategory<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -542,11 +542,11 @@ struct IfThenByArgumentCategory<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Condition,
-    class TrueValue,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename Result>
 struct IfThenByArgumentCategory<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -600,12 +600,12 @@ struct IfThenByArgumentCategory<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Condition,
-    class TrueValue,
-    class FalseValue,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename FalseValue,
+    typename Result>
 struct IfThenElseByArgumentCategory<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -647,12 +647,12 @@ struct IfThenElseByArgumentCategory<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Condition,
-    class TrueValue,
-    class FalseValue,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename FalseValue,
+    typename Result>
 struct IfThenElseByArgumentCategory<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -712,23 +712,23 @@ struct IfThenElseByArgumentCategory<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Condition,
-    class TrueValue,
-    class Result,
-    class ExecutionPolicy>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename Result,
+    typename ExecutionPolicy>
 class IfThenByExecutionPolicy
 {
 };
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Condition,
-    class TrueValue,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename Result>
 struct IfThenByExecutionPolicy<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -788,25 +788,25 @@ struct IfThenByExecutionPolicy<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Condition,
-    class TrueValue,
-    class FalseValue,
-    class Result,
-    class ExecutionPolicy>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename FalseValue,
+    typename Result,
+    typename ExecutionPolicy>
 class IfThenElseByExecutionPolicy
 {
 };
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Condition,
-    class TrueValue,
-    class FalseValue,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename FalseValue,
+    typename Result>
 struct IfThenElseByExecutionPolicy<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -874,12 +874,12 @@ struct IfThenElseByExecutionPolicy<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Condition,
-    class TrueValue,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename Result>
 void if_(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -896,13 +896,13 @@ void if_(
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Condition,
-    class TrueValue,
-    class FalseValue,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename FalseValue,
+    typename Result>
 void if_(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
