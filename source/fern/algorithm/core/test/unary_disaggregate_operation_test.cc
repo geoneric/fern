@@ -5,7 +5,7 @@
 #include "fern/feature/core/array_traits.h"
 #include "fern/feature/core/masked_array_traits.h"
 #include "fern/feature/core/masked_constant_traits.h"
-#include "fern/algorithm/algebra/boolean/defined.h"
+#include "fern/algorithm/algebra/boole/defined.h"
 
 
 namespace fa = fern::algorithm;

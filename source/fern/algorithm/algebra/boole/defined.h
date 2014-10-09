@@ -1,7 +1,7 @@
 #pragma once
 #include "fern/core/assert.h"
 #include "fern/algorithm/policy/policies.h"
-#include "fern/algorithm/algebra/boolean/detail/defined.h"
+#include "fern/algorithm/algebra/boole/detail/defined.h"
 
 
 namespace fern {

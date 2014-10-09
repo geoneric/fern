@@ -1,14 +1,14 @@
-#define BOOST_TEST_MODULE fern algorithm algebra boolean and_
+#define BOOST_TEST_MODULE fern algorithm algebra boole or_
 #include <boost/test/unit_test.hpp>
 #include "fern/core/constant_traits.h"
 #include "fern/core/type_traits.h"
-#include "fern/algorithm/algebra/boolean/and.h"
+#include "fern/algorithm/algebra/boole/or.h"
 
 
 namespace fa = fern::algorithm;
 
 
-BOOST_AUTO_TEST_SUITE(and_)
+BOOST_AUTO_TEST_SUITE(or_)
 
 template<
     class Value1,
@@ -20,7 +20,7 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fa::algebra::and_(fa::sequential, value1, value2, result_we_get);
+    fa::algebra::or_(fa::sequential, value1, value2, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 
@@ -28,8 +28,8 @@ void verify_value(
 BOOST_AUTO_TEST_CASE(algorithm)
 {
     verify_value<>(true, true, true);
-    verify_value<>(true, false, false);
-    verify_value<>(false, true, false);
+    verify_value<>(true, false, true);
+    verify_value<>(false, true, true);
     verify_value<>(false, false, false);
 }
 

@@ -4,7 +4,7 @@
 #include "fern/core/constant_traits.h"
 #include "fern/example/algorithm/raster_traits.h"
 #include "fern/algorithm/core/cast.h"
-#include "fern/algorithm/spatial/focal/slope.h"
+#include "fern/algorithm/space/focal/slope.h"
 #include "fern/algorithm/algebra/elementary/add.h"
 
 
@@ -65,7 +65,7 @@ fern::Collection<Value, fern::value_type<Value>> slope(
     fern::Collection<Value, fern::value_type<Value>> result(
         fern::cell_size(value, 0), fern::size(value, 0), fern::size(value, 1));
 
-    fern::algorithm::spatial::slope(execution_policy, value, result);
+    fern::algorithm::space::slope(execution_policy, value, result);
 
     return std::move(result);
 }

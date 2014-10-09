@@ -11,7 +11,7 @@
 #include "fern/algorithm/algebra/elementary/divide.h"
 #include "fern/algorithm/algebra/elementary/multiply.h"
 #include "fern/algorithm/algebra/elementary/subtract.h"
-#include "fern/algorithm/algebra/boolean/defined.h"
+#include "fern/algorithm/algebra/boole/defined.h"
 #include "fern/algorithm/statistic/sum.h"
 #include "fern/algorithm/statistic/unary_max.h"
 

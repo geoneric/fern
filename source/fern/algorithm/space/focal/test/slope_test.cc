@@ -1,11 +1,11 @@
-#define BOOST_TEST_MODULE fern algorithm spatial focal slope
+#define BOOST_TEST_MODULE fern algorithm space focal slope
 #include <boost/test/unit_test.hpp>
 #include "fern/core/constant_traits.h"
 #include "fern/core/type_traits.h"
 #include "fern/core/types.h"
 #include "fern/feature/core/masked_array_traits.h"
 #include "fern/feature/core/masked_raster_traits.h"
-#include "fern/algorithm/spatial/focal/slope.h"
+#include "fern/algorithm/space/focal/slope.h"
 
 
 namespace fa = fern::algorithm;
@@ -127,7 +127,7 @@ BOOST_AUTO_TEST_CASE(algorithm)
 
     OutputNoDataPolicy output_no_data_policy(result_we_get.mask(), true);
 
-    fa::spatial::slope<fa::unary::DiscardRangeErrors>(
+    fa::space::slope<fa::unary::DiscardRangeErrors>(
         InputNoDataPolicy(raster.mask(), true),
         output_no_data_policy,
         fa::sequential,

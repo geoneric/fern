@@ -1,7 +1,7 @@
 #pragma once
 #include "fern/core/assert.h"
 #include "fern/algorithm/policy/policies.h"
-#include "fern/algorithm/spatial/focal/detail/slope.h"
+#include "fern/algorithm/space/focal/detail/slope.h"
 
 
 namespace fern {
@@ -37,7 +37,7 @@ public:
 } // namespace slope
 
 
-namespace spatial {
+namespace space {
 
 /*!
     @ingroup    fern_algorithm_space_group
@@ -147,6 +147,6 @@ void slope(
         output_no_data_policy, execution_policy, value, result);
 }
 
-} // namespace spatial
+} // namespace space
 } // namespace algorithm
 } // namespace fern

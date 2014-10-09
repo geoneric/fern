@@ -4,7 +4,7 @@
 #include "fern/feature/core/array_traits.h"
 #include "fern/feature/core/masked_array_traits.h"
 #include "fern/feature/core/masked_constant_traits.h"
-#include "fern/algorithm/algebra/boolean/or.h"
+#include "fern/algorithm/algebra/boole/or.h"
 #include "fern/algorithm/core/if.h"
 #include "fern/algorithm/core/test/test_utils.h"
 

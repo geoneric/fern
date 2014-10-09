@@ -2,7 +2,7 @@
 #include <boost/test/unit_test.hpp>
 #include "fern/core/constant_traits.h"
 #include "fern/feature/core/masked_array_traits.h"
-#include "fern/algorithm/algebra/boolean/and.h"
+#include "fern/algorithm/algebra/boole/and.h"
 #include "fern/algorithm/core/cover.h"
 #include "fern/algorithm/core/test/test_utils.h"
 
