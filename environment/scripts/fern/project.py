@@ -18,7 +18,7 @@ def rename_project(
     ]
 
     for root_directory_pathname, _, _ in os.walk(os.path.join(
-            os.environ["FERN"], "sources", "fern")):
+            os.environ["FERN"], "source", "fern")):
 
         with fern.process.ChangeDirectory(root_directory_pathname):
             # for command in commands:

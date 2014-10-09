@@ -38,9 +38,9 @@ CONFIGURE_FILE(
     ${CMAKE_CURRENT_BINARY_DIR}/test_run_epilog.sh
 )
 
-ADD_SUBDIRECTORY(documents)
+ADD_SUBDIRECTORY(document)
 ADD_SUBDIRECTORY(environment)
-ADD_SUBDIRECTORY(sources)
+ADD_SUBDIRECTORY(source)
 
 INSTALL(
     EXPORT fern_targets
