@@ -6,9 +6,9 @@
 namespace fern {
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions,
-    class CoordinateSystem>
+    typename CoordinateSystem>
 struct ArgumentTraits<
     Point<T, nr_dimensions, CoordinateSystem>>
 {

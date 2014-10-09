@@ -4,8 +4,10 @@
 namespace fern {
 namespace algorithm {
 
-//! Domain policy which discards out-of-domain values.
 /*!
+    @ingroup    fern_algorithm_policy_group
+    @brief      Domain policy which discards out-of-domain values.
+
     Use this class if you don't need to test an algorithm's arguments for
     being out of domain. This can be because you are certain the argument
     values are within the algorithm's domain and you don't want to spend
@@ -13,7 +15,7 @@ namespace algorithm {
     accepts all values being passed to it, like default addition.
 */
 template<
-    class... Parameters>
+    typename... Parameters>
 class DiscardDomainErrors
 {
 
@@ -26,7 +28,7 @@ public:
 
 
 template<
-    class... Parameters>
+    typename... Parameters>
 inline constexpr bool DiscardDomainErrors<Parameters...>::within_domain(
     Parameters const&... /* parameters */)
 {
@@ -44,7 +46,7 @@ using DiscardDomainErrors = DiscardDomainErrors<>;
 namespace unary {
 
 template<
-    class Value>
+    typename Value>
 using DiscardDomainErrors = DiscardDomainErrors<Value>;
 
 } // namespace binary
@@ -53,8 +55,8 @@ using DiscardDomainErrors = DiscardDomainErrors<Value>;
 namespace binary {
 
 template<
-    class Value1,
-    class Value2>
+    typename Value1,
+    typename Value2>
 using DiscardDomainErrors = DiscardDomainErrors<Value1, Value2>;
 
 } // namespace binary

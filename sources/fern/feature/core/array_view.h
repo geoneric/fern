@@ -6,14 +6,14 @@ namespace fern {
 namespace detail {
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 using boost_array_view = typename boost::array_view_gen<
     boost::multi_array<T, nr_dimensions>, nr_dimensions>::type;
 
 
 // template<
-//     class T,
+//     typename T,
 //     size_t nr_dimensions>
 // using boost_const_array_view = typename boost::const_array_view_gen<
 //     boost::multi_array<T, nr_dimensions>, nr_dimensions>::type;
@@ -22,7 +22,7 @@ using boost_array_view = typename boost::array_view_gen<
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 class ArrayView:
     public detail::boost_array_view<T, nr_dimensions>
@@ -37,7 +37,7 @@ public:
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 inline ArrayView<T, nr_dimensions>::ArrayView(
     detail::boost_array_view<T, nr_dimensions> const& view)

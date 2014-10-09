@@ -1,0 +1,10 @@
+/*!
+    @brief      Group containing Boole algebra algorithms
+    @defgroup   fern_algorithm_algebra_boole_group Boole algorithms
+    @ingroup    fern_algorithm_algebra_group
+
+
+    See also:
+
+    - [Wikipedia on boolean algebra](https://en.wikipedia.org/wiki/Boolean_algebra)
+*/

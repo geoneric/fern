@@ -7,28 +7,32 @@ namespace algorithm {
 
 //! Execution policy class for sequential execution of algorithms.
 /*!
-    \sa        sequential, parallel, ExecutionPolicy
+    @ingroup    fern_algorithm_policy_group
+    @sa         sequential, parallel, ExecutionPolicy
 */
 class SequentialExecutionPolicy{};
 
 
 //! Execution policy class for parallel execution of algorithms.
 /*!
-    \sa        sequential, parallel, ExecutionPolicy
+    @ingroup    fern_algorithm_policy_group
+    @sa         sequential, parallel, ExecutionPolicy
 */
 class ParallelExecutionPolicy{};
 
 
 //! Execution policy instance for sequential execution of algorithms.
 /*!
-    \sa        parallel, ExecutionPolicy
+    @ingroup    fern_algorithm_policy_group
+    @sa         parallel, ExecutionPolicy
 */
 constexpr SequentialExecutionPolicy sequential = SequentialExecutionPolicy();
 
 
 //! Execution policy instance for parallel execution of algorithms.
 /*!
-    \sa        sequential, ExecutionPolicy
+    @ingroup    fern_algorithm_policy_group
+    @sa         sequential, ExecutionPolicy
 
     Parallel algorithms make use of the ThreadClient::pool(). Therefore,
     a ThreadClient instance must be created before calling algorithms with
@@ -39,12 +43,13 @@ constexpr ParallelExecutionPolicy parallel = ParallelExecutionPolicy();
 
 //! Generic execution policy class.
 /*!
-    \sa        sequential, parallel
+    @ingroup    fern_algorithm_policy_group
+    @sa         sequential, parallel
 
     An ExecutionPolicy instance can be created and assigned from sequential
     or parallel.
 
-    \code
+    @code
     ExecutionPolicy execution_policy = sequential;
 
     if(concurrent) {
@@ -52,7 +57,7 @@ constexpr ParallelExecutionPolicy parallel = ParallelExecutionPolicy();
     }
 
     my_algorithm(execution_policy, value1, value2, result);
-    \endcode
+    @endcode
 */
 using ExecutionPolicy = boost::variant<SequentialExecutionPolicy,
     ParallelExecutionPolicy>;
@@ -67,7 +72,7 @@ size_t const parallel_execution_policy_id = 1;
 
 
 template<
-    class ConcreteExecutionPolicy>
+    typename ConcreteExecutionPolicy>
 inline ConcreteExecutionPolicy& get_policy(
     ExecutionPolicy& policy)
 {
@@ -78,7 +83,7 @@ inline ConcreteExecutionPolicy& get_policy(
 
 
 template<
-    class ConcreteExecutionPolicy>
+    typename ConcreteExecutionPolicy>
 inline ConcreteExecutionPolicy const& get_policy(
     ExecutionPolicy const& policy)
 {

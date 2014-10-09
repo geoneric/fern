@@ -8,7 +8,7 @@ namespace detail {
 namespace dispatch {
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 struct RasterCategoryTag
 {
@@ -18,7 +18,7 @@ struct RasterCategoryTag
 #define RASTER_CATEGORY_TAG(                    \
     nr_dimensions)                              \
 template<                                       \
-    class T>                                    \
+    typename T>                                 \
 struct RasterCategoryTag<T, nr_dimensions>      \
 {                                               \
                                                 \

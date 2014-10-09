@@ -9,7 +9,7 @@ namespace unary_min {
 namespace detail {
 
 template<
-    class Value>
+    typename Value>
 struct Algorithm
 {
 
@@ -17,7 +17,7 @@ struct Algorithm
     FERN_STATIC_ASSERT(!std::is_same, Value, bool)
 
     template<
-        class Result>
+        typename Result>
     inline static void init(
         Value const& value,
         Result& result)
@@ -28,7 +28,7 @@ struct Algorithm
     }
 
     template<
-        class Result>
+        typename Result>
     inline static void calculate(
         Value const& value,
         Result& result)
@@ -42,11 +42,11 @@ struct Algorithm
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result>
 void unary_min(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -59,12 +59,12 @@ struct Aggregator
 {
 
     template<
-        template<class, class, class> class OutOfRangePolicy,
-        class InputNoDataPolicy,
-        class OutputNoDataPolicy,
-        class ExecutionPolicy,
-        class Value,
-        class Result>
+        template<typename, typename, typename> class OutOfRangePolicy,
+        typename InputNoDataPolicy,
+        typename OutputNoDataPolicy,
+        typename ExecutionPolicy,
+        typename Value,
+        typename Result>
     inline static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
@@ -80,11 +80,11 @@ struct Aggregator
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result>
 void unary_min(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,

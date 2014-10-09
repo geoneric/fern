@@ -9,43 +9,50 @@ namespace fern {
 namespace algorithm {
 namespace subtract {
 
-//! Determine the result type when subtracting instances of \a Value2 from \a Value1.
 /*!
-    \sa            fern::subtract::result_value_type, fern::Result
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @brief      Determine the result type when subtracting instances of
+                @a Value2 from @a Value1.
+    @sa         fern::algorithm::subtract::result_value_type,
+                fern::algorithm::Result
 */
 template<
-    class Value1,
-    class Value2>
+    typename Value1,
+    typename Value2>
 using result_type = typename fern::algorithm::Result<Value1, Value2>::type;
 
 
-//! Determine the result value type when subtracting instances of \a Value2 from \a Value1.
 /*!
-  \sa              fern::subtract::result_type
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @brief      Determine the result value type when subtracting instances
+                of @a Value2 from @a Value1.
+    @sa         fern::algorithm::subtract::result_type
 */
 template<
-    class Value1,
-    class Value2>
+    typename Value1,
+    typename Value2>
 using result_value_type = typename fern::algorithm::Result<value_type<Value1>,
     value_type<Value2>>::type;
 
 
-//! Out of range policy for fern::algebra::subtract algorithm.
 /*!
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @brief      Out of range policy for fern::algorithm::algebra::subtract
+                algorithm.
+    @sa         @ref fern_algorithm_policies_out_of_range_policy
+
     The logic for determining whether subtract's result is out of range depends
     on the types involved (unsigned integers, signed integers, floating
     points) and their sizes.
 
-    The value types of \a value1 and \a value2 must be arithmetic and not
-    `bool`. The value type of \a result must be equal to
-    fern::subtract::result_value_type<Value1, Value2>.
-
-    \sa            @ref fern_algorithm_policies_out_of_range_policy
+    The value types of @a value1 and @a value2 must be arithmetic and not
+    `bool`. The value type of @a result must be equal to
+    fern::algorithm::subtract::result_value_type<Value1, Value2>.
 */
 template<
-    class Value1,
-    class Value2,
-    class Result>
+    typename Value1,
+    typename Value2,
+    typename Result>
 class OutOfRangePolicy
 {
 
@@ -79,27 +86,27 @@ public:
 
 namespace algebra {
 
-//! Subtract \a value2 to \a value1 and write the result to \a result.
 /*!
-    \ingroup       elementary
-    \sa            fern::subtract::OutOfRangePolicy,
-                   fern::subtract::result_type,
-                   fern::subtract::result_value_type,
-                   fern::binary_local_operation,
-                   @ref fern_algorithm_algebra_elementary
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @brief      Subtract @a value2 to @a value1 and write the result to
+                @a result.
+    @sa         fern::algorithm::subtract::OutOfRangePolicy,
+                fern::algorithm::subtract::result_type,
+                fern::algorithm::subtract::result_value_type,
+                fern::algorithm::binary_local_operation
 
-    The value types of \a value1 and \a value2 must be arithmetic and not
-    `bool`. The value type of \a result must be equal to
-    fern::subtract::result_value_type<Value1, Value2>.
+    The value types of @a value1 and @a value2 must be arithmetic and not
+    `bool`. The value type of @a result must be equal to
+    fern::algorithm::subtract::result_value_type<Value1, Value2>.
 */
 template<
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result
 >
 void subtract(
     InputNoDataPolicy const& input_no_data_policy,
@@ -123,17 +130,17 @@ void subtract(
 
 
 /*!
-    \ingroup       elementary
-    \overload
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @overload
 */
 template<
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result
 >
 void subtract(
     ExecutionPolicy const& execution_policy,
@@ -148,14 +155,14 @@ void subtract(
 
 
 /*!
-    \ingroup       elementary
-    \overload
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @overload
 */
 template<
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result
 >
 void subtract(
     ExecutionPolicy const& execution_policy,

@@ -8,21 +8,23 @@ namespace fern {
 namespace algorithm {
 namespace pow {
 
-//! Out of domain policy for fern::algebra::pow algorithm.
 /*!
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @brief      Out of domain policy for fern::algorithm::algebra::pow
+                algorithm.
+    @sa         @ref fern_algorithm_policies_out_of_domain_policy
+
     In the folowing cases, within_domain(Base const&, Exponent const&)
     returns false:
-    - \a base < 0 and \a base's exponent is not 0.
-    - \a base == 0 and \a exponent < 0.
+    - @a base < 0 and @a base's exponent is not 0.
+    - @a base == 0 and @a exponent < 0.
 
-    The value types of \a base and \a exponent must be floating point and
+    The value types of @a base and @a exponent must be floating point and
     the same.
-
-    \sa            @ref fern_algorithm_policies_out_of_domain_policy
 */
 template<
-    class Base,
-    class Exponent>
+    typename Base,
+    typename Exponent>
 class OutOfDomainPolicy
 {
 
@@ -53,18 +55,19 @@ public:
 };
 
 
-//! Out of range policy for fern::algebra::pow algorithm.
 /*!
-    The value types of \a base and \a exponent must be floating point and
-    the same.
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @brief      Out of range policy for fern::algorithm::algebra::pow algorithm.
+    @sa         fern::algorithm::DetectOutOfRangeByErrno,
+                @ref fern_algorithm_policies_out_of_range_policy
 
-    \sa            fern::DetectOutOfRangeByErrno,
-                   @ref fern_algorithm_policies_out_of_range_policy
+    The value types of @a base and @a exponent must be floating point and
+    the same.
 */
 template<
-    class Base,
-    class Exponent,
-    class Result>
+    typename Base,
+    typename Exponent,
+    typename Result>
 class OutOfRangePolicy
 {
 
@@ -89,25 +92,26 @@ public:
 
 namespace algebra {
 
-//! Raise \a base to the power of \a exponent and write the result to \a result.
 /*!
-    \ingroup       elementary
-    \sa            fern::pow::OutOfDomainPolicy, fern::pow::OutOfRangePolicy,
-                   fern::binary_local_operation,
-                   @ref fern_algorithm_algebra_elementary
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @brief      Raise @a base to the power of @a exponent and write the
+                result to @a result.
+    @sa         fern::algorithm::pow::OutOfDomainPolicy,
+                fern::algorithm::pow::OutOfRangePolicy,
+                fern::algorithm::binary_local_operation
 
-    The value types of \a base, \a exponent and \a result must be floating
+    The value types of @a base, @a exponent and @a result must be floating
     point and the same.
 */
 template<
-    template<class, class> class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Base,
-    class Exponent,
-    class Result
+    template<typename, typename> class OutOfDomainPolicy,
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Base,
+    typename Exponent,
+    typename Result
 >
 void pow(
     InputNoDataPolicy const& input_no_data_policy,
@@ -127,18 +131,18 @@ void pow(
 
 
 /*!
-    \ingroup       elementary
-    \overload
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @overload
 */
 template<
-    template<class, class> class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Base,
-    class Exponent,
-    class Result
+    template<typename, typename> class OutOfDomainPolicy,
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Base,
+    typename Exponent,
+    typename Result
 >
 void pow(
     ExecutionPolicy const& execution_policy,
@@ -153,14 +157,14 @@ void pow(
 
 
 /*!
-    \ingroup       elementary
-    \overload
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @overload
 */
 template<
-    class ExecutionPolicy,
-    class Base,
-    class Exponent,
-    class Result
+    typename ExecutionPolicy,
+    typename Base,
+    typename Exponent,
+    typename Result
 >
 void pow(
     ExecutionPolicy const& execution_policy,

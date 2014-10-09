@@ -1,0 +1,14 @@
+- Use @command instead of \command for all Doxygen commands.
+- Indent with 4 spaces.
+- Group documentation section: two blank lines required between documentation
+  sections and the description. Otherwise the description becomes part of the
+  brief description shown in the Modules page.
+
+
+/*!
+    @ingroup    <group>
+    @brief      <short description>
+    @...
+
+    <long description>
+*/

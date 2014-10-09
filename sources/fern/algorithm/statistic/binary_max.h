@@ -7,23 +7,23 @@ namespace fern {
 namespace algorithm {
 namespace statistic {
 
-//! Determine the elementwise maximum value of \a value1 and \a value2 and write the result to \a result.
 /*!
-    \ingroup       statistic
-    \sa            fern::binary_local_operation,
-                   @ref fern_algorithm_statistics
+    @ingroup    fern_algorithm_statistic_group
+    @brief      Determine the elementwise maximum value of @a value1
+                and @a value2 and write the result to @a result.
+    @sa         fern::algorithm::binary_local_operation
 
-    The value type of \a value1 and \a value2 must be arithmetic and not
+    The value type of @a value1 and @a value2 must be arithmetic and not
     `bool`. They must also be the same. The value
-    type of \a result must be equal to the value type of the values.
+    type of @a result must be equal to the value type of the values.
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result
 >
 void binary_max(
     InputNoDataPolicy const& input_no_data_policy,
@@ -45,16 +45,16 @@ void binary_max(
 
 
 /*!
-    \ingroup       statistic
-    \overload
+    @ingroup    fern_algorithm_statistic_group
+    @overload
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result
 >
 void binary_max(
     ExecutionPolicy const& execution_policy,
@@ -69,14 +69,14 @@ void binary_max(
 
 
 /*!
-    \ingroup       statistic
-    \overload
+    @ingroup    fern_algorithm_statistic_group
+    @overload
 */
 template<
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result
 >
 void binary_max(
     ExecutionPolicy const& execution_policy,
@@ -92,6 +92,6 @@ void binary_max(
         value1, value2, result);
 }
 
-} // namespace statistic
+} // namespace fern_algorithm_statistic_group
 } // namespace algorithm
 } // namespace fern

@@ -14,7 +14,7 @@ namespace offset {
 namespace detail {
 
 template<
-    class Offset>
+    typename Offset>
 IndexRange range_to_copy(
     IndexRange const& index_range,
     size_t const nr_elements,
@@ -67,7 +67,7 @@ IndexRange range_to_copy(
 
 
 template<
-    class Offset>
+    typename Offset>
 IndexRange range_to_initialize(
     size_t const nr_elements,
     Offset offset)
@@ -93,11 +93,11 @@ IndexRange range_to_initialize(
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Offset_,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Offset_,
+    typename Result>
 void copy_1d(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -125,9 +125,9 @@ void copy_1d(
 
 
 template<
-    class OutputNoDataPolicy,
-    class Value,
-    class Offset_>
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Offset_>
 void mark_no_data_1d(
     OutputNoDataPolicy& output_no_data_policy,
     Value const& value,
@@ -144,8 +144,8 @@ void mark_no_data_1d(
 
 
 template<
-    class Offset_,
-    class Result>
+    typename Offset_,
+    typename Result>
 void fill_value_1d(
     Offset_ const& offset_,
     value_type<Result> const& fill_value,
@@ -162,11 +162,11 @@ void fill_value_1d(
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Offset_,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Offset_,
+    typename Result>
 void copy_2d(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -200,9 +200,9 @@ void copy_2d(
 
 
 template<
-    class OutputNoDataPolicy,
-    class Value,
-    class Offset_>
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Offset_>
 void mark_no_data_2d(
     OutputNoDataPolicy& output_no_data_policy,
     Value const& value,
@@ -233,8 +233,8 @@ void mark_no_data_2d(
 
 
 template<
-    class Offset_,
-    class Result>
+    typename Offset_,
+    typename Result>
 void fill_value_2d(
     Offset_ const& offset_,
     value_type<Result> const& fill_value,
@@ -267,24 +267,24 @@ void fill_value_2d(
 namespace dispatch {
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Offset_,
-    class Result,
-    class ExecutionPolicy,
-    class ValueCollectionCategory>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Offset_,
+    typename Result,
+    typename ExecutionPolicy,
+    typename ValueCollectionCategory>
 class Offset
 {
 };
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Offset_,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Offset_,
+    typename Result>
 struct Offset<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -332,11 +332,11 @@ struct Offset<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Offset_,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Offset_,
+    typename Result>
 struct Offset<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -430,11 +430,11 @@ struct Offset<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Offset_,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Offset_,
+    typename Result>
 struct Offset<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -533,11 +533,11 @@ struct Offset<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Offset_,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Offset_,
+    typename Result>
 struct Offset<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -589,11 +589,11 @@ struct Offset<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Offset_,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Offset_,
+    typename Result>
 struct Offset<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -691,11 +691,11 @@ struct Offset<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Offset_,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Offset_,
+    typename Result>
 struct Offset<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -796,12 +796,12 @@ struct Offset<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Offset,
-    class Result
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Offset,
+    typename Result
 >
 void offset(
     InputNoDataPolicy const& input_no_data_policy,
@@ -824,12 +824,12 @@ void offset(
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Offset,
-    class Result
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Offset,
+    typename Result
 >
 void offset(
     InputNoDataPolicy const& input_no_data_policy,

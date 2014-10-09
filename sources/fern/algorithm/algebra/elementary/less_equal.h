@@ -8,22 +8,22 @@ namespace fern {
 namespace algorithm {
 namespace algebra {
 
-//! Determine whether \a value1 is less than or equal to \a value2 and write the result to \a result.
 /*!
-    \ingroup       elementary
-    \sa            fern::binary_local_operation,
-                   @ref fern_algorithm_algebra_elementary
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @brief      Determine whether @a value1 is less than or equal to
+                @a value2 and write the result to @a result.
+    @sa         fern::algorithm::binary_local_operation
 
-    The value types of \a value1 and \a value2 must be arithmetic and not
-    `bool`. The value type of \a result must be arithmetic.
+    The value types of @a value1 and @a value2 must be arithmetic and not
+    `bool`. The value type of @a result must be arithmetic.
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 void less_equal(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -44,16 +44,16 @@ void less_equal(
 
 
 /*!
-    \ingroup       elementary
-    \overload
+    @ingroup       fern_algorithm_algebra_elementary_group
+    @overload
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 void less_equal(
     ExecutionPolicy const& execution_policy,
     Value1 const& value1,
@@ -67,14 +67,14 @@ void less_equal(
 
 
 /*!
-    \ingroup       elementary
-    \overload
+    @ingroup       fern_algorithm_algebra_elementary_group
+    @overload
 */
 template<
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 void less_equal(
     ExecutionPolicy const& execution_policy,
     Value1 const& value1,

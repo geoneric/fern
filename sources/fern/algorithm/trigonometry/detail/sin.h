@@ -11,14 +11,14 @@ namespace sin {
 namespace detail {
 
 template<
-    class Value>
+    typename Value>
 struct Algorithm
 {
 
     FERN_STATIC_ASSERT(std::is_floating_point, Value)
 
     template<
-        class Result>
+        typename Result>
     inline void operator()(
         Value const& value,
         Result& result) const
@@ -32,12 +32,12 @@ struct Algorithm
 
 
 template<
-    template<class> class OutOfDomainPolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    template<typename> class OutOfDomainPolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void sin(
     InputNoDataPolicy const& input_no_data_policy,

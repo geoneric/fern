@@ -8,20 +8,19 @@ namespace fern {
 namespace algorithm {
 namespace algebra {
 
-//! Negate \a value and write the result to \a result.
 /*!
-    \ingroup       boolean
-    \sa            fern::unary_local_operation,
-                   @ref fern_algorithm_algebra_boolean
+    @ingroup    fern_algorithm_algebra_boole_group
+    @brief      Negate @a value and write the result to @a result.
+    @sa         fern::algorithm::unary_local_operation
 
-    The value types of \a value and \a result must be arithmetic.
+    The value types of @a value and @a result must be arithmetic.
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void not_(
     InputNoDataPolicy const& input_no_data_policy,
@@ -39,15 +38,15 @@ void not_(
 
 
 /*!
-    \ingroup       boolean
-    \overload
+    @ingroup    fern_algorithm_algebra_boole_group
+    @overload
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void not_(
     ExecutionPolicy const& execution_policy,
@@ -61,13 +60,13 @@ void not_(
 
 
 /*!
-    \ingroup       boolean
-    \overload
+    @ingroup    fern_algorithm_algebra_boole_group
+    @overload
 */
 template<
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void not_(
     ExecutionPolicy const& execution_policy,

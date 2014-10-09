@@ -5,8 +5,11 @@
 namespace fern {
 namespace algorithm {
 
+/*!
+    @ingroup    fern_algorithm_policy_group
+*/
 template<
-    class... Parameters>
+    typename... Parameters>
 class DetectOutOfRangeByErrno
 {
 
@@ -19,7 +22,7 @@ public:
 
 
 template<
-    class... Parameters>
+    typename... Parameters>
 inline constexpr bool DetectOutOfRangeByErrno<Parameters...>::within_range(
     Parameters const&... /* parameters */)
 {

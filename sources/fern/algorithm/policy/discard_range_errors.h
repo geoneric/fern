@@ -5,8 +5,11 @@
 namespace fern {
 namespace algorithm {
 
+/*!
+    @ingroup    fern_algorithm_policy_group
+*/
 template<
-    class... Parameters>
+    typename... Parameters>
 class DiscardRangeErrors
 {
 
@@ -25,7 +28,7 @@ public:
 
 
 template<
-    class... Parameters>
+    typename... Parameters>
 inline constexpr bool DiscardRangeErrors<Parameters...>::within_range(
     LastParameter const& /* parameter */)
 {
@@ -34,7 +37,7 @@ inline constexpr bool DiscardRangeErrors<Parameters...>::within_range(
 
 
 template<
-    class... Parameters>
+    typename... Parameters>
 inline constexpr bool DiscardRangeErrors<Parameters...>::within_range(
     Parameters const&... /* parameters */)
 {
@@ -45,7 +48,7 @@ inline constexpr bool DiscardRangeErrors<Parameters...>::within_range(
 namespace nullary {
 
 template<
-    class Result>
+    typename Result>
 using DiscardRangeErrors = DiscardRangeErrors<Result>;
 
 } // namespace nullary
@@ -54,8 +57,8 @@ using DiscardRangeErrors = DiscardRangeErrors<Result>;
 namespace unary {
 
 template<
-    class Value,
-    class Result>
+    typename Value,
+    typename Result>
 using DiscardRangeErrors = DiscardRangeErrors<Value, Result>;
 
 } // namespace unary
@@ -64,9 +67,9 @@ using DiscardRangeErrors = DiscardRangeErrors<Value, Result>;
 namespace binary {
 
 template<
-    class Value1,
-    class Value2,
-    class Result>
+    typename Value1,
+    typename Value2,
+    typename Result>
 using DiscardRangeErrors = DiscardRangeErrors<Value1, Value2, Result>;
 
 } // namespace binary

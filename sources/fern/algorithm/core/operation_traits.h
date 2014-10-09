@@ -6,7 +6,7 @@ namespace fern {
 namespace algorithm {
 
 template<
-    class Operation>
+    typename Operation>
 struct OperationTraits
 {
     using category = typename Operation::category;

@@ -9,19 +9,21 @@ namespace fern {
 namespace algorithm {
 namespace tan {
 
-//! Out-of-domain policy for fern::trigonometry::tan algorithm.
 /*!
+    @ingroup    fern_algorithm_trigonometry_group
+    @brief      Out-of-domain policy for fern::algorithm::trigonometry::tan
+                algorithm.
+    @sa         @ref fern_algorithm_policies_out_of_domain_policy
+
     Positive or negative infinity is considered out-of-domain for sin.
 
     Valid input values for tan are finite and not divisable by an odd number
     of times 0.5 * π.
 
-    \a Value must be a floating point.
-
-    \sa            @ref fern_algorithm_policies_out_of_domain_policy
+    - @a Value must be a floating point.
 */
 template<
-    class Value>
+    typename Value>
 class OutOfDomainPolicy
 {
 
@@ -58,22 +60,23 @@ public:
 
 namespace trigonometry {
 
-//! Calculate the tangent of \a value and write the result to \a result.
 /*!
-    \ingroup       trigonometry
-    \sa            fern::tan::OutOfDomainPolicy, fern::unary_local_operation,
-                   @ref fern_algorithm_trigonometry
+    @ingroup    fern_algorithm_trigonometry_group
+    @brief      Calculate the tangent of @a value and write the result
+                to @a result.
+    @sa         fern::algorithm::tan::OutOfDomainPolicy,
+                fern::algorithm::unary_local_operation
 
-    The value types of \a value and \a result must be floating point and the
+    The value types of @a value and @a result must be floating point and the
     same.
 */
 template<
-    template<class> class OutOfDomainPolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result>
+    template<typename> class OutOfDomainPolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result>
 void tan(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -90,16 +93,16 @@ void tan(
 
 
 /*!
-    \ingroup       trigonometry
-    \overload
+    @ingroup    fern_algorithm_trigonometry_group
+    @overload
 */
 template<
-    template<class> class OutOfDomainPolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result>
+    template<typename> class OutOfDomainPolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result>
 void tan(
     ExecutionPolicy const& execution_policy,
     Value const& value,
@@ -112,13 +115,13 @@ void tan(
 
 
 /*!
-    \ingroup       trigonometry
-    \overload
+    @ingroup    fern_algorithm_trigonometry_group
+    @overload
 */
 template<
-    class ExecutionPolicy,
-    class Value,
-    class Result>
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result>
 void tan(
     ExecutionPolicy const& execution_policy,
     Value const& value,

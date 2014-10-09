@@ -1,0 +1,1 @@
+For template parameters, use `typename` instead of `class`.

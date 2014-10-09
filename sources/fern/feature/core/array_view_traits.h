@@ -6,7 +6,7 @@
 namespace fern {
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 struct ArgumentTraits<
     ArrayView<T, nr_dimensions>>
@@ -16,7 +16,7 @@ struct ArgumentTraits<
         nr_dimensions>::type;
 
     template<
-        class U>
+        typename U>
     struct Collection
     {
         using type = ArrayView<U, nr_dimensions>;
@@ -30,7 +30,7 @@ struct ArgumentTraits<
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 size_t size(
     ArrayView<T, nr_dimensions> const& view)
@@ -40,7 +40,7 @@ size_t size(
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 size_t size(
     ArrayView<T, nr_dimensions> const& view,
@@ -52,7 +52,7 @@ size_t size(
 
 
 template<
-    class T>
+    typename T>
 T const& get(
     ArrayView<T, 1> const& view,
     size_t index)
@@ -63,7 +63,7 @@ T const& get(
 
 
 template<
-    class T>
+    typename T>
 T& get(
     ArrayView<T, 1>& view,
     size_t index)
@@ -74,7 +74,7 @@ T& get(
 
 
 template<
-    class T>
+    typename T>
 T const& get(
     ArrayView<T, 2> const& view,
     size_t index1,
@@ -87,7 +87,7 @@ T const& get(
 
 
 template<
-    class T>
+    typename T>
 T& get(
     ArrayView<T, 2>& view,
     size_t index1,
@@ -100,7 +100,7 @@ T& get(
 
 
 template<
-    class T>
+    typename T>
 T const& get(
     ArrayView<T, 3> const& view,
     size_t index1,
@@ -115,7 +115,7 @@ T const& get(
 
 
 template<
-    class T>
+    typename T>
 T& get(
     ArrayView<T, 3>& view,
     size_t index1,

@@ -13,7 +13,7 @@ namespace fern {
   \sa        .
 */
 template<
-    class Value>
+    typename Value>
 class ConstantAttribute:
     public Attribute
 {
@@ -48,7 +48,7 @@ private:
 
 
 template<
-    class Value>
+    typename Value>
 inline ConstantAttribute<Value>::ConstantAttribute()
 
     : _values(std::make_unique<ConstantValue<Value>>())
@@ -58,7 +58,7 @@ inline ConstantAttribute<Value>::ConstantAttribute()
 
 
 template<
-    class Value>
+    typename Value>
 inline ConstantAttribute<Value>::ConstantAttribute(
     Value const& value)
 
@@ -69,7 +69,7 @@ inline ConstantAttribute<Value>::ConstantAttribute(
 
 
 template<
-    class Value>
+    typename Value>
 void ConstantAttribute<Value>::set(
     Value const& value)
 {
@@ -78,7 +78,7 @@ void ConstantAttribute<Value>::set(
 
 
 template<
-    class Value>
+    typename Value>
 ConstantValue<Value> const& ConstantAttribute<Value>::values() const
 {
     return *_values;

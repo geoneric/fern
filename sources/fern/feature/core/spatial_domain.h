@@ -13,7 +13,7 @@ namespace fern {
   \sa        .
 */
 template<
-    class Geometry_>
+    typename Geometry_>
 class SpatialDomain:
     private std::map<size_t, Geometry_>,
     public Domain
@@ -65,7 +65,7 @@ private:
 
 
 // template<
-//     class Geometry_>
+//     typename Geometry_>
 // inline auto SpatialDomain<Geometry_>::gids() const -> std::vector<GID> const&
 // {
 //     return _gids;
@@ -73,7 +73,7 @@ private:
 
 
 template<
-    class Geometry_>
+    typename Geometry_>
 inline auto SpatialDomain<Geometry_>::cbegin() const -> const_iterator
 {
     return std::map<GID, Geometry_>::cbegin();
@@ -81,7 +81,7 @@ inline auto SpatialDomain<Geometry_>::cbegin() const -> const_iterator
 
 
 template<
-    class Geometry_>
+    typename Geometry_>
 inline auto SpatialDomain<Geometry_>::begin() const -> const_iterator
 {
     return std::map<GID, Geometry_>::begin();
@@ -89,7 +89,7 @@ inline auto SpatialDomain<Geometry_>::begin() const -> const_iterator
 
 
 template<
-    class Geometry_>
+    typename Geometry_>
 inline auto SpatialDomain<Geometry_>::cend() const -> const_iterator
 {
     return std::map<GID, Geometry_>::cend();
@@ -97,7 +97,7 @@ inline auto SpatialDomain<Geometry_>::cend() const -> const_iterator
 
 
 template<
-    class Geometry_>
+    typename Geometry_>
 inline auto SpatialDomain<Geometry_>::end() const -> const_iterator
 {
     return std::map<GID, Geometry_>::end();
@@ -105,7 +105,7 @@ inline auto SpatialDomain<Geometry_>::end() const -> const_iterator
 
 
 template<
-    class Geometry_>
+    typename Geometry_>
 inline auto SpatialDomain<Geometry_>::add(
     Geometry_ const& geometry) -> GID
 {
@@ -116,7 +116,7 @@ inline auto SpatialDomain<Geometry_>::add(
 
 
 template<
-    class Geometry_>
+    typename Geometry_>
 inline Geometry_ const& SpatialDomain<Geometry_>::geometry(
     GID const& gid)
 {
@@ -126,7 +126,7 @@ inline Geometry_ const& SpatialDomain<Geometry_>::geometry(
 
 
 template<
-    class Geometry_>
+    typename Geometry_>
 inline bool SpatialDomain<Geometry_>::empty() const
 {
     return std::map<GID, Geometry_>::empty();
@@ -134,7 +134,7 @@ inline bool SpatialDomain<Geometry_>::empty() const
 
 
 template<
-    class Geometry_>
+    typename Geometry_>
 inline size_t SpatialDomain<Geometry_>::size() const
 {
     return std::map<GID, Geometry_>::size();

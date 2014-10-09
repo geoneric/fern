@@ -8,17 +8,20 @@ namespace fern {
 namespace algorithm {
 namespace sqrt {
 
-//! Out of domain policy for fern::algebra::sqrt algorithm.
 /*!
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @brief      Out of domain policy for fern::algorithm::algebra::sqrt
+                algorithm.
+    @sa         @ref fern_algorithm_policies_out_of_domain_policy
+
     Values smaller than 0 are considered out-of-domain.
 
-    The value types of \a value and \a result must be floating point and
+    The value types of @a value and @a result must be floating point and
     the same.
 
-    \sa            @ref fern_algorithm_policies_out_of_domain_policy
 */
 template<
-    class Value>
+    typename Value>
 class OutOfDomainPolicy
 {
 
@@ -40,22 +43,23 @@ public:
 
 namespace algebra {
 
-//! Calculate the square root of \a value and write the result to \a result.
 /*!
-    \ingroup       elementary
-    \sa            fern::sqrt::OutOfDomainPolicy, fern::unary_local_operation,
-                   @ref fern_algorithm_algebra_elementary
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @brief      Calculate the square root of @a value and write the result
+                to @a result.
+    @sa         fern::algorithm::sqrt::OutOfDomainPolicy,
+                fern::algorithm::unary_local_operation
 
-    The value types of \a value and \a result must be floating point and the
+    The value types of @a value and @a result must be floating point and the
     same.
 */
 template<
-    template<class> class OutOfDomainPolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    template<typename> class OutOfDomainPolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void sqrt(
     InputNoDataPolicy const& input_no_data_policy,
@@ -73,16 +77,16 @@ void sqrt(
 
 
 /*!
-    \ingroup       elementary
-    \overload
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @overload
 */
 template<
-    template<class> class OutOfDomainPolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    template<typename> class OutOfDomainPolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void sqrt(
     ExecutionPolicy const& execution_policy,
@@ -96,13 +100,13 @@ void sqrt(
 
 
 /*!
-    \ingroup       elementary
-    \overload
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @overload
 */
 template<
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void sqrt(
     ExecutionPolicy const& execution_policy,

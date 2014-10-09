@@ -13,8 +13,8 @@ namespace gradient {
 namespace detail {
 
 template<
-    class Value,
-    class Distance>
+    typename Value,
+    typename Distance>
 inline constexpr Value gradient(
     Value const& value1,
     Value const& value2,
@@ -25,10 +25,10 @@ inline constexpr Value gradient(
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result>
 static void gradient_x_2d(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& /* output_no_data_policy */,
@@ -139,10 +139,10 @@ static void gradient_x_2d(
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result>
 static void gradient_y_2d(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& /* output_no_data_policy */,
@@ -258,22 +258,22 @@ static void gradient_y_2d(
 namespace dispatch {
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result,
-    class ExecutionPolicy,
-    class ValueCollectionCategory>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result,
+    typename ExecutionPolicy,
+    typename ValueCollectionCategory>
 struct GradientXByArgumentCategory
 {
 };
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result>
 struct GradientXByArgumentCategory<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -305,10 +305,10 @@ struct GradientXByArgumentCategory<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result>
 struct GradientXByArgumentCategory<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -356,22 +356,22 @@ struct GradientXByArgumentCategory<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result,
-    class ExecutionPolicy,
-    class ValueCollectionCategory>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result,
+    typename ExecutionPolicy,
+    typename ValueCollectionCategory>
 struct GradientYByArgumentCategory
 {
 };
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result>
 struct GradientYByArgumentCategory<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -403,10 +403,10 @@ struct GradientYByArgumentCategory<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result>
 struct GradientYByArgumentCategory<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -454,11 +454,11 @@ struct GradientYByArgumentCategory<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result,
-    class ExecutionPolicy>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result,
+    typename ExecutionPolicy>
 class GradientX
 {
 
@@ -485,10 +485,10 @@ class GradientX
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result>
 struct GradientX<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -543,11 +543,11 @@ struct GradientX<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result,
-    class ExecutionPolicy>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result,
+    typename ExecutionPolicy>
 class GradientY
 {
 
@@ -574,10 +574,10 @@ class GradientY
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result>
 struct GradientY<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -634,11 +634,11 @@ struct GradientY<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void gradient_x(
     InputNoDataPolicy const& input_no_data_policy,
@@ -659,11 +659,11 @@ void gradient_x(
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void gradient_y(
     InputNoDataPolicy const& input_no_data_policy,

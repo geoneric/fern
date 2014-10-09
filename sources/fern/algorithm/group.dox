@@ -1,61 +1,19 @@
 /*!
-    \defgroup algorithm Algorithms
-
-    Fern.Algorithm is a library of algorithms for data manipulation. These
-    algorithms are implemented in terms of policies and type traits, to make
-    them useable in as many contexts as possible.
-*/
+    @brief      Parent group containing algorithm sub-groups
+    @defgroup   fern_algorithm_group Algorithm
+    @ingroup    fern_group
 
 
-/*!
-    \defgroup algebra Algebra algorithms
-    \ingroup  algorithm
-*/
+    Fern.Algorithm is a library of algorithms for data manipulation.
+    The algorithms have been classified in various categories.
+    Each algorithm is configurable using policies. Most/all algorithms have
+    overloads that allow them to be called with default policies. Default
+    policies
+    are always those policies that do not do anything. For example, the default
+    policy for testing input value for no-data is the
+    fern::algorithm::SkipNoData policy, which does not incur any overhead.
 
+    See also:
 
-/*!
-    \defgroup boolean Boole algorithms
-    \ingroup  algebra
-*/
-
-
-/*!
-    \defgroup elementary Elementary algorithms
-    \ingroup  algebra
-*/
-
-
-/*!
-    \defgroup vector Vector algorithms
-    \ingroup  algebra
-*/
-
-
-/*!
-    \defgroup convolution Convolution algorithms
-    \ingroup  algorithm
-*/
-
-
-/*!
-    \defgroup core Core algorithms
-    \ingroup  algorithm
-*/
-
-
-/*!
-    \defgroup spatial Space algorithms
-    \ingroup  algorithm
-*/
-
-
-/*!
-    \defgroup statistic Statistics algorithms
-    \ingroup  algorithm
-*/
-
-
-/*!
-    \defgroup trigonometry Trigonometry algorithms
-    \ingroup  algorithm
+    - @ref fern_algorithm_policies
 */

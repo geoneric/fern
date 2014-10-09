@@ -1,0 +1,5 @@
+/*!
+    @brief      Group containing core algorithms
+    @defgroup   fern_algorithm_core_group Core algorithms
+    @ingroup    fern_algorithm_group
+*/

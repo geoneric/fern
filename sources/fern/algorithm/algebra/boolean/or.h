@@ -8,21 +8,21 @@ namespace fern {
 namespace algorithm {
 namespace algebra {
 
-//! Determine the boolean or result of \a value1 and \a value2 and write the result to \a result.
 /*!
-    \ingroup       boolean
-    \sa            fern::binary_local_operation,
-                   @ref fern_algorithm_algebra_boolean
+    @ingroup    fern_algorithm_algebra_boole_group
+    @brief      Determine the boolean or result of @a value1 and @a value2
+                and write the result to @a result.
+    @sa         fern::algorithm::binary_local_operation
 
-    The value types of \a value1, \a value2 and \a result must be arithmetic.
+    The value types of @a value1, @a value2 and @a result must be arithmetic.
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result
 >
 void or_(
     InputNoDataPolicy const& input_no_data_policy,
@@ -42,16 +42,16 @@ void or_(
 
 
 /*!
-    \ingroup       boolean
-    \overload
+    @ingroup    fern_algorithm_algebra_boole_group
+    @overload
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result
 >
 void or_(
     ExecutionPolicy const& execution_policy,
@@ -66,14 +66,14 @@ void or_(
 
 
 /*!
-    \ingroup       boolean
-    \overload
+    @ingroup    fern_algorithm_algebra_boole_group
+    @overload
 */
 template<
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result
 >
 void or_(
     ExecutionPolicy const& execution_policy,

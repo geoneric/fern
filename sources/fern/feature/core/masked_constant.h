@@ -4,7 +4,7 @@
 namespace fern {
 
 template<
-    class T>
+    typename T>
 class MaskedConstant
 {
 
@@ -47,7 +47,7 @@ private:
 
 
 template<
-    class T>
+    typename T>
 inline MaskedConstant<T>::MaskedConstant()
 
     : MaskedConstant(T(), false)
@@ -57,7 +57,7 @@ inline MaskedConstant<T>::MaskedConstant()
 
 
 template<
-    class T>
+    typename T>
 inline MaskedConstant<T>::MaskedConstant(
     T const& value)
 
@@ -68,7 +68,7 @@ inline MaskedConstant<T>::MaskedConstant(
 
 
 template<
-    class T>
+    typename T>
 inline MaskedConstant<T>::MaskedConstant(
     T const& value,
     bool mask)
@@ -81,7 +81,7 @@ inline MaskedConstant<T>::MaskedConstant(
 
 
 template<
-    class T>
+    typename T>
 inline MaskedConstant<T>& MaskedConstant<T>::operator=(
     T const& value)
 {
@@ -92,7 +92,7 @@ inline MaskedConstant<T>& MaskedConstant<T>::operator=(
 
 
 template<
-    class T>
+    typename T>
 inline T const& MaskedConstant<T>::value() const
 {
     // assert(!_mask);
@@ -101,7 +101,7 @@ inline T const& MaskedConstant<T>::value() const
 
 
 template<
-    class T>
+    typename T>
 inline T& MaskedConstant<T>::value()
 {
     // assert(!_mask);
@@ -110,7 +110,7 @@ inline T& MaskedConstant<T>::value()
 
 
 template<
-    class T>
+    typename T>
 inline bool const& MaskedConstant<T>::mask() const
 {
     return _mask;
@@ -118,7 +118,7 @@ inline bool const& MaskedConstant<T>::mask() const
 
 
 template<
-    class T>
+    typename T>
 inline bool& MaskedConstant<T>::mask()
 {
     return _mask;
@@ -126,7 +126,7 @@ inline bool& MaskedConstant<T>::mask()
 
 
 template<
-    class T>
+    typename T>
 inline bool operator==(
     MaskedConstant<T> const& lhs,
     MaskedConstant<T> const& rhs)

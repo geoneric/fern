@@ -9,24 +9,24 @@ namespace fern {
 namespace algorithm {
 namespace core {
 
-//! Per position, select the first non-no-data element from \a value1 and \a value2, and write it to \a result.
 /*!
-    \ingroup       core
-    \sa            fern::binary_local_operation,
-                   @ref fern_algorithm_core
+    @ingroup    fern_algorithm_core_group
+    @brief      Per position, select the first non-no-data element from
+                @a value1 and @a value2, and write it to @a result.
+    @sa         fern::algorithm::binary_local_operation
 
-    - Value types of \a Value1, \a Value2 and \a Result must be arithmetic.
-    - Value types of \a Value1, \a Value2 and \a Result must be the same.
-    - The clone type of \a Result must equal the clone type of
-      combining \a Value1 and \a Value2. See fern::Result.
+    - Value types of @a Value1, @a Value2 and @a Result must be arithmetic.
+    - Value types of @a Value1, @a Value2 and @a Result must be the same.
+    - The clone type of @a Result must equal the clone type of
+      combining @a Value1 and @a Value2. See fern::algorithm::Result.
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 void cover(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -57,16 +57,16 @@ void cover(
 
 
 /*!
-    \ingroup       core
-    \overload
+    @ingroup    fern_algorithm_core_group
+    @overload
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 void cover(
     ExecutionPolicy const& execution_policy,
     Value1 const& value1,
@@ -80,14 +80,14 @@ void cover(
 
 
 /*!
-    \ingroup       core
-    \overload
+    @ingroup    fern_algorithm_core_group
+    @overload
 */
 template<
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 void cover(
     ExecutionPolicy const& execution_policy,
     Value1 const& value1,

@@ -7,12 +7,12 @@
 namespace fern {
 
 template<
-    class T>
+    typename T>
 struct ArgumentTraits<example::Raster<T>>
 {
 
     template<
-        class U>
+        typename U>
     struct Collection
     {
         using type = example::Raster<U>;
@@ -30,7 +30,7 @@ struct ArgumentTraits<example::Raster<T>>
 
 
 template<
-    class T>
+    typename T>
 size_t size(
     example::Raster<T> const& raster,
     size_t index)
@@ -41,7 +41,7 @@ size_t size(
 
 
 template<
-    class T>
+    typename T>
 T const& get(
     example::Raster<T> const& raster,
     size_t row,
@@ -52,7 +52,7 @@ T const& get(
 
 
 template<
-    class T>
+    typename T>
 T& get(
     example::Raster<T>& raster,
     size_t row,
@@ -63,7 +63,7 @@ T& get(
 
 
 template<
-    class T>
+    typename T>
 double cell_size(
     example::Raster<T> const& raster,
     size_t /* index */)
@@ -73,8 +73,8 @@ double cell_size(
 
 
 template<
-    class T,
-    class U>
+    typename T,
+    typename U>
 example::Raster<T> clone(
     example::Raster<U> const& raster)
 {

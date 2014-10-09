@@ -5,7 +5,7 @@
 namespace fern {
 
 template<
-    class Point>
+    typename Point>
 using Box = boost::geometry::model::box<Point>;
 
 } // namespace fern

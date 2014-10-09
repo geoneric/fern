@@ -8,20 +8,19 @@ namespace fern {
 namespace algorithm {
 namespace core {
 
-//! Fill \a result with \a value.
 /*!
-    \ingroup       core
-    \sa            fern::unary_disaggregate_operation,
-                   @ref fern_algorithm_core
+    @ingroup    fern_algorithm_core_group
+    @brief      Fill @a result with @a value.
+    @sa         fern::algorithm::unary_disaggregate_operation
 
-    The value type of \a Result must be equal to \a Value.
+    - The value type of @a Result must be equal to @a Value.
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result>
 void fill(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -37,15 +36,15 @@ void fill(
 
 
 /*!
-    \ingroup       core
-    \overload
+    @ingroup    fern_algorithm_core_group
+    @overload
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result>
 void fill(
     ExecutionPolicy const& execution_policy,
     Value const& value,
@@ -58,13 +57,13 @@ void fill(
 
 
 /*!
-    \ingroup       core
-    \overload
+    @ingroup    fern_algorithm_core_group
+    @overload
 */
 template<
-    class ExecutionPolicy,
-    class Value,
-    class Result>
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result>
 void fill(
     ExecutionPolicy const& execution_policy,
     Value const& value,

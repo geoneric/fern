@@ -14,7 +14,7 @@ struct Algorithm
 {
 
     template<
-        class Result>
+        typename Result>
     inline void operator()(
         Result& result) const
     {
@@ -25,9 +25,9 @@ struct Algorithm
 
 
 template<
-    class InputNoDataPolicy,
-    class ExecutionPolicy,
-    class Result
+    typename InputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Result
 >
 void defined(
     InputNoDataPolicy const& input_no_data_policy,

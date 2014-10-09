@@ -12,8 +12,8 @@ namespace fern {
   \sa        .
 */
 template<
-    class GID,
-    class Value>
+    typename GID,
+    typename Value>
 class GeometryValues:
     public Values
 {
@@ -53,8 +53,8 @@ private:
 
 
 template<
-    class GID,
-    class Value>
+    typename GID,
+    typename Value>
 inline void GeometryValues<GID, Value>::add(
     GID const& gid,
     Value const& value)
@@ -64,8 +64,8 @@ inline void GeometryValues<GID, Value>::add(
 
 
 template<
-    class GID,
-    class Value>
+    typename GID,
+    typename Value>
 inline bool GeometryValues<GID, Value>::empty() const
 {
     return _values.empty();
@@ -73,8 +73,8 @@ inline bool GeometryValues<GID, Value>::empty() const
 
 
 template<
-    class GID,
-    class Value>
+    typename GID,
+    typename Value>
 inline size_t GeometryValues<GID, Value>::size() const
 {
     return _values.size();
@@ -82,8 +82,8 @@ inline size_t GeometryValues<GID, Value>::size() const
 
 
 template<
-    class GID,
-    class Value>
+    typename GID,
+    typename Value>
 inline Value const& GeometryValues<GID, Value>::value(
     GID const& gid) const
 {
@@ -94,8 +94,8 @@ inline Value const& GeometryValues<GID, Value>::value(
 
 
 template<
-    class GID,
-    class Value>
+    typename GID,
+    typename Value>
 inline auto GeometryValues<GID, Value>::cbegin() const -> const_iterator
 {
     return _values.cbegin();

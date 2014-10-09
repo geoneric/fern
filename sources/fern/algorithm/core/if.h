@@ -9,27 +9,26 @@ namespace fern {
 namespace algorithm {
 namespace core {
 
-//! Conditionally assign \a true_value to \a result.
 /*!
-    \ingroup       core
-    \sa            @ref fern_algorithm_core
+    @ingroup    fern_algorithm_core_group
+    @brief      Conditionally assign @a true_value to @a result.
 
-    All elements in \a condition that evaluate to true are assigned to the
-    \a result. All other elements in result are handled by the
-    \a output_no_data policy.
+    All elements in @a condition that evaluate to true are assigned to the
+    @a result. All other elements in result are handled by the
+    @a output_no_data policy.
 
-    - The value type of \a Condition must be arithmetic.
-    - The value type of \a Result must be equal to \a TrueValue.
-    - The clone type of \a Result must equal the clone type of
-      combining \a Condition and \a TrueValue. See fern::Result.
+    - The value type of @a Condition must be arithmetic.
+    - The value type of @a Result must be equal to @a TrueValue.
+    - The clone type of @a Result must equal the clone type of
+      combining @a Condition and @a TrueValue. See fern::algorithm::Result.
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Condition,
-    class TrueValue,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename Result>
 void if_(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -49,16 +48,16 @@ void if_(
 
 
 /*!
-    \ingroup       core
-    \overload
+    @ingroup    fern_algorithm_core_group
+    @overload
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Condition,
-    class TrueValue,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename Result>
 void if_(
     ExecutionPolicy const& execution_policy,
     Condition const& condition,
@@ -72,14 +71,14 @@ void if_(
 
 
 /*!
-    \ingroup       core
-    \overload
+    @ingroup    fern_algorithm_core_group
+    @overload
 */
 template<
-    class ExecutionPolicy,
-    class Condition,
-    class TrueValue,
-    class Result>
+    typename ExecutionPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename Result>
 void if_(
     ExecutionPolicy const& execution_policy,
     Condition const& condition,
@@ -95,31 +94,32 @@ void if_(
 }
 
 
-//! Conditionally assign \a true_value or \a false_value to \a result.
 /*!
-    \ingroup       core
-    \sa            @ref fern_algorithm_core
+    @ingroup    fern_algorithm_core_group
+    @brief      Conditionally assign @a true_value or @a false_value to
+                @a result.
 
-    All elements in \a condition that evaluate to true are assigned the
-    corresponding element from \a true_value. All elements in \a condition
+    All elements in @a condition that evaluate to true are assigned the
+    corresponding element from @a true_value. All elements in @a condition
     that evaluate to false are assigned the corresponding element from
-    \a false_value.
+    @a false_value.
 
-    - The value type of \a Condition must be arithmetic.
-    - The value type of \a TrueValue must equal the value type of
-      \a FalseValue.
-    - The value type of \a Result must be equal to \a TrueValue.
-    - The clone type of \a Result must equal the clone type of
-      combining \a Condition, \a TrueValue and \a FalseValue. See fern::Result.
+    - The value type of @a Condition must be arithmetic.
+    - The value type of @a TrueValue must equal the value type of
+      @a FalseValue.
+    - The value type of @a Result must be equal to @a TrueValue.
+    - The clone type of @a Result must equal the clone type of
+      combining @a Condition, @a TrueValue and @a FalseValue. See
+      fern::algorithm::Result.
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Condition,
-    class TrueValue,
-    class FalseValue,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename FalseValue,
+    typename Result>
 void if_(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -144,17 +144,17 @@ void if_(
 
 
 /*!
-    \ingroup       core
-    \overload
+    @ingroup    fern_algorithm_core_group
+    @overload
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Condition,
-    class TrueValue,
-    class FalseValue,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename FalseValue,
+    typename Result>
 void if_(
     ExecutionPolicy const& execution_policy,
     Condition const& condition,
@@ -169,15 +169,15 @@ void if_(
 
 
 /*!
-    \ingroup       core
-    \overload
+    @ingroup    fern_algorithm_core_group
+    @overload
 */
 template<
-    class ExecutionPolicy,
-    class Condition,
-    class TrueValue,
-    class FalseValue,
-    class Result>
+    typename ExecutionPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename FalseValue,
+    typename Result>
 void if_(
     ExecutionPolicy const& execution_policy,
     Condition const& condition,

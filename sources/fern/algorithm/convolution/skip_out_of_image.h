@@ -6,16 +6,17 @@ namespace fern {
 namespace algorithm {
 namespace convolve {
 
-//! OutOfImagePolicy which treats out-of-image values as no-data.
 /*!
-    \sa            @ref fern_algorithm_convolution_policies
+    @ingroup    fern_algorithm_convolution_group
+    @brief      OutOfImagePolicy which treats out-of-image values as no-data.
+    @sa         @ref fern_algorithm_convolution_policies
 */
 class SkipOutOfImage
 {
 
 public:
 
-    template<class InputNoDataPolicy, class SourceImage, class Value>
+    template<typename InputNoDataPolicy, typename SourceImage, typename Value>
     static constexpr bool
                    value_north_west    (InputNoDataPolicy const&
                                             input_no_data_policy,
@@ -30,7 +31,7 @@ public:
                                         size_t const first_col_source,
                                         Value& value);
 
-    template<class InputNoDataPolicy, class SourceImage, class Value>
+    template<typename InputNoDataPolicy, typename SourceImage, typename Value>
     static constexpr bool
                    value_north_east    (InputNoDataPolicy const&
                                             input_no_data_policy,
@@ -45,7 +46,7 @@ public:
                                         size_t const first_col_source,
                                         Value& value);
 
-    template<class InputNoDataPolicy, class SourceImage, class Value>
+    template<typename InputNoDataPolicy, typename SourceImage, typename Value>
     static constexpr bool
                    value_south_west    (InputNoDataPolicy const&
                                             input_no_data_policy,
@@ -60,7 +61,7 @@ public:
                                         size_t const first_col_source,
                                         Value& value);
 
-    template<class InputNoDataPolicy, class SourceImage, class Value>
+    template<typename InputNoDataPolicy, typename SourceImage, typename Value>
     static constexpr bool
                    value_south_east    (InputNoDataPolicy const&
                                             input_no_data_policy,
@@ -75,7 +76,7 @@ public:
                                         size_t const first_col_source,
                                         Value& value);
 
-    template<class InputNoDataPolicy, class SourceImage, class Value>
+    template<typename InputNoDataPolicy, typename SourceImage, typename Value>
     static constexpr bool
                    value_north         (InputNoDataPolicy const&
                                             input_no_data_policy,
@@ -90,7 +91,7 @@ public:
                                         size_t const first_col_source,
                                         Value& value);
 
-    template<class InputNoDataPolicy, class SourceImage, class Value>
+    template<typename InputNoDataPolicy, typename SourceImage, typename Value>
     static constexpr bool
                    value_west          (InputNoDataPolicy const&
                                             input_no_data_policy,
@@ -105,7 +106,7 @@ public:
                                         size_t const first_col_source,
                                         Value& value);
 
-    template<class InputNoDataPolicy, class SourceImage, class Value>
+    template<typename InputNoDataPolicy, typename SourceImage, typename Value>
     static constexpr bool
                    value_east          (InputNoDataPolicy const&
                                             input_no_data_policy,
@@ -120,7 +121,7 @@ public:
                                         size_t const first_col_source,
                                         Value& value);
 
-    template<class InputNoDataPolicy, class SourceImage, class Value>
+    template<typename InputNoDataPolicy, typename SourceImage, typename Value>
     static constexpr bool
                    value_south         (InputNoDataPolicy const&
                                             input_no_data_policy,
@@ -139,9 +140,9 @@ public:
 
 
 template<
-    class InputNoDataPolicy,
-    class SourceImage,
-    class Value
+    typename InputNoDataPolicy,
+    typename SourceImage,
+    typename Value
 >
 inline constexpr bool SkipOutOfImage::value_north_west(
         InputNoDataPolicy const& /* input_no_data_policy */,
@@ -161,9 +162,9 @@ inline constexpr bool SkipOutOfImage::value_north_west(
 
 
 template<
-    class InputNoDataPolicy,
-    class SourceImage,
-    class Value
+    typename InputNoDataPolicy,
+    typename SourceImage,
+    typename Value
 >
 inline constexpr bool SkipOutOfImage::value_north_east(
         InputNoDataPolicy const& /* input_no_data_policy */,
@@ -183,9 +184,9 @@ inline constexpr bool SkipOutOfImage::value_north_east(
 
 
 template<
-    class InputNoDataPolicy,
-    class SourceImage,
-    class Value
+    typename InputNoDataPolicy,
+    typename SourceImage,
+    typename Value
 >
 inline constexpr bool SkipOutOfImage::value_south_west(
         InputNoDataPolicy const& /* input_no_data_policy */,
@@ -205,9 +206,9 @@ inline constexpr bool SkipOutOfImage::value_south_west(
 
 
 template<
-    class InputNoDataPolicy,
-    class SourceImage,
-    class Value
+    typename InputNoDataPolicy,
+    typename SourceImage,
+    typename Value
 >
 inline constexpr bool SkipOutOfImage::value_south_east(
         InputNoDataPolicy const& /* input_no_data_policy */,
@@ -227,9 +228,9 @@ inline constexpr bool SkipOutOfImage::value_south_east(
 
 
 template<
-    class InputNoDataPolicy,
-    class SourceImage,
-    class Value
+    typename InputNoDataPolicy,
+    typename SourceImage,
+    typename Value
 >
 inline constexpr bool SkipOutOfImage::value_north(
         InputNoDataPolicy const& /* input_no_data_policy */,
@@ -249,9 +250,9 @@ inline constexpr bool SkipOutOfImage::value_north(
 
 
 template<
-    class InputNoDataPolicy,
-    class SourceImage,
-    class Value
+    typename InputNoDataPolicy,
+    typename SourceImage,
+    typename Value
 >
 inline constexpr bool SkipOutOfImage::value_west(
         InputNoDataPolicy const& /* input_no_data_policy */,
@@ -271,9 +272,9 @@ inline constexpr bool SkipOutOfImage::value_west(
 
 
 template<
-    class InputNoDataPolicy,
-    class SourceImage,
-    class Value
+    typename InputNoDataPolicy,
+    typename SourceImage,
+    typename Value
 >
 inline constexpr bool SkipOutOfImage::value_east(
         InputNoDataPolicy const& /* input_no_data_policy */,
@@ -293,9 +294,9 @@ inline constexpr bool SkipOutOfImage::value_east(
 
 
 template<
-    class InputNoDataPolicy,
-    class SourceImage,
-    class Value
+    typename InputNoDataPolicy,
+    typename SourceImage,
+    typename Value
 >
 inline constexpr bool SkipOutOfImage::value_south(
         InputNoDataPolicy const& /* input_no_data_policy */,

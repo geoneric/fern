@@ -16,23 +16,23 @@ namespace detail {
 namespace dispatch {
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result,
-    class ExecutionPolicy,
-    class ValueCollectionCategory>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result,
+    typename ExecutionPolicy,
+    typename ValueCollectionCategory>
 class Lax
 {
 };
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result,
-    class ExecutionPolicy>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result,
+    typename ExecutionPolicy>
 struct Lax<
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -110,11 +110,11 @@ struct Lax<
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void lax(
     InputNoDataPolicy const& input_no_data_policy,

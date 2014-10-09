@@ -13,20 +13,20 @@ namespace detail {
 namespace dispatch {
 
 template<
-    class Value1,
-    class Value2,
-    class R,
-    class A1NumberCategory,
-    class A2NumberCategory>
+    typename Value1,
+    typename Value2,
+    typename R,
+    typename A1NumberCategory,
+    typename A2NumberCategory>
 struct within_range
 {
 };
 
 
 template<
-    class Value1,
-    class Value2,
-    class Result>
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct within_range<
     Value1,
     Value2,
@@ -51,9 +51,9 @@ struct within_range<
 
 
 template<
-    class Value1,
-    class Value2,
-    class Result>
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct within_range<
     Value1,
     Value2,
@@ -77,9 +77,9 @@ struct within_range<
 
 
 template<
-    class Value1,
-    class Value2,
-    class Result>
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct within_range<
     Value1,
     Value2,
@@ -105,9 +105,9 @@ struct within_range<
 
 
 template<
-    class Value1,
-    class Value2,
-    class Result>
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct within_range<
     Value1,
     Value2,
@@ -133,9 +133,9 @@ struct within_range<
 
 
 template<
-    class Value1,
-    class Value2,
-    class Result>
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct within_range<
     Value1,
     Value2,
@@ -157,9 +157,9 @@ struct within_range<
 
 
 template<
-    class Value1,
-    class Value2,
-    class Result>
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct within_range<
     Value1,
     Value2,
@@ -181,9 +181,9 @@ struct within_range<
 
 
 template<
-    class Value1,
-    class Value2,
-    class Result>
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct within_range<
     Value1,
     Value2,
@@ -213,9 +213,9 @@ struct within_range<
 
 
 template<
-    class Value1,
-    class Value2,
-    class Result>
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct within_range<
     Value1,
     Value2,
@@ -246,8 +246,8 @@ struct within_range<
 } // namespace dispatch
 
 template<
-    class Value1,
-    class Value2>
+    typename Value1,
+    typename Value2>
 struct Algorithm
 {
 
@@ -255,7 +255,7 @@ struct Algorithm
     FERN_STATIC_ASSERT(std::is_arithmetic, Value2)
 
     template<
-        class R>
+        typename R>
     inline void operator()(
         Value1 const& value1,
         Value2 const& value2,
@@ -268,13 +268,13 @@ struct Algorithm
 
 
 template<
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result
 >
 void subtract(
     InputNoDataPolicy const& input_no_data_policy,

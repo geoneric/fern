@@ -8,29 +8,29 @@ namespace detail {
 namespace dispatch {
 
 template<
-    template<class, class> class Algorithm,
-    template<class, class> class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Result,
-    class... Values>
+    template<typename, typename> class Algorithm,
+    template<typename, typename> class OutOfDomainPolicy,
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Result,
+    typename... Values>
 struct NAryLocalOperation
 {
 };
 
 
 template<
-    template<class, class> class Algorithm,
-    template<class, class> class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Result,
-    class Value1,
-    class Value2>
+    template<typename, typename> class Algorithm,
+    template<typename, typename> class OutOfDomainPolicy,
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Result,
+    typename Value1,
+    typename Value2>
 struct NAryLocalOperation<
     Algorithm,
     OutOfDomainPolicy,
@@ -62,17 +62,17 @@ struct NAryLocalOperation<
 
 
 template<
-    template<class, class> class Algorithm,
-    template<class, class> class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Result,
-    class Value1,
-    class Value2,
-    class Value3,
-    class... Values>
+    template<typename, typename> class Algorithm,
+    template<typename, typename> class OutOfDomainPolicy,
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Result,
+    typename Value1,
+    typename Value2,
+    typename Value3,
+    typename... Values>
 struct NAryLocalOperation<
     Algorithm,
     OutOfDomainPolicy,
@@ -137,27 +137,29 @@ struct NAryLocalOperation<
 } // namespace detail
 
 
-//! Function that executes an n-ary local operation.
 /*!
-    \tparam        Algorithm Class template of the operation to execute.
-    \param[out]    result Output that is written by the operation.
-    \param[in]     values Argument values to pass to the operation.
-    \sa            fern::nullary_local_operation, fern::unary_local_operation,
-                   fern::binary_local_operation
+    @ingroup    fern_algorithm_core_group
+    @brief      Function that executes an n-ary local operation.
+    @tparam     Algorithm Class template of the operation to execute.
+    @param[out] result Output that is written by the operation.
+    @param[in]  values Argument values to pass to the operation.
+    @sa         fern::algorithm::nullary_local_operation,
+                fern::algorithm::unary_local_operation,
+                fern::algorithm::binary_local_operation
 
     This function supports handling 0d, 1d and 2d values.
 
     This function supports sequential and parallel execution of the operation.
 */
 template<
-    template<class, class> class Algorithm,
-    template<class, class> class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Result,
-    class... Values>
+    template<typename, typename> class Algorithm,
+    template<typename, typename> class OutOfDomainPolicy,
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Result,
+    typename... Values>
 void n_ary_local_operation(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,

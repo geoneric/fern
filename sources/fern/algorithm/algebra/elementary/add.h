@@ -9,43 +9,49 @@ namespace fern {
 namespace algorithm {
 namespace add {
 
-//! Determine the result type when adding instances of \a Value1 and \a Value2.
 /*!
-    \sa            fern::add::result_value_type, fern::algorithm::Result
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @brief      Determine the result type when adding instances of @a Value1
+                and @a Value2.
+    @sa         fern::algorithm::add::result_value_type,
+                fern::algorithm::Result
 */
 template<
-    class Value1,
-    class Value2>
+    typename Value1,
+    typename Value2>
 using result_type = typename fern::algorithm::Result<Value1, Value2>::type;
 
 
-//! Determine the result value type when adding instances of \a Value1 and \a Value2.
 /*!
-  \sa              fern::add::result_type
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @brief      Determine the result value type when adding instances of
+                @a Value1 and @a Value2.
+    @sa         fern::algorithm::add::result_type
 */
 template<
-    class Value1,
-    class Value2>
+    typename Value1,
+    typename Value2>
 using result_value_type = typename fern::algorithm::Result<value_type<Value1>,
     value_type<Value2>>::type;
 
 
-//! Out of range policy for fern::algebra::add algorithm.
 /*!
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @brief      Out of range policy for fern::algebra::add algorithm.
+    @sa         @ref fern_algorithm_policies_out_of_range_policy
+
     The logic for determining whether add's result is out of range depends
     on the types involved (unsigned integers, signed integers, floating
     points) and their sizes.
 
-    The value types of \a value1 and \a value2 must be arithmetic and not
-    `bool`. The value type of \a result must be equal to
+    The value types of @a value1 and @a value2 must be arithmetic and not
+    `bool`. The value type of @a result must be equal to
     fern::add::result_value_type<Value1, Value2>.
-
-    \sa            @ref fern_algorithm_policies_out_of_range_policy
 */
 template<
-    class Value1,
-    class Value2,
-    class Result>
+    typename Value1,
+    typename Value2,
+    typename Result>
 class OutOfRangePolicy
 {
 
@@ -78,25 +84,26 @@ public:
 
 namespace algebra {
 
-//! Add \a value1 to \a value2 and write the result to \a result.
 /*!
-    \ingroup       elementary
-    \sa            fern::add::OutOfRangePolicy, fern::add::result_type,
-                   fern::add::result_value_type, fern::binary_local_operation,
-                   @ref fern_algorithm_algebra_elementary
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @brief      Add @a value1 to @a value2 and write the result to @a result.
+    @sa         fern::algorithm::add::OutOfRangePolicy,
+                fern::algorithm::add::result_type,
+                fern::algorithm::add::result_value_type,
+                fern::algorithm::binary_local_operation
 
-    The value types of \a value1 and \a value2 must be arithmetic and not
-    `bool`. The value type of \a result must be equal to
+    The value types of @a value1 and @a value2 must be arithmetic and not
+    `bool`. The value type of @a result must be equal to
     fern::add::result_value_type<Value1, Value2>.
 */
 template<
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result
 >
 void add(
     InputNoDataPolicy const& input_no_data_policy,
@@ -120,17 +127,17 @@ void add(
 
 
 /*!
-    \ingroup       elementary
-    \overload
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @overload
 */
 template<
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result
 >
 void add(
     ExecutionPolicy const& execution_policy,
@@ -145,14 +152,14 @@ void add(
 
 
 /*!
-    \ingroup       elementary
-    \overload
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @overload
 */
 template<
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result
 >
 void add(
     ExecutionPolicy const& execution_policy,

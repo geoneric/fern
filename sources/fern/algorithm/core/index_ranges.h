@@ -9,13 +9,15 @@
 namespace fern {
 namespace algorithm {
 
-//! The IndexRanges class represents a collection of index ranges for multiple dimensions.
 /*!
+    @ingroup    fern_algorithm_core_group
+    @brief      The IndexRanges class represents a collection of index ranges
+                for multiple dimensions.
+    @tparam     nr_dimensions Number of dimensions to store an index range for.
+    @sa         IndexRange
+
     This is useful for defining a multi-dimensional subset of (array)
     dimensions.
-
-    \tparam nr_dimensions Number of dimensions to store an index range for.
-    \sa     IndexRange
 */
 template<
     size_t nr_dimensions>

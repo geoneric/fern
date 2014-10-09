@@ -1,0 +1,5 @@
+/*!
+    @brief      Group containing statistic algorithms
+    @defgroup   fern_algorithm_statistic_group Statistic algorithms
+    @ingroup    fern_algorithm_group
+*/

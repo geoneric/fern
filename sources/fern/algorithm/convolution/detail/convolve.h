@@ -20,8 +20,8 @@ namespace convolve {
 namespace detail {
 
 template<
-    class Value,
-    class Result>
+    typename Value,
+    typename Result>
 struct OutOfRangePolicy
 {
 
@@ -116,15 +116,15 @@ struct ConvolveNorthWestCorner<true>
 {
 
     template<
-        class AlternativeForNoDataPolicy,
-        class NormalizePolicy,
-        class OutOfImagePolicy,
-        template<class, class> class OutOfRangePolicy,
-        class InputNoDataPolicy,
-        class OutputNoDataPolicy,
-        class SourceImage,
-        class Kernel,
-        class DestinationImage>
+        typename AlternativeForNoDataPolicy,
+        typename NormalizePolicy,
+        typename OutOfImagePolicy,
+        template<typename, typename> class OutOfRangePolicy,
+        typename InputNoDataPolicy,
+        typename OutputNoDataPolicy,
+        typename SourceImage,
+        typename Kernel,
+        typename DestinationImage>
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
@@ -289,15 +289,15 @@ struct ConvolveNorthEastCorner<true>
 {
 
     template<
-        class AlternativeForNoDataPolicy,
-        class NormalizePolicy,
-        class OutOfImagePolicy,
-        template<class, class> class OutOfRangePolicy,
-        class InputNoDataPolicy,
-        class OutputNoDataPolicy,
-        class SourceImage,
-        class Kernel,
-        class DestinationImage>
+        typename AlternativeForNoDataPolicy,
+        typename NormalizePolicy,
+        typename OutOfImagePolicy,
+        template<typename, typename> class OutOfRangePolicy,
+        typename InputNoDataPolicy,
+        typename OutputNoDataPolicy,
+        typename SourceImage,
+        typename Kernel,
+        typename DestinationImage>
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
@@ -454,15 +454,15 @@ struct ConvolveSouthWestCorner<true>
 {
 
     template<
-        class AlternativeForNoDataPolicy,
-        class NormalizePolicy,
-        class OutOfImagePolicy,
-        template<class, class> class OutOfRangePolicy,
-        class InputNoDataPolicy,
-        class OutputNoDataPolicy,
-        class SourceImage,
-        class Kernel,
-        class DestinationImage>
+        typename AlternativeForNoDataPolicy,
+        typename NormalizePolicy,
+        typename OutOfImagePolicy,
+        template<typename, typename> class OutOfRangePolicy,
+        typename InputNoDataPolicy,
+        typename OutputNoDataPolicy,
+        typename SourceImage,
+        typename Kernel,
+        typename DestinationImage>
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
@@ -619,15 +619,15 @@ struct ConvolveSouthEastCorner<true>
 {
 
     template<
-        class AlternativeForNoDataPolicy,
-        class NormalizePolicy,
-        class OutOfImagePolicy,
-        template<class, class> class OutOfRangePolicy,
-        class InputNoDataPolicy,
-        class OutputNoDataPolicy,
-        class SourceImage,
-        class Kernel,
-        class DestinationImage>
+        typename AlternativeForNoDataPolicy,
+        typename NormalizePolicy,
+        typename OutOfImagePolicy,
+        template<typename, typename> class OutOfRangePolicy,
+        typename InputNoDataPolicy,
+        typename OutputNoDataPolicy,
+        typename SourceImage,
+        typename Kernel,
+        typename DestinationImage>
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
@@ -787,15 +787,15 @@ struct ConvolveNorthSide<true>
 {
 
     template<
-        class AlternativeForNoDataPolicy,
-        class NormalizePolicy,
-        class OutOfImagePolicy,
-        template<class, class> class OutOfRangePolicy,
-        class InputNoDataPolicy,
-        class OutputNoDataPolicy,
-        class SourceImage,
-        class Kernel,
-        class DestinationImage>
+        typename AlternativeForNoDataPolicy,
+        typename NormalizePolicy,
+        typename OutOfImagePolicy,
+        template<typename, typename> class OutOfRangePolicy,
+        typename InputNoDataPolicy,
+        typename OutputNoDataPolicy,
+        typename SourceImage,
+        typename Kernel,
+        typename DestinationImage>
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
@@ -949,15 +949,15 @@ struct ConvolveWestSide<true>
 {
 
     template<
-        class AlternativeForNoDataPolicy,
-        class NormalizePolicy,
-        class OutOfImagePolicy,
-        template<class, class> class OutOfRangePolicy,
-        class InputNoDataPolicy,
-        class OutputNoDataPolicy,
-        class SourceImage,
-        class Kernel,
-        class DestinationImage>
+        typename AlternativeForNoDataPolicy,
+        typename NormalizePolicy,
+        typename OutOfImagePolicy,
+        template<typename, typename> class OutOfRangePolicy,
+        typename InputNoDataPolicy,
+        typename OutputNoDataPolicy,
+        typename SourceImage,
+        typename Kernel,
+        typename DestinationImage>
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
@@ -1113,15 +1113,15 @@ struct ConvolveEastSide<true>
 {
 
     template<
-        class AlternativeForNoDataPolicy,
-        class NormalizePolicy,
-        class OutOfImagePolicy,
-        template<class, class> class OutOfRangePolicy,
-        class InputNoDataPolicy,
-        class OutputNoDataPolicy,
-        class SourceImage,
-        class Kernel,
-        class DestinationImage>
+        typename AlternativeForNoDataPolicy,
+        typename NormalizePolicy,
+        typename OutOfImagePolicy,
+        template<typename, typename> class OutOfRangePolicy,
+        typename InputNoDataPolicy,
+        typename OutputNoDataPolicy,
+        typename SourceImage,
+        typename Kernel,
+        typename DestinationImage>
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
@@ -1279,15 +1279,15 @@ struct ConvolveSouthSide<true>
 {
 
     template<
-        class AlternativeForNoDataPolicy,
-        class NormalizePolicy,
-        class OutOfImagePolicy,
-        template<class, class> class OutOfRangePolicy,
-        class InputNoDataPolicy,
-        class OutputNoDataPolicy,
-        class SourceImage,
-        class Kernel,
-        class DestinationImage>
+        typename AlternativeForNoDataPolicy,
+        typename NormalizePolicy,
+        typename OutOfImagePolicy,
+        template<typename, typename> class OutOfRangePolicy,
+        typename InputNoDataPolicy,
+        typename OutputNoDataPolicy,
+        typename SourceImage,
+        typename Kernel,
+        typename DestinationImage>
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
@@ -1444,14 +1444,14 @@ struct ConvolveInnerPart<true>
 {
 
     template<
-        class AlternativeForNoDataPolicy,
-        class NormalizePolicy,
-        template<class, class> class OutOfRangePolicy,
-        class InputNoDataPolicy,
-        class OutputNoDataPolicy,
-        class SourceImage,
-        class Kernel,
-        class DestinationImage>
+        typename AlternativeForNoDataPolicy,
+        typename NormalizePolicy,
+        template<typename, typename> class OutOfRangePolicy,
+        typename InputNoDataPolicy,
+        typename OutputNoDataPolicy,
+        typename SourceImage,
+        typename Kernel,
+        typename DestinationImage>
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
@@ -1556,31 +1556,31 @@ struct ConvolveInnerPart<true>
 
 
 template<
-    class AlternativeForNoDataPolicy,
-    class NormalizePolicy,
-    class OutOfImagePolicy,
-    template<class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class SourceImage,
-    class Kernel,
-    class DestinationImage,
-    class ExecutionPolicy>
+    typename AlternativeForNoDataPolicy,
+    typename NormalizePolicy,
+    typename OutOfImagePolicy,
+    template<typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename SourceImage,
+    typename Kernel,
+    typename DestinationImage,
+    typename ExecutionPolicy>
 struct Convolve
 {
 };
 
 
 template<
-    class AlternativeForNoDataPolicy,
-    class NormalizePolicy,
-    class OutOfImagePolicy,
-    template<class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class SourceImage,
-    class Kernel,
-    class DestinationImage>
+    typename AlternativeForNoDataPolicy,
+    typename NormalizePolicy,
+    typename OutOfImagePolicy,
+    template<typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename SourceImage,
+    typename Kernel,
+    typename DestinationImage>
 struct Convolve<
     AlternativeForNoDataPolicy,
     NormalizePolicy,
@@ -1693,15 +1693,15 @@ struct Convolve<
 
 
 template<
-    class AlternativeForNoDataPolicy,
-    class NormalizePolicy,
-    class OutOfImagePolicy,
-    template<class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class SourceImage,
-    class Kernel,
-    class DestinationImage>
+    typename AlternativeForNoDataPolicy,
+    typename NormalizePolicy,
+    typename OutOfImagePolicy,
+    template<typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename SourceImage,
+    typename Kernel,
+    typename DestinationImage>
 struct Convolve<
     AlternativeForNoDataPolicy,
     NormalizePolicy,
@@ -1782,15 +1782,15 @@ struct Convolve<
 
 
 template<
-    class AlternativeForNoDataPolicy,
-    class NormalizePolicy,
-    class OutOfImagePolicy,
-    template<class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class SourceImage,
-    class Kernel,
-    class DestinationImage>
+    typename AlternativeForNoDataPolicy,
+    typename NormalizePolicy,
+    typename OutOfImagePolicy,
+    template<typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename SourceImage,
+    typename Kernel,
+    typename DestinationImage>
 struct Convolve<
     AlternativeForNoDataPolicy,
     NormalizePolicy,
@@ -1844,16 +1844,16 @@ struct Convolve<
 
 
 template<
-    class AlternativeForNoDataPolicy,
-    class NormalizePolicy,
-    class OutOfImagePolicy,
-    template<class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class SourceImage,
-    class Kernel,
-    class DestinationImage
+    typename AlternativeForNoDataPolicy,
+    typename NormalizePolicy,
+    typename OutOfImagePolicy,
+    template<typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename SourceImage,
+    typename Kernel,
+    typename DestinationImage
 >
 void convolve(
     InputNoDataPolicy const& input_no_data_policy,

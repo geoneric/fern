@@ -1,0 +1,10 @@
+/*!
+    @brief      Parent group containing groups related to algebra
+    @defgroup   fern_algorithm_algebra_group Algebra algorithms
+    @ingroup    fern_algorithm_group
+
+
+    See also:
+
+    - [Wikipedia on algebra](https://en.wikipedia.org/wiki/Algebra)
+*/

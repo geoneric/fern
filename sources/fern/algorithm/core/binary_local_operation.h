@@ -13,14 +13,14 @@ namespace algorithm {
 namespace detail {
 
 template<
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 void operation_0d_0d(
     Algorithm const& algorithm,
     InputNoDataPolicy const& input_no_data_policy,
@@ -60,14 +60,14 @@ void operation_0d_0d(
 
 
 template<
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 void operation_1d_0d(
     Algorithm const& algorithm,
     InputNoDataPolicy const& input_no_data_policy,
@@ -111,14 +111,14 @@ void operation_1d_0d(
 
 
 template<
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 void operation_0d_1d(
     Algorithm const& algorithm,
     InputNoDataPolicy const& input_no_data_policy,
@@ -162,14 +162,14 @@ void operation_0d_1d(
 
 
 template<
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 void operation_1d_1d(
     Algorithm const& algorithm,
     InputNoDataPolicy const& input_no_data_policy,
@@ -213,14 +213,14 @@ void operation_1d_1d(
 
 
 template<
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 void operation_2d_0d(
     Algorithm const& algorithm,
     InputNoDataPolicy const& input_no_data_policy,
@@ -267,14 +267,14 @@ void operation_2d_0d(
 
 
 template<
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 void operation_0d_2d(
     Algorithm const& algorithm,
     InputNoDataPolicy const& input_no_data_policy,
@@ -321,14 +321,14 @@ void operation_0d_2d(
 
 
 template<
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 void operation_2d_2d(
     Algorithm const& algorithm,
     InputNoDataPolicy const& input_no_data_policy,
@@ -377,32 +377,32 @@ void operation_2d_2d(
 namespace dispatch {
 
 template<
-    class Algorithm,
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result,
-    class ExecutionPolicy,
-    class Value1CollectionCategory,
-    class Value2CollectionCategory>
+    typename Algorithm,
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result,
+    typename ExecutionPolicy,
+    typename Value1CollectionCategory,
+    typename Value2CollectionCategory>
 class BinaryLocalOperation
 {
 };
 
 
 template<
-    class Algorithm,
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result,
-    class ExecutionPolicy>
+    typename Algorithm,
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result,
+    typename ExecutionPolicy>
 struct BinaryLocalOperation<
     Algorithm,
     OutOfDomainPolicy,
@@ -438,14 +438,14 @@ struct BinaryLocalOperation<
 
 
 template<
-    class Algorithm,
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename Algorithm,
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct BinaryLocalOperation<
     Algorithm,
     OutOfDomainPolicy,
@@ -484,14 +484,14 @@ struct BinaryLocalOperation<
 
 
 template<
-    class Algorithm,
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename Algorithm,
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct BinaryLocalOperation<
     Algorithm,
     OutOfDomainPolicy,
@@ -549,14 +549,14 @@ struct BinaryLocalOperation<
 
 
 template<
-    class Algorithm,
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename Algorithm,
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct BinaryLocalOperation<
     Algorithm,
     OutOfDomainPolicy,
@@ -595,14 +595,14 @@ struct BinaryLocalOperation<
 
 
 template<
-    class Algorithm,
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename Algorithm,
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct BinaryLocalOperation<
     Algorithm,
     OutOfDomainPolicy,
@@ -658,14 +658,14 @@ struct BinaryLocalOperation<
 
 
 template<
-    class Algorithm,
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename Algorithm,
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct BinaryLocalOperation<
     Algorithm,
     OutOfDomainPolicy,
@@ -705,14 +705,14 @@ struct BinaryLocalOperation<
 
 
 template<
-    class Algorithm,
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename Algorithm,
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct BinaryLocalOperation<
     Algorithm,
     OutOfDomainPolicy,
@@ -771,14 +771,14 @@ struct BinaryLocalOperation<
 
 
 template<
-    class Algorithm,
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename Algorithm,
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct BinaryLocalOperation<
     Algorithm,
     OutOfDomainPolicy,
@@ -847,14 +847,14 @@ struct BinaryLocalOperation<
 
 
 template<
-    class Algorithm,
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename Algorithm,
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct BinaryLocalOperation<
     Algorithm,
     OutOfDomainPolicy,
@@ -896,14 +896,14 @@ struct BinaryLocalOperation<
 
 
 template<
-    class Algorithm,
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename Algorithm,
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct BinaryLocalOperation<
     Algorithm,
     OutOfDomainPolicy,
@@ -964,14 +964,14 @@ struct BinaryLocalOperation<
 
 
 template<
-    class Algorithm,
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename Algorithm,
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct BinaryLocalOperation<
     Algorithm,
     OutOfDomainPolicy,
@@ -1040,14 +1040,14 @@ struct BinaryLocalOperation<
 
 
 template<
-    class Algorithm,
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename Algorithm,
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct BinaryLocalOperation<
     Algorithm,
     OutOfDomainPolicy,
@@ -1089,14 +1089,14 @@ struct BinaryLocalOperation<
 
 
 template<
-    class Algorithm,
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename Algorithm,
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct BinaryLocalOperation<
     Algorithm,
     OutOfDomainPolicy,
@@ -1157,14 +1157,14 @@ struct BinaryLocalOperation<
 
 
 template<
-    class Algorithm,
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename Algorithm,
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct BinaryLocalOperation<
     Algorithm,
     OutOfDomainPolicy,
@@ -1233,14 +1233,14 @@ struct BinaryLocalOperation<
 
 
 template<
-    class Algorithm,
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename Algorithm,
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct BinaryLocalOperation<
     Algorithm,
     OutOfDomainPolicy,
@@ -1284,14 +1284,14 @@ struct BinaryLocalOperation<
 
 
 template<
-    class Algorithm,
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename Algorithm,
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct BinaryLocalOperation<
     Algorithm,
     OutOfDomainPolicy,
@@ -1354,14 +1354,14 @@ struct BinaryLocalOperation<
 
 
 template<
-    class Algorithm,
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename Algorithm,
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 struct BinaryLocalOperation<
     Algorithm,
     OutOfDomainPolicy,
@@ -1432,29 +1432,31 @@ struct BinaryLocalOperation<
 } // namespace detail
 
 
-//! Function that executes a binary local operation.
 /*!
-    \tparam        Algorithm Class template of the operation to execute.
-    \param[in]     value1 First input to pass to the operation.
-    \param[in]     value2 Second input to pass to the operation.
-    \param[out]    result Output that is written by the operation.
-    \sa            fern::nullary_local_operation, fern::unary_local_operation,
-                   fern::n_ary_local_operation
+    @ingroup    fern_algorithm_core_group
+    @brief      Function that executes a binary local operation.
+    @tparam     Algorithm Class template of the operation to execute.
+    @param[in]  value1 First input to pass to the operation.
+    @param[in]  value2 Second input to pass to the operation.
+    @param[out] result Output that is written by the operation.
+    @sa         fern::algorithm::nullary_local_operation,
+                fern::algorithm::unary_local_operation,
+                fern::algorithm::n_ary_local_operation
 
     This function supports handling 0d, 1d and 2d values.
 
     This function supports sequential and parallel execution of the operation.
 */
 template<
-    template<class, class> class Algorithm,
-    template<class, class> class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result
+    template<typename, typename> class Algorithm,
+    template<typename, typename> class OutOfDomainPolicy,
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result
 >
 void binary_local_operation(
     InputNoDataPolicy const& input_no_data_policy,

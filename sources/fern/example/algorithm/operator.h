@@ -6,8 +6,8 @@
 namespace example {
 
 template<
-    class Value1,
-    class Value2>
+    typename Value1,
+    typename Value2>
 fern::algorithm::add::result_type<Value1, Value2> operator+(
     Value1 const& lhs,
     Value2 const& rhs)

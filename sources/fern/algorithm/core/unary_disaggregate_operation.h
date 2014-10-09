@@ -14,13 +14,13 @@ namespace unary_disaggregate_operation_ {
 namespace detail {
 
 template<
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result>
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result>
 void operation_0d(
     Algorithm const& algorithm,
     InputNoDataPolicy const& input_no_data_policy,
@@ -58,13 +58,13 @@ void operation_0d(
 
 
 template<
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result>
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result>
 void operation_1d(
     Algorithm const& algorithm,
     InputNoDataPolicy const& input_no_data_policy,
@@ -111,13 +111,13 @@ void operation_1d(
 
 
 template<
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result>
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result>
 void operation_2d(
     Algorithm const& algorithm,
     InputNoDataPolicy const& input_no_data_policy,
@@ -169,29 +169,29 @@ void operation_2d(
 namespace dispatch {
 
 template<
-    class Algorithm,
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result,
-    class ExecutionPolicy,
-    class ValueCollectionCategory>
+    typename Algorithm,
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result,
+    typename ExecutionPolicy,
+    typename ValueCollectionCategory>
 class UnaryDisaggregateOperation
 {
 };
 
 
 template<
-    class Algorithm,
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result,
-    class ExecutionPolicy>
+    typename Algorithm,
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result,
+    typename ExecutionPolicy>
 struct UnaryDisaggregateOperation<
     Algorithm,
     OutOfDomainPolicy,
@@ -223,13 +223,13 @@ struct UnaryDisaggregateOperation<
 
 
 template<
-    class Algorithm,
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result>
+    typename Algorithm,
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result>
 struct UnaryDisaggregateOperation<
     Algorithm,
     OutOfDomainPolicy,
@@ -262,13 +262,13 @@ struct UnaryDisaggregateOperation<
 
 
 template<
-    class Algorithm,
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result>
+    typename Algorithm,
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result>
 struct UnaryDisaggregateOperation<
     Algorithm,
     OutOfDomainPolicy,
@@ -321,13 +321,13 @@ struct UnaryDisaggregateOperation<
 
 
 template<
-    class Algorithm,
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result>
+    typename Algorithm,
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result>
 struct UnaryDisaggregateOperation<
     Algorithm,
     OutOfDomainPolicy,
@@ -363,13 +363,13 @@ struct UnaryDisaggregateOperation<
 
 
 template<
-    class Algorithm,
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result>
+    typename Algorithm,
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result>
 struct UnaryDisaggregateOperation<
     Algorithm,
     OutOfDomainPolicy,
@@ -424,13 +424,13 @@ struct UnaryDisaggregateOperation<
 
 
 template<
-    class Algorithm,
-    class OutOfDomainPolicy,
-    class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result>
+    typename Algorithm,
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result>
 struct UnaryDisaggregateOperation<
     Algorithm,
     OutOfDomainPolicy,
@@ -497,11 +497,12 @@ struct UnaryDisaggregateOperation<
 } // namespace unary_disaggregate_operation_
 
 
-//! Function that executes a unary disaggregating operation.
 /*!
-    \tparam        Algorithm Class template of the operation to execute.
-    \param[in]     value Input to pass to the operation.
-    \param[out]    result Output that is written by the operation.
+    @ingroup    fern_algorithm_core_group
+    @brief      Function that executes a unary disaggregating operation.
+    @tparam     Algorithm Class template of the operation to execute.
+    @param[in]  value Input to pass to the operation.
+    @param[out] result Output that is written by the operation.
 
     A disaggregating operation takes a 0D input value and writes an nD result
     value.
@@ -511,14 +512,14 @@ struct UnaryDisaggregateOperation<
     This function supports sequential and parallel execution of the operation.
 */
 template<
-    template<class> class Algorithm,
-    template<class> class OutOfDomainPolicy,
-    template<class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    template<typename> class Algorithm,
+    template<typename> class OutOfDomainPolicy,
+    template<typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void unary_disaggregate_operation(
     InputNoDataPolicy const& input_no_data_policy,

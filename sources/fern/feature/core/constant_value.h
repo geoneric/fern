@@ -12,7 +12,7 @@ namespace fern {
   \sa        .
 */
 template<
-    class Value>
+    typename Value>
 class ConstantValue:
     public Values
 {
@@ -45,7 +45,7 @@ private:
 
 
 template<
-    class Value>
+    typename Value>
 inline ConstantValue<Value>::ConstantValue(
     Value const& value)
 
@@ -57,7 +57,7 @@ inline ConstantValue<Value>::ConstantValue(
 
 
 template<
-    class Value>
+    typename Value>
 inline void ConstantValue<Value>::set(
     Value const& value)
 {
@@ -66,7 +66,7 @@ inline void ConstantValue<Value>::set(
 
 
 template<
-    class Value>
+    typename Value>
 inline Value const& ConstantValue<Value>::value() const
 {
     return _value;

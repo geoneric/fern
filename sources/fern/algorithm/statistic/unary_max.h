@@ -7,21 +7,21 @@ namespace fern {
 namespace algorithm {
 namespace statistic {
 
-//! Determine the maximum value of \a value and write the result to \a result.
 /*!
-    \ingroup       statistic
-    \sa            fern::unary_aggregate_operation,
-                   @ref fern_algorithm_statistics
+    @ingroup    fern_algorithm_statistic_group
+    @brief      Determine the maximum value of @a value and write the
+                result to @a result.
+    @sa         fern::algorithm::unary_aggregate_operation
 
-    The value type of \a value must be arithmetic and not `bool`. The value
-    type of \a result must be equal to the value type of \a value.
+    The value type of @a value must be arithmetic and not `bool`. The value
+    type of @a result must be equal to the value type of @a value.
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void unary_max(
     InputNoDataPolicy const& input_no_data_policy,
@@ -40,15 +40,15 @@ void unary_max(
 
 
 /*!
-    \ingroup       statistic
-    \overload
+    @ingroup    fern_algorithm_statistic_group
+    @overload
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void unary_max(
     ExecutionPolicy const& execution_policy,
@@ -62,13 +62,13 @@ void unary_max(
 
 
 /*!
-    \ingroup       statistic
-    \overload
+    @ingroup    fern_algorithm_statistic_group
+    @overload
 */
 template<
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void unary_max(
     ExecutionPolicy const& execution_policy,

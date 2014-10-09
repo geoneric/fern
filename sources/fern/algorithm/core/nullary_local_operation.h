@@ -13,10 +13,10 @@ namespace algorithm {
 namespace detail {
 
 template<
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Result>
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Result>
 void operation_0d(
     Algorithm const& algorithm,
     InputNoDataPolicy const& input_no_data_policy,
@@ -45,10 +45,10 @@ void operation_0d(
 
 
 template<
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Result>
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Result>
 void operation_1d(
     Algorithm const& algorithm,
     InputNoDataPolicy const& input_no_data_policy,
@@ -81,10 +81,10 @@ void operation_1d(
 
 
 template<
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Result>
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Result>
 void operation_2d(
     Algorithm const& algorithm,
     InputNoDataPolicy const& input_no_data_policy,
@@ -122,23 +122,23 @@ void operation_2d(
 namespace dispatch {
 
 template<
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Result,
-    class ExecutionPolicy,
-    class ValueCollectionCategory>
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Result,
+    typename ExecutionPolicy,
+    typename ValueCollectionCategory>
 class NullaryLocalOperation
 {
 };
 
 
 template<
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Result,
-    class ExecutionPolicy>
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Result,
+    typename ExecutionPolicy>
 struct NullaryLocalOperation<
     Algorithm,
     InputNoDataPolicy,
@@ -166,10 +166,10 @@ struct NullaryLocalOperation<
 
 
 template<
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Result>
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Result>
 struct NullaryLocalOperation<
     Algorithm,
     InputNoDataPolicy,
@@ -198,10 +198,10 @@ struct NullaryLocalOperation<
 
 
 template<
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Result>
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Result>
 struct NullaryLocalOperation<
     Algorithm,
     InputNoDataPolicy,
@@ -249,10 +249,10 @@ struct NullaryLocalOperation<
 
 
 template<
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Result>
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Result>
 struct NullaryLocalOperation<
     Algorithm,
     InputNoDataPolicy,
@@ -284,10 +284,10 @@ struct NullaryLocalOperation<
 
 
 template<
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Result>
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Result>
 struct NullaryLocalOperation<
     Algorithm,
     InputNoDataPolicy,
@@ -337,10 +337,10 @@ struct NullaryLocalOperation<
 
 
 template<
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Result>
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Result>
 struct NullaryLocalOperation<
     Algorithm,
     InputNoDataPolicy,
@@ -396,23 +396,25 @@ struct NullaryLocalOperation<
 } // namespace detail
 
 
-//! Function that executes a nullary local operation.
 /*!
-    \tparam        Algorithm Class of the operation to execute.
-    \param[out]    result Output that is written by the operation.
-    \sa            fern::unary_local_operation, fern::binary_local_operation,
-                   fern::n_ary_local_operation
+    @ingroup    fern_algorithm_core_group
+    @brief      Function that executes a nullary local operation.
+    @tparam     Algorithm Class of the operation to execute.
+    @param[out] result Output that is written by the operation.
+    @sa         fern::algorithm::unary_local_operation,
+                fern::algorithm::binary_local_operation,
+                fern::algorithm::n_ary_local_operation
 
     This function supports handling 0d, 1d and 2d values.
 
     This function supports sequential and parallel execution of the operation.
 */
 template<
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Result
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Result
 >
 void nullary_local_operation(
     InputNoDataPolicy const& input_no_data_policy,

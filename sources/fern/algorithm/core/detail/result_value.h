@@ -23,18 +23,18 @@ namespace dispatch {
   the result.
 */
 template<
-    class A1,
-    class A2,
-    class A1NumberCategory,
-    class A2NumberCategory>
+    typename A1,
+    typename A2,
+    typename A1NumberCategory,
+    typename A2NumberCategory>
 struct ResultValue
 {
 };
 
 
 template<
-    class A1,
-    class A2>
+    typename A1,
+    typename A2>
 class ResultValue<
     A1,
     A2,
@@ -50,8 +50,8 @@ public:
 
 
 template<
-    class A1,
-    class A2>
+    typename A1,
+    typename A2>
 class ResultValue<
     A1,
     A2,
@@ -74,8 +74,8 @@ public:
 
 
 template<
-    class A1,
-    class A2>
+    typename A1,
+    typename A2>
 class ResultValue<
     A1,
     A2,
@@ -98,8 +98,8 @@ public:
 
 
 template<
-    class T1,
-    class T2>
+    typename T1,
+    typename T2>
 constexpr auto min(
     T1 const& value1,
     T2 const& value2) -> decltype(value1 < value2 ? value1 : value2)
@@ -109,8 +109,8 @@ constexpr auto min(
 
 
 template<
-    class A1,
-    class A2>
+    typename A1,
+    typename A2>
 class ResultValue<
     A1,
     A2,
@@ -140,8 +140,8 @@ public:
 
 
 template<
-    class A1,
-    class A2>
+    typename A1,
+    typename A2>
 struct ResultValue<
     A1,
     A2,
@@ -155,8 +155,8 @@ struct ResultValue<
 
 
 template<
-    class A1,
-    class A2>
+    typename A1,
+    typename A2>
 class ResultValue<
     A1,
     A2,
@@ -179,8 +179,8 @@ public:
 
 
 template<
-    class A1,
-    class A2>
+    typename A1,
+    typename A2>
 struct ResultValue<
     A1,
     A2,
@@ -195,8 +195,8 @@ struct ResultValue<
 
 
 template<
-    class A1,
-    class A2>
+    typename A1,
+    typename A2>
 struct ResultValue<
     A1,
     A2,
@@ -211,8 +211,8 @@ struct ResultValue<
 
 
 template<
-    class A1,
-    class A2>
+    typename A1,
+    typename A2>
 struct ResultValue<
     A1,
     A2,
@@ -227,8 +227,8 @@ struct ResultValue<
 
 
 template<
-    class A1,
-    class A2>
+    typename A1,
+    typename A2>
 struct ResultValue<
     A1,
     A2,

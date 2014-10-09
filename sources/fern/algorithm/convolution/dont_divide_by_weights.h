@@ -5,16 +5,17 @@ namespace fern {
 namespace algorithm {
 namespace convolve {
 
-//! NormalizePolicy which does not normalize convoluted values.
 /*!
-    \sa            @ref fern_algorithm_convolution_policies
+    @ingroup    fern_algorithm_convolution_group
+    @brief      NormalizePolicy which does not normalize convoluted values.
+    @sa         @ref fern_algorithm_convolution_policies
 */
 class DontDivideByWeights
 {
 
 public:
 
-    template<class Value, class Count>
+    template<typename Value, typename Count>
     static Value   normalize           (Value const& value,
                                         Count const& count);
 
@@ -22,9 +23,8 @@ public:
 
 
 template<
-    class Value,
-    class Count
->
+    typename Value,
+    typename Count>
 inline Value DontDivideByWeights::normalize(
         Value const& value,
         Count const& /* count */)

@@ -12,10 +12,10 @@ namespace detail {
 namespace dispatch {
 
 template<
-    class Value,
-    class R,
-    class ValueNumberCategory,
-    class ResultNumberCategory>
+    typename Value,
+    typename R,
+    typename ValueNumberCategory,
+    typename ResultNumberCategory>
 struct within_range
 {
 };
@@ -25,8 +25,8 @@ struct within_range
     number_category1, \
     number_category2) \
 template< \
-    class Value, \
-    class Result> \
+    typename Value, \
+    typename Result> \
 struct within_range< \
     Value, \
     Result, \
@@ -49,8 +49,8 @@ UNCONDITIONAL_WITHIN_RANGE(boolean_tag, floating_point_tag)
 
 
 template<
-    class Value,
-    class Result>
+    typename Value,
+    typename Result>
 struct within_range<
     Value,
     Result,
@@ -69,8 +69,8 @@ struct within_range<
 
 
 template<
-    class Value,
-    class Result>
+    typename Value,
+    typename Result>
 struct within_range<
     Value,
     Result,
@@ -93,8 +93,8 @@ struct within_range<
 
 
 template<
-    class Value,
-    class Result>
+    typename Value,
+    typename Result>
 struct within_range<
     Value,
     Result,
@@ -114,8 +114,8 @@ struct within_range<
 
 
 template<
-    class Value,
-    class Result>
+    typename Value,
+    typename Result>
 struct within_range<
     Value,
     Result,
@@ -134,8 +134,8 @@ struct within_range<
 
 
 template<
-    class Value,
-    class Result>
+    typename Value,
+    typename Result>
 struct within_range<
     Value,
     Result,
@@ -154,8 +154,8 @@ struct within_range<
 
 
 template<
-    class Value,
-    class Result>
+    typename Value,
+    typename Result>
 struct within_range<
     Value,
     Result,
@@ -181,14 +181,14 @@ struct within_range<
 
 
 template<
-    class Value>
+    typename Value>
 struct Algorithm
 {
 
     FERN_STATIC_ASSERT(std::is_arithmetic, Value)
 
     template<
-        class R>
+        typename R>
     inline void operator()(
         Value const& value,
         R& result) const
@@ -200,12 +200,12 @@ struct Algorithm
 
 
 template<
-    template<class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    template<typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void cast(
     InputNoDataPolicy const& input_no_data_policy,

@@ -14,20 +14,20 @@ namespace detail {
 namespace dispatch {
 
 template<
-    class A1,
-    class A2,
-    class RValue,
-    class A1ArgumentCategory,
-    class A2ArgumentCategory>
+    typename A1,
+    typename A2,
+    typename RValue,
+    typename A1ArgumentCategory,
+    typename A2ArgumentCategory>
 struct Result
 {
 };
 
 
 template<
-    class A1,
-    class A2,
-    class RValue>
+    typename A1,
+    typename A2,
+    typename RValue>
 struct Result<
     A1,
     A2,
@@ -64,9 +64,9 @@ struct Result<
 
 
 template<
-    class A1,
-    class A2,
-    class RValue>
+    typename A1,
+    typename A2,
+    typename RValue>
 struct Result<
     A1,
     A2,
@@ -83,9 +83,9 @@ struct Result<
 
 
 template<
-    class A1,
-    class A2,
-    class RValue>
+    typename A1,
+    typename A2,
+    typename RValue>
 struct Result<
     A1,
     A2,
@@ -102,9 +102,9 @@ struct Result<
 
 
 template<
-    class A1,
-    class A2,
-    class RValue>
+    typename A1,
+    typename A2,
+    typename RValue>
 struct Result<
     A1,
     A2,
@@ -123,27 +123,29 @@ struct Result<
 } // namespace detail
 
 
-//! Calculate the result type of combining values of types \a A1 and \a A2.
 /*!
-  \tparam    A1 Type of first value to combine.
-  \tparam    A2 Type of second value to combine.
-  \tparam    RValue Value type of the result.
+   @ingroup     fern_algorithm_core_group
+   @brief       Calculate the result type of combining values of types @a A1
+                and @a A2.
+   @tparam      A1 Type of first value to combine.
+   @tparam      A2 Type of second value to combine.
+   @tparam      RValue Value type of the result.
 
-  When both of the types are collection types, the collection type of A1
-  determines the collection type of the result type.
+   When both of the types are collection types, the collection type of A1
+   determines the collection type of the result type.
 
-  If one of the types is a collection type, it determines the collection type
-  of the result type.
+   If one of the types is a collection type, it determines the collection type
+   of the result type.
 
-  The default value type of the result is calculated by the ResultValue
-  template class.
+   The default value type of the result is calculated by the ResultValue
+   template class.
 
-  Check the unit tests to see all this in action.
+   Check the unit tests to see all this in action.
 */
 template<
-    class A1,
-    class A2,
-    class RValue=typename ResultValue<
+    typename A1,
+    typename A2,
+    typename RValue=typename ResultValue<
         typename ArgumentTraits<A1>::value_type,
         typename ArgumentTraits<A2>::value_type>::type>
 class Result
@@ -166,8 +168,8 @@ public:
 
 
 template<
-    class A1,
-    class A2>
+    typename A1,
+    typename A2>
 using result_type = typename Result<A1, A2>::type;
 
 } // namespace algorithm

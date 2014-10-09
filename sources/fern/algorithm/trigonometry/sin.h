@@ -8,16 +8,18 @@ namespace fern {
 namespace algorithm {
 namespace sin {
 
-//! Out-of-domain policy for fern::trigonometry::sin algorithm.
 /*!
+    @ingroup    fern_algorithm_trigonometry_group
+    @brief      Out-of-domain policy for fern::algorithm::trigonometry::sin
+                algorithm.
+    @sa         @ref fern_algorithm_policies_out_of_domain_policy
+
     Positive or negative infinity is considered out-of-domain for sin.
 
-    \a Value must be a floating point.
-
-    \sa            @ref fern_algorithm_policies_out_of_domain_policy
+    - @a Value must be a floating point.
 */
 template<
-    class Value>
+    typename Value>
 class OutOfDomainPolicy
 {
 
@@ -38,22 +40,23 @@ public:
 
 namespace trigonometry {
 
-//! Calculate the sine of \a value and write the result to \a result.
 /*!
-    \ingroup       trigonometry
-    \sa            fern::sin::OutOfDomainPolicy, fern::unary_local_operation,
-                   @ref fern_algorithm_trigonometry
+    @ingroup    fern_algorithm_trigonometry_group
+    @brief      Calculate the sine of @a value and write the result to
+                @a result.
+    @sa         fern::algorithm::sin::OutOfDomainPolicy,
+                fern::algorithm::unary_local_operation
 
-    The value types of \a value and \a result must be floating point and the
+    The value types of @a value and @a result must be floating point and the
     same.
 */
 template<
-    template<class> class OutOfDomainPolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result>
+    template<typename> class OutOfDomainPolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result>
 void sin(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -70,16 +73,16 @@ void sin(
 
 
 /*!
-    \ingroup       trigonometry
-    \overload
+    @ingroup    fern_algorithm_trigonometry_group
+    @overload
 */
 template<
-    template<class> class OutOfDomainPolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result>
+    template<typename> class OutOfDomainPolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result>
 void sin(
     ExecutionPolicy const& execution_policy,
     Value const& value,
@@ -92,13 +95,13 @@ void sin(
 
 
 /*!
-    \ingroup       trigonometry
-    \overload
+    @ingroup    fern_algorithm_trigonometry_group
+    @overload
 */
 template<
-    class ExecutionPolicy,
-    class Value,
-    class Result>
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result>
 void sin(
     ExecutionPolicy const& execution_policy,
     Value const& value,

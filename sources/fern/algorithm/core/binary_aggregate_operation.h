@@ -13,13 +13,13 @@ namespace binary_aggregate_operation_ {
 namespace detail {
 
 template<
-    class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result>
+    typename OutOfDomainPolicy,
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result>
 void operation_0d(
     Algorithm const& algorithm,
     InputNoDataPolicy const& input_no_data_policy,
@@ -38,13 +38,13 @@ void operation_0d(
 
 
 template<
-    class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result>
+    typename OutOfDomainPolicy,
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result>
 void operation_1d(
     Algorithm const& algorithm,
     InputNoDataPolicy const& input_no_data_policy,
@@ -104,13 +104,13 @@ void operation_1d(
 
 
 template<
-    class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
-    class Algorithm,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result>
+    typename OutOfDomainPolicy,
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename Algorithm,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result>
 void operation_2d(
     Algorithm const& algorithm,
     InputNoDataPolicy const& input_no_data_policy,
@@ -216,12 +216,12 @@ struct Aggregate<
 {
 
     template<
-        template<class, class, class> class OutOfRangePolicy,
-        class Aggregator,
-        class OutputNoDataPolicy,
-        class ExecutionPolicy,
-        class Results,
-        class Result>
+        template<typename, typename, typename> class OutOfRangePolicy,
+        typename Aggregator,
+        typename OutputNoDataPolicy,
+        typename ExecutionPolicy,
+        typename Results,
+        typename Result>
     static void apply(
         Aggregator const& aggregator,
         OutputNoDataPolicy& output_no_data_policy,
@@ -247,12 +247,12 @@ struct Aggregate<
 {
 
     template<
-        template<class, class, class> class OutOfRangePolicy,
-        class Aggregator,
-        class OutputNoDataPolicy,
-        class ExecutionPolicy,
-        class Results,
-        class Result>
+        template<typename, typename, typename> class OutOfRangePolicy,
+        typename Aggregator,
+        typename OutputNoDataPolicy,
+        typename ExecutionPolicy,
+        typename Results,
+        typename Result>
     static void apply(
         Aggregator const& aggregator,
         OutputNoDataPolicy& output_no_data_policy,
@@ -273,31 +273,31 @@ struct Aggregate<
 
 
 template<
-    class Algorithm,
-    class Aggregator,
-    class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result,
-    class ExecutionPolicy,
-    class ValueCollectionCategory>
+    typename Algorithm,
+    typename Aggregator,
+    typename OutOfDomainPolicy,
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result,
+    typename ExecutionPolicy,
+    typename ValueCollectionCategory>
 struct BinaryAggregateOperation
 {
 };
 
 
 template<
-    class Algorithm,
-    class Aggregator,
-    class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result,
-    class ExecutionPolicy>
+    typename Algorithm,
+    typename Aggregator,
+    typename OutOfDomainPolicy,
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result,
+    typename ExecutionPolicy>
 struct BinaryAggregateOperation<
     Algorithm,
     Aggregator,
@@ -330,14 +330,14 @@ struct BinaryAggregateOperation<
 
 
 template<
-    class Algorithm,
-    class Aggregator,
-    class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result>
+    typename Algorithm,
+    typename Aggregator,
+    typename OutOfDomainPolicy,
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result>
 struct BinaryAggregateOperation<
     Algorithm,
     Aggregator,
@@ -371,14 +371,14 @@ struct BinaryAggregateOperation<
 
 
 template<
-    class Algorithm,
-    class Aggregator,
-    class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result>
+    typename Algorithm,
+    typename Aggregator,
+    typename OutOfDomainPolicy,
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result>
 struct BinaryAggregateOperation<
     Algorithm,
     Aggregator,
@@ -452,14 +452,14 @@ struct BinaryAggregateOperation<
 
 
 template<
-    class Algorithm,
-    class Aggregator,
-    class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result>
+    typename Algorithm,
+    typename Aggregator,
+    typename OutOfDomainPolicy,
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result>
 struct BinaryAggregateOperation<
     Algorithm,
     Aggregator,
@@ -525,14 +525,14 @@ struct BinaryAggregateOperation<
 
 
 template<
-    class Algorithm,
-    class Aggregator,
-    class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result>
+    typename Algorithm,
+    typename Aggregator,
+    typename OutOfDomainPolicy,
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result>
 struct BinaryAggregateOperation<
     Algorithm,
     Aggregator,
@@ -568,14 +568,14 @@ struct BinaryAggregateOperation<
 
 
 template<
-    class Algorithm,
-    class Aggregator,
-    class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result>
+    typename Algorithm,
+    typename Aggregator,
+    typename OutOfDomainPolicy,
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result>
 struct BinaryAggregateOperation<
     Algorithm,
     Aggregator,
@@ -644,14 +644,14 @@ struct BinaryAggregateOperation<
 
 
 template<
-    class Algorithm,
-    class Aggregator,
-    class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class Value,
-    class Result>
+    typename Algorithm,
+    typename Aggregator,
+    typename OutOfDomainPolicy,
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result>
 struct BinaryAggregateOperation<
     Algorithm,
     Aggregator,
@@ -720,16 +720,19 @@ struct BinaryAggregateOperation<
 } // namespace binary_aggregate_operation_
 
 
+/*!
+    @ingroup   fern_algorithm_core_group
+*/
 template<
-    template<class> class Algorithm,
-    class Aggregator,
-    template<class, class> class OutOfDomainPolicy,
-    template<class, class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result
+    template<typename> class Algorithm,
+    typename Aggregator,
+    template<typename, typename> class OutOfDomainPolicy,
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result
 >
 void binary_aggregate_operation(
     InputNoDataPolicy const& input_no_data_policy,

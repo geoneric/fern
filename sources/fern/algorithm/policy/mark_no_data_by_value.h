@@ -6,15 +6,17 @@
 namespace fern {
 namespace algorithm {
 
-//! Output no-data policy class that marks no-data given a special marker value.
 /*!
-  \tparam    Mask Collection receiving the marker values.
+    @ingroup    fern_algorithm_policy_group
+    @brief      Output no-data policy class that marks no-data given a
+                special marker value.
+    @tparam     Mask Collection receiving the marker values.
 
-  This class keeps a reference to a mask; it doesn't copy the mask. So, copy
-  construction and copy assignment are not supported.
+    This class keeps a reference to a mask; it doesn't copy the mask. So,
+    copy construction and copy assignment are not supported.
 */
 template<
-    class Mask>
+    typename Mask>
 class MarkNoDataByValue {
 
 private:
@@ -63,7 +65,7 @@ private:
 
 
 template<
-    class Mask>
+    typename Mask>
 inline MarkNoDataByValue<Mask>::MarkNoDataByValue(
     Mask& mask,
     MarkNoDataByValue<Mask>::value_type const& no_data_value)
@@ -76,7 +78,7 @@ inline MarkNoDataByValue<Mask>::MarkNoDataByValue(
 
 
 template<
-    class Mask>
+    typename Mask>
 inline void MarkNoDataByValue<Mask>::mark_as_no_data()
 {
     // In case of a compile error, make sure that get is overloaded for
@@ -87,7 +89,7 @@ inline void MarkNoDataByValue<Mask>::mark_as_no_data()
 
 
 template<
-    class Mask>
+    typename Mask>
 inline void MarkNoDataByValue<Mask>::mark_as_no_data(
     size_t index)
 {
@@ -96,7 +98,7 @@ inline void MarkNoDataByValue<Mask>::mark_as_no_data(
 
 
 template<
-    class Mask>
+    typename Mask>
 inline void MarkNoDataByValue<Mask>::mark_as_no_data(
     size_t index1,
     size_t index2)
@@ -106,7 +108,7 @@ inline void MarkNoDataByValue<Mask>::mark_as_no_data(
 
 
 template<
-    class Mask>
+    typename Mask>
 inline void MarkNoDataByValue<Mask>::mark_as_no_data(
     size_t index1,
     size_t index2,

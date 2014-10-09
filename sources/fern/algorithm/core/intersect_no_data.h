@@ -7,29 +7,29 @@ namespace fern {
 namespace algorithm {
 namespace core {
 
-//! Intersect the no-data of \a value1 and \a value2 and store the results in result.
 /*!
-    \ingroup       core
-    \sa            @ref fern_algorithm_core
+    @ingroup    fern_algorithm_core_group
+    @brief      Intersect the no-data of @a value1 and @a value2 and store
+                the results in result.
 
-    Intersecting no-data means that if an element from \a value1 and \a value2
-    contains a no-data, \a result will contain a no-data. This is a useful
+    Intersecting no-data means that if an element from @a value1 and @a value2
+    contains a no-data, @a result will contain a no-data. This is a useful
     operation when preparing the inputs for other algorithms. Some
     algorithms assume that the result already contains no-data for those
     elements for which all of the inputs contain a no-data.
 
-    \a value1, \a value2 and \a result are not used. They may, of course,
+    @a value1, @a value2 and @a result are not used. They may, of course,
     be used by the no-data policies passed in.
 
-    The value types of \a value1, \a value2 and \a result are not relevant.
+    The value types of @a value1, @a value2 and @a result are not relevant.
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 void intersect_no_data(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -44,16 +44,16 @@ void intersect_no_data(
 
 
 /*!
-    \ingroup       core
-    \overload
+    @ingroup    fern_algorithm_core_group
+    @overload
 */
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 void intersect_no_data(
     ExecutionPolicy const& execution_policy,
     Value1 const& value1,
@@ -67,14 +67,14 @@ void intersect_no_data(
 
 
 /*!
-    \ingroup       core
-    \overload
+    @ingroup    fern_algorithm_core_group
+    @overload
 */
 template<
-    class ExecutionPolicy,
-    class Value1,
-    class Value2,
-    class Result>
+    typename ExecutionPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
 void intersect_no_data(
     ExecutionPolicy const& execution_policy,
     Value1 const& value1,

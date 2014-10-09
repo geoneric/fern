@@ -12,7 +12,7 @@ namespace fern {
   \sa        .
 */
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 class MaskedArrayValue:
     public MaskedArray<T, nr_dimensions>,
@@ -42,7 +42,7 @@ private:
 
 
 template<
-    class T,
+    typename T,
     size_t nr_dimensions>
 template<
     size_t nr_ranges>

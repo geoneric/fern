@@ -9,18 +9,19 @@ namespace fern {
 namespace algorithm {
 namespace cast {
 
-//! Out-of-range policy for fern::cast algorithm.
 /*!
+    @ingroup    fern_algorithm_core_group
+    @brief      Out-of-range policy for fern::cast algorithm.
+    @sa         @ref fern_algorithm_policies_out_of_range_policy
+
     A source input value is considered out-of-range if the value cannot be
     represented by the target type.
 
-    The value type of \a value and \a result must be arithmetic.
-
-    \sa            @ref fern_algorithm_policies_out_of_range_policy
+    The value type of @a value and @a result must be arithmetic.
 */
 template<
-    class Value,
-    class Result>
+    typename Value,
+    typename Result>
 class OutOfRangePolicy
 {
 
@@ -47,22 +48,21 @@ public:
 
 namespace core {
 
-//! Cast \a value and write the result to \a result.
 /*!
-    \ingroup       core
-    \sa            fern::cast::OutOfRangePolicy,
-                   fern::unary_local_operation,
-                   @ref fern_algorithm_core
+    @ingroup    fern_algorithm_core_group
+    @brief      Cast @a value and write the result to @a result.
+    @sa         fern::algorithm::cast::OutOfRangePolicy,
+                fern::algorithm::unary_local_operation
 
-    The value type of \a value and \a result must be arithmetic.
+    The value type of @a value and @a result must be arithmetic.
 */
 template<
-    template<class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result>
+    template<typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result>
 void cast(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
@@ -79,16 +79,16 @@ void cast(
 
 
 /*!
-    \ingroup       core
-    \overload
+    @ingroup    fern_algorithm_core_group
+    @overload
 */
 template<
-    template<class, class> class OutOfRangePolicy,
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result>
+    template<typename, typename> class OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result>
 void cast(
     ExecutionPolicy const& execution_policy,
     Value const& value,
@@ -101,13 +101,13 @@ void cast(
 
 
 /*!
-    \ingroup       core
-    \overload
+    @ingroup    fern_algorithm_core_group
+    @overload
 */
 template<
-    class ExecutionPolicy,
-    class Value,
-    class Result>
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result>
 void cast(
     ExecutionPolicy const& execution_policy,
     Value const& value,

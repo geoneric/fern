@@ -10,14 +10,14 @@ namespace count {
 namespace detail {
 
 template<
-    class Value>
+    typename Value>
 struct Algorithm
 {
 
     FERN_STATIC_ASSERT(std::is_arithmetic, Value)
 
     template<
-        class Result>
+        typename Result>
     inline static void init(
         Value const& value1,
         Value const& value2,
@@ -30,7 +30,7 @@ struct Algorithm
     }
 
     template<
-        class Result>
+        typename Result>
     inline static void calculate(
         Value const& value1,
         Value const& value2,
@@ -49,12 +49,12 @@ struct Aggregator
 {
 
     template<
-        template<class, class, class> class OutOfRangePolicy,
-        class InputNoDataPolicy,
-        class OutputNoDataPolicy,
-        class ExecutionPolicy,
-        class Value,
-        class Result>
+        template<typename, typename, typename> class OutOfRangePolicy,
+        typename InputNoDataPolicy,
+        typename OutputNoDataPolicy,
+        typename ExecutionPolicy,
+        typename Value,
+        typename Result>
     inline static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
@@ -70,11 +70,11 @@ struct Aggregator
 
 
 template<
-    class InputNoDataPolicy,
-    class OutputNoDataPolicy,
-    class ExecutionPolicy,
-    class Value,
-    class Result>
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename ExecutionPolicy,
+    typename Value,
+    typename Result>
 void count(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
