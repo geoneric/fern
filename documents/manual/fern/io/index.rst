@@ -1,7 +1,5 @@
-.. _fern_algorithm:
-
-Fern.Algorithm
-==============
+Fern.IO
+=======
 
 Contents:
 
