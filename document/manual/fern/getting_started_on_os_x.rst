@@ -1,5 +1,5 @@
 Getting started on OS X
------------------------
+=======================
 The process is as folows:
 
 #. Unpack the source code.

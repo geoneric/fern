@@ -1,5 +1,5 @@
 Getting started on Windows
---------------------------
+==========================
 The process is as folows:
 
 #. Unpack the source code.
