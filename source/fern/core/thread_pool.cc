@@ -1,6 +1,5 @@
 #include "fern/core/thread_pool.h"
 #include <cassert>
-#include <iostream>
 
 
 namespace fern {
@@ -97,7 +96,7 @@ void ThreadPool::execute_task_or_wait()
 {
     while(!_done) {
 
-        // Start by checking the queue for a task.
+        // Check the queue for a task.
         detail::FunctionWrapper task;
 
         if(_work_queue.try_pop(task)) {
@@ -105,7 +104,7 @@ void ThreadPool::execute_task_or_wait()
         }
         else {
 
-            // Wait until a task got added to the queue, or someone decided
+            // Wait until a task gets added to the queue, or someone decides
             // that we need to stop. Lock a mutex so all the waiting of
             // threads is synchronized. No two threads will be woken up
             // at the same time.
@@ -115,25 +114,10 @@ void ThreadPool::execute_task_or_wait()
             // Don't start waiting if _done is already true!!! You will never
             // be woken up again...
 
-            {
-                std::unique_lock<std::mutex> lock(_mutex);
-                if(!_done) {
-                    _work_condition.wait(lock, [this] {
-                        return !_work_queue.empty() || _done; });
-                }
-            }
-
+            std::unique_lock<std::mutex> lock(_mutex);
             if(!_done) {
-
-                detail::FunctionWrapper task;
-
-                // Pick a task if there is one. We got woken up because a task
-                // got added to the queue, but all threads start with checking
-                // the queue for a task unconditionally. Our task may have been
-                // taken already.
-                if(_work_queue.try_pop(task)) {
-                    task();
-                }
+                _work_condition.wait(lock, [this] {
+                    return !_work_queue.empty() || _done; });
             }
         }
     }

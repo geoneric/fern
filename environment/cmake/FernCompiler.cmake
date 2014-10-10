@@ -48,6 +48,15 @@ IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR
     SET(CMAKE_CXX_FLAGS
         "${CMAKE_CXX_FLAGS} -Werror -Wall -Wextra -Wcast-qual -Wzero-as-null-pointer-constant -Wwrite-strings -Werror=strict-aliasing -pedantic -fno-strict-overflow -ftemplate-backtrace-limit=0"
     )
+
+    IF(NOT MINGW)
+        # This option triggers a warning on Windows, something in
+        # boost.filesystem. Not fixing it now.
+        SET(CMAKE_CXX_FLAGS
+            "${CMAKE_CXX_FLAGS} -Wzero-as-null-pointer-constant"
+        )
+    ENDIF()
+
     IF(APPLE)
         SET(CMAKE_CXX_FLAGS
             "${CMAKE_CXX_FLAGS} -Wno-unused-local-typedefs"

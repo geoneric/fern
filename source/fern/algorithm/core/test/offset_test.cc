@@ -105,7 +105,6 @@ BOOST_AUTO_TEST_CASE(array_1d_sequential)
 
 BOOST_AUTO_TEST_CASE(array_1d_parallel)
 {
-    // fern::ThreadClient client;
     test_array_1d(fa::parallel);
 }
 
@@ -234,7 +233,6 @@ BOOST_AUTO_TEST_CASE(array_1d_masked_sequential)
 
 BOOST_AUTO_TEST_CASE(array_1d_masked_parallel)
 {
-    // fern::ThreadClient client;
     test_array_1d_masked(fa::parallel);
 }
 
@@ -338,7 +336,6 @@ BOOST_AUTO_TEST_CASE(array_1d_fill_value_sequential)
 
 BOOST_AUTO_TEST_CASE(array_1d_fill_value_parallel)
 {
-    // fern::ThreadClient client;
     test_array_1d_fill_value(fa::parallel);
 }
 
@@ -466,7 +463,6 @@ BOOST_AUTO_TEST_CASE(array_1d_fill_value_masked_sequential)
 
 BOOST_AUTO_TEST_CASE(array_1d_fill_value_masked_parallel)
 {
-    // fern::ThreadClient client;
     test_array_1d_fill_value_masked(fa::parallel);
 }
 
@@ -511,7 +507,6 @@ BOOST_AUTO_TEST_CASE(array_2d_sequential)
 
 BOOST_AUTO_TEST_CASE(array_2d_parallel)
 {
-    // fern::ThreadClient client;
     test_array_2d(fa::parallel);
 }
 
@@ -566,7 +561,6 @@ BOOST_AUTO_TEST_CASE(array_2d_masked_sequential)
 
 BOOST_AUTO_TEST_CASE(array_2d_masked_parallel)
 {
-    // fern::ThreadClient client;
     test_array_2d_masked(fa::parallel);
 }
 
@@ -614,7 +608,6 @@ BOOST_AUTO_TEST_CASE(array_2d_fill_value_sequential)
 
 BOOST_AUTO_TEST_CASE(array_2d_fill_value_parallel)
 {
-    // fern::ThreadClient client;
     test_array_2d_fill_value(fa::parallel);
 }
 
@@ -671,7 +664,6 @@ BOOST_AUTO_TEST_CASE(array_2d_fill_value_masked_sequential)
 
 BOOST_AUTO_TEST_CASE(array_2d_fill_value_masked_parallel)
 {
-    // fern::ThreadClient client;
     test_array_2d_fill_value_masked(fa::parallel);
 }
 
