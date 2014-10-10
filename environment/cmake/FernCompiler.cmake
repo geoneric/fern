@@ -46,7 +46,10 @@ IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR
     # -Wconversion
     # -Wsign-conversion
     SET(CMAKE_CXX_FLAGS
-        "${CMAKE_CXX_FLAGS} -Werror -Wall -Wextra -Wcast-qual -Wzero-as-null-pointer-constant -Wwrite-strings -Werror=strict-aliasing -pedantic -fno-strict-overflow -ftemplate-backtrace-limit=0"
+        "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wcast-qual -Wwrite-strings -Werror=strict-aliasing -pedantic -fno-strict-overflow -ftemplate-backtrace-limit=0"
+    )
+    SET(CMAKE_CXX_FLAGS_RELEASE
+        "${CMAKE_CXX_FLAGS_RELEASE} -Werror"
     )
 
     IF(NOT MINGW)
