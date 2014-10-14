@@ -7,4 +7,4 @@ ADD_SUBDIRECTORY(statistic)
 ADD_SUBDIRECTORY(test)
 ADD_SUBDIRECTORY(trigonometry)
 
-### ADD_TARGET_CONDITIONALLY(algorithm_python_extension python_extension)
+ADD_TARGET_CONDITIONALLY(algorithm_python_extension python_extension)

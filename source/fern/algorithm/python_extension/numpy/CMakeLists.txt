@@ -1,18 +1,3 @@
-### SET(SOURCES
-###     fern_algorithm_numpy.pyx
-### )
-### SET_SOURCE_FILES_PROPERTIES(${SOURCES}
-###     PROPERTIES
-###         CYTHON_IS_CXX TRUE
-### )
-### CYTHON_ADD_MODULE(
-###     fern_algorithm_numpy
-###     ${SOURCES}
-### )
-
-
-### ADD_SUBDIRECTORY(test)
-
 SET(SOURCES
     algorithm
     python_extension

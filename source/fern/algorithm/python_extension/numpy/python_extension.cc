@@ -36,7 +36,7 @@ static PyObject* add(
     PyObject* value2_object;
 
     if(!PyArg_ParseTuple(arguments, "OO", &value1_object, &value2_object)) {
-        return NULL;
+        return nullptr;
     }
 
     PyObject* result{nullptr};
@@ -54,8 +54,8 @@ static PyObject* add(
 
 static PyMethodDef methods[] = {
     {"add", add, METH_VARARGS,
-        "Bladiblah"},
-    {NULL, NULL, 0, NULL}
+        "Bladiblah from numpy"},
+    {nullptr, nullptr, 0, nullptr}
 };
 
 } // namespace fern
