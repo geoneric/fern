@@ -32,6 +32,9 @@ INCLUDE(CheckCXXCompilerFlag)
 
 IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR
         ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
+    # TODO Figure this out:
+    # https://gcc.gnu.org/wiki/Visibility
+
     # The code assumes integer overflow and underflow wraps. This is not
     # guaranteed by the standard. Gcc may assume overflow/underflow will not
     # happen and optimize the code accordingly. That's why we added
@@ -52,13 +55,13 @@ IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR
         "${CMAKE_CXX_FLAGS_RELEASE} -Werror"
     )
 
-    IF(NOT MINGW)
-        # This option triggers a warning on Windows, something in
-        # boost.filesystem. Not fixing it now.
-        SET(CMAKE_CXX_FLAGS
-            "${CMAKE_CXX_FLAGS} -Wzero-as-null-pointer-constant"
-        )
-    ENDIF()
+#     IF(NOT MINGW)
+#         # This option triggers a warning on Windows, something in
+#         # boost.filesystem. Not fixing it now.
+#         SET(CMAKE_CXX_FLAGS
+#             "${CMAKE_CXX_FLAGS} -Wzero-as-null-pointer-constant"
+#         )
+#     ENDIF()
 
     IF(APPLE)
         SET(CMAKE_CXX_FLAGS
@@ -67,15 +70,15 @@ IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR
     ENDIF()
 
     # TODO Revisit this option. Only needed for shared libraries.
-    ### # Add the PIC compiler flag if needed.
-    ### IF(UNIX AND NOT WIN32)
-    ###     IF(CMAKE_SIZEOF_VOID_P MATCHES "8")
-    ###         CHECK_CXX_COMPILER_FLAG("-fPIC" WITH_FPIC)
-    ###         IF(WITH_FPIC)
-    ###             ADD_DEFINITIONS(-fPIC)
-    ###         ENDIF()
-    ###     ENDIF()
-    ### ENDIF()
+    # Add the PIC compiler flag if needed.
+    IF(UNIX AND NOT WIN32)
+        IF(CMAKE_SIZEOF_VOID_P MATCHES "8")
+            CHECK_CXX_COMPILER_FLAG("-fPIC" WITH_FPIC)
+            IF(WITH_FPIC)
+                ADD_DEFINITIONS(-fPIC)
+            ENDIF()
+        ENDIF()
+    ENDIF()
 ENDIF()
 
 IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
