@@ -3,22 +3,25 @@
 
 
 namespace fern {
+namespace python {
 
 void raise_runtime_error(
-    std::string const& message)
+    String const& message)
 {
     assert(!PyErr_Occurred());
-    PyErr_SetString(PyExc_RuntimeError, message.c_str());
+    // TODO utf8 or default encoding?
+    PyErr_SetString(PyExc_RuntimeError, message.encode_in_utf8().c_str());
     assert(PyErr_Occurred());
 }
 
 
 void raise_unsupported_argument_type_exception(
-    std::string const& type_representation)
+    String const& type_representation)
 {
-    std::string message = "Unsupported argument type (" + type_representation +
-        ")";
+    String message = String("Unsupported argument type (") +
+        type_representation + String(")");
     raise_runtime_error(message);
 }
 
+} // namespace python
 } // namespace fern

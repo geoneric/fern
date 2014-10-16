@@ -15,3 +15,9 @@ ADD_CUSTOM_TARGET(swig_runtime DEPENDS swig_runtime.h)
 ADD_SUBDIRECTORY(c_array)
 ADD_SUBDIRECTORY(gdal)
 ADD_SUBDIRECTORY(numpy)
+
+
+CONFIGURE_FILE(__init__.py.in
+    ${PROJECT_BINARY_DIR}/bin/fern/algorithm/__init__.py
+    COPYONLY
+)
