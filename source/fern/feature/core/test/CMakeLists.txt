@@ -4,6 +4,7 @@ IF(FERN_ALGORITHM)
         masked_array_test
         masked_constant_test
         masked_raster_test
+        raster_test
     )
 ENDIF()
 ### ELSE()
