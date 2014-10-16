@@ -87,7 +87,7 @@ inline std::future<typename std::result_of<Function()>::type>
     // task to perform.
     // We are not locking the mutex here. The thread that is being woken up
     // will try to acquire the lock and we don't want to keep her waiting.
-    std::unique_lock<std::mutex> lock(_mutex);
+    // std::lock_guard<std::mutex> lock(_mutex);
     _work_condition.notify_one();
 
     return result;

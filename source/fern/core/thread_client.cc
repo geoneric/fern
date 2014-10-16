@@ -37,24 +37,26 @@ ThreadPool& ThreadClient::pool()
 ThreadClient::ThreadClient(
     size_t nr_threads)
 {
-    // Instantiate the thread pool only once.
-    // Note, that the pointer to the pool is created, but the pool itself
-    // isn't. The pointer is a static variable.
-    assert(!thread_pool);
+    // (Re-)instantiate the thread pool.
     nr_threads = nr_threads > 0 ? nr_threads : 1;
-    thread_pool = std::make_unique<ThreadPool>(nr_threads);
+    thread_pool.reset(new ThreadPool(nr_threads));
 }
 
 
 ThreadClient::~ThreadClient()
 {
-    // The pointer to the pool is a static variable.  The pool itself may or
+    // The pointer to the pool is a static variable. The pool itself may or
     // may not be destructed already. This depends on whether we are static
-    // or not and if so, the order of destruction.
+    // or not.
+    // If we are not static, the thread pool still exists.
+    // If we are static, the thread pool may be destructed already. We don't
+    // know. Order of destruction is undefined.
+    // For now, let the thread pool be destructed automatically. This isn't
+    // ideal, but probably not a problem.
     // assert(thread_pool);
-    if(thread_pool) {
-        thread_pool.reset();
-    }
+    // if(thread_pool) {
+    //     thread_pool.reset();
+    // }
 }
 
 } // namespace fern

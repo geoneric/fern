@@ -1,5 +1,6 @@
 #include "fern/core/thread_pool.h"
 #include <cassert>
+#include <iostream>
 
 
 namespace fern {
@@ -22,14 +23,10 @@ ThreadPool::ThreadPool(
     try {
         for(size_t i = 0; i < nr_threads; ++i) {
             _threads.emplace_back(&ThreadPool::execute_task_or_wait, this);
-            // _threads.emplace_back(&ThreadPool::execute_task_or_yield, this);
         }
     }
     catch(...) {
-        {
-            std::lock_guard<std::mutex> lock(_mutex);
-            _done = true;
-        }
+        _done = true;
         _work_condition.notify_all();
         throw;
     }
@@ -41,10 +38,7 @@ ThreadPool::ThreadPool(
 */
 ThreadPool::~ThreadPool()
 {
-    {
-        std::lock_guard<std::mutex> lock(_mutex);
-        _done = true;
-    }
+    _done = true;
     _work_condition.notify_all();
 }
 
@@ -96,29 +90,19 @@ void ThreadPool::execute_task_or_wait()
 {
     while(!_done) {
 
-        // Check the queue for a task.
+        // Check the queue for a task to execute, else wait for one to be
+        // added.
         detail::FunctionWrapper task;
 
         if(_work_queue.try_pop(task)) {
+
             task();
         }
         else {
 
-            // Wait until a task gets added to the queue, or someone decides
-            // that we need to stop. Lock a mutex so all the waiting of
-            // threads is synchronized. No two threads will be woken up
-            // at the same time.
-            // Unlock the mutex so multiple notifies by the condition
-            // variable get handled ASAP.
-            // Be careful not to start waiting while in fact we need to stop.
-            // Don't start waiting if _done is already true!!! You will never
-            // be woken up again...
-
             std::unique_lock<std::mutex> lock(_mutex);
-            if(!_done) {
-                _work_condition.wait(lock, [this] {
-                    return !_work_queue.empty() || _done; });
-            }
+            _work_condition.wait(lock, [this] {
+                return !_work_queue.empty() || _done; });
         }
     }
 }
