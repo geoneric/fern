@@ -71,6 +71,7 @@ IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR
 
     # TODO Revisit this option. Only needed for shared libraries.
     # Add the PIC compiler flag if needed.
+    # See also CMake property POSITION_INDEPENDENT_CODE.
     IF(UNIX AND NOT WIN32)
         IF(CMAKE_SIZEOF_VOID_P MATCHES "8")
             CHECK_CXX_COMPILER_FLAG("-fPIC" WITH_FPIC)
