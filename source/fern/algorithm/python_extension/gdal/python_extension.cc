@@ -2,10 +2,11 @@
 #include <functional>
 #include <iostream>
 #include <map>
-#include "fern/core/thread_client.h"
-#include "fern/algorithm/python_extension/gdal/algorithm.h"
 #include "gdal_priv.h"
+#include "fern/core/thread_client.h"
 #include "fern/algorithm/python_extension/swig_runtime.h"
+#include "fern/algorithm/python_extension/gdal/algorithm.h"
+#include "fern/algorithm/python_extension/gdal/error.h"
 
 
 namespace fern {
@@ -141,25 +142,14 @@ PyObject* add_gdal_raster_band_python_float(
 }
 
 
-void raise_runtime_error(
-    std::string const& message)
-{
-    assert(!PyErr_Occurred());
-    PyErr_SetString(PyExc_RuntimeError, message.c_str());
-    assert(PyErr_Occurred());
-}
-
-
 void raise_unsupported_argument_type_exception(
     PyObject* object)
 {
     PyObject* type_object = reinterpret_cast<PyObject*>(object->ob_type);
     PyObject* representation_object = PyObject_Repr(type_object);
-    std::string type_represenation = PyString_AsString(representation_object);
 
-    std::string message = "Unsupported argument type (" + type_represenation +
-        ")";
-    raise_runtime_error(message);
+    raise_unsupported_argument_type_exception(PyString_AsString(
+        representation_object));
 }
 
 
@@ -296,7 +286,8 @@ static PyMethodDef methods[] = {
     macro(unsupported, unsupported)
 
 
-static fern::ThreadClient client;
+static fern::ThreadClient thread_client;
+
 
 PyMODINIT_FUNC initfern_algorithm_gdal(
     void)

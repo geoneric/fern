@@ -43,8 +43,6 @@ PyArrayObject* add(
         static_cast<float*>(PyArray_DATA(const_cast<PyArrayObject*>(
             array_object2))), extents[size1][size2]);
 
-    init_numpy();
-
     using result_value_type = algorithm::add::result_value_type<float, float>;
 
     PyArrayObject* result_object{(PyArrayObject*)(

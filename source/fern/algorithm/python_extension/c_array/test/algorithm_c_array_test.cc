@@ -4,7 +4,7 @@
 #include "fern/algorithm/python_extension/c_array/algorithm.h"
 
 
-BOOST_AUTO_TEST_SUITE(c_array)
+BOOST_FIXTURE_TEST_SUITE(c_array, fern::ThreadClient)
 
 BOOST_AUTO_TEST_CASE(add)
 {

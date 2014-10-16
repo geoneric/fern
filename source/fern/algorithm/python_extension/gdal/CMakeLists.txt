@@ -1,5 +1,6 @@
 SET(SOURCES
     algorithm
+    error
     python_extension
 )
 ADD_LIBRARY(fern_algorithm_gdal SHARED ${SOURCES})
