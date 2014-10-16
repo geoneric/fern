@@ -2,7 +2,7 @@
 #include <functional>
 #include <map>
 #include <tuple>
-#include "fern/algorithm/python_extension/gdal/wrapped_data_type.h"
+#include "fern/python_extension/gdal/wrapped_data_type.h"
 
 
 namespace fern {

@@ -1,6 +1,6 @@
 #include <Python.h>
 #include "fern/core/thread_client.h"
-#include "fern/algorithm/python_extension/gdal/add_overloads.h"
+#include "fern/python_extension/gdal/add_overloads.h"
 
 
 namespace fern {

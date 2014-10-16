@@ -1,6 +1,6 @@
-#include "fern/algorithm/python_extension/gdal/util.h"
+#include "fern/python_extension/gdal/util.h"
 #include <map>
-#include "fern/algorithm/python_extension/gdal/swig.h"
+#include "fern/python_extension/gdal/swig.h"
 
 
 namespace fern {

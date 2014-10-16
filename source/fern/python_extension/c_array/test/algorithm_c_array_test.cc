@@ -1,7 +1,7 @@
 #define BOOST_TEST_MODULE fern algorithm c_array
 #include <memory>
 #include <boost/test/unit_test.hpp>
-#include "fern/algorithm/python_extension/c_array/algorithm.h"
+#include "fern/python_extension/c_array/algorithm.h"
 
 
 BOOST_FIXTURE_TEST_SUITE(c_array, fern::ThreadClient)
