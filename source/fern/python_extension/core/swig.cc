@@ -1,4 +1,4 @@
-#include "fern/python_extension/algorithm/gdal/swig.h"
+#include "fern/python_extension/core/swig.h"
 
 
 namespace fern {

@@ -1,6 +1,6 @@
 #pragma once
 #include <Python.h>
-#include "fern/algorithm/python_extension/swig_runtime.h"
+#include "fern/python_extension/core/swig_runtime.h"
 #include "fern/core/string.h"
 
 

@@ -1,36 +1,17 @@
 #include <Python.h>
-#include <numpy/arrayobject.h>
 #include "fern/core/thread_client.h"
-#include "fern/python_extension/algorithm/numpy/algorithm.h"
+#include "fern/python_extension/core/error.h"
+#include "fern/python_extension/algorithm/numpy/add_overloads.h"
 
 
 namespace fern {
-
-static void init_numpy()
-{
-    import_array();
-}
-
-
-#define TRY_BINARY_ALGORITHM(                                               \
-    algorithm,                                                              \
-    type1,                                                                  \
-    type2)                                                                  \
-if(!result && Py##type1##_Check(value1_object) && Py##type2##_Check(        \
-        value2_object)) {                                                   \
-    result = (PyObject*)algorithm(                                          \
-        (Py##type1##Object const*)value1_object,                            \
-        (Py##type2##Object const*)value2_object);                           \
-}
-
+namespace python {
 
 static PyObject* add(
     PyObject* /* self */,
     PyObject* arguments)
 {
-    init_numpy();
-
-    // Parse PyObject instances, verify their types. Switch on argument type.
+    /// init_numpy();
 
     PyObject* value1_object;
     PyObject* value2_object;
@@ -41,32 +22,54 @@ static PyObject* add(
 
     PyObject* result{nullptr};
 
-    TRY_BINARY_ALGORITHM(fern::add, Array, Array)
-    TRY_BINARY_ALGORITHM(fern::add, Array, Float)
+    try {
+        BinaryAlgorithmKey key(data_type(value1_object),
+            data_type(value2_object));
 
-    // Int, Long, Float, Array
+        if(add_overloads.find(key) == add_overloads.end()) {
+            raise_unsupported_overload_exception(value1_object, value2_object);
+            result = nullptr;
+        }
+        else {
+            result = add_overloads[key](value1_object, value2_object);
+        }
 
-    // TODO Error handling.
-    assert(result);
+        assert((PyErr_Occurred() && result == nullptr) ||
+            (!PyErr_Occurred() && result != nullptr));
+    }
+    catch(std::runtime_error const& exception) {
+        PyErr_SetString(PyExc_RuntimeError, exception.what());
+        assert(result == nullptr);
+    }
+    catch(std::exception const& exception) {
+        PyErr_SetString(PyExc_StandardError, exception.what());
+        assert(result == nullptr);
+    }
+
+    assert((PyErr_Occurred() && result == nullptr) ||
+        (!PyErr_Occurred() && result != nullptr));
+    assert(result != Py_None);
     return result;
 }
 
 
 static PyMethodDef methods[] = {
-    {"add", add, METH_VARARGS,
-        "Bladiblah from numpy"},
+    {"add", add, METH_VARARGS, "Add two arguments and return the result"},
     {nullptr, nullptr, 0, nullptr}
 };
 
+} // namespace python
 } // namespace fern
 
 
-static fern::ThreadClient clien;
+static fern::ThreadClient client;
 
-PyMODINIT_FUNC initfern_algorithm_numpy(
+
+PyMODINIT_FUNC init_fern_algorithm_numpy(
     void)
 {
-    PyObject* module = Py_InitModule("fern_algorithm_numpy", fern::methods);
+    PyObject* module = Py_InitModule("_fern_algorithm_numpy",
+        fern::python::methods);
 
     if(module) {
         // ...

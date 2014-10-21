@@ -1,6 +1,6 @@
 #include "fern/python_extension/algorithm/gdal/util.h"
 #include <map>
-#include "fern/python_extension/algorithm/gdal/swig.h"
+#include "fern/python_extension/core/swig.h"
 
 
 namespace fern {
@@ -35,41 +35,11 @@ bool is_gdal_raster_band(
 }
 
 
-bool is_python_float(
-    PyObject* object)
-{
-    return PyFloat_Check(object);
-}
-
-
 GDALRasterBand* gdal_raster_band(
     PyObject* object)
 {
     assert(object);
     return static_cast<GDALRasterBand*>(swig_object(object)->ptr);
-}
-
-
-double python_float(
-    PyObject const* object)
-{
-    assert(object);
-    return PyFloat_AS_DOUBLE(const_cast<PyObject*>(object));
-}
-
-
-PyObject* python_object(
-    double value)
-{
-    return PyFloat_FromDouble(value);
-}
-
-
-PyObject* python_object(
-    PyArrayObject* array_object)
-{
-    assert(array_object);
-    return reinterpret_cast<PyObject*>(array_object);
 }
 
 } // namespace python

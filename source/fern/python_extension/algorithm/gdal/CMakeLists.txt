@@ -1,15 +1,15 @@
 SET(SOURCES
     add
     add_overloads
-    error
     python_extension
-    swig
     util
     wrapped_data_type
 )
 ADD_LIBRARY(fern_algorithm_gdal SHARED ${SOURCES})
-ADD_DEPENDENCIES(fern_algorithm_gdal swig_runtime)
 TARGET_LINK_LIBRARIES(fern_algorithm_gdal
+    _fern_algorithm_numpy
+    fern_python_extension_algorithm_core
+    fern_python_extension_core
     fern_algorithm_core
     fern_feature_core
     ${GDAL_LIBRARY}

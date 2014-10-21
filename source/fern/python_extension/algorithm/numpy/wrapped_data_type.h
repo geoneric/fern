@@ -12,7 +12,6 @@ enum class WrappedDataType
     // TODO python_long,
     python_float,
     numpy_array,
-    gdal_raster_band,
     // TODO numpy_array,  -> Forward to numpy module as much as possible.
     // TODO numpy_int8,  -> ..
     // TODO numpy_int16,

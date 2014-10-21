@@ -2,15 +2,15 @@
 #include <functional>
 #include <map>
 #include <tuple>
-#include "gdal_priv.h"
-#include "fern/io/gdal/gdal_type_traits.h"
+#include <gdal_priv.h>
 #include "fern/feature/core/array_reference_traits.h"
 #include "fern/feature/core/array_traits.h"
 #include "fern/feature/core/raster_traits.h"
-#include "fern/python_extension/algorithm/gdal/numpy_type_traits.h"
-#include "fern/python_extension/algorithm/gdal/error.h"
-#include "fern/python_extension/algorithm/gdal/util.h"
 #include "fern/algorithm/algebra/elementary/add.h"
+#include "fern/io/gdal/gdal_type_traits.h"
+#include "fern/python_extension/core/error.h"
+#include "fern/python_extension/algorithm/numpy/numpy_type_traits.h"
+#include "fern/python_extension/algorithm/gdal/util.h"
 
 
 namespace fern {
@@ -166,38 +166,6 @@ PyArrayObject* add(
 }
 
 
-PyArrayObject* add_unsupported_unsupported(
-    GDALRasterBand* raster_band1,
-    GDALRasterBand* /* raster_band2 */)
-{
-    GDALDataType data_type = raster_band1->GetRasterDataType();
-
-    raise_unsupported_argument_type_exception(to_string(data_type));
-
-    return nullptr;
-}
-
-
-PyArrayObject* unsupported1(
-    GDALRasterBand* raster_band1,
-    GDALRasterBand* /* raster_band2 */)
-{
-    GDALDataType data_type = raster_band1->GetRasterDataType();
-    raise_unsupported_argument_type_exception(to_string(data_type));
-    return nullptr;
-}
-
-
-PyArrayObject* unsupported2(
-    GDALRasterBand* /* raster_band1 */,
-    GDALRasterBand* raster_band2)
-{
-    GDALDataType data_type = raster_band2->GetRasterDataType();
-    raise_unsupported_argument_type_exception(to_string(data_type));
-    return nullptr;
-}
-
-
 #define ADD_OVERLOAD(                                                    \
     algorithm,                                                           \
     type1,                                                               \
@@ -241,7 +209,7 @@ using AddOverload = std::function<PyArrayObject*(GDALRasterBand*,
 using AddOverloads = std::map<AddOverloadsKey, AddOverload>;
 
 
-#define ADD_SUPPORTED_ADD_OVERLOADS(                                \
+#define ADD_ADD_OVERLOADS(                                          \
     gdal_type,                                                      \
     type)                                                           \
 { AddOverloadsKey(gdal_type, GDT_Byte   ), add_##type##_uint8   },  \
@@ -253,25 +221,6 @@ using AddOverloads = std::map<AddOverloadsKey, AddOverload>;
 { AddOverloadsKey(gdal_type, GDT_Float64), add_##type##_float64 },
 
 
-#define ADD_UNSUPPORTED_ADD_OVERLOADS(                       \
-    gdal_type)                                               \
-{ AddOverloadsKey(GDT_CInt16  , gdal_type), unsupported1 },  \
-{ AddOverloadsKey(GDT_CInt32  , gdal_type), unsupported1 },  \
-{ AddOverloadsKey(GDT_CFloat32, gdal_type), unsupported1 },  \
-{ AddOverloadsKey(GDT_CFloat64, gdal_type), unsupported1 },  \
-{ AddOverloadsKey(gdal_type, GDT_CInt16  ), unsupported2 },  \
-{ AddOverloadsKey(gdal_type, GDT_CInt32  ), unsupported2 },  \
-{ AddOverloadsKey(gdal_type, GDT_CFloat32), unsupported2 },  \
-{ AddOverloadsKey(gdal_type, GDT_CFloat64), unsupported2 },
-
-
-#define ADD_ADD_OVERLOADS(                    \
-    gdal_type,                                \
-    type)                                     \
-ADD_SUPPORTED_ADD_OVERLOADS(gdal_type, type)  \
-ADD_UNSUPPORTED_ADD_OVERLOADS(gdal_type)
-
-
 static AddOverloads add_overloads = {
     ADD_ADD_OVERLOADS(GDT_Byte, uint8)
     ADD_ADD_OVERLOADS(GDT_UInt16, uint16)
@@ -280,7 +229,6 @@ static AddOverloads add_overloads = {
     ADD_ADD_OVERLOADS(GDT_Int32, int32)
     ADD_ADD_OVERLOADS(GDT_Float32, float32)
     ADD_ADD_OVERLOADS(GDT_Float64, float64)
-    {AddOverloadsKey(GDT_Unknown, GDT_Unknown), add_unsupported_unsupported }
 };
 
 
@@ -376,16 +324,6 @@ ADD_OVERLOADS(add, float64)
 
 namespace raster_band_float64 {
 
-PyArrayObject* unsupported1(
-    GDALRasterBand* raster_band,
-    float64_t const& /* value */)
-{
-    GDALDataType data_type = raster_band->GetRasterDataType();
-    raise_unsupported_argument_type_exception(to_string(data_type));
-    return nullptr;
-}
-
-
 using AddOverloadsKey = GDALDataType;
 using AddOverload = std::function<PyArrayObject*(GDALRasterBand*, float64_t)>;
 using AddOverloads = std::map<AddOverloadsKey, AddOverload>;
@@ -398,29 +336,11 @@ static AddOverloads add_overloads = {
     { AddOverloadsKey(GDT_UInt32  ), raster_band_number::add_uint32_float64  },
     { AddOverloadsKey(GDT_Int32   ), raster_band_number::add_int32_float64   },
     { AddOverloadsKey(GDT_Float32 ), raster_band_number::add_float32_float64 },
-    { AddOverloadsKey(GDT_Float64 ), raster_band_number::add_float64_float64 },
-    { AddOverloadsKey(GDT_CInt16  ), unsupported1 },
-    { AddOverloadsKey(GDT_CInt32  ), unsupported1 },
-    { AddOverloadsKey(GDT_CFloat32), unsupported1 },
-    { AddOverloadsKey(GDT_CFloat64), unsupported1 },
+    { AddOverloadsKey(GDT_Float64 ), raster_band_number::add_float64_float64 }
 };
 
 } // namespace raster_band_float64
 } // namespace detail
-
-
-PyArrayObject* add(
-    GDALRasterBand* raster_band1,
-    GDALRasterBand* raster_band2)
-{
-    using namespace detail::raster_band_raster_band;
-
-    GDALDataType data_type1 = raster_band1->GetRasterDataType();
-    GDALDataType data_type2 = raster_band2->GetRasterDataType();
-
-    AddOverloadsKey key(data_type1, data_type2);
-    return add_overloads[key](raster_band1, raster_band2);
-}
 
 
 PyArrayObject* add(
@@ -431,7 +351,18 @@ PyArrayObject* add(
 
     GDALDataType data_type = raster_band->GetRasterDataType();
     AddOverloadsKey key(data_type);
-    return add_overloads[key](raster_band, value);
+
+    PyArrayObject* result{nullptr};
+
+    if(add_overloads.find(key) == add_overloads.end()) {
+        raise_unsupported_overload_exception(to_string(data_type));
+        result = nullptr;
+    }
+    else {
+        result = add_overloads[key](raster_band, value);
+    }
+
+    return result;
 }
 
 
@@ -443,12 +374,44 @@ PyArrayObject* add(
 }
 
 
-double add(
-    double value1,
-    double value2)
+PyArrayObject* add(
+    GDALRasterBand* raster_band,
+    PyArrayObject* array)
 {
-    double result;
-    algorithm::algebra::add(algorithm::parallel, value1, value2, result);
+    // TODO
+    return nullptr;
+}
+
+
+PyArrayObject* add(
+    PyArrayObject* array,
+    GDALRasterBand* raster_band)
+{
+    return add(raster_band, array);
+}
+
+
+PyArrayObject* add(
+    GDALRasterBand* raster_band1,
+    GDALRasterBand* raster_band2)
+{
+    using namespace detail::raster_band_raster_band;
+
+    GDALDataType data_type1 = raster_band1->GetRasterDataType();
+    GDALDataType data_type2 = raster_band2->GetRasterDataType();
+    AddOverloadsKey key(data_type1, data_type2);
+
+    PyArrayObject* result{nullptr};
+
+    if(add_overloads.find(key) == add_overloads.end()) {
+        raise_unsupported_overload_exception(to_string(data_type1),
+            to_string(data_type2));
+        result = nullptr;
+    }
+    else {
+        result = add_overloads[key](raster_band1, raster_band2);
+    }
+
     return result;
 }
 

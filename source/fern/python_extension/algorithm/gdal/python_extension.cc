@@ -1,5 +1,6 @@
 #include <Python.h>
 #include "fern/core/thread_client.h"
+#include "fern/python_extension/core/error.h"
 #include "fern/python_extension/algorithm/gdal/add_overloads.h"
 
 
@@ -20,9 +21,17 @@ static PyObject* add(
     PyObject* result{nullptr};
 
     try {
-        PyBinaryAlgorithmKey key(data_type(value1_object),
+        BinaryAlgorithmKey key(data_type(value1_object),
             data_type(value2_object));
-        result = add_overloads[key](value1_object, value2_object);
+
+        if(add_overloads.find(key) == add_overloads.end()) {
+            raise_unsupported_overload_exception(value1_object, value2_object);
+            result = nullptr;
+        }
+        else {
+            result = add_overloads[key](value1_object, value2_object);
+        }
+
         assert((PyErr_Occurred() && result == nullptr) ||
             (!PyErr_Occurred() && result != nullptr));
     }
