@@ -1,6 +1,5 @@
 #include "fern/core/thread_pool.h"
 #include <cassert>
-#include <iostream>
 
 
 namespace fern {

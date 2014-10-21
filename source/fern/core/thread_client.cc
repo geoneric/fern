@@ -1,6 +1,5 @@
 #include "fern/core/thread_client.h"
 #include <cassert>
-#include <iostream>
 #include <memory>
 
 
