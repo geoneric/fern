@@ -1,7 +1,7 @@
 #include <Python.h>
 #include <numpy/arrayobject.h>
 #include "fern/core/thread_client.h"
-#include "fern/python_extension/numpy/algorithm.h"
+#include "fern/python_extension/algorithm/numpy/algorithm.h"
 
 
 namespace fern {

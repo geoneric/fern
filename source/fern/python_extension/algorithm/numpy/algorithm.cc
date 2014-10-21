@@ -1,4 +1,4 @@
-#include "fern/python_extension/numpy/algorithm.h"
+#include "fern/python_extension/algorithm/numpy/algorithm.h"
 #include "fern/feature/core/array_reference_traits.h"
 #include "fern/algorithm.h"
 

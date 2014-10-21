@@ -1,5 +1,5 @@
 #include <Python.h>
-#include "fern/python_extension/gdal/error.h"
+#include "fern/python_extension/algorithm/gdal/error.h"
 
 
 namespace fern {

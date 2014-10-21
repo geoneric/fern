@@ -1,6 +1,6 @@
 #include <Python.h>
 #include "fern/core/thread_client.h"
-#include "fern/python_extension/gdal/add_overloads.h"
+#include "fern/python_extension/algorithm/gdal/add_overloads.h"
 
 
 namespace fern {
@@ -54,10 +54,10 @@ static PyMethodDef methods[] = {
 static fern::ThreadClient thread_client;
 
 
-PyMODINIT_FUNC initfern_algorithm_gdal(
+PyMODINIT_FUNC init_fern_algorithm_gdal(
     void)
 {
-    PyObject* module = Py_InitModule("fern_algorithm_gdal",
+    PyObject* module = Py_InitModule("_fern_algorithm_gdal",
         fern::python::methods);
 
     if(module) {

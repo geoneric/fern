@@ -1,4 +1,4 @@
-#include "fern/python_extension/gdal/add.h"
+#include "fern/python_extension/algorithm/gdal/add.h"
 #include <functional>
 #include <map>
 #include <tuple>
@@ -7,9 +7,9 @@
 #include "fern/feature/core/array_reference_traits.h"
 #include "fern/feature/core/array_traits.h"
 #include "fern/feature/core/raster_traits.h"
-#include "fern/python_extension/gdal/numpy_type_traits.h"
-#include "fern/python_extension/gdal/error.h"
-#include "fern/python_extension/gdal/util.h"
+#include "fern/python_extension/algorithm/gdal/numpy_type_traits.h"
+#include "fern/python_extension/algorithm/gdal/error.h"
+#include "fern/python_extension/algorithm/gdal/util.h"
 #include "fern/algorithm/algebra/elementary/add.h"
 
 

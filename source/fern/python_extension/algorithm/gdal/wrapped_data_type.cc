@@ -1,5 +1,5 @@
-#include "fern/python_extension/gdal/wrapped_data_type.h"
-#include "fern/python_extension/gdal/util.h"
+#include "fern/python_extension/algorithm/gdal/wrapped_data_type.h"
+#include "fern/python_extension/algorithm/gdal/util.h"
 
 
 namespace fern {

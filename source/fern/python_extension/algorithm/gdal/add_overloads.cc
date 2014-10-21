@@ -1,8 +1,8 @@
 #include <Python.h>
-#include "fern/python_extension/gdal/add_overloads.h"
-#include "fern/python_extension/gdal/add.h"
-#include "fern/python_extension/gdal/error.h"
-#include "fern/python_extension/gdal/util.h"
+#include "fern/python_extension/algorithm/gdal/add_overloads.h"
+#include "fern/python_extension/algorithm/gdal/add.h"
+#include "fern/python_extension/algorithm/gdal/error.h"
+#include "fern/python_extension/algorithm/gdal/util.h"
 
 
 namespace fern {
