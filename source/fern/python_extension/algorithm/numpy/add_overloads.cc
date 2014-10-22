@@ -1,6 +1,5 @@
 #include <Python.h>
 #include "fern/python_extension/algorithm/numpy/add_overloads.h"
-/// #include "fern/python_extension/core/error.h"
 #include "fern/python_extension/algorithm/core/add.h"
 #include "fern/python_extension/algorithm/core/util.h"
 #include "fern/python_extension/algorithm/numpy/add.h"
@@ -70,6 +69,9 @@ BinaryOperationMap add_overloads{
     ADD_ADD(numpy_array, python_float)
     ADD_ADD(numpy_array, numpy_array)
 };
+
+
+#undef ADD_ADD
 
 } // namespace python
 } // namespace fern

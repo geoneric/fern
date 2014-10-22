@@ -5,6 +5,7 @@
 #include "fern/feature/core/array_reference_traits.h"
 #include "fern/algorithm/algebra/elementary/add.h"
 #include "fern/python_extension/core/error.h"
+#include "fern/python_extension/algorithm/core/macro.h"
 #include "fern/python_extension/algorithm/numpy/numpy_type_traits.h"
 #include "fern/python_extension/algorithm/numpy/util.h"
 
@@ -37,15 +38,15 @@ PyArrayObject* add(
     size_t const size2{static_cast<size_t>(PyArray_DIM(array_object, 1))};
 
     ArrayReference<Value1, 2> array_2d_reference(
-        static_cast<Value1*>(PyArray_DATA(const_cast<PyArrayObject*>(
-            array_object))), extents[size1][size2]);
+        static_cast<Value1*>(PyArray_DATA(array_object)),
+        extents[size1][size2]);
 
     using result_value_type = algorithm::add::result_value_type<Value1, Value2>;
 
     PyArrayObject* result_object{(PyArrayObject*)(
         PyArray_SimpleNew(
             PyArray_NDIM(array_object),
-            PyArray_DIMS(const_cast<PyArrayObject*>(array_object)),
+            PyArray_DIMS(array_object),
             NumpyTypeTraits<result_value_type>::data_type))};
 
     ArrayReference<result_value_type, 2> result_reference(
@@ -59,32 +60,21 @@ PyArrayObject* add(
 }
 
 
-#define ADD_OVERLOAD(                                      \
-    algorithm,                                             \
-    type1,                                                 \
-    type2)                                                 \
-PyArrayObject* algorithm##_##type1##_##type2(              \
-    PyArrayObject* array,                                  \
-    type2##_t const& value)                                \
-{                                                          \
-    return algorithm<type1##_t, type2##_t>(array, value);  \
-}
+#define BFO BINARY_FUNCTION_OVERLOAD
 
-
-#define ADD_OVERLOADS(                  \
-    algorithm,                          \
-    type)                               \
-ADD_OVERLOAD(algorithm, type, uint8)    \
-ADD_OVERLOAD(algorithm, type, int8)     \
-ADD_OVERLOAD(algorithm, type, uint16)   \
-ADD_OVERLOAD(algorithm, type, int16)    \
-ADD_OVERLOAD(algorithm, type, uint32)   \
-ADD_OVERLOAD(algorithm, type, int32)    \
-ADD_OVERLOAD(algorithm, type, uint64)   \
-ADD_OVERLOAD(algorithm, type, int64)    \
-ADD_OVERLOAD(algorithm, type, float32)  \
-ADD_OVERLOAD(algorithm, type, float64)
-
+#define ADD_OVERLOADS(                                           \
+    algorithm,                                                   \
+    type)                                                        \
+BFO(algorithm, PyArrayObject*, type, uint8_t const&, uint8)      \
+BFO(algorithm, PyArrayObject*, type, int8_t const&, int8)        \
+BFO(algorithm, PyArrayObject*, type, uint16_t const&, uint16)    \
+BFO(algorithm, PyArrayObject*, type, int16_t const&, int16)      \
+BFO(algorithm, PyArrayObject*, type, uint32_t const&, uint32)    \
+BFO(algorithm, PyArrayObject*, type, int32_t const&, int32)      \
+BFO(algorithm, PyArrayObject*, type, uint64_t const&, uint64)    \
+BFO(algorithm, PyArrayObject*, type, int64_t const&, int64)      \
+BFO(algorithm, PyArrayObject*, type, float32_t const&, float32)  \
+BFO(algorithm, PyArrayObject*, type, float64_t const&, float64)
 
 ADD_OVERLOADS(add, uint8)
 ADD_OVERLOADS(add, int8)
@@ -97,9 +87,8 @@ ADD_OVERLOADS(add, int64)
 ADD_OVERLOADS(add, float32)
 ADD_OVERLOADS(add, float64)
 
-
 #undef ADD_OVERLOADS
-#undef ADD_OVERLOAD
+#undef BFO
 
 } // namespace array_number
 
@@ -148,19 +137,19 @@ PyArrayObject* add(
     size_t const size2{static_cast<size_t>(PyArray_DIM(array_object1, 1))};
 
     ArrayReference<Value1, 2> array_2d_reference1(
-        static_cast<Value1*>(PyArray_DATA(const_cast<PyArrayObject*>(
-            array_object1))), extents[size1][size2]);
+        static_cast<Value1*>(PyArray_DATA(array_object1)),
+        extents[size1][size2]);
 
     ArrayReference<Value2, 2> array_2d_reference2(
-        static_cast<Value2*>(PyArray_DATA(const_cast<PyArrayObject*>(
-            array_object2))), extents[size1][size2]);
+        static_cast<Value2*>(PyArray_DATA(array_object2)),
+        extents[size1][size2]);
 
     using result_value_type = algorithm::add::result_value_type<Value1, Value2>;
 
     PyArrayObject* result_object{(PyArrayObject*)(
         PyArray_SimpleNew(
             PyArray_NDIM(array_object1),
-            PyArray_DIMS(const_cast<PyArrayObject*>(array_object1)),
+            PyArray_DIMS(array_object1),
             NumpyTypeTraits<result_value_type>::data_type))};
 
     ArrayReference<result_value_type, 2> result_reference(
@@ -174,32 +163,21 @@ PyArrayObject* add(
 }
 
 
-#define ADD_OVERLOAD(                                        \
-    algorithm,                                               \
-    type1,                                                   \
-    type2)                                                   \
-PyArrayObject* algorithm##_##type1##_##type2(                \
-    PyArrayObject* array1,                                   \
-    PyArrayObject* array2)                                   \
-{                                                            \
-    return algorithm<type1##_t, type2##_t>(array1, array2);  \
-}
+#define BFO BINARY_FUNCTION_OVERLOAD
 
-
-#define ADD_OVERLOADS(                  \
-    algorithm,                          \
-    type)                               \
-ADD_OVERLOAD(algorithm, type, uint8)    \
-ADD_OVERLOAD(algorithm, type, int8)     \
-ADD_OVERLOAD(algorithm, type, uint16)   \
-ADD_OVERLOAD(algorithm, type, int16)    \
-ADD_OVERLOAD(algorithm, type, uint32)   \
-ADD_OVERLOAD(algorithm, type, int32)    \
-ADD_OVERLOAD(algorithm, type, uint64)   \
-ADD_OVERLOAD(algorithm, type, int64)    \
-ADD_OVERLOAD(algorithm, type, float32)  \
-ADD_OVERLOAD(algorithm, type, float64)
-
+#define ADD_OVERLOADS(                                         \
+    algorithm,                                                 \
+    type)                                                      \
+BFO(algorithm, PyArrayObject*, type, PyArrayObject*, uint8)    \
+BFO(algorithm, PyArrayObject*, type, PyArrayObject*, int8)     \
+BFO(algorithm, PyArrayObject*, type, PyArrayObject*, uint16)   \
+BFO(algorithm, PyArrayObject*, type, PyArrayObject*, int16)    \
+BFO(algorithm, PyArrayObject*, type, PyArrayObject*, uint32)   \
+BFO(algorithm, PyArrayObject*, type, PyArrayObject*, int32)    \
+BFO(algorithm, PyArrayObject*, type, PyArrayObject*, uint64)   \
+BFO(algorithm, PyArrayObject*, type, PyArrayObject*, int64)    \
+BFO(algorithm, PyArrayObject*, type, PyArrayObject*, float32)  \
+BFO(algorithm, PyArrayObject*, type, PyArrayObject*, float64)
 
 ADD_OVERLOADS(add, uint8)
 ADD_OVERLOADS(add, int8)
@@ -212,9 +190,8 @@ ADD_OVERLOADS(add, int64)
 ADD_OVERLOADS(add, float32)
 ADD_OVERLOADS(add, float64)
 
-
 #undef ADD_OVERLOADS
-#undef ADD_OVERLOAD
+#undef BFO
 
 
 using AddOverloadsKey = std::tuple<int, int>;
@@ -253,8 +230,6 @@ static AddOverloads add_overloads = {
 
 
 #undef ADD_ADD_OVERLOADS
-#undef ADD_UNSUPPORTED_ADD_OVERLOADS
-#undef ADD_SUPPORTED_ADD_OVERLOADS
 
 } // namespace array_array
 } // namespace detail

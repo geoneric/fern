@@ -1,6 +1,7 @@
 SET(SOURCES
     add
     add_overloads
+    algorithm
     python_extension
     util
     wrapped_data_type

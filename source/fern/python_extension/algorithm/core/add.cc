@@ -1,4 +1,5 @@
 #include "fern/python_extension/algorithm/core/add.h"
+#include "fern/core/constant_traits.h"
 #include "fern/algorithm/algebra/elementary/add.h"
 
 

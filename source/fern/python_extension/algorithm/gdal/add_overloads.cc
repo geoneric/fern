@@ -116,7 +116,6 @@ PyObject* add_gdal_raster_band_gdal_raster_band(
 { BinaryAlgorithmKey(WrappedDataType::type1, WrappedDataType::type2),  \
     add_##type1##_##type2 },
 
-
 BinaryOperationMap add_overloads{
     ADD_ADD(python_float, python_float)
     ADD_ADD(python_float, numpy_array)
@@ -130,6 +129,8 @@ BinaryOperationMap add_overloads{
     ADD_ADD(gdal_raster_band, numpy_array)
     ADD_ADD(gdal_raster_band, gdal_raster_band)
 };
+
+#undef ADD_ADD
 
 } // namespace python
 } // namespace fern

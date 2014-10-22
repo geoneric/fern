@@ -1,5 +1,6 @@
 SET(LIB_SOURCES
     add
+    sqrt
     util
 )
 ADD_LIBRARY(fern_algorithm_numpy ${LIB_SOURCES})
@@ -11,7 +12,9 @@ TARGET_LINK_LIBRARIES(fern_algorithm_numpy
 )
 SET(EXTENSION_SOURCES
     add_overloads
+    algorithm
     python_extension
+    sqrt_overloads
     wrapped_data_type
 )
 ADD_LIBRARY(_fern_algorithm_numpy SHARED ${EXTENSION_SOURCES})

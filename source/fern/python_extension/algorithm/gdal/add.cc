@@ -9,6 +9,7 @@
 #include "fern/algorithm/algebra/elementary/add.h"
 #include "fern/io/gdal/gdal_type_traits.h"
 #include "fern/python_extension/core/error.h"
+#include "fern/python_extension/algorithm/core/macro.h"
 #include "fern/python_extension/algorithm/numpy/numpy_type_traits.h"
 #include "fern/python_extension/algorithm/gdal/util.h"
 
@@ -166,29 +167,18 @@ PyArrayObject* add(
 }
 
 
-#define ADD_OVERLOAD(                                                    \
-    algorithm,                                                           \
-    type1,                                                               \
-    type2)                                                               \
-PyArrayObject* algorithm##_##type1##_##type2(                            \
-    GDALRasterBand* raster_band1,                                        \
-    GDALRasterBand* raster_band2)                                        \
-{                                                                        \
-    return algorithm<type1##_t, type2##_t>(raster_band1, raster_band2);  \
-}
+#define BFO BINARY_FUNCTION_OVERLOAD
 
-
-#define ADD_OVERLOADS(                  \
-    algorithm,                          \
-    type)                               \
-ADD_OVERLOAD(algorithm, type, uint8)    \
-ADD_OVERLOAD(algorithm, type, uint16)   \
-ADD_OVERLOAD(algorithm, type, int16)    \
-ADD_OVERLOAD(algorithm, type, uint32)   \
-ADD_OVERLOAD(algorithm, type, int32)    \
-ADD_OVERLOAD(algorithm, type, float32)  \
-ADD_OVERLOAD(algorithm, type, float64)
-
+#define ADD_OVERLOADS(                                           \
+    algorithm,                                                   \
+    type)                                                        \
+BFO(algorithm, GDALRasterBand*, type, GDALRasterBand*, uint8)    \
+BFO(algorithm, GDALRasterBand*, type, GDALRasterBand*, uint16)   \
+BFO(algorithm, GDALRasterBand*, type, GDALRasterBand*, int16)    \
+BFO(algorithm, GDALRasterBand*, type, GDALRasterBand*, uint32)   \
+BFO(algorithm, GDALRasterBand*, type, GDALRasterBand*, int32)    \
+BFO(algorithm, GDALRasterBand*, type, GDALRasterBand*, float32)  \
+BFO(algorithm, GDALRasterBand*, type, GDALRasterBand*, float64)
 
 ADD_OVERLOADS(add, uint8)
 ADD_OVERLOADS(add, uint16)
@@ -198,9 +188,8 @@ ADD_OVERLOADS(add, int32)
 ADD_OVERLOADS(add, float32)
 ADD_OVERLOADS(add, float64)
 
-
 #undef ADD_OVERLOADS
-#undef ADD_OVERLOAD
+#undef BFO
 
 
 using AddOverloadsKey = std::tuple<GDALDataType, GDALDataType>;
@@ -220,7 +209,6 @@ using AddOverloads = std::map<AddOverloadsKey, AddOverload>;
 { AddOverloadsKey(gdal_type, GDT_Float32), add_##type##_float32 },  \
 { AddOverloadsKey(gdal_type, GDT_Float64), add_##type##_float64 },
 
-
 static AddOverloads add_overloads = {
     ADD_ADD_OVERLOADS(GDT_Byte, uint8)
     ADD_ADD_OVERLOADS(GDT_UInt16, uint16)
@@ -231,10 +219,7 @@ static AddOverloads add_overloads = {
     ADD_ADD_OVERLOADS(GDT_Float64, float64)
 };
 
-
 #undef ADD_ADD_OVERLOADS
-#undef ADD_UNSUPPORTED_ADD_OVERLOADS
-#undef ADD_SUPPORTED_ADD_OVERLOADS
 
 } // namespace raster_band_raster_band
 
@@ -283,29 +268,18 @@ PyArrayObject* add(
 }
 
 
-#define ADD_OVERLOAD(                                            \
-    algorithm,                                                   \
-    type1,                                                       \
-    type2)                                                       \
-PyArrayObject* algorithm##_##type1##_##type2(                    \
-    GDALRasterBand* raster_band,                                 \
-    type2##_t const& value)                                      \
-{                                                                \
-    return algorithm<type1##_t, type2##_t>(raster_band, value);  \
-}
+#define BFO BINARY_FUNCTION_OVERLOAD
 
-
-#define ADD_OVERLOADS(                  \
-    algorithm,                          \
-    type)                               \
-ADD_OVERLOAD(algorithm, type, uint8)    \
-ADD_OVERLOAD(algorithm, type, uint16)   \
-ADD_OVERLOAD(algorithm, type, int16)    \
-ADD_OVERLOAD(algorithm, type, uint32)   \
-ADD_OVERLOAD(algorithm, type, int32)    \
-ADD_OVERLOAD(algorithm, type, float32)  \
-ADD_OVERLOAD(algorithm, type, float64)
-
+#define ADD_OVERLOADS(                                            \
+    algorithm,                                                    \
+    type)                                                         \
+BFO(algorithm, GDALRasterBand*, type, uint8_t const&, uint8)      \
+BFO(algorithm, GDALRasterBand*, type, uint16_t const&, uint16)    \
+BFO(algorithm, GDALRasterBand*, type, int16_t const&, int16)      \
+BFO(algorithm, GDALRasterBand*, type, uint32_t const&, uint32)    \
+BFO(algorithm, GDALRasterBand*, type, int32_t const&, int32)      \
+BFO(algorithm, GDALRasterBand*, type, float32_t const&, float32)  \
+BFO(algorithm, GDALRasterBand*, type, float64_t const&, float64)
 
 ADD_OVERLOADS(add, uint8)
 ADD_OVERLOADS(add, uint16)
@@ -315,9 +289,8 @@ ADD_OVERLOADS(add, int32)
 ADD_OVERLOADS(add, float32)
 ADD_OVERLOADS(add, float64)
 
-
 #undef ADD_OVERLOADS
-#undef ADD_OVERLOAD
+#undef BFO
 
 } // namespace raster_band_number
 
