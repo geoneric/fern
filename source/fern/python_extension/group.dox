@@ -1,0 +1,10 @@
+/*!
+    @brief      Parent group containing python package sub-groups
+    @defgroup   fern_python_package_group Python package
+    @ingroup    fern_group
+
+
+    Fern.Python is a Python package for accessing the Fern library from
+    Python. It contains various Python modules and extensions exposing
+    the various libraries of Fern.
+*/
