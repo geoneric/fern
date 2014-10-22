@@ -57,8 +57,6 @@ private:
     //! Utility member that will join all worker threads.
     JoinThreads    _joiner;
 
-    /// void           execute_task_or_yield();
-
     void           execute_task_or_wait ();
 
 };
@@ -85,10 +83,10 @@ inline std::future<typename std::result_of<Function()>::type>
 
     // Notify a waiting thread (if there is any), that there is a new
     // task to perform.
-    // We are not locking the mutex here. The thread that is being woken up
-    // will try to acquire the lock and we don't want to keep her waiting.
-    // std::lock_guard<std::mutex> lock(_mutex);
-    _work_condition.notify_one();
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        _work_condition.notify_one();
+    }
 
     return result;
 }
