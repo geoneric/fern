@@ -4,6 +4,7 @@ CONFIGURE_FILE(
 )
 
 ADD_TARGET_CONDITIONALLY(algorithm algorithm)
+ADD_TARGET_CONDITIONALLY(algorithm_python_extension python_extension)
 ADD_TARGET_CONDITIONALLY(ast ast)
 ADD_TARGET_CONDITIONALLY(back_end back_end)
 ADD_TARGET_CONDITIONALLY(command command)
