@@ -47,6 +47,27 @@ private:
 };
 
 
+// begin() and end() are used in for loops over arrays. They must be inlined.
+
+
+//! Return the first index in the range.
+/*!
+*/
+inline IndexRange::index IndexRange::begin() const
+{
+    return _begin;
+}
+
+
+//! Return the index past the last index in the range.
+/*!
+*/
+inline IndexRange::index IndexRange::end() const
+{
+    return _end;
+}
+
+
 bool               operator==          (IndexRange const& lhs,
                                         IndexRange const& rhs);
 

@@ -36,25 +36,6 @@ IndexRange::IndexRange(
 }
 
 
-
-//! Return the first index in the range.
-/*!
-*/
-IndexRange::index IndexRange::begin() const
-{
-    return _begin;
-}
-
-
-//! Return the index past the last index in the range.
-/*!
-*/
-IndexRange::index IndexRange::end() const
-{
-    return _end;
-}
-
-
 //! Return whether or not the range is empty.
 /*!
     \sa        size()
