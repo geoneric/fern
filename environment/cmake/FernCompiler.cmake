@@ -83,9 +83,15 @@ IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR
 ENDIF()
 
 IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
-    SET(CMAKE_CXX_FLAGS
-        "${CMAKE_CXX_FLAGS} -std=c++14"
-    )
+    IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
+        SET(CMAKE_CXX_FLAGS
+            "${CMAKE_CXX_FLAGS} -std=c++1y"
+        )
+    ELSE()
+        SET(CMAKE_CXX_FLAGS
+            "${CMAKE_CXX_FLAGS} -std=c++14"
+        )
+    ENDIF()
 ELSEIF(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
     SET(CMAKE_CXX_FLAGS
         "${CMAKE_CXX_FLAGS} -stdlib=libc++ -std=c++1y"

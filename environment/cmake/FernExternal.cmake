@@ -36,6 +36,7 @@ IF(FERN_BOOST_REQUIRED)
             SET(BOOST_PREFIX
                 ${PEACOCK_PREFIX}/${peacock_target_platform}/boost-${version})
             IF(EXISTS ${BOOST_PREFIX})
+                SET(CMAKE_FIND_ROOT_PATH ${BOOST_PREFIX} ${CMAKE_PREFIX_PATH})
                 SET(CMAKE_PREFIX_PATH ${BOOST_PREFIX} ${CMAKE_PREFIX_PATH})
                 BREAK()
             ENDIF()
