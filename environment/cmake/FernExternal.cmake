@@ -1,13 +1,12 @@
-IF(DEFINED ENV{FERN_EXTERNAL_PROJECT_PREFIX})
-    # Configure search path to find packages.
+IF(PEACOCK_PREFIX)
+    # # if cross compiling:
+    # SET(CMAKE_FIND_ROOT_PATH
+    #     ${PEACOCK_PREFIX}/${peacock_target_platform})
+    # else:
     SET(CMAKE_PREFIX_PATH
-        $ENV{FERN_EXTERNAL_PROJECT_PREFIX}
+        ${PEACOCK_PREFIX}/${peacock_target_platform}
         ${CMAKE_PREFIX_PATH}
     )
-ENDIF()
-
-IF(DEFINED ENV{PEACOCK_PREFIX})
-    SET(PEACOCK_PREFIX $ENV{PEACOCK_PREFIX})
 ENDIF()
 
 
@@ -31,17 +30,6 @@ IF(FERN_BOOST_REQUIRED)
         # Disable range checks in release builds.
         "${CMAKE_CXX_FLAGS_RELEASE} -DBOOST_DISABLE_ASSERTS"
     )
-    IF(DEFINED ENV{PEACOCK_PREFIX})
-        FOREACH(version 1.56.0 1.55.0)
-            SET(BOOST_PREFIX
-                ${PEACOCK_PREFIX}/${peacock_target_platform}/boost-${version})
-            IF(EXISTS ${BOOST_PREFIX})
-                SET(CMAKE_FIND_ROOT_PATH ${BOOST_PREFIX} ${CMAKE_PREFIX_PATH})
-                SET(CMAKE_PREFIX_PATH ${BOOST_PREFIX} ${CMAKE_PREFIX_PATH})
-                BREAK()
-            ENDIF()
-        ENDFOREACH()
-    ENDIF()
     FIND_PACKAGE(Boost REQUIRED
         COMPONENTS ${FERN_REQUIRED_BOOST_COMPONENTS})
     INCLUDE_DIRECTORIES(
