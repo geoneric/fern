@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include "fern/algorithm/algebra/elementary/divide.h"
 
 
@@ -10,4 +11,6 @@ int main()
     double result;
 
     fa::algebra::divide(fa::sequential, value1, value2, result);
+
+    return EXIT_SUCCESS;
 }

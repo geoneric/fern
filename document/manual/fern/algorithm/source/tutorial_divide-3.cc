@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include "fern/feature/core/array_traits.h"
 #include "fern/algorithm/algebra/elementary/divide.h"
 
@@ -15,4 +16,6 @@ int main()
     fern::Array<double, 2> result(fern::extents[2][3]);
 
     fa::algebra::divide(fa::sequential, value1, value2, result);
+
+    return EXIT_SUCCESS;
 }
