@@ -23,6 +23,7 @@ MACRO(ADD_UNIT_TEST NAME)
         fern_feature_core  # fern::extents
         fern_core
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+        stdc++
     )
     ADD_TEST(NAME algorithm_core_${NAME} COMMAND algorithm_core_${NAME})
 ENDMACRO()

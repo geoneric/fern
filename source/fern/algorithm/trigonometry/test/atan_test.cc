@@ -19,7 +19,7 @@ void verify_value(
 {
     Result result_we_get;
     fa::trigonometry::atan(fa::sequential, value, result_we_get);
-    BOOST_CHECK_EQUAL(result_we_get, result_we_want);
+    BOOST_CHECK_CLOSE(result_we_get, result_we_want, 1e-5);
 }
 
 

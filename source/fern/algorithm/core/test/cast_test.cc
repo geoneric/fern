@@ -3,6 +3,7 @@
 #include "fern/core/constant_traits.h"
 #include "fern/core/types.h"
 #include "fern/algorithm/core/cast.h"
+#include "fern/algorithm/core/test/test_utils.h"
 
 
 BOOST_AUTO_TEST_SUITE(cast)
