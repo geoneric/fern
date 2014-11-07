@@ -267,7 +267,7 @@ void divide(
     Result& result)
 {
     binary_local_operation<Algorithm,
-        binary::DiscardDomainErrors, OutOfRangePolicy>(
+        OutOfDomainPolicy, OutOfRangePolicy>(
             input_no_data_policy, output_no_data_policy,
             execution_policy,
             value1, value2, result);
