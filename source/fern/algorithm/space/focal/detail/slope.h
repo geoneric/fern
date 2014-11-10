@@ -98,7 +98,7 @@ struct Slope<
             divide::OutOfDomainPolicy,  // TODO Pick correct policy.
             divide::OutOfRangePolicy>(  // TODO Pick correct policy.
                 input_no_data_policy, output_no_data_policy, execution_policy,
-                dz_dx, 8 * cell_size(value, 0), dz_dx);
+                dz_dx, static_cast<Float>(8 * cell_size(value, 0)), dz_dx);
 
         auto dz_dy(clone<Float>(value));
         convolution::convolve<
@@ -113,7 +113,7 @@ struct Slope<
             divide::OutOfDomainPolicy,  // TODO Pick correct policy.
             divide::OutOfRangePolicy>(  // TODO Pick correct policy.
                 input_no_data_policy, output_no_data_policy, execution_policy,
-                dz_dy, 8 * cell_size(value, 1), dz_dy);
+                dz_dy, static_cast<Float>(8 * cell_size(value, 1)), dz_dy);
 
         algebra::pow<
             pow::OutOfDomainPolicy,  // TODO Pick correct policy.
