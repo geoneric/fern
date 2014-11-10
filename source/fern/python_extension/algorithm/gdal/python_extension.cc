@@ -6,6 +6,8 @@
 static PyMethodDef methods[] = {
     {"add", fern::python::add, METH_VARARGS,
         "Add two arguments and return the result"},
+    {"slope", fern::python::slope, METH_VARARGS,
+        "Calculate the slope and return the result"},
     {nullptr, nullptr, 0, nullptr}
 };
 

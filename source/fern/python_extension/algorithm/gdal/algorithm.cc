@@ -8,6 +8,7 @@ namespace fern {
 namespace python {
 
 BINARY_ALGORITHM(add)
+UNARY_ALGORITHM(slope)
 
 } // namespace python
 } // namespace fern
