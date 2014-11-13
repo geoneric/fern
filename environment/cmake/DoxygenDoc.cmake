@@ -11,6 +11,7 @@ SET(DOXYGEN_TEMPLATE "
     FILE_PATTERNS           = *.h *.hpp *.hxx *.c *.cc *.cpp *.cxx *.dox *.md
     FULL_PATH_NAMES         = YES
     GENERATE_LATEX          = NO
+    GENERATE_TODOLIST       = ${FERN_DOXYGEN_GENERATE_TODOLIST}
     HAVE_DOT                = YES
     INCLUDE_GRAPH           = YES
     INHERIT_DOCS            = YES
