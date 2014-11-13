@@ -106,9 +106,9 @@ void copy_1d(
     Offset_ const& offset_,
     Result& result)
 {
-    value_type<Offset_> offset(fern::get<0>(offset_));
+    value_type<Offset_> offset(get<0>(offset_));
 
-    IndexRange range_to_copy_(range_to_copy(index_ranges[0], fern::size(value),
+    IndexRange range_to_copy_(range_to_copy(index_ranges[0], size(value),
         offset));
 
     // Copy the values.
@@ -118,7 +118,7 @@ void copy_1d(
             output_no_data_policy.mark_as_no_data(i + offset);
         }
         else {
-            fern::get(result, i + offset) = fern::get(value, i);
+            get(result, i + offset) = get(value, i);
         }
     }
 }
@@ -134,7 +134,7 @@ void mark_no_data_1d(
     Offset_ const& offset_)
 {
     IndexRange const range_to_initialize_(range_to_initialize(
-        fern::size(value), fern::get<0>(offset_)));
+        size(value), get<0>(offset_)));
 
     for(size_t i = range_to_initialize_.begin();
             i < range_to_initialize_.end(); ++i) {
@@ -152,11 +152,11 @@ void fill_value_1d(
     Result& result)
 {
     IndexRange const range_to_initialize_(range_to_initialize(
-        fern::size(result), fern::get<0>(offset_)));
+        size(result), get<0>(offset_)));
 
     for(size_t i = range_to_initialize_.begin();
             i < range_to_initialize_.end(); ++i) {
-        fern::get(result, i) = fill_value;
+        get(result, i) = fill_value;
     }
 }
 
@@ -175,13 +175,13 @@ void copy_2d(
     Offset_ const& offset_,
     Result& result)
 {
-    value_type<Offset_> offset1(fern::get<0>(offset_));
-    value_type<Offset_> offset2(fern::get<1>(offset_));
+    value_type<Offset_> offset1(get<0>(offset_));
+    value_type<Offset_> offset2(get<1>(offset_));
 
     IndexRange const range_to_copy1(range_to_copy(index_ranges[0],
-        fern::size(value, 0), offset1));
+        size(value, 0), offset1));
     IndexRange const range_to_copy2(range_to_copy(index_ranges[1],
-        fern::size(value, 1), offset2));
+        size(value, 1), offset2));
 
     // Copy the values.
     for(size_t i = range_to_copy1.begin(); i < range_to_copy1.end(); ++i) {
@@ -191,7 +191,7 @@ void copy_2d(
                 output_no_data_policy.mark_as_no_data(i + offset1, j + offset2);
             }
             else {
-                fern::get(result, i + offset1, j + offset2) = fern::get(value,
+                get(result, i + offset1, j + offset2) = get(value,
                     i, j);
             }
         }
@@ -208,13 +208,13 @@ void mark_no_data_2d(
     Value const& value,
     Offset_ const& offset_)
 {
-    size_t const size1{fern::size(value, 0)};
-    size_t const size2{fern::size(value, 1)};
+    size_t const size1{size(value, 0)};
+    size_t const size2{size(value, 1)};
 
     IndexRange const range_to_initialize1(range_to_initialize(size1,
-        fern::get<0>(offset_)));
+        get<0>(offset_)));
     IndexRange const range_to_initialize2(range_to_initialize(size2,
-        fern::get<1>(offset_)));
+        get<1>(offset_)));
 
     for(size_t i = range_to_initialize1.begin();
             i < range_to_initialize1.end(); ++i) {
@@ -240,25 +240,25 @@ void fill_value_2d(
     value_type<Result> const& fill_value,
     Result& result)
 {
-    size_t const size1{fern::size(result, 0)};
-    size_t const size2{fern::size(result, 1)};
+    size_t const size1{size(result, 0)};
+    size_t const size2{size(result, 1)};
 
     IndexRange const range_to_initialize1(range_to_initialize(size1,
-        fern::get<0>(offset_)));
+        get<0>(offset_)));
     IndexRange const range_to_initialize2(range_to_initialize(size2,
-        fern::get<1>(offset_)));
+        get<1>(offset_)));
 
     for(size_t i = range_to_initialize1.begin();
             i < range_to_initialize1.end(); ++i) {
         for(size_t j = 0; j < size2; ++j) {
-            fern::get(result, i, j) = fill_value;
+            get(result, i, j) = fill_value;
         }
     }
 
     for(size_t i = 0; i < size1; ++i) {
         for(size_t j = range_to_initialize2.begin();
                 j < range_to_initialize2.end(); ++j) {
-            fern::get(result, i, j) = fill_value;
+            get(result, i, j) = fill_value;
         }
     }
 }
@@ -303,10 +303,10 @@ struct Offset<
         Offset_ const& offset_,
         Result& result)
     {
-        assert(fern::size(value) > 0);
+        assert(size(value) > 0);
 
         copy_1d(input_no_data_policy, output_no_data_policy,
-            IndexRanges<1>{IndexRange(0, fern::size(value))},
+            IndexRanges<1>{IndexRange(0, size(value))},
             value, offset_, result);
         mark_no_data_1d(output_no_data_policy, value, offset_);
     }
@@ -320,10 +320,10 @@ struct Offset<
         value_type<Result> const& fill_value,
         Result& result)
     {
-        assert(fern::size(value) > 0);
+        assert(size(value) > 0);
 
         copy_1d(input_no_data_policy, output_no_data_policy,
-            IndexRanges<1>{IndexRange(0, fern::size(value))},
+            IndexRanges<1>{IndexRange(0, size(value))},
             value, offset_, result);
         fill_value_1d(offset_, fill_value, result);
     }
@@ -355,11 +355,11 @@ struct Offset<
         Offset_ const& offset_,
         Result& result)
     {
-        assert(fern::size(value) > 0);
+        assert(size(value) > 0);
 
         ThreadPool& pool(ThreadClient::pool());
-        size_t const size = fern::size(value);
-        std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size);
+        size_t const size_ = size(value);
+        std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size_);
         std::vector<std::future<void>> futures;
         futures.reserve(ranges.size());
 
@@ -396,11 +396,11 @@ struct Offset<
         value_type<Result> const& fill_value,
         Result& result)
     {
-        assert(fern::size(value) > 0);
+        assert(size(value) > 0);
 
         ThreadPool& pool(ThreadClient::pool());
-        size_t const size = fern::size(value);
-        std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size);
+        size_t const size_ = size(value);
+        std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size_);
         std::vector<std::future<void>> futures;
         futures.reserve(ranges.size());
 
@@ -556,12 +556,12 @@ struct Offset<
         Offset_ const& offset_,
         Result& result)
     {
-        assert(fern::size(value) > 0);
+        assert(size(value) > 0);
 
         copy_2d(input_no_data_policy, output_no_data_policy,
             IndexRanges<2>{
-                IndexRange(0, fern::size(value, 0)),
-                IndexRange(0, fern::size(value, 1)),
+                IndexRange(0, size(value, 0)),
+                IndexRange(0, size(value, 1)),
             }, value, offset_, result);
         mark_no_data_2d(output_no_data_policy, value, offset_);
     }
@@ -575,12 +575,12 @@ struct Offset<
         value_type<Result> const& fill_value,
         Result& result)
     {
-        assert(fern::size(value) > 0);
+        assert(size(value) > 0);
 
         copy_2d(input_no_data_policy, output_no_data_policy,
             IndexRanges<2>{
-                IndexRange(0, fern::size(value, 0)),
-                IndexRange(0, fern::size(value, 1)),
+                IndexRange(0, size(value, 0)),
+                IndexRange(0, size(value, 1)),
             }, value, offset_, result);
         fill_value_2d(offset_, fill_value, result);
     }
@@ -612,11 +612,11 @@ struct Offset<
         Offset_ const& offset_,
         Result& result)
     {
-        assert(fern::size(value) > 0);
+        assert(size(value) > 0);
 
         ThreadPool& pool(ThreadClient::pool());
-        size_t const size1 = fern::size(value, 0);
-        size_t const size2 = fern::size(value, 1);
+        size_t const size1 = size(value, 0);
+        size_t const size2 = size(value, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
             size1, size2);
         std::vector<std::future<void>> futures;
@@ -655,11 +655,11 @@ struct Offset<
         value_type<Result> const& fill_value,
         Result& result)
     {
-        assert(fern::size(value) > 0);
+        assert(size(value) > 0);
 
         ThreadPool& pool(ThreadClient::pool());
-        size_t const size1 = fern::size(value, 0);
-        size_t const size2 = fern::size(value, 1);
+        size_t const size1 = size(value, 0);
+        size_t const size2 = size(value, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
             size1, size2);
         std::vector<std::future<void>> futures;
@@ -811,7 +811,7 @@ void offset(
     Offset const& offset,
     Result& result)
 {
-    if(fern::size(value) == 0) {
+    if(size(value) == 0) {
         return;
     }
 
@@ -840,7 +840,7 @@ void offset(
     value_type<Result> const& fill_value,
     Result& result)
 {
-    if(fern::size(value) == 0) {
+    if(size(value) == 0) {
         return;
     }
 

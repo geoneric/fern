@@ -36,8 +36,8 @@ static void gradient_x_2d(
     Value const& value,
     Result& result)
 {
-    size_t const size2{fern::size(value, 1)};
-    double const distance1{fern::cell_size(value, 0)};
+    size_t const size2{size(value, 1)};
+    double const distance1{cell_size(value, 0)};
     double const distance2{distance1 + distance1};
 
     // Handle left border, in case it is within the index range.
@@ -52,14 +52,14 @@ static void gradient_x_2d(
                 assert(j + 1 < size2);
                 if(!input_no_data_policy.is_no_data(i, j + 1)) {
                     // x c r
-                    fern::get(result, i, j) = gradient(
-                        fern::get(value, i, j),
-                        fern::get(value, i, j + 1),
+                    get(result, i, j) = gradient(
+                        get(value, i, j),
+                        get(value, i, j + 1),
                         distance1);
                 }
                 else  {
                     // x c x
-                    fern::get(result, i, j) = 0;
+                    get(result, i, j) = 0;
                 }
             }
         }
@@ -78,14 +78,14 @@ static void gradient_x_2d(
                 assert(j > 0);
                 if(!input_no_data_policy.is_no_data(i, j - 1)) {
                     // l c x
-                    fern::get(result, i, j) = gradient(
-                        fern::get(value, i, j - 1),
-                        fern::get(value, i, j),
+                    get(result, i, j) = gradient(
+                        get(value, i, j - 1),
+                        get(value, i, j),
                         distance1);
                 }
                 else  {
                     // x c x
-                    fern::get(result, i, j) = 0;
+                    get(result, i, j) = 0;
                 }
             }
         }
@@ -108,29 +108,29 @@ static void gradient_x_2d(
                 if(!input_no_data_policy.is_no_data(i, j - 1)) {
                     if(!input_no_data_policy.is_no_data(i, j + 1)) {
                         // l c r
-                        fern::get(result, i, j) = gradient(
-                            fern::get(value, i, j - 1),
-                            fern::get(value, i, j + 1),
+                        get(result, i, j) = gradient(
+                            get(value, i, j - 1),
+                            get(value, i, j + 1),
                             distance2);
                     }
                     else {
                         // l c x
-                        fern::get(result, i, j) = gradient(
-                            fern::get(value, i, j - 1),
-                            fern::get(value, i, j),
+                        get(result, i, j) = gradient(
+                            get(value, i, j - 1),
+                            get(value, i, j),
                             distance1);
                     }
                 }
                 else if(!input_no_data_policy.is_no_data(i, j + 1)) {
                     // x c r
-                    fern::get(result, i, j) = gradient(
-                        fern::get(value, i, j),
-                        fern::get(value, i, j + 1),
+                    get(result, i, j) = gradient(
+                        get(value, i, j),
+                        get(value, i, j + 1),
                         distance1);
                 }
                 else {
                     // x c x
-                    fern::get(result, i, j) = 0;
+                    get(result, i, j) = 0;
                 }
             }
         }
@@ -150,8 +150,8 @@ static void gradient_y_2d(
     Value const& value,
     Result& result)
 {
-    size_t const size1{fern::size(value, 0)};
-    double const distance1{fern::cell_size(value, 1)};
+    size_t const size1{size(value, 0)};
+    double const distance1{cell_size(value, 1)};
     double const distance2{distance1 + distance1};
 
     // Handle top border, in case it is within the index range.
@@ -167,14 +167,14 @@ static void gradient_y_2d(
                 assert(i + 1 < size1);
                 if(!input_no_data_policy.is_no_data(i + 1, j)) {
                     // x c r
-                    fern::get(result, i, j) = gradient(
-                        fern::get(value, i, j),
-                        fern::get(value, i + 1, j),
+                    get(result, i, j) = gradient(
+                        get(value, i, j),
+                        get(value, i + 1, j),
                         distance1);
                 }
                 else  {
                     // x c x
-                    fern::get(result, i, j) = 0;
+                    get(result, i, j) = 0;
                 }
             }
         }
@@ -194,14 +194,14 @@ static void gradient_y_2d(
                 assert(i > 0);
                 if(!input_no_data_policy.is_no_data(i - 1, j)) {
                     // l c x
-                    fern::get(result, i, j) = gradient(
-                        fern::get(value, i - 1, j),
-                        fern::get(value, i, j),
+                    get(result, i, j) = gradient(
+                        get(value, i - 1, j),
+                        get(value, i, j),
                         distance1);
                 }
                 else  {
                     // x c x
-                    fern::get(result, i, j) = 0;
+                    get(result, i, j) = 0;
                 }
             }
         }
@@ -225,29 +225,29 @@ static void gradient_y_2d(
                 if(!input_no_data_policy.is_no_data(i - 1, j)) {
                     if(!input_no_data_policy.is_no_data(i + 1, j)) {
                         // l c r
-                        fern::get(result, i, j) = gradient(
-                            fern::get(value, i - 1, j),
-                            fern::get(value, i + 1, j),
+                        get(result, i, j) = gradient(
+                            get(value, i - 1, j),
+                            get(value, i + 1, j),
                             distance2);
                     }
                     else {
                         // l c x
-                        fern::get(result, i, j) = gradient(
-                            fern::get(value, i - 1, j),
-                            fern::get(value, i, j),
+                        get(result, i, j) = gradient(
+                            get(value, i - 1, j),
+                            get(value, i, j),
                             distance1);
                     }
                 }
                 else if(!input_no_data_policy.is_no_data(i + 1, j)) {
                     // x c r
-                    fern::get(result, i, j) = gradient(
-                        fern::get(value, i, j),
-                        fern::get(value, i + 1, j),
+                    get(result, i, j) = gradient(
+                        get(value, i, j),
+                        get(value, i + 1, j),
                         distance1);
                 }
                 else {
                     // x c x
-                    fern::get(result, i, j) = 0;
+                    get(result, i, j) = 0;
                 }
             }
         }
@@ -291,13 +291,13 @@ struct GradientXByArgumentCategory<
         Value const& value,
         Result& result)
     {
-        assert(fern::size(value, 0) == fern::size(result, 0));
-        assert(fern::size(value, 1) == fern::size(result, 1));
+        assert(size(value, 0) == size(result, 0));
+        assert(size(value, 1) == size(result, 1));
 
         gradient_x_2d(input_no_data_policy, output_no_data_policy,
             IndexRanges<2>{
-                IndexRange(0, fern::size(result, 0)),
-                IndexRange(0, fern::size(result, 1)),
+                IndexRange(0, size(result, 0)),
+                IndexRange(0, size(result, 1)),
             }, value, result);
     }
 
@@ -326,12 +326,12 @@ struct GradientXByArgumentCategory<
         Value const& value,
         Result& result)
     {
-        assert(fern::size(value, 0) == fern::size(result, 0));
-        assert(fern::size(value, 1) == fern::size(result, 1));
+        assert(size(value, 0) == size(result, 0));
+        assert(size(value, 1) == size(result, 1));
 
         ThreadPool& pool(ThreadClient::pool());
-        size_t const size1 = fern::size(result, 0);
-        size_t const size2 = fern::size(result, 1);
+        size_t const size1 = size(result, 0);
+        size_t const size2 = size(result, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
             size1, size2);
         std::vector<std::future<void>> futures;
@@ -389,13 +389,13 @@ struct GradientYByArgumentCategory<
         Value const& value,
         Result& result)
     {
-        assert(fern::size(value, 0) == fern::size(result, 0));
-        assert(fern::size(value, 1) == fern::size(result, 1));
+        assert(size(value, 0) == size(result, 0));
+        assert(size(value, 1) == size(result, 1));
 
         gradient_y_2d(input_no_data_policy, output_no_data_policy,
             IndexRanges<2>{
-                IndexRange(0, fern::size(result, 0)),
-                IndexRange(0, fern::size(result, 1)),
+                IndexRange(0, size(result, 0)),
+                IndexRange(0, size(result, 1)),
             }, value, result);
     }
 
@@ -424,12 +424,12 @@ struct GradientYByArgumentCategory<
         Value const& value,
         Result& result)
     {
-        assert(fern::size(value, 0) == fern::size(result, 0));
-        assert(fern::size(value, 1) == fern::size(result, 1));
+        assert(size(value, 0) == size(result, 0));
+        assert(size(value, 1) == size(result, 1));
 
         ThreadPool& pool(ThreadClient::pool());
-        size_t const size1 = fern::size(result, 0);
-        size_t const size2 = fern::size(result, 1);
+        size_t const size1 = size(result, 0);
+        size_t const size2 = size(result, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
             size1, size2);
         std::vector<std::future<void>> futures;

@@ -31,7 +31,7 @@ void operation_0d(
     // that input no-data values are already marked as such in the
     // result.
     if(!input_no_data_policy.is_no_data()) {
-        const_reference<Value> v(fern::get(value));
+        const_reference<Value> v(get(value));
 
         if(!OutOfDomainPolicy::within_domain(v)) {
             // Input value is out of domain. Mark result value as
@@ -39,7 +39,7 @@ void operation_0d(
             output_no_data_policy.mark_as_no_data();
         }
         else {
-            reference<Result> r(fern::get(result));
+            reference<Result> r(get(result));
 
             algorithm(v, r);
 
@@ -78,7 +78,7 @@ void operation_1d(
         // that input no-data values are already marked as such in the
         // result.
         if(!input_no_data_policy.is_no_data(i)) {
-            const_reference<Value> v(fern::get(value, i));
+            const_reference<Value> v(get(value, i));
 
             if(!OutOfDomainPolicy::within_domain(v)) {
                 // Input value is out of domain. Mark result value as
@@ -86,7 +86,7 @@ void operation_1d(
                 output_no_data_policy.mark_as_no_data(i);
             }
             else {
-                reference<Result> r(fern::get(result, i));
+                reference<Result> r(get(result, i));
 
                 algorithm(v, r);
 
@@ -128,7 +128,7 @@ void operation_2d(
             // that input no-data values are already marked as such in the
             // result.
             if(!input_no_data_policy.is_no_data(i, j)) {
-                const_reference<Value> v(fern::get(value, i, j));
+                const_reference<Value> v(get(value, i, j));
 
                 if(!OutOfDomainPolicy::within_domain(v)) {
                     // Input value is out of domain. Mark result value as
@@ -136,7 +136,7 @@ void operation_2d(
                     output_no_data_policy.mark_as_no_data(i, j);
                 }
                 else {
-                    reference<Result> r(fern::get(result, i, j));
+                    reference<Result> r(get(result, i, j));
 
                     algorithm(v, r);
 
@@ -240,13 +240,13 @@ struct UnaryLocalOperation<
         Value const& value,
         Result& result)
     {
-        assert(fern::size(value) == fern::size(result));
+        assert(size(value) == size(result));
 
         Algorithm algorithm;
 
         operation_1d<OutOfDomainPolicy, OutOfRangePolicy>(algorithm,
             input_no_data_policy, output_no_data_policy,
-            IndexRanges<1>{IndexRange(0, fern::size(value))}, value, result);
+            IndexRanges<1>{IndexRange(0, size(value))}, value, result);
     }
 
 };
@@ -281,11 +281,11 @@ struct UnaryLocalOperation<
         Value const& value,
         Result& result)
     {
-        assert(fern::size(value) == fern::size(result));
+        assert(size(value) == size(result));
 
         ThreadPool& pool(ThreadClient::pool());
-        size_t const size = fern::size(value);
-        std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size);
+        size_t const size_ = size(value);
+        std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size_);
         std::vector<std::future<void>> futures;
         futures.reserve(ranges.size());
 
@@ -342,16 +342,16 @@ struct UnaryLocalOperation<
         Value const& value,
         Result& result)
     {
-        assert(fern::size(value, 0) == fern::size(result, 0));
-        assert(fern::size(value, 1) == fern::size(result, 1));
+        assert(size(value, 0) == size(result, 0));
+        assert(size(value, 1) == size(result, 1));
 
         Algorithm algorithm;
 
         operation_2d<OutOfDomainPolicy, OutOfRangePolicy>(algorithm,
             input_no_data_policy, output_no_data_policy,
             IndexRanges<2>{
-                IndexRange(0, fern::size(value, 0)),
-                IndexRange(0, fern::size(value, 1))
+                IndexRange(0, size(value, 0)),
+                IndexRange(0, size(value, 1))
             }, value, result);
     }
 
@@ -387,12 +387,12 @@ struct UnaryLocalOperation<
         Value const& value,
         Result& result)
     {
-        assert(fern::size(value, 0) == fern::size(result, 0));
-        assert(fern::size(value, 1) == fern::size(result, 1));
+        assert(size(value, 0) == size(result, 0));
+        assert(size(value, 1) == size(result, 1));
 
         ThreadPool& pool(ThreadClient::pool());
-        size_t const size1 = fern::size(value, 0);
-        size_t const size2 = fern::size(value, 1);
+        size_t const size1 = size(value, 0);
+        size_t const size2 = size(value, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
             size1, size2);
         std::vector<std::future<void>> futures;

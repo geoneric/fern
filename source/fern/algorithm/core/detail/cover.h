@@ -27,11 +27,11 @@ static void cover_0d_0d(
 {
     if(!input_no_data_policy.is_no_data()) {
         if(!input_no_data_policy.template get<0>().is_no_data()) {
-            fern::get(result) = fern::get(value1);
+            get(result) = get(value1);
         }
         else {
             assert(!input_no_data_policy.template get<1>().is_no_data());
-            fern::get(result) = fern::get(value2);
+            get(result) = get(value2);
         }
     }
 }
@@ -58,12 +58,12 @@ static void cover_2d_0d(
             if(!input_no_data_policy.is_no_data(i, j)) {
 
                 if(!input_no_data_policy.template get<0>().is_no_data(i, j)) {
-                    fern::get(result, i, j) = fern::get(value1, i, j);
+                    get(result, i, j) = get(value1, i, j);
                 }
                 else {
                     assert(!
                         input_no_data_policy.template get<1>().is_no_data());
-                    fern::get(result, i, j) = fern::get(value2);
+                    get(result, i, j) = get(value2);
                 }
             }
         }
@@ -92,12 +92,12 @@ static void cover_2d_2d(
             if(!input_no_data_policy.is_no_data(i, j)) {
 
                 if(!input_no_data_policy.template get<0>().is_no_data(i, j)) {
-                    fern::get(result, i, j) = fern::get(value1, i, j);
+                    get(result, i, j) = get(value1, i, j);
                 }
                 else {
                     assert(!input_no_data_policy.template get<1>().is_no_data(
                         i, j));
-                    fern::get(result, i, j) = fern::get(value2, i, j);
+                    get(result, i, j) = get(value2, i, j);
                 }
             }
         }
@@ -184,13 +184,13 @@ struct CoverByArgumentCategory<
         Value2 const& value2,
         Result& result)
     {
-        assert(fern::size(value1, 0) == fern::size(result, 0));
-        assert(fern::size(value1, 1) == fern::size(result, 1));
+        assert(size(value1, 0) == size(result, 0));
+        assert(size(value1, 1) == size(result, 1));
 
         cover_2d_0d(input_no_data_policy, output_no_data_policy,
             IndexRanges<2>{
-                IndexRange(0, fern::size(result, 0)),
-                IndexRange(0, fern::size(result, 1)),
+                IndexRange(0, size(result, 0)),
+                IndexRange(0, size(result, 1)),
             }, value1, value2, result);
     }
 
@@ -223,12 +223,12 @@ struct CoverByArgumentCategory<
         Value2 const& value2,
         Result& result)
     {
-        assert(fern::size(value1, 0) == fern::size(result, 0));
-        assert(fern::size(value1, 1) == fern::size(result, 1));
+        assert(size(value1, 0) == size(result, 0));
+        assert(size(value1, 1) == size(result, 1));
 
         ThreadPool& pool(ThreadClient::pool());
-        size_t const size1 = fern::size(result, 0);
-        size_t const size2 = fern::size(result, 1);
+        size_t const size1 = size(result, 0);
+        size_t const size2 = size(result, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
             size1, size2);
         std::vector<std::future<void>> futures;
@@ -278,15 +278,15 @@ struct CoverByArgumentCategory<
         Value2 const& value2,
         Result& result)
     {
-        assert(fern::size(value1, 0) == fern::size(result, 0));
-        assert(fern::size(value1, 1) == fern::size(result, 1));
-        assert(fern::size(value2, 0) == fern::size(result, 0));
-        assert(fern::size(value2, 1) == fern::size(result, 1));
+        assert(size(value1, 0) == size(result, 0));
+        assert(size(value1, 1) == size(result, 1));
+        assert(size(value2, 0) == size(result, 0));
+        assert(size(value2, 1) == size(result, 1));
 
         cover_2d_2d(input_no_data_policy, output_no_data_policy,
             IndexRanges<2>{
-                IndexRange(0, fern::size(result, 0)),
-                IndexRange(0, fern::size(result, 1)),
+                IndexRange(0, size(result, 0)),
+                IndexRange(0, size(result, 1)),
             }, value1, value2, result);
     }
 
@@ -319,14 +319,14 @@ struct CoverByArgumentCategory<
         Value2 const& value2,
         Result& result)
     {
-        assert(fern::size(value1, 0) == fern::size(result, 0));
-        assert(fern::size(value1, 1) == fern::size(result, 1));
-        assert(fern::size(value2, 0) == fern::size(result, 0));
-        assert(fern::size(value2, 1) == fern::size(result, 1));
+        assert(size(value1, 0) == size(result, 0));
+        assert(size(value1, 1) == size(result, 1));
+        assert(size(value2, 0) == size(result, 0));
+        assert(size(value2, 1) == size(result, 1));
 
         ThreadPool& pool(ThreadClient::pool());
-        size_t const size1 = fern::size(result, 0);
-        size_t const size2 = fern::size(result, 1);
+        size_t const size1 = size(result, 0);
+        size_t const size2 = size(result, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
             size1, size2);
         std::vector<std::future<void>> futures;

@@ -1506,8 +1506,8 @@ struct ConvolveInnerPart<true>
                                 if(AFNP::value(
                                         input_no_data_policy,
                                         source,
-                                        fern::size(source, 0),
-                                        fern::size(source, 1),
+                                        size(source, 0),
+                                        size(source, 1),
                                         first_row_source + row,
                                         first_col_source + col,
                                         alternative_value)) {
@@ -1653,9 +1653,9 @@ struct Convolve<
                     input_no_data_policy, output_no_data_policy,
                     IndexRanges<2>{
                         IndexRange(fern::radius(kernel),
-                            fern::size(source, 0) - fern::radius(kernel)),
+                            size(source, 0) - fern::radius(kernel)),
                         IndexRange(fern::radius(kernel),
-                            fern::size(source, 1) - fern::radius(kernel))},
+                            size(source, 1) - fern::radius(kernel))},
                     source, kernel, destination);
     }
 
@@ -1748,13 +1748,13 @@ struct Convolve<
         // Inner part.
         // Divide the inner part in a number of pieces that can be handled
         // concurrently.
-        assert(fern::size(source, 0) == fern::size(destination, 0));
-        assert(fern::size(source, 1) == fern::size(destination, 1));
-        assert(2 * fern::radius(kernel) <= fern::size(source, 0));
-        assert(2 * fern::radius(kernel) <= fern::size(source, 1));
+        assert(size(source, 0) == size(destination, 0));
+        assert(size(source, 1) == size(destination, 1));
+        assert(2 * fern::radius(kernel) <= size(source, 0));
+        assert(2 * fern::radius(kernel) <= size(source, 1));
 
-        size_t const size1 = fern::size(source, 0) - 2 * fern::radius(kernel);
-        size_t const size2 = fern::size(source, 1) - 2 * fern::radius(kernel);
+        size_t const size1 = size(source, 0) - 2 * fern::radius(kernel);
+        size_t const size2 = size(source, 1) - 2 * fern::radius(kernel);
         std::vector<IndexRanges<2>> index_ranges =
             fern::algorithm::index_ranges(pool.size(), size1, size2);
 
