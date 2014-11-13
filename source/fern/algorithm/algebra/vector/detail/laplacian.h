@@ -61,8 +61,8 @@ struct Laplacian<
         Value const& value,
         Result& result)
     {
-        assert(fern::size(value, 0) == fern::size(result, 0));
-        assert(fern::size(value, 1) == fern::size(result, 1));
+        assert(size(value, 0) == size(result, 0));
+        assert(size(value, 1) == size(result, 1));
 
         // TODO See also comments in detail/slope.h.
 

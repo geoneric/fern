@@ -32,7 +32,7 @@ void operation_0d(
     // that input no-data values are already marked as such in the
     // result.
     if(!input_no_data_policy.is_no_data()) {
-        const_reference<Value> v(fern::get(value));
+        const_reference<Value> v(get(value));
 
         if(!OutOfDomainPolicy::within_domain(v)) {
             // Input value is out of domain. Mark result value as
@@ -40,7 +40,7 @@ void operation_0d(
             output_no_data_policy.mark_as_no_data();
         }
         else {
-            reference<Result> r(fern::get(result));
+            reference<Result> r(get(result));
 
             algorithm(v, r);
 
@@ -78,7 +78,7 @@ void operation_1d(
     // result.
     if(!input_no_data_policy.is_no_data()) {
 
-        const_reference<Value> v(fern::get(value));
+        const_reference<Value> v(get(value));
 
         for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end();
                 ++i) {
@@ -91,7 +91,7 @@ void operation_1d(
             }
             else {
 
-                reference<Result> r(fern::get(result, i));
+                reference<Result> r(get(result, i));
 
                 algorithm(v, r);
 
@@ -131,7 +131,7 @@ void operation_2d(
     // result.
     if(!input_no_data_policy.is_no_data()) {
 
-        const_reference<Value> v(fern::get(value));
+        const_reference<Value> v(get(value));
 
         for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end();
                 ++i) {
@@ -146,7 +146,7 @@ void operation_2d(
                 }
                 else {
 
-                    reference<Result> r(fern::get(result, i, j));
+                    reference<Result> r(get(result, i, j));
 
                     algorithm(v, r);
 
@@ -255,7 +255,7 @@ struct UnaryDisaggregateOperation<
 
         operation_1d<OutOfDomainPolicy, OutOfRangePolicy>(algorithm,
             input_no_data_policy, output_no_data_policy,
-            IndexRanges<1>{IndexRange(0, fern::size(result))}, value, result);
+            IndexRanges<1>{IndexRange(0, size(result))}, value, result);
     }
 
 };
@@ -291,8 +291,8 @@ struct UnaryDisaggregateOperation<
         Result& result)
     {
         ThreadPool& pool(ThreadClient::pool());
-        size_t const size = fern::size(result);
-        std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size);
+        size_t const size_ = size(result);
+        std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size_);
         std::vector<std::future<void>> futures;
         futures.reserve(ranges.size());
 
@@ -354,8 +354,8 @@ struct UnaryDisaggregateOperation<
         operation_2d<OutOfDomainPolicy, OutOfRangePolicy>(algorithm,
             input_no_data_policy, output_no_data_policy,
             IndexRanges<2>{
-                IndexRange(0, fern::size(result, 0)),
-                IndexRange(0, fern::size(result, 1))
+                IndexRange(0, size(result, 0)),
+                IndexRange(0, size(result, 1))
             }, value, result);
     }
 
@@ -392,8 +392,8 @@ struct UnaryDisaggregateOperation<
         Result& result)
     {
         ThreadPool& pool(ThreadClient::pool());
-        size_t const size1 = fern::size(result, 0);
-        size_t const size2 = fern::size(result, 1);
+        size_t const size1 = size(result, 0);
+        size_t const size2 = size(result, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
             size1, size2);
         std::vector<std::future<void>> futures;

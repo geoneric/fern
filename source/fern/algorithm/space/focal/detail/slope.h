@@ -65,8 +65,9 @@ struct Slope<
         //      we can't mark this in the result.
         //      Slope itself doesn't have out-of-domain policy.
         //      Slope has an out-of-range policy, but it isn't used yet.
-        assert(fern::size(value, 0) == fern::size(result, 0));
-        assert(fern::size(value, 1) == fern::size(result, 1));
+
+        assert(size(value, 0) == size(result, 0));
+        assert(size(value, 1) == size(result, 1));
 
         using Float = value_type<Value>;
         FERN_STATIC_ASSERT(std::is_floating_point, Float)

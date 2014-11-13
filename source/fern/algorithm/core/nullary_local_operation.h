@@ -28,7 +28,7 @@ void operation_0d(
     // result.
     if(!input_no_data_policy.is_no_data()) {
 
-        reference<Result> r(fern::get(result));
+        reference<Result> r(get(result));
 
         algorithm(r);
 
@@ -63,7 +63,7 @@ void operation_1d(
         // result.
         if(!input_no_data_policy.is_no_data(i)) {
 
-            reference<Result> r(fern::get(result, i));
+            reference<Result> r(get(result, i));
 
             algorithm(r);
 
@@ -101,7 +101,7 @@ void operation_2d(
             // result.
             if(!input_no_data_policy.is_no_data(i, j)) {
 
-                reference<Result> r(fern::get(result, i, j));
+                reference<Result> r(get(result, i, j));
 
                 algorithm(r);
 
@@ -191,7 +191,7 @@ struct NullaryLocalOperation<
 
         operation_1d<>(algorithm,
             input_no_data_policy, output_no_data_policy,
-            IndexRanges<1>{IndexRange(0, fern::size(result))}, result);
+            IndexRanges<1>{IndexRange(0, size(result))}, result);
     }
 
 };
@@ -220,8 +220,8 @@ struct NullaryLocalOperation<
         Result& result)
     {
         ThreadPool& pool(ThreadClient::pool());
-        size_t const size = fern::size(result);
-        std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size);
+        size_t const size_ = size(result);
+        std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size_);
         std::vector<std::future<void>> futures;
         futures.reserve(ranges.size());
 
@@ -275,8 +275,8 @@ struct NullaryLocalOperation<
         operation_2d<>(algorithm,
             input_no_data_policy, output_no_data_policy,
             IndexRanges<2>{
-                IndexRange(0, fern::size(result, 0)),
-                IndexRange(0, fern::size(result, 1))
+                IndexRange(0, size(result, 0)),
+                IndexRange(0, size(result, 1))
             }, result);
     }
 
@@ -306,8 +306,8 @@ struct NullaryLocalOperation<
         Result& result)
     {
         ThreadPool& pool(ThreadClient::pool());
-        size_t const size1 = fern::size(result, 0);
-        size_t const size2 = fern::size(result, 1);
+        size_t const size1 = size(result, 0);
+        size_t const size2 = size(result, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
             size1, size2);
         std::vector<std::future<void>> futures;

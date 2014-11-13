@@ -116,8 +116,8 @@ inline std::ostream& operator<<(
     std::ostream& stream,
     MaskedArray<T, nr_dimensions> const& array)
 {
-    for(size_t r = 0; r < fern::size(array, 0); ++r) {
-        for(size_t c = 0; c < fern::size(array, 1); ++c) {
+    for(size_t r = 0; r < size(array, 0); ++r) {
+        for(size_t c = 0; c < size(array, 1); ++c) {
             stream
                 << (array.mask()[r][c] ? "(" : " ")
                 << std::setw(5) << array[r][c]
@@ -136,8 +136,8 @@ inline std::ostream& operator<<(
     std::ostream& stream,
     MaskedRaster<T, nr_dimensions> const& raster)
 {
-    for(size_t r = 0; r < fern::size(raster, 0); ++r) {
-        for(size_t c = 0; c < fern::size(raster, 1); ++c) {
+    for(size_t r = 0; r < size(raster, 0); ++r) {
+        for(size_t c = 0; c < size(raster, 1); ++c) {
             stream
                 << (raster.mask()[r][c] ? "(" : " ")
                 << std::setw(5) << raster[r][c]

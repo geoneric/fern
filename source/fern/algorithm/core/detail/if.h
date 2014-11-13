@@ -26,8 +26,8 @@ void if_then_0d_0d(
     Result& result)
 {
     if(!input_no_data_policy.is_no_data()) {
-        if(fern::get(condition)) {
-            fern::get(result) = fern::get(true_value);
+        if(get(condition)) {
+            get(result) = get(true_value);
         }
         else {
             output_no_data_policy.mark_as_no_data();
@@ -56,8 +56,8 @@ void if_then_2d_0d(
 
             if(!input_no_data_policy.is_no_data(i, j)) {
 
-                if(fern::get(condition, i, j)) {
-                    fern::get(result, i, j) = fern::get(true_value);
+                if(get(condition, i, j)) {
+                    get(result, i, j) = get(true_value);
                 }
                 else {
                     output_no_data_policy.mark_as_no_data(i, j);
@@ -88,8 +88,8 @@ void if_then_2d_2d(
 
             if(!input_no_data_policy.is_no_data(i, j)) {
 
-                if(fern::get(condition, i, j)) {
-                    fern::get(result, i, j) = fern::get(true_value, i, j);
+                if(get(condition, i, j)) {
+                    get(result, i, j) = get(true_value, i, j);
                 }
                 else {
                     output_no_data_policy.mark_as_no_data(i, j);
@@ -116,11 +116,11 @@ void if_then_else_0d_0d_0d(
     Result& result)
 {
     if(!input_no_data_policy.is_no_data()) {
-        if(fern::get(condition)) {
-            fern::get(result) = fern::get(true_value);
+        if(get(condition)) {
+            get(result) = get(true_value);
         }
         else {
-            fern::get(result) = fern::get(false_value);
+            get(result) = get(false_value);
         }
     }
 }
@@ -148,11 +148,11 @@ void if_then_else_2d_2d_2d(
 
             if(!input_no_data_policy.is_no_data(i, j)) {
 
-                if(fern::get(condition, i, j)) {
-                    fern::get(result, i, j) = fern::get(true_value, i, j);
+                if(get(condition, i, j)) {
+                    get(result, i, j) = get(true_value, i, j);
                 }
                 else {
-                    fern::get(result, i, j) = fern::get(false_value, i, j);
+                    get(result, i, j) = get(false_value, i, j);
                 }
             }
         }
@@ -182,11 +182,11 @@ void if_then_else_2d_0d_0d(
 
             if(!input_no_data_policy.is_no_data(i, j)) {
 
-                if(fern::get(condition, i, j)) {
-                    fern::get(result, i, j) = fern::get(true_value);
+                if(get(condition, i, j)) {
+                    get(result, i, j) = get(true_value);
                 }
                 else {
-                    fern::get(result, i, j) = fern::get(false_value);
+                    get(result, i, j) = get(false_value);
                 }
             }
         }
@@ -327,13 +327,13 @@ struct IfThenByArgumentCategory<
         TrueValue const& true_value,
         Result& result)
     {
-        assert(fern::size(result, 0) == fern::size(condition, 0));
-        assert(fern::size(result, 1) == fern::size(condition, 1));
+        assert(size(result, 0) == size(condition, 0));
+        assert(size(result, 1) == size(condition, 1));
 
         if_then_2d_0d(input_no_data_policy, output_no_data_policy,
             IndexRanges<2>{
-                IndexRange(0, fern::size(condition, 0)),
-                IndexRange(0, fern::size(condition, 1)),
+                IndexRange(0, size(condition, 0)),
+                IndexRange(0, size(condition, 1)),
             }, condition, true_value, result);
     }
 
@@ -366,12 +366,12 @@ struct IfThenByArgumentCategory<
         TrueValue const& true_value,
         Result& result)
     {
-        assert(fern::size(result, 0) == fern::size(condition, 0));
-        assert(fern::size(result, 1) == fern::size(condition, 1));
+        assert(size(result, 0) == size(condition, 0));
+        assert(size(result, 1) == size(condition, 1));
 
         ThreadPool& pool(ThreadClient::pool());
-        size_t const size1 = fern::size(condition, 0);
-        size_t const size2 = fern::size(condition, 1);
+        size_t const size1 = size(condition, 0);
+        size_t const size2 = size(condition, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
             size1, size2);
         std::vector<std::future<void>> futures;
@@ -426,13 +426,13 @@ struct IfThenElseByArgumentCategory<
         FalseValue const& false_value,
         Result& result)
     {
-        assert(fern::size(result, 0) == fern::size(condition, 0));
-        assert(fern::size(result, 1) == fern::size(condition, 1));
+        assert(size(result, 0) == size(condition, 0));
+        assert(size(result, 1) == size(condition, 1));
 
         if_then_else_2d_0d_0d(input_no_data_policy, output_no_data_policy,
             IndexRanges<2>{
-                IndexRange(0, fern::size(condition, 0)),
-                IndexRange(0, fern::size(condition, 1)),
+                IndexRange(0, size(condition, 0)),
+                IndexRange(0, size(condition, 1)),
             }, condition, true_value, false_value, result);
     }
 
@@ -469,12 +469,12 @@ struct IfThenElseByArgumentCategory<
         FalseValue const& false_value,
         Result& result)
     {
-        assert(fern::size(result, 0) == fern::size(condition, 0));
-        assert(fern::size(result, 1) == fern::size(condition, 1));
+        assert(size(result, 0) == size(condition, 0));
+        assert(size(result, 1) == size(condition, 1));
 
         ThreadPool& pool(ThreadClient::pool());
-        size_t const size1 = fern::size(condition, 0);
-        size_t const size2 = fern::size(condition, 1);
+        size_t const size1 = size(condition, 0);
+        size_t const size2 = size(condition, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
             size1, size2);
         std::vector<std::future<void>> futures;
@@ -526,15 +526,15 @@ struct IfThenByArgumentCategory<
         TrueValue const& true_value,
         Result& result)
     {
-        assert(fern::size(true_value, 0) == fern::size(condition, 0));
-        assert(fern::size(true_value, 1) == fern::size(condition, 1));
-        assert(fern::size(result, 0) == fern::size(condition, 0));
-        assert(fern::size(result, 1) == fern::size(condition, 1));
+        assert(size(true_value, 0) == size(condition, 0));
+        assert(size(true_value, 1) == size(condition, 1));
+        assert(size(result, 0) == size(condition, 0));
+        assert(size(result, 1) == size(condition, 1));
 
         if_then_2d_2d(input_no_data_policy, output_no_data_policy,
             IndexRanges<2>{
-                IndexRange(0, fern::size(condition, 0)),
-                IndexRange(0, fern::size(condition, 1)),
+                IndexRange(0, size(condition, 0)),
+                IndexRange(0, size(condition, 1)),
             }, condition, true_value, result);
     }
 
@@ -567,14 +567,14 @@ struct IfThenByArgumentCategory<
         TrueValue const& true_value,
         Result& result)
     {
-        assert(fern::size(true_value, 0) == fern::size(condition, 0));
-        assert(fern::size(true_value, 1) == fern::size(condition, 1));
-        assert(fern::size(result, 0) == fern::size(condition, 0));
-        assert(fern::size(result, 1) == fern::size(condition, 1));
+        assert(size(true_value, 0) == size(condition, 0));
+        assert(size(true_value, 1) == size(condition, 1));
+        assert(size(result, 0) == size(condition, 0));
+        assert(size(result, 1) == size(condition, 1));
 
         ThreadPool& pool(ThreadClient::pool());
-        size_t const size1 = fern::size(condition, 0);
-        size_t const size2 = fern::size(condition, 1);
+        size_t const size1 = size(condition, 0);
+        size_t const size2 = size(condition, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
             size1, size2);
         std::vector<std::future<void>> futures;
@@ -629,17 +629,17 @@ struct IfThenElseByArgumentCategory<
         FalseValue const& false_value,
         Result& result)
     {
-        assert(fern::size(true_value, 0) == fern::size(condition, 0));
-        assert(fern::size(true_value, 1) == fern::size(condition, 1));
-        assert(fern::size(false_value, 0) == fern::size(condition, 0));
-        assert(fern::size(false_value, 1) == fern::size(condition, 1));
-        assert(fern::size(result, 0) == fern::size(condition, 0));
-        assert(fern::size(result, 1) == fern::size(condition, 1));
+        assert(size(true_value, 0) == size(condition, 0));
+        assert(size(true_value, 1) == size(condition, 1));
+        assert(size(false_value, 0) == size(condition, 0));
+        assert(size(false_value, 1) == size(condition, 1));
+        assert(size(result, 0) == size(condition, 0));
+        assert(size(result, 1) == size(condition, 1));
 
         if_then_else_2d_2d_2d(input_no_data_policy, output_no_data_policy,
             IndexRanges<2>{
-                IndexRange(0, fern::size(condition, 0)),
-                IndexRange(0, fern::size(condition, 1)),
+                IndexRange(0, size(condition, 0)),
+                IndexRange(0, size(condition, 1)),
             }, condition, true_value, false_value, result);
     }
 
@@ -676,16 +676,16 @@ struct IfThenElseByArgumentCategory<
         FalseValue const& false_value,
         Result& result)
     {
-        assert(fern::size(true_value, 0) == fern::size(condition, 0));
-        assert(fern::size(true_value, 1) == fern::size(condition, 1));
-        assert(fern::size(false_value, 0) == fern::size(condition, 0));
-        assert(fern::size(false_value, 1) == fern::size(condition, 1));
-        assert(fern::size(result, 0) == fern::size(condition, 0));
-        assert(fern::size(result, 1) == fern::size(condition, 1));
+        assert(size(true_value, 0) == size(condition, 0));
+        assert(size(true_value, 1) == size(condition, 1));
+        assert(size(false_value, 0) == size(condition, 0));
+        assert(size(false_value, 1) == size(condition, 1));
+        assert(size(result, 0) == size(condition, 0));
+        assert(size(result, 1) == size(condition, 1));
 
         ThreadPool& pool(ThreadClient::pool());
-        size_t const size1 = fern::size(condition, 0);
-        size_t const size2 = fern::size(condition, 1);
+        size_t const size1 = size(condition, 0);
+        size_t const size2 = size(condition, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
             size1, size2);
         std::vector<std::future<void>> futures;

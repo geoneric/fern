@@ -29,7 +29,7 @@ void operation_0d(
     Result& result)
 {
     if(!input_no_data_policy.is_no_data()) {
-        algorithm.init(fern::get(values), fern::get(value), fern::get(result));
+        algorithm.init(get(values), get(value), get(result));
     }
     else {
         output_no_data_policy.mark_as_no_data();
@@ -64,14 +64,14 @@ void operation_1d(
     if(begin < end) {
 
         value_type<Result> tmp_result;
-        value_type<Result>& result_ = fern::get(result);
+        value_type<Result>& result_ = get(result);
 
         for(size_t i = begin; i < end; ++i) {
 
             if(!input_no_data_policy.is_no_data(i)) {
 
                 // Initialize result using the first valid value.
-                algorithm.init(fern::get(values, i), fern::get(value),
+                algorithm.init(get(values, i), get(value),
                     tmp_result);
                 result_ = tmp_result;
                 data_seen = true;
@@ -80,11 +80,11 @@ void operation_1d(
 
                     if(!input_no_data_policy.is_no_data(i)) {
 
-                        value_type<Value> const& a_value{fern::get(values, i)};
-                        algorithm.calculate(a_value, fern::get(value),
+                        value_type<Value> const& a_value{get(values, i)};
+                        algorithm.calculate(a_value, get(value),
                             tmp_result);
 
-                        if(!OORP::within_range(a_value, fern::get(value),
+                        if(!OORP::within_range(a_value, get(value),
                                 tmp_result)) {
                             output_no_data_policy.mark_as_no_data();
                             break;
@@ -132,7 +132,7 @@ void operation_2d(
     if(begin1 < end1 && begin2 < end2) {
 
         value_type<Result> tmp_result;
-        value_type<Result>& result_ = fern::get(result);
+        value_type<Result>& result_ = get(result);
 
         size_t i = begin1;
         size_t j = begin2;
@@ -144,7 +144,7 @@ void operation_2d(
                 if(!input_no_data_policy.is_no_data(i, j)) {
 
                     // Initialize result using the first valid value.
-                    algorithm.init(fern::get(values, i, j), fern::get(value),
+                    algorithm.init(get(values, i, j), get(value),
                         tmp_result);
                     result_ = tmp_result;
                     data_seen = true;
@@ -166,13 +166,13 @@ void operation_2d(
 
                     if(!input_no_data_policy.is_no_data(i, j)) {
 
-                        value_type<Value> const& a_value{fern::get(
+                        value_type<Value> const& a_value{get(
                             values, i, j)};
-                        algorithm.calculate(a_value, fern::get(value),
+                        algorithm.calculate(a_value, get(value),
                             tmp_result);
 
                         // lhs, rhs, lhs + rhs
-                        if(!OORP::within_range(a_value, fern::get(value),
+                        if(!OORP::within_range(a_value, get(value),
                                 tmp_result)) {
                             output_no_data_policy.mark_as_no_data();
                             break;
@@ -363,7 +363,7 @@ struct BinaryAggregateOperation<
 
         operation_1d<OutOfDomainPolicy, OutOfRangePolicy>(algorithm,
             input_no_data_policy, output_no_data_policy,
-            IndexRanges<1>{IndexRange(0, fern::size(values))},
+            IndexRanges<1>{IndexRange(0, size(values))},
             values, value, result);
     }
 
@@ -404,12 +404,12 @@ struct BinaryAggregateOperation<
 
         // operation_1d<OutOfDomainPolicy, OutOfRangePolicy>(algorithm,
         //     input_no_data_policy, output_no_data_policy,
-        //     IndexRanges<1>{IndexRange(0, fern::size(values))},
+        //     IndexRanges<1>{IndexRange(0, size(values))},
         //     values, value, result);
 
         ThreadPool& pool(ThreadClient::pool());
-        size_t const size = fern::size(values);
-        std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size);
+        size_t const size_ = size(values);
+        std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size_);
         std::vector<std::future<void>> futures;
         futures.reserve(ranges.size());
         std::vector<Result> results_per_block(ranges.size(), Result(0));
@@ -559,8 +559,8 @@ struct BinaryAggregateOperation<
         operation_2d<OutOfDomainPolicy, OutOfRangePolicy>(algorithm,
             input_no_data_policy, output_no_data_policy,
             IndexRanges<2>{
-                IndexRange(0, fern::size(values, 0)),
-                IndexRange(0, fern::size(values, 1))},
+                IndexRange(0, size(values, 0)),
+                IndexRange(0, size(values, 1))},
             values, value, result);
     }
 
@@ -598,8 +598,8 @@ struct BinaryAggregateOperation<
         Result& result)
     {
         ThreadPool& pool(ThreadClient::pool());
-        size_t const size1 = fern::size(values, 0);
-        size_t const size2 = fern::size(values, 1);
+        size_t const size1 = size(values, 0);
+        size_t const size2 = size(values, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
             size1, size2);
         std::vector<std::future<void>> futures;
