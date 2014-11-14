@@ -160,3 +160,38 @@ MACRO(CONFIGURE_PYTHON_EXTENSION
         )
     ENDIF(WIN32)
 ENDMACRO()
+
+
+# Add a test target.
+# Also configures the environment to point to the location of shared libs.
+# The idea of this is to keep the dev's shell as clean as possible. Use
+# ctest command to run unit tests.
+# SCOPE: Some prefix. Often the lib name of the lib being tested.
+# NAME : Name of test module, without extension.
+# LINK_LIBRARIES: Libries to link against.
+# MACRO(ADD_UNIT_TEST2 SCOPE NAME LINK_LIBRARIES)
+MACRO(ADD_UNIT_TEST2 SCOPE NAME) #  LINK_LIBRARIES)
+    SET(LINK_LIBRARIES ${ARGN})
+    ADD_EXECUTABLE(${SCOPE}_${NAME} ${NAME})
+    TARGET_LINK_LIBRARIES(${SCOPE}_${NAME}
+        ${LINK_LIBRARIES}
+        ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+        stdc++
+    )
+    ADD_TEST(NAME ${SCOPE}_${NAME} COMMAND ${SCOPE}_${NAME})
+
+    # Maybe add ${EXECUTABLE_OUTPUT_PATH} in the future. If needed.
+    SET(PATH_LIST $ENV{PATH})
+    LIST(INSERT PATH_LIST 0 ${Boost_LIBRARY_DIRS})
+    SET(PATH_STRING "${PATH_LIST}")
+
+    IF(${host_system_name} STREQUAL "windows")
+        STRING(REPLACE "\\" "/" PATH_STRING "${PATH_STRING}")
+        STRING(REPLACE ";" "\\;" PATH_STRING "${PATH_STRING}")
+    ELSE()
+        STRING(REPLACE ";" ":" PATH_STRING "${PATH_STRING}")
+    ENDIF()
+
+    SET_PROPERTY(TEST ${SCOPE}_${NAME}
+        PROPERTY ENVIRONMENT "PATH=${PATH_STRING}")
+ENDMACRO()

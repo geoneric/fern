@@ -15,19 +15,7 @@ SET(TEST_NAMES
     unary_local_operation_test
     unite_no_data_test
 )
-
-MACRO(ADD_UNIT_TEST NAME)
-    ADD_EXECUTABLE(algorithm_core_${NAME} ${NAME})
-    TARGET_LINK_LIBRARIES(algorithm_core_${NAME}
-        fern_algorithm_core
-        fern_feature_core  # fern::extents
-        fern_core
-        ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
-        stdc++
-    )
-    ADD_TEST(NAME algorithm_core_${NAME} COMMAND algorithm_core_${NAME})
-ENDMACRO()
-
 FOREACH(NAME ${TEST_NAMES})
-    ADD_UNIT_TEST(${NAME})
+    ADD_UNIT_TEST2(algorithm_core ${NAME}
+        fern_algorithm_core fern_feature_core fern_core)
 ENDFOREACH()

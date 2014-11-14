@@ -131,3 +131,46 @@ IF(FERN_MALLOC_H_EXISTS)
    CHECK_SYMBOL_EXISTS(M_TRIM_THRESHOLD malloc.h
        FERN_REQUIRED_MALLOC_SYMBOLS_AVAILABLE)
 ENDIF()
+
+
+# make_unique not available in gcc <= 4.8, but we have our own.
+INCLUDE(CheckCXXSourceRuns)
+CHECK_CXX_SOURCE_RUNS("
+    #include <memory>
+
+    int main(int, char**)
+    {
+        auto silly = std::make_unique<int>(5);
+    }"
+    FERN_COMPILER_HAS_MAKE_UNIQUE
+)
+IF(NOT FERN_COMPILER_HAS_MAKE_UNIQUE)
+    SET(FERN_COMPILER_DOES_NOT_HAVE_MAKE_UNIQUE TRUE)
+ENDIF()
+
+
+# Link errors on gcc-4.8. Incomplete support for regex.
+# If regex is not usable, we cannot use String::split and all code
+# that depends on it. That is fine if we are only building for Fern.Algorithm,
+# but may not be fine for some other components.
+CHECK_CXX_SOURCE_RUNS("
+    #include <regex>
+    #include <string>
+    #include <vector>
+
+    int main(int, char**)
+    {
+        std::string silly;
+        std::regex regular_expression(\"\");
+        std::vector<std::string> words;
+
+        std::copy_if(std::sregex_token_iterator(silly.begin(), silly.end(),
+            regular_expression, -1), std::sregex_token_iterator(),
+            std::back_inserter(words),
+            [](std::string const& string) { return !string.empty(); });
+    }"
+    FERN_COMPILER_HAS_REGEX
+)
+IF(NOT FERN_COMPILER_HAS_REGEX)
+    SET(FERN_COMPILER_DOES_NOT_HAVE_REGEX TRUE)
+ENDIF()

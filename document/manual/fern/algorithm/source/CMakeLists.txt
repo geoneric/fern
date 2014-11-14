@@ -1,5 +1,6 @@
 INCLUDE_DIRECTORIES(
     ${CMAKE_SOURCE_DIR}/source
+    ${CMAKE_BINARY_DIR}/source
 )
 ADD_SUBDIRECTORY(test)
 

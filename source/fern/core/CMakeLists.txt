@@ -1,7 +1,6 @@
 ADD_SUBDIRECTORY(test)
 
 SET(SOURCES
-    data_name
     data_types
     detail/function_wrapper
     exception
@@ -10,7 +9,6 @@ SET(SOURCES
     join_threads
     messages
     parse_error
-    path
     script_error
     stack
     stopwatch
@@ -21,6 +19,15 @@ SET(SOURCES
     validate_error
     value_types
 )
+IF(FERN_COMPILER_HAS_REGEX)
+    # Skip modules that depend on String::split, which is not included if
+    # the compiler doesn't support std::regex.
+    SET(SOURCES
+        ${SOURCES}
+        data_name
+        path
+    )
+ENDIF()
 ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_core ${SOURCES})
 TARGET_LINK_LIBRARIES(fern_core
     ${Boost_FILESYSTEM_LIBRARY}

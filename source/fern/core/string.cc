@@ -384,6 +384,7 @@ String join(
 }
 
 
+#ifndef FERN_COMPILER_DOES_NOT_HAVE_REGEX
 //! Split this string by \a characters and return the result.
 /*!
   \param     characters Characters to split string by. If this string is empty,
@@ -412,5 +413,6 @@ std::vector<String> String::split(
 
     return words2;
 }
+#endif
 
 } // namespace fern

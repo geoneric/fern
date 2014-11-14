@@ -1,6 +1,10 @@
 #pragma once
 #include <algorithm>
 #include <memory>
+#include "fern/configure.h"
+#ifdef FERN_COMPILER_DOES_NOT_HAVE_MAKE_UNIQUE
+#include "fern/core/memory.h"
+#endif
 
 
 namespace fern {

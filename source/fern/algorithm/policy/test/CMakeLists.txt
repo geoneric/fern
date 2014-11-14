@@ -3,16 +3,6 @@ SET(TEST_NAMES
     discard_domain_errors_test
     mark_no_data_by_value_test
 )
-
-MACRO(ADD_UNIT_TEST NAME)
-    ADD_EXECUTABLE(algorithm_policy_${NAME} ${NAME})
-    TARGET_LINK_LIBRARIES(algorithm_policy_${NAME}
-        ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
-        stdc++
-    )
-    ADD_TEST(NAME algorithm_policy_${NAME} COMMAND algorithm_policy_${NAME})
-ENDMACRO()
-
 FOREACH(NAME ${TEST_NAMES})
-    ADD_UNIT_TEST(${NAME})
+    ADD_UNIT_TEST2(algorithm_policy ${NAME})
 ENDFOREACH()

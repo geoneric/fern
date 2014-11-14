@@ -4,18 +4,6 @@ SET(TEST_NAMES
     sin_test
     tan_test
 )
-
-MACRO(ADD_UNIT_TEST NAME)
-    ADD_EXECUTABLE(algorithm_trigonometry_${NAME} ${NAME})
-    TARGET_LINK_LIBRARIES(algorithm_trigonometry_${NAME}
-        fern_core
-        ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
-    )
-    ADD_TEST(
-        NAME algorithm_trigonometry_${NAME}
-        COMMAND algorithm_trigonometry_${NAME})
-ENDMACRO()
-
 FOREACH(NAME ${TEST_NAMES})
-    ADD_UNIT_TEST(${NAME})
+    ADD_UNIT_TEST2(algorithm_trigonometry ${NAME} fern_core)
 ENDFOREACH()

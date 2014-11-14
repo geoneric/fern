@@ -1,11 +1,11 @@
+# https://github.com/geoneric/peacock/blob/master/cmake/PeacockPlatform.cmake
+INCLUDE(PeacockPlatform) # This one first. Other modules use the variables.
+
 IF(WIN32)
     SET(CMAKE_DEBUG_POSTFIX "d")
 ENDIF()
 
-# https://github.com/geoneric/peacock/blob/master/cmake/PeacockPlatform.cmake
-INCLUDE(PeacockPlatform)
-
+INCLUDE(FernCompiler)  # This one first. Configuration uses the compiler.
 INCLUDE(FernConfiguration)
-INCLUDE(FernCompiler)
 INCLUDE(FernExternal)
 INCLUDE(FernMacros)
