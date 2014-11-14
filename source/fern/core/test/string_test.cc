@@ -92,6 +92,7 @@ BOOST_AUTO_TEST_CASE(contains)
 }
 
 
+#ifndef FERN_COMPILER_DOES_NOT_HAVE_REGEX
 BOOST_AUTO_TEST_CASE(split)
 {
     fern::String string;
@@ -117,6 +118,7 @@ BOOST_AUTO_TEST_CASE(split)
     BOOST_CHECK_EQUAL(words[0], fern::String("ab"));
     BOOST_CHECK_EQUAL(words[1], fern::String("cd"));
 }
+#endif
 
 
 BOOST_AUTO_TEST_CASE(encode_in_default_encoding)

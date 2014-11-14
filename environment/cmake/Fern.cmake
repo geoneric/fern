@@ -5,7 +5,7 @@ ENDIF()
 # https://github.com/geoneric/peacock/blob/master/cmake/PeacockPlatform.cmake
 INCLUDE(PeacockPlatform)
 
+INCLUDE(FernCompiler)  # This one first. Configuration uses compiler.
 INCLUDE(FernConfiguration)
-INCLUDE(FernCompiler)
 INCLUDE(FernExternal)
 INCLUDE(FernMacros)

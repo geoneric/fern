@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <boost/format.hpp>
+#include "fern/configure.h"
 
 
 namespace fern {
@@ -83,7 +84,9 @@ public:
     String&        replace             (String const& old_string,
                                         String const& new_string);
 
+#ifndef FERN_COMPILER_DOES_NOT_HAVE_REGEX
     std::vector<String> split          (String characters=String()) const;
+#endif
 
     template<
         class T>

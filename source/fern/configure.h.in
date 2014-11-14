@@ -14,6 +14,11 @@
 // TODO Detect FERN_HOST_ARCHITECTURE and FERN_TARGET_ARCHITECTURE.
 // #define FERN_ARCHITECTURE "${ARCHITECTURE}"
 
+
+#cmakedefine FERN_COMPILER_DOES_NOT_HAVE_MAKE_UNIQUE
+#cmakedefine FERN_COMPILER_DOES_NOT_HAVE_REGEX
+
+
 namespace fern {
 
 } // namespace fern
