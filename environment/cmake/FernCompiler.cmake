@@ -51,17 +51,20 @@ IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR
     SET(CMAKE_CXX_FLAGS
         "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wcast-qual -Wwrite-strings -Werror=strict-aliasing -pedantic -fno-strict-overflow -ftemplate-backtrace-limit=0"
     )
-    SET(CMAKE_CXX_FLAGS_RELEASE
-        "${CMAKE_CXX_FLAGS_RELEASE} -Werror"
-    )
 
-#     IF(NOT MINGW)
-#         # This option triggers a warning on Windows, something in
-#         # boost.filesystem. Not fixing it now.
-#         SET(CMAKE_CXX_FLAGS
-#             "${CMAKE_CXX_FLAGS} -Wzero-as-null-pointer-constant"
-#         )
-#     ENDIF()
+    # This results in an error on mingw/gcc 4.8/windows. Some warning about
+    # and unused parameters. Skip for now.
+    # SET(CMAKE_CXX_FLAGS_RELEASE
+    #         "${CMAKE_CXX_FLAGS_RELEASE} -Werror"
+    #     )
+
+    # IF(NOT MINGW)
+    #     # This option triggers a warning on Windows, something in
+    #     # boost.filesystem. Not fixing it now.
+    #     SET(CMAKE_CXX_FLAGS
+    #         "${CMAKE_CXX_FLAGS} -Wzero-as-null-pointer-constant"
+    #     )
+    # ENDIF()
 
     IF(APPLE)
         SET(CMAKE_CXX_FLAGS
