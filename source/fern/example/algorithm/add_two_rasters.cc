@@ -21,7 +21,7 @@ fern::algorithm::ExecutionPolicy execution_policy = fern::algorithm::parallel;
 // a ThreadClient instance, although it doesn't hurt.
 fern::ThreadClient client;
 
-}
+}  // namespace example
 
 
 int main(
@@ -36,16 +36,16 @@ int main(
 
     // [0, 1, 2, 3, ...]
     Raster<int32_t> raster1(cell_size, nr_rows, nr_cols);
-    std::iota(raster1.values().begin(), raster1.values().end(), 0);
+    std::iota(begin(raster1), end(raster1), 0);
 
     // [5, 5, 5, ...]
     Raster<int32_t> raster2(cell_size, nr_rows, nr_cols);
-    std::fill(raster2.values().begin(), raster2.values().end(), 5);
+    std::fill(begin(raster2), end(raster2), 5);
 
     // [5, 6, 7, 8, ...]
     // Operator syntax.
     auto raster3 = raster1 + raster2;
-    assert(raster3.values()[100] == 100 + 5);
+    assert(raster3.get(100) == 100 + 5);
 
     // Function call syntax.
     auto raster4 = slope(cast<double>(raster3));

@@ -21,7 +21,7 @@ SET(DOXYGEN_TEMPLATE "
     QUIET                   = YES
     RECURSIVE               = YES
     SEARCH_INCLUDES         = YES
-    SHOW_FILES              = NO
+    SHOW_FILES              = YES
     SHOW_USED_FILES         = NO
     SHOW_GROUPED_MEMB_INC   = YES
     SORT_MEMBER_DOCS        = NO

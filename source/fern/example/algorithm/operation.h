@@ -21,14 +21,14 @@ fern::algorithm::add::result_type<Value1, Value2> add(
     Value1 const& lhs,
     Value2 const& rhs)
 {
-    assert(fern::cell_size(lhs, 0) == fern::cell_size(lhs, 1));
-    assert(fern::cell_size(lhs, 0) == fern::cell_size(rhs, 0));
-    assert(fern::cell_size(lhs, 1) == fern::cell_size(rhs, 1));
-    assert(fern::size(lhs, 0) == fern::size(rhs, 0));
-    assert(fern::size(lhs, 1) == fern::size(rhs, 1));
+    assert(cell_size(lhs, 0) == cell_size(lhs, 1));
+    assert(cell_size(lhs, 0) == cell_size(rhs, 0));
+    assert(cell_size(lhs, 1) == cell_size(rhs, 1));
+    assert(size(lhs, 0) == size(rhs, 0));
+    assert(size(lhs, 1) == size(rhs, 1));
 
     fern::algorithm::add::result_type<Value1, Value2> result(
-        fern::cell_size(lhs, 0), fern::size(lhs, 0), fern::size(lhs, 1));
+        cell_size(lhs, 0), size(lhs, 0), size(lhs, 1));
 
     fern::algorithm::algebra::add(execution_policy, lhs, rhs, result);
 
@@ -42,12 +42,12 @@ template<
 fern::Collection<Value, ResultValueType> cast(
     Value const& value)
 {
-    assert(fern::cell_size(value, 0) == fern::cell_size(value, 1));
+    assert(cell_size(value, 0) == cell_size(value, 1));
 
     fern::Collection<Value, ResultValueType> result(
-        fern::cell_size(value, 0),
-        fern::size(value, 0),
-        fern::size(value, 1));
+        cell_size(value, 0),
+        size(value, 0),
+        size(value, 1));
 
     fern::algorithm::core::cast(execution_policy, value, result);
 
@@ -60,10 +60,10 @@ template<
 fern::Collection<Value, fern::value_type<Value>> slope(
     Value const& value)
 {
-    assert(fern::cell_size(value, 0) == fern::cell_size(value, 1));
+    assert(cell_size(value, 0) == cell_size(value, 1));
 
     fern::Collection<Value, fern::value_type<Value>> result(
-        fern::cell_size(value, 0), fern::size(value, 0), fern::size(value, 1));
+        cell_size(value, 0), size(value, 0), size(value, 1));
 
     fern::algorithm::space::slope(execution_policy, value, result);
 

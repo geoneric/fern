@@ -6,6 +6,9 @@
 
 namespace fern {
 
+/*!
+    @brief      Traits used by Fern.Algorithm.
+*/
 template<
     typename T>
 struct ArgumentTraits<example::Raster<T>>
@@ -24,15 +27,21 @@ struct ArgumentTraits<example::Raster<T>>
 
     using reference = T&;
 
-    using argument_category = raster_2d_tag;
+    using argument_category = fern::raster_2d_tag;
+
+    using iterator = typename example::Raster<T>::iterator;
 
 };
 
+} // namespace fern
+
+
+namespace example {
 
 template<
     typename T>
 size_t size(
-    example::Raster<T> const& raster,
+    Raster<T> const& raster,
     size_t index)
 {
     assert(index == 0 || index == 1);
@@ -43,29 +52,29 @@ size_t size(
 template<
     typename T>
 T const& get(
-    example::Raster<T> const& raster,
+    Raster<T> const& raster,
     size_t row,
     size_t col)
 {
-    return raster.values()[row * raster.nr_cols() + col];
+    return raster.get(row, col);
 }
 
 
 template<
     typename T>
 T& get(
-    example::Raster<T>& raster,
+    Raster<T>& raster,
     size_t row,
     size_t col)
 {
-    return raster.values()[row * raster.nr_cols() + col];
+    return raster.get(row, col);
 }
 
 
 template<
     typename T>
 double cell_size(
-    example::Raster<T> const& raster,
+    Raster<T> const& raster,
     size_t /* index */)
 {
     return raster.cell_size();
@@ -75,11 +84,29 @@ double cell_size(
 template<
     typename T,
     typename U>
-example::Raster<T> clone(
-    example::Raster<U> const& raster)
+Raster<T> clone(
+    Raster<U> const& raster)
 {
-    return std::move(example::Raster<T>(raster.cell_size(), raster.nr_rows(),
+    return std::move(Raster<T>(raster.cell_size(), raster.nr_rows(),
         raster.nr_cols()));
 }
 
-} // namespace fern
+
+template<
+    typename T>
+typename fern::ArgumentTraits<Raster<T>>::iterator begin(
+    Raster<T>& raster)
+{
+    return raster.begin();
+}
+
+
+template<
+    typename T>
+typename fern::ArgumentTraits<Raster<T>>::iterator end(
+    Raster<T>& raster)
+{
+    return raster.end();
+}
+
+} // namespace example

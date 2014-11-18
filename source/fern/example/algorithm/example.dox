@@ -1,0 +1,141 @@
+/*!
+    @page       add_two_rasters Add two rasters example
+
+
+    @tableofcontents
+
+
+    @section overview Overview
+
+    Let us assume that we want to calculate a new result based on two 2D
+    raster inputs, where the type of the rasters is not known to
+    Fern.Algorithm and cannot be changed.
+
+    In short, we want the folowing code to work:
+
+    @code
+    example::Raster<double> elevation, error;
+
+    // Fill rasters
+    // ...
+
+    auto elevation = elevation + error;
+    auto slope = slope(elevation);
+    @endcode
+
+    In this example we will explain what is needed to allow this code
+    to work.
+
+
+    @section connecting_data Connecting data to the algorithms
+
+    Fern.Algorithm algorithms are function templates whose template arguments
+    are policy templates and types, and argument and result types. For now,
+    we focus on the argument and result types.
+
+    In the implementation of each algorithm, there is code that tries
+    to figure out (at compile-time) what kind of types the argument
+    and result types have. Based on the outcome of these checks, an
+    implementation is selected. For example, when adding two floating point
+    values a different implementation is used then when adding a 3D array
+    and a floating point value.
+
+    The kind of type is called a category, and the check requires that for
+    each argument and result type there is an implementation of
+
+    @code
+    template<
+        typename T>
+    struct fern::ArgumentTraits<SomeType>
+    {
+
+        using argument_category = some_category;
+
+    };
+    @endcode
+
+    where `SomeType` must be replaced by the template and `some_category` must
+    be replaced by one of the supported categories. In our case, since we
+    are dealing with rasters, `SomeType` is example::Raster<T> and the category
+    is fern::raster_2d_tag, resulting in
+
+    @code
+    template<
+        typename T>
+    struct fern::ArgumentTraits<example::Raster<T>>
+    {
+
+        using argument_category = fern::raster_2d_tag;
+
+    };
+    @endcode
+
+    Another vital piece of information that is needed by the algorithms
+    is the value type of individual values. In our case, this is the type of
+    the values in the raster. For this, we need to provide the `value_type`
+    trait:
+
+    @code
+    template<
+        typename T>
+    struct fern::ArgumentTraits<example::Raster<T>>
+    {
+
+        using value_type = T;
+
+    };
+    @endcode
+
+    Additionally, for the algorithm to be able to define local variables,
+    we need to define `const_reference` and `reference`. The complete
+    implementation can be found in fern/example/algorithm/raster_traits.h.
+
+    With these traits in place, the compiler can select the correct
+    implementation of each algorithm.
+
+    To be able to read and write values from and to our rasters, the algorithm
+    calls a function called `get`, which we must overload for our
+    rasters. Such a 'customization point' enables the algorithm to use
+    instances of types it does not know about. The `get` function is
+    called to obtain a readable or writable reference to a value at a
+    certain position in an instance. It is called with an instance as
+    the first argument and zero or more indices as subsequent arguments,
+    depending on the dimensionality of the value. In our case, these indices
+    are the row and the column id's.
+
+    In case of the add and slope algorithms, we need to implement:
+
+    @code
+    // Return the number of elements along a dimension.
+    template<
+        typename T>
+    size_t size(example::Raster<T> const& raster, size_t index);
+
+    // Return a writable reference to an element.
+    template<
+        typename T>
+    T& get(example::Raster<T> const& raster, size_t row, size_t col);
+
+    // Return a readable reference to an element.
+    template<
+        typename T>
+    T const& get(example::Raster<T> const& raster, size_t row, size_t col);
+
+    // Return the size of elements along a dimension.
+    template<
+        typename T>
+    double cell_size(example::Raster<T> const& raster, size_t index);
+    @endcode
+
+    With these functions in place, the Fern.Algorithm algorithms can interact
+    with our example::Raster instances.
+
+
+    \section syntactic_sugar Syntactic sugar
+
+    TODO: Wrappers around Fern.Algorithm algorithms, selecting the correct
+        policies for a project.
+
+    TODO: Operator overloading.
+
+*/
