@@ -28,6 +28,12 @@ IF(FERN_ALGORITHM)
         DESTINATION include/fern
         FILES_MATCHING PATTERN "*.h"
     )
+    INSTALL(
+        DIRECTORY example
+        DESTINATION doc
+        FILES_MATCHING PATTERN "*.h"
+        FILES_MATCHING PATTERN "*.cc"
+    )
 ENDIF()
 
 ### ELSE()
