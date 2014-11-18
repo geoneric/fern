@@ -1,3 +1,18 @@
+# Peacock is a project for building external software. It can be used to
+# build the Boost libraries on all kinds of platform, for example. A
+# PEACOCK_PREFIX CMake variable or environment variable can be set to
+# point us to the root of the platform-specific files. By adding the
+# current platform string to this prefix, we end up at the root of the
+# header files and libraries.
+# See also: https://github.com/geoneric/peacock
+
+# If the PEACOCK_PREFIX CMake variable is not set, but an environment
+# variable with that name is, then copy it to a CMake variable. This way
+# the CMake variable takes precedence.
+IF((NOT PEACOCK_PREFIX) AND (DEFINED ENV{PEACOCK_PREFIX}))
+    SET(PEACOCK_PREFIX $ENV{PEACOCK_PREFIX})
+ENDIF()
+
 IF(PEACOCK_PREFIX)
     # # if cross compiling:
     # SET(CMAKE_FIND_ROOT_PATH
