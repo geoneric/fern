@@ -31,8 +31,9 @@ IF(FERN_ALGORITHM)
     INSTALL(
         DIRECTORY example
         DESTINATION doc
-        FILES_MATCHING PATTERN "*.h"
-        FILES_MATCHING PATTERN "*.cc"
+        FILES_MATCHING
+            PATTERN "*.h"
+            PATTERN "*.cc"
     )
 ENDIF()
 
