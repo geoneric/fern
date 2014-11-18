@@ -26,7 +26,9 @@ IF(FERN_ALGORITHM)
     INSTALL(
         DIRECTORY algorithm core
         DESTINATION include/fern
-        FILES_MATCHING PATTERN "*.h"
+        FILES_MATCHING
+            PATTERN "*.h"
+            PATTERN "test" EXCLUDE
     )
     INSTALL(
         DIRECTORY example
@@ -34,6 +36,7 @@ IF(FERN_ALGORITHM)
         FILES_MATCHING
             PATTERN "*.h"
             PATTERN "*.cc"
+            PATTERN "test" EXCLUDE
     )
 ENDIF()
 
