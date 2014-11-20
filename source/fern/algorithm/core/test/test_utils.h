@@ -129,6 +129,8 @@ inline std::ostream& operator<<(
 
     return stream;
 }
+
+
 template<
     class T,
     size_t nr_dimensions>
