@@ -40,7 +40,7 @@ public:
                    IndexRanges         (IndexRange range1,
                                         IndexRange range2);
 
-    IndexRanges&   operator=           (IndexRanges const& other)=delete;
+    IndexRanges&   operator=           (IndexRanges const& other)=default;
 
     IndexRanges&   operator=           (IndexRanges&& other);
 
@@ -50,6 +50,8 @@ public:
                    operator[]          (size_t index) const;
 
     bool           empty               () const;
+
+    size_t         size                () const;
 
 private:
 
@@ -161,6 +163,26 @@ inline bool IndexRanges<nr_dimensions>::empty() const
 {
     return std::any_of(this->cbegin(), this->cend(),
         [](IndexRange const& range){ return range.empty(); });
+}
+
+
+template<
+    size_t nr_dimensions>
+inline size_t IndexRanges<nr_dimensions>::size() const
+{
+    size_t result = 0;
+
+    for(auto const& range: *this) {
+        if(range.empty()) {
+            result = 0;
+            break;
+        }
+        else {
+            result += range.size();
+        }
+    }
+
+    return result;
 }
 
 
