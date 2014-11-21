@@ -3,10 +3,17 @@
 // #include "fern/core/array_2d_traits.h"
 // #include "fern/core/constant_traits.h"
 #include "fern/core/base_class.h"
+#include "fern/core/point.h"
 #include "fern/core/thread_client.h"
 #include "fern/algorithm/statistic/sum.h"
+#include "fern/algorithm/core/copy.h"
 #include "fern/algorithm/core/index_ranges.h"
 #include "fern/algorithm/policy/execution_policy.h"
+
+
+// Optimalisations:
+// - Compression with SkipNoData input no-data policy is the same as copy.
+//   Forward such a call. copy can be optimized too.
 
 
 namespace fern {
@@ -132,17 +139,26 @@ struct CompressByArgumentCategory<
             future.get();
         }
 
-        // TODO hier verder
-        // // Copy all results per regions to the front of the final result.
-        // Count offset{counts_per_block[0]};
+        // Copy all results per region to the front of the final result.
+        Point<Count, 1> position{0};
 
-        // for(size_t i = 1; i < ranges.size(); ++i) {
-        //     auto const& block_range(ranges[i]);
-        //     // TODO Define range of values to copy. block_range is almost it.
-        //     // TODO Define position to copy to. offset?
-        //     copy(sequential, result, block_range, result, offset);
-        //     offset += counts_per_block[i];
-        // }
+        for(size_t i = 1; i < ranges.size(); ++i) {
+            // Define range of values to copy. block_range is almost it, but
+            // we need to use the number of compressed values instead of the
+            // full range.
+            assert(counts_per_block[i] <= ranges[i].size());
+            auto& block_range(ranges[i]);
+            block_range[0].set_end(block_range[0].begin() +
+                counts_per_block[i]);
+
+            // Define position to copy to.
+            get<0>(position) += counts_per_block[i-1];
+            assert(block_range[0].begin() >= get<0>(position));
+
+            // Copy this block's compress result to the front of the overall
+            // result collection.
+            core::copy(sequential, result, block_range, result, position);
+        }
 
         statistic::sum(sequential, counts_per_block, count);
     }

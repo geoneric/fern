@@ -49,6 +49,8 @@ public:
     IndexRange const&
                    operator[]          (size_t index) const;
 
+    IndexRange&    operator[]          (size_t index);
+
     bool           empty               () const;
 
     size_t         size                () const;
@@ -146,6 +148,21 @@ template<
     size_t nr_dimensions>
 inline IndexRange const& IndexRanges<nr_dimensions>::operator[](
     size_t index) const
+{
+    assert(index < nr_dimensions);
+    return Base::operator[](index);
+}
+
+
+//! Subscript instance by \a index.
+/*!
+  \return    The index range of dimension \a index.
+  \exception \a index must be smaller than \a nr_dimensions.
+*/
+template<
+    size_t nr_dimensions>
+inline IndexRange& IndexRanges<nr_dimensions>::operator[](
+    size_t index)
 {
     assert(index < nr_dimensions);
     return Base::operator[](index);

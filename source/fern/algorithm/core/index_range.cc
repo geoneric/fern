@@ -58,6 +58,14 @@ size_t IndexRange::size() const
 }
 
 
+void IndexRange::set_end(
+    index end)
+{
+    assert(end >= _begin);
+    _end = end;
+}
+
+
 //! Return whether or not \a lhs equals \a rhs.
 /*!
 */

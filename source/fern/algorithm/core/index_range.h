@@ -38,6 +38,8 @@ public:
 
     size_t         size                () const;
 
+    void           set_end             (index end);
+
 private:
 
     index          _begin;

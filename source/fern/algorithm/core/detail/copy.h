@@ -5,6 +5,11 @@
 #include "fern/algorithm/policy/execution_policy.h"
 
 
+// Optimalisations:
+// - Copy of contiguous arrays with SkipNoData input no-data policy can call
+//   std::copy/memcpy/...
+
+
 namespace fern {
 namespace algorithm {
 namespace copy {
