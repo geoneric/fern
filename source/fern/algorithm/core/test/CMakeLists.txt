@@ -4,6 +4,7 @@ SET(TEST_NAMES
     compress_test
     copy_test
     cover_test
+    decompress_test
     if_test
     index_range_test
     index_ranges_test
