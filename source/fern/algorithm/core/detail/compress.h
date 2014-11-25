@@ -1,11 +1,8 @@
 #pragma once
 #include "fern/core/assert.h"
-// #include "fern/core/array_2d_traits.h"
-// #include "fern/core/constant_traits.h"
 #include "fern/core/base_class.h"
 #include "fern/core/point.h"
 #include "fern/core/thread_client.h"
-#include "fern/algorithm/statistic/sum.h"
 #include "fern/algorithm/core/copy.h"
 #include "fern/algorithm/core/index_ranges.h"
 #include "fern/algorithm/policy/execution_policy.h"
@@ -45,6 +42,80 @@ static void compress_1d(
     }
 
     count = target_index - index_ranges[0].begin();
+}
+
+
+template<
+    typename InputNoDataPolicy,
+    typename Value,
+    typename Result,
+    typename Count>
+static void compress_2d(
+    InputNoDataPolicy const& input_no_data_policy,
+    IndexRanges<2> const& index_ranges,
+    Value const& value,
+    Result& result,
+    Count& count)
+{
+    // i = row * nr_cols + col
+    size_t const initial_index{index_ranges[0].begin() * size(value, 1) +
+        index_ranges[1].begin()};
+    size_t target_index{initial_index};
+
+    for(size_t source_index1 = index_ranges[0].begin();
+            source_index1 < index_ranges[0].end(); ++source_index1) {
+        for(size_t source_index2 = index_ranges[1].begin();
+                source_index2 < index_ranges[1].end(); ++source_index2) {
+
+            if(!input_no_data_policy.is_no_data(source_index1, source_index2)) {
+                get(result, target_index) = get(value, source_index1,
+                    source_index2);
+                ++target_index;
+            }
+        }
+    }
+
+    count = target_index - initial_index;
+}
+
+
+// Copy all results per region to the front of the final result.
+template<
+    typename Result,
+    typename Count,
+    size_t nr_dimensions>
+void copy_regional_results_to_front(
+    std::vector<IndexRanges<nr_dimensions>> const& ranges,
+    std::vector<Count> const& counts_per_block,
+    Result& result,
+    Count& count)
+{
+    // Start position of elements to copy from.
+    size_t source_index{0};
+
+    // Start position of elements to copy to.
+    size_t target_index{0};
+
+    for(size_t i = 0; i < ranges.size(); ++i) {
+        // Range of indices in current region.
+        auto const& block_range(ranges[i]);
+
+        // Number of values compressed must be <= number of values in
+        // the region.
+        assert(counts_per_block[i] <= block_range.size());
+
+        // Range of indices of compressed values in 1D result.
+        IndexRanges<1> compressed_values_range{IndexRange(source_index,
+            source_index + block_range.size())};
+
+        core::copy(sequential, result, compressed_values_range, result,
+            Point<size_t, 1>{target_index});
+
+        source_index += block_range.size();
+        target_index += counts_per_block[i];
+    }
+
+    count = target_index;
 }
 
 
@@ -139,184 +210,94 @@ struct CompressByArgumentCategory<
             future.get();
         }
 
-        // Copy all results per region to the front of the final result.
-        Point<Count, 1> position{0};
-
-        for(size_t i = 1; i < ranges.size(); ++i) {
-            // Define range of values to copy. block_range is almost it, but
-            // we need to use the number of compressed values instead of the
-            // full range.
-            assert(counts_per_block[i] <= ranges[i].size());
-            auto& block_range(ranges[i]);
-            block_range[0].set_end(block_range[0].begin() +
-                counts_per_block[i]);
-
-            // Define position to copy to.
-            get<0>(position) += counts_per_block[i-1];
-            assert(block_range[0].begin() >= get<0>(position));
-
-            // Copy this block's compress result to the front of the overall
-            // result collection.
-            core::copy(sequential, result, block_range, result, position);
-        }
-
-        statistic::sum(sequential, counts_per_block, count);
+        copy_regional_results_to_front(ranges, counts_per_block, result, count);
     }
 
 };
 
 
-// template<
-//     typename InputNoDataPolicy,
-//     typename OutputNoDataPolicy,
-//     typename Value1,
-//     typename Value2,
-//     typename Result>
-// struct CompressByArgumentCategory<
-//     InputNoDataPolicy,
-//     OutputNoDataPolicy,
-//     Value1,
-//     Value2,
-//     Result,
-//     ParallelExecutionPolicy,
-//     array_2d_tag,
-//     array_0d_tag>
-// {
-// 
-//     // compress(2d, 0d)
-//     static void apply(
-//         InputNoDataPolicy const& input_no_data_policy,
-//         OutputNoDataPolicy& output_no_data_policy,
-//         ParallelExecutionPolicy const& /* execution_policy */,
-//         Value1 const& value1,
-//         Value2 const& value2,
-//         Result& result)
-//     {
-//         assert(size(value1, 0) == size(result, 0));
-//         assert(size(value1, 1) == size(result, 1));
-// 
-//         ThreadPool& pool(ThreadClient::pool());
-//         size_t const size1 = size(result, 0);
-//         size_t const size2 = size(result, 1);
-//         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
-//             size1, size2);
-//         std::vector<std::future<void>> futures;
-//         futures.reserve(ranges.size());
-// 
-//         for(auto const& block_range: ranges) {
-//             auto function = std::bind(
-//                 cover_2d_0d<InputNoDataPolicy, OutputNoDataPolicy,
-//                     Value1, Value2, Result>,
-//                 std::cref(input_no_data_policy),
-//                 std::ref(output_no_data_policy), std::cref(block_range),
-//                 std::cref(value1), std::cref(value2), std::ref(result));
-//             futures.emplace_back(pool.submit(function));
-//         }
-// 
-//         for(auto& future: futures) {
-//             future.get();
-//         }
-//     }
-// 
-// };
-// 
-// 
-// template<
-//     typename InputNoDataPolicy,
-//     typename OutputNoDataPolicy,
-//     typename Value1,
-//     typename Value2,
-//     typename Result>
-// struct CompressByArgumentCategory<
-//     InputNoDataPolicy,
-//     OutputNoDataPolicy,
-//     Value1,
-//     Value2,
-//     Result,
-//     SequentialExecutionPolicy,
-//     array_2d_tag,
-//     array_2d_tag>
-// {
-// 
-//     // compress(2d, 2d)
-//     static void apply(
-//         InputNoDataPolicy const& input_no_data_policy,
-//         OutputNoDataPolicy& output_no_data_policy,
-//         SequentialExecutionPolicy const& /* execution_policy */,
-//         Value1 const& value1,
-//         Value2 const& value2,
-//         Result& result)
-//     {
-//         assert(size(value1, 0) == size(result, 0));
-//         assert(size(value1, 1) == size(result, 1));
-//         assert(size(value2, 0) == size(result, 0));
-//         assert(size(value2, 1) == size(result, 1));
-// 
-//         cover_2d_2d(input_no_data_policy, output_no_data_policy,
-//             IndexRanges<2>{
-//                 IndexRange(0, size(result, 0)),
-//                 IndexRange(0, size(result, 1)),
-//             }, value1, value2, result);
-//     }
-// 
-// };
-// 
-// 
-// template<
-//     typename InputNoDataPolicy,
-//     typename OutputNoDataPolicy,
-//     typename Value1,
-//     typename Value2,
-//     typename Result>
-// struct CompressByArgumentCategory<
-//     InputNoDataPolicy,
-//     OutputNoDataPolicy,
-//     Value1,
-//     Value2,
-//     Result,
-//     ParallelExecutionPolicy,
-//     array_2d_tag,
-//     array_2d_tag>
-// {
-// 
-//     // compress(2d, 2d)
-//     static void apply(
-//         InputNoDataPolicy const& input_no_data_policy,
-//         OutputNoDataPolicy& output_no_data_policy,
-//         ParallelExecutionPolicy const& /* execution_policy */,
-//         Value1 const& value1,
-//         Value2 const& value2,
-//         Result& result)
-//     {
-//         assert(size(value1, 0) == size(result, 0));
-//         assert(size(value1, 1) == size(result, 1));
-//         assert(size(value2, 0) == size(result, 0));
-//         assert(size(value2, 1) == size(result, 1));
-// 
-//         ThreadPool& pool(ThreadClient::pool());
-//         size_t const size1 = size(result, 0);
-//         size_t const size2 = size(result, 1);
-//         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
-//             size1, size2);
-//         std::vector<std::future<void>> futures;
-//         futures.reserve(ranges.size());
-// 
-//         for(auto const& block_range: ranges) {
-//             auto function = std::bind(
-//                 cover_2d_2d<InputNoDataPolicy, OutputNoDataPolicy,
-//                     Value1, Value2, Result>,
-//                 std::cref(input_no_data_policy),
-//                 std::ref(output_no_data_policy), std::cref(block_range),
-//                 std::cref(value1), std::cref(value2), std::ref(result));
-//             futures.emplace_back(pool.submit(function));
-//         }
-// 
-//         for(auto& future: futures) {
-//             future.get();
-//         }
-//     }
-// 
-// };
+template<
+    typename InputNoDataPolicy,
+    typename Value,
+    typename Result,
+    typename Count>
+struct CompressByArgumentCategory<
+    InputNoDataPolicy,
+    Value,
+    Result,
+    Count,
+    SequentialExecutionPolicy,
+    array_2d_tag>
+{
+
+    // compress(2d)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        SequentialExecutionPolicy const& /* execution_policy */,
+        Value const& value,
+        Result& result,
+        Count& count)
+    {
+        compress_2d(input_no_data_policy,
+            IndexRanges<2>{
+                IndexRange(0, size(value, 0)),
+                IndexRange(0, size(value, 1)),
+            }, value, result, count);
+    }
+
+};
+
+
+template<
+    typename InputNoDataPolicy,
+    typename Value,
+    typename Result,
+    typename Count>
+struct CompressByArgumentCategory<
+    InputNoDataPolicy,
+    Value,
+    Result,
+    Count,
+    ParallelExecutionPolicy,
+    array_2d_tag>
+{
+
+    // compress(2d)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        ParallelExecutionPolicy const& /* execution_policy */,
+        Value const& value,
+        Result& result,
+        Count& count)
+    {
+        // Compress each region individually.
+        ThreadPool& pool(ThreadClient::pool());
+        size_t const size1 = size(value, 0);
+        size_t const size2 = size(value, 1);
+        std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
+            size1, size2);
+        std::vector<std::future<void>> futures;
+        futures.reserve(ranges.size());
+        std::vector<Count> counts_per_block(ranges.size());
+
+        for(size_t i = 0; i < ranges.size(); ++i) {
+            auto const& block_range(ranges[i]);
+            auto function = std::bind(
+                compress_2d<InputNoDataPolicy, Value, Result, Count>,
+                std::cref(input_no_data_policy),
+                std::cref(block_range), std::cref(value), std::ref(result),
+                std::ref(counts_per_block[i]));
+            futures.emplace_back(pool.submit(function));
+        }
+
+        for(auto& future: futures) {
+            future.get();
+        }
+
+        copy_regional_results_to_front(ranges, counts_per_block, result, count);
+    }
+
+};
 
 
 template<

@@ -15,7 +15,16 @@ namespace core {
     - Value type of @Value must be copy-assignable.
     - Value type of @Value and @Result must be the same.
     - Result must be a one-dimensional collection.
+    - @result must have the same size as @value.
     - Count must be integral.
+
+    The @count returned can be used to resize @result to the actual number of
+    values it contains, e.g. in case result is an std::vector:
+
+    @code
+    compress(input_no_data_policy, execution_policy, values, result, count);
+    result.resize(count);
+    @endcode
 */
 template<
     typename InputNoDataPolicy,
@@ -34,6 +43,7 @@ void compress(
     FERN_STATIC_ASSERT(std::is_same, value_type<Value>, value_type<Result>)
     static_assert(rank<Result>() == 1, "");
     FERN_STATIC_ASSERT(std::is_integral, Count)
+    assert(size(result) == size(value));
 
     compress::detail::compress<>(input_no_data_policy, execution_policy,
         value, result, count);
