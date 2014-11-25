@@ -5,6 +5,7 @@
 
 namespace fern {
 namespace python {
+namespace core {
 
 double sqrt(
     double value)
@@ -14,5 +15,6 @@ double sqrt(
     return result;
 }
 
+} // namespace core
 } // namespace python
 } // namespace fern

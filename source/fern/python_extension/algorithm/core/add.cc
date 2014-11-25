@@ -5,6 +5,7 @@
 
 namespace fern {
 namespace python {
+namespace core {
 
 double add(
     double value1,
@@ -15,5 +16,6 @@ double add(
     return result;
 }
 
+} // namespace core
 } // namespace python
 } // namespace fern

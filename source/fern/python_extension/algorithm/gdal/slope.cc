@@ -15,6 +15,7 @@
 
 namespace fern {
 namespace python {
+namespace gdal {
 namespace detail {
 
 static void init_numpy()
@@ -120,5 +121,6 @@ PyArrayObject* slope(
     return result;
 }
 
+} // namespace gdal
 } // namespace python
 } // namespace fern

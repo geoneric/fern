@@ -8,11 +8,12 @@
 
 namespace fern {
 namespace python {
+namespace numpy {
 
 PyObject* sqrt_python_float(
     PyObject* object)
 {
-    return python_object(sqrt(
+    return python_object(core::sqrt(
         python_float(object)));
 }
 
@@ -41,5 +42,6 @@ UnaryOperationMap sqrt_overloads{
 
 #undef ADD_SQRT
 
+} // namespace numpy
 } // namespace python
 } // namespace fern

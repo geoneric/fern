@@ -4,8 +4,10 @@
 
 namespace fern {
 namespace python {
+namespace gdal {
 
 extern UnaryOperationMap slope_overloads;
 
+} // namespace gdal
 } // namespace python
 } // namespace fern

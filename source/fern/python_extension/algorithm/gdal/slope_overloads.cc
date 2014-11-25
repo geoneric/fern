@@ -1,6 +1,5 @@
 #include <Python.h>
 #include "fern/python_extension/algorithm/gdal/slope_overloads.h"
-// #include "fern/python_extension/algorithm/core/util.h"
 #include "fern/python_extension/algorithm/numpy/util.h"
 #include "fern/python_extension/algorithm/gdal/slope.h"
 #include "fern/python_extension/algorithm/gdal/util.h"
@@ -8,6 +7,7 @@
 
 namespace fern {
 namespace python {
+namespace gdal {
 
 PyObject* slope_gdal_raster_band(
     PyObject* object)
@@ -24,5 +24,6 @@ UnaryOperationMap slope_overloads{
 
 #undef ADD_SLOPE
 
+} // namespace gdal
 } // namespace python
 } // namespace fern

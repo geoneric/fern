@@ -6,6 +6,7 @@
 
 namespace fern {
 namespace python {
+namespace numpy {
 
 PyArrayObject*     add                 (float64_t value,
                                         PyArrayObject* array);
@@ -16,5 +17,6 @@ PyArrayObject*     add                 (PyArrayObject* array,
 PyArrayObject*     add                 (PyArrayObject* array1,
                                         PyArrayObject* array2);
 
+} // namespace numpy
 } // namespace python
 } // namespace fern

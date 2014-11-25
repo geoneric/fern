@@ -4,8 +4,10 @@
 
 namespace fern {
 namespace python {
+namespace numpy {
 
 extern UnaryOperationMap sqrt_overloads;
 
+} // namespace numpy
 } // namespace python
 } // namespace fern

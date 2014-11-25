@@ -12,6 +12,7 @@
 
 namespace fern {
 namespace python {
+namespace numpy {
 namespace detail {
 
 static void init_numpy()
@@ -290,5 +291,6 @@ PyArrayObject* add(
     return result;
 }
 
+} // namespace numpy
 } // namespace python
 } // namespace fern

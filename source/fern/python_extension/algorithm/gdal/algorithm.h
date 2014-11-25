@@ -4,6 +4,7 @@
 
 namespace fern {
 namespace python {
+namespace gdal {
 
 PyObject*          add                 (PyObject* self,
                                         PyObject* arguments);
@@ -11,5 +12,6 @@ PyObject*          add                 (PyObject* self,
 PyObject*          slope               (PyObject* self,
                                         PyObject* arguments);
 
+} // namespace gdal
 } // namespace python
 } // namespace fern

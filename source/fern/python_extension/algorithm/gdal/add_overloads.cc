@@ -10,12 +10,13 @@
 
 namespace fern {
 namespace python {
+namespace gdal {
 
 PyObject* add_python_float_python_float(
     PyObject* object1,
     PyObject* object2)
 {
-    return python_object(add(
+    return python_object(core::add(
         python_float(object1),
         python_float(object2)));
 }
@@ -25,7 +26,7 @@ PyObject* add_python_float_numpy_array(
     PyObject* object1,
     PyObject* object2)
 {
-    return python_object(add(
+    return python_object(numpy::add(
         python_float(object1),
         numpy_array(object2)));
 }
@@ -48,7 +49,7 @@ PyObject* add_numpy_array_python_float(
     PyObject* object1,
     PyObject* object2)
 {
-    return python_object(add(
+    return python_object(numpy::add(
         numpy_array(object1),
         python_float(object2)));
 }
@@ -58,7 +59,7 @@ PyObject* add_numpy_array_numpy_array(
     PyObject* object1,
     PyObject* object2)
 {
-    return python_object(add(
+    return python_object(numpy::add(
         numpy_array(object1),
         numpy_array(object2)));
 }
@@ -132,5 +133,6 @@ BinaryOperationMap add_overloads{
 
 #undef ADD_ADD
 
+} // namespace gdal
 } // namespace python
 } // namespace fern

@@ -4,8 +4,10 @@
 
 namespace fern {
 namespace python {
+namespace numpy {
 
 extern BinaryOperationMap add_overloads;
 
+} // namespace numpy
 } // namespace python
 } // namespace fern

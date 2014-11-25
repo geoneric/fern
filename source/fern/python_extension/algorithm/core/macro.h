@@ -102,7 +102,7 @@ return result;
 
 #define UNARY_ALGORITHM(            \
     algorithm)                      \
-PyObject* sqrt(                     \
+PyObject* algorithm(                \
     PyObject* /* self */,           \
     PyObject* arguments)            \
 {                                   \
@@ -114,7 +114,7 @@ PyObject* sqrt(                     \
 
 #define BINARY_ALGORITHM(            \
     algorithm)                       \
-PyObject* add(                       \
+PyObject* algorithm(                 \
     PyObject* /* self */,            \
     PyObject* arguments)             \
 {                                    \

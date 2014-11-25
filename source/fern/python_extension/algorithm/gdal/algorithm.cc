@@ -6,9 +6,11 @@
 
 namespace fern {
 namespace python {
+namespace gdal {
 
 BINARY_ALGORITHM(add)
 UNARY_ALGORITHM(slope)
 
+} // namespace gdal
 } // namespace python
 } // namespace fern
