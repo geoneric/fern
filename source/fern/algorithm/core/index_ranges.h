@@ -49,6 +49,8 @@ public:
     IndexRange const&
                    operator[]          (size_t index) const;
 
+    IndexRange&    operator[]          (size_t index);
+
     bool           empty               () const;
 
     size_t         size                () const;
@@ -152,6 +154,21 @@ inline IndexRange const& IndexRanges<nr_dimensions>::operator[](
 }
 
 
+//! Subscript instance by \a index.
+/*!
+  \return    The index range of dimension \a index.
+  \exception \a index must be smaller than \a nr_dimensions.
+*/
+template<
+    size_t nr_dimensions>
+inline IndexRange& IndexRanges<nr_dimensions>::operator[](
+    size_t index)
+{
+    assert(index < nr_dimensions);
+    return Base::operator[](index);
+}
+
+
 //! Return whether the index ranges are empty.
 /*!
   The ranges are considered empty if at least one of the layered index ranges
@@ -170,16 +187,11 @@ template<
     size_t nr_dimensions>
 inline size_t IndexRanges<nr_dimensions>::size() const
 {
-    size_t result = 0;
+    size_t result = 1;
 
+    // Returns 0 if one of the dimensions is empty.
     for(auto const& range: *this) {
-        if(range.empty()) {
-            result = 0;
-            break;
-        }
-        else {
-            result += range.size();
-        }
+        result *= range.size();
     }
 
     return result;
