@@ -187,16 +187,11 @@ template<
     size_t nr_dimensions>
 inline size_t IndexRanges<nr_dimensions>::size() const
 {
-    size_t result = 0;
+    size_t result = 1;
 
+    // Returns 0 if one of the dimensions is empty.
     for(auto const& range: *this) {
-        if(range.empty()) {
-            result = 0;
-            break;
-        }
-        else {
-            result += range.size();
-        }
+        result *= range.size();
     }
 
     return result;
