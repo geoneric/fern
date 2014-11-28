@@ -13,6 +13,8 @@ SET(TEST_NAMES
     subtract_test
 )
 FOREACH(NAME ${TEST_NAMES})
-    ADD_UNIT_TEST2(algorithm_algebra_elementary ${NAME}
-        fern_core fern_algorithm_core fern_feature_core)
+    ADD_UNIT_TEST2(
+        SCOPE algorithm_algebra_elementary
+        NAME ${NAME}
+        LINK_LIBRARIES fern_core fern_algorithm_core fern_feature_core)
 ENDFOREACH()

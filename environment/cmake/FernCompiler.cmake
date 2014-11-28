@@ -1,17 +1,17 @@
-SET(LIBRARY_OUTPUT_PATH
-    ${PROJECT_BINARY_DIR}/bin
-    CACHE PATH
-    "Single directory for all libraries."
-)
-SET(EXECUTABLE_OUTPUT_PATH
-    ${PROJECT_BINARY_DIR}/bin
-    CACHE PATH
-    "Single directory for all executables."
-)
-MARK_AS_ADVANCED(
-    LIBRARY_OUTPUT_PATH
-    EXECUTABLE_OUTPUT_PATH
-)
+### SET(LIBRARY_OUTPUT_PATH
+###     ${PROJECT_BINARY_DIR}/bin
+###     CACHE PATH
+###     "Single directory for all libraries."
+### )
+### SET(EXECUTABLE_OUTPUT_PATH
+###     ${PROJECT_BINARY_DIR}/bin
+###     CACHE PATH
+###     "Single directory for all executables."
+### )
+### MARK_AS_ADVANCED(
+###     LIBRARY_OUTPUT_PATH
+###     EXECUTABLE_OUTPUT_PATH
+### )
 
 
 IF(UNIX AND NOT CYGWIN)

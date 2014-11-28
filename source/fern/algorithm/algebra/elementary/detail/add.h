@@ -188,11 +188,11 @@ struct within_range<
     inline static constexpr bool calculate(
         Value1 const& /* value1 */,
         Value2 const& /* value2 */,
-        Result const& result)
+        Result const& /* result */)
     {
         FERN_STATIC_ASSERT(std::is_same,
             typename fern::algorithm::Result<Value1, Value2>::type, Result)
-        assert(std::isfinite(result));
+        // assert(std::isfinite(result));
 
         // integral + float
         return true;
@@ -214,11 +214,11 @@ struct within_range<
     inline static constexpr bool calculate(
         Value1 const& /* value1 */,
         Value2 const& /* values2 */,
-        Result const& result)
+        Result const& /* result */)
     {
         FERN_STATIC_ASSERT(std::is_same,
             typename fern::algorithm::Result<Value1, Value2>::type, Result)
-        assert(std::isfinite(result));
+        // assert(std::isfinite(result));
 
         // float + integral
         return true;

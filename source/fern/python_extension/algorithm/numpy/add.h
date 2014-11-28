@@ -8,6 +8,12 @@ namespace fern {
 namespace python {
 namespace numpy {
 
+PyArrayObject*     add                 (int64_t value,
+                                        PyArrayObject* array);
+
+PyArrayObject*     add                 (PyArrayObject* array,
+                                        int64_t value);
+
 PyArrayObject*     add                 (float64_t value,
                                         PyArrayObject* array);
 

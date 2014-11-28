@@ -17,7 +17,7 @@ PyObject* slope_gdal_raster_band(
 }
 
 
-UnaryOperationMap slope_overloads{
+UnaryOperationMap<UnaryAlgorithmKey> slope_overloads{
     { UnaryAlgorithmKey(WrappedDataType::gdal_raster_band),
         slope_gdal_raster_band }
 };

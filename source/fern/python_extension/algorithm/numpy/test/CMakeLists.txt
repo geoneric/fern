@@ -1,0 +1,34 @@
+SET(TEST_NAMES
+    add_test
+    python_test
+)
+
+FILE(GLOB PYTHON_UNIT_TEST_MODULES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.py")
+
+FOREACH(MODULE ${PYTHON_UNIT_TEST_MODULES})
+    SET(PYTHON_UNIT_TEST_MODULE ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE})
+    SET(COPIED_PYTHON_UNIT_TEST_MODULE ${CMAKE_CURRENT_BINARY_DIR}/${MODULE})
+    ADD_CUSTOM_COMMAND(
+        OUTPUT ${COPIED_PYTHON_UNIT_TEST_MODULE}
+        DEPENDS ${PYTHON_UNIT_TEST_MODULE}
+        COMMAND ${CMAKE_COMMAND} -E copy ${PYTHON_UNIT_TEST_MODULE}
+            ${COPIED_PYTHON_UNIT_TEST_MODULE}
+    )
+    LIST(APPEND COPIED_PYTHON_UNIT_TEST_MODULES
+        ${COPIED_PYTHON_UNIT_TEST_MODULE})
+ENDFOREACH()
+
+ADD_CUSTOM_TARGET(copied_python_modules
+    DEPENDS ${COPIED_PYTHON_UNIT_TEST_MODULES})
+
+FOREACH(NAME ${TEST_NAMES})
+    ADD_UNIT_TEST2(
+        SCOPE python_extension_algorithm_numpy
+        NAME ${NAME}
+        LINK_LIBRARIES fern_core ${PYTHON_LIBRARIES} stdc++
+        # The tests load the Python extension at runtime. Make sure it is
+        # up to date.
+        DEPENDENCIES _fern_algorithm_numpy)
+ENDFOREACH()
+ADD_DEPENDENCIES(python_extension_algorithm_numpy_python_test
+    copied_python_modules)

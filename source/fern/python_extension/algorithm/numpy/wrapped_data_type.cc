@@ -11,7 +11,10 @@ WrappedDataType data_type(
 {
     WrappedDataType result{WrappedDataType::unsupported};
 
-    if(is_python_float(object)) {
+    if(is_python_int(object)) {
+        result = WrappedDataType::python_int;
+    }
+    else if(is_python_float(object)) {
         result = WrappedDataType::python_float;
     }
     else if(is_numpy_array(object)) {

@@ -34,7 +34,7 @@ PyObject* sqrt_numpy_array(
 { UnaryAlgorithmKey(WrappedDataType::type), sqrt_##type },
 
 
-UnaryOperationMap sqrt_overloads{
+UnaryOperationMap<UnaryAlgorithmKey> sqrt_overloads{
     ADD_SQRT(python_float)
     ADD_SQRT(numpy_array)
 };

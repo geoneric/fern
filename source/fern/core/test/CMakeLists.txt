@@ -22,5 +22,8 @@ IF(FERN_COMPILER_HAS_REGEX)
 ENDIF()
 
 FOREACH(NAME ${TEST_NAMES})
-    ADD_UNIT_TEST2(core ${NAME} fern_core)
+    ADD_UNIT_TEST2(
+        SCOPE core
+        NAME ${NAME}
+        LINK_LIBRARIES fern_core)
 ENDFOREACH()

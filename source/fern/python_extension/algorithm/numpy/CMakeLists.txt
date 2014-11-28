@@ -1,10 +1,11 @@
+ADD_SUBDIRECTORY(test)
 SET(LIB_SOURCES
     add
     sqrt
     util
 )
-ADD_LIBRARY(fern_algorithm_numpy ${LIB_SOURCES})
-TARGET_LINK_LIBRARIES(fern_algorithm_numpy
+ADD_LIBRARY(fern_python_extension_algorithm_numpy ${LIB_SOURCES})
+TARGET_LINK_LIBRARIES(fern_python_extension_algorithm_numpy
     fern_python_extension_core
     fern_algorithm_core
     fern_feature_core
@@ -19,7 +20,7 @@ SET(EXTENSION_SOURCES
 )
 ADD_LIBRARY(_fern_algorithm_numpy SHARED ${EXTENSION_SOURCES})
 TARGET_LINK_LIBRARIES(_fern_algorithm_numpy
-    fern_algorithm_numpy
+    fern_python_extension_algorithm_numpy
     fern_python_extension_algorithm_core
     fern_python_extension_core
     stdc++

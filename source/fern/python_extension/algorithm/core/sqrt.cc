@@ -7,10 +7,10 @@ namespace fern {
 namespace python {
 namespace core {
 
-double sqrt(
-    double value)
+float64_t sqrt(
+    float64_t value)
 {
-    double result;
+    float64_t result;
     algorithm::algebra::sqrt(algorithm::parallel, value, result);
     return result;
 }
