@@ -277,6 +277,8 @@ BFO(algorithm, GDALRasterBand*, type, uint16_t const&, uint16)    \
 BFO(algorithm, GDALRasterBand*, type, int16_t const&, int16)      \
 BFO(algorithm, GDALRasterBand*, type, uint32_t const&, uint32)    \
 BFO(algorithm, GDALRasterBand*, type, int32_t const&, int32)      \
+BFO(algorithm, GDALRasterBand*, type, uint32_t const&, uint64)    \
+BFO(algorithm, GDALRasterBand*, type, int32_t const&, int64)      \
 BFO(algorithm, GDALRasterBand*, type, float32_t const&, float32)  \
 BFO(algorithm, GDALRasterBand*, type, float64_t const&, float64)
 
@@ -292,6 +294,26 @@ ADD_OVERLOADS(add, float64)
 #undef BFO
 
 } // namespace raster_band_number
+
+
+namespace raster_band_int64 {
+
+using AddOverloadsKey = GDALDataType;
+using AddOverload = std::function<PyArrayObject*(GDALRasterBand*, int64_t)>;
+using AddOverloads = std::map<AddOverloadsKey, AddOverload>;
+
+
+static AddOverloads add_overloads = {
+    { AddOverloadsKey(GDT_Byte    ), raster_band_number::add_uint8_int64   },
+    { AddOverloadsKey(GDT_UInt16  ), raster_band_number::add_uint16_int64  },
+    { AddOverloadsKey(GDT_Int16   ), raster_band_number::add_int16_int64   },
+    { AddOverloadsKey(GDT_UInt32  ), raster_band_number::add_uint32_int64  },
+    { AddOverloadsKey(GDT_Int32   ), raster_band_number::add_int32_int64   },
+    { AddOverloadsKey(GDT_Float32 ), raster_band_number::add_float32_int64 },
+    { AddOverloadsKey(GDT_Float64 ), raster_band_number::add_float64_int64 }
+};
+
+} // namespace raster_band_int64
 
 
 namespace raster_band_float64 {
@@ -313,6 +335,37 @@ static AddOverloads add_overloads = {
 
 } // namespace raster_band_float64
 } // namespace detail
+
+
+PyArrayObject* add(
+    GDALRasterBand* raster_band,
+    int64_t value)
+{
+    using namespace detail::raster_band_int64;
+
+    GDALDataType data_type = raster_band->GetRasterDataType();
+    AddOverloadsKey key(data_type);
+
+    PyArrayObject* result{nullptr};
+
+    if(add_overloads.find(key) == add_overloads.end()) {
+        raise_unsupported_overload_exception(to_string(data_type));
+        result = nullptr;
+    }
+    else {
+        result = add_overloads[key](raster_band, value);
+    }
+
+    return result;
+}
+
+
+PyArrayObject* add(
+    int64_t value,
+    GDALRasterBand* raster_band)
+{
+    return add(raster_band, value);
+}
 
 
 PyArrayObject* add(

@@ -12,6 +12,9 @@ int64_t            add              (int64_t value1,
 float64_t          add              (float64_t value1,
                                      float64_t value2);
 
+float64_t          add              (float64_t value1,
+                                     int64_t value2);
+
 float64_t          add              (int64_t value1,
                                      float64_t value2);
 

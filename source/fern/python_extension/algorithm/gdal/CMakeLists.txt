@@ -1,3 +1,4 @@
+ADD_SUBDIRECTORY(test)
 SET(SOURCES
     add
     add_overloads

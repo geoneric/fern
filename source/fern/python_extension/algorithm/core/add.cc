@@ -28,6 +28,16 @@ float64_t add(
 
 
 float64_t add(
+    float64_t value1,
+    int64_t value2)
+{
+    float64_t result;
+    algorithm::algebra::add(algorithm::parallel, value1, value2, result);
+    return result;
+}
+
+
+float64_t add(
     int64_t value1,
     float64_t value2)
 {

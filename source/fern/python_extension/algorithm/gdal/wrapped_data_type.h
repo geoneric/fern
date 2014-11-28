@@ -8,7 +8,7 @@ namespace python {
 //! Types of data supported by this module.
 enum class WrappedDataType
 {
-    // TODO python_int,
+    python_int,
     // TODO python_long,
     python_float,
     numpy_array,

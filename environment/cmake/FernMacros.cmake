@@ -218,3 +218,47 @@ MACRO(ADD_UNIT_TEST2)
     SET_PROPERTY(TEST ${TEST_EXE_NAME}
         PROPERTY ENVIRONMENT "PATH=${PATH_STRING}")
 ENDMACRO()
+
+
+# Copy Python test modules from current source directory to current binary
+# directory. For each module a custom command is created so editing a test
+# module in the source directory will trigger a copy to the binary directory.
+# Also, a custom target is defined that depends on all copied test modules.
+# If you let another target depend on this custom target, then all copied
+# test modules will always be up to date before building the other target.
+# TARGET: Name of custom target to add.
+MACRO(COPY_PYTHON_UNIT_TEST_MODULES)
+    SET(OPTIONS "")
+    SET(ONE_VALUE_ARGUMENTS TARGET)
+    SET(MULTI_VALUE_ARGUMENTS "")
+
+    CMAKE_PARSE_ARGUMENTS(COPY_MODULES "${OPTIONS}" "${ONE_VALUE_ARGUMENTS}"
+        "${MULTI_VALUE_ARGUMENTS}" ${ARGN})
+
+    IF(COPY_MODULES_UNPARSED_ARGUMENTS)
+        MESSAGE(FATAL_ERROR
+            "Macro called with unrecognized arguments: "
+            "${COPY_MODULES_UNPARSED_ARGUMENTS}"
+        )
+    ENDIF()
+
+    FILE(GLOB PYTHON_UNIT_TEST_MODULES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+        "*_test.py")
+
+    FOREACH(MODULE ${PYTHON_UNIT_TEST_MODULES})
+        SET(PYTHON_UNIT_TEST_MODULE ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE})
+        SET(COPIED_PYTHON_UNIT_TEST_MODULE
+            ${CMAKE_CURRENT_BINARY_DIR}/${MODULE})
+        ADD_CUSTOM_COMMAND(
+            OUTPUT ${COPIED_PYTHON_UNIT_TEST_MODULE}
+            DEPENDS ${PYTHON_UNIT_TEST_MODULE}
+            COMMAND ${CMAKE_COMMAND} -E copy ${PYTHON_UNIT_TEST_MODULE}
+                ${COPIED_PYTHON_UNIT_TEST_MODULE}
+        )
+        LIST(APPEND COPIED_PYTHON_UNIT_TEST_MODULES
+            ${COPIED_PYTHON_UNIT_TEST_MODULE})
+    ENDFOREACH()
+
+    ADD_CUSTOM_TARGET(${COPY_MODULES_TARGET}
+        DEPENDS ${COPIED_PYTHON_UNIT_TEST_MODULES})
+ENDMACRO()
