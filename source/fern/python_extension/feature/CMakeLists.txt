@@ -7,6 +7,7 @@ ADD_SUBDIRECTORY(test)
 # )
 SET(EXTENSION_SOURCES
     masked_raster
+    numpy
     python_extension
 )
 ADD_LIBRARY(_fern_feature SHARED ${EXTENSION_SOURCES})

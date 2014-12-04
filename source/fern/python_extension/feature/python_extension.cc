@@ -1,11 +1,15 @@
 #include <boost/python.hpp>
 #include "fern/python_extension/feature/masked_raster.h"
+#include "fern/python_extension/feature/numpy.h"
+
+
+namespace bp = boost::python;
+namespace fp = fern::python;
 
 
 BOOST_PYTHON_MODULE(_fern_feature)
 {
-    namespace bp = boost::python;
-    namespace fp = fern::python;
+    bp::numeric::array::set_module_and_type("numpy", "ndarray");
 
     bp::enum_<fern::ValueType>(
         "ValueType",
@@ -61,5 +65,10 @@ BOOST_PYTHON_MODULE(_fern_feature)
             "X- and y-coordinates of origin (north-west)")
         .add_property("cell_sizes", &fp::MaskedRaster::cell_sizes,
             "Cell width and cell height")
+        .add_property("value_type", &fp::MaskedRaster::value_type,
+            "Value type")
         ;
+
+    bp::def("raster_as_numpy_array", fp::raster_as_numpy_array);
+    bp::def("mask_as_numpy_array", fp::mask_as_numpy_array);
 }

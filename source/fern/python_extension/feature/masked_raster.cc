@@ -1,8 +1,6 @@
 #include "fern/python_extension/feature/masked_raster.h"
 #include <iostream>
-#include <memory>
 #include "fern/feature/core/array_traits.h"
-#include "fern/feature/core/masked_raster.h"
 
 
 namespace fern {
@@ -42,7 +40,7 @@ MaskedRaster::MaskedRaster(
     boost::python::tuple const& sizes,
     boost::python::tuple const& origin,
     boost::python::tuple const& cell_sizes,
-    fern::ValueType value_type)
+    ValueType value_type)
 
     : _sizes(boost::python::extract<size_t>(sizes[0])(),
           boost::python::extract<size_t>(sizes[1])()),
@@ -98,7 +96,7 @@ MaskedRaster::MaskedRaster(
     boost::python::list& mask,
     boost::python::tuple& origin,
     boost::python::tuple& cell_sizes,
-    fern::ValueType value_type)
+    ValueType value_type)
 
     : _sizes(
           boost::python::extract<size_t>(values.attr("__len__")()),
@@ -152,6 +150,12 @@ boost::python::tuple MaskedRaster::origin() const
 boost::python::tuple MaskedRaster::cell_sizes() const
 {
     return boost::python::make_tuple(_cell_sizes.first, _cell_sizes.second);
+}
+
+
+ValueType MaskedRaster::value_type() const
+{
+    return _value_type;
 }
 
 } // namespace python
