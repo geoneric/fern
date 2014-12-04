@@ -1,4 +1,5 @@
 #pragma once
+#include <type_traits>
 #include <boost/mpl/if.hpp>
 
 
