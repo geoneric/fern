@@ -1,5 +1,6 @@
 ADD_SUBDIRECTORY(algorithm)
 ADD_SUBDIRECTORY(core)
+ADD_SUBDIRECTORY(feature)
 
 
 CONFIGURE_FILE(__init__.py.in

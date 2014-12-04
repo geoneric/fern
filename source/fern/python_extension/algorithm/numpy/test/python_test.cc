@@ -8,7 +8,7 @@ BOOST_AUTO_TEST_SUITE(python)
 BOOST_AUTO_TEST_CASE(unit_test)
 {
     BOOST_CHECK_EQUAL(1, 1);
-    std::string command{"python -m unittest discover --pattern *_test.py"};
+    std::string command{"python -m unittest discover --pattern '*_test.py'"};
     int result{std::system(command.c_str())};
     BOOST_CHECK_EQUAL(result, 0);
 }
