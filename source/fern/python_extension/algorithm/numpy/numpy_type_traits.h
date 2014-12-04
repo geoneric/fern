@@ -12,6 +12,13 @@ struct NumpyTypeTraits
 
 
 template<>
+struct NumpyTypeTraits<bool>
+{
+    static int const data_type = NPY_BOOL;
+};
+
+
+template<>
 struct NumpyTypeTraits<uint8_t>
 {
     static int const data_type = NPY_UINT8;
