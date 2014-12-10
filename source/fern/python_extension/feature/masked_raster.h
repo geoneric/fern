@@ -56,8 +56,15 @@ public:
 
     template<
         typename T>
+    fern::MaskedRaster<T, 2> &
+                   raster              ();
+
+    template<
+        typename T>
     fern::MaskedRaster<T, 2> const&
                    raster              () const;
+
+    // MaskedRaster&  operator+=          (MaskedRaster const& other);
 
 private:
 
@@ -109,11 +116,24 @@ inline MaskedRaster::MaskedRaster(
 
 template<
     typename T>
+inline fern::MaskedRaster<T, 2>& MaskedRaster::raster()
+{
+    using Pointer = std::shared_ptr<fern::MaskedRaster<T, 2>>;
+    return *boost::any_cast<Pointer>(_pointer);
+}
+
+
+template<
+    typename T>
 inline fern::MaskedRaster<T, 2> const& MaskedRaster::raster() const
 {
     using Pointer = std::shared_ptr<fern::MaskedRaster<T, 2>>;
     return *boost::any_cast<Pointer>(_pointer);
 }
+
+
+// MaskedRasterHandle operator+           (MaskedRaster const& lhs,
+//                                         MaskedRaster const& rhs);
 
 } // namespace python
 } // namespace fern

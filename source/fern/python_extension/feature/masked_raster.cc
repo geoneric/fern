@@ -1,5 +1,5 @@
 #include "fern/python_extension/feature/masked_raster.h"
-#include <iostream>
+#include "fern/python_extension/algorithm/add.h"
 #include "fern/feature/core/array_traits.h"
 
 
@@ -195,6 +195,21 @@ ValueType MaskedRaster::value_type() const
 {
     return _value_type;
 }
+
+
+// MaskedRaster& MaskedRaster::operator+=(
+//     MaskedRaster const& other)
+// {
+//     return iadd(*this, other);
+// }
+// 
+// 
+// MaskedRasterHandle operator+(
+//     MaskedRaster const& lhs,
+//     MaskedRaster const& rhs)
+// {
+//     return add(lhs, rhs);
+// }
 
 } // namespace python
 } // namespace fern

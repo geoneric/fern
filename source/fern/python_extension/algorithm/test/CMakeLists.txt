@@ -13,4 +13,4 @@ FOREACH(NAME ${TEST_NAMES})
         DEPENDENCIES _fern_feature _fern_algorithm)
 ENDFOREACH()
 ADD_DEPENDENCIES(python_extension_algorithm_python_test
-    fern_algorithm_test_modules)
+    fern_algorithm_test_modules fern_test_modules)

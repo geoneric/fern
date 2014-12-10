@@ -1,8 +1,26 @@
 import unittest
+import fern
 import fern.feature as ff
 
 
+python_type_to_value_type = {
+    int: fern.int64
+}
+
+
 class TestCase(unittest.TestCase):
+
+    @staticmethod
+    def masked_raster(
+            values,
+            mask,
+            origin=(0.0, 0.0),
+            cell_sizes=(1.0, 1.0),
+            value_type=None):
+        if value_type is None:
+            value_type = python_type_to_value_type[type(values[0][0])]
+
+        return ff.MaskedRaster(values, mask, origin, cell_sizes, value_type)
 
     def assertMaskedRasterEqual(self,
             raster_we_got,
