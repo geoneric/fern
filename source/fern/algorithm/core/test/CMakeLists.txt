@@ -10,6 +10,7 @@ SET(TEST_NAMES
     index_ranges_test
     intersect_no_data_test
     fill_test
+    merge_no_data_test
     nullary_local_operation_test
     offset_test
     result_type_test

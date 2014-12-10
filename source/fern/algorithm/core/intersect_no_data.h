@@ -18,9 +18,6 @@ namespace core {
     algorithms assume that the result already contains no-data for those
     elements for which all of the inputs contain a no-data.
 
-    @a value1, @a value2 and @a result are not used. They may, of course,
-    be used by the no-data policies passed in.
-
     The value types of @a value1, @a value2 and @a result are not relevant.
 */
 template<
