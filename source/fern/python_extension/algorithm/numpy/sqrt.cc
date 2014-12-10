@@ -12,6 +12,7 @@
 
 namespace fern {
 namespace python {
+namespace numpy {
 namespace detail {
 
 static void init_numpy()
@@ -100,5 +101,6 @@ PyArrayObject* sqrt(
     return result;
 }
 
+} // namespace numpy
 } // namespace python
 } // namespace fern

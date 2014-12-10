@@ -5,5 +5,7 @@ SET(TEST_NAMES
     or_test
 )
 FOREACH(NAME ${TEST_NAMES})
-    ADD_UNIT_TEST2(algorithm_algebra_boole ${NAME})
+    ADD_UNIT_TEST2(
+        SCOPE algorithm_algebra_boole
+        NAME ${NAME})
 ENDFOREACH()

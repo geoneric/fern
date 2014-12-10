@@ -168,17 +168,40 @@ ENDMACRO()
 # ctest command to run unit tests.
 # SCOPE: Some prefix. Often the lib name of the lib being tested.
 # NAME : Name of test module, without extension.
-# LINK_LIBRARIES: Libries to link against.
-# MACRO(ADD_UNIT_TEST2 SCOPE NAME LINK_LIBRARIES)
-MACRO(ADD_UNIT_TEST2 SCOPE NAME) #  LINK_LIBRARIES)
-    SET(LINK_LIBRARIES ${ARGN})
-    ADD_EXECUTABLE(${SCOPE}_${NAME} ${NAME})
-    TARGET_LINK_LIBRARIES(${SCOPE}_${NAME}
-        ${LINK_LIBRARIES}
+# LINK_LIBRARIES: Libraries to link against.
+# DEPENDENCIES: Targets this test target depends on.
+MACRO(ADD_UNIT_TEST2)
+    SET(OPTIONS "")
+    SET(ONE_VALUE_ARGUMENTS SCOPE NAME)
+    SET(MULTI_VALUE_ARGUMENTS LINK_LIBRARIES DEPENDENCIES)
+
+    CMAKE_PARSE_ARGUMENTS(ADD_UNIT_TEST "${OPTIONS}" "${ONE_VALUE_ARGUMENTS}"
+        "${MULTI_VALUE_ARGUMENTS}" ${ARGN})
+
+    IF(ADD_UNIT_TEST_UNPARSED_ARGUMENTS)
+        MESSAGE(FATAL_ERROR
+            "Macro called with unrecognized arguments: "
+            "${ADD_UNIT_TEST_UNPARSED_ARGUMENTS}"
+        )
+    ENDIF()
+
+    SET(TEST_MODULE_NAME ${ADD_UNIT_TEST_NAME})
+    SET(TEST_EXE_NAME ${ADD_UNIT_TEST_SCOPE}_${TEST_MODULE_NAME})
+
+    ADD_EXECUTABLE(${TEST_EXE_NAME} ${TEST_MODULE_NAME})
+    TARGET_LINK_LIBRARIES(${TEST_EXE_NAME}
+        ${ADD_UNIT_TEST_LINK_LIBRARIES}
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
-        stdc++
-    )
-    ADD_TEST(NAME ${SCOPE}_${NAME} COMMAND ${SCOPE}_${NAME})
+        stdc++)
+    ADD_TEST(NAME ${TEST_EXE_NAME}
+        # catch_system_errors: Prevent UTF to detect system errors. This
+        #     messes things up when doing system calls to Python unit tests.
+        #     See also: http://lists.boost.org/boost-users/2009/12/55048.php
+        COMMAND ${TEST_EXE_NAME} --catch_system_errors=no)
+
+    IF(ADD_UNIT_TEST_DEPENDENCIES)
+        ADD_DEPENDENCIES(${TEST_EXE_NAME} ${ADD_UNIT_TEST_DEPENDENCIES})
+    ENDIF()
 
     # Maybe add ${EXECUTABLE_OUTPUT_PATH} in the future. If needed.
     SET(PATH_LIST $ENV{PATH})
@@ -192,6 +215,84 @@ MACRO(ADD_UNIT_TEST2 SCOPE NAME) #  LINK_LIBRARIES)
         STRING(REPLACE ";" ":" PATH_STRING "${PATH_STRING}")
     ENDIF()
 
-    SET_PROPERTY(TEST ${SCOPE}_${NAME}
+    SET_PROPERTY(TEST ${TEST_EXE_NAME}
         PROPERTY ENVIRONMENT "PATH=${PATH_STRING}")
+ENDMACRO()
+
+
+# Copy Python test modules from current source directory to current binary
+# directory. For each module a custom command is created so editing a test
+# module in the source directory will trigger a copy to the binary directory.
+# Also, a custom target is defined that depends on all copied test modules.
+# If you let another target depend on this custom target, then all copied
+# test modules will always be up to date before building the other target.
+# TARGET: Name of custom target to add.
+MACRO(COPY_PYTHON_UNIT_TEST_MODULES)
+    SET(OPTIONS "")
+    SET(ONE_VALUE_ARGUMENTS TARGET)
+    SET(MULTI_VALUE_ARGUMENTS "")
+
+    CMAKE_PARSE_ARGUMENTS(COPY_MODULES "${OPTIONS}" "${ONE_VALUE_ARGUMENTS}"
+        "${MULTI_VALUE_ARGUMENTS}" ${ARGN})
+
+    IF(COPY_MODULES_UNPARSED_ARGUMENTS)
+        MESSAGE(FATAL_ERROR
+            "Macro called with unrecognized arguments: "
+            "${COPY_MODULES_UNPARSED_ARGUMENTS}"
+        )
+    ENDIF()
+
+    FILE(GLOB PYTHON_UNIT_TEST_MODULES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+        "*_test.py")
+
+    FOREACH(MODULE ${PYTHON_UNIT_TEST_MODULES})
+        SET(PYTHON_UNIT_TEST_MODULE ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE})
+        SET(COPIED_PYTHON_UNIT_TEST_MODULE
+            ${CMAKE_CURRENT_BINARY_DIR}/${MODULE})
+        ADD_CUSTOM_COMMAND(
+            OUTPUT ${COPIED_PYTHON_UNIT_TEST_MODULE}
+            DEPENDS ${PYTHON_UNIT_TEST_MODULE}
+            COMMAND ${CMAKE_COMMAND} -E copy ${PYTHON_UNIT_TEST_MODULE}
+                ${COPIED_PYTHON_UNIT_TEST_MODULE}
+        )
+        LIST(APPEND COPIED_PYTHON_UNIT_TEST_MODULES
+            ${COPIED_PYTHON_UNIT_TEST_MODULE})
+    ENDFOREACH()
+
+    ADD_CUSTOM_TARGET(${COPY_MODULES_TARGET}
+        DEPENDS ${COPIED_PYTHON_UNIT_TEST_MODULES})
+ENDMACRO()
+
+
+MACRO(COPY_PYTHON_MODULES)
+    SET(OPTIONS "")
+    SET(ONE_VALUE_ARGUMENTS TARGET TARGET_DIRECTORY)
+    SET(MULTI_VALUE_ARGUMENTS "")
+
+    CMAKE_PARSE_ARGUMENTS(COPY_MODULES "${OPTIONS}" "${ONE_VALUE_ARGUMENTS}"
+        "${MULTI_VALUE_ARGUMENTS}" ${ARGN})
+
+    IF(COPY_MODULES_UNPARSED_ARGUMENTS)
+        MESSAGE(FATAL_ERROR
+            "Macro called with unrecognized arguments: "
+            "${COPY_MODULES_UNPARSED_ARGUMENTS}"
+        )
+    ENDIF()
+
+    FILE(GLOB PYTHON_MODULES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.py")
+
+    FOREACH(MODULE ${PYTHON_MODULES})
+        SET(PYTHON_MODULE ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE})
+        SET(COPIED_PYTHON_MODULE ${COPY_MODULES_TARGET_DIRECTORY}/${MODULE})
+        ADD_CUSTOM_COMMAND(
+            OUTPUT ${COPIED_PYTHON_MODULE}
+            DEPENDS ${PYTHON_MODULE}
+            COMMAND ${CMAKE_COMMAND} -E copy ${PYTHON_MODULE}
+                ${COPIED_PYTHON_MODULE}
+        )
+        LIST(APPEND COPIED_PYTHON_MODULES ${COPIED_PYTHON_MODULE})
+    ENDFOREACH()
+
+    ADD_CUSTOM_TARGET(${COPY_MODULES_TARGET}
+        DEPENDS ${COPIED_PYTHON_MODULES})
 ENDMACRO()

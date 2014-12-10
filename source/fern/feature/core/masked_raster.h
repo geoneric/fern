@@ -52,7 +52,18 @@ public:
                                         Transformation const& transformation,
                                         T const& value);
 
+                   MaskedRaster        (MaskedRaster const&)=delete;
+
+    MaskedRaster&  operator=           (MaskedRaster const&)=delete;
+
+                   MaskedRaster        (MaskedRaster&&)=default;
+
+    MaskedRaster&  operator=           (MaskedRaster&&)=delete;
+
+    virtual        ~MaskedRaster       ()=default;
+
     Transformation const&
+
                    transformation      () const;
 
 private:

@@ -19,6 +19,8 @@ SET(TEST_NAMES
     unite_no_data_test
 )
 FOREACH(NAME ${TEST_NAMES})
-    ADD_UNIT_TEST2(algorithm_core ${NAME}
-        fern_algorithm_core fern_feature_core fern_core)
+    ADD_UNIT_TEST2(
+        SCOPE algorithm_core
+        NAME ${NAME}
+        LINK_LIBRARIES fern_algorithm_core fern_feature_core fern_core)
 ENDFOREACH()

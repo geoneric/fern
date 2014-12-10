@@ -4,5 +4,7 @@ SET(TEST_NAMES
     mark_no_data_by_value_test
 )
 FOREACH(NAME ${TEST_NAMES})
-    ADD_UNIT_TEST2(algorithm_policy ${NAME})
+    ADD_UNIT_TEST2(
+        SCOPE algorithm_policy
+        NAME ${NAME})
 ENDFOREACH()

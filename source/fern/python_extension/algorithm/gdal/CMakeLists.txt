@@ -1,8 +1,11 @@
+ADD_SUBDIRECTORY(test)
 SET(SOURCES
     add
     add_overloads
     algorithm
     python_extension
+    slope
+    slope_overloads
     util
     wrapped_data_type
 )

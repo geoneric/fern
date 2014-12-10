@@ -5,15 +5,47 @@
 
 namespace fern {
 namespace python {
+namespace core {
 
-double add(
-    double value1,
-    double value2)
+int64_t add(
+    int64_t value1,
+    int64_t value2)
 {
-    double result;
+    int64_t result;
     algorithm::algebra::add(algorithm::parallel, value1, value2, result);
     return result;
 }
 
+
+float64_t add(
+    float64_t value1,
+    float64_t value2)
+{
+    float64_t result;
+    algorithm::algebra::add(algorithm::parallel, value1, value2, result);
+    return result;
+}
+
+
+float64_t add(
+    float64_t value1,
+    int64_t value2)
+{
+    float64_t result;
+    algorithm::algebra::add(algorithm::parallel, value1, value2, result);
+    return result;
+}
+
+
+float64_t add(
+    int64_t value1,
+    float64_t value2)
+{
+    float64_t result;
+    algorithm::algebra::add(algorithm::parallel, value1, value2, result);
+    return result;
+}
+
+} // namespace core
 } // namespace python
 } // namespace fern

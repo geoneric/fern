@@ -6,10 +6,12 @@
 
 namespace fern {
 namespace python {
+namespace numpy {
 
 BINARY_ALGORITHM(add)
 UNARY_ALGORITHM(sqrt)
 
+} // namespace numpy
 } // namespace python
 } // namespace fern
 

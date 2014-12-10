@@ -23,5 +23,8 @@ ENDIF()
 ### ENDIF()
 
 FOREACH(NAME ${TEST_NAMES})
-    ADD_UNIT_TEST2(feature_core ${NAME} fern_feature_core)
+    ADD_UNIT_TEST2(
+        SCOPE feature_core
+        NAME ${NAME}
+        LINK_LIBRARIES fern_feature_core)
 ENDFOREACH()

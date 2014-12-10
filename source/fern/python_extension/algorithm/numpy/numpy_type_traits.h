@@ -2,11 +2,19 @@
 
 
 namespace fern {
+namespace python {
 
 template<
     class T>
 struct NumpyTypeTraits
 {
+};
+
+
+template<>
+struct NumpyTypeTraits<bool>
+{
+    static int const data_type = NPY_BOOL;
 };
 
 
@@ -79,4 +87,5 @@ struct NumpyTypeTraits<double>
     static int const data_type = NPY_FLOAT64;
 };
 
+} // namespace python
 } // namespace fern

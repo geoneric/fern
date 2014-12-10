@@ -40,15 +40,15 @@ public:
                    MaskedArray         (gen_type<nr_ranges> const& sizes,
                                         T const& value=T());
 
-                   MaskedArray         (MaskedArray const&)=default;
+                   MaskedArray         (MaskedArray const&)=delete;
 
-    MaskedArray&   operator=           (MaskedArray const&)=default;
+    MaskedArray&   operator=           (MaskedArray const&)=delete;
 
                    MaskedArray         (MaskedArray&&)=default;
 
-    MaskedArray&   operator=           (MaskedArray&&)=default;
+    MaskedArray&   operator=           (MaskedArray&&)=delete;
 
-                   ~MaskedArray        ()=default;
+    virtual        ~MaskedArray        ()=default;
 
     bool           has_masked_values   () const;
 

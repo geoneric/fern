@@ -8,11 +8,12 @@
 
 namespace fern {
 namespace python {
+namespace numpy {
 
 PyObject* sqrt_python_float(
     PyObject* object)
 {
-    return python_object(sqrt(
+    return python_object(core::sqrt(
         python_float(object)));
 }
 
@@ -33,7 +34,7 @@ PyObject* sqrt_numpy_array(
 { UnaryAlgorithmKey(WrappedDataType::type), sqrt_##type },
 
 
-UnaryOperationMap sqrt_overloads{
+UnaryOperationMap<UnaryAlgorithmKey> sqrt_overloads{
     ADD_SQRT(python_float)
     ADD_SQRT(numpy_array)
 };
@@ -41,5 +42,6 @@ UnaryOperationMap sqrt_overloads{
 
 #undef ADD_SQRT
 
+} // namespace numpy
 } // namespace python
 } // namespace fern

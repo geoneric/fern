@@ -10,6 +10,12 @@ class GDALRasterBand;
 namespace fern {
 namespace python {
 
+PyArrayObject*     add                 (int64_t value,
+                                        GDALRasterBand* raster_band);
+
+PyArrayObject*     add                 (GDALRasterBand* raster_band,
+                                        int64_t value);
+
 PyArrayObject*     add                 (float64_t value,
                                         GDALRasterBand* raster_band);
 

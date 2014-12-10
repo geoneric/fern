@@ -5,5 +5,8 @@ SET(TEST_NAMES
     tan_test
 )
 FOREACH(NAME ${TEST_NAMES})
-    ADD_UNIT_TEST2(algorithm_trigonometry ${NAME} fern_core)
+    ADD_UNIT_TEST2(
+        SCOPE algorithm_trigonometry
+        NAME ${NAME}
+        LINK_LIBRARIES fern_core)
 ENDFOREACH()
