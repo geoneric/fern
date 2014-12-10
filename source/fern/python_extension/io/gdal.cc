@@ -24,6 +24,7 @@ switch(value_type) {               \
     case_(GDT_Float64, double)     \
     case GDT_Unknown: {            \
         assert(false);             \
+        break;                     \
     }                              \
     case GDT_CInt16:               \
     case GDT_CInt32:               \
@@ -31,6 +32,7 @@ switch(value_type) {               \
     case GDT_CFloat64:             \
     case GDT_TypeCount: {          \
         assert(false);             \
+        break;                     \
     }                              \
 }
 
@@ -86,6 +88,7 @@ case gdal_value_type: {                                                 \
             transformation[1], transformation[3], transformation[5]})); \
     read_raster<value_type>(*band, *result_ptr);                        \
     result = std::make_shared<MaskedRaster>(result_ptr);                \
+    break;                                                              \
 }
 
 std::shared_ptr<MaskedRaster> read_raster(
