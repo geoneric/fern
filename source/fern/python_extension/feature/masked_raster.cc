@@ -5,6 +5,44 @@
 
 namespace fern {
 namespace python {
+
+/// MaskedRaster::MaskedRaster()
+/// 
+///     : _sizes(0, 0),
+///       _origin(0.0, 0.0),
+///       _cell_sizes(1.0, 1.0),
+///       _value_type(),
+///       _pointer()
+/// 
+/// {
+/// }
+/// 
+/// 
+/// MaskedRaster::MaskedRaster(
+///     MaskedRaster& raster)
+/// 
+///     : _sizes(raster._sizes),
+///       _origin(raster._origin),
+///       _cell_sizes(raster._cell_sizes),
+///       _value_type(raster._value_type),
+///       _pointer(raster._pointer)
+/// 
+/// {
+/// }
+/// 
+/// 
+/// MaskedRaster& MaskedRaster::operator=(
+///     MaskedRaster&& raster)
+/// {
+///     _sizes = std::move(raster._sizes);
+///     _origin = std::move(raster._origin);
+///     _cell_sizes = std::move(raster._cell_sizes);
+///     _value_type = std::move(raster._value_type);
+///     _pointer = std::move(raster._pointer);
+///     return *this;
+/// }
+
+
 template<
     typename T>
 static void copy(
@@ -31,7 +69,7 @@ case value_type_enum: {                                              \
     using Transformation = MaskedRaster::Transformation;             \
     Transformation transformation{{_origin.first, _cell_sizes.first, \
         _origin.second, _cell_sizes.second}};                        \
-    _masked_raster = std::make_shared<MaskedRaster>(                 \
+    _pointer = std::make_shared<MaskedRaster>(                       \
         fern::extents[_sizes.first][_sizes.second], transformation); \
     break;                                                           \
 }
@@ -70,7 +108,7 @@ MaskedRaster::MaskedRaster(
         }
     }
 
-    assert(!_masked_raster.empty());
+    assert(!_pointer.empty());
 }
 
 #undef HANDLE_CASE
@@ -85,7 +123,7 @@ case value_type_enum: {                                              \
         _origin.second, _cell_sizes.second}};                        \
     auto masked_raster = std::make_shared<MaskedRaster>(             \
         fern::extents[_sizes.first][_sizes.second], transformation); \
-    _masked_raster = masked_raster;                                  \
+    _pointer = masked_raster;                                        \
     copy(values, *masked_raster);                                    \
     copy(mask, masked_raster->mask());                               \
     break;                                                           \
@@ -129,7 +167,7 @@ MaskedRaster::MaskedRaster(
         }
     }
 
-    assert(!_masked_raster.empty());
+    assert(!_pointer.empty());
 }
 
 #undef HANDLE_CASE

@@ -1,4 +1,5 @@
 #include <boost/python.hpp>
+#include "fern/python_extension/core/init_python_module.h"
 #include "fern/python_extension/feature/masked_raster.h"
 #include "fern/python_extension/feature/numpy.h"
 
@@ -9,6 +10,8 @@ namespace fp = fern::python;
 
 BOOST_PYTHON_MODULE(_fern_feature)
 {
+    INIT_PYTHON_MODULE("C++ module with wrappers for C++ types.")
+
     bp::numeric::array::set_module_and_type("numpy", "ndarray");
 
     bp::enum_<fern::ValueType>(
@@ -29,7 +32,7 @@ BOOST_PYTHON_MODULE(_fern_feature)
         .export_values()
         ;
 
-    bp::class_<fp::MaskedRaster>(
+    bp::class_<fp::MaskedRaster, fp::MaskedRasterHandle, boost::noncopyable>(
         "MaskedRaster",
         "Class for masked rasters."
         "\n"
@@ -69,6 +72,8 @@ BOOST_PYTHON_MODULE(_fern_feature)
             "Value type")
         ;
 
-    bp::def("raster_as_numpy_array", fp::raster_as_numpy_array);
-    bp::def("mask_as_numpy_array", fp::mask_as_numpy_array);
+    bp::def("raster_as_numpy_array", fp::raster_as_numpy_array,
+        "Return a Numpy array with the raster values.");
+    bp::def("mask_as_numpy_array", fp::mask_as_numpy_array,
+        "Return a Numpy array with the mask.");
 }

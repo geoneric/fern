@@ -1,18 +1,18 @@
 ADD_SUBDIRECTORY(test)
-# SET(LIB_SOURCES
-# )
-# ADD_LIBRARY(fern_python_extension_feature ${LIB_SOURCES})
-# TARGET_LINK_LIBRARIES(fern_python_extension_feature
-#     stdc++
-# )
-SET(EXTENSION_SOURCES
+SET(LIB_SOURCES
     masked_raster
+)
+ADD_LIBRARY(fern_python_extension_feature ${LIB_SOURCES})
+TARGET_LINK_LIBRARIES(fern_python_extension_feature
+    stdc++
+)
+SET(EXTENSION_SOURCES
     numpy
     python_extension
 )
 ADD_LIBRARY(_fern_feature SHARED ${EXTENSION_SOURCES})
 TARGET_LINK_LIBRARIES(_fern_feature
-    # fern_python_extension_feature
+    fern_python_extension_feature
     fern_feature_core
     ${Boost_PYTHON_LIBRARY}
     stdc++

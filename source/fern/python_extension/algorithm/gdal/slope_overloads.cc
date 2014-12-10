@@ -22,8 +22,6 @@ UnaryOperationMap<UnaryAlgorithmKey> slope_overloads{
         slope_gdal_raster_band }
 };
 
-#undef ADD_SLOPE
-
 } // namespace gdal
 } // namespace python
 } // namespace fern
