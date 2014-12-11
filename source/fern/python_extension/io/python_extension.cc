@@ -15,4 +15,8 @@ BOOST_PYTHON_MODULE(_fern_io)
         "the result.",
         bp::arg("name"))
         ;
+    bp::def("write_raster", fp::write_raster,
+        "Write raster given the raster, name and format passed in.",
+        (bp::arg("raster"), bp::arg("name"), bp::arg("format")))
+        ;
 }

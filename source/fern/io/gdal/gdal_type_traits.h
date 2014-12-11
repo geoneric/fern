@@ -18,6 +18,14 @@ struct GDALTypeTraits<uint8_t>
 
 
 template<>
+struct GDALTypeTraits<int8_t>
+{
+    // int8 is not supported by GDAL...
+    static GDALDataType const data_type = GDT_Int16;
+};
+
+
+template<>
 struct GDALTypeTraits<uint16_t>
 {
     static GDALDataType const data_type = GDT_UInt16;
@@ -42,6 +50,22 @@ template<>
 struct GDALTypeTraits<int32_t>
 {
     static GDALDataType const data_type = GDT_Int32;
+};
+
+
+template<>
+struct GDALTypeTraits<uint64_t>
+{
+    // uint64 is not supported by GDAL...
+    static GDALDataType const data_type = GDT_Float64;
+};
+
+
+template<>
+struct GDALTypeTraits<int64_t>
+{
+    // int64 is not supported by GDAL...
+    static GDALDataType const data_type = GDT_Float64;
 };
 
 
