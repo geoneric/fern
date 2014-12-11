@@ -26,3 +26,9 @@ class RasterTest(ft.TestCase):
         raster_we_want = fern.MaskedRaster(values, mask, origin=(0.0, 0.0),
             cell_sizes=(1.0, 1.0), value_type=fern.int32)
         self.assertMaskedRasterEqual(raster_we_got, raster_we_want)
+
+        fi.write_raster(raster_we_got, dataset_name, driver_name)
+        raster_we_got = fi.read_raster(dataset_name)
+        raster_we_want = fern.MaskedRaster(values, mask, origin=(0.0, 0.0),
+            cell_sizes=(1.0, 1.0), value_type=fern.int32)
+        self.assertMaskedRasterEqual(raster_we_got, raster_we_want)
