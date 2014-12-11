@@ -5,23 +5,19 @@
 namespace fern {
 namespace python {
 
-MaskedRasterHandle&
-                   iadd                (MaskedRasterHandle& self,
-                                        MaskedRasterHandle const& other);
-
-MaskedRasterHandle add                 (MaskedRasterHandle const& raster1,
+MaskedRasterHandle less                (MaskedRasterHandle const& raster1,
                                         MaskedRasterHandle const& raster2);
 
-MaskedRasterHandle add                 (int64_t value,
+MaskedRasterHandle less                (int64_t value,
                                         MaskedRasterHandle const& raster);
 
-MaskedRasterHandle add                 (MaskedRasterHandle const& raster,
+MaskedRasterHandle less                (MaskedRasterHandle const& raster,
                                         int64_t value);
 
-MaskedRasterHandle add                 (double value,
+MaskedRasterHandle less                (double value,
                                         MaskedRasterHandle const& raster);
 
-MaskedRasterHandle add                 (MaskedRasterHandle const& raster,
+MaskedRasterHandle less                (MaskedRasterHandle const& raster,
                                         double value);
 
 } // namespace python

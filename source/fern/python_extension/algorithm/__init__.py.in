@@ -6,3 +6,10 @@ import fern.feature
 fern.feature.MaskedRaster.__add__ = add
 fern.feature.MaskedRaster.__radd__ = add
 fern.feature.MaskedRaster.__iadd__ = iadd
+
+fern.feature.MaskedRaster.__mul__ = multiply
+fern.feature.MaskedRaster.__rmul__ = multiply
+fern.feature.MaskedRaster.__imult__ = imultiply
+
+fern.feature.MaskedRaster.__lt__ = less
+fern.feature.MaskedRaster.__gt__ = greater

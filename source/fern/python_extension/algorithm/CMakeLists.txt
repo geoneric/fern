@@ -7,6 +7,9 @@ ADD_SUBDIRECTORY(test)
 
 SET(EXTENSION_SOURCES
     add
+    greater
+    multiply
+    less
     python_extension
     slope
 )
