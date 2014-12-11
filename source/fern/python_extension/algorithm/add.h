@@ -12,5 +12,23 @@ MaskedRasterHandle&
 MaskedRasterHandle add                 (MaskedRasterHandle const& raster1,
                                         MaskedRasterHandle const& raster2);
 
+// MaskedRasterHandle add                 (int32_t value,
+//                                         MaskedRasterHandle const& raster);
+// 
+// MaskedRasterHandle add                 (MaskedRasterHandle const& raster,
+//                                         int32_t value);
+
+MaskedRasterHandle add                 (int64_t value,
+                                        MaskedRasterHandle const& raster);
+
+MaskedRasterHandle add                 (MaskedRasterHandle const& raster,
+                                        int64_t value);
+
+MaskedRasterHandle add                 (double value,
+                                        MaskedRasterHandle const& raster);
+
+MaskedRasterHandle add                 (MaskedRasterHandle const& raster,
+                                        double value);
+
 } // namespace python
 } // namespace fern

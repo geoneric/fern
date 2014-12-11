@@ -2,6 +2,7 @@
 #include "fern/feature/core/array_traits.h"
 #include "fern/feature/core/masked_raster_traits.h"
 #include "fern/algorithm/algebra/elementary/add.h"
+#include "fern/algorithm/core/merge_no_data.h"
 #include "fern/algorithm/core/unite_no_data.h"
 #include "fern/python_extension/core/switch_on_value_type.h"
 
@@ -11,6 +12,26 @@ namespace fa = fern::algorithm;
 
 namespace fern {
 namespace python {
+namespace {
+
+template<
+    typename T,
+    typename R>
+void merge_no_data(
+    fern::MaskedRaster<T, 2> const& raster,
+    fern::MaskedRaster<R, 2>& result_raster)
+{
+    using InputNoDataPolicy = fa::DetectNoDataByValue<fern::Mask<2>>;
+    using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<2>>;
+
+    fa::SkipNoData<
+        InputNoDataPolicy> input_no_data_policy(
+            InputNoDataPolicy(raster.mask(), true));
+    OutputNoDataPolicy output_no_data_policy(result_raster.mask(), true);
+
+    fa::core::merge_no_data(input_no_data_policy,
+        output_no_data_policy, algorithm::parallel, raster, result_raster);
+}
 
 
 template<
@@ -60,13 +81,53 @@ void add(
 
 template<
     typename T1,
+    typename T2,
+    typename R>
+void add(
+    fern::MaskedRaster<T1, 2> const& lhs,
+    T2 const& rhs,
+    fern::MaskedRaster<R, 2>& result)
+{
+    using InputNoDataPolicy = fa::DetectNoDataByValue<fern::Mask<2>>;
+    using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<2>>;
+
+    InputNoDataPolicy input_no_data_policy(result.mask(), true);
+    OutputNoDataPolicy output_no_data_policy(result.mask(), true);
+
+    fa::algebra::add<fa::add::OutOfRangePolicy>(input_no_data_policy,
+        output_no_data_policy, algorithm::parallel, lhs, rhs, result);
+}
+
+
+template<
+    typename T1,
+    typename T2,
+    typename R>
+void add(
+    T1 const& lhs,
+    fern::MaskedRaster<T2, 2> const& rhs,
+    fern::MaskedRaster<R, 2>& result)
+{
+    using InputNoDataPolicy = fa::DetectNoDataByValue<fern::Mask<2>>;
+    using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<2>>;
+
+    InputNoDataPolicy input_no_data_policy(result.mask(), true);
+    OutputNoDataPolicy output_no_data_policy(result.mask(), true);
+
+    fa::algebra::add<fa::add::OutOfRangePolicy>(input_no_data_policy,
+        output_no_data_policy, algorithm::parallel, lhs, rhs, result);
+}
+
+
+template<
+    typename T1,
     typename T2>
 fern::MaskedRaster<T1, 2>& iadd(
     fern::MaskedRaster<T1, 2>& self,
     fern::MaskedRaster<T2, 2> const& other)
 {
     // TODO Assert raster properties.
-    merge_no_data(self, other, self);
+    merge_no_data(other, self);
     add(self, other, self);
     return self;
 }
@@ -88,6 +149,42 @@ MaskedRasterHandle add(
     add(lhs, rhs, *handle);
     return std::make_shared<MaskedRaster>(handle);
 }
+
+
+template<
+    typename T1,
+    typename T2>
+MaskedRasterHandle add(
+    fern::MaskedRaster<T1, 2> const& lhs,
+    T2 const& rhs)
+{
+    auto sizes = extents[lhs.shape()[0]][lhs.shape()[1]];
+    using R = algorithm::add::result_type<T1, T2>;
+    auto handle = std::make_shared<fern::MaskedRaster<R, 2>>(sizes,
+        lhs.transformation());
+    merge_no_data(lhs, *handle);
+    add(lhs, rhs, *handle);
+    return std::make_shared<MaskedRaster>(handle);
+}
+
+
+template<
+    typename T1,
+    typename T2>
+MaskedRasterHandle add(
+    T1 const& lhs,
+    fern::MaskedRaster<T2, 2> const& rhs)
+{
+    auto sizes = extents[rhs.shape()[0]][rhs.shape()[1]];
+    using R = algorithm::add::result_type<T1, T2>;
+    auto handle = std::make_shared<fern::MaskedRaster<R, 2>>(sizes,
+        rhs.transformation());
+    merge_no_data(rhs, *handle);
+    add(lhs, rhs, *handle);
+    return std::make_shared<MaskedRaster>(handle);
+}
+
+} // Anonymous namespace
 
 
 #define CASE2(                          \
@@ -151,6 +248,90 @@ MaskedRasterHandle add(
 
 #undef CASE1
 #undef CASE2
+
+
+#define CASE(                            \
+    value_type_enum2,                    \
+    value_type2)                         \
+case value_type_enum2: {                 \
+    result = add(                        \
+        value,                           \
+        raster->raster<value_type2>());  \
+    break;                               \
+}
+
+// MaskedRasterHandle add(
+//     int32_t value,
+//     MaskedRasterHandle const& raster)
+// {
+//     MaskedRasterHandle result;
+//     SWITCH_ON_VALUE_TYPE(raster->value_type(), CASE)
+//     return result;
+// }
+
+
+MaskedRasterHandle add(
+    int64_t value,
+    MaskedRasterHandle const& raster)
+{
+    MaskedRasterHandle result;
+    SWITCH_ON_VALUE_TYPE(raster->value_type(), CASE)
+    return result;
+}
+
+
+MaskedRasterHandle add(
+    double value,
+    MaskedRasterHandle const& raster)
+{
+    MaskedRasterHandle result;
+    SWITCH_ON_VALUE_TYPE(raster->value_type(), CASE)
+    return result;
+}
+
+#undef CASE
+
+
+#define CASE(                           \
+    value_type_enum1,                   \
+    value_type1)                        \
+case value_type_enum1: {                \
+    result = add(                       \
+        raster->raster<value_type1>(),  \
+        value);                         \
+    break;                              \
+}
+
+// MaskedRasterHandle add(
+//     MaskedRasterHandle const& raster,
+//     int32_t value)
+// {
+//     MaskedRasterHandle result;
+//     SWITCH_ON_VALUE_TYPE(raster->value_type(), CASE)
+//     return result;
+// }
+
+
+MaskedRasterHandle add(
+    MaskedRasterHandle const& raster,
+    int64_t value)
+{
+    MaskedRasterHandle result;
+    SWITCH_ON_VALUE_TYPE(raster->value_type(), CASE)
+    return result;
+}
+
+
+MaskedRasterHandle add(
+    MaskedRasterHandle const& raster,
+    double value)
+{
+    MaskedRasterHandle result;
+    SWITCH_ON_VALUE_TYPE(raster->value_type(), CASE)
+    return result;
+}
+
+#undef CASE
 
 } // namespace python
 } // namespace fern

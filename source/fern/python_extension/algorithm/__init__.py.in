@@ -4,4 +4,5 @@ from . _fern_algorithm import *
 import fern.feature
 
 fern.feature.MaskedRaster.__add__ = add
+fern.feature.MaskedRaster.__radd__ = add
 fern.feature.MaskedRaster.__iadd__ = iadd

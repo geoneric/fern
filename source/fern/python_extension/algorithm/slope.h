@@ -5,8 +5,7 @@
 namespace fern {
 namespace python {
 
-boost::python::object
-                   slope               (MaskedRasterHandle const& dem);
+MaskedRasterHandle slope               (MaskedRasterHandle const& dem);
 
 } // namespace python
 } // namespace fern

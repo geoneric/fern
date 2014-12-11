@@ -14,7 +14,7 @@ namespace python {
 
 template<
     typename T>
-bp::object slope(
+fp::MaskedRasterHandle slope(
     fern::MaskedRaster<T, 2> const& dem)
 {
     using InputNoDataPolicy = algorithm::DetectNoDataByValue<Mask<2>>;
@@ -31,23 +31,23 @@ bp::object slope(
         input_no_data_policy, output_no_data_policy, algorithm::parallel,
         dem, *result_ptr);
 
-    return bp::object(std::make_shared<MaskedRaster>(result_ptr));
+    return std::make_shared<MaskedRaster>(result_ptr);
 }
 
 
-#define CASE(                                    \
-    value_type_enum,                             \
-    value_type)                                  \
-case value_type_enum: {                          \
-    result = slope<>(dem->raster<value_type>()); \
-    break;                                       \
+#define CASE(                                     \
+    value_type_enum,                              \
+    value_type)                                   \
+case value_type_enum: {                           \
+    result = slope<>(dem->raster<value_type>());  \
+    break;                                        \
 }
 
-bp::object slope(
+fp::MaskedRasterHandle slope(
     fp::MaskedRasterHandle const& dem)
 {
     assert(!PyErr_Occurred());
-    bp::object result;
+    fp::MaskedRasterHandle result;
 
     SWITCH_ON_FLOATING_POINT_VALUE_TYPE(dem->value_type(), CASE)
 
