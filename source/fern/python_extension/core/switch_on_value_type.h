@@ -2,6 +2,7 @@
 // be passed in.
 
 
+//     case_(VT_INT8, int8_t)      
 //     case_(VT_UINT16, uint16_t)  
 //     case_(VT_INT16, int16_t)    
 
@@ -10,7 +11,6 @@
     case_)                      \
 switch(value_type) {            \
     case_(VT_UINT8, uint8_t)    \
-    case_(VT_INT8, int8_t)      \
     case_(VT_UINT32, uint32_t)  \
     case_(VT_INT32, int32_t)    \
     case_(VT_UINT64, uint64_t)  \
@@ -18,6 +18,7 @@ switch(value_type) {            \
     case_(VT_FLOAT32, float)    \
     case_(VT_FLOAT64, double)   \
     case VT_BOOL:               \
+    case VT_INT8:               \
     case VT_UINT16:             \
     case VT_INT16:              \
     case VT_STRING: {           \
@@ -26,6 +27,7 @@ switch(value_type) {            \
 }
 
 
+//     case_(VT_INT8, int8_t, __VA_ARGS__)      
 //     case_(VT_UINT16, uint16_t, __VA_ARGS__)  
 //     case_(VT_INT16, int16_t, __VA_ARGS__)    
 
@@ -35,7 +37,6 @@ switch(value_type) {            \
     ...)                                     \
 switch(value_type) {                         \
     case_(VT_UINT8, uint8_t, __VA_ARGS__)    \
-    case_(VT_INT8, int8_t, __VA_ARGS__)      \
     case_(VT_UINT32, uint32_t, __VA_ARGS__)  \
     case_(VT_INT32, int32_t, __VA_ARGS__)    \
     case_(VT_UINT64, uint64_t, __VA_ARGS__)  \
@@ -43,6 +44,7 @@ switch(value_type) {                         \
     case_(VT_FLOAT32, float, __VA_ARGS__)    \
     case_(VT_FLOAT64, double, __VA_ARGS__)   \
     case VT_BOOL:                            \
+    case VT_INT8:               \
     case VT_UINT16:             \
     case VT_INT16:              \
     case VT_STRING: {                        \
@@ -51,6 +53,7 @@ switch(value_type) {                         \
 }
 
 
+//     case_(VT_INT8, int8_t, __VA_ARGS__)      
 //     case_(VT_UINT16, uint16_t, __VA_ARGS__)  
 //     case_(VT_INT16, int16_t, __VA_ARGS__)    
 
@@ -60,7 +63,6 @@ switch(value_type) {                         \
     ...)                                     \
 switch(value_type) {                         \
     case_(VT_UINT8, uint8_t, __VA_ARGS__)    \
-    case_(VT_INT8, int8_t, __VA_ARGS__)      \
     case_(VT_UINT32, uint32_t, __VA_ARGS__)  \
     case_(VT_INT32, int32_t, __VA_ARGS__)    \
     case_(VT_UINT64, uint64_t, __VA_ARGS__)  \
@@ -68,6 +70,33 @@ switch(value_type) {                         \
     case_(VT_FLOAT32, float, __VA_ARGS__)    \
     case_(VT_FLOAT64, double, __VA_ARGS__)   \
     case VT_BOOL:                            \
+    case VT_INT8:               \
+    case VT_UINT16:             \
+    case VT_INT16:              \
+    case VT_STRING: {                        \
+        assert(false);                       \
+    }                                        \
+}
+
+
+//     case_(VT_INT8, int8_t, __VA_ARGS__)      
+//     case_(VT_UINT16, uint16_t, __VA_ARGS__)  
+//     case_(VT_INT16, int16_t, __VA_ARGS__)    
+
+#define SWITCH_ON_VALUE_TYPE3(               \
+    value_type,                              \
+    case_,                                   \
+    ...)                                     \
+switch(value_type) {                         \
+    case_(VT_UINT8, uint8_t, __VA_ARGS__)    \
+    case_(VT_UINT32, uint32_t, __VA_ARGS__)  \
+    case_(VT_INT32, int32_t, __VA_ARGS__)    \
+    case_(VT_UINT64, uint64_t, __VA_ARGS__)  \
+    case_(VT_INT64, int64_t, __VA_ARGS__)    \
+    case_(VT_FLOAT32, float, __VA_ARGS__)    \
+    case_(VT_FLOAT64, double, __VA_ARGS__)   \
+    case VT_BOOL:                            \
+    case VT_INT8:               \
     case VT_UINT16:             \
     case VT_INT16:              \
     case VT_STRING: {                        \

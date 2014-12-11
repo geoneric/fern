@@ -55,4 +55,7 @@ class TestCase(unittest.TestCase):
 
                 if not mask_we_got[row][col]:
                     self.assertEqual(values_we_got[row][col],
-                        values_we_want[row][col])
+                        values_we_want[row][col],
+                        "{} != {} for cell {}, {}".format(
+                            values_we_got[row][col], values_we_want[row][col],
+                            row, col))

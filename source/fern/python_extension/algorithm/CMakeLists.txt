@@ -8,6 +8,9 @@ ADD_SUBDIRECTORY(test)
 SET(EXTENSION_SOURCES
     add
     greater
+    if_number_raster
+    if_raster_number
+    if_raster_raster
     multiply
     less
     python_extension
