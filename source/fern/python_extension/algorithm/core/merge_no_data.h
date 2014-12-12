@@ -26,7 +26,7 @@ inline void merge_no_data(
     OutputNoDataPolicy output_no_data_policy(result_raster.mask(), true);
 
     algorithm::core::merge_no_data(input_no_data_policy,
-        output_no_data_policy, algorithm::parallel, raster, result_raster);
+        output_no_data_policy, algorithm::sequential, raster, result_raster);
 }
 
 } // namespace python

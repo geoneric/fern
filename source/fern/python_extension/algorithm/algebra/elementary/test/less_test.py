@@ -1,4 +1,3 @@
-import unittest
 import fern
 import fern.algorithm as fa
 import fern.test as ft

@@ -30,7 +30,7 @@ void unite_no_data(
     OutputNoDataPolicy output_no_data_policy(result_raster.mask(), true);
 
     algorithm::core::unite_no_data(input_no_data_policy,
-        output_no_data_policy, algorithm::parallel, raster1, raster2,
+        output_no_data_policy, algorithm::sequential, raster1, raster2,
         result_raster);
 }
 

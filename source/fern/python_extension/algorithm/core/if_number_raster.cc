@@ -1,5 +1,5 @@
-#include "fern/python_extension/algorithm/if.h"
-#include "fern/python_extension/algorithm/unite_no_data.h"
+#include "fern/python_extension/algorithm/core/if.h"
+#include "fern/python_extension/algorithm/core/unite_no_data.h"
 #include "fern/algorithm/core/if.h"
 #include "fern/python_extension/core/switch_on_value_type.h"
 
@@ -29,7 +29,7 @@ void if_(
     OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
     fa::core::if_(input_no_data_policy, output_no_data_policy,
-        algorithm::parallel, condition, true_value, false_value, result);
+        algorithm::sequential, condition, true_value, false_value, result);
 }
 
 

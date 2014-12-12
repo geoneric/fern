@@ -1,4 +1,4 @@
-#include "fern/python_extension/algorithm/slope.h"
+#include "fern/python_extension/algorithm/space/focal/slope.h"
 #include "fern/feature/core/array_traits.h"
 #include "fern/feature/core/masked_raster_traits.h"
 #include "fern/algorithm/policy/policies.h"
@@ -28,7 +28,7 @@ fp::MaskedRasterHandle slope(
     OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
     algorithm::space::slope<algorithm::slope::OutOfRangePolicy>(
-        input_no_data_policy, output_no_data_policy, algorithm::parallel,
+        input_no_data_policy, output_no_data_policy, algorithm::sequential,
         dem, *result_ptr);
 
     return std::make_shared<MaskedRaster>(result_ptr);

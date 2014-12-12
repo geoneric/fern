@@ -1,4 +1,5 @@
-#define BOOST_TEST_MODULE fern fern_python_extension_algorithm
+#define BOOST_TEST_MODULE \
+    fern fern_python_extension_algorithm_algebra_elementary
 #include <cstdlib>
 #include <boost/test/unit_test.hpp>
 

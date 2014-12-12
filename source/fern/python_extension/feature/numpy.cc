@@ -2,7 +2,7 @@
 #include <numpy/ndarrayobject.h>
 #include "fern/python_extension/core/switch_on_value_type.h"
 #include "fern/python_extension/feature/numpy.h"
-#include "fern/python_extension/algorithm/numpy/numpy_type_traits.h"
+#include "fern/python_extension/algorithm/tmp/numpy/numpy_type_traits.h"
 
 
 namespace bp = boost::python;

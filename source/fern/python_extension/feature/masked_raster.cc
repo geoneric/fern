@@ -1,5 +1,4 @@
 #include "fern/python_extension/feature/masked_raster.h"
-#include "fern/python_extension/algorithm/add.h"
 #include "fern/feature/core/array_traits.h"
 
 

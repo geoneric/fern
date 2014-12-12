@@ -1,4 +1,7 @@
 from . _fern_algorithm import *
+from . algebra import *
+from . core import *
+from . space import *
 
 
 import fern.feature
