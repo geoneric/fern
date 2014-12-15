@@ -167,6 +167,74 @@ template<
     typename TrueValue,
     typename FalseValue,
     typename Result>
+void if_then_else_2d_0d_2d(
+    InputNoDataPolicy const& input_no_data_policy,
+    OutputNoDataPolicy& /* output_no_data_policy */,
+    IndexRanges<2> const& index_ranges,
+    Condition const& condition,
+    TrueValue const& true_value,
+    FalseValue const& false_value,
+    Result& result)
+{
+    for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+        for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
+                ++j) {
+
+            if(!input_no_data_policy.is_no_data(i, j)) {
+
+                if(get(condition, i, j)) {
+                    get(result, i, j) = get(true_value);
+                }
+                else {
+                    get(result, i, j) = get(false_value, i, j);
+                }
+            }
+        }
+    }
+}
+
+
+template<
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename FalseValue,
+    typename Result>
+void if_then_else_2d_2d_0d(
+    InputNoDataPolicy const& input_no_data_policy,
+    OutputNoDataPolicy& /* output_no_data_policy */,
+    IndexRanges<2> const& index_ranges,
+    Condition const& condition,
+    TrueValue const& true_value,
+    FalseValue const& false_value,
+    Result& result)
+{
+    for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+        for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
+                ++j) {
+
+            if(!input_no_data_policy.is_no_data(i, j)) {
+
+                if(get(condition, i, j)) {
+                    get(result, i, j) = get(true_value, i, j);
+                }
+                else {
+                    get(result, i, j) = get(false_value);
+                }
+            }
+        }
+    }
+}
+
+
+template<
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename FalseValue,
+    typename Result>
 void if_then_else_2d_0d_0d(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& /* output_no_data_policy */,
@@ -716,10 +784,214 @@ template<
     typename OutputNoDataPolicy,
     typename Condition,
     typename TrueValue,
-    typename Result,
-    typename ExecutionPolicy>
-class IfThenByExecutionPolicy
+    typename FalseValue,
+    typename Result>
+struct IfThenElseByArgumentCategory<
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Condition,
+    TrueValue,
+    FalseValue,
+    Result,
+    SequentialExecutionPolicy,
+    array_2d_tag,
+    array_0d_tag,
+    array_2d_tag>
 {
+
+    // if(2d, 0d, 2d, 2d)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        SequentialExecutionPolicy const& /* execution_policy */,
+        Condition const& condition,
+        TrueValue const& true_value,
+        FalseValue const& false_value,
+        Result& result)
+    {
+        assert(size(false_value, 0) == size(condition, 0));
+        assert(size(false_value, 1) == size(condition, 1));
+        assert(size(result, 0) == size(condition, 0));
+        assert(size(result, 1) == size(condition, 1));
+
+        if_then_else_2d_0d_2d(input_no_data_policy, output_no_data_policy,
+            IndexRanges<2>{
+                IndexRange(0, size(condition, 0)),
+                IndexRange(0, size(condition, 1)),
+            }, condition, true_value, false_value, result);
+    }
+
+};
+
+
+template<
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename FalseValue,
+    typename Result>
+struct IfThenElseByArgumentCategory<
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Condition,
+    TrueValue,
+    FalseValue,
+    Result,
+    ParallelExecutionPolicy,
+    array_2d_tag,
+    array_0d_tag,
+    array_2d_tag>
+{
+
+    // if(2d, 0d, 2d, 2d)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        ParallelExecutionPolicy const& /* execution_policy */,
+        Condition const& condition,
+        TrueValue const& true_value,
+        FalseValue const& false_value,
+        Result& result)
+    {
+        assert(size(false_value, 0) == size(condition, 0));
+        assert(size(false_value, 1) == size(condition, 1));
+        assert(size(result, 0) == size(condition, 0));
+        assert(size(result, 1) == size(condition, 1));
+
+        ThreadPool& pool(ThreadClient::pool());
+        size_t const size1 = size(condition, 0);
+        size_t const size2 = size(condition, 1);
+        std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
+            size1, size2);
+        std::vector<std::future<void>> futures;
+        futures.reserve(ranges.size());
+
+        for(auto const& block_range: ranges) {
+            auto function = std::bind(
+                if_then_else_2d_0d_2d<
+                    InputNoDataPolicy, OutputNoDataPolicy,
+                    Condition, TrueValue, FalseValue, Result>,
+                std::cref(input_no_data_policy),
+                std::ref(output_no_data_policy), std::cref(block_range),
+                std::cref(condition), std::cref(true_value),
+                std::cref(false_value), std::ref(result));
+            futures.emplace_back(pool.submit(function));
+        }
+
+        for(auto& future: futures) {
+            future.get();
+        }
+    }
+
+};
+
+
+template<
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename FalseValue,
+    typename Result>
+struct IfThenElseByArgumentCategory<
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Condition,
+    TrueValue,
+    FalseValue,
+    Result,
+    SequentialExecutionPolicy,
+    array_2d_tag,
+    array_2d_tag,
+    array_0d_tag>
+{
+
+    // if(2d, 2d, 0d, 2d)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        SequentialExecutionPolicy const& /* execution_policy */,
+        Condition const& condition,
+        TrueValue const& true_value,
+        FalseValue const& false_value,
+        Result& result)
+    {
+        assert(size(true_value, 0) == size(condition, 0));
+        assert(size(true_value, 1) == size(condition, 1));
+        assert(size(result, 0) == size(condition, 0));
+        assert(size(result, 1) == size(condition, 1));
+
+        if_then_else_2d_2d_0d(input_no_data_policy, output_no_data_policy,
+            IndexRanges<2>{
+                IndexRange(0, size(condition, 0)),
+                IndexRange(0, size(condition, 1)),
+            }, condition, true_value, false_value, result);
+    }
+
+};
+
+
+template<
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename FalseValue,
+    typename Result>
+struct IfThenElseByArgumentCategory<
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Condition,
+    TrueValue,
+    FalseValue,
+    Result,
+    ParallelExecutionPolicy,
+    array_2d_tag,
+    array_2d_tag,
+    array_0d_tag>
+{
+
+    // if(2d, 2d, 0d, 2d)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        ParallelExecutionPolicy const& /* execution_policy */,
+        Condition const& condition,
+        TrueValue const& true_value,
+        FalseValue const& false_value,
+        Result& result)
+    {
+        assert(size(true_value, 0) == size(condition, 0));
+        assert(size(true_value, 1) == size(condition, 1));
+        assert(size(result, 0) == size(condition, 0));
+        assert(size(result, 1) == size(condition, 1));
+
+        ThreadPool& pool(ThreadClient::pool());
+        size_t const size1 = size(condition, 0);
+        size_t const size2 = size(condition, 1);
+        std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
+            size1, size2);
+        std::vector<std::future<void>> futures;
+        futures.reserve(ranges.size());
+
+        for(auto const& block_range: ranges) {
+            auto function = std::bind(
+                if_then_else_2d_2d_0d<
+                    InputNoDataPolicy, OutputNoDataPolicy,
+                    Condition, TrueValue, FalseValue, Result>,
+                std::cref(input_no_data_policy),
+                std::ref(output_no_data_policy), std::cref(block_range),
+                std::cref(condition), std::cref(true_value),
+                std::cref(false_value), std::ref(result));
+            futures.emplace_back(pool.submit(function));
+        }
+
+        for(auto& future: futures) {
+            future.get();
+        }
+    }
+
 };
 
 
@@ -729,13 +1001,7 @@ template<
     typename Condition,
     typename TrueValue,
     typename Result>
-struct IfThenByExecutionPolicy<
-    InputNoDataPolicy,
-    OutputNoDataPolicy,
-    Condition,
-    TrueValue,
-    Result,
-    ExecutionPolicy>
+struct IfThenByExecutionPolicy
 {
 
     static void apply(
@@ -793,28 +1059,8 @@ template<
     typename Condition,
     typename TrueValue,
     typename FalseValue,
-    typename Result,
-    typename ExecutionPolicy>
-class IfThenElseByExecutionPolicy
-{
-};
-
-
-template<
-    typename InputNoDataPolicy,
-    typename OutputNoDataPolicy,
-    typename Condition,
-    typename TrueValue,
-    typename FalseValue,
     typename Result>
-struct IfThenElseByExecutionPolicy<
-    InputNoDataPolicy,
-    OutputNoDataPolicy,
-    Condition,
-    TrueValue,
-    FalseValue,
-    Result,
-    ExecutionPolicy>
+struct IfThenElseByExecutionPolicy
 {
 
     static void apply(
@@ -889,7 +1135,7 @@ void if_(
     Result& result)
 {
     dispatch::IfThenByExecutionPolicy<InputNoDataPolicy, OutputNoDataPolicy,
-        Condition, TrueValue, Result, ExecutionPolicy>::apply(
+        Condition, TrueValue, Result>::apply(
             input_no_data_policy, output_no_data_policy, execution_policy,
             condition, true_value, result);
 }
@@ -913,7 +1159,7 @@ void if_(
     Result& result)
 {
     dispatch::IfThenElseByExecutionPolicy<InputNoDataPolicy, OutputNoDataPolicy,
-        Condition, TrueValue, FalseValue, Result, ExecutionPolicy>::apply(
+        Condition, TrueValue, FalseValue, Result>::apply(
             input_no_data_policy, output_no_data_policy, execution_policy,
             condition, true_value, false_value, result);
 }
