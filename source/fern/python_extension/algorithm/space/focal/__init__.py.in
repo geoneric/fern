@@ -1,1 +1,7 @@
-from . _fern_algorithm_space_focal import *
+from fern.algorithm import execution_policy
+import _fern_algorithm_space_focal as ext
+
+
+def slope(
+        dem):
+    return ext.slope(execution_policy(), dem)

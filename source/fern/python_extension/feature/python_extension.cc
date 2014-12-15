@@ -34,7 +34,7 @@ BOOST_PYTHON_MODULE(_fern_feature)
 
     bp::class_<fp::MaskedRaster, fp::MaskedRasterHandle, boost::noncopyable>(
         "MaskedRaster",
-        "Class for masked rasters."
+        "Class for masked rasters.\n"
         "\n"
         "A masked raster is a raster for which some cells may be masked "
         "out",

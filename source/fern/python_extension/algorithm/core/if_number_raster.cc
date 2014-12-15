@@ -17,6 +17,7 @@ template<
     typename T3,
     typename R>
 void if_(
+    fa::ExecutionPolicy& execution_policy,
     fern::MaskedRaster<T1, 2> const& condition,
     T2 const& true_value,
     fern::MaskedRaster<T3, 2> const& false_value,
@@ -29,7 +30,7 @@ void if_(
     OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
     fa::core::if_(input_no_data_policy, output_no_data_policy,
-        algorithm::sequential, condition, true_value, false_value, result);
+        execution_policy, condition, true_value, false_value, result);
 }
 
 
@@ -38,6 +39,7 @@ template<
     typename T2,
     typename T3>
 MaskedRasterHandle if_(
+    fa::ExecutionPolicy& execution_policy,
     fern::MaskedRaster<T1, 2> const& condition,
     T2 const& true_value,
     fern::MaskedRaster<T3, 2> const& false_value)
@@ -46,8 +48,8 @@ MaskedRasterHandle if_(
     using R = T3;
     auto handle = std::make_shared<fern::MaskedRaster<R, 2>>(sizes,
         condition.transformation());
-    unite_no_data(condition, false_value, *handle);
-    if_(condition, true_value, false_value, *handle);
+    unite_no_data(execution_policy, condition, false_value, *handle);
+    if_(execution_policy, condition, true_value, false_value, *handle);
     return std::make_shared<MaskedRaster>(handle);
 }
 
@@ -60,6 +62,7 @@ MaskedRasterHandle if_(
     value_type1)                              \
 case value_type_enum3: {                      \
     result = if_(                             \
+        execution_policy,                     \
         condition->raster<value_type1>(),     \
         true_value,                           \
         false_value->raster<value_type3>());  \
@@ -79,6 +82,7 @@ case value_type_enum1: {    \
 }
 
 MaskedRasterHandle if_(
+    fa::ExecutionPolicy& execution_policy,
     MaskedRasterHandle const& condition,
     int64_t true_value,
     MaskedRasterHandle const& false_value)
@@ -91,6 +95,7 @@ MaskedRasterHandle if_(
 
 
 MaskedRasterHandle if_(
+    fa::ExecutionPolicy& execution_policy,
     MaskedRasterHandle const& condition,
     double true_value,
     MaskedRasterHandle const& false_value)

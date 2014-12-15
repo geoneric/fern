@@ -5,6 +5,7 @@ ADD_SUBDIRECTORY(test)
 
 
 SET(EXTENSION_SOURCES
+    execution_policy
     python_extension
 )
 ADD_LIBRARY(_fern_algorithm SHARED ${EXTENSION_SOURCES})

@@ -12,7 +12,6 @@ BOOST_PYTHON_MODULE(_fern_algorithm_space_focal)
     INIT_PYTHON_MODULE("C++ module with space/focal algorithms.")
 
     bp::def("slope", fp::slope,
-        "Calculate the slope and return the result.",
-        bp::arg("dem"))
+        "Calculate the slope and return the result.")
         ;
 }

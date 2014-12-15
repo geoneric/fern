@@ -7,73 +7,94 @@
 
 
 namespace bp = boost::python;
+namespace fa = fern::algorithm;
 namespace fp = fern::python;
 
 
 fp::MaskedRasterHandle (*add_raster_raster)(
+    fa::ExecutionPolicy&,
     fp::MaskedRasterHandle const&,
     fp::MaskedRasterHandle const&) = &fp::add;
 fp::MaskedRasterHandle (*add_int64_raster)(
+    fa::ExecutionPolicy&,
     int64_t,
     fp::MaskedRasterHandle const&) = &fp::add;
 fp::MaskedRasterHandle (*add_raster_int64)(
+    fa::ExecutionPolicy&,
     fp::MaskedRasterHandle const&,
     int64_t) = &fp::add;
 fp::MaskedRasterHandle (*add_double_raster)(
+    fa::ExecutionPolicy&,
     double,
     fp::MaskedRasterHandle const&) = &fp::add;
 fp::MaskedRasterHandle (*add_raster_double)(
+    fa::ExecutionPolicy&,
     fp::MaskedRasterHandle const&,
     double) = &fp::add;
 
 
 fp::MaskedRasterHandle (*multiply_raster_raster)(
+    fa::ExecutionPolicy&,
     fp::MaskedRasterHandle const&,
     fp::MaskedRasterHandle const&) = &fp::multiply;
 fp::MaskedRasterHandle (*multiply_int64_raster)(
+    fa::ExecutionPolicy&,
     int64_t,
     fp::MaskedRasterHandle const&) = &fp::multiply;
 fp::MaskedRasterHandle (*multiply_raster_int64)(
+    fa::ExecutionPolicy&,
     fp::MaskedRasterHandle const&,
     int64_t) = &fp::multiply;
 fp::MaskedRasterHandle (*multiply_double_raster)(
+    fa::ExecutionPolicy&,
     double,
     fp::MaskedRasterHandle const&) = &fp::multiply;
 fp::MaskedRasterHandle (*multiply_raster_double)(
+    fa::ExecutionPolicy&,
     fp::MaskedRasterHandle const&,
     double) = &fp::multiply;
 
 
 fp::MaskedRasterHandle (*less_raster_raster)(
+    fa::ExecutionPolicy&,
     fp::MaskedRasterHandle const&,
     fp::MaskedRasterHandle const&) = &fp::less;
 fp::MaskedRasterHandle (*less_int64_raster)(
+    fa::ExecutionPolicy&,
     int64_t,
     fp::MaskedRasterHandle const&) = &fp::less;
 fp::MaskedRasterHandle (*less_raster_int64)(
+    fa::ExecutionPolicy&,
     fp::MaskedRasterHandle const&,
     int64_t) = &fp::less;
 fp::MaskedRasterHandle (*less_double_raster)(
+    fa::ExecutionPolicy&,
     double,
     fp::MaskedRasterHandle const&) = &fp::less;
 fp::MaskedRasterHandle (*less_raster_double)(
+    fa::ExecutionPolicy&,
     fp::MaskedRasterHandle const&,
     double) = &fp::less;
 
 
 fp::MaskedRasterHandle (*greater_raster_raster)(
+    fa::ExecutionPolicy&,
     fp::MaskedRasterHandle const&,
     fp::MaskedRasterHandle const&) = &fp::greater;
 fp::MaskedRasterHandle (*greater_int64_raster)(
+    fa::ExecutionPolicy&,
     int64_t,
     fp::MaskedRasterHandle const&) = &fp::greater;
 fp::MaskedRasterHandle (*greater_raster_int64)(
+    fa::ExecutionPolicy&,
     fp::MaskedRasterHandle const&,
     int64_t) = &fp::greater;
 fp::MaskedRasterHandle (*greater_double_raster)(
+    fa::ExecutionPolicy&,
     double,
     fp::MaskedRasterHandle const&) = &fp::greater;
 fp::MaskedRasterHandle (*greater_raster_double)(
+    fa::ExecutionPolicy&,
     fp::MaskedRasterHandle const&,
     double) = &fp::greater;
 

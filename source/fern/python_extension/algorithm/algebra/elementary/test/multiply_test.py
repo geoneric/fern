@@ -71,7 +71,7 @@ class LessTest(ft.TestCase):
             [  5,           10]]
         mask_we_want = self.mask
         raster_we_want = self.masked_raster(values_we_want, mask_we_want,
-            value_type=fern.float64)
+            value_type=fern.int64)
 
         self.assertMaskedRasterEqual(raster_we_got, raster_we_want)
 
@@ -86,6 +86,6 @@ class LessTest(ft.TestCase):
             [  5,           10]]
         mask_we_want = self.mask
         raster_we_want = self.masked_raster(values_we_want, mask_we_want,
-            value_type=fern.float64)
+            value_type=fern.int64)
 
         self.assertMaskedRasterEqual(raster_we_got, raster_we_want)

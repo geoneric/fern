@@ -4,17 +4,18 @@
 #include "fern/algorithm/policy/policies.h"
 #include "fern/algorithm/space/focal/slope.h"
 #include "fern/python_extension/core/switch_on_value_type.h"
+#include "fern/python_extension/algorithm/core/merge_no_data.h"
 
 
-namespace bp = boost::python;
-namespace fp = fern::python;
+namespace fa = fern::algorithm;
 
 namespace fern {
 namespace python {
 
 template<
     typename T>
-fp::MaskedRasterHandle slope(
+MaskedRasterHandle slope(
+    fa::ExecutionPolicy& execution_policy,
     fern::MaskedRaster<T, 2> const& dem)
 {
     using InputNoDataPolicy = algorithm::DetectNoDataByValue<Mask<2>>;
@@ -28,26 +29,29 @@ fp::MaskedRasterHandle slope(
     OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
     algorithm::space::slope<algorithm::slope::OutOfRangePolicy>(
-        input_no_data_policy, output_no_data_policy, algorithm::sequential,
-        dem, *result_ptr);
+        input_no_data_policy, output_no_data_policy, execution_policy,
+        dem, result);
 
     return std::make_shared<MaskedRaster>(result_ptr);
 }
 
 
-#define CASE(                                     \
-    value_type_enum,                              \
-    value_type)                                   \
-case value_type_enum: {                           \
-    result = slope<>(dem->raster<value_type>());  \
-    break;                                        \
+#define CASE(                        \
+    value_type_enum,                 \
+    value_type)                      \
+case value_type_enum: {              \
+    result = slope<>(                \
+        execution_policy,            \
+        dem->raster<value_type>());  \
+    break;                           \
 }
 
-fp::MaskedRasterHandle slope(
-    fp::MaskedRasterHandle const& dem)
+MaskedRasterHandle slope(
+    fa::ExecutionPolicy& execution_policy,
+    MaskedRasterHandle const& dem)
 {
     assert(!PyErr_Occurred());
-    fp::MaskedRasterHandle result;
+    MaskedRasterHandle result;
 
     SWITCH_ON_FLOATING_POINT_VALUE_TYPE(dem->value_type(), CASE)
 

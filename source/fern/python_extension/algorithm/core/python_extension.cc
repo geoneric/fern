@@ -4,26 +4,32 @@
 
 
 namespace bp = boost::python;
+namespace fa = fern::algorithm;
 namespace fp = fern::python;
 
 
 fp::MaskedRasterHandle (*if_raster_raster)(
+    fa::ExecutionPolicy&,
     fp::MaskedRasterHandle const&,
     fp::MaskedRasterHandle const&,
     fp::MaskedRasterHandle const&) = &fp::if_;
 fp::MaskedRasterHandle (*if_int64_raster)(
+    fa::ExecutionPolicy&,
     fp::MaskedRasterHandle const&,
     int64_t,
     fp::MaskedRasterHandle const&) = &fp::if_;
 fp::MaskedRasterHandle (*if_raster_int64)(
+    fa::ExecutionPolicy&,
     fp::MaskedRasterHandle const&,
     fp::MaskedRasterHandle const&,
     int64_t) = &fp::if_;
 fp::MaskedRasterHandle (*if_double_raster)(
+    fa::ExecutionPolicy&,
     fp::MaskedRasterHandle const&,
     double,
     fp::MaskedRasterHandle const&) = &fp::if_;
 fp::MaskedRasterHandle (*if_raster_double)(
+    fa::ExecutionPolicy&,
     fp::MaskedRasterHandle const&,
     fp::MaskedRasterHandle const&,
     double) = &fp::if_;
