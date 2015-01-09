@@ -67,28 +67,15 @@ MaskedRasterHandle add(
 } // Anonymous namespace
 
 
-#define CASE2(                          \
-    value_type_enum2,                   \
-    value_type2,                        \
-    value_type1)                        \
-case value_type_enum2: {                \
-    iadd(                               \
-        execution_policy,               \
-        self->raster<value_type1>(),    \
-        other->raster<value_type2>());  \
-    break;                              \
-}
-
-#define CASE1(              \
-    value_type_enum1,       \
-    value_type1,            \
-    value_type_enum2)       \
-case value_type_enum1: {    \
-    SWITCH_ON_VALUE_TYPE2(  \
-        value_type_enum2,   \
-        CASE2,              \
-        value_type1)        \
-    break;                  \
+#define CASE(                          \
+    value_type_enum,                   \
+    value_type)                        \
+case value_type_enum: {                \
+    iadd(                              \
+        execution_policy,              \
+        self->raster<value_type>(),    \
+        other->raster<value_type>());  \
+    break;                             \
 }
 
 MaskedRasterHandle& iadd(
@@ -96,12 +83,16 @@ MaskedRasterHandle& iadd(
     MaskedRasterHandle& self,
     MaskedRasterHandle const& other)
 {
-    SWITCH_ON_VALUE_TYPE1(self->value_type(), CASE1, other->value_type());
+    if(other->value_type() != self->value_type()) {
+        // TODO
+        assert(false);
+    }
+
+    SWITCH_ON_VALUE_TYPE(self->value_type(), CASE);
     return self;
 }
 
-#undef CASE1
-#undef CASE2
+#undef CASE
 
 
 #define CASE2(                            \

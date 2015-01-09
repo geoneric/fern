@@ -44,19 +44,19 @@ BOOST_PYTHON_MODULE(_fern_algorithm_core)
         "Conditionally assign cells from true or false raster to\n"
         "the result.")
         ;
-    bp::def("if_", if_raster_double,
-        "Conditionally assign cell from true raster or false value to\n"
-        "the result.")
-        ;
-    bp::def("if_", if_double_raster,
-        "Conditionally assign cell from true value or false raster to\n"
-        "the result.")
-        ;
     bp::def("if_", if_raster_int64,
         "Conditionally assign cell from true raster or false value to\n"
         "the result.")
         ;
     bp::def("if_", if_int64_raster,
+        "Conditionally assign cell from true value or false raster to\n"
+        "the result.")
+        ;
+    bp::def("if_", if_raster_double,
+        "Conditionally assign cell from true raster or false value to\n"
+        "the result.")
+        ;
+    bp::def("if_", if_double_raster,
         "Conditionally assign cell from true value or false raster to\n"
         "the result.")
         ;

@@ -119,7 +119,8 @@ MaskedRasterHandle multiply(
     detail::MaskedRaster<T1> const& lhs,
     T2 const& rhs)
 {
-    using R = T1; // algorithm::multiply::result_type<T1, T2>;
+    // using R = T1; // algorithm::multiply::result_type<T1, T2>;
+    using R = algorithm::multiply::result_type<T1, T2>;
     auto handle = std::make_shared<detail::MaskedRaster<R>>(lhs.sizes(),
         lhs.origin(), lhs.cell_sizes());
     multiply(execution_policy, lhs, rhs, *handle);
@@ -135,7 +136,8 @@ MaskedRasterHandle multiply(
     T1 const& lhs,
     detail::MaskedRaster<T2> const& rhs)
 {
-    using R = T2; // algorithm::multiply::result_type<T1, T2>;
+    // using R = T2; // algorithm::multiply::result_type<T1, T2>;
+    using R = algorithm::multiply::result_type<T1, T2>;
     auto handle = std::make_shared<detail::MaskedRaster<R>>(rhs.sizes(),
         rhs.origin(), rhs.cell_sizes());
     multiply(execution_policy, lhs, rhs, *handle);
@@ -145,28 +147,15 @@ MaskedRasterHandle multiply(
 } // Anonymous namespace
 
 
-#define CASE2(                          \
-    value_type_enum2,                   \
-    value_type2,                        \
-    value_type1)                        \
-case value_type_enum2: {                \
-    imultiply(                          \
-        execution_policy,               \
-        self->raster<value_type1>(),    \
-        other->raster<value_type2>());  \
-    break;                              \
-}
-
-#define CASE1(              \
-    value_type_enum1,       \
-    value_type1,            \
-    value_type_enum2)       \
-case value_type_enum1: {    \
-    SWITCH_ON_VALUE_TYPE2(  \
-        value_type_enum2,   \
-        CASE2,              \
-        value_type1)        \
-    break;                  \
+#define CASE(                          \
+    value_type_enum,                   \
+    value_type)                        \
+case value_type_enum: {                \
+    imultiply(                         \
+        execution_policy,              \
+        self->raster<value_type>(),    \
+        other->raster<value_type>());  \
+    break;                             \
 }
 
 MaskedRasterHandle& imultiply(
@@ -174,12 +163,16 @@ MaskedRasterHandle& imultiply(
     MaskedRasterHandle& self,
     MaskedRasterHandle const& other)
 {
-    SWITCH_ON_VALUE_TYPE1(self->value_type(), CASE1, other->value_type());
+    if(other->value_type() != self->value_type()) {
+        // TODO
+        assert(false);
+    }
+
+    SWITCH_ON_VALUE_TYPE(self->value_type(), CASE);
     return self;
 }
 
-#undef CASE1
-#undef CASE2
+#undef CASE
 
 
 #define CASE2(                            \
@@ -220,15 +213,15 @@ MaskedRasterHandle multiply(
 #undef CASE2
 
 
-#define CASE(                            \
-    value_type_enum2,                    \
-    value_type2)                         \
-case value_type_enum2: {                 \
-    result = multiply(                   \
-        execution_policy,               \
-        value,                           \
-        raster->raster<value_type2>());  \
-    break;                               \
+#define CASE(                             \
+    value_type_enum2,                     \
+    value_type2)                          \
+case value_type_enum2: {                  \
+    result = multiply(                    \
+        execution_policy,                 \
+        static_cast<value_type2>(value),  \
+        raster->raster<value_type2>());   \
+    break;                                \
 }
 
 MaskedRasterHandle multiply(
@@ -255,15 +248,15 @@ MaskedRasterHandle multiply(
 #undef CASE
 
 
-#define CASE(                           \
-    value_type_enum1,                   \
-    value_type1)                        \
-case value_type_enum1: {                \
-    result = multiply(                  \
-        execution_policy,               \
-        raster->raster<value_type1>(),  \
-        value);                         \
-    break;                              \
+#define CASE(                              \
+    value_type_enum1,                      \
+    value_type1)                           \
+case value_type_enum1: {                   \
+    result = multiply(                     \
+        execution_policy,                  \
+        raster->raster<value_type1>(),     \
+        static_cast<value_type1>(value));  \
+    break;                                 \
 }
 
 MaskedRasterHandle multiply(

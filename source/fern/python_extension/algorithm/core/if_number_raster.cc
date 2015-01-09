@@ -59,17 +59,17 @@ MaskedRasterHandle if_(
 } // Anonymous namespace
 
 
-#define CASE2(                                \
-    value_type_enum3,                         \
-    value_type3,                              \
-    value_type1)                              \
-case value_type_enum3: {                      \
-    result = if_(                             \
-        execution_policy,                     \
-        condition->raster<value_type1>(),     \
-        true_value,                           \
-        false_value->raster<value_type3>());  \
-    break;                                    \
+#define CASE2(                                 \
+    value_type_enum3,                          \
+    value_type3,                               \
+    value_type1)                               \
+case value_type_enum3: {                       \
+    result = if_(                              \
+        execution_policy,                      \
+        condition->raster<value_type1>(),      \
+        static_cast<value_type3>(true_value),  \
+        false_value->raster<value_type3>());   \
+    break;                                     \
 }
 
 #define CASE1(              \

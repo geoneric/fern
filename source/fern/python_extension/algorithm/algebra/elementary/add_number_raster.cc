@@ -43,7 +43,8 @@ MaskedRasterHandle add(
     T1 const& lhs,
     detail::MaskedRaster<T2> const& rhs)
 {
-    using R = T2; // algorithm::add::result_type<T1, T2>;
+    // using R = T2; // algorithm::add::result_type<T1, T2>;
+    using R = algorithm::add::result_type<T1, T2>;
     auto handle = std::make_shared<detail::MaskedRaster<R>>(rhs.sizes(),
         rhs.origin(), rhs.cell_sizes());
     add(execution_policy, lhs, rhs, *handle);
@@ -53,15 +54,15 @@ MaskedRasterHandle add(
 } // Anonymous namespace
 
 
-#define CASE(                            \
-    value_type_enum2,                    \
-    value_type2)                         \
-case value_type_enum2: {                 \
-    result = add(                        \
-        execution_policy,                \
-        value,                           \
-        raster->raster<value_type2>());  \
-    break;                               \
+#define CASE(                             \
+    value_type_enum2,                     \
+    value_type2)                          \
+case value_type_enum2: {                  \
+    result = add(                         \
+        execution_policy,                 \
+        static_cast<value_type2>(value),  \
+        raster->raster<value_type2>());   \
+    break;                                \
 }
 
 MaskedRasterHandle add(
