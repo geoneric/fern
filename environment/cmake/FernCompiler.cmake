@@ -30,6 +30,16 @@ ENDIF()
 INCLUDE(CheckCXXCompilerFlag)
 
 
+# TODO: Treat all warnings as errors and explicitly turn off warning that
+#       we don't consider errors. Example(!):
+# Clang:
+# -Werror -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-exit-time-destructors -Wno-missing-braces -Wno-padded
+# Visual Studio:
+# /WX /Wall
+# Gcc:
+# -Werror -Wall -Wextra -Wpedantic -Wcast-align -Wcast-qual -Wconversion -Wctor-dtor-privacy -Wdisabled-optimization -Wdouble-promotion -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wlogical-op -Wmissing-declarations -Wmissing-include-dirs -Wnoexcept -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wstrict-overflow=5 -Wtrampolines -Wundef -Wunsafe-loop-optimizations -Wvector-operation-performance -Wzero-as-null-pointer-constant
+
+
 IF(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR
         ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
     # TODO Figure this out:
