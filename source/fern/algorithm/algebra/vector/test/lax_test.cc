@@ -51,22 +51,23 @@ BOOST_AUTO_TEST_CASE(algorithm)
         fa::algebra::lax(fa::sequential, raster, fraction, result);
 
         /// // Verify the result.
-        BOOST_CHECK_EQUAL(fern::get(result, 0, 0),
+        BOOST_CHECK_EQUAL(get(result, index(result, 0, 0)),
             ((1.0 - fraction) * 0.0) + (fraction * 25.0 / 8.0));
-        BOOST_CHECK_EQUAL(fern::get(result, 1, 1),
+        BOOST_CHECK_EQUAL(get(result, index(result, 1, 1)),
             ((1.0 - fraction) * 5.0) + (fraction * 100.0 / 20.0));
     }
 
-    using InputNoDataPolicy = fa::DetectNoDataByValue<fern::Mask<2>>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<
+        fa::DetectNoDataByValue<fern::Mask<2>>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<2>>;
 
     // With masking input and output values.
     {
         result.fill(999.0);
         result.mask().fill(false);
-        result.mask()[1][1] = true;
+        raster.mask()[1][1] = true;
 
-        InputNoDataPolicy input_no_data_policy(result.mask(), true);
+        InputNoDataPolicy input_no_data_policy{{raster.mask(), true}};
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
         fa::algebra::lax(
@@ -76,12 +77,13 @@ BOOST_AUTO_TEST_CASE(algorithm)
             raster, fraction, result);
 
         // Verify the result.
-        BOOST_CHECK_EQUAL(fern::get(result.mask(), 0, 0), false);
-        BOOST_CHECK_EQUAL(fern::get(result, 0, 0),
+        BOOST_CHECK_EQUAL(get(result.mask(), index(result.mask(), 0, 0)),
+            false);
+        BOOST_CHECK_EQUAL(get(result, index(result, 0, 0)),
             ((1.0 - fraction) * 0.0) + (fraction * 15.0 / 6.0));
 
-        BOOST_CHECK_EQUAL(fern::get(result.mask(), 1, 1), true);
-        BOOST_CHECK_EQUAL(fern::get(result, 1, 1), 999.0);
+        BOOST_CHECK_EQUAL(get(result.mask(), index(result.mask(), 1, 1)), true);
+        BOOST_CHECK_EQUAL(get(result, index(result, 1, 1)), 999.0);
     }
 }
 

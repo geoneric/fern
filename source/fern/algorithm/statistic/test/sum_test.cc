@@ -59,7 +59,8 @@ BOOST_AUTO_TEST_CASE(masked_d0_array)
     BOOST_CHECK_EQUAL(result_we_get.value(), 6);
 
     // MaskedConstant with masking sum. ----------------------------------------
-    using InputNoDataPolicy = fa::DetectNoDataByValue<bool>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<
+        fa::DetectNoDataByValue<bool>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
 
     // Constant is not masked.
@@ -70,8 +71,8 @@ BOOST_AUTO_TEST_CASE(masked_d0_array)
     {
         OutputNoDataPolicy output_no_data_policy(result_we_get.mask(), true);
         fa::statistic::sum<fa::binary::DiscardRangeErrors>(
-                InputNoDataPolicy(constant.mask(), true), output_no_data_policy,
-                fa::sequential, constant, result_we_get);
+            InputNoDataPolicy{{constant.mask(), true}}, output_no_data_policy,
+            fa::sequential, constant, result_we_get);
     }
     BOOST_CHECK(!result_we_get.mask());
     BOOST_CHECK_EQUAL(result_we_get.value(), 5);
@@ -84,8 +85,8 @@ BOOST_AUTO_TEST_CASE(masked_d0_array)
     {
         OutputNoDataPolicy output_no_data_policy(result_we_get.mask(), true);
         fa::statistic::sum<fa::binary::DiscardRangeErrors>(
-                InputNoDataPolicy(constant.mask(), true), output_no_data_policy,
-                fa::sequential, constant, result_we_get);
+            InputNoDataPolicy{{constant.mask(), true}}, output_no_data_policy,
+            fa::sequential, constant, result_we_get);
     }
     BOOST_CHECK(result_we_get.mask());
     BOOST_CHECK_EQUAL(result_we_get.value(), 5);
@@ -123,7 +124,8 @@ BOOST_AUTO_TEST_CASE(d1_array)
 
 BOOST_AUTO_TEST_CASE(masked_d1_array)
 {
-    using InputNoDataPolicy = fa::DetectNoDataByValue<fern::Mask<1>>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<
+        fa::DetectNoDataByValue<fern::Mask<1>>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
     using MaskedArray = fern::MaskedArray<int32_t, 1>;
     using MaskedConstant = fern::MaskedConstant<int32_t>;
@@ -143,8 +145,8 @@ BOOST_AUTO_TEST_CASE(masked_d1_array)
         MaskedConstant result;
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
         fa::statistic::sum<fa::binary::DiscardRangeErrors>(
-                InputNoDataPolicy(array.mask(), true), output_no_data_policy,
-                fa::sequential, array, result);
+            InputNoDataPolicy{{array.mask(), true}}, output_no_data_policy,
+            fa::sequential, array, result);
         BOOST_CHECK(!result.mask());
         BOOST_CHECK_EQUAL(result.value(), 8);
 
@@ -152,8 +154,8 @@ BOOST_AUTO_TEST_CASE(masked_d1_array)
         std::fill(array.mask().data(), array.mask().data() +
             array.num_elements(), true);
         fa::statistic::sum<fa::binary::DiscardRangeErrors>(
-                InputNoDataPolicy(array.mask(), true), output_no_data_policy,
-                fa::sequential, array, result);
+            InputNoDataPolicy{{array.mask(), true}}, output_no_data_policy,
+            fa::sequential, array, result);
         BOOST_CHECK(result.mask());
     }
 
@@ -163,8 +165,8 @@ BOOST_AUTO_TEST_CASE(masked_d1_array)
         MaskedConstant result{5};
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
         fa::statistic::sum<fa::binary::DiscardRangeErrors>(
-            InputNoDataPolicy(empty_array.mask(), true), output_no_data_policy,
-            fa::sequential, empty_array, result);
+            InputNoDataPolicy{{empty_array.mask(), true}},
+            output_no_data_policy, fa::sequential, empty_array, result);
         BOOST_CHECK(result.mask());
         BOOST_CHECK_EQUAL(result.value(), 5);
     }
@@ -205,15 +207,16 @@ BOOST_AUTO_TEST_CASE(masked_d2_array)
     // 2d masked array with masking sum
     {
         using MaskedConstant = fern::MaskedConstant<int8_t>;
-        using InputNoDataPolicy = fa::DetectNoDataByValue<fern::Mask<2>>;
+        using InputNoDataPolicy = fa::InputNoDataPolicies<
+            fa::DetectNoDataByValue<fern::Mask<2>>>;
         using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
 
         array.mask()[1][1] = true;
         MaskedConstant result;
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
         fa::statistic::sum<fa::binary::DiscardRangeErrors>(
-                InputNoDataPolicy(array.mask(), true), output_no_data_policy,
-                fa::sequential, array, result);
+            InputNoDataPolicy{{array.mask(), true}}, output_no_data_policy,
+            fa::sequential, array, result);
         BOOST_CHECK(!result.mask());
         BOOST_CHECK_EQUAL(result.value(), 5);
 
@@ -221,8 +224,8 @@ BOOST_AUTO_TEST_CASE(masked_d2_array)
         std::fill(array.mask().data(), array.mask().data() +
             array.num_elements(), true);
         fa::statistic::sum<fa::binary::DiscardRangeErrors>(
-                InputNoDataPolicy(array.mask(), true), output_no_data_policy,
-                fa::sequential, array, result);
+            InputNoDataPolicy{{array.mask(), true}}, output_no_data_policy,
+            fa::sequential, array, result);
         BOOST_CHECK(result.mask());
     }
 }
@@ -249,7 +252,7 @@ BOOST_AUTO_TEST_CASE(out_of_range)
 
     // 1d masked array with masking sum
     {
-        using InputNoDataPolicy = fa::SkipNoData<>;
+        using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData<>>;
         using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
 
         // fern::MaskedConstant<int32_t> result;
@@ -257,7 +260,7 @@ BOOST_AUTO_TEST_CASE(out_of_range)
         R result;
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
         fa::statistic::sum<fa::sum::OutOfRangePolicy>(
-            InputNoDataPolicy(), output_no_data_policy,
+            InputNoDataPolicy{{}}, output_no_data_policy,
             fa::sequential, overflow_array, result);
         BOOST_CHECK(result.mask());
     }
@@ -292,7 +295,7 @@ BOOST_AUTO_TEST_CASE(concurrent)
     }
 
     {
-        using InputNoDataPolicy = fa::SkipNoData<>;
+        using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData<>>;
         using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
         fern::MaskedConstant<int32_t> result_we_got;
 
@@ -310,7 +313,7 @@ BOOST_AUTO_TEST_CASE(concurrent)
             // Base case, serial.
             result_we_got.mask() = false;
             fa::statistic::sum<fa::sum::OutOfRangePolicy>(
-                InputNoDataPolicy(), output_no_data_policy,
+                InputNoDataPolicy{{}}, output_no_data_policy,
                 fa::sequential, argument, result_we_got);
             BOOST_CHECK(result_we_got.mask());
         }
@@ -319,7 +322,7 @@ BOOST_AUTO_TEST_CASE(concurrent)
             // Concurrent.
             result_we_got.mask() = false;
             fa::statistic::sum<fa::sum::OutOfRangePolicy>(
-                InputNoDataPolicy(), output_no_data_policy,
+                InputNoDataPolicy{{}}, output_no_data_policy,
                 fa::parallel, argument, result_we_got);
             BOOST_CHECK(result_we_got.mask());
         }
@@ -337,7 +340,7 @@ BOOST_AUTO_TEST_CASE(concurrent)
             // Base case, serial.
             result_we_got.mask() = false;
             fa::statistic::sum<fa::sum::OutOfRangePolicy>(
-                InputNoDataPolicy(), output_no_data_policy,
+                InputNoDataPolicy{{}}, output_no_data_policy,
                 fa::sequential, argument, result_we_got);
             BOOST_CHECK(result_we_got.mask());
         }
@@ -346,7 +349,7 @@ BOOST_AUTO_TEST_CASE(concurrent)
             // Concurrent.
             result_we_got.mask() = false;
             fa::statistic::sum<fa::sum::OutOfRangePolicy>(
-                InputNoDataPolicy(), output_no_data_policy,
+                InputNoDataPolicy{{}}, output_no_data_policy,
                 fa::parallel, argument, result_we_got);
             BOOST_CHECK(result_we_got.mask());
         }

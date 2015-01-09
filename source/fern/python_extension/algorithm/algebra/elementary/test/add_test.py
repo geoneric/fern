@@ -5,12 +5,12 @@ import fern.test as ft
 
 class AddTest(ft.TestCase):
 
-    no_data = -999
+    bogus = -999
 
     values = [
-        [ -2,      -1],
-        [  0, no_data],
-        [  1,       2]]
+        [ -2,    -1],
+        [  0, bogus],
+        [  1,     2]]
     mask = [
         [ False, False],
         [ False, True ],
@@ -23,8 +23,8 @@ class AddTest(ft.TestCase):
 
         values_we_want = [
             [ -4,           -2],
-            [  0, self.no_data],
-            [  2,           4]]
+            [  0, ft.no_data_value(fern.int64)],
+            [  2,            4]]
         mask_we_want = self.mask
         raster_we_want = self.masked_raster(values_we_want, mask_we_want)
 
@@ -37,7 +37,7 @@ class AddTest(ft.TestCase):
 
         values_we_want = [
             [  3,            4],
-            [  5, self.no_data],
+            [  5, ft.no_data_value(fern.int64)],
             [  6,            7]]
         mask_we_want = self.mask
         raster_we_want = self.masked_raster(values_we_want, mask_we_want,
@@ -52,7 +52,7 @@ class AddTest(ft.TestCase):
 
         values_we_want = [
             [  3,            4],
-            [  5, self.no_data],
+            [  5, ft.no_data_value(fern.int64)],
             [  6,            7]]
         mask_we_want = self.mask
         raster_we_want = self.masked_raster(values_we_want, mask_we_want,
@@ -67,7 +67,7 @@ class AddTest(ft.TestCase):
 
         values_we_want = [
             [  3,            4],
-            [  5, self.no_data],
+            [  5, ft.no_data_value(fern.int64)],
             [  6,            7]]
         mask_we_want = self.mask
         raster_we_want = self.masked_raster(values_we_want, mask_we_want,
@@ -82,7 +82,7 @@ class AddTest(ft.TestCase):
 
         values_we_want = [
             [  3,            4],
-            [  5, self.no_data],
+            [  5, ft.no_data_value(fern.int64)],
             [  6,            7]]
         mask_we_want = self.mask
         raster_we_want = self.masked_raster(values_we_want, mask_we_want,

@@ -70,8 +70,9 @@ void test_array_1d_masked(
         [&](int const& value) {
             return value % 5 == 0? no_data_value : value; });
 
-    using InputNoDataPolicy = fa::DetectNoDataByValue<std::vector<int>>;
-    InputNoDataPolicy input_no_data_policy(values, no_data_value);
+    using InputNoDataPolicy = fa::InputNoDataPolicies<
+        fa::DetectNoDataByValue<std::vector<int>>>;
+    InputNoDataPolicy input_no_data_policy{{values, no_data_value}};
 
     result_we_want = values;
     result_we_want.erase(std::remove(result_we_want.begin(),
@@ -167,8 +168,9 @@ void test_array_2d_masked(
         [&](int const& value) {
             return value % 5 == 0? no_data_value : value; });
 
-    using InputNoDataPolicy = fa::DetectNoDataByValue<fern::Array<int, 2>>;
-    InputNoDataPolicy input_no_data_policy(values, no_data_value);
+    using InputNoDataPolicy = fa::InputNoDataPolicies<
+        fa::DetectNoDataByValue<fern::Array<int, 2>>>;
+    InputNoDataPolicy input_no_data_policy{{values, no_data_value}};
 
     std::copy(values.data(), values.data() + nr_elements,
         result_we_want.data());

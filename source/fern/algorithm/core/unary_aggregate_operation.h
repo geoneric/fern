@@ -27,11 +27,11 @@ void operation_0d(
     Value const& value,
     Result& result)
 {
-    if(!input_no_data_policy.is_no_data()) {
-        algorithm.init(get(value), get(result));
+    if(std::get<0>(input_no_data_policy).is_no_data()) {
+        output_no_data_policy.mark_as_no_data();
     }
     else {
-        output_no_data_policy.mark_as_no_data();
+        algorithm.init(get(value), get(result));
     }
 }
 
@@ -66,7 +66,7 @@ void operation_1d(
 
         for(size_t i = begin; i < end; ++i) {
 
-            if(!input_no_data_policy.is_no_data(i)) {
+            if(!std::get<0>(input_no_data_policy).is_no_data(i)) {
 
                 // Initialize result using the first valid value.
                 algorithm.init(get(value, i), tmp_result);
@@ -75,7 +75,7 @@ void operation_1d(
 
                 for(++i; i < end; ++i) {
 
-                    if(!input_no_data_policy.is_no_data(i)) {
+                    if(!std::get<0>(input_no_data_policy).is_no_data(i)) {
 
                         value_type<Value> const& a_value{get(value, i)};
                         algorithm.calculate(a_value, tmp_result);
@@ -131,19 +131,25 @@ void operation_2d(
 
         size_t i = begin1;
         size_t j = begin2;
+        size_t index_;
 
         // Initialize result.
         for(; i < end1; ++i) {
+
+            index_ = index(value, i, j);
+
             for(; j < end2; ++j) {
 
-                if(!input_no_data_policy.is_no_data(i, j)) {
+                if(!std::get<0>(input_no_data_policy).is_no_data(index_)) {
 
                     // Initialize result using the first valid value.
-                    algorithm.init(get(value, i, j), tmp_result);
+                    algorithm.init(get(value, index_), tmp_result);
                     result_ = tmp_result;
                     data_seen = true;
                     break;
                 }
+
+                ++index_;
             }
 
             if(data_seen) {
@@ -156,11 +162,14 @@ void operation_2d(
             ++j;
 
             for(; i < end1; ++i) {
+
+                index_ = index(value, i, j);
+
                 for(; j < end2; ++j) {
 
-                    if(!input_no_data_policy.is_no_data(i, j)) {
+                    if(!std::get<0>(input_no_data_policy).is_no_data(index_)) {
 
-                        value_type<Value> const& a_value{get(value, i, j)};
+                        value_type<Value> const& a_value{get(value, index_)};
                         algorithm.calculate(a_value, tmp_result);
 
                         // lhs, rhs, lhs + rhs
@@ -172,6 +181,8 @@ void operation_2d(
 
                         result_ = tmp_result;
                     }
+
+                    ++index_;
                 }
 
                 if(j != end2) {
@@ -226,8 +237,9 @@ struct Aggregate<
         // Accumulate the results into one single result.
         // The final result is not masking, so the results aren't
         // either.
-        aggregator.template apply<OutOfRangePolicy>(SkipNoData<>(),
-            output_no_data_policy, sequential, results_, result);
+        aggregator.template apply<OutOfRangePolicy>(
+            InputNoDataPolicies<SkipNoData<>>{{}}, output_no_data_policy,
+            sequential, results_, result);
     }
 
 };
@@ -257,8 +269,8 @@ struct Aggregate<
         // Accumulate the results into one single result.
         // The final result is masking, so the results are also.
         aggregator.template apply<OutOfRangePolicy>(
-            DetectNoDataByValue<Mask<1>>(results_.mask(), true),
-            output_no_data_policy, sequential, results_, result);
+            InputNoDataPolicies<DetectNoDataByValue<Mask<1>>>{{results_.mask(),
+                true}}, output_no_data_policy, sequential, results_, result);
     }
 
 };

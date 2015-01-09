@@ -135,10 +135,6 @@ void pow(
     @overload
 */
 template<
-    template<typename, typename> class OutOfDomainPolicy,
-    template<typename, typename, typename> class OutOfRangePolicy,
-    typename InputNoDataPolicy,
-    typename OutputNoDataPolicy,
     typename ExecutionPolicy,
     typename Base,
     typename Exponent,
@@ -150,34 +146,12 @@ void pow(
     Exponent const& exponent,
     Result& result)
 {
-    OutputNoDataPolicy output_no_data_policy;
-    pow<OutOfDomainPolicy, OutOfRangePolicy>(InputNoDataPolicy(),
-        output_no_data_policy, execution_policy, base, exponent, result);
-}
-
-
-/*!
-    @ingroup    fern_algorithm_algebra_elementary_group
-    @overload
-*/
-template<
-    typename ExecutionPolicy,
-    typename Base,
-    typename Exponent,
-    typename Result
->
-void pow(
-    ExecutionPolicy const& execution_policy,
-    Base const& base,
-    Exponent const& exponent,
-    Result& result)
-{
-    using InputNoDataPolicy = SkipNoData<>;
+    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData<>, SkipNoData<>>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
     pow<binary::DiscardDomainErrors, binary::DiscardRangeErrors>(
-        InputNoDataPolicy(), output_no_data_policy, execution_policy,
+        InputNoDataPolicy{{}, {}}, output_no_data_policy, execution_policy,
         base, exponent, result);
 }
 

@@ -52,8 +52,6 @@ void if_(
     @overload
 */
 template<
-    typename InputNoDataPolicy,
-    typename OutputNoDataPolicy,
     typename ExecutionPolicy,
     typename Condition,
     typename TrueValue,
@@ -64,32 +62,11 @@ void if_(
     TrueValue const& true_value,
     Result& result)
 {
-    OutputNoDataPolicy output_no_data_policy;
-    if_<>(InputNoDataPolicy(), output_no_data_policy,
-        execution_policy, condition, true_value, result);
-}
-
-
-/*!
-    @ingroup    fern_algorithm_core_group
-    @overload
-*/
-template<
-    typename ExecutionPolicy,
-    typename Condition,
-    typename TrueValue,
-    typename Result>
-void if_(
-    ExecutionPolicy const& execution_policy,
-    Condition const& condition,
-    TrueValue const& true_value,
-    Result& result)
-{
-    using InputNoDataPolicy = SkipNoData<>;
+    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData<>, SkipNoData<>>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
-    if_<>(InputNoDataPolicy(), output_no_data_policy, execution_policy,
+    if_<>(InputNoDataPolicy{{}, {}}, output_no_data_policy, execution_policy,
         condition, true_value, result);
 }
 
@@ -148,8 +125,6 @@ void if_(
     @overload
 */
 template<
-    typename InputNoDataPolicy,
-    typename OutputNoDataPolicy,
     typename ExecutionPolicy,
     typename Condition,
     typename TrueValue,
@@ -162,35 +137,13 @@ void if_(
     FalseValue const& false_value,
     Result& result)
 {
-    OutputNoDataPolicy output_no_data_policy;
-    if_<>(InputNoDataPolicy(), output_no_data_policy,
-        execution_policy, condition, true_value, false_value, result);
-}
-
-
-/*!
-    @ingroup    fern_algorithm_core_group
-    @overload
-*/
-template<
-    typename ExecutionPolicy,
-    typename Condition,
-    typename TrueValue,
-    typename FalseValue,
-    typename Result>
-void if_(
-    ExecutionPolicy const& execution_policy,
-    Condition const& condition,
-    TrueValue const& true_value,
-    FalseValue const& false_value,
-    Result& result)
-{
-    using InputNoDataPolicy = SkipNoData<>;
+    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData<>, SkipNoData<>,
+          SkipNoData<>>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
-    if_<>(InputNoDataPolicy(), output_no_data_policy, execution_policy,
-        condition, true_value, false_value, result);
+    if_<>(InputNoDataPolicy{{}, {}, {}}, output_no_data_policy,
+        execution_policy, condition, true_value, false_value, result);
 }
 
 } // namespace core

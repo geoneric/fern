@@ -14,7 +14,7 @@ struct floating_point_tag {};
 
 
 template<
-    class T>
+    typename T>
 struct TypeTraits
 {
     // static ValueType const value_type;
@@ -56,6 +56,8 @@ struct TypeTraits<int8_t>
     static int8_t const min;
 
     static int8_t const max;
+
+    static int8_t const no_data_value;
 };
 
 
@@ -75,6 +77,8 @@ struct TypeTraits<uint8_t>
     static uint8_t const min;
 
     static uint8_t const max;
+
+    static uint8_t const no_data_value;
 };
 
 
@@ -94,6 +98,8 @@ struct TypeTraits<int16_t>
     static int16_t const min;
 
     static int16_t const max;
+
+    static int16_t const no_data_value;
 };
 
 
@@ -113,6 +119,8 @@ struct TypeTraits<uint16_t>
     static uint16_t const min;
 
     static uint16_t const max;
+
+    static uint16_t const no_data_value;
 };
 
 
@@ -132,6 +140,8 @@ struct TypeTraits<int32_t>
     static int32_t const min;
 
     static int32_t const max;
+
+    static int32_t const no_data_value;
 };
 
 
@@ -151,6 +161,8 @@ struct TypeTraits<uint32_t>
     static uint32_t const min;
 
     static uint32_t const max;
+
+    static uint32_t const no_data_value;
 };
 
 
@@ -170,6 +182,8 @@ struct TypeTraits<int64_t>
     static int64_t const min;
 
     static int64_t const max;
+
+    static int64_t const no_data_value;
 };
 
 
@@ -189,6 +203,8 @@ struct TypeTraits<uint64_t>
     static uint64_t const min;
 
     static uint64_t const max;
+
+    static uint64_t const no_data_value;
 };
 
 
@@ -212,6 +228,8 @@ struct TypeTraits<float>
     static float const nan;
 
     static float const infinity;
+
+    static float const no_data_value;
 };
 
 
@@ -235,6 +253,8 @@ struct TypeTraits<double>
     static double const nan;
 
     static double const infinity;
+
+    static double const no_data_value;
 };
 
 
@@ -252,55 +272,81 @@ struct TypeTraits<String>
 
 
 template<
-    class T>
-T min()
+    typename T>
+inline T min()
 {
   return TypeTraits<T>::min;
 }
 
 
 template<
-    class T>
-T max()
+    typename T>
+inline T max()
 {
   return TypeTraits<T>::max;
 }
 
 
 template<
-    class T>
-T nan()
+    typename T>
+inline T nan()
 {
   return TypeTraits<T>::nan;
 }
 
 
 template<
-    class T>
-T infinity()
+    typename T>
+inline T infinity()
 {
   return TypeTraits<T>::infinity;
 }
 
 
 template<
-    class T>
-T pi()
+    typename T>
+inline T no_data_value()
+{
+  return TypeTraits<T>::no_data_value;
+}
+
+
+template<
+    typename T>
+inline bool is_no_data(
+    T const& value)
+{
+    return value == no_data_value<T>();
+}
+
+
+template<
+    typename T>
+inline void set_no_data(
+    T& value)
+{
+    value = no_data_value<T>();
+}
+
+
+template<
+    typename T>
+inline T pi()
 {
   return boost::math::constants::pi<T>();
 }
 
 
 template<
-    class T>
-T half_pi()
+    typename T>
+inline T half_pi()
 {
   return boost::math::constants::half_pi<T>();
 }
 
 
 template<
-    class T>
+    typename T>
 using number_category = typename TypeTraits<T>::number_category;
 
 

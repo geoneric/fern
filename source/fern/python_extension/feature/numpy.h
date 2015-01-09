@@ -12,9 +12,9 @@ boost::python::object
                                        (fern::python::MaskedRaster const&
                                             masked_raster);
 
-boost::python::object
-                   mask_as_numpy_array (fern::python::MaskedRaster const&
-                                            masked_raster);
+// boost::python::object
+//                    mask_as_numpy_array (fern::python::MaskedRaster const&
+//                                             masked_raster);
 
 } // namespace python
 } // namespace fern

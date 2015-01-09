@@ -22,11 +22,9 @@ void unite_no_data_0d_0d(
     Value2 const& /* value2 */,
     Result& /* result */)
 {
-    if(!input_no_data_policy.is_no_data()) {
-        if(input_no_data_policy.get<0>().is_no_data() ||
-                input_no_data_policy.get<1>().is_no_data()) {
-            output_no_data_policy.mark_as_no_data();
-        }
+    if(std::get<0>(input_no_data_policy).is_no_data() ||
+            std::get<1>(input_no_data_policy).is_no_data()) {
+        output_no_data_policy.mark_as_no_data();
     }
 }
 
@@ -43,18 +41,23 @@ void unite_no_data_2d_2d(
     IndexRanges<2> const& index_ranges,
     Value1 const& /* value1 */,
     Value2 const& /* value2 */,
-    Result& /* result */)
+    Result& result)
 {
+    size_t index_;
+
     for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+
+        index_ = index(result, i, index_ranges[1].begin());
+
         for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
                 ++j) {
 
-            if(!input_no_data_policy.is_no_data(i, j)) {
-                if(input_no_data_policy.get<0>().is_no_data(i, j) ||
-                        input_no_data_policy.get<1>().is_no_data(i, j)) {
-                    output_no_data_policy.mark_as_no_data(i, j);
-                }
+            if(std::get<0>(input_no_data_policy).is_no_data(index_) ||
+                    std::get<1>(input_no_data_policy).is_no_data(index_)) {
+                output_no_data_policy.mark_as_no_data(index_);
             }
+
+            ++index_;
         }
     }
 }

@@ -3,14 +3,14 @@ import fern.algorithm as fa
 import fern.test as ft
 
 
-class LessTest(ft.TestCase):
+class MultiplyTest(ft.TestCase):
 
-    no_data = -999
+    bogus = -999
 
     values = [
-        [ -2,      -1],
-        [  0, no_data],
-        [  1,       2]]
+        [ -2,    -1],
+        [  0, bogus],
+        [  1,     2]]
     mask = [
         [ False, False],
         [ False, True ],
@@ -23,10 +23,14 @@ class LessTest(ft.TestCase):
 
         values_we_want = [
             [  4,            1],
-            [  0, self.no_data],
+            # [  0, ft.no_data_value(fern.int64)],
+            [  0, 12345],
             [  1,            4]]
         mask_we_want = self.mask
         raster_we_want = self.masked_raster(values_we_want, mask_we_want)
+        print fern.raster_as_numpy_array(raster1)
+        print fern.raster_as_numpy_array(raster_we_got)
+        print fern.raster_as_numpy_array(raster_we_want)
 
         self.assertMaskedRasterEqual(raster_we_got, raster_we_want)
 
@@ -37,7 +41,7 @@ class LessTest(ft.TestCase):
 
         values_we_want = [
             [-10,           -5],
-            [  0, self.no_data],
+            [  0, ft.no_data_value(fern.int64)],
             [  5,           10]]
         mask_we_want = self.mask
         raster_we_want = self.masked_raster(values_we_want, mask_we_want,
@@ -52,7 +56,7 @@ class LessTest(ft.TestCase):
 
         values_we_want = [
             [-10,           -5],
-            [  0, self.no_data],
+            [  0, ft.no_data_value(fern.int64)],
             [  5,           10]]
         mask_we_want = self.mask
         raster_we_want = self.masked_raster(values_we_want, mask_we_want,
@@ -67,7 +71,7 @@ class LessTest(ft.TestCase):
 
         values_we_want = [
             [-10,           -5],
-            [  0, self.no_data],
+            [  0, ft.no_data_value(fern.int64)],
             [  5,           10]]
         mask_we_want = self.mask
         raster_we_want = self.masked_raster(values_we_want, mask_we_want,
@@ -82,7 +86,7 @@ class LessTest(ft.TestCase):
 
         values_we_want = [
             [-10,           -5],
-            [  0, self.no_data],
+            [  0, ft.no_data_value(fern.int64)],
             [  5,           10]]
         mask_we_want = self.mask
         raster_we_want = self.masked_raster(values_we_want, mask_we_want,

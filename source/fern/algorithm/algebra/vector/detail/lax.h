@@ -70,6 +70,7 @@ struct Lax<
 
         // result = (1 - f) * value + f * convolution(value, kernel);
 
+        // result = convolve(value, kernel)
         convolution::convolve<
             convolve::SkipNoData,
             convolve::DivideByWeights,
@@ -80,28 +81,62 @@ struct Lax<
                 input_no_data_policy, output_no_data_policy, execution_policy,
                 value, kernel, result);
 
-        algebra::multiply<
-            // TODO: Select OutOfRange policy based on the
-            //       output-no-data-policy passed in.
-            algorithm::multiply::OutOfRangePolicy>(
-                input_no_data_policy, output_no_data_policy, execution_policy,
-                fraction, result, result);
+        // result = f * result
+        {
+            // TODO Tricky, we should use an input no-data policy that can
+            //      detect the no-data in the temp result of the convolve.
+            //      Like it is now, we won't detect generated no-data, but
+            //      only no-data in the origin value passed in. Update INP2.
+            //      Given a type, we need to be able to create an
+            //      input-no-data policy.
+            using INP1 = SkipNoData<>;
+            using INP2 = decltype(std::get<0>(input_no_data_policy));
 
+            InputNoDataPolicies<INP1, INP2> input_no_data_policy_{{},
+                {std::get<0>(input_no_data_policy)}};
 
+            algebra::multiply<
+                // TODO: Select OutOfRange policy based on the
+                //       output-no-data-policy passed in.
+                algorithm::multiply::OutOfRangePolicy>(
+                    input_no_data_policy_, output_no_data_policy,
+                    execution_policy, fraction, result, result);
+        }
+
+        // tmp = (1.0 - f) * value
         auto multiplied_values = clone<Float>(result);
-        algebra::multiply<
-            // TODO: Select OutOfRange policy based on the
-            //       output-no-data-policy passed in.
-            algorithm::multiply::OutOfRangePolicy>(
-                input_no_data_policy, output_no_data_policy, execution_policy,
-                (1.0 - fraction), value, multiplied_values);
+        {
+            using INP1 = SkipNoData<>;
+            using INP2 = decltype(std::get<0>(input_no_data_policy));
 
-        algebra::add<
-            // TODO: Select OutOfRange policy based on the
-            //       output-no-data-policy passed in.
-            algorithm::add::OutOfRangePolicy>(
-                input_no_data_policy, output_no_data_policy, execution_policy,
-                multiplied_values, result, result);
+            InputNoDataPolicies<INP1, INP2> input_no_data_policy_{{},
+                {std::get<0>(input_no_data_policy)}};
+
+            algebra::multiply<
+                // TODO: Select OutOfRange policy based on the
+                //       output-no-data-policy passed in.
+                algorithm::multiply::OutOfRangePolicy>(
+                    input_no_data_policy_, output_no_data_policy,
+                    execution_policy, (1.0 - fraction), value,
+                    multiplied_values);
+        }
+
+        // result = tmp + result
+        {
+            // TODO See comment above.
+            using INP1 = SkipNoData<>;
+            using INP2 = decltype(std::get<0>(input_no_data_policy));
+
+            InputNoDataPolicies<INP1, INP2> input_no_data_policy_{{},
+                {std::get<0>(input_no_data_policy)}};
+
+            algebra::add<
+                // TODO: Select OutOfRange policy based on the
+                //       output-no-data-policy passed in.
+                algorithm::add::OutOfRangePolicy>(
+                    input_no_data_policy_, output_no_data_policy,
+                    execution_policy, multiplied_values, result, result);
+        }
     }
 
 };

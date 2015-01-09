@@ -70,12 +70,10 @@ BOOST_PYTHON_MODULE(_fern_feature)
             "Cell width and cell height")
         .add_property("value_type", &fp::MaskedRaster::value_type,
             "Value type")
-        // .def(bp::self += bp::self)
-        // .def(bp::self + bp::self)
         ;
 
     bp::def("raster_as_numpy_array", fp::raster_as_numpy_array,
         "Return a Numpy array with the raster values.");
-    bp::def("mask_as_numpy_array", fp::mask_as_numpy_array,
-        "Return a Numpy array with the mask.");
+    // bp::def("mask_as_numpy_array", fp::mask_as_numpy_array,
+    //     "Return a Numpy array with the mask.");
 }

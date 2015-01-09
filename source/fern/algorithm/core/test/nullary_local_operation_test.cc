@@ -33,7 +33,7 @@ BOOST_FIXTURE_TEST_SUITE(nullary_local_operation, Fixture)
 
 BOOST_AUTO_TEST_CASE(array_0d)
 {
-    using InputNoDataPolicy = fa::SkipNoData<>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData<>>;
     using OutputNoDataPolicy = fa::DontMarkNoData;
     using Result = ResultValue;
 
@@ -41,7 +41,7 @@ BOOST_AUTO_TEST_CASE(array_0d)
     Result result{3};
 
     fa::nullary_local_operation<Algorithm>(
-        InputNoDataPolicy(), output_no_data_policy,
+        InputNoDataPolicy{{}}, output_no_data_policy,
         fa::sequential, result);
 
     BOOST_REQUIRE_EQUAL(result, 1);
@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(array_0d)
     result = 3;
 
     fa::nullary_local_operation<Algorithm>(
-        InputNoDataPolicy(), output_no_data_policy,
+        InputNoDataPolicy{{}}, output_no_data_policy,
         fa::parallel, result);
 
     BOOST_REQUIRE_EQUAL(result, 1);
@@ -58,7 +58,8 @@ BOOST_AUTO_TEST_CASE(array_0d)
 
 BOOST_AUTO_TEST_CASE(array_0d_masked)
 {
-    using InputNoDataPolicy = fa::DetectNoDataByValue<bool>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<
+        fa::DetectNoDataByValue<bool>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
     using Result = fern::MaskedConstant<ResultValue>;
 
@@ -69,7 +70,7 @@ BOOST_AUTO_TEST_CASE(array_0d_masked)
         result.value() = 3;
         result.mask() = false;
 
-        InputNoDataPolicy input_no_data_policy(result.mask(), true);
+        InputNoDataPolicy input_no_data_policy{{result.mask(), true}};
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
         fa::nullary_local_operation<Algorithm>(
@@ -85,7 +86,7 @@ BOOST_AUTO_TEST_CASE(array_0d_masked)
         result.value() = 3;
         result.mask() = true;
 
-        InputNoDataPolicy input_no_data_policy(result.mask(), true);
+        InputNoDataPolicy input_no_data_policy{{result.mask(), true}};
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
         fa::nullary_local_operation<Algorithm>(
             input_no_data_policy, output_no_data_policy,
@@ -99,7 +100,7 @@ BOOST_AUTO_TEST_CASE(array_0d_masked)
 
 BOOST_AUTO_TEST_CASE(array_1d_sequential)
 {
-    using InputNoDataPolicy = fa::SkipNoData<>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData<>>;
     using OutputNoDataPolicy = fa::DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
@@ -111,7 +112,7 @@ BOOST_AUTO_TEST_CASE(array_1d_sequential)
         Result result{3, 3, 3};
 
         fa::nullary_local_operation<Algorithm>(
-            InputNoDataPolicy(), output_no_data_policy,
+            InputNoDataPolicy{{}}, output_no_data_policy,
             fa::sequential, result);
 
         BOOST_REQUIRE_EQUAL(result[0], 1);
@@ -126,7 +127,7 @@ BOOST_AUTO_TEST_CASE(array_1d_sequential)
         Result result{3, 3, 3};
 
         fa::nullary_local_operation<Algorithm>(
-            InputNoDataPolicy(), output_no_data_policy,
+            InputNoDataPolicy{{}}, output_no_data_policy,
             fa::sequential, result);
 
         BOOST_REQUIRE_EQUAL(result[0], 1);
@@ -141,7 +142,7 @@ BOOST_AUTO_TEST_CASE(array_1d_sequential)
         Result result;
 
         fa::nullary_local_operation<Algorithm>(
-            InputNoDataPolicy(), output_no_data_policy,
+            InputNoDataPolicy{{}}, output_no_data_policy,
             fa::sequential, result);
 
         BOOST_CHECK(result.empty());
@@ -151,7 +152,7 @@ BOOST_AUTO_TEST_CASE(array_1d_sequential)
 
 BOOST_AUTO_TEST_CASE(array_1d_parallel)
 {
-    using InputNoDataPolicy = fa::SkipNoData<>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData<>>;
     using OutputNoDataPolicy = fa::DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
@@ -163,7 +164,7 @@ BOOST_AUTO_TEST_CASE(array_1d_parallel)
         Result result{3, 3, 3};
 
         fa::nullary_local_operation<Algorithm>(
-            InputNoDataPolicy(), output_no_data_policy,
+            InputNoDataPolicy{{}}, output_no_data_policy,
             fa::parallel, result);
 
         BOOST_REQUIRE_EQUAL(result[0], 1);
@@ -178,7 +179,7 @@ BOOST_AUTO_TEST_CASE(array_1d_parallel)
         Result result{3, 3, 3};
 
         fa::nullary_local_operation<Algorithm>(
-            InputNoDataPolicy(), output_no_data_policy,
+            InputNoDataPolicy{{}}, output_no_data_policy,
             fa::parallel, result);
 
         BOOST_REQUIRE_EQUAL(result[0], 1);
@@ -193,7 +194,7 @@ BOOST_AUTO_TEST_CASE(array_1d_parallel)
         Result result;
 
         fa::nullary_local_operation<Algorithm>(
-            InputNoDataPolicy(), output_no_data_policy,
+            InputNoDataPolicy{{}}, output_no_data_policy,
             fa::parallel, result);
 
         BOOST_CHECK(result.empty());
@@ -204,13 +205,14 @@ BOOST_AUTO_TEST_CASE(array_1d_parallel)
 BOOST_AUTO_TEST_CASE(array_1d_masked)
 {
     using Result = fern::MaskedArray<ResultValue, 1>;
-    using InputNoDataPolicy = fa::DetectNoDataByValue<fern::Mask<1>>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<
+        fa::DetectNoDataByValue<fern::Mask<1>>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<1>>;
 
     {
         Result result(3);
 
-        InputNoDataPolicy input_no_data_policy(result.mask(), true);
+        InputNoDataPolicy input_no_data_policy{{result.mask(), true}};
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
         result.fill(3);
@@ -245,7 +247,7 @@ BOOST_AUTO_TEST_CASE(array_1d_masked)
     {
         Result result;
 
-        InputNoDataPolicy input_no_data_policy(result.mask(), true);
+        InputNoDataPolicy input_no_data_policy{{result.mask(), true}};
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
         fa::nullary_local_operation<Algorithm>(
@@ -259,7 +261,7 @@ BOOST_AUTO_TEST_CASE(array_1d_masked)
 
 BOOST_AUTO_TEST_CASE(array_2d_sequential)
 {
-    using InputNoDataPolicy = fa::SkipNoData<>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData<>>;
     using OutputNoDataPolicy = fa::DontMarkNoData;
     using Result = fern::Array<ResultValue, 2>;
 
@@ -272,7 +274,7 @@ BOOST_AUTO_TEST_CASE(array_2d_sequential)
     };
 
     fa::nullary_local_operation<Algorithm>(
-        InputNoDataPolicy(), output_no_data_policy,
+        InputNoDataPolicy{{}}, output_no_data_policy,
         fa::sequential, result);
 
     BOOST_CHECK_EQUAL(result[0][0], 1);
@@ -286,7 +288,7 @@ BOOST_AUTO_TEST_CASE(array_2d_sequential)
 
 BOOST_AUTO_TEST_CASE(array_2d_parallel)
 {
-    using InputNoDataPolicy = fa::SkipNoData<>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData<>>;
     using OutputNoDataPolicy = fa::DontMarkNoData;
     using Result = fern::Array<ResultValue, 2>;
 
@@ -299,7 +301,7 @@ BOOST_AUTO_TEST_CASE(array_2d_parallel)
     };
 
     fa::nullary_local_operation<Algorithm>(
-        InputNoDataPolicy(), output_no_data_policy,
+        InputNoDataPolicy{{}}, output_no_data_policy,
         fa::parallel, result);
 
     BOOST_CHECK_EQUAL(result[0][0], 1);
@@ -314,7 +316,8 @@ BOOST_AUTO_TEST_CASE(array_2d_parallel)
 BOOST_AUTO_TEST_CASE(array_2d_masked)
 {
     using Result = fern::MaskedArray<ResultValue, 2>;
-    using InputNoDataPolicy = fa::DetectNoDataByValue<fern::Mask<2>>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<
+        fa::DetectNoDataByValue<fern::Mask<2>>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<2>>;
 
     {
@@ -324,7 +327,7 @@ BOOST_AUTO_TEST_CASE(array_2d_masked)
             { 3, 3 }
         };
 
-        InputNoDataPolicy input_no_data_policy(result.mask(), true);
+        InputNoDataPolicy input_no_data_policy{{result.mask(), true}};
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
         result.fill(3);
@@ -371,7 +374,7 @@ BOOST_AUTO_TEST_CASE(array_2d_masked)
     {
         Result result;
 
-        InputNoDataPolicy input_no_data_policy(result.mask(), true);
+        InputNoDataPolicy input_no_data_policy{{result.mask(), true}};
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
         fa::nullary_local_operation<Algorithm>(

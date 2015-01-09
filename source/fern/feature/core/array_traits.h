@@ -118,24 +118,38 @@ inline size_t size(
 
 
 template<
-    typename T>
-inline typename ArgumentTraits<Array<T, 1>>::const_reference get(
-    Array<T, 1> const& array,
-    size_t index)
+    typename T,
+    size_t nr_dimensions>
+inline size_t index(
+    Array<T, nr_dimensions> const& array,
+    size_t index1,
+    size_t index2)
 {
-    assert(index < array.shape()[0]);
-    return array[index];
+    return index1 * size(array, 1) + index2;
 }
 
 
 template<
-    typename T>
-inline typename ArgumentTraits<Array<T, 1>>::reference get(
-    Array<T, 1>& array,
+    typename T,
+    size_t nr_dimensions>
+inline typename ArgumentTraits<Array<T, nr_dimensions>>::const_reference get(
+    Array<T, nr_dimensions> const& array,
     size_t index)
 {
-    assert(index < array.shape()[0]);
-    return array[index];
+    assert(index < array.num_elements());
+    return array.data()[index];
+}
+
+
+template<
+    typename T,
+    size_t nr_dimensions>
+inline typename ArgumentTraits<Array<T, nr_dimensions>>::reference get(
+    Array<T, nr_dimensions>& array,
+    size_t index)
+{
+    assert(index < array.num_elements());
+    return array.data()[index];
 }
 
 
@@ -161,32 +175,6 @@ inline Array<U, 1> clone(
 
 
 template<
-    typename T>
-inline typename ArgumentTraits<Array<T, 2>>::const_reference get(
-    Array<T, 2> const& array,
-    size_t index1,
-    size_t index2)
-{
-    assert(index1 < array.shape()[0]);
-    assert(index2 < array.shape()[1]);
-    return array[index1][index2];
-}
-
-
-template<
-    typename T>
-inline typename ArgumentTraits<Array<T, 2>>::reference get(
-    Array<T, 2>& array,
-    size_t index1,
-    size_t index2)
-{
-    assert(index1 < array.shape()[0]);
-    assert(index2 < array.shape()[1]);
-    return array[index1][index2];
-}
-
-
-template<
     typename U,
     typename V>
 inline Array<U, 2> clone(
@@ -205,36 +193,6 @@ inline Array<U, 2> clone(
 {
     return std::move(Array<U, 2>(extents[array.shape()[0]][array.shape()[1]],
         value));
-}
-
-
-template<
-    typename T>
-inline typename ArgumentTraits<Array<T, 3>>::const_reference get(
-    Array<T, 3> const& array,
-    size_t index1,
-    size_t index2,
-    size_t index3)
-{
-    assert(index1 < array.shape()[0]);
-    assert(index2 < array.shape()[1]);
-    assert(index3 < array.shape()[2]);
-    return array[index1][index2][index3];
-}
-
-
-template<
-    typename T>
-inline typename ArgumentTraits<Array<T, 3>>::const_reference get(
-    Array<T, 3>& array,
-    size_t index1,
-    size_t index2,
-    size_t index3)
-{
-    assert(index1 < array.shape()[0]);
-    assert(index2 < array.shape()[1]);
-    assert(index3 < array.shape()[2]);
-    return array[index1][index2][index3];
 }
 
 

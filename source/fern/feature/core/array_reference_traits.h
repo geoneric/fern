@@ -119,24 +119,27 @@ inline size_t size(
 
 
 template<
-    class T>
-inline typename ArgumentTraits<ArrayReference<T, 1>>::const_reference get(
-    ArrayReference<T, 1> const& array,
+    class T,
+    size_t nr_dimensions>
+inline typename ArgumentTraits<ArrayReference<T, nr_dimensions>>
+        ::const_reference get(
+    ArrayReference<T, nr_dimensions> const& array,
     size_t index)
 {
-    assert(index < array.shape()[0]);
-    return array[index];
+    assert(index < array.num_elements());
+    return array.data()[index];
 }
 
 
 template<
-    class T>
-inline typename ArgumentTraits<ArrayReference<T, 1>>::reference get(
-    ArrayReference<T, 1>& array,
+    class T,
+    size_t nr_dimensions>
+inline typename ArgumentTraits<ArrayReference<T, nr_dimensions>>::reference get(
+    ArrayReference<T, nr_dimensions>& array,
     size_t index)
 {
-    assert(index < array.shape()[0]);
-    return array[index];
+    assert(index < array.num_elements());
+    return array.data()[index];
 }
 
 
@@ -161,32 +164,6 @@ inline typename ArgumentTraits<ArrayReference<T, 1>>::reference get(
 /// }
 
 
-template<
-    class T>
-inline typename ArgumentTraits<ArrayReference<T, 2>>::const_reference get(
-    ArrayReference<T, 2> const& array,
-    size_t index1,
-    size_t index2)
-{
-    assert(index1 < array.shape()[0]);
-    assert(index2 < array.shape()[1]);
-    return array[index1][index2];
-}
-
-
-template<
-    class T>
-inline typename ArgumentTraits<ArrayReference<T, 2>>::reference get(
-    ArrayReference<T, 2>& array,
-    size_t index1,
-    size_t index2)
-{
-    assert(index1 < array.shape()[0]);
-    assert(index2 < array.shape()[1]);
-    return array[index1][index2];
-}
-
-
 /// template<
 ///     class U,
 ///     class V>
@@ -207,36 +184,6 @@ inline typename ArgumentTraits<ArrayReference<T, 2>>::reference get(
 ///     return std::move(Array<U, 2>(extents[array.shape()[0]][array.shape()[1]],
 ///         value));
 /// }
-
-
-template<
-    class T>
-inline typename ArgumentTraits<ArrayReference<T, 3>>::const_reference get(
-    ArrayReference<T, 3> const& array,
-    size_t index1,
-    size_t index2,
-    size_t index3)
-{
-    assert(index1 < array.shape()[0]);
-    assert(index2 < array.shape()[1]);
-    assert(index3 < array.shape()[2]);
-    return array[index1][index2][index3];
-}
-
-
-template<
-    class T>
-inline typename ArgumentTraits<ArrayReference<T, 3>>::const_reference get(
-    ArrayReference<T, 3>& array,
-    size_t index1,
-    size_t index2,
-    size_t index3)
-{
-    assert(index1 < array.shape()[0]);
-    assert(index2 < array.shape()[1]);
-    assert(index3 < array.shape()[2]);
-    return array[index1][index2][index3];
-}
 
 
 /// template<

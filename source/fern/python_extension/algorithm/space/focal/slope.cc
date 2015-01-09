@@ -1,32 +1,31 @@
 #include "fern/python_extension/algorithm/space/focal/slope.h"
-#include "fern/feature/core/array_traits.h"
-#include "fern/feature/core/masked_raster_traits.h"
+#include "fern/python_extension/feature/detail/masked_raster_traits.h"
 #include "fern/algorithm/policy/policies.h"
 #include "fern/algorithm/space/focal/slope.h"
 #include "fern/python_extension/core/switch_on_value_type.h"
-#include "fern/python_extension/algorithm/core/merge_no_data.h"
 
 
 namespace fa = fern::algorithm;
 
 namespace fern {
 namespace python {
+namespace {
 
 template<
     typename T>
 MaskedRasterHandle slope(
     fa::ExecutionPolicy& execution_policy,
-    fern::MaskedRaster<T, 2> const& dem)
+    detail::MaskedRaster<T> const& dem)
 {
-    using InputNoDataPolicy = algorithm::DetectNoDataByValue<Mask<2>>;
-    using OutputNoDataPolicy = algorithm::MarkNoDataByValue<Mask<2>>;
-
-    auto result_ptr(std::make_shared<fern::MaskedRaster<T, 2>>(
-        extents[dem.shape()[0]][dem.shape()[1]], dem.transformation()));
+    auto result_ptr(std::make_shared<detail::MaskedRaster<T>>(
+        dem.sizes(), dem.origin(), dem.cell_sizes()));
     auto& result(*result_ptr);
 
-    InputNoDataPolicy input_no_data_policy(dem.mask(), true);
-    OutputNoDataPolicy output_no_data_policy(result.mask(), true);
+    fa::InputNoDataPolicies<
+        fa::DetectNoData<detail::MaskedRaster<T>>
+    > input_no_data_policy{
+        fa::DetectNoData<detail::MaskedRaster<T>>{dem}};
+    fa::MarkNoData<detail::MaskedRaster<T>> output_no_data_policy{result};
 
     algorithm::space::slope<algorithm::slope::OutOfRangePolicy>(
         input_no_data_policy, output_no_data_policy, execution_policy,
@@ -34,6 +33,8 @@ MaskedRasterHandle slope(
 
     return std::make_shared<MaskedRaster>(result_ptr);
 }
+
+} // Anonymous namespace
 
 
 #define CASE(                        \

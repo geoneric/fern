@@ -168,10 +168,6 @@ void divide(
     @overload
 */
 template<
-    template<typename, typename> class OutOfDomainPolicy,
-    template<typename, typename, typename> class OutOfRangePolicy,
-    typename InputNoDataPolicy,
-    typename OutputNoDataPolicy,
     typename ExecutionPolicy,
     typename Value1,
     typename Value2,
@@ -183,34 +179,12 @@ void divide(
     Value2 const& value2,
     Result& result)
 {
-    OutputNoDataPolicy output_no_data_policy;
-    divide<OutOfRangePolicy>(InputNoDataPolicy(), output_no_data_policy,
-        execution_policy, value1, value2, result);
-}
-
-
-/*!
-    @ingroup    fern_algorithm_algebra_elementary_group
-    @overload
-*/
-template<
-    typename ExecutionPolicy,
-    typename Value1,
-    typename Value2,
-    typename Result
->
-void divide(
-    ExecutionPolicy const& execution_policy,
-    Value1 const& value1,
-    Value2 const& value2,
-    Result& result)
-{
-    using InputNoDataPolicy = SkipNoData<>;
+    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData<>, SkipNoData<>>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
     divide<binary::DiscardDomainErrors, binary::DiscardRangeErrors>(
-        InputNoDataPolicy(), output_no_data_policy, execution_policy,
+        InputNoDataPolicy{{}, {}}, output_no_data_policy, execution_policy,
         value1, value2, result);
 }
 

@@ -122,13 +122,14 @@ BOOST_AUTO_TEST_CASE(algorithm)
     // Calculate slope.
     MaskedRaster<double> result_we_get(extents, transformation);
 
-    using InputNoDataPolicy = fa::DetectNoDataByValue<fern::Mask<2>>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<
+        fa::DetectNoDataByValue<fern::Mask<2>>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<2>>;
 
     OutputNoDataPolicy output_no_data_policy(result_we_get.mask(), true);
 
     fa::space::slope<fa::unary::DiscardRangeErrors>(
-        InputNoDataPolicy(raster.mask(), true),
+        InputNoDataPolicy{{raster.mask(), true}},
         output_no_data_policy,
         fa::sequential,
         raster, result_we_get);

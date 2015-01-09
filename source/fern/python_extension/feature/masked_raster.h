@@ -4,7 +4,7 @@
 #include <boost/python.hpp>
 #include <boost/any.hpp>
 #include "fern/core/type_traits.h"
-#include "fern/feature/core/masked_raster.h"
+#include "fern/python_extension/feature/detail/masked_raster.h"
 
 
 namespace fern {
@@ -15,22 +15,10 @@ class MaskedRaster
 
 public:
 
-    // template<
-    //     typename T>
-    // explicit       MaskedRaster        (fern::MaskedRaster<T, 2>::
-    //                                         Transformation const&
-    //                                             transformation);
-
-    ///                MaskedRaster        ();
-
-    ///                MaskedRaster        (MaskedRaster& raster);
-
-    /// MaskedRaster&  operator=           (MaskedRaster&& raster);
-
     template<
         typename T>
     explicit       MaskedRaster        (std::shared_ptr<
-                                            fern::MaskedRaster<T, 2>> pointer);
+                                            detail::MaskedRaster<T>> pointer);
 
                    MaskedRaster        (boost::python::tuple const& sizes,
                                         boost::python::tuple const& origin,
@@ -56,23 +44,21 @@ public:
 
     template<
         typename T>
-    fern::MaskedRaster<T, 2> &
+    detail::MaskedRaster<T> &
                    raster              ();
 
     template<
         typename T>
-    fern::MaskedRaster<T, 2> const&
+    detail::MaskedRaster<T> const&
                    raster              () const;
-
-    // MaskedRaster&  operator+=          (MaskedRaster const& other);
 
 private:
 
-    std::pair<size_t, size_t> _sizes;
+    std::tuple<size_t, size_t> _sizes;
 
-    std::pair<double, double> _origin;
+    std::tuple<double, double> _origin;
 
-    std::pair<double, double> _cell_sizes;
+    std::tuple<double, double> _cell_sizes;
 
     ValueType _value_type;
 
@@ -84,29 +70,14 @@ private:
 using MaskedRasterHandle = std::shared_ptr<MaskedRaster>;
 
 
-// template<
-//     typename T>
-// inline MaskedRaster::MaskedRaster(
-//     fern::MaskedRaster<T, 2>::Transformation const& transformation)
-// 
-//     : _sizes(pointer->shape()[0], pointer->shape()[1]),
-//       _origin(transformation()[0], transformation()[2]),
-//       _cell_sizes(transformation()[1], transformation()[3]),
-//       _value_type(TypeTraits<T>::value_type),
-//       _pointer(std::make_shared<fern::MaskedRaster<T, 2>>)
-// 
-// {
-// }
-
-
 template<
     typename T>
 inline MaskedRaster::MaskedRaster(
-    std::shared_ptr<fern::MaskedRaster<T, 2>> pointer)
+    std::shared_ptr<detail::MaskedRaster<T>> pointer)
 
-    : _sizes(pointer->shape()[0], pointer->shape()[1]),
-      _origin(pointer->transformation()[0], pointer->transformation()[2]),
-      _cell_sizes(pointer->transformation()[1], pointer->transformation()[3]),
+    : _sizes(pointer->sizes()),
+      _origin(pointer->origin()),
+      _cell_sizes(pointer->cell_sizes()),
       _value_type(TypeTraits<T>::value_type),
       _pointer(pointer)
 
@@ -116,24 +87,20 @@ inline MaskedRaster::MaskedRaster(
 
 template<
     typename T>
-inline fern::MaskedRaster<T, 2>& MaskedRaster::raster()
+inline detail::MaskedRaster<T>& MaskedRaster::raster()
 {
-    using Pointer = std::shared_ptr<fern::MaskedRaster<T, 2>>;
+    using Pointer = std::shared_ptr<detail::MaskedRaster<T>>;
     return *boost::any_cast<Pointer>(_pointer);
 }
 
 
 template<
     typename T>
-inline fern::MaskedRaster<T, 2> const& MaskedRaster::raster() const
+inline detail::MaskedRaster<T> const& MaskedRaster::raster() const
 {
-    using Pointer = std::shared_ptr<fern::MaskedRaster<T, 2>>;
+    using Pointer = std::shared_ptr<detail::MaskedRaster<T>>;
     return *boost::any_cast<Pointer>(_pointer);
 }
-
-
-// MaskedRasterHandle operator+           (MaskedRaster const& lhs,
-//                                         MaskedRaster const& rhs);
 
 } // namespace python
 } // namespace fern

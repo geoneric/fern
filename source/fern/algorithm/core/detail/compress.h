@@ -32,11 +32,10 @@ static void compress_1d(
 {
     size_t target_index{index_ranges[0].begin()};
 
-    for(size_t source_index = index_ranges[0].begin();
-            source_index < index_ranges[0].end(); ++source_index) {
+    for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
 
-        if(!input_no_data_policy.is_no_data(source_index)) {
-            get(result, target_index) = get(value, source_index);
+        if(!std::get<0>(input_no_data_policy).is_no_data(i)) {
+            get(result, target_index) = get(value, i);
             ++target_index;
         }
     }
@@ -62,16 +61,21 @@ static void compress_2d(
         index_ranges[1].begin()};
     size_t target_index{initial_index};
 
-    for(size_t source_index1 = index_ranges[0].begin();
-            source_index1 < index_ranges[0].end(); ++source_index1) {
-        for(size_t source_index2 = index_ranges[1].begin();
-                source_index2 < index_ranges[1].end(); ++source_index2) {
+    size_t index_;
 
-            if(!input_no_data_policy.is_no_data(source_index1, source_index2)) {
-                get(result, target_index) = get(value, source_index1,
-                    source_index2);
+    for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+
+        index_ = index(value, i, index_ranges[1].begin());
+
+        for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
+                ++j) {
+
+            if(!std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                get(result, target_index) = get(value, index_);
                 ++target_index;
             }
+
+            ++index_;
         }
     }
 

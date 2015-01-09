@@ -77,9 +77,6 @@ void sin(
     @overload
 */
 template<
-    template<typename> class OutOfDomainPolicy,
-    typename InputNoDataPolicy,
-    typename OutputNoDataPolicy,
     typename ExecutionPolicy,
     typename Value,
     typename Result>
@@ -88,31 +85,12 @@ void sin(
     Value const& value,
     Result& result)
 {
-    OutputNoDataPolicy output_no_data_policy;
-    sin<OutOfDomainPolicy>(InputNoDataPolicy(), output_no_data_policy,
-        execution_policy, value, result);
-}
-
-
-/*!
-    @ingroup    fern_algorithm_trigonometry_group
-    @overload
-*/
-template<
-    typename ExecutionPolicy,
-    typename Value,
-    typename Result>
-void sin(
-    ExecutionPolicy const& execution_policy,
-    Value const& value,
-    Result& result)
-{
-    using InputNoDataPolicy = SkipNoData<>;
+    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData<>>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
-    sin<unary::DiscardDomainErrors>(InputNoDataPolicy(), output_no_data_policy,
-        execution_policy, value, result);
+    sin<unary::DiscardDomainErrors>(InputNoDataPolicy{{}},
+        output_no_data_policy, execution_policy, value, result);
 }
 
 } // namespace trigonometry

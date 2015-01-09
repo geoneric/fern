@@ -44,8 +44,6 @@ void unary_min(
     @overload
 */
 template<
-    typename InputNoDataPolicy,
-    typename OutputNoDataPolicy,
     typename ExecutionPolicy,
     typename Value,
     typename Result
@@ -55,31 +53,11 @@ void unary_min(
     Value const& value,
     Result& result)
 {
-    OutputNoDataPolicy output_no_data_policy;
-    unary_min<>(InputNoDataPolicy(), output_no_data_policy, execution_policy,
-        value, result);
-}
-
-
-/*!
-    @ingroup    fern_algorithm_statistic_group
-    @overload
-*/
-template<
-    typename ExecutionPolicy,
-    typename Value,
-    typename Result
->
-void unary_min(
-    ExecutionPolicy const& execution_policy,
-    Value const& value,
-    Result& result)
-{
-    using InputNoDataPolicy = SkipNoData<>;
+    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData<>>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
-    unary_min<>(InputNoDataPolicy(), output_no_data_policy, execution_policy,
+    unary_min<>(InputNoDataPolicy{{}}, output_no_data_policy, execution_policy,
         value, result);
 }
 

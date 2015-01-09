@@ -19,13 +19,19 @@ class Square
 
 public:
 
+    using value_type = T;
+
+    using reference = T&;
+
+    using const_reference = T const&;
+
                    Square              (std::initializer_list<
                                            std::initializer_list<T>> const&
                                                weights);
 
-    T const*       operator[]          (size_t index) const;
+    T&                weight              (size_t index);
 
-    T*             operator[]          (size_t index);
+    T const&          weight              (size_t index) const;
 
     static constexpr size_t  size      ();
 
@@ -33,7 +39,7 @@ private:
 
     static size_t const _size = 2 * radius + 1;
 
-    T              _weights[_size][_size];
+    T              _weights[_size * _size];
 
 };
 
@@ -69,36 +75,30 @@ inline Square<T, radius>::Square(
     assert(weights.size() == _size);
     for(size_t i = 0; i < _size; ++i) {
         assert(it->size() == _size);
-        std::copy(it->begin(), it->end(), _weights[i]);
+        std::copy(it->begin(), it->end(), &_weights[i * _size]);
         ++it;
     }
 }
 
 
-//! Return the weight at index \a index.
-/*!
-*/
 template<
     class T,
     size_t radius>
-inline T const* Square<T, radius>::operator[](
-    size_t index) const
+inline T& Square<T, radius>::weight(
+    size_t index)
 {
-    assert(index < _size);
+    assert(index < _size * _size);
     return _weights[index];
 }
 
 
-//! Return the weight at index \a index.
-/*!
-*/
 template<
     class T,
     size_t radius>
-inline T* Square<T, radius>::operator[](
-    size_t index)
+inline T const& Square<T, radius>::weight(
+    size_t index) const
 {
-    assert(index < _size);
+    assert(index < _size * _size);
     return _weights[index];
 }
 

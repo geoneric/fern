@@ -1,5 +1,6 @@
 #include "fern/python_extension/algorithm/core/if.h"
-#include "fern/python_extension/algorithm/core/unite_no_data.h"
+#include "fern/python_extension/feature/detail/masked_raster_traits.h"
+#include "fern/algorithm/policy/policies.h"
 #include "fern/algorithm/core/if.h"
 #include "fern/python_extension/core/switch_on_value_type.h"
 
@@ -18,16 +19,20 @@ template<
     typename R>
 void if_(
     fa::ExecutionPolicy& execution_policy,
-    fern::MaskedRaster<T1, 2> const& condition,
+    detail::MaskedRaster<T1> const& condition,
     T2 const& true_value,
-    fern::MaskedRaster<T3, 2> const& false_value,
-    fern::MaskedRaster<R, 2>& result)
+    detail::MaskedRaster<T3> const& false_value,
+    detail::MaskedRaster<R>& result)
 {
-    using InputNoDataPolicy = fa::DetectNoDataByValue<fern::Mask<2>>;
-    using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<2>>;
-
-    InputNoDataPolicy input_no_data_policy(result.mask(), true);
-    OutputNoDataPolicy output_no_data_policy(result.mask(), true);
+    fa::InputNoDataPolicies<
+        fa::DetectNoData<detail::MaskedRaster<T1>>,
+        fa::SkipNoData<>,
+        fa::DetectNoData<detail::MaskedRaster<T3>>
+    > input_no_data_policy{
+        fa::DetectNoData<detail::MaskedRaster<T1>>{condition},
+        fa::SkipNoData<>{},
+        fa::DetectNoData<detail::MaskedRaster<T3>>{false_value}};
+    fa::MarkNoData<detail::MaskedRaster<R>> output_no_data_policy(result);
 
     fa::core::if_(input_no_data_policy, output_no_data_policy,
         execution_policy, condition, true_value, false_value, result);
@@ -40,15 +45,13 @@ template<
     typename T3>
 MaskedRasterHandle if_(
     fa::ExecutionPolicy& execution_policy,
-    fern::MaskedRaster<T1, 2> const& condition,
+    detail::MaskedRaster<T1> const& condition,
     T2 const& true_value,
-    fern::MaskedRaster<T3, 2> const& false_value)
+    detail::MaskedRaster<T3> const& false_value)
 {
-    auto sizes = extents[condition.shape()[0]][condition.shape()[1]];
     using R = T3;
-    auto handle = std::make_shared<fern::MaskedRaster<R, 2>>(sizes,
-        condition.transformation());
-    unite_no_data(execution_policy, condition, false_value, *handle);
+    auto handle = std::make_shared<detail::MaskedRaster<R>>(condition.sizes(),
+        condition.origin(), condition.cell_sizes());
     if_(execution_policy, condition, true_value, false_value, *handle);
     return std::make_shared<MaskedRaster>(handle);
 }

@@ -20,19 +20,19 @@ template<
     typename Result>
 static void cover_0d_0d(
     InputNoDataPolicy const& input_no_data_policy,
-    OutputNoDataPolicy& /* output_no_data_policy */,
+    OutputNoDataPolicy& output_no_data_policy,
     Value1 const& value1,
     Value2 const& value2,
     Result& result)
 {
-    if(!input_no_data_policy.is_no_data()) {
-        if(!input_no_data_policy.template get<0>().is_no_data()) {
-            get(result) = get(value1);
-        }
-        else {
-            assert(!input_no_data_policy.template get<1>().is_no_data());
-            get(result) = get(value2);
-        }
+    if(!std::get<0>(input_no_data_policy).is_no_data()) {
+        get(result) = get(value1);
+    }
+    else if(!std::get<1>(input_no_data_policy).is_no_data()) {
+        get(result) = get(value2);
+    }
+    else {
+        output_no_data_policy.mark_as_no_data();
     }
 }
 
@@ -45,27 +45,32 @@ template<
     typename Result>
 static void cover_2d_0d(
     InputNoDataPolicy const& input_no_data_policy,
-    OutputNoDataPolicy& /* output_no_data_policy */,
+    OutputNoDataPolicy& output_no_data_policy,
     IndexRanges<2> const& index_ranges,
     Value1 const& value1,
     Value2 const& value2,
     Result& result)
 {
+    size_t index_;
+
     for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+
+        index_ = index(result, i, index_ranges[1].begin());
+
         for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
                 ++j) {
 
-            if(!input_no_data_policy.is_no_data(i, j)) {
-
-                if(!input_no_data_policy.template get<0>().is_no_data(i, j)) {
-                    get(result, i, j) = get(value1, i, j);
-                }
-                else {
-                    assert(!
-                        input_no_data_policy.template get<1>().is_no_data());
-                    get(result, i, j) = get(value2);
-                }
+            if(!std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                get(result, index_) = get(value1, index_);
             }
+            else if(!std::get<1>(input_no_data_policy).is_no_data(index_)) {
+                get(result, index_) = get(value2);
+            }
+            else {
+                output_no_data_policy.mark_as_no_data(index_);
+            }
+
+            ++index_;
         }
     }
 }
@@ -79,27 +84,32 @@ template<
     typename Result>
 static void cover_2d_2d(
     InputNoDataPolicy const& input_no_data_policy,
-    OutputNoDataPolicy& /* output_no_data_policy */,
+    OutputNoDataPolicy& output_no_data_policy,
     IndexRanges<2> const& index_ranges,
     Value1 const& value1,
     Value2 const& value2,
     Result& result)
 {
+    size_t index_;
+
     for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+
+        index_ = index(result, i, index_ranges[1].begin());
+
         for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
                 ++j) {
 
-            if(!input_no_data_policy.is_no_data(i, j)) {
-
-                if(!input_no_data_policy.template get<0>().is_no_data(i, j)) {
-                    get(result, i, j) = get(value1, i, j);
-                }
-                else {
-                    assert(!input_no_data_policy.template get<1>().is_no_data(
-                        i, j));
-                    get(result, i, j) = get(value2, i, j);
-                }
+            if(!std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                get(result, index_) = get(value1, index_);
             }
+            else if(!std::get<1>(input_no_data_policy).is_no_data(index_)) {
+                get(result, index_) = get(value2, index_);
+            }
+            else {
+                output_no_data_policy.mark_as_no_data(index_);
+            }
+
+            ++index_;
         }
     }
 }

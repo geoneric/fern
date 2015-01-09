@@ -29,20 +29,16 @@ namespace algorithm {
 template<
     typename... NoDataPolicies>
 class InputNoDataPolicies:
-    private std::tuple<NoDataPolicies...>
+    public std::tuple<NoDataPolicies...>
 {
 
 public:
 
-    template<
-        size_t index>
-    auto const&    get                 () const;
-
-protected:
-
                    InputNoDataPolicies (NoDataPolicies&&... policies);
 
     virtual        ~InputNoDataPolicies()=default;
+
+protected:
 
 };
 
@@ -58,20 +54,6 @@ inline InputNoDataPolicies<NoDataPolicies...>::InputNoDataPolicies(
     : std::tuple<NoDataPolicies...>(std::forward<NoDataPolicies>(policies)...)
 
 {
-}
-
-
-/*!
-    @brief      Return the input no-data policy for the @a index -th argument.
-*/
-template<
-    typename... NoDataPolicies>
-template<
-    size_t index>
-inline auto const& InputNoDataPolicies<NoDataPolicies...>::get() const
-{
-    return std::get<index>(dynamic_cast<
-        std::tuple<NoDataPolicies...> const&>(*this));
 }
 
 } // namespace algorithm

@@ -81,9 +81,6 @@ void sqrt(
     @overload
 */
 template<
-    template<typename> class OutOfDomainPolicy,
-    typename InputNoDataPolicy,
-    typename OutputNoDataPolicy,
     typename ExecutionPolicy,
     typename Value,
     typename Result
@@ -93,31 +90,11 @@ void sqrt(
     Value const& value,
     Result& result)
 {
-    OutputNoDataPolicy output_no_data_policy;
-    sqrt<OutOfDomainPolicy>(InputNoDataPolicy(), output_no_data_policy,
-        execution_policy, value, result);
-}
-
-
-/*!
-    @ingroup    fern_algorithm_algebra_elementary_group
-    @overload
-*/
-template<
-    typename ExecutionPolicy,
-    typename Value,
-    typename Result
->
-void sqrt(
-    ExecutionPolicy const& execution_policy,
-    Value const& value,
-    Result& result)
-{
-    using InputNoDataPolicy = SkipNoData<>;
+    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData<>>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
-    sqrt<unary::DiscardDomainErrors>(InputNoDataPolicy(),
+    sqrt<unary::DiscardDomainErrors>(InputNoDataPolicy{{}},
         output_no_data_policy, execution_policy, value, result);
 }
 

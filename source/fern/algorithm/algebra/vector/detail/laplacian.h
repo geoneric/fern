@@ -124,32 +124,59 @@ struct Laplacian<
 
         // Multiply the values by the sum of weights.
         auto multiplied_values = clone<Float>(result);
-        algebra::multiply<
-            // TODO: Select OutOfRange policy based on the
-            //       output-no-data-policy passed in.
-            algorithm::multiply::OutOfRangePolicy>(
-                input_no_data_policy, output_no_data_policy, execution_policy,
-                sum_of_weights, value, multiplied_values);
+        {
+            using INP1 = SkipNoData<>;
+            using INP2 = decltype(std::get<0>(input_no_data_policy));
+
+            InputNoDataPolicies<INP1, INP2> input_no_data_policy_{
+                {}, {std::get<0>(input_no_data_policy)}};
+
+            algebra::multiply<
+                // TODO: Select OutOfRange policy based on the
+                //       output-no-data-policy passed in.
+                algorithm::multiply::OutOfRangePolicy>(
+                    input_no_data_policy_, output_no_data_policy,
+                    execution_policy, sum_of_weights, value, multiplied_values);
+        }
 
         // Subtract the convolution result by the multiplied values.
         // Result subtracted_results;
-        algebra::subtract<
-            // TODO: Select OutOfRange policy based on the
-            //       output-no-data-policy passed in.
-            algorithm::subtract::OutOfRangePolicy>(
-                input_no_data_policy, output_no_data_policy, execution_policy,
-                result, multiplied_values, result);
+        {
+            // TODO Base INP1 on result.
+            // TODO Base INP2 on multiplied_values.
+            using INP1 = decltype(std::get<0>(input_no_data_policy));
+            using INP2 = SkipNoData<>;
+
+            InputNoDataPolicies<INP1, INP2> input_no_data_policy_{
+                {std::get<0>(input_no_data_policy)}, {}};
+
+            algebra::subtract<
+                // TODO: Select OutOfRange policy based on the
+                //       output-no-data-policy passed in.
+                algorithm::subtract::OutOfRangePolicy>(
+                    input_no_data_policy_, output_no_data_policy,
+                    execution_policy, result, multiplied_values, result);
+        }
 
         // Divide subtracted results by the area of the cells.
-        algebra::divide<
-            // TODO: Select OutOfDomain policy based on the
-            //       output-no-data-policy passed in.
-            // TODO: Select OutOfRange policy based on the
-            //       output-no-data-policy passed in.
-            algorithm::divide::OutOfDomainPolicy,
-            algorithm::divide::OutOfRangePolicy>(
-                input_no_data_policy, output_no_data_policy, execution_policy,
-                result, cell_area(value), result);
+        {
+            // TODO Base INP1 on result.
+            using INP1 = decltype(std::get<0>(input_no_data_policy));
+            using INP2 = SkipNoData<>;
+
+            InputNoDataPolicies<INP1, INP2> input_no_data_policy_{
+                {std::get<0>(input_no_data_policy)}, {}};
+
+            algebra::divide<
+                // TODO: Select OutOfDomain policy based on the
+                //       output-no-data-policy passed in.
+                // TODO: Select OutOfRange policy based on the
+                //       output-no-data-policy passed in.
+                algorithm::divide::OutOfDomainPolicy,
+                algorithm::divide::OutOfRangePolicy>(
+                    input_no_data_policy_, output_no_data_policy,
+                    execution_policy, result, cell_area(value), result);
+        }
     }
 
 };

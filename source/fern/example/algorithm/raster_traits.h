@@ -40,7 +40,7 @@ namespace example {
 
 template<
     typename T>
-size_t size(
+inline size_t size(
     Raster<T> const& raster,
     size_t index)
 {
@@ -51,29 +51,38 @@ size_t size(
 
 template<
     typename T>
-T const& get(
+inline size_t index(
     Raster<T> const& raster,
-    size_t row,
-    size_t col)
+    size_t index1,
+    size_t index2)
 {
-    return raster.get(row, col);
+    return raster.index(index1, index2);
 }
 
 
 template<
     typename T>
-T& get(
+inline T const& get(
+    Raster<T> const& raster,
+    size_t index)
+{
+    return raster.get(index);
+}
+
+
+template<
+    typename T>
+inline T& get(
     Raster<T>& raster,
-    size_t row,
-    size_t col)
+    size_t index)
 {
-    return raster.get(row, col);
+    return raster.get(index);
 }
 
 
 template<
     typename T>
-double cell_size(
+inline double cell_size(
     Raster<T> const& raster,
     size_t /* index */)
 {
@@ -84,7 +93,7 @@ double cell_size(
 template<
     typename T,
     typename U>
-Raster<T> clone(
+inline Raster<T> clone(
     Raster<U> const& raster)
 {
     return std::move(Raster<T>(raster.cell_size(), raster.nr_rows(),
@@ -94,7 +103,7 @@ Raster<T> clone(
 
 template<
     typename T>
-typename fern::ArgumentTraits<Raster<T>>::iterator begin(
+inline typename fern::ArgumentTraits<Raster<T>>::iterator begin(
     Raster<T>& raster)
 {
     return raster.begin();
@@ -103,7 +112,7 @@ typename fern::ArgumentTraits<Raster<T>>::iterator begin(
 
 template<
     typename T>
-typename fern::ArgumentTraits<Raster<T>>::iterator end(
+inline typename fern::ArgumentTraits<Raster<T>>::iterator end(
     Raster<T>& raster)
 {
     return raster.end();

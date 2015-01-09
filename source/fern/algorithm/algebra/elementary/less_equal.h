@@ -48,8 +48,6 @@ void less_equal(
     @overload
 */
 template<
-    typename InputNoDataPolicy,
-    typename OutputNoDataPolicy,
     typename ExecutionPolicy,
     typename Value1,
     typename Value2,
@@ -60,33 +58,12 @@ void less_equal(
     Value2 const& value2,
     Result& result)
 {
-    OutputNoDataPolicy output_no_data_policy;
-    less_equal<>(InputNoDataPolicy(),
-        output_no_data_policy, execution_policy, value1, value2, result);
-}
-
-
-/*!
-    @ingroup       fern_algorithm_algebra_elementary_group
-    @overload
-*/
-template<
-    typename ExecutionPolicy,
-    typename Value1,
-    typename Value2,
-    typename Result>
-void less_equal(
-    ExecutionPolicy const& execution_policy,
-    Value1 const& value1,
-    Value2 const& value2,
-    Result& result)
-{
-    using InputNoDataPolicy = SkipNoData<>;
+    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData<>, SkipNoData<>>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
-    less_equal<>(InputNoDataPolicy(), output_no_data_policy, execution_policy,
-        value1, value2, result);
+    less_equal<>(InputNoDataPolicy{{}, {}}, output_no_data_policy,
+        execution_policy, value1, value2, result);
 }
 
 } // namespace algebra

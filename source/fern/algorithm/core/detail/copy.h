@@ -5,7 +5,7 @@
 #include "fern/algorithm/policy/execution_policy.h"
 
 
-// Optimalisations:
+// Optimizations:
 // - Copy of contiguous arrays with SkipNoData input no-data policy can call
 //   std::copy/memcpy/...
 
@@ -33,11 +33,12 @@ static void copy_1d(
     value_type<Position> destination_index(get<0>(position));
 
     for(size_t i = range[0].begin(); i < range[0].end(); ++i) {
-        if(!input_no_data_policy.is_no_data(i)) {
-            get(destination, destination_index) = get(source, i);
+
+        if(std::get<0>(input_no_data_policy).is_no_data(i)) {
+            output_no_data_policy.mark_as_no_data(destination_index);
         }
         else {
-            output_no_data_policy.mark_as_no_data(destination_index);
+            get(destination, destination_index) = get(source, i);
         }
 
         ++destination_index;

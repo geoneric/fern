@@ -77,15 +77,25 @@ inline constexpr size_t radius(
 
 template<
     class T,
-    size_t radius>
-inline typename ArgumentTraits<Square<T, radius>>::const_reference get(
-    Square<T, radius> const& square,
+    size_t radius_>
+inline constexpr size_t index(
+    Square<T, radius_> const& square,
     size_t index1,
     size_t index2)
 {
-    assert(index1 < width(square));
-    assert(index2 < height(square));  // height == width
-    return square[index1][index2];
+    return index1 * size(square, 1) + index2;
+}
+
+
+template<
+    class T,
+    size_t radius>
+inline typename ArgumentTraits<Square<T, radius>>::const_reference get(
+    Square<T, radius> const& square,
+    size_t index)
+{
+    assert(index < size(square));
+    return square.weight(index);
 }
 
 
@@ -94,12 +104,10 @@ template<
     size_t radius>
 inline typename ArgumentTraits<Square<T, radius>>::reference get(
     Square<T, radius>& square,
-    size_t index1,
-    size_t index2)
+    size_t index)
 {
-    assert(index1 < width(square));
-    assert(index2 < height(square));  // height == width
-    return square[index1][index2];
+    assert(index < size(square));
+    return square.weight(index);
 }
 
 } // namespace fern

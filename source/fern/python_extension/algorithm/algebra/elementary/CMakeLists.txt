@@ -6,7 +6,6 @@ SET(EXTENSION_SOURCES
     add_raster_number
     add_raster_raster
     greater
-    iadd_raster_raster
     multiply
     less
     python_extension

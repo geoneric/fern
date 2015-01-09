@@ -87,58 +87,139 @@ struct Slope<
         });
 
         auto dz_dx(clone<Float>(value));
-        convolution::convolve<
-            convolve::ReplaceNoDataByFocalAverage,
-            convolve::DontDivideByWeights,
-            convolve::ReplaceOutOfImageByFocalAverage,
-            convolve::OutOfRangePolicy>(  // TODO Pick correct policy.
-                input_no_data_policy, output_no_data_policy, execution_policy,
-                value, dz_dx_kernel, dz_dx);
 
-        algebra::divide<
-            divide::OutOfDomainPolicy,  // TODO Pick correct policy.
-            divide::OutOfRangePolicy>(  // TODO Pick correct policy.
-                input_no_data_policy, output_no_data_policy, execution_policy,
-                dz_dx, static_cast<Float>(8 * cell_size(value, 0)), dz_dx);
+        // TODO Figure out how to configure correct inp and onp.
+
+        {
+            // TODO Base output no-data policy on dz_dx.
+            // using ONP = typename std::remove_reference<decltype(
+            //     output_no_data_policy)>::type;
+
+            // ONP output_no_data_policy_{dz_dx};
+
+            convolution::convolve<
+                convolve::ReplaceNoDataByFocalAverage,
+                convolve::DontDivideByWeights,
+                convolve::ReplaceOutOfImageByFocalAverage,
+                convolve::OutOfRangePolicy>(  // TODO Pick correct policy.
+                    input_no_data_policy, output_no_data_policy,
+                    execution_policy, value, dz_dx_kernel, dz_dx);
+        }
+
+        {
+            // TODO Base output no-data policy on dz_dx.
+            using INP1 = decltype(std::get<0>(input_no_data_policy));
+            using INP2 = SkipNoData<>;
+            // using ONP = typename std::remove_reference<decltype(
+            //     output_no_data_policy)>::type;
+
+            InputNoDataPolicies<INP1, INP2> input_no_data_policy_{
+                {std::get<0>(input_no_data_policy)}, {}};
+            // ONP output_no_data_policy_{dz_dx};
+
+            algebra::divide<
+                divide::OutOfDomainPolicy,  // TODO Pick correct policy.
+                divide::OutOfRangePolicy>(  // TODO Pick correct policy.
+                    input_no_data_policy_, output_no_data_policy,
+                    execution_policy, dz_dx, static_cast<Float>(8 *
+                        cell_size(value, 0)), dz_dx);
+        }
 
         auto dz_dy(clone<Float>(value));
-        convolution::convolve<
-            convolve::ReplaceNoDataByFocalAverage,
-            convolve::DontDivideByWeights,
-            convolve::ReplaceOutOfImageByFocalAverage,
-            convolve::OutOfRangePolicy>(  // TODO Pick correct policy.
-                input_no_data_policy, output_no_data_policy, execution_policy,
-                value, dz_dy_kernel, dz_dy);
 
-        algebra::divide<
-            divide::OutOfDomainPolicy,  // TODO Pick correct policy.
-            divide::OutOfRangePolicy>(  // TODO Pick correct policy.
-                input_no_data_policy, output_no_data_policy, execution_policy,
-                dz_dy, static_cast<Float>(8 * cell_size(value, 1)), dz_dy);
+        {
+            // using ONP = typename std::remove_reference<decltype(
+            //     output_no_data_policy)>::type;
 
-        algebra::pow<
-            pow::OutOfDomainPolicy,  // TODO Pick correct policy.
-            pow::OutOfRangePolicy>(  // TODO Pick correct policy.
-                input_no_data_policy, output_no_data_policy, execution_policy,
-                dz_dx, Float(2), dz_dx);
+            // ONP output_no_data_policy_{dz_dy};
 
-        algebra::pow<
-            pow::OutOfDomainPolicy,  // TODO Pick correct policy.
-            pow::OutOfRangePolicy>(  // TODO Pick correct policy.
-                input_no_data_policy, output_no_data_policy, execution_policy,
-                dz_dy, Float(2), dz_dy);
+            convolution::convolve<
+                convolve::ReplaceNoDataByFocalAverage,
+                convolve::DontDivideByWeights,
+                convolve::ReplaceOutOfImageByFocalAverage,
+                convolve::OutOfRangePolicy>(  // TODO Pick correct policy.
+                    input_no_data_policy, output_no_data_policy,
+                    execution_policy, value, dz_dy_kernel, dz_dy);
+        }
 
-        algebra::add<
-            add::OutOfRangePolicy>(  // TODO Pick correct policy.
-                input_no_data_policy, output_no_data_policy, execution_policy,
-                dz_dx, dz_dy, result);
+        {
+            using INP1 = decltype(std::get<0>(input_no_data_policy));
+            using INP2 = SkipNoData<>;
+            // using ONP = typename std::remove_reference<decltype(
+            //     output_no_data_policy)>::type;
 
-        // TODO Whether or not to detect out of domain values depends on
-        //      output no-data policy passed in. Will sqrt succeed if input
-        //      < 0?
-        algebra::sqrt<sqrt::OutOfDomainPolicy>(  // TODO Pick correct policy.
-            input_no_data_policy, output_no_data_policy, execution_policy,
-            result, result);
+            InputNoDataPolicies<INP1, INP2> input_no_data_policy_{
+                {std::get<0>(input_no_data_policy)}, {}};
+            // ONP output_no_data_policy_{dz_dy};
+
+            algebra::divide<
+                divide::OutOfDomainPolicy,  // TODO Pick correct policy.
+                divide::OutOfRangePolicy>(  // TODO Pick correct policy.
+                    input_no_data_policy_, output_no_data_policy,
+                    execution_policy, dz_dy, static_cast<Float>(8 *
+                        cell_size(value, 1)), dz_dy);
+        }
+
+        {
+            using INP1 = decltype(std::get<0>(input_no_data_policy));
+            using INP2 = SkipNoData<>;
+            // using ONP = typename std::remove_reference<decltype(
+            //     output_no_data_policy)>::type;
+
+            InputNoDataPolicies<INP1, INP2> input_no_data_policy_{
+                {std::get<0>(input_no_data_policy)}, {}};
+            // ONP output_no_data_policy_{dz_dx};
+
+            algebra::pow<
+                pow::OutOfDomainPolicy,  // TODO Pick correct policy.
+                pow::OutOfRangePolicy>(  // TODO Pick correct policy.
+                    input_no_data_policy_, output_no_data_policy,
+                    execution_policy, dz_dx, Float(2), dz_dx);
+        }
+
+        {
+            using INP1 = decltype(std::get<0>(input_no_data_policy));
+            using INP2 = SkipNoData<>;
+            // using ONP = typename std::remove_reference<decltype(
+            //     output_no_data_policy)>::type;
+
+            InputNoDataPolicies<INP1, INP2> input_no_data_policy_{
+                {std::get<0>(input_no_data_policy)}, {}};
+            // ONP output_no_data_policy_{dz_dy};
+
+            algebra::pow<
+                pow::OutOfDomainPolicy,  // TODO Pick correct policy.
+                pow::OutOfRangePolicy>(  // TODO Pick correct policy.
+                    input_no_data_policy_, output_no_data_policy,
+                    execution_policy, dz_dy, Float(2), dz_dy);
+        }
+
+        {
+            using INP1 = decltype(std::get<0>(input_no_data_policy));
+            using INP2 = SkipNoData<>;
+
+            InputNoDataPolicies<INP1, INP2> input_no_data_policy_{
+                {std::get<0>(input_no_data_policy)}, {}};
+
+            algebra::add<
+                add::OutOfRangePolicy>(  // TODO Pick correct policy.
+                    input_no_data_policy_, output_no_data_policy,
+                    execution_policy, dz_dx, dz_dy, result);
+        }
+
+        {
+            using INP = decltype(std::get<0>(input_no_data_policy));
+
+            InputNoDataPolicies<INP> input_no_data_policy_{
+                {std::get<0>(input_no_data_policy)}};
+
+            // TODO Whether or not to detect out of domain values depends on
+            //      output no-data policy passed in. Will sqrt succeed if input
+            //      < 0?
+            algebra::sqrt<sqrt::OutOfDomainPolicy>( // TODO Pick correct policy.
+                input_no_data_policy_, output_no_data_policy, execution_policy,
+                result, result);
+        }
     }
 
 };

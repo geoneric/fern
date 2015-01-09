@@ -49,8 +49,6 @@ void binary_min(
     @overload
 */
 template<
-    typename InputNoDataPolicy,
-    typename OutputNoDataPolicy,
     typename ExecutionPolicy,
     typename Value1,
     typename Value2,
@@ -62,34 +60,12 @@ void binary_min(
     Value2 const& value2,
     Result& result)
 {
-    OutputNoDataPolicy output_no_data_policy;
-    binary_min<>(InputNoDataPolicy(), output_no_data_policy, execution_policy,
-        value1, value2, result);
-}
-
-
-/*!
-    @ingroup    fern_algorithm_statistic_group
-    @overload
-*/
-template<
-    typename ExecutionPolicy,
-    typename Value1,
-    typename Value2,
-    typename Result
->
-void binary_min(
-    ExecutionPolicy const& execution_policy,
-    Value1 const& value1,
-    Value2 const& value2,
-    Result& result)
-{
-    using InputNoDataPolicy = SkipNoData<>;
+    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData<>, SkipNoData<>>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
-    binary_min<>(InputNoDataPolicy(), output_no_data_policy, execution_policy,
-        value1, value2, result);
+    binary_min<>(InputNoDataPolicy{{}, {}}, output_no_data_policy,
+        execution_policy, value1, value2, result);
 }
 
 } // namespace statistic

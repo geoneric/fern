@@ -70,8 +70,8 @@ BOOST_AUTO_TEST_CASE(algorithm)
         fa::core::if_(execution_policy, raster.mask(), true,
             result_we_got.mask());
 
-        fa::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
-            result_we_got.mask(), true);
+        fa::InputNoDataPolicies<fa::DetectNoDataByValue<fern::Mask<2>>>
+             input_no_data_policy{{raster.mask(), true}};
         fa::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
             result_we_got.mask(), true);
 
@@ -104,8 +104,8 @@ BOOST_AUTO_TEST_CASE(algorithm)
         fa::core::if_(execution_policy, raster.mask(), true,
             result_we_got.mask());
 
-        fa::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
-            result_we_got.mask(), true);
+        fa::InputNoDataPolicies<fa::DetectNoDataByValue<fern::Mask<2>>>
+            input_no_data_policy{{raster.mask(), true}};
         fa::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
             result_we_got.mask(), true);
 

@@ -64,8 +64,6 @@ void lax(
     @overload
 */
 template<
-    typename InputNoDataPolicy,
-    typename OutputNoDataPolicy,
     typename ExecutionPolicy,
     typename Value,
     typename Result>
@@ -75,31 +73,11 @@ void lax(
     value_type<Value> const& fraction,
     Result& result)
 {
-    OutputNoDataPolicy output_no_data_policy;
-    lax(InputNoDataPolicy(), output_no_data_policy, execution_policy,
-        value, fraction, result);
-}
-
-
-/*!
-    @ingroup    fern_algorithm_algebra_vector_group
-    @overload
-*/
-template<
-    typename ExecutionPolicy,
-    typename Value,
-    typename Result>
-void lax(
-    ExecutionPolicy const& execution_policy,
-    Value const& value,
-    value_type<Value> const& fraction,
-    Result& result)
-{
-    using InputNoDataPolicy = SkipNoData<>;
+    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData<>>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
-    lax(InputNoDataPolicy(), output_no_data_policy, execution_policy,
+    lax(InputNoDataPolicy{{}}, output_no_data_policy, execution_policy,
         value, fraction, result);
 }
 
