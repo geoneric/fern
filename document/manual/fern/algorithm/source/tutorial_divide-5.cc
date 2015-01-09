@@ -10,7 +10,9 @@ int main()
 {
     namespace fa = fern::algorithm;
 
-    using InputNoDataPolicy = fa::DetectNoDataByValue<std::vector<double>>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<
+        fa::DetectNoDataByValue<std::vector<double>>,
+        fa::DetectNoDataByValue<std::vector<double>>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<std::vector<double>>;
 
     double const no_data{-999.0};
@@ -19,11 +21,8 @@ int main()
     std::vector<double> value2 = { 0.0, 4.0, no_data, 2.0, 1.0 };
     std::vector<double> result(value1.size());
 
-    // Merge argument no-data into result.
-    result[2] = no_data;
-    result[4] = no_data;
-
-    InputNoDataPolicy input_no_data_policy(result, no_data);
+    InputNoDataPolicy input_no_data_policy{{value1, no_data},
+        {value2, no_data}};
     OutputNoDataPolicy output_no_data_policy(result, no_data);
 
     fa::algebra::divide<fa::divide::OutOfDomainPolicy,
