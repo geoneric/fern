@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE fern fern_python_extension_feature
+#define BOOST_TEST_MODULE fern fern_python_extension_algorithm
 #include <cstdlib>
 #include <boost/test/unit_test.hpp>
 

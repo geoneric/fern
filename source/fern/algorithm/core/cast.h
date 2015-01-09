@@ -83,9 +83,6 @@ void cast(
     @overload
 */
 template<
-    template<typename, typename> class OutOfRangePolicy,
-    typename InputNoDataPolicy,
-    typename OutputNoDataPolicy,
     typename ExecutionPolicy,
     typename Value,
     typename Result>
@@ -94,30 +91,11 @@ void cast(
     Value const& value,
     Result& result)
 {
-    OutputNoDataPolicy output_no_data_policy;
-    cast<OutOfRangePolicy>(InputNoDataPolicy(), output_no_data_policy,
-        execution_policy, value, result);
-}
-
-
-/*!
-    @ingroup    fern_algorithm_core_group
-    @overload
-*/
-template<
-    typename ExecutionPolicy,
-    typename Value,
-    typename Result>
-void cast(
-    ExecutionPolicy const& execution_policy,
-    Value const& value,
-    Result& result)
-{
-    using InputNoDataPolicy = SkipNoData<>;
+    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData<>>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
-    cast<unary::DiscardRangeErrors>(InputNoDataPolicy(),
+    cast<unary::DiscardRangeErrors>(InputNoDataPolicy{{}},
         output_no_data_policy, execution_policy, value, result);
 }
 

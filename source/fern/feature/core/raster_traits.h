@@ -97,28 +97,38 @@ inline size_t size(
 
 
 template<
-    typename T>
-inline typename ArgumentTraits<Raster<T, 1>>::const_reference get(
-    Raster<T, 1> const& raster,
-    size_t index)
+    typename T,
+    size_t nr_dimensions>
+inline size_t index(
+    Raster<T, nr_dimensions> const& raster,
+    size_t index1,
+    size_t index2)
 {
-    assert(index < raster.shape()[0]);
-    // Don't assert this. Depending on the policy used, mask may not be
-    // relevant.
-    // assert(!raster.mask()[index]);
-    return raster[index];
+    return index1 * size(raster, 1) + index2;
 }
 
 
 template<
-    typename T>
-inline typename ArgumentTraits<Raster<T, 1>>::reference get(
-    Raster<T, 1>& raster,
+    typename T,
+    size_t nr_dimensions>
+inline typename ArgumentTraits<Raster<T, nr_dimensions>>::const_reference get(
+    Raster<T, nr_dimensions> const& raster,
     size_t index)
 {
-    assert(index < raster.shape()[0]);
-    // assert(!raster.mask()[index]);
-    return raster[index];
+    assert(index < raster.num_elements());
+    return raster.data()[index];
+}
+
+
+template<
+    typename T,
+    size_t nr_dimensions>
+inline typename ArgumentTraits<Raster<T, nr_dimensions>>::reference get(
+    Raster<T, nr_dimensions>& raster,
+    size_t index)
+{
+    assert(index < raster.num_elements());
+    return raster.data()[index];
 }
 
 
@@ -167,34 +177,6 @@ inline double cell_area(
 
 
 template<
-    typename T>
-inline typename ArgumentTraits<Raster<T, 2>>::const_reference get(
-    Raster<T, 2> const& raster,
-    size_t index1,
-    size_t index2)
-{
-    assert(index1 < raster.shape()[0]);
-    assert(index2 < raster.shape()[1]);
-    // assert(!raster.mask()[index1][index2]);
-    return raster[index1][index2];
-}
-
-
-template<
-    typename T>
-inline typename ArgumentTraits<Raster<T, 2>>::reference get(
-    Raster<T, 2>& raster,
-    size_t index1,
-    size_t index2)
-{
-    assert(index1 < raster.shape()[0]);
-    assert(index2 < raster.shape()[1]);
-    // assert(!raster.mask()[index1][index2]);
-    return raster[index1][index2];
-}
-
-
-template<
     typename U,
     typename V>
 inline Raster<U, 2> clone(
@@ -217,38 +199,6 @@ inline Raster<U, 2> clone(
         extents[raster.shape()[0]][raster.shape()[1]],
         raster.transformation(),
         value));
-}
-
-
-template<
-    typename T>
-inline typename ArgumentTraits<Raster<T, 3>>::const_reference get(
-    Raster<T, 3> const& raster,
-    size_t index1,
-    size_t index2,
-    size_t index3)
-{
-    assert(index1 < raster.shape()[0]);
-    assert(index2 < raster.shape()[1]);
-    assert(index3 < raster.shape()[2]);
-    // assert(!raster.mask()[index1][index2][index3]);
-    return raster[index1][index2][index3];
-}
-
-
-template<
-    typename T>
-inline typename ArgumentTraits<Raster<T, 3>>::reference get(
-    Raster<T, 3>& raster,
-    size_t index1,
-    size_t index2,
-    size_t index3)
-{
-    assert(index1 < raster.shape()[0]);
-    assert(index2 < raster.shape()[1]);
-    assert(index3 < raster.shape()[2]);
-    // assert(!raster.mask()[index1][index2][index3]);
-    return raster[index1][index2][index3];
 }
 
 

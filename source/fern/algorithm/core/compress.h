@@ -55,7 +55,6 @@ void compress(
     @overload
 */
 template<
-    typename InputNoDataPolicy,
     typename ExecutionPolicy,
     typename Value,
     typename Result,
@@ -66,28 +65,9 @@ void compress(
     Result& result,
     Count& count)
 {
-    compress<>(InputNoDataPolicy(), execution_policy, value, result, count);
-}
+    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData<>>;
 
-
-/*!
-    @ingroup    fern_algorithm_core_group
-    @overload
-*/
-template<
-    typename ExecutionPolicy,
-    typename Value,
-    typename Result,
-    typename Count>
-void compress(
-    ExecutionPolicy const& execution_policy,
-    Value const& value,
-    Result& result,
-    Count& count)
-{
-    using InputNoDataPolicy = SkipNoData<>;
-
-    compress<>(InputNoDataPolicy(), execution_policy, value, result, count);
+    compress<>(InputNoDataPolicy{{}}, execution_policy, value, result, count);
 }
 
 } // namespace core

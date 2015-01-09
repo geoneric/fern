@@ -154,6 +154,8 @@ struct ConvolveNorthWestCorner<true>
 
         bool value_seen;
 
+        size_t index_;
+
         // Loop over all cells that are situated in the north west corner
         // and for which some cells are outside of the kernel.
         for(size_t row_source = 0; row_source < radius_; ++row_source) {
@@ -162,15 +164,16 @@ struct ConvolveNorthWestCorner<true>
             nr_cols_kernel = radius_ + 1;
             nr_cols_outside_of_image = radius_;
 
+            index_ = index(source, row_source, 0);
+
             for(size_t col_source = 0; col_source < radius_; ++col_source) {
 
                 sum_of_values = 0;
                 sum_of_weights = 0;
                 value_seen = false;
 
-                if(input_no_data_policy.is_no_data(row_source, col_source)) {
-                    output_no_data_policy.mark_as_no_data(row_source,
-                        col_source);
+                if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                    output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
                     // We are now positioned on a cell within the image.
@@ -185,44 +188,52 @@ struct ConvolveNorthWestCorner<true>
 
                     // Handle cells positioned in the kernel, but outside of
                     // the source image.
-                    for(size_t out_of_image_kernel_row = 0;
-                            out_of_image_kernel_row < size(kernel, 0);
-                            ++out_of_image_kernel_row) {
-                        for(size_t out_of_image_kernel_col = 0;
-                                out_of_image_kernel_col < size(kernel, 1);
-                                    ++out_of_image_kernel_col) {
-                            if(out_of_image_kernel_row < first_row_kernel ||
-                                out_of_image_kernel_col < first_col_kernel) {
-
-                                if(OutOfImagePolicy::value_north_west(
-                                        input_no_data_policy,
-                                        source,
-                                        out_of_image_kernel_row,
-                                        out_of_image_kernel_col,
-                                        first_row_kernel, first_col_kernel,
-                                        nr_rows_kernel, nr_cols_kernel,
-                                        first_row_source, first_col_source,
-                                        out_of_image_value)) {
-                                    sum_of_values += out_of_image_value *
-                                        get(kernel,
+                    {
+                        size_t kernel_index;
+                        for(size_t out_of_image_kernel_row = 0;
+                                out_of_image_kernel_row < size(kernel, 0);
+                                ++out_of_image_kernel_row) {
+                            kernel_index = index(kernel,
+                                out_of_image_kernel_row, 0);
+                            for(size_t out_of_image_kernel_col = 0;
+                                    out_of_image_kernel_col < size(kernel, 1);
+                                        ++out_of_image_kernel_col) {
+                                if(out_of_image_kernel_row < first_row_kernel ||
+                                    out_of_image_kernel_col < first_col_kernel)
+                                {
+                                    if(OutOfImagePolicy::value_north_west(
+                                            input_no_data_policy,
+                                            source,
                                             out_of_image_kernel_row,
-                                            out_of_image_kernel_col);
-                                    sum_of_weights += get(kernel,
-                                        out_of_image_kernel_row,
-                                        out_of_image_kernel_col);
-                                    value_seen = true;
+                                            out_of_image_kernel_col,
+                                            first_row_kernel, first_col_kernel,
+                                            nr_rows_kernel, nr_cols_kernel,
+                                            first_row_source, first_col_source,
+                                            out_of_image_value)) {
+                                        sum_of_values += out_of_image_value *
+                                            get(kernel, kernel_index);
+                                        sum_of_weights += get(kernel,
+                                            kernel_index);
+                                        value_seen = true;
+                                    }
                                 }
+
+                                ++kernel_index;
                             }
                         }
                     }
 
                     // Handle cells positioned in the kernel, and in the source
                     // image.
+                    size_t source_index, kernel_index;
                     for(size_t row = 0; row < nr_rows_kernel; ++row) {
+                        source_index = index(source, first_row_source + row,
+                            first_col_source + 0);
+                        kernel_index = index(kernel, first_row_kernel + row,
+                            first_col_kernel + 0);
                         for(size_t col = 0; col < nr_cols_kernel; ++col) {
-                            if(input_no_data_policy.is_no_data(
-                                    first_row_source + row,
-                                    first_col_source + col)) {
+                            if(std::get<0>(input_no_data_policy).is_no_data(
+                                    source_index)) {
                                 if(AFNP::value(
                                         input_no_data_policy,
                                         source,
@@ -232,25 +243,22 @@ struct ConvolveNorthWestCorner<true>
                                         first_col_source + col,
                                         alternative_value)) {
                                     sum_of_values += alternative_value *
-                                        get(kernel, first_row_kernel + row,
-                                            first_col_kernel + col);
+                                        get(kernel, kernel_index);
                                     sum_of_weights +=
-                                        get(kernel, first_row_kernel + row,
-                                            first_col_kernel + col);
+                                        get(kernel, kernel_index);
                                     value_seen = true;
                                 }
                             }
                             else {
                                 sum_of_values +=
-                                    get(kernel, first_row_kernel + row,
-                                        first_col_kernel + col) *
-                                    get(source, first_row_source + row,
-                                        first_col_source + col);
-                                sum_of_weights +=
-                                    get(kernel, first_row_kernel + row,
-                                        first_col_kernel + col);
+                                    get(kernel, kernel_index) *
+                                    get(source, source_index);
+                                sum_of_weights += get(kernel, kernel_index);
                                 value_seen = true;
                             }
+
+                            ++source_index;
+                            ++kernel_index;
                         }
                     }
                 }
@@ -262,17 +270,17 @@ struct ConvolveNorthWestCorner<true>
 
                 // TODO OutOfRangePolicy must handle integral results too.
                 if(!value_seen || !OORP::within_range(sum_of_values)) {
-                    output_no_data_policy.mark_as_no_data(row_source,
-                        col_source);
+                    output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
-                    get(destination, row_source, col_source) =
-                        NP::normalize(sum_of_values, sum_of_weights);
+                    get(destination, index_) = NP::normalize(sum_of_values,
+                        sum_of_weights);
                 }
 
                 --first_col_kernel;
                 ++nr_cols_kernel;
                 --nr_cols_outside_of_image;
+                ++index_;
             }
 
             --first_row_kernel;
@@ -328,6 +336,8 @@ struct ConvolveNorthEastCorner<true>
 
         bool value_seen;
 
+        size_t index_;
+
         // Loop over all cells that are situated in the north east corner
         // and for which some cells are outside of the kernel.
         for(size_t row_source = 0; row_source < radius_; ++row_source) {
@@ -336,6 +346,8 @@ struct ConvolveNorthEastCorner<true>
             nr_cols_kernel = radius_ + radius_;
             nr_cols_outside_of_image = 1;
 
+            index_ = index(source, row_source, nr_cols_source - radius_);
+
             for(size_t col_source = nr_cols_source - radius_;
                     col_source < nr_cols_source; ++col_source) {
 
@@ -343,51 +355,58 @@ struct ConvolveNorthEastCorner<true>
                 sum_of_weights = 0;
                 value_seen = false;
 
-                if(input_no_data_policy.is_no_data(row_source, col_source)) {
-                    output_no_data_policy.mark_as_no_data(row_source,
-                        col_source);
+                if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                    output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
                     // Handle cells positioned in the kernel, but outside of
                     // the source image.
-                    for(size_t out_of_image_kernel_row = 0;
-                            out_of_image_kernel_row < size(kernel, 0);
-                            ++out_of_image_kernel_row) {
-                        for(size_t out_of_image_kernel_col = 0;
-                                out_of_image_kernel_col < size(kernel, 1);
-                                    ++out_of_image_kernel_col) {
-                            if(out_of_image_kernel_row < first_row_kernel ||
-                                out_of_image_kernel_col >= nr_cols_kernel) {
+                    {
+                        size_t kernel_index;
+                        for(size_t out_of_image_kernel_row = 0;
+                                out_of_image_kernel_row < size(kernel, 0);
+                                ++out_of_image_kernel_row) {
+                            kernel_index = index(kernel,
+                                out_of_image_kernel_row, 0);
+                            for(size_t out_of_image_kernel_col = 0;
+                                    out_of_image_kernel_col < size(kernel, 1);
+                                        ++out_of_image_kernel_col) {
+                                if(out_of_image_kernel_row < first_row_kernel ||
+                                    out_of_image_kernel_col >= nr_cols_kernel) {
 
-                                if(OutOfImagePolicy::value_north_east(
-                                        input_no_data_policy,
-                                        source,
-                                        out_of_image_kernel_row,
-                                        out_of_image_kernel_col,
-                                        first_row_kernel, first_col_kernel,
-                                        nr_rows_kernel, nr_cols_kernel,
-                                        first_row_source, first_col_source,
-                                        out_of_image_value)) {
-                                    sum_of_values += out_of_image_value *
-                                        get(kernel,
+                                    if(OutOfImagePolicy::value_north_east(
+                                            input_no_data_policy,
+                                            source,
                                             out_of_image_kernel_row,
-                                            out_of_image_kernel_col);
-                                    sum_of_weights += get(kernel,
-                                        out_of_image_kernel_row,
-                                        out_of_image_kernel_col);
-                                    value_seen = true;
+                                            out_of_image_kernel_col,
+                                            first_row_kernel, first_col_kernel,
+                                            nr_rows_kernel, nr_cols_kernel,
+                                            first_row_source, first_col_source,
+                                            out_of_image_value)) {
+                                        sum_of_values += out_of_image_value *
+                                            get(kernel, kernel_index);
+                                        sum_of_weights += get(kernel,
+                                            kernel_index);
+                                        value_seen = true;
+                                    }
                                 }
+
+                                ++kernel_index;
                             }
                         }
                     }
 
                     // Handle cells positioned in the kernel, and in the source
                     // image.
+                    size_t source_index, kernel_index;
                     for(size_t row = 0; row < nr_rows_kernel; ++row) {
+                        source_index = index(source, first_row_source + row,
+                            first_col_source + 0);
+                        kernel_index = index(kernel, first_row_kernel + row,
+                            first_col_kernel + 0);
                         for(size_t col = 0; col < nr_cols_kernel; ++col) {
-                            if(input_no_data_policy.is_no_data(
-                                    first_row_source + row,
-                                    first_col_source + col)) {
+                            if(std::get<0>(input_no_data_policy).is_no_data(
+                                    source_index)) {
                                 if(AFNP::value(
                                         input_no_data_policy,
                                         source,
@@ -397,25 +416,20 @@ struct ConvolveNorthEastCorner<true>
                                         first_col_source + col,
                                         alternative_value)) {
                                     sum_of_values += alternative_value *
-                                        get(kernel, first_row_kernel + row,
-                                            first_col_kernel + col);
-                                    sum_of_weights +=
-                                        get(kernel, first_row_kernel + row,
-                                            first_col_kernel + col);
+                                        get(kernel, kernel_index);
+                                    sum_of_weights += get(kernel, kernel_index);
                                     value_seen = true;
                                 }
                             }
                             else {
-                                sum_of_values +=
-                                    get(kernel, first_row_kernel + row,
-                                        first_col_kernel + col) *
-                                    get(source, first_row_source + row,
-                                        first_col_source + col);
-                                sum_of_weights +=
-                                    get(kernel, first_row_kernel + row,
-                                        first_col_kernel + col);
+                                sum_of_values += get(kernel, kernel_index) *
+                                    get(source, source_index);
+                                sum_of_weights += get(kernel, kernel_index);
                                 value_seen = true;
                             }
+
+                            ++source_index;
+                            ++kernel_index;
                         }
                     }
                 }
@@ -427,17 +441,17 @@ struct ConvolveNorthEastCorner<true>
 
                 // TODO OutOfRangePolicy must handle integral results too.
                 if(!value_seen || !OORP::within_range(sum_of_values)) {
-                    output_no_data_policy.mark_as_no_data(row_source,
-                        col_source);
+                    output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
-                    get(destination, row_source, col_source) =
-                        NP::normalize(sum_of_values, sum_of_weights);
+                    get(destination, index_) = NP::normalize(sum_of_values,
+                        sum_of_weights);
                 }
 
                 ++first_col_source;
                 --nr_cols_kernel;
                 ++nr_cols_outside_of_image;
+                ++index_;
             }
 
             --first_row_kernel;
@@ -493,6 +507,8 @@ struct ConvolveSouthWestCorner<true>
 
         bool value_seen;
 
+        size_t index_;
+
         // Loop over all cells that are situated in the south west corner
         // and for which some cells are outside of the kernel.
         for(size_t row_source = nr_rows_source - radius_;
@@ -502,57 +518,67 @@ struct ConvolveSouthWestCorner<true>
             nr_cols_kernel = radius_ + 1;
             nr_cols_outside_of_image = radius_;
 
+            index_ = index(source, row_source, 0);
+
             for(size_t col_source = 0; col_source < radius_; ++col_source) {
 
                 sum_of_values = 0;
                 sum_of_weights = 0;
                 value_seen = false;
 
-                if(input_no_data_policy.is_no_data(row_source, col_source)) {
-                    output_no_data_policy.mark_as_no_data(row_source,
-                        col_source);
+                if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                    output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
                     // Handle cells positioned in the kernel, but outside of
                     // the source image.
-                    for(size_t out_of_image_kernel_row = 0;
-                            out_of_image_kernel_row < size(kernel, 0);
-                            ++out_of_image_kernel_row) {
-                        for(size_t out_of_image_kernel_col = 0;
-                                out_of_image_kernel_col < size(kernel, 1);
-                                    ++out_of_image_kernel_col) {
-                            if(out_of_image_kernel_row >= nr_rows_kernel ||
-                                out_of_image_kernel_col < first_col_kernel) {
+                    {
+                        size_t kernel_index;
+                        for(size_t out_of_image_kernel_row = 0;
+                                out_of_image_kernel_row < size(kernel, 0);
+                                ++out_of_image_kernel_row) {
+                            kernel_index = index(kernel,
+                                out_of_image_kernel_row, 0);
+                            for(size_t out_of_image_kernel_col = 0;
+                                    out_of_image_kernel_col < size(kernel, 1);
+                                        ++out_of_image_kernel_col) {
+                                if(out_of_image_kernel_row >= nr_rows_kernel ||
+                                    out_of_image_kernel_col < first_col_kernel)
+                                {
 
-                                if(OutOfImagePolicy::value_south_west(
-                                        input_no_data_policy,
-                                        source,
-                                        out_of_image_kernel_row,
-                                        out_of_image_kernel_col,
-                                        first_row_kernel, first_col_kernel,
-                                        nr_rows_kernel, nr_cols_kernel,
-                                        first_row_source, first_col_source,
-                                        out_of_image_value)) {
-                                    sum_of_values += out_of_image_value *
-                                        get(kernel,
+                                    if(OutOfImagePolicy::value_south_west(
+                                            input_no_data_policy,
+                                            source,
                                             out_of_image_kernel_row,
-                                            out_of_image_kernel_col);
-                                    sum_of_weights += get(kernel,
-                                        out_of_image_kernel_row,
-                                        out_of_image_kernel_col);
-                                    value_seen = true;
+                                            out_of_image_kernel_col,
+                                            first_row_kernel, first_col_kernel,
+                                            nr_rows_kernel, nr_cols_kernel,
+                                            first_row_source, first_col_source,
+                                            out_of_image_value)) {
+                                        sum_of_values += out_of_image_value *
+                                            get(kernel, kernel_index);
+                                        sum_of_weights += get(kernel,
+                                            kernel_index);
+                                        value_seen = true;
+                                    }
                                 }
+
+                                ++kernel_index;
                             }
                         }
                     }
 
                     // Handle cells positioned in the kernel, and in the source
                     // image.
+                    size_t source_index, kernel_index;
                     for(size_t row = 0; row < nr_rows_kernel; ++row) {
+                        source_index = index(source, first_row_source + row,
+                            first_col_source + 0);
+                        kernel_index = index(kernel, first_row_kernel + row,
+                            first_col_kernel + 0);
                         for(size_t col = 0; col < nr_cols_kernel; ++col) {
-                            if(input_no_data_policy.is_no_data(
-                                    first_row_source + row,
-                                    first_col_source + col)) {
+                            if(std::get<0>(input_no_data_policy).is_no_data(
+                                    source_index)) {
                                 if(AFNP::value(
                                         input_no_data_policy,
                                         source,
@@ -562,25 +588,21 @@ struct ConvolveSouthWestCorner<true>
                                         first_col_source + col,
                                         alternative_value)) {
                                     sum_of_values += alternative_value *
-                                        get(kernel, first_row_kernel + row,
-                                            first_col_kernel + col);
+                                        get(kernel, kernel_index);
                                     sum_of_weights +=
-                                        get(kernel, first_row_kernel + row,
-                                            first_col_kernel + col);
+                                        get(kernel, kernel_index);
                                     value_seen = true;
                                 }
                             }
                             else {
-                                sum_of_values +=
-                                    get(kernel, first_row_kernel + row,
-                                        first_col_kernel + col) *
-                                    get(source, first_row_source + row,
-                                        first_col_source + col);
-                                sum_of_weights +=
-                                    get(kernel, first_row_kernel + row,
-                                        first_col_kernel + col);
+                                sum_of_values += get(kernel, kernel_index) *
+                                    get(source, source_index);
+                                sum_of_weights += get(kernel, kernel_index);
                                 value_seen = true;
                             }
+
+                            ++source_index;
+                            ++kernel_index;
                         }
                     }
                 }
@@ -592,17 +614,17 @@ struct ConvolveSouthWestCorner<true>
 
                 // TODO OutOfRangePolicy must handle integral results too.
                 if(!value_seen || !OORP::within_range(sum_of_values)) {
-                    output_no_data_policy.mark_as_no_data(row_source,
-                        col_source);
+                    output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
-                    get(destination, row_source, col_source) =
-                        NP::normalize(sum_of_values, sum_of_weights);
+                    get(destination, index_) = NP::normalize(sum_of_values,
+                        sum_of_weights);
                 }
 
                 --first_col_kernel;
                 ++nr_cols_kernel;
                 --nr_cols_outside_of_image;
+                ++index_;
             }
 
             ++first_row_source;
@@ -659,6 +681,8 @@ struct ConvolveSouthEastCorner<true>
 
         bool value_seen;
 
+        size_t index_;
+
         // Loop over all cells that are situated in the south west corner
         // and for which some cells are outside of the kernel.
         for(size_t row_source = nr_rows_source - radius_;
@@ -668,6 +692,8 @@ struct ConvolveSouthEastCorner<true>
             nr_cols_kernel = radius_ + radius_;
             nr_cols_outside_of_image = 1;
 
+            index_ = index(source, row_source, nr_cols_source - radius_);
+
             for(size_t col_source = nr_cols_source - radius_;
                     col_source < nr_cols_source; ++col_source) {
 
@@ -675,52 +701,59 @@ struct ConvolveSouthEastCorner<true>
                 sum_of_weights = 0;
                 value_seen = false;
 
-                if(input_no_data_policy.is_no_data(row_source, col_source)) {
-                    output_no_data_policy.mark_as_no_data(row_source,
-                        col_source);
+                if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                    output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
                     // Handle cells positioned in the kernel, but outside of
                     // the source image.
-                    for(size_t out_of_image_kernel_row = 0;
-                            out_of_image_kernel_row < size(kernel, 0);
-                            ++out_of_image_kernel_row) {
-                        for(size_t out_of_image_kernel_col = 0;
-                                out_of_image_kernel_col < size(kernel, 1);
-                                    ++out_of_image_kernel_col) {
+                    {
+                        size_t kernel_index;
+                        for(size_t out_of_image_kernel_row = 0;
+                                out_of_image_kernel_row < size(kernel, 0);
+                                ++out_of_image_kernel_row) {
+                            kernel_index = index(kernel,
+                                out_of_image_kernel_row, 0);
+                            for(size_t out_of_image_kernel_col = 0;
+                                    out_of_image_kernel_col < size(kernel, 1);
+                                        ++out_of_image_kernel_col) {
 
-                            if(out_of_image_kernel_row >= nr_rows_kernel ||
-                                out_of_image_kernel_col >= nr_cols_kernel) {
+                                if(out_of_image_kernel_row >= nr_rows_kernel ||
+                                    out_of_image_kernel_col >= nr_cols_kernel) {
 
-                                if(OutOfImagePolicy::value_south_east(
-                                        input_no_data_policy,
-                                        source,
-                                        out_of_image_kernel_row,
-                                        out_of_image_kernel_col,
-                                        first_row_kernel, first_col_kernel,
-                                        nr_rows_kernel, nr_cols_kernel,
-                                        first_row_source, first_col_source,
-                                        out_of_image_value)) {
-                                    sum_of_values += out_of_image_value *
-                                        get(kernel,
+                                    if(OutOfImagePolicy::value_south_east(
+                                            input_no_data_policy,
+                                            source,
                                             out_of_image_kernel_row,
-                                            out_of_image_kernel_col);
-                                    sum_of_weights += get(kernel,
-                                        out_of_image_kernel_row,
-                                        out_of_image_kernel_col);
-                                    value_seen = true;
+                                            out_of_image_kernel_col,
+                                            first_row_kernel, first_col_kernel,
+                                            nr_rows_kernel, nr_cols_kernel,
+                                            first_row_source, first_col_source,
+                                            out_of_image_value)) {
+                                        sum_of_values += out_of_image_value *
+                                            get(kernel, kernel_index);
+                                        sum_of_weights += get(kernel,
+                                            kernel_index);
+                                        value_seen = true;
+                                    }
                                 }
+
+                                ++kernel_index;
                             }
                         }
                     }
 
                     // Handle cells positioned in the kernel, and in the source
                     // image.
+                    size_t source_index, kernel_index;
                     for(size_t row = 0; row < nr_rows_kernel; ++row) {
+                        source_index = index(source, first_row_source + row,
+                            first_col_source + 0);
+                        kernel_index = index(kernel, first_row_kernel + row,
+                            first_col_kernel + 0);
                         for(size_t col = 0; col < nr_cols_kernel; ++col) {
-                            if(input_no_data_policy.is_no_data(
-                                    first_row_source + row,
-                                    first_col_source + col)) {
+                            if(std::get<0>(input_no_data_policy).is_no_data(
+                                    source_index)) {
                                 if(AFNP::value(
                                         input_no_data_policy,
                                         source,
@@ -730,25 +763,20 @@ struct ConvolveSouthEastCorner<true>
                                         first_col_source + col,
                                         alternative_value)) {
                                     sum_of_values += alternative_value *
-                                        get(kernel, first_row_kernel + row,
-                                            first_col_kernel + col);
-                                    sum_of_weights +=
-                                        get(kernel, first_row_kernel + row,
-                                            first_col_kernel + col);
+                                        get(kernel, kernel_index);
+                                    sum_of_weights += get(kernel, kernel_index);
                                     value_seen = true;
                                 }
                             }
                             else {
-                                sum_of_values +=
-                                    get(kernel, first_row_kernel + row,
-                                        first_col_kernel + col) *
-                                    get(source, first_row_source + row,
-                                        first_col_source + col);
-                                sum_of_weights +=
-                                    get(kernel, first_row_kernel + row,
-                                        first_col_kernel + col);
+                                sum_of_values += get(kernel, kernel_index) *
+                                    get(source, source_index);
+                                sum_of_weights += get(kernel, kernel_index);
                                 value_seen = true;
                             }
+
+                            ++source_index;
+                            ++kernel_index;
                         }
                     }
                 }
@@ -760,17 +788,17 @@ struct ConvolveSouthEastCorner<true>
 
                 // TODO OutOfRangePolicy must handle integral results too.
                 if(!value_seen || !OORP::within_range(sum_of_values)) {
-                    output_no_data_policy.mark_as_no_data(row_source,
-                        col_source);
+                    output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
-                    get(destination, row_source, col_source) =
-                        NP::normalize(sum_of_values, sum_of_weights);
+                    get(destination, index_) = NP::normalize(sum_of_values,
+                        sum_of_weights);
                 }
 
                 ++first_col_source;
                 --nr_cols_kernel;
                 ++nr_cols_outside_of_image;
+                ++index_;
             }
 
             ++first_row_source;
@@ -825,11 +853,15 @@ struct ConvolveNorthSide<true>
 
         bool value_seen;
 
+        size_t index_;
+
         // Loop over all cells that are situated in the north side and for
         // which some cells are outside of the kernel.
         for(size_t row_source = 0; row_source < radius_; ++row_source) {
 
             first_col_source = 0;
+
+            index_ = index(source, row_source, radius_);
 
             for(size_t col_source = radius_; col_source <
                     nr_cols_source - radius_; ++col_source) {
@@ -838,53 +870,61 @@ struct ConvolveNorthSide<true>
                 sum_of_weights = 0;
                 value_seen = false;
 
-                if(input_no_data_policy.is_no_data(row_source, col_source)) {
-                    output_no_data_policy.mark_as_no_data(row_source,
-                        col_source);
+                if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                    output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
                     // Handle cells positioned in the kernel, but outside of
                     // the source image.
-                    for(size_t out_of_image_kernel_row = 0;
-                            out_of_image_kernel_row < size(kernel, 0);
-                            ++out_of_image_kernel_row) {
-                        for(size_t out_of_image_kernel_col = 0;
-                                out_of_image_kernel_col < size(kernel, 1);
-                                ++out_of_image_kernel_col) {
+                    {
+                        size_t kernel_index;
+                        for(size_t out_of_image_kernel_row = 0;
+                                out_of_image_kernel_row < size(kernel, 0);
+                                ++out_of_image_kernel_row) {
+                            kernel_index = index(kernel,
+                                out_of_image_kernel_row, 0);
+                            for(size_t out_of_image_kernel_col = 0;
+                                    out_of_image_kernel_col < size(kernel, 1);
+                                    ++out_of_image_kernel_col) {
 
-                            assert(out_of_image_kernel_col >= first_col_kernel);
+                                assert(out_of_image_kernel_col >=
+                                    first_col_kernel);
 
-                            if(out_of_image_kernel_row < first_row_kernel) {
+                                if(out_of_image_kernel_row < first_row_kernel) {
 
-                                if(OutOfImagePolicy::value_north(
-                                        input_no_data_policy,
-                                        source,
-                                        out_of_image_kernel_row,
-                                        out_of_image_kernel_col,
-                                        first_row_kernel, first_col_kernel,
-                                        nr_rows_kernel, nr_cols_kernel,
-                                        first_row_source, first_col_source,
-                                        out_of_image_value)) {
-                                    sum_of_values += out_of_image_value *
-                                        get(kernel,
+                                    if(OutOfImagePolicy::value_north(
+                                            input_no_data_policy,
+                                            source,
                                             out_of_image_kernel_row,
-                                            out_of_image_kernel_col);
-                                    sum_of_weights += get(kernel,
-                                        out_of_image_kernel_row,
-                                        out_of_image_kernel_col);
-                                    value_seen = true;
+                                            out_of_image_kernel_col,
+                                            first_row_kernel, first_col_kernel,
+                                            nr_rows_kernel, nr_cols_kernel,
+                                            first_row_source, first_col_source,
+                                            out_of_image_value)) {
+                                        sum_of_values += out_of_image_value *
+                                            get(kernel, kernel_index);
+                                        sum_of_weights += get(kernel,
+                                            kernel_index);
+                                        value_seen = true;
+                                    }
                                 }
+
+                                ++kernel_index;
                             }
                         }
                     }
 
                     // Handle cells positioned in the kernel, and in the source
                     // image.
+                    size_t source_index, kernel_index;
                     for(size_t row = 0; row < nr_rows_kernel; ++row) {
+                        source_index = index(source, first_row_source + row,
+                            first_col_source + 0);
+                        kernel_index = index(kernel, first_row_kernel + row,
+                            first_col_kernel + 0);
                         for(size_t col = 0; col < nr_cols_kernel; ++col) {
-                            if(input_no_data_policy.is_no_data(
-                                    first_row_source + row,
-                                    first_col_source + col)) {
+                            if(std::get<0>(input_no_data_policy).is_no_data(
+                                    source_index)) {
                                 if(AFNP::value(
                                         input_no_data_policy,
                                         source,
@@ -894,25 +934,20 @@ struct ConvolveNorthSide<true>
                                         first_col_source + col,
                                         alternative_value)) {
                                     sum_of_values += alternative_value *
-                                        get(kernel, first_row_kernel + row,
-                                            first_col_kernel + col);
-                                    sum_of_weights +=
-                                        get(kernel, first_row_kernel + row,
-                                            first_col_kernel + col);
+                                        get(kernel, kernel_index);
+                                    sum_of_weights += get(kernel, kernel_index);
                                     value_seen = true;
                                 }
                             }
                             else {
-                                sum_of_values +=
-                                    get(kernel, first_row_kernel + row,
-                                        first_col_kernel + col) *
-                                    get(source, first_row_source + row,
-                                        first_col_source + col);
-                                sum_of_weights +=
-                                    get(kernel, first_row_kernel + row,
-                                        first_col_kernel + col);
+                                sum_of_values += get(kernel, kernel_index) *
+                                    get(source, source_index);
+                                sum_of_weights += get(kernel, kernel_index);
                                 value_seen = true;
                             }
+
+                            ++source_index;
+                            ++kernel_index;
                         }
                     }
                 }
@@ -924,15 +959,15 @@ struct ConvolveNorthSide<true>
 
                 // TODO OutOfRangePolicy must handle integral results too.
                 if(!value_seen || !OORP::within_range(sum_of_values)) {
-                    output_no_data_policy.mark_as_no_data(row_source,
-                        col_source);
+                    output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
-                    get(destination, row_source, col_source) =
-                        NP::normalize(sum_of_values, sum_of_weights);
+                    get(destination, index_) = NP::normalize(sum_of_values,
+                        sum_of_weights);
                 }
 
                 ++first_col_source;
+                ++index_;
             }
 
             --first_row_kernel;
@@ -987,6 +1022,8 @@ struct ConvolveWestSide<true>
 
         bool value_seen;
 
+        size_t index_;
+
         // Loop over all cells that are situated in the west side and for
         // which some cells are outside of the kernel.
         for(size_t row_source = radius_; row_source <
@@ -996,59 +1033,69 @@ struct ConvolveWestSide<true>
             nr_cols_kernel = radius_ + 1;
             nr_cols_outside_of_image = radius_;
 
+            index_ = index(source, row_source, 0);
+
             for(size_t col_source = 0; col_source < radius_; ++col_source) {
 
                 sum_of_values = 0;
                 sum_of_weights = 0;
                 value_seen = false;
 
-                if(input_no_data_policy.is_no_data(row_source, col_source)) {
-                    output_no_data_policy.mark_as_no_data(row_source,
-                        col_source);
+                if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                    output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
                     // Handle cells positioned in the kernel, but outside of
                     // the source image.
-                    for(size_t out_of_image_kernel_row = 0;
-                            out_of_image_kernel_row < size(kernel, 0);
-                            ++out_of_image_kernel_row) {
-                        for(size_t out_of_image_kernel_col = 0;
-                                out_of_image_kernel_col < size(kernel, 1);
-                                ++out_of_image_kernel_col) {
+                    {
+                        size_t kernel_index;
+                        for(size_t out_of_image_kernel_row = 0;
+                                out_of_image_kernel_row < size(kernel, 0);
+                                ++out_of_image_kernel_row) {
+                            kernel_index = index(kernel,
+                                out_of_image_kernel_row, 0);
+                            for(size_t out_of_image_kernel_col = 0;
+                                    out_of_image_kernel_col < size(kernel, 1);
+                                    ++out_of_image_kernel_col) {
 
-                            assert(out_of_image_kernel_row >= first_row_kernel);
+                                assert(out_of_image_kernel_row >=
+                                    first_row_kernel);
 
-                            if(out_of_image_kernel_col < first_col_kernel) {
+                                if(out_of_image_kernel_col < first_col_kernel) {
 
-                                if(OutOfImagePolicy::value_west(
-                                        input_no_data_policy,
-                                        source,
-                                        out_of_image_kernel_row,
-                                        out_of_image_kernel_col,
-                                        first_row_kernel, first_col_kernel,
-                                        nr_rows_kernel, nr_cols_kernel,
-                                        first_row_source, first_col_source,
-                                        out_of_image_value)) {
-                                    sum_of_values += out_of_image_value *
-                                        get(kernel,
+                                    if(OutOfImagePolicy::value_west(
+                                            input_no_data_policy,
+                                            source,
                                             out_of_image_kernel_row,
-                                            out_of_image_kernel_col);
-                                    sum_of_weights += get(kernel,
-                                        out_of_image_kernel_row,
-                                        out_of_image_kernel_col);
-                                    value_seen = true;
+                                            out_of_image_kernel_col,
+                                            first_row_kernel, first_col_kernel,
+                                            nr_rows_kernel, nr_cols_kernel,
+                                            first_row_source, first_col_source,
+                                            out_of_image_value)) {
+                                        sum_of_values += out_of_image_value *
+                                            get(kernel, kernel_index);
+                                        sum_of_weights += get(kernel,
+                                            kernel_index);
+                                        value_seen = true;
+                                    }
                                 }
+
+                                ++kernel_index;
                             }
                         }
                     }
 
                     // Handle cells positioned in the kernel, and in the source
                     // image.
+                    size_t source_index, kernel_index;
                     for(size_t row = 0; row < nr_rows_kernel; ++row) {
+                        source_index = index(source, first_row_source + row,
+                            first_col_source + 0);
+                        kernel_index = index(kernel, first_row_kernel + row,
+                            first_col_kernel + 0);
                         for(size_t col = 0; col < nr_cols_kernel; ++col) {
-                            if(input_no_data_policy.is_no_data(
-                                    first_row_source + row,
-                                    first_col_source + col)) {
+                            if(std::get<0>(input_no_data_policy).is_no_data(
+                                    source_index)) {
                                 if(AFNP::value(
                                         input_no_data_policy,
                                         source,
@@ -1058,25 +1105,20 @@ struct ConvolveWestSide<true>
                                         first_col_source + col,
                                         alternative_value)) {
                                     sum_of_values += alternative_value *
-                                        get(kernel, first_row_kernel + row,
-                                            first_col_kernel + col);
-                                    sum_of_weights +=
-                                        get(kernel, first_row_kernel + row,
-                                            first_col_kernel + col);
+                                        get(kernel, kernel_index);
+                                    sum_of_weights += get(kernel, kernel_index);
                                     value_seen = true;
                                 }
                             }
                             else {
-                                sum_of_values +=
-                                    get(kernel, first_row_kernel + row,
-                                        first_col_kernel + col) *
-                                    get(source, first_row_source + row,
-                                        first_col_source + col);
-                                sum_of_weights +=
-                                    get(kernel, first_row_kernel + row,
-                                        first_col_kernel + col);
+                                sum_of_values += get(kernel, kernel_index) *
+                                    get(source, source_index);
+                                sum_of_weights += get(kernel, kernel_index);
                                 value_seen = true;
                             }
+
+                            ++source_index;
+                            ++kernel_index;
                         }
                     }
                 }
@@ -1088,17 +1130,17 @@ struct ConvolveWestSide<true>
 
                 // TODO OutOfRangePolicy must handle integral results too.
                 if(!value_seen || !OORP::within_range(sum_of_values)) {
-                    output_no_data_policy.mark_as_no_data(row_source,
-                        col_source);
+                    output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
-                    get(destination, row_source, col_source) =
-                        NP::normalize(sum_of_values, sum_of_weights);
+                    get(destination, index_) = NP::normalize(sum_of_values,
+                        sum_of_weights);
                 }
 
                 --first_col_kernel;
                 ++nr_cols_kernel;
                 --nr_cols_outside_of_image;
+                ++index_;
             }
 
             ++first_row_source;
@@ -1152,6 +1194,8 @@ struct ConvolveEastSide<true>
 
         bool value_seen;
 
+        size_t index_;
+
         // Loop over all cells that are situated in the east side and for
         // which some cells are outside of the kernel.
         for(size_t row_source = radius_; row_source <
@@ -1161,6 +1205,8 @@ struct ConvolveEastSide<true>
             nr_cols_kernel = radius_ + radius_;
             nr_cols_outside_of_image = 1;
 
+            index_ = index(source, row_source, nr_cols_source - radius_);
+
             for(size_t col_source = nr_cols_source - radius_;
                     col_source < nr_cols_source; ++col_source) {
 
@@ -1168,53 +1214,61 @@ struct ConvolveEastSide<true>
                 sum_of_weights = 0;
                 value_seen = false;
 
-                if(input_no_data_policy.is_no_data(row_source, col_source)) {
-                    output_no_data_policy.mark_as_no_data(row_source,
-                        col_source);
+                if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                    output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
                     // Handle cells positioned in the kernel, but outside of
                     // the source image.
-                    for(size_t out_of_image_kernel_row = 0;
-                            out_of_image_kernel_row < size(kernel, 0);
-                            ++out_of_image_kernel_row) {
-                        for(size_t out_of_image_kernel_col = 0;
-                                out_of_image_kernel_col < size(kernel, 1);
-                                ++out_of_image_kernel_col) {
+                    {
+                        size_t kernel_index;
+                        for(size_t out_of_image_kernel_row = 0;
+                                out_of_image_kernel_row < size(kernel, 0);
+                                ++out_of_image_kernel_row) {
+                            kernel_index = index(kernel,
+                                out_of_image_kernel_row, 0);
+                            for(size_t out_of_image_kernel_col = 0;
+                                    out_of_image_kernel_col < size(kernel, 1);
+                                    ++out_of_image_kernel_col) {
 
-                            assert(out_of_image_kernel_row >= first_row_kernel);
+                                assert(out_of_image_kernel_row >=
+                                    first_row_kernel);
 
-                            if(out_of_image_kernel_col >= nr_cols_kernel) {
+                                if(out_of_image_kernel_col >= nr_cols_kernel) {
 
-                                if(OutOfImagePolicy::value_east(
-                                        input_no_data_policy,
-                                        source,
-                                        out_of_image_kernel_row,
-                                        out_of_image_kernel_col,
-                                        first_row_kernel, first_col_kernel,
-                                        nr_rows_kernel, nr_cols_kernel,
-                                        first_row_source, first_col_source,
-                                        out_of_image_value)) {
-                                    sum_of_values += out_of_image_value *
-                                        get(kernel,
+                                    if(OutOfImagePolicy::value_east(
+                                            input_no_data_policy,
+                                            source,
                                             out_of_image_kernel_row,
-                                            out_of_image_kernel_col);
-                                    sum_of_weights += get(kernel,
-                                        out_of_image_kernel_row,
-                                        out_of_image_kernel_col);
-                                    value_seen = true;
+                                            out_of_image_kernel_col,
+                                            first_row_kernel, first_col_kernel,
+                                            nr_rows_kernel, nr_cols_kernel,
+                                            first_row_source, first_col_source,
+                                            out_of_image_value)) {
+                                        sum_of_values += out_of_image_value *
+                                            get(kernel, kernel_index);
+                                        sum_of_weights += get(kernel,
+                                            kernel_index);
+                                        value_seen = true;
+                                    }
                                 }
+
+                                ++kernel_index;
                             }
                         }
                     }
 
                     // Handle cells positioned in the kernel, and in the source
                     // image.
+                    size_t source_index, kernel_index;
                     for(size_t row = 0; row < nr_rows_kernel; ++row) {
+                        source_index = index(source, first_row_source + row,
+                            first_col_source + 0);
+                        kernel_index = index(kernel, first_row_kernel + row,
+                            first_col_kernel + 0);
                         for(size_t col = 0; col < nr_cols_kernel; ++col) {
-                            if(input_no_data_policy.is_no_data(
-                                    first_row_source + row,
-                                    first_col_source + col)) {
+                            if(std::get<0>(input_no_data_policy).is_no_data(
+                                    source_index)) {
                                 if(AFNP::value(
                                         input_no_data_policy,
                                         source,
@@ -1224,25 +1278,21 @@ struct ConvolveEastSide<true>
                                         first_col_source + col,
                                         alternative_value)) {
                                     sum_of_values += alternative_value *
-                                        get(kernel, first_row_kernel + row,
-                                            first_col_kernel + col);
+                                        get(kernel, kernel_index);
                                     sum_of_weights +=
-                                        get(kernel, first_row_kernel + row,
-                                            first_col_kernel + col);
+                                        get(kernel, kernel_index);
                                     value_seen = true;
                                 }
                             }
                             else {
-                                sum_of_values +=
-                                    get(kernel, first_row_kernel + row,
-                                        first_col_kernel + col) *
-                                    get(source, first_row_source + row,
-                                        first_col_source + col);
-                                sum_of_weights +=
-                                    get(kernel, first_row_kernel + row,
-                                        first_col_kernel + col);
+                                sum_of_values += get(kernel, kernel_index) *
+                                    get(source, source_index);
+                                sum_of_weights += get(kernel, kernel_index);
                                 value_seen = true;
                             }
+
+                            ++source_index;
+                            ++kernel_index;
                         }
                     }
                 }
@@ -1254,17 +1304,17 @@ struct ConvolveEastSide<true>
 
                 // TODO OutOfRangePolicy must handle integral results too.
                 if(!value_seen || !OORP::within_range(sum_of_values)) {
-                    output_no_data_policy.mark_as_no_data(row_source,
-                        col_source);
+                    output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
-                    get(destination, row_source, col_source) =
-                        NP::normalize(sum_of_values, sum_of_weights);
+                    get(destination, index_) = NP::normalize(sum_of_values,
+                        sum_of_weights);
                 }
 
                 ++first_col_source;
                 --nr_cols_kernel;
                 ++nr_cols_outside_of_image;
+                ++index_;
             }
 
             ++first_row_source;
@@ -1318,12 +1368,16 @@ struct ConvolveSouthSide<true>
 
         bool value_seen;
 
+        size_t index_;
+
         // Loop over all cells that are situated in the south side and for
         // which some cells are outside of the kernel.
         for(size_t row_source = nr_rows_source - radius_;
                 row_source < nr_rows_source; ++row_source) {
 
             first_col_source = 0;
+
+            index_ = index(source, row_source, radius_);
 
             for(size_t col_source = radius_; col_source <
                     nr_cols_source - radius_; ++col_source) {
@@ -1332,53 +1386,61 @@ struct ConvolveSouthSide<true>
                 sum_of_weights = 0;
                 value_seen = false;
 
-                if(input_no_data_policy.is_no_data(row_source, col_source)) {
-                    output_no_data_policy.mark_as_no_data(row_source,
-                        col_source);
+                if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                    output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
                     // Handle cells positioned in the kernel, but outside of
                     // the source image.
-                    for(size_t out_of_image_kernel_row = 0;
-                            out_of_image_kernel_row < size(kernel, 0);
-                            ++out_of_image_kernel_row) {
-                        for(size_t out_of_image_kernel_col = 0;
-                                out_of_image_kernel_col < size(kernel, 1);
-                                ++out_of_image_kernel_col) {
+                    {
+                        size_t kernel_index;
+                        for(size_t out_of_image_kernel_row = 0;
+                                out_of_image_kernel_row < size(kernel, 0);
+                                ++out_of_image_kernel_row) {
+                            kernel_index = index(kernel,
+                                out_of_image_kernel_row, 0);
+                            for(size_t out_of_image_kernel_col = 0;
+                                    out_of_image_kernel_col < size(kernel, 1);
+                                    ++out_of_image_kernel_col) {
 
-                            assert(out_of_image_kernel_col >= first_col_kernel);
+                                assert(out_of_image_kernel_col >=
+                                    first_col_kernel);
 
-                            if(out_of_image_kernel_row >= nr_rows_kernel) {
+                                if(out_of_image_kernel_row >= nr_rows_kernel) {
 
-                                if(OutOfImagePolicy::value_south(
-                                        input_no_data_policy,
-                                        source,
-                                        out_of_image_kernel_row,
-                                        out_of_image_kernel_col,
-                                        first_row_kernel, first_col_kernel,
-                                        nr_rows_kernel, nr_cols_kernel,
-                                        first_row_source, first_col_source,
-                                        out_of_image_value)) {
-                                    sum_of_values += out_of_image_value *
-                                        get(kernel,
+                                    if(OutOfImagePolicy::value_south(
+                                            input_no_data_policy,
+                                            source,
                                             out_of_image_kernel_row,
-                                            out_of_image_kernel_col);
-                                    sum_of_weights += get(kernel,
-                                        out_of_image_kernel_row,
-                                        out_of_image_kernel_col);
-                                    value_seen = true;
+                                            out_of_image_kernel_col,
+                                            first_row_kernel, first_col_kernel,
+                                            nr_rows_kernel, nr_cols_kernel,
+                                            first_row_source, first_col_source,
+                                            out_of_image_value)) {
+                                        sum_of_values += out_of_image_value *
+                                            get(kernel, kernel_index);
+                                        sum_of_weights += get(kernel,
+                                            kernel_index);
+                                        value_seen = true;
+                                    }
                                 }
+
+                                ++kernel_index;
                             }
                         }
                     }
 
                     // Handle cells positioned in the kernel, and in the source
                     // image.
+                    size_t source_index, kernel_index;
                     for(size_t row = 0; row < nr_rows_kernel; ++row) {
+                        source_index = index(source, first_row_source + row,
+                            first_col_source + 0);
+                        kernel_index = index(kernel, first_row_kernel + row,
+                            first_col_kernel + 0);
                         for(size_t col = 0; col < nr_cols_kernel; ++col) {
-                            if(input_no_data_policy.is_no_data(
-                                    first_row_source + row,
-                                    first_col_source + col)) {
+                            if(std::get<0>(input_no_data_policy).is_no_data(
+                                    source_index)) {
                                 if(AFNP::value(
                                         input_no_data_policy,
                                         source,
@@ -1388,25 +1450,20 @@ struct ConvolveSouthSide<true>
                                         first_col_source + col,
                                         alternative_value)) {
                                     sum_of_values += alternative_value *
-                                        get(kernel, first_row_kernel + row,
-                                            first_col_kernel + col);
-                                    sum_of_weights +=
-                                        get(kernel, first_row_kernel + row,
-                                            first_col_kernel + col);
+                                        get(kernel, kernel_index);
+                                    sum_of_weights += get(kernel, kernel_index);
                                     value_seen = true;
                                 }
                             }
                             else {
-                                sum_of_values +=
-                                    get(kernel, first_row_kernel + row,
-                                        first_col_kernel + col) *
-                                    get(source, first_row_source + row,
-                                        first_col_source + col);
-                                sum_of_weights +=
-                                    get(kernel, first_row_kernel + row,
-                                        first_col_kernel + col);
+                                sum_of_values += get(kernel, kernel_index) *
+                                    get(source, source_index);
+                                sum_of_weights += get(kernel, kernel_index);
                                 value_seen = true;
                             }
+
+                            ++source_index;
+                            ++kernel_index;
                         }
                     }
                 }
@@ -1418,15 +1475,15 @@ struct ConvolveSouthSide<true>
 
                 // TODO OutOfRangePolicy must handle integral results too.
                 if(!value_seen || !OORP::within_range(sum_of_values)) {
-                    output_no_data_policy.mark_as_no_data(row_source,
-                        col_source);
+                    output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
-                    get(destination, row_source, col_source) =
-                        NP::normalize(sum_of_values, sum_of_weights);
+                    get(destination, index_) = NP::normalize(sum_of_values,
+                        sum_of_weights);
                 }
 
                 ++first_col_source;
+                ++index_;
             }
 
             // --first_row_kernel;
@@ -1477,12 +1534,16 @@ struct ConvolveInnerPart<true>
 
         bool value_seen;
 
+        size_t index_;
+
         // Loop over all cells that are situated in the inner part. The kernel
         // does not extent outside of the source image.
         for(size_t row_source = index_ranges[0].begin(); row_source <
                 index_ranges[0].end(); ++row_source) {
 
             first_col_source = index_ranges[1].begin() - radius_;
+
+            index_ = index(source, row_source, index_ranges[1].begin());
 
             for(size_t col_source = index_ranges[1].begin(); col_source <
                     index_ranges[1].end(); ++col_source) {
@@ -1491,18 +1552,20 @@ struct ConvolveInnerPart<true>
                 sum_of_weights = 0;
                 value_seen = false;
 
-                if(input_no_data_policy.is_no_data(row_source, col_source)) {
-                    output_no_data_policy.mark_as_no_data(row_source,
-                        col_source);
+                if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                    output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
                     // Handle cells positioned in the kernel, and in the source
                     // image.
+                    size_t source_index, kernel_index;
                     for(size_t row = 0; row < nr_rows_kernel; ++row) {
+                        source_index = index(source, first_row_source + row,
+                            first_col_source + 0);
+                        kernel_index = index(kernel, row, 0);
                         for(size_t col = 0; col < nr_cols_kernel; ++col) {
-                            if(input_no_data_policy.is_no_data(
-                                    first_row_source + row,
-                                    first_col_source + col)) {
+                            if(std::get<0>(input_no_data_policy).is_no_data(
+                                    source_index)) {
                                 if(AFNP::value(
                                         input_no_data_policy,
                                         source,
@@ -1512,20 +1575,20 @@ struct ConvolveInnerPart<true>
                                         first_col_source + col,
                                         alternative_value)) {
                                     sum_of_values += alternative_value *
-                                        get(kernel, row, col);
-                                    sum_of_weights += get(kernel, row, col);
+                                        get(kernel, kernel_index);
+                                    sum_of_weights += get(kernel, kernel_index);
                                     value_seen = true;
                                 }
                             }
                             else {
-                                sum_of_values +=
-                                    get(kernel, row, col) *
-                                    get(source, first_row_source + row,
-                                        first_col_source + col);
-                                sum_of_weights +=
-                                    get(kernel, row, col);
+                                sum_of_values += get(kernel, kernel_index) *
+                                    get(source, source_index);
+                                sum_of_weights += get(kernel, kernel_index);
                                 value_seen = true;
                             }
+
+                            ++source_index;
+                            ++kernel_index;
                         }
                     }
                 }
@@ -1537,15 +1600,15 @@ struct ConvolveInnerPart<true>
 
                 // TODO OutOfRangePolicy must handle integral results too.
                 if(!value_seen || !OORP::within_range(sum_of_values)) {
-                    output_no_data_policy.mark_as_no_data(row_source,
-                        col_source);
+                    output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
-                    get(destination, row_source, col_source) =
-                        NP::normalize(sum_of_values, sum_of_weights);
+                    get(destination, index_) = NP::normalize(sum_of_values,
+                        sum_of_weights);
                 }
 
                 ++first_col_source;
+                ++index_;
             }
 
             ++first_row_source;

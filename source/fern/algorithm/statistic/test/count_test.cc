@@ -63,7 +63,8 @@ BOOST_AUTO_TEST_CASE(masked_d0_array)
     BOOST_CHECK_EQUAL(result_we_get.value(), 1u);
 
     // MaskedConstant with masking count. --------------------------------------
-    using InputNoDataPolicy = fa::DetectNoDataByValue<bool>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<
+        fa::DetectNoDataByValue<bool>, fa::SkipNoData<>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
 
     // Constant is not masked.
@@ -75,10 +76,10 @@ BOOST_AUTO_TEST_CASE(masked_d0_array)
     BOOST_CHECK(!result_we_get.mask());
     OutputNoDataPolicy output_no_data_policy(result_we_get.mask(), true);
     fa::statistic::count(
-            InputNoDataPolicy(constant.mask(), true),
-            output_no_data_policy,
-            fa::sequential,
-            constant, 5, result_we_get);
+        InputNoDataPolicy{{constant.mask(), true}, {}},
+        output_no_data_policy,
+        fa::sequential,
+        constant, 5, result_we_get);
     BOOST_CHECK(!result_we_get.mask());
     BOOST_CHECK_EQUAL(result_we_get.value(), 1u);
 
@@ -90,10 +91,10 @@ BOOST_AUTO_TEST_CASE(masked_d0_array)
     BOOST_CHECK(constant.mask());
     BOOST_CHECK(!result_we_get.mask());
     fa::statistic::count(
-            InputNoDataPolicy(constant.mask(), true),
-            output_no_data_policy,
-            fa::sequential,
-            constant, 5, result_we_get);
+        InputNoDataPolicy{{constant.mask(), true}, {}},
+        output_no_data_policy,
+        fa::sequential,
+        constant, 5, result_we_get);
     BOOST_CHECK(result_we_get.mask());
     BOOST_CHECK_EQUAL(result_we_get.value(), 9u);
 }
@@ -130,7 +131,8 @@ BOOST_AUTO_TEST_CASE(d1_array)
 
 BOOST_AUTO_TEST_CASE(masked_d1_array)
 {
-    using InputNoDataPolicy = fa::DetectNoDataByValue<fern::Mask<1>>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<
+        fa::DetectNoDataByValue<fern::Mask<1>>, fa::SkipNoData<>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
 
     fern::MaskedArray<int32_t, 1> array{ 1, 2, 3, 5 };
@@ -151,18 +153,18 @@ BOOST_AUTO_TEST_CASE(masked_d1_array)
         result.mask() = false;
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
         fa::statistic::count(
-                InputNoDataPolicy(array.mask(), true),
-                output_no_data_policy,
-                fa::sequential, array, 2, result);
+            InputNoDataPolicy{{array.mask(), true}, {}},
+            output_no_data_policy,
+            fa::sequential, array, 2, result);
         BOOST_CHECK(!result.mask());
         BOOST_CHECK_EQUAL(result.value(), 1u);
 
         // Mask the whole input. Result must be masked too.
         array.mask_all();
         fa::statistic::count(
-                InputNoDataPolicy(array.mask(), true),
-                output_no_data_policy,
-                fa::sequential, array, 2, result);
+            InputNoDataPolicy{{array.mask(), true}, {}},
+            output_no_data_policy,
+            fa::sequential, array, 2, result);
         BOOST_CHECK(result.mask());
     }
 
@@ -173,9 +175,9 @@ BOOST_AUTO_TEST_CASE(masked_d1_array)
         result.mask() = false;
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
         fa::statistic::count(
-                InputNoDataPolicy(empty_array.mask(), true),
-                output_no_data_policy,
-                fa::sequential, empty_array, 2, result);
+            InputNoDataPolicy{{empty_array.mask(), true}, {}},
+            output_no_data_policy,
+            fa::sequential, empty_array, 2, result);
         BOOST_CHECK(result.mask());
         BOOST_CHECK_EQUAL(result.value(), 9u);
     }
@@ -216,7 +218,8 @@ BOOST_AUTO_TEST_CASE(masked_d2_array)
 
     // 2d masked array with masking count
     {
-        using InputNoDataPolicy = fa::DetectNoDataByValue<fern::Mask<2>>;
+        using InputNoDataPolicy = fa::InputNoDataPolicies<
+            fa::DetectNoDataByValue<fern::Mask<2>>, fa::SkipNoData<>>;
         using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
 
         // Mask the 9.
@@ -226,16 +229,16 @@ BOOST_AUTO_TEST_CASE(masked_d2_array)
         fern::MaskedConstant<uint64_t> result;
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
         fa::statistic::count(
-                InputNoDataPolicy(array.mask(), true), output_no_data_policy,
-                fa::sequential, array, 2, result);
+            InputNoDataPolicy{{array.mask(), true}, {}}, output_no_data_policy,
+            fa::sequential, array, 2, result);
         BOOST_CHECK(!result.mask());
         BOOST_CHECK_EQUAL(result.value(), 1u);
 
         // Count 9's. The one present is not visible, so the result is 0.
         result.value() = 999;
         fa::statistic::count(
-                InputNoDataPolicy(array.mask(), true), output_no_data_policy,
-                fa::sequential, array, 9, result);
+            InputNoDataPolicy{{array.mask(), true}, {}}, output_no_data_policy,
+            fa::sequential, array, 9, result);
         BOOST_CHECK(!result.mask());
         BOOST_CHECK_EQUAL(result.value(), 0u);
 
@@ -244,8 +247,8 @@ BOOST_AUTO_TEST_CASE(masked_d2_array)
         result.mask() = false;
         result.value() = 999;
         fa::statistic::count(
-                InputNoDataPolicy(array.mask(), true), output_no_data_policy,
-                fa::sequential, array, 9, result);
+            InputNoDataPolicy{{array.mask(), true}, {}}, output_no_data_policy,
+            fa::sequential, array, 9, result);
         BOOST_CHECK(result.mask());
     }
 }
@@ -279,14 +282,15 @@ BOOST_AUTO_TEST_CASE(concurrent)
     }
 
     {
-        using InputNoDataPolicy = fa::SkipNoData<>;
+        using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData<>,
+              fa::SkipNoData<>>;
         using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
         fern::MaskedConstant<size_t> result_we_got;
         OutputNoDataPolicy output_no_data_policy(result_we_got.mask(), true);
 
         // Verify executor can handle masked result.
         fa::statistic::count(
-            InputNoDataPolicy(), output_no_data_policy,
+            InputNoDataPolicy{{}, {}}, output_no_data_policy,
             fa::parallel, argument, 5, result_we_got);
     }
 }

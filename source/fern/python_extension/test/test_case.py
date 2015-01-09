@@ -1,8 +1,43 @@
 import unittest
+import numpy
+import fern
 import fern.feature as ff
 
 
+python_type_to_value_type = {
+    int: fern.int64,
+    float: fern.float64
+}
+
+
+def no_data_value(
+        value_type):
+    no_data_value_by_value_type = {
+        fern.int8: numpy.iinfo(numpy.int8).min,
+        fern.uint8: numpy.iinfo(numpy.uint8).max,
+        fern.int32: numpy.iinfo(numpy.int32).min,
+        fern.uint32: numpy.iinfo(numpy.uint32).max,
+        fern.int64: numpy.iinfo(numpy.int64).min,
+        fern.uint64: numpy.iinfo(numpy.uint64).max,
+        fern.float32: numpy.finfo(numpy.float32).min,
+        fern.float64: numpy.finfo(numpy.float64).max,
+    }
+    return no_data_value_by_value_type[value_type]
+
+
 class TestCase(unittest.TestCase):
+
+    @staticmethod
+    def masked_raster(
+            values,
+            mask,
+            origin=(0.0, 0.0),
+            cell_sizes=(1.0, 1.0),
+            value_type=None):
+        if value_type is None:
+            value_type = python_type_to_value_type[type(values[0][0])]
+
+        return ff.MaskedRaster(values, mask, origin, cell_sizes, value_type)
 
     def assertMaskedRasterEqual(self,
             raster_we_got,
@@ -16,25 +51,26 @@ class TestCase(unittest.TestCase):
 
         values_we_got = ff.raster_as_numpy_array(raster_we_got)
         values_we_want = ff.raster_as_numpy_array(raster_we_want)
-        mask_we_got = ff.mask_as_numpy_array(raster_we_got)
-        mask_we_want = ff.mask_as_numpy_array(raster_we_want)
 
         self.assertEqual(values_we_got.shape, values_we_want.shape)
-        self.assertEqual(mask_we_got.shape, mask_we_want.shape)
         self.assertEqual(len(values_we_got.shape), 2)
-        self.assertEqual(len(mask_we_got.shape), 2)
-        self.assertEqual(values_we_got.shape, mask_we_got.shape)
 
         nr_rows = values_we_got.shape[0]
         nr_cols = values_we_got.shape[1]
+        value_type = raster_we_got.value_type
 
         for row in xrange(nr_rows):
             for col in xrange(nr_cols):
-                self.assertEqual(mask_we_got[row][col], mask_we_want[row][col],
-                    "{} != {} for mask cell {}, {}".format(
-                        mask_we_got[row][col], mask_we_want[row][col],
-                        row, col))
 
-                if not mask_we_got[row][col]:
+                if value_type in [fern.float32, fern.float64]:
+                    self.assertAlmostEqual(values_we_got[row][col],
+                        values_we_want[row][col],
+                        msg="{} != {} for cell {}, {}".format(
+                            values_we_got[row][col],
+                            values_we_want[row][col], row, col))
+                else:
                     self.assertEqual(values_we_got[row][col],
-                        values_we_want[row][col])
+                        values_we_want[row][col],
+                        msg="{} != {} for cell {}, {}".format(
+                            values_we_got[row][col],
+                            values_we_want[row][col], row, col))

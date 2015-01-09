@@ -114,7 +114,7 @@ void copy_1d(
     // Copy the values.
     for(size_t i = range_to_copy_.begin(); i < range_to_copy_.end(); ++i) {
 
-        if(input_no_data_policy.is_no_data(i)) {
+        if(std::get<0>(input_no_data_policy).is_no_data(i)) {
             output_no_data_policy.mark_as_no_data(i + offset);
         }
         else {
@@ -183,17 +183,26 @@ void copy_2d(
     IndexRange const range_to_copy2(range_to_copy(index_ranges[1],
         size(value, 1), offset2));
 
+    size_t source_index, destination_index;
+
     // Copy the values.
     for(size_t i = range_to_copy1.begin(); i < range_to_copy1.end(); ++i) {
+
+        source_index = index(value, i, range_to_copy2.begin());
+        destination_index = index(result, i + offset1, range_to_copy2.begin() +
+                offset2);
+
         for(size_t j = range_to_copy2.begin(); j < range_to_copy2.end(); ++j) {
 
-            if(input_no_data_policy.is_no_data(i, j)) {
-                output_no_data_policy.mark_as_no_data(i + offset1, j + offset2);
+            if(std::get<0>(input_no_data_policy).is_no_data(source_index)) {
+                output_no_data_policy.mark_as_no_data(destination_index);
             }
             else {
-                get(result, i + offset1, j + offset2) = get(value,
-                    i, j);
+                get(result, destination_index) = get(value, source_index);
             }
+
+            ++source_index;
+            ++destination_index;
         }
     }
 }
@@ -216,17 +225,27 @@ void mark_no_data_2d(
     IndexRange const range_to_initialize2(range_to_initialize(size2,
         get<1>(offset_)));
 
+    size_t index_;
+
     for(size_t i = range_to_initialize1.begin();
             i < range_to_initialize1.end(); ++i) {
+
+        index_ = index(value, i, 0);
+
         for(size_t j = 0; j < size2; ++j) {
-            output_no_data_policy.mark_as_no_data(i, j);
+            output_no_data_policy.mark_as_no_data(index_);
+            ++index_;
         }
     }
 
     for(size_t i = 0; i < size1; ++i) {
+
+        index_ = index(value, i, range_to_initialize2.begin());
+
         for(size_t j = range_to_initialize2.begin();
                 j < range_to_initialize2.end(); ++j) {
-            output_no_data_policy.mark_as_no_data(i, j);
+            output_no_data_policy.mark_as_no_data(index_);
+            ++index_;
         }
     }
 }
@@ -248,17 +267,27 @@ void fill_value_2d(
     IndexRange const range_to_initialize2(range_to_initialize(size2,
         get<1>(offset_)));
 
+    size_t index_;
+
     for(size_t i = range_to_initialize1.begin();
             i < range_to_initialize1.end(); ++i) {
+
+        index_ = index(result, i, 0);
+
         for(size_t j = 0; j < size2; ++j) {
-            get(result, i, j) = fill_value;
+            get(result, index_) = fill_value;
+            ++index_;
         }
     }
 
     for(size_t i = 0; i < size1; ++i) {
+
+        index_ = index(result, i, range_to_initialize2.begin());
+
         for(size_t j = range_to_initialize2.begin();
                 j < range_to_initialize2.end(); ++j) {
-            get(result, i, j) = fill_value;
+            get(result, index_) = fill_value;
+            ++index_;
         }
     }
 }

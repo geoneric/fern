@@ -34,7 +34,7 @@ BOOST_PYTHON_MODULE(_fern_feature)
 
     bp::class_<fp::MaskedRaster, fp::MaskedRasterHandle, boost::noncopyable>(
         "MaskedRaster",
-        "Class for masked rasters."
+        "Class for masked rasters.\n"
         "\n"
         "A masked raster is a raster for which some cells may be masked "
         "out",
@@ -74,6 +74,6 @@ BOOST_PYTHON_MODULE(_fern_feature)
 
     bp::def("raster_as_numpy_array", fp::raster_as_numpy_array,
         "Return a Numpy array with the raster values.");
-    bp::def("mask_as_numpy_array", fp::mask_as_numpy_array,
-        "Return a Numpy array with the mask.");
+    // bp::def("mask_as_numpy_array", fp::mask_as_numpy_array,
+    //     "Return a Numpy array with the mask.");
 }

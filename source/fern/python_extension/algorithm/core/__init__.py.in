@@ -1,0 +1,9 @@
+from fern.algorithm import execution_policy
+import _fern_algorithm_core as ext
+
+
+def if_(
+        condition,
+        true_value,
+        false_value):
+    return ext.if_(execution_policy(), condition, true_value, false_value)

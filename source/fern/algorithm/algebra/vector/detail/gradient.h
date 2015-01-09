@@ -31,7 +31,7 @@ template<
     typename Result>
 static void gradient_x_2d(
     InputNoDataPolicy const& input_no_data_policy,
-    OutputNoDataPolicy& /* output_no_data_policy */,
+    OutputNoDataPolicy& output_no_data_policy,
     IndexRanges<2> const& index_ranges,
     Value const& value,
     Result& result)
@@ -40,54 +40,77 @@ static void gradient_x_2d(
     double const distance1{cell_size(value, 0)};
     double const distance2{distance1 + distance1};
 
+    size_t index_left, index_center, index_right;
+
     // Handle left border, in case it is within the index range.
     for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+
+        index_center = index(result, i, index_ranges[1].begin());
+        index_right = index_center + 1;
+
         for(size_t j = index_ranges[1].begin(); j < 1; ++j) {
 
             // Left cell of window lies outside of the raster. Consider it
             // no-data.
 
-            if(!input_no_data_policy.is_no_data(i, j)) {
-
+            if(std::get<0>(input_no_data_policy).is_no_data(index_center)) {
+                output_no_data_policy.mark_as_no_data(index_center);
+            }
+            else {
                 assert(j + 1 < size2);
-                if(!input_no_data_policy.is_no_data(i, j + 1)) {
+
+                if(!std::get<0>(input_no_data_policy).is_no_data(index_right)) {
                     // x c r
-                    get(result, i, j) = gradient(
-                        get(value, i, j),
-                        get(value, i, j + 1),
+                    get(result, index_center) = gradient(
+                        get(value, index_center),
+                        get(value, index_right),
                         distance1);
                 }
                 else  {
                     // x c x
-                    get(result, i, j) = 0;
+                    get(result, index_center) = 0;
                 }
             }
+
+            ++index_center;
+            ++index_right;
         }
     }
 
 
     // Handle right border, in case it is within the index range.
     for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+
+        index_center = index(result, i, size2 - 1);
+        assert(index_center > 0);
+        index_left = index_center - 1;
+
         for(size_t j = size2 - 1; j < index_ranges[1].end(); ++j) {
 
             // Right cell of window lies outside of the raster. Consider it
             // no-data.
 
-            if(!input_no_data_policy.is_no_data(i, j)) {
-
+            if(std::get<0>(input_no_data_policy).is_no_data(index_center)) {
+                output_no_data_policy.mark_as_no_data(index_center);
+            }
+            else {
                 assert(j > 0);
-                if(!input_no_data_policy.is_no_data(i, j - 1)) {
+
+                if(!std::get<0>(input_no_data_policy).is_no_data(index_left)) {
                     // l c x
-                    get(result, i, j) = gradient(
-                        get(value, i, j - 1),
-                        get(value, i, j),
+                    get(result, index_center) = gradient(
+                        get(value, index_left),
+                        get(value, index_center),
                         distance1);
                 }
                 else  {
                     // x c x
-                    get(result, i, j) = 0;
+                    get(result, index_center) = 0;
                 }
             }
+
+            ++index_center;
+            ++index_left;
         }
     }
 
@@ -95,44 +118,58 @@ static void gradient_x_2d(
     // Handle innert part, except for the borders (in case borders are within
     // the index range).
     for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+
+        index_center = index(result, i, std::max<size_t>(1u,
+            index_ranges[1].begin()));
+        index_left = index_center - 1;
+        index_right = index_center + 1;
+
         for(size_t j = std::max<size_t>(1u, index_ranges[1].begin());
                 j < std::min<size_t>(size2 - 1u, index_ranges[1].end()); ++j) {
 
             // All cells of window lie within the raster.
 
-            if(!input_no_data_policy.is_no_data(i, j)) {
-
+            if(std::get<0>(input_no_data_policy).is_no_data(index_center)) {
+                output_no_data_policy.mark_as_no_data(index_center);
+            }
+            else {
                 assert(j > 0);
                 assert(j + 1 < size2);
 
-                if(!input_no_data_policy.is_no_data(i, j - 1)) {
-                    if(!input_no_data_policy.is_no_data(i, j + 1)) {
+                if(!std::get<0>(input_no_data_policy).is_no_data(index_left)) {
+                    if(!std::get<0>(input_no_data_policy).is_no_data(
+                            index_right)) {
                         // l c r
-                        get(result, i, j) = gradient(
-                            get(value, i, j - 1),
-                            get(value, i, j + 1),
+                        get(result, index_center) = gradient(
+                            get(value, index_left),
+                            get(value, index_right),
                             distance2);
                     }
                     else {
                         // l c x
-                        get(result, i, j) = gradient(
-                            get(value, i, j - 1),
-                            get(value, i, j),
+                        get(result, index_center) = gradient(
+                            get(value, index_left),
+                            get(value, index_center),
                             distance1);
                     }
                 }
-                else if(!input_no_data_policy.is_no_data(i, j + 1)) {
+                else if(!std::get<0>(input_no_data_policy).is_no_data(
+                        index_right)) {
                     // x c r
-                    get(result, i, j) = gradient(
-                        get(value, i, j),
-                        get(value, i, j + 1),
+                    get(result, index_center) = gradient(
+                        get(value, index_center),
+                        get(value, index_right),
                         distance1);
                 }
                 else {
                     // x c x
-                    get(result, i, j) = 0;
+                    get(result, index_center) = 0;
                 }
             }
+
+            ++index_center;
+            ++index_left;
+            ++index_right;
         }
     }
 }
@@ -145,7 +182,7 @@ template<
     typename Result>
 static void gradient_y_2d(
     InputNoDataPolicy const& input_no_data_policy,
-    OutputNoDataPolicy& /* output_no_data_policy */,
+    OutputNoDataPolicy& output_no_data_policy,
     IndexRanges<2> const& index_ranges,
     Value const& value,
     Result& result)
@@ -154,56 +191,79 @@ static void gradient_y_2d(
     double const distance1{cell_size(value, 1)};
     double const distance2{distance1 + distance1};
 
+    size_t index_top, index_center, index_bottom;
+
     // Handle top border, in case it is within the index range.
     for(size_t i = index_ranges[0].begin(); i < 1; ++i) {
+
+        index_center = index(result, i, index_ranges[1].begin());
+        index_bottom = index(result, i + 1, index_ranges[1].begin());
+
         for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
             ++j) {
 
             // Top cell of window lies outside of the raster. Consider it
             // no-data.
 
-            if(!input_no_data_policy.is_no_data(i, j)) {
-
+            if(std::get<0>(input_no_data_policy).is_no_data(index_center)) {
+                output_no_data_policy.mark_as_no_data(index_center);
+            }
+            else {
                 assert(i + 1 < size1);
-                if(!input_no_data_policy.is_no_data(i + 1, j)) {
+
+                if(!std::get<0>(input_no_data_policy).is_no_data(
+                        index_bottom)) {
                     // x c r
-                    get(result, i, j) = gradient(
-                        get(value, i, j),
-                        get(value, i + 1, j),
+                    get(result, index_center) = gradient(
+                        get(value, index_center),
+                        get(value, index_bottom),
                         distance1);
                 }
                 else  {
                     // x c x
-                    get(result, i, j) = 0;
+                    get(result, index_center) = 0;
                 }
             }
+
+            ++index_center;
+            ++index_bottom;
         }
     }
 
 
     // Handle bottom border, in case it is within the index range.
     for(size_t i = size1 - 1; i < index_ranges[0].end(); ++i) {
+
+        index_center = index(result, i, index_ranges[1].begin());
+        index_top = index(result, i - 1, index_ranges[1].begin());
+
         for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
                 ++j) {
 
             // Bottom cell of window lies outside of the raster. Consider it
             // no-data.
 
-            if(!input_no_data_policy.is_no_data(i, j)) {
-
+            if(std::get<0>(input_no_data_policy).is_no_data(index_center)) {
+                output_no_data_policy.mark_as_no_data(index_center);
+            }
+            else {
                 assert(i > 0);
-                if(!input_no_data_policy.is_no_data(i - 1, j)) {
+
+                if(!std::get<0>(input_no_data_policy).is_no_data(index_top)) {
                     // l c x
-                    get(result, i, j) = gradient(
-                        get(value, i - 1, j),
-                        get(value, i, j),
+                    get(result, index_center) = gradient(
+                        get(value, index_top),
+                        get(value, index_center),
                         distance1);
                 }
                 else  {
                     // x c x
-                    get(result, i, j) = 0;
+                    get(result, index_center) = 0;
                 }
             }
+
+            ++index_center;
+            ++index_top;
         }
     }
 
@@ -212,44 +272,57 @@ static void gradient_y_2d(
     // the index range).
     for(size_t i = std::max<size_t>(1u, index_ranges[0].begin());
             i < std::min<size_t>(size1 - 1u, index_ranges[0].end()); ++i) {
+
+        index_center = index(result, i, index_ranges[1].begin());
+        index_bottom = index(result, i + 1, index_ranges[1].begin());
+        index_top = index(result, i - 1, index_ranges[1].begin());
+
         for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
                 ++j) {
 
             // All cells of window lie within the raster.
 
-            if(!input_no_data_policy.is_no_data(i, j)) {
-
+            if(std::get<0>(input_no_data_policy).is_no_data(index_center)) {
+                output_no_data_policy.mark_as_no_data(index_center);
+            }
+            else {
                 assert(i > 0);
                 assert(i + 1 < size1);
 
-                if(!input_no_data_policy.is_no_data(i - 1, j)) {
-                    if(!input_no_data_policy.is_no_data(i + 1, j)) {
+                if(!std::get<0>(input_no_data_policy).is_no_data(index_top)) {
+                    if(!std::get<0>(input_no_data_policy).is_no_data(
+                            index_bottom)) {
                         // l c r
-                        get(result, i, j) = gradient(
-                            get(value, i - 1, j),
-                            get(value, i + 1, j),
+                        get(result, index_center) = gradient(
+                            get(value, index_top),
+                            get(value, index_bottom),
                             distance2);
                     }
                     else {
                         // l c x
-                        get(result, i, j) = gradient(
-                            get(value, i - 1, j),
-                            get(value, i, j),
+                        get(result, index_center) = gradient(
+                            get(value, index_top),
+                            get(value, index_center),
                             distance1);
                     }
                 }
-                else if(!input_no_data_policy.is_no_data(i + 1, j)) {
+                else if(!std::get<0>(input_no_data_policy).is_no_data(
+                        index_bottom)) {
                     // x c r
-                    get(result, i, j) = gradient(
-                        get(value, i, j),
-                        get(value, i + 1, j),
+                    get(result, index_center) = gradient(
+                        get(value, index_center),
+                        get(value, index_bottom),
                         distance1);
                 }
                 else {
                     // x c x
-                    get(result, i, j) = 0;
+                    get(result, index_center) = 0;
                 }
             }
+
+            ++index_center;
+            ++index_top;
+            ++index_bottom;
         }
     }
 }

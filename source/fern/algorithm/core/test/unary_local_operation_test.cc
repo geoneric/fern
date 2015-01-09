@@ -43,7 +43,7 @@ BOOST_FIXTURE_TEST_SUITE(unary_local_operation, Fixture)
 
 BOOST_AUTO_TEST_CASE(array_0d)
 {
-    using InputNoDataPolicy = fa::SkipNoData<>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData<>>;
     using OutputNoDataPolicy = fa::DontMarkNoData;
     using Argument = ArgumentValue;
     using Result = ResultValue;
@@ -56,7 +56,7 @@ BOOST_AUTO_TEST_CASE(array_0d)
         Algorithm,
         fa::unary::DiscardDomainErrors,
         fa::unary::DiscardRangeErrors>(
-            InputNoDataPolicy(),
+            InputNoDataPolicy{{}},
             output_no_data_policy,
             fa::sequential, argument, result);
 
@@ -68,7 +68,7 @@ BOOST_AUTO_TEST_CASE(array_0d)
         Algorithm,
         fa::unary::DiscardDomainErrors,
         fa::unary::DiscardRangeErrors>(
-            InputNoDataPolicy(),
+            InputNoDataPolicy{{}},
             output_no_data_policy,
             fa::parallel, argument, result);
 
@@ -78,7 +78,8 @@ BOOST_AUTO_TEST_CASE(array_0d)
 
 BOOST_AUTO_TEST_CASE(array_0d_masked)
 {
-    using InputNoDataPolicy = fa::DetectNoDataByValue<bool>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<
+        fa::DetectNoDataByValue<bool>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
     using Argument = fern::MaskedConstant<ArgumentValue>;
     using Result = fern::MaskedConstant<ResultValue>;
@@ -91,9 +92,8 @@ BOOST_AUTO_TEST_CASE(array_0d_masked)
         argument.value() = -5;
         argument.mask() = false;
         result.value() = 3;
-        result.mask() = argument.mask();
 
-        InputNoDataPolicy input_no_data_policy(result.mask(), true);
+        InputNoDataPolicy input_no_data_policy{{argument.mask(), true}};
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
         fa::unary_local_operation<
@@ -113,9 +113,8 @@ BOOST_AUTO_TEST_CASE(array_0d_masked)
         argument.value() = -5;
         argument.mask() = true;
         result.value() = 3;
-        result.mask() = argument.mask();
 
-        InputNoDataPolicy input_no_data_policy(result.mask(), true);
+        InputNoDataPolicy input_no_data_policy{{argument.mask(), true}};
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
         fa::unary_local_operation<
             Algorithm,
@@ -139,9 +138,8 @@ BOOST_AUTO_TEST_CASE(array_0d_masked)
         argument.value() = fern::min<ArgumentValue>();
         argument.mask() = false;
         result.value() = 3;
-        result.mask() = argument.mask();
 
-        InputNoDataPolicy input_no_data_policy(result.mask(), true);
+        InputNoDataPolicy input_no_data_policy{{argument.mask(), true}};
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
         fa::unary_local_operation<
             Algorithm,
@@ -162,7 +160,7 @@ BOOST_AUTO_TEST_CASE(array_0d_masked)
 
 BOOST_AUTO_TEST_CASE(array_1d_sequential)
 {
-    using InputNoDataPolicy = fa::SkipNoData<>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData<>>;
     using OutputNoDataPolicy = fa::DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
@@ -179,7 +177,7 @@ BOOST_AUTO_TEST_CASE(array_1d_sequential)
             Algorithm,
             fa::unary::DiscardDomainErrors,
             fa::unary::DiscardRangeErrors>(
-                InputNoDataPolicy(),
+                InputNoDataPolicy{{}},
                 output_no_data_policy,
                 fa::sequential, argument, result);
 
@@ -200,7 +198,7 @@ BOOST_AUTO_TEST_CASE(array_1d_sequential)
             Algorithm,
             fa::unary::DiscardDomainErrors,
             fa::unary::DiscardRangeErrors>(
-                InputNoDataPolicy(),
+                InputNoDataPolicy{{}},
                 output_no_data_policy,
                 fa::sequential, argument, result);
 
@@ -221,7 +219,7 @@ BOOST_AUTO_TEST_CASE(array_1d_sequential)
             Algorithm,
             fa::unary::DiscardDomainErrors,
             fa::unary::DiscardRangeErrors>(
-                InputNoDataPolicy(),
+                InputNoDataPolicy{{}},
                 output_no_data_policy,
                 fa::sequential, argument, result);
 
@@ -232,7 +230,7 @@ BOOST_AUTO_TEST_CASE(array_1d_sequential)
 
 BOOST_AUTO_TEST_CASE(array_1d_parallel)
 {
-    using InputNoDataPolicy = fa::SkipNoData<>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData<>>;
     using OutputNoDataPolicy = fa::DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
@@ -249,7 +247,7 @@ BOOST_AUTO_TEST_CASE(array_1d_parallel)
             Algorithm,
             fa::unary::DiscardDomainErrors,
             fa::unary::DiscardRangeErrors>(
-                InputNoDataPolicy(),
+                InputNoDataPolicy{{}},
                 output_no_data_policy,
                 fa::parallel, argument, result);
 
@@ -270,7 +268,7 @@ BOOST_AUTO_TEST_CASE(array_1d_parallel)
             Algorithm,
             fa::unary::DiscardDomainErrors,
             fa::unary::DiscardRangeErrors>(
-                InputNoDataPolicy(),
+                InputNoDataPolicy{{}},
                 output_no_data_policy,
                 fa::parallel, argument, result);
 
@@ -291,7 +289,7 @@ BOOST_AUTO_TEST_CASE(array_1d_parallel)
             Algorithm,
             fa::unary::DiscardDomainErrors,
             fa::unary::DiscardRangeErrors>(
-                InputNoDataPolicy(),
+                InputNoDataPolicy{{}},
                 output_no_data_policy,
                 fa::parallel, argument, result);
 
@@ -304,14 +302,15 @@ BOOST_AUTO_TEST_CASE(array_1d_masked)
 {
     using Argument = fern::MaskedArray<ArgumentValue, 1>;
     using Result = fern::MaskedArray<ResultValue, 1>;
-    using InputNoDataPolicy = fa::DetectNoDataByValue<fern::Mask<1>>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<
+        fa::DetectNoDataByValue<fern::Mask<1>>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<1>>;
 
     {
         Argument argument{-5, 0, 5};
         Result result(3);
 
-        InputNoDataPolicy input_no_data_policy(result.mask(), true);
+        InputNoDataPolicy input_no_data_policy{{argument.mask(), true}};
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
         result.fill(3);
@@ -332,7 +331,7 @@ BOOST_AUTO_TEST_CASE(array_1d_masked)
         BOOST_REQUIRE_EQUAL(result[2], 5);
 
         result.fill(3);
-        result.mask()[1] = true;
+        argument.mask()[1] = true;
 
         fa::unary_local_operation<
             Algorithm,
@@ -355,7 +354,7 @@ BOOST_AUTO_TEST_CASE(array_1d_masked)
         Argument argument;
         Result result;
 
-        InputNoDataPolicy input_no_data_policy(result.mask(), true);
+        InputNoDataPolicy input_no_data_policy{{argument.mask(), true}};
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
         fa::unary_local_operation<
@@ -373,7 +372,7 @@ BOOST_AUTO_TEST_CASE(array_1d_masked)
 
 BOOST_AUTO_TEST_CASE(array_2d_sequential)
 {
-    using InputNoDataPolicy = fa::SkipNoData<>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData<>>;
     using OutputNoDataPolicy = fa::DontMarkNoData;
     using Argument = fern::Array<ArgumentValue, 2>;
     using Result = fern::Array<ResultValue, 2>;
@@ -395,7 +394,7 @@ BOOST_AUTO_TEST_CASE(array_2d_sequential)
         Algorithm,
         fa::unary::DiscardDomainErrors,
         fa::unary::DiscardRangeErrors>(
-            InputNoDataPolicy(),
+            InputNoDataPolicy{{}},
             output_no_data_policy,
             fa::sequential, argument, result);
 
@@ -410,7 +409,7 @@ BOOST_AUTO_TEST_CASE(array_2d_sequential)
 
 BOOST_AUTO_TEST_CASE(array_2d_parallel)
 {
-    using InputNoDataPolicy = fa::SkipNoData<>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData<>>;
     using OutputNoDataPolicy = fa::DontMarkNoData;
     using Argument = fern::Array<ArgumentValue, 2>;
     using Result = fern::Array<ResultValue, 2>;
@@ -432,7 +431,7 @@ BOOST_AUTO_TEST_CASE(array_2d_parallel)
         Algorithm,
         fa::unary::DiscardDomainErrors,
         fa::unary::DiscardRangeErrors>(
-            InputNoDataPolicy(),
+            InputNoDataPolicy{{}},
             output_no_data_policy,
             fa::parallel, argument, result);
 
@@ -449,7 +448,8 @@ BOOST_AUTO_TEST_CASE(array_2d_masked)
 {
     using Argument = fern::MaskedArray<ArgumentValue, 2>;
     using Result = fern::MaskedArray<ResultValue, 2>;
-    using InputNoDataPolicy = fa::DetectNoDataByValue<fern::Mask<2>>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<
+        fa::DetectNoDataByValue<fern::Mask<2>>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<2>>;
 
     {
@@ -464,7 +464,7 @@ BOOST_AUTO_TEST_CASE(array_2d_masked)
             { 3, 3 }
         };
 
-        InputNoDataPolicy input_no_data_policy(result.mask(), true);
+        InputNoDataPolicy input_no_data_policy{{argument.mask(), true}};
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
         result.fill(3);
@@ -491,7 +491,7 @@ BOOST_AUTO_TEST_CASE(array_2d_masked)
         BOOST_CHECK_EQUAL(result[2][1], 2);
 
         result.fill(3);
-        result.mask()[1][1] = true;
+        argument.mask()[1][1] = true;
 
         fa::unary_local_operation<
             Algorithm,
@@ -520,7 +520,7 @@ BOOST_AUTO_TEST_CASE(array_2d_masked)
         Argument argument;
         Result result;
 
-        InputNoDataPolicy input_no_data_policy(result.mask(), true);
+        InputNoDataPolicy input_no_data_policy{{argument.mask(), true}};
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
         fa::unary_local_operation<

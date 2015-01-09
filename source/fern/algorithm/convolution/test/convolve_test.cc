@@ -309,8 +309,10 @@ BOOST_AUTO_TEST_CASE(convolve)
             using NormalizePolicy=fa::convolve::DivideByWeights;
             using OutOfImagePolicy=
                 fa::convolve::ReplaceOutOfImageByFocalAverage;
-            using InputNoDataPolicy=fa::SkipNoData<>;
+            using InputNoDataPolicy=fa::InputNoDataPolicies<fa::SkipNoData<>>;
             using OutputNoDataPolicy=fa::DontMarkNoData;
+
+            OutputNoDataPolicy output_no_data_policy;
 
             // Sequential.
             {
@@ -321,8 +323,9 @@ BOOST_AUTO_TEST_CASE(convolve)
                     OutOfImagePolicy,
                     fa::unary::DiscardRangeErrors,
                     InputNoDataPolicy,
-                    OutputNoDataPolicy>(fa::sequential, argument, kernel,
-                        result);
+                    OutputNoDataPolicy>(
+                        InputNoDataPolicy{{}}, output_no_data_policy,
+                        fa::sequential, argument, kernel, result);
                 compare_result2(result);
             }
 
@@ -335,8 +338,9 @@ BOOST_AUTO_TEST_CASE(convolve)
                     OutOfImagePolicy,
                     fa::unary::DiscardRangeErrors,
                     InputNoDataPolicy,
-                    OutputNoDataPolicy>(fa::parallel, argument, kernel,
-                        result);
+                    OutputNoDataPolicy>(
+                        InputNoDataPolicy{{}}, output_no_data_policy,
+                        fa::parallel, argument, kernel, result);
                 compare_result2(result);
             }
         }
@@ -426,7 +430,8 @@ BOOST_AUTO_TEST_CASE(out_of_range_policy)
 BOOST_AUTO_TEST_CASE(no_data_policies)
 {
     // Make sure that input no-data is detected and handled correctly.
-    using InputNoDataPolicy = fa::DetectNoDataByValue<fern::Mask<2>>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<
+        fa::DetectNoDataByValue<fern::Mask<2>>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<2>>;
 
     size_t const nr_rows = 3;
@@ -472,7 +477,7 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
                 fa::convolve::DivideByWeights,
                 fa::convolve::SkipOutOfImage,
                 fa::unary::DiscardRangeErrors>(
-                    InputNoDataPolicy(source.mask(), true),
+                    InputNoDataPolicy{{source.mask(), true}},
                     output_no_data_policy,
                     fa::sequential,
                     source, kernel_1, destination);
@@ -522,7 +527,7 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
         ///         fern::unary::DiscardRangeErrors>(
         ///         fa::convolve::ReplaceNoDataByFocalAverage,
         ///             fa::sequential,
-        ///             InputNoDataPolicy(source.mask(), true),
+        ///             InputNoDataPolicy{{source.mask(), true}},
         ///             OutputNoDataPolicy(destination.mask(), true),
         ///             source, kernel_1, destination);
 
@@ -565,7 +570,7 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
             fa::convolve::DivideByWeights,
             fa::convolve::SkipOutOfImage,
             fa::unary::DiscardRangeErrors>(
-                InputNoDataPolicy(source.mask(), true),
+                InputNoDataPolicy{{source.mask(), true}},
                 output_no_data_policy,
                 fa::sequential, source, kernel_1, destination);
 
@@ -590,7 +595,7 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
             fa::convolve::DivideByWeights,
             fa::convolve::SkipOutOfImage,
             fa::convolve::OutOfRangePolicy>(
-                InputNoDataPolicy(source.mask(), true),
+                InputNoDataPolicy{{source.mask(), true}},
                 output_no_data_policy,
                 fa::sequential, source, kernel_2, destination);
 

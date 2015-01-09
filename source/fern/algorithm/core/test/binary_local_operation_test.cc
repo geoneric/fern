@@ -31,7 +31,8 @@ BOOST_AUTO_TEST_SUITE(binary_local_operation)
 
 BOOST_AUTO_TEST_CASE(d0_array_d0_array)
 {
-    using InputNoDataPolicy = fa::SkipNoData<>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData<>,
+          fa::SkipNoData<>>;
     using OutputNoDataPolicy = fa::DontMarkNoData;
     using Argument1 = ArgumentValue;
     using Argument2 = ArgumentValue;
@@ -46,7 +47,7 @@ BOOST_AUTO_TEST_CASE(d0_array_d0_array)
         Algorithm,
         fa::binary::DiscardDomainErrors,
         fa::binary::DiscardRangeErrors>(
-            InputNoDataPolicy(),
+            InputNoDataPolicy{{}, {}},
             output_no_data_policy,
             fa::sequential, argument1, argument2, result);
 
@@ -58,7 +59,7 @@ BOOST_AUTO_TEST_CASE(d0_array_d0_array)
         Algorithm,
         fa::binary::DiscardDomainErrors,
         fa::binary::DiscardRangeErrors>(
-            InputNoDataPolicy(),
+            InputNoDataPolicy{{}, {}},
             output_no_data_policy,
             fa::parallel, argument1, argument2, result);
 
@@ -68,7 +69,8 @@ BOOST_AUTO_TEST_CASE(d0_array_d0_array)
 
 BOOST_AUTO_TEST_CASE(masked_d0_array_d0_array)
 {
-    using InputNoDataPolicy = fa::DetectNoDataByValue<bool>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<
+        fa::DetectNoDataByValue<bool>, fa::DetectNoDataByValue<bool>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
     using Argument1 = fern::MaskedConstant<ArgumentValue>;
     using Argument2 = fern::MaskedConstant<ArgumentValue>;
@@ -85,9 +87,11 @@ BOOST_AUTO_TEST_CASE(masked_d0_array_d0_array)
         argument2.value() = -6;
         argument2.mask() = false;
         result.value() = 3;
-        result.mask() = argument1.mask() || argument2.mask();
+        result.mask() = false;
 
-        InputNoDataPolicy input_no_data_policy(result.mask(), true);
+        InputNoDataPolicy input_no_data_policy{
+            {argument1.mask(), true},
+            {argument2.mask(), true}};
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
         fa::binary_local_operation<
@@ -109,9 +113,11 @@ BOOST_AUTO_TEST_CASE(masked_d0_array_d0_array)
         argument2.value() = -6;
         argument2.mask() = false;
         result.value() = 3;
-        result.mask() = argument1.mask() || argument2.mask();
+        result.mask() = false;
 
-        InputNoDataPolicy input_no_data_policy(result.mask(), true);
+        InputNoDataPolicy input_no_data_policy{
+            {argument1.mask(), true},
+            {argument2.mask(), true}};
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
         fa::binary_local_operation<
@@ -138,9 +144,11 @@ BOOST_AUTO_TEST_CASE(masked_d0_array_d0_array)
         argument2.value() = 1;
         argument2.mask() = false;
         result.value() = 3;
-        result.mask() = argument1.mask() || argument2.mask();
+        result.mask() = false;
 
-        InputNoDataPolicy input_no_data_policy(result.mask(), true);
+        InputNoDataPolicy input_no_data_policy{
+            {argument1.mask(), true},
+            {argument2.mask(), true}};
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
         fa::binary_local_operation<
             Algorithm,
@@ -161,7 +169,8 @@ BOOST_AUTO_TEST_CASE(masked_d0_array_d0_array)
 
 BOOST_AUTO_TEST_CASE(d1_array_d0_array_sequential)
 {
-    using InputNoDataPolicy = fa::SkipNoData<>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData<>,
+          fa::SkipNoData<>>;
     using OutputNoDataPolicy = fa::DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
@@ -180,7 +189,7 @@ BOOST_AUTO_TEST_CASE(d1_array_d0_array_sequential)
             Algorithm,
             fa::binary::DiscardDomainErrors,
             fa::binary::DiscardRangeErrors>(
-                InputNoDataPolicy(),
+                InputNoDataPolicy{{}, {}},
                 output_no_data_policy,
                 fa::sequential, argument1, argument2, result);
 
@@ -195,7 +204,7 @@ BOOST_AUTO_TEST_CASE(d1_array_d0_array_sequential)
             Algorithm,
             fa::binary::DiscardDomainErrors,
             fa::binary::DiscardRangeErrors>(
-                InputNoDataPolicy(),
+                InputNoDataPolicy{{}, {}},
                 output_no_data_policy,
                 fa::sequential, argument2, argument1, result);
 
@@ -218,7 +227,7 @@ BOOST_AUTO_TEST_CASE(d1_array_d0_array_sequential)
             Algorithm,
             fa::binary::DiscardDomainErrors,
             fa::binary::DiscardRangeErrors>(
-                InputNoDataPolicy(),
+                InputNoDataPolicy{{}, {}},
                 output_no_data_policy,
                 fa::sequential, argument1, argument2, result);
 
@@ -241,7 +250,7 @@ BOOST_AUTO_TEST_CASE(d1_array_d0_array_sequential)
             Algorithm,
             fa::binary::DiscardDomainErrors,
             fa::binary::DiscardRangeErrors>(
-                InputNoDataPolicy(),
+                InputNoDataPolicy{{}, {}},
                 output_no_data_policy,
                 fa::sequential, argument1, argument2, result);
 

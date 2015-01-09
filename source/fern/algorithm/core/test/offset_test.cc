@@ -118,8 +118,8 @@ void test_array_1d_masked(
     fern::MaskedArray<int, 1> result_we_want(nr_elements);
     fern::MaskedArray<int, 1> result_we_got(nr_elements);
 
-    fa::DetectNoDataByValue<fern::Mask<1>> input_no_data_policy(
-        values.mask(), true);
+    fa::InputNoDataPolicies<fa::DetectNoDataByValue<fern::Mask<1>>>
+        input_no_data_policy{{values.mask(), true}};
     fa::MarkNoDataByValue<fern::Mask<1>> output_no_data_policy(
         result_we_got.mask(), true);
 
@@ -350,8 +350,8 @@ void test_array_1d_fill_value_masked(
     fern::MaskedArray<int, 1> result_we_got(nr_elements);
     int const fill_value{5};
 
-    fa::DetectNoDataByValue<fern::Mask<1>> input_no_data_policy(
-        values.mask(), true);
+    fa::InputNoDataPolicies<fa::DetectNoDataByValue<fern::Mask<1>>>
+        input_no_data_policy{{values.mask(), true}};
     fa::MarkNoDataByValue<fern::Mask<1>> output_no_data_policy(
         result_we_got.mask(), true);
 
@@ -362,7 +362,8 @@ void test_array_1d_fill_value_masked(
         fern::Point<int, 1> offset{0};
 
         // 0, -9, 2, ..., n - 1
-        std::iota(result_we_want.data(), result_we_want.data() + nr_elements, 0);
+        std::iota(result_we_want.data(), result_we_want.data() + nr_elements,
+            0);
         result_we_want.data()[1] = -9;
         result_we_want.mask()[1] = true;
         result_we_got.fill(-9);
@@ -523,8 +524,8 @@ void test_array_2d_masked(
     fern::MaskedArray<int, 2> result_we_want(fern::extents[nr_rows][nr_cols]);
     fern::MaskedArray<int, 2> result_we_got(fern::extents[nr_rows][nr_cols]);
 
-    fa::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
-        values.mask(), true);
+    fa::InputNoDataPolicies<fa::DetectNoDataByValue<fern::Mask<2>>>
+        input_no_data_policy{{values.mask(), true}};
     fa::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
         result_we_got.mask(), true);
 
@@ -626,8 +627,8 @@ void test_array_2d_fill_value_masked(
 
     int const fill_value{5};
 
-    fa::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
-        values.mask(), true);
+    fa::InputNoDataPolicies<fa::DetectNoDataByValue<fern::Mask<2>>>
+        input_no_data_policy{{values.mask(), true}};
     fa::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
         result_we_got.mask(), true);
 
@@ -703,8 +704,8 @@ BOOST_AUTO_TEST_CASE(pcraster_example_1)
 
     fern::Point<int, 2> offset(-1, -1);
 
-    fa::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
-        values.mask(), true);
+    fa::InputNoDataPolicies<fa::DetectNoDataByValue<fern::Mask<2>>>
+        input_no_data_policy{{values.mask(), true}};
     fa::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
         result_we_got.mask(), true);
 
@@ -751,8 +752,8 @@ BOOST_AUTO_TEST_CASE(pcraster_example_2)
 
     fern::Point<int, 2> offset(1, 1);
 
-    fa::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
-        values.mask(), true);
+    fa::InputNoDataPolicies<fa::DetectNoDataByValue<fern::Mask<2>>>
+        input_no_data_policy{{values.mask(), true}};
     fa::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
         result_we_got.mask(), true);
 
@@ -793,8 +794,8 @@ BOOST_AUTO_TEST_CASE(pcraster_example_3)
 
     fern::Point<int, 2> offset(1, 1);
 
-    fa::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
-        values.mask(), true);
+    fa::InputNoDataPolicies<fa::DetectNoDataByValue<fern::Mask<2>>>
+        input_no_data_policy{{values.mask(), true}};
     fa::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
         result_we_got.mask(), true);
 

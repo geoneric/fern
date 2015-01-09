@@ -65,28 +65,39 @@ inline size_t size(
 
 
 template<
-    typename T>
-inline typename ArgumentTraits<MaskedArray<T, 1>>::const_reference get(
-    MaskedArray<T, 1> const& array,
-    size_t index)
+    typename T,
+    size_t nr_dimensions>
+inline size_t index(
+    MaskedArray<T, nr_dimensions> const& array,
+    size_t index1,
+    size_t index2)
 {
-    assert(index < array.shape()[0]);
-    // Don't assert this. Depending on the policy used, mask may not be
-    // relevant.
-    // assert(!array.mask()[index]);
-    return array[index];
+    return index1 * size(array, 1) + index2;
 }
 
 
 template<
-    typename T>
-inline typename ArgumentTraits<MaskedArray<T, 1>>::reference get(
-    MaskedArray<T, 1>& array,
+    typename T,
+    size_t nr_dimensions>
+inline typename ArgumentTraits<MaskedArray<T, nr_dimensions>>::const_reference
+        get(
+    MaskedArray<T, nr_dimensions> const& array,
     size_t index)
 {
-    assert(index < array.shape()[0]);
-    // assert(!array.mask()[index]);
-    return array[index];
+    assert(index < array.num_elements());
+    return array.data()[index];
+}
+
+
+template<
+    typename T,
+    size_t nr_dimensions>
+inline typename ArgumentTraits<MaskedArray<T, nr_dimensions>>::reference get(
+    MaskedArray<T, nr_dimensions>& array,
+    size_t index)
+{
+    assert(index < array.num_elements());
+    return array.data()[index];
 }
 
 
@@ -112,34 +123,6 @@ inline MaskedArray<U, 1> clone(
 
 
 template<
-    typename T>
-inline typename ArgumentTraits<MaskedArray<T, 2>>::const_reference get(
-    MaskedArray<T, 2> const& array,
-    size_t index1,
-    size_t index2)
-{
-    assert(index1 < array.shape()[0]);
-    assert(index2 < array.shape()[1]);
-    // assert(!array.mask()[index1][index2]);
-    return array[index1][index2];
-}
-
-
-template<
-    typename T>
-inline typename ArgumentTraits<MaskedArray<T, 2>>::reference get(
-    MaskedArray<T, 2>& array,
-    size_t index1,
-    size_t index2)
-{
-    assert(index1 < array.shape()[0]);
-    assert(index2 < array.shape()[1]);
-    // assert(!array.mask()[index1][index2]);
-    return array[index1][index2];
-}
-
-
-template<
     typename U,
     typename V>
 inline MaskedArray<U, 2> clone(
@@ -159,38 +142,6 @@ inline MaskedArray<U, 2> clone(
 {
     return std::move(MaskedArray<U, 2>(
         extents[array.shape()[0]][array.shape()[1]], value));
-}
-
-
-template<
-    typename T>
-inline typename ArgumentTraits<MaskedArray<T, 3>>::const_reference get(
-    MaskedArray<T, 3> const& array,
-    size_t index1,
-    size_t index2,
-    size_t index3)
-{
-    assert(index1 < array.shape()[0]);
-    assert(index2 < array.shape()[1]);
-    assert(index3 < array.shape()[2]);
-    // assert(!array.mask()[index1][index2][index3]);
-    return array[index1][index2][index3];
-}
-
-
-template<
-    typename T>
-inline typename ArgumentTraits<MaskedArray<T, 3>>::reference get(
-    MaskedArray<T, 3>& array,
-    size_t index1,
-    size_t index2,
-    size_t index3)
-{
-    assert(index1 < array.shape()[0]);
-    assert(index2 < array.shape()[1]);
-    assert(index3 < array.shape()[2]);
-    // assert(!array.mask()[index1][index2][index3]);
-    return array[index1][index2][index3];
 }
 
 

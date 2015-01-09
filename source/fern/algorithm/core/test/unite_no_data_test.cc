@@ -62,11 +62,11 @@ void test_array_0d_0d_masked(
     fern::MaskedConstant<int> result_we_want;
     fern::MaskedConstant<int> result_we_got;
 
-    fa::SkipNoData<
+    fa::InputNoDataPolicies<
         fa::DetectNoDataByValue<bool>,
-        fa::DetectNoDataByValue<bool>> input_no_data_policy(
-            fa::DetectNoDataByValue<bool>(value1.mask(), true),
-            fa::DetectNoDataByValue<bool>(value2.mask(), true));
+        fa::DetectNoDataByValue<bool>> input_no_data_policy{
+            {value1.mask(), true},
+            {value2.mask(), true}};
     fa::MarkNoDataByValue<bool> output_no_data_policy(result_we_got.mask(),
         true);
 
@@ -203,11 +203,11 @@ void test_array_2d_2d_masked(
     fern::MaskedArray<int, 2> value2(fern::extents[nr_rows][nr_cols]);
     fern::MaskedArray<int, 2> result_we_got(fern::extents[nr_rows][nr_cols]);
 
-    fa::SkipNoData<
+    fa::InputNoDataPolicies<
         fa::DetectNoDataByValue<fern::Mask<2>>,
-        fa::DetectNoDataByValue<fern::Mask<2>>> input_no_data_policy(
-            fa::DetectNoDataByValue<fern::Mask<2>>(value1.mask(), true),
-            fa::DetectNoDataByValue<fern::Mask<2>>(value2.mask(), true));
+        fa::DetectNoDataByValue<fern::Mask<2>>> input_no_data_policy{
+            {value1.mask(), true},
+            {value2.mask(), true}};
     fa::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
         result_we_got.mask(), true);
 

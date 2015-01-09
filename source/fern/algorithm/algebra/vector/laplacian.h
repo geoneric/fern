@@ -101,9 +101,6 @@ void laplacian(
     @overload
 */
 template<
-    template<typename, typename> class OutOfRangePolicy,
-    typename InputNoDataPolicy,
-    typename OutputNoDataPolicy,
     typename ExecutionPolicy,
     typename Value,
     typename Result>
@@ -112,30 +109,11 @@ void laplacian(
     Value const& value,
     Result& result)
 {
-    OutputNoDataPolicy output_no_data_policy;
-    laplacian<OutOfRangePolicy>(InputNoDataPolicy(), output_no_data_policy,
-        execution_policy, value, result);
-}
-
-
-/*!
-    @ingroup    fern_algorithm_algebra_vector_group
-    @overload
-*/
-template<
-    typename ExecutionPolicy,
-    typename Value,
-    typename Result>
-void laplacian(
-    ExecutionPolicy const& execution_policy,
-    Value const& value,
-    Result& result)
-{
-    using InputNoDataPolicy = SkipNoData<>;
+    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData<>>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
-    laplacian<unary::DiscardRangeErrors>(InputNoDataPolicy(),
+    laplacian<unary::DiscardRangeErrors>(InputNoDataPolicy{{}},
         output_no_data_policy, execution_policy, value, result);
 }
 

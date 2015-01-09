@@ -43,7 +43,6 @@ void defined(
     @overload
 */
 template<
-    typename InputNoDataPolicy,
     typename ExecutionPolicy,
     typename Result
 >
@@ -51,25 +50,9 @@ void defined(
     ExecutionPolicy const& execution_policy,
     Result& result)
 {
-    defined<>(InputNoDataPolicy(), execution_policy, result);
-}
+    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData<>>;
 
-
-/*!
-    @ingroup    fern_algorithm_algebra_boole_group
-    @overload
-*/
-template<
-    typename ExecutionPolicy,
-    typename Result
->
-void defined(
-    ExecutionPolicy const& execution_policy,
-    Result& result)
-{
-    using InputNoDataPolicy = SkipNoData<>;
-
-    defined<>(InputNoDataPolicy(), execution_policy, result);
+    defined<>(InputNoDataPolicy{{}}, execution_policy, result);
 }
 
 } // namespace algebra

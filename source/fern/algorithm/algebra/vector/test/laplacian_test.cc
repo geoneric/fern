@@ -73,35 +73,38 @@ BOOST_AUTO_TEST_CASE(algorithm)
         fa::algebra::laplacian(fa::sequential, raster, result);
 
         // Verify the result.
-        BOOST_CHECK_EQUAL(fern::get(result, 0, 0),
+        BOOST_CHECK_EQUAL(get(result, index(result, 0, 0)),
             (25.0 - (8.0 * 0.0)) / 6.0);
-        BOOST_CHECK_EQUAL(fern::get(result, 1, 1),
+        BOOST_CHECK_EQUAL(get(result, index(result, 1, 1)),
             (100.0 - (20.0 * 5.0)) / 6.0);
     }
 
-    using InputNoDataPolicy = fa::DetectNoDataByValue<fern::Mask<2>>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<
+        fa::DetectNoDataByValue<fern::Mask<2>>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<2>>;
 
     // With masking input and output values.
     {
         result.fill(999.0);
         result.mask().fill(false);
-        result.mask()[1][1] = true;
+        raster.mask()[1][1] = true;
 
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
         fa::algebra::laplacian<fa::laplacian::OutOfRangePolicy>(
-            InputNoDataPolicy(result.mask(), true),
+            InputNoDataPolicy{{raster.mask(), true}},
             output_no_data_policy,
             fa::sequential,
             raster, result);
 
         // Verify the result.
-        BOOST_CHECK_EQUAL(fern::get(result.mask(), 0, 0), false);
-        BOOST_CHECK_EQUAL(fern::get(result.mask(), 1, 1), true);
-        BOOST_CHECK_EQUAL(fern::get(result, 0, 0),
+        BOOST_CHECK_EQUAL(get(result.mask(), index(result.mask(), 0, 0)),
+            false);
+        BOOST_CHECK_EQUAL(get(result.mask(), index(result.mask(), 1, 1)),
+            true);
+        BOOST_CHECK_EQUAL(get(result, index(result, 0, 0)),
             (15.0 - (6.0 * 0.0)) / 6.0);
-        BOOST_CHECK_EQUAL(fern::get(result, 1, 1), 999.0);
+        BOOST_CHECK_EQUAL(get(result, index(result, 1, 1)), 999.0);
     }
 }
 

@@ -12,6 +12,13 @@ template<
     class T>
 size_t             size                (T const& collection);
 
+// Convert 2D indices to linear index.
+template<
+    class T>
+size_t             index               (T const& collection,
+                                        size_t index1,
+                                        size_t index2);
+
 // For constant only.
 template<
     class T>

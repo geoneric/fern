@@ -28,10 +28,10 @@ void operation_0d(
     Value const& value,
     Result& result)
 {
-    // Don't do anything if the input value is no-data. We assume
-    // that input no-data values are already marked as such in the
-    // result.
-    if(!input_no_data_policy.is_no_data()) {
+    if(std::get<0>(input_no_data_policy).is_no_data()) {
+        output_no_data_policy.mark_as_no_data();
+    }
+    else {
         const_reference<Value> v(get(value));
 
         if(!OutOfDomainPolicy::within_domain(v)) {
@@ -73,11 +73,13 @@ void operation_1d(
     Value const& value,
     Result& result)
 {
-    // Don't do anything if the input value is no-data. We assume
-    // that input no-data values are already marked as such in the
-    // result.
-    if(!input_no_data_policy.is_no_data()) {
-
+    if(std::get<0>(input_no_data_policy).is_no_data()) {
+        for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end();
+                ++i) {
+            output_no_data_policy.mark_as_no_data(i);
+        }
+    }
+    else {
         const_reference<Value> v(get(value));
 
         for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end();
@@ -126,27 +128,43 @@ void operation_2d(
     Value const& value,
     Result& result)
 {
-    // Don't do anything if the input value is no-data. We assume
-    // that input no-data values are already marked as such in the
-    // result.
-    if(!input_no_data_policy.is_no_data()) {
+    size_t index_;
 
+    if(std::get<0>(input_no_data_policy).is_no_data()) {
+
+        for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end();
+                ++i) {
+
+            index_ = index(result, i, index_ranges[1].begin());
+
+            for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
+                    ++j) {
+
+                output_no_data_policy.mark_as_no_data(index_);
+                ++index_;
+            }
+        }
+    }
+    else {
         const_reference<Value> v(get(value));
 
         for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end();
                 ++i) {
+
+            index_ = index(result, i, index_ranges[1].begin());
+
             for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
-                ++j) {
+                    ++j) {
 
                 if(!OutOfDomainPolicy::within_domain(v)) {
 
                     // Input value is out of domain. Mark result value as
                     // no-data. Don't change the result value.
-                    output_no_data_policy.mark_as_no_data(i, j);
+                    output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
 
-                    reference<Result> r(get(result, i, j));
+                    reference<Result> r(get(result, index_));
 
                     algorithm(v, r);
 
@@ -157,9 +175,11 @@ void operation_2d(
                         // value (this may be overridden by
                         // output_no_data_policy, depending on its
                         // implementation).
-                        output_no_data_policy.mark_as_no_data(i, j);
+                        output_no_data_policy.mark_as_no_data(index_);
                     }
                 }
+
+                ++index_;
             }
         }
     }

@@ -1,0 +1,38 @@
+from fern.algorithm import execution_policy
+import _fern_algorithm_algebra_elementary as ext
+
+
+def add(
+        argument1,
+        argument2):
+    return ext.add(execution_policy(), argument1, argument2)
+
+
+def iadd(
+        argument1,
+        argument2):
+    return ext.iadd(execution_policy(), argument1, argument2)
+
+
+def greater(
+        argument1,
+        argument2):
+    return ext.greater(execution_policy(), argument1, argument2)
+
+def less(
+        argument1,
+        argument2):
+    return ext.less(execution_policy(), argument1, argument2)
+
+def multiply(
+        argument1,
+        argument2):
+    return ext.multiply(execution_policy(), argument1, argument2)
+
+
+def imultiply(
+        argument1,
+        argument2):
+    return ext.imultiply(execution_policy(), argument1, argument2)
+
+

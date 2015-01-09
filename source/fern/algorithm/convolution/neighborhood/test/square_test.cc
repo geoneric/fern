@@ -19,9 +19,9 @@ BOOST_AUTO_TEST_CASE(square)
             {7, 8, 9}
         });
 
-        BOOST_CHECK_EQUAL(square[0][0], 1);
-        BOOST_CHECK_EQUAL(square[1][1], 5);
-        BOOST_CHECK_EQUAL(square[2][2], 9);
+        BOOST_CHECK_EQUAL(square.weight(0), 1);
+        BOOST_CHECK_EQUAL(square.weight(4), 5);
+        BOOST_CHECK_EQUAL(square.weight(8), 9);
     }
 }
 
@@ -40,15 +40,15 @@ BOOST_AUTO_TEST_CASE(verify_use_in_algorithm)
 
         fa::algebra::multiply(fa::sequential, square, 2, square);
 
-        BOOST_CHECK_EQUAL(square[0][0], 2);
-        BOOST_CHECK_EQUAL(square[0][1], 4);
-        BOOST_CHECK_EQUAL(square[0][2], 6);
-        BOOST_CHECK_EQUAL(square[1][0], 8);
-        BOOST_CHECK_EQUAL(square[1][1], 10);
-        BOOST_CHECK_EQUAL(square[1][2], 12);
-        BOOST_CHECK_EQUAL(square[2][0], 14);
-        BOOST_CHECK_EQUAL(square[2][1], 16);
-        BOOST_CHECK_EQUAL(square[2][2], 18);
+        BOOST_CHECK_EQUAL(square.weight(0), 2);
+        BOOST_CHECK_EQUAL(square.weight(1), 4);
+        BOOST_CHECK_EQUAL(square.weight(2), 6);
+        BOOST_CHECK_EQUAL(square.weight(3), 8);
+        BOOST_CHECK_EQUAL(square.weight(4), 10);
+        BOOST_CHECK_EQUAL(square.weight(5), 12);
+        BOOST_CHECK_EQUAL(square.weight(6), 14);
+        BOOST_CHECK_EQUAL(square.weight(7), 16);
+        BOOST_CHECK_EQUAL(square.weight(8), 18);
     }
 }
 

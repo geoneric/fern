@@ -40,27 +40,6 @@ void merge_no_data(
     @overload
 */
 template<
-    typename InputNoDataPolicy,
-    typename OutputNoDataPolicy,
-    typename ExecutionPolicy,
-    typename Value,
-    typename Result>
-void merge_no_data(
-    ExecutionPolicy const& execution_policy,
-    Value const& value,
-    Result& result)
-{
-    OutputNoDataPolicy output_no_data_policy;
-    merge_no_data<>(InputNoDataPolicy(), output_no_data_policy,
-        execution_policy, value, result);
-}
-
-
-/*!
-    @ingroup    fern_algorithm_core_group
-    @overload
-*/
-template<
     typename ExecutionPolicy,
     typename Value,
     typename Result>
@@ -73,7 +52,7 @@ void merge_no_data(
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
-    merge_no_data<>(InputNoDataPolicy(SkipNoData<>(), SkipNoData<>()),
+    merge_no_data<>(InputNoDataPolicy{{}, {}},
         output_no_data_policy, execution_policy, value, result);
 }
 

@@ -43,48 +43,56 @@ ValueTypes const TypeTraits<int8_t>::value_types(ValueTypes::INT8);
 String const TypeTraits<int8_t>::name("int8");
 int8_t const TypeTraits<int8_t>::min(std::numeric_limits<int8_t>::min());
 int8_t const TypeTraits<int8_t>::max(std::numeric_limits<int8_t>::max());
+int8_t const TypeTraits<int8_t>::no_data_value(TypeTraits<int8_t>::min);
 
 ValueType const TypeTraits<uint8_t>::value_type(VT_UINT8);
 ValueTypes const TypeTraits<uint8_t>::value_types(ValueTypes::UINT8);
 String const TypeTraits<uint8_t>::name("uint8");
 uint8_t const TypeTraits<uint8_t>::min(std::numeric_limits<uint8_t>::min());
 uint8_t const TypeTraits<uint8_t>::max(std::numeric_limits<uint8_t>::max());
+uint8_t const TypeTraits<uint8_t>::no_data_value(TypeTraits<uint8_t>::max);
 
 ValueType const TypeTraits<int16_t>::value_type(VT_INT16);
 ValueTypes const TypeTraits<int16_t>::value_types(ValueTypes::INT16);
 String const TypeTraits<int16_t>::name("int16");
 int16_t const TypeTraits<int16_t>::min(std::numeric_limits<int16_t>::min());
 int16_t const TypeTraits<int16_t>::max(std::numeric_limits<int16_t>::max());
+int16_t const TypeTraits<int16_t>::no_data_value(TypeTraits<int16_t>::min);
 
 ValueType const TypeTraits<uint16_t>::value_type(VT_UINT16);
 ValueTypes const TypeTraits<uint16_t>::value_types(ValueTypes::UINT16);
 String const TypeTraits<uint16_t>::name("uint16");
 uint16_t const TypeTraits<uint16_t>::min(std::numeric_limits<uint16_t>::min());
 uint16_t const TypeTraits<uint16_t>::max(std::numeric_limits<uint16_t>::max());
+uint16_t const TypeTraits<uint16_t>::no_data_value(TypeTraits<uint16_t>::max);
 
 ValueType const TypeTraits<int32_t>::value_type(VT_INT32);
 ValueTypes const TypeTraits<int32_t>::value_types(ValueTypes::INT32);
 String const TypeTraits<int32_t>::name("int32");
 int32_t const TypeTraits<int32_t>::min(std::numeric_limits<int32_t>::min());
 int32_t const TypeTraits<int32_t>::max(std::numeric_limits<int32_t>::max());
+int32_t const TypeTraits<int32_t>::no_data_value(TypeTraits<int32_t>::min);
 
 ValueType const TypeTraits<uint32_t>::value_type(VT_UINT32);
 ValueTypes const TypeTraits<uint32_t>::value_types(ValueTypes::UINT32);
 String const TypeTraits<uint32_t>::name("uint32");
 uint32_t const TypeTraits<uint32_t>::min(std::numeric_limits<uint32_t>::min());
 uint32_t const TypeTraits<uint32_t>::max(std::numeric_limits<uint32_t>::max());
+uint32_t const TypeTraits<uint32_t>::no_data_value(TypeTraits<uint32_t>::max);
 
 ValueType const TypeTraits<int64_t>::value_type(VT_INT64);
 ValueTypes const TypeTraits<int64_t>::value_types(ValueTypes::INT64);
 String const TypeTraits<int64_t>::name("int64");
 int64_t const TypeTraits<int64_t>::min(std::numeric_limits<int64_t>::min());
 int64_t const TypeTraits<int64_t>::max(std::numeric_limits<int64_t>::max());
+int64_t const TypeTraits<int64_t>::no_data_value(TypeTraits<int64_t>::min);
 
 ValueType const TypeTraits<uint64_t>::value_type(VT_UINT64);
 ValueTypes const TypeTraits<uint64_t>::value_types(ValueTypes::UINT64);
 String const TypeTraits<uint64_t>::name("uint64");
 uint64_t const TypeTraits<uint64_t>::min(std::numeric_limits<uint64_t>::min());
 uint64_t const TypeTraits<uint64_t>::max(std::numeric_limits<uint64_t>::max());
+uint64_t const TypeTraits<uint64_t>::no_data_value(TypeTraits<uint64_t>::max);
 
 ValueType const TypeTraits<float>::value_type(VT_FLOAT32);
 ValueTypes const TypeTraits<float>::value_types(ValueTypes::FLOAT32);
@@ -94,6 +102,7 @@ float const TypeTraits<float>::max(std::numeric_limits<float>::max());
 static_assert(std::numeric_limits<float>::has_quiet_NaN, "");
 float const TypeTraits<float>::nan(std::numeric_limits<float>::quiet_NaN());
 float const TypeTraits<float>::infinity(std::numeric_limits<float>::infinity());
+float const TypeTraits<float>::no_data_value(TypeTraits<float>::min);
 
 ValueType const TypeTraits<double>::value_type(VT_FLOAT64);
 ValueTypes const TypeTraits<double>::value_types(ValueTypes::FLOAT64);
@@ -104,6 +113,7 @@ static_assert(std::numeric_limits<double>::has_quiet_NaN, "");
 double const TypeTraits<double>::nan(std::numeric_limits<double>::quiet_NaN());
 double const TypeTraits<double>::infinity(
     std::numeric_limits<double>::infinity());
+double const TypeTraits<double>::no_data_value(TypeTraits<double>::min);
 
 ValueType const TypeTraits<String>::value_type(VT_STRING);
 ValueTypes const TypeTraits<String>::value_types(ValueTypes::STRING);

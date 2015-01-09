@@ -32,6 +32,9 @@ public:
 
     iterator        end                ();
 
+    size_t          index              (size_t row,
+                                        size_t col) const;
+
     T&              get                (size_t index);
 
     T const &       get                (size_t index) const;
@@ -133,6 +136,16 @@ inline typename Raster<T>::iterator Raster<T>::end()
 
 template<
     typename T>
+inline size_t Raster<T>::index(
+    size_t row,
+    size_t col) const
+{
+    return row * _nr_cols + col;
+}
+
+
+template<
+    typename T>
 inline T& Raster<T>::get(
     size_t index)
 {
@@ -155,7 +168,7 @@ inline T& Raster<T>::get(
     size_t row,
     size_t col)
 {
-    return get(row * _nr_cols + col);
+    return get(index(row, col));
 }
 
 
@@ -165,7 +178,7 @@ inline T const& Raster<T>::get(
     size_t row,
     size_t col) const
 {
-    return get(row * _nr_cols + col);
+    return get(index(row, col));
 }
 
 

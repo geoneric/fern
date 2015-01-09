@@ -85,38 +85,6 @@ void convolve(
 /*!
     @ingroup    fern_algorithm_convolution_group
     @overload
-*/
-template<
-    typename AlternativeForNoDataPolicy,
-    typename NormalizePolicy,
-    typename OutOfImagePolicy,
-    template<typename, typename> class OutOfRangePolicy,
-    typename InputNoDataPolicy,
-    typename OutputNoDataPolicy,
-    typename ExecutionPolicy,
-    typename SourceImage,
-    typename Kernel,
-    typename DestinationImage
->
-void convolve(
-    ExecutionPolicy const& execution_policy,
-    SourceImage const& source,
-    Kernel const& kernel,
-    DestinationImage& destination)
-{
-    OutputNoDataPolicy output_no_data_policy;
-
-    convolve<AlternativeForNoDataPolicy, NormalizePolicy, OutOfImagePolicy,
-        OutOfRangePolicy>(
-            InputNoDataPolicy(), output_no_data_policy,
-            execution_policy,
-            source, kernel, destination);
-}
-
-
-/*!
-    @ingroup    fern_algorithm_convolution_group
-    @overload
 
     Use this overload if the default policies are fine. The default policies
     used are:
@@ -144,14 +112,14 @@ void convolve(
     using AlternativeForNoDataPolicy = convolve::SkipNoData;
     using NormalizePolicy = convolve::DivideByWeights;
     using OutOfImagePolicy = convolve::SkipOutOfImage;
-    using InputNoDataPolicy = SkipNoData<>;
+    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData<>>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
 
     convolve<AlternativeForNoDataPolicy, NormalizePolicy, OutOfImagePolicy,
         unary::DiscardRangeErrors>(
-            InputNoDataPolicy(), output_no_data_policy,
+            InputNoDataPolicy{{}}, output_no_data_policy,
             execution_policy,
             source, kernel, destination);
 }

@@ -53,14 +53,22 @@ inline bool ReplaceNoDataByFocalAverage::value(
 
     size_t count = 0;
 
+    size_t index_;
+
     for(size_t r = first_row; r <= last_row; ++r) {
+
+        index_ = index(source, r, first_col);
+
         for(size_t c = first_col; c <= last_col; ++c) {
+
             if(!(r == row && c == col)) {
-                if(!input_no_data_policy.is_no_data(r, c)) {
-                    value += get(source, r, c);
+                if(!std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                    value += get(source, index_);
                     ++count;
                 }
             }
+
+            ++index_;
         }
     }
 

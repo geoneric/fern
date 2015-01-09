@@ -25,14 +25,13 @@ static void decompress_1d(
 {
     size_t source_index{index_ranges[0].begin()};
 
-    for(size_t target_index = index_ranges[0].begin();
-            target_index < index_ranges[0].end(); ++target_index) {
+    for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
 
-        if(input_no_data_policy.is_no_data(target_index)) {
-            output_no_data_policy.mark_as_no_data(target_index);
+        if(std::get<0>(input_no_data_policy).is_no_data(i)) {
+            output_no_data_policy.mark_as_no_data(i);
         }
         else {
-            get(result, target_index) = get(value, source_index);
+            get(result, i) = get(value, source_index);
             ++source_index;
         }
     }
@@ -55,20 +54,24 @@ static void decompress_2d(
     size_t source_index{index_ranges[0].begin() * size(result, 1) +
         index_ranges[1].begin()};
 
-    for(size_t target_index1 = index_ranges[0].begin();
-            target_index1 < index_ranges[0].end(); ++target_index1) {
-        for(size_t target_index2 = index_ranges[1].begin();
-                target_index2 < index_ranges[1].end(); ++target_index2) {
+    size_t index_;
 
-            if(input_no_data_policy.is_no_data(target_index1, target_index2)) {
-                output_no_data_policy.mark_as_no_data(target_index1,
-                    target_index2);
+    for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+
+        index_ = index(result, i, index_ranges[1].begin());
+
+        for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
+                ++j) {
+
+            if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                output_no_data_policy.mark_as_no_data(index_);
             }
             else {
-                get(result, target_index1, target_index2) = get(value,
-                    source_index);
+                get(result, index_) = get(value, source_index);
                 ++source_index;
             }
+
+            ++index_;
         }
     }
 }

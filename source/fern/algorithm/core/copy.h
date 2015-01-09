@@ -57,8 +57,6 @@ void copy(
     @overload
 */
 template<
-    typename InputNoDataPolicy,
-    typename OutputNoDataPolicy,
     typename ExecutionPolicy,
     typename Source,
     typename Range,
@@ -71,34 +69,11 @@ void copy(
     Destination& destination,
     Position const& position)
 {
-    OutputNoDataPolicy output_no_data_policy;
-    copy<>(InputNoDataPolicy(), output_no_data_policy,
-        execution_policy, source, range, destination, position);
-}
-
-
-/*!
-    @ingroup    fern_algorithm_core_group
-    @overload
-*/
-template<
-    typename ExecutionPolicy,
-    typename Source,
-    typename Range,
-    typename Destination,
-    typename Position>
-void copy(
-    ExecutionPolicy const& execution_policy,
-    Source const& source,
-    Range const& range,
-    Destination& destination,
-    Position const& position)
-{
-    using InputNoDataPolicy = SkipNoData<>;
+    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData<>>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
-    copy<>(InputNoDataPolicy(), output_no_data_policy, execution_policy,
+    copy<>(InputNoDataPolicy{{}}, output_no_data_policy, execution_policy,
         source, range, destination, position);
 }
 

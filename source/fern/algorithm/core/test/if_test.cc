@@ -85,12 +85,17 @@ void test_array_0d_0d_0d_masked(
     fern::MaskedConstant<int> result_we_want;
     fern::MaskedConstant<int> result_we_got;
 
-    fa::DetectNoDataByValue<bool> input_no_data_policy(result_we_got.mask(),
-        true);
     fa::MarkNoDataByValue<bool> output_no_data_policy(result_we_got.mask(),
         true);
 
     {
+        fa::InputNoDataPolicies<fa::DetectNoDataByValue<bool>,
+            fa::DetectNoDataByValue<bool>, fa::DetectNoDataByValue<bool>>
+                input_no_data_policy{
+                    {condition.mask(), true},
+                    {true_value.mask(), true},
+                    {false_value.mask(), true}};
+
         condition = 0;
         condition.mask() = false;
         true_value = 5;
@@ -115,6 +120,13 @@ void test_array_0d_0d_0d_masked(
     }
 
     {
+        fa::InputNoDataPolicies<fa::DetectNoDataByValue<bool>,
+            fa::DetectNoDataByValue<bool>, fa::DetectNoDataByValue<bool>>
+                input_no_data_policy{
+                    {condition.mask(), true},
+                    {true_value.mask(), true},
+                    {false_value.mask(), true}};
+
         condition = 1;
         condition.mask() = false;
         true_value = 5;
@@ -252,8 +264,6 @@ void test_array_2d_2d_2d_masked(
     fern::MaskedArray<int, 2> false_value(fern::extents[nr_rows][nr_cols]);
     fern::MaskedArray<int, 2> result_we_got(fern::extents[nr_rows][nr_cols]);
 
-    fa::DetectNoDataByValue<fern::Mask<2>> input_no_data_policy(
-        result_we_got.mask(), true);
     fa::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
         result_we_got.mask(), true);
 
@@ -289,6 +299,11 @@ void test_array_2d_2d_2d_masked(
 
     // if_then
     {
+        fa::InputNoDataPolicies<fa::DetectNoDataByValue<fern::Mask<2>>,
+            fa::DetectNoDataByValue<fern::Mask<2>>> input_no_data_policy{
+                {condition.mask(), true},
+                {true_value.mask(), true}};
+
         fern::MaskedArray<int, 2> result_we_want(
             fern::extents[nr_rows][nr_cols]);
 
@@ -330,36 +345,57 @@ void test_array_2d_2d_2d_masked(
 
     // if_then_else
     {
+        fa::InputNoDataPolicies<fa::DetectNoDataByValue<fern::Mask<2>>,
+            fa::DetectNoDataByValue<fern::Mask<2>>,
+            fa::DetectNoDataByValue<fern::Mask<2>>> input_no_data_policy{
+                {condition.mask(), true},
+                {true_value.mask(), true},
+                {false_value.mask(), true}};
+
         fern::MaskedArray<int, 2> result_we_want(
             fern::extents[nr_rows][nr_cols]);
 
         {
             // Fill result_we_want.mask().
-            // If condition is masked, the result must be masked.
-            // If true_value is masked, the result must be masked.
-            // If false_value is masked, the result must be masked.
-            fa::algebra::or_(execution_policy, condition.mask(),
-                result_we_want.mask(), result_we_want.mask());
-            fa::algebra::or_(execution_policy, true_value.mask(),
-                result_we_want.mask(), result_we_want.mask());
-            fa::algebra::or_(execution_policy, false_value.mask(),
-                result_we_want.mask(), result_we_want.mask());
+            // - If condition is masked, the result must be masked.
+            // - If condition is true and true_value is masked, the result
+            //   must be masked.
+            // - If condition is false and false_value is masked, the result
+            //   must be masked.
+            //
+            // TODO It would be nice to be able to replace this loop with
+            //      a nested expression of our own.
+            for(size_t i = 0; i < size(result_we_want); ++i) {
+                if(get(condition.mask(), i) ||
+                        (get(true_value, i) && get(true_value.mask(), i)) ||
+                        (get(false_value, i) && get(false_value.mask(), i))) {
+                    get(result_we_want.mask(), i) = true;
+                }
+            }
 
-            // Fill result_we_want.
-            // If mask is false, copy true value if condition is true, copy
-            // false value if condition is false.
-            // If mask is true, set -9.
-            auto true_value_it = true_value.data();
-            auto false_value_it = false_value.data();
-            auto mask_it = result_we_want.mask().data();
-            std::transform(condition.data(), condition.data() + nr_elements,
-                result_we_want.data(), [&](int const& value) {
-                    ++true_value_it;
-                    ++false_value_it;
-                    ++mask_it;
-                    return *(mask_it-1) == 0
-                        ? (value ? *(true_value_it-1) : *(false_value_it-1))
-                        : -9; });
+            // - Initialize all values with -9.
+            // - If condition is not no-data and true and true_value is not
+            //   masked, the result must be true_value.
+            // - If condition is not no-data and false and false_value is not
+            //   masked, the result must be false_value.
+            //
+            // TODO It would be nice to be able to replace this loop with
+            //      a nested expression of our own.
+            result_we_want.fill(-9);
+            for(size_t i = 0; i < size(result_we_want); ++i) {
+                if(!get(condition.mask(), i)) {
+                    if(get(condition, i)) {
+                        if(!get(true_value.mask(), i)) {
+                            get(result_we_want, i) = get(true_value, i);
+                        }
+                    }
+                    else {
+                        if(!get(false_value.mask(), i)) {
+                            get(result_we_want, i) = get(false_value, i);
+                        }
+                    }
+                }
+            }
         }
 
         result_we_got.fill(-9);

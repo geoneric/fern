@@ -1,77 +1,53 @@
 #include "fern/python_extension/feature/masked_raster.h"
-#include <iostream>
-#include "fern/feature/core/array_traits.h"
+#include "fern/python_extension/core/switch_on_value_type.h"
 
 
 namespace fern {
 namespace python {
 
-/// MaskedRaster::MaskedRaster()
-/// 
-///     : _sizes(0, 0),
-///       _origin(0.0, 0.0),
-///       _cell_sizes(1.0, 1.0),
-///       _value_type(),
-///       _pointer()
-/// 
-/// {
-/// }
-/// 
-/// 
-/// MaskedRaster::MaskedRaster(
-///     MaskedRaster& raster)
-/// 
-///     : _sizes(raster._sizes),
-///       _origin(raster._origin),
-///       _cell_sizes(raster._cell_sizes),
-///       _value_type(raster._value_type),
-///       _pointer(raster._pointer)
-/// 
-/// {
-/// }
-/// 
-/// 
-/// MaskedRaster& MaskedRaster::operator=(
-///     MaskedRaster&& raster)
-/// {
-///     _sizes = std::move(raster._sizes);
-///     _origin = std::move(raster._origin);
-///     _cell_sizes = std::move(raster._cell_sizes);
-///     _value_type = std::move(raster._value_type);
-///     _pointer = std::move(raster._pointer);
-///     return *this;
-/// }
-
-
 template<
     typename T>
 static void copy(
     boost::python::list& values,
-    Array<T, 2>& array)
+    boost::python::list& mask,
+    detail::MaskedRaster<T>& masked_raster)
 {
     namespace bp = boost::python;
 
-    for(size_t row = 0; row < size(array, 0); ++row) {
-        bp::list row_object(values[row]);
+    size_t const size1{std::get<0>(masked_raster.sizes())};
+    size_t const size2{std::get<1>(masked_raster.sizes())};
+    size_t index_;
 
-        for(size_t col = 0; col < size(array, 1); ++col) {
-            bp::object value_object(row_object[col]);
-            get(array, row, col) = bp::extract<T>(value_object);
+    for(size_t index1 = 0; index1 < size1; ++index1) {
+        bp::list row_object(values[index1]);
+        bp::list mask_row_object(mask[index1]);
+
+        index_ = masked_raster.index(index1, 0);
+
+        for(size_t index2 = 0; index2 < size2; ++index2) {
+            bp::object mask_value_object(mask_row_object[index2]);
+
+            if(bp::extract<bool>(mask_value_object)) {
+                set_no_data(masked_raster.element(index_));
+            }
+            else {
+                bp::object value_object(row_object[index2]);
+                masked_raster.element(index_) = bp::extract<T>(value_object);
+            }
+
+            ++index_;
         }
     }
 }
 
 
-#define HANDLE_CASE(                                                 \
-    value_type_enum, value_type)                                     \
-case value_type_enum: {                                              \
-    using MaskedRaster = fern::MaskedRaster<value_type, 2>;          \
-    using Transformation = MaskedRaster::Transformation;             \
-    Transformation transformation{{_origin.first, _cell_sizes.first, \
-        _origin.second, _cell_sizes.second}};                        \
-    _pointer = std::make_shared<MaskedRaster>(                       \
-        fern::extents[_sizes.first][_sizes.second], transformation); \
-    break;                                                           \
+#define CASE(                                                       \
+    value_type_enum,                                                \
+    value_type)                                                     \
+case value_type_enum: {                                             \
+    _pointer = std::make_shared<detail::MaskedRaster<value_type>>(  \
+        _sizes, _origin, _cell_sizes, value_type{0});               \
+    break;                                                          \
 }
 
 MaskedRaster::MaskedRaster(
@@ -89,44 +65,22 @@ MaskedRaster::MaskedRaster(
       _value_type(value_type)
 
 {
-    switch(value_type) {
-        HANDLE_CASE(VT_UINT8, uint8_t)
-        HANDLE_CASE(VT_INT8, int8_t)
-        HANDLE_CASE(VT_UINT16, uint16_t)
-        HANDLE_CASE(VT_INT16, int16_t)
-        HANDLE_CASE(VT_UINT32, uint32_t)
-        HANDLE_CASE(VT_INT32, int32_t)
-        HANDLE_CASE(VT_UINT64, uint64_t)
-        HANDLE_CASE(VT_INT64, int64_t)
-        HANDLE_CASE(VT_FLOAT32, float)
-        HANDLE_CASE(VT_FLOAT64, double)
-        case VT_BOOL:
-        case VT_STRING: {
-            // These value types are not exposed in Python, so they shouldn't
-            // arrive here.
-            assert(false);
-        }
-    }
+    SWITCH_ON_VALUE_TYPE(value_type, CASE);
 
     assert(!_pointer.empty());
 }
 
-#undef HANDLE_CASE
+#undef CASE
 
 
-#define HANDLE_CASE(                                                 \
-    value_type_enum, value_type)                                     \
-case value_type_enum: {                                              \
-    using MaskedRaster = fern::MaskedRaster<value_type, 2>;          \
-    using Transformation = MaskedRaster::Transformation;             \
-    Transformation transformation{{_origin.first, _cell_sizes.first, \
-        _origin.second, _cell_sizes.second}};                        \
-    auto masked_raster = std::make_shared<MaskedRaster>(             \
-        fern::extents[_sizes.first][_sizes.second], transformation); \
-    _pointer = masked_raster;                                        \
-    copy(values, *masked_raster);                                    \
-    copy(mask, masked_raster->mask());                               \
-    break;                                                           \
+#define CASE(                                                                 \
+    value_type_enum, value_type)                                              \
+case value_type_enum: {                                                       \
+    auto masked_raster = std::make_shared<detail::MaskedRaster<value_type>>(  \
+        _sizes, _origin, _cell_sizes);                                        \
+    _pointer = masked_raster;                                                 \
+    copy(values, mask, *masked_raster);                                       \
+    break;                                                                    \
 }
 
 MaskedRaster::MaskedRaster(
@@ -148,46 +102,31 @@ MaskedRaster::MaskedRaster(
 {
     namespace bp = boost::python;
 
-    switch(value_type) {
-        HANDLE_CASE(VT_UINT8, uint8_t)
-        HANDLE_CASE(VT_INT8, int8_t)
-        HANDLE_CASE(VT_UINT16, uint16_t)
-        HANDLE_CASE(VT_INT16, int16_t)
-        HANDLE_CASE(VT_UINT32, uint32_t)
-        HANDLE_CASE(VT_INT32, int32_t)
-        HANDLE_CASE(VT_UINT64, uint64_t)
-        HANDLE_CASE(VT_INT64, int64_t)
-        HANDLE_CASE(VT_FLOAT32, float)
-        HANDLE_CASE(VT_FLOAT64, double)
-        case VT_BOOL:
-        case VT_STRING: {
-            // These value types are not exposed in Python, so they shouldn't
-            // arrive here.
-            assert(false);
-        }
-    }
+    SWITCH_ON_VALUE_TYPE(value_type, CASE);
 
     assert(!_pointer.empty());
 }
 
-#undef HANDLE_CASE
+#undef CASE
 
 
 boost::python::tuple MaskedRaster::sizes() const
 {
-    return boost::python::make_tuple(_sizes.first, _sizes.second);
+    return boost::python::make_tuple(std::get<0>(_sizes), std::get<1>(_sizes));
 }
 
 
 boost::python::tuple MaskedRaster::origin() const
 {
-    return boost::python::make_tuple(_origin.first, _origin.second);
+    return boost::python::make_tuple(std::get<0>(_origin),
+        std::get<1>(_origin));
 }
 
 
 boost::python::tuple MaskedRaster::cell_sizes() const
 {
-    return boost::python::make_tuple(_cell_sizes.first, _cell_sizes.second);
+    return boost::python::make_tuple(std::get<0>(_cell_sizes),
+        std::get<1>(_cell_sizes));
 }
 
 

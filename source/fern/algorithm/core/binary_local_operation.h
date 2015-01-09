@@ -29,10 +29,11 @@ void operation_0d_0d(
     Value2 const& value2,
     Result& result)
 {
-    // Don't do anything if the input value is no-data. We assume
-    // that input no-data values are already marked as such in the
-    // result.
-    if(!input_no_data_policy.is_no_data()) {
+    if(std::get<0>(input_no_data_policy).is_no_data() ||
+            std::get<1>(input_no_data_policy).is_no_data()) {
+        output_no_data_policy.mark_as_no_data();
+    }
+    else {
         const_reference<Value1> v1(get(value1));
         const_reference<Value2> v2(get(value2));
 
@@ -79,10 +80,11 @@ void operation_1d_0d(
 {
     for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
 
-        // Don't do anything if the input value is no-data. We assume
-        // that input no-data values are already marked as such in the
-        // result.
-        if(!input_no_data_policy.is_no_data(i)) {
+        if(std::get<0>(input_no_data_policy).is_no_data(i) ||
+                std::get<1>(input_no_data_policy).is_no_data(i)) {
+            output_no_data_policy.mark_as_no_data(i);
+        }
+        else {
             const_reference<Value1> v1(get(value1, i));
             const_reference<Value2> v2(get(value2));
 
@@ -130,10 +132,11 @@ void operation_0d_1d(
 {
     for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
 
-        // Don't do anything if the input value is no-data. We assume
-        // that input no-data values are already marked as such in the
-        // result.
-        if(!input_no_data_policy.is_no_data(i)) {
+        if(std::get<0>(input_no_data_policy).is_no_data(i) ||
+                std::get<1>(input_no_data_policy).is_no_data(i)) {
+            output_no_data_policy.mark_as_no_data(i);
+        }
+        else {
             const_reference<Value1> v1(get(value1));
             const_reference<Value1> v2(get(value2, i));
 
@@ -181,10 +184,11 @@ void operation_1d_1d(
 {
     for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
 
-        // Don't do anything if the input value is no-data. We assume
-        // that input no-data values are already marked as such in the
-        // result.
-        if(!input_no_data_policy.is_no_data(i)) {
+        if(std::get<0>(input_no_data_policy).is_no_data(i) ||
+                std::get<1>(input_no_data_policy).is_no_data(i)) {
+            output_no_data_policy.mark_as_no_data(i);
+        }
+        else {
             const_reference<Value1> v1(get(value1, i));
             const_reference<Value1> v2(get(value2, i));
 
@@ -230,24 +234,30 @@ void operation_2d_0d(
     Value2 const& value2,
     Result& result)
 {
+    size_t index_;
+
     for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+
+        index_ = index(result, i, index_ranges[1].begin());
+
         for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
                 ++j) {
 
-            // Don't do anything if the input value is no-data. We assume
-            // that input no-data values are already marked as such in the
-            // result.
-            if(!input_no_data_policy.is_no_data(i, j)) {
-                const_reference<Value1> v1(get(value1, i, j));
+            if(std::get<0>(input_no_data_policy).is_no_data(index_) ||
+                    std::get<1>(input_no_data_policy).is_no_data(index_)) {
+                output_no_data_policy.mark_as_no_data(index_);
+            }
+            else {
+                const_reference<Value1> v1(get(value1, index_));
                 const_reference<Value2> v2(get(value2));
 
                 if(!OutOfDomainPolicy::within_domain(v1, v2)) {
                     // Input value is out of domain. Mark result value as
                     // no-data. Don't change the result value.
-                    output_no_data_policy.mark_as_no_data(i, j);
+                    output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
-                    reference<Result> r(get(result, i, j));
+                    reference<Result> r(get(result, index_));
 
                     algorithm(v1, v2, r);
 
@@ -257,10 +267,12 @@ void operation_2d_0d(
                         // value (this may be overridden by
                         // output_no_data_policy, depending on its
                         // implementation).
-                        output_no_data_policy.mark_as_no_data(i, j);
+                        output_no_data_policy.mark_as_no_data(index_);
                     }
                 }
             }
+
+            ++index_;
         }
     }
 }
@@ -284,24 +296,30 @@ void operation_0d_2d(
     Value2 const& value2,
     Result& result)
 {
+    size_t index_;
+
     for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+
+        index_ = index(result, i, index_ranges[1].begin());
+
         for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
                 ++j) {
 
-            // Don't do anything if the input value is no-data. We assume
-            // that input no-data values are already marked as such in the
-            // result.
-            if(!input_no_data_policy.is_no_data(i, j)) {
+            if(std::get<0>(input_no_data_policy).is_no_data(index_) ||
+                    std::get<1>(input_no_data_policy).is_no_data(index_)) {
+                output_no_data_policy.mark_as_no_data(index_);
+            }
+            else {
                 const_reference<Value1> v1(get(value1));
-                const_reference<Value2> v2(get(value2, i, j));
+                const_reference<Value2> v2(get(value2, index_));
 
                 if(!OutOfDomainPolicy::within_domain(v1, v2)) {
                     // Input value is out of domain. Mark result value as
                     // no-data. Don't change the result value.
-                    output_no_data_policy.mark_as_no_data(i, j);
+                    output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
-                    reference<Result> r(get(result, i, j));
+                    reference<Result> r(get(result, index_));
 
                     algorithm(v1, v2, r);
 
@@ -311,10 +329,12 @@ void operation_0d_2d(
                         // value (this may be overridden by
                         // output_no_data_policy, depending on its
                         // implementation).
-                        output_no_data_policy.mark_as_no_data(i, j);
+                        output_no_data_policy.mark_as_no_data(index_);
                     }
                 }
             }
+
+            ++index_;
         }
     }
 }
@@ -338,24 +358,30 @@ void operation_2d_2d(
     Value2 const& value2,
     Result& result)
 {
+    size_t index_;
+
     for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+
+        index_ = index(result, i, index_ranges[1].begin());
+
         for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
                 ++j) {
 
-            // Don't do anything if the input value is no-data. We assume
-            // that input no-data values are already marked as such in the
-            // result.
-            if(!input_no_data_policy.is_no_data(i, j)) {
-                const_reference<Value1> v1(get(value1, i, j));
-                const_reference<Value2> v2(get(value2, i, j));
+            if(std::get<0>(input_no_data_policy).is_no_data(index_) ||
+                    std::get<1>(input_no_data_policy).is_no_data(index_)) {
+                output_no_data_policy.mark_as_no_data(index_);
+            }
+            else {
+                const_reference<Value1> v1(get(value1, index_));
+                const_reference<Value2> v2(get(value2, index_));
 
                 if(!OutOfDomainPolicy::within_domain(v1, v2)) {
                     // Input value is out of domain. Mark result value as
                     // no-data. Don't change the result value.
-                    output_no_data_policy.mark_as_no_data(i, j);
+                    output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
-                    reference<Result> r(get(result, i, j));
+                    reference<Result> r(get(result, index_));
 
                     algorithm(v1, v2, r);
 
@@ -365,10 +391,12 @@ void operation_2d_2d(
                         // value (this may be overridden by
                         // output_no_data_policy, depending on its
                         // implementation).
-                        output_no_data_policy.mark_as_no_data(i, j);
+                        output_no_data_policy.mark_as_no_data(index_);
                     }
                 }
             }
+
+            ++index_;
         }
     }
 }
