@@ -4,7 +4,8 @@
 namespace fern {
 namespace python {
 
-static algorithm::ExecutionPolicy _execution_policy{algorithm::sequential};
+static algorithm::ExecutionPolicy _execution_policy{
+    algorithm::ParallelExecutionPolicy{}};
 
 
 void set_execution_policy(

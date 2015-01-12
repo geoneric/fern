@@ -3,7 +3,6 @@
 #include "fern/core/assert.h"
 #include "fern/core/base_class.h"
 #include "fern/core/collection_traits.h"
-#include "fern/core/thread_client.h"
 #include "fern/algorithm/core/index_ranges.h"
 #include "fern/algorithm/policy/execution_policy.h"
 
@@ -229,7 +228,7 @@ struct UnaryDisaggregateOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& /* execution_policy */,
+        ExecutionPolicy& /* execution_policy */,
         Value const& value,
         Result& result)
     {
@@ -267,7 +266,7 @@ struct UnaryDisaggregateOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Value const& value,
         Result& result)
     {
@@ -306,11 +305,11 @@ struct UnaryDisaggregateOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Value const& value,
         Result& result)
     {
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size_ = size(result);
         std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size_);
         std::vector<std::future<void>> futures;
@@ -365,7 +364,7 @@ struct UnaryDisaggregateOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Value const& value,
         Result& result)
     {
@@ -407,11 +406,11 @@ struct UnaryDisaggregateOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Value const& value,
         Result& result)
     {
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size1 = size(result, 0);
         size_t const size2 = size(result, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
@@ -468,7 +467,7 @@ struct UnaryDisaggregateOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& execution_policy,
+        ExecutionPolicy& execution_policy,
         Value const& value,
         Result& result)
     {
@@ -485,8 +484,7 @@ struct UnaryDisaggregateOperation<
                     SequentialExecutionPolicy,
                     array_2d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        fern::algorithm::detail::get_policy<
-                            SequentialExecutionPolicy>(execution_policy),
+                        boost::get<SequentialExecutionPolicy>(execution_policy),
                         value, result);
                 break;
             }
@@ -502,8 +500,7 @@ struct UnaryDisaggregateOperation<
                     ParallelExecutionPolicy,
                     array_2d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        fern::algorithm::detail::get_policy<
-                            ParallelExecutionPolicy>(execution_policy),
+                        boost::get<ParallelExecutionPolicy>(execution_policy),
                         value, result);
                 break;
             }
@@ -544,7 +541,7 @@ template<
 void unary_disaggregate_operation(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Value const& value,
     Result& result)
 {

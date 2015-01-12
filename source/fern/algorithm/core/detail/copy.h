@@ -1,6 +1,5 @@
 #pragma once
 #include "fern/core/base_class.h"
-#include "fern/core/thread_client.h"
 #include "fern/algorithm/core/index_ranges_traits.h"
 #include "fern/algorithm/policy/execution_policy.h"
 
@@ -84,7 +83,7 @@ struct CopyByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Source const& source,
         Range const& range,
         Destination& destination,
@@ -121,7 +120,7 @@ struct CopyByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Source const& source,
         Range const& range,
         Destination& destination,
@@ -132,7 +131,7 @@ struct CopyByArgumentCategory<
         // copy_1d(input_no_data_policy, output_no_data_policy,
         //     source, range, destination, position);
 
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size_ = size(range);
         std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size_);
         std::vector<std::future<void>> futures;
@@ -187,14 +186,58 @@ template<
     typename Source,
     typename Range,
     typename Destination,
-    typename Position>
+    typename Position,
+    typename ExecutionPolicy>
 struct CopyByExecutionPolicy
 {
 
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& execution_policy,
+        ExecutionPolicy& execution_policy,
+        Source const& source,
+        Range const& range,
+        Destination& destination,
+        Position const& position)
+    {
+        CopyByArgumentCategory<
+            InputNoDataPolicy,
+            OutputNoDataPolicy,
+            Source,
+            Range,
+            Destination,
+            Position,
+            ExecutionPolicy,
+            base_class<argument_category<Source>, array_2d_tag>>
+                ::apply(
+                    input_no_data_policy, output_no_data_policy,
+                    execution_policy, source, range, destination, position);
+    }
+
+};
+
+
+template<
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Source,
+    typename Range,
+    typename Destination,
+    typename Position>
+struct CopyByExecutionPolicy<
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Source,
+    Range,
+    Destination,
+    Position,
+    ExecutionPolicy>
+{
+
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        ExecutionPolicy& execution_policy,
         Source const& source,
         Range const& range,
         Destination& destination,
@@ -213,8 +256,8 @@ struct CopyByExecutionPolicy
                     base_class<argument_category<Source>, array_2d_tag>>
                         ::apply(
                             input_no_data_policy, output_no_data_policy,
-                            fern::algorithm::detail::get_policy<
-                                SequentialExecutionPolicy>(execution_policy),
+                            boost::get<SequentialExecutionPolicy>(
+                                execution_policy),
                             source, range, destination, position);
                 break;
             }
@@ -230,8 +273,8 @@ struct CopyByExecutionPolicy
                     base_class<argument_category<Source>, array_2d_tag>>
                         ::apply(
                             input_no_data_policy, output_no_data_policy,
-                            fern::algorithm::detail::get_policy<
-                                ParallelExecutionPolicy>(execution_policy),
+                            boost::get<ParallelExecutionPolicy>(
+                                execution_policy),
                             source, range, destination, position);
                 break;
             }
@@ -255,14 +298,14 @@ template<
 void copy(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Source const& source,
     Range const& range,
     Destination& destination,
     Position const& position)
 {
     dispatch::CopyByExecutionPolicy<InputNoDataPolicy, OutputNoDataPolicy,
-        Source, Range, Destination, Position>::apply(
+        Source, Range, Destination, Position, ExecutionPolicy>::apply(
             input_no_data_policy, output_no_data_policy, execution_policy,
             source, range, destination, position);
 }

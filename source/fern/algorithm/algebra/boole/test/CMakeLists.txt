@@ -7,5 +7,6 @@ SET(TEST_NAMES
 FOREACH(NAME ${TEST_NAMES})
     ADD_UNIT_TEST2(
         SCOPE algorithm_algebra_boole
-        NAME ${NAME})
+        NAME ${NAME}
+        LINK_LIBRARIES fern_algorithm_policy)
 ENDFOREACH()

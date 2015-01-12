@@ -2,7 +2,6 @@
 #include "fern/core/argument_traits.h"
 #include "fern/core/base_class.h"
 #include "fern/core/collection_traits.h"
-#include "fern/core/thread_client.h"
 #include "fern/core/type_traits.h"
 #include "fern/algorithm/core/index_ranges.h"
 #include "fern/algorithm/policy/execution_policy.h"
@@ -327,7 +326,7 @@ struct Offset<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Value const& value,
         Offset_ const& offset_,
         Result& result)
@@ -343,7 +342,7 @@ struct Offset<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Value const& value,
         Offset_ const& offset_,
         value_type<Result> const& fill_value,
@@ -379,14 +378,14 @@ struct Offset<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Value const& value,
         Offset_ const& offset_,
         Result& result)
     {
         assert(size(value) > 0);
 
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size_ = size(value);
         std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size_);
         std::vector<std::future<void>> futures;
@@ -419,7 +418,7 @@ struct Offset<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Value const& value,
         Offset_ const& offset_,
         value_type<Result> const& fill_value,
@@ -427,7 +426,7 @@ struct Offset<
     {
         assert(size(value) > 0);
 
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size_ = size(value);
         std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size_);
         std::vector<std::future<void>> futures;
@@ -477,7 +476,7 @@ struct Offset<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& execution_policy,
+        ExecutionPolicy& execution_policy,
         Value const& value,
         Offset_ const& offset_,
         Result& result)
@@ -493,8 +492,7 @@ struct Offset<
                     SequentialExecutionPolicy,
                     array_1d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        fern::algorithm::detail::get_policy<
-                            SequentialExecutionPolicy>(execution_policy),
+                        boost::get<SequentialExecutionPolicy>(execution_policy),
                         value, offset_, result);
                 break;
             }
@@ -508,8 +506,7 @@ struct Offset<
                     ParallelExecutionPolicy,
                     array_1d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        fern::algorithm::detail::get_policy<
-                            ParallelExecutionPolicy>(execution_policy),
+                        boost::get<ParallelExecutionPolicy>(execution_policy),
                         value, offset_, result);
                 break;
             }
@@ -519,7 +516,7 @@ struct Offset<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& execution_policy,
+        ExecutionPolicy& execution_policy,
         Value const& value,
         Offset_ const& offset_,
         value_type<Result> const& fill_value,
@@ -536,8 +533,7 @@ struct Offset<
                     SequentialExecutionPolicy,
                     array_1d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        fern::algorithm::detail::get_policy<
-                            SequentialExecutionPolicy>(execution_policy),
+                        boost::get<SequentialExecutionPolicy>(execution_policy),
                         value, offset_, fill_value, result);
                 break;
             }
@@ -551,8 +547,7 @@ struct Offset<
                     ParallelExecutionPolicy,
                     array_1d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        fern::algorithm::detail::get_policy<
-                            ParallelExecutionPolicy>(execution_policy),
+                        boost::get<ParallelExecutionPolicy>(execution_policy),
                         value, offset_, fill_value, result);
                 break;
             }
@@ -580,7 +575,7 @@ struct Offset<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Value const& value,
         Offset_ const& offset_,
         Result& result)
@@ -598,7 +593,7 @@ struct Offset<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Value const& value,
         Offset_ const& offset_,
         value_type<Result> const& fill_value,
@@ -636,14 +631,14 @@ struct Offset<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Value const& value,
         Offset_ const& offset_,
         Result& result)
     {
         assert(size(value) > 0);
 
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size1 = size(value, 0);
         size_t const size2 = size(value, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
@@ -678,7 +673,7 @@ struct Offset<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Value const& value,
         Offset_ const& offset_,
         value_type<Result> const& fill_value,
@@ -686,7 +681,7 @@ struct Offset<
     {
         assert(size(value) > 0);
 
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size1 = size(value, 0);
         size_t const size2 = size(value, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
@@ -738,7 +733,7 @@ struct Offset<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& execution_policy,
+        ExecutionPolicy& execution_policy,
         Value const& value,
         Offset_ const& offset_,
         Result& result)
@@ -754,8 +749,7 @@ struct Offset<
                     SequentialExecutionPolicy,
                     array_2d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        fern::algorithm::detail::get_policy<
-                            SequentialExecutionPolicy>(execution_policy),
+                        boost::get<SequentialExecutionPolicy>(execution_policy),
                         value, offset_, result);
                 break;
             }
@@ -769,8 +763,7 @@ struct Offset<
                     ParallelExecutionPolicy,
                     array_2d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        fern::algorithm::detail::get_policy<
-                            ParallelExecutionPolicy>(execution_policy),
+                        boost::get<ParallelExecutionPolicy>(execution_policy),
                         value, offset_, result);
                 break;
             }
@@ -780,7 +773,7 @@ struct Offset<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& execution_policy,
+        ExecutionPolicy& execution_policy,
         Value const& value,
         Offset_ const& offset_,
         value_type<Result> const& fill_value,
@@ -797,8 +790,7 @@ struct Offset<
                     SequentialExecutionPolicy,
                     array_2d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        fern::algorithm::detail::get_policy<
-                            SequentialExecutionPolicy>(execution_policy),
+                        boost::get<SequentialExecutionPolicy>(execution_policy),
                         value, offset_, fill_value, result);
                 break;
             }
@@ -812,8 +804,7 @@ struct Offset<
                     ParallelExecutionPolicy,
                     array_2d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        fern::algorithm::detail::get_policy<
-                            ParallelExecutionPolicy>(execution_policy),
+                        boost::get<ParallelExecutionPolicy>(execution_policy),
                         value, offset_, fill_value, result);
                 break;
             }
@@ -835,7 +826,7 @@ template<
 void offset(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Value const& value,
     Offset const& offset,
     Result& result)
@@ -863,7 +854,7 @@ template<
 void offset(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Value const& value,
     Offset const& offset,
     value_type<Result> const& fill_value,

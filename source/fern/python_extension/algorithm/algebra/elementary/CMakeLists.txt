@@ -14,6 +14,7 @@ ADD_LIBRARY(_fern_algorithm_algebra_elementary SHARED ${EXTENSION_SOURCES})
 TARGET_LINK_LIBRARIES(_fern_algorithm_algebra_elementary
     fern_python_extension_feature
     fern_feature_core
+    fern_algorithm_policy
     fern_algorithm_core
     fern_core
     ${Boost_PYTHON_LIBRARY}

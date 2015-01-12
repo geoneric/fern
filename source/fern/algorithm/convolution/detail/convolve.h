@@ -11,7 +11,6 @@
 #include "fern/core/assert.h"
 #include "fern/core/argument_traits.h"
 #include "fern/core/base_class.h"
-#include "fern/core/thread_client.h"
 
 
 namespace fern {
@@ -1660,7 +1659,7 @@ struct Convolve<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         SourceImage const& source,
         Kernel const& kernel,
         DestinationImage& destination)
@@ -1781,12 +1780,12 @@ struct Convolve<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         SourceImage const& source,
         Kernel const& kernel,
         DestinationImage& destination)
     {
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         std::vector<std::future<void>> futures;
 
         using BorderFunction = void(*)(InputNoDataPolicy const&,
@@ -1870,7 +1869,7 @@ struct Convolve<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& execution_policy,
+        ExecutionPolicy& execution_policy,
         SourceImage const& source,
         Kernel const& kernel,
         DestinationImage& destination)
@@ -1882,8 +1881,7 @@ struct Convolve<
                     OutputNoDataPolicy, SourceImage, Kernel, DestinationImage,
                     SequentialExecutionPolicy>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        fern::algorithm::detail::get_policy<
-                            SequentialExecutionPolicy>(execution_policy),
+                        boost::get<SequentialExecutionPolicy>(execution_policy),
                         source, kernel, destination);
                 break;
             }
@@ -1893,8 +1891,7 @@ struct Convolve<
                     OutputNoDataPolicy, SourceImage, Kernel, DestinationImage,
                     ParallelExecutionPolicy>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        fern::algorithm::detail::get_policy<
-                            ParallelExecutionPolicy>(execution_policy),
+                        boost::get<ParallelExecutionPolicy>(execution_policy),
                         source, kernel, destination);
                 break;
             }
@@ -1921,7 +1918,7 @@ template<
 void convolve(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     SourceImage const& source,
     Kernel const& kernel,
     DestinationImage& destination)

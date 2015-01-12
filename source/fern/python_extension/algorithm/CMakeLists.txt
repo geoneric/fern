@@ -10,6 +10,7 @@ SET(EXTENSION_SOURCES
 )
 ADD_LIBRARY(_fern_algorithm SHARED ${EXTENSION_SOURCES})
 TARGET_LINK_LIBRARIES(_fern_algorithm
+    fern_algorithm_policy
     fern_core
     ${Boost_PYTHON_LIBRARY}
     stdc++

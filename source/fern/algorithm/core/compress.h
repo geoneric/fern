@@ -34,7 +34,7 @@ template<
     typename Count>
 void compress(
     InputNoDataPolicy const& input_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Value const& value,
     Result& result,
     Count& count)
@@ -60,7 +60,7 @@ template<
     typename Result,
     typename Count>
 void compress(
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Value const& value,
     Result& result,
     Count& count)

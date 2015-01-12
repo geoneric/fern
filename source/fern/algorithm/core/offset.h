@@ -35,7 +35,7 @@ template<
 void offset(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Value const& value,
     Offset const& offset_,
     Result& result)
@@ -62,7 +62,7 @@ template<
     typename Offset,
     typename Result>
 void offset(
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Value const& value,
     Offset const& offset_,
     Result& result)
@@ -103,7 +103,7 @@ template<
 void offset(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Value const& value,
     Offset const& offset_,
     value_type<Result> const& fill_value,
@@ -132,7 +132,7 @@ template<
     typename Offset,
     typename Result>
 void offset(
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Value const& value,
     Offset const& offset_,
     value_type<Result> const& fill_value,

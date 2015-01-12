@@ -11,7 +11,7 @@
 #include "fern/algorithm/convolution/replace_no_data_by_focal_average.h"
 
 
-BOOST_FIXTURE_TEST_SUITE(convolve, fern::ThreadClient)
+BOOST_AUTO_TEST_SUITE(convolve)
 
 namespace fa = fern::algorithm;
 

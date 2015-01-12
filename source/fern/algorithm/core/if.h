@@ -32,7 +32,7 @@ template<
 void if_(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Condition const& condition,
     TrueValue const& true_value,
     Result& result)
@@ -57,7 +57,7 @@ template<
     typename TrueValue,
     typename Result>
 void if_(
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Condition const& condition,
     TrueValue const& true_value,
     Result& result)
@@ -100,7 +100,7 @@ template<
 void if_(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Condition const& condition,
     TrueValue const& true_value,
     FalseValue const& false_value,
@@ -131,7 +131,7 @@ template<
     typename FalseValue,
     typename Result>
 void if_(
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Condition const& condition,
     TrueValue const& true_value,
     FalseValue const& false_value,

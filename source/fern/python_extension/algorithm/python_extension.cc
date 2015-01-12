@@ -1,5 +1,4 @@
 #include <boost/python.hpp>
-// #include "fern/core/thread_client.h"
 #include "fern/python_extension/core/init_python_module.h"
 #include "fern/python_extension/algorithm/execution_policy.h"
 
@@ -7,8 +6,6 @@
 namespace bp = boost::python;
 namespace fa = fern::algorithm;
 namespace fp = fern::python;
-
-// static fern::ThreadClient thread_client;
 
 
 BOOST_PYTHON_MODULE(_fern_algorithm)

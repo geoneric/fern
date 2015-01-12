@@ -2,7 +2,6 @@
 #include "fern/core/array_2d_traits.h"
 #include "fern/core/base_class.h"
 #include "fern/core/constant_traits.h"
-#include "fern/core/thread_client.h"
 #include "fern/algorithm/core/index_ranges.h"
 #include "fern/algorithm/policy/execution_policy.h"
 
@@ -414,7 +413,7 @@ struct IfThenByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& /* execution_policy */,
+        ExecutionPolicy& /* execution_policy */,
         Condition const& condition,
         TrueValue const& true_value,
         Result& result)
@@ -451,7 +450,7 @@ struct IfThenElseByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& /* execution_policy */,
+        ExecutionPolicy& /* execution_policy */,
         Condition const& condition,
         TrueValue const& true_value,
         FalseValue const& false_value,
@@ -488,7 +487,7 @@ struct IfThenByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Condition const& condition,
         TrueValue const& true_value,
         Result& result)
@@ -527,7 +526,7 @@ struct IfThenByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Condition const& condition,
         TrueValue const& true_value,
         Result& result)
@@ -535,7 +534,7 @@ struct IfThenByArgumentCategory<
         assert(size(result, 0) == size(condition, 0));
         assert(size(result, 1) == size(condition, 1));
 
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size1 = size(condition, 0);
         size_t const size2 = size(condition, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
@@ -586,7 +585,7 @@ struct IfThenElseByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Condition const& condition,
         TrueValue const& true_value,
         FalseValue const& false_value,
@@ -629,7 +628,7 @@ struct IfThenElseByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Condition const& condition,
         TrueValue const& true_value,
         FalseValue const& false_value,
@@ -638,7 +637,7 @@ struct IfThenElseByArgumentCategory<
         assert(size(result, 0) == size(condition, 0));
         assert(size(result, 1) == size(condition, 1));
 
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size1 = size(condition, 0);
         size_t const size2 = size(condition, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
@@ -687,7 +686,7 @@ struct IfThenByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Condition const& condition,
         TrueValue const& true_value,
         Result& result)
@@ -728,7 +727,7 @@ struct IfThenByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Condition const& condition,
         TrueValue const& true_value,
         Result& result)
@@ -738,7 +737,7 @@ struct IfThenByArgumentCategory<
         assert(size(result, 0) == size(condition, 0));
         assert(size(result, 1) == size(condition, 1));
 
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size1 = size(condition, 0);
         size_t const size2 = size(condition, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
@@ -789,7 +788,7 @@ struct IfThenElseByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Condition const& condition,
         TrueValue const& true_value,
         FalseValue const& false_value,
@@ -836,7 +835,7 @@ struct IfThenElseByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Condition const& condition,
         TrueValue const& true_value,
         FalseValue const& false_value,
@@ -849,7 +848,7 @@ struct IfThenElseByArgumentCategory<
         assert(size(result, 0) == size(condition, 0));
         assert(size(result, 1) == size(condition, 1));
 
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size1 = size(condition, 0);
         size_t const size2 = size(condition, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
@@ -901,7 +900,7 @@ struct IfThenElseByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Condition const& condition,
         TrueValue const& true_value,
         FalseValue const& false_value,
@@ -946,7 +945,7 @@ struct IfThenElseByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Condition const& condition,
         TrueValue const& true_value,
         FalseValue const& false_value,
@@ -957,7 +956,7 @@ struct IfThenElseByArgumentCategory<
         assert(size(result, 0) == size(condition, 0));
         assert(size(result, 1) == size(condition, 1));
 
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size1 = size(condition, 0);
         size_t const size2 = size(condition, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
@@ -1009,7 +1008,7 @@ struct IfThenElseByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Condition const& condition,
         TrueValue const& true_value,
         FalseValue const& false_value,
@@ -1054,7 +1053,7 @@ struct IfThenElseByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Condition const& condition,
         TrueValue const& true_value,
         FalseValue const& false_value,
@@ -1065,7 +1064,7 @@ struct IfThenElseByArgumentCategory<
         assert(size(result, 0) == size(condition, 0));
         assert(size(result, 1) == size(condition, 1));
 
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size1 = size(condition, 0);
         size_t const size2 = size(condition, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
@@ -1106,7 +1105,43 @@ struct IfThenByExecutionPolicy
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& execution_policy,
+        ExecutionPolicy& execution_policy,
+        Condition const& condition,
+        TrueValue const& true_value,
+        Result& result)
+    {
+        IfThenByArgumentCategory<InputNoDataPolicy, OutputNoDataPolicy,
+            Condition, TrueValue, Result,
+            ExecutionPolicy,
+            base_class<argument_category<Condition>, array_2d_tag>,
+            base_class<argument_category<TrueValue>, array_2d_tag>>
+                ::apply(input_no_data_policy, output_no_data_policy,
+                    execution_policy, condition, true_value, result);
+
+    }
+
+};
+
+
+template<
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename Result>
+struct IfThenByExecutionPolicy<
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Condition,
+    TrueValue,
+    Result,
+    ExecutionPolicy>
+{
+
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        ExecutionPolicy& execution_policy,
         Condition const& condition,
         TrueValue const& true_value,
         Result& result)
@@ -1124,8 +1159,8 @@ struct IfThenByExecutionPolicy
                     base_class<argument_category<TrueValue>, array_2d_tag>>
                         ::apply(
                             input_no_data_policy, output_no_data_policy,
-                            fern::algorithm::detail::get_policy<
-                                SequentialExecutionPolicy>(execution_policy),
+                            boost::get<SequentialExecutionPolicy>(
+                                execution_policy),
                             condition, true_value, result);
                 break;
             }
@@ -1141,8 +1176,8 @@ struct IfThenByExecutionPolicy
                     base_class<argument_category<TrueValue>, array_2d_tag>>
                         ::apply(
                             input_no_data_policy, output_no_data_policy,
-                            fern::algorithm::detail::get_policy<
-                                ParallelExecutionPolicy>(execution_policy),
+                            boost::get<ParallelExecutionPolicy>(
+                                execution_policy),
                             condition, true_value, result);
                 break;
             }
@@ -1166,7 +1201,48 @@ struct IfThenElseByExecutionPolicy
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& execution_policy,
+        ExecutionPolicy& execution_policy,
+        Condition const& condition,
+        TrueValue const& true_value,
+        FalseValue const& false_value,
+        Result& result)
+    {
+        IfThenElseByArgumentCategory<
+            InputNoDataPolicy, OutputNoDataPolicy,
+            Condition, TrueValue, FalseValue, Result,
+            ExecutionPolicy,
+            base_class<argument_category<Condition>, array_2d_tag>,
+            base_class<argument_category<TrueValue>, array_2d_tag>,
+            base_class<argument_category<FalseValue>, array_2d_tag>>
+                ::apply(input_no_data_policy, output_no_data_policy,
+                    execution_policy, condition, true_value, false_value,
+                    result);
+    }
+
+};
+
+
+template<
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Condition,
+    typename TrueValue,
+    typename FalseValue,
+    typename Result>
+struct IfThenElseByExecutionPolicy<
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Condition,
+    TrueValue,
+    FalseValue,
+    Result,
+    ExecutionPolicy>
+{
+
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        ExecutionPolicy& execution_policy,
         Condition const& condition,
         TrueValue const& true_value,
         FalseValue const& false_value,
@@ -1186,10 +1262,10 @@ struct IfThenElseByExecutionPolicy
                     base_class<argument_category<TrueValue>, array_2d_tag>,
                     base_class<argument_category<FalseValue>, array_2d_tag>>
                         ::apply(
-                        input_no_data_policy, output_no_data_policy,
-                        fern::algorithm::detail::get_policy<
-                            SequentialExecutionPolicy>(execution_policy),
-                        condition, true_value, false_value, result);
+                            input_no_data_policy, output_no_data_policy,
+                            boost::get<SequentialExecutionPolicy>(
+                                execution_policy),
+                            condition, true_value, false_value, result);
                 break;
             }
             case fern::algorithm::detail::parallel_execution_policy_id: {
@@ -1206,8 +1282,8 @@ struct IfThenElseByExecutionPolicy
                     base_class<argument_category<FalseValue>, array_2d_tag>>
                         ::apply(
                             input_no_data_policy, output_no_data_policy,
-                            fern::algorithm::detail::get_policy<
-                                ParallelExecutionPolicy>(execution_policy),
+                            boost::get<ParallelExecutionPolicy>(
+                                execution_policy),
                             condition, true_value, false_value, result);
                 break;
             }
@@ -1229,7 +1305,7 @@ template<
 void if_(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Condition const& condition,
     TrueValue const& true_value,
     Result& result)
@@ -1252,7 +1328,7 @@ template<
 void if_(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Condition const& condition,
     TrueValue const& true_value,
     FalseValue const& false_value,

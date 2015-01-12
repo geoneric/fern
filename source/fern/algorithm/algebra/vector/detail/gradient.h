@@ -2,7 +2,6 @@
 #include <algorithm>
 #include "fern/core/base_class.h"
 #include "fern/core/raster_traits.h"
-#include "fern/core/thread_client.h"
 #include "fern/algorithm/policy/execution_policy.h"
 #include "fern/algorithm/core/index_ranges.h"
 
@@ -360,7 +359,7 @@ struct GradientXByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Value const& value,
         Result& result)
     {
@@ -395,14 +394,14 @@ struct GradientXByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Value const& value,
         Result& result)
     {
         assert(size(value, 0) == size(result, 0));
         assert(size(value, 1) == size(result, 1));
 
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size1 = size(result, 0);
         size_t const size2 = size(result, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
@@ -458,7 +457,7 @@ struct GradientYByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Value const& value,
         Result& result)
     {
@@ -493,14 +492,14 @@ struct GradientYByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Value const& value,
         Result& result)
     {
         assert(size(value, 0) == size(result, 0));
         assert(size(value, 1) == size(result, 1));
 
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size1 = size(result, 0);
         size_t const size2 = size(result, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
@@ -532,17 +531,16 @@ template<
     typename Value,
     typename Result,
     typename ExecutionPolicy>
-class GradientX
+struct GradientX
 {
 
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& execution_policy,
+        ExecutionPolicy& execution_policy,
         Value const& value,
         Result& result)
     {
-
         GradientXByArgumentCategory<
             InputNoDataPolicy,
             OutputNoDataPolicy,
@@ -574,7 +572,7 @@ struct GradientX<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& execution_policy,
+        ExecutionPolicy& execution_policy,
         Value const& value,
         Result& result)
     {
@@ -589,8 +587,8 @@ struct GradientX<
                     base_class<argument_category<Value>, raster_2d_tag>>
                         ::apply(
                             input_no_data_policy, output_no_data_policy,
-                            fern::algorithm::detail::get_policy<
-                                SequentialExecutionPolicy>(execution_policy),
+                            boost::get<SequentialExecutionPolicy>(
+                                execution_policy),
                             value, result);
                 break;
             }
@@ -604,8 +602,8 @@ struct GradientX<
                     base_class<argument_category<Value>, raster_2d_tag>>
                         ::apply(
                             input_no_data_policy, output_no_data_policy,
-                            fern::algorithm::detail::get_policy<
-                                ParallelExecutionPolicy>(execution_policy),
+                            boost::get<ParallelExecutionPolicy>(
+                                execution_policy),
                             value, result);
                 break;
             }
@@ -621,17 +619,16 @@ template<
     typename Value,
     typename Result,
     typename ExecutionPolicy>
-class GradientY
+struct GradientY
 {
 
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& execution_policy,
+        ExecutionPolicy& execution_policy,
         Value const& value,
         Result& result)
     {
-
         GradientYByArgumentCategory<
             InputNoDataPolicy,
             OutputNoDataPolicy,
@@ -663,7 +660,7 @@ struct GradientY<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& execution_policy,
+        ExecutionPolicy& execution_policy,
         Value const& value,
         Result& result)
     {
@@ -678,7 +675,7 @@ struct GradientY<
                     base_class<argument_category<Value>, raster_2d_tag>>
                         ::apply(
                             input_no_data_policy, output_no_data_policy,
-                            fern::algorithm::detail::get_policy<
+                            boost::get<
                                 SequentialExecutionPolicy>(execution_policy),
                             value, result);
                 break;
@@ -693,7 +690,7 @@ struct GradientY<
                     base_class<argument_category<Value>, raster_2d_tag>>
                         ::apply(
                             input_no_data_policy, output_no_data_policy,
-                            fern::algorithm::detail::get_policy<
+                            boost::get<
                                 ParallelExecutionPolicy>(execution_policy),
                             value, result);
                 break;
@@ -716,7 +713,7 @@ template<
 void gradient_x(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Value const& value,
     Result& result)
 {
@@ -741,7 +738,7 @@ template<
 void gradient_y(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Value const& value,
     Result& result)
 {

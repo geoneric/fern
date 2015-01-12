@@ -3,7 +3,6 @@
 #include "fern/core/assert.h"
 #include "fern/core/base_class.h"
 #include "fern/core/collection_traits.h"
-#include "fern/core/thread_client.h"
 #include "fern/algorithm/core/index_ranges.h"
 #include "fern/algorithm/policy/execution_policy.h"
 
@@ -450,7 +449,7 @@ struct BinaryLocalOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& /* execution_policy */,
+        ExecutionPolicy& /* execution_policy */,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
@@ -493,7 +492,7 @@ struct BinaryLocalOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
@@ -539,14 +538,14 @@ struct BinaryLocalOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
     {
         assert(size(value1) == size(result));
 
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size_ = size(value1);
         std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size_);
         std::vector<std::future<void>> futures;
@@ -604,7 +603,7 @@ struct BinaryLocalOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
@@ -650,12 +649,12 @@ struct BinaryLocalOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
     {
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size_ = size(value2);
         std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size_);
         std::vector<std::future<void>> futures;
@@ -713,7 +712,7 @@ struct BinaryLocalOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
@@ -760,7 +759,7 @@ struct BinaryLocalOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
@@ -768,7 +767,7 @@ struct BinaryLocalOperation<
         assert(size(value1) == size(value2));
         assert(size(value2) == size(result));
 
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size_ = size(value1);
         std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size_);
         std::vector<std::future<void>> futures;
@@ -826,7 +825,7 @@ struct BinaryLocalOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& execution_policy,
+        ExecutionPolicy& execution_policy,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
@@ -845,8 +844,7 @@ struct BinaryLocalOperation<
                     SequentialExecutionPolicy,
                     array_1d_tag, array_1d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        detail::get_policy<SequentialExecutionPolicy>(
-                            execution_policy),
+                        boost::get<SequentialExecutionPolicy>(execution_policy),
                         value1, value2, result);
                 break;
             }
@@ -863,8 +861,7 @@ struct BinaryLocalOperation<
                     ParallelExecutionPolicy,
                     array_1d_tag, array_1d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        detail::get_policy<ParallelExecutionPolicy>(
-                            execution_policy),
+                        boost::get<ParallelExecutionPolicy>(execution_policy),
                         value1, value2, result);
                 break;
             }
@@ -902,7 +899,7 @@ struct BinaryLocalOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
@@ -951,7 +948,7 @@ struct BinaryLocalOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
@@ -959,7 +956,7 @@ struct BinaryLocalOperation<
         assert(size(value1, 0) == size(result, 0));
         assert(size(value1, 1) == size(result, 1));
 
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size1 = size(value1, 0);
         size_t const size2 = size(value1, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
@@ -1019,7 +1016,7 @@ struct BinaryLocalOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& execution_policy,
+        ExecutionPolicy& execution_policy,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
@@ -1038,8 +1035,7 @@ struct BinaryLocalOperation<
                     SequentialExecutionPolicy,
                     array_2d_tag, array_0d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        detail::get_policy<SequentialExecutionPolicy>(
-                            execution_policy),
+                        boost::get<SequentialExecutionPolicy>(execution_policy),
                         value1, value2, result);
                 break;
             }
@@ -1056,8 +1052,7 @@ struct BinaryLocalOperation<
                     ParallelExecutionPolicy,
                     array_2d_tag, array_0d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        detail::get_policy<ParallelExecutionPolicy>(
-                            execution_policy),
+                        boost::get<ParallelExecutionPolicy>(execution_policy),
                         value1, value2, result);
                 break;
             }
@@ -1095,7 +1090,7 @@ struct BinaryLocalOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
@@ -1144,7 +1139,7 @@ struct BinaryLocalOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
@@ -1152,7 +1147,7 @@ struct BinaryLocalOperation<
         assert(size(value2, 0) == size(result, 0));
         assert(size(value2, 1) == size(result, 1));
 
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size1 = size(value2, 0);
         size_t const size2 = size(value2, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
@@ -1212,7 +1207,7 @@ struct BinaryLocalOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& execution_policy,
+        ExecutionPolicy& execution_policy,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
@@ -1231,8 +1226,7 @@ struct BinaryLocalOperation<
                     SequentialExecutionPolicy,
                     array_0d_tag, array_2d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        detail::get_policy<SequentialExecutionPolicy>(
-                            execution_policy),
+                        boost::get<SequentialExecutionPolicy>(execution_policy),
                         value1, value2, result);
                 break;
             }
@@ -1249,8 +1243,7 @@ struct BinaryLocalOperation<
                     ParallelExecutionPolicy,
                     array_0d_tag, array_2d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        detail::get_policy<ParallelExecutionPolicy>(
-                            execution_policy),
+                        boost::get<ParallelExecutionPolicy>(execution_policy),
                         value1, value2, result);
                 break;
             }
@@ -1288,7 +1281,7 @@ struct BinaryLocalOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
@@ -1339,7 +1332,7 @@ struct BinaryLocalOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
@@ -1349,7 +1342,7 @@ struct BinaryLocalOperation<
         assert(size(value1, 0) == size(result, 0));
         assert(size(value1, 1) == size(result, 1));
 
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size1 = size(value1, 0);
         size_t const size2 = size(value1, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
@@ -1409,7 +1402,7 @@ struct BinaryLocalOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& execution_policy,
+        ExecutionPolicy& execution_policy,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
@@ -1428,8 +1421,7 @@ struct BinaryLocalOperation<
                     SequentialExecutionPolicy,
                     array_2d_tag, array_2d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        detail::get_policy<SequentialExecutionPolicy>(
-                            execution_policy),
+                        boost::get<SequentialExecutionPolicy>(execution_policy),
                         value1, value2, result);
                 break;
             }
@@ -1446,8 +1438,7 @@ struct BinaryLocalOperation<
                     ParallelExecutionPolicy,
                     array_2d_tag, array_2d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        detail::get_policy<ParallelExecutionPolicy>(
-                            execution_policy),
+                        boost::get<ParallelExecutionPolicy>(execution_policy),
                         value1, value2, result);
                 break;
             }
@@ -1489,7 +1480,7 @@ template<
 void binary_local_operation(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Value1 const& value1,
     Value2 const& value2,
     Result& result)

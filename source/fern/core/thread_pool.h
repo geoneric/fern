@@ -10,6 +10,8 @@
 
 namespace fern {
 
+size_t hardware_concurrency();
+
 //! Thread pool.
 /*!
     This thread pool contains a collection of threads that will pop tasks
@@ -18,8 +20,6 @@ namespace fern {
     This means that it is OK to construct a ThreadPool instance without
     submitting tasks to it. The worker threads won't burn CPU cycles in
     that case.
-
-    \sa            ThreadClient
 */
 class ThreadPool
 {

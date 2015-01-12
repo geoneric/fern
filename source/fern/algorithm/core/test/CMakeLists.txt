@@ -23,5 +23,6 @@ FOREACH(NAME ${TEST_NAMES})
     ADD_UNIT_TEST2(
         SCOPE algorithm_core
         NAME ${NAME}
-        LINK_LIBRARIES fern_algorithm_core fern_feature_core fern_core)
+        LINK_LIBRARIES fern_algorithm_policy fern_algorithm_core
+            fern_feature_core fern_core)
 ENDFOREACH()

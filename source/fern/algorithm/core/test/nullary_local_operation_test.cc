@@ -11,25 +11,12 @@
 namespace fa = fern::algorithm;
 
 
-struct Fixture
-{
-
-    Fixture()
-        : _thread_client(2)
-    {
-    }
-
-    fern::ThreadClient _thread_client;
-
-};
-
-
 using ArgumentValue = int32_t;
 using ResultValue = int32_t;
 using Algorithm = fa::defined::detail::Algorithm;
 
 
-BOOST_FIXTURE_TEST_SUITE(nullary_local_operation, Fixture)
+BOOST_AUTO_TEST_SUITE(nullary_local_operation)
 
 BOOST_AUTO_TEST_CASE(array_0d)
 {
