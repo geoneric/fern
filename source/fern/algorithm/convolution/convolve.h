@@ -62,7 +62,7 @@ template<
 void convolve(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     SourceImage const& source,
     Kernel const& kernel,
     DestinationImage& destination)
@@ -104,7 +104,7 @@ template<
     typename DestinationImage
 >
 void convolve(
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     SourceImage const& source,
     Kernel const& kernel,
     DestinationImage& destination)

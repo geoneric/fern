@@ -1,6 +1,5 @@
 #pragma once
 #include "fern/core/base_class.h"
-#include "fern/core/thread_client.h"
 #include "fern/algorithm/core/index_ranges.h"
 
 
@@ -100,7 +99,7 @@ struct IntersectNoDataByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& /* execution_policy */,
+        ExecutionPolicy& /* execution_policy */,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
@@ -135,7 +134,7 @@ struct IntersectNoDataByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
@@ -175,7 +174,7 @@ struct IntersectNoDataByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
@@ -185,7 +184,7 @@ struct IntersectNoDataByArgumentCategory<
         assert(size(value2, 0) == size(result, 0));
         assert(size(value2, 1) == size(result, 1));
 
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size1 = size(result, 0);
         size_t const size2 = size(result, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
@@ -219,8 +218,28 @@ template<
     typename Value2,
     typename Result,
     typename ExecutionPolicy>
-class IntersectNoDataByExecutionPolicy
+struct IntersectNoDataByExecutionPolicy
 {
+
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        ExecutionPolicy& execution_policy,
+        Value1 const& value1,
+        Value2 const& value2,
+        Result& result)
+    {
+        IntersectNoDataByArgumentCategory<
+            InputNoDataPolicy, OutputNoDataPolicy,
+            Value1, Value2, Result,
+            ExecutionPolicy,
+            base_class<argument_category<Value1>, array_2d_tag>,
+            base_class<argument_category<Value2>, array_2d_tag>>
+                ::apply(
+                    input_no_data_policy, output_no_data_policy,
+                    execution_policy, value1, value2, result);
+    }
+
 };
 
 
@@ -242,7 +261,7 @@ struct IntersectNoDataByExecutionPolicy<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& execution_policy,
+        ExecutionPolicy& execution_policy,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
@@ -260,8 +279,8 @@ struct IntersectNoDataByExecutionPolicy<
                     base_class<argument_category<Value2>, array_2d_tag>>
                         ::apply(
                             input_no_data_policy, output_no_data_policy,
-                            fern::algorithm::detail::get_policy<
-                                SequentialExecutionPolicy>(execution_policy),
+                            boost::get<SequentialExecutionPolicy>(
+                                execution_policy),
                             value1, value2, result);
                 break;
             }
@@ -277,8 +296,8 @@ struct IntersectNoDataByExecutionPolicy<
                     base_class<argument_category<Value2>, array_2d_tag>>
                         ::apply(
                             input_no_data_policy, output_no_data_policy,
-                            fern::algorithm::detail::get_policy<
-                                ParallelExecutionPolicy>(execution_policy),
+                            boost::get<ParallelExecutionPolicy>(
+                                execution_policy),
                             value1, value2, result);
                 break;
             }
@@ -300,7 +319,7 @@ template<
 void intersect_no_data(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Value1 const& value1,
     Value2 const& value2,
     Result& result)

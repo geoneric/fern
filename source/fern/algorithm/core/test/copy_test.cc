@@ -8,12 +8,14 @@
 namespace fa = fern::algorithm;
 
 
-BOOST_FIXTURE_TEST_SUITE(copy, fern::ThreadClient)
+BOOST_AUTO_TEST_SUITE(copy)
 
+template<
+    typename ExecutionPolicy>
 void test_array_1d(
-    fa::ExecutionPolicy const& execution_policy)
+    ExecutionPolicy& execution_policy)
 {
-    size_t const nr_threads{fern::ThreadClient::hardware_concurrency()};
+    size_t const nr_threads{fern::hardware_concurrency()};
     size_t const nr_elements{10 * nr_threads};
     std::vector<int> source(nr_elements);
     std::vector<int> result_we_want(nr_elements);
@@ -45,12 +47,16 @@ void test_array_1d(
 BOOST_AUTO_TEST_CASE(array_1d_sequential)
 {
     test_array_1d(fa::sequential);
+    fa::ExecutionPolicy execution_policy{fa::sequential};
+    test_array_1d(execution_policy);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_1d_parallel)
 {
     test_array_1d(fa::parallel);
+    fa::ExecutionPolicy execution_policy{fa::parallel};
+    test_array_1d(execution_policy);
 }
 
 

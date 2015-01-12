@@ -2,7 +2,6 @@
 #include "fern/core/array_2d_traits.h"
 #include "fern/core/constant_traits.h"
 #include "fern/core/base_class.h"
-#include "fern/core/thread_client.h"
 #include "fern/algorithm/core/index_ranges.h"
 #include "fern/algorithm/policy/execution_policy.h"
 
@@ -153,7 +152,7 @@ struct CoverByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& /* execution_policy */,
+        ExecutionPolicy& /* execution_policy */,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
@@ -189,7 +188,7 @@ struct CoverByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
@@ -228,7 +227,7 @@ struct CoverByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
@@ -236,7 +235,7 @@ struct CoverByArgumentCategory<
         assert(size(value1, 0) == size(result, 0));
         assert(size(value1, 1) == size(result, 1));
 
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size1 = size(result, 0);
         size_t const size2 = size(result, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
@@ -283,7 +282,7 @@ struct CoverByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
@@ -324,7 +323,7 @@ struct CoverByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
@@ -334,7 +333,7 @@ struct CoverByArgumentCategory<
         assert(size(value2, 0) == size(result, 0));
         assert(size(value2, 1) == size(result, 1));
 
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size1 = size(result, 0);
         size_t const size2 = size(result, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
@@ -373,7 +372,7 @@ struct CoverByExecutionPolicy
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& execution_policy,
+        ExecutionPolicy& execution_policy,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
@@ -412,7 +411,7 @@ struct CoverByExecutionPolicy<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& execution_policy,
+        ExecutionPolicy& execution_policy,
         Value1 const& value1,
         Value2 const& value2,
         Result& result)
@@ -430,8 +429,8 @@ struct CoverByExecutionPolicy<
                     base_class<argument_category<Value2>, array_2d_tag>>
                         ::apply(
                             input_no_data_policy, output_no_data_policy,
-                            fern::algorithm::detail::get_policy<
-                                SequentialExecutionPolicy>(execution_policy),
+                            boost::get<SequentialExecutionPolicy>(
+                                execution_policy),
                             value1, value2, result);
                 break;
             }
@@ -447,8 +446,8 @@ struct CoverByExecutionPolicy<
                     base_class<argument_category<Value2>, array_2d_tag>>
                         ::apply(
                             input_no_data_policy, output_no_data_policy,
-                            fern::algorithm::detail::get_policy<
-                                ParallelExecutionPolicy>(execution_policy),
+                            boost::get<ParallelExecutionPolicy>(
+                                execution_policy),
                             value1, value2, result);
                 break;
             }
@@ -470,7 +469,7 @@ template<
 static void cover(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Value1 const& value1,
     Value2 const& value2,
     Result& result)

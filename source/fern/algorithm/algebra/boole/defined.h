@@ -29,7 +29,7 @@ template<
 >
 void defined(
     InputNoDataPolicy const& input_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Result& result)
 {
     FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Result>)
@@ -47,7 +47,7 @@ template<
     typename Result
 >
 void defined(
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Result& result)
 {
     using InputNoDataPolicy = InputNoDataPolicies<SkipNoData<>>;

@@ -76,7 +76,7 @@ BOOST_AUTO_TEST_CASE(array_2d_masked_0d)
     result_we_want[2][1] = value1[2][1];
     result_we_want[2][2] = value1[2][2];
 
-    auto const& execution_policy(fa::sequential);
+    auto& execution_policy(fa::sequential);
 
     fa::core::cover(input_no_data_policy, output_no_data_policy,
         execution_policy, value1, value2, result_we_got);
@@ -157,7 +157,7 @@ BOOST_AUTO_TEST_CASE(array_2d_masked_2d)
     result_we_want.mask()[2][0] = true;
 
 
-    auto const& execution_policy(fa::sequential);
+    auto& execution_policy(fa::sequential);
 
     fa::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
         result_we_got1.mask(), true);

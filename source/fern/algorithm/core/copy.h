@@ -31,7 +31,7 @@ template<
 void copy(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Source const& source,
     Range const& range,
     Destination& destination,
@@ -63,7 +63,7 @@ template<
     typename Destination,
     typename Position>
 void copy(
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Source const& source,
     Range const& range,
     Destination& destination,

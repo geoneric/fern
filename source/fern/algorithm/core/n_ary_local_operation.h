@@ -48,7 +48,7 @@ struct NAryLocalOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& execution_policy,
+        ExecutionPolicy& execution_policy,
         Result& result,
         Value1 const& value1,
         Value2 const& value2)
@@ -91,7 +91,7 @@ struct NAryLocalOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& execution_policy,
+        ExecutionPolicy& execution_policy,
         Result& result,
         Value1 const& value1,
         Value2 const& value2,
@@ -163,7 +163,7 @@ template<
 void n_ary_local_operation(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Result& result,
     Values&&... values)
 {

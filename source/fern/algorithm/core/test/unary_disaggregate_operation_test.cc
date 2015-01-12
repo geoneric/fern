@@ -11,19 +11,6 @@
 namespace fa = fern::algorithm;
 
 
-struct Fixture
-{
-
-    Fixture()
-        : _thread_client(2)
-    {
-    }
-
-    fern::ThreadClient _thread_client;
-
-};
-
-
 using ArgumentValue = int32_t;
 using ResultValue = int32_t;
 
@@ -32,7 +19,7 @@ template<
 using Algorithm = fa::fill::detail::Algorithm<Value>;
 
 
-BOOST_FIXTURE_TEST_SUITE(unary_disaggregate_operation, Fixture)
+BOOST_AUTO_TEST_SUITE(unary_disaggregate_operation)
 
 BOOST_AUTO_TEST_CASE(array_0d)
 {

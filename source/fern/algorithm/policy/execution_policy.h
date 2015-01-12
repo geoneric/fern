@@ -1,5 +1,6 @@
 #pragma once
 #include <boost/variant.hpp>
+#include "fern/algorithm/policy/parallel_execution_policy.h"
 
 
 namespace fern {
@@ -13,32 +14,20 @@ namespace algorithm {
 class SequentialExecutionPolicy{};
 
 
-//! Execution policy class for parallel execution of algorithms.
-/*!
-    @ingroup    fern_algorithm_policy_group
-    @sa         sequential, parallel, ExecutionPolicy
-*/
-class ParallelExecutionPolicy{};
-
-
 //! Execution policy instance for sequential execution of algorithms.
 /*!
     @ingroup    fern_algorithm_policy_group
     @sa         parallel, ExecutionPolicy
 */
-constexpr SequentialExecutionPolicy sequential = SequentialExecutionPolicy();
+extern SequentialExecutionPolicy sequential;
 
 
 //! Execution policy instance for parallel execution of algorithms.
 /*!
     @ingroup    fern_algorithm_policy_group
     @sa         sequential, ExecutionPolicy
-
-    Parallel algorithms make use of the ThreadClient::pool(). Therefore,
-    a ThreadClient instance must be created before calling algorithms with
-    the parallel execution policy.
 */
-constexpr ParallelExecutionPolicy parallel = ParallelExecutionPolicy();
+extern ParallelExecutionPolicy parallel;
 
 
 //! Generic execution policy class.
@@ -69,28 +58,6 @@ namespace detail {
 // ExecutionPolicy variant. policy.which() returns these id's.
 size_t const sequential_execution_policy_id = 0;
 size_t const parallel_execution_policy_id = 1;
-
-
-template<
-    typename ConcreteExecutionPolicy>
-inline ConcreteExecutionPolicy& get_policy(
-    ExecutionPolicy& policy)
-{
-    // For some reason calling boost::get with instance instead of pointer
-    // conflicts with fern::get.
-    return *boost::get<ConcreteExecutionPolicy>(&policy);
-}
-
-
-template<
-    typename ConcreteExecutionPolicy>
-inline ConcreteExecutionPolicy const& get_policy(
-    ExecutionPolicy const& policy)
-{
-    // For some reason calling boost::get with instance instead of pointer
-    // conflicts with fern::get.
-    return *boost::get<ConcreteExecutionPolicy>(&policy);
-}
 
 } // namespace detail
 } // namespace algorithm

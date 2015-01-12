@@ -10,12 +10,14 @@
 namespace fa = fern::algorithm;
 
 
-BOOST_FIXTURE_TEST_SUITE(decompress, fern::ThreadClient)
+BOOST_AUTO_TEST_SUITE(decompress)
 
+template<
+    typename ExecutionPolicy>
 void test_array_1d(
-    fa::ExecutionPolicy const& execution_policy)
+    ExecutionPolicy& execution_policy)
 {
-    size_t const nr_threads{fern::ThreadClient::hardware_concurrency()};
+    size_t const nr_threads{fern::hardware_concurrency()};
     size_t const nr_elements{10 * nr_threads};
     std::vector<int> values(nr_elements);
     std::vector<int> compress_result_we_want(nr_elements);
@@ -51,19 +53,25 @@ void test_array_1d(
 BOOST_AUTO_TEST_CASE(array_1d_sequential)
 {
     test_array_1d(fa::sequential);
+    fa::ExecutionPolicy execution_policy{fa::sequential};
+    test_array_1d(execution_policy);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_1d_parallel)
 {
     test_array_1d(fa::parallel);
+    fa::ExecutionPolicy execution_policy{fa::parallel};
+    test_array_1d(execution_policy);
 }
 
 
+template<
+    typename ExecutionPolicy>
 void test_array_1d_masked(
-    fa::ExecutionPolicy const& execution_policy)
+    ExecutionPolicy& execution_policy)
 {
-    size_t const nr_threads{fern::ThreadClient::hardware_concurrency()};
+    size_t const nr_threads{fern::hardware_concurrency()};
     size_t const nr_elements{10 * nr_threads};
     std::vector<int> values(nr_elements);
     std::vector<int> compress_result_we_want(nr_elements);
@@ -109,21 +117,27 @@ void test_array_1d_masked(
 BOOST_AUTO_TEST_CASE(array_1d_masked_sequential)
 {
     test_array_1d_masked(fa::sequential);
+    fa::ExecutionPolicy execution_policy{fa::sequential};
+    test_array_1d_masked(execution_policy);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_1d_masked_parallel)
 {
     test_array_1d_masked(fa::parallel);
+    fa::ExecutionPolicy execution_policy{fa::parallel};
+    test_array_1d_masked(execution_policy);
 }
 
 
+template<
+    typename ExecutionPolicy>
 void test_array_2d(
-    fa::ExecutionPolicy const& execution_policy)
+    ExecutionPolicy& execution_policy)
 {
     // Create 2D array of values.
     // Compression should result in the same array.
-    size_t const nr_threads{fern::ThreadClient::hardware_concurrency()};
+    size_t const nr_threads{fern::hardware_concurrency()};
     size_t const nr_rows{30 * nr_threads};
     size_t const nr_cols{20 * nr_threads};
     size_t const nr_elements{nr_rows * nr_cols};
@@ -163,19 +177,25 @@ void test_array_2d(
 BOOST_AUTO_TEST_CASE(array_2d_sequential)
 {
     test_array_2d(fa::sequential);
+    fa::ExecutionPolicy execution_policy{fa::sequential};
+    test_array_2d(execution_policy);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_2d_parallel)
 {
     test_array_2d(fa::parallel);
+    fa::ExecutionPolicy execution_policy{fa::parallel};
+    test_array_2d(execution_policy);
 }
 
 
+template<
+    typename ExecutionPolicy>
 void test_array_2d_masked(
-    fa::ExecutionPolicy const& execution_policy)
+    ExecutionPolicy& execution_policy)
 {
-    size_t const nr_threads{fern::ThreadClient::hardware_concurrency()};
+    size_t const nr_threads{fern::hardware_concurrency()};
     size_t const nr_rows{30 * nr_threads};
     size_t const nr_cols{20 * nr_threads};
     size_t const nr_elements{nr_rows * nr_cols};
@@ -225,12 +245,16 @@ void test_array_2d_masked(
 BOOST_AUTO_TEST_CASE(array_2d_masked_sequential)
 {
     test_array_2d_masked(fa::sequential);
+    fa::ExecutionPolicy execution_policy{fa::sequential};
+    test_array_2d_masked(execution_policy);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_2d_masked_parallel)
 {
     test_array_2d_masked(fa::parallel);
+    fa::ExecutionPolicy execution_policy{fa::parallel};
+    test_array_2d_masked(execution_policy);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

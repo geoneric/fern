@@ -31,7 +31,7 @@ template<
 >
 void defined(
     InputNoDataPolicy const& input_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Result& result)
 {
     // 1. Whatever the input-no-data policy, fill result with false.

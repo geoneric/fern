@@ -11,10 +11,12 @@
 namespace fa = fern::algorithm;
 
 
-BOOST_FIXTURE_TEST_SUITE(merge_no_data, fern::ThreadClient)
+BOOST_AUTO_TEST_SUITE(merge_no_data)
 
+template<
+    typename ExecutionPolicy>
 void test_array_0d(
-    fa::ExecutionPolicy const& execution_policy)
+    ExecutionPolicy& execution_policy)
 {
     int value;
     int result_we_want;
@@ -35,17 +37,23 @@ void test_array_0d(
 BOOST_AUTO_TEST_CASE(array_0d_sequential)
 {
     test_array_0d(fa::sequential);
+    fa::ExecutionPolicy execution_policy{fa::sequential};
+    test_array_0d(execution_policy);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_0d_parallel)
 {
     test_array_0d(fa::parallel);
+    fa::ExecutionPolicy execution_policy{fa::parallel};
+    test_array_0d(execution_policy);
 }
 
 
+template<
+    typename ExecutionPolicy>
 void test_array_0d_masked(
-    fa::ExecutionPolicy const& execution_policy)
+    ExecutionPolicy& execution_policy)
 {
     fern::MaskedConstant<int> value;
     fern::MaskedConstant<int> result_we_want;
@@ -90,22 +98,28 @@ void test_array_0d_masked(
 BOOST_AUTO_TEST_CASE(array_0d_masked_sequential)
 {
     test_array_0d_masked(fa::sequential);
+    fa::ExecutionPolicy execution_policy{fa::sequential};
+    test_array_0d_masked(execution_policy);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_0d_masked_parallel)
 {
     test_array_0d_masked(fa::parallel);
+    fa::ExecutionPolicy execution_policy{fa::parallel};
+    test_array_0d_masked(execution_policy);
 }
 
 
 // TODO 1d
 
 
+template<
+    typename ExecutionPolicy>
 void test_array_2d(
-    fa::ExecutionPolicy const& execution_policy)
+    ExecutionPolicy& execution_policy)
 {
-    size_t const nr_threads{fern::ThreadClient::hardware_concurrency()};
+    size_t const nr_threads{fern::hardware_concurrency()};
     size_t const nr_rows{30 * nr_threads};
     size_t const nr_cols{20 * nr_threads};
     size_t const nr_elements{nr_rows * nr_cols};
@@ -129,19 +143,25 @@ void test_array_2d(
 BOOST_AUTO_TEST_CASE(array_2d_sequential)
 {
     test_array_2d(fa::sequential);
+    fa::ExecutionPolicy execution_policy{fa::sequential};
+    test_array_2d(execution_policy);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_2d_parallel)
 {
     test_array_2d(fa::parallel);
+    fa::ExecutionPolicy execution_policy{fa::parallel};
+    test_array_2d(execution_policy);
 }
 
 
+template<
+    typename ExecutionPolicy>
 void test_array_2d_masked(
-    fa::ExecutionPolicy const& execution_policy)
+    ExecutionPolicy& execution_policy)
 {
-    size_t const nr_threads{fern::ThreadClient::hardware_concurrency()};
+    size_t const nr_threads{fern::hardware_concurrency()};
     size_t const nr_rows{3 * nr_threads};
     size_t const nr_cols{2 * nr_threads};
     size_t const nr_elements{nr_rows * nr_cols};
@@ -187,12 +207,16 @@ void test_array_2d_masked(
 BOOST_AUTO_TEST_CASE(array_2d_masked_sequential)
 {
     test_array_2d_masked(fa::sequential);
+    fa::ExecutionPolicy execution_policy{fa::sequential};
+    test_array_2d_masked(execution_policy);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_2d_masked_parallel)
 {
     test_array_2d_masked(fa::parallel);
+    fa::ExecutionPolicy execution_policy{fa::parallel};
+    test_array_2d_masked(execution_policy);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

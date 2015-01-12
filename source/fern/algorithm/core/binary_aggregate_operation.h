@@ -1,7 +1,6 @@
 #pragma once
 #include "fern/core/argument_traits.h"
 #include "fern/core/base_class.h"
-#include "fern/core/thread_client.h"
 #include "fern/feature/core/masked_array_traits.h"
 #include "fern/algorithm/core/index_ranges.h"
 #include "fern/algorithm/policy/policies.h"
@@ -242,7 +241,7 @@ struct Aggregate<
     static void apply(
         Aggregator const& aggregator,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& /* execution_policy */,
+        ExecutionPolicy& /* execution_policy */,
         Results const& results,
         Result& result)
     {
@@ -274,7 +273,7 @@ struct Aggregate<
     static void apply(
         Aggregator const& aggregator,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& /* execution_policy */,
+        ExecutionPolicy& /* execution_policy */,
         Results const& results,
         Result& result)
     {
@@ -332,7 +331,7 @@ struct BinaryAggregateOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& /* execution_policy */,
+        ExecutionPolicy& /* execution_policy */,
         Value const& values,
         value_type<Value> const& value,
         Result& result)
@@ -372,7 +371,7 @@ struct BinaryAggregateOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Value const& values,
         value_type<Value> const& value,
         Result& result)
@@ -413,7 +412,7 @@ struct BinaryAggregateOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& execution_policy,
+        ParallelExecutionPolicy& execution_policy,
         Value const& values,
         value_type<Value> const& value,
         Result& result)
@@ -425,7 +424,7 @@ struct BinaryAggregateOperation<
         //     IndexRanges<1>{IndexRange(0, size(values))},
         //     values, value, result);
 
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size_ = size(values);
         std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size_);
         std::vector<std::future<void>> futures;
@@ -494,7 +493,7 @@ struct BinaryAggregateOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& execution_policy,
+        ExecutionPolicy& execution_policy,
         Value const& values,
         value_type<Value> const& value,
         Result& result)
@@ -513,8 +512,7 @@ struct BinaryAggregateOperation<
                     SequentialExecutionPolicy,
                     array_1d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        fern::algorithm::detail::get_policy<
-                            SequentialExecutionPolicy>(execution_policy),
+                        boost::get<SequentialExecutionPolicy>(execution_policy),
                         values, value, result);
                 break;
             }
@@ -531,8 +529,7 @@ struct BinaryAggregateOperation<
                     ParallelExecutionPolicy,
                     array_1d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        fern::algorithm::detail::get_policy<
-                            ParallelExecutionPolicy>(execution_policy),
+                        boost::get<ParallelExecutionPolicy>(execution_policy),
                         values, value, result);
                 break;
             }
@@ -567,7 +564,7 @@ struct BinaryAggregateOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Value const& values,
         value_type<Value> const& value,
         Result& result)
@@ -610,12 +607,12 @@ struct BinaryAggregateOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& execution_policy,
+        ParallelExecutionPolicy& execution_policy,
         Value const& values,
         value_type<Value> const& value,
         Result& result)
     {
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size1 = size(values, 0);
         size_t const size2 = size(values, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
@@ -686,7 +683,7 @@ struct BinaryAggregateOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& execution_policy,
+        ExecutionPolicy& execution_policy,
         Value const& values,
         value_type<Value> const& value,
         Result& result)
@@ -705,8 +702,7 @@ struct BinaryAggregateOperation<
                     SequentialExecutionPolicy,
                     array_2d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        fern::algorithm::detail::get_policy<
-                            SequentialExecutionPolicy>(execution_policy),
+                        boost::get<SequentialExecutionPolicy>(execution_policy),
                         values, value, result);
                 break;
             }
@@ -723,8 +719,7 @@ struct BinaryAggregateOperation<
                     ParallelExecutionPolicy,
                     array_2d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        fern::algorithm::detail::get_policy<
-                            ParallelExecutionPolicy>(execution_policy),
+                        boost::get<ParallelExecutionPolicy>(execution_policy),
                         values, value, result);
                 break;
             }
@@ -755,7 +750,7 @@ template<
 void binary_aggregate_operation(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Value const& values,
     value_type<Value> const& value,
     Result& result)

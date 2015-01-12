@@ -25,7 +25,7 @@ template<
 void count(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Value const& values,
     value_type<Value> const& value,
     Result& result)
@@ -48,7 +48,7 @@ template<
     typename Result
 >
 void count(
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Value const& values,
     value_type<Value> const& value,
     Result& result)

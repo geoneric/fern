@@ -116,7 +116,7 @@ template<
 void pow(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Base const& base,
     Exponent const& exponent,
     Result& result)
@@ -141,7 +141,7 @@ template<
     typename Result
 >
 void pow(
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Base const& base,
     Exponent const& exponent,
     Result& result)

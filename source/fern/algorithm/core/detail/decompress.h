@@ -1,7 +1,6 @@
 #pragma once
 #include "fern/core/assert.h"
 #include "fern/core/base_class.h"
-#include "fern/core/thread_client.h"
 #include "fern/algorithm/core/index_ranges.h"
 #include "fern/algorithm/policy/execution_policy.h"
 
@@ -109,7 +108,7 @@ struct DeCompressByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Value const& value,
         Result& result)
     {
@@ -140,7 +139,7 @@ struct DeCompressByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& /* execution_policy */,
         Value const& value,
         Result& result)
     {
@@ -172,7 +171,7 @@ struct DeCompressByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Value const& value,
         Result& result)
     {
@@ -204,7 +203,7 @@ struct DeCompressByArgumentCategory<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& /* execution_policy */,
         Value const& value,
         Result& result)
     {
@@ -223,14 +222,50 @@ template<
     typename InputNoDataPolicy,
     typename OutputNoDataPolicy,
     typename Value,
-    typename Result>
+    typename Result,
+    typename ExecutionPolicy>
 struct DeCompressByExecutionPolicy
 {
 
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& execution_policy,
+        ExecutionPolicy& execution_policy,
+        Value const& value,
+        Result& result)
+    {
+        DeCompressByArgumentCategory<
+            InputNoDataPolicy,
+            OutputNoDataPolicy,
+            Value,
+            Result,
+            ExecutionPolicy,
+            base_class<argument_category<Result>, array_2d_tag>>
+                ::apply(
+                    input_no_data_policy, output_no_data_policy,
+                    execution_policy, value, result);
+    }
+
+};
+
+
+template<
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result>
+struct DeCompressByExecutionPolicy<
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Value,
+    Result,
+    ExecutionPolicy>
+{
+
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        ExecutionPolicy& execution_policy,
         Value const& value,
         Result& result)
     {
@@ -245,8 +280,8 @@ struct DeCompressByExecutionPolicy
                     base_class<argument_category<Result>, array_2d_tag>>
                         ::apply(
                             input_no_data_policy, output_no_data_policy,
-                            fern::algorithm::detail::get_policy<
-                                SequentialExecutionPolicy>(execution_policy),
+                            boost::get<SequentialExecutionPolicy>(
+                                execution_policy),
                             value, result);
                 break;
             }
@@ -260,8 +295,8 @@ struct DeCompressByExecutionPolicy
                     base_class<argument_category<Result>, array_2d_tag>>
                         ::apply(
                             input_no_data_policy, output_no_data_policy,
-                            fern::algorithm::detail::get_policy<
-                                ParallelExecutionPolicy>(execution_policy),
+                            boost::get<ParallelExecutionPolicy>(
+                                execution_policy),
                             value, result);
                 break;
             }
@@ -282,12 +317,12 @@ template<
 static void decompress(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Value const& value,
     Result& result)
 {
     dispatch::DeCompressByExecutionPolicy<InputNoDataPolicy,
-        OutputNoDataPolicy, Value, Result>::apply(
+        OutputNoDataPolicy, Value, Result, ExecutionPolicy>::apply(
             input_no_data_policy, output_no_data_policy, execution_policy,
             value, result);
 }

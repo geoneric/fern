@@ -13,7 +13,6 @@ SET(SOURCES
     stack
     stopwatch
     string
-    thread_client
     thread_pool
     type_traits
     validate_error

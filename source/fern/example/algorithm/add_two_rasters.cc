@@ -14,13 +14,6 @@ namespace example {
 // Execution policy to use.
 fern::algorithm::ExecutionPolicy execution_policy = fern::algorithm::parallel;
 
-// In case the execution policy is fern::parallel, we need to create a
-// ThreadClient instance. This will, in turn, create a thread pool which is
-// used by the parallel algorithms.
-// In case the execution policy is fern::sequential, we don't need to create
-// a ThreadClient instance, although it doesn't hurt.
-fern::ThreadClient client;
-
 }  // namespace example
 
 

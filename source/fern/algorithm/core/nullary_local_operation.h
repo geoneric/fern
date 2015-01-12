@@ -3,7 +3,6 @@
 #include "fern/core/assert.h"
 #include "fern/core/base_class.h"
 #include "fern/core/collection_traits.h"
-#include "fern/core/thread_client.h"
 #include "fern/algorithm/core/index_ranges.h"
 #include "fern/algorithm/policy/execution_policy.h"
 
@@ -159,7 +158,7 @@ struct NullaryLocalOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& /* execution_policy */,
+        ExecutionPolicy& /* execution_policy */,
         Result& result)
     {
         Algorithm algorithm;
@@ -190,7 +189,7 @@ struct NullaryLocalOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Result& result)
     {
         Algorithm algorithm;
@@ -222,10 +221,10 @@ struct NullaryLocalOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Result& result)
     {
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size_ = size(result);
         std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size_);
         std::vector<std::future<void>> futures;
@@ -273,7 +272,7 @@ struct NullaryLocalOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Result& result)
     {
         Algorithm algorithm;
@@ -308,10 +307,10 @@ struct NullaryLocalOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Result& result)
     {
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size1 = size(result, 0);
         size_t const size2 = size(result, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
@@ -361,7 +360,7 @@ struct NullaryLocalOperation<
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
         OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy const& execution_policy,
+        ExecutionPolicy& execution_policy,
         Result& result)
     {
         switch(execution_policy.which()) {
@@ -374,8 +373,7 @@ struct NullaryLocalOperation<
                     SequentialExecutionPolicy,
                     array_2d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        detail::get_policy<SequentialExecutionPolicy>(
-                            execution_policy),
+                        boost::get<SequentialExecutionPolicy>(execution_policy),
                         result);
                 break;
             }
@@ -388,8 +386,7 @@ struct NullaryLocalOperation<
                     ParallelExecutionPolicy,
                     array_2d_tag>::apply(
                         input_no_data_policy, output_no_data_policy,
-                        detail::get_policy<ParallelExecutionPolicy>(
-                            execution_policy),
+                        boost::get<ParallelExecutionPolicy>(execution_policy),
                         result);
                 break;
             }
@@ -425,7 +422,7 @@ template<
 void nullary_local_operation(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Result& result)
 {
     detail::dispatch::NullaryLocalOperation<

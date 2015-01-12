@@ -46,7 +46,7 @@ template<
 void lax(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Value const& value,
     value_type<Value> const& fraction,
     Result& result)
@@ -68,7 +68,7 @@ template<
     typename Value,
     typename Result>
 void lax(
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Value const& value,
     value_type<Value> const& fraction,
     Result& result)

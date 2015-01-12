@@ -26,7 +26,7 @@ template<
 void atan(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Value const& value,
     Result& result)
 {
@@ -47,7 +47,7 @@ template<
     typename Value,
     typename Result>
 void atan(
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Value const& value,
     Result& result)
 {

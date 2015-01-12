@@ -24,7 +24,7 @@ void verify_value(
 }
 
 
-BOOST_FIXTURE_TEST_SUITE(sum, fern::ThreadClient)
+BOOST_AUTO_TEST_SUITE(sum)
 
 BOOST_AUTO_TEST_CASE(d0_array)
 {

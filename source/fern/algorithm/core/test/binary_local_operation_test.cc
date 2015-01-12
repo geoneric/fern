@@ -266,8 +266,6 @@ BOOST_AUTO_TEST_CASE(d1_array_d0_array_sequential)
 /// 
 ///     OutputNoDataPolicy output_no_data_policy;
 /// 
-///     fern::ThreadClient client(2);
-/// 
 ///     // vector
 ///     {
 ///         using Argument = std::vector<ArgumentValue>;
@@ -448,8 +446,6 @@ BOOST_AUTO_TEST_CASE(d1_array_d0_array_sequential)
 /// 
 ///     OutputNoDataPolicy output_no_data_policy;
 /// 
-///     fern::ThreadClient client(2);
-/// 
 ///     Argument argument{
 ///         { -2, -1 },
 ///         {  0,  9 },
@@ -576,7 +572,6 @@ BOOST_AUTO_TEST_SUITE_END()
 /// #include "fern/feature/core/masked_array_traits.h"
 /// #include "fern/feature/core/masked_constant_traits.h"
 /// #include "fern/feature/core/test/masked_constant.h"
-/// #include "fern/core/thread_client.h"
 /// #include "fern/core/vector_traits.h"
 /// #include "fern/algorithm/policy/policies.h"
 /// #include "fern/algorithm/statistic/count.h"
@@ -876,7 +871,6 @@ BOOST_AUTO_TEST_SUITE_END()
 // 
 //     // Concurrent.
 //     {
-//         fern::ThreadClient client;
 //         fern::concurrent::execute(add, array1, array2, plus_result_we_get);
 //         fern::concurrent::execute(equal, plus_result_we_get,
 //             plus_result_we_want, equal_result_we_get);
@@ -936,7 +930,6 @@ BOOST_AUTO_TEST_SUITE_END()
 //         plus_result_we_want.data(), [](int32_t value){ return value + value; });
 // 
 //     // Verify executor can handle masked result.
-//     fern::ThreadClient client;
 //     fern::concurrent::execute(add, array1, array2, plus_result_we_get);
 //     fern::concurrent::execute(equal, plus_result_we_get,
 //         plus_result_we_want, equal_result_we_get);
@@ -1382,9 +1375,6 @@ BOOST_AUTO_TEST_SUITE_END()
 ///             BOOST_CHECK_EQUAL(count_result, equal_result.num_elements());
 ///         }
 /// 
-///         // Make sure the concurrent call have a pool to work with.
-///         fern::ThreadClient client;
-/// 
 ///         // Concurrent.
 ///         {
 ///             fern::concurrent::execute(add, argument1, argument2, plus_result);
@@ -1683,7 +1673,6 @@ BOOST_AUTO_TEST_SUITE_END()
 ///     // Concurrent.
 ///     {
 ///         result.fill(false);
-///         fern::ThreadClient client;
 ///         fern::concurrent::execute(equal, array1, array2, result);
 ///         BOOST_CHECK(std::all_of(result.data(), result.data() +
 ///             result.num_elements(), [](bool equal){ return equal; }));
@@ -1706,7 +1695,6 @@ BOOST_AUTO_TEST_SUITE_END()
 ///                 OutputNoDataPolicy(result.mask(), true));
 /// 
 ///         // Verify executor can handle masked result.
-///         fern::ThreadClient client;
 ///         fern::concurrent::execute(equal, array1, array2, result);
 ///         BOOST_CHECK(std::all_of(result.data(), result.data() +
 ///             result.num_elements(), [](bool equal){ return equal; }));

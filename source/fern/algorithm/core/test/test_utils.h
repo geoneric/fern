@@ -13,7 +13,7 @@ template<
     class ExecutionPolicy,
     class Value>
 bool compare(
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Value const& value1,
     Value const& value2)
 {
@@ -36,7 +36,7 @@ template<
     class ExecutionPolicy,
     class Value>
 bool compare(
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     MaskedConstant<Value> const& value1,
     MaskedConstant<Value> const& value2)
 {
@@ -57,7 +57,7 @@ template<
     class Value,
     size_t nr_dimensions>
 bool compare(
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     MaskedArray<Value, nr_dimensions> const& value1,
     MaskedArray<Value, nr_dimensions> const& value2)
 {
@@ -80,7 +80,7 @@ template<
     class Value,
     size_t nr_dimensions>
 bool compare(
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     MaskedRaster<Value, nr_dimensions> const& value1,
     MaskedRaster<Value, nr_dimensions> const& value2)
 {

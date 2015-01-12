@@ -2,7 +2,6 @@
 #include "fern/core/assert.h"
 #include "fern/core/base_class.h"
 #include "fern/core/point.h"
-#include "fern/core/thread_client.h"
 #include "fern/algorithm/core/copy.h"
 #include "fern/algorithm/core/index_ranges.h"
 #include "fern/algorithm/policy/execution_policy.h"
@@ -154,7 +153,7 @@ struct CompressByArgumentCategory<
     // compress(1d)
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Value const& value,
         Result& result,
         Count& count)
@@ -185,7 +184,7 @@ struct CompressByArgumentCategory<
     // compress(1d)
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Value const& value,
         Result& result,
         Count& count)
@@ -193,7 +192,7 @@ struct CompressByArgumentCategory<
         assert(size(value) <= size(result));
 
         // Compress each region individually.
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size_ = size(result);
         std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size_);
         std::vector<std::future<void>> futures;
@@ -237,7 +236,7 @@ struct CompressByArgumentCategory<
     // compress(2d)
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
-        SequentialExecutionPolicy const& /* execution_policy */,
+        SequentialExecutionPolicy& /* execution_policy */,
         Value const& value,
         Result& result,
         Count& count)
@@ -269,13 +268,13 @@ struct CompressByArgumentCategory<
     // compress(2d)
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
-        ParallelExecutionPolicy const& /* execution_policy */,
+        ParallelExecutionPolicy& execution_policy,
         Value const& value,
         Result& result,
         Count& count)
     {
         // Compress each region individually.
-        ThreadPool& pool(ThreadClient::pool());
+        ThreadPool& pool(execution_policy.thread_pool());
         size_t const size1 = size(value, 0);
         size_t const size2 = size(value, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
@@ -308,13 +307,49 @@ template<
     typename InputNoDataPolicy,
     typename Value,
     typename Result,
-    typename Count>
+    typename Count,
+    typename ExecutionPolicy>
 struct CompressByExecutionPolicy
 {
 
     static void apply(
         InputNoDataPolicy const& input_no_data_policy,
-        ExecutionPolicy const& execution_policy,
+        ExecutionPolicy& execution_policy,
+        Value const& value,
+        Result& result,
+        Count& count)
+    {
+        CompressByArgumentCategory<
+            InputNoDataPolicy,
+            Value,
+            Result,
+            Count,
+            ExecutionPolicy,
+            base_class<argument_category<Value>, array_2d_tag>>
+                ::apply(
+                    input_no_data_policy, execution_policy,
+                    value, result, count);
+    }
+
+};
+
+
+template<
+    typename InputNoDataPolicy,
+    typename Value,
+    typename Result,
+    typename Count>
+struct CompressByExecutionPolicy<
+    InputNoDataPolicy,
+    Value,
+    Result,
+    Count,
+    ExecutionPolicy>
+{
+
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        ExecutionPolicy& execution_policy,
         Value const& value,
         Result& result,
         Count& count)
@@ -330,8 +365,8 @@ struct CompressByExecutionPolicy
                     base_class<argument_category<Value>, array_2d_tag>>
                         ::apply(
                             input_no_data_policy,
-                            fern::algorithm::detail::get_policy<
-                                SequentialExecutionPolicy>(execution_policy),
+                            boost::get<SequentialExecutionPolicy>(
+                                execution_policy),
                             value, result, count);
                 break;
             }
@@ -345,8 +380,8 @@ struct CompressByExecutionPolicy
                     base_class<argument_category<Value>, array_2d_tag>>
                         ::apply(
                             input_no_data_policy,
-                            fern::algorithm::detail::get_policy<
-                                ParallelExecutionPolicy>(execution_policy),
+                            boost::get<ParallelExecutionPolicy>(
+                                execution_policy),
                             value, result, count);
                 break;
             }
@@ -366,13 +401,13 @@ template<
     typename Count>
 static void compress(
     InputNoDataPolicy const& input_no_data_policy,
-    ExecutionPolicy const& execution_policy,
+    ExecutionPolicy& execution_policy,
     Value const& value,
     Result& result,
     Count& count)
 {
     dispatch::CompressByExecutionPolicy<InputNoDataPolicy,
-        Value, Result, Count>::apply(
+        Value, Result, Count, ExecutionPolicy>::apply(
             input_no_data_policy, execution_policy, value, result, count);
 }
 
