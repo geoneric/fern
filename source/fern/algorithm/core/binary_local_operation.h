@@ -593,6 +593,82 @@ struct BinaryLocalOperation<
     Value1,
     Value2,
     Result,
+    ExecutionPolicy,
+    array_1d_tag,
+    array_0d_tag>
+
+{
+
+    // f(1d array, 0d array)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        ExecutionPolicy& execution_policy,
+        Value1 const& value1,
+        Value2 const& value2,
+        Result& result)
+    {
+        switch(execution_policy.which()) {
+            case detail::sequential_execution_policy_id: {
+                BinaryLocalOperation<
+                    Algorithm,
+                    OutOfDomainPolicy,
+                    OutOfRangePolicy,
+                    InputNoDataPolicy,
+                    OutputNoDataPolicy,
+                    Value1,
+                    Value2,
+                    Result,
+                    SequentialExecutionPolicy,
+                    array_1d_tag, array_0d_tag>::apply(
+                        input_no_data_policy, output_no_data_policy,
+                        boost::get<SequentialExecutionPolicy>(execution_policy),
+                        value1, value2, result);
+                break;
+            }
+            case detail::parallel_execution_policy_id: {
+                BinaryLocalOperation<
+                    Algorithm,
+                    OutOfDomainPolicy,
+                    OutOfRangePolicy,
+                    InputNoDataPolicy,
+                    OutputNoDataPolicy,
+                    Value1,
+                    Value2,
+                    Result,
+                    ParallelExecutionPolicy,
+                    array_1d_tag, array_0d_tag>::apply(
+                        input_no_data_policy, output_no_data_policy,
+                        boost::get<ParallelExecutionPolicy>(execution_policy),
+                        value1, value2, result);
+                break;
+            }
+        }
+    }
+
+};
+
+
+
+
+template<
+    typename Algorithm,
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value1,
+    typename Value2,
+    typename Result>
+struct BinaryLocalOperation<
+    Algorithm,
+    OutOfDomainPolicy,
+    OutOfRangePolicy,
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Value1,
+    Value2,
+    Result,
     SequentialExecutionPolicy,
     array_0d_tag,
     array_1d_tag>
