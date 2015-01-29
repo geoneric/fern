@@ -109,7 +109,7 @@ struct Slope<
         {
             // TODO Base output no-data policy on dz_dx.
             using INP1 = decltype(std::get<0>(input_no_data_policy));
-            using INP2 = SkipNoData<>;
+            using INP2 = SkipNoData;
             // using ONP = typename std::remove_reference<decltype(
             //     output_no_data_policy)>::type;
 
@@ -144,7 +144,7 @@ struct Slope<
 
         {
             using INP1 = decltype(std::get<0>(input_no_data_policy));
-            using INP2 = SkipNoData<>;
+            using INP2 = SkipNoData;
             // using ONP = typename std::remove_reference<decltype(
             //     output_no_data_policy)>::type;
 
@@ -162,7 +162,7 @@ struct Slope<
 
         {
             using INP1 = decltype(std::get<0>(input_no_data_policy));
-            using INP2 = SkipNoData<>;
+            using INP2 = SkipNoData;
             // using ONP = typename std::remove_reference<decltype(
             //     output_no_data_policy)>::type;
 
@@ -179,7 +179,7 @@ struct Slope<
 
         {
             using INP1 = decltype(std::get<0>(input_no_data_policy));
-            using INP2 = SkipNoData<>;
+            using INP2 = SkipNoData;
             // using ONP = typename std::remove_reference<decltype(
             //     output_no_data_policy)>::type;
 
@@ -196,7 +196,7 @@ struct Slope<
 
         {
             using INP1 = decltype(std::get<0>(input_no_data_policy));
-            using INP2 = SkipNoData<>;
+            using INP2 = SkipNoData;
 
             InputNoDataPolicies<INP1, INP2> input_no_data_policy_{
                 {std::get<0>(input_no_data_policy)}, {}};

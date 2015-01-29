@@ -27,11 +27,8 @@ void if_(
     fa::InputNoDataPolicies<
         fa::DetectNoData<detail::MaskedRaster<T1>>,
         fa::DetectNoData<detail::MaskedRaster<T2>>,
-        fa::SkipNoData<>
-    > input_no_data_policy{
-        fa::DetectNoData<detail::MaskedRaster<T1>>{condition},
-        fa::DetectNoData<detail::MaskedRaster<T2>>{true_value},
-        fa::SkipNoData<>{}};
+        fa::SkipNoData
+    > input_no_data_policy{{condition}, {true_value}, {}};
     fa::MarkNoData<detail::MaskedRaster<R>> output_no_data_policy(result);
 
     fa::core::if_(input_no_data_policy, output_no_data_policy,

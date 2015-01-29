@@ -1,7 +1,6 @@
 #pragma once
 #include "fern/core/argument_traits.h"
 #include "fern/core/type_traits.h"
-#include "fern/algorithm/policy/input_no_data_policies.h"
 
 
 namespace fern {
@@ -17,10 +16,8 @@ namespace algorithm {
     collection. So, copy construction and copy assignment are not supported.
 */
 template<
-    typename Collection,
-    typename... ArgumentNoDataPolicies>
-class DetectNoData:
-    public InputNoDataPolicies<ArgumentNoDataPolicies...>
+    typename Collection>
+class DetectNoData
 {
 
 private:
@@ -40,8 +37,7 @@ public:
                                         size_t index2,
                                         size_t index3) const;
 
-                   DetectNoData        (Collection const& collection,
-                                        ArgumentNoDataPolicies&&... policies);
+                   DetectNoData        (Collection const& collection);
 
     virtual        ~DetectNoData       ()=default;
 
@@ -65,35 +61,27 @@ private:
 
 
 template<
-    typename Collection,
-    typename... ArgumentNoDataPolicies>
-inline DetectNoData<Collection, ArgumentNoDataPolicies...>::
-        DetectNoData(
-    Collection const& collection,
-    ArgumentNoDataPolicies&&... policies)
+    typename Collection>
+inline DetectNoData<Collection>::DetectNoData(
+    Collection const& collection)
 
-    : InputNoDataPolicies<ArgumentNoDataPolicies...>(
-          std::forward<ArgumentNoDataPolicies>(policies)...),
-      _collection(collection)
+    : _collection(collection)
 
 {
 }
 
 
 template<
-    typename Collection,
-    typename... ArgumentNoDataPolicies>
-inline bool DetectNoData<Collection, ArgumentNoDataPolicies...>
-        ::is_no_data() const
+    typename Collection>
+inline bool DetectNoData<Collection>::is_no_data() const
 {
     return fern::is_no_data(get(_collection));
 }
 
 
 template<
-    typename Collection,
-    typename... ArgumentNoDataPolicies>
-inline bool DetectNoData<Collection, ArgumentNoDataPolicies...>::is_no_data(
+    typename Collection>
+inline bool DetectNoData<Collection>::is_no_data(
     size_t index) const
 {
     return fern::is_no_data(get(_collection, index));
@@ -101,9 +89,8 @@ inline bool DetectNoData<Collection, ArgumentNoDataPolicies...>::is_no_data(
 
 
 template<
-    typename Collection,
-    typename... ArgumentNoDataPolicies>
-inline bool DetectNoData<Collection, ArgumentNoDataPolicies...>::is_no_data(
+    typename Collection>
+inline bool DetectNoData<Collection>::is_no_data(
     size_t index1,
     size_t index2) const
 {
@@ -112,9 +99,8 @@ inline bool DetectNoData<Collection, ArgumentNoDataPolicies...>::is_no_data(
 
 
 template<
-    typename Collection,
-    typename... ArgumentNoDataPolicies>
-inline bool DetectNoData<Collection, ArgumentNoDataPolicies...>::is_no_data(
+    typename Collection>
+inline bool DetectNoData<Collection>::is_no_data(
     size_t index1,
     size_t index2,
     size_t index3) const

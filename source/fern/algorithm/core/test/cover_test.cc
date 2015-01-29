@@ -44,15 +44,10 @@ BOOST_AUTO_TEST_CASE(array_2d_masked_0d)
     int const value2{3};
     fern::MaskedArray<int, 2> result_we_got(fern::extents[nr_rows][nr_cols]);
 
-    fa::DetectNoDataByValue<fern::Mask<2>> value1_input_no_data_policy(
-        value1.mask(), true);
-    fa::SkipNoData<> value2_input_no_data_policy;
-
-    fa::DetectNoDataByValue<fern::Mask<2>,
+    fa::InputNoDataPolicies<
         fa::DetectNoDataByValue<fern::Mask<2>>,
-        fa::SkipNoData<>> input_no_data_policy(result_we_got.mask(), true,
-            std::move(value1_input_no_data_policy),
-            std::move(value2_input_no_data_policy));
+        fa::SkipNoData> input_no_data_policy{{value1.mask(), true}, {}};
+
     fa::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
         result_we_got.mask(), true);
 
@@ -164,12 +159,10 @@ BOOST_AUTO_TEST_CASE(array_2d_masked_2d)
 
     // result1 = cover(value1, value2)
     {
-        fa::DetectNoDataByValue<fern::Mask<2>,
+        fa::InputNoDataPolicies<
             fa::DetectNoDataByValue<fern::Mask<2>>,
-            fa::DetectNoDataByValue<fern::Mask<2>>> input_no_data_policy(
-                result_we_got1.mask(), true,
-                fa::DetectNoDataByValue<fern::Mask<2>>(value1.mask(), true),
-                fa::DetectNoDataByValue<fern::Mask<2>>(value2.mask(), true));
+            fa::DetectNoDataByValue<fern::Mask<2>>> input_no_data_policy{
+                {value1.mask(), true}, {value2.mask(), true}};
 
         fa::algebra::and_(execution_policy, value1.mask(), value2.mask(),
             result_we_got1.mask());
@@ -181,13 +174,10 @@ BOOST_AUTO_TEST_CASE(array_2d_masked_2d)
 
     // result2 = cover(result1, value3)
     {
-        fa::DetectNoDataByValue<fern::Mask<2>,
+        fa::InputNoDataPolicies<
             fa::DetectNoDataByValue<fern::Mask<2>>,
-            fa::DetectNoDataByValue<fern::Mask<2>>> input_no_data_policy(
-                result_we_got2.mask(), true,
-                fa::DetectNoDataByValue<fern::Mask<2>>(result_we_got1.mask(),
-                    true),
-                fa::DetectNoDataByValue<fern::Mask<2>>(value3.mask(), true));
+            fa::DetectNoDataByValue<fern::Mask<2>>> input_no_data_policy{
+                {result_we_got1.mask(), true}, {value3.mask(), true}};
 
         fa::algebra::and_(execution_policy, result_we_got1.mask(),
             value3.mask(), result_we_got2.mask());

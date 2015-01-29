@@ -73,7 +73,7 @@ void lax(
     value_type<Value> const& fraction,
     Result& result)
 {
-    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData<>>;
+    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;

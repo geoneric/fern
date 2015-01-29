@@ -309,7 +309,7 @@ BOOST_AUTO_TEST_CASE(convolve)
             using NormalizePolicy=fa::convolve::DivideByWeights;
             using OutOfImagePolicy=
                 fa::convolve::ReplaceOutOfImageByFocalAverage;
-            using InputNoDataPolicy=fa::InputNoDataPolicies<fa::SkipNoData<>>;
+            using InputNoDataPolicy=fa::InputNoDataPolicies<fa::SkipNoData>;
             using OutputNoDataPolicy=fa::DontMarkNoData;
 
             OutputNoDataPolicy output_no_data_policy;

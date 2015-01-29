@@ -65,7 +65,7 @@ void compress(
     Result& result,
     Count& count)
 {
-    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData<>>;
+    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData>;
 
     compress<>(InputNoDataPolicy{{}}, execution_policy, value, result, count);
 }

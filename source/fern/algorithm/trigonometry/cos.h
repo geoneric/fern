@@ -84,7 +84,7 @@ void cos(
     Value const& value,
     Result& result)
 {
-    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData<>>;
+    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;

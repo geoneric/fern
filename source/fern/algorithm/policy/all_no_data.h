@@ -9,15 +9,10 @@ namespace algorithm {
 /*!
     @ingroup    fern_algorithm_policy_group
     @brief      Input no-data policy that does not test for no-data.
-    @tparam     ArgumentNoDataPolicies Input no-data policies of the
-                algorithm's arguments.
 
     Use this policy whenever all input contains no-data.
 */
-template<
-    typename... ArgumentNoDataPolicies>
-class AllNoData:
-    public InputNoDataPolicies<ArgumentNoDataPolicies...>
+class AllNoData
 {
 
 public:
@@ -32,8 +27,6 @@ public:
     static constexpr bool is_no_data   (size_t index1,
                                         size_t index2,
                                         size_t index3);
-
-                   AllNoData           (ArgumentNoDataPolicies&&... policies);
 
                    AllNoData           (AllNoData const&)=delete;
 
@@ -54,9 +47,7 @@ public:
 
     This method is called in case of a 0D input.
 */
-template<
-    typename... ArgumentNoDataPolicies>
-inline constexpr bool AllNoData<ArgumentNoDataPolicies...>::is_no_data()
+inline constexpr bool AllNoData::is_no_data()
 {
     return true;
 }
@@ -68,9 +59,7 @@ inline constexpr bool AllNoData<ArgumentNoDataPolicies...>::is_no_data()
 
     This method is called in case of a 1D input.
 */
-template<
-    typename... ArgumentNoDataPolicies>
-inline constexpr bool AllNoData<ArgumentNoDataPolicies...>::is_no_data(
+inline constexpr bool AllNoData::is_no_data(
     size_t /* index */)
 {
     return true;
@@ -84,9 +73,7 @@ inline constexpr bool AllNoData<ArgumentNoDataPolicies...>::is_no_data(
 
     This method is called in case of a 2D input.
 */
-template<
-    typename... ArgumentNoDataPolicies>
-inline constexpr bool AllNoData<ArgumentNoDataPolicies...>::is_no_data(
+inline constexpr bool AllNoData::is_no_data(
     size_t /* index1 */,
     size_t /* index2 */)
 {
@@ -102,35 +89,12 @@ inline constexpr bool AllNoData<ArgumentNoDataPolicies...>::is_no_data(
 
     This method is called in case of a 3D input.
 */
-template<
-    typename... ArgumentNoDataPolicies>
-inline constexpr bool AllNoData<ArgumentNoDataPolicies...>::is_no_data(
+inline constexpr bool AllNoData::is_no_data(
     size_t /* index1 */,
     size_t /* index2 */,
     size_t /* index3 */)
 {
     return true;
-}
-
-
-/*!
-    @brief      Constructor.
-    @param      policies Policies of inputs.
-    @sa         fern::algorithm::core::unite_no_data,
-                fern::algorithm::core::intersect_no_data
-
-    Most algorithms don't need input no-data policies of each individual
-    input. Often, they only need to know the union of the input no-data.
-*/
-template<
-    typename... ArgumentNoDataPolicies>
-inline AllNoData<ArgumentNoDataPolicies...>::AllNoData(
-    ArgumentNoDataPolicies&&... policies)
-
-    : InputNoDataPolicies<ArgumentNoDataPolicies...>(
-          std::forward<ArgumentNoDataPolicies>(policies)...)
-
-{
 }
 
 } // namespace algorithm

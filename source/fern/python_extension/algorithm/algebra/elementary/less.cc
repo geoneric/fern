@@ -48,10 +48,8 @@ void less(
 {
     fa::InputNoDataPolicies<
         fa::DetectNoData<detail::MaskedRaster<T1>>,
-        fa::SkipNoData<>
-    > input_no_data_policy{
-        fa::DetectNoData<detail::MaskedRaster<T1>>{lhs},
-        fa::SkipNoData<>{}};
+        fa::SkipNoData
+    > input_no_data_policy{{lhs}, {}};
     fa::MarkNoData<detail::MaskedRaster<R>> output_no_data_policy(result);
 
     fa::algebra::less(input_no_data_policy, output_no_data_policy,
@@ -70,11 +68,9 @@ void less(
     detail::MaskedRaster<R>& result)
 {
     fa::InputNoDataPolicies<
-        fa::SkipNoData<>,
+        fa::SkipNoData,
         fa::DetectNoData<detail::MaskedRaster<T2>>
-    > input_no_data_policy{
-        fa::SkipNoData<>{},
-        fa::DetectNoData<detail::MaskedRaster<T2>>{rhs}};
+    > input_no_data_policy{{}, {rhs}};
     fa::MarkNoData<detail::MaskedRaster<R>> output_no_data_policy(result);
 
     fa::algebra::less(input_no_data_policy, output_no_data_policy,

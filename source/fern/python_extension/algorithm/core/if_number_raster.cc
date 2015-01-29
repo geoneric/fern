@@ -26,11 +26,11 @@ void if_(
 {
     fa::InputNoDataPolicies<
         fa::DetectNoData<detail::MaskedRaster<T1>>,
-        fa::SkipNoData<>,
+        fa::SkipNoData,
         fa::DetectNoData<detail::MaskedRaster<T3>>
     > input_no_data_policy{
         fa::DetectNoData<detail::MaskedRaster<T1>>{condition},
-        fa::SkipNoData<>{},
+        fa::SkipNoData{},
         fa::DetectNoData<detail::MaskedRaster<T3>>{false_value}};
     fa::MarkNoData<detail::MaskedRaster<R>> output_no_data_policy(result);
 

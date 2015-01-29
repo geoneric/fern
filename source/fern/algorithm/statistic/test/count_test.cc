@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_CASE(masked_d0_array)
 
     // MaskedConstant with masking count. --------------------------------------
     using InputNoDataPolicy = fa::InputNoDataPolicies<
-        fa::DetectNoDataByValue<bool>, fa::SkipNoData<>>;
+        fa::DetectNoDataByValue<bool>, fa::SkipNoData>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
 
     // Constant is not masked.
@@ -132,7 +132,7 @@ BOOST_AUTO_TEST_CASE(d1_array)
 BOOST_AUTO_TEST_CASE(masked_d1_array)
 {
     using InputNoDataPolicy = fa::InputNoDataPolicies<
-        fa::DetectNoDataByValue<fern::Mask<1>>, fa::SkipNoData<>>;
+        fa::DetectNoDataByValue<fern::Mask<1>>, fa::SkipNoData>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
 
     fern::MaskedArray<int32_t, 1> array{ 1, 2, 3, 5 };
@@ -219,7 +219,7 @@ BOOST_AUTO_TEST_CASE(masked_d2_array)
     // 2d masked array with masking count
     {
         using InputNoDataPolicy = fa::InputNoDataPolicies<
-            fa::DetectNoDataByValue<fern::Mask<2>>, fa::SkipNoData<>>;
+            fa::DetectNoDataByValue<fern::Mask<2>>, fa::SkipNoData>;
         using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
 
         // Mask the 9.
@@ -282,8 +282,8 @@ BOOST_AUTO_TEST_CASE(concurrent)
     }
 
     {
-        using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData<>,
-              fa::SkipNoData<>>;
+        using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData,
+              fa::SkipNoData>;
         using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
         fern::MaskedConstant<size_t> result_we_got;
         OutputNoDataPolicy output_no_data_policy(result_we_got.mask(), true);

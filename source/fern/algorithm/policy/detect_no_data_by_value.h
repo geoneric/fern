@@ -2,7 +2,6 @@
 #include <cstddef>
 #include <utility>
 #include "fern/core/argument_traits.h"
-#include "fern/algorithm/policy/input_no_data_policies.h"
 
 
 namespace fern {
@@ -18,10 +17,8 @@ namespace algorithm {
     copy construction and copy assignment are not supported.
 */
 template<
-    typename Mask,
-    typename... ArgumentNoDataPolicies>
-class DetectNoDataByValue:
-    public InputNoDataPolicies<ArgumentNoDataPolicies...>
+    typename Mask>
+class DetectNoDataByValue
 {
 
 private:
@@ -42,8 +39,7 @@ public:
                                         size_t index3) const;
 
                    DetectNoDataByValue (Mask const& mask,
-                                        value_type const& no_data_value,
-                                        ArgumentNoDataPolicies&&... policies);
+                                        value_type const& no_data_value);
 
     virtual        ~DetectNoDataByValue()=default;
 
@@ -71,17 +67,13 @@ private:
 
 
 template<
-    typename Mask,
-    typename... ArgumentNoDataPolicies>
-inline DetectNoDataByValue<Mask, ArgumentNoDataPolicies...>::
+    typename Mask>
+inline DetectNoDataByValue<Mask>::
         DetectNoDataByValue(
     Mask const& mask,
-    value_type const& no_data_value,
-    ArgumentNoDataPolicies&&... policies)
+    value_type const& no_data_value)
 
-    : InputNoDataPolicies<ArgumentNoDataPolicies...>(
-          std::forward<ArgumentNoDataPolicies>(policies)...),
-      _mask(mask),
+    : _mask(mask),
       _no_data_value(no_data_value)
 
 {
@@ -89,9 +81,8 @@ inline DetectNoDataByValue<Mask, ArgumentNoDataPolicies...>::
 
 
 template<
-    typename Mask,
-    typename... ArgumentNoDataPolicies>
-inline bool DetectNoDataByValue<Mask, ArgumentNoDataPolicies...>
+    typename Mask>
+inline bool DetectNoDataByValue<Mask>
         ::is_no_data() const
 {
     return get(_mask) == _no_data_value;
@@ -99,9 +90,8 @@ inline bool DetectNoDataByValue<Mask, ArgumentNoDataPolicies...>
 
 
 template<
-    typename Mask,
-    typename... ArgumentNoDataPolicies>
-inline bool DetectNoDataByValue<Mask, ArgumentNoDataPolicies...>::is_no_data(
+    typename Mask>
+inline bool DetectNoDataByValue<Mask>::is_no_data(
     size_t index) const
 {
     return get(_mask, index) == _no_data_value;
@@ -109,9 +99,8 @@ inline bool DetectNoDataByValue<Mask, ArgumentNoDataPolicies...>::is_no_data(
 
 
 template<
-    typename Mask,
-    typename... ArgumentNoDataPolicies>
-inline bool DetectNoDataByValue<Mask, ArgumentNoDataPolicies...>::is_no_data(
+    typename Mask>
+inline bool DetectNoDataByValue<Mask>::is_no_data(
     size_t index1,
     size_t index2) const
 {
@@ -120,9 +109,8 @@ inline bool DetectNoDataByValue<Mask, ArgumentNoDataPolicies...>::is_no_data(
 
 
 template<
-    typename Mask,
-    typename... ArgumentNoDataPolicies>
-inline bool DetectNoDataByValue<Mask, ArgumentNoDataPolicies...>::is_no_data(
+    typename Mask>
+inline bool DetectNoDataByValue<Mask>::is_no_data(
     size_t index1,
     size_t index2,
     size_t index3) const

@@ -48,7 +48,7 @@ void merge_no_data(
     Value const& value,
     Result& result)
 {
-    using InputNoDataPolicy = SkipNoData<SkipNoData<>, SkipNoData<>>;
+    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData, SkipNoData>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;

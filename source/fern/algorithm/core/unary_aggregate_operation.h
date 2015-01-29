@@ -237,7 +237,7 @@ struct Aggregate<
         // The final result is not masking, so the results aren't
         // either.
         aggregator.template apply<OutOfRangePolicy>(
-            InputNoDataPolicies<SkipNoData<>>{{}}, output_no_data_policy,
+            InputNoDataPolicies<SkipNoData>{{}}, output_no_data_policy,
             sequential, results_, result);
     }
 

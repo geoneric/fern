@@ -50,7 +50,7 @@ void defined(
     ExecutionPolicy& execution_policy,
     Result& result)
 {
-    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData<>>;
+    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData>;
 
     defined<>(InputNoDataPolicy{{}}, execution_policy, result);
 }

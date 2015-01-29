@@ -146,7 +146,7 @@ void pow(
     Exponent const& exponent,
     Result& result)
 {
-    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData<>, SkipNoData<>>;
+    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData, SkipNoData>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;

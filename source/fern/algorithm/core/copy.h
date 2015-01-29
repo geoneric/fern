@@ -69,7 +69,7 @@ void copy(
     Destination& destination,
     Position const& position)
 {
-    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData<>>;
+    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;

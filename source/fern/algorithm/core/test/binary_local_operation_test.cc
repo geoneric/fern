@@ -31,8 +31,8 @@ BOOST_AUTO_TEST_SUITE(binary_local_operation)
 
 BOOST_AUTO_TEST_CASE(d0_array_d0_array)
 {
-    using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData<>,
-          fa::SkipNoData<>>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData,
+          fa::SkipNoData>;
     using OutputNoDataPolicy = fa::DontMarkNoData;
     using Argument1 = ArgumentValue;
     using Argument2 = ArgumentValue;
@@ -169,8 +169,8 @@ BOOST_AUTO_TEST_CASE(masked_d0_array_d0_array)
 
 BOOST_AUTO_TEST_CASE(d1_array_d0_array_sequential)
 {
-    using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData<>,
-          fa::SkipNoData<>>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData,
+          fa::SkipNoData>;
     using OutputNoDataPolicy = fa::DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
@@ -261,7 +261,7 @@ BOOST_AUTO_TEST_CASE(d1_array_d0_array_sequential)
 
 /// BOOST_AUTO_TEST_CASE(array_1d_parallel)
 /// {
-///     using InputNoDataPolicy = fern::SkipNoData<>;
+///     using InputNoDataPolicy = fern::SkipNoData;
 ///     using OutputNoDataPolicy = fern::DontMarkNoData;
 /// 
 ///     OutputNoDataPolicy output_no_data_policy;
@@ -402,7 +402,7 @@ BOOST_AUTO_TEST_CASE(d1_array_d0_array_sequential)
 /// 
 /// BOOST_AUTO_TEST_CASE(array_2d_sequential)
 /// {
-///     using InputNoDataPolicy = fern::SkipNoData<>;
+///     using InputNoDataPolicy = fern::SkipNoData;
 ///     using OutputNoDataPolicy = fern::DontMarkNoData;
 ///     using Argument = fern::Array<ArgumentValue, 2>;
 ///     using Result = fern::Array<ResultValue, 2>;
@@ -439,7 +439,7 @@ BOOST_AUTO_TEST_CASE(d1_array_d0_array_sequential)
 /// 
 /// BOOST_AUTO_TEST_CASE(array_2d_parallel)
 /// {
-///     using InputNoDataPolicy = fern::SkipNoData<>;
+///     using InputNoDataPolicy = fern::SkipNoData;
 ///     using OutputNoDataPolicy = fern::DontMarkNoData;
 ///     using Argument = fern::Array<ArgumentValue, 2>;
 ///     using Result = fern::Array<ResultValue, 2>;
@@ -883,7 +883,7 @@ BOOST_AUTO_TEST_SUITE_END()
 // 
 // BOOST_AUTO_TEST_CASE(concurrent_masked_d2_array)
 // {
-//     using InputNoDataPolicy = fern::SkipNoData<>;
+//     using InputNoDataPolicy = fern::SkipNoData;
 //     using OutputNoDataPolicy = fern::MarkNoDataByValue<fern::Mask<2>>;
 // 
 //     size_t const nr_rows = 6000;
@@ -1679,7 +1679,7 @@ BOOST_AUTO_TEST_SUITE_END()
 ///     }
 /// 
 ///     {
-///         using InputNoDataPolicy = fern::SkipNoData<>;
+///         using InputNoDataPolicy = fern::SkipNoData;
 ///         using OutputNoDataPolicy = fern::MarkNoDataByValue<fern::Mask<2>>;
 /// 
 ///         fern::MaskedArray<bool, 2> result(extents);

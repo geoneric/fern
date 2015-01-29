@@ -20,7 +20,7 @@ BOOST_AUTO_TEST_SUITE(nullary_local_operation)
 
 BOOST_AUTO_TEST_CASE(array_0d)
 {
-    using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData<>>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData>;
     using OutputNoDataPolicy = fa::DontMarkNoData;
     using Result = ResultValue;
 
@@ -87,7 +87,7 @@ BOOST_AUTO_TEST_CASE(array_0d_masked)
 
 BOOST_AUTO_TEST_CASE(array_1d_sequential)
 {
-    using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData<>>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData>;
     using OutputNoDataPolicy = fa::DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
@@ -139,7 +139,7 @@ BOOST_AUTO_TEST_CASE(array_1d_sequential)
 
 BOOST_AUTO_TEST_CASE(array_1d_parallel)
 {
-    using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData<>>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData>;
     using OutputNoDataPolicy = fa::DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
@@ -248,7 +248,7 @@ BOOST_AUTO_TEST_CASE(array_1d_masked)
 
 BOOST_AUTO_TEST_CASE(array_2d_sequential)
 {
-    using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData<>>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData>;
     using OutputNoDataPolicy = fa::DontMarkNoData;
     using Result = fern::Array<ResultValue, 2>;
 
@@ -275,7 +275,7 @@ BOOST_AUTO_TEST_CASE(array_2d_sequential)
 
 BOOST_AUTO_TEST_CASE(array_2d_parallel)
 {
-    using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData<>>;
+    using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData>;
     using OutputNoDataPolicy = fa::DontMarkNoData;
     using Result = fern::Array<ResultValue, 2>;
 

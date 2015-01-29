@@ -23,11 +23,9 @@ void add(
     detail::MaskedRaster<R>& result)
 {
     fa::InputNoDataPolicies<
-        fa::SkipNoData<>,
+        fa::SkipNoData,
         fa::DetectNoData<detail::MaskedRaster<T2>>
-    > input_no_data_policy{
-        fa::SkipNoData<>{},
-        fa::DetectNoData<detail::MaskedRaster<T2>>{rhs}};
+    > input_no_data_policy{{}, {rhs}};
     fa::MarkNoData<detail::MaskedRaster<R>> output_no_data_policy(result);
 
     fa::algebra::add<fa::add::OutOfRangePolicy>(input_no_data_policy,

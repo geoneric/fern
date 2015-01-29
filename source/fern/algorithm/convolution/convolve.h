@@ -112,7 +112,7 @@ void convolve(
     using AlternativeForNoDataPolicy = convolve::SkipNoData;
     using NormalizePolicy = convolve::DivideByWeights;
     using OutOfImagePolicy = convolve::SkipOutOfImage;
-    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData<>>;
+    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;

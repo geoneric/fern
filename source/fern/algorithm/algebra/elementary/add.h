@@ -142,7 +142,7 @@ void add(
     Value2 const& value2,
     Result& result)
 {
-    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData<>, SkipNoData<>>;
+    using InputNoDataPolicy = InputNoDataPolicies<SkipNoData, SkipNoData>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;

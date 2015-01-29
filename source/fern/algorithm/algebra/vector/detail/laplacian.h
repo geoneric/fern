@@ -125,7 +125,7 @@ struct Laplacian<
         // Multiply the values by the sum of weights.
         auto multiplied_values = clone<Float>(result);
         {
-            using INP1 = SkipNoData<>;
+            using INP1 = SkipNoData;
             using INP2 = decltype(std::get<0>(input_no_data_policy));
 
             InputNoDataPolicies<INP1, INP2> input_no_data_policy_{
@@ -145,7 +145,7 @@ struct Laplacian<
             // TODO Base INP1 on result.
             // TODO Base INP2 on multiplied_values.
             using INP1 = decltype(std::get<0>(input_no_data_policy));
-            using INP2 = SkipNoData<>;
+            using INP2 = SkipNoData;
 
             InputNoDataPolicies<INP1, INP2> input_no_data_policy_{
                 {std::get<0>(input_no_data_policy)}, {}};
@@ -162,7 +162,7 @@ struct Laplacian<
         {
             // TODO Base INP1 on result.
             using INP1 = decltype(std::get<0>(input_no_data_policy));
-            using INP2 = SkipNoData<>;
+            using INP2 = SkipNoData;
 
             InputNoDataPolicies<INP1, INP2> input_no_data_policy_{
                 {std::get<0>(input_no_data_policy)}, {}};

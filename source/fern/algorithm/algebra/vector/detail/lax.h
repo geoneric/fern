@@ -89,7 +89,7 @@ struct Lax<
             //      only no-data in the origin value passed in. Update INP2.
             //      Given a type, we need to be able to create an
             //      input-no-data policy.
-            using INP1 = SkipNoData<>;
+            using INP1 = SkipNoData;
             using INP2 = decltype(std::get<0>(input_no_data_policy));
 
             InputNoDataPolicies<INP1, INP2> input_no_data_policy_{{},
@@ -106,7 +106,7 @@ struct Lax<
         // tmp = (1.0 - f) * value
         auto multiplied_values = clone<Float>(result);
         {
-            using INP1 = SkipNoData<>;
+            using INP1 = SkipNoData;
             using INP2 = decltype(std::get<0>(input_no_data_policy));
 
             InputNoDataPolicies<INP1, INP2> input_no_data_policy_{{},
@@ -124,7 +124,7 @@ struct Lax<
         // result = tmp + result
         {
             // TODO See comment above.
-            using INP1 = SkipNoData<>;
+            using INP1 = SkipNoData;
             using INP2 = decltype(std::get<0>(input_no_data_policy));
 
             InputNoDataPolicies<INP1, INP2> input_no_data_policy_{{},
