@@ -289,7 +289,7 @@ BOOST_AUTO_TEST_CASE(array_1d_masked)
                 input_no_data_policy, output_no_data_policy,
                 fa::sequential, argument, result);
 
-        BOOST_CHECK(result.empty());
+        BOOST_CHECK_EQUAL(result.size(), 0u);
     }
 }
 
@@ -434,7 +434,7 @@ BOOST_AUTO_TEST_CASE(array_2d_masked)
                 input_no_data_policy, output_no_data_policy,
                 fa::sequential, argument, result);
 
-        BOOST_CHECK(result.empty());
+        BOOST_CHECK_EQUAL(result.size(), 0u);
     }
 }
 

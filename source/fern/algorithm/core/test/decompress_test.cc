@@ -5,6 +5,7 @@
 #include "fern/feature/core/array_traits.h"
 #include "fern/algorithm/core/compress.h"
 #include "fern/algorithm/core/decompress.h"
+#include "fern/algorithm/core/test/test_utils.h"
 
 
 namespace fa = fern::algorithm;
@@ -169,7 +170,8 @@ void test_array_2d(
 
         fa::core::decompress(execution_policy, compress_result_we_got,
             decompress_result_we_got);
-        BOOST_CHECK(decompress_result_we_got == values);
+        BOOST_CHECK(compare(execution_policy, decompress_result_we_got,
+            values));
     }
 }
 
@@ -237,7 +239,8 @@ void test_array_2d_masked(
             no_data_value);
         fa::core::decompress(input_no_data_policy, output_no_data_policy,
             execution_policy, compress_result_we_got, decompress_result_we_got);
-        BOOST_CHECK(decompress_result_we_got == values);
+        BOOST_CHECK(compare(execution_policy, decompress_result_we_got,
+            values));
     }
 }
 
