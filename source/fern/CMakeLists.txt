@@ -24,6 +24,10 @@ IF(FERN_ALGORITHM)
     # Install all headers for now. Otherwise we have to keep tweaking the
     # install rules.
     INSTALL(
+        FILES ${CMAKE_CURRENT_BINARY_DIR}/configure.h
+        DESTINATION include/fern
+    )
+    INSTALL(
         DIRECTORY algorithm core
         DESTINATION include/fern
         FILES_MATCHING
