@@ -10,16 +10,16 @@ namespace core {
 
 /*!
     @ingroup    fern_algorithm_core_group
-    @brief      Copy all non-no-data values from \a value to \a result.
+    @brief      Copy all non-no-data values from @a value to @a result.
 
-    - Value type of @Value must be copy-assignable.
-    - Value type of @Value and @Result must be the same.
+    - Value type of @a Value must be copy-assignable.
+    - Value type of @a Value and @a Result must be the same.
     - Result must be a one-dimensional collection.
-    - @result must have the same size as @value.
+    - @a result must have the same size as @a value.
     - Count must be integral.
 
-    The @count returned can be used to resize @result to the actual number of
-    values it contains, e.g. in case result is an std::vector:
+    The @a count returned can be used to resize @a result to the actual
+    number of values it contains, e.g. in case result is an std::vector:
 
     @code
     compress(input_no_data_policy, execution_policy, values, result, count);

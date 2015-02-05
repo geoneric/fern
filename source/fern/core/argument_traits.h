@@ -1,5 +1,6 @@
 #pragma once
 #include <cstddef>
+#include <type_traits>
 #include "fern/core/argument_categories.h"
 
 
@@ -52,6 +53,13 @@ using reference = typename ArgumentTraits<T>::reference;
 template<
     class T>
 using argument_category = typename ArgumentTraits<T>::argument_category;
+
+
+template<
+    class T>
+struct is_masking:
+    public std::integral_constant<bool, fern::ArgumentTraits<T>::is_masking>
+{};
 
 
 template<

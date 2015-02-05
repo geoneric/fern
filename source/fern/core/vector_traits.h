@@ -21,6 +21,13 @@ struct ArgumentTraits<
         using type = std::vector<U>;
     };
 
+    template<
+        class U>
+    struct Clone
+    {
+        using type = std::vector<U>;
+    };
+
     // Don't use vector's typedefs. Doing it like this will make it impossible
     // to use vector<bool>, which is Good. vector<bool> is nasty since it
     // doesn't store bools. Using it works out bad in combination with threads.

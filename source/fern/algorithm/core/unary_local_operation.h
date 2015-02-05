@@ -335,6 +335,74 @@ struct UnaryLocalOperation<
     OutputNoDataPolicy,
     Value,
     Result,
+    ExecutionPolicy,
+    array_1d_tag>
+
+{
+
+    // f(1d array)
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        ExecutionPolicy& execution_policy,
+        Value const& value,
+        Result& result)
+    {
+        switch(execution_policy.which()) {
+            case detail::sequential_execution_policy_id: {
+                detail::dispatch::UnaryLocalOperation<
+                    Algorithm,
+                    OutOfDomainPolicy,
+                    OutOfRangePolicy,
+                    InputNoDataPolicy,
+                    OutputNoDataPolicy,
+                    Value,
+                    Result,
+                    SequentialExecutionPolicy,
+                    array_1d_tag>::apply(
+                        input_no_data_policy, output_no_data_policy,
+                        boost::get<SequentialExecutionPolicy>(execution_policy),
+                        value, result);
+                break;
+            }
+            case detail::parallel_execution_policy_id: {
+                detail::dispatch::UnaryLocalOperation<
+                    Algorithm,
+                    OutOfDomainPolicy,
+                    OutOfRangePolicy,
+                    InputNoDataPolicy,
+                    OutputNoDataPolicy,
+                    Value,
+                    Result,
+                    ParallelExecutionPolicy,
+                    array_1d_tag>::apply(
+                        input_no_data_policy, output_no_data_policy,
+                        boost::get<ParallelExecutionPolicy>(execution_policy),
+                        value, result);
+                break;
+            }
+        }
+    }
+
+};
+
+
+template<
+    typename Algorithm,
+    typename OutOfDomainPolicy,
+    typename OutOfRangePolicy,
+    typename InputNoDataPolicy,
+    typename OutputNoDataPolicy,
+    typename Value,
+    typename Result>
+struct UnaryLocalOperation<
+    Algorithm,
+    OutOfDomainPolicy,
+    OutOfRangePolicy,
+    InputNoDataPolicy,
+    OutputNoDataPolicy,
+    Value,
+    Result,
     SequentialExecutionPolicy,
     array_2d_tag>
 

@@ -1,6 +1,8 @@
 #pragma once
 #include "fern/algorithm/core/cast.h"
+#include "fern/algorithm/core/compress.h"
 #include "fern/algorithm/core/cover.h"
+#include "fern/algorithm/core/decompress.h"
 #include "fern/algorithm/core/fill.h"
 #include "fern/algorithm/core/if.h"
 #include "fern/algorithm/core/intersect_no_data.h"

@@ -10,12 +10,12 @@ namespace core {
 
 /*!
     @ingroup    fern_algorithm_core_group
-    @brief      Copy all non-no-data values from \a value to \a result, while
-                inserting no-data given the @input_no_data_policy.
+    @brief      Copy all non-no-data values from @a value to @a result, while
+                inserting no-data given the @a input_no_data_policy.
 
-    - Value type of @Value must be copy-assignable.
-    - Value type of @Value and @Result must be the same.
-    - @Value must be a one-dimensional collection.
+    - Value type of @a Value must be copy-assignable.
+    - Value type of @a Value and @a Result must be the same.
+    - @a Value must be a one-dimensional collection.
 */
 template<
     typename InputNoDataPolicy,
