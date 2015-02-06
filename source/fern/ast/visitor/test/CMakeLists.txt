@@ -1,4 +1,4 @@
-SET(TEST_NAMES
+set(TEST_NAMES
     annotate_visitor_test
     ast_visitor_test
     dot_visitor_test
@@ -12,18 +12,18 @@ SET(TEST_NAMES
     validate_visitor_test
 )
 
-MACRO(ADD_UNIT_TEST NAME)
-    ADD_EXECUTABLE(ast_visitor_${NAME} ${NAME})
-    TARGET_LINK_LIBRARIES(ast_visitor_${NAME}
+macro(ADD_UNIT_TEST NAME)
+    add_executable(ast_visitor_${NAME} ${NAME})
+    target_link_libraries(ast_visitor_${NAME}
         fern_ast_visitor
         fern_script
         fern_ast_xml
         fern_operation_std
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
-    ADD_TEST(NAME ast_visitor_${NAME} COMMAND ast_visitor_${NAME})
-ENDMACRO()
+    add_test(NAME ast_visitor_${NAME} COMMAND ast_visitor_${NAME})
+endmacro()
 
-FOREACH(NAME ${TEST_NAMES})
-    ADD_UNIT_TEST(${NAME})
-ENDFOREACH()
+foreach(NAME ${TEST_NAMES})
+    add_unit_test(${NAME})
+endforeach()

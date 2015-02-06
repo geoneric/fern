@@ -1,18 +1,18 @@
-ADD_SUBDIRECTORY(test)
-ADD_SUBDIRECTORY(core)
-ADD_SUBDIRECTORY(gdal)
-ADD_SUBDIRECTORY(fern)
-# ADD_SUBDIRECTORY(hdf5)
-# ADD_SUBDIRECTORY(netcdf)
-# ADD_SUBDIRECTORY(ogr)
-# ADD_SUBDIRECTORY(uncertml2)
+add_subdirectory(test)
+add_subdirectory(core)
+add_subdirectory(gdal)
+add_subdirectory(fern)
+# add_subdirectory(hdf5)
+# add_subdirectory(netcdf)
+# add_subdirectory(ogr)
+# add_subdirectory(uncertml2)
 
-SET(SOURCES
+set(SOURCES
     drivers
     io_client
 )
-ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_io ${SOURCES})
-TARGET_LINK_LIBRARIES(fern_io
+add_library_and_object_library(fern_io ${SOURCES})
+target_link_libraries(fern_io
     fern_io_gdal
     fern_io_fern
 )

@@ -1,18 +1,18 @@
-SET(TEST_NAMES
+set(TEST_NAMES
     abs_test
     operations_test
     print_test
 )
 
-MACRO(ADD_UNIT_TEST NAME)
-    ADD_EXECUTABLE(operation_std_${NAME} ${NAME})
-    TARGET_LINK_LIBRARIES(operation_std_${NAME}
+macro(add_unit_test NAME)
+    add_executable(operation_std_${NAME} ${NAME})
+    target_link_libraries(operation_std_${NAME}
         fern_operation_std
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
-    ADD_TEST(NAME operation_std_${NAME} COMMAND operation_std_${NAME})
-ENDMACRO()
+    add_test(NAME operation_std_${NAME} COMMAND operation_std_${NAME})
+endmacro()
 
-FOREACH(NAME ${TEST_NAMES})
-    ADD_UNIT_TEST(${NAME})
-ENDFOREACH()
+foreach(NAME ${TEST_NAMES})
+    add_unit_test(${NAME})
+endforeach()

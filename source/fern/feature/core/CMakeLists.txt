@@ -1,28 +1,28 @@
-ADD_SUBDIRECTORY(test)
+add_subdirectory(test)
 
-IF(FERN_ALGORITHM)
-    SET(SOURCES
+if(FERN_ALGORITHM)
+    set(SOURCES
         array
     )
-ENDIF()
+endif()
 
-### ELSE()
-###     SET(SOURCES
+### else()
+###     set(SOURCES
 ###         array
 ###         attribute
 ###         domain
 ###         feature
 ###     )
-### ENDIF()
+### endif()
 
-ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_feature_core ${SOURCES})
-TARGET_LINK_LIBRARIES(fern_feature_core
+add_library_and_object_library(fern_feature_core ${SOURCES})
+target_link_libraries(fern_feature_core
     fern_core
 )
-IF(FERN_ALGORITHM)
-    INSTALL(
+if(FERN_ALGORITHM)
+    install(
         TARGETS fern_feature_core
         EXPORT fern_targets
         ARCHIVE DESTINATION lib
     )
-ENDIF()
+endif()

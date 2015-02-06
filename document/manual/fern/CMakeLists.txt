@@ -1,12 +1,12 @@
-ADD_SUBDIRECTORY(algorithm)
-ADD_SUBDIRECTORY(io)
+add_subdirectory(algorithm)
+add_subdirectory(io)
 
-FILE(GLOB_RECURSE SPHINX_SOURCES
+file(GLOB_RECURSE SPHINX_SOURCES
     RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     *.rst
     *.cc
 )
-SET(SPHINX_TARGET
+set(SPHINX_TARGET
     fern_manual
 )
-INCLUDE(SphinxDoc)
+include(SphinxDoc)

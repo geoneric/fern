@@ -1,16 +1,16 @@
-SET(TEST_NAMES
+set(TEST_NAMES
     gdal_dataset_test
 )
 
-MACRO(ADD_UNIT_TEST NAME)
-    ADD_EXECUTABLE(io_gdal_${NAME} ${NAME})
-    TARGET_LINK_LIBRARIES(io_gdal_${NAME}
+macro(ADD_UNIT_TEST NAME)
+    add_executable(io_gdal_${NAME} ${NAME})
+    target_link_libraries(io_gdal_${NAME}
         fern_io_gdal
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
-    ADD_TEST(NAME io_gdal_${NAME} COMMAND io_gdal_${NAME})
-ENDMACRO()
+    add_test(NAME io_gdal_${NAME} COMMAND io_gdal_${NAME})
+endmacro()
 
-FOREACH(NAME ${TEST_NAMES})
+foreach(NAME ${TEST_NAMES})
     ADD_UNIT_TEST(${NAME})
-ENDFOREACH()
+endforeach()

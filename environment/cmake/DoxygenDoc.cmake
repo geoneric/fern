@@ -1,4 +1,4 @@
-SET(DOXYGEN_TEMPLATE "
+set(DOXYGEN_TEMPLATE "
     ALWAYS_DETAILED_SEC     = YES
     BUILTIN_STL_SUPPORT     = YES
     CLASS_DIAGRAMS          = YES
@@ -37,17 +37,17 @@ SET(DOXYGEN_TEMPLATE "
     WARN_NO_PARAMDOC        = YES
 ")
 
-CONFIGURE_FILE(
+configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in
     ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
 )
 
-ADD_CUSTOM_COMMAND(
+add_custom_command(
     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/html/index.html
     COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
     DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
 )
 
-ADD_CUSTOM_TARGET(cpp_doc ALL
+add_custom_target(cpp_doc ALL
     DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/html/index.html
 )

@@ -1,4 +1,4 @@
-SET(SPHINX_SOURCES
+set(SPHINX_SOURCES
     Algorithms.rst
     CommandlineUtilities.rst
     Concepts.rst
@@ -14,7 +14,7 @@ SET(SPHINX_SOURCES
     Components.txt
     Introduction.txt
 )
-SET(SPHINX_TARGET
+set(SPHINX_TARGET
     Development
 )
-INCLUDE(SphinxDoc)
+include(SphinxDoc)

@@ -1,4 +1,4 @@
-SET(TEST_NAMES
+set(TEST_NAMES
     constant_test
     evaluate_visitor_test
     expression_test
@@ -6,16 +6,16 @@ SET(TEST_NAMES
     stream_visitor_test
 )
 
-MACRO(ADD_UNIT_TEST NAME)
-    ADD_EXECUTABLE(expression_tree_${NAME} ${NAME})
-    TARGET_LINK_LIBRARIES(expression_tree_${NAME}
+macro(ADD_UNIT_TEST NAME)
+    add_executable(expression_tree_${NAME} ${NAME})
+    target_link_libraries(expression_tree_${NAME}
         # fern_expression_tree
         fern_feature_core  # fern::extents
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
-    ADD_TEST(NAME expression_tree_${NAME} COMMAND expression_tree_${NAME})
-ENDMACRO()
+    add_test(NAME expression_tree_${NAME} COMMAND expression_tree_${NAME})
+endmacro()
 
-FOREACH(NAME ${TEST_NAMES})
-    ADD_UNIT_TEST(${NAME})
-ENDFOREACH()
+foreach(NAME ${TEST_NAMES})
+    add_unit_test(${NAME})
+endforeach()

@@ -1,28 +1,28 @@
-ADD_SUBDIRECTORY(test)
-SET(LIB_SOURCES
+add_subdirectory(test)
+set(LIB_SOURCES
     masked_raster
 )
-ADD_LIBRARY(fern_python_extension_feature ${LIB_SOURCES})
-TARGET_LINK_LIBRARIES(fern_python_extension_feature
+add_library(fern_python_extension_feature ${LIB_SOURCES})
+target_link_libraries(fern_python_extension_feature
     stdc++
 )
-SET(EXTENSION_SOURCES
+set(EXTENSION_SOURCES
     numpy
     python_extension
 )
-ADD_LIBRARY(_fern_feature SHARED ${EXTENSION_SOURCES})
-TARGET_LINK_LIBRARIES(_fern_feature
+add_library(_fern_feature SHARED ${EXTENSION_SOURCES})
+target_link_libraries(_fern_feature
     fern_python_extension_feature
     fern_feature_core
     ${Boost_PYTHON_LIBRARY}
     stdc++
 )
-CONFIGURE_PYTHON_EXTENSION(_fern_feature "_fern_feature")
-SET_TARGET_PROPERTIES(_fern_feature
+configure_python_extension(_fern_feature "_fern_feature")
+set_target_properties(_fern_feature
     PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin/fern/feature
 )
-CONFIGURE_FILE(__init__.py.in
+configure_file(__init__.py.in
     ${PROJECT_BINARY_DIR}/bin/fern/feature/__init__.py
     COPYONLY
 )

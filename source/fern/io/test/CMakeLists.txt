@@ -1,16 +1,16 @@
-SET(TEST_NAMES
+set(TEST_NAMES
     drivers_test
 )
 
-MACRO(ADD_UNIT_TEST NAME)
-    ADD_EXECUTABLE(io_${NAME} ${NAME})
-    TARGET_LINK_LIBRARIES(io_${NAME}
+macro(ADD_UNIT_TEST NAME)
+    add_executable(io_${NAME} ${NAME})
+    target_link_libraries(io_${NAME}
         fern_io
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
-    ADD_TEST(NAME io_${NAME} COMMAND io_${NAME})
-ENDMACRO()
+    add_test(NAME io_${NAME} COMMAND io_${NAME})
+endmacro()
 
-FOREACH(NAME ${TEST_NAMES})
-    ADD_UNIT_TEST(${NAME})
-ENDFOREACH()
+foreach(NAME ${TEST_NAMES})
+    add_unit_test(${NAME})
+endforeach()

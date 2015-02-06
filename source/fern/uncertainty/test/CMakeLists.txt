@@ -1,16 +1,16 @@
-SET(TEST_NAMES
+set(TEST_NAMES
     normal_distribution_test
 )
 
-MACRO(ADD_UNIT_TEST NAME)
-    ADD_EXECUTABLE(uncertainty_${NAME} ${NAME})
-    TARGET_LINK_LIBRARIES(uncertainty_${NAME}
+macro(ADD_UNIT_TEST NAME)
+    add_executable(uncertainty_${NAME} ${NAME})
+    target_link_libraries(uncertainty_${NAME}
         fern_uncertainty
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
-    ADD_TEST(NAME uncertainty_${NAME} COMMAND uncertainty_${NAME})
-ENDMACRO()
+    add_test(NAME uncertainty_${NAME} COMMAND uncertainty_${NAME})
+endmacro()
 
-FOREACH(NAME ${TEST_NAMES})
+foreach(NAME ${TEST_NAMES})
     ADD_UNIT_TEST(${NAME})
-ENDFOREACH()
+endforeach()

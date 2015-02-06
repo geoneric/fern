@@ -1,6 +1,6 @@
-ADD_SUBDIRECTORY(test)
+add_subdirectory(test)
 
-SET(SOURCES
+set(SOURCES
     data_source
     data_sync
     dataset_source
@@ -8,8 +8,8 @@ SET(SOURCES
     execute_visitor
     interpreter
 )
-ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_interpreter ${SOURCES})
-TARGET_LINK_LIBRARIES(fern_interpreter
+add_library_and_object_library(fern_interpreter ${SOURCES})
+target_link_libraries(fern_interpreter
     fern_ast_visitor
     fern_ast_xml
     fern_operation_std

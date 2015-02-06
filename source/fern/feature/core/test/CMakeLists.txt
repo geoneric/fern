@@ -1,14 +1,14 @@
-IF(FERN_ALGORITHM)
-    SET(TEST_NAMES
+if(FERN_ALGORITHM)
+    set(TEST_NAMES
         array_test
         masked_array_test
         masked_constant_test
         masked_raster_test
         raster_test
     )
-ENDIF()
-### ELSE()
-###     SET(TEST_NAMES
+endif()
+### else()
+###     set(TEST_NAMES
 ###         array_test
 ###         array_value_test
 ###         constant_attribute_test
@@ -20,11 +20,11 @@ ENDIF()
 ###         spatial_attribute_test
 ###         spatial_domain_test
 ###     )
-### ENDIF()
+### endif()
 
-FOREACH(NAME ${TEST_NAMES})
-    ADD_UNIT_TEST2(
+foreach(NAME ${TEST_NAMES})
+    add_unit_test2(
         SCOPE feature_core
         NAME ${NAME}
         LINK_LIBRARIES fern_feature_core)
-ENDFOREACH()
+endforeach()

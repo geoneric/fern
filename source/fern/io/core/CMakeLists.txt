@@ -1,11 +1,11 @@
-ADD_SUBDIRECTORY(test)
+add_subdirectory(test)
 
-SET(SOURCES
+set(SOURCES
     dataset
     driver
     file
 )
-ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_io_core ${SOURCES})
-TARGET_LINK_LIBRARIES(fern_io_core
+add_library_and_object_library(fern_io_core ${SOURCES})
+target_link_libraries(fern_io_core
     fern_core
 )

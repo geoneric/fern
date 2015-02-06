@@ -1,14 +1,14 @@
-ADD_SUBDIRECTORY(test)
+add_subdirectory(test)
 
-SET(SOURCES
+set(SOURCES
     compile_visitor
     compiler
     data_description
     module
     parse_command_line
 )
-ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_compiler ${SOURCES})
-TARGET_LINK_LIBRARIES(fern_compiler
+add_library_and_object_library(fern_compiler ${SOURCES})
+target_link_libraries(fern_compiler
     fern_interpreter
     # ${Boost_PROGRAM_OPTIONS_LIBRARY}
 )

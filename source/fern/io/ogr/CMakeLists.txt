@@ -1,15 +1,15 @@
-ADD_SUBDIRECTORY(test)
+add_subdirectory(test)
 
-SET(SOURCES
+set(SOURCES
     ogr_client
     ogr_dataset
     ogr_dataset_driver
     ogr_feature_layer
 )
-ADD_LIBRARY(fern_io_ogr
+add_library(fern_io_ogr
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(fern_io_ogr
+target_link_libraries(fern_io_ogr
     fern_io_core
     ${GDAL_LIBRARIES}
 )

@@ -1,1 +1,1 @@
-ADD_SUBDIRECTORY(algorithm)
+add_subdirectory(algorithm)

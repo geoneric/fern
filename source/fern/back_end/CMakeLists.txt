@@ -1,4 +1,4 @@
-ADD_SUBDIRECTORY(arcgis)
-ADD_SUBDIRECTORY(core)
-ADD_SUBDIRECTORY(fern)
-ADD_SUBDIRECTORY(pcraster)
+add_subdirectory(arcgis)
+add_subdirectory(core)
+add_subdirectory(fern)
+add_subdirectory(pcraster)

@@ -1,10 +1,10 @@
-SET(SPHINX_SOURCES
+set(SPHINX_SOURCES
     index.rst
     Introduction.rst
     MicroCharter.rst
     UserStories.rst
 )
-SET(SPHINX_TARGET
+set(SPHINX_TARGET
     Project
 )
-INCLUDE(SphinxDoc)
+include(SphinxDoc)

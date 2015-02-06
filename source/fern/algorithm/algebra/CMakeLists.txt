@@ -1,4 +1,4 @@
-ADD_SUBDIRECTORY(test)
-ADD_SUBDIRECTORY(boole)
-ADD_SUBDIRECTORY(elementary)
-ADD_SUBDIRECTORY(vector)
+add_subdirectory(test)
+add_subdirectory(boole)
+add_subdirectory(elementary)
+add_subdirectory(vector)

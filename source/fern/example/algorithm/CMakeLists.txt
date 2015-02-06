@@ -1,9 +1,9 @@
-ADD_SUBDIRECTORY(test)
-ADD_EXECUTABLE(add_two_rasters
+add_subdirectory(test)
+add_executable(add_two_rasters
     add_two_rasters
     raster
 )
-TARGET_LINK_LIBRARIES(add_two_rasters
+target_link_libraries(add_two_rasters
     fern_feature_core
     fern_algorithm_policy
     fern_algorithm_core

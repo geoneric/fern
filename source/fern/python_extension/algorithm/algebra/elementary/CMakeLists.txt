@@ -1,7 +1,7 @@
-ADD_SUBDIRECTORY(test)
+add_subdirectory(test)
 
 
-SET(EXTENSION_SOURCES
+set(EXTENSION_SOURCES
     add_number_raster
     add_raster_number
     add_raster_raster
@@ -10,8 +10,8 @@ SET(EXTENSION_SOURCES
     less
     python_extension
 )
-ADD_LIBRARY(_fern_algorithm_algebra_elementary SHARED ${EXTENSION_SOURCES})
-TARGET_LINK_LIBRARIES(_fern_algorithm_algebra_elementary
+add_library(_fern_algorithm_algebra_elementary SHARED ${EXTENSION_SOURCES})
+target_link_libraries(_fern_algorithm_algebra_elementary
     fern_python_extension_feature
     fern_feature_core
     fern_algorithm_policy
@@ -20,14 +20,14 @@ TARGET_LINK_LIBRARIES(_fern_algorithm_algebra_elementary
     ${Boost_PYTHON_LIBRARY}
     stdc++
 )
-CONFIGURE_PYTHON_EXTENSION(_fern_algorithm_algebra_elementary
+configure_python_extension(_fern_algorithm_algebra_elementary
     "_fern_algorithm_algebra_elementary")
-SET_TARGET_PROPERTIES(_fern_algorithm_algebra_elementary
+set_target_properties(_fern_algorithm_algebra_elementary
     PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY
             ${PROJECT_BINARY_DIR}/bin/fern/algorithm/algebra/elementary
 )
-CONFIGURE_FILE(__init__.py.in
+configure_file(__init__.py.in
     ${PROJECT_BINARY_DIR}/bin/fern/algorithm/algebra/elementary/__init__.py
     COPYONLY
 )

@@ -1,16 +1,16 @@
-SET(TEST_NAMES
+set(TEST_NAMES
     fern_dataset_test
 )
 
-MACRO(ADD_UNIT_TEST NAME)
-    ADD_EXECUTABLE(io_fern_${NAME} ${NAME})
-    TARGET_LINK_LIBRARIES(io_fern_${NAME}
+macro(ADD_UNIT_TEST NAME)
+    add_executable(io_fern_${NAME} ${NAME})
+    target_link_libraries(io_fern_${NAME}
         fern_io_fern
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
-    ADD_TEST(NAME io_fern_${NAME} COMMAND io_fern_${NAME})
-ENDMACRO()
+    add_test(NAME io_fern_${NAME} COMMAND io_fern_${NAME})
+endmacro()
 
-FOREACH(NAME ${TEST_NAMES})
-    ADD_UNIT_TEST(${NAME})
-ENDFOREACH()
+foreach(NAME ${TEST_NAMES})
+    add_unit_test(${NAME})
+endforeach()

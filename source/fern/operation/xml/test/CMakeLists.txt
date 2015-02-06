@@ -1,16 +1,16 @@
-SET(TEST_NAMES
+set(TEST_NAMES
     operation_xml_parser_test
 )
 
-MACRO(ADD_UNIT_TEST NAME)
-    ADD_EXECUTABLE(operation_xml_${NAME} ${NAME})
-    TARGET_LINK_LIBRARIES(operation_xml_${NAME}
+macro(ADD_UNIT_TEST NAME)
+    add_executable(operation_xml_${NAME} ${NAME})
+    target_link_libraries(operation_xml_${NAME}
         fern_operation_xml
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
-    ADD_TEST(NAME operation_xml_${NAME} COMMAND operation_xml_${NAME})
-ENDMACRO()
+    add_test(NAME operation_xml_${NAME} COMMAND operation_xml_${NAME})
+endmacro()
 
-FOREACH(NAME ${TEST_NAMES})
-    ADD_UNIT_TEST(${NAME})
-ENDFOREACH()
+foreach(NAME ${TEST_NAMES})
+    add_unit_test(${NAME})
+endforeach()

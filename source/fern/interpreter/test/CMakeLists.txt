@@ -1,17 +1,17 @@
-SET(TEST_NAMES
+set(TEST_NAMES
     execute_visitor_test
     interpreter_test
 )
 
-MACRO(ADD_UNIT_TEST NAME)
-    ADD_EXECUTABLE(interpreter_${NAME} ${NAME})
-    TARGET_LINK_LIBRARIES(interpreter_${NAME}
+macro(ADD_UNIT_TEST NAME)
+    add_executable(interpreter_${NAME} ${NAME})
+    target_link_libraries(interpreter_${NAME}
         fern_interpreter
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
-    ADD_TEST(NAME interpreter_${NAME} COMMAND interpreter_${NAME})
-ENDMACRO()
+    add_test(NAME interpreter_${NAME} COMMAND interpreter_${NAME})
+endmacro()
 
-FOREACH(NAME ${TEST_NAMES})
-    ADD_UNIT_TEST(${NAME})
-ENDFOREACH()
+foreach(NAME ${TEST_NAMES})
+    add_unit_test(${NAME})
+endforeach()

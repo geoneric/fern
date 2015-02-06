@@ -1,26 +1,26 @@
-ADD_SUBDIRECTORY(algebra)
-ADD_SUBDIRECTORY(core)
-ADD_SUBDIRECTORY(space)
-ADD_SUBDIRECTORY(test)
+add_subdirectory(algebra)
+add_subdirectory(core)
+add_subdirectory(space)
+add_subdirectory(test)
 
 
-SET(EXTENSION_SOURCES
+set(EXTENSION_SOURCES
     execution_policy
     python_extension
 )
-ADD_LIBRARY(_fern_algorithm SHARED ${EXTENSION_SOURCES})
-TARGET_LINK_LIBRARIES(_fern_algorithm
+add_library(_fern_algorithm SHARED ${EXTENSION_SOURCES})
+target_link_libraries(_fern_algorithm
     fern_algorithm_policy
     fern_core
     ${Boost_PYTHON_LIBRARY}
     stdc++
 )
-CONFIGURE_PYTHON_EXTENSION(_fern_algorithm "_fern_algorithm")
-SET_TARGET_PROPERTIES(_fern_algorithm
+configure_python_extension(_fern_algorithm "_fern_algorithm")
+set_target_properties(_fern_algorithm
     PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin/fern/algorithm
 )
-CONFIGURE_FILE(__init__.py.in
+configure_file(__init__.py.in
     ${PROJECT_BINARY_DIR}/bin/fern/algorithm/__init__.py
     COPYONLY
 )

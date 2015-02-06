@@ -1,5 +1,5 @@
-### SET(TEST_NAMES
+### set(TEST_NAMES
 ### )
-### FOREACH(NAME ${TEST_NAMES})
-###     ADD_UNIT_TEST(${NAME})
-### ENDFOREACH()
+### foreach(NAME ${TEST_NAMES})
+###     add_unit_test(${NAME})
+### endforeach()

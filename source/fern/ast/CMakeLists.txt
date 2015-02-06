@@ -1,3 +1,3 @@
-ADD_SUBDIRECTORY(core)
-ADD_SUBDIRECTORY(visitor)
-ADD_SUBDIRECTORY(xml)
+add_subdirectory(core)
+add_subdirectory(visitor)
+add_subdirectory(xml)

@@ -1,6 +1,6 @@
-ADD_SUBDIRECTORY(test)
+add_subdirectory(test)
 
-ADD_CUSTOM_COMMAND(
+add_custom_command(
     OUTPUT
         ${CMAKE_CURRENT_BINARY_DIR}/operation-xml.h
     DEPENDS
@@ -24,7 +24,7 @@ ADD_CUSTOM_COMMAND(
             "}\\n"
                 >> ${CMAKE_CURRENT_BINARY_DIR}/operation-xml.h
 )
-SET(SOURCES
+set(SOURCES
     abs
     add
     int32
@@ -32,12 +32,12 @@ SET(SOURCES
     read
     write
 )
-ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_operation_std ${SOURCES})
-TARGET_LINK_LIBRARIES(fern_operation_std
+add_library_and_object_library(fern_operation_std ${SOURCES})
+target_link_libraries(fern_operation_std
     fern_operation_core
     fern_io
 )
-ADD_CUSTOM_TARGET(operation-xml.h
+add_custom_target(operation-xml.h
     DEPENDS
         ${CMAKE_CURRENT_BINARY_DIR}/operation-xml.h
 )

@@ -1,46 +1,46 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8)
 
-PROJECT(Fern)
+project(Fern)
 
-SET(${PROJECT_NAME}_ORGANISATION_NAME "Geoneric")
-SET(${PROJECT_NAME}_COPYRIGHT "Copyright \(C\) 2010-2014 Geoneric")
-SET(${PROJECT_NAME}_PROJECT_NAME "${PROJECT_NAME}")
-SET(${PROJECT_NAME}_HOMEPAGE "http://www.geoneric.eu")
-SET(${PROJECT_NAME}_MAJOR_VERSION "0")
-SET(${PROJECT_NAME}_MINOR_VERSION "0")
-SET(${PROJECT_NAME}_PATCH_VERSION "0")
-SET(${PROJECT_NAME}_PRE_RELEASE_VERSION "-rc.1")
-SET(${PROJECT_NAME}_VERSION
+set(${PROJECT_NAME}_ORGANISATION_NAME "Geoneric")
+set(${PROJECT_NAME}_COPYRIGHT "Copyright \(C\) 2010-2015 Geoneric")
+set(${PROJECT_NAME}_PROJECT_NAME "${PROJECT_NAME}")
+set(${PROJECT_NAME}_HOMEPAGE "http://www.geoneric.eu")
+set(${PROJECT_NAME}_MAJOR_VERSION "0")
+set(${PROJECT_NAME}_MINOR_VERSION "0")
+set(${PROJECT_NAME}_PATCH_VERSION "0")
+set(${PROJECT_NAME}_PRE_RELEASE_VERSION "-rc.1")
+set(${PROJECT_NAME}_VERSION
     "${${PROJECT_NAME}_MAJOR_VERSION}.${${PROJECT_NAME}_MINOR_VERSION}.${${PROJECT_NAME}_PATCH_VERSION}${${PROJECT_NAME}_PRE_RELEASE_VERSION}")
 
-ENABLE_TESTING()
-# Doesn't work: SET(ENV{CTEST_OUTPUT_ON_FAILURE} 1)
-# SET(BOOST_TEST_RUNTIME_PARAMETERS "--log_level all")
+enable_testing()
+# Doesn't work: set(ENV{CTEST_OUTPUT_ON_FAILURE} 1)
+# set(BOOST_TEST_RUNTIME_PARAMETERS "--log_level all")
 
-SET(CMAKE_MODULE_PATH
+set(CMAKE_MODULE_PATH
     $ENV{CMAKE_MODULE_PATH}
     ${CMAKE_CURRENT_SOURCE_DIR}/environment/cmake
 )
-INCLUDE(Fern)
+include(Fern)
 
-CONFIGURE_FILE(
+configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/CTestCustom.cmake.in
     ${CMAKE_CURRENT_BINARY_DIR}/CTestCustom.cmake
 )
-CONFIGURE_FILE(
+configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/test_run_prolog.sh.in
     ${CMAKE_CURRENT_BINARY_DIR}/test_run_prolog.sh
 )
-CONFIGURE_FILE(
+configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/test_run_epilog.sh.in
     ${CMAKE_CURRENT_BINARY_DIR}/test_run_epilog.sh
 )
 
-ADD_SUBDIRECTORY(document)
-ADD_SUBDIRECTORY(environment)
-ADD_SUBDIRECTORY(source)
+add_subdirectory(document)
+add_subdirectory(environment)
+add_subdirectory(source)
 
-INSTALL(
+install(
     EXPORT fern_targets
     DESTINATION lib/fern
 )

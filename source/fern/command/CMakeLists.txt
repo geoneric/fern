@@ -1,4 +1,4 @@
-ADD_EXECUTABLE(fern
+add_executable(fern
     command
     compile_command
     describe_command
@@ -8,19 +8,19 @@ ADD_EXECUTABLE(fern
     message
     fern
 )
-ADD_DEPENDENCIES(fern
+add_dependencies(fern
     Operation-xml.h
 )
-TARGET_LINK_LIBRARIES(fern
+target_link_libraries(fern
     fernlib
     ${READLINE_LIBRARY}
     termcap
 )
-INSTALL(
+install(
     TARGETS fern
     EXPORT fern_targets
     RUNTIME DESTINATION bin
 )
-SET(APPLICATIONS
+set(APPLICATIONS
     "\${CMAKE_INSTALL_PREFIX}/bin/fern"
 )

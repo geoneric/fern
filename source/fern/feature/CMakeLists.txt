@@ -1,13 +1,13 @@
-IF(FERN_ALGORITHM)
-    ADD_SUBDIRECTORY(core)
+if(FERN_ALGORITHM)
+    add_subdirectory(core)
 
     # Install all header for now. Otherwise we have to keep tweaking the
     # install rules.
-    INSTALL(
+    install(
         DIRECTORY core
         DESTINATION include/fern/feature
         FILES_MATCHING PATTERN "*.h"
     )
-ENDIF()
+endif()
 
 ### ADD_SUBDIRECTORY(visitor)

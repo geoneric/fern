@@ -1,17 +1,17 @@
-ADD_SUBDIRECTORY(test)
+add_subdirectory(test)
 
-SET(SOURCES
+set(SOURCES
     index_range
     index_ranges
 )
-ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_algorithm_core ${SOURCES})
-TARGET_LINK_LIBRARIES(fern_algorithm_core
+add_library_and_object_library(fern_algorithm_core ${SOURCES})
+target_link_libraries(fern_algorithm_core
     stdc++
 )
-IF(FERN_ALGORITHM)
-    INSTALL(
+if(FERN_ALGORITHM)
+    install(
         TARGETS fern_algorithm_core
         EXPORT fern_targets
         ARCHIVE DESTINATION lib
     )
-ENDIF()
+endif()

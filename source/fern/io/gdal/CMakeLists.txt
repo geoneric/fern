@@ -1,13 +1,13 @@
-ADD_SUBDIRECTORY(test)
+add_subdirectory(test)
 
-SET(SOURCES
+set(SOURCES
     gdal_client
     gdal_dataset
     gdal_driver
     gdal_data_type_traits;
 )
-ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_io_gdal ${SOURCES})
-TARGET_LINK_LIBRARIES(fern_io_gdal
+add_library_and_object_library(fern_io_gdal ${SOURCES})
+target_link_libraries(fern_io_gdal
     fern_io_core
     fern_feature_visitor
     fern_feature_core

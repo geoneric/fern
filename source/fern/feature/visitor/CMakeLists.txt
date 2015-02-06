@@ -1,10 +1,10 @@
-ADD_SUBDIRECTORY(test)
+add_subdirectory(test)
 
-SET(SOURCES
+set(SOURCES
     attribute_visitor
     attribute_type_visitor
 )
-ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_feature_visitor ${SOURCES})
-TARGET_LINK_LIBRARIES(fern_feature_visitor
+add_library_and_object_library(fern_feature_visitor ${SOURCES})
+target_link_libraries(fern_feature_visitor
     fern_core
 )

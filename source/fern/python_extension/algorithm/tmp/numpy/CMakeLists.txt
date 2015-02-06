@@ -1,36 +1,36 @@
-ADD_SUBDIRECTORY(test)
-SET(LIB_SOURCES
+add_subdirectory(test)
+set(LIB_SOURCES
     add
     sqrt
     util
 )
-ADD_LIBRARY(fern_python_extension_algorithm_numpy ${LIB_SOURCES})
-TARGET_LINK_LIBRARIES(fern_python_extension_algorithm_numpy
+add_library(fern_python_extension_algorithm_numpy ${LIB_SOURCES})
+target_link_libraries(fern_python_extension_algorithm_numpy
     fern_python_extension_core
     fern_algorithm_core
     fern_feature_core
     stdc++
 )
-SET(EXTENSION_SOURCES
+set(EXTENSION_SOURCES
     add_overloads
     algorithm
     python_extension
     sqrt_overloads
     wrapped_data_type
 )
-ADD_LIBRARY(_fern_algorithm_numpy SHARED ${EXTENSION_SOURCES})
-TARGET_LINK_LIBRARIES(_fern_algorithm_numpy
+add_library(_fern_algorithm_numpy SHARED ${EXTENSION_SOURCES})
+target_link_libraries(_fern_algorithm_numpy
     fern_python_extension_algorithm_numpy
     fern_python_extension_algorithm_core
     fern_python_extension_core
     stdc++
 )
-CONFIGURE_PYTHON_EXTENSION(_fern_algorithm_numpy "_fern_algorithm_numpy")
-SET_TARGET_PROPERTIES(_fern_algorithm_numpy
+configure_python_extension(_fern_algorithm_numpy "_fern_algorithm_numpy")
+set_target_properties(_fern_algorithm_numpy
     PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin/fern/algorithm/numpy
 )
-CONFIGURE_FILE(__init__.py.in
+configure_file(__init__.py.in
     ${PROJECT_BINARY_DIR}/bin/fern/algorithm/numpy/__init__.py
     COPYONLY
 )
