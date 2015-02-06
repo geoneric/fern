@@ -1,6 +1,6 @@
-ADD_SUBDIRECTORY(test)
+add_subdirectory(test)
 
-SET(SOURCES
+set(SOURCES
     fern_client
     fern_dataset
     fern_driver
@@ -9,8 +9,8 @@ SET(SOURCES
     hdf5_type_traits
     utils
 )
-ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_io_fern ${SOURCES})
-TARGET_LINK_LIBRARIES(fern_io_fern
+add_library_and_object_library(fern_io_fern ${SOURCES})
+target_link_libraries(fern_io_fern
     fern_io_core
     fern_feature_visitor
     fern_feature_core

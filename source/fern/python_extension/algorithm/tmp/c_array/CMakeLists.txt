@@ -1,13 +1,13 @@
-ADD_SUBDIRECTORY(test)
+add_subdirectory(test)
 
-# SET(SOURCES
+# set(SOURCES
 #     algorithm
 # )
-# ADD_LIBRARY(fern_algorithm_c_array ${SOURCES})
-# TARGET_LINK_LIBRARIES(fern_algorithm_c_array
+# add_library(fern_algorithm_c_array ${SOURCES})
+# target_link_libraries(fern_algorithm_c_array
 #     stdc++
 # )
-# INSTALL(
+# install(
 #     TARGETS fern_algorithm_core
 #     EXPORT fern_targets
 #     ARCHIVE DESTINATION lib

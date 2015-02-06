@@ -1,16 +1,16 @@
-SET(TEST_NAMES
+set(TEST_NAMES
     algebra_parser_test
 )
 
-MACRO(ADD_UNIT_TEST NAME)
-    ADD_EXECUTABLE(script_${NAME} ${NAME})
-    TARGET_LINK_LIBRARIES(script_${NAME}
+macro(ADD_UNIT_TEST NAME)
+    add_executable(script_${NAME} ${NAME})
+    target_link_libraries(script_${NAME}
         fern_script
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
-    ADD_TEST(NAME script_${NAME} COMMAND script_${NAME})
-ENDMACRO()
+    add_test(NAME script_${NAME} COMMAND script_${NAME})
+endmacro()
 
-FOREACH(NAME ${TEST_NAMES})
-    ADD_UNIT_TEST(${NAME})
-ENDFOREACH()
+foreach(NAME ${TEST_NAMES})
+    add_unit_test(${NAME})
+endforeach()

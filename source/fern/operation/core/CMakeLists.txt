@@ -1,6 +1,6 @@
-ADD_SUBDIRECTORY(test)
+add_subdirectory(test)
 
-SET(SOURCES
+set(SOURCES
     argument
     argument_type
     attribute_argument
@@ -12,8 +12,8 @@ SET(SOURCES
     result
     expression_types
 )
-ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_operation_core ${SOURCES})
-TARGET_LINK_LIBRARIES(fern_operation_core
+add_library_and_object_library(fern_operation_core ${SOURCES})
+target_link_libraries(fern_operation_core
     fern_feature_visitor
     fern_core
 )

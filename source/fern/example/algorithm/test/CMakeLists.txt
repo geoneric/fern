@@ -1,8 +1,8 @@
-SET(TEST_NAMES
+set(TEST_NAMES
     raster_test
 )
-FOREACH(NAME ${TEST_NAMES})
-    ADD_UNIT_TEST2(
+foreach(NAME ${TEST_NAMES})
+    add_unit_test2(
         SCOPE example_algorithm
         NAME ${NAME})
-ENDFOREACH()
+endforeach()

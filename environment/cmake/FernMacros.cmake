@@ -1,14 +1,14 @@
-INCLUDE(CheckCXXSourceRuns)
+include(CheckCXXSourceRuns)
 
 
-MACRO(ADD_PARSER_GENERATION_COMMAND
+macro(add_parser_generation_command
         BASENAME)
-    CONFIGURE_FILE(
+    configure_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.map.in
         ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.map
     )
 
-    ADD_CUSTOM_COMMAND(
+    add_custom_command(
         OUTPUT
             ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}-pskel.hxx
             ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}-pskel.cxx
@@ -17,12 +17,12 @@ MACRO(ADD_PARSER_GENERATION_COMMAND
                 --type-map ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.map
                 ${ARGN}
                 ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.xsd
-        DEPENDS
+                DEPENDS
             ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.map
             ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.xsd
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     )
-ENDMACRO()
+endmacro()
 
 
 # Targets can be added conditionally. When Fern components are selected during
@@ -30,23 +30,23 @@ ENDMACRO()
 # include a target or group of targets. See FernConfiguration.cmake.
 # TARGET_NAME   : Name of target, snake_case.
 # DIRECTORY_NAME: Name of subdirectory containing the target.
-MACRO(ADD_TARGET_CONDITIONALLY
+macro(add_target_conditionally
         TARGET_NAME
         DIRECTORY_NAME)
     # Determine name of variable to check.
-    STRING(TOUPPER ${TARGET_NAME} VARIABLE_NAME)
-    SET(VARIABLE_NAME "FERN_FERN_${VARIABLE_NAME}_REQUIRED")
+    string(TOUPPER ${TARGET_NAME} VARIABLE_NAME)
+    set(VARIABLE_NAME "FERN_FERN_${VARIABLE_NAME}_REQUIRED")
 
     # Make sure it is defined.
-    IF(NOT DEFINED ${VARIABLE_NAME})
-        MESSAGE(SEND_ERROR "Variable ${VARIABLE_NAME} is not defined")
-    ENDIF()
+    if(NOT DEFINED ${VARIABLE_NAME})
+        message(SEND_ERROR "Variable ${VARIABLE_NAME} is not defined")
+    endif()
 
     # Evaluate the variable and include target if result is true.
-    IF(${VARIABLE_NAME})
-        ADD_SUBDIRECTORY(${DIRECTORY_NAME})
-    ENDIF()
-ENDMACRO()
+    if(${VARIABLE_NAME})
+        add_subdirectory(${DIRECTORY_NAME})
+    endif()
+endmacro()
 
 
 # Create a static library and an object library.
@@ -54,16 +54,16 @@ ENDMACRO()
 #           named ${BASENAME}_objects.
 # SOURCES : Sources that are part of the libraries. Any argument that comes
 #           after the BASENAME is treated as a source.
-MACRO(ADD_LIBRARY_AND_OBJECT_LIBRARY
+macro(add_library_and_object_library
         BASENAME)
-    SET(SOURCES ${ARGN})
-    ADD_LIBRARY(${BASENAME}
+    set(SOURCES ${ARGN})
+    add_library(${BASENAME}
         ${SOURCES}
     )
-    ADD_LIBRARY(${BASENAME}_objects OBJECT
+    add_library(${BASENAME}_objects OBJECT
         ${SOURCES}
     )
-ENDMACRO()
+endmacro()
 
 
 # Verify that headers are self-sufficient: they include the headers they need.
@@ -75,43 +75,43 @@ ENDMACRO()
 # 
 # Cache veriables will be set that are named after the headers:
 # <header_name>_IS_STANDALONE
-MACRO(VERIFY_HEADERS_ARE_SELF_SUFFICIENT)
-    SET(OPTIONS "")
-    SET(ONE_VALUE_ARGUMENTS OFFSET_PATHNAME FLAGS)
-    SET(MULTI_VALUE_ARGUMENTS INCLUDES LIBRARIES HEADER_PATHNAMES)
-    CMAKE_PARSE_ARGUMENTS(VERIFY_HEADERS "${OPTIONS}" "${ONE_VALUE_ARGUMENTS}"
+macro(verify_headers_are_self_sufficient)
+    set(OPTIONS "")
+    set(ONE_VALUE_ARGUMENTS OFFSET_PATHNAME FLAGS)
+    set(MULTI_VALUE_ARGUMENTS INCLUDES LIBRARIES HEADER_PATHNAMES)
+    cmake_parse_arguments(VERIFY_HEADERS "${OPTIONS}" "${ONE_VALUE_ARGUMENTS}"
         "${MULTI_VALUE_ARGUMENTS}" ${ARGN})
 
-    IF(VERIFY_HEADERS_UNPARSED_ARGUMENTS)
-        MESSAGE(FATAL_ERROR
+    if(VERIFY_HEADERS_UNPARSED_ARGUMENTS)
+        message(FATAL_ERROR
             "Macro called with unrecognized arguments: "
             "${VERIFY_HEADERS_UNPARSED_ARGUMENTS}"
         )
-    ENDIF()
+    endif()
 
-    SET(CMAKE_REQUIRED_FLAGS "${VERIFY_HEADERS_FLAGS}")
-    # SET(CMAKE_REQUIRED_DEFINITIONS xxx)
-    SET(CMAKE_REQUIRED_INCLUDES ${VERIFY_HEADERS_INCLUDES})
-    SET(CMAKE_REQUIRED_LIBRARIES ${VERIFY_HEADERS_LIBRARIES})
+    set(CMAKE_REQUIRED_FLAGS "${VERIFY_HEADERS_FLAGS}")
+    # set(CMAKE_REQUIRED_DEFINITIONS xxx)
+    set(CMAKE_REQUIRED_INCLUDES ${VERIFY_HEADERS_INCLUDES})
+    set(CMAKE_REQUIRED_LIBRARIES ${VERIFY_HEADERS_LIBRARIES})
 
-    FOREACH(HEADER_PATHNAME ${VERIFY_HEADERS_HEADER_PATHNAMES})
-        STRING(REPLACE ${VERIFY_HEADERS_OFFSET_PATHNAME} "" HEADER_NAME
+    foreach(HEADER_PATHNAME ${VERIFY_HEADERS_HEADER_PATHNAMES})
+        string(REPLACE ${VERIFY_HEADERS_OFFSET_PATHNAME} "" HEADER_NAME
             ${HEADER_PATHNAME})
 
         # Create variable name that contains the name of the header being
         # checked and is a valid macro name. It is passed to the compiler:
         # -D${VARIABLE_NAME}. That meanѕ that some characters cannot be in
         # the name.
-        SET(VARIABLE_NAME ${HEADER_NAME})
-        STRING(REPLACE /  _ VARIABLE_NAME ${VARIABLE_NAME})
-        STRING(REPLACE \\ _ VARIABLE_NAME ${VARIABLE_NAME})
-        STRING(REPLACE .  _ VARIABLE_NAME ${VARIABLE_NAME})
+        set(VARIABLE_NAME ${HEADER_NAME})
+        string(REPLACE /  _ VARIABLE_NAME ${VARIABLE_NAME})
+        string(REPLACE \\ _ VARIABLE_NAME ${VARIABLE_NAME})
+        string(REPLACE .  _ VARIABLE_NAME ${VARIABLE_NAME})
 
         # - Include the header twice to see whether the '#pragma once' is in
         #   place.
         # - Compile a dummy main to see whether the header includes everything
         #   it uses.
-        CHECK_CXX_SOURCE_COMPILES("
+        check_cxx_source_compiles("
             #include \"${HEADER_NAME}\"
             #include \"${HEADER_NAME}\"
             int main(int /* argc */, char** /* argv */) {
@@ -119,47 +119,47 @@ MACRO(VERIFY_HEADERS_ARE_SELF_SUFFICIENT)
             }"
             ${VARIABLE_NAME})
 
-        IF(NOT ${VARIABLE_NAME})
-            MESSAGE(FATAL_ERROR
+        if(NOT ${VARIABLE_NAME})
+            message(FATAL_ERROR
                 "Header ${HEADER_NAME} is not self-sufficient. "
                 "Inspect CMakeFiles/{CMakeError.log,CMakeOutput.log}."
             )
-        ENDIF()
-    ENDFOREACH()
-ENDMACRO()
+        endif()
+    endforeach()
+endmacro()
 
 
 # TODO Can we somehow configure the extension to end up in bin/python instead
 # TODO of bin? Currently we cannot have a dll and a python extension
 # TODO both named bla. On Windows the import lib of the python extension will
 # TODO conflict with the import lib of the dll.
-MACRO(CONFIGURE_PYTHON_EXTENSION
+macro(configure_python_extension
         EXTENTION_TARGET
         EXTENSION_NAME)
-    SET_TARGET_PROPERTIES(${EXTENTION_TARGET}
+    set_target_properties(${EXTENTION_TARGET}
         PROPERTIES
             OUTPUT_NAME "${EXTENSION_NAME}"
     )
 
     # Configure suffix and prefix, depending on the Python OS conventions.
-    SET_TARGET_PROPERTIES(${EXTENTION_TARGET}
+    set_target_properties(${EXTENTION_TARGET}
         PROPERTIES
             PREFIX ""
     )
 
-    IF(WIN32)
-        SET_TARGET_PROPERTIES(${EXTENTION_TARGET}
+    if(WIN32)
+        set_target_properties(${EXTENTION_TARGET}
             PROPERTIES
                 DEBUG_POSTFIX "_d"
                 SUFFIX ".pyd"
         )
-    ELSE(WIN32)
-        SET_TARGET_PROPERTIES(${EXTENTION_TARGET}
+    else(WIN32)
+        set_target_properties(${EXTENTION_TARGET}
             PROPERTIES
                 SUFFIX ".so"
         )
-    ENDIF(WIN32)
-ENDMACRO()
+    endif(WIN32)
+endmacro()
 
 
 # Add a test target.
@@ -170,54 +170,54 @@ ENDMACRO()
 # NAME : Name of test module, without extension.
 # LINK_LIBRARIES: Libraries to link against.
 # DEPENDENCIES: Targets this test target depends on.
-MACRO(ADD_UNIT_TEST2)
-    SET(OPTIONS "")
-    SET(ONE_VALUE_ARGUMENTS SCOPE NAME)
-    SET(MULTI_VALUE_ARGUMENTS LINK_LIBRARIES DEPENDENCIES)
+macro(add_unit_test2)
+    set(OPTIONS "")
+    set(ONE_VALUE_ARGUMENTS SCOPE NAME)
+    set(MULTI_VALUE_ARGUMENTS LINK_LIBRARIES DEPENDENCIES)
 
-    CMAKE_PARSE_ARGUMENTS(ADD_UNIT_TEST "${OPTIONS}" "${ONE_VALUE_ARGUMENTS}"
+    cmake_parse_arguments(ADD_UNIT_TEST "${OPTIONS}" "${ONE_VALUE_ARGUMENTS}"
         "${MULTI_VALUE_ARGUMENTS}" ${ARGN})
 
-    IF(ADD_UNIT_TEST_UNPARSED_ARGUMENTS)
-        MESSAGE(FATAL_ERROR
+    if(ADD_UNIT_TEST_UNPARSED_ARGUMENTS)
+        message(FATAL_ERROR
             "Macro called with unrecognized arguments: "
             "${ADD_UNIT_TEST_UNPARSED_ARGUMENTS}"
         )
-    ENDIF()
+    endif()
 
-    SET(TEST_MODULE_NAME ${ADD_UNIT_TEST_NAME})
-    SET(TEST_EXE_NAME ${ADD_UNIT_TEST_SCOPE}_${TEST_MODULE_NAME})
+    set(TEST_MODULE_NAME ${ADD_UNIT_TEST_NAME})
+    set(TEST_EXE_NAME ${ADD_UNIT_TEST_SCOPE}_${TEST_MODULE_NAME})
 
-    ADD_EXECUTABLE(${TEST_EXE_NAME} ${TEST_MODULE_NAME})
-    TARGET_LINK_LIBRARIES(${TEST_EXE_NAME}
+    add_executable(${TEST_EXE_NAME} ${TEST_MODULE_NAME})
+    target_link_libraries(${TEST_EXE_NAME}
         ${ADD_UNIT_TEST_LINK_LIBRARIES}
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
         stdc++)
-    ADD_TEST(NAME ${TEST_EXE_NAME}
+    add_test(NAME ${TEST_EXE_NAME}
         # catch_system_errors: Prevent UTF to detect system errors. This
         #     messes things up when doing system calls to Python unit tests.
         #     See also: http://lists.boost.org/boost-users/2009/12/55048.php
         COMMAND ${TEST_EXE_NAME} --catch_system_errors=no)
 
-    IF(ADD_UNIT_TEST_DEPENDENCIES)
+    if(ADD_UNIT_TEST_DEPENDENCIES)
         ADD_DEPENDENCIES(${TEST_EXE_NAME} ${ADD_UNIT_TEST_DEPENDENCIES})
-    ENDIF()
+    endif()
 
     # Maybe add ${EXECUTABLE_OUTPUT_PATH} in the future. If needed.
-    SET(PATH_LIST $ENV{PATH})
-    LIST(INSERT PATH_LIST 0 ${Boost_LIBRARY_DIRS})
-    SET(PATH_STRING "${PATH_LIST}")
+    set(PATH_LIST $ENV{PATH})
+    list(INSERT PATH_LIST 0 ${Boost_LIBRARY_DIRS})
+    set(PATH_STRING "${PATH_LIST}")
 
-    IF(${host_system_name} STREQUAL "windows")
-        STRING(REPLACE "\\" "/" PATH_STRING "${PATH_STRING}")
-        STRING(REPLACE ";" "\\;" PATH_STRING "${PATH_STRING}")
-    ELSE()
-        STRING(REPLACE ";" ":" PATH_STRING "${PATH_STRING}")
-    ENDIF()
+    if(${host_system_name} STREQUAL "windows")
+        string(REPLACE "\\" "/" PATH_STRING "${PATH_STRING}")
+        string(REPLACE ";" "\\;" PATH_STRING "${PATH_STRING}")
+    else()
+        string(REPLACE ";" ":" PATH_STRING "${PATH_STRING}")
+    endif()
 
-    SET_PROPERTY(TEST ${TEST_EXE_NAME}
+    set_property(TEST ${TEST_EXE_NAME}
         PROPERTY ENVIRONMENT "PATH=${PATH_STRING}")
-ENDMACRO()
+endmacro()
 
 
 # Copy Python test modules from current source directory to current binary
@@ -227,72 +227,72 @@ ENDMACRO()
 # If you let another target depend on this custom target, then all copied
 # test modules will always be up to date before building the other target.
 # TARGET: Name of custom target to add.
-MACRO(COPY_PYTHON_UNIT_TEST_MODULES)
-    SET(OPTIONS "")
-    SET(ONE_VALUE_ARGUMENTS TARGET)
-    SET(MULTI_VALUE_ARGUMENTS "")
+macro(copy_python_unit_test_modules)
+    set(OPTIONS "")
+    set(ONE_VALUE_ARGUMENTS TARGET)
+    set(MULTI_VALUE_ARGUMENTS "")
 
-    CMAKE_PARSE_ARGUMENTS(COPY_MODULES "${OPTIONS}" "${ONE_VALUE_ARGUMENTS}"
+    cmake_parse_arguments(COPY_MODULES "${OPTIONS}" "${ONE_VALUE_ARGUMENTS}"
         "${MULTI_VALUE_ARGUMENTS}" ${ARGN})
 
-    IF(COPY_MODULES_UNPARSED_ARGUMENTS)
-        MESSAGE(FATAL_ERROR
+    if(COPY_MODULES_UNPARSED_ARGUMENTS)
+        message(FATAL_ERROR
             "Macro called with unrecognized arguments: "
             "${COPY_MODULES_UNPARSED_ARGUMENTS}"
         )
-    ENDIF()
+    endif()
 
-    FILE(GLOB PYTHON_UNIT_TEST_MODULES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    file(GLOB PYTHON_UNIT_TEST_MODULES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
         "*_test.py")
 
-    FOREACH(MODULE ${PYTHON_UNIT_TEST_MODULES})
-        SET(PYTHON_UNIT_TEST_MODULE ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE})
-        SET(COPIED_PYTHON_UNIT_TEST_MODULE
+    foreach(MODULE ${PYTHON_UNIT_TEST_MODULES})
+        set(PYTHON_UNIT_TEST_MODULE ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE})
+        set(COPIED_PYTHON_UNIT_TEST_MODULE
             ${CMAKE_CURRENT_BINARY_DIR}/${MODULE})
-        ADD_CUSTOM_COMMAND(
+        add_custom_command(
             OUTPUT ${COPIED_PYTHON_UNIT_TEST_MODULE}
             DEPENDS ${PYTHON_UNIT_TEST_MODULE}
             COMMAND ${CMAKE_COMMAND} -E copy ${PYTHON_UNIT_TEST_MODULE}
                 ${COPIED_PYTHON_UNIT_TEST_MODULE}
         )
-        LIST(APPEND COPIED_PYTHON_UNIT_TEST_MODULES
+        list(APPEND COPIED_PYTHON_UNIT_TEST_MODULES
             ${COPIED_PYTHON_UNIT_TEST_MODULE})
-    ENDFOREACH()
+    endforeach()
 
-    ADD_CUSTOM_TARGET(${COPY_MODULES_TARGET}
+    add_custom_target(${COPY_MODULES_TARGET}
         DEPENDS ${COPIED_PYTHON_UNIT_TEST_MODULES})
-ENDMACRO()
+endmacro()
 
 
-MACRO(COPY_PYTHON_MODULES)
-    SET(OPTIONS "")
-    SET(ONE_VALUE_ARGUMENTS TARGET TARGET_DIRECTORY)
-    SET(MULTI_VALUE_ARGUMENTS "")
+macro(copy_python_modules)
+    set(OPTIONS "")
+    set(ONE_VALUE_ARGUMENTS TARGET TARGET_DIRECTORY)
+    set(MULTI_VALUE_ARGUMENTS "")
 
-    CMAKE_PARSE_ARGUMENTS(COPY_MODULES "${OPTIONS}" "${ONE_VALUE_ARGUMENTS}"
+    cmake_parse_arguments(COPY_MODULES "${OPTIONS}" "${ONE_VALUE_ARGUMENTS}"
         "${MULTI_VALUE_ARGUMENTS}" ${ARGN})
 
-    IF(COPY_MODULES_UNPARSED_ARGUMENTS)
-        MESSAGE(FATAL_ERROR
+    if(COPY_MODULES_UNPARSED_ARGUMENTS)
+        message(FATAL_ERROR
             "Macro called with unrecognized arguments: "
             "${COPY_MODULES_UNPARSED_ARGUMENTS}"
         )
-    ENDIF()
+    endif()
 
-    FILE(GLOB PYTHON_MODULES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.py")
+    file(GLOB PYTHON_MODULES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.py")
 
-    FOREACH(MODULE ${PYTHON_MODULES})
-        SET(PYTHON_MODULE ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE})
-        SET(COPIED_PYTHON_MODULE ${COPY_MODULES_TARGET_DIRECTORY}/${MODULE})
-        ADD_CUSTOM_COMMAND(
+    foreach(MODULE ${PYTHON_MODULES})
+        set(PYTHON_MODULE ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE})
+        set(COPIED_PYTHON_MODULE ${COPY_MODULES_TARGET_DIRECTORY}/${MODULE})
+        add_custom_command(
             OUTPUT ${COPIED_PYTHON_MODULE}
             DEPENDS ${PYTHON_MODULE}
             COMMAND ${CMAKE_COMMAND} -E copy ${PYTHON_MODULE}
                 ${COPIED_PYTHON_MODULE}
         )
-        LIST(APPEND COPIED_PYTHON_MODULES ${COPIED_PYTHON_MODULE})
-    ENDFOREACH()
+        list(APPEND COPIED_PYTHON_MODULES ${COPIED_PYTHON_MODULE})
+    endforeach()
 
-    ADD_CUSTOM_TARGET(${COPY_MODULES_TARGET}
+    add_custom_target(${COPY_MODULES_TARGET}
         DEPENDS ${COPIED_PYTHON_MODULES})
-ENDMACRO()
+endmacro()

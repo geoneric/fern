@@ -1,16 +1,16 @@
-SET(TEST_NAMES
+set(TEST_NAMES
     file_test
 )
 
-MACRO(ADD_UNIT_TEST NAME)
-    ADD_EXECUTABLE(io_core_${NAME} ${NAME})
-    TARGET_LINK_LIBRARIES(io_core_${NAME}
+macro(ADD_UNIT_TEST NAME)
+    add_executable(io_core_${NAME} ${NAME})
+    target_link_libraries(io_core_${NAME}
         fern_io_core
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
-    ADD_TEST(NAME io_core_${NAME} COMMAND io_core_${NAME})
-ENDMACRO()
+    add_test(NAME io_core_${NAME} COMMAND io_core_${NAME})
+endmacro()
 
-FOREACH(NAME ${TEST_NAMES})
-    ADD_UNIT_TEST(${NAME})
-ENDFOREACH()
+foreach(NAME ${TEST_NAMES})
+    add_unit_test(${NAME})
+endforeach()

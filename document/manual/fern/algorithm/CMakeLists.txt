@@ -1,1 +1,1 @@
-ADD_SUBDIRECTORY(source)
+add_subdirectory(source)

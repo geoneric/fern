@@ -1,3 +1,3 @@
-ADD_SUBDIRECTORY(core)
-ADD_SUBDIRECTORY(std)
-ADD_SUBDIRECTORY(xml)
+add_subdirectory(core)
+add_subdirectory(std)
+add_subdirectory(xml)

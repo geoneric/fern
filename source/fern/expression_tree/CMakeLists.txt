@@ -1,9 +1,9 @@
-ADD_SUBDIRECTORY(test)
+add_subdirectory(test)
 
-# SET(SOURCES
+# set(SOURCES
 #     expression
 # )
-# ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_expression_tree ${SOURCES})
-# TARGET_LINK_LIBRARIES(fern_feature_core
+# add_library_and_object_library(fern_expression_tree ${SOURCES})
+# target_link_libraries(fern_feature_core
 #     fern_core
 # )

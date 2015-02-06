@@ -1,19 +1,19 @@
-SET(TEST_NAMES
+set(TEST_NAMES
     compiler_test
     module_test
     parse_command_line_test
 )
 
-MACRO(ADD_UNIT_TEST NAME)
-    ADD_EXECUTABLE(compiler_${NAME} ${NAME})
-    TARGET_LINK_LIBRARIES(compiler_${NAME}
+macro(ADD_UNIT_TEST NAME)
+    add_executable(compiler_${NAME} ${NAME})
+    target_link_libraries(compiler_${NAME}
         fern_compiler
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
         ${Boost_SYSTEM_LIBRARY}
     )
-    ADD_TEST(NAME compiler_${NAME} COMMAND compiler_${NAME})
-ENDMACRO()
+    add_test(NAME compiler_${NAME} COMMAND compiler_${NAME})
+endmacro()
 
-FOREACH(NAME ${TEST_NAMES})
-    ADD_UNIT_TEST(${NAME})
-ENDFOREACH()
+foreach(NAME ${TEST_NAMES})
+    add_unit_test(${NAME})
+endforeach()

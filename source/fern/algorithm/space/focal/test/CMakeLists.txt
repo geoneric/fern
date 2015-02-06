@@ -1,10 +1,10 @@
-SET(TEST_NAMES
+set(TEST_NAMES
     slope_test
 )
-FOREACH(NAME ${TEST_NAMES})
-    ADD_UNIT_TEST2(
+foreach(NAME ${TEST_NAMES})
+    add_unit_test2(
         SCOPE algorithm_spatial_focal
         NAME ${NAME}
         LINK_LIBRARIES fern_algorithm_policy fern_core fern_algorithm_core
             fern_feature_core)
-ENDFOREACH()
+endforeach()

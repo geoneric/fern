@@ -1,6 +1,6 @@
-ADD_SUBDIRECTORY(elementary)
+add_subdirectory(elementary)
 
-CONFIGURE_FILE(__init__.py.in
+configure_file(__init__.py.in
     ${PROJECT_BINARY_DIR}/bin/fern/algorithm/algebra/__init__.py
     COPYONLY
 )

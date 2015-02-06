@@ -1,4 +1,4 @@
-SET(TEST_NAMES
+set(TEST_NAMES
     base_class_test
     data_types_test
     flag_collection_test
@@ -13,17 +13,17 @@ SET(TEST_NAMES
     typelist_test
     value_types_test
 )
-IF(FERN_COMPILER_HAS_REGEX)
-    SET(TEST_NAMES
+if(FERN_COMPILER_HAS_REGEX)
+    set(TEST_NAMES
         ${TEST_NAMES}
         data_name_test
         path_test
     )
-ENDIF()
+endif()
 
-FOREACH(NAME ${TEST_NAMES})
-    ADD_UNIT_TEST2(
+foreach(NAME ${TEST_NAMES})
+    add_unit_test2(
         SCOPE core
         NAME ${NAME}
         LINK_LIBRARIES fern_core)
-ENDFOREACH()
+endforeach()

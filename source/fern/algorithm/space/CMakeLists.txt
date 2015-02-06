@@ -1,1 +1,1 @@
-ADD_SUBDIRECTORY(focal)
+add_subdirectory(focal)

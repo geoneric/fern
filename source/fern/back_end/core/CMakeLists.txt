@@ -1,10 +1,10 @@
-ADD_SUBDIRECTORY(test)
+add_subdirectory(test)
 
-SET(SOURCES
+set(SOURCES
     back_end
 )
-ADD_LIBRARY(fern_back_end
+add_library(fern_back_end
     ${SOURCES}
 )
-# TARGET_LINK_LIBRARIES(fern_back_end
+# target_link_libraries(fern_back_end
 # )

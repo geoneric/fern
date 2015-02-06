@@ -1,11 +1,11 @@
-### IF(NOT FERN_ALGORITHM_ONLY)
-###     SET(LATEX_COMPILER_FLAGS
+### if(NOT FERN_ALGORITHM_ONLY)
+###     set(LATEX_COMPILER_FLAGS
 ###         # "--shell-escape
 ###         "-interaction=nonstopmode --enable-write18"
 ###         # CACHE STRING "Flags passed to latex."
 ###     )
-###     INCLUDE(UseLATEX)
-### ENDIF()
+###     include(UseLATEX)
+### endif()
 
-ADD_SUBDIRECTORY(manual)
-ADD_SUBDIRECTORY(text)
+add_subdirectory(manual)
+add_subdirectory(text)

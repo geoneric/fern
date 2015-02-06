@@ -1,5 +1,5 @@
-ADD_SUBDIRECTORY(test)
-SET(SOURCES
+add_subdirectory(test)
+set(SOURCES
     add
     add_overloads
     algorithm
@@ -9,8 +9,8 @@ SET(SOURCES
     util
     wrapped_data_type
 )
-ADD_LIBRARY(fern_algorithm_gdal SHARED ${SOURCES})
-TARGET_LINK_LIBRARIES(fern_algorithm_gdal
+add_library(fern_algorithm_gdal SHARED ${SOURCES})
+target_link_libraries(fern_algorithm_gdal
     _fern_algorithm_numpy
     fern_python_extension_algorithm_core
     fern_python_extension_core
@@ -19,12 +19,12 @@ TARGET_LINK_LIBRARIES(fern_algorithm_gdal
     ${GDAL_LIBRARY}
     stdc++
 )
-CONFIGURE_PYTHON_EXTENSION(fern_algorithm_gdal "_fern_algorithm_gdal")
-SET_TARGET_PROPERTIES(fern_algorithm_gdal
+configure_python_extension(fern_algorithm_gdal "_fern_algorithm_gdal")
+set_target_properties(fern_algorithm_gdal
     PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin/fern/algorithm/gdal
 )
-CONFIGURE_FILE(__init__.py.in
+configure_file(__init__.py.in
     ${PROJECT_BINARY_DIR}/bin/fern/algorithm/gdal/__init__.py
     COPYONLY
 )

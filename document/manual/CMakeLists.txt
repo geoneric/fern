@@ -1,6 +1,6 @@
-ADD_SUBDIRECTORY(fern)
+add_subdirectory(fern)
 
-INSTALL(
+install(
     DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/fern/_build/html/
     DESTINATION doc/manual
 )

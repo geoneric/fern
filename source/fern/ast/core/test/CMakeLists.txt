@@ -1,4 +1,4 @@
-SET(TEST_NAMES
+set(TEST_NAMES
     assignment_vertex_test
     ast_vertex_test
     expression_vertex_test
@@ -15,14 +15,14 @@ SET(TEST_NAMES
     while_vertex_test
 )
 
-MACRO(ADD_UNIT_TEST NAME)
-    ADD_EXECUTABLE(ast_core_${NAME} ${NAME})
-    TARGET_LINK_LIBRARIES(ast_core_${NAME}
+macro(ADD_UNIT_TEST NAME)
+    add_executable(ast_core_${NAME} ${NAME})
+    target_link_libraries(ast_core_${NAME}
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
-    ADD_TEST(NAME ast_core_${NAME} COMMAND ast_core_${NAME})
-ENDMACRO()
+    add_test(NAME ast_core_${NAME} COMMAND ast_core_${NAME})
+endmacro()
 
-FOREACH(NAME ${TEST_NAMES})
-    ADD_UNIT_TEST(${NAME})
-ENDFOREACH()
+foreach(NAME ${TEST_NAMES})
+    add_unit_test(${NAME})
+endforeach()

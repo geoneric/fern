@@ -1,6 +1,6 @@
-ADD_SUBDIRECTORY(test)
+add_subdirectory(test)
 
-SET(SOURCES
+set(SOURCES
     annotate_visitor
     ast_dot_visitor
     ast_visitor
@@ -14,7 +14,7 @@ SET(SOURCES
     thread_visitor
     validate_visitor
 )
-ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_ast_visitor ${SOURCES})
-TARGET_LINK_LIBRARIES(fern_ast_visitor
+add_library_and_object_library(fern_ast_visitor ${SOURCES})
+target_link_libraries(fern_ast_visitor
     fern_ast_core
 )

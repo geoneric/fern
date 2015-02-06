@@ -1,1 +1,1 @@
-ADD_SUBDIRECTORY(cmake)
+add_subdirectory(cmake)

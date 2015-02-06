@@ -1,10 +1,10 @@
-SET(SOURCES
+set(SOURCES
     add
     sqrt
     util
 )
-ADD_LIBRARY(fern_python_extension_algorithm_core ${SOURCES})
-TARGET_LINK_LIBRARIES(fern_python_extension_algorithm_core
+add_library(fern_python_extension_algorithm_core ${SOURCES})
+target_link_libraries(fern_python_extension_algorithm_core
     ${PYTHON_LIBRARIES}
     stdc++
 )

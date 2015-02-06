@@ -1,12 +1,12 @@
-ADD_SUBDIRECTORY(test)
+add_subdirectory(test)
 
-SET(SOURCES
+set(SOURCES
     distribution
     normal_distribution
     uncertainty
 )
-ADD_LIBRARY(fern_uncertainty
+add_library(fern_uncertainty
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(fern_uncertainty
+target_link_libraries(fern_uncertainty
 )

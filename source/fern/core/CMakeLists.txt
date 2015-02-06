@@ -1,6 +1,6 @@
-ADD_SUBDIRECTORY(test)
+add_subdirectory(test)
 
-SET(SOURCES
+set(SOURCES
     data_types
     detail/function_wrapper
     exception
@@ -18,26 +18,26 @@ SET(SOURCES
     validate_error
     value_types
 )
-IF(FERN_COMPILER_HAS_REGEX)
+if(FERN_COMPILER_HAS_REGEX)
     # Skip modules that depend on String::split, which is not included if
     # the compiler doesn't support std::regex.
-    SET(SOURCES
+    set(SOURCES
         ${SOURCES}
         data_name
         path
     )
-ENDIF()
-ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_core ${SOURCES})
-TARGET_LINK_LIBRARIES(fern_core
+endif()
+add_library_and_object_library(fern_core ${SOURCES})
+target_link_libraries(fern_core
     ${Boost_FILESYSTEM_LIBRARY}
     ${Boost_SYSTEM_LIBRARY}
     ${Boost_TIMER_LIBRARY}
     stdc++
 )
-IF(FERN_ALGORITHM)
-    INSTALL(
+if(FERN_ALGORITHM)
+    install(
         TARGETS fern_core
         EXPORT fern_targets
         ARCHIVE DESTINATION lib
     )
-ENDIF()
+endif()

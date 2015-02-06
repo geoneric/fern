@@ -1,4 +1,4 @@
-SET(TEST_NAMES
+set(TEST_NAMES
     binary_local_operation_test
     cast_test
     compress_test
@@ -19,10 +19,10 @@ SET(TEST_NAMES
     unary_local_operation_test
     unite_no_data_test
 )
-FOREACH(NAME ${TEST_NAMES})
-    ADD_UNIT_TEST2(
+foreach(NAME ${TEST_NAMES})
+    add_unit_test2(
         SCOPE algorithm_core
         NAME ${NAME}
         LINK_LIBRARIES fern_algorithm_policy fern_algorithm_core
             fern_feature_core fern_core)
-ENDFOREACH()
+endforeach()

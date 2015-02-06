@@ -1,16 +1,16 @@
-ADD_SUBDIRECTORY(test)
+add_subdirectory(test)
 
-ADD_PARSER_GENERATION_COMMAND(operation
+add_parser_generation_command(operation
     --namespace-map http://www.geoneric.eu/fern=fern)
 
-SET(SOURCES
+set(SOURCES
     ${CMAKE_CURRENT_BINARY_DIR}/operation-pskel.cxx
     operation_xml_parser
 )
-ADD_LIBRARY(fern_operation_xml
+add_library(fern_operation_xml
     ${SOURCES}
 )
-TARGET_LINK_LIBRARIES(fern_operation_xml
+target_link_libraries(fern_operation_xml
     fern_operation_core
     # fern_operation_std
     ${EXPAT_LIBRARY}

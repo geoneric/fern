@@ -1,7 +1,7 @@
-ADD_SUBDIRECTORY(neighborhood)
-ADD_SUBDIRECTORY(test)
+add_subdirectory(neighborhood)
+add_subdirectory(test)
 
-SET(SOURCES
+set(SOURCES
     # index_ranges
 )
-# ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_algorithm_core ${SOURCES})
+# add_library_and_object_library(fern_algorithm_core ${SOURCES})

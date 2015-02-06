@@ -1,18 +1,18 @@
-SET(TEST_NAMES
+set(TEST_NAMES
     algorithm_c_array_test
 )
 
-MACRO(ADD_UNIT_TEST NAME)
-    ADD_EXECUTABLE(algorithm_c_array_${NAME} ${NAME})
-    TARGET_LINK_LIBRARIES(algorithm_c_array_${NAME}
+macro(ADD_UNIT_TEST NAME)
+    add_executable(algorithm_c_array_${NAME} ${NAME})
+    target_link_libraries(algorithm_c_array_${NAME}
         fern_algorithm_core
         fern_feature_core  # fern::extents
         # fern_core
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     )
-    ADD_TEST(NAME algorithm_c_array_${NAME} COMMAND algorithm_c_array_${NAME})
-ENDMACRO()
+    add_test(NAME algorithm_c_array_${NAME} COMMAND algorithm_c_array_${NAME})
+endmacro()
 
-FOREACH(NAME ${TEST_NAMES})
-    ADD_UNIT_TEST(${NAME})
-ENDFOREACH()
+foreach(NAME ${TEST_NAMES})
+    add_unit_test(${NAME})
+endforeach()

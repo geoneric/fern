@@ -1,38 +1,38 @@
-CONFIGURE_FILE(
+configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/conf.py.in
     ${CMAKE_CURRENT_BINARY_DIR}/conf.py
 )
-CONFIGURE_FILE(
+configure_file(
     # Don't name the new file Makefile, as it conflicts with the CMake generated
     # file.
     ${CMAKE_CURRENT_SOURCE_DIR}/Makefile.in
     ${CMAKE_CURRENT_BINARY_DIR}/Makefile-sphinx
 )
 
-FOREACH(NAME ${SPHINX_SOURCES})
-    SET(SPHINX_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/${NAME})
-    SET(COPIED_SPHINX_SOURCE ${CMAKE_CURRENT_BINARY_DIR}/${NAME})
-    ADD_CUSTOM_COMMAND(
+foreach(NAME ${SPHINX_SOURCES})
+    set(SPHINX_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/${NAME})
+    set(COPIED_SPHINX_SOURCE ${CMAKE_CURRENT_BINARY_DIR}/${NAME})
+    add_custom_command(
         OUTPUT ${COPIED_SPHINX_SOURCE}
         COMMAND ${CMAKE_COMMAND} -E copy ${SPHINX_SOURCE}
             ${COPIED_SPHINX_SOURCE}
         DEPENDS ${SPHINX_SOURCE}
     )
-    LIST(APPEND COPIED_SPHINX_SOURCES ${COPIED_SPHINX_SOURCE})
-ENDFOREACH()
+    list(APPEND COPIED_SPHINX_SOURCES ${COPIED_SPHINX_SOURCE})
+endforeach()
 
-FOREACH(NAME _build _static _templates)
-    ADD_CUSTOM_COMMAND(
+foreach(NAME _build _static _templates)
+    add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${NAME}
         COMMAND ${CMAKE_COMMAND} -E make_directory
             ${CMAKE_CURRENT_BINARY_DIR}/${NAME}
     )
-ENDFOREACH()
+endforeach()
 
-SET(SPHINX_SPHINXOPTS "-q -W")
-# SET(SPHINX_PAPER a4)
+set(SPHINX_SPHINXOPTS "-q -W")
+# set(SPHINX_PAPER a4)
 
-ADD_CUSTOM_COMMAND(
+add_custom_command(
     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/_build/html/index.html
     COMMAND ${CMAKE_MAKE_PROGRAM} SPHINXOPTS=${SPHINX_SPHINXOPTS}
         -C ${CMAKE_CURRENT_BINARY_DIR}
@@ -46,6 +46,6 @@ ADD_CUSTOM_COMMAND(
         ${COPIED_SPHINX_SOURCES}
 )
 
-ADD_CUSTOM_TARGET(${SPHINX_TARGET} ALL
+add_custom_target(${SPHINX_TARGET} ALL
     DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/_build/html/index.html
 )

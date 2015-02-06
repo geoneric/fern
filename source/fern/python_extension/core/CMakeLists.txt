@@ -1,4 +1,4 @@
-ADD_CUSTOM_COMMAND(
+add_custom_command(
     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/swig_runtime.h
     COMMAND echo "\\#pragma once" > swig_runtime.h
     COMMAND echo "\\#pragma GCC system_header" >> swig_runtime.h
@@ -9,14 +9,14 @@ ADD_CUSTOM_COMMAND(
     COMMAND rm swig_runtime.h.tmp
     COMMAND echo "/*! @} */" >> swig_runtime.h
 )
-ADD_CUSTOM_TARGET(swig_runtime DEPENDS swig_runtime.h)
+add_custom_target(swig_runtime DEPENDS swig_runtime.h)
 
 
-SET(SOURCES
+set(SOURCES
     error
     swig
 )
-ADD_LIBRARY(fern_python_extension_core ${SOURCES})
-ADD_DEPENDENCIES(fern_python_extension_core swig_runtime)
-# TARGET_LINK_LIBRARIES(fern_python_extension_core
+add_library(fern_python_extension_core ${SOURCES})
+add_dependencies(fern_python_extension_core swig_runtime)
+# target_link_libraries(fern_python_extension_core
 # )

@@ -1,4 +1,4 @@
-SET(SPHINX_SOURCES
+set(SPHINX_SOURCES
     data_model.rst
     examples.rst
     file_format.rst
@@ -10,7 +10,7 @@ SET(SPHINX_SOURCES
     ontology.rst
     wolves_and_sheep.ran
 )
-SET(SPHINX_TARGET
+set(SPHINX_TARGET
     data_model
 )
-INCLUDE(SphinxDoc)
+include(SphinxDoc)

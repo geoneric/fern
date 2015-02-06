@@ -1,6 +1,6 @@
-ADD_SUBDIRECTORY(test)
+add_subdirectory(test)
 
-SET(SOURCES
+set(SOURCES
     assignment_vertex
     ast_vertex
     attribute_vertex
@@ -21,8 +21,8 @@ SET(SOURCES
     subscript_vertex
     while_vertex
 )
-ADD_LIBRARY_AND_OBJECT_LIBRARY(fern_ast_core ${SOURCES})
-TARGET_LINK_LIBRARIES(fern_ast_core
+add_library_and_object_library(fern_ast_core ${SOURCES})
+target_link_libraries(fern_ast_core
     fern_operation_core
     fern_core
 )

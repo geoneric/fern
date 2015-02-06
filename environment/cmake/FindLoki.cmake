@@ -1,8 +1,8 @@
-FIND_PATH(LOKI_INCLUDE_DIR loki/Typelist.h)
-FIND_LIBRARY(LOKI_LIBRARY NAMES loki)
+find_path(LOKI_INCLUDE_DIR loki/Typelist.h)
+find_library(LOKI_LIBRARY NAMES loki)
 
-INCLUDE(FindPackageHandleStandardArgs)
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(Loki DEFAULT_MSG LOKI_INCLUDE_DIR
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(Loki DEFAULT_MSG LOKI_INCLUDE_DIR
     LOKI_LIBRARY)
 
-MARK_AS_ADVANCED(LOKI_INCLUDE_DIR LOKI_LIBRARY)
+mark_as_advanced(LOKI_INCLUDE_DIR LOKI_LIBRARY)
