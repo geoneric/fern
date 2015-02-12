@@ -163,11 +163,9 @@ void if_then_else_1d_0d_0d(
     FalseValue const& false_value,
     Result& result)
 {
-    size_t index_;
-
     for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
 
-        if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+        if(std::get<0>(input_no_data_policy).is_no_data(i)) {
             output_no_data_policy.mark_as_no_data(i);
         }
         else {
@@ -209,11 +207,9 @@ void if_then_else_1d_1d_0d(
     FalseValue const& false_value,
     Result& result)
 {
-    size_t index_;
-
     for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
 
-        if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+        if(std::get<0>(input_no_data_policy).is_no_data(i)) {
             output_no_data_policy.mark_as_no_data(i);
         }
         else {
@@ -255,11 +251,9 @@ void if_then_else_1d_0d_1d(
     FalseValue const& false_value,
     Result& result)
 {
-    size_t index_;
-
     for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
 
-        if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+        if(std::get<0>(input_no_data_policy).is_no_data(i)) {
             output_no_data_policy.mark_as_no_data(i);
         }
         else {
@@ -301,11 +295,9 @@ void if_then_else_1d_1d_1d(
     FalseValue const& false_value,
     Result& result)
 {
-    size_t index_;
-
     for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
 
-        if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+        if(std::get<0>(input_no_data_policy).is_no_data(i)) {
             output_no_data_policy.mark_as_no_data(i);
         }
         else {
