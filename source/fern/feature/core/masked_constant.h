@@ -3,6 +3,13 @@
 
 namespace fern {
 
+/*!
+    @brief      A value that can be masked.
+
+    When adding to number together, the result may be a larger value then
+    can be represented by the type. A MaskedConstant can be used to mark
+    the result as no-data in such cases.
+*/
 template<
     typename T>
 class MaskedConstant
@@ -29,6 +36,10 @@ public:
 
                    ~MaskedConstant     ()=default;
 
+                   operator T const&   () const;
+
+                   operator T&         ();
+
     T const&       value               () const;
 
     T&             value               ();
@@ -46,6 +57,11 @@ private:
 };
 
 
+/*!
+    @brief      Default construct an instance.
+
+    The layered number is default constructed and the mask is set to false.
+*/
 template<
     typename T>
 inline MaskedConstant<T>::MaskedConstant()
@@ -56,6 +72,11 @@ inline MaskedConstant<T>::MaskedConstant()
 }
 
 
+/*!
+    @brief      Construct an instance.
+
+    The layered number is set to @a value and the mask is set to false.
+*/
 template<
     typename T>
 inline MaskedConstant<T>::MaskedConstant(
@@ -67,6 +88,11 @@ inline MaskedConstant<T>::MaskedConstant(
 }
 
 
+/*!
+    @brief      Construct an instance.
+
+    The layered number is set to @a value and the mask is set to @a mask.
+*/
 template<
     typename T>
 inline MaskedConstant<T>::MaskedConstant(
@@ -80,17 +106,48 @@ inline MaskedConstant<T>::MaskedConstant(
 }
 
 
+/*!
+    @brief      Assign @a value to the instance.
+
+    The layered number is set to @a value and the mask is set to false.
+*/
 template<
     typename T>
 inline MaskedConstant<T>& MaskedConstant<T>::operator=(
     T const& value)
 {
     _value = value;
+    _mask = false;
 
     return *this;
 }
 
 
+/*!
+    @brief      Return a const reference to the layered number.
+*/
+template<
+    typename T>
+inline MaskedConstant<T>::operator T const&() const
+{
+    return _value;
+}
+
+
+/*!
+    @brief      Return a reference to the layered number.
+*/
+template<
+    typename T>
+inline MaskedConstant<T>::operator T&()
+{
+    return _value;
+}
+
+
+/*!
+    @brief      Return a const reference to the layered number.
+*/
 template<
     typename T>
 inline T const& MaskedConstant<T>::value() const
@@ -100,6 +157,9 @@ inline T const& MaskedConstant<T>::value() const
 }
 
 
+/*!
+    @brief      Return a reference to the layered number.
+*/
 template<
     typename T>
 inline T& MaskedConstant<T>::value()
@@ -109,6 +169,9 @@ inline T& MaskedConstant<T>::value()
 }
 
 
+/*!
+    @brief      Return a const reference to the layered mask.
+*/
 template<
     typename T>
 inline bool const& MaskedConstant<T>::mask() const
@@ -117,6 +180,9 @@ inline bool const& MaskedConstant<T>::mask() const
 }
 
 
+/*!
+    @brief      Return a reference to the layered mask.
+*/
 template<
     typename T>
 inline bool& MaskedConstant<T>::mask()
@@ -125,6 +191,11 @@ inline bool& MaskedConstant<T>::mask()
 }
 
 
+/*!
+    @brief      Return whether @a lhs equals @a rhs.
+
+    True is returned if both the layered number and the mask are equal.
+*/
 template<
     typename T>
 inline bool operator==(
