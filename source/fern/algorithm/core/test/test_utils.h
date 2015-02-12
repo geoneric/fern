@@ -7,6 +7,33 @@
 #include "fern/algorithm/statistic/count.h"
 
 
+// Macro to create test cases based on a name passed in. This name must
+// correspond with a template function named test_<name>. The one template
+// argument must be the execution policy's type, which is passed in.
+// The template function will be called 4 times, with different execution
+// policies:
+// - fern::algorithm::sequential
+// - fern::algorithm::ExecutionPolicy{fern::algorithm::sequential}
+// - fern::algorithm::parallel
+// - fern::algorithm::ExecutionPolicy{fern::algorithm::parallel}
+#define FERN_TEST_CASES(name)                           \
+BOOST_AUTO_TEST_CASE(array_##name##_sequential)         \
+{                                                       \
+    test_##name(fern::algorithm::sequential);           \
+    fern::algorithm::ExecutionPolicy execution_policy{  \
+        fern::algorithm::sequential};                   \
+    test_##name(execution_policy);                      \
+}                                                       \
+                                                        \
+BOOST_AUTO_TEST_CASE(array_##name##_parallel)           \
+{                                                       \
+    test_##name(fern::algorithm::parallel);             \
+    fern::algorithm::ExecutionPolicy execution_policy{  \
+        fern::algorithm::parallel};                     \
+    test_##name(execution_policy);                      \
+}
+
+
 namespace fern {
 
 template<

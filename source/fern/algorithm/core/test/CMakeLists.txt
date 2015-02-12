@@ -1,6 +1,7 @@
 set(TEST_NAMES
     binary_local_operation_test
     cast_test
+    clamp_test
     compress_test
     copy_test
     cover_test
