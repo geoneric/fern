@@ -1,0 +1,51 @@
+/*!
+    @brief      Group containing accumulator classes
+    @defgroup   fern_algorithm_accumulator_group Accumulators
+    @ingroup    fern_algorithm_group
+
+
+    Accumulators {#fern_algorithm_accumulators}
+    ============
+    Accumulators are used to accumulate values and calculate a result, often
+    a statistic.
+
+    Once an accumulator is created, individual values can be added to it.
+    When all values are added, the accumulator can be asked for a result.
+    Here is an example of calculating the sum of a collection of values:
+
+    ~~~~{.c}
+    fern::algorithm::accumulator::Sum<int> my_sum;
+    for(auto value: values) {
+        my_sum(value);
+    }
+
+    std::cout << "The sum is: " << my_sum() << std::endl;
+    ~~~~
+
+    During accumulation of values, there is a possibility that the layered
+    state variable(s) go out of range. This depends on the accumulator.
+    The fern::algorithm::accumulator::Min accumulator, for example,
+    will not go out of range, because it uses the same type for the
+    layered state variable as the values have that are being added to the
+    accumulator. The fern::algorithm::accumulator::Sum accumulator can go
+    out of range, since it keeps adding the values that are being added to
+    it. Whether or not an accumulator can go out of range can be detected
+    by querying the accumulator's class variable `out_of_range_risk`.
+
+    Since out-of-range policies check based on the argument value(s) and
+    the result value, accumulators that may go out of range during
+    accumulation of values, store the running statistic in a result value
+    type instance. Otherwise the out-of-range policy can't make a decision.
+
+    When calculating the final result, there is also a possibility that
+    the result value is not within range of the result value type.
+
+    Accumulators are low-level classes used by higher level
+    code. Calculating the sum of a collection of values can be done more
+    conveniently with the fern::algorithm::statistic::sum algorithm.
+
+
+    See also {#fern_algorithm_accumulators_see_also}
+    ========
+    - [Boost.Accumulators](http://www.boost.org/doc/libs/1_57_0/doc/html/accumulators.html) Used for inspiration.
+*/

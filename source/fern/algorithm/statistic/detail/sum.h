@@ -2,45 +2,13 @@
 #include "fern/core/argument_traits.h"
 #include "fern/core/assert.h"
 #include "fern/algorithm/core/unary_aggregate_operation.h"
+#include "fern/algorithm/accumulator/sum.h"
 
 
 namespace fern {
 namespace algorithm {
 namespace sum {
 namespace detail {
-
-template<
-    typename Value>
-struct Algorithm
-{
-
-    FERN_STATIC_ASSERT(std::is_arithmetic, Value)
-    FERN_STATIC_ASSERT(!std::is_same, Value, bool)
-
-    template<
-        typename Result>
-    inline static void init(
-        Value const& value,
-        Result& result)
-    {
-        FERN_STATIC_ASSERT(std::is_same, Result, Value)
-
-        result = value;
-    }
-
-    template<
-        typename Result>
-    inline static void calculate(
-        Value const& value,
-        Result& result)
-    {
-        FERN_STATIC_ASSERT(std::is_same, Result, Value)
-
-        result += value;
-    }
-
-};
-
 
 template<
     template<typename, typename, typename> class OutOfRangePolicy,
@@ -95,7 +63,7 @@ void sum(
     Value const& value,
     Result& result)
 {
-    unary_aggregate_operation<Algorithm, Aggregator,
+    unary_aggregate_operation<accumulator::Sum, Aggregator,
         unary::DiscardDomainErrors, OutOfRangePolicy>(
             input_no_data_policy, output_no_data_policy, execution_policy,
             value, result);
