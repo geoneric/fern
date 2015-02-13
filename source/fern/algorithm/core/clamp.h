@@ -12,7 +12,7 @@ namespace core {
 /*!
     @ingroup    fern_algorithm_core_group
     @brief      Limit the values in @a value to the range defined by
-                @lower_bound and @a upper_bound and write the resulting
+                @a lower_bound and @a upper_bound and write the resulting
                 value to @a result.
 
     - The rank of @a Value must be larger or equal to the rank of
