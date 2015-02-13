@@ -22,6 +22,7 @@ namespace core {
     - Value types of @a Value, @a UpperBound, @a LowerBound and @a Result
       must be the same.
     - The rank of @a Result must be equal to the rank of @a Value.
+    - @a lower_bound and @a upper_bound must not contain no-data.
 */
 template<
     typename InputNoDataPolicy,
