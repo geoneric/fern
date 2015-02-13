@@ -7,25 +7,26 @@ namespace accumulator {
 
 /*!
     @ingroup    fern_algorithm_accumulator_group
-    @brief      Accumulator that calculates the sum of the added values.
+    @brief      Accumulator that calculates the number of added values.
 */
 template<
     typename Argument,
     typename Result=Argument>
-class Sum
+class Count
 {
 
 public:
 
     /*!
         @brief      During the addition of values, this accumulator's
-                    layered sum may go out of range. It is of type @a Result.
+                    layered count may go out of range. It is of type
+                    @a Result.
     */
     static bool const out_of_range_risk{true};
 
-                   Sum                 ();
+                   Count               ();
 
-    explicit       Sum                 (Argument const& value);
+    explicit       Count               (Argument const& value);
 
     void           operator=           (Argument const& value);
 
@@ -33,11 +34,11 @@ public:
 
     Result         operator()          () const;
 
-    Sum&           operator|=          (Sum const& other);
+    Count&         operator|=          (Count const& other);
 
 private:
 
-    Result         _sum;
+    Result         _count;
 
 };
 
@@ -45,14 +46,14 @@ private:
 /*!
     @brief      Default construct an instance.
 
-    The layered sum is initialized with 0.
+    The layered count is initialized with 0.
 */
 template<
     typename Argument,
     typename Result>
-inline Sum<Argument, Result>::Sum()
+inline Count<Argument, Result>::Count()
 
-    : _sum(0)
+    : _count(0)
 
 {
 }
@@ -61,15 +62,15 @@ inline Sum<Argument, Result>::Sum()
 /*!
     @brief      Construct an instance.
 
-    The layered sum is initialized with @a value.
+    The layered count is initialized with 1.
 */
 template<
     typename Argument,
     typename Result>
-inline Sum<Argument, Result>::Sum(
-    Argument const& value)
+inline Count<Argument, Result>::Count(
+    Argument const& /* value */)
 
-    : _sum(value)
+    : _count(1)
 
 {
 }
@@ -83,37 +84,37 @@ inline Sum<Argument, Result>::Sum(
 template<
     typename Argument,
     typename Result>
-inline void Sum<Argument, Result>::operator=(
-    Argument const& value)
+inline void Count<Argument, Result>::operator=(
+    Argument const& /* value */)
 {
-    _sum = value;
+    _count = 1;
 }
 
 
 /*!
     @brief      Add @a value to the instance.
 
-    @a value is added to the layered sum.
+    The layered count is increased by one.
 */
 template<
     typename Argument,
     typename Result>
-inline void Sum<Argument, Result>::operator()(
-    Argument const& value)
+inline void Count<Argument, Result>::operator()(
+    Argument const& /* value */)
 {
-    _sum += value;
+    ++_count;
 }
 
 
 /*!
-    @brief      Return the sum of values seen until now.
+    @brief      Return the number of values seen until now.
 */
 template<
     typename Argument,
     typename Result>
-inline Result Sum<Argument, Result>::operator()() const
+inline Result Count<Argument, Result>::operator()() const
 {
-    return _sum;
+    return _count;
 }
 
 
@@ -126,10 +127,10 @@ inline Result Sum<Argument, Result>::operator()() const
 template<
     typename Argument,
     typename Result>
-inline Sum<Argument, Result>& Sum<Argument, Result>::operator|=(
-    Sum const& other)
+inline Count<Argument, Result>& Count<Argument, Result>::operator|=(
+    Count const& other)
 {
-    _sum += other._sum;
+    _count += other._count;
     return *this;
 }
 
@@ -144,11 +145,11 @@ inline Sum<Argument, Result>& Sum<Argument, Result>::operator|=(
 template<
     typename Argument,
     typename Result>
-inline Sum<Argument, Result> operator|(
-    Sum<Argument, Result> const& lhs,
-    Sum<Argument, Result> const& rhs)
+inline Count<Argument, Result> operator|(
+    Count<Argument, Result> const& lhs,
+    Count<Argument, Result> const& rhs)
 {
-    return Sum<Argument, Result>(lhs) |= rhs;
+    return Count<Argument, Result>(lhs) |= rhs;
 }
 
 } // namespace accumulator

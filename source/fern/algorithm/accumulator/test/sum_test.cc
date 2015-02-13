@@ -26,4 +26,11 @@ BOOST_AUTO_TEST_CASE(accumulate)
     BOOST_CHECK_EQUAL(sum(), 3);
 }
 
+
+BOOST_AUTO_TEST_CASE(merge)
+{
+    auto sum(faa::Sum<int>(5) | faa::Sum<int>(6));
+    BOOST_CHECK_EQUAL(sum(), 11);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

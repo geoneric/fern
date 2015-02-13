@@ -40,6 +40,14 @@
     When calculating the final result, there is also a possibility that
     the result value is not within range of the result value type.
 
+    Accumulators support being merged. This allows one to divide a task
+    into sub-tasks, each with its own accumulator, and later aggregating
+    the result by first mergin the accumulators and then asking the
+    resulting accumulator for the final result. This is useful when
+    calculating a mean, for example. The mean calculated by the sub-tasks
+    cannot be aggregated, but after each accumulator's state is merged
+    the overall mean can be calculated.
+
     Accumulators are low-level classes used by higher level
     code. Calculating the sum of a collection of values can be done more
     conveniently with the fern::algorithm::statistic::sum algorithm.

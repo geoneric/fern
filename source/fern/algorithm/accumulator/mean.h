@@ -1,5 +1,6 @@
 #pragma once
 #include <cassert>
+#include "fern/algorithm/accumulator/count.h"
 #include "fern/algorithm/accumulator/sum.h"
 
 
@@ -23,6 +24,10 @@ public:
         @brief      During the addition of values, this accumulator's
                     layered Sum accumulator may go out of range. It is
                     of type @a Result.
+
+        In theory, the layered Count accumulator may also go out of range,
+        but as long as values from a single collection are added, this will
+        never happen. It contains a state variable of type size_t.
     */
     static bool const out_of_range_risk{true};
 
@@ -36,11 +41,13 @@ public:
 
     Result         operator()          () const;
 
+    Mean&          operator|=          (Mean const& other);
+
 private:
 
     Sum<Argument, Result> _sum;
 
-    size_t         _count;
+    Count<Argument, size_t> _count;
 
 };
 
@@ -51,8 +58,7 @@ private:
                 Since the layered count is initialized with 0, dividing the
                 sum of values by the count will 'fail'.
 
-    The layered Sum accumulator is default constructed, and the layered
-    count is initialized with 0.
+    The layered Sum and Count accumulators are default constructed.
 */
 template<
     typename Argument,
@@ -60,7 +66,7 @@ template<
 inline Mean<Argument, Result>::Mean()
 
     : _sum(),
-      _count(0u)
+      _count()
 
 {
 }
@@ -69,8 +75,7 @@ inline Mean<Argument, Result>::Mean()
 /*!
     @brief      Construct an instance.
 
-    The layered Sum accumulator is constructed passing @a value, and the
-    layered count is initialized with 1.
+    The layered Sum and Count accumulators are constructed passing @a value.
 */
 template<
     typename Argument,
@@ -79,7 +84,7 @@ inline Mean<Argument, Result>::Mean(
     Argument const& value)
 
     : _sum(value),
-      _count(1u)
+      _count(value)
 
 {
 }
@@ -97,7 +102,7 @@ inline void Mean<Argument, Result>::operator=(
     Argument const& value)
 {
     _sum = value;
-    _count = 1u;
+    _count = value;
 }
 
 
@@ -105,7 +110,8 @@ inline void Mean<Argument, Result>::operator=(
     @brief      Add @a value to the instance.
 
     A running sum of all values added is stored in the layered Sum
-    accumulator. The layered count is increased by one.
+    accumulator. The number of values added is stored in the layered Count
+    accumulator.
 */
 template<
     typename Argument,
@@ -114,7 +120,7 @@ inline void Mean<Argument, Result>::operator()(
     Argument const& value)
 {
     _sum(value);
-    ++_count;
+    _count(value);
 }
 
 
@@ -128,11 +134,47 @@ template<
     typename Result>
 inline Result Mean<Argument, Result>::operator()() const
 {
-    assert(_count > 0);
+    assert(_count() > 0);
 
     // _sum() returns result in Result. Dividing by _count may implicitly cast
     // it to some other type.
-    return Result(_sum() / _count);
+    return Result(_sum() / _count());
+}
+
+
+/*!
+    @brief      Merge @a other with *this.
+
+    The resulting accumulator represents the merged state of both original
+    accumulators.
+*/
+template<
+    typename Argument,
+    typename Result>
+inline Mean<Argument, Result>& Mean<Argument, Result>::operator|=(
+    Mean const& other)
+{
+    _sum |= other._sum;
+    _count |= other._count;
+    return *this;
+}
+
+
+/*!
+    @ingroup    fern_algorithm_accumulator_group
+    @brief      Merge @a lhs with @a rhs.
+
+    The resulting accumulator represents the merged state of both original
+    accumulators.
+*/
+template<
+    typename Argument,
+    typename Result>
+inline Mean<Argument, Result> operator|(
+    Mean<Argument, Result> const& lhs,
+    Mean<Argument, Result> const& rhs)
+{
+    return Mean<Argument, Result>(lhs) |= rhs;
 }
 
 } // namespace accumulator

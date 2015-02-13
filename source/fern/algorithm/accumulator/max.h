@@ -36,6 +36,8 @@ public:
 
     Result         operator()          () const;
 
+    Max&           operator|=          (Max const& other);
+
 private:
 
     Argument       _max;
@@ -120,6 +122,41 @@ template<
 inline Result Max<Argument, Result>::operator()() const
 {
     return static_cast<Result>(_max);
+}
+
+
+/*!
+    @brief      Merge @a other with *this.
+
+    The resulting accumulator represents the merged state of both original
+    accumulators.
+*/
+template<
+    typename Argument,
+    typename Result>
+inline Max<Argument, Result>& Max<Argument, Result>::operator|=(
+    Max const& other)
+{
+    operator()(other._max);
+    return *this;
+}
+
+
+/*!
+    @ingroup    fern_algorithm_accumulator_group
+    @brief      Merge @a lhs with @a rhs.
+
+    The resulting accumulator represents the merged state of both original
+    accumulators.
+*/
+template<
+    typename Argument,
+    typename Result>
+inline Max<Argument, Result> operator|(
+    Max<Argument, Result> const& lhs,
+    Max<Argument, Result> const& rhs)
+{
+    return Max<Argument, Result>(lhs) |= rhs;
 }
 
 } // namespace accumulator

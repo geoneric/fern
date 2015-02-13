@@ -39,4 +39,18 @@ BOOST_AUTO_TEST_CASE(accumulate)
     }
 }
 
+
+BOOST_AUTO_TEST_CASE(merge)
+{
+    {
+        auto mean(faa::Mean<int>(5) | faa::Mean<int>(15));
+        BOOST_CHECK_EQUAL(mean(), 10);
+    }
+
+    {
+        auto mean(faa::Mean<int, double>(5) | faa::Mean<int, double>(20));
+        BOOST_CHECK_EQUAL(mean(), 12.5);
+    }
+}
+
 BOOST_AUTO_TEST_SUITE_END()

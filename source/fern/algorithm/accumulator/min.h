@@ -36,6 +36,8 @@ public:
 
     Result         operator()          () const;
 
+    Min&           operator|=          (Min const& other);
+
 private:
 
     Argument       _min;
@@ -120,6 +122,41 @@ template<
 inline Result Min<Argument, Result>::operator()() const
 {
     return static_cast<Result>(_min);
+}
+
+
+/*!
+    @brief      Merge @a other with *this.
+
+    The resulting accumulator represents the merged state of both original
+    accumulators.
+*/
+template<
+    typename Argument,
+    typename Result>
+inline Min<Argument, Result>& Min<Argument, Result>::operator|=(
+    Min const& other)
+{
+    operator()(other._min);
+    return *this;
+}
+
+
+/*!
+    @ingroup    fern_algorithm_accumulator_group
+    @brief      Merge @a lhs with @a rhs.
+
+    The resulting accumulator represents the merged state of both original
+    accumulators.
+*/
+template<
+    typename Argument,
+    typename Result>
+inline Min<Argument, Result> operator|(
+    Min<Argument, Result> const& lhs,
+    Min<Argument, Result> const& rhs)
+{
+    return Min<Argument, Result>(lhs) |= rhs;
 }
 
 } // namespace accumulator

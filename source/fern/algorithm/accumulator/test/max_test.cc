@@ -29,4 +29,11 @@ BOOST_AUTO_TEST_CASE(accumulate)
     BOOST_CHECK_EQUAL(max(), 3);
 }
 
+
+BOOST_AUTO_TEST_CASE(merge)
+{
+    auto max(faa::Max<int>(5) | faa::Max<int>(3));
+    BOOST_CHECK_EQUAL(max(), 5);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

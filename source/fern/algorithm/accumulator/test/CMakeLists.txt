@@ -1,4 +1,5 @@
 set(TEST_NAMES
+    count_test
     max_test
     min_test
     mean_test

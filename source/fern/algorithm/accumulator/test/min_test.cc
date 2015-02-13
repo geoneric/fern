@@ -29,4 +29,11 @@ BOOST_AUTO_TEST_CASE(accumulate)
     BOOST_CHECK_EQUAL(min(), 3);
 }
 
+
+BOOST_AUTO_TEST_CASE(merge)
+{
+    auto min(faa::Min<int>(5) | faa::Min<int>(3));
+    BOOST_CHECK_EQUAL(min(), 3);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
