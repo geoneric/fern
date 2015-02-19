@@ -8,12 +8,14 @@ namespace accumulator {
 
 /*!
     @ingroup    fern_algorithm_accumulator_group
-    @brief      Accumulator that calculates the most occurring value.
+    @brief      Accumulator that calculates the mode of the added values.
+
+    The mode of a collection of values is the value that occurs most.
 */
 template<
     typename Argument,
     typename Result=Argument>
-class Majority
+class Mode
 {
 
 public:
@@ -25,9 +27,9 @@ public:
     */
     static bool const out_of_range_risk{false};
 
-                   Majority            ();
+                   Mode                ();
 
-    explicit       Majority            (Argument const& value);
+    explicit       Mode                (Argument const& value);
 
     void           operator=           (Argument const& value);
 
@@ -35,7 +37,7 @@ public:
 
     Result         operator()          () const;
 
-    Majority&      operator|=          (Majority const& other);
+    Mode&          operator|=          (Mode const& other);
 
 private:
 
@@ -50,7 +52,7 @@ private:
 template<
     typename Argument,
     typename Result>
-inline Majority<Argument, Result>::Majority()
+inline Mode<Argument, Result>::Mode()
 
     : _histogram(0)
 
@@ -64,7 +66,7 @@ inline Majority<Argument, Result>::Majority()
 template<
     typename Argument,
     typename Result>
-inline Majority<Argument, Result>::Majority(
+inline Mode<Argument, Result>::Mode(
     Argument const& value)
 
     : _histogram{value}
@@ -81,7 +83,7 @@ inline Majority<Argument, Result>::Majority(
 template<
     typename Argument,
     typename Result>
-inline void Majority<Argument, Result>::operator=(
+inline void Mode<Argument, Result>::operator=(
     Argument const& value)
 {
     _histogram = {value};
@@ -96,7 +98,7 @@ inline void Majority<Argument, Result>::operator=(
 template<
     typename Argument,
     typename Result>
-inline void Majority<Argument, Result>::operator()(
+inline void Mode<Argument, Result>::operator()(
     Argument const& value)
 {
     _histogram(value);
@@ -106,15 +108,15 @@ inline void Majority<Argument, Result>::operator()(
 /*!
     @brief      Return the most occurring value of the values added until now.
 
-    TODO Which value is returned if more than one value occurs most.
+    TODO Which value is returned in multi-modal case?
 */
 template<
     typename Argument,
     typename Result>
-inline Result Majority<Argument, Result>::operator()() const
+inline Result Mode<Argument, Result>::operator()() const
 {
     assert(!_histogram.empty());
-    return _histogram.majority();
+    return _histogram.mode();
 }
 
 
@@ -127,8 +129,8 @@ inline Result Majority<Argument, Result>::operator()() const
 template<
     typename Argument,
     typename Result>
-inline Majority<Argument, Result>& Majority<Argument, Result>::operator|=(
-    Majority const& other)
+inline Mode<Argument, Result>& Mode<Argument, Result>::operator|=(
+    Mode const& other)
 {
     _histogram |= other._histogram;
     return *this;
@@ -145,11 +147,11 @@ inline Majority<Argument, Result>& Majority<Argument, Result>::operator|=(
 template<
     typename Argument,
     typename Result>
-inline Majority<Argument, Result> operator|(
-    Majority<Argument, Result> const& lhs,
-    Majority<Argument, Result> const& rhs)
+inline Mode<Argument, Result> operator|(
+    Mode<Argument, Result> const& lhs,
+    Mode<Argument, Result> const& rhs)
 {
-    return Majority<Argument, Result>(lhs) |= rhs;
+    return Mode<Argument, Result>(lhs) |= rhs;
 }
 
 } // namespace accumulator

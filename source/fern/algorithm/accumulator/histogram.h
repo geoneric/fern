@@ -31,9 +31,7 @@ public:
 
     size_t         size                () const;
 
-    T const&       minority            () const;
-
-    T const&       majority            () const;
+    T const&       mode                () const;
 
 private:
 
@@ -128,19 +126,7 @@ inline size_t Histogram<T>::size() const
 
 template<
     typename T>
-inline T const& Histogram<T>::minority() const
-{
-    assert(!empty());
-
-    // Find value with the lowest count.
-
-    return _count.begin()->first;
-}
-
-
-template<
-    typename T>
-inline T const& Histogram<T>::majority() const
+inline T const& Histogram<T>::mode() const
 {
     assert(!empty());
 
