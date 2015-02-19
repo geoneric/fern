@@ -9,24 +9,25 @@ namespace accumulator {
 namespace detail {
 
 /*!
-    @brief      Class for storing count per value.
+    @brief      Class for storing frequency per value.
 */
 template<
     typename T>
-class Histogram
+class FrequencyTable
 {
 
 public:
 
-                   Histogram           ();
+                   FrequencyTable      ();
 
-    explicit       Histogram           (T const& value);
+    explicit       FrequencyTable      (T const& value);
 
     void           operator=           (T const& value);
 
     void           operator()          (T const& value);
 
-    Histogram&     operator|=          (Histogram const& other);
+    FrequencyTable&
+                   operator|=          (FrequencyTable const& other);
 
     bool           empty               () const;
 
@@ -36,7 +37,7 @@ public:
 
 private:
 
-    std::unordered_map<T, size_t> _count;
+    std::unordered_map<T, size_t> _frequency;
 
 };
 
@@ -46,9 +47,9 @@ private:
 */
 template<
     typename T>
-inline Histogram<T>::Histogram()
+inline FrequencyTable<T>::FrequencyTable()
 
-    : _count()
+    : _frequency()
 
 {
 }
@@ -59,10 +60,10 @@ inline Histogram<T>::Histogram()
 */
 template<
     typename T>
-inline Histogram<T>::Histogram(
+inline FrequencyTable<T>::FrequencyTable(
     T const& value)
 
-    : _count{{value, 1}}
+    : _frequency{{value, 1}}
 
 {
 }
@@ -75,24 +76,24 @@ inline Histogram<T>::Histogram(
 */
 template<
     typename T>
-inline void Histogram<T>::operator=(
+inline void FrequencyTable<T>::operator=(
     T const& value)
 {
-    _count = {{value, 1}};
+    _frequency = {{value, 1}};
 }
 
 
 /*!
     @brief      Add @a value to the instance.
 
-    The layered count for @a value is increased by one.
+    The layered frequency for @a value is increased by one.
 */
 template<
     typename T>
-inline void Histogram<T>::operator()(
+inline void FrequencyTable<T>::operator()(
     T const& value)
 {
-    ++_count[value];
+    ++_frequency[value];
 }
 
 
@@ -101,13 +102,13 @@ inline void Histogram<T>::operator()(
 */
 template<
     typename T>
-inline Histogram<T>& Histogram<T>::operator|=(
-    Histogram const& other)
+inline FrequencyTable<T>& FrequencyTable<T>::operator|=(
+    FrequencyTable const& other)
 {
-    for(auto const& pair: other._count) {
-        auto position = _count.find(pair.first);
-        if(position == _count.end()) {
-            _count.insert(pair);
+    for(auto const& pair: other._frequency) {
+        auto position = _frequency.find(pair.first);
+        if(position == _frequency.end()) {
+            _frequency.insert(pair);
         }
         else {
             position->second += pair.second;
@@ -120,17 +121,17 @@ inline Histogram<T>& Histogram<T>::operator|=(
 
 template<
     typename T>
-inline bool Histogram<T>::empty() const
+inline bool FrequencyTable<T>::empty() const
 {
-    return _count.empty();
+    return _frequency.empty();
 }
 
 
 template<
     typename T>
-inline size_t Histogram<T>::size() const
+inline size_t FrequencyTable<T>::size() const
 {
-    return _count.size();
+    return _frequency.size();
 }
 
 
@@ -142,17 +143,17 @@ inline size_t Histogram<T>::size() const
 */
 template<
     typename T>
-inline T const& Histogram<T>::mode() const
+inline T const& FrequencyTable<T>::mode() const
 {
     assert(!empty());
 
-    // For speed, _count is an unordered_map instead of a regular map.
+    // For speed, _frequency is an unordered_map instead of a regular map.
     // Because of that, we can't make promisses about which value is returned
     // in the multi-modal case. We don't know in which order the values in
     // the map are visited by the algorithm below.
 
-    // Find a value with the highest count.
-    auto result = std::max_element(_count.begin(), _count.end(),
+    // Find a value with the highest frequency.
+    auto result = std::max_element(_frequency.begin(), _frequency.end(),
         [](auto const& lhs, auto const& rhs) {
             return lhs.second < rhs.second; });
 
@@ -165,11 +166,11 @@ inline T const& Histogram<T>::mode() const
 */
 template<
     typename T>
-inline Histogram<T> operator|(
-    Histogram<T> const& lhs,
-    Histogram<T> const& rhs)
+inline FrequencyTable<T> operator|(
+    FrequencyTable<T> const& lhs,
+    FrequencyTable<T> const& rhs)
 {
-    return Histogram<T>(lhs) |= rhs;
+    return FrequencyTable<T>(lhs) |= rhs;
 }
 
 } // namespace detail

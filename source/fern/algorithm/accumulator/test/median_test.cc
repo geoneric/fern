@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE(accumulate)
 
         median(2);
         // 2 5
-        BOOST_CHECK_EQUAL(median(), 5);
+        BOOST_CHECK_EQUAL(median(), 3);
 
         median(3);
         // 2 3 5
@@ -36,12 +36,15 @@ BOOST_AUTO_TEST_CASE(accumulate)
 
     {
         faa::Median<int, double> median(5);
+        // 5
         BOOST_CHECK_EQUAL(median(), 5.0);
 
         median(2);
-        BOOST_CHECK_EQUAL(median(), 5.0);
+        // 2 5
+        BOOST_CHECK_EQUAL(median(), 3.5);
 
         median = 3;
+        // 2 3 5
         BOOST_CHECK_EQUAL(median(), 3.0);
     }
 }
@@ -51,12 +54,12 @@ BOOST_AUTO_TEST_CASE(merge)
 {
     {
         auto median(faa::Median<int>(15) | faa::Median<int>(5));
-        BOOST_CHECK_EQUAL(median(), 15);
+        BOOST_CHECK_EQUAL(median(), 10);
     }
 
     {
         auto median(faa::Median<int, double>(5) | faa::Median<int, double>(20));
-        BOOST_CHECK_EQUAL(median(), 20.0);
+        BOOST_CHECK_EQUAL(median(), 12.5);
     }
 }
 

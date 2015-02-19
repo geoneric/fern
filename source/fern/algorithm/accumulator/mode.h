@@ -1,5 +1,5 @@
 #pragma once
-#include "fern/algorithm/accumulator/detail/histogram.h"
+#include "fern/algorithm/accumulator/detail/frequency_table.h"
 
 
 namespace fern {
@@ -11,6 +11,9 @@ namespace accumulator {
     @brief      Accumulator that calculates the mode of the added values.
 
     The mode of a collection of values is the value that occurs most.
+
+    The mode is a summary statistic. It is a measure of location of a
+    distribution of values.
 */
 template<
     typename Argument,
@@ -41,7 +44,7 @@ public:
 
 private:
 
-    detail::Histogram<Argument> _histogram;
+    detail::FrequencyTable<Argument> _frequency_table;
 
 };
 
@@ -54,7 +57,7 @@ template<
     typename Result>
 inline Mode<Argument, Result>::Mode()
 
-    : _histogram(0)
+    : _frequency_table(0)
 
 {
 }
@@ -69,7 +72,7 @@ template<
 inline Mode<Argument, Result>::Mode(
     Argument const& value)
 
-    : _histogram{value}
+    : _frequency_table{value}
 
 {
 }
@@ -86,7 +89,7 @@ template<
 inline void Mode<Argument, Result>::operator=(
     Argument const& value)
 {
-    _histogram = {value};
+    _frequency_table = {value};
 }
 
 
@@ -101,7 +104,7 @@ template<
 inline void Mode<Argument, Result>::operator()(
     Argument const& value)
 {
-    _histogram(value);
+    _frequency_table(value);
 }
 
 
@@ -115,8 +118,8 @@ template<
     typename Result>
 inline Result Mode<Argument, Result>::operator()() const
 {
-    assert(!_histogram.empty());
-    return _histogram.mode();
+    assert(!_frequency_table.empty());
+    return _frequency_table.mode();
 }
 
 
@@ -132,7 +135,7 @@ template<
 inline Mode<Argument, Result>& Mode<Argument, Result>::operator|=(
     Mode const& other)
 {
-    _histogram |= other._histogram;
+    _frequency_table |= other._frequency_table;
     return *this;
 }
 

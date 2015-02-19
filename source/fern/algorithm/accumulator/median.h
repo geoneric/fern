@@ -1,5 +1,6 @@
 #pragma once
 #include <algorithm>
+#include <vector>
 
 
 namespace fern {
@@ -9,6 +10,9 @@ namespace accumulator {
 /*!
     @ingroup    fern_algorithm_accumulator_group
     @brief      Accumulator that calculates the median of added values.
+
+    The median is a summary statistic. It is a measure of location of the
+    center of a distribution of values.
 */
 template<
     typename Argument,
@@ -111,8 +115,11 @@ inline void Median<Argument, Result>::operator()(
 /*!
     @brief      Return the median value of the values added until now.
 
+    In case the number of values in the layered collection is odd, the
+    middle value is returned.
+
     In case the number of values in the layered collection is even, the
-    first value of the second half is returned.
+    mean of the two middle values is returned.
 */
 template<
     typename Argument,
@@ -121,7 +128,21 @@ inline Result Median<Argument, Result>::operator()() const
 {
     assert(!_values.empty());
     std::sort(_values.begin(), _values.end());
-    return static_cast<Result>(_values[_values.size() / 2]);
+    size_t center_index{_values.size() / 2};
+
+    Result result;
+
+    if(_values.size() % 2 == 1) {
+        // Odd. Return center value.
+        result = static_cast<Result>(_values[center_index]);
+    }
+    else {
+        // Even. Return mean of two center values.
+        result = static_cast<Result>(_values[center_index - 1] +
+            _values[center_index]) / 2;
+    }
+
+    return result;
 }
 
 

@@ -11,6 +11,9 @@ namespace accumulator {
 /*!
     @ingroup    fern_algorithm_accumulator_group
     @brief      Accumulator that calculates the mean of the added values.
+
+    The mean is a summary statistic. It is a measure of location of the
+    center of a distribution of values.
 */
 template<
     typename Argument,
@@ -22,8 +25,7 @@ public:
 
     /*!
         @brief      During the addition of values, this accumulator's
-                    layered Sum accumulator may go out of range. It is
-                    of type @a Result.
+                    layered Sum accumulator may go out of range.
 
         In theory, the layered Count accumulator may also go out of range,
         but as long as values from a single collection are added, this will
