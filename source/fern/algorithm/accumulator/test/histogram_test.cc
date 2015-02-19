@@ -41,8 +41,7 @@ BOOST_AUTO_TEST_CASE(accumulate)
         histogram(6);
         // 5 5 5
         // 6 6 6
-        BOOST_CHECK(false);  // TODO Figure out a rule.
-        BOOST_CHECK_EQUAL(histogram.mode(), 5);
+        BOOST_CHECK_EQUAL(histogram.mode(), 6);
 
         histogram = 8;
         BOOST_CHECK_EQUAL(histogram.mode(), 8);
@@ -54,7 +53,7 @@ BOOST_AUTO_TEST_CASE(merge)
 {
     auto histogram(faa::detail::Histogram<int>(15) |
             faa::detail::Histogram<int>(5) | faa::detail::Histogram<int>(15));
-    BOOST_CHECK_EQUAL(histogram.size(), 3);
+    BOOST_CHECK_EQUAL(histogram.size(), 2);
     BOOST_CHECK_EQUAL(histogram.mode(), 15);
 }
 

@@ -1,5 +1,6 @@
 #pragma once
-#include <map>
+#include <algorithm>
+#include <unordered_map>
 
 
 namespace fern {
@@ -8,7 +9,6 @@ namespace accumulator {
 namespace detail {
 
 /*!
-    @ingroup    fern_algorithm_accumulator_group
     @brief      Class for storing count per value.
 */
 template<
@@ -36,7 +36,7 @@ public:
 
 private:
 
-    std::map<T, size_t> _count;
+    std::unordered_map<T, size_t> _count;
 
 };
 
@@ -104,7 +104,16 @@ template<
 inline Histogram<T>& Histogram<T>::operator|=(
     Histogram const& other)
 {
-    // TODO _count |= other._count;
+    for(auto const& pair: other._count) {
+        auto position = _count.find(pair.first);
+        if(position == _count.end()) {
+            _count.insert(pair);
+        }
+        else {
+            position->second += pair.second;
+        }
+    }
+
     return *this;
 }
 
@@ -125,20 +134,33 @@ inline size_t Histogram<T>::size() const
 }
 
 
+/*!
+    @brief      Return the mode of the histogram.
+
+    In case there are multiple modal values, it is undefined which one is
+    returned.
+*/
 template<
     typename T>
 inline T const& Histogram<T>::mode() const
 {
     assert(!empty());
 
-    // Find value with the highest count.
+    // For speed, _count is an unordered_map instead of a regular map.
+    // Because of that, we can't make promisses about which value is returned
+    // in the multi-modal case. We don't know in which order the values in
+    // the map are visited by the algorithm below.
 
-    return _count.begin()->first;
+    // Find a value with the highest count.
+    auto result = std::max_element(_count.begin(), _count.end(),
+        [](auto const& lhs, auto const& rhs) {
+            return lhs.second < rhs.second; });
+
+    return result->first;
 }
 
 
 /*!
-    @ingroup    fern_algorithm_accumulator_group
     @brief      Merge @a lhs with @a rhs.
 */
 template<
