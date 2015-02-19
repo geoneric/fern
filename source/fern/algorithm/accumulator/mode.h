@@ -1,5 +1,5 @@
 #pragma once
-#include "fern/algorithm/accumulator/histogram.h"
+#include "fern/algorithm/accumulator/detail/histogram.h"
 
 
 namespace fern {
@@ -41,7 +41,7 @@ public:
 
 private:
 
-    Histogram<Argument> _histogram;
+    detail::Histogram<Argument> _histogram;
 
 };
 

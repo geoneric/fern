@@ -5,6 +5,7 @@
 namespace fern {
 namespace algorithm {
 namespace accumulator {
+namespace detail {
 
 /*!
     @ingroup    fern_algorithm_accumulator_group
@@ -149,6 +150,7 @@ inline Histogram<T> operator|(
     return Histogram<T>(lhs) |= rhs;
 }
 
+} // namespace detail
 } // namespace accumulator
 } // namespace algorithm
 } // namespace fern
