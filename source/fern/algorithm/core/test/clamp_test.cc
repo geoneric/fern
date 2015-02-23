@@ -95,8 +95,8 @@ void test_2d_2d_2d_masked(
     ExecutionPolicy& execution_policy)
 {
     fern::MaskedArray<int, 2> value         {{10, 20}, {30, 40}, {50, 60}};
-    fern::Array<int, 2> lower_bound        {{ 9, 20}, {31,  0}, { 0,  0}};
-    fern::Array<int, 2> upper_bound        {{90, 90}, {90, 39}, {50, 61}};
+    fern::Array<int, 2> lower_bound         {{ 9, 20}, {31,  0}, { 0,  0}};
+    fern::Array<int, 2> upper_bound         {{90, 90}, {90, 39}, {50, 61}};
     fern::MaskedArray<int, 2> result_we_want{{10, 20}, {31, -9}, {50, 60}};
     fern::MaskedArray<int, 2> result_we_got(fern::extents[3][2], -9);
 
