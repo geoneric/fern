@@ -30,8 +30,10 @@ public:
         In theory, the layered Count accumulator may also go out of range,
         but as long as values from a single collection are added, this will
         never happen. It contains a state variable of type size_t.
+        Tests involving an out-of-range policy do not test the count.
     */
-    static bool const out_of_range_risk{true};
+    static bool const out_of_range_risk{
+        Sum<Argument, Result>::out_of_range_risk};
 
                    Mean                ();
 
@@ -41,9 +43,17 @@ public:
 
     void           operator()          (Argument const& value);
 
+    template<
+        template<typename, typename, typename> class OutOfRangePolicy>
+    bool           operator()          (Argument const& value);
+
     Result         operator()          () const;
 
     Mean&          operator|=          (Mean const& other);
+
+    template<
+        template<typename, typename, typename> class OutOfRangePolicy>
+    bool           operator|=          (Mean const& other);
 
 private:
 
@@ -126,6 +136,19 @@ inline void Mean<Argument, Result>::operator()(
 }
 
 
+template<
+    typename Argument,
+    typename Result>
+template<
+    template<typename, typename, typename> class OutOfRangePolicy>
+inline bool Mean<Argument, Result>::operator()(
+    Argument const& value)
+{
+    _count(value);
+    return _sum.operator()<OutOfRangePolicy>(value);
+}
+
+
 /*!
     @brief      Return the mean value given all values added until now.
 
@@ -159,6 +182,19 @@ inline Mean<Argument, Result>& Mean<Argument, Result>::operator|=(
     _sum |= other._sum;
     _count |= other._count;
     return *this;
+}
+
+
+template<
+    typename Argument,
+    typename Result>
+template<
+    template<typename, typename, typename> class OutOfRangePolicy>
+inline bool Mean<Argument, Result>::operator|=(
+    Mean const& other)
+{
+    _count |= other._count;
+    return _sum.operator|=<OutOfRangePolicy>(other._sum);
 }
 
 

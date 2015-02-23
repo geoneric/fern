@@ -32,9 +32,17 @@ public:
 
     void           operator()          (Argument const& value);
 
+    template<
+        template<typename, typename, typename> class OutOfRangePolicy>
+    bool           operator()          (Argument const& value);
+
     Result         operator()          () const;
 
     Count&         operator|=          (Count const& other);
+
+    template<
+        template<typename, typename, typename> class OutOfRangePolicy>
+    bool           operator|=          (Count const& other);
 
 private:
 
@@ -106,6 +114,22 @@ inline void Count<Argument, Result>::operator()(
 }
 
 
+template<
+    typename Argument,
+    typename Result>
+template<
+    template<typename, typename, typename> class OutOfRangePolicy>
+inline bool Count<Argument, Result>::operator()(
+    Argument const& /* value */)
+{
+    Result previous_count{_count};
+    ++_count;
+
+    return OutOfRangePolicy<Result, Argument, Result>::within_range(
+        previous_count, 1, _count);
+}
+
+
 /*!
     @brief      Return the number of values seen until now.
 */
@@ -132,6 +156,19 @@ inline Count<Argument, Result>& Count<Argument, Result>::operator|=(
 {
     _count += other._count;
     return *this;
+}
+
+
+template<
+    typename Argument,
+    typename Result>
+template<
+    template<typename, typename, typename> class OutOfRangePolicy>
+inline bool Count<Argument, Result>::operator|=(
+    Count const& other)
+{
+    // Value doesn't matter. We're counting, not summing.
+    return operator()<OutOfRangePolicy>(Argument{});
 }
 
 

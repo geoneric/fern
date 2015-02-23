@@ -27,13 +27,31 @@ public:
 
     explicit       Sum                 (Argument const& value);
 
+                   Sum                 (Sum const& other)=default;
+
+                   Sum                 (Sum&& other)=default;
+
+                   ~Sum                ()=default;
+
+    Sum&           operator=           (Sum const& other)=default;
+
+    Sum&           operator=           (Sum&& other)=default;
+
     void           operator=           (Argument const& value);
 
     void           operator()          (Argument const& value);
 
     Result         operator()          () const;
 
+    template<
+        template<typename, typename, typename> class OutOfRangePolicy>
+    bool           operator()          (Argument const& value);
+
     Sum&           operator|=          (Sum const& other);
+
+    template<
+        template<typename, typename, typename> class OutOfRangePolicy>
+    bool           operator|=          (Sum const& other);
 
 private:
 
@@ -118,6 +136,31 @@ inline Result Sum<Argument, Result>::operator()() const
 
 
 /*!
+    @brief      Add @a value to the instance.
+    @tparam     OutOfRangePolicy Policy to use during check for out of range
+                result.
+    @return     Whether or not the layered sum went out of range according
+                to @a OutOfRangePolicy.
+
+    @a value is added to the layered sum.
+*/
+template<
+    typename Argument,
+    typename Result>
+template<
+    template<typename, typename, typename> class OutOfRangePolicy>
+inline bool Sum<Argument, Result>::operator()(
+    Argument const& value)
+{
+    Result previous_sum{_sum};
+    _sum += value;
+
+    return OutOfRangePolicy<Result, Argument, Result>::within_range(
+        previous_sum, value, _sum);
+}
+
+
+/*!
     @brief      Merge @a other with *this.
 
     The resulting accumulator represents the merged state of both original
@@ -131,6 +174,18 @@ inline Sum<Argument, Result>& Sum<Argument, Result>::operator|=(
 {
     _sum += other._sum;
     return *this;
+}
+
+
+template<
+    typename Argument,
+    typename Result>
+template<
+    template<typename, typename, typename> class OutOfRangePolicy>
+inline bool Sum<Argument, Result>::operator|=(
+    Sum const& other)
+{
+    return operator()<OutOfRangePolicy>(other._sum);
 }
 
 
