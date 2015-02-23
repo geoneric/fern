@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE fern algorithm statistic sum
+#define BOOST_TEST_MODULE fern algorithm statistic mean
 #include <limits>
 #include <numeric>
 #include <boost/test/unit_test.hpp>
@@ -6,7 +6,7 @@
 #include "fern/feature/core/masked_array_traits.h"
 #include "fern/feature/core/masked_constant_traits.h"
 #include "fern/algorithm/core/test/test_utils.h"
-#include "fern/algorithm/statistic/sum.h"
+#include "fern/algorithm/statistic/mean.h"
 
 
 namespace f = fern;
@@ -14,7 +14,7 @@ namespace fa = f::algorithm;
 namespace ft = f::test;
 
 
-BOOST_AUTO_TEST_SUITE(sum)
+BOOST_AUTO_TEST_SUITE(mean)
 
 template<
     typename ExecutionPolicy,
@@ -26,7 +26,7 @@ void verify_0d_0d(
     Result const& result_we_want)
 {
     int result_we_got{-9};
-    fa::statistic::sum<>(execution_policy, value, result_we_got);
+    fa::statistic::mean<>(execution_policy, value, result_we_got);
     BOOST_CHECK_EQUAL(result_we_got, result_we_want);
 }
 
@@ -74,7 +74,7 @@ void verify_0d_0d_masked(
     InputNoDataPolicy input_no_data_policy{{value.mask(), true}};
     OutputNoDataPolicy output_no_data_policy(result_we_got.mask(), true);
 
-    fa::statistic::sum<fa::sum::OutOfRangePolicy>(
+    fa::statistic::mean<fa::mean::OutOfRangePolicy>(
         input_no_data_policy, output_no_data_policy, execution_policy,
         value, result_we_got);
     BOOST_CHECK_EQUAL(result_we_got, result_we_want);
@@ -112,7 +112,7 @@ void verify_1d_0d(
     Result const& result_we_want)
 {
     int result_we_got{-9};
-    fa::statistic::sum<>(execution_policy, value, result_we_got);
+    fa::statistic::mean<>(execution_policy, value, result_we_got);
     BOOST_CHECK_EQUAL(result_we_got, result_we_want);
 }
 
@@ -126,8 +126,8 @@ void test_1d_0d(
     {
         f::Array<int, 1> value(ft::nr_elements_1d);
         std::iota(value.data(), value.data() + ft::nr_elements_1d, 0);
-        int result_we_want{std::accumulate(value.data(), value.data() +
-            ft::nr_elements_1d, 0)};
+        int result_we_want{static_cast<int>(std::accumulate(value.data(),
+            value.data() + ft::nr_elements_1d, 0) / ft::nr_elements_1d)};
         verify_1d_0d(execution_policy, value, result_we_want);
     }
 
@@ -137,8 +137,8 @@ void test_1d_0d(
         std::iota(value.data(), value.data() + ft::nr_elements_1d, 0);
         get(value, 5) = std::numeric_limits<int>::max();
         // Overflow, integer wrap.
-        int result_we_want = std::accumulate(value.data(), value.data() +
-            ft::nr_elements_1d, 0);
+        int result_we_want{static_cast<int>(std::accumulate(value.data(),
+            value.data() + ft::nr_elements_1d, 0) / ft::nr_elements_1d)};
         verify_1d_0d(execution_policy, value, result_we_want);
     }
 
@@ -169,7 +169,7 @@ void verify_1d_0d_masked(
     InputNoDataPolicy input_no_data_policy{{value.mask(), true}};
     OutputNoDataPolicy output_no_data_policy(result_we_got.mask(), true);
 
-    fa::statistic::sum<fa::sum::OutOfRangePolicy>(
+    fa::statistic::mean<fa::mean::OutOfRangePolicy>(
         input_no_data_policy, output_no_data_policy, execution_policy,
         value, result_we_got);
     BOOST_CHECK_EQUAL(result_we_got, result_we_want);
@@ -185,8 +185,9 @@ void test_1d_0d_masked(
     {
         f::MaskedArray<int, 1> value(ft::nr_elements_1d);
         std::iota(value.data(), value.data() + ft::nr_elements_1d, 0);
-        f::MaskedConstant<int> result_we_want{std::accumulate(
-            value.data(), value.data() + ft::nr_elements_1d, 0)};
+        f::MaskedConstant<int> result_we_want{static_cast<int>(std::accumulate(
+            value.data(), value.data() + ft::nr_elements_1d, 0) /
+                ft::nr_elements_1d)};
         verify_1d_0d_masked(execution_policy, value, result_we_want);
     }
 
@@ -196,9 +197,9 @@ void test_1d_0d_masked(
         f::MaskedArray<int, 1> value(ft::nr_elements_1d);
         std::iota(value.data(), value.data() + ft::nr_elements_1d, 0);
         get(value.mask(), 5) = true;
-        f::MaskedConstant<int> result_we_want{std::accumulate(
-            value.data(), value.data() + ft::nr_elements_1d, 0)};
-        result_we_want -= get(value, 5);
+        f::MaskedConstant<int> result_we_want{static_cast<int>((std::accumulate(
+            value.data(), value.data() + ft::nr_elements_1d, 0) - 5) /
+                ft::nr_elements_1d)};
         verify_1d_0d_masked(execution_policy, value, result_we_want);
     }
 
@@ -251,7 +252,7 @@ void verify_2d_0d(
     Result const& result_we_want)
 {
     int result_we_got{-9};
-    fa::statistic::sum<>(execution_policy, value, result_we_got);
+    fa::statistic::mean<>(execution_policy, value, result_we_got);
     BOOST_CHECK_EQUAL(result_we_got, result_we_want);
 }
 
@@ -265,8 +266,8 @@ void test_2d_0d(
     {
         f::Array<int, 2> value(f::extents[ft::nr_rows][ft::nr_cols]);
         std::iota(value.data(), value.data() + ft::nr_elements_2d, 0);
-        int result_we_want{std::accumulate(value.data(), value.data() +
-            ft::nr_elements_2d, 0)};
+        int result_we_want{static_cast<int>(std::accumulate(value.data(),
+            value.data() + ft::nr_elements_2d, 0) / ft::nr_elements_2d)};
         verify_2d_0d(execution_policy, value, result_we_want);
     }
 
@@ -297,7 +298,7 @@ void verify_2d_0d_masked(
     InputNoDataPolicy input_no_data_policy{{value.mask(), true}};
     OutputNoDataPolicy output_no_data_policy(result_we_got.mask(), true);
 
-    fa::statistic::sum<fa::sum::OutOfRangePolicy>(
+    fa::statistic::mean<fa::mean::OutOfRangePolicy>(
         input_no_data_policy, output_no_data_policy, execution_policy,
         value, result_we_got);
     BOOST_CHECK_EQUAL(result_we_got, result_we_want);
@@ -313,8 +314,9 @@ void test_2d_0d_masked(
     {
         f::MaskedArray<int, 2> value(f::extents[ft::nr_rows][ft::nr_cols]);
         std::iota(value.data(), value.data() + ft::nr_elements_2d, 0);
-        f::MaskedConstant<int> result_we_want{std::accumulate(
-            value.data(), value.data() + ft::nr_elements_2d, 0)};
+        f::MaskedConstant<int> result_we_want{static_cast<int>(std::accumulate(
+            value.data(), value.data() + ft::nr_elements_2d, 0) /
+                ft::nr_elements_2d)};
         verify_2d_0d(execution_policy, value, result_we_want);
     }
 
@@ -324,9 +326,9 @@ void test_2d_0d_masked(
         f::MaskedArray<int, 2> value(f::extents[ft::nr_rows][ft::nr_cols]);
         std::iota(value.data(), value.data() + ft::nr_elements_2d, 0);
         get(value.mask(), 5) = true;
-        f::MaskedConstant<int> result_we_want{std::accumulate(
-            value.data(), value.data() + ft::nr_elements_2d, 0)};
-        result_we_want -= get(value, 5);
+        f::MaskedConstant<int> result_we_want{static_cast<int>((std::accumulate(
+            value.data(), value.data() + ft::nr_elements_2d, 0) - 5) /
+                ft::nr_elements_2d)};
         verify_2d_0d_masked(execution_policy, value, result_we_want);
     }
 

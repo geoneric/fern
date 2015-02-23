@@ -34,7 +34,43 @@ BOOST_AUTO_TEST_CASE(array_##name##_parallel)           \
 }
 
 
+#define FERN_UNARY_AGGREGATE_TEST_CASES()  \
+FERN_TEST_CASES(0d_0d)                     \
+FERN_TEST_CASES(0d_0d_masked)              \
+FERN_TEST_CASES(1d_0d)                     \
+FERN_TEST_CASES(1d_0d_masked)              \
+FERN_TEST_CASES(2d_0d)                     \
+FERN_TEST_CASES(2d_0d_masked)              \
+
+
+#define FERN_BINARY_TEST_CASES()     \
+FERN_TEST_CASES(0d_0d_0d)            \
+FERN_TEST_CASES(1d_1d_1d)            \
+FERN_TEST_CASES(1d_1d_1d_masked)     \
+FERN_TEST_CASES(1d_1d_0d)            \
+FERN_TEST_CASES(1d_1d_0d_masked)     \
+FERN_TEST_CASES(1d_0d_1d)            \
+FERN_TEST_CASES(1d_0d_1d_masked)     \
+FERN_TEST_CASES(2d_2d_2d)            \
+FERN_TEST_CASES(2d_2d_2d_masked)     \
+FERN_TEST_CASES(2d_2d_2d)            \
+FERN_TEST_CASES(2d_2d_0d)            \
+FERN_TEST_CASES(2d_2d_0d_masked)     \
+FERN_TEST_CASES(2d_0d_2d)            \
+FERN_TEST_CASES(2d_0d_2d_masked)
+
+
 namespace fern {
+namespace test {
+
+static size_t const nr_cores{fern::hardware_concurrency()};
+static size_t const nr_rows{30 * nr_cores};
+static size_t const nr_cols{20 * nr_cores};
+static size_t const nr_elements_1d{10 * nr_cores};
+static size_t const nr_elements_2d{nr_rows * nr_cols};
+
+} // namespace test
+
 
 template<
     class ExecutionPolicy,

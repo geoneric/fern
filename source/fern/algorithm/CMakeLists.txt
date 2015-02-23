@@ -1,4 +1,5 @@
 add_subdirectory(algebra)
+add_subdirectory(accumulator)
 add_subdirectory(convolution)
 add_subdirectory(core)
 add_subdirectory(policy)

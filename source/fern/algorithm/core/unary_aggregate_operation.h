@@ -1,7 +1,7 @@
 #pragma once
+#include <tuple>
 #include "fern/core/argument_traits.h"
 #include "fern/core/base_class.h"
-#include "fern/feature/core/masked_array_traits.h"
 #include "fern/algorithm/core/index_ranges.h"
 #include "fern/algorithm/policy/policies.h"
 
@@ -12,122 +12,201 @@ namespace unary_aggregate_operation_ {
 namespace detail {
 
 template<
+    typename Accumulator,
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename Value,
+    bool out_of_range_risk>
+class Adder
+{
+
+public:
+
+    static bool    add                 (Accumulator& accumulator,
+                                        Value const& value);
+
+    static bool    merge               (Accumulator& accumulator,
+                                        Accumulator&& other);
+
+};
+
+
+template<
+    typename Accumulator,
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename Value>
+class Adder<
+    Accumulator,
+    OutOfRangePolicy,
+    Value,
+    false>
+{
+
+public:
+
+    static inline bool add(
+            Accumulator& accumulator,
+            Value const& value)
+    {
+        accumulator(value);
+        return true;
+    }
+
+
+    static inline bool merge(
+        Accumulator& accumulator,
+        Accumulator&& other)
+    {
+        accumulator |= other;
+        return true;
+    }
+
+};
+
+
+template<
+    typename Accumulator,
+    template<typename, typename, typename> class OutOfRangePolicy,
+    typename Value>
+class Adder<
+    Accumulator,
+    OutOfRangePolicy,
+    Value,
+    true>
+{
+
+public:
+
+    static inline bool add(
+            Accumulator& accumulator,
+            Value const& value)
+    {
+        return accumulator.template operator()<OutOfRangePolicy>(value);
+    }
+
+    static inline bool merge(
+        Accumulator& accumulator,
+        Accumulator&& other)
+    {
+        return accumulator.template operator|=<OutOfRangePolicy>(other);
+    }
+
+};
+
+
+template<
+    typename Accumulator,
     typename OutOfDomainPolicy,
     template<typename, typename, typename> class OutOfRangePolicy,
-    typename Algorithm,
     typename InputNoDataPolicy,
-    typename OutputNoDataPolicy,
-    typename Value,
-    typename Result>
-void operation_0d(
-    Algorithm const& algorithm,
+    typename Value>
+std::tuple<bool, bool, Accumulator> operation_0d(
     InputNoDataPolicy const& input_no_data_policy,
-    OutputNoDataPolicy& output_no_data_policy,
-    Value const& value,
-    Result& result)
+    Value const& value)
 {
-    if(std::get<0>(input_no_data_policy).is_no_data()) {
-        output_no_data_policy.mark_as_no_data();
+    using Adder_ = Adder<Accumulator, OutOfRangePolicy, value_type<Value>,
+        Accumulator::out_of_range_risk>;
+
+    bool result_within_range{true};
+    bool accumulator_initialized{false};
+    Accumulator accumulator;
+
+    if(!std::get<0>(input_no_data_policy).is_no_data()) {
+        result_within_range = Adder_::add(accumulator, get(value));
+        accumulator_initialized = true;
     }
-    else {
-        algorithm.init(get(value), get(result));
-    }
+
+    return std::make_tuple(accumulator_initialized, result_within_range,
+        std::move(accumulator));
 }
 
 
 template<
+    typename Accumulator,
     typename OutOfDomainPolicy,
     template<typename, typename, typename> class OutOfRangePolicy,
-    typename Algorithm,
     typename InputNoDataPolicy,
-    typename OutputNoDataPolicy,
-    typename Value,
-    typename Result>
-void operation_1d(
-    Algorithm const& algorithm,
+    typename Value>
+std::tuple<bool, bool, Accumulator> operation_1d(
     InputNoDataPolicy const& input_no_data_policy,
-    OutputNoDataPolicy& output_no_data_policy,
     IndexRanges<1> const& index_ranges,
-    Value const& value,
-    Result& result)
+    Value const& value)
 {
-    using OORP = OutOfRangePolicy<value_type<Value>, value_type<Value>,
-        value_type<Result>>;
+    using Adder_ = Adder<Accumulator, OutOfRangePolicy, value_type<Value>,
+        Accumulator::out_of_range_risk>;
+
+    bool accumulator_initialized{false};
+    bool result_within_range{true};
+    Accumulator accumulator;
 
     size_t const begin = index_ranges[0].begin();
     size_t const end = index_ranges[0].end();
-    bool data_seen{false};
 
     if(begin < end) {
 
-        value_type<Result> tmp_result;
-        value_type<Result>& result_ = get(result);
-
+        // Input is not empty, find first non-no-data value.
         for(size_t i = begin; i < end; ++i) {
 
             if(!std::get<0>(input_no_data_policy).is_no_data(i)) {
 
-                // Initialize result using the first valid value.
-                algorithm.init(get(value, i), tmp_result);
-                result_ = tmp_result;
-                data_seen = true;
+                result_within_range = Adder_::add(accumulator, get(value, i));
+                accumulator_initialized = true;
 
-                for(++i; i < end; ++i) {
+                // Found first value, continue with the result.
+                if(result_within_range) {
 
-                    if(!std::get<0>(input_no_data_policy).is_no_data(i)) {
+                    for(++i; i < end; ++i) {
 
-                        value_type<Value> const& a_value{get(value, i)};
-                        algorithm.calculate(a_value, tmp_result);
+                        if(!std::get<0>(input_no_data_policy).is_no_data(i)) {
 
-                        // lhs, rhs, lhs + rhs
-                        if(!OORP::within_range(result_, a_value, tmp_result)) {
-                            output_no_data_policy.mark_as_no_data();
-                            break;
+                            result_within_range = Adder_::add(accumulator,
+                                get(value, i));
+
+                            if(!result_within_range) {
+                                // No need to continue anymore.
+                                break;
+                            }
                         }
-
-                        result_ = tmp_result;
                     }
                 }
+            }
+
+            if(!result_within_range) {
+                break;
             }
         }
     }
 
-    if(!data_seen) {
-        output_no_data_policy.mark_as_no_data();
-    }
+    return std::make_tuple(accumulator_initialized, result_within_range,
+        std::move(accumulator));
 }
 
 
 template<
+    typename Accumulator,
     typename OutOfDomainPolicy,
     template<typename, typename, typename> class OutOfRangePolicy,
-    typename Algorithm,
     typename InputNoDataPolicy,
-    typename OutputNoDataPolicy,
-    typename Value,
-    typename Result>
-void operation_2d(
-    Algorithm const& algorithm,
+    typename Value>
+std::tuple<bool, bool, Accumulator> operation_2d(
     InputNoDataPolicy const& input_no_data_policy,
-    OutputNoDataPolicy& output_no_data_policy,
     IndexRanges<2> const& index_ranges,
-    Value const& value,
-    Result& result)
+    Value const& value)
 {
-    using OORP = OutOfRangePolicy<value_type<Value>, value_type<Value>,
-        value_type<Result>>;
+    using Adder_ = Adder<Accumulator, OutOfRangePolicy, value_type<Value>,
+        Accumulator::out_of_range_risk>;
+
+    bool accumulator_initialized{false};
+    bool result_within_range{true};
+    Accumulator accumulator;
 
     size_t const begin1 = index_ranges[0].begin();
     size_t const end1 = index_ranges[0].end();
     size_t const begin2 = index_ranges[1].begin();
     size_t const end2 = index_ranges[1].end();
-    bool data_seen{false};
 
     if(begin1 < end1 && begin2 < end2) {
 
-        value_type<Result> tmp_result;
-        value_type<Result>& result_ = get(result);
-
+        // Input is not empty, find first non-no-data value.
         size_t i = begin1;
         size_t j = begin2;
         size_t index_;
@@ -141,23 +220,24 @@ void operation_2d(
 
                 if(!std::get<0>(input_no_data_policy).is_no_data(index_)) {
 
-                    // Initialize result using the first valid value.
-                    algorithm.init(get(value, index_), tmp_result);
-                    result_ = tmp_result;
-                    data_seen = true;
+                    result_within_range = Adder_::add(accumulator,
+                        get(value, index_));
+                    accumulator_initialized = true;
+
+                    // Found first value, continue with the result.
                     break;
                 }
 
                 ++index_;
             }
 
-            if(data_seen) {
+            if(accumulator_initialized) {
                 break;
             }
         }
 
         // Continue where the previous loop stopped.
-        if(data_seen) {
+        if(accumulator_initialized) {
             ++j;
 
             for(; i < end1; ++i) {
@@ -168,17 +248,14 @@ void operation_2d(
 
                     if(!std::get<0>(input_no_data_policy).is_no_data(index_)) {
 
-                        value_type<Value> const& a_value{get(value, index_)};
-                        algorithm.calculate(a_value, tmp_result);
+                        result_within_range = Adder_::add(accumulator,
+                            get(value, index_));
 
-                        // lhs, rhs, lhs + rhs
-                        if(!OORP::within_range(result_, a_value,
-                                tmp_result)) {
-                            output_no_data_policy.mark_as_no_data();
+                        if(!result_within_range) {
+                            // No need to continue anymore.
                             break;
                         }
 
-                        result_ = tmp_result;
                     }
 
                     ++index_;
@@ -197,87 +274,15 @@ void operation_2d(
         }
     }
 
-    if(!data_seen) {
-        output_no_data_policy.mark_as_no_data();
-    }
+    return std::make_tuple(accumulator_initialized, result_within_range,
+        std::move(accumulator));
 }
 
 
 namespace dispatch {
 
 template<
-    bool result_is_masking>
-struct Aggregate
-{
-};
-
-
-template<>
-struct Aggregate<
-    false>
-{
-
-    template<
-        template<typename, typename, typename> class OutOfRangePolicy,
-        typename Aggregator,
-        typename OutputNoDataPolicy,
-        typename ExecutionPolicy,
-        typename Results,
-        typename Result>
-    static void apply(
-        Aggregator const& aggregator,
-        OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy& /* execution_policy */,
-        Results const& results,
-        Result& result)
-    {
-        Array<value_type<Result>, 1> results_(results);
-
-        // Accumulate the results into one single result.
-        // The final result is not masking, so the results aren't
-        // either.
-        aggregator.template apply<OutOfRangePolicy>(
-            InputNoDataPolicies<SkipNoData>{{}}, output_no_data_policy,
-            sequential, results_, result);
-    }
-
-};
-
-
-template<>
-struct Aggregate<
-    true>
-{
-
-    template<
-        template<typename, typename, typename> class OutOfRangePolicy,
-        typename Aggregator,
-        typename OutputNoDataPolicy,
-        typename ExecutionPolicy,
-        typename Results,
-        typename Result>
-    static void apply(
-        Aggregator const& aggregator,
-        OutputNoDataPolicy& output_no_data_policy,
-        ExecutionPolicy& /* execution_policy */,
-        Results const& results,
-        Result& result)
-    {
-        MaskedArray<value_type<Result>, 1> results_(results);
-
-        // Accumulate the results into one single result.
-        // The final result is masking, so the results are also.
-        aggregator.template apply<OutOfRangePolicy>(
-            InputNoDataPolicies<DetectNoDataByValue<Mask<1>>>{{results_.mask(),
-                true}}, output_no_data_policy, sequential, results_, result);
-    }
-
-};
-
-
-template<
-    typename Algorithm,
-    typename Aggregator,
+    template<typename, typename> class Accumulator,
     typename OutOfDomainPolicy,
     template<typename, typename, typename> class OutOfRangePolicy,
     typename InputNoDataPolicy,
@@ -292,8 +297,7 @@ struct UnaryAggregateOperation
 
 
 template<
-    typename Algorithm,
-    typename Aggregator,
+    template<typename, typename> class Accumulator,
     typename OutOfDomainPolicy,
     template<typename, typename, typename> class OutOfRangePolicy,
     typename InputNoDataPolicy,
@@ -302,8 +306,7 @@ template<
     typename Result,
     typename ExecutionPolicy>
 struct UnaryAggregateOperation<
-    Algorithm,
-    Aggregator,
+    Accumulator,
     OutOfDomainPolicy,
     OutOfRangePolicy,
     InputNoDataPolicy,
@@ -321,19 +324,29 @@ struct UnaryAggregateOperation<
         Value const& value,
         Result& result)
     {
-        Algorithm algorithm;
+        using Accumulator_ = Accumulator<value_type<Value>, value_type<Result>>;
 
-        operation_0d<OutOfDomainPolicy, OutOfRangePolicy>(algorithm,
-            input_no_data_policy, output_no_data_policy,
-            value, result);
+        bool accumulator_initialized;
+        bool result_within_range;
+        Accumulator_ accumulator;
+
+        std::tie(accumulator_initialized, result_within_range, accumulator) =
+            operation_0d<Accumulator_, OutOfDomainPolicy, OutOfRangePolicy>(
+                input_no_data_policy, value);
+
+        if(accumulator_initialized && result_within_range) {
+            get(result) = accumulator();
+        }
+        else {
+            output_no_data_policy.mark_as_no_data();
+        }
     }
 
 };
 
 
 template<
-    typename Algorithm,
-    typename Aggregator,
+    template<typename, typename> class Accumulator,
     typename OutOfDomainPolicy,
     template<typename, typename, typename> class OutOfRangePolicy,
     typename InputNoDataPolicy,
@@ -341,8 +354,7 @@ template<
     typename Value,
     typename Result>
 struct UnaryAggregateOperation<
-    Algorithm,
-    Aggregator,
+    Accumulator,
     OutOfDomainPolicy,
     OutOfRangePolicy,
     InputNoDataPolicy,
@@ -360,20 +372,30 @@ struct UnaryAggregateOperation<
         Value const& value,
         Result& result)
     {
-        Algorithm algorithm;
+        using Accumulator_ = Accumulator<value_type<Value>, value_type<Result>>;
 
-        operation_1d<OutOfDomainPolicy, OutOfRangePolicy>(algorithm,
-            input_no_data_policy, output_no_data_policy,
-            IndexRanges<1>{IndexRange(0, size(value))},
-            value, result);
+        bool result_within_range;
+        bool accumulator_initialized;
+        Accumulator_ accumulator;
+
+        std::tie(accumulator_initialized, result_within_range, accumulator) =
+            operation_1d<Accumulator_, OutOfDomainPolicy,
+                OutOfRangePolicy>(input_no_data_policy, IndexRanges<1>{
+                    IndexRange(0, size(value))}, value);
+
+        if(accumulator_initialized && result_within_range) {
+            get(result) = accumulator();
+        }
+        else {
+            output_no_data_policy.mark_as_no_data();
+        }
     }
 
 };
 
 
 template<
-    typename Algorithm,
-    typename Aggregator,
+    template<typename, typename> class Accumulator,
     typename OutOfDomainPolicy,
     template<typename, typename, typename> class OutOfRangePolicy,
     typename InputNoDataPolicy,
@@ -381,8 +403,7 @@ template<
     typename Value,
     typename Result>
 struct UnaryAggregateOperation<
-    Algorithm,
-    Aggregator,
+    Accumulator,
     OutOfDomainPolicy,
     OutOfRangePolicy,
     InputNoDataPolicy,
@@ -400,52 +421,71 @@ struct UnaryAggregateOperation<
         Value const& value,
         Result& result)
     {
+        using Accumulator_ = Accumulator<value_type<Value>, value_type<Result>>;
+        using Adder_ = Adder<Accumulator_, OutOfRangePolicy, value_type<Value>,
+            Accumulator_::out_of_range_risk>;
+
         ThreadPool& pool(execution_policy.thread_pool());
         size_t const size_ = size(value);
         std::vector<IndexRanges<1>> ranges = index_ranges(pool.size(), size_);
-        std::vector<std::future<void>> futures;
+        std::vector<std::future<std::tuple<bool, bool, Accumulator_>>> futures;
         futures.reserve(ranges.size());
-        std::vector<Result> results_per_block(ranges.size(), Result(0));
 
-        Algorithm algorithm;
-
-        // TODO OutputNoDataPolicy must be created ad-hoc here. It must have
-        //      an effect on the values in results_per_block.
-        //      This depends on whether or not results are masking. Probably
-        //      need to dispatch this whole function on that. First create a
-        //      failing unit test that fails: include a block with only
-        //      no-data and verify the result is not no-data.
         for(size_t i = 0; i < ranges.size(); ++i) {
             auto const& block_range(ranges[i]);
             auto function = std::bind(
-                operation_1d<OutOfDomainPolicy, OutOfRangePolicy, Algorithm,
-                    InputNoDataPolicy, OutputNoDataPolicy,
-                    Value, Result>,
-                std::cref(algorithm),
-                std::cref(input_no_data_policy),
-                std::ref(output_no_data_policy), std::cref(block_range),
-                std::cref(value), std::ref(results_per_block[i]));
+                operation_1d<Accumulator_, OutOfDomainPolicy, OutOfRangePolicy,
+                    InputNoDataPolicy, Value>,
+                std::cref(input_no_data_policy), std::cref(block_range),
+                std::cref(value));
             futures.emplace_back(pool.submit(function));
         }
 
+        std::vector<std::tuple<bool, bool, Accumulator_>> results;
+        results.reserve(ranges.size());
+
         for(auto& future: futures) {
-            future.get();
+            results.emplace_back(future.get());
         }
 
-        Aggregator aggregator;
+        bool aggregated_result_within_range{false};
+        bool aggregated_accumulator_initialized{false};
+        Accumulator_ aggregated_accumulator;
 
-        Aggregate<ArgumentTraits<Result>::is_masking>::template
-            apply<OutOfRangePolicy>(
-                aggregator, output_no_data_policy, execution_policy,
-                results_per_block, result);
+        for(auto& result: results) {
+            auto const& accumulator_initialized = get<0>(result);
+            auto const& result_within_range = get<1>(result);
+
+            if(accumulator_initialized && result_within_range) {
+                auto& accumulator(get<2>(result));
+                aggregated_accumulator_initialized = true;
+                aggregated_result_within_range = Adder_::merge(
+                    aggregated_accumulator, std::move(accumulator));
+                if(!aggregated_result_within_range) {
+                    break;
+                }
+            }
+            else {
+                // At least one block resulted in an out-of-range value.
+                aggregated_result_within_range = false;
+                break;
+            }
+        }
+
+        if(aggregated_accumulator_initialized &&
+                aggregated_result_within_range) {
+            get(result) = aggregated_accumulator();
+        }
+        else {
+            output_no_data_policy.mark_as_no_data();
+        }
     }
 
 };
 
 
 template<
-    typename Algorithm,
-    typename Aggregator,
+    template<typename, typename> class Accumulator,
     typename OutOfDomainPolicy,
     template<typename, typename, typename> class OutOfRangePolicy,
     typename InputNoDataPolicy,
@@ -453,8 +493,7 @@ template<
     typename Value,
     typename Result>
 struct UnaryAggregateOperation<
-    Algorithm,
-    Aggregator,
+    Accumulator,
     OutOfDomainPolicy,
     OutOfRangePolicy,
     InputNoDataPolicy,
@@ -475,8 +514,7 @@ struct UnaryAggregateOperation<
         switch(execution_policy.which()) {
             case fern::algorithm::detail::sequential_execution_policy_id: {
                 UnaryAggregateOperation<
-                    Algorithm,
-                    Aggregator,
+                    Accumulator,
                     OutOfDomainPolicy,
                     OutOfRangePolicy,
                     InputNoDataPolicy,
@@ -492,8 +530,7 @@ struct UnaryAggregateOperation<
             }
             case fern::algorithm::detail::parallel_execution_policy_id: {
                 UnaryAggregateOperation<
-                    Algorithm,
-                    Aggregator,
+                    Accumulator,
                     OutOfDomainPolicy,
                     OutOfRangePolicy,
                     InputNoDataPolicy,
@@ -514,8 +551,7 @@ struct UnaryAggregateOperation<
 
 
 template<
-    typename Algorithm,
-    typename Aggregator,
+    template<typename, typename> class Accumulator,
     typename OutOfDomainPolicy,
     template<typename, typename, typename> class OutOfRangePolicy,
     typename InputNoDataPolicy,
@@ -523,8 +559,7 @@ template<
     typename Value,
     typename Result>
 struct UnaryAggregateOperation<
-    Algorithm,
-    Aggregator,
+    Accumulator,
     OutOfDomainPolicy,
     OutOfRangePolicy,
     InputNoDataPolicy,
@@ -542,22 +577,31 @@ struct UnaryAggregateOperation<
         Value const& value,
         Result& result)
     {
-        Algorithm algorithm;
+        using Accumulator_ = Accumulator<value_type<Value>, value_type<Result>>;
 
-        operation_2d<OutOfDomainPolicy, OutOfRangePolicy>(algorithm,
-            input_no_data_policy, output_no_data_policy,
-            IndexRanges<2>{
-                IndexRange(0, size(value, 0)),
-                IndexRange(0, size(value, 1))},
-            value, result);
+        bool result_within_range;
+        bool accumulator_initialized;
+        Accumulator_ accumulator;
+
+        std::tie(accumulator_initialized, result_within_range, accumulator) =
+            operation_2d<Accumulator_, OutOfDomainPolicy,
+                OutOfRangePolicy>(input_no_data_policy, IndexRanges<2>{
+                    IndexRange(0, size(value, 0)),
+                    IndexRange(0, size(value, 1))}, value);
+
+        if(accumulator_initialized && result_within_range) {
+            get(result) = accumulator();
+        }
+        else {
+            output_no_data_policy.mark_as_no_data();
+        }
     }
 
 };
 
 
 template<
-    typename Algorithm,
-    typename Aggregator,
+    template<typename, typename> class Accumulator,
     typename OutOfDomainPolicy,
     template<typename, typename, typename> class OutOfRangePolicy,
     typename InputNoDataPolicy,
@@ -565,8 +609,7 @@ template<
     typename Value,
     typename Result>
 struct UnaryAggregateOperation<
-    Algorithm,
-    Aggregator,
+    Accumulator,
     OutOfDomainPolicy,
     OutOfRangePolicy,
     InputNoDataPolicy,
@@ -584,54 +627,73 @@ struct UnaryAggregateOperation<
         Value const& value,
         Result& result)
     {
+        using Accumulator_ = Accumulator<value_type<Value>, value_type<Result>>;
+        using Adder_ = Adder<Accumulator_, OutOfRangePolicy, value_type<Value>,
+            Accumulator_::out_of_range_risk>;
+
         ThreadPool& pool(execution_policy.thread_pool());
         size_t const size1 = size(value, 0);
         size_t const size2 = size(value, 1);
         std::vector<IndexRanges<2>> ranges = index_ranges(pool.size(),
             size1, size2);
-        std::vector<std::future<void>> futures;
+        std::vector<std::future<std::tuple<bool, bool, Accumulator_>>> futures;
         futures.reserve(ranges.size());
-        std::vector<Result> results_per_block(ranges.size(), Result(0));
 
-        Algorithm algorithm;
-
-        // TODO OutputNoDataPolicy must be created ad-hoc here. It must have
-        //      an effect on the values in results_per_block.
-        //      This depends on whether or not results are masking. Probably
-        //      need to dispatch this whole function on that. First create a
-        //      failing unit test that fails: include a block with only
-        //      no-data and verify the result is not no-data.
         for(size_t i = 0; i < ranges.size(); ++i) {
             auto const& block_range(ranges[i]);
             auto function = std::bind(
-                operation_2d<OutOfDomainPolicy, OutOfRangePolicy, Algorithm,
-                    InputNoDataPolicy, OutputNoDataPolicy,
-                    Value, Result>,
-                std::cref(algorithm),
-                std::cref(input_no_data_policy),
-                std::ref(output_no_data_policy), std::cref(block_range),
-                std::cref(value), std::ref(results_per_block[i]));
+                operation_2d<Accumulator_, OutOfDomainPolicy, OutOfRangePolicy,
+                    InputNoDataPolicy, Value>,
+                std::cref(input_no_data_policy), std::cref(block_range),
+                std::cref(value));
             futures.emplace_back(pool.submit(function));
         }
 
+        std::vector<std::tuple<bool, bool, Accumulator_>> results;
+        results.reserve(ranges.size());
+
         for(auto& future: futures) {
-            future.get();
+            results.emplace_back(future.get());
         }
 
-        Aggregator aggregator;
+        bool aggregated_result_within_range{false};
+        bool aggregated_accumulator_initialized{false};
+        Accumulator_ aggregated_accumulator;
 
-        Aggregate<ArgumentTraits<Result>::is_masking>::template
-            apply<OutOfRangePolicy>(
-                aggregator, output_no_data_policy, execution_policy,
-                results_per_block, result);
+        for(auto& result: results) {
+            auto const& accumulator_initialized = get<0>(result);
+            auto const& result_within_range = get<1>(result);
+
+            if(accumulator_initialized && result_within_range) {
+                auto& accumulator(get<2>(result));
+                aggregated_accumulator_initialized = true;
+                aggregated_result_within_range = Adder_::merge(
+                    aggregated_accumulator, std::move(accumulator));
+                if(!aggregated_result_within_range) {
+                    break;
+                }
+            }
+            else {
+                // At least one block resulted in an out-of-range value.
+                aggregated_result_within_range = false;
+                break;
+            }
+        }
+
+        if(aggregated_accumulator_initialized &&
+                aggregated_result_within_range) {
+            get(result) = aggregated_accumulator();
+        }
+        else {
+            output_no_data_policy.mark_as_no_data();
+        }
     }
 
 };
 
 
 template<
-    typename Algorithm,
-    typename Aggregator,
+    template<typename, typename> class Accumulator,
     typename OutOfDomainPolicy,
     template<typename, typename, typename> class OutOfRangePolicy,
     typename InputNoDataPolicy,
@@ -639,8 +701,7 @@ template<
     typename Value,
     typename Result>
 struct UnaryAggregateOperation<
-    Algorithm,
-    Aggregator,
+    Accumulator,
     OutOfDomainPolicy,
     OutOfRangePolicy,
     InputNoDataPolicy,
@@ -661,8 +722,7 @@ struct UnaryAggregateOperation<
         switch(execution_policy.which()) {
             case fern::algorithm::detail::sequential_execution_policy_id: {
                 UnaryAggregateOperation<
-                    Algorithm,
-                    Aggregator,
+                    Accumulator,
                     OutOfDomainPolicy,
                     OutOfRangePolicy,
                     InputNoDataPolicy,
@@ -678,8 +738,7 @@ struct UnaryAggregateOperation<
             }
             case fern::algorithm::detail::parallel_execution_policy_id: {
                 UnaryAggregateOperation<
-                    Algorithm,
-                    Aggregator,
+                    Accumulator,
                     OutOfDomainPolicy,
                     OutOfRangePolicy,
                     InputNoDataPolicy,
@@ -706,8 +765,7 @@ struct UnaryAggregateOperation<
 /*!
     @ingroup    fern_algorithm_core_group
     @brief      Function that executes a unary aggregate operation.
-    @tparam     Algorithm Class template of the operation to execute.
-    @tparam     Aggregator Class of the aggregator.
+    @tparam     Accumulator Class template of the operation to execute.
     @param[in]  value Input to pass to the operation.
     @param[out] result Output that is written by the operation.
     @sa         fern::algorithm::binary_aggregate_operation
@@ -717,8 +775,7 @@ struct UnaryAggregateOperation<
     This function supports sequential and parallel execution of the operation.
 */
 template<
-    template<typename> class Algorithm,
-    typename Aggregator,
+    template<typename, typename> class Accumulator,
     template<typename> class OutOfDomainPolicy,
     template<typename, typename, typename> class OutOfRangePolicy,
     typename InputNoDataPolicy,
@@ -735,8 +792,7 @@ void unary_aggregate_operation(
     Result& result)
 {
     unary_aggregate_operation_::detail::dispatch::UnaryAggregateOperation<
-        Algorithm<value_type<Value>>,
-        Aggregator,
+        Accumulator,
         OutOfDomainPolicy<value_type<Value>>,
         OutOfRangePolicy,
         InputNoDataPolicy,

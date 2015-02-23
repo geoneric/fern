@@ -86,7 +86,7 @@
     ===================
     An out-of-range policy's job is to test result values and determine
     whether they fit within the result's value type. For example,
-    adding two large integral values may result is a value that is
+    adding two large integral values may result in a value that is
     larger than the resulting integer value type. In the case of
     the add algorithm (fern::algorithm::algebra::add), the out-of-range
     policy (fern::algorithm::add::OutOfRangePolicy) needs the argument

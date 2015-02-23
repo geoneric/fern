@@ -1,16 +1,29 @@
 #pragma once
-#include "fern/core/assert.h"
-#include "fern/algorithm/policy/policies.h"
-#include "fern/algorithm/statistic/detail/unary_max.h"
+#include "fern/algorithm/algebra/elementary/add.h"
+#include "fern/algorithm/statistic/detail/mean.h"
 
 
 namespace fern {
 namespace algorithm {
+namespace mean {
+
+/*!
+    @ingroup    fern_algorithm_statistic_group
+*/
+template<
+    typename Value1,
+    typename Value2,
+    typename Result>
+using OutOfRangePolicy = add::OutOfRangePolicy<Value1, Value2, Result>;
+
+} // namespace mean
+
+
 namespace statistic {
 
 /*!
     @ingroup    fern_algorithm_statistic_group
-    @brief      Determine the maximum value of @a value and write the
+    @brief      Calculate the arithmetic mean of @a value and write the
                 result to @a result.
     @sa         fern::algorithm::unary_aggregate_operation
 
@@ -18,13 +31,14 @@ namespace statistic {
     type of @a result must be equal to the value type of @a value.
 */
 template<
+    template<typename, typename, typename> class OutOfRangePolicy,
     typename InputNoDataPolicy,
     typename OutputNoDataPolicy,
     typename ExecutionPolicy,
     typename Value,
     typename Result
 >
-void unary_max(
+void mean(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
     ExecutionPolicy& execution_policy,
@@ -35,8 +49,8 @@ void unary_max(
     FERN_STATIC_ASSERT(!std::is_same, value_type<Value>, bool)
     FERN_STATIC_ASSERT(std::is_same, value_type<Result>, value_type<Value>)
 
-    unary_max::detail::unary_max<>(input_no_data_policy, output_no_data_policy,
-        execution_policy, value, result);
+    mean::detail::mean<OutOfRangePolicy>(input_no_data_policy,
+        output_no_data_policy, execution_policy, value, result);
 }
 
 
@@ -49,7 +63,7 @@ template<
     typename Value,
     typename Result
 >
-void unary_max(
+void mean(
     ExecutionPolicy& execution_policy,
     Value const& value,
     Result& result)
@@ -58,8 +72,8 @@ void unary_max(
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
-    unary_max<>(InputNoDataPolicy{{}}, output_no_data_policy, execution_policy,
-        value, result);
+    mean<binary::DiscardRangeErrors>(InputNoDataPolicy{{}},
+        output_no_data_policy, execution_policy, value, result);
 }
 
 } // namespace statistic
