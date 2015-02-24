@@ -1,5 +1,4 @@
 ### if(NOT FERN_ALGORITHM_ONLY)
-###     add_subdirectory(Project)
 ###     add_subdirectory(data_model)
 ###     add_subdirectory(development)
 ###     add_subdirectory(iteration)
