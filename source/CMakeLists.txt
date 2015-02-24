@@ -58,7 +58,7 @@ IF(DOXYGEN_FOUND)
 
     INSTALL(
         DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html/
-        DESTINATION doc/api
+        DESTINATION doc/fern/api
     )
 ENDIF()
 ADD_SUBDIRECTORY(fern)

@@ -36,7 +36,7 @@ if(FERN_ALGORITHM)
     )
     install(
         DIRECTORY example
-        DESTINATION doc
+        DESTINATION doc/fern
         FILES_MATCHING
             PATTERN "*.h"
             PATTERN "*.cc"
