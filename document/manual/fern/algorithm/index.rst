@@ -10,3 +10,4 @@ Contents:
 
    introduction
    tutorial
+   no_data_compression
