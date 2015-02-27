@@ -1,6 +1,4 @@
-.. _no_data_compression:
-
-No-data compression
+No-data compression    {#fern_algorithm_no_data_compression}
 ===================
 No-data compression is about creating a copy of a collection of values, but without the no-data elements. The goal is to end up with a smaller collection that can be passed to algorithms that don't need to test for no-data. Under certain circumstances, this will speed up the calculations considerably. Unfortunately, there are some drawbacks too. In this section we will provide some guidance as to when no-data compression might be useful and when it might not be.
 
@@ -15,12 +13,17 @@ You might want to consider compressing your collections when all of these condit
 
 No-data compression involves these steps:
 
-#. Compress argument collections to compressed collections.
-#. Call algorithms with compressed collections. Pass policies to the algorithms that:
+1. Compress argument collections to compressed collections.
+   See fern::algorithm::core::compress
+2. Call algorithms with compressed collections. Pass policies to the algorithms that:
     - Do not test for no-data in the argument collections.
+      See fern::algorithm::SkipNoData
     - Do not test for out-of-domain values in the argument collections.
+      See fern::algorithm::DiscardDomainErrors
     - Do not test for out-of-range values in the result collections.
-#. Decompress the compressed result collections you need to process further.
+      See fern::algorithm::DiscardRangeErrors
+3. Decompress the compressed result collections you need to process further.
+   See fern::algorithm::core::decompress
 
 As you see, there are some steps involved that are unique to no-data compression: compressing the argument collections and decompressing the result collections. These steps take time and may well mean that no-data compression is not useful. The only way to tell so is by measuring the efficiency of the resulting code. It is easy to time a set of algorithms using uncompressed collections and using compressed collections and compare the runtimes.
 
@@ -28,6 +31,7 @@ The relative benefit of using no-data compression is affected by:
 
 - The size of the data collections. There may be a threshold in the number of values in the collections below which the overhead of no-data compression dominates the possitive effect.
 - The execution policy passed to the algorithms.
+  See fern::algorithm::ExecutionPolicy
 - The hardware available to the calculations.
 
-The only way to tell whether no-data compression is useful or not is by timing the code. Fern contains the Stopwatch class that is useful for timing snippets of code.
+The only way to tell whether no-data compression is useful or not is by timing the code. Fern contains the fern::Stopwatch class that is useful for timing snippets of code.
