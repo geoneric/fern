@@ -7,6 +7,7 @@ if(FERN_ALGORITHM)
         DIRECTORY core
         DESTINATION include/fern/feature
         FILES_MATCHING PATTERN "*.h"
+        CONFIGURATIONS Release
     )
 endif()
 
