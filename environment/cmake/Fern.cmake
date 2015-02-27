@@ -9,3 +9,4 @@ include(FernCompiler)  # This one first. Configuration uses the compiler.
 include(FernConfiguration)
 include(FernExternal)
 include(FernMacros)
+include(CppCheck)
