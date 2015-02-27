@@ -1,4 +1,6 @@
-add_subdirectory(test)
+if(FERN_TEST)
+    add_subdirectory(test)
+endif()
 
 # configure_file(
 #     ${CMAKE_CURRENT_SOURCE_DIR}/syntax_tree.map.in

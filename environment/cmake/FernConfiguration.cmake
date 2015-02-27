@@ -1,11 +1,13 @@
 option(FERN_ALGORITHM FALSE)
 option(FERN_ALGORITHM_PYTHON_EXTENSION FALSE)
+option(FERN_TEST FALSE)
 option(FERN_ALL FALSE)
 
 
 if(FERN_ALL)
     set(FERN_ALGORITHM TRUE)
     set(FERN_ALGORITHM_PYTHON_EXTENSION TRUE)
+    set(FERN_TEST TRUE)
 endif()
 
 if(FERN_ALGORITHM_PYTHON_EXTENSION)
@@ -53,7 +55,7 @@ if(FERN_ALGORITHM OR FERN_ALGORITHM_PYTHON_EXTENSION)
     # Required third party software.
     set(FERN_BOOST_REQUIRED TRUE)
     list(APPEND FERN_REQUIRED_BOOST_COMPONENTS
-        filesystem system timer unit_test_framework)
+        filesystem system timer)
 
     # Required Fern targets.
     set(FERN_FERN_ALGORITHM_REQUIRED TRUE)
@@ -74,6 +76,13 @@ if(FERN_ALGORITHM_PYTHON_EXTENSION)
 
     # Required Fern targets.
     set(FERN_FERN_ALGORITHM_PYTHON_EXTENSION_REQUIRED TRUE)
+endif()
+
+
+if(FERN_TEST)
+    set(FERN_BOOST_REQUIRED TRUE)
+    list(APPEND FERN_REQUIRED_BOOST_COMPONENTS
+        system unit_test_framework)
 endif()
 
 

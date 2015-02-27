@@ -6,8 +6,8 @@ if(FERN_ALGORITHM)
     install(
         DIRECTORY core
         DESTINATION include/fern/feature
-        FILES_MATCHING PATTERN "*.h"
         CONFIGURATIONS Release
+        FILES_MATCHING PATTERN "*.h"
     )
 endif()
 

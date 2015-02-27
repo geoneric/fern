@@ -31,19 +31,19 @@ if(FERN_ALGORITHM)
     install(
         DIRECTORY algorithm core
         DESTINATION include/fern
+        CONFIGURATIONS Release
         FILES_MATCHING
             PATTERN "*.h"
             PATTERN "test" EXCLUDE
-        CONFIGURATIONS Release
     )
     install(
         DIRECTORY example
         DESTINATION doc/fern
+        CONFIGURATIONS Release
         FILES_MATCHING
             PATTERN "*.h"
             PATTERN "*.cc"
             PATTERN "test" EXCLUDE
-        CONFIGURATIONS Release
     )
 endif()
 

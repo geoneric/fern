@@ -1,4 +1,6 @@
-add_subdirectory(test)
+if(FERN_TEST)
+    add_subdirectory(test)
+endif()
 
 add_parser_generation_command(uncertml2
     --namespace-map http://www.uncertml.org/2.0=uncertml2

@@ -1,4 +1,6 @@
-add_subdirectory(test)
+if(FERN_TEST)
+    add_subdirectory(test)
+endif()
 add_subdirectory(core)
 add_subdirectory(gdal)
 add_subdirectory(fern)
