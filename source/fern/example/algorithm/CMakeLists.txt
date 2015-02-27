@@ -1,4 +1,7 @@
-add_subdirectory(test)
+if(FERN_TEST)
+    add_subdirectory(test)
+endif()
+
 add_executable(add_two_rasters
     add_two_rasters
     raster

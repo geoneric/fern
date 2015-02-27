@@ -1,4 +1,6 @@
-add_subdirectory(test)
+if(FERN_TEST)
+    add_subdirectory(test)
+endif()
 add_subdirectory(boole)
 add_subdirectory(elementary)
 add_subdirectory(vector)

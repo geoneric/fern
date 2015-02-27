@@ -45,6 +45,7 @@ if(FERN_BOOST_REQUIRED)
         # Disable range checks in release builds.
         "${CMAKE_CXX_FLAGS_RELEASE} -DBOOST_DISABLE_ASSERTS"
     )
+    list(REMOVE_DUPLICATES FERN_REQUIRED_BOOST_COMPONENTS)
     find_package(Boost REQUIRED
         COMPONENTS ${FERN_REQUIRED_BOOST_COMPONENTS})
     include_directories(

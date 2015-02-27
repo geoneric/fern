@@ -1,7 +1,9 @@
 add_subdirectory(algebra)
 add_subdirectory(core)
 add_subdirectory(space)
-add_subdirectory(test)
+if(FERN_TEST)
+    add_subdirectory(test)
+endif()
 
 
 set(EXTENSION_SOURCES

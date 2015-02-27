@@ -1,4 +1,7 @@
-add_subdirectory(test)
+if(FERN_TEST)
+    add_subdirectory(test)
+endif()
+
 set(SOURCES
     add
     add_overloads

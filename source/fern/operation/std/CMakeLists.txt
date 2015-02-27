@@ -1,4 +1,6 @@
-add_subdirectory(test)
+if(FERN_TEST)
+    add_subdirectory(test)
+endif()
 
 add_custom_command(
     OUTPUT

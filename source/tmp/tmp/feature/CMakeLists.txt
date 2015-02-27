@@ -1,4 +1,6 @@
-ADD_SUBDIRECTORY(test)
+if(FERN_TEST)
+    add_subdirectory(test)
+endif()
 
 SET(SOURCES
     attribute
