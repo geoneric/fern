@@ -22,7 +22,7 @@ namespace fern {
 /// }
 
 
-//! Return time as would be measured by a ordinary clock.
+//! Return time as would be measured by an ordinary clock.
 /*!
   \return    Number of nanoseconds.
   \sa        user_time(), system_time()
