@@ -11,6 +11,7 @@ Contents:
 
    algorithm/index
    io/index
+   python/index
 
    what_s_new
    license

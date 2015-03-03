@@ -4,7 +4,6 @@ configure_file(
 )
 
 add_target_conditionally(algorithm algorithm)
-add_target_conditionally(algorithm_python_extension python_extension)
 add_target_conditionally(ast ast)
 add_target_conditionally(back_end back_end)
 add_target_conditionally(command command)
