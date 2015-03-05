@@ -9,9 +9,7 @@ namespace fp = fern::python;
 
 BOOST_PYTHON_MODULE(_fern_algorithm_space_focal)
 {
-    INIT_PYTHON_MODULE("C++ module with space/focal algorithms.")
+    INIT_PYTHON_MODULE("_fern_algorithm_space_focal")
 
-    bp::def("slope", fp::slope,
-        "Calculate the slope and return the result.")
-        ;
+    bp::def("slope", fp::slope);
 }

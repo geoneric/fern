@@ -6,4 +6,27 @@ def if_(
         condition,
         true_value,
         false_value):
+    """
+    Conditionally assign values from *true_value* or *false_value* to the
+    result.
+
+    :param condition: Condition to test.
+    :param true_value: Value to assign if *condition* is true.
+    :param false_value: Value to assign if *condition* is false.
+
+    Supported value types:
+
+    - int64
+    - double
+
+    Supported data types:
+
+    - number
+    - raster
+
+    Requirements:
+
+    - The value types of *true_value* and *false_value* must be the same.
+    - At least one of the arguments must be a raster.
+    """
     return ext.if_(execution_policy(), condition, true_value, false_value)

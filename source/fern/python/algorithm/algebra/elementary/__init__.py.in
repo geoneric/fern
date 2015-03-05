@@ -1,3 +1,6 @@
+"""
+Module with elementary algorithms.
+"""
 from fern.algorithm import execution_policy
 import _fern_algorithm_algebra_elementary as ext
 
@@ -5,34 +8,116 @@ import _fern_algorithm_algebra_elementary as ext
 def add(
         argument1,
         argument2):
+    """
+    Add the first argument to the second and return the result.
+
+    Supported value types:
+
+    - int64
+    - double
+
+    Supported data types:
+
+    - number
+    - raster
+    """
     return ext.add(execution_policy(), argument1, argument2)
 
 
 def iadd(
         argument1,
         argument2):
+    """
+    Add the first argument to the second and return the updated first
+    argument.
+
+    Supported value types:
+
+    - int64
+    - double
+
+    Supported data types:
+
+    - number
+    - raster
+    """
     return ext.iadd(execution_policy(), argument1, argument2)
 
 
 def greater(
         argument1,
         argument2):
+    """
+    Determine whether the first argument is greater than the second and return
+    the result.
+
+    Supported value types:
+
+    - int64
+    - double
+
+    Supported data types:
+
+    - number
+    - raster
+    """
     return ext.greater(execution_policy(), argument1, argument2)
+
 
 def less(
         argument1,
         argument2):
+    """
+    Determine whether the first argument is less than the second and return
+    the result.
+
+    Supported value types:
+
+    - int64
+    - double
+
+    Supported data types:
+
+    - number
+    - raster
+    """
     return ext.less(execution_policy(), argument1, argument2)
+
 
 def multiply(
         argument1,
         argument2):
+    """
+    Multiply the first argument with the second and return the result.
+
+    Supported value types:
+
+    - int64
+    - double
+
+    Supported data types:
+
+    - number
+    - raster
+    """
     return ext.multiply(execution_policy(), argument1, argument2)
 
 
 def imultiply(
         argument1,
         argument2):
+    """
+    Multiply the first argument with the second and return the updated first
+    argument.
+
+    Supported value types:
+
+    - int64
+    - double
+
+    Supported data types:
+
+    - number
+    - raster
+    """
     return ext.imultiply(execution_policy(), argument1, argument2)
-
-

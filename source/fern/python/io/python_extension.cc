@@ -9,7 +9,7 @@ namespace fp = fern::python;
 
 BOOST_PYTHON_MODULE(_fern_io)
 {
-    INIT_PYTHON_MODULE("C++ module with I/O related functionality.")
+    INIT_PYTHON_MODULE("_fern_io")
 
     // Don't throw in case of an error.
     CPLSetErrorHandler(CPLQuietErrorHandler);

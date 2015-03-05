@@ -29,3 +29,10 @@ configure_file(__init__.py.in
     ${PROJECT_BINARY_DIR}/bin/fern/feature/__init__.py
     COPYONLY
 )
+add_custom_target(fern_feature_python_package
+    DEPENDS
+        ${PROJECT_BINARY_DIR}/bin/fern/feature/__init__.py
+)
+add_dependencies(fern_feature_python_package
+    _fern_feature
+)

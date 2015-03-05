@@ -25,7 +25,11 @@ import sys, os
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.mathjax']
+extensions = [
+    "sphinx.ext.autodoc",
+    "sphinx.ext.ifconfig",
+    "sphinx.ext.mathjax"
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -240,3 +244,13 @@ texinfo_documents = [
 
 # How to display URL addresses: 'footnote', 'no', or 'inline'.
 #texinfo_show_urls = 'footnote'
+
+
+def setup(app):
+    app.add_config_value("fern_algorithm", False, "env")
+    app.add_config_value("fern_io", False, "env")
+    app.add_config_value("fern_python", False, "env")
+
+fern_algorithm = "${FERN_ALGORITHM}" in ["TRUE", "ON"]
+fern_io = "${FERN_IO}" in ["TRUE", "ON"]
+fern_python = "${FERN_PYTHON}" in ["TRUE", "ON"]

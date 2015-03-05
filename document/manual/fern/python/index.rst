@@ -8,3 +8,4 @@ Contents:
 
    introduction
    tutorial
+   API <api/modules>

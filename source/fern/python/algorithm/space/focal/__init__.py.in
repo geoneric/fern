@@ -4,4 +4,15 @@ import _fern_algorithm_space_focal as ext
 
 def slope(
         dem):
+    """
+    Return the slope of the elevation model passed in.
+
+    Supported value types:
+
+    - double
+
+    Supported data types:
+
+    - raster
+    """
     return ext.slope(execution_policy(), dem)

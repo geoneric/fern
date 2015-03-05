@@ -10,7 +10,7 @@ namespace fp = fern::python;
 
 BOOST_PYTHON_MODULE(_fern_feature)
 {
-    INIT_PYTHON_MODULE("C++ module with wrappers for C++ types.")
+    INIT_PYTHON_MODULE("_fern_feature")
 
     bp::numeric::array::set_module_and_type("numpy", "ndarray");
 

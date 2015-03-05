@@ -23,3 +23,10 @@ configure_file(__init__.py.in
     ${PROJECT_BINARY_DIR}/bin/fern/io/__init__.py
     COPYONLY
 )
+add_custom_target(fern_io_python_package
+    DEPENDS
+        ${PROJECT_BINARY_DIR}/bin/fern/io/__init__.py
+)
+add_dependencies(fern_io_python_package
+    _fern_io
+)

@@ -10,7 +10,7 @@ namespace fp = fern::python;
 
 BOOST_PYTHON_MODULE(_fern_algorithm)
 {
-    INIT_PYTHON_MODULE("C++ module with algorithms.")
+    INIT_PYTHON_MODULE("_fern_algorithm")
 
     // bp::class_<fern::ExecutionPolicy, boost::noncopyable>(
     //     "ExecutionPolicy",
