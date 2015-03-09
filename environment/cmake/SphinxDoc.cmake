@@ -73,7 +73,7 @@ endfunction()
 function(document_python_api)
     set(OPTIONS "")
     set(ONE_VALUE_ARGUMENTS TARGET SOURCE_DIRECTORY BINARY_DIRECTORY)
-    set(MULTI_VALUE_ARGUMENTS "")
+    set(MULTI_VALUE_ARGUMENTS EXCLUDE_DIRECTORIES)
 
     cmake_parse_arguments(PYTHON_API "${OPTIONS}" "${ONE_VALUE_ARGUMENTS}"
         "${MULTI_VALUE_ARGUMENTS}" ${ARGN})
@@ -86,8 +86,8 @@ function(document_python_api)
 
     add_custom_command(
         OUTPUT ${PYTHON_API_BINARY_DIRECTORY}/modules.rst
-        COMMAND sphinx-apidoc -o ${PYTHON_API_BINARY_DIRECTORY}
-            ${PYTHON_API_SOURCE_DIRECTORY}
+        COMMAND ${SPHINX_APIDOC_EXECUTABLE} -o ${PYTHON_API_BINARY_DIRECTORY}
+            ${PYTHON_API_SOURCE_DIRECTORY} ${EXCLUDE_DIRECTORIES}
         DEPENDS
             ${PYTHON_API_SOURCE_DIRECTORY}/__init__.py
     )

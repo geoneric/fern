@@ -26,8 +26,6 @@ BOOST_PYTHON_MODULE(_fern_feature)
         .value("int64", fern::VT_INT64)
         .value("uint64", fern::VT_UINT64)
         .value("float32", fern::VT_FLOAT32)
-        .value("float32", fern::VT_FLOAT32)
-        .value("float64", fern::VT_FLOAT64)
         .value("float64", fern::VT_FLOAT64)
         .export_values()
         ;

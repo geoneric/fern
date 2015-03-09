@@ -1,1 +1,49 @@
+"""
+.. autoclass:: ValueType
+
+   Supported value types are:
+
+   - int8
+   - uint8
+   - int16
+   - uint16
+   - int32
+   - uint32
+   - int64
+   - uint64
+   - float32
+   - float64
+
+
+.. autoclass:: MaskedRaster
+   :members:
+
+   :param list values: 2D list of cell values
+   :param list mask: 2D list of boolean cell values where True values signal
+       a masked value
+   :param tuple sizes: Tuple of number or rows and columns in raster
+   :param tuple cell_sizes: Tuple of cell width and height
+   :param ValueType value_type: Value type of cell values
+
+   .. code-block:: python
+
+      values = [
+          [5, 4],
+          [3, 2],
+          [1, 0]]
+      mask = [
+          [False, True],
+          [False, False],
+          [True, False]]
+      raster = MaskedRaster(
+            values,
+            mask,
+            sizes=(3, 2)
+            origin=(100.0, 200.0),
+            cell_sizes=(50, 60),
+            value_type=fern.int32)
+
+
+.. autofunction:: raster_as_numpy_array
+"""
 from _fern_feature import *

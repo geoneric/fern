@@ -40,7 +40,13 @@ if(FERN_PYTHON)
     document_python_api(
         TARGET python_api
         SOURCE_DIRECTORY ${PROJECT_BINARY_DIR}/bin/fern
-        BINARY_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/python/api)
+        BINARY_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/python/api
+        # TODO Doesn't work yet.
+        # EXCLUDE_DIRECTORIES ${PROJECT_BINARY_DIR}/bin/fern/test
+        #     ${PROJECT_BINARY_DIR}/bin/fern/test/*
+        #     test
+        #     test/*
+    )
     add_dependencies(python_api fern_python_package)
     add_dependencies(fern_manual python_api)
 endif()

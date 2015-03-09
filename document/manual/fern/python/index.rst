@@ -9,3 +9,10 @@ Contents:
    introduction
    tutorial
    API <api/modules>
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`

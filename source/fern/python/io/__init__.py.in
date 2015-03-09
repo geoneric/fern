@@ -1,1 +1,6 @@
+"""
+.. autofunction:: read_raster
+
+.. autofunction:: write_raster
+"""
 from _fern_io import *
