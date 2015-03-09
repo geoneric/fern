@@ -8,7 +8,7 @@ namespace fern {
 
 template<
     class T>
-struct ArgumentTraits
+struct DataTraits
 {
 
     //! By default, we grab T's value type. Specialize if needed.
@@ -25,40 +25,40 @@ struct ArgumentTraits
 
 template<
     class T>
-using value_type = typename ArgumentTraits<T>::value_type;
+using value_type = typename DataTraits<T>::value_type;
 
 
 template<
     class U,
     class V>
-using Collection = typename ArgumentTraits<U>::template Collection<V>::type;
+using Collection = typename DataTraits<U>::template Collection<V>::type;
 
 
 template<
     class U,
     class V>
-using clone_type = typename ArgumentTraits<U>::template Clone<V>::type;
+using clone_type = typename DataTraits<U>::template Clone<V>::type;
 
 
 template<
     class T>
-using const_reference = typename ArgumentTraits<T>::const_reference;
+using const_reference = typename DataTraits<T>::const_reference;
 
 
 template<
     class T>
-using reference = typename ArgumentTraits<T>::reference;
+using reference = typename DataTraits<T>::reference;
 
 
 template<
     class T>
-using argument_category = typename ArgumentTraits<T>::argument_category;
+using argument_category = typename DataTraits<T>::argument_category;
 
 
 template<
     class T>
 struct is_masking:
-    public std::integral_constant<bool, fern::ArgumentTraits<T>::is_masking>
+    public std::integral_constant<bool, fern::DataTraits<T>::is_masking>
 {};
 
 
@@ -66,7 +66,7 @@ template<
     class T>
 inline constexpr size_t rank()
 {
-    return ArgumentTraits<T>::rank;
+    return DataTraits<T>::rank;
 }
 
 

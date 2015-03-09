@@ -1,6 +1,6 @@
 #pragma once
 #include <cstddef>
-#include "fern/core/argument_traits.h"
+#include "fern/core/data_traits.h"
 #include "fern/feature/core/raster.h"
 
 
@@ -40,7 +40,7 @@ RASTER_CATEGORY_TAG(3)
 template<
     typename T,
     size_t nr_dimensions>
-struct ArgumentTraits<
+struct DataTraits<
     Raster<T, nr_dimensions>>
 {
 
@@ -111,7 +111,7 @@ inline size_t index(
 template<
     typename T,
     size_t nr_dimensions>
-inline typename ArgumentTraits<Raster<T, nr_dimensions>>::const_reference get(
+inline typename DataTraits<Raster<T, nr_dimensions>>::const_reference get(
     Raster<T, nr_dimensions> const& raster,
     size_t index)
 {
@@ -123,7 +123,7 @@ inline typename ArgumentTraits<Raster<T, nr_dimensions>>::const_reference get(
 template<
     typename T,
     size_t nr_dimensions>
-inline typename ArgumentTraits<Raster<T, nr_dimensions>>::reference get(
+inline typename DataTraits<Raster<T, nr_dimensions>>::reference get(
     Raster<T, nr_dimensions>& raster,
     size_t index)
 {

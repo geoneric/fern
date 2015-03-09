@@ -1,6 +1,6 @@
 #pragma once
 #include <cstddef>
-#include "fern/core/argument_traits.h"
+#include "fern/core/data_traits.h"
 
 
 namespace fern {
@@ -21,7 +21,7 @@ class MarkNoDataByValue {
 
 private:
 
-    using value_type = typename ArgumentTraits<Mask>::value_type;
+    using value_type = typename DataTraits<Mask>::value_type;
 
 public:
 

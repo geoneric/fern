@@ -1,6 +1,6 @@
 #pragma once
 #include <cassert>
-#include "fern/core/argument_traits.h"
+#include "fern/core/data_traits.h"
 #include "fern/algorithm/convolution/neighborhood/square.h"
 
 
@@ -9,7 +9,7 @@ namespace fern {
 template<
     class T,
     size_t radius>
-struct ArgumentTraits<
+struct DataTraits<
     Square<T, radius>>
 {
 
@@ -90,7 +90,7 @@ inline constexpr size_t index(
 template<
     class T,
     size_t radius>
-inline typename ArgumentTraits<Square<T, radius>>::const_reference get(
+inline typename DataTraits<Square<T, radius>>::const_reference get(
     Square<T, radius> const& square,
     size_t index)
 {
@@ -102,7 +102,7 @@ inline typename ArgumentTraits<Square<T, radius>>::const_reference get(
 template<
     class T,
     size_t radius>
-inline typename ArgumentTraits<Square<T, radius>>::reference get(
+inline typename DataTraits<Square<T, radius>>::reference get(
     Square<T, radius>& square,
     size_t index)
 {

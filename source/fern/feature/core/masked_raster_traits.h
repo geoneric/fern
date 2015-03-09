@@ -9,7 +9,7 @@ namespace fern {
 template<
     typename T,
     size_t nr_dimensions>
-struct ArgumentTraits<
+struct DataTraits<
     MaskedRaster<T, nr_dimensions>>
 {
 
@@ -80,7 +80,7 @@ inline size_t index(
 template<
     typename T,
     size_t nr_dimensions>
-inline typename ArgumentTraits<MaskedRaster<T, nr_dimensions>>
+inline typename DataTraits<MaskedRaster<T, nr_dimensions>>
         ::const_reference get(
     MaskedRaster<T, nr_dimensions> const& raster,
     size_t index)
@@ -93,7 +93,7 @@ inline typename ArgumentTraits<MaskedRaster<T, nr_dimensions>>
 template<
     typename T,
     size_t nr_dimensions>
-inline typename ArgumentTraits<MaskedRaster<T, nr_dimensions>>::reference get(
+inline typename DataTraits<MaskedRaster<T, nr_dimensions>>::reference get(
     MaskedRaster<T, nr_dimensions>& raster,
     size_t index)
 {

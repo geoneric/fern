@@ -1,14 +1,14 @@
 #pragma once
 #include <cstddef>
 #include <vector>
-#include "fern/core/argument_traits.h"
+#include "fern/core/data_traits.h"
 
 
 namespace fern {
 
 template<
     class T>
-struct ArgumentTraits<
+struct DataTraits<
     std::vector<T>>
 {
 
@@ -59,7 +59,7 @@ inline size_t size(
 
 template<
     class T>
-inline typename ArgumentTraits<std::vector<T>>::const_reference get(
+inline typename DataTraits<std::vector<T>>::const_reference get(
     std::vector<T> const& vector,
     size_t index)
 {
@@ -69,7 +69,7 @@ inline typename ArgumentTraits<std::vector<T>>::const_reference get(
 
 template<
     class T>
-inline typename ArgumentTraits<std::vector<T>>::reference get(
+inline typename DataTraits<std::vector<T>>::reference get(
     std::vector<T>& vector,
     size_t index)
 {

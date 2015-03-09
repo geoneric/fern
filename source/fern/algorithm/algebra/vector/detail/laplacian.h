@@ -104,7 +104,7 @@ struct Laplacian<
         core::cast<>(execution_policy, defined, defined_as_floats);
 
         // It is not needed to take range errors into account. The max value
-        // calculate per cells is sum(kernel) -> 20.
+        // calculated per cell is sum(kernel) -> 20.
         Array<Float, 2> sum_of_weights(extents);
         convolution::convolve<
             convolve::SkipNoData,

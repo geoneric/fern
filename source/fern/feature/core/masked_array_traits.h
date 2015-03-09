@@ -8,7 +8,7 @@ namespace fern {
 template<
     typename T,
     size_t nr_dimensions>
-struct ArgumentTraits<
+struct DataTraits<
     MaskedArray<T, nr_dimensions>>
 {
 
@@ -79,7 +79,7 @@ inline size_t index(
 template<
     typename T,
     size_t nr_dimensions>
-inline typename ArgumentTraits<MaskedArray<T, nr_dimensions>>::const_reference
+inline typename DataTraits<MaskedArray<T, nr_dimensions>>::const_reference
         get(
     MaskedArray<T, nr_dimensions> const& array,
     size_t index)
@@ -92,7 +92,7 @@ inline typename ArgumentTraits<MaskedArray<T, nr_dimensions>>::const_reference
 template<
     typename T,
     size_t nr_dimensions>
-inline typename ArgumentTraits<MaskedArray<T, nr_dimensions>>::reference get(
+inline typename DataTraits<MaskedArray<T, nr_dimensions>>::reference get(
     MaskedArray<T, nr_dimensions>& array,
     size_t index)
 {

@@ -1,7 +1,7 @@
 #pragma once
 #include <boost/mpl/and.hpp>
 #include <boost/mpl/if.hpp>
-#include "fern/core/argument_traits.h"
+#include "fern/core/data_traits.h"
 #include "fern/core/constant_traits.h"
 #include "fern/core/assert.h"
 #include "fern/core/base_class.h"
@@ -52,11 +52,11 @@ struct Result<
 
             // A2 is a type representing a constant. Select its template class
             // in combination with the result value type.
-            typename ArgumentTraits<A2>::template Constant<RValue>::type,
+            typename DataTraits<A2>::template Constant<RValue>::type,
 
             // A1 is a type representing a constant. Select its template class
             // in combination with the result value type.
-            typename ArgumentTraits<A1>::template Constant<RValue>::type>
+            typename DataTraits<A1>::template Constant<RValue>::type>
                 ::type
     >::type;
 
@@ -77,7 +77,7 @@ struct Result<
 
     // Use collection template class of first argument as the template class
     // of the result.
-    using type = typename ArgumentTraits<A1>::template Collection<RValue>::type;
+    using type = typename DataTraits<A1>::template Collection<RValue>::type;
 
 };
 
@@ -96,7 +96,7 @@ struct Result<
 
     // Use collection template class of second argument as the template class
     // of the result.
-    using type = typename ArgumentTraits<A2>::template Collection<RValue>::type;
+    using type = typename DataTraits<A2>::template Collection<RValue>::type;
 
 };
 
@@ -115,7 +115,7 @@ struct Result<
 
     // Use collection template class of first argument as the template class
     // of the result.
-    using type = typename ArgumentTraits<A1>::template Collection<RValue>::type;
+    using type = typename DataTraits<A1>::template Collection<RValue>::type;
 
 };
 
@@ -146,8 +146,8 @@ template<
     typename A1,
     typename A2,
     typename RValue=typename ResultValue<
-        typename ArgumentTraits<A1>::value_type,
-        typename ArgumentTraits<A2>::value_type>::type>
+        typename DataTraits<A1>::value_type,
+        typename DataTraits<A2>::value_type>::type>
 class Result
 {
 

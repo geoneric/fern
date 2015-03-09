@@ -1,6 +1,6 @@
 #pragma once
 #include <cassert>
-#include "fern/core/argument_traits.h"
+#include "fern/core/data_traits.h"
 #include "fern/feature/core/array.h"
 #include "fern/feature/core/array_reference.h"
 
@@ -41,7 +41,7 @@ ARRAY_CATEGORY_TAG(3)
 // template<
 //     class T,
 //     size_t nr_dimensions>
-// struct ArgumentTraits<
+// struct DataTraits<
 //     View<T, nr_dimensions>>
 // {
 // 
@@ -62,7 +62,7 @@ ARRAY_CATEGORY_TAG(3)
 template<
     class T,
     size_t nr_dimensions>
-struct ArgumentTraits<
+struct DataTraits<
     ArrayReference<T, nr_dimensions>>
 {
 
@@ -121,7 +121,7 @@ inline size_t size(
 template<
     class T,
     size_t nr_dimensions>
-inline typename ArgumentTraits<ArrayReference<T, nr_dimensions>>
+inline typename DataTraits<ArrayReference<T, nr_dimensions>>
         ::const_reference get(
     ArrayReference<T, nr_dimensions> const& array,
     size_t index)
@@ -134,7 +134,7 @@ inline typename ArgumentTraits<ArrayReference<T, nr_dimensions>>
 template<
     class T,
     size_t nr_dimensions>
-inline typename ArgumentTraits<ArrayReference<T, nr_dimensions>>::reference get(
+inline typename DataTraits<ArrayReference<T, nr_dimensions>>::reference get(
     ArrayReference<T, nr_dimensions>& array,
     size_t index)
 {

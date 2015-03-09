@@ -1,7 +1,7 @@
 // Example showing how to make it possible to pass instances of user-defined
 // classes, unknown to fern, to algorithms.
 // - User-defined raster class: example::Raster
-// - Glue code to allow passing rasters to algorithm: example::ArgumentTraits
+// - Glue code to allow passing rasters to algorithm: example::DataTraits
 // - Operators to support nice syntax.
 #include <cstdlib>
 #include <numeric>

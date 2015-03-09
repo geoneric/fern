@@ -1,5 +1,5 @@
 #pragma once
-#include "fern/core/argument_traits.h"
+#include "fern/core/data_traits.h"
 #include "fern/feature/core/point.h"
 
 
@@ -9,7 +9,7 @@ template<
     typename T,
     size_t nr_dimensions,
     typename CoordinateSystem>
-struct ArgumentTraits<
+struct DataTraits<
     Point<T, nr_dimensions, CoordinateSystem>>
 {
 

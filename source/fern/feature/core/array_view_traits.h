@@ -8,7 +8,7 @@ namespace fern {
 template<
     typename T,
     size_t nr_dimensions>
-struct ArgumentTraits<
+struct DataTraits<
     ArrayView<T, nr_dimensions>>
 {
 

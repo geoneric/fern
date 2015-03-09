@@ -1,6 +1,6 @@
 #pragma once
 #include <cstdint>
-#include "fern/core/argument_traits.h"
+#include "fern/core/data_traits.h"
 #include "fern/core/collection_traits.h"
 
 
@@ -9,7 +9,7 @@ namespace fern {
 #define CONSTANT_ARGUMENT_TRAITS(                           \
     T)                                                      \
 template<>                                                  \
-struct ArgumentTraits<T>                                    \
+struct DataTraits<T>                                        \
 {                                                           \
                                                             \
     using argument_category = constant_tag;                 \
@@ -42,16 +42,16 @@ struct ArgumentTraits<T>                                    \
                                                             \
                                                             \
 template<>                                                  \
-inline typename ArgumentTraits<T>::const_reference get(     \
-    typename ArgumentTraits<T>::value_type const& constant) \
+inline typename DataTraits<T>::const_reference get(         \
+    typename DataTraits<T>::value_type const& constant)     \
 {                                                           \
     return constant;                                        \
 }                                                           \
                                                             \
                                                             \
 template<>                                                  \
-inline typename ArgumentTraits<T>::reference get(           \
-    typename ArgumentTraits<T>::value_type& constant)       \
+inline typename DataTraits<T>::reference get(               \
+    typename DataTraits<T>::value_type& constant)           \
 {                                                           \
     return constant;                                        \
 }

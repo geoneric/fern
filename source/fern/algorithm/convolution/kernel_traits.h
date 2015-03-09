@@ -1,6 +1,6 @@
 #pragma once
 #include <type_traits>
-#include "fern/core/argument_traits.h"
+#include "fern/core/data_traits.h"
 
 
 namespace fern {

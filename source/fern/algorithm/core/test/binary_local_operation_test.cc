@@ -1216,8 +1216,8 @@ BOOST_AUTO_TEST_SUITE_END()
 /// 
 ///         using A1 = decltype(argument1);
 ///         using A2 = decltype(argument2);
-///         using A1Value = fern::ArgumentTraits<A1>::value_type;
-///         using A2Value = fern::ArgumentTraits<A2>::value_type;
+///         using A1Value = fern::DataTraits<A1>::value_type;
+///         using A2Value = fern::DataTraits<A2>::value_type;
 ///         using OutOfDomainPolicy = fern::DiscardDomainErrors<A1Value, A2Value>;
 ///         using OutOfRangePolicy = fern::add::OutOfRangePolicy<A1Value, A2Value>;
 ///         using NoDataPolicy = fern::MarkNoDataByValue<bool, fern::Mask<2>>;
@@ -1259,8 +1259,8 @@ BOOST_AUTO_TEST_SUITE_END()
 /// 
 ///         using A1 = decltype(argument1);
 ///         using A2 = decltype(argument3);
-///         using A1Value = fern::ArgumentTraits<A1>::value_type;
-///         using A2Value = fern::ArgumentTraits<A2>::value_type;
+///         using A1Value = fern::DataTraits<A1>::value_type;
+///         using A2Value = fern::DataTraits<A2>::value_type;
 ///         using OutOfDomainPolicy = fern::DiscardDomainErrors<A1Value, A2Value>;
 ///         using OutOfRangePolicy = fern::add::OutOfRangePolicy<A1Value, A2Value>;
 ///         using NoDataPolicy = fern::MarkNoDataByValue<bool, fern::Mask<2>>;
@@ -1299,8 +1299,8 @@ BOOST_AUTO_TEST_SUITE_END()
 /// 
 ///         using A1 = decltype(argument3);
 ///         using A2 = decltype(argument1);
-///         using A1Value = fern::ArgumentTraits<A1>::value_type;
-///         using A2Value = fern::ArgumentTraits<A2>::value_type;
+///         using A1Value = fern::DataTraits<A1>::value_type;
+///         using A2Value = fern::DataTraits<A2>::value_type;
 ///         using OutOfDomainPolicy = fern::DiscardDomainErrors<A1Value, A2Value>;
 ///         using OutOfRangePolicy = fern::add::OutOfRangePolicy<A1Value, A2Value>;
 ///         using NoDataPolicy = fern::MarkNoDataByValue<bool, fern::Mask<2>>;

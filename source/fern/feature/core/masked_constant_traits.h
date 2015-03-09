@@ -1,13 +1,13 @@
 #pragma once
 #include "fern/feature/core/masked_constant.h"
-#include "fern/core/argument_traits.h"
+#include "fern/core/data_traits.h"
 
 
 namespace fern {
 
 template<
     typename T>
-struct ArgumentTraits<MaskedConstant<T>>
+struct DataTraits<MaskedConstant<T>>
 {
 
     using argument_category = constant_tag;
@@ -41,7 +41,7 @@ struct ArgumentTraits<MaskedConstant<T>>
 
 template<
     typename T>
-inline typename ArgumentTraits<MaskedConstant<T>>::const_reference get(
+inline typename DataTraits<MaskedConstant<T>>::const_reference get(
     MaskedConstant<T> const& constant)
 {
     return constant.value();
@@ -50,7 +50,7 @@ inline typename ArgumentTraits<MaskedConstant<T>>::const_reference get(
 
 template<
     typename T>
-inline typename ArgumentTraits<MaskedConstant<T>>::reference get(
+inline typename DataTraits<MaskedConstant<T>>::reference get(
     MaskedConstant<T>& constant)
 {
     return constant.value();

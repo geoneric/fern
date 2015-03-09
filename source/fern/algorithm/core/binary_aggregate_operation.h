@@ -1,5 +1,5 @@
 #pragma once
-#include "fern/core/argument_traits.h"
+#include "fern/core/data_traits.h"
 #include "fern/core/base_class.h"
 #include "fern/feature/core/masked_array_traits.h"
 #include "fern/algorithm/core/index_ranges.h"
@@ -459,7 +459,7 @@ struct BinaryAggregateOperation<
 
         Aggregator aggregator;
 
-        Aggregate<ArgumentTraits<Result>::is_masking>::template
+        Aggregate<DataTraits<Result>::is_masking>::template
             apply<OutOfRangePolicy>(
                 aggregator, output_no_data_policy, execution_policy,
                 results_per_block, result);
@@ -649,7 +649,7 @@ struct BinaryAggregateOperation<
 
         Aggregator aggregator;
 
-        Aggregate<ArgumentTraits<Result>::is_masking>::template
+        Aggregate<DataTraits<Result>::is_masking>::template
             apply<OutOfRangePolicy>(
                 aggregator, output_no_data_policy, execution_policy,
                 results_per_block, result);

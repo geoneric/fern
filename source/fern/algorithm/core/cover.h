@@ -1,5 +1,5 @@
 #pragma once
-#include "fern/core/argument_traits.h"
+#include "fern/core/data_traits.h"
 #include "fern/algorithm/core/detail/cover.h"
 #include "fern/algorithm/core/result_type.h"
 #include "fern/algorithm/policy/policies.h"

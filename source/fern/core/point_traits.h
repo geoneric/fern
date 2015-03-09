@@ -1,6 +1,6 @@
 #pragma once
 #include <cstddef>
-#include "fern/core/argument_traits.h"
+#include "fern/core/data_traits.h"
 #include "fern/core/point.h"
 
 
@@ -9,7 +9,7 @@ namespace fern {
 template<
     class Coordinate,
     size_t nr_dimensions>
-struct ArgumentTraits<
+struct DataTraits<
     Point<Coordinate, nr_dimensions>>
 {
 
@@ -28,7 +28,7 @@ template<
     size_t index,
     class Coordinate,
     size_t nr_dimensions>
-inline constexpr typename ArgumentTraits<Point<Coordinate, nr_dimensions>>
+inline constexpr typename DataTraits<Point<Coordinate, nr_dimensions>>
         ::const_reference get(
     Point<Coordinate, nr_dimensions> const& point)
 {
@@ -40,7 +40,7 @@ template<
     size_t index,
     class Coordinate,
     size_t nr_dimensions>
-inline constexpr typename ArgumentTraits<Point<Coordinate, nr_dimensions>>
+inline constexpr typename DataTraits<Point<Coordinate, nr_dimensions>>
         ::reference get(
     Point<Coordinate, nr_dimensions>& point)
 {
