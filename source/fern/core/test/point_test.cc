@@ -1,6 +1,6 @@
 #define BOOST_TEST_MODULE fern core
 #include <boost/test/unit_test.hpp>
-#include "fern/core/point_traits.h"
+#include "fern/core/data_customization_point/point.h"
 
 
 BOOST_AUTO_TEST_SUITE(point)

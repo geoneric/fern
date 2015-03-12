@@ -2,6 +2,7 @@
 #include <cstddef>
 #include <utility>
 #include "fern/core/data_traits.h"
+#include "fern/algorithm/core/mask_customization_point.h"
 
 
 namespace fern {
@@ -38,24 +39,27 @@ public:
                                         size_t index2,
                                         size_t index3) const;
 
+                   DetectNoDataByValue (DetectNoDataByValue const& other)
+                                            =default;
+
+                   DetectNoDataByValue (DetectNoDataByValue&& other) =default;
+
+                   DetectNoDataByValue (Mask const& mask);
+
                    DetectNoDataByValue (Mask const& mask,
                                         value_type const& no_data_value);
 
     virtual        ~DetectNoDataByValue()=default;
 
-                   DetectNoDataByValue (DetectNoDataByValue&& other)=default;
+    DetectNoDataByValue&
+                   operator=           (DetectNoDataByValue const&)=default;
+
+    DetectNoDataByValue&
+                   operator=           (DetectNoDataByValue&&)=default;
 
 protected:
 
                    DetectNoDataByValue ()=delete;
-
-                   DetectNoDataByValue (DetectNoDataByValue const&)=delete;
-
-    DetectNoDataByValue&
-                   operator=           (DetectNoDataByValue const&)=delete;
-
-    DetectNoDataByValue&
-                   operator=           (DetectNoDataByValue&&)=default;
 
 private:
 
@@ -64,6 +68,19 @@ private:
     value_type     _no_data_value;
 
 };
+
+
+template<
+    typename Mask>
+inline DetectNoDataByValue<Mask>::
+        DetectNoDataByValue(
+    Mask const& mask)
+
+    : _mask(mask),
+      _no_data_value(no_data_value(_mask))
+
+{
+}
 
 
 template<

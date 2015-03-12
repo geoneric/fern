@@ -2,7 +2,7 @@
 #include <boost/test/unit_test.hpp>
 #include "fern/algorithm/core/result_type.h"
 #include "fern/feature/core/masked_constant_traits.h"
-#include "fern/core/constant_traits.h"
+#include "fern/core/data_customization_point/constant.h"
 #include "fern/core/typename.h"
 #include "fern/core/vector_traits.h"
 

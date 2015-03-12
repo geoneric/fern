@@ -1,6 +1,9 @@
 #pragma once
 #include <cstddef>
 #include "fern/core/data_traits.h"
+// #include "fern/algorithm/core/argument_traits.h"
+// #include "fern/algorithm/core/customization_point.h"
+#include "fern/algorithm/core/mask_customization_point.h"
 
 
 namespace fern {
@@ -36,6 +39,12 @@ public:
                                         size_t index2,
                                         size_t index3);
 
+    /// template<
+    ///     typename Argument>
+    ///                MarkNoDataByValue   (Argument& argument);
+
+                   MarkNoDataByValue   (Mask& mask);
+
                    MarkNoDataByValue   (Mask& mask,
                                         value_type const& no_data_value);
 
@@ -62,6 +71,41 @@ private:
     value_type     _no_data_value;
 
 };
+
+
+/// /*!
+///     @brief      Construct an instance using a data argument.
+/// 
+///     The mask is obtained by calling mask(Argument& argument) with @a argument
+///     as argument.
+/// 
+///     The value used for testing for no-data-ness is obtained by calling
+///     no_data_value(Mask const&) with the just obtained mask as argument.
+/// */
+/// template<
+///     typename Mask>
+/// template<
+///     typename Argument>
+/// inline MarkNoDataByValue<Mask>::MarkNoDataByValue(
+///     Argument& argument)
+/// 
+///     : _mask(mask(argument)),
+///       _no_data_value(no_data_value(_mask))
+/// 
+/// {
+/// }
+
+
+template<
+    typename Mask>
+inline MarkNoDataByValue<Mask>::MarkNoDataByValue(
+    Mask& mask)
+
+    : _mask(mask),
+      _no_data_value(no_data_value(_mask))
+
+{
+}
 
 
 template<

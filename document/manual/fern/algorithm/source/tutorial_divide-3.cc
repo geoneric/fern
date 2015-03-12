@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include "fern/core/data_customization_point/constant.h"
 #include "fern/feature/core/array_traits.h"
 #include "fern/algorithm/algebra/elementary/divide.h"
 

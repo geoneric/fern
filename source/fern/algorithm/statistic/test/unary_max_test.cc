@@ -1,6 +1,6 @@
 #define BOOST_TEST_MODULE fern algorithm statistic unary_max
 #include <boost/test/unit_test.hpp>
-#include "fern/core/constant_traits.h"
+#include "fern/core/data_customization_point/constant.h"
 #include "fern/feature/core/masked_array_traits.h"
 #include "fern/feature/core/masked_constant_traits.h"
 #include "fern/algorithm/core/test/test_utils.h"
