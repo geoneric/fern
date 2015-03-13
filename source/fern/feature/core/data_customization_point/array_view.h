@@ -1,6 +1,7 @@
 #pragma once
-#include "fern/feature/core/data_customization_point/array.h"
-#include "fern/feature/core/array_view.h"
+#include <cassert>
+#include "fern/core/data_customization_point.h"
+#include "fern/feature/core/data_traits/array_view.h"
 
 
 namespace fern {
@@ -8,31 +9,7 @@ namespace fern {
 template<
     typename T,
     size_t nr_dimensions>
-struct DataTraits<
-    ArrayView<T, nr_dimensions>>
-{
-
-    using argument_category = typename detail::dispatch::ArrayCategoryTag<T,
-        nr_dimensions>::type;
-
-    template<
-        typename U>
-    struct Collection
-    {
-        using type = ArrayView<U, nr_dimensions>;
-    };
-
-    using value_type = T;
-
-    static bool const is_masking = false;
-
-};
-
-
-template<
-    typename T,
-    size_t nr_dimensions>
-size_t size(
+inline size_t size(
     ArrayView<T, nr_dimensions> const& view)
 {
     return view.num_elements();
@@ -42,7 +19,7 @@ size_t size(
 template<
     typename T,
     size_t nr_dimensions>
-size_t size(
+inline size_t size(
     ArrayView<T, nr_dimensions> const& view,
     size_t dimension)
 {
@@ -54,7 +31,7 @@ size_t size(
 template<
     typename T,
     size_t nr_dimensions>
-T const& get(
+inline typename DataTraits<ArrayView<T, nr_dimensions>>::const_reference get(
     ArrayView<T, nr_dimensions> const& view,
     size_t index)
 {
@@ -66,7 +43,7 @@ T const& get(
 template<
     typename T,
     size_t nr_dimensions>
-T& get(
+inline typename DataTraits<ArrayView<T, nr_dimensions>>::reference get(
     ArrayView<T, nr_dimensions>& view,
     size_t index)
 {
