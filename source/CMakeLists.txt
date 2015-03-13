@@ -1,23 +1,29 @@
-INCLUDE_DIRECTORIES(
+include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
+add_subdirectory(fern)
+if(FERN_REQUIRED_MALLOC_SYMBOLS_AVAILABLE)
+    add_subdirectory(tool)
+endif()
+
+
 ### # TODO By default, this check should be disabled.
 ### # Verify that headers are self-sufficient. This is especially important
 ### # for headers that are part of the public API.
-### GET_DIRECTORY_PROPERTY(INCLUDES INCLUDE_DIRECTORIES)
-### FILE(GLOB_RECURSE ALGORITHM_HEADER_PATHNAMES "fern/algorithm/*.h")
-### FILE(GLOB_RECURSE CORE_HEADER_PATHNAMES "fern/core/*.h")
-### FILE(GLOB_RECURSE FEATURE_HEADER_PATHNAMES "fern/feature/*.h")
-### SET(PUBLIC_HEADER_PATHNAMES
+### get_directory_property(INCLUDES INCLUDE_DIRECTORIES)
+### file(GLOB_RECURSE ALGORITHM_HEADER_PATHNAMES "fern/algorithm/*.h")
+### file(GLOB_RECURSE CORE_HEADER_PATHNAMES "fern/core/*.h")
+### file(GLOB_RECURSE FEATURE_HEADER_PATHNAMES "fern/feature/*.h")
+### set(PUBLIC_HEADER_PATHNAMES
 ###     # Order matters. First test the most basic headers and after that the
 ###     # ones that use those headers.
 ###     ${CORE_HEADER_PATHNAMES}
 ###     ${FEATURE_HEADER_PATHNAMES}
 ###     ${ALGORITHM_HEADER_PATHNAMES}
 ### )
-### VERIFY_HEADERS_ARE_SELF_SUFFICIENT(
+### verify_headers_are_self_sufficient(
 ###     OFFSET_PATHNAME
 ###         ${CMAKE_CURRENT_SOURCE_DIR}/
 ###     INCLUDES
@@ -31,37 +37,34 @@ INCLUDE_DIRECTORIES(
 ###         ${PUBLIC_HEADER_PATHNAMES}
 ### )
 
-IF(DOXYGEN_FOUND)
-    LIST(APPEND _API_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/fern/fern.md)
-    LIST(APPEND _API_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/fern/group.dox)
-    IF(FERN_FERN_ALGORITHM_REQUIRED)
-        LIST(APPEND _API_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/fern/algorithm)
-    ENDIF()
-    IF(FERN_FERN_CORE_REQUIRED)
-        LIST(APPEND _API_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/fern/core)
-    ENDIF()
-    IF(FERN_FERN_EXAMPLE_REQUIRED)
-        LIST(APPEND _API_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/fern/example)
-    ENDIF()
-    IF(FERN_FERN_FEATURE_REQUIRED)
-        LIST(APPEND _API_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/fern/feature)
-    ENDIF()
-    IF(FERN_FERN_ALGORITHM_PYTHON_EXTENSION_REQUIRED)
-        LIST(APPEND _API_SOURCES
+
+if(DOXYGEN_FOUND)
+    list(APPEND _API_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/fern/fern.md)
+    list(APPEND _API_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/fern/group.dox)
+    if(FERN_FERN_ALGORITHM_REQUIRED)
+        list(APPEND _API_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/fern/algorithm)
+    endif()
+    if(FERN_FERN_CORE_REQUIRED)
+        list(APPEND _API_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/fern/core)
+    endif()
+    if(FERN_FERN_EXAMPLE_REQUIRED)
+        list(APPEND _API_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/fern/example)
+    endif()
+    if(FERN_FERN_FEATURE_REQUIRED)
+        list(APPEND _API_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/fern/feature)
+    endif()
+    if(FERN_FERN_ALGORITHM_PYTHON_EXTENSION_REQUIRED)
+        list(APPEND _API_SOURCES
             ${CMAKE_CURRENT_SOURCE_DIR}/fern/python_extension)
-    ENDIF()
+    endif()
     # TODO Add more...
 
-    STRING(REPLACE ";" " " FERN_DOXYGEN_INPUT "${_API_SOURCES}")
+    string(REPLACE ";" " " FERN_DOXYGEN_INPUT "${_API_SOURCES}")
 
-    INCLUDE(DoxygenDoc)
+    include(DoxygenDoc)
 
-    INSTALL(
+    install(
         DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html/
         DESTINATION doc/fern/api
     )
-ENDIF()
-ADD_SUBDIRECTORY(fern)
-IF(FERN_REQUIRED_MALLOC_SYMBOLS_AVAILABLE)
-    ADD_SUBDIRECTORY(tool)
-ENDIF()
+endif()

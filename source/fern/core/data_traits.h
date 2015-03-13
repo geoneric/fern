@@ -69,9 +69,4 @@ inline constexpr size_t rank()
     return DataTraits<T>::rank;
 }
 
-
-template<
-    class T>
-size_t             size                (T const& value);
-
 } // namespace fern

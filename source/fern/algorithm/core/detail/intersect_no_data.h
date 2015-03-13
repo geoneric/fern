@@ -1,6 +1,9 @@
 #pragma once
+#include <cassert>
 #include "fern/core/base_class.h"
+#include "fern/core/data_customization_point.h"
 #include "fern/algorithm/core/index_ranges.h"
+#include "fern/algorithm/policy/execution_policy.h"
 
 
 namespace fern {

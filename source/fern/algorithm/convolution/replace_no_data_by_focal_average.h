@@ -1,6 +1,8 @@
 #pragma once
 #include <cassert>
 #include <cstddef>
+#include <tuple>
+#include "fern/core/data_customization_point.h"
 
 
 namespace fern {

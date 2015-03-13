@@ -1,5 +1,6 @@
 #pragma once
 #include <cassert>
+#include <cstddef>
 #include "fern/algorithm/accumulator/count.h"
 #include "fern/algorithm/accumulator/sum.h"
 

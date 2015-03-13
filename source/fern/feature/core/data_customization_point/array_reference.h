@@ -1,7 +1,7 @@
 #pragma once
 #include <cassert>
 #include "fern/core/data_customization_point.h"
-#include "fern/core/data_traits/array_reference.h"
+#include "fern/feature/core/data_traits/array_reference.h"
 
 
 namespace fern {

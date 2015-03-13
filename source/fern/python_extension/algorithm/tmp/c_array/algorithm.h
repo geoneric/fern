@@ -1,5 +1,4 @@
 #pragma once
-#include "fern/core/clone.h"
 #include "fern/feature/core/array_reference_traits.h"
 #include "fern/algorithm.h"
 
