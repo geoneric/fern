@@ -1,7 +1,8 @@
 #define BOOST_TEST_MODULE fern algorithm core cover
 #include <boost/test/unit_test.hpp>
 #include "fern/core/data_customization_point/constant.h"
-#include "fern/feature/core/masked_array_traits.h"
+#include "fern/feature/core/data_customization_point/array.h"
+#include "fern/feature/core/data_customization_point/masked_array.h"
 #include "fern/algorithm/algebra/boole/and.h"
 #include "fern/algorithm/core/cover.h"
 #include "fern/algorithm/core/test/test_utils.h"

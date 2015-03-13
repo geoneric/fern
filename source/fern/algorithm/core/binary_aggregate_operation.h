@@ -1,7 +1,7 @@
 #pragma once
 #include "fern/core/data_traits.h"
 #include "fern/core/base_class.h"
-#include "fern/feature/core/masked_array_traits.h"
+#include "fern/feature/core/data_customization_point/masked_array.h"
 #include "fern/algorithm/core/index_ranges.h"
 #include "fern/algorithm/policy/policies.h"
 
