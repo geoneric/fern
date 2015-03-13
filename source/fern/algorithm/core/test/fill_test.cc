@@ -1,7 +1,7 @@
 #define BOOST_TEST_MODULE fern algorithm core fill
 #include <boost/test/unit_test.hpp>
 #include "fern/core/data_customization_point/constant.h"
-#include "fern/core/vector_traits.h"
+#include "fern/core/data_customization_point/vector.h"
 #include "fern/algorithm/core/fill.h"
 #include "fern/algorithm/statistic/count.h"
 

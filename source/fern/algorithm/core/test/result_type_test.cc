@@ -4,7 +4,7 @@
 #include "fern/feature/core/masked_constant_traits.h"
 #include "fern/core/data_customization_point/constant.h"
 #include "fern/core/typename.h"
-#include "fern/core/vector_traits.h"
+#include "fern/core/data_customization_point/vector.h"
 
 
 namespace fa = fern::algorithm;
