@@ -1,7 +1,7 @@
 #define BOOST_TEST_MODULE fern algorithm core result_type
 #include <boost/test/unit_test.hpp>
 #include "fern/algorithm/core/result_type.h"
-#include "fern/feature/core/masked_constant_traits.h"
+#include "fern/feature/core/data_customization_point/masked_constant.h"
 #include "fern/core/data_customization_point/constant.h"
 #include "fern/core/typename.h"
 #include "fern/core/data_customization_point/vector.h"

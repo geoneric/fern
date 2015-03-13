@@ -4,7 +4,7 @@
 #include "fern/core/data_customization_point/vector.h"
 #include "fern/feature/core/data_customization_point/array.h"
 #include "fern/feature/core/data_customization_point/masked_array.h"
-#include "fern/feature/core/masked_constant_traits.h"
+#include "fern/feature/core/data_customization_point/masked_constant.h"
 #include "fern/algorithm/algebra/elementary/absolute.h"
 
 
