@@ -3,7 +3,7 @@
 #include "fern/core/data_customization_point/constant.h"
 #include "fern/core/type_traits.h"
 #include "fern/core/types.h"
-#include "fern/feature/core/masked_raster_traits.h"
+#include "fern/feature/core/data_customization_point/masked_raster.h"
 #include "fern/algorithm/algebra/vector/laplacian.h"
 
 

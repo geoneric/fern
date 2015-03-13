@@ -2,7 +2,7 @@
 #include <boost/test/unit_test.hpp>
 #include "fern/core/data_customization_point/constant.h"
 #include "fern/feature/core/data_customization_point/array.h"
-#include "fern/feature/core/masked_raster_traits.h"
+#include "fern/feature/core/data_customization_point/masked_raster.h"
 #include "fern/algorithm/algebra/vector/gradient.h"
 #include "fern/algorithm/core/if.h"
 #include "fern/algorithm/core/test/test_utils.h"

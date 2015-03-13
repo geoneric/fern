@@ -4,7 +4,7 @@
 #include "fern/core/type_traits.h"
 #include "fern/core/types.h"
 #include "fern/feature/core/masked_array_traits.h"
-#include "fern/feature/core/masked_raster_traits.h"
+#include "fern/feature/core/data_customization_point/masked_raster.h"
 #include "fern/algorithm/core/mask_customization_point/array.h"
 #include "fern/algorithm/core/argument_traits/masked_raster.h"
 #include "fern/algorithm/core/argument_customization_point/masked_raster.h"
