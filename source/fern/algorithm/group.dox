@@ -2,6 +2,7 @@
     @brief      Parent group containing algorithm sub-groups
     @defgroup   fern_algorithm_group Algorithm
     @ingroup    fern_group
+    @sa         fern_algorithm_policies, fern_algorithm_no_data_compression
 
 
     Fern.Algorithm is a library of algorithms for data manipulation.
@@ -12,20 +13,41 @@
     are always those policies that do not do anything. For example, the default
     policy for testing input value for no-data is the
     fern::algorithm::SkipNoData policy, which does not incur any overhead.
-
-    See also:
-
-    - @ref fern_algorithm_policies
-    - @ref fern_algorithm_no_data_compression
 */
 
 
 /*!
-    @brief      Parent group containing argument traits.
+    @brief      Group containing argument traits.
     @defgroup   fern_algorithm_argument_traits_group Argument traits
     @ingroup    fern_algorithm_group
     @sa         fern_data_traits_group
 
 
     Argument traits provide type traits of various argument types.
+*/
+
+
+/*!
+    @brief      Group containing argument customization points.
+    @defgroup   fern_algorithm_argument_customization_point_group Argument \
+                customization group
+    @ingroup    fern_algorithm_group
+    @sa         fern_data_customization_point_group,
+                fern_mask_customization_point_group
+
+
+    Template functions implementing functionality for different argument types.
+*/
+
+
+/*!
+    @brief      Group containing mask customization points.
+    @defgroup   fern_algorithm_mask_customization_point_group Mask \
+                customization group
+    @ingroup    fern_algorithm_group
+    @sa         fern_data_customization_point_group,
+                fern_algorithm_argument_customization_point_group
+
+
+    Template functions implementing functionality for different mask types.
 */

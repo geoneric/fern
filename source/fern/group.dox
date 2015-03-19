@@ -5,7 +5,7 @@
 
 
 /*!
-    @brief      Parent group containing data traits.
+    @brief      Group containing data traits.
     @defgroup   fern_data_traits_group Data traits
     @ingroup    fern_group
     @sa         fern_algorithm_argument_traits_group
@@ -16,7 +16,7 @@
 
 
 /*!
-    @brief      Parent group containing data customization points.
+    @brief      Group containing data customization points.
     @defgroup   fern_data_customization_point_group Data customization point
     @ingroup    fern_group
 
