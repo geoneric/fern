@@ -1,46 +1,11 @@
 #pragma once
-#include "fern/feature/core/array_traits.h"
-#include "fern/feature/core/masked_array.h"
+#include <cassert>
+#include <utility>
+#include "fern/core/data_customization_point.h"
+#include "fern/feature/core/data_traits/masked_array.h"
 
 
 namespace fern {
-
-template<
-    typename T,
-    size_t nr_dimensions>
-struct ArgumentTraits<
-    MaskedArray<T, nr_dimensions>>
-{
-
-    using argument_category = typename detail::dispatch::ArrayCategoryTag<T,
-        nr_dimensions>::type;
-
-    template<
-        typename U>
-    struct Collection
-    {
-        using type = MaskedArray<U, nr_dimensions>;
-    };
-
-    template<
-        typename U>
-    struct Clone
-    {
-        using type = MaskedArray<U, nr_dimensions>;
-    };
-
-    using value_type = T;
-
-    using reference = T&;
-
-    using const_reference = T const&;
-
-    static bool const is_masking = true;
-
-    static size_t const rank = nr_dimensions;
-
-};
-
 
 template<
     typename T,
@@ -79,7 +44,7 @@ inline size_t index(
 template<
     typename T,
     size_t nr_dimensions>
-inline typename ArgumentTraits<MaskedArray<T, nr_dimensions>>::const_reference
+inline typename DataTraits<MaskedArray<T, nr_dimensions>>::const_reference
         get(
     MaskedArray<T, nr_dimensions> const& array,
     size_t index)
@@ -92,7 +57,7 @@ inline typename ArgumentTraits<MaskedArray<T, nr_dimensions>>::const_reference
 template<
     typename T,
     size_t nr_dimensions>
-inline typename ArgumentTraits<MaskedArray<T, nr_dimensions>>::reference get(
+inline typename DataTraits<MaskedArray<T, nr_dimensions>>::reference get(
     MaskedArray<T, nr_dimensions>& array,
     size_t index)
 {

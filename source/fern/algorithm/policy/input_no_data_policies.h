@@ -34,6 +34,8 @@ class InputNoDataPolicies:
 
 public:
 
+                   InputNoDataPolicies (NoDataPolicies const&... policies);
+
                    InputNoDataPolicies (NoDataPolicies&&... policies);
 
     virtual        ~InputNoDataPolicies()=default;
@@ -41,6 +43,20 @@ public:
 protected:
 
 };
+
+
+/*!
+    @brief      Constructor.
+*/
+template<
+    typename... NoDataPolicies>
+inline InputNoDataPolicies<NoDataPolicies...>::InputNoDataPolicies(
+    NoDataPolicies const&... policies)
+
+    : std::tuple<NoDataPolicies...>(policies...)
+
+{
+}
 
 
 /*!

@@ -1,5 +1,5 @@
 #pragma once
-#include "fern/core/argument_traits.h"
+#include "fern/core/data_traits.h"
 #include "fern/algorithm/core/detail/cover.h"
 #include "fern/algorithm/core/result_type.h"
 #include "fern/algorithm/policy/policies.h"
@@ -47,8 +47,8 @@ void cover(
 
     FERN_STATIC_ASSERT(std::is_same, value_type<Value1>, value_type<Value2>)
     FERN_STATIC_ASSERT(std::is_same, value_type<Result>, value_type<Value2>)
-    FERN_STATIC_ASSERT(std::is_same, clone_type<Result, value_type<Result>>,
-        clone_type<result_type<Value1, Value2>, value_type<Result>>)
+    FERN_STATIC_ASSERT(std::is_same, CloneT<Result, value_type<Result>>,
+        CloneT<result_type<Value1, Value2>, value_type<Result>>)
 
     cover::detail::cover<>(input_no_data_policy,
         output_no_data_policy, execution_policy,

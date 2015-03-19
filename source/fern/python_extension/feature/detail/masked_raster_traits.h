@@ -1,6 +1,6 @@
 #pragma once
 #include <cassert>
-#include "fern/core/argument_traits.h"
+#include "fern/core/data_traits.h"
 #include "fern/python_extension/feature/detail/masked_raster.h"
 
 
@@ -8,7 +8,7 @@ namespace fern {
 
 template<
     typename T>
-struct ArgumentTraits<python::detail::MaskedRaster<T>>
+struct DataTraits<python::detail::MaskedRaster<T>>
 {
 
     using argument_category = raster_2d_tag;
@@ -99,7 +99,7 @@ inline size_t index(
 
 template<
     typename T>
-inline typename ArgumentTraits<python::detail::MaskedRaster<T>>::const_reference get(
+inline typename DataTraits<python::detail::MaskedRaster<T>>::const_reference get(
     python::detail::MaskedRaster<T> const& raster,
     size_t index)
 {
@@ -110,7 +110,7 @@ inline typename ArgumentTraits<python::detail::MaskedRaster<T>>::const_reference
 
 template<
     typename T>
-inline typename ArgumentTraits<python::detail::MaskedRaster<T>>::reference get(
+inline typename DataTraits<python::detail::MaskedRaster<T>>::reference get(
     python::detail::MaskedRaster<T>& raster,
     size_t index)
 {
@@ -121,7 +121,7 @@ inline typename ArgumentTraits<python::detail::MaskedRaster<T>>::reference get(
 
 template<
     typename T>
-inline typename ArgumentTraits<python::detail::MaskedRaster<T>>::const_reference get(
+inline typename DataTraits<python::detail::MaskedRaster<T>>::const_reference get(
     python::detail::MaskedRaster<T> const& raster,
     size_t index1,
     size_t index2)
@@ -134,7 +134,7 @@ inline typename ArgumentTraits<python::detail::MaskedRaster<T>>::const_reference
 
 template<
     typename T>
-inline typename ArgumentTraits<python::detail::MaskedRaster<T>>::reference get(
+inline typename DataTraits<python::detail::MaskedRaster<T>>::reference get(
     python::detail::MaskedRaster<T>& raster,
     size_t index1,
     size_t index2)

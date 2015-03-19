@@ -38,6 +38,10 @@ public:
 
                    DontMarkNoData      (DontMarkNoData&&)=default;
 
+    template<
+        typename Mask>
+                   DontMarkNoData      (Mask& mask);
+
     DontMarkNoData&
                    operator=           (DontMarkNoData&&)=default;
 
@@ -49,6 +53,17 @@ public:
     virtual        ~DontMarkNoData     ()=default;
 
 };
+
+
+template<
+    typename Mask>
+inline DontMarkNoData::DontMarkNoData(
+    Mask& /* mask */)
+
+    : DontMarkNoData()
+
+{
+}
 
 
 inline constexpr bool DontMarkNoData::is_no_data()

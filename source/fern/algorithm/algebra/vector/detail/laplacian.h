@@ -1,9 +1,10 @@
 #pragma once
 #include <utility>
 #include "fern/core/assert.h"
-#include "fern/core/clone.h"
 #include "fern/core/value_type.h"
-#include "fern/feature/core/array_traits.h"
+#include "fern/feature/core/data_customization_point/array.h"
+#include "fern/algorithm/core/argument_customization_point.h"
+#include "fern/algorithm/core/argument_traits.h"
 #include "fern/algorithm/core/cast.h"
 #include "fern/algorithm/convolution/convolve.h"
 #include "fern/algorithm/convolution/dont_divide_by_weights.h"
@@ -61,10 +62,15 @@ struct Laplacian<
         Value const& value,
         Result& result)
     {
+        // TODO Select out-of-range based on input out-of-range policy and/or
+        //      output-no-data policy.
+        // TODO We handle out-of-range per operation. Analyse the algorithm
+        //      and see if we can be more lazy: let infinity and NaN propagate
+        //      and only test the result values.
+        // TODO Get rid of OutOfRangePolicy? It is not used.
+
         assert(size(value, 0) == size(result, 0));
         assert(size(value, 1) == size(result, 1));
-
-        // TODO See also comments in detail/slope.h.
 
         using Float = value_type<Value>;
         FERN_STATIC_ASSERT(std::is_floating_point, Float)
@@ -81,15 +87,13 @@ struct Laplacian<
             convolve::SkipNoData,
             convolve::DontDivideByWeights,
             convolve::SkipOutOfImage,
-            // TODO: Select OutOfRange policy based on the
-            //       output-no-data-policy passed in.
             convolve::OutOfRangePolicy>(
                 input_no_data_policy, output_no_data_policy, execution_policy,
                 value, kernel, result);
 
-        // Calculate the sum of the kernel weights. This equals the convolution
-        // of the mask (inverted) by the kernel used above, without
-        // normalizing by the kernel weights.
+        // Calculate the sum of the kernel weights. This equals the
+        // convolution of the mask (inverted) by the kernel used above,
+        // without normalizing by the kernel weights.
         auto extents = fern::extents[size(value, 0)][size(value, 1)];
 
         // Determine which cells have a valid (non-no-data) value. The result
@@ -104,7 +108,7 @@ struct Laplacian<
         core::cast<>(execution_policy, defined, defined_as_floats);
 
         // It is not needed to take range errors into account. The max value
-        // calculate per cells is sum(kernel) -> 20.
+        // calculated per cell is sum(kernel) -> 20.
         Array<Float, 2> sum_of_weights(extents);
         convolution::convolve<
             convolve::SkipNoData,
@@ -124,6 +128,9 @@ struct Laplacian<
 
         // Multiply the values by the sum of weights.
         auto multiplied_values = clone<Float>(result);
+
+        using MultipliedValues = decltype(multiplied_values);
+
         {
             using INP1 = SkipNoData;
             using INP2 = decltype(std::get<0>(input_no_data_policy));
@@ -131,28 +138,32 @@ struct Laplacian<
             InputNoDataPolicies<INP1, INP2> input_no_data_policy_{
                 {}, {std::get<0>(input_no_data_policy)}};
 
+            using OutputNoDataPolicyMultipliedValues =
+                OutputNoDataPolicyTemporary<OutputNoDataPolicy,
+                    MultipliedValues>;
+
+            OutputNoDataPolicyMultipliedValues output_no_data_policy_{
+                mask(multiplied_values)};
+
             algebra::multiply<
-                // TODO: Select OutOfRange policy based on the
-                //       output-no-data-policy passed in.
                 algorithm::multiply::OutOfRangePolicy>(
-                    input_no_data_policy_, output_no_data_policy,
+                    input_no_data_policy_, output_no_data_policy_,
                     execution_policy, sum_of_weights, value, multiplied_values);
         }
 
         // Subtract the convolution result by the multiplied values.
         // Result subtracted_results;
         {
-            // TODO Base INP1 on result.
-            // TODO Base INP2 on multiplied_values.
-            using INP1 = decltype(std::get<0>(input_no_data_policy));
-            using INP2 = SkipNoData;
+            // Base INP1 on result.
+            // Base INP2 on multiplied_values.
+            using INP1 = InputNoDataPolicyTemporary<InputNoDataPolicy, Result>;
+            using INP2 = InputNoDataPolicyTemporary<InputNoDataPolicy,
+                MultipliedValues>;
 
             InputNoDataPolicies<INP1, INP2> input_no_data_policy_{
-                {std::get<0>(input_no_data_policy)}, {}};
+                {mask(result)}, {mask(multiplied_values)}};
 
             algebra::subtract<
-                // TODO: Select OutOfRange policy based on the
-                //       output-no-data-policy passed in.
                 algorithm::subtract::OutOfRangePolicy>(
                     input_no_data_policy_, output_no_data_policy,
                     execution_policy, result, multiplied_values, result);
@@ -160,20 +171,17 @@ struct Laplacian<
 
         // Divide subtracted results by the area of the cells.
         {
-            // TODO Base INP1 on result.
-            using INP1 = decltype(std::get<0>(input_no_data_policy));
+            // Base INP1 on result.
+            using INP1 = InputNoDataPolicyTemporary<InputNoDataPolicy, Result>;
             using INP2 = SkipNoData;
 
             InputNoDataPolicies<INP1, INP2> input_no_data_policy_{
-                {std::get<0>(input_no_data_policy)}, {}};
+                {mask(result)}, {}};
 
             algebra::divide<
-                // TODO: Select OutOfDomain policy based on the
-                //       output-no-data-policy passed in.
-                // TODO: Select OutOfRange policy based on the
-                //       output-no-data-policy passed in.
-                algorithm::divide::OutOfDomainPolicy,
-                algorithm::divide::OutOfRangePolicy>(
+                // Cheap, number as denomenator.
+                divide::OutOfDomainPolicy,
+                divide::OutOfRangePolicy>(
                     input_no_data_policy_, output_no_data_policy,
                     execution_policy, result, cell_area(value), result);
         }

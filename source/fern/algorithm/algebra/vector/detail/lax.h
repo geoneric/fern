@@ -1,7 +1,6 @@
 #pragma once
 #include "fern/core/assert.h"
 #include "fern/core/base_class.h"
-#include "fern/core/clone.h"
 #include "fern/core/value_type.h"
 #include "fern/algorithm/convolution/convolve.h"
 #include "fern/algorithm/convolution/neighborhood/square_traits.h"

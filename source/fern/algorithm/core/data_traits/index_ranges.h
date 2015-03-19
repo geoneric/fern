@@ -1,6 +1,6 @@
 #pragma once
 #include <cstddef>
-#include "fern/core/argument_traits.h"
+#include "fern/core/data_traits.h"
 #include "fern/algorithm/core/index_ranges.h"
 
 
@@ -8,7 +8,7 @@ namespace fern {
 
 template<
     size_t nr_dimensions>
-struct ArgumentTraits<
+struct DataTraits<
     algorithm::IndexRanges<nr_dimensions>>
 {
 

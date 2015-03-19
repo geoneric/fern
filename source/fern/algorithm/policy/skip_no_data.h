@@ -27,18 +27,35 @@ public:
                                         size_t index2,
                                         size_t index3);
 
-                   SkipNoData          (SkipNoData const&)=delete;
+                   SkipNoData          ()=default;
+
+    template<
+        typename Mask>
+                   SkipNoData          (Mask const& mask);
+
+                   SkipNoData          (SkipNoData const&)=default;
 
                    SkipNoData          (SkipNoData&&)=default;
 
     SkipNoData&
-                   operator=           (SkipNoData const&)=delete;
+                   operator=           (SkipNoData const&)=default;
 
     SkipNoData&    operator=           (SkipNoData&&)=default;
 
                    ~SkipNoData         ()=default;
 
 };
+
+
+template<
+    typename Mask>
+SkipNoData::SkipNoData(
+    Mask const& /* mask */)
+
+    : SkipNoData()
+
+{
+}
 
 
 /*!

@@ -45,6 +45,9 @@ namespace space {
                 @a result.
     @sa         fern::algorithm::slope::OutOfRangePolicy
 
+    - @a Value must be floating point.
+    - The value types of @a Value and @a Result must be the same.
+
     This algorithm implements Horne's slope algorithm (Horn, B.K.P. (1981)
     Hill shading and the reflectance map. Proceedings of IEEE 69(1), 14-47).
     In pseudo-code this works as folows:

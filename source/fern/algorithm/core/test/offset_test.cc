@@ -1,8 +1,10 @@
 #define BOOST_TEST_MODULE fern algorithm core offset
 #include <boost/test/unit_test.hpp>
-#include "fern/feature/core/masked_array_traits.h"
-#include "fern/core/point_traits.h"
-#include "fern/core/vector_traits.h"
+#include "fern/feature/core/data_customization_point/array.h"
+#include "fern/feature/core/data_customization_point/masked_array.h"
+#include "fern/core/data_customization_point/constant.h"
+#include "fern/core/data_customization_point/point.h"
+#include "fern/core/data_customization_point/vector.h"
 #include "fern/algorithm/core/offset.h"
 #include "fern/algorithm/core/test/test_utils.h"
 

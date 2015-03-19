@@ -4,7 +4,7 @@
 #include <tuple>
 #include <gdal_priv.h>
 #include "fern/feature/core/array_reference_traits.h"
-#include "fern/feature/core/array_traits.h"
+#include "fern/feature/core/data_customization_point/array.h"
 #include "fern/algorithm/algebra/elementary/add.h"
 #include "fern/io/gdal/gdal_type_traits.h"
 #include "fern/python_extension/core/error.h"

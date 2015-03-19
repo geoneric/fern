@@ -1,6 +1,7 @@
 #pragma once
 #include <cstddef>
-#include "fern/core/argument_traits.h"
+#include "fern/core/data_traits.h"
+#include "fern/algorithm/core/mask_customization_point.h"
 
 
 namespace fern {
@@ -21,7 +22,7 @@ class MarkNoDataByValue {
 
 private:
 
-    using value_type = typename ArgumentTraits<Mask>::value_type;
+    using value_type = typename DataTraits<Mask>::value_type;
 
 public:
 
@@ -35,6 +36,8 @@ public:
     void           mark_as_no_data     (size_t index1,
                                         size_t index2,
                                         size_t index3);
+
+                   MarkNoDataByValue   (Mask& mask);
 
                    MarkNoDataByValue   (Mask& mask,
                                         value_type const& no_data_value);
@@ -62,6 +65,18 @@ private:
     value_type     _no_data_value;
 
 };
+
+
+template<
+    typename Mask>
+inline MarkNoDataByValue<Mask>::MarkNoDataByValue(
+    Mask& mask)
+
+    : _mask(mask),
+      _no_data_value(no_data_value(_mask))
+
+{
+}
 
 
 template<

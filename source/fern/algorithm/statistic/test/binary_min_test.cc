@@ -1,8 +1,8 @@
 #define BOOST_TEST_MODULE fern algorithm statistic binary_min
 #include <boost/test/unit_test.hpp>
-#include "fern/core/constant_traits.h"
-#include "fern/core/vector_traits.h"
-#include "fern/feature/core/array_traits.h"
+#include "fern/core/data_customization_point/constant.h"
+#include "fern/core/data_customization_point/vector.h"
+#include "fern/feature/core/data_customization_point/array.h"
 #include "fern/algorithm/statistic/binary_min.h"
 
 

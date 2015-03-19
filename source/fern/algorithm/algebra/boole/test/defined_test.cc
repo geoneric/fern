@@ -1,6 +1,6 @@
 #define BOOST_TEST_MODULE fern algorithm algebra boole defined
 #include <boost/test/unit_test.hpp>
-#include "fern/core/constant_traits.h"
+#include "fern/core/data_customization_point/constant.h"
 #include "fern/core/type_traits.h"
 #include "fern/feature/core/masked_constant.h"
 #include "fern/algorithm/algebra/boole/defined.h"

@@ -1,5 +1,5 @@
 #include <cstdlib>
-#include "fern/core/vector_traits.h"
+#include "fern/core/data_customization_point/vector.h"
 #include "fern/algorithm/algebra/elementary/divide.h"
 
 

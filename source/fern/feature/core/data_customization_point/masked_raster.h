@@ -1,47 +1,11 @@
 #pragma once
 #include <cassert>
-#include "fern/feature/core/raster_traits.h"
-#include "fern/feature/core/masked_raster.h"
+#include <utility>
+#include "fern/core/data_customization_point.h"
+#include "fern/feature/core/data_traits/masked_raster.h"
 
 
 namespace fern {
-
-template<
-    typename T,
-    size_t nr_dimensions>
-struct ArgumentTraits<
-    MaskedRaster<T, nr_dimensions>>
-{
-
-    using argument_category = typename detail::dispatch::RasterCategoryTag<T,
-        nr_dimensions>::type;
-
-    template<
-        typename U>
-    struct Collection
-    {
-        using type = MaskedRaster<U, nr_dimensions>;
-    };
-
-    template<
-        typename U>
-    struct Clone
-    {
-        using type = MaskedRaster<U, nr_dimensions>;
-    };
-
-    using value_type = T;
-
-    using reference = T&;
-
-    using const_reference = T const&;
-
-    static bool const is_masking = true;
-
-    static size_t const rank = nr_dimensions;
-
-};
-
 
 template<
     typename T,
@@ -80,7 +44,7 @@ inline size_t index(
 template<
     typename T,
     size_t nr_dimensions>
-inline typename ArgumentTraits<MaskedRaster<T, nr_dimensions>>
+inline typename DataTraits<MaskedRaster<T, nr_dimensions>>
         ::const_reference get(
     MaskedRaster<T, nr_dimensions> const& raster,
     size_t index)
@@ -93,7 +57,7 @@ inline typename ArgumentTraits<MaskedRaster<T, nr_dimensions>>
 template<
     typename T,
     size_t nr_dimensions>
-inline typename ArgumentTraits<MaskedRaster<T, nr_dimensions>>::reference get(
+inline typename DataTraits<MaskedRaster<T, nr_dimensions>>::reference get(
     MaskedRaster<T, nr_dimensions>& raster,
     size_t index)
 {

@@ -1,10 +1,10 @@
 #define BOOST_TEST_MODULE fern algorithm algebra binary_local_operation
 #include <boost/test/unit_test.hpp>
-#include "fern/core/constant_traits.h"
-#include "fern/core/vector_traits.h"
-#include "fern/feature/core/array_traits.h"
-#include "fern/feature/core/masked_array_traits.h"
-#include "fern/feature/core/masked_constant_traits.h"
+#include "fern/core/data_customization_point/constant.h"
+#include "fern/core/data_customization_point/vector.h"
+#include "fern/feature/core/data_customization_point/array.h"
+#include "fern/feature/core/data_customization_point/masked_array.h"
+#include "fern/feature/core/data_customization_point/masked_constant.h"
 #include "fern/algorithm/algebra/elementary/add.h"
 
 
@@ -1216,8 +1216,8 @@ BOOST_AUTO_TEST_SUITE_END()
 /// 
 ///         using A1 = decltype(argument1);
 ///         using A2 = decltype(argument2);
-///         using A1Value = fern::ArgumentTraits<A1>::value_type;
-///         using A2Value = fern::ArgumentTraits<A2>::value_type;
+///         using A1Value = fern::DataTraits<A1>::value_type;
+///         using A2Value = fern::DataTraits<A2>::value_type;
 ///         using OutOfDomainPolicy = fern::DiscardDomainErrors<A1Value, A2Value>;
 ///         using OutOfRangePolicy = fern::add::OutOfRangePolicy<A1Value, A2Value>;
 ///         using NoDataPolicy = fern::MarkNoDataByValue<bool, fern::Mask<2>>;
@@ -1259,8 +1259,8 @@ BOOST_AUTO_TEST_SUITE_END()
 /// 
 ///         using A1 = decltype(argument1);
 ///         using A2 = decltype(argument3);
-///         using A1Value = fern::ArgumentTraits<A1>::value_type;
-///         using A2Value = fern::ArgumentTraits<A2>::value_type;
+///         using A1Value = fern::DataTraits<A1>::value_type;
+///         using A2Value = fern::DataTraits<A2>::value_type;
 ///         using OutOfDomainPolicy = fern::DiscardDomainErrors<A1Value, A2Value>;
 ///         using OutOfRangePolicy = fern::add::OutOfRangePolicy<A1Value, A2Value>;
 ///         using NoDataPolicy = fern::MarkNoDataByValue<bool, fern::Mask<2>>;
@@ -1299,8 +1299,8 @@ BOOST_AUTO_TEST_SUITE_END()
 /// 
 ///         using A1 = decltype(argument3);
 ///         using A2 = decltype(argument1);
-///         using A1Value = fern::ArgumentTraits<A1>::value_type;
-///         using A2Value = fern::ArgumentTraits<A2>::value_type;
+///         using A1Value = fern::DataTraits<A1>::value_type;
+///         using A2Value = fern::DataTraits<A2>::value_type;
 ///         using OutOfDomainPolicy = fern::DiscardDomainErrors<A1Value, A2Value>;
 ///         using OutOfRangePolicy = fern::add::OutOfRangePolicy<A1Value, A2Value>;
 ///         using NoDataPolicy = fern::MarkNoDataByValue<bool, fern::Mask<2>>;

@@ -39,8 +39,8 @@ void if_(
 {
     FERN_STATIC_ASSERT(std::is_arithmetic, value_type<Condition>)
     FERN_STATIC_ASSERT(std::is_same, value_type<Result>, value_type<TrueValue>)
-    FERN_STATIC_ASSERT(std::is_same, clone_type<Result, value_type<Result>>,
-        clone_type<result_type<Condition, TrueValue>, value_type<Result>>)
+    FERN_STATIC_ASSERT(std::is_same, CloneT<Result, value_type<Result>>,
+        CloneT<result_type<Condition, TrueValue>, value_type<Result>>)
 
     if_::detail::if_<>(input_no_data_policy,
         output_no_data_policy, execution_policy, condition, true_value, result);
@@ -110,8 +110,8 @@ void if_(
     FERN_STATIC_ASSERT(std::is_same, value_type<TrueValue>,
         value_type<FalseValue>)
     FERN_STATIC_ASSERT(std::is_same, value_type<Result>, value_type<TrueValue>)
-    FERN_STATIC_ASSERT(std::is_same, clone_type<Result, value_type<Result>>,
-        clone_type<result_type<result_type<Condition, TrueValue>, FalseValue>,
+    FERN_STATIC_ASSERT(std::is_same, CloneT<Result, value_type<Result>>,
+        CloneT<result_type<result_type<Condition, TrueValue>, FalseValue>,
         value_type<Result>>)
 
     if_::detail::if_<>(input_no_data_policy,
