@@ -5,7 +5,9 @@ namespace fern {
 namespace algorithm {
 
 /*!
+    @ingroup    fern_algorithm_argument_traits_group
     @brief      Traits of an algorithm argument's type.
+    @sa         fern_algorithm_policy_group
 
     - InputNoDataPolicy: Type of input no-data policy.
     - OutputNoDataPolicy: Type of output no-data policy.
@@ -26,6 +28,7 @@ struct ArgumentTraits
 
 
 /*!
+    @ingroup    fern_algorithm_argument_traits_group
     @brief      Type of an input no-data policy, given an algorithm
                 argument's type.
 */
@@ -35,6 +38,7 @@ using InputNoDataPolicyT = typename ArgumentTraits<T>::InputNoDataPolicy;
 
 
 /*!
+    @ingroup    fern_algorithm_argument_traits_group
     @brief      Type of an output no-data policy, given an algorithm
                 argument's type.
 */
@@ -44,6 +48,7 @@ using OutputNoDataPolicyT = typename ArgumentTraits<T>::OutputNoDataPolicy;
 
 
 /*!
+    @ingroup    fern_algorithm_argument_traits_group
     @brief      Type of a mask, given an algorithm argument's type.
 
     Often no-data values are special values stored in the same collection

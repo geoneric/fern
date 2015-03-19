@@ -18,3 +18,14 @@
     - @ref fern_algorithm_policies
     - @ref fern_algorithm_no_data_compression
 */
+
+
+/*!
+    @brief      Parent group containing argument traits.
+    @defgroup   fern_algorithm_argument_traits_group Argument traits
+    @ingroup    fern_algorithm_group
+    @sa         fern_data_traits_group
+
+
+    Argument traits provide type traits of various argument types.
+*/
