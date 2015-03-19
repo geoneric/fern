@@ -66,7 +66,7 @@ T&                 get                 (T& collection,
 template<
     class ValueType,
     class Value>
-Collection<Value, ValueType>
+CloneT<Value, ValueType>
                    clone               (Value const& value);
 
 
@@ -76,7 +76,7 @@ Collection<Value, ValueType>
 template<
     class ValueType,
     class Value>
-Collection<Value, ValueType>
+CloneT<Value, ValueType>
                    clone               (Value const& value,
                                         ValueType const& initial_value);
 

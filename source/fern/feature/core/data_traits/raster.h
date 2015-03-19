@@ -49,13 +49,6 @@ struct DataTraits<
 
     template<
         typename U>
-    struct Collection
-    {
-        using type = Raster<U, nr_dimensions>;
-    };
-
-    template<
-        typename U>
     struct Clone
     {
         using type = Raster<U, nr_dimensions>;

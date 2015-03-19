@@ -14,13 +14,6 @@ struct DataTraits<MaskedConstant<T>>
 
     template<
         typename U>
-    struct Constant
-    {
-        using type = MaskedConstant<U>;
-    };
-
-    template<
-        typename U>
     struct Clone
     {
         using type = MaskedConstant<U>;

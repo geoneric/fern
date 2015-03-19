@@ -31,13 +31,7 @@ using value_type = typename DataTraits<T>::value_type;
 template<
     class U,
     class V>
-using Collection = typename DataTraits<U>::template Collection<V>::type;
-
-
-template<
-    class U,
-    class V>
-using clone_type = typename DataTraits<U>::template Clone<V>::type;
+using CloneT = typename DataTraits<U>::template Clone<V>::type;
 
 
 template<

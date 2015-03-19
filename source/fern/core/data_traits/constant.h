@@ -1,7 +1,6 @@
 #pragma once
 #include <cstdint>
 #include "fern/core/data_traits.h"
-// #include "fern/core/collection_traits.h"
 
 
 namespace fern {
@@ -13,13 +12,6 @@ struct DataTraits<T>                                        \
 {                                                           \
                                                             \
     using argument_category = constant_tag;                 \
-                                                            \
-    template<                                               \
-        class U>                                            \
-    struct Constant                                         \
-    {                                                       \
-        using type = U;                                     \
-    };                                                      \
                                                             \
     template<                                               \
         class U>                                            \

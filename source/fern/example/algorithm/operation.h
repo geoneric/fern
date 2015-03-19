@@ -41,12 +41,12 @@ fern::algorithm::add::result_type<Value1, Value2> add(
 template<
     typename ResultValueType,
     typename Value>
-fern::Collection<Value, ResultValueType> cast(
+fern::CloneT<Value, ResultValueType> cast(
     Value const& value)
 {
     assert(cell_size(value, 0) == cell_size(value, 1));
 
-    fern::Collection<Value, ResultValueType> result(
+    fern::CloneT<Value, ResultValueType> result(
         cell_size(value, 0),
         size(value, 0),
         size(value, 1));
@@ -59,12 +59,12 @@ fern::Collection<Value, ResultValueType> cast(
 
 template<
     typename Value>
-fern::Collection<Value, fern::value_type<Value>> slope(
+fern::CloneT<Value, fern::value_type<Value>> slope(
     Value const& value)
 {
     assert(cell_size(value, 0) == cell_size(value, 1));
 
-    fern::Collection<Value, fern::value_type<Value>> result(
+    fern::CloneT<Value, fern::value_type<Value>> result(
         cell_size(value, 0), size(value, 0), size(value, 1));
 
     fern::algorithm::space::slope(execution_policy, value, result);

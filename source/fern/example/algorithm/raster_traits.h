@@ -16,7 +16,7 @@ struct DataTraits<example::Raster<T>>
 
     template<
         typename U>
-    struct Collection
+    struct Clone
     {
         using type = example::Raster<U>;
     };

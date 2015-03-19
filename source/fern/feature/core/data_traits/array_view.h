@@ -17,7 +17,7 @@ struct DataTraits<
 
     template<
         typename U>
-    struct Collection
+    struct Clone
     {
         using type = ArrayView<U, nr_dimensions>;
     };

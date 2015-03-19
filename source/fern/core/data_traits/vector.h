@@ -15,13 +15,6 @@ struct DataTraits<
 
     template<
         class U>
-    struct Collection
-    {
-        using type = std::vector<U>;
-    };
-
-    template<
-        class U>
     struct Clone
     {
         using type = std::vector<U>;

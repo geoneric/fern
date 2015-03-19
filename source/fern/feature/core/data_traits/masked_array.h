@@ -17,13 +17,6 @@ struct DataTraits<
 
     template<
         typename U>
-    struct Collection
-    {
-        using type = MaskedArray<U, nr_dimensions>;
-    };
-
-    template<
-        typename U>
     struct Clone
     {
         using type = MaskedArray<U, nr_dimensions>;

@@ -51,12 +51,11 @@ struct Result<
 
             // A2 is a type representing a constant. Select its template class
             // in combination with the result value type.
-            typename DataTraits<A2>::template Constant<RValue>::type,
+            CloneT<A2, RValue>,
 
             // A1 is a type representing a constant. Select its template class
             // in combination with the result value type.
-            typename DataTraits<A1>::template Constant<RValue>::type>
-                ::type
+            CloneT<A1, RValue>>::type
     >::type;
 
 };
@@ -76,7 +75,7 @@ struct Result<
 
     // Use collection template class of first argument as the template class
     // of the result.
-    using type = typename DataTraits<A1>::template Collection<RValue>::type;
+    using type = CloneT<A1, RValue>;
 
 };
 
@@ -95,7 +94,7 @@ struct Result<
 
     // Use collection template class of second argument as the template class
     // of the result.
-    using type = typename DataTraits<A2>::template Collection<RValue>::type;
+    using type = CloneT<A2, RValue>;
 
 };
 
@@ -114,7 +113,7 @@ struct Result<
 
     // Use collection template class of first argument as the template class
     // of the result.
-    using type = typename DataTraits<A1>::template Collection<RValue>::type;
+    using type = CloneT<A1, RValue>;
 
 };
 

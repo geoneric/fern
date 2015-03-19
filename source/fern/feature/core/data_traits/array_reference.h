@@ -67,20 +67,6 @@ struct DataTraits<
     using argument_category = typename
         detail::dispatch::ArrayReferenceCategoryTag<T, nr_dimensions>::type;
 
-    /// template<
-    ///     class U>
-    /// struct Collection
-    /// {
-    ///     using type = ArrayReference<U, nr_dimensions>;
-    /// };
-
-    /// template<
-    ///     class U>
-    /// struct Clone
-    /// {
-    ///     using type = Array<U, nr_dimensions>;
-    /// };
-
     using value_type = T;
 
     using reference = T&;

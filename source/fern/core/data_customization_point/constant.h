@@ -40,7 +40,7 @@ CONSTANT_CUSTOMIZATION_POINT(double)
 
 
 template<
-    class T>
+    typename T>
 inline size_t size(
     T const& /* constant */)
 {
@@ -49,8 +49,8 @@ inline size_t size(
 
 
 template<
-    class U,
-    class V>
+    typename U,
+    typename V>
 inline U clone(
     V const& /* constant */)
 {
@@ -59,10 +59,11 @@ inline U clone(
 
 
 template<
-    class U,
-    class V>
-inline U clone(
-    V const& /* value */,
+    typename U,
+    typename V>
+// inline U clone(
+inline CloneT<V, U> clone(
+    V const& /* constant */,
     U const& value)
 {
     return U{value};
