@@ -1,6 +1,5 @@
 #pragma once
 #include <type_traits>
-#include <boost/mpl/if.hpp>
 #include "fern/core/argument_categories.h"
 #include "fern/core/assert.h"
 #include "fern/core/value_type.h"
@@ -30,58 +29,6 @@ class Slope
 };
 
 
-/*!
-    @brief      Determine output no-data policy type for a temporary.
-    @tparam     OutputNoDataPolicy Output no-data policy passed into the
-                algorithm.
-    @tparam     Argument Argument to mark no-data in.
-
-    This alias template can be used when an algorithm is implemented in
-    terms of other algorithms and these algorithms write results in
-    temporary values. The output no-data policy passed into the algorithm
-    itself marks no-data in the final result, but sometimes we want to
-    mark no-data in temporary values. The temporary values are often
-    inputs in subsequent algorithms which want to know about previously
-    generated no-data.
-
-    In case @a OutputNoDataPolicy is DontMarkNoData, then the resulting
-    type is also DontMarkNoData.
-*/
-template<
-    typename OutputNoDataPolicy,
-    typename Argument>
-using OutputNoDataPolicyTemporary = typename boost::mpl::if_<
-    std::is_same<OutputNoDataPolicy, DontMarkNoData>,
-    DontMarkNoData,
-    OutputNoDataPolicyT<Argument>>::type;
-
-
-/*!
-    @brief      Determine input no-data policy type for a temporary.
-    @tparam     InputNoDataPolicy Input no-data policy passed into the
-                algorithm.
-    @tparam     Argument Argument to detect no-data in.
-
-    This alias template can be used when an algorithm is implemented in
-    terms of other algorithms and these algorithms write results in
-    temporary values. The input no-data policy passed into the algorithm
-    itself detects no-data in the original argument(s), but sometimes we
-    want to detect no-data in temporary values. The temporary values are
-    often inputs in subsequent algorithms which want to know about
-    previously generated no-data.
-
-    In case @a InputNoDataPolicy is SkipNoData, then the resulting
-    type is also SkipNoData.
-*/
-template<
-    typename InputNoDataPolicy,
-    typename Argument>
-using InputNoDataPolicyTemporary = typename boost::mpl::if_<
-    std::is_same<InputNoDataPolicy, SkipNoData>,
-    SkipNoData,
-    InputNoDataPolicyT<Argument>>::type;
-
-
 template<
     typename OutOfRangePolicy,
     typename InputNoDataPolicy,
@@ -108,6 +55,8 @@ struct Slope<
         Value const& value,
         Result& result)
     {
+        // TODO Select out-of-range based on input out-of-range policy and/or
+        //      output-no-data policy.
         // TODO We handle out-of-range per operation. Analyse the algorithm
         //      and see if we can be more lazy: let infinity and NaN propagate
         //      and only test the result values.

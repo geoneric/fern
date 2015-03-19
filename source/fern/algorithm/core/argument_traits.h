@@ -1,4 +1,7 @@
 #pragma once
+#include <boost/mpl/if.hpp>
+#include "fern/algorithm/policy/dont_mark_no_data.h"
+#include "fern/algorithm/policy/skip_no_data.h"
 
 
 namespace fern {
@@ -62,6 +65,60 @@ using OutputNoDataPolicyT = typename ArgumentTraits<T>::OutputNoDataPolicy;
 template<
     typename T>
 using MaskT = typename ArgumentTraits<T>::Mask;
+
+
+/*!
+    @ingroup    fern_algorithm_argument_traits_group
+    @brief      Determine output no-data policy type for a temporary.
+    @tparam     OutputNoDataPolicy Output no-data policy passed into the
+                algorithm.
+    @tparam     Argument Argument to mark no-data in.
+
+    This alias template can be used when an algorithm is implemented in
+    terms of other algorithms and these algorithms write results in
+    temporary values. The output no-data policy passed into the algorithm
+    itself marks no-data in the final result, but sometimes we want to
+    mark no-data in temporary values. The temporary values are often
+    inputs in subsequent algorithms which want to know about previously
+    generated no-data.
+
+    In case @a OutputNoDataPolicy is DontMarkNoData, then the resulting
+    type is also DontMarkNoData.
+*/
+template<
+    typename OutputNoDataPolicy,
+    typename Argument>
+using OutputNoDataPolicyTemporary = typename boost::mpl::if_<
+    std::is_same<OutputNoDataPolicy, DontMarkNoData>,
+    DontMarkNoData,
+    OutputNoDataPolicyT<Argument>>::type;
+
+
+/*!
+    @ingroup    fern_algorithm_argument_traits_group
+    @brief      Determine input no-data policy type for a temporary.
+    @tparam     InputNoDataPolicy Input no-data policy passed into the
+                algorithm.
+    @tparam     Argument Argument to detect no-data in.
+
+    This alias template can be used when an algorithm is implemented in
+    terms of other algorithms and these algorithms write results in
+    temporary values. The input no-data policy passed into the algorithm
+    itself detects no-data in the original argument(s), but sometimes we
+    want to detect no-data in temporary values. The temporary values are
+    often inputs in subsequent algorithms which want to know about
+    previously generated no-data.
+
+    In case @a InputNoDataPolicy is SkipNoData, then the resulting
+    type is also SkipNoData.
+*/
+template<
+    typename InputNoDataPolicy,
+    typename Argument>
+using InputNoDataPolicyTemporary = typename boost::mpl::if_<
+    std::is_same<InputNoDataPolicy, SkipNoData>,
+    SkipNoData,
+    InputNoDataPolicyT<Argument>>::type;
 
 } // namespace algorithm
 } // namespace fern
