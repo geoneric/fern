@@ -1,0 +1,3 @@
+add_subdirectory(generic_algorithms)
+add_subdirectory(parallel_algorithms)
+add_subdirectory(distributed_algorithms)
