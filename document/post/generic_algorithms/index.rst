@@ -14,7 +14,7 @@ Contents:
 
    introduction
    requirements
-   generalize_value_type
+   generalize_data_type
    generalize_no_data
    generalize_domain_range
    ruminations
