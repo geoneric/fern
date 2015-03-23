@@ -8,7 +8,8 @@ namespace fern {
 
 //! Class for multidimensional rasters, with a cartesian coordinate system.
 /*!
-    \sa        Array
+    @ingroup    fern_feature_group
+    @sa         Array
 
     Raster extents Array with support for a Cartesian projection
     coordinate system. A raster is an array which is positioned in a

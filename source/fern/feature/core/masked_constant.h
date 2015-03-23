@@ -4,9 +4,10 @@
 namespace fern {
 
 /*!
+    @ingroup    fern_feature_group
     @brief      A value that can be masked.
 
-    When adding to number together, the result may be a larger value then
+    When adding two numbers together, the result may be a larger value then
     can be represented by the type. A MaskedConstant can be used to mark
     the result as no-data in such cases.
 */

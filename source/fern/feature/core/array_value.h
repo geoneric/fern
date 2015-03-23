@@ -7,9 +7,7 @@ namespace fern {
 
 //! Multi-dimensional array value.
 /*!
-  This class represents an n-dimensional array.
-
-  \sa        .
+    @brief      This class represents an n-dimensional array.
 */
 template<
     typename T,
