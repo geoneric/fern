@@ -1,0 +1,10 @@
+include_directories(
+    ${CMAKE_SOURCE_DIR}/source
+)
+add_executable(pow_2
+    main
+)
+target_link_libraries(pow_2
+    fern_feature_core
+    stdc++
+)

@@ -14,7 +14,7 @@ algorithms, we can first take a look at a non-generic algorithm and
 compare it to a generic one. Let's create an algorithm for finding the
 maximum element in a collection:
 
-.. literalinclude:: source/non_generic_max.cc
+.. literalinclude:: source/max_element/max_element.cc
    :language: cpp
 
 The algorithm accepts iterators pointing to the first and one-past-last
@@ -43,7 +43,7 @@ When we call this generic algorithm like this:
    std::vector<int> my_values{1, 5, 2, 4, 3};
    auto it = std::max_element(my_values.begin(), my_values.end())
 
-the compiler will instantiate the same algorithm for us as the non-generic
+the compiler will instantiate a similar algorithm for us as the non-generic
 version which we wrote above. But the generic algorithm can also be
 called with other argument types:
 
@@ -84,8 +84,9 @@ and the elevation of the earth's surface itself. To be able to handle
 such quantities in the computer, we discretize fields using rasters,
 which are essentially 2D arrays with some additional information about
 where each raster is positioned according to some coordinate reference
-system. For our purpose here it is enough to think of spatial fields as
-2D arrays positioned somewhere.
+system, and the width and height of the raster cells. For our purpose
+here it is enough to think of spatial fields as 2D arrays positioned
+somewhere.
 
 In the next section we will develop a first version of a simple
 algorithm handling a 2D spatial field. We we will generalize it a bit,

@@ -5,54 +5,24 @@ handling 2D spatial field data. It is good practice to start with a
 non-generic version, and get a clear idea about the shortcomings, before
 generalizing the code.
 
-For our pursposes here we are not interested in the calculations
+For our purposes here we are not interested in the calculations
 themselves. In fact we are interested in everything but the calculations
 themselves. The algorithm we will develop will raise a 2D spatial field
 to the power of some exponent. Here is a first try:
 
-.. code-block:: cpp
+.. literalinclude:: source/pow_1/pow.cc
+   :language: cpp
 
-   using Raster = boost::multi_array<double, 2>;
-   using Index = Array::index;
-   using Size = Array::size_type;
+We use the ``Raster`` class template from `Geoneric`_'s Fern library, but
+this could be any class with which we can model a raster. The details
+of this class' implementation don't matter here.
 
-
-   Raster pow(
-       Raster const& base,
-       double exponent)
-   {
-       Size const* shape{base.shape()};
-       Raster result(shape);
-
-       for(Index i = 0; i < shape[0]; ++i) {
-           for(Index j = 0; j < shape[1]; ++j) {
-               result[i][j] = std::pow(base[i][j], exponent);
-           }
-       }
-
-       return result;
-   }
-
-
-We use `Boost.MultiArray
-<http://www.boost.org/doc/libs/1_57_0/libs/multi_array/doc/index.html>`_ for
-representing a 2D spatial field, discretized as a raster. A drawback of
-this type is that it is not a raster but an array. As described in
-the previous section, besides the individual cell values, rasters contain
-information about their position in some coordinate reference system, and
-the width and height of the individual cells. Fortunately, this drawback
-doesn't matter here, since the algorithm doesn't need information about
-the location of the raster or the width and height of the raster cells.
-Had we picked another example algorithm instead, like calculating the slope,
-then we would really need to know about the cell sizes (and the snippet of
-code would be much longer).
-
-Some observations and drawbacks about this implementation:
+Some observations and drawbacks of this implementation:
 
 - The type of the individual elements (further on we call this the `value
   type`) in the base raster are fixed to ``double``. This is limiting the
   caller. She might prefer to pass in ``float`` or ``long double``
-  values. The same holds for the exponent.
+  values. The same is true for the exponent.
 - The type of the argument itself (the `data type`) is fixed to ``Raster``.
   This is also limiting the caller. She has to use our ``Raster`` type
   while she may have a type for modelling rasters that fits her
@@ -73,8 +43,8 @@ Some observations and drawbacks about this implementation:
   the algorithm's valid domain of argument values?
 - Similarly, result value types have a limited range of values they can
   represent. For example, an ``int8_t`` cannot hold values larger than
-  (2^8 / 2) - 1. What should happen if an algorithm calculates values
-  that are not part of the valid range of values?
+  :math:`(2^8 / 2) - 1`. What should happen if an algorithm calculates
+  values that are not part of the valid range of values?
 - In the algorithm above, we perform a calculation for each cell. In reality,
   raster often have cells with undefined values. Depending on the field
   that is represented by the raster, this may be due to clouds, measurement
@@ -103,3 +73,6 @@ fields:
 
 In the next sections, we are going to tackle each of these requirements
 in turn.
+
+
+.. _Geoneric: http://www.geoneric.eu
