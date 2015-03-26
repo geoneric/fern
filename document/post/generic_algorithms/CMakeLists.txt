@@ -1,13 +1,13 @@
 add_subdirectory(image)
 add_subdirectory(source)
-file(GLOB_RECURSE SPHINX_SOURCES
+file(GLOB_RECURSE sources
     RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     *.rst
     *.cc
     *.h
     *.png
 )
-set(SPHINX_TARGET
-    generic_algorithms
-)
-include(SphinxDoc)
+create_sphinx_docs(
+    TARGET post_generic_algorithms
+    SOURCES ${sources})
+add_dependencies(post_generic_algorithms post_generic_algorithms_images)
