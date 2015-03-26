@@ -1,5 +1,6 @@
 #include "fern/python/algorithm/algebra/elementary/add.h"
-#include "fern/python/feature/detail/masked_raster_traits.h"
+#include "fern/core/data_customization_point/constant.h"
+#include "fern/python/feature/detail/data_customization_point/masked_raster.h"
 #include "fern/algorithm/policy/policies.h"
 #include "fern/algorithm/algebra/elementary/add.h"
 #include "fern/python/core/switch_on_value_type.h"

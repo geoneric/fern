@@ -13,7 +13,7 @@ namespace algorithm {
     @tparam     Collection Collection containing the values.
 
     This class keeps a reference to a collection; it doesn't copy the
-    collection. So, copy construction and copy assignment are not supported.
+    collection.
 */
 template<
     typename Collection>
@@ -37,19 +37,19 @@ public:
                                         size_t index2,
                                         size_t index3) const;
 
+                   DetectNoData        (DetectNoData const&)=default;
+
                    DetectNoData        (Collection const& collection);
 
     virtual        ~DetectNoData       ()=default;
 
-                   DetectNoData        (DetectNoData&& other)=default;
+    DetectNoData&  operator=           (DetectNoData const&)=default;
 
 protected:
 
                    DetectNoData        ()=delete;
 
-                   DetectNoData        (DetectNoData const&)=delete;
-
-    DetectNoData&  operator=           (DetectNoData const&)=delete;
+                   DetectNoData        (DetectNoData&& other)=default;
 
     DetectNoData&  operator=           (DetectNoData&&)=default;
 

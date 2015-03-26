@@ -12,6 +12,7 @@ target_link_libraries(_fern_io
     fern_feature_core
     ${GDAL_LIBRARIES}
     ${Boost_PYTHON_LIBRARY}
+    ${PYTHON_LIBRARIES}
     stdc++
 )
 configure_python_extension(_fern_io "_fern_io")

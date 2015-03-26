@@ -18,6 +18,7 @@ target_link_libraries(_fern_feature
     fern_python_extension_feature
     fern_feature_core
     ${Boost_PYTHON_LIBRARY}
+    ${PYTHON_LIBRARIES}
     stdc++
 )
 configure_python_extension(_fern_feature "_fern_feature")

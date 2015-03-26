@@ -1,5 +1,5 @@
 #include "fern/python/algorithm/core/if.h"
-#include "fern/python/feature/detail/masked_raster_traits.h"
+#include "fern/python/feature/detail/data_customization_point/masked_raster.h"
 #include "fern/algorithm/policy/policies.h"
 #include "fern/algorithm/core/if.h"
 #include "fern/algorithm/algebra/elementary/add.h"

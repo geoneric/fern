@@ -17,9 +17,9 @@ struct ArgumentTraits<
 
     using Mask = fern::Mask<nr_dimensions>;
 
-    using InputNoDataPolicy = algorithm::DetectNoDataByValue<Mask>;
+    using InputNoDataPolicy = DetectNoDataByValue<Mask>;
 
-    using OutputNoDataPolicy = algorithm::MarkNoDataByValue<Mask>;
+    using OutputNoDataPolicy = MarkNoDataByValue<Mask>;
 
 };
 

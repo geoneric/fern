@@ -1,6 +1,5 @@
 #define BOOST_TEST_MODULE fern algorithm space focal slope
 #include <boost/test/unit_test.hpp>
-#include "fern/core/data_customization_point/constant.h"
 #include "fern/core/type_traits.h"
 #include "fern/core/types.h"
 #include "fern/feature/core/data_customization_point/array.h"
