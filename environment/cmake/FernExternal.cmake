@@ -89,6 +89,18 @@ if(FERN_HDF5_REQUIRED)
         ${HDF5_LIBRARIES}
     )
 endif()
+if(FERN_HPX_REQUIRED)
+    # TODO Set HPX_DIR to dir containing HPXConfig.cmake.
+    # See lib/cmake/hpx/HPXTargets.cmake for names of HPX targets to link
+    # against.
+
+    # HPX updates CMAKE_CXX_FLAGS (adds -std=c++11, see HPXConfig.cmake).
+    # We want to do this ourselves.
+    set(_flags ${CMAKE_CXX_FLAGS})
+    find_package(HPX REQUIRED)
+    set(CMAKE_CXX_FLAGS ${_flags})
+    include_directories(${HPX_INCLUDE_DIRS})
+endif()
 if(FERN_LOKI_REQUIRED)
     find_package(Loki REQUIRED)
 endif()
