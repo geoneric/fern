@@ -1,0 +1,5 @@
+add_subdirectory(1d_stencil)
+add_subdirectory(accumulator)
+add_subdirectory(fibonacci)
+add_subdirectory(hello_world)
+add_subdirectory(interest_calculator)
