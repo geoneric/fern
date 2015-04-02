@@ -16,3 +16,5 @@ if(FERN_TEST)
 endif()
 # Doesn't work: set(ENV{CTEST_OUTPUT_ON_FAILURE} 1)
 # set(BOOST_TEST_RUNTIME_PARAMETERS "--log_level all")
+
+force_out_of_tree_build()

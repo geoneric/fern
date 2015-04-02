@@ -296,3 +296,12 @@ macro(copy_python_modules)
     add_custom_target(${COPY_MODULES_TARGET}
         DEPENDS ${COPIED_PYTHON_MODULES})
 endmacro()
+
+
+macro(force_out_of_tree_build)
+    string(COMPARE EQUAL "${CMAKE_SOURCE_DIR}" "${CMAKE_BINARY_DIR}"
+        in_source_build)
+    if(in_source_build)
+        message(FATAL_ERROR "Fern must be build out-of-source")
+    endif()
+endmacro()

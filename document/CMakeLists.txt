@@ -8,7 +8,4 @@
 ### endif()
 
 add_subdirectory(manual)
-if(FERN_BLOG_POST)
-    add_subdirectory(post)
-endif()
 add_subdirectory(text)
