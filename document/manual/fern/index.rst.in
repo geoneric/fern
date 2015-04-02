@@ -1,0 +1,14 @@
+Fern
+====
+
+Contents:
+
+.. toctree::
+   :maxdepth: 2
+
+   introduction
+   getting_started
+   ${FERN_SPHINX_TOC_MODULES}
+   what_s_new
+   license
+   geoneric
