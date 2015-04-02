@@ -2,7 +2,7 @@ Fern
 ====
 Building blocks for scalable high-performance geocomputing
 
-This project is very much work in process. We have not created a release
+This project is very much work in progress. We have not created a release
 yet. Nevertheless, Fern is currently being used in the folowing projects:
 
 - openLISEM (http://blogs.itc.nl/lisem): A spatial model for runoff, floods
