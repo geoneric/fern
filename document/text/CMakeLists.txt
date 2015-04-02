@@ -1,8 +1,3 @@
 ### if(NOT FERN_ALGORITHM_ONLY)
-###     add_subdirectory(data_model)
-###     add_subdirectory(development)
-###     add_subdirectory(iteration)
-###     add_subdirectory(language)
 ###     add_subdirectory(logo)
-###     add_subdirectory(wolf_sheep_predation)
 ### endif()
