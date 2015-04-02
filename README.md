@@ -1,3 +1,3 @@
 Fern
 ====
-Building blocks for scalable high-performance computing
+Building blocks for scalable high-performance geocomputing
