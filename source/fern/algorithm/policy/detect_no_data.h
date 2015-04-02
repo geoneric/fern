@@ -41,7 +41,7 @@ public:
 
                    DetectNoData        (Collection const& collection);
 
-    virtual        ~DetectNoData       ()=default;
+                   ~DetectNoData       ()=default;
 
     DetectNoData&  operator=           (DetectNoData const&)=default;
 

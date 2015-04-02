@@ -39,7 +39,7 @@ public:
 
                    MarkNoData          (Collection& collection);
 
-    virtual        ~MarkNoData         ()=default;
+                   ~MarkNoData         ()=default;
 
 protected:
 

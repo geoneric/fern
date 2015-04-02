@@ -42,7 +42,7 @@ public:
                    MarkNoDataByValue   (Mask& mask,
                                         value_type const& no_data_value);
 
-    virtual        ~MarkNoDataByValue  ()=default;
+                   ~MarkNoDataByValue  ()=default;
 
 protected:
 
