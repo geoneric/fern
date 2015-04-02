@@ -16,28 +16,29 @@ using gen_type = typename boost::detail::multi_array::extent_gen<nr_ranges>;
 
 //! Class for multidimensional arrays.
 /*!
-    \sa        MaskedArray
+    @ingroup    fern_feature_group
+    @sa         MaskedArray
 
     Array is a simple class for managing multidimensional arrays.
 
     This is how you create a 1-dimensional array:
 
-    \code
+    @code
     Array<int, 1> array(extents[size]);
-    \endcode
+    @endcode
 
     This is how you create a 2-dimensional array:
 
-    \code
+    @code
     Array<int, 2> array(extents[nr_rows][nr_cols]);
-    \endcode
+    @endcode
 
     For these two cases, shortcuts exist:
 
-    \code
+    @code
     Array<int, 1> array1d(size);
     Array<int, 2> array2d(size1, size2);
-    \endcode
+    @endcode
 */
 template<
     typename T,

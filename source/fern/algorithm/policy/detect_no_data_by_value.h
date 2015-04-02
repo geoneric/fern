@@ -24,7 +24,7 @@ class DetectNoDataByValue
 
 private:
 
-    using value_type = typename DataTraits<Mask>::value_type;
+    using value_type = fern::value_type<Mask>;
 
 public:
 
@@ -49,7 +49,7 @@ public:
                    DetectNoDataByValue (Mask const& mask,
                                         value_type const& no_data_value);
 
-    virtual        ~DetectNoDataByValue()=default;
+                   ~DetectNoDataByValue()=default;
 
     DetectNoDataByValue&
                    operator=           (DetectNoDataByValue const&)=default;

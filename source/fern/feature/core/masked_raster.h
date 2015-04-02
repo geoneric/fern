@@ -8,7 +8,8 @@ namespace fern {
 
 //! Class for masked multidimensional rasters, with a cartesian coordinate system.
 /*!
-    \sa        MaskedArray
+    @ingroup    fern_feature_group
+    @sa         MaskedArray
 
     MaskedRaster extents MaskedArray with support for a Cartesian projection
     coordinate system. A raster is an array which is positioned in a Cartesian

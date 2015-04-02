@@ -8,4 +8,5 @@
 ### endif()
 
 add_subdirectory(manual)
+add_subdirectory(post)
 add_subdirectory(text)

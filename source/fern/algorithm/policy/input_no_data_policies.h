@@ -38,7 +38,7 @@ public:
 
                    InputNoDataPolicies (NoDataPolicies&&... policies);
 
-    virtual        ~InputNoDataPolicies()=default;
+                   ~InputNoDataPolicies()=default;
 
 protected:
 

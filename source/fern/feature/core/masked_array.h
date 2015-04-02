@@ -9,7 +9,8 @@ namespace fern {
 
 //! Class for masked multidimensional arrays.
 /*!
-    \sa        Array, MaskedRaster
+    @ingroup    fern_feature_group
+    @sa         Array, MaskedRaster
 
     MaskedArray extents Array with support for masking elements.
 */

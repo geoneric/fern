@@ -1,0 +1,8 @@
+/*!
+    @brief      Group containing feature types.
+    @defgroup   fern_feature_group Features
+    @ingroup    fern_group
+
+
+    Features are data types for storing a phenomenon's property data.
+*/

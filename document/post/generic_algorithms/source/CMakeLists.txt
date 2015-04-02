@@ -1,0 +1,6 @@
+add_subdirectory(max_element)
+add_subdirectory(pow_1)
+add_subdirectory(pow_2)
+add_subdirectory(pow_3)
+add_subdirectory(pow_4)
+add_subdirectory(pow_5)
