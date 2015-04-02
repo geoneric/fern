@@ -1,3 +1,5 @@
+.. _abstraction_data_type:
+
 Abstraction 1: data type
 ========================
 This requirement is the easiest to fulfill. By turning our previous

@@ -9,3 +9,9 @@ Algorithms can be used for other data types than 2D spatial fields.
 parallel algorithm
 
 distributed algorithm
+
+performance requirement
+
+generalize:
+    arity: unary_local_operation, binary_local_operation
+    kind: local, aggregating, disaggregating, ...

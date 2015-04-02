@@ -1,3 +1,5 @@
+.. _introduction:
+
 Introduction
 ============
 
@@ -166,6 +168,9 @@ fields:
       - mark invalid result raster cell values
       - handle out of domain argument values
       - handle out of range result values
+
+- However the above requirements are met, the performance of the algorithm
+  must be equal to a handwritten non-generic algorithm.
 
 In the next sections, we are going to tackle each of these requirements
 in turn.
