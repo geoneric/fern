@@ -8,7 +8,7 @@
 // -----------------------------------------------------------------------------
 #define BOOST_TEST_MODULE fern algorithm algebra vector lax
 #include <boost/test/unit_test.hpp>
-#include "fern/core/data_customization_point/constant.h"
+#include "fern/core/data_customization_point/scalar.h"
 #include "fern/feature/core/data_customization_point/array.h"
 #include "fern/feature/core/data_customization_point/masked_raster.h"
 #include "fern/algorithm/algebra/vector/lax.h"

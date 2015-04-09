@@ -9,7 +9,7 @@
 #pragma once
 #include <utility>
 // Include the relevant traits before including the algorithms.
-#include "fern/core/data_customization_point/constant.h"
+#include "fern/core/data_customization_point/scalar.h"
 #include "fern/example/algorithm/raster_traits.h"
 #include "fern/example/algorithm/raster_argument_traits.h"
 #include "fern/example/algorithm/raster_customization_point.h"

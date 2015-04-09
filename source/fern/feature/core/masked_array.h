@@ -10,7 +10,7 @@
 #include <type_traits>
 #include "fern/feature/core/array.h"
 #include "fern/feature/core/mask.h"
-#include "fern/feature/core/masked_constant.h"
+#include "fern/feature/core/masked_scalar.h"
 
 
 namespace fern {
@@ -42,7 +42,7 @@ public:
                                            std::initializer_list<T>> const&
                                               values);
 
-                   MaskedArray         (std::vector<MaskedConstant<T>> const&
+                   MaskedArray         (std::vector<MaskedScalar<T>> const&
                                            values);
 
     template<size_t nr_ranges>
@@ -89,7 +89,7 @@ template<
     typename T,
     size_t nr_dimensions>
 inline MaskedArray<T, nr_dimensions>::MaskedArray(
-    std::vector<MaskedConstant<T>> const& values)
+    std::vector<MaskedScalar<T>> const& values)
 
     : Array<T, nr_dimensions>(values.size()),
       _mask(values.size())
@@ -102,7 +102,7 @@ inline MaskedArray<T, nr_dimensions>::MaskedArray(
     typename Array<T, nr_dimensions>::value_type* value_it = this->data();
     typename Mask<nr_dimensions>::value_type* mask_it = _mask.data();
 
-    for(typename std::vector<MaskedConstant<T>>::const_iterator container_it =
+    for(typename std::vector<MaskedScalar<T>>::const_iterator container_it =
             values.begin(); container_it != values.end();
             ++container_it, ++value_it, ++mask_it) {
         *value_it = (*container_it).value();

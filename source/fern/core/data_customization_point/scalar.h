@@ -8,7 +8,7 @@
 // -----------------------------------------------------------------------------
 #pragma once
 // For convenience, so users don't need to include it explicitly.
-#include "fern/core/data_traits/constant.h"
+#include "fern/core/data_traits/scalar.h"
 #include "fern/core/data_customization_point.h"
 
 

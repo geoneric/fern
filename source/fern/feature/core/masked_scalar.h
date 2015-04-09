@@ -16,34 +16,34 @@ namespace fern {
     @brief      A value that can be masked.
 
     When adding two numbers together, the result may be a larger value then
-    can be represented by the type. A MaskedConstant can be used to mark
+    can be represented by the type. A MaskedScalar can be used to mark
     the result as no-data in such cases.
 */
 template<
     typename T>
-class MaskedConstant
+class MaskedScalar
 {
 
 public:
 
-                   MaskedConstant      ();
+                   MaskedScalar        ();
 
-    explicit       MaskedConstant      (T const& value);
+    explicit       MaskedScalar        (T const& value);
 
-                   MaskedConstant      (T const& value,
+                   MaskedScalar        (T const& value,
                                         bool mask);
 
-                   MaskedConstant      (MaskedConstant const&)=default;
+                   MaskedScalar        (MaskedScalar const&)=default;
 
-    MaskedConstant& operator=          (MaskedConstant const&)=default;
+    MaskedScalar& operator=            (MaskedScalar const&)=default;
 
-    MaskedConstant& operator=          (T const& value);
+    MaskedScalar& operator=            (T const& value);
 
-                   MaskedConstant      (MaskedConstant&&)=default;
+                   MaskedScalar        (MaskedScalar&&)=default;
 
-    MaskedConstant& operator=          (MaskedConstant&&)=default;
+    MaskedScalar& operator=            (MaskedScalar&&)=default;
 
-                   ~MaskedConstant     ()=default;
+                   ~MaskedScalar       ()=default;
 
                    operator T const&   () const;
 
@@ -73,9 +73,9 @@ private:
 */
 template<
     typename T>
-inline MaskedConstant<T>::MaskedConstant()
+inline MaskedScalar<T>::MaskedScalar()
 
-    : MaskedConstant(T(), false)
+    : MaskedScalar(T(), false)
 
 {
 }
@@ -88,10 +88,10 @@ inline MaskedConstant<T>::MaskedConstant()
 */
 template<
     typename T>
-inline MaskedConstant<T>::MaskedConstant(
+inline MaskedScalar<T>::MaskedScalar(
     T const& value)
 
-    : MaskedConstant(value, false)
+    : MaskedScalar(value, false)
 
 {
 }
@@ -104,7 +104,7 @@ inline MaskedConstant<T>::MaskedConstant(
 */
 template<
     typename T>
-inline MaskedConstant<T>::MaskedConstant(
+inline MaskedScalar<T>::MaskedScalar(
     T const& value,
     bool mask)
 
@@ -122,7 +122,7 @@ inline MaskedConstant<T>::MaskedConstant(
 */
 template<
     typename T>
-inline MaskedConstant<T>& MaskedConstant<T>::operator=(
+inline MaskedScalar<T>& MaskedScalar<T>::operator=(
     T const& value)
 {
     _value = value;
@@ -137,7 +137,7 @@ inline MaskedConstant<T>& MaskedConstant<T>::operator=(
 */
 template<
     typename T>
-inline MaskedConstant<T>::operator T const&() const
+inline MaskedScalar<T>::operator T const&() const
 {
     return _value;
 }
@@ -148,7 +148,7 @@ inline MaskedConstant<T>::operator T const&() const
 */
 template<
     typename T>
-inline MaskedConstant<T>::operator T&()
+inline MaskedScalar<T>::operator T&()
 {
     return _value;
 }
@@ -159,7 +159,7 @@ inline MaskedConstant<T>::operator T&()
 */
 template<
     typename T>
-inline T const& MaskedConstant<T>::value() const
+inline T const& MaskedScalar<T>::value() const
 {
     // assert(!_mask);
     return _value;
@@ -171,7 +171,7 @@ inline T const& MaskedConstant<T>::value() const
 */
 template<
     typename T>
-inline T& MaskedConstant<T>::value()
+inline T& MaskedScalar<T>::value()
 {
     // assert(!_mask);
     return _value;
@@ -183,7 +183,7 @@ inline T& MaskedConstant<T>::value()
 */
 template<
     typename T>
-inline bool const& MaskedConstant<T>::mask() const
+inline bool const& MaskedScalar<T>::mask() const
 {
     return _mask;
 }
@@ -194,7 +194,7 @@ inline bool const& MaskedConstant<T>::mask() const
 */
 template<
     typename T>
-inline bool& MaskedConstant<T>::mask()
+inline bool& MaskedScalar<T>::mask()
 {
     return _mask;
 }
@@ -208,8 +208,8 @@ inline bool& MaskedConstant<T>::mask()
 template<
     typename T>
 inline bool operator==(
-    MaskedConstant<T> const& lhs,
-    MaskedConstant<T> const& rhs)
+    MaskedScalar<T> const& lhs,
+    MaskedScalar<T> const& rhs)
 {
     return
         lhs.mask() == rhs.mask() &&

@@ -8,16 +8,16 @@
 // -----------------------------------------------------------------------------
 #define BOOST_TEST_MODULE fern feature core
 #include <boost/test/unit_test.hpp>
-#include "fern/feature/core/masked_constant.h"
+#include "fern/feature/core/masked_scalar.h"
 
 
-BOOST_AUTO_TEST_SUITE(masked_constant)
+BOOST_AUTO_TEST_SUITE(masked_scalar)
 
 BOOST_AUTO_TEST_CASE(construct)
 {
     // Default construct.
     {
-        fern::MaskedConstant<int> masked_value;
+        fern::MaskedScalar<int> masked_value;
         BOOST_CHECK(!masked_value.mask());
         BOOST_CHECK_EQUAL(masked_value.value(), 0);
         BOOST_CHECK_EQUAL(masked_value, 0);
@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE(construct)
 
     // Construct with value.
     {
-        fern::MaskedConstant<int> masked_value(5);
+        fern::MaskedScalar<int> masked_value(5);
         BOOST_CHECK(!masked_value.mask());
         BOOST_CHECK_EQUAL(masked_value.value(), 5);
         BOOST_CHECK_EQUAL(masked_value, 5);
@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE(construct)
 
     // Construct with value and mask.
     {
-        fern::MaskedConstant<int> masked_value(5, false);
+        fern::MaskedScalar<int> masked_value(5, false);
         BOOST_CHECK(!masked_value.mask());
         BOOST_CHECK_EQUAL(masked_value.value(), 5);
         BOOST_CHECK_EQUAL(masked_value, 5);
@@ -41,7 +41,7 @@ BOOST_AUTO_TEST_CASE(construct)
 
     // Construct with value and mask.
     {
-        fern::MaskedConstant<int> masked_value(5, true);
+        fern::MaskedScalar<int> masked_value(5, true);
         BOOST_CHECK(masked_value.mask());
         BOOST_CHECK_EQUAL(masked_value.value(), 5);
         BOOST_CHECK_EQUAL(masked_value, 5);
@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE(construct)
 
 BOOST_AUTO_TEST_CASE(update)
 {
-    fern::MaskedConstant<int> masked_value(5);
+    fern::MaskedScalar<int> masked_value(5);
 
     BOOST_CHECK(!masked_value.mask());
     BOOST_CHECK_EQUAL(masked_value.value(), 5);
@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_CASE(update)
 
 BOOST_AUTO_TEST_CASE(assign)
 {
-    fern::MaskedConstant<int> value(5);
+    fern::MaskedScalar<int> value(5);
     value = 6;
     BOOST_CHECK(!value.mask());
     BOOST_CHECK_EQUAL(value, 6);

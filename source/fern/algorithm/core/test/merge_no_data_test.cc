@@ -8,10 +8,10 @@
 // -----------------------------------------------------------------------------
 #define BOOST_TEST_MODULE fern algorithm core merge_no_data
 #include <boost/test/unit_test.hpp>
-#include "fern/core/data_customization_point/constant.h"
+#include "fern/core/data_customization_point/scalar.h"
 #include "fern/feature/core/data_customization_point/array.h"
 #include "fern/feature/core/data_customization_point/masked_array.h"
-#include "fern/feature/core/data_customization_point/masked_constant.h"
+#include "fern/feature/core/data_customization_point/masked_scalar.h"
 #include "fern/algorithm/core/merge_no_data.h"
 #include "fern/algorithm/core/test/test_utils.h"
 
@@ -63,9 +63,9 @@ template<
 void test_array_0d_masked(
     ExecutionPolicy& execution_policy)
 {
-    fern::MaskedConstant<int> value;
-    fern::MaskedConstant<int> result_we_want;
-    fern::MaskedConstant<int> result_we_got;
+    fern::MaskedScalar<int> value;
+    fern::MaskedScalar<int> result_we_want;
+    fern::MaskedScalar<int> result_we_got;
 
     fa::InputNoDataPolicies<
         fa::DetectNoDataByValue<bool>> input_no_data_policy(
@@ -78,7 +78,7 @@ void test_array_0d_masked(
         value = 5;
         value.mask() = false;
 
-        result_we_want = fern::MaskedConstant<int>(-9, false);
+        result_we_want = fern::MaskedScalar<int>(-9, false);
         result_we_got = -9;
         result_we_got.mask() = false;
         fa::core::merge_no_data(input_no_data_policy, output_no_data_policy,
@@ -92,7 +92,7 @@ void test_array_0d_masked(
         value = 5;
         value.mask() = true;
 
-        result_we_want = fern::MaskedConstant<int>(-9, true);
+        result_we_want = fern::MaskedScalar<int>(-9, true);
         result_we_got = -9;
         result_we_got.mask() = true;
         fa::core::merge_no_data(input_no_data_policy, output_no_data_policy,

@@ -7,23 +7,27 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include <iostream>
-#include "fern/feature/core/masked_constant.h"
+#include "fern/feature/core/data_traits/masked_scalar.h"
+#include "fern/core/data_customization_point.h"
 
 
 namespace fern {
 
 template<
-    class T>
-inline std::ostream& operator<<(
-    std::ostream& stream,
-    MaskedConstant<T> const& constant)
+    typename T>
+inline typename DataTraits<MaskedScalar<T>>::const_reference get(
+    MaskedScalar<T> const& constant)
 {
-    stream
-        << constant.value()
-        << '(' << constant.mask() << ')'
-        ;
-    return stream;
+    return constant.value();
+}
+
+
+template<
+    typename T>
+inline typename DataTraits<MaskedScalar<T>>::reference get(
+    MaskedScalar<T>& constant)
+{
+    return constant.value();
 }
 
 } // namespace fern

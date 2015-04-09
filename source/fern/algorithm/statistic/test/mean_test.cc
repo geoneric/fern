@@ -10,10 +10,10 @@
 #include <limits>
 #include <numeric>
 #include <boost/test/unit_test.hpp>
-#include "fern/core/data_customization_point/constant.h"
+#include "fern/core/data_customization_point/scalar.h"
 #include "fern/feature/core/data_customization_point/array.h"
 #include "fern/feature/core/data_customization_point/masked_array.h"
-#include "fern/feature/core/data_customization_point/masked_constant.h"
+#include "fern/feature/core/data_customization_point/masked_scalar.h"
 #include "fern/algorithm/core/test/test_utils.h"
 #include "fern/algorithm/statistic/mean.h"
 
@@ -78,7 +78,7 @@ void verify_0d_0d_masked(
         fa::DetectNoDataByValue<bool>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
 
-    f::MaskedConstant<int> result_we_got{-9};
+    f::MaskedScalar<int> result_we_got{-9};
 
     InputNoDataPolicy input_no_data_policy{{value.mask(), true}};
     OutputNoDataPolicy output_no_data_policy(result_we_got.mask(), true);
@@ -97,15 +97,15 @@ void test_0d_0d_masked(
 {
     // Regular case.
     {
-        f::MaskedConstant<int> value{5};
-        f::MaskedConstant<int> result_we_want{5};
+        f::MaskedScalar<int> value{5};
+        f::MaskedScalar<int> result_we_want{5};
         verify_0d_0d_masked(execution_policy, value, result_we_want);
     }
 
     // Mask a value.
     {
-        f::MaskedConstant<int> value{5, true};
-        f::MaskedConstant<int> result_we_want{-9, true};
+        f::MaskedScalar<int> value{5, true};
+        f::MaskedScalar<int> result_we_want{-9, true};
         verify_0d_0d_masked(execution_policy, value, result_we_want);
     }
 }
@@ -173,7 +173,7 @@ void verify_1d_0d_masked(
         fa::DetectNoDataByValue<f::Mask<1>>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
 
-    f::MaskedConstant<int> result_we_got{-9};
+    f::MaskedScalar<int> result_we_got{-9};
 
     InputNoDataPolicy input_no_data_policy{{value.mask(), true}};
     OutputNoDataPolicy output_no_data_policy(result_we_got.mask(), true);
@@ -194,7 +194,7 @@ void test_1d_0d_masked(
     {
         f::MaskedArray<int, 1> value(ft::nr_elements_1d);
         std::iota(value.data(), value.data() + ft::nr_elements_1d, 0);
-        f::MaskedConstant<int> result_we_want{static_cast<int>(std::accumulate(
+        f::MaskedScalar<int> result_we_want{static_cast<int>(std::accumulate(
             value.data(), value.data() + ft::nr_elements_1d, 0) /
                 ft::nr_elements_1d)};
         verify_1d_0d_masked(execution_policy, value, result_we_want);
@@ -206,7 +206,7 @@ void test_1d_0d_masked(
         f::MaskedArray<int, 1> value(ft::nr_elements_1d);
         std::iota(value.data(), value.data() + ft::nr_elements_1d, 0);
         get(value.mask(), 5) = true;
-        f::MaskedConstant<int> result_we_want{static_cast<int>((std::accumulate(
+        f::MaskedScalar<int> result_we_want{static_cast<int>((std::accumulate(
             value.data(), value.data() + ft::nr_elements_1d, 0) - 5) /
                 ft::nr_elements_1d)};
         verify_1d_0d_masked(execution_policy, value, result_we_want);
@@ -217,7 +217,7 @@ void test_1d_0d_masked(
     {
         f::MaskedArray<int, 1> value(ft::nr_elements_1d);
         value.mask().fill(true);
-        f::MaskedConstant<int> result_we_want{-9, true};
+        f::MaskedScalar<int> result_we_want{-9, true};
         verify_1d_0d_masked(execution_policy, value, result_we_want);
     }
 
@@ -227,7 +227,7 @@ void test_1d_0d_masked(
         f::MaskedArray<int, 1> value(ft::nr_elements_1d, 0);
         get(value, 0) = std::numeric_limits<int>::max();
         get(value, 1) = 1;
-        f::MaskedConstant<int> result_we_want{-9, true};
+        f::MaskedScalar<int> result_we_want{-9, true};
         verify_1d_0d_masked(execution_policy, value, result_we_want);
     }
 
@@ -238,14 +238,14 @@ void test_1d_0d_masked(
         value.fill(0);
         get(value, 0) = std::numeric_limits<int>::max();
         get(value, ft::nr_elements_1d - 1) = 1;
-        f::MaskedConstant<int> result_we_want{-9, true};
+        f::MaskedScalar<int> result_we_want{-9, true};
         verify_1d_0d_masked(execution_policy, value, result_we_want);
     }
 
     // Empty.
     {
         f::MaskedArray<int, 1> value(0);
-        f::MaskedConstant<int> result_we_want{-9, true};
+        f::MaskedScalar<int> result_we_want{-9, true};
         verify_1d_0d_masked(execution_policy, value, result_we_want);
     }
 }
@@ -302,7 +302,7 @@ void verify_2d_0d_masked(
         fa::DetectNoDataByValue<f::Mask<2>>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
 
-    f::MaskedConstant<int> result_we_got{-9};
+    f::MaskedScalar<int> result_we_got{-9};
 
     InputNoDataPolicy input_no_data_policy{{value.mask(), true}};
     OutputNoDataPolicy output_no_data_policy(result_we_got.mask(), true);
@@ -323,7 +323,7 @@ void test_2d_0d_masked(
     {
         f::MaskedArray<int, 2> value(f::extents[ft::nr_rows][ft::nr_cols]);
         std::iota(value.data(), value.data() + ft::nr_elements_2d, 0);
-        f::MaskedConstant<int> result_we_want{static_cast<int>(std::accumulate(
+        f::MaskedScalar<int> result_we_want{static_cast<int>(std::accumulate(
             value.data(), value.data() + ft::nr_elements_2d, 0) /
                 ft::nr_elements_2d)};
         verify_2d_0d(execution_policy, value, result_we_want);
@@ -335,7 +335,7 @@ void test_2d_0d_masked(
         f::MaskedArray<int, 2> value(f::extents[ft::nr_rows][ft::nr_cols]);
         std::iota(value.data(), value.data() + ft::nr_elements_2d, 0);
         get(value.mask(), 5) = true;
-        f::MaskedConstant<int> result_we_want{static_cast<int>((std::accumulate(
+        f::MaskedScalar<int> result_we_want{static_cast<int>((std::accumulate(
             value.data(), value.data() + ft::nr_elements_2d, 0) - 5) /
                 ft::nr_elements_2d)};
         verify_2d_0d_masked(execution_policy, value, result_we_want);
@@ -346,7 +346,7 @@ void test_2d_0d_masked(
     {
         f::MaskedArray<int, 2> value(f::extents[ft::nr_rows][ft::nr_cols]);
         value.mask().fill(true);
-        f::MaskedConstant<int> result_we_want{-9, true};
+        f::MaskedScalar<int> result_we_want{-9, true};
         verify_2d_0d_masked(execution_policy, value, result_we_want);
     }
 
@@ -356,7 +356,7 @@ void test_2d_0d_masked(
         f::MaskedArray<int, 2> value(f::extents[ft::nr_rows][ft::nr_cols], 0);
         get(value, 0) = std::numeric_limits<int>::max();
         get(value, 1) = 1;
-        f::MaskedConstant<int> result_we_want{-9, true};
+        f::MaskedScalar<int> result_we_want{-9, true};
         verify_2d_0d_masked(execution_policy, value, result_we_want);
     }
 
@@ -367,14 +367,14 @@ void test_2d_0d_masked(
         value.fill(0);
         get(value, 0) = std::numeric_limits<int>::max();
         get(value, ft::nr_elements_2d - 1) = 1;
-        f::MaskedConstant<int> result_we_want{-9, true};
+        f::MaskedScalar<int> result_we_want{-9, true};
         verify_2d_0d_masked(execution_policy, value, result_we_want);
     }
 
     // Empty.
     {
         f::MaskedArray<int, 2> value(f::extents[0][0]);
-        f::MaskedConstant<int> result_we_want{-9, true};
+        f::MaskedScalar<int> result_we_want{-9, true};
         verify_2d_0d_masked(execution_policy, value, result_we_want);
     }
 }

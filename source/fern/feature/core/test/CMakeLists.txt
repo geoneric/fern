@@ -2,8 +2,8 @@ if(FERN_ALGORITHM)
     set(TEST_NAMES
         array_test
         masked_array_test
-        masked_constant_test
         masked_raster_test
+        masked_scalar_test
         raster_test
     )
 endif()
@@ -15,8 +15,8 @@ endif()
 ###         feature_test
 ###         masked_array_test
 ###         masked_array_value_test
-###         masked_constant_test
 ###         masked_raster_test
+###         masked_scalar_test
 ###         spatial_attribute_test
 ###         spatial_domain_test
 ###     )

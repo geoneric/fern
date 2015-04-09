@@ -8,10 +8,10 @@
 // -----------------------------------------------------------------------------
 #define BOOST_TEST_MODULE fern algorithm core if_
 #include <boost/test/unit_test.hpp>
-#include "fern/core/data_customization_point/constant.h"
+#include "fern/core/data_customization_point/scalar.h"
 #include "fern/feature/core/data_customization_point/array.h"
 #include "fern/feature/core/data_customization_point/masked_array.h"
-#include "fern/feature/core/data_customization_point/masked_constant.h"
+#include "fern/feature/core/data_customization_point/masked_scalar.h"
 #include "fern/algorithm/algebra/boole/or.h"
 #include "fern/algorithm/core/if.h"
 #include "fern/algorithm/core/test/test_utils.h"
@@ -95,11 +95,11 @@ template<
 void test_array_0d_0d_0d_masked(
     ExecutionPolicy& execution_policy)
 {
-    fern::MaskedConstant<int> condition;
-    fern::MaskedConstant<int> true_value;
-    fern::MaskedConstant<int> false_value;
-    fern::MaskedConstant<int> result_we_want;
-    fern::MaskedConstant<int> result_we_got;
+    fern::MaskedScalar<int> condition;
+    fern::MaskedScalar<int> true_value;
+    fern::MaskedScalar<int> false_value;
+    fern::MaskedScalar<int> result_we_want;
+    fern::MaskedScalar<int> result_we_got;
 
     fa::MarkNoDataByValue<bool> output_no_data_policy(result_we_got.mask(),
         true);
@@ -119,15 +119,15 @@ void test_array_0d_0d_0d_masked(
         false_value = 6;
         false_value.mask() = false;
 
-        result_we_want = fern::MaskedConstant<int>(-9, true);
-        result_we_got = fern::MaskedConstant<int>(-9, false);
+        result_we_want = fern::MaskedScalar<int>(-9, true);
+        result_we_got = fern::MaskedScalar<int>(-9, false);
         fa::core::if_(input_no_data_policy, output_no_data_policy,
             execution_policy, condition, true_value, result_we_got);
         BOOST_CHECK(fern::compare(execution_policy, result_we_got,
             result_we_want));
 
-        result_we_want = fern::MaskedConstant<int>(6, false);
-        result_we_got = fern::MaskedConstant<int>(-9, false);
+        result_we_want = fern::MaskedScalar<int>(6, false);
+        result_we_got = fern::MaskedScalar<int>(-9, false);
         fa::core::if_(input_no_data_policy, output_no_data_policy,
             execution_policy, condition, true_value, false_value,
             result_we_got);
@@ -150,15 +150,15 @@ void test_array_0d_0d_0d_masked(
         false_value = 6;
         false_value.mask() = false;
 
-        result_we_want = fern::MaskedConstant<int>(5, false);
-        result_we_got = fern::MaskedConstant<int>(-9, false);
+        result_we_want = fern::MaskedScalar<int>(5, false);
+        result_we_got = fern::MaskedScalar<int>(-9, false);
         fa::core::if_(input_no_data_policy, output_no_data_policy,
             execution_policy, condition, true_value, result_we_got);
         BOOST_CHECK_EQUAL(result_we_got.value(), 5);
         BOOST_CHECK(!result_we_got.mask());
 
-        result_we_want = fern::MaskedConstant<int>(5, false);
-        result_we_got = fern::MaskedConstant<int>(-9, false);
+        result_we_want = fern::MaskedScalar<int>(5, false);
+        result_we_got = fern::MaskedScalar<int>(-9, false);
         fa::core::if_(input_no_data_policy, output_no_data_policy,
             execution_policy, condition, true_value, false_value,
             result_we_got);

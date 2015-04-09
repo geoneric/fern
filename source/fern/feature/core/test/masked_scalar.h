@@ -7,36 +7,23 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include "fern/feature/core/masked_constant.h"
-#include "fern/core/data_traits.h"
+#include <iostream>
+#include "fern/feature/core/masked_scalar.h"
 
 
 namespace fern {
 
 template<
-    typename T>
-struct DataTraits<MaskedConstant<T>>
+    class T>
+inline std::ostream& operator<<(
+    std::ostream& stream,
+    MaskedScalar<T> const& scalar)
 {
-
-    using argument_category = constant_tag;
-
-    template<
-        typename U>
-    struct Clone
-    {
-        using type = MaskedConstant<U>;
-    };
-
-    using value_type = T;
-
-    using reference = T&;
-
-    using const_reference = T const&;
-
-    static bool const is_masking = true;
-
-    static size_t const rank = 0u;
-
-};
+    stream
+        << scalar.value()
+        << '(' << scalar.mask() << ')'
+        ;
+    return stream;
+}
 
 } // namespace fern

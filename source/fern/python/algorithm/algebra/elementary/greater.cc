@@ -7,7 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #include "fern/python/algorithm/algebra/elementary/greater.h"
-#include "fern/core/data_customization_point/constant.h"
+#include "fern/core/data_customization_point/scalar.h"
 #include "fern/python/feature/detail/data_customization_point/masked_raster.h"
 #include "fern/algorithm/policy/policies.h"
 #include "fern/algorithm/algebra/elementary/greater.h"

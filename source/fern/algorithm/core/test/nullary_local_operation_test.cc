@@ -8,11 +8,11 @@
 // -----------------------------------------------------------------------------
 #define BOOST_TEST_MODULE fern algorithm algebra nullary_local_operation
 #include <boost/test/unit_test.hpp>
-#include "fern/core/data_customization_point/constant.h"
+#include "fern/core/data_customization_point/scalar.h"
 #include "fern/core/data_customization_point/vector.h"
 #include "fern/feature/core/data_customization_point/array.h"
 #include "fern/feature/core/data_customization_point/masked_array.h"
-#include "fern/feature/core/data_customization_point/masked_constant.h"
+#include "fern/feature/core/data_customization_point/masked_scalar.h"
 #include "fern/algorithm/algebra/boole/defined.h"
 
 
@@ -56,7 +56,7 @@ BOOST_AUTO_TEST_CASE(array_0d_masked)
     using InputNoDataPolicy = fa::InputNoDataPolicies<
         fa::DetectNoDataByValue<bool>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
-    using Result = fern::MaskedConstant<ResultValue>;
+    using Result = fern::MaskedScalar<ResultValue>;
 
     Result result;
 
