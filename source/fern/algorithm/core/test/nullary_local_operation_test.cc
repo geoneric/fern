@@ -1,3 +1,11 @@
+// -----------------------------------------------------------------------------
+// Fern © Geoneric
+//
+// This file is part of Geoneric Fern which is available under the terms of
+// the GNU General Public License (GPL), version 2. If you do not want to
+// be bound by the terms of the GPL, you may purchase a proprietary license
+// from Geoneric (http://www.geoneric.eu/contact).
+// -----------------------------------------------------------------------------
 #define BOOST_TEST_MODULE fern algorithm algebra nullary_local_operation
 #include <boost/test/unit_test.hpp>
 #include "fern/core/data_customization_point/constant.h"
