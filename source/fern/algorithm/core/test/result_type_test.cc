@@ -9,8 +9,8 @@
 #define BOOST_TEST_MODULE fern algorithm core result_type
 #include <boost/test/unit_test.hpp>
 #include "fern/algorithm/core/result_type.h"
-#include "fern/feature/core/data_customization_point/masked_constant.h"
-#include "fern/core/data_customization_point/constant.h"
+#include "fern/feature/core/data_customization_point/masked_scalar.h"
+#include "fern/core/data_customization_point/scalar.h"
 #include "fern/core/typename.h"
 #include "fern/core/data_customization_point/vector.h"
 
@@ -36,10 +36,10 @@ BOOST_AUTO_TEST_CASE(result_type)
     using namespace fern;
 
     // Constants.
-    verify_result_type(MaskedConstant<int8_t>, MaskedConstant<int8_t>,
-        MaskedConstant<int8_t>);
-    verify_result_type(int8_t, MaskedConstant<int8_t>, MaskedConstant<int8_t>);
-    verify_result_type(MaskedConstant<int8_t>, int8_t, MaskedConstant<int8_t>);
+    verify_result_type(MaskedScalar<int8_t>, MaskedScalar<int8_t>,
+        MaskedScalar<int8_t>);
+    verify_result_type(int8_t, MaskedScalar<int8_t>, MaskedScalar<int8_t>);
+    verify_result_type(MaskedScalar<int8_t>, int8_t, MaskedScalar<int8_t>);
 
     // Collections.
     verify_result_type(int8_t, std::vector<int8_t>, std::vector<int8_t>);

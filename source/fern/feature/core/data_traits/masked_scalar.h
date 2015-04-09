@@ -7,27 +7,36 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include "fern/feature/core/data_traits/masked_constant.h"
-#include "fern/core/data_customization_point.h"
+#include "fern/feature/core/masked_scalar.h"
+#include "fern/core/data_traits.h"
 
 
 namespace fern {
 
 template<
     typename T>
-inline typename DataTraits<MaskedConstant<T>>::const_reference get(
-    MaskedConstant<T> const& constant)
+struct DataTraits<MaskedScalar<T>>
 {
-    return constant.value();
-}
 
+    using argument_category = constant_tag;
 
-template<
-    typename T>
-inline typename DataTraits<MaskedConstant<T>>::reference get(
-    MaskedConstant<T>& constant)
-{
-    return constant.value();
-}
+    template<
+        typename U>
+    struct Clone
+    {
+        using type = MaskedScalar<U>;
+    };
+
+    using value_type = T;
+
+    using reference = T&;
+
+    using const_reference = T const&;
+
+    static bool const is_masking = true;
+
+    static size_t const rank = 0u;
+
+};
 
 } // namespace fern

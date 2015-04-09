@@ -8,7 +8,7 @@
 // -----------------------------------------------------------------------------
 #define BOOST_TEST_MODULE fern algorithm algebra elementary add
 #include <boost/test/unit_test.hpp>
-#include "fern/core/data_customization_point/constant.h"
+#include "fern/core/data_customization_point/scalar.h"
 #include "fern/algorithm/algebra/elementary/add.h"
 
 

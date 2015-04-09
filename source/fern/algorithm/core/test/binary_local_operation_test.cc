@@ -8,11 +8,11 @@
 // -----------------------------------------------------------------------------
 #define BOOST_TEST_MODULE fern algorithm algebra binary_local_operation
 #include <boost/test/unit_test.hpp>
-#include "fern/core/data_customization_point/constant.h"
+#include "fern/core/data_customization_point/scalar.h"
 #include "fern/core/data_customization_point/vector.h"
 #include "fern/feature/core/data_customization_point/array.h"
 #include "fern/feature/core/data_customization_point/masked_array.h"
-#include "fern/feature/core/data_customization_point/masked_constant.h"
+#include "fern/feature/core/data_customization_point/masked_scalar.h"
 #include "fern/algorithm/algebra/elementary/add.h"
 
 
@@ -80,9 +80,9 @@ BOOST_AUTO_TEST_CASE(masked_d0_array_d0_array)
     using InputNoDataPolicy = fa::InputNoDataPolicies<
         fa::DetectNoDataByValue<bool>, fa::DetectNoDataByValue<bool>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
-    using Argument1 = fern::MaskedConstant<ArgumentValue>;
-    using Argument2 = fern::MaskedConstant<ArgumentValue>;
-    using Result = fern::MaskedConstant<ResultValue>;
+    using Argument1 = fern::MaskedScalar<ArgumentValue>;
+    using Argument2 = fern::MaskedScalar<ArgumentValue>;
+    using Result = fern::MaskedScalar<ResultValue>;
 
     Argument1 argument1;
     Argument2 argument2;
@@ -579,7 +579,7 @@ BOOST_AUTO_TEST_SUITE_END()
 /// #include "fern/feature/core/array_traits.h"
 /// #include "fern/feature/core/masked_array_traits.h"
 /// #include "fern/feature/core/masked_constant_traits.h"
-/// #include "fern/feature/core/test/masked_constant.h"
+/// #include "fern/feature/core/test/masked_scalar.h"
 /// #include "fern/core/vector_traits.h"
 /// #include "fern/algorithm/policy/policies.h"
 /// #include "fern/algorithm/statistic/count.h"
@@ -590,9 +590,9 @@ BOOST_AUTO_TEST_SUITE_END()
 
 // BOOST_AUTO_TEST_CASE(masked_d0_array_d0_array)
 // {
-//     fern::MaskedConstant<int8_t> constant1;
-//     fern::MaskedConstant<int32_t> constant2;
-//     fern::MaskedConstant<int32_t> result;
+//     fern::MaskedScalar<int8_t> constant1;
+//     fern::MaskedScalar<int32_t> constant2;
+//     fern::MaskedScalar<int32_t> result;
 // 
 //     // MaskedConstants with non-masking equal. ---------------------------------
 //     // Constants are not masked.
@@ -617,7 +617,7 @@ BOOST_AUTO_TEST_SUITE_END()
 //     BOOST_CHECK(!result.mask());
 //     BOOST_CHECK_EQUAL(result.value(), 10);
 // 
-//     // MaskedConstant with masking add. ----------------------------------------
+//     // MaskedScalar with masking add. ----------------------------------------
 //     using InputNoDataPolicy = fern::DetectNoDataByValue<bool>;
 //     using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
 // 
@@ -628,8 +628,8 @@ BOOST_AUTO_TEST_SUITE_END()
 //     constant2.value() = 5;
 //     result.value() = 9;
 //     result.mask() = false;
-//     fern::algebra::add<fern::MaskedConstant<int8_t>,
-//         fern::MaskedConstant<int32_t>, fern::MaskedConstant<int32_t>,
+//     fern::algebra::add<fern::MaskedScalar<int8_t>,
+//         fern::MaskedScalar<int32_t>, fern::MaskedScalar<int32_t>,
 //         fern::binary::DiscardDomainErrors, fern::binary::DiscardRangeErrors, InputNoDataPolicy,
 //         OutputNoDataPolicy>(
 //             InputNoDataPolicy(result.mask(), true),
@@ -645,8 +645,8 @@ BOOST_AUTO_TEST_SUITE_END()
 //     constant2.mask() = false;
 //     result.value() = 9;
 //     result.mask() = constant1.mask() || constant2.mask();
-//     fern::algebra::add<fern::MaskedConstant<int8_t>,
-//         fern::MaskedConstant<int32_t>, fern::MaskedConstant<int32_t>,
+//     fern::algebra::add<fern::MaskedScalar<int8_t>,
+//         fern::MaskedScalar<int32_t>, fern::MaskedScalar<int32_t>,
 //         fern::binary::DiscardDomainErrors, fern::binary::DiscardRangeErrors, InputNoDataPolicy,
 //         OutputNoDataPolicy>(
 //             InputNoDataPolicy(result.mask(), true),
@@ -902,8 +902,8 @@ BOOST_AUTO_TEST_SUITE_END()
 //     fern::MaskedArray<int32_t, 2> plus_result_we_get(extents);
 //     fern::MaskedArray<int32_t, 2> plus_result_we_want(extents);
 //     fern::MaskedArray<bool, 2> equal_result_we_get(extents, true);
-//     fern::MaskedConstant<size_t> count_result_we_get;
-//     fern::MaskedConstant<size_t> const count_result_we_want{nr_rows * nr_cols};
+//     fern::MaskedScalar<size_t> count_result_we_get;
+//     fern::MaskedScalar<size_t> const count_result_we_want{nr_rows * nr_cols};
 //     fern::algebra::Add<
 //         fern::MaskedArray<int32_t, 2>,
 //         fern::MaskedArray<int32_t, 2>,
@@ -926,7 +926,7 @@ BOOST_AUTO_TEST_SUITE_END()
 //             OutputNoDataPolicy(equal_result_we_get.mask(), true));
 //     fern::statistic::Count<
 //         fern::MaskedArray<bool, 2>,
-//         fern::MaskedConstant<size_t>,
+//         fern::MaskedScalar<size_t>,
 //         InputNoDataPolicy,
 //         fern::MarkNoDataByValue<bool>> count(
 //             InputNoDataPolicy(),
@@ -1403,9 +1403,9 @@ BOOST_AUTO_TEST_SUITE_END()
 
 /// BOOST_AUTO_TEST_CASE(masked_d0_array_d0_array)
 /// {
-///     fern::MaskedConstant<int8_t> constant1;
-///     fern::MaskedConstant<int32_t> constant2;
-///     fern::MaskedConstant<bool> result_we_get;
+///     fern::MaskedScalar<int8_t> constant1;
+///     fern::MaskedScalar<int32_t> constant2;
+///     fern::MaskedScalar<bool> result_we_get;
 /// 
 ///     // MaskedConstants with non-masking equal. ---------------------------------
 ///     // Constants are not masked.
@@ -1430,7 +1430,7 @@ BOOST_AUTO_TEST_SUITE_END()
 ///     BOOST_CHECK(!result_we_get.mask());
 ///     BOOST_CHECK_EQUAL(result_we_get.value(), true);
 /// 
-///     // MaskedConstant with masking equal. --------------------------------------
+///     // MaskedScalar with masking equal. --------------------------------------
 ///     using InputNoDataPolicy = fern::DetectNoDataByValue<bool>;
 ///     using OutputNoDataPolicy = fern::MarkNoDataByValue<bool>;
 /// 
@@ -1441,8 +1441,8 @@ BOOST_AUTO_TEST_SUITE_END()
 ///     constant2.value() = 5;
 ///     result_we_get.value() = false;
 ///     result_we_get.mask() = constant1.mask() || constant2.mask();
-///     fern::algebra::equal<fern::MaskedConstant<int8_t>,
-///         fern::MaskedConstant<int32_t>, fern::MaskedConstant<bool>,
+///     fern::algebra::equal<fern::MaskedScalar<int8_t>,
+///         fern::MaskedScalar<int32_t>, fern::MaskedScalar<bool>,
 ///         fern::binary::DiscardDomainErrors, fern::binary::DiscardRangeErrors,
 ///         InputNoDataPolicy,
 ///         OutputNoDataPolicy>(
@@ -1459,8 +1459,8 @@ BOOST_AUTO_TEST_SUITE_END()
 ///     constant2.mask() = false;
 ///     result_we_get.value() = false;
 ///     result_we_get.mask() = constant1.mask() || constant2.mask();
-///     fern::algebra::equal<fern::MaskedConstant<int8_t>,
-///         fern::MaskedConstant<int32_t>, fern::MaskedConstant<bool>,
+///     fern::algebra::equal<fern::MaskedScalar<int8_t>,
+///         fern::MaskedScalar<int32_t>, fern::MaskedScalar<bool>,
 ///         fern::binary::DiscardDomainErrors, fern::binary::DiscardRangeErrors,
 ///         InputNoDataPolicy,
 ///         OutputNoDataPolicy>(

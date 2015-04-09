@@ -8,11 +8,11 @@
 // -----------------------------------------------------------------------------
 #define BOOST_TEST_MODULE fern algorithm statistic count
 #include <boost/test/unit_test.hpp>
-#include "fern/core/data_customization_point/constant.h"
+#include "fern/core/data_customization_point/scalar.h"
 #include "fern/core/data_customization_point/vector.h"
 #include "fern/feature/core/data_customization_point/array.h"
 #include "fern/feature/core/data_customization_point/masked_array.h"
-#include "fern/feature/core/data_customization_point/masked_constant.h"
+#include "fern/feature/core/data_customization_point/masked_scalar.h"
 #include "fern/algorithm/statistic/count.h"
 
 
@@ -46,10 +46,10 @@ BOOST_AUTO_TEST_CASE(d0_array)
 
 BOOST_AUTO_TEST_CASE(masked_d0_array)
 {
-    fern::MaskedConstant<int32_t> constant;
-    fern::MaskedConstant<uint64_t> result_we_get;
+    fern::MaskedScalar<int32_t> constant;
+    fern::MaskedScalar<uint64_t> result_we_get;
 
-    // MaskedConstant with non-masking count. ----------------------------------
+    // MaskedScalar with non-masking count. ----------------------------------
     // Constant is not masked.
     constant.mask() = false;
     constant.value() = 5;
@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE(masked_d0_array)
     BOOST_CHECK(!result_we_get.mask());
     BOOST_CHECK_EQUAL(result_we_get.value(), 1u);
 
-    // MaskedConstant with masking count. --------------------------------------
+    // MaskedScalar with masking count. --------------------------------------
     using InputNoDataPolicy = fa::InputNoDataPolicies<
         fa::DetectNoDataByValue<bool>, fa::SkipNoData>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
@@ -144,7 +144,7 @@ BOOST_AUTO_TEST_CASE(masked_d1_array)
     using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
 
     fern::MaskedArray<int32_t, 1> array{ 1, 2, 3, 5 };
-    fern::MaskedConstant<size_t> result;
+    fern::MaskedScalar<size_t> result;
 
     // 1d masked array with non-masking count
     {
@@ -218,7 +218,7 @@ BOOST_AUTO_TEST_CASE(masked_d2_array)
 
     // 2d masked array with non-masking count
     {
-        fern::MaskedConstant<uint64_t> result;
+        fern::MaskedScalar<uint64_t> result;
         fa::statistic::count(fa::sequential, array, -2, result);
         BOOST_CHECK(!result.mask());
         BOOST_CHECK_EQUAL(result.value(), 1u);
@@ -234,7 +234,7 @@ BOOST_AUTO_TEST_CASE(masked_d2_array)
         array.mask()[1][1] = true;
 
         // Count 2's.
-        fern::MaskedConstant<uint64_t> result;
+        fern::MaskedScalar<uint64_t> result;
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
         fa::statistic::count(
             InputNoDataPolicy{{array.mask(), true}, {}}, output_no_data_policy,
@@ -293,7 +293,7 @@ BOOST_AUTO_TEST_CASE(concurrent)
         using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData,
               fa::SkipNoData>;
         using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
-        fern::MaskedConstant<size_t> result_we_got;
+        fern::MaskedScalar<size_t> result_we_got;
         OutputNoDataPolicy output_no_data_policy(result_we_got.mask(), true);
 
         // Verify executor can handle masked result.

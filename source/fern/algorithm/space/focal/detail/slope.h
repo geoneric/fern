@@ -11,7 +11,7 @@
 #include "fern/core/argument_categories.h"
 #include "fern/core/assert.h"
 #include "fern/core/value_type.h"
-#include "fern/core/data_customization_point/constant.h"
+#include "fern/core/data_customization_point/scalar.h"
 #include "fern/algorithm/convolution/neighborhood/square_traits.h"
 #include "fern/algorithm/algebra/elementary.h"
 #include "fern/algorithm/convolution/convolve.h"

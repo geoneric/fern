@@ -9,7 +9,7 @@
 #pragma once
 #include <boost/test/unit_test.hpp>
 #include <iostream>
-#include "fern/feature/core/masked_constant.h"
+#include "fern/feature/core/masked_scalar.h"
 #include "fern/feature/core/masked_raster.h"
 #include "fern/algorithm/algebra/elementary/equal.h"
 #include "fern/algorithm/statistic/count.h"
@@ -108,8 +108,8 @@ template<
     class Value>
 bool compare(
     ExecutionPolicy& execution_policy,
-    MaskedConstant<Value> const& value1,
-    MaskedConstant<Value> const& value2)
+    MaskedScalar<Value> const& value1,
+    MaskedScalar<Value> const& value2)
 {
     bool values_are_the_same = compare(execution_policy,
             value1.value(), value2.value());
@@ -173,7 +173,7 @@ template<
     class T>
 inline std::ostream& operator<<(
     std::ostream& stream,
-    MaskedConstant<T> const& constant)
+    MaskedScalar<T> const& constant)
 {
     stream << constant.value() << (constant.mask() ? "(masked)" : "");
     return stream;

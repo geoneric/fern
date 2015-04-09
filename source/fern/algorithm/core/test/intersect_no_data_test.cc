@@ -8,10 +8,10 @@
 // -----------------------------------------------------------------------------
 #define BOOST_TEST_MODULE fern algorithm core intersect_no_data
 #include <boost/test/unit_test.hpp>
-#include "fern/core/data_customization_point/constant.h"
+#include "fern/core/data_customization_point/scalar.h"
 #include "fern/feature/core/data_customization_point/array.h"
 #include "fern/feature/core/data_customization_point/masked_array.h"
-#include "fern/feature/core/data_customization_point/masked_constant.h"
+#include "fern/feature/core/data_customization_point/masked_scalar.h"
 #include "fern/algorithm/core/intersect_no_data.h"
 #include "fern/algorithm/core/test/test_utils.h"
 
@@ -73,10 +73,10 @@ template<
 void test_array_0d_0d_masked(
     ExecutionPolicy& execution_policy)
 {
-    fern::MaskedConstant<int> value1;
-    fern::MaskedConstant<int> value2;
-    fern::MaskedConstant<int> result_we_want;
-    fern::MaskedConstant<int> result_we_got;
+    fern::MaskedScalar<int> value1;
+    fern::MaskedScalar<int> value2;
+    fern::MaskedScalar<int> result_we_want;
+    fern::MaskedScalar<int> result_we_got;
 
     fa::InputNoDataPolicies<
         fa::DetectNoDataByValue<bool>,
@@ -93,7 +93,7 @@ void test_array_0d_0d_masked(
         value2 = 6;
         value2.mask() = false;
 
-        result_we_want = fern::MaskedConstant<int>(-9, false);
+        result_we_want = fern::MaskedScalar<int>(-9, false);
         result_we_got = -9;
         result_we_got.mask() = false;
         fa::core::intersect_no_data(input_no_data_policy, output_no_data_policy,
@@ -109,7 +109,7 @@ void test_array_0d_0d_masked(
         value2 = 6;
         value2.mask() = false;
 
-        result_we_want = fern::MaskedConstant<int>(-9, false);
+        result_we_want = fern::MaskedScalar<int>(-9, false);
         result_we_got = -9;
         result_we_got.mask() = false;
         fa::core::intersect_no_data(input_no_data_policy,
@@ -126,7 +126,7 @@ void test_array_0d_0d_masked(
         value2 = 6;
         value2.mask() = true;
 
-        result_we_want = fern::MaskedConstant<int>(-9, false);
+        result_we_want = fern::MaskedScalar<int>(-9, false);
         result_we_got = -9;
         result_we_got.mask() = false;
         fa::core::intersect_no_data(input_no_data_policy,
@@ -143,7 +143,7 @@ void test_array_0d_0d_masked(
         value2 = 6;
         value2.mask() = true;
 
-        result_we_want = fern::MaskedConstant<int>(-9, true);
+        result_we_want = fern::MaskedScalar<int>(-9, true);
         result_we_got = -9;
         result_we_got.mask() = false;
         fa::core::intersect_no_data(input_no_data_policy,
