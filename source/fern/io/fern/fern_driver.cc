@@ -1,3 +1,11 @@
+// -----------------------------------------------------------------------------
+// Fern © Geoneric
+//
+// This file is part of Geoneric Fern which is available under the terms of
+// the GNU General Public License (GPL), version 2. If you do not want to
+// be bound by the terms of the GPL, you may purchase a proprietary license
+// from Geoneric (http://www.geoneric.eu/contact).
+// -----------------------------------------------------------------------------
 #include "fern/io/fern/fern_driver.h"
 #include "fern/core/data_name.h"
 #include "fern/feature/visitor/attribute_type_visitor.h"

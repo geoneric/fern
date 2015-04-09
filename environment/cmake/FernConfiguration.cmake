@@ -6,7 +6,7 @@ option(FERN_ALL FALSE)
 
 if(FERN_ALL)
     set(FERN_ALGORITHM TRUE)
-    set(FERN_HPX TRUE)
+    # set(FERN_HPX TRUE)
     set(FERN_PYTHON TRUE)
     set(FERN_TEST TRUE)
 endif()
