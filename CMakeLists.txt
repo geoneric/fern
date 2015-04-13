@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 project(Fern)
 
 set(${PROJECT_NAME}_ORGANISATION_NAME "Geoneric")
-set(${PROJECT_NAME}_COPYRIGHT "Copyright \(C\) 2010-2015 Geoneric")
+set(${PROJECT_NAME}_COPYRIGHT "2010-2015 Geoneric")
 set(${PROJECT_NAME}_PROJECT_NAME "${PROJECT_NAME}")
 set(${PROJECT_NAME}_HOMEPAGE "http://www.geoneric.eu")
 set(${PROJECT_NAME}_MAJOR_VERSION "0")

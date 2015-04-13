@@ -18,9 +18,9 @@ add_target_conditionally(operation operation)
 add_target_conditionally(python python)
 add_target_conditionally(script script)
 add_target_conditionally(uncertainty uncertainty)
-add_target_conditionally(hpx hpx)
+# add_target_conditionally(hpx hpx)
 
-if(FERN_ALGORITHM)
+if(FERN_BUILD_ALGORITHM)
     # Install all headers for now. Otherwise we have to keep tweaking the
     # install rules.
     install(

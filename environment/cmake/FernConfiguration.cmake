@@ -1,19 +1,39 @@
-option(FERN_ALGORITHM FALSE)
-option(FERN_HPX FALSE)
-option(FERN_PYTHON FALSE)
-option(FERN_TEST FALSE)
-option(FERN_ALL FALSE)
+# Options for selecting the modules to build.
+# FERN_BUILD_<module>
+option(FERN_BUILD_ALL "Build everything" FALSE)
 
-if(FERN_ALL)
-    set(FERN_ALGORITHM TRUE)
-    # set(FERN_HPX TRUE)
-    set(FERN_PYTHON TRUE)
-    set(FERN_TEST TRUE)
+option(FERN_BUILD_ALGORITHM "Build Fern.Algorithm module" FALSE)
+option(FERN_BUILD_IO "Build Fern.IO module" FALSE)
+option(FERN_BUILD_PYTHON "Build Fern.Python module" FALSE)
+
+option(FERN_BUILD_DOCUMENTATION "Build documentation" FALSE)
+option(FERN_BUILD_TEST "Build tests" FALSE)
+
+
+# Options for selecting features.
+# FERN_WITH_<feature>
+option(FERN_WITH_HDF5 "Add support for HDF5" FALSE)
+option(FERN_WITH_NETCDF "Add support for NetCDF" FALSE)
+option(FERN_WITH_GDAL "Add support for GDAL" FALSE)
+
+
+# Some modules require the build of other modules.
+if(FERN_BUILD_ALL)
+    set(FERN_BUILD_ALGORITHM TRUE)
+    set(FERN_BUILD_DOCUMENTATION TRUE)
+    # set(FERN_BUILD_IO TRUE)
+    set(FERN_BUILD_PYTHON TRUE)
+    set(FERN_BUILD_TEST TRUE)
 endif()
 
-if(FERN_PYTHON)
-    set(FERN_ALGORITHM TRUE)
+if(FERN_BUILD_PYTHON)
+    set(FERN_BUILD_ALGORITHM TRUE)
 endif()
+
+
+# Some features require the selection of other features.
+# ...
+
 
 
 # Fern targets that can be built. Depending on the selection made during
@@ -27,7 +47,6 @@ set(FERN_FERN_CORE_REQUIRED FALSE)
 set(FERN_FERN_EXAMPLE_REQUIRED FALSE)
 set(FERN_FERN_EXPRESSION_TREE_REQUIRED FALSE)
 set(FERN_FERN_FEATURE_REQUIRED FALSE)
-set(FERN_FERN_HPX_REQUIRED FALSE)
 set(FERN_FERN_INTERPRETER_REQUIRED FALSE)
 set(FERN_FERN_IO_REQUIRED FALSE)
 set(FERN_FERN_OPERATION_REQUIRED FALSE)
@@ -43,7 +62,6 @@ set(FERN_BOOST_REQUIRED FALSE)
 set(FERN_EXPAT_REQUIRED FALSE)
 set(FERN_GDAL_REQUIRED FALSE)
 set(FERN_HDF5_REQUIRED FALSE)
-set(FERN_HPX_REQUIRED FALSE)
 set(FERN_LOKI_REQUIRED FALSE)
 set(FERN_NETCDF_REQUIRED FALSE)
 set(FERN_NUMPY_REQUIRED FALSE)
@@ -54,7 +72,7 @@ set(FERN_SWIG_REQUIRED FALSE)
 set(FERN_XSD_REQUIRED FALSE)
 
 
-if(FERN_ALGORITHM)
+if(FERN_BUILD_ALGORITHM)
     # Required third party software.
     set(FERN_BOOST_REQUIRED TRUE)
     list(APPEND FERN_REQUIRED_BOOST_COMPONENTS
@@ -68,19 +86,19 @@ if(FERN_ALGORITHM)
 endif()
 
 
-if(FERN_HPX)
-    # Required third party software.
-    set(FERN_BOOST_REQUIRED TRUE)
-    list(APPEND FERN_REQUIRED_BOOST_COMPONENTS
-        date_time program_options regex serialization thread chrono)
-    set(FERN_HPX_REQUIRED TRUE)
+# if(FERN_HPX)
+#     # Required third party software.
+#     set(FERN_BOOST_REQUIRED TRUE)
+#     list(APPEND FERN_REQUIRED_BOOST_COMPONENTS
+#         date_time program_options regex serialization thread chrono)
+#     set(FERN_HPX_REQUIRED TRUE)
+# 
+#     # Required Fern targets.
+#     set(FERN_FERN_HPX_REQUIRED TRUE)
+# endif()
 
-    # Required Fern targets.
-    set(FERN_FERN_HPX_REQUIRED TRUE)
-endif()
 
-
-if(FERN_PYTHON)
+if(FERN_BUILD_PYTHON)
     # Required third party software.
     set(FERN_GDAL_REQUIRED TRUE)
     set(FERN_NUMPY_REQUIRED TRUE)
@@ -94,7 +112,7 @@ if(FERN_PYTHON)
 endif()
 
 
-if(FERN_TEST)
+if(FERN_BUILD_TEST)
     set(FERN_BOOST_REQUIRED TRUE)
     list(APPEND FERN_REQUIRED_BOOST_COMPONENTS
         system unit_test_framework)

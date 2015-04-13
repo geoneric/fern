@@ -1,7 +1,5 @@
 add_subdirectory(neighborhood)
-if(FERN_TEST)
-    add_subdirectory(test)
-endif()
+add_test_conditionally(test)
 
 set(SOURCES
     # index_ranges

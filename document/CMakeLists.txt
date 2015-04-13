@@ -7,5 +7,7 @@
 ###     include(UseLATEX)
 ### endif()
 
-add_subdirectory(manual)
+if(FERN_BUILD_DOCUMENTATION)
+    add_subdirectory(manual)
+endif()
 add_subdirectory(text)

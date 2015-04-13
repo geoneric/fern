@@ -1,6 +1,4 @@
-if(FERN_TEST)
-    add_subdirectory(test)
-endif()
+add_test_conditionally(test)
 
 add_parser_generation_command(operation
     --namespace-map http://www.geoneric.eu/fern=fern)

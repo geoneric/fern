@@ -1,6 +1,4 @@
-if(FERN_TEST)
-    add_subdirectory(test)
-endif()
+add_test_conditionally(test)
 
 set(SOURCES
     execution_policy
@@ -11,7 +9,7 @@ target_link_libraries(fern_algorithm_policy
     fern_core
     stdc++
 )
-if(FERN_ALGORITHM)
+if(FERN_BUILD_ALGORITHM)
     install(
         TARGETS fern_algorithm_policy
         EXPORT fern_targets

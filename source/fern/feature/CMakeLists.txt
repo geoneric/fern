@@ -1,4 +1,4 @@
-if(FERN_ALGORITHM)
+if(FERN_BUILD_ALGORITHM)
     add_subdirectory(core)
 
     # Install all header for now. Otherwise we have to keep tweaking the
