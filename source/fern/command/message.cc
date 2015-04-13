@@ -16,7 +16,7 @@ namespace fern {
 void show_version()
 {
     std::cout << "fern " << FERN_VERSION << "\n";
-    std::cout << FERN_COPYRIGHT << "\n";
+    std::cout << "Copyright " << FERN_COPYRIGHT << "\n";
 }
 
 } // namespace fern

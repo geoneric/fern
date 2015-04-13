@@ -1,6 +1,4 @@
-if(FERN_TEST)
-    add_subdirectory(test)
-endif()
+add_test_conditionally(test)
 
 set(SOURCES
     gdal_client

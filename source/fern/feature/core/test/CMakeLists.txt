@@ -1,4 +1,4 @@
-if(FERN_ALGORITHM)
+if(FERN_BUILD_ALGORITHM)
     set(TEST_NAMES
         array_test
         masked_array_test

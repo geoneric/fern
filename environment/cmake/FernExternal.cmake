@@ -58,7 +58,9 @@ if(FERN_BOOST_REQUIRED)
         ${Boost_SYSTEM_LIBRARY}
     )
 endif()
-find_package(Doxygen)
+if(FERN_BUILD_DOCUMENTATION)
+    find_package(Doxygen REQUIRED)
+endif()
 if(FERN_EXPAT_REQUIRED)
     find_package(EXPAT REQUIRED)
     include_directories(

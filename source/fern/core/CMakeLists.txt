@@ -1,6 +1,4 @@
-if(FERN_TEST)
-    add_subdirectory(test)
-endif()
+add_test_conditionally(test)
 
 set(SOURCES
     data_types
@@ -36,7 +34,7 @@ target_link_libraries(fern_core
     ${Boost_TIMER_LIBRARY}
     stdc++
 )
-if(FERN_ALGORITHM)
+if(FERN_BUILD_ALGORITHM)
     install(
         TARGETS fern_core
         EXPORT fern_targets

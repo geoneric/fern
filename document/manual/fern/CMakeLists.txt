@@ -1,6 +1,6 @@
 include(SphinxDoc)
 
-if(FERN_ALGORITHM)
+if(FERN_BUILD_ALGORITHM)
     add_subdirectory(algorithm)
 
     file(GLOB_RECURSE FERN_ALGORITHM_SPHINX_SOURCES
@@ -12,7 +12,7 @@ if(FERN_ALGORITHM)
     list(APPEND FERN_SPHINX_TOC_MODULES algorithm/index)
 endif()
 
-if(FERN_IO)
+if(FERN_BUILD_IO)
     add_subdirectory(io)
 
     file(GLOB_RECURSE FERN_IO_SPHINX_SOURCES
@@ -24,7 +24,7 @@ if(FERN_IO)
     list(APPEND FERN_SPHINX_TOC_MODULES io/index)
 endif()
 
-if(FERN_PYTHON)
+if(FERN_BUILD_PYTHON)
     add_subdirectory(python)
 
     file(GLOB_RECURSE FERN_PYTHON_SPHINX_SOURCES
@@ -60,7 +60,7 @@ create_sphinx_docs(
     SOURCES ${SPHINX_SOURCES}
 )
 
-if(FERN_PYTHON)
+if(FERN_BUILD_PYTHON)
     document_python_api(
         TARGET python_api
         SOURCE_DIRECTORY ${PROJECT_BINARY_DIR}/bin/fern

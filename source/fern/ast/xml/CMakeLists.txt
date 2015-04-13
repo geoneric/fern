@@ -1,6 +1,4 @@
-if(FERN_TEST)
-    add_subdirectory(test)
-endif()
+add_test_conditionally(test)
 
 # configure_file(
 #     ${CMAKE_CURRENT_SOURCE_DIR}/syntax_tree.map.in

@@ -49,6 +49,18 @@ macro(add_target_conditionally
 endmacro()
 
 
+# Tests can be added conditionally. When the Fern build is configured, the
+# FERN_BUILD_TEST variable is set to TRUE or FALSE. Depending on its setting
+# tests are build or not. See FernConfiguration.cmake.
+# DIRECTORY_NAME: Name of subdirectory containing the target.
+function(add_test_conditionally
+        DIRECTORY_NAME)
+    if(FERN_BUILD_TEST)
+        add_subdirectory(${DIRECTORY_NAME})
+    endif()
+endfunction()
+
+
 # Create a static library and an object library.
 # BASENAME: Name of static library to create. The object library will be 
 #           named ${BASENAME}_objects.

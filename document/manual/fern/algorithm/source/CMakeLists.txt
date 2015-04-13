@@ -2,9 +2,7 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/source
     ${CMAKE_BINARY_DIR}/source
 )
-if(FERN_TEST)
-    add_subdirectory(test)
-endif()
+add_test_conditionally(test)
 
 add_executable(tutorial_divide-1
     tutorial_divide-1

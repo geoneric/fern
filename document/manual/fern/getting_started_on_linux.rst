@@ -31,7 +31,7 @@ An example where CMake is requested to
    cmake \
        -G"Unix Makefiles" \
        -DCMAKE_BUILD_TYPE=Release \
-       -DFERN_ALGORITHM:BOOL=TRUE \
+       -DFERN_BUILD_ALGORITHM:BOOL=TRUE \
        -DCMAKE_MAKE_PROGRAM=make \
        -DCMAKE_INSTALL_PREFIX=/opt/fern-<version> \
        $HOME/tmp/fern-<version>

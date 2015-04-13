@@ -1,7 +1,4 @@
-if(FERN_TEST)
-    add_subdirectory(test)
-endif()
-
+add_test_conditionally(test)
 
 set(EXTENSION_SOURCES
     python_extension

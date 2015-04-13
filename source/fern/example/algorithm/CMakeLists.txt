@@ -1,6 +1,4 @@
-if(FERN_TEST)
-    add_subdirectory(test)
-endif()
+add_test_conditionally(test)
 
 add_executable(add_two_rasters
     add_two_rasters

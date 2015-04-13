@@ -45,7 +45,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Fern'
-copyright = u'2014, Geoneric'
+# copyright = u'2010-2015, Geoneric'
+copyright = u'${Fern_COPYRIGHT}'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -251,6 +252,6 @@ def setup(app):
     app.add_config_value("fern_io", False, "env")
     app.add_config_value("fern_python", False, "env")
 
-fern_algorithm = "${FERN_ALGORITHM}" in ["TRUE", "ON"]
-fern_io = "${FERN_IO}" in ["TRUE", "ON"]
-fern_python = "${FERN_PYTHON}" in ["TRUE", "ON"]
+fern_algorithm = "${FERN_BUILD_ALGORITHM}" in ["TRUE", "ON"]
+fern_io = "${FERN_BUILD_IO}" in ["TRUE", "ON"]
+fern_python = "${FERN_BUILD_PYTHON}" in ["TRUE", "ON"]

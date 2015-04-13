@@ -69,6 +69,14 @@ function build_peacock()
     options+=("-Dboost_build_boost_thread=true")
     options+=("-Dboost_build_boost_timer=true")
 
+    # HDF5.
+    options+=("-Dbuild_hdf5=true")
+    options+=("-Dhdf5_version=1.8.14")
+
+    # NetCDF.
+    options+=("-Dbuild_netcdf=true")
+    options+=("-Dnetcdf_version=4.3.3.1")
+
     # HPX.
     options+=("-Dbuild_hpx=true")
     options+=("-Dhpx_version=0.9.10")
