@@ -15,6 +15,7 @@
 #include "fern/io/netcdf/core/attribute.h"
 #include "fern/io/netcdf/core/dataset.h"
 #include "fern/io/netcdf/core/variable.h"
+#include "fern/io/netcdf/coards/dataset.h"
 
 
 namespace fern {
@@ -59,9 +60,7 @@ inline void read_coards(
 
 
     // Verify that the file is formatted according to the COARDS conventions.
-    auto conventions(netcdf::conventions(handle));
-    if(std::find(conventions.begin(), conventions.end(), "COARDS") ==
-            conventions.end()) {
+    if(!conforms_to_coards(handle)) {
         throw IOError(pathname,
             Exception::messages().format_message(
                 MessageId::DOES_NOT_CONFORM_TO_CONVENTION, "COARDS"));

@@ -51,6 +51,7 @@ add_unit_tests(
     SCOPE io_netcdf_coards
     NAMES ${TEST_NAMES}
     LINK_LIBRARIES
+        fern_io_netcdf_coards
         fern_io_netcdf_core
         fern_io_core
         fern_core
