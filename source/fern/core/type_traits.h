@@ -15,6 +15,7 @@ namespace fern {
 
 // Type categories. Used in tag dispatching.
 struct boolean_tag {};  // A boolean is not an integer in fern, it's a boolean.
+struct char_tag {};  // A character is a ISO/ASCII character, not a number.
 struct integer_tag {};
 struct signed_integer_tag: public integer_tag {};
 struct unsigned_integer_tag: public integer_tag {};
@@ -37,6 +38,21 @@ template<>
 struct TypeTraits<bool>
 {
     using number_category = boolean_tag;
+
+    static ValueType const value_type;
+
+    static ValueTypes const value_types;
+
+    static String const name;
+
+    static bool const builtin = true;
+};
+
+
+template<>
+struct TypeTraits<char>
+{
+    using number_category = char_tag;
 
     static ValueType const value_type;
 
@@ -281,7 +297,7 @@ struct TypeTraits<String>
 
 template<
     typename T>
-inline T min()
+constexpr inline T min()
 {
   return TypeTraits<T>::min;
 }
@@ -289,7 +305,7 @@ inline T min()
 
 template<
     typename T>
-inline T max()
+constexpr inline T max()
 {
   return TypeTraits<T>::max;
 }
@@ -297,7 +313,7 @@ inline T max()
 
 template<
     typename T>
-inline T nan()
+constexpr inline T nan()
 {
   return TypeTraits<T>::nan;
 }
@@ -305,7 +321,7 @@ inline T nan()
 
 template<
     typename T>
-inline T infinity()
+constexpr inline T infinity()
 {
   return TypeTraits<T>::infinity;
 }
@@ -313,7 +329,7 @@ inline T infinity()
 
 template<
     typename T>
-inline T no_data_value()
+constexpr inline T no_data_value()
 {
   return TypeTraits<T>::no_data_value;
 }
@@ -339,7 +355,7 @@ inline void set_no_data(
 
 template<
     typename T>
-inline T pi()
+constexpr inline T pi()
 {
   return boost::math::constants::pi<T>();
 }
@@ -347,7 +363,7 @@ inline T pi()
 
 template<
     typename T>
-inline T half_pi()
+constexpr inline T half_pi()
 {
   return boost::math::constants::half_pi<T>();
 }
@@ -356,6 +372,14 @@ inline T half_pi()
 template<
     typename T>
 using number_category = typename TypeTraits<T>::number_category;
+
+
+template<
+    typename T>
+constexpr inline ValueType value_type_id()
+{
+    return TypeTraits<T>::value_type;
+}
 
 
 template<class... T>

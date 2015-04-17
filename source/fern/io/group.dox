@@ -1,0 +1,8 @@
+/*!
+    @brief      Parent group containing io sub-groups
+    @defgroup   fern_io_group IO
+    @ingroup    fern_group
+
+
+    Fern.IO is a library for performing I/O to various data formats.
+*/

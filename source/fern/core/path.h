@@ -63,7 +63,7 @@ public:
 
     Path           filename            () const;
 
-    std::vector<String> names          () const;
+    std::vector<std::string> names     () const;
 
     Path&          replace_extension   (Path const& extension);
 

@@ -1,0 +1,12 @@
+netcdf earth {
+
+dimensions:
+
+variables:
+    double age;
+
+:Conventions = "COARDS";
+
+data:
+    age = 4.54e9;
+}

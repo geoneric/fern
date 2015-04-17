@@ -62,7 +62,8 @@ Initially, all configuration options are set to `FALSE`.
 Some CMake configuration options imply the use of other configuration options:
 
 - `FERN_BUILD_ALL` implies `FERN_BUILD_*`.
-- `FERN_BUILD_PYTHON` implies `FERN_BUILD_ALGORITHM`.
+- `FERN_BUILD_PYTHON` implies `FERN_BUILD_ALGORITHM`, `FERN_BUILD_IO`,
+  `FERN_WITH_GDAL`.
 
 
 Instructions per platform:

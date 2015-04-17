@@ -3,6 +3,7 @@ set(TEST_NAMES
     data_types_test
     flag_collection_test
     point_test
+    scope_exit_test
     scope_test
     stack_test
     std_test

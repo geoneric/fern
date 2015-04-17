@@ -108,6 +108,19 @@ if(FERN_LOKI_REQUIRED)
 endif()
 if(FERN_NETCDF_REQUIRED)
     find_package(NetCDF REQUIRED)
+    include_directories(
+        SYSTEM
+        ${NetCDF_INCLUDE_DIRECTORIES}
+    )
+    find_program(NCGEN ncgen
+        HINTS ${NetCDF_INCLUDE_DIRECTORIES}/../bin
+    )
+    list(APPEND FERN_EXTERNAL_LIBRARIES
+        ${NetCDF_LIBRARIES}
+    )
+    message(STATUS "Found NetCDF:")
+    message(STATUS "  includes : ${NetCDF_INCLUDE_DIRECTORIES}")
+    message(STATUS "  C-library: ${NetCDF_C_LIBRARY}")
 endif()
 if(FERN_NUMPY_REQUIRED)
     find_package(NumPy REQUIRED)

@@ -16,9 +16,15 @@
 
 namespace fern {
 
-// High level exception classes. The classes in this namespace end up in the
-// user's code.
+/*!
+    @brief      Base class of the Fern exception class hierarchy.
 
+    There is also a low-level exception hierarchy (rooted at
+    @ref detail::Exception). Use it in low-level code,
+    when information about the error is collected during stack-unwinding.
+    The high-level exception hierarchy must be used when all information is
+    gathered and ready to be handled by higher level code.
+*/
 class Exception:
     public virtual std::exception
 {
@@ -41,7 +47,8 @@ public:
 
     virtual String message             () const;
 
-    static Messages const& messages    ();
+    static Messages const&
+                   messages            ();
 
 private:
 
@@ -79,7 +86,7 @@ using ExceptionRequiredArgumentTypes = boost::error_info<
 using ExceptionProvidedArgumentTypes = boost::error_info<
     struct tag_provided_argument_type, String>;
 
-// Low leven exception classes.
+// Low level exception classes.
 struct Exception:
     public virtual std::exception, public virtual boost::exception
 { };

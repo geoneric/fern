@@ -1,0 +1,5 @@
+/*!
+    @brief      Group containing code related to handling NetCDF files.
+    @defgroup   fern_io_netcdf_group NetCDF
+    @ingroup    fern_io_group
+*/

@@ -13,24 +13,25 @@
 
 namespace fern {
 
-
-//! Class for names to data.
 /*!
-  A data name can name a feature or an attribute in a dataset.
+    @brief      Class for names to data.
+    @sa         Path
 
-  The convention is that the name of the database and of the data in the
-  dataset is separated by a colon: <database pathname>:<data pathname>.
+    A data name can name a feature or an attribute in a dataset.
 
-  The database name folows the native pathname conventions.
+    The convention is that the name of the database and of the data in the
+    dataset is separated by a colon: \<database pathname\>:\<data pathname\>.
 
-  The data pathname folows the generic pathname conventions as described
-  in the Boost.Filesystem documentation. The first name is always the name
-  of a feature set. Subsequent names point to data within this feature set.
-  Data pathname is an absolute pathname.
+    The database name folows the native pathname conventions.
 
-  The kind of data the data pathname points to is up to the application.
+    The data pathname folows the generic pathname conventions as described
+    in the Boost.Filesystem documentation. The first name is always the name
+    of a feature set. Subsequent names point to data within this feature set.
+    Data pathname is an absolute pathname.
 
-  \sa        Path
+    The kind of data the data pathname points to is up to the application.
+
+    In the future, this class can be extended to support URI's to databases.
 */
 class DataName
 {
@@ -43,13 +44,13 @@ public:
 
                    DataName            (DataName&&)=default;
 
-    DataName&      operator=           (DataName&&)=default;
-
                    DataName            (DataName const&)=default;
 
-    DataName&      operator=           (DataName const&)=default;
-
                    ~DataName           ()=default;
+
+    DataName&      operator=           (DataName&&)=default;
+
+    DataName&      operator=           (DataName const&)=default;
 
     Path const&    database_pathname   () const;
 

@@ -55,7 +55,7 @@ DataName::DataName(
 
     // Remove trailing occurences of path separator.
     // Replace double occurences of path separator by single ones.
-    data_pathname.strip_end("/");
+    strip_end(data_pathname, "/");
 
     // Loop, otherwise /// will result in //, instead of /, for example.
     while(data_pathname.contains("//")) {
@@ -76,10 +76,10 @@ DataName::DataName(
 }
 
 
-//! Return the pathname of the dataset name.
 /*!
-  \return    Pathname.
-  \sa        data_pathname()
+    @brief      Return the pathname of the dataset name.
+    @return     Pathname.
+    @sa         data_pathname()
 */
 Path const& DataName::database_pathname() const
 {
@@ -87,10 +87,10 @@ Path const& DataName::database_pathname() const
 }
 
 
-//! Return the pathname of the data in the dataset.
 /*!
-  \return    Pathname.
-  \sa        database_pathname()
+    @brief      Return the pathname of the data in the dataset.
+    @return     Pathname.
+    @sa         database_pathname()
 */
 Path const& DataName::data_pathname() const
 {

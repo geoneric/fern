@@ -1,0 +1,7 @@
+add_subdirectory(core)
+if(FERN_WITH_GDAL)
+    add_subdirectory(gdal)
+endif()
+if(FERN_WITH_NETCDF)
+    add_subdirectory(netcdf)
+endif()

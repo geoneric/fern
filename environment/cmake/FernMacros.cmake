@@ -232,6 +232,34 @@ macro(add_unit_test2)
 endmacro()
 
 
+function(add_unit_tests)
+    set(OPTIONS "")
+    set(ONE_VALUE_ARGUMENTS SCOPE)
+    set(MULTI_VALUE_ARGUMENTS NAMES LINK_LIBRARIES DEPENDENCIES)
+
+    cmake_parse_arguments(ADD_UNIT_TESTS "${OPTIONS}" "${ONE_VALUE_ARGUMENTS}"
+        "${MULTI_VALUE_ARGUMENTS}" ${ARGN})
+
+    if(ADD_UNIT_TESTS_UNPARSED_ARGUMENTS)
+        message(FATAL_ERROR
+            "Macro called with unrecognized arguments: "
+            "${ADD_UNIT_TESTS_UNPARSED_ARGUMENTS}"
+        )
+    endif()
+
+    foreach(NAME ${ADD_UNIT_TESTS_NAMES})
+        add_unit_test2(
+            SCOPE ${ADD_UNIT_TESTS_SCOPE}
+            NAME ${NAME}
+            LINK_LIBRARIES ${ADD_UNIT_TESTS_LINK_LIBRARIES})
+        set(target_name ${ADD_UNIT_TESTS_SCOPE}_${NAME})
+        if(ADD_UNIT_TESTS_DEPENDENCIES)
+            add_dependencies(${target_name} ${ADD_UNIT_TESTS_DEPENDENCIES})
+        endif()
+    endforeach()
+endfunction()
+
+
 # Copy Python test modules from current source directory to current binary
 # directory. For each module a custom command is created so editing a test
 # module in the source directory will trigger a copy to the binary directory.

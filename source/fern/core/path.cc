@@ -75,9 +75,9 @@ bool Path::is_absolute() const
 }
 
 
-std::vector<String> Path::names() const
+std::vector<std::string> Path::names() const
 {
-    return generic_string().split("/");
+    return split(generic_string(), "/");
 }
 
 

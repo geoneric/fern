@@ -220,51 +220,10 @@ void String::clear()
 }
 
 
-//! Strip characters from \a characters from the begin of the string.
-/*!
-  \param     characters String with characters to strip.
-  \return    Reference to *this.
-*/
-String& String::strip_begin(
-    String const& characters)
-{
-    boost::trim_left_if(*this, [&](char c){
-        return characters.find(c) != std::string::npos; });
-    return *this;
-}
-
-
-//! Strip characters from \a characters from the end of the string.
-/*!
-  \param     characters String with characters to strip.
-  \return    Reference to *this.
-*/
-String& String::strip_end(
-    String const& characters)
-{
-    boost::trim_right_if(*this, [&](char c){
-        return characters.find(c) != std::string::npos; });
-    return *this;
-}
-
-
-//! Strip characters from the start and end of the string.
-/*!
-  \param     characters String with characters to strip. If empty, whitespace
-             characters are trimmed.
-  \return    Reference to this.
-*/
 String& String::strip(
     String const& characters)
 {
-    if(characters.is_empty()) {
-        boost::algorithm::trim(*this);
-    }
-    else {
-        strip_begin(characters);
-        strip_end(characters);
-    }
-
+    fern::strip(*this, characters);
     return *this;
 }
 
@@ -369,16 +328,100 @@ std::ostream& operator<<(
 }
 
 
-//! Join all \a strings, inserting \a separator inbetween the strings, and return the result.
 /*!
-  \param     strings String to join.
-  \param     separator String to insert inbetween the strings.
-  \return    New string.
+    @brief      Split @a string by @a characters and return the result.
+    @param      characters Characters to split string by. If this string
+                is empty, the string is split by whitespace characters.
+    @return     Vector with strings.
+    @warning    The @a characters passed in are used in a regular
+                expression, where the string of characters is put in
+                a bracket expression. It is assumed this results in a
+                valid regular expression.
+*/
+std::vector<std::string> split(
+    std::string const& string,
+    std::string characters)
+{
+    if(characters.empty()) {
+        characters = "[:space:]";
+    }
 
-  Comparable to this Python code:
-  \code
-  separator.join(strings)
-  \endcode
+    std::regex regular_expression(
+        std::string("[") + characters + std::string("]+"));
+    std::vector<std::string> words;
+
+    std::copy_if(std::sregex_token_iterator(string.begin(), string.end(),
+        regular_expression, -1), std::sregex_token_iterator(),
+        std::back_inserter(words),
+        [](std::string const& string) { return !string.empty(); });
+
+    // std::vector<std::string> words2;
+    // std::copy(words1.begin(), words1.end(), std::back_inserter(words2));
+
+    return words;
+}
+
+
+/*!
+    @brief      Strip @a characters from the start and end of @a string and
+                return the result.
+    @param      string String to trim. A reference to this string is
+                returned.
+    @param      characters String with characters to strip. If empty,
+                whitespace characters are trimmed.
+*/
+std::string& strip(
+    std::string& string,
+    std::string const& characters)
+{
+    if(characters.empty()) {
+        boost::algorithm::trim(string);
+    }
+    else {
+        strip_begin(string, characters);
+        strip_end(string, characters);
+    }
+
+    return string;
+}
+
+
+/*!
+    @brief      Strip @a characters from the begin of @a string and return
+                a reference to the updated @a string.
+*/
+std::string& strip_begin(
+    std::string& string,
+    std::string const& characters)
+{
+    boost::trim_left_if(string, [&](char c){
+        return characters.find(c) != std::string::npos; });
+    return string;
+}
+
+
+/*!
+    @brief      Strip @a characters from the end of @a string and return
+                a reference to the updated @a string.
+*/
+std::string& strip_end(
+    std::string& string,
+    std::string const& characters)
+{
+    boost::trim_right_if(string, [&](char c){
+        return characters.find(c) != std::string::npos; });
+    return string;
+}
+
+
+/*!
+    @brief      Join all @a strings, inserting @a separator inbetween
+                the strings, and return the result.
+
+    Comparable to this Python code:
+    @code
+    separator.join(strings)
+    @endcode
 */
 String join(
     std::vector<String> const& strings,
@@ -392,35 +435,16 @@ String join(
 }
 
 
-#ifndef FERN_COMPILER_DOES_NOT_HAVE_REGEX
-//! Split this string by \a characters and return the result.
-/*!
-  \param     characters Characters to split string by. If this string is empty,
-             the string is split by whitespace characters.
-  \return    Vector with strings.
-  \warning   The \a characters passed in are used in a regular expression,
-             where the string of characters is put in a bracket expression.
-             It is assumed this results in a valid regular expression.
-*/
-std::vector<String> String::split(
-    String characters) const
-{
-    if(characters.is_empty()) {
-        characters = "[:space:]";
-    }
-
-    std::regex regular_expression(String("[") + characters + String("]+"));
-    std::vector<std::string> words1;
-
-    std::copy_if(std::sregex_token_iterator(begin(), end(), regular_expression,
-        -1), std::sregex_token_iterator(), std::back_inserter(words1),
-        [](std::string const& string) { return !string.empty(); });
-
-    std::vector<String> words2;
-    std::copy(words1.begin(), words1.end(), std::back_inserter(words2));
-
-    return words2;
-}
-#endif
+// #ifndef FERN_COMPILER_DOES_NOT_HAVE_REGEX
+// /*!
+//   @brief     Split this string by @a characters and return the result.
+//   @sa        fern::split(String const&, String)
+// */
+// std::vector<String> String::split(
+//     String characters) const
+// {
+//     return fern::split(*this, characters);
+// }
+// #endif
 
 } // namespace fern
