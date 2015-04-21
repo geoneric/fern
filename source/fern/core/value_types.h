@@ -36,6 +36,8 @@ public:
 
     static ValueTypes const BOOL;
 
+    static ValueTypes const CHAR;
+
     static ValueTypes const UINT8;
 
     static ValueTypes const INT8;

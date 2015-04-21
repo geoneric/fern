@@ -1,16 +1,35 @@
+add_custom_command(
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/unreadable.txt
+    COMMAND ${CMAKE_COMMAND} -E touch
+        ${CMAKE_CURRENT_BINARY_DIR}/unreadable.txt
+    COMMAND chmod 222 ${CMAKE_CURRENT_BINARY_DIR}/unreadable.txt
+)
+list(APPEND outputs ${CMAKE_CURRENT_BINARY_DIR}/unreadable.txt)
+
+
+add_custom_command(
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/unwritable.txt
+    COMMAND ${CMAKE_COMMAND} -E touch
+        ${CMAKE_CURRENT_BINARY_DIR}/unwritable.txt
+    COMMAND chmod 444 ${CMAKE_CURRENT_BINARY_DIR}/unwritable.txt
+)
+list(APPEND outputs ${CMAKE_CURRENT_BINARY_DIR}/unwritable.txt)
+
+
+add_custom_target(
+    io_core_test_data
+    DEPENDS ${outputs}
+)
+
+
 set(TEST_NAMES
     file_test
 )
-
-macro(ADD_UNIT_TEST NAME)
-    add_executable(io_core_${NAME} ${NAME})
-    target_link_libraries(io_core_${NAME}
+add_unit_tests(
+    SCOPE io_core
+    NAMES ${TEST_NAMES}
+    LINK_LIBRARIES
         fern_io_core
-        ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
-    )
-    add_test(NAME io_core_${NAME} COMMAND io_core_${NAME})
-endmacro()
-
-foreach(NAME ${TEST_NAMES})
-    add_unit_test(${NAME})
-endforeach()
+        ${Boost_FILESYSTEM_LIBRARY}
+        ${Boost_SYSTEM_LIBRARY}
+    DEPENDENCIES io_core_test_data)

@@ -26,51 +26,66 @@ BOOST_AUTO_TEST_CASE(strip)
 {
     fern::String string;
 
-    string = fern::String("bla").strip();
+    string = "bla";
+    string = fern::strip(string);
     BOOST_CHECK_EQUAL(string, fern::String("bla"));
 
-    string = fern::String("bla").strip("\n");
+    string = "bla";
+    string = fern::strip(string, "\n");
     BOOST_CHECK_EQUAL(string, fern::String("bla"));
 
-    string = fern::String("bla\n").strip();
+    string = "bla\n";
+    string = fern::strip(string);
     BOOST_CHECK_EQUAL(string, fern::String("bla"));
 
-    string = fern::String("bla\n").strip("\n");
+    string = "bla\n";
+    string = fern::strip(string, "\n");
     BOOST_CHECK_EQUAL(string, fern::String("bla"));
 
-    string = fern::String("\nbla").strip();
+    string = "\nbla";
+    string = fern::strip(string);
     BOOST_CHECK_EQUAL(string, fern::String("bla"));
 
-    string = fern::String("\nbla").strip("\n");
+    string = "\nbla";
+    string = fern::strip(string, "\n");
     BOOST_CHECK_EQUAL(string, fern::String("bla"));
 
-    string = fern::String("\nbla\n").strip();
+    string = "\nbla\n";
+    string = fern::strip(string);
     BOOST_CHECK_EQUAL(string, fern::String("bla"));
 
-    string = fern::String("\nbla\n").strip("\n");
+    string = "\nbla\n";
+    string = fern::strip(string, "\n");
     BOOST_CHECK_EQUAL(string, fern::String("bla"));
 
     // Strip with argument preserves whitespace.
-    string = fern::String("\n bla \n").strip("\n");
+    string = "\n bla \n";
+    string = fern::strip(string, "\n");
     BOOST_CHECK_EQUAL(string, fern::String(" bla "));
 
     // Default strip doesn't preserve whitespace.
-    string = fern::String("\n bla \n").strip();
+    string = "\n bla \n";
+    string = fern::strip(string);
     BOOST_CHECK_EQUAL(string, fern::String("bla"));
 
-    string = fern::String("bla bla").strip("ba");
+    string = "bla bla";
+    string = fern::strip(string, "ba");
     BOOST_CHECK_EQUAL(string, fern::String("la bl"));
 
-    string = fern::String("").strip();
+    string = "";
+    string = fern::strip(string);
     BOOST_CHECK_EQUAL(string, fern::String(""));
 
-    string = fern::String("").strip("");
+    string = "";
+    string = fern::strip(string, "");
     BOOST_CHECK_EQUAL(string, fern::String(""));
 
-    string = fern::String("").strip("x");
+    string = "";
+    string = fern::strip(string, "x");
     BOOST_CHECK_EQUAL(string, fern::String(""));
 
-    string = fern::String("øaø").strip("ø");
+    string = "øaø";
+    string = fern::strip(string, "ø");
     BOOST_CHECK_EQUAL(string, fern::String("a"));
 }
 
@@ -101,30 +116,44 @@ BOOST_AUTO_TEST_CASE(contains)
 
 
 #ifndef FERN_COMPILER_DOES_NOT_HAVE_REGEX
-BOOST_AUTO_TEST_CASE(split)
+BOOST_AUTO_TEST_CASE(split_)
 {
-    fern::String string;
-    std::vector<fern::String> words;
+    std::string string;
+    std::vector<std::string> words;
 
-    string = fern::String();
-    words = string.split("");
+    string = std::string();
+    words = fern::split(string, "");
     BOOST_CHECK(words.empty());
 
-    string = fern::String();
-    words = string.split("x");
+    string = std::string();
+    words = fern::split(string, "x");
     BOOST_CHECK(words.empty());
 
-    string = fern::String("abxcd");
-    words = string.split("x");
+    string = std::string("abxcd");
+    words = fern::split(string, "x");
     BOOST_REQUIRE_EQUAL(words.size(), 2u);
-    BOOST_CHECK_EQUAL(words[0], fern::String("ab"));
-    BOOST_CHECK_EQUAL(words[1], fern::String("cd"));
+    BOOST_CHECK_EQUAL(words[0], std::string("ab"));
+    BOOST_CHECK_EQUAL(words[1], std::string("cd"));
 
-    string = fern::String("xxabxxcdxx");
-    words = string.split("x");
+    string = std::string("xxabxxcdxx");
+    words = fern::split(string, "x");
     BOOST_REQUIRE_EQUAL(words.size(), 2u);
-    BOOST_CHECK_EQUAL(words[0], fern::String("ab"));
-    BOOST_CHECK_EQUAL(words[1], fern::String("cd"));
+    BOOST_CHECK_EQUAL(words[0], std::string("ab"));
+    BOOST_CHECK_EQUAL(words[1], std::string("cd"));
+
+    string = std::string("a,b,c");
+    words = fern::split(string, ",");
+    BOOST_REQUIRE_EQUAL(words.size(), 3u);
+    BOOST_CHECK_EQUAL(words[0], std::string("a"));
+    BOOST_CHECK_EQUAL(words[1], std::string("b"));
+    BOOST_CHECK_EQUAL(words[2], std::string("c"));
+
+    string = std::string(" a, b ,c ");
+    words = fern::split(string, ",");
+    BOOST_REQUIRE_EQUAL(words.size(), 3u);
+    BOOST_CHECK_EQUAL(words[0], std::string(" a"));
+    BOOST_CHECK_EQUAL(words[1], std::string(" b "));
+    BOOST_CHECK_EQUAL(words[2], std::string("c "));
 }
 #endif
 

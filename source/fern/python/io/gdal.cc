@@ -9,11 +9,13 @@
 #include "fern/python/io/gdal.h"
 #include <memory>
 #include <gdal_priv.h>
+#include "fern/python/feature/detail/data_customization_point/masked_raster.h"
 #include "fern/feature/core/array.h"
-#include "fern/io/gdal/gdal_data_type_traits.h"
-#include "fern/io/gdal/gdal_type_traits.h"
-#include "fern/python/core/switch_on_value_type.h"
-#include "fern/python/feature/masked_raster.h"
+#include "fern/algorithm/policy/mark_no_data.h"
+#include "fern/io/gdal/dataset.h"
+#include "fern/io/gdal/gdal_value_type_traits.h"
+#include "fern/io/gdal/read.h"
+#include "fern/io/gdal/value_type_traits.h"
 
 
 namespace bp = boost::python;
@@ -47,119 +49,68 @@ switch(value_type) {               \
 }
 
 
+#define SWITCH_ON_GDAL_SUPPORTED_VALUE_TYPE( \
+    value_type,                 \
+    case_)                      \
+switch(value_type) {            \
+    case_(VT_UINT8, uint8_t)    \
+    case_(VT_UINT16, uint16_t)  \
+    case_(VT_INT16, int16_t)    \
+    case_(VT_UINT32, uint32_t)  \
+    case_(VT_INT32, int32_t)    \
+    case_(VT_FLOAT32, float)    \
+    case_(VT_FLOAT64, double)   \
+    case VT_BOOL:               \
+    case VT_CHAR:               \
+    case VT_INT8:               \
+    case VT_UINT64:             \
+    case VT_INT64:              \
+    case VT_STRING: {           \
+        assert(false);          \
+    }                           \
+}
+
+
 namespace fern {
 namespace python {
-namespace {
 
-template<
-    typename T>
-void read_raster(
-    GDALRasterBand& band,
-    detail::MaskedRaster<T>& raster)
-{
-    int const nr_rows = band.GetYSize();
-    int const nr_cols = band.GetXSize();
-
-    if(band.RasterIO(GF_Read, 0, 0, nr_cols, nr_rows, raster.data(),
-            nr_cols, nr_rows, GDALTypeTraits<T>::data_type, 0, 0) != CE_None) {
-        // TODO
-        assert(false);
-    }
-
-
-    int has_no_data;
-    T gdal_no_data_value{static_cast<T>(band.GetNoDataValue(&has_no_data))};
-
-    if(has_no_data && !is_no_data(gdal_no_data_value)) {
-        auto elements = raster.data();
-        for(size_t i = 0; i < raster.size(); ++i) {
-            if(elements[i] == gdal_no_data_value) {
-                set_no_data<T>(elements[i]);
-            }
-        }
-    }
-
-
-
-    // auto mask_flags(band.GetMaskFlags());
-
-    // if(!(mask_flags & GMF_ALL_VALID)) {
-    //     assert(!(mask_flags & GMF_ALPHA));
-    //     GDALRasterBand* mask_band = band.GetMaskBand();
-    //     assert(mask_band->GetRasterDataType() == GDT_Byte);
-    //     // The mask band has gdal data type GDT_Byte. A value of zero
-    //     // means that the value must be masked.
-    //     Array<GDALDataTypeTraits<GDT_Byte>::type, 2> mask(
-    //         extents[nr_rows][nr_cols]);
-
-    //     if(mask_band->RasterIO(GF_Read, 0, 0, nr_cols, nr_rows, mask.data(),
-    //             nr_cols, nr_rows, GDT_Byte, 0, 0) != CE_None) {
-    //         assert(false);
-    //     }
-
-    //     auto elements = raster.data();
-    //     auto mask_elements = mask.data();
-
-    //     for(size_t i = 0; i < raster.size(); ++i) {
-    //         if(mask_elements[i] == 0) {
-    //             elements[i] = no_data_value<T>();
-    //         }
-    //     }
-    // }
+#define CASE(                                                                \
+        gdal_value_type,                                                     \
+        value_type)                                                          \
+case gdal_value_type: {                                                      \
+    using OutputNoDataPolicy = fern::algorithm::MarkNoData<                  \
+        detail::MaskedRaster<value_type>>;                                   \
+    auto result_ptr(std::make_shared<detail::MaskedRaster<value_type>>(      \
+        std::make_tuple(static_cast<size_t>(nr_rows),                        \
+            static_cast<size_t>(nr_cols)),                                   \
+        std::make_tuple(transformation[0], transformation[3]),               \
+        std::make_tuple(transformation[1], transformation[5])));             \
+    OutputNoDataPolicy output_no_data_policy(*result_ptr);                   \
+    io::gdal::read(output_no_data_policy, DataName(pathname), *result_ptr);  \
+    result = std::make_shared<MaskedRaster>(result_ptr);                     \
+    break;                                                                   \
 }
 
-
-} // anonymous namespace
-
-
-#define CASE(                                                            \
-        gdal_value_type,                                                 \
-        value_type)                                                      \
-case gdal_value_type: {                                                  \
-    auto result_ptr(std::make_shared<detail::MaskedRaster<value_type>>(  \
-        std::make_tuple(static_cast<size_t>(nr_rows),                    \
-            static_cast<size_t>(nr_cols)),                               \
-        std::make_tuple(transformation[0], transformation[3]),           \
-        std::make_tuple(transformation[1], transformation[5])));         \
-    read_raster<value_type>(*band, *result_ptr);                         \
-    result = std::make_shared<MaskedRaster>(result_ptr);                 \
-    break;                                                               \
-}
 
 MaskedRasterHandle read_raster(
     std::string const& pathname)
 {
-    // Open raster dataset and obtain some properties.
-    auto dataset = static_cast<GDALDataset *>(GDALOpen(pathname.c_str(),
-        GA_ReadOnly));
-    if(dataset == nullptr) {
-        // TODO
-        assert(dataset);
-    }
-
-    int nr_bands = dataset->GetRasterCount();
-    if(nr_bands == 0) {
-        // TODO
-        assert(false);
-    }
-
+    GDALDataType gdal_value_type;
+    int nr_rows, nr_cols;
     double transformation[6];
-    /* auto status = */ dataset->GetGeoTransform(transformation);
-    // if(status != CE_None) {
-    //     // TODO
-    //     assert(false);
-    // }
 
-    int nr_rows = dataset->GetRasterYSize();
-    int nr_cols = dataset->GetRasterXSize();
-
-
-    // Read the first raster band.
-    auto band = dataset->GetRasterBand(1);
+    {
+        auto dataset = io::gdal::open_dataset(pathname, GA_ReadOnly);
+        auto band = raster_band(dataset, 1);
+        gdal_value_type = band->GetRasterDataType();
+        nr_rows = dataset->GetRasterYSize();
+        nr_cols = dataset->GetRasterXSize();
+        /* auto status = */ dataset->GetGeoTransform(transformation);
+    }
 
     MaskedRasterHandle result;
 
-    SWITCH_ON_GDAL_VALUE_TYPE(band->GetRasterDataType(), CASE)
+    SWITCH_ON_GDAL_VALUE_TYPE(gdal_value_type, CASE)
 
     return result;
 }
@@ -177,9 +128,9 @@ void write_raster(
     int const nr_rows{static_cast<int>(std::get<0>(raster.sizes()))};
     int const nr_cols{static_cast<int>(std::get<1>(raster.sizes()))};
     int const nr_bands{1};
-    GDALDataType data_type{GDALTypeTraits<T>::data_type};
+    GDALDataType value_type{io::gdal::ValueTypeTraits<T>::gdal_value_type};
     auto dataset = driver->Create(name.c_str(), nr_cols, nr_rows, nr_bands,
-        data_type, nullptr);
+        value_type, nullptr);
     // TODO
     assert(dataset);
 
@@ -200,7 +151,7 @@ void write_raster(
 
     if(band->RasterIO(GF_Write, 0, 0, nr_cols, nr_rows,
             const_cast<T*>(raster.data()),
-            nr_cols, nr_rows, data_type, 0, 0) != CE_None) {
+            nr_cols, nr_rows, value_type, 0, 0) != CE_None) {
         // TODO
         assert(false);
     }
@@ -264,7 +215,7 @@ void write_raster(
     // TODO
     assert(CSLFetchBoolean(metadata, GDAL_DCAP_CREATE, FALSE));
 
-    SWITCH_ON_VALUE_TYPE(raster->value_type(), CASE)
+    SWITCH_ON_GDAL_SUPPORTED_VALUE_TYPE(raster->value_type(), CASE)
 }
 
 #undef CASE

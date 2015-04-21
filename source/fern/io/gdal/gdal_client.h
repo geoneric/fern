@@ -11,31 +11,32 @@
 
 
 namespace fern {
+namespace io {
+namespace gdal {
 
-//! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
-  longer_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
+    @ingroup    fern_io_gdal_group
+    @brief      Class for making sure GDAL is initialized before use.
 
-  \sa        .
+    Upon creation this class loads all GDAL drivers and upon destuction
+    it unloads them again, removing them from memory.
 */
 class GDALClient
 {
 
 public:
 
-protected:
-
                    GDALClient          ();
 
                    GDALClient          (GDALClient const&)=delete;
 
-    GDALClient&    operator=           (GDALClient const&)=delete;
-
                    GDALClient          (GDALClient&&)=delete;
 
-    GDALClient&    operator=           (GDALClient&&)=delete;
-
     virtual        ~GDALClient         ();
+
+    GDALClient&    operator=           (GDALClient const&)=delete;
+
+    GDALClient&    operator=           (GDALClient&&)=delete;
 
 private:
 
@@ -48,4 +49,6 @@ private:
 
 };
 
+} // namespace gdal
+} // namespace io
 } // namespace fern

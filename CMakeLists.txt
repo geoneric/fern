@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 2.8)
+# We need support for cmake -E env.
+cmake_minimum_required(VERSION 3.1)
 
 project(Fern)
 
@@ -32,12 +33,14 @@ configure_file(
     ${CMAKE_CURRENT_BINARY_DIR}/test_run_epilog.sh
 )
 
-# Order matters. some doc targets depend on source targets.
+# Order matters. Some doc targets depend on source targets.
 add_subdirectory(environment)
 add_subdirectory(source)
 add_subdirectory(document)
 
-install(
-    EXPORT fern_targets
-    DESTINATION lib/fern
-)
+if(TARGET fern_targets)
+    install(
+        EXPORT fern_targets
+        DESTINATION lib/fern
+    )
+endif()

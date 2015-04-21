@@ -7,19 +7,13 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include "fern/core/path.h"
+#include <string>
 
 
 namespace fern {
+namespace io {
 
-bool               file_exists         (Path const& path);
+bool               file_exists         (std::string const& pathname);
 
-bool               file_is_writable    (Path const& path);
-
-bool               directory_is_writable(
-                                        Path const& path);
-
-void               write_file          (String const& value,
-                                        Path const& path);
-
+} // namespace io
 } // namespace fern

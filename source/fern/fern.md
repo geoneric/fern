@@ -7,10 +7,8 @@ high-performance calculations. Modellers can use Fern to build their
 models, without having to know about the details of programming a computer
 for high-performance computing.
 
-The scope of the envisioned Fern software is broad, but we started with
-implementing an initial set of generic parallel algorithms for
-manipulating gridded data (1D, 2D and 3D). For an overview of these
-algorithms, visit the @ref fern_algorithm_group group page.
+The Fern source code and documentation is grouped in modules. For an
+overview of these modules, see the [modules](modules.html) page.
 
 
 <!---

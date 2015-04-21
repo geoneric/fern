@@ -17,6 +17,7 @@ namespace fern {
 // value_types.cc
 ValueTypes const ValueTypes::UNKNOWN;
 ValueTypes const ValueTypes::BOOL(1 << ValueType::VT_BOOL);
+ValueTypes const ValueTypes::CHAR(1 << ValueType::VT_CHAR);
 ValueTypes const ValueTypes::UINT8(1 << ValueType::VT_UINT8);
 ValueTypes const ValueTypes::INT8(1 << ValueType::VT_INT8);
 ValueTypes const ValueTypes::UINT16(1 << ValueType::VT_UINT16);
@@ -39,12 +40,16 @@ ValueTypes const ValueTypes::FLOATING_POINT(ValueTypes::FLOAT32 |
     ValueTypes::FLOAT64);
 ValueTypes const ValueTypes::NUMBER(ValueTypes::INTEGER |
     ValueTypes::FLOATING_POINT);
-ValueTypes const ValueTypes::ALL(ValueTypes::BOOL | ValueTypes::NUMBER |
-    ValueTypes::STRING);
+ValueTypes const ValueTypes::ALL(ValueTypes::BOOL | ValueTypes::CHAR |
+    ValueTypes::NUMBER | ValueTypes::STRING);
 
 ValueType const TypeTraits<bool>::value_type(VT_BOOL);
 ValueTypes const TypeTraits<bool>::value_types(ValueTypes::BOOL);
 String const TypeTraits<bool>::name("bool");
+
+ValueType const TypeTraits<char>::value_type(VT_CHAR);
+ValueTypes const TypeTraits<char>::value_types(ValueTypes::CHAR);
+String const TypeTraits<char>::name("char");
 
 ValueType const TypeTraits<int8_t>::value_type(VT_INT8);
 ValueTypes const TypeTraits<int8_t>::value_types(ValueTypes::INT8);

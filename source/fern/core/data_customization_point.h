@@ -23,7 +23,7 @@ namespace fern {
     @brief      Return the number of elements in @a collection.
 */
 template<
-    class T>
+    typename T>
 size_t             size                (T const& collection);
 
 
@@ -32,7 +32,7 @@ size_t             size                (T const& collection);
     @brief      Convert 2D indices to linear index.
 */
 template<
-    class T>
+    typename T>
 size_t             index               (T const& collection,
                                         size_t index1,
                                         size_t index2);
@@ -43,7 +43,7 @@ size_t             index               (T const& collection,
                 passed in.
 */
 template<
-    class T>
+    typename T>
 T const&           get                 (T const&);
 
 
@@ -52,7 +52,7 @@ T const&           get                 (T const&);
     @overload
 */
 template<
-    class T>
+    typename T>
 T&                 get                 (T&);
 
 
@@ -62,7 +62,7 @@ T&                 get                 (T&);
                 in the data type instance passed in.
 */
 template<
-    class T>
+    typename T>
 T const&           get                 (T const& collection,
                                         size_t index);
 
@@ -71,9 +71,21 @@ T const&           get                 (T const& collection,
     @overload
 */
 template<
-    class T>
+    typename T>
 T&                 get                 (T& collection,
                                         size_t index);
+
+
+template<
+    typename T>
+value_type<T>*     data                (T& collection);
+
+
+template<
+    typename T>
+void               set_transformation  (T& collection,
+                                        size_t index,
+                                        double value);
 
 
 //! Clone a collection, using a different value type.
@@ -100,8 +112,8 @@ T&                 get                 (T& collection,
     `std::vector`.
 */
 template<
-    class ValueType,
-    class Value>
+    typename ValueType,
+    typename Value>
 CloneT<Value, ValueType>
                    clone               (Value const& value);
 
@@ -113,8 +125,8 @@ CloneT<Value, ValueType>
     The @a initial_value is used to initialize the values in the result.
 */
 template<
-    class ValueType,
-    class Value>
+    typename ValueType,
+    typename Value>
 CloneT<Value, ValueType>
                    clone               (Value const& value,
                                         ValueType const& initial_value);

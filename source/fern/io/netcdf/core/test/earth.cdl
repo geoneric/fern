@@ -1,0 +1,12 @@
+netcdf earth {
+
+dimensions:
+
+variables:
+    double gravity;
+
+:Conventions = "COARDS";
+
+data:
+    gravity = 9.8;
+}

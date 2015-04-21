@@ -8,7 +8,8 @@ add_library(_fern_io SHARED ${EXTENSION_SOURCES})
 target_link_libraries(_fern_io
     fern_python_extension_feature
     fern_feature_core
-    ${GDAL_LIBRARIES}
+    fern_io_gdal
+    fern_io_core
     ${Boost_PYTHON_LIBRARY}
     ${PYTHON_LIBRARIES}
     stdc++

@@ -12,6 +12,10 @@
 
 namespace fern {
 
+
+/*!
+    @brief      Exception for I/O related errors.
+*/
 class IOError:
     public Exception
 {

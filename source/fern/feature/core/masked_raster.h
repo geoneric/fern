@@ -72,8 +72,10 @@ public:
     virtual        ~MaskedRaster       ()=default;
 
     Transformation const&
-
                    transformation      () const;
+
+    Transformation&
+                   transformation      ();
 
 private:
 
@@ -120,6 +122,16 @@ template<
     size_t nr_dimensions>
 inline typename MaskedRaster<T, nr_dimensions>::Transformation const&
     MaskedRaster<T, nr_dimensions>::transformation() const
+{
+    return _transformation;
+}
+
+
+template<
+    typename T,
+    size_t nr_dimensions>
+inline typename MaskedRaster<T, nr_dimensions>::Transformation&
+    MaskedRaster<T, nr_dimensions>::transformation()
 {
     return _transformation;
 }

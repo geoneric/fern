@@ -6,7 +6,7 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-// VT_BOOL and VT_STRING are not exposed in Python, so they shouldn't
+// VT_BOOL, VT_CHAR and VT_STRING are not exposed in Python, so they shouldn't
 // be passed in.
 
 
@@ -26,6 +26,7 @@ switch(value_type) {            \
     case_(VT_FLOAT32, float)    \
     case_(VT_FLOAT64, double)   \
     case VT_BOOL:               \
+    case VT_CHAR:               \
     case VT_INT8:               \
     case VT_UINT16:             \
     case VT_INT16:              \
@@ -52,6 +53,7 @@ switch(value_type) {                         \
     case_(VT_FLOAT32, float, __VA_ARGS__)    \
     case_(VT_FLOAT64, double, __VA_ARGS__)   \
     case VT_BOOL:                            \
+    case VT_CHAR:                            \
     case VT_INT8:               \
     case VT_UINT16:             \
     case VT_INT16:              \
@@ -78,6 +80,7 @@ switch(value_type) {                         \
     case_(VT_FLOAT32, float, __VA_ARGS__)    \
     case_(VT_FLOAT64, double, __VA_ARGS__)   \
     case VT_BOOL:                            \
+    case VT_CHAR:                            \
     case VT_INT8:               \
     case VT_UINT16:             \
     case VT_INT16:              \
@@ -104,6 +107,7 @@ switch(value_type) {                         \
     case_(VT_FLOAT32, float, __VA_ARGS__)    \
     case_(VT_FLOAT64, double, __VA_ARGS__)   \
     case VT_BOOL:                            \
+    case VT_CHAR:                            \
     case VT_INT8:               \
     case VT_UINT16:             \
     case VT_INT16:              \

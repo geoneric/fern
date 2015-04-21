@@ -8,12 +8,6 @@ EXCLUDE_PATTERNS        = */detail/* \
                           ${CMAKE_CURRENT_SOURCE_DIR}/fern/expression_tree \
                           ${CMAKE_CURRENT_SOURCE_DIR}/fern/expression_tree_1 \
                           ${CMAKE_CURRENT_SOURCE_DIR}/fern/expression_templates \
-                          ${CMAKE_CURRENT_SOURCE_DIR}/fern/tmp/*/*.h \
-                          ${CMAKE_CURRENT_SOURCE_DIR}/fern/tmp/*/*.cc \
-                          ${CMAKE_CURRENT_SOURCE_DIR}/fern/io/netcdf/*.h \
-                          ${CMAKE_CURRENT_SOURCE_DIR}/fern/io/netcdf/*.cc \
-                          ${CMAKE_CURRENT_SOURCE_DIR}/fern/io/ogr/*.h \
-                          ${CMAKE_CURRENT_SOURCE_DIR}/fern/io/ogr/*.cc
 EXCLUDE_SYMBOLS         = *::detail \
                           H5 \
                           XERCES_CPP_NAMESPACE \

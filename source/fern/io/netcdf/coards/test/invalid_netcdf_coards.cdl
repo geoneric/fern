@@ -1,0 +1,6 @@
+netcdf earth {
+dimensions:
+variables:
+// global attributes:
+data:
+}

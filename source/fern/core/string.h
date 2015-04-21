@@ -29,12 +29,15 @@ namespace fern {
         depends on the OS. char for ISO/IEC 9945, wchar_t for Windows
         Compare with boost::filesystem's path. Add compile-time checks for
         this.
+
+  \todo Get rid of this class. Use std::string and some free functions to
+        do the encoding/decoding. Inheriting from std::string is wrong, and
+        clients will be using std::string anyway. Don't force them into using
+        String.
 */
 class String:
     public std::string
 {
-
-    friend class DataName;
 
 public:
 
@@ -92,9 +95,9 @@ public:
     String&        replace             (String const& old_string,
                                         String const& new_string);
 
-#ifndef FERN_COMPILER_DOES_NOT_HAVE_REGEX
-    std::vector<String> split          (String characters=String()) const;
-#endif
+/// #ifndef FERN_COMPILER_DOES_NOT_HAVE_REGEX
+///     std::vector<String> split          (String characters=String()) const;
+/// #endif
 
     template<
         class T>
@@ -113,10 +116,6 @@ private:
 
     using Base = std::string;
 
-    String&        strip_begin         (String const& characters);
-
-    String&        strip_end           (String const& characters);
-
 };
 
 
@@ -125,6 +124,22 @@ String             operator+           (String const& lhs,
 
 std::ostream&      operator<<          (std::ostream& stream,
                                         String const& string);
+
+#ifndef FERN_COMPILER_DOES_NOT_HAVE_REGEX
+std::vector<std::string>
+                   split               (std::string const& string,
+                                        std::string characters=std::string());
+#endif
+
+std::string&       strip               (std::string& string,
+                                        std::string const& characters=
+                                            std::string());
+
+std::string&       strip_begin         (std::string& string,
+                                        std::string const& characters);
+
+std::string&       strip_end           (std::string& string,
+                                        std::string const& characters);
 
 String             join                (std::vector<String> const& strings,
                                         String const& separator);

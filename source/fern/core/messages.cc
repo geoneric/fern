@@ -20,7 +20,7 @@ Messages::Messages()
 
     insert(std::make_pair(MessageId::IO_ERROR,
         // source: message
-        "IO error handling %1%: %2%"));
+        "I/O error handling %1%: %2%"));
     insert(std::make_pair(MessageId::DOES_NOT_EXIST,
         "Does not exist"));
     insert(std::make_pair(MessageId::CANNOT_BE_READ,
@@ -29,6 +29,15 @@ Messages::Messages()
         "Cannot be written"));
     insert(std::make_pair(MessageId::CANNOT_BE_CREATED,
         "Cannot be created"));
+    insert(std::make_pair(MessageId::DOES_NOT_CONFORM_TO_CONVENTION,
+        // convention
+        "Does not conform to convention: %1%"));
+    insert(std::make_pair(MessageId::DOES_NOT_CONTAIN_VARIABLE,
+        // variable
+        "Does not contain variable: %1%"));
+    insert(std::make_pair(MessageId::VARIABLE_IS_NOT_A_SCALAR,
+        // variable
+        "Variable is not a scalar: %1%"));
     insert(std::make_pair(MessageId::DOES_NOT_CONTAIN_FEATURE,
         // feature
         "Does not contain feature: %1%"));

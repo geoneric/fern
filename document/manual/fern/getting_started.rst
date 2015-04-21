@@ -9,17 +9,17 @@ Prerequisites
 -------------
 The Geoneric Fern software depends on 3rd party software. Depending on the Geoneric Fern modules you want to build, you need or need not to install dependencies. Below we list the dependencies and whether or not they are required:
 
-+------------+-----------------------------------------+
-| Dependency | Required or not                         |
-+============+=========================================+
-| Boost      | Always                                  |
-+------------+-----------------------------------------+
-| NetCDF     | `FERN_BUILD_IO` with `FERN_WITH_NETCDF` |
-+------------+-----------------------------------------+
-| HDF5       | `FERN_BUILD_IO` with `FERN_WITH_HDF5`   |
-+------------+-----------------------------------------+
-| GDAL       | `FERN_BUILD_IO` with `FERN_WITH_GDAL`   |
-+------------+-----------------------------------------+
++------------+--------------------------------------------+
+| Dependency | Required or not                            |
++============+============================================+
+| Boost      | Always                                     |
++------------+--------------------------------------------+
+| NetCDF     | `FERN_BUILD_IO` with `FERN_IO_WITH_NETCDF` |
++------------+--------------------------------------------+
+| HDF5       | `FERN_BUILD_IO` with `FERN_WITH_HDF5`      |
++------------+--------------------------------------------+
+| GDAL       | `FERN_BUILD_IO` with `FERN_IO_WITH_GDAL`   |
++------------+--------------------------------------------+
 
 Dependencies can be installed using your system's package manager or built. In the latter case you may want to consider using using Geoneric `Peacock`_, which can build all requirements needed by Geoneric Fern for various platforms. The Geoneric Fern sources contains a script (`environment/script/peacock.sh`) which builds all requirements using Peacock.
 
@@ -49,20 +49,21 @@ Initially, all configuration options are set to `FALSE`.
     Build Fern documentation.
 
 
-`FERN_WITH_NETCDF`
+`FERN_IO_WITH_NETCDF`
     Include support for NetCDF in Fern.IO module.
 
 `FERN_WITH_HDF5`
     Include support for HDF5 in Fern.IO module.
 
-`FERN_WITH_GDAL`
+`FERN_IO_WITH_GDAL`
     Include support for GDAL in Fern.IO module.
 
 
 Some CMake configuration options imply the use of other configuration options:
 
 - `FERN_BUILD_ALL` implies `FERN_BUILD_*`.
-- `FERN_BUILD_PYTHON` implies `FERN_BUILD_ALGORITHM`.
+- `FERN_BUILD_PYTHON` implies `FERN_BUILD_ALGORITHM`, `FERN_BUILD_IO`,
+  `FERN_IO_WITH_GDAL`.
 
 
 Instructions per platform:
