@@ -1,0 +1,9 @@
+/*!
+    @brief      Group containing code related to handling files using GDAL.
+    @defgroup   fern_io_gdal_group GDAL
+    @ingroup    fern_io_group
+
+    See also:
+    - GDAL homepage: http://www.gdal.org
+    - GDAL API tutorial: http://www.gdal.org/gdal_tutorial.html
+*/

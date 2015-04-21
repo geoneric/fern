@@ -14,7 +14,7 @@ namespace fern {
 namespace io {
 namespace netcdf {
 
-bool               conforms_to_coards  (DatasetHandle const& handle);
+bool               conforms_to_coards  (DatasetHandle const& dataset);
 
 } // namespace netcdf
 } // namespace io

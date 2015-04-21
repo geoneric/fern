@@ -2,4 +2,12 @@
     @brief      Group containing code related to handling NetCDF files.
     @defgroup   fern_io_netcdf_group NetCDF
     @ingroup    fern_io_group
+
+
+    See also:
+    - NetCDF homepage: http://www.unidata.ucar.edu/software/netcdf
+    - NetCDF C-API documentation: http://www.unidata.ucar.edu/software/netcdf/docs/modules.html
+    - Conventions:
+        - COARDS: http://ferret.wrc.noaa.gov/noaa_coop/coop_cdf_profile.html
+        - CF: http://cfconventions.org/
 */

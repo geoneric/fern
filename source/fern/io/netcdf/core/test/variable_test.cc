@@ -27,10 +27,10 @@ BOOST_AUTO_TEST_CASE(contains_variable)
     std::string dataset_pathname = "earth.nc";
     BOOST_REQUIRE(fi::file_exists(dataset_pathname));
 
-    fin::DatasetHandle handle = fin::open_dataset(dataset_pathname);
+    fin::DatasetHandle dataset = fin::open_dataset(dataset_pathname);
 
-    BOOST_CHECK(!fin::contains_variable(handle, "does_not_exist"));
-    BOOST_CHECK( fin::contains_variable(handle, "gravity"));
+    BOOST_CHECK(!fin::contains_variable(dataset, "does_not_exist"));
+    BOOST_CHECK( fin::contains_variable(dataset, "gravity"));
 }
 
 
@@ -39,12 +39,12 @@ BOOST_AUTO_TEST_CASE(variable_is_scalar)
     std::string dataset_pathname = "earth.nc";
     BOOST_REQUIRE(fi::file_exists(dataset_pathname));
 
-    fin::DatasetHandle handle = fin::open_dataset(dataset_pathname);
+    fin::DatasetHandle dataset = fin::open_dataset(dataset_pathname);
     std::string variable_name = "gravity";
-    BOOST_REQUIRE(fin::contains_variable(handle, variable_name));
+    BOOST_REQUIRE(fin::contains_variable(dataset, variable_name));
 
-    int variable_id = fin::variable_id(handle, variable_name);
-    BOOST_CHECK(fin::variable_is_scalar(handle, variable_id));
+    int variable_id = fin::variable_id(dataset, variable_name);
+    BOOST_CHECK(fin::variable_is_scalar(dataset, variable_id));
 
     // TODO Test non-scalar variable.
 }
@@ -53,10 +53,10 @@ BOOST_AUTO_TEST_CASE(variable_is_scalar)
 BOOST_AUTO_TEST_CASE(value_type_id)
 {
     std::string dataset_pathname = "earth.nc";
-    fin::DatasetHandle handle = fin::open_dataset(dataset_pathname);
+    fin::DatasetHandle dataset = fin::open_dataset(dataset_pathname);
     std::string variable_name = "gravity";
-    int variable_id = fin::variable_id(handle, variable_name);
-    BOOST_CHECK_EQUAL(fin::value_type_id(handle, variable_id),
+    int variable_id = fin::variable_id(dataset, variable_name);
+    BOOST_CHECK_EQUAL(fin::value_type_id(dataset, variable_id),
         fern::VT_FLOAT64);
 }
 
@@ -64,12 +64,12 @@ BOOST_AUTO_TEST_CASE(value_type_id)
 BOOST_AUTO_TEST_CASE(read_variable)
 {
     std::string dataset_pathname = "earth.nc";
-    fin::DatasetHandle handle = fin::open_dataset(dataset_pathname);
+    fin::DatasetHandle dataset = fin::open_dataset(dataset_pathname);
     std::string variable_name = "gravity";
-    int variable_id = fin::variable_id(handle, variable_name);
+    int variable_id = fin::variable_id(dataset, variable_name);
     double gravity;
     fa::DontMarkNoData output_no_data_policy;
-    fin::read_variable(output_no_data_policy, handle, variable_id, gravity);
+    fin::read_variable(output_no_data_policy, dataset, variable_id, gravity);
 
     BOOST_CHECK_CLOSE(gravity, 9.8, 7);
 }

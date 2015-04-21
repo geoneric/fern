@@ -75,6 +75,29 @@ inline typename DataTraits<MaskedRaster<T, nr_dimensions>>::reference get(
 
 
 template<
+    typename T,
+    size_t nr_dimensions>
+inline T* data(
+    MaskedRaster<T, nr_dimensions>& raster)
+{
+    return raster.data();
+}
+
+
+template<
+    typename T,
+    size_t nr_dimensions>
+inline void set_transformation(
+    MaskedRaster<T, nr_dimensions>& raster,
+    size_t index,
+    double value)
+{
+    assert(index < 2 * nr_dimensions);
+    raster.transformation()[index] = value;
+}
+
+
+template<
     typename U,
     typename V>
 inline MaskedRaster<U, 1> clone(

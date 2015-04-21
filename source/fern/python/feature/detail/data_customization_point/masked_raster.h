@@ -120,6 +120,15 @@ inline typename DataTraits<python::detail::MaskedRaster<T>>::reference get(
 
 
 template<
+    typename T>
+inline T* data(
+    python::detail::MaskedRaster<T>& raster)
+{
+    return raster.data();
+}
+
+
+template<
     typename U,
     typename V>
 inline python::detail::MaskedRaster<U> clone(

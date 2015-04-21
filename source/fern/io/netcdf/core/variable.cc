@@ -18,18 +18,17 @@ namespace netcdf {
 
 /*!
     @ingroup    fern_io_netcdf_group
-    @brief      Return whether or not dataset \a handle contains variable
-                @a name.
+    @brief      Return whether or not @a dataset contains variable @a name.
 
     Assumptions:
-    - @a handle corresponds with a valid open NetCDF dataset.
+    - @a dataset corresponds with a valid open NetCDF dataset.
 */
 bool contains_variable(
-    DatasetHandle const& handle,
+    DatasetHandle const& dataset,
     std::string const& name)
 {
     int variable_id;
-    int status = nc_inq_varid(handle.ncid(), name.c_str(), &variable_id);
+    int status = nc_inq_varid(dataset.ncid(), name.c_str(), &variable_id);
 
     assert(status != NC_EBADID);
 
@@ -42,15 +41,15 @@ bool contains_variable(
     @brief      Return id of variable @a name.
 
     Assumptions:
-    - @a handle corresponds with a valid open NetCDF dataset.
+    - @a dataset corresponds with a valid open NetCDF dataset.
     - @a name corresponds with a variable in the dataset.
 */
 int variable_id(
-    DatasetHandle const& handle,
+    DatasetHandle const& dataset,
     std::string const& name)
 {
     int variable_id;
-    int status = nc_inq_varid(handle.ncid(), name.c_str(), &variable_id);
+    int status = nc_inq_varid(dataset.ncid(), name.c_str(), &variable_id);
 
     assert(status != NC_EBADID);
     assert(status == NC_NOERR);
@@ -64,15 +63,15 @@ int variable_id(
     @brief      Return whether variable @a variable_id is scalar.
 
     Assumptions:
-    - @a handle corresponds with a valid open NetCDF dataset.
+    - @a dataset corresponds with a valid open NetCDF dataset.
     - @a variable_id corresponds with the id of a variable in the dataset.
 */
 bool variable_is_scalar(
-    DatasetHandle const& handle,
+    DatasetHandle const& dataset,
     int variable_id)
 {
     int nr_dimensions;
-    int status = nc_inq_var(handle.ncid(), variable_id, nullptr, nullptr,
+    int status = nc_inq_var(dataset.ncid(), variable_id, nullptr, nullptr,
         &nr_dimensions, nullptr, nullptr);
 
     assert(status != NC_EBADID);
@@ -125,15 +124,15 @@ ValueType value_type_id(
     @brief      Return value type id of variable @a variable_id.
 
     Assumptions:
-    - @a handle corresponds with a valid open NetCDF dataset.
+    - @a dataset corresponds with a valid open NetCDF dataset.
     - @a variable_id corresponds with the id of a variable in the dataset.
 */
 ValueType value_type_id(
-    DatasetHandle const& handle,
+    DatasetHandle const& dataset,
     int variable_id)
 {
     nc_type type_id;
-    int status = nc_inq_vartype(handle.ncid(), variable_id, &type_id);
+    int status = nc_inq_vartype(dataset.ncid(), variable_id, &type_id);
 
     assert(status != NC_EBADID);
     assert(status != NC_ENOTVAR);

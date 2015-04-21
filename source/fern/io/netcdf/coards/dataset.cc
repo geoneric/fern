@@ -17,16 +17,15 @@ namespace netcdf {
 
 /*!
     @ingroup    fern_io_netcdf_group
-    @brief      Return whether dataset @a handle conforms to the COARDS
-                conventions.
+    @brief      Return whether @a dataset conforms to the COARDS conventions.
 
     Assumptions:
-    - @a handle corresponds with a valid open NetCDF dataset.
+    - @a dataset corresponds with a valid open NetCDF dataset.
 */
 bool conforms_to_coards(
-    DatasetHandle const& handle)
+    DatasetHandle const& dataset)
 {
-    auto conventions(netcdf::conventions(handle));
+    auto conventions(netcdf::conventions(dataset));
 
     return std::find(conventions.begin(), conventions.end(), "COARDS") !=
             conventions.end();

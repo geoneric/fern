@@ -31,6 +31,8 @@ class MaskedArray:
 
 public:
 
+    using Mask = fern::Mask<nr_dimensions>;
+
                    MaskedArray         ()=default;
 
                    MaskedArray         (size_t size,
@@ -61,9 +63,9 @@ public:
 
     bool           has_masked_values   () const;
 
-    Mask<nr_dimensions> const& mask    () const;
+    Mask const&    mask                () const;
 
-    Mask<nr_dimensions>& mask          ();
+    Mask&          mask                ();
 
     template<
         typename U>
@@ -80,7 +82,7 @@ public:
 
 private:
 
-    Mask<nr_dimensions> _mask;
+    Mask           _mask;
 
 };
 
@@ -100,7 +102,7 @@ inline MaskedArray<T, nr_dimensions>::MaskedArray(
     assert(_mask.num_elements() == values.size());
 
     typename Array<T, nr_dimensions>::value_type* value_it = this->data();
-    typename Mask<nr_dimensions>::value_type* mask_it = _mask.data();
+    typename Mask::value_type* mask_it = _mask.data();
 
     for(typename std::vector<MaskedScalar<T>>::const_iterator container_it =
             values.begin(); container_it != values.end();
@@ -131,7 +133,7 @@ inline MaskedArray<T, nr_dimensions>::MaskedArray(
 //     assert(_mask.num_elements() == container.size());
 // 
 //     typename Array<T, nr_dimensions>::value_type* value_it = this->data();
-//     typename Mask<nr_dimensions>::value_type mask_it = _mask.data();
+//     typename Mask::value_type mask_it = _mask.data();
 // 
 //     for(typename Container<Value>::const_it container_it = container.begin();
 //             container_it != container.end(); ++container_it, ++value_it,
@@ -226,7 +228,8 @@ inline bool MaskedArray<T, nr_dimensions>::has_masked_values() const
 template<
     typename T,
     size_t nr_dimensions>
-inline Mask<nr_dimensions> const& MaskedArray<T, nr_dimensions>::mask() const
+inline typename MaskedArray<T, nr_dimensions>::Mask const&
+    MaskedArray<T, nr_dimensions>::mask() const
 {
     return _mask;
 }
@@ -235,7 +238,8 @@ inline Mask<nr_dimensions> const& MaskedArray<T, nr_dimensions>::mask() const
 template<
     typename T,
     size_t nr_dimensions>
-inline Mask<nr_dimensions>& MaskedArray<T, nr_dimensions>::mask()
+inline typename MaskedArray<T, nr_dimensions>::Mask&
+    MaskedArray<T, nr_dimensions>::mask()
 {
     return _mask;
 }

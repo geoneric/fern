@@ -21,19 +21,19 @@ namespace netcdf {
     @brief      Return the value of the global attribute @a name in @a ncid.
 
     Assumptions:
-    - @a handle corresponds with a valid open NetCDF dataset.
+    - @a dataset corresponds with a valid open NetCDF dataset.
     - @a name corresponds with a global attribute in the dataset.
 */
 template<
     typename T>
-T                  attribute           (DatasetHandle const& handle,
+T                  attribute           (DatasetHandle const& dataset,
                                         std::string const& name);
 
-bool               has_attribute       (DatasetHandle const& handle,
+bool               has_attribute       (DatasetHandle const& dataset,
                                         std::string const& name);
 
 std::vector<std::string>
-                   conventions         (DatasetHandle const& handle);
+                   conventions         (DatasetHandle const& dataset);
 
 } // namespace netcdf
 } // namespace io

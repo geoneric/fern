@@ -20,9 +20,17 @@ namespace fern {
 static std::regex regular_expression(R"(([^:]+)(?::(.+)?)?)");
 
 
-
 DataName::DataName(
     char const* string)
+
+    : DataName(String(string))
+
+{
+}
+
+
+DataName::DataName(
+    std::string const& string)
 
     : DataName(String(string))
 

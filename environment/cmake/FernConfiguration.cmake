@@ -14,11 +14,12 @@ option(FERN_BUILD_TEST "Build tests" FALSE)
 # FERN_WITH_<feature>
 option(FERN_WITH_ALL "Support all features" FALSE)
 option(FERN_WITH_HDF5 "Add support for HDF5" FALSE)
-option(FERN_WITH_NETCDF "Add support for NetCDF" FALSE)
-option(FERN_WITH_GDAL "Add support for GDAL" FALSE)
+option(FERN_IO_WITH_NETCDF "Add support for NetCDF" FALSE)
+option(FERN_IO_WITH_GDAL "Add support for GDAL" FALSE)
 
 
-# Some modules require the build of other modules.
+# Some modules require the build of other modules and support for certain
+# features.
 if(FERN_BUILD_ALL)
     set(FERN_BUILD_ALGORITHM TRUE)
     set(FERN_BUILD_DOCUMENTATION TRUE)
@@ -30,15 +31,15 @@ endif()
 if(FERN_BUILD_PYTHON)
     set(FERN_BUILD_ALGORITHM TRUE)
     set(FERN_BUILD_IO TRUE)
-    set(FERN_WITH_GDAL TRUE)
+    set(FERN_IO_WITH_GDAL TRUE)
 endif()
 
 
 # Some features require the selection of other features.
 if(FERN_WITH_ALL)
     set(FERN_WITH_HDF5 TRUE)
-    set(FERN_WITH_NETCDF TRUE)
-    set(FERN_WITH_GDAL TRUE)
+    set(FERN_IO_WITH_NETCDF TRUE)
+    set(FERN_IO_WITH_GDAL TRUE)
 endif()
 
 
@@ -112,10 +113,10 @@ if(FERN_BUILD_IO)
     if(FERN_WITH_HDF5)
         set(FERN_HDF5_REQUIRED TRUE)
     endif()
-    if(FERN_WITH_NETCDF)
+    if(FERN_IO_WITH_NETCDF)
         set(FERN_NETCDF_REQUIRED TRUE)
     endif()
-    if(FERN_WITH_GDAL)
+    if(FERN_IO_WITH_GDAL)
         set(FERN_GDAL_REQUIRED TRUE)
     endif()
 

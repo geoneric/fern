@@ -14,12 +14,6 @@
 namespace fern {
 namespace algorithm {
 
-// template<
-//     typename T,
-//     size_t nr_dimensions>
-// T                  no_data_value       (Array<T, nr_dimensions> const& array);
-
-
 template<
     size_t nr_dimensions>
 inline constexpr bool no_data_value(

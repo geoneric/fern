@@ -17,25 +17,25 @@ namespace fern {
 namespace io {
 namespace netcdf {
 
-bool               contains_variable   (DatasetHandle const& handle,
+bool               contains_variable   (DatasetHandle const& dataset,
                                         std::string const& name);
 
-int                variable_id         (DatasetHandle const& handle,
+int                variable_id         (DatasetHandle const& dataset,
                                         std::string const& name);
 
-bool               variable_is_scalar  (DatasetHandle const& handle,
+bool               variable_is_scalar  (DatasetHandle const& dataset,
                                         int variable_id);
 
-ValueType          value_type_id       (DatasetHandle const& handle,
+ValueType          value_type_id       (DatasetHandle const& dataset,
                                         int variable_id);
 
 /*!
     @ingroup    fern_io_netcdf_group
-    @brief      Read variable @a variable_id from dataset @a handle into
+    @brief      Read variable @a variable_id from @a dataset into
                 @a destination.
 
     Assumptions:
-    - @a handle corresponds with a valid open NetCDF dataset.
+    - @a dataset corresponds with a valid open NetCDF dataset.
     - @a variable_id corresponds with the id of a variable in the dataset.
     - @a destination has the ѕame data type as the variable to read.
 */
@@ -44,11 +44,11 @@ template<
     typename Destination>
 inline void read_variable(
     OutputNoDataPolicy& output_no_data_policy,
-    DatasetHandle const& handle,
+    DatasetHandle const& dataset,
     int variable_id,
     Destination& destination)
 {
-    detail::read_variable(output_no_data_policy, handle, variable_id,
+    detail::read_variable(output_no_data_policy, dataset, variable_id,
         destination, argument_category<Destination>());
 }
 

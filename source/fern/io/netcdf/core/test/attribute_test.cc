@@ -24,10 +24,10 @@ BOOST_AUTO_TEST_CASE(has_attribute)
     std::string dataset_pathname = "earth.nc";
     BOOST_REQUIRE(fi::file_exists(dataset_pathname));
 
-    fin::DatasetHandle handle = fin::open_dataset(dataset_pathname);
+    fin::DatasetHandle dataset = fin::open_dataset(dataset_pathname);
 
-    BOOST_CHECK(!fin::has_attribute(handle, "does_not_exist"));
-    BOOST_CHECK( fin::has_attribute(handle, "Conventions"));
+    BOOST_CHECK(!fin::has_attribute(dataset, "does_not_exist"));
+    BOOST_CHECK( fin::has_attribute(dataset, "Conventions"));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

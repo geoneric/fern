@@ -77,6 +77,9 @@ if(FERN_GDAL_REQUIRED)
     list(APPEND FERN_EXTERNAL_LIBRARIES
         ${GDAL_LIBRARIES}
     )
+    find_program(GDAL_TRANSLATE gdal_translate
+        HINTS ${GDAL_INCLUDE_DIR}/../bin
+    )
 endif()
 if(FERN_HDF5_REQUIRED)
     set(HDF5_USE_STATIC_LIBRARIES OFF)

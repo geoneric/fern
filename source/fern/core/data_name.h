@@ -40,6 +40,8 @@ public:
 
                    DataName            (char const* string);
 
+                   DataName            (std::string const& string);
+
                    DataName            (String const& string);
 
                    DataName            (DataName&&)=default;

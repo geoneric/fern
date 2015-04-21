@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 2.8)
+# We need support for cmake -E env.
+cmake_minimum_required(VERSION 3.1)
 
 project(Fern)
 

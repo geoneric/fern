@@ -18,19 +18,19 @@ namespace netcdf {
 
 template<>
 std::string attribute(
-    DatasetHandle const& handle,
+    DatasetHandle const& dataset,
     std::string const& name)
 {
-    assert(has_attribute(handle, name));
+    assert(has_attribute(dataset, name));
 
     size_t buffer_size;
-    int status = nc_inq_attlen(handle.ncid(), NC_GLOBAL, name.c_str(),
+    int status = nc_inq_attlen(dataset.ncid(), NC_GLOBAL, name.c_str(),
         &buffer_size);
 
     assert(status == NC_NOERR);
 
     std::vector<char> buffer(buffer_size);
-    status = nc_get_att_text(handle.ncid(), NC_GLOBAL, name.c_str(),
+    status = nc_get_att_text(dataset.ncid(), NC_GLOBAL, name.c_str(),
         buffer.data());
 
     assert(status == NC_NOERR);
@@ -46,14 +46,14 @@ std::string attribute(
                 @a name.
 
     Assumptions:
-    - @a handle corresponds with a valid open NetCDF dataset.
+    - @a dataset corresponds with a valid open NetCDF dataset.
 */
 bool has_attribute(
-    DatasetHandle const& handle,
+    DatasetHandle const& dataset,
     std::string const& name)
 {
     int attribute_id;
-    int status = nc_inq_attid(handle.ncid(), NC_GLOBAL, name.c_str(),
+    int status = nc_inq_attid(dataset.ncid(), NC_GLOBAL, name.c_str(),
         &attribute_id);
 
     assert(status != NC_EBADID);
@@ -76,17 +76,17 @@ bool has_attribute(
     by whitespace.
 
     Assumptions:
-    - @a handle corresponds with a valid open NetCDF dataset.
+    - @a dataset corresponds with a valid open NetCDF dataset.
 */
 std::vector<std::string> conventions(
-    DatasetHandle const& handle)
+    DatasetHandle const& dataset)
 {
     std::vector<std::string> values;
 
-    if(has_attribute(handle, "Conventions")) {
+    if(has_attribute(dataset, "Conventions")) {
 
         // Get the attribute value as a string.
-        std::string value{attribute<std::string>(handle, "Conventions")};
+        std::string value{attribute<std::string>(dataset, "Conventions")};
 
         // If the list of conventions is seperated by comma's.
         if(value.find(",") != std::string::npos) {

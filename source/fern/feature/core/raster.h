@@ -64,6 +64,9 @@ public:
     Transformation const&
                    transformation      () const;
 
+    Transformation&
+                   transformation      ();
+
 private:
 
     Transformation _transformation;
@@ -109,6 +112,16 @@ template<
     size_t nr_dimensions>
 inline typename Raster<T, nr_dimensions>::Transformation const&
     Raster<T, nr_dimensions>::transformation() const
+{
+    return _transformation;
+}
+
+
+template<
+    typename T,
+    size_t nr_dimensions>
+inline typename Raster<T, nr_dimensions>::Transformation&
+    Raster<T, nr_dimensions>::transformation()
 {
     return _transformation;
 }
