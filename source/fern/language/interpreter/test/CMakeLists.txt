@@ -1,62 +1,24 @@
-add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/valid-1.ran
-    COMMAND ${CMAKE_COMMAND} -E copy
-        ${FERN_DATA_DIR}/test/valid-1.ran
-        ${CMAKE_CURRENT_BINARY_DIR}
-    DEPENDS ${FERN_DATA_DIR}/test/valid-1.ran
-)
-list(APPEND outputs
-    ${CMAKE_CURRENT_BINARY_DIR}/valid-1.ran
-)
-
-
-add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/valid-1_unreadable.ran
-    COMMAND ${CMAKE_COMMAND} -E copy
-        ${FERN_DATA_DIR}/test/valid-1.ran
-        ${CMAKE_CURRENT_BINARY_DIR}/valid-1_unreadable.ran
-    COMMAND chmod a-r ${CMAKE_CURRENT_BINARY_DIR}/valid-1_unreadable.ran
-    DEPENDS ${FERN_DATA_DIR}/test/valid-1.ran
-)
-list(APPEND outputs
-    ${CMAKE_CURRENT_BINARY_DIR}/valid-1_unreadable.ran
-)
-
-
-add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/valid-2.ran
-    COMMAND ${CMAKE_COMMAND} -E copy
-        ${FERN_DATA_DIR}/test/valid-2.ran
-        ${CMAKE_CURRENT_BINARY_DIR}
-    DEPENDS ${FERN_DATA_DIR}/test/valid-2.ran
-)
-list(APPEND outputs
-    ${CMAKE_CURRENT_BINARY_DIR}/valid-2.ran
-)
-
-
-add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/invalid-1.ran
-    COMMAND ${CMAKE_COMMAND} -E copy
-        ${FERN_DATA_DIR}/test/invalid-1.ran
-        ${CMAKE_CURRENT_BINARY_DIR}
-    DEPENDS ${FERN_DATA_DIR}/test/invalid-1.ran
-)
-list(APPEND outputs
-    ${CMAKE_CURRENT_BINARY_DIR}/invalid-1.ran
-)
-
-
-add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/raster-1.asc
-    COMMAND ${CMAKE_COMMAND} -E copy
-        ${FERN_DATA_DIR}/test/raster-1.asc
-        ${CMAKE_CURRENT_BINARY_DIR}
-    DEPENDS ${FERN_DATA_DIR}/test/raster-1.asc
-)
-list(APPEND outputs
-    ${CMAKE_CURRENT_BINARY_DIR}/raster-1.asc
-)
+copy_test_file(
+    SOURCE_FILE_PATHNAME ${FERN_DATA_DIR}/test/valid-1.ran
+    DESTINATION_FILENAME valid-1.ran
+    DESTINATION_FILE_PATHNAMES_LIST outputs)
+copy_test_file(
+    SOURCE_FILE_PATHNAME ${FERN_DATA_DIR}/test/valid-1.ran
+    DESTINATION_FILENAME valid-1_unreadable.ran
+    PERMISSIONS WRITE_ONLY
+    DESTINATION_FILE_PATHNAMES_LIST outputs)
+copy_test_file(
+    SOURCE_FILE_PATHNAME ${FERN_DATA_DIR}/test/valid-2.ran
+    DESTINATION_FILENAME valid-2.ran
+    DESTINATION_FILE_PATHNAMES_LIST outputs)
+copy_test_file(
+    SOURCE_FILE_PATHNAME ${FERN_DATA_DIR}/test/invalid-1.ran
+    DESTINATION_FILENAME invalid-1.ran
+    DESTINATION_FILE_PATHNAMES_LIST outputs)
+copy_test_file(
+    SOURCE_FILE_PATHNAME ${FERN_DATA_DIR}/test/raster-1.asc
+    DESTINATION_FILENAME raster-1.asc
+    DESTINATION_FILE_PATHNAMES_LIST outputs)
 
 
 add_custom_command(

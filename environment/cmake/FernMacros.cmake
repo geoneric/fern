@@ -345,3 +345,59 @@ macro(force_out_of_tree_build)
         message(FATAL_ERROR "Fern must be build out-of-source")
     endif()
 endmacro()
+
+
+# Copy a test data file.
+function(copy_test_file)
+    set(OPTIONS "")
+    set(ONE_VALUE_ARGUMENTS
+        SOURCE_FILE_PATHNAME
+        DESTINATION_FILENAME
+        PERMISSIONS
+        DESTINATION_FILE_PATHNAMES_LIST)
+    set(MULTI_VALUE_ARGUMENTS "")
+
+    cmake_parse_arguments(COPY_TEST_FILE "${OPTIONS}" "${ONE_VALUE_ARGUMENTS}"
+        "${MULTI_VALUE_ARGUMENTS}" ${ARGN})
+
+    if(COPY_TEST_FILE_UNPARSED_ARGUMENTS)
+        message(FATAL_ERROR
+            "Macro called with unrecognized arguments: "
+            "${COPY_TEST_FILE_UNPARSED_ARGUMENTS}"
+        )
+    endif()
+
+    set(source_file_pathname ${COPY_TEST_FILE_SOURCE_FILE_PATHNAME})
+    set(destination_filename ${COPY_TEST_FILE_DESTINATION_FILENAME})
+    set(destination_file_pathname
+        ${CMAKE_CURRENT_BINARY_DIR}/${destination_filename})
+    set(destination_file_pathnames_list
+        ${COPY_TEST_FILE_DESTINATION_FILE_PATHNAMES_LIST})
+    set(permissions ${COPY_TEST_FILE_PERMISSIONS})
+
+    if(permissions)
+        if(${permissions} STREQUAL WRITE_ONLY)
+            add_custom_command(
+                OUTPUT ${destination_file_pathname}
+                WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+                COMMAND ${CMAKE_COMMAND} -E remove -f ${destination_filename}
+                COMMAND ${CMAKE_COMMAND} -E copy ${source_file_pathname}
+                    ${destination_filename}
+                COMMAND chmod 222 ${destination_filename}
+                DEPENDS ${source_file_pathname}
+            )
+        endif()
+    else()
+        add_custom_command(
+            OUTPUT ${destination_file_pathname}
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+            COMMAND ${CMAKE_COMMAND} -E remove -f ${destination_filename}
+            COMMAND ${CMAKE_COMMAND} -E copy ${source_file_pathname}
+                ${destination_filename}
+            DEPENDS ${source_file_pathname}
+        )
+    endif()
+
+    set(${destination_file_pathnames_list} ${${destination_file_pathnames_list}}
+        ${destination_file_pathname} PARENT_SCOPE)
+endfunction()

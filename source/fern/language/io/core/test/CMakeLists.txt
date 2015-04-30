@@ -1,26 +1,12 @@
-add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/raster-1.asc
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    COMMAND ${CMAKE_COMMAND} -E copy ${FERN_DATA_DIR}/test/raster-1.asc .
-    DEPENDS ${FERN_DATA_DIR}/test/raster-1.asc
-)
-list(APPEND outputs
-    ${CMAKE_CURRENT_BINARY_DIR}/raster-1.asc
-)
-
-
-add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/write_only.asc
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    COMMAND ${CMAKE_COMMAND} -E remove -f write_only.asc
-    COMMAND ${CMAKE_COMMAND} -E copy ${FERN_DATA_DIR}/test/raster-1.asc
-        write_only.asc
-    COMMAND chmod 222 write_only.asc
-    DEPENDS ${FERN_DATA_DIR}/test/raster-1.asc
-)
-list(APPEND outputs
-    ${CMAKE_CURRENT_BINARY_DIR}/write_only.asc
-)
+copy_test_file(
+    SOURCE_FILE_PATHNAME ${FERN_DATA_DIR}/test/raster-1.asc
+    DESTINATION_FILENAME raster-1.asc
+    DESTINATION_FILE_PATHNAMES_LIST outputs)
+copy_test_file(
+    SOURCE_FILE_PATHNAME ${FERN_DATA_DIR}/test/raster-1.asc
+    DESTINATION_FILENAME write_only.asc
+    PERMISSIONS WRITE_ONLY
+    DESTINATION_FILE_PATHNAMES_LIST outputs)
 
 
 add_custom_command(

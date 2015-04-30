@@ -1,13 +1,7 @@
-add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/raster-1.asc
-    COMMAND ${CMAKE_COMMAND} -E copy
-        ${FERN_DATA_DIR}/test/raster-1.asc
-        ${CMAKE_CURRENT_BINARY_DIR}
-    DEPENDS ${FERN_DATA_DIR}/test/raster-1.asc
-)
-list(APPEND outputs
-    ${CMAKE_CURRENT_BINARY_DIR}/raster-1.asc
-)
+copy_test_file(
+    SOURCE_FILE_PATHNAME ${FERN_DATA_DIR}/test/raster-1.asc
+    DESTINATION_FILENAME raster-1.asc
+    DESTINATION_FILE_PATHNAMES_LIST outputs)
 
 
 add_custom_command(
@@ -22,17 +16,11 @@ list(APPEND outputs
 )
 
 
-add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/write_only.h5
-    COMMAND ${CMAKE_COMMAND} -E copy
-        ${CMAKE_CURRENT_BINARY_DIR}/constant-1.h5
-        ${CMAKE_CURRENT_BINARY_DIR}/write_only.h5
-    COMMAND chmod 222 ${CMAKE_CURRENT_BINARY_DIR}/write_only.h5
-    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/constant-1.h5
-)
-list(APPEND outputs
-    ${CMAKE_CURRENT_BINARY_DIR}/write_only.h5
-)
+copy_test_file(
+    SOURCE_FILE_PATHNAME ${CMAKE_CURRENT_BINARY_DIR}/constant-1.h5
+    DESTINATION_FILENAME write_only.h5
+    PERMISSIONS WRITE_ONLY
+    DESTINATION_FILE_PATHNAMES_LIST outputs)
 
 
 add_custom_target(
