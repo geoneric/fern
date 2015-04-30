@@ -13,6 +13,7 @@
 
 
 namespace fern {
+namespace language {
 
 size_t GDALClient::_count = 0u;
 
@@ -144,4 +145,5 @@ GDALClient::~GDALClient()
     }
 }
 
+} // namespace language
 } // namespace fern

@@ -10,7 +10,9 @@
 
 
 namespace fern {
+namespace language {
 
 void               show_version        ();
 
+} // namespace language
 } // namespace fern

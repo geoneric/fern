@@ -10,7 +10,9 @@
 
 
 namespace fern {
+namespace language {
 
 void               enter_interpreter   ();
 
+} // namespace language
 } // namespace fern

@@ -14,6 +14,7 @@
 
 
 namespace fern {
+namespace language {
 
 class Module
 {
@@ -62,4 +63,5 @@ private:
 
 };
 
+} // namespace language
 } // namespace fern

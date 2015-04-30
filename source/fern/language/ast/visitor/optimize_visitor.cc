@@ -13,6 +13,7 @@
 
 
 namespace fern {
+namespace language {
 
 OptimizeVisitor::OptimizeVisitor()
 
@@ -168,4 +169,5 @@ std::cout << "visit script" << std::endl;
     } while(inlined_expressions);
 }
 
+} // namespace language
 } // namespace fern

@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 H5::PredType const HDF5TypeTraits<uint8_t>::data_type =
     H5::PredType::NATIVE_UINT8;
@@ -32,4 +33,5 @@ H5::PredType const HDF5TypeTraits<float>::data_type =
 H5::PredType const HDF5TypeTraits<double>::data_type =
     H5::PredType::NATIVE_DOUBLE;
 
+} // namespace language
 } // namespace fern

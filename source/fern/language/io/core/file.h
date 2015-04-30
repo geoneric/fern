@@ -11,6 +11,7 @@
 
 
 namespace fern {
+namespace language {
 
 bool               file_exists         (Path const& path);
 
@@ -22,4 +23,5 @@ bool               directory_is_writable(
 void               write_file          (std::string const& value,
                                         Path const& path);
 
+} // namespace language
 } // namespace fern

@@ -14,10 +14,11 @@
 #include "fern/language/ast/xml/syntax_tree-pskel.hxx"
 
 
-namespace {
+namespace fern {
+namespace language {
 
 class Fern_pimpl:
-    public fern::Fern_pskel
+    public Fern_pskel
 {
 
 public:
@@ -30,34 +31,34 @@ public:
     void source(
         std::string const& sourceName)
     {
-        _source_name = fern::String(sourceName);
+        _source_name = String(sourceName);
     }
 
     void Statements(
-        std::vector<std::shared_ptr<fern::StatementVertex>> const&
+        std::vector<std::shared_ptr<StatementVertex>> const&
             statements)
     {
         assert(!_scope_vertex);
-        _scope_vertex = std::make_shared<fern::ScopeVertex>(statements);
+        _scope_vertex = std::make_shared<ScopeVertex>(statements);
     }
 
-    std::shared_ptr<fern::ModuleVertex> post_Fern()
+    std::shared_ptr<ModuleVertex> post_Fern()
     {
-        return std::shared_ptr<fern::ModuleVertex>(
-            std::make_shared<fern::ModuleVertex>(_source_name, _scope_vertex));
+        return std::shared_ptr<ModuleVertex>(
+            std::make_shared<ModuleVertex>(_source_name, _scope_vertex));
     }
 
 private:
 
-    fern::String  _source_name;
+    String  _source_name;
 
-    std::shared_ptr<fern::ScopeVertex> _scope_vertex;
+    std::shared_ptr<ScopeVertex> _scope_vertex;
 
 };
 
 
 class Assignment_pimpl:
-    public fern::Assignment_pskel
+    public Assignment_pskel
 {
 
 public:
@@ -68,7 +69,7 @@ public:
     }
 
     // void Targets(
-    //   std::vector<std::shared_ptr<fern::ExpressionVertex>> const&
+    //   std::vector<std::shared_ptr<ExpressionVertex>> const&
     //     vertices)
     // {
     //   assert(!vertices.empty());
@@ -76,32 +77,32 @@ public:
     // }
 
     void Expression(
-        std::shared_ptr<fern::ExpressionVertex> const& vertex)
+        std::shared_ptr<ExpressionVertex> const& vertex)
     {
         _expressions.emplace_back(vertex);
         assert(_expressions.size() <= 2);
     }
 
-    std::shared_ptr<fern::AssignmentVertex> post_Assignment()
+    std::shared_ptr<AssignmentVertex> post_Assignment()
     {
         assert(!_expressions.empty());
-        return std::shared_ptr<fern::AssignmentVertex>(
-            std::make_shared<fern::AssignmentVertex>(_expressions[0],
+        return std::shared_ptr<AssignmentVertex>(
+            std::make_shared<AssignmentVertex>(_expressions[0],
                 _expressions[1]));
     }
 
 private:
 
-    std::vector<std::shared_ptr<fern::ExpressionVertex>>
+    std::vector<std::shared_ptr<ExpressionVertex>>
         _expressions;
 
 };
 
 
-// class Targets_pimpl: public fern::Targets_pskel
+// class Targets_pimpl: public Targets_pskel
 // {
 // private:
-//   std::vector<std::shared_ptr<fern::ExpressionVertex>>
+//   std::vector<std::shared_ptr<ExpressionVertex>>
 //     _vertices;
 // 
 // public:
@@ -111,13 +112,13 @@ private:
 //   }
 // 
 //   void Expression(
-//     std::shared_ptr<fern::ExpressionVertex> const& vertex)
+//     std::shared_ptr<ExpressionVertex> const& vertex)
 //   {
 //     assert(vertex);
 //     _vertices.emplace_back(vertex);
 //   }
 // 
-//   std::vector<std::shared_ptr<fern::ExpressionVertex>>
+//   std::vector<std::shared_ptr<ExpressionVertex>>
 //     post_Targets()
 //   {
 //     assert(!_vertices.empty());
@@ -127,7 +128,7 @@ private:
 
 
 class If_pimpl:
-    public fern::If_pskel
+    public If_pskel
 {
 
 public:
@@ -138,7 +139,7 @@ public:
     }
 
     void Expression(
-        std::shared_ptr<fern::ExpressionVertex> const& vertex)
+        std::shared_ptr<ExpressionVertex> const& vertex)
     {
         assert(!_data_stack.top().condition_vertex);
         assert(vertex);
@@ -146,28 +147,28 @@ public:
     }
 
     void Statements(
-        std::vector<std::shared_ptr<fern::StatementVertex>>
+        std::vector<std::shared_ptr<StatementVertex>>
             const& statements)
     {
         if(!_data_stack.top().true_scope) {
             assert(!statements.empty());
             assert(!_data_stack.top().false_scope);
-            _data_stack.top().true_scope = std::make_shared<fern::ScopeVertex>(
+            _data_stack.top().true_scope = std::make_shared<ScopeVertex>(
                 statements);
         }
         else {
             assert(!_data_stack.top().false_scope);
-            _data_stack.top().false_scope = std::make_shared<fern::ScopeVertex>(
+            _data_stack.top().false_scope = std::make_shared<ScopeVertex>(
                 statements);
         }
     }
 
-    std::shared_ptr<fern::IfVertex> post_If()
+    std::shared_ptr<IfVertex> post_If()
     {
         assert(!_data_stack.empty());
         IfData result(_data_stack.top());
         _data_stack.pop();
-        return std::shared_ptr<fern::IfVertex>(std::make_shared<fern::IfVertex>(
+        return std::shared_ptr<IfVertex>(std::make_shared<IfVertex>(
             result.condition_vertex, result.true_scope, result.false_scope));
     }
 
@@ -175,9 +176,9 @@ private:
 
     struct IfData
     {
-        std::shared_ptr<fern::ExpressionVertex> condition_vertex;
-        std::shared_ptr<fern::ScopeVertex> true_scope;
-        std::shared_ptr<fern::ScopeVertex> false_scope;
+        std::shared_ptr<ExpressionVertex> condition_vertex;
+        std::shared_ptr<ScopeVertex> true_scope;
+        std::shared_ptr<ScopeVertex> false_scope;
     };
 
     std::stack<IfData> _data_stack;
@@ -186,7 +187,7 @@ private:
 
 
 class While_pimpl:
-    public fern::While_pskel
+    public While_pskel
 {
 
 public:
@@ -197,7 +198,7 @@ public:
     }
 
     void Expression(
-        std::shared_ptr<fern::ExpressionVertex> const& vertex)
+        std::shared_ptr<ExpressionVertex> const& vertex)
     {
         assert(!_data_stack.top().condition_vertex);
         assert(vertex);
@@ -205,29 +206,29 @@ public:
     }
 
     void Statements(
-        std::vector<std::shared_ptr<fern::StatementVertex>>
+        std::vector<std::shared_ptr<StatementVertex>>
             const& statements)
     {
         if(!_data_stack.top().true_scope) {
             assert(!statements.empty());
             assert(!_data_stack.top().false_scope);
-            _data_stack.top().true_scope = std::make_shared<fern::ScopeVertex>(
+            _data_stack.top().true_scope = std::make_shared<ScopeVertex>(
                 statements);
         }
         else {
             assert(!_data_stack.top().false_scope);
-            _data_stack.top().false_scope = std::make_shared<fern::ScopeVertex>(
+            _data_stack.top().false_scope = std::make_shared<ScopeVertex>(
                 statements);
         }
     }
 
-    std::shared_ptr<fern::WhileVertex> post_While()
+    std::shared_ptr<WhileVertex> post_While()
     {
         assert(!_data_stack.empty());
         WhileData result(_data_stack.top());
         _data_stack.pop();
-        return std::shared_ptr<fern::WhileVertex>(
-            std::make_shared<fern::WhileVertex>(result.condition_vertex,
+        return std::shared_ptr<WhileVertex>(
+            std::make_shared<WhileVertex>(result.condition_vertex,
                 result.true_scope, result.false_scope));
     }
 
@@ -235,9 +236,9 @@ private:
 
     struct WhileData
     {
-        std::shared_ptr<fern::ExpressionVertex> condition_vertex;
-        std::shared_ptr<fern::ScopeVertex> true_scope;
-        std::shared_ptr<fern::ScopeVertex> false_scope;
+        std::shared_ptr<ExpressionVertex> condition_vertex;
+        std::shared_ptr<ScopeVertex> true_scope;
+        std::shared_ptr<ScopeVertex> false_scope;
     };
 
     std::stack<WhileData> _data_stack;
@@ -246,7 +247,7 @@ private:
 
 
 class FunctionDefinition_pimpl:
-    public fern::FunctionDefinition_pskel
+    public FunctionDefinition_pskel
 {
 
 public:
@@ -260,11 +261,11 @@ public:
         std::string const& name)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().name = fern::String(name);
+        _data_stack.top().name = String(name);
     }
 
     void Expressions(
-        std::vector<std::shared_ptr<fern::ExpressionVertex>>
+        std::vector<std::shared_ptr<ExpressionVertex>>
             const& vertices)
     {
         assert(!_data_stack.empty());
@@ -273,33 +274,33 @@ public:
     }
 
     void Statements(
-        std::vector<std::shared_ptr<fern::StatementVertex>>
+        std::vector<std::shared_ptr<StatementVertex>>
             const& statements)
     {
         assert(!statements.empty());
-        _data_stack.top().scope_vertex = std::make_shared<fern::ScopeVertex>(
+        _data_stack.top().scope_vertex = std::make_shared<ScopeVertex>(
             statements);
     }
 
-    std::shared_ptr<fern::FunctionDefinitionVertex> post_FunctionDefinition()
+    std::shared_ptr<FunctionDefinitionVertex> post_FunctionDefinition()
     {
         assert(!_data_stack.empty());
         FunctionDefinitionData result(_data_stack.top());
         _data_stack.pop();
-        return std::shared_ptr<fern::FunctionDefinitionVertex>(
-            std::make_shared<fern::FunctionDefinitionVertex>(
+        return std::shared_ptr<FunctionDefinitionVertex>(
+            std::make_shared<FunctionDefinitionVertex>(
                 result.name, result.expression_vertices, result.scope_vertex));
     }
 
 private:
 
-    using ExpressionVertices = std::vector<std::shared_ptr<fern::ExpressionVertex>>;
+    using ExpressionVertices = std::vector<std::shared_ptr<ExpressionVertex>>;
 
     struct FunctionDefinitionData
     {
-        fern::String name;
+        String name;
         ExpressionVertices expression_vertices;
-        std::shared_ptr<fern::ScopeVertex> scope_vertex;
+        std::shared_ptr<ScopeVertex> scope_vertex;
     };
 
     std::stack<FunctionDefinitionData> _data_stack;
@@ -308,7 +309,7 @@ private:
 
 
 class Return_pimpl:
-    public fern::Return_pskel
+    public Return_pskel
 {
 
 public:
@@ -319,22 +320,22 @@ public:
     }
 
     void Expression(
-        std::shared_ptr<fern::ExpressionVertex> const& expression)
+        std::shared_ptr<ExpressionVertex> const& expression)
     {
         assert(!_data_stack.empty());
         _data_stack.top().expression_vertex = expression;
     }
 
-    std::shared_ptr<fern::ReturnVertex> post_Return()
+    std::shared_ptr<ReturnVertex> post_Return()
     {
         assert(!_data_stack.empty());
         ReturnData result(_data_stack.top());
         _data_stack.pop();
-        std::shared_ptr<fern::ReturnVertex> vertex(
+        std::shared_ptr<ReturnVertex> vertex(
             result.expression_vertex
-                ?  std::make_shared<fern::ReturnVertex>(
+                ?  std::make_shared<ReturnVertex>(
                        result.expression_vertex)
-                :  std::make_shared<fern::ReturnVertex>());
+                :  std::make_shared<ReturnVertex>());
         return vertex;
     }
 
@@ -342,7 +343,7 @@ private:
 
     struct ReturnData
     {
-        std::shared_ptr<fern::ExpressionVertex> expression_vertex;
+        std::shared_ptr<ExpressionVertex> expression_vertex;
     };
 
     std::stack<ReturnData> _data_stack;
@@ -351,7 +352,7 @@ private:
 
 
 class Statements_pimpl:
-    public fern::Statements_pskel
+    public Statements_pskel
 {
 
 public:
@@ -362,13 +363,13 @@ public:
     }
 
     void Statement(
-        std::shared_ptr<fern::StatementVertex> const& vertex)
+        std::shared_ptr<StatementVertex> const& vertex)
     {
         assert(vertex);
         _data_stack.top().emplace_back(vertex);
     }
 
-    std::vector<std::shared_ptr<fern::StatementVertex>>
+    std::vector<std::shared_ptr<StatementVertex>>
         post_Statements()
     {
         assert(!_data_stack.empty());
@@ -379,7 +380,7 @@ public:
 
 private:
 
-    using StatementsData = std::vector<std::shared_ptr<fern::StatementVertex>>;
+    using StatementsData = std::vector<std::shared_ptr<StatementVertex>>;
 
     std::stack<StatementsData> _data_stack;
 
@@ -387,7 +388,7 @@ private:
 
 
 class Statement_pimpl:
-    public fern::Statement_pskel
+    public Statement_pskel
 {
 
 public:
@@ -412,7 +413,7 @@ public:
     }
 
     void Expression(
-        std::shared_ptr<fern::ExpressionVertex> const& vertex)
+        std::shared_ptr<ExpressionVertex> const& vertex)
     {
         assert(vertex);
         assert(!_data_stack.empty());
@@ -422,7 +423,7 @@ public:
     }
 
     void Assignment(
-        std::shared_ptr<fern::AssignmentVertex> const& vertex)
+        std::shared_ptr<AssignmentVertex> const& vertex)
     {
         assert(vertex);
         assert(!_data_stack.empty());
@@ -432,7 +433,7 @@ public:
     }
 
     void If(
-        std::shared_ptr<fern::IfVertex> const& vertex)
+        std::shared_ptr<IfVertex> const& vertex)
     {
         assert(vertex);
         assert(!_data_stack.empty());
@@ -442,7 +443,7 @@ public:
     }
 
     void While(
-        std::shared_ptr<fern::WhileVertex> const& vertex)
+        std::shared_ptr<WhileVertex> const& vertex)
     {
         assert(vertex);
         assert(!_data_stack.empty());
@@ -452,7 +453,7 @@ public:
     }
 
     void FunctionDefinition(
-        std::shared_ptr<fern::FunctionDefinitionVertex> const& vertex)
+        std::shared_ptr<FunctionDefinitionVertex> const& vertex)
     {
         assert(vertex);
         assert(!_data_stack.empty());
@@ -462,7 +463,7 @@ public:
     }
 
     void Return(
-        std::shared_ptr<fern::ReturnVertex> const& vertex)
+        std::shared_ptr<ReturnVertex> const& vertex)
     {
         assert(vertex);
         assert(!_data_stack.empty());
@@ -471,7 +472,7 @@ public:
             _data_stack.top().col);
     }
 
-    std::shared_ptr<fern::StatementVertex> post_Statement()
+    std::shared_ptr<StatementVertex> post_Statement()
     {
         assert(!_data_stack.empty());
         StatementData result(_data_stack.top());
@@ -485,7 +486,7 @@ private:
     {
         int line;
         int col;
-        std::shared_ptr<fern::StatementVertex> vertex;
+        std::shared_ptr<StatementVertex> vertex;
     };
 
     std::stack<StatementData> _data_stack;
@@ -494,7 +495,7 @@ private:
 
 
 class Expressions_pimpl:
-    public fern::Expressions_pskel
+    public Expressions_pskel
 {
 
 public:
@@ -505,13 +506,13 @@ public:
     }
 
     void Expression(
-        std::shared_ptr<fern::ExpressionVertex> const& vertex)
+        std::shared_ptr<ExpressionVertex> const& vertex)
     {
         assert(vertex);
         _data_stack.top().emplace_back(vertex);
     }
 
-    std::vector<std::shared_ptr<fern::ExpressionVertex>>
+    std::vector<std::shared_ptr<ExpressionVertex>>
         post_Expressions()
     {
         assert(!_data_stack.empty());
@@ -523,7 +524,7 @@ public:
 private:
 
     using ExpressionsData = std::vector<std::shared_ptr<
-        fern::ExpressionVertex>>;
+        ExpressionVertex>>;
 
     std::stack<ExpressionsData> _data_stack;
 
@@ -531,7 +532,7 @@ private:
 
 
 class Integer_pimpl:
-    public fern::Integer_pskel
+    public Integer_pskel
 {
 
 public:
@@ -554,29 +555,29 @@ public:
         _value = value;
     }
 
-    std::shared_ptr<fern::ExpressionVertex> post_Integer()
+    std::shared_ptr<ExpressionVertex> post_Integer()
     {
-        std::shared_ptr<fern::ExpressionVertex> result;
+        std::shared_ptr<ExpressionVertex> result;
 
         switch(_size) {
             case 8: {
-                result = std::shared_ptr<fern::ExpressionVertex>(
-                    std::make_shared<fern::NumberVertex<int8_t>>(_value));
+                result = std::shared_ptr<ExpressionVertex>(
+                    std::make_shared<NumberVertex<int8_t>>(_value));
                 break;
             }
             case 16: {
-                result = std::shared_ptr<fern::ExpressionVertex>(
-                    std::make_shared<fern::NumberVertex<int16_t>>(_value));
+                result = std::shared_ptr<ExpressionVertex>(
+                    std::make_shared<NumberVertex<int16_t>>(_value));
                 break;
             }
             case 32: {
-                result = std::shared_ptr<fern::ExpressionVertex>(
-                    std::make_shared<fern::NumberVertex<int32_t>>(_value));
+                result = std::shared_ptr<ExpressionVertex>(
+                    std::make_shared<NumberVertex<int32_t>>(_value));
                 break;
             }
             case 64: {
-                result = std::shared_ptr<fern::ExpressionVertex>(
-                    std::make_shared<fern::NumberVertex<int64_t>>(_value));
+                result = std::shared_ptr<ExpressionVertex>(
+                    std::make_shared<NumberVertex<int64_t>>(_value));
                 break;
             }
             default: {
@@ -599,7 +600,7 @@ private:
 
 
 class UnsignedInteger_pimpl:
-    public fern::UnsignedInteger_pskel
+    public UnsignedInteger_pskel
 {
 
 public:
@@ -621,30 +622,30 @@ public:
         _value = value;
     }
 
-    std::shared_ptr<fern::ExpressionVertex>
+    std::shared_ptr<ExpressionVertex>
         post_UnsignedInteger()
     {
-        std::shared_ptr<fern::ExpressionVertex> result;
+        std::shared_ptr<ExpressionVertex> result;
 
         switch(_size) {
             case 8: {
-                result = std::shared_ptr<fern::ExpressionVertex>(
-                    std::make_shared<fern::NumberVertex<uint8_t>>(_value));
+                result = std::shared_ptr<ExpressionVertex>(
+                    std::make_shared<NumberVertex<uint8_t>>(_value));
                 break;
             }
             case 16: {
-                result = std::shared_ptr<fern::ExpressionVertex>(
-                    std::make_shared<fern::NumberVertex<uint16_t>>(_value));
+                result = std::shared_ptr<ExpressionVertex>(
+                    std::make_shared<NumberVertex<uint16_t>>(_value));
                 break;
             }
             case 32: {
-                result = std::shared_ptr<fern::ExpressionVertex>(
-                    std::make_shared<fern::NumberVertex<uint32_t>>(_value));
+                result = std::shared_ptr<ExpressionVertex>(
+                    std::make_shared<NumberVertex<uint32_t>>(_value));
                 break;
             }
             case 64: {
-                result = std::shared_ptr<fern::ExpressionVertex>(
-                    std::make_shared<fern::NumberVertex<uint64_t>>(_value));
+                result = std::shared_ptr<ExpressionVertex>(
+                    std::make_shared<NumberVertex<uint64_t>>(_value));
                 break;
             }
             default: {
@@ -668,7 +669,7 @@ private:
 
 
 class Float_pimpl:
-    public fern::Float_pskel
+    public Float_pskel
 {
 
 public:
@@ -690,21 +691,21 @@ public:
         _value = value;
     }
 
-    std::shared_ptr<fern::ExpressionVertex> post_Float()
+    std::shared_ptr<ExpressionVertex> post_Float()
     {
-        std::shared_ptr<fern::ExpressionVertex> result;
+        std::shared_ptr<ExpressionVertex> result;
 
         switch(_size) {
             case 32: {
                 assert(sizeof(float) == 4);
-                result = std::shared_ptr<fern::ExpressionVertex>(
-                    std::make_shared<fern::NumberVertex<float>>(_value));
+                result = std::shared_ptr<ExpressionVertex>(
+                    std::make_shared<NumberVertex<float>>(_value));
                 break;
             }
             case 64: {
                 assert(sizeof(double) == 8);
-                result = std::shared_ptr<fern::ExpressionVertex>(
-                    std::make_shared<fern::NumberVertex<double>>(_value));
+                result = std::shared_ptr<ExpressionVertex>(
+                    std::make_shared<NumberVertex<double>>(_value));
                 break;
             }
             default: {
@@ -727,7 +728,7 @@ private:
 
 
 class Number_pimpl:
-    public fern::Number_pskel
+    public Number_pskel
 {
 
 public:
@@ -738,27 +739,27 @@ public:
     }
 
     void Integer(
-        std::shared_ptr<fern::ExpressionVertex> const& vertex)
+        std::shared_ptr<ExpressionVertex> const& vertex)
     {
         assert(!_vertex);
         _vertex = vertex;
     }
 
     void UnsignedInteger(
-        std::shared_ptr<fern::ExpressionVertex> const& vertex)
+        std::shared_ptr<ExpressionVertex> const& vertex)
     {
         assert(!_vertex);
         _vertex = vertex;
     }
 
     void Float(
-        std::shared_ptr<fern::ExpressionVertex> const& vertex)
+        std::shared_ptr<ExpressionVertex> const& vertex)
     {
         assert(!_vertex);
         _vertex = vertex;
     }
 
-    std::shared_ptr<fern::ExpressionVertex> post_Number()
+    std::shared_ptr<ExpressionVertex> post_Number()
     {
         assert(_vertex);
         return _vertex;
@@ -766,13 +767,13 @@ public:
 
 private:
 
-    std::shared_ptr<fern::ExpressionVertex> _vertex;
+    std::shared_ptr<ExpressionVertex> _vertex;
 
 };
 
 
 class FunctionCall_pimpl:
-    public fern::FunctionCall_pskel
+    public FunctionCall_pskel
 {
 
 public:
@@ -786,11 +787,11 @@ public:
         std::string const& name)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().name = fern::String(name);
+        _data_stack.top().name = String(name);
     }
 
     void Expressions(
-        std::vector<std::shared_ptr<fern::ExpressionVertex>>
+        std::vector<std::shared_ptr<ExpressionVertex>>
             const& vertices)
     {
         assert(!_data_stack.empty());
@@ -798,24 +799,24 @@ public:
         _data_stack.top().expression_vertices = vertices;
     }
 
-    std::shared_ptr<fern::FunctionCallVertex> post_FunctionCall()
+    std::shared_ptr<FunctionCallVertex> post_FunctionCall()
     {
         assert(!_data_stack.empty());
         FunctionData result(_data_stack.top());
         _data_stack.pop();
-        return std::shared_ptr<fern::FunctionCallVertex>(
-            std::make_shared<fern::FunctionCallVertex>(result.name,
+        return std::shared_ptr<FunctionCallVertex>(
+            std::make_shared<FunctionCallVertex>(result.name,
                 result.expression_vertices));
     }
 
 private:
 
     using ExpressionVertices = std::vector<std::shared_ptr<
-        fern::ExpressionVertex>>;
+        ExpressionVertex>>;
 
     struct FunctionData
     {
-        fern::String name;
+        String name;
         ExpressionVertices expression_vertices;
     };
 
@@ -825,7 +826,7 @@ private:
 
 
 class Operator_pimpl:
-    public fern::Operator_pskel
+    public Operator_pskel
 {
 
 public:
@@ -839,11 +840,11 @@ public:
         std::string const& name)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().name = fern::String(name);
+        _data_stack.top().name = String(name);
     }
 
     void Expressions(
-        std::vector<std::shared_ptr<fern::ExpressionVertex>>
+        std::vector<std::shared_ptr<ExpressionVertex>>
             const& vertices)
     {
         assert(!_data_stack.empty());
@@ -851,24 +852,24 @@ public:
         _data_stack.top().expression_vertices = vertices;
     }
 
-    std::shared_ptr<fern::OperatorVertex> post_Operator()
+    std::shared_ptr<OperatorVertex> post_Operator()
     {
         assert(!_data_stack.empty());
         OperatorData result(_data_stack.top());
         _data_stack.pop();
-        return std::shared_ptr<fern::OperatorVertex>(
-            std::make_shared<fern::OperatorVertex>(result.name,
+        return std::shared_ptr<OperatorVertex>(
+            std::make_shared<OperatorVertex>(result.name,
                 result.expression_vertices));
     }
 
 private:
 
     using ExpressionVertices = std::vector<std::shared_ptr<
-        fern::ExpressionVertex>>;
+        ExpressionVertex>>;
 
     struct OperatorData
     {
-        fern::String name;
+        String name;
         ExpressionVertices expression_vertices;
     };
 
@@ -878,7 +879,7 @@ private:
 
 
 class Subscript_pimpl:
-    public fern::Subscript_pskel
+    public Subscript_pskel
 {
 
 public:
@@ -889,7 +890,7 @@ public:
     }
 
     void Expression(
-        std::shared_ptr<fern::ExpressionVertex> const& vertex)
+        std::shared_ptr<ExpressionVertex> const& vertex)
     {
         assert(_data_stack.size() == 1);
         if(!_data_stack.top().expression) {
@@ -901,13 +902,13 @@ public:
         }
     }
 
-    std::shared_ptr<fern::ExpressionVertex> post_Subscript()
+    std::shared_ptr<ExpressionVertex> post_Subscript()
     {
         assert(!_data_stack.empty());
         SubscriptData result(_data_stack.top());
         _data_stack.pop();
-        return std::shared_ptr<fern::SubscriptVertex>(
-            std::make_shared<fern::SubscriptVertex>(result.expression,
+        return std::shared_ptr<SubscriptVertex>(
+            std::make_shared<SubscriptVertex>(result.expression,
                 result.selection));
     }
 
@@ -915,8 +916,8 @@ private:
 
     struct SubscriptData
     {
-        fern::ExpressionVertexPtr expression;
-        fern::ExpressionVertexPtr selection;
+        ExpressionVertexPtr expression;
+        ExpressionVertexPtr selection;
     };
 
     std::stack<SubscriptData> _data_stack;
@@ -925,7 +926,7 @@ private:
 
 
 class Attribute_pimpl:
-    public fern::Attribute_pskel
+    public Attribute_pskel
 {
 
 public:
@@ -936,7 +937,7 @@ public:
     }
 
     void Expression(
-        std::shared_ptr<fern::ExpressionVertex> const& vertex)
+        std::shared_ptr<ExpressionVertex> const& vertex)
     {
         assert(_data_stack.size() == 1);
         assert(!_data_stack.top().expression);
@@ -951,13 +952,13 @@ public:
         _data_stack.top().member_name = name;
     }
 
-    std::shared_ptr<fern::ExpressionVertex> post_Attribute()
+    std::shared_ptr<ExpressionVertex> post_Attribute()
     {
         assert(_data_stack.size() == 1);
         AttributeData result(_data_stack.top());
         _data_stack.pop();
-        return std::shared_ptr<fern::AttributeVertex>(
-            std::make_shared<fern::AttributeVertex>(result.expression,
+        return std::shared_ptr<AttributeVertex>(
+            std::make_shared<AttributeVertex>(result.expression,
                 result.member_name));
     }
 
@@ -965,7 +966,7 @@ private:
 
     struct AttributeData
     {
-        fern::ExpressionVertexPtr expression;
+        ExpressionVertexPtr expression;
         std::string member_name;
     };
 
@@ -975,7 +976,7 @@ private:
 
 
 class Expression_pimpl:
-    public fern::Expression_pskel
+    public Expression_pskel
 {
 
 public:
@@ -1004,13 +1005,13 @@ public:
     {
         assert(!_data_stack.empty());
         assert(!_data_stack.top().vertex);
-        _data_stack.top().vertex = std::shared_ptr<fern::NameVertex>(
-            std::make_shared<fern::NameVertex>(_data_stack.top().line,
-                _data_stack.top().col, fern::String(name)));
+        _data_stack.top().vertex = std::shared_ptr<NameVertex>(
+            std::make_shared<NameVertex>(_data_stack.top().line,
+                _data_stack.top().col, name));
     }
 
     void Subscript(
-        std::shared_ptr<fern::ExpressionVertex> const& vertex)
+        std::shared_ptr<ExpressionVertex> const& vertex)
     {
         assert(!_data_stack.empty());
         assert(!_data_stack.top().vertex);
@@ -1020,7 +1021,7 @@ public:
     }
 
     void Attribute(
-        std::shared_ptr<fern::ExpressionVertex> const& vertex)
+        std::shared_ptr<ExpressionVertex> const& vertex)
     {
         assert(!_data_stack.empty());
         assert(!_data_stack.top().vertex);
@@ -1034,13 +1035,13 @@ public:
     {
         assert(!_data_stack.empty());
         assert(!_data_stack.top().vertex);
-        _data_stack.top().vertex = std::shared_ptr<fern::StringVertex>(
-            std::make_shared<fern::StringVertex>(_data_stack.top().line,
-                _data_stack.top().col, fern::String(string)));
+        _data_stack.top().vertex = std::shared_ptr<StringVertex>(
+            std::make_shared<StringVertex>(_data_stack.top().line,
+                _data_stack.top().col, string));
     }
 
     void Number(
-        std::shared_ptr<fern::ExpressionVertex> const& vertex)
+        std::shared_ptr<ExpressionVertex> const& vertex)
     {
         assert(!_data_stack.empty());
         assert(!_data_stack.top().vertex);
@@ -1050,7 +1051,7 @@ public:
     }
 
     void FunctionCall(
-        std::shared_ptr<fern::FunctionCallVertex> const& vertex)
+        std::shared_ptr<FunctionCallVertex> const& vertex)
     {
         assert(!_data_stack.empty());
         assert(!_data_stack.top().vertex);
@@ -1060,7 +1061,7 @@ public:
     }
 
     void Operator(
-        std::shared_ptr<fern::OperatorVertex> const& vertex)
+        std::shared_ptr<OperatorVertex> const& vertex)
     {
         assert(!_data_stack.empty());
         assert(!_data_stack.top().vertex);
@@ -1069,7 +1070,7 @@ public:
             _data_stack.top().col);
     }
 
-    std::shared_ptr<fern::ExpressionVertex> post_Expression()
+    std::shared_ptr<ExpressionVertex> post_Expression()
     {
         assert(!_data_stack.empty());
         ExpressionData result(_data_stack.top());
@@ -1083,17 +1084,13 @@ private:
   {
       int line;
       int col;
-      std::shared_ptr<fern::ExpressionVertex> vertex;
+      std::shared_ptr<ExpressionVertex> vertex;
   };
 
   std::stack<ExpressionData> _data_stack;
 
 };
 
-} // Anonymous namespace
-
-
-namespace fern {
 
 //! Parse the Xml in \a stream and return a syntax tree.
 /*!
@@ -1210,7 +1207,7 @@ std::shared_ptr<ModuleVertex> XmlParser::parse_string(
     }
     catch(xml_schema::parsing const& exception) {
         assert(!exception.diagnostics().empty());
-        BOOST_THROW_EXCEPTION(fern::detail::ParseError()
+        BOOST_THROW_EXCEPTION(detail::ParseError()
             << detail::ExceptionSourceName("<string>")
             << detail::ExceptionLineNr(exception.diagnostics()[0].line())
             << detail::ExceptionColNr(exception.diagnostics()[0].column())
@@ -1221,4 +1218,5 @@ std::shared_ptr<ModuleVertex> XmlParser::parse_string(
     return vertex;
 }
 
+} // namespace language
 } // namespace fern

@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 
 size_t HDF5Client::_count = 0u;
 
@@ -39,4 +40,5 @@ HDF5Client::~HDF5Client()
     }
 }
 
+} // namespace language
 } // namespace fern

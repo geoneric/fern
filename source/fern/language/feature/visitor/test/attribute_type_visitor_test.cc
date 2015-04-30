@@ -13,6 +13,9 @@
 #include "fern/language/feature/visitor/attribute_type_visitor.h"
 
 
+namespace fl = fern::language;
+
+
 #define CALL_FUNCTION_TEMPLATE_1(                                              \
         function_template,                                                     \
         argument)                                                              \
@@ -33,9 +36,9 @@
 template<
     class T>
 void test_constant_attribute(
-    fern::AttributeTypeVisitor& visitor)
+    fl::AttributeTypeVisitor& visitor)
 {
-    fern::ConstantAttribute<T> attribute;
+    fl::ConstantAttribute<T> attribute;
     attribute.Accept(visitor);
     BOOST_CHECK_EQUAL(visitor.data_type(), fern::DT_CONSTANT);
     BOOST_CHECK_EQUAL(visitor.value_type(),
@@ -47,15 +50,15 @@ BOOST_AUTO_TEST_SUITE(attribute_type_visitor)
 
 BOOST_AUTO_TEST_CASE(attribute_type_visitor)
 {
-    fern::AttributeTypeVisitor visitor;
+    fl::AttributeTypeVisitor visitor;
 
     // Check constant attributes.
     CALL_FUNCTION_TEMPLATE_1(test_constant_attribute, visitor);
 
     // Make sure visiting using a pointer to the base class works too.
     {
-        fern::ConstantAttribute<int32_t> int32_attribute;
-        fern::Attribute *attribute = &int32_attribute;
+        fl::ConstantAttribute<int32_t> int32_attribute;
+        fl::Attribute *attribute = &int32_attribute;
         attribute->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.data_type(), fern::DT_CONSTANT);
         BOOST_CHECK_EQUAL(visitor.value_type(), fern::VT_INT32);
@@ -63,8 +66,8 @@ BOOST_AUTO_TEST_CASE(attribute_type_visitor)
 
     // Visit a constant string attribute.
     {
-        fern::ConstantAttribute<fern::String> string_attribute;
-        fern::Attribute *attribute = &string_attribute;
+        fl::ConstantAttribute<fern::String> string_attribute;
+        fl::Attribute *attribute = &string_attribute;
         attribute->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.data_type(), fern::DT_CONSTANT);
         BOOST_CHECK_EQUAL(visitor.value_type(), fern::VT_STRING);

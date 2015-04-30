@@ -14,6 +14,7 @@
 
 
 namespace fern {
+namespace language {
 namespace detail {
 
 template<
@@ -87,4 +88,5 @@ inline void print(
     detail::print(category(), argument, stream);
 }
 
+} // namespace language
 } // namespace fern

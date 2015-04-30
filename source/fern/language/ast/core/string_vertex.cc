@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 StringVertex::StringVertex(
     int line_nr,
@@ -28,4 +29,5 @@ String const& StringVertex::value() const
     return _value;
 }
 
+} // namespace language
 } // namespace fern

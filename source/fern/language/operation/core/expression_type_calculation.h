@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 
 class Operation;
 
@@ -20,4 +21,5 @@ ExpressionType standard_expression_type(Operation const& operation,
                                         std::vector<ExpressionType> const&
                                             argument_types);
 
+} // namespace language
 } // namespace fern

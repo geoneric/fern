@@ -14,8 +14,10 @@
 
 
 namespace fern {
+namespace language {
 
 std::shared_ptr<H5::H5File> open_file  (Path const& path,
                                         OpenMode open_mode);
 
+} // namespace language
 } // namespace fern

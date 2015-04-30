@@ -14,6 +14,7 @@
 
 
 namespace fern {
+namespace language {
 
 template<
     typename T>
@@ -193,4 +194,5 @@ std::vector<std::shared_ptr<Argument>> Abs::execute(
     return result;
 }
 
+} // namespace language
 } // namespace fern

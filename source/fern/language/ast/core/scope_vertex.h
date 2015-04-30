@@ -11,6 +11,7 @@
 
 
 namespace fern {
+namespace language {
 
 class ScopeVertex:
     public AstVertex
@@ -46,4 +47,5 @@ private:
 
 };
 
+} // namespace language
 } // namespace fern

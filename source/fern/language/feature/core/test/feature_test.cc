@@ -11,33 +11,36 @@
 #include "fern/language/feature/core/attributes.h"
 
 
+namespace fl = fern::language;
+
+
 BOOST_AUTO_TEST_SUITE(feature)
 
 BOOST_AUTO_TEST_CASE(feature)
 {
     // Earth feature. All attributes are relevant for this one planet.
     {
-        fern::Feature earth;
+        fl::Feature earth;
         BOOST_CHECK_EQUAL(earth.nr_features(), 0u);
         BOOST_CHECK(!earth.contains_feature("continents"));
         BOOST_CHECK_EQUAL(earth.nr_attributes(), 0u);
         BOOST_CHECK(!earth.contains_attribute("acceleration"));
 
         earth.add_attribute("acceleration",
-            std::make_shared<fern::ConstantAttribute<double>>(9.80665));
+            std::make_shared<fl::ConstantAttribute<double>>(9.80665));
         BOOST_CHECK_EQUAL(earth.nr_features(), 0u);
         BOOST_CHECK_EQUAL(earth.nr_attributes(), 1u);
         BOOST_CHECK(earth.contains_attribute("acceleration"));
 
         // Add continents child-feature.
-        earth.add_feature("continents", std::make_shared<fern::Feature>());
+        earth.add_feature("continents", std::make_shared<fl::Feature>());
         BOOST_CHECK_EQUAL(earth.nr_features(), 1u);
         BOOST_CHECK(earth.contains_feature("continents"));
         BOOST_CHECK_EQUAL(earth.nr_attributes(), 1u);
 
         // Add attribute that is global to all continents.
         earth.add_attribute("/continents/is_land",
-            std::make_shared<fern::ConstantAttribute<bool>>(true));
+            std::make_shared<fl::ConstantAttribute<bool>>(true));
         BOOST_CHECK_EQUAL(earth.nr_features(), 1u);
         BOOST_CHECK_EQUAL(earth.nr_attributes(), 1u);
         BOOST_CHECK_EQUAL(earth.nr_features("continents"), 0u);
@@ -47,11 +50,11 @@ BOOST_AUTO_TEST_CASE(feature)
 
     // Planets feature. Attributes are stored per planet (a point in space).
     {
-        fern::Feature planets;
+        fl::Feature planets;
 
         using Value = int;
         using Point = fern::Point<int, 3>;
-        using PointsAttribute = fern::SpatialAttribute<fern::SpatialDomain<
+        using PointsAttribute = fl::SpatialAttribute<fl::SpatialDomain<
             Point>, Value>;
         using PointsAttributePtr = std::shared_ptr<PointsAttribute>;
 

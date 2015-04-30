@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 Module::Module(
     std::vector<DataDescription> const& arguments,
@@ -35,7 +36,7 @@ std::vector<DataDescription> const& Module::results() const
 
 
 /*!
-  \exception std::runtime_error If an error occured.
+    @exception  std::runtime_error If an error occured.
 */
 void Module::check_sources_and_syncs(
     std::vector<std::shared_ptr<DataSource>> const& data_sources,
@@ -53,4 +54,5 @@ void Module::check_sources_and_syncs(
     // TODO Compare properties of arguments with properties of data sources.
 }
 
+} // namespace language
 } // namespace fern

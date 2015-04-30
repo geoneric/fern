@@ -23,24 +23,27 @@
 #include "fern/language/interpreter/interpreter.h"
 
 
+namespace fl = fern::language;
+
+
 template<
     class T>
 struct TestConstant {
     void operator()(
-            fern::Interpreter& interpreter,
+            fl::Interpreter& interpreter,
             T result)
     {
-        std::stack<std::shared_ptr<fern::Argument>> stack(
+        std::stack<std::shared_ptr<fl::Argument>> stack(
             interpreter.stack());
         BOOST_CHECK_EQUAL(stack.size(), 1u);
 
-        std::shared_ptr<fern::Argument> const& argument(stack.top());
+        std::shared_ptr<fl::Argument> const& argument(stack.top());
         BOOST_REQUIRE_EQUAL(argument->argument_type(),
-            fern::ArgumentType::AT_ATTRIBUTE);
+            fl::ArgumentType::AT_ATTRIBUTE);
 
-        std::shared_ptr<fern::AttributeArgument> const&
+        std::shared_ptr<fl::AttributeArgument> const&
             attribute_argument(
-                std::dynamic_pointer_cast<fern::AttributeArgument>(
+                std::dynamic_pointer_cast<fl::AttributeArgument>(
                     argument));
         BOOST_REQUIRE(attribute_argument);
         BOOST_REQUIRE_EQUAL(attribute_argument->data_type(),
@@ -48,24 +51,24 @@ struct TestConstant {
         BOOST_REQUIRE_EQUAL(attribute_argument->value_type(),
             fern::TypeTraits<T>::value_type);
 
-        std::shared_ptr<fern::Attribute> const& attribute(
+        std::shared_ptr<fl::Attribute> const& attribute(
             attribute_argument->attribute());
 
-        std::shared_ptr<fern::ConstantAttribute<T>>
+        std::shared_ptr<fl::ConstantAttribute<T>>
             constant_attribute(std::dynamic_pointer_cast<
-                fern::ConstantAttribute<T>>(attribute));
+                fl::ConstantAttribute<T>>(attribute));
         BOOST_REQUIRE(constant_attribute);
         BOOST_CHECK_EQUAL(constant_attribute->values().value(), result);
     }
 };
 
 
-BOOST_FIXTURE_TEST_SUITE(interpreter, fern::IOClient)
+BOOST_FIXTURE_TEST_SUITE(interpreter, fl::IOClient)
 
 BOOST_AUTO_TEST_CASE(parse_string)
 {
-    fern::Interpreter interpreter;
-    fern::ModuleVertexPtr vertex;
+    fl::Interpreter interpreter;
+    fl::ModuleVertexPtr vertex;
 
     // String with valid statements, should succeed.
     std::vector<fern::String> valid_statements = {
@@ -96,8 +99,8 @@ BOOST_AUTO_TEST_CASE(parse_string)
 
 BOOST_AUTO_TEST_CASE(parse_file)
 {
-    fern::Interpreter interpreter;
-    fern::ModuleVertexPtr vertex;
+    fl::Interpreter interpreter;
+    fl::ModuleVertexPtr vertex;
 
     // File with valid statement, should succeed.
     std::vector<fern::String> valid_files = {
@@ -136,8 +139,8 @@ BOOST_AUTO_TEST_CASE(parse_file)
 
 BOOST_AUTO_TEST_CASE(validate)
 {
-    fern::Interpreter interpreter;
-    fern::ModuleVertexPtr vertex;
+    fl::Interpreter interpreter;
+    fl::ModuleVertexPtr vertex;
 
     vertex = interpreter.parse_file("valid-1.ran");
     BOOST_CHECK(vertex);
@@ -249,8 +252,8 @@ foo(5)
 
 BOOST_AUTO_TEST_CASE(execute)
 {
-    fern::Interpreter interpreter;
-    fern::ModuleVertexPtr tree;
+    fl::Interpreter interpreter;
+    fl::ModuleVertexPtr tree;
 
     // Calculate abs(-5) and leave the result on the stack for testing.
     {
@@ -276,7 +279,7 @@ BOOST_AUTO_TEST_CASE(execute)
 
 
 
-    // fern::SymbolTable<boost::any> const& symbol_table(
+    // fl::SymbolTable<boost::any> const& symbol_table(
     //     execute_visitor.symbol_table());
     // fern::Stack const& stack(execute_visitor.stack());
 
@@ -294,10 +297,10 @@ BOOST_AUTO_TEST_CASE(execute)
     // interpreter.validate(tree);
     // interpreter.execute(tree);
 
-    // fern::ExecuteVisitor execute_visitor;
+    // fl::ExecuteVisitor execute_visitor;
     // tree->Accept(execute_visitor);
 
-    // fern::SymbolTable<boost::any> const& symbol_table(
+    // fl::SymbolTable<boost::any> const& symbol_table(
     //     execute_visitor.symbol_table());
     // fern::Stack const& stack(execute_visitor.stack());
 
@@ -311,8 +314,8 @@ BOOST_AUTO_TEST_CASE(execute)
 
 BOOST_AUTO_TEST_CASE(execute_read_with_raster_input)
 {
-    fern::Interpreter interpreter;
-    fern::ModuleVertexPtr tree;
+    fl::Interpreter interpreter;
+    fl::ModuleVertexPtr tree;
 
     // Read feature.
     {
@@ -321,36 +324,36 @@ BOOST_AUTO_TEST_CASE(execute_read_with_raster_input)
         tree = interpreter.parse_string(script);
         interpreter.execute(tree);
 
-        std::stack<std::shared_ptr<fern::Argument>> stack(
+        std::stack<std::shared_ptr<fl::Argument>> stack(
             interpreter.stack());
         BOOST_CHECK_EQUAL(stack.size(), 1u);
 
-        std::shared_ptr<fern::Argument> const& argument(stack.top());
+        std::shared_ptr<fl::Argument> const& argument(stack.top());
         BOOST_REQUIRE_EQUAL(argument->argument_type(),
-            fern::ArgumentType::AT_FEATURE);
+            fl::ArgumentType::AT_FEATURE);
 
-        std::shared_ptr<fern::FeatureArgument> const&
+        std::shared_ptr<fl::FeatureArgument> const&
             feature_argument(
-                std::dynamic_pointer_cast<fern::FeatureArgument>(
+                std::dynamic_pointer_cast<fl::FeatureArgument>(
                     argument));
         BOOST_REQUIRE(feature_argument);
 
-        std::shared_ptr<fern::Feature> const& feature(
+        std::shared_ptr<fl::Feature> const& feature(
             feature_argument->feature());
 
         BOOST_REQUIRE_EQUAL(feature->nr_attributes(), 1u);
         BOOST_REQUIRE(feature->contains_attribute("raster-1"));
 
-        std::shared_ptr<fern::Attribute> const& attribute(
+        std::shared_ptr<fl::Attribute> const& attribute(
             feature->attribute("raster-1"));
 
-        fern::FieldAttributePtr<int32_t> boxes_attribute(
-            std::dynamic_pointer_cast<fern::FieldAttribute<int32_t>>(
+        fl::FieldAttributePtr<int32_t> boxes_attribute(
+            std::dynamic_pointer_cast<fl::FieldAttribute<int32_t>>(
                 attribute));
         BOOST_REQUIRE(boxes_attribute);
         BOOST_REQUIRE_EQUAL(boxes_attribute->size(), 1u);
 
-        fern::FieldValue<int32_t> const& value =
+        fl::FieldValue<int32_t> const& value =
             *boxes_attribute->values().cbegin()->second;
         BOOST_REQUIRE_EQUAL(value.num_dimensions(), 2);
         BOOST_REQUIRE_EQUAL(value.shape()[0], 3);
@@ -377,30 +380,30 @@ BOOST_AUTO_TEST_CASE(execute_read_with_raster_input)
         tree = interpreter.parse_string(script);
         interpreter.execute(tree);
 
-        std::stack<std::shared_ptr<fern::Argument>> stack(
+        std::stack<std::shared_ptr<fl::Argument>> stack(
             interpreter.stack());
         BOOST_CHECK_EQUAL(stack.size(), 1u);
 
-        std::shared_ptr<fern::Argument> const& argument(stack.top());
+        std::shared_ptr<fl::Argument> const& argument(stack.top());
         BOOST_REQUIRE_EQUAL(argument->argument_type(),
-            fern::ArgumentType::AT_ATTRIBUTE);
+            fl::ArgumentType::AT_ATTRIBUTE);
 
-        std::shared_ptr<fern::AttributeArgument> const&
+        std::shared_ptr<fl::AttributeArgument> const&
             attribute_argument(
-                std::dynamic_pointer_cast<fern::AttributeArgument>(
+                std::dynamic_pointer_cast<fl::AttributeArgument>(
                     argument));
         BOOST_REQUIRE(attribute_argument);
 
-        std::shared_ptr<fern::Attribute> const& attribute(
+        std::shared_ptr<fl::Attribute> const& attribute(
             attribute_argument->attribute());
 
-        fern::FieldAttributePtr<int32_t> boxes_attribute(
-            std::dynamic_pointer_cast<fern::FieldAttribute<int32_t>>(
+        fl::FieldAttributePtr<int32_t> boxes_attribute(
+            std::dynamic_pointer_cast<fl::FieldAttribute<int32_t>>(
                 attribute));
         BOOST_REQUIRE(boxes_attribute);
         BOOST_REQUIRE_EQUAL(boxes_attribute->size(), 1u);
 
-        fern::FieldValue<int32_t> const& value =
+        fl::FieldValue<int32_t> const& value =
             *boxes_attribute->values().cbegin()->second;
         BOOST_REQUIRE_EQUAL(value.num_dimensions(), 2);
         BOOST_REQUIRE_EQUAL(value.shape()[0], 3);
@@ -428,35 +431,35 @@ BOOST_AUTO_TEST_CASE(execute_read_with_raster_input)
     ///     tree = interpreter.parse_string(script);
     ///     interpreter.execute(tree);
 
-    ///     std::stack<std::shared_ptr<fern::Argument>> stack(
+    ///     std::stack<std::shared_ptr<fl::Argument>> stack(
     ///         interpreter.stack());
     ///     BOOST_CHECK_EQUAL(stack.size(), 1u);
 
-    ///     std::shared_ptr<fern::Argument> const& argument(stack.top());
+    ///     std::shared_ptr<fl::Argument> const& argument(stack.top());
     ///     BOOST_REQUIRE_EQUAL(argument->argument_type(),
-    ///         fern::ArgumentType::AT_FEATURE);
+    ///         fl::ArgumentType::AT_FEATURE);
 
-    ///     std::shared_ptr<fern::FeatureArgument> const&
+    ///     std::shared_ptr<fl::FeatureArgument> const&
     ///         feature_argument(
-    ///             std::dynamic_pointer_cast<fern::FeatureArgument>(
+    ///             std::dynamic_pointer_cast<fl::FeatureArgument>(
     ///                 argument));
     ///     BOOST_REQUIRE(feature_argument);
 
-    ///     std::shared_ptr<fern::Feature> const& feature(
+    ///     std::shared_ptr<fl::Feature> const& feature(
     ///         feature_argument->feature());
 
     ///     BOOST_REQUIRE_EQUAL(feature->nr_attributes(), 1u);
     ///     BOOST_REQUIRE(feature->contains_attribute("raster-1"));
 
-    ///     std::shared_ptr<fern::Attribute> const& attribute(
+    ///     std::shared_ptr<fl::Attribute> const& attribute(
     ///         feature->attribute("raster-1"));
 
     ///     using Point = fern::Point<double, 2>;
-    ///     using Box = fern::Box<Point>;
-    ///     using BoxDomain = fern::SpatialDomain<Box>;
-    ///     using Value = fern::ArrayValue<int32_t, 1>;
+    ///     using Box = fl::Box<Point>;
+    ///     using BoxDomain = fl::SpatialDomain<Box>;
+    ///     using Value = fl::ArrayValue<int32_t, 1>;
     ///     using ValuePtr = std::shared_ptr<Value>;
-    ///     using BoxesAttribute = fern::SpatialAttribute<BoxDomain, ValuePtr>;
+    ///     using BoxesAttribute = fl::SpatialAttribute<BoxDomain, ValuePtr>;
 
     ///     std::shared_ptr<BoxesAttribute> boxes_attribute(
     ///         std::dynamic_pointer_cast<BoxesAttribute>(attribute));
@@ -480,8 +483,8 @@ BOOST_AUTO_TEST_CASE(execute_read_with_raster_input)
 
 BOOST_AUTO_TEST_CASE(execute_abs_with_raster_input)
 {
-    fern::Interpreter interpreter;
-    fern::ModuleVertexPtr tree;
+    fl::Interpreter interpreter;
+    fl::ModuleVertexPtr tree;
 
     {
         fern::String script =
@@ -489,30 +492,30 @@ BOOST_AUTO_TEST_CASE(execute_abs_with_raster_input)
         tree = interpreter.parse_string(script);
         interpreter.execute(tree);
 
-        std::stack<std::shared_ptr<fern::Argument>> stack(
+        std::stack<std::shared_ptr<fl::Argument>> stack(
             interpreter.stack());
         BOOST_CHECK_EQUAL(stack.size(), 1u);
 
-        std::shared_ptr<fern::Argument> const& argument(stack.top());
+        std::shared_ptr<fl::Argument> const& argument(stack.top());
         BOOST_REQUIRE_EQUAL(argument->argument_type(),
-            fern::ArgumentType::AT_ATTRIBUTE);
+            fl::ArgumentType::AT_ATTRIBUTE);
 
-        std::shared_ptr<fern::AttributeArgument> const&
+        std::shared_ptr<fl::AttributeArgument> const&
             attribute_argument(
-                std::dynamic_pointer_cast<fern::AttributeArgument>(
+                std::dynamic_pointer_cast<fl::AttributeArgument>(
                     argument));
         BOOST_REQUIRE(attribute_argument);
 
-        std::shared_ptr<fern::Attribute> const& attribute(
+        std::shared_ptr<fl::Attribute> const& attribute(
             attribute_argument->attribute());
 
-        fern::FieldAttributePtr<int32_t> boxes_attribute(
-            std::dynamic_pointer_cast<fern::FieldAttribute<int32_t>>(
+        fl::FieldAttributePtr<int32_t> boxes_attribute(
+            std::dynamic_pointer_cast<fl::FieldAttribute<int32_t>>(
                 attribute));
         BOOST_REQUIRE(boxes_attribute);
         BOOST_REQUIRE_EQUAL(boxes_attribute->size(), 1u);
 
-        fern::FieldValue<int32_t> const& value =
+        fl::FieldValue<int32_t> const& value =
             *boxes_attribute->values().cbegin()->second;
         BOOST_REQUIRE_EQUAL(value.num_dimensions(), 2);
         BOOST_REQUIRE_EQUAL(value.shape()[0], 3);
@@ -536,8 +539,8 @@ BOOST_AUTO_TEST_CASE(execute_abs_with_raster_input)
 
 BOOST_AUTO_TEST_CASE(execute_write_with_raster_input)
 {
-    fern::Interpreter interpreter;
-    fern::ModuleVertexPtr tree;
+    fl::Interpreter interpreter;
+    fl::ModuleVertexPtr tree;
 
     {
         // Read a raster, calculate the abs, write the result.
@@ -554,38 +557,38 @@ BOOST_AUTO_TEST_CASE(execute_write_with_raster_input)
         tree = interpreter.parse_string(script);
         interpreter.execute(tree);
 
-        std::stack<std::shared_ptr<fern::Argument>> stack(
+        std::stack<std::shared_ptr<fl::Argument>> stack(
             interpreter.stack());
         BOOST_CHECK_EQUAL(stack.size(), 1u);
 
-        std::shared_ptr<fern::Argument> const& argument(stack.top());
+        std::shared_ptr<fl::Argument> const& argument(stack.top());
         BOOST_REQUIRE_EQUAL(argument->argument_type(),
-            fern::ArgumentType::AT_ATTRIBUTE);
+            fl::ArgumentType::AT_ATTRIBUTE);
 
-        std::shared_ptr<fern::AttributeArgument> const&
+        std::shared_ptr<fl::AttributeArgument> const&
             attribute_argument(
-                std::dynamic_pointer_cast<fern::AttributeArgument>(
+                std::dynamic_pointer_cast<fl::AttributeArgument>(
                     argument));
         BOOST_REQUIRE(attribute_argument);
 
-        std::shared_ptr<fern::Attribute> const& attribute(
+        std::shared_ptr<fl::Attribute> const& attribute(
             attribute_argument->attribute());
 
-        fern::FieldAttributePtr<int32_t> boxes_attribute(
-            std::dynamic_pointer_cast<fern::FieldAttribute<int32_t>>(
+        fl::FieldAttributePtr<int32_t> boxes_attribute(
+            std::dynamic_pointer_cast<fl::FieldAttribute<int32_t>>(
                 attribute));
         BOOST_REQUIRE(boxes_attribute);
         BOOST_REQUIRE_EQUAL(boxes_attribute->size(), 1u);
 
-        fern::FieldDomain const& domain(boxes_attribute->domain());
+        fl::FieldDomain const& domain(boxes_attribute->domain());
         BOOST_REQUIRE_EQUAL(domain.size(), 1u);
-        fern::d2::Box const& box(domain.cbegin()->second);
+        fl::d2::Box const& box(domain.cbegin()->second);
         BOOST_CHECK_EQUAL(fern::get<0>(box.min_corner()), -1.0);
         BOOST_CHECK_EQUAL(fern::get<1>(box.min_corner()), -1.0);
         BOOST_CHECK_EQUAL(fern::get<0>(box.max_corner()), 1.0);
         BOOST_CHECK_EQUAL(fern::get<1>(box.max_corner()), 2.0);
 
-        fern::FieldValue<int32_t> const& value(
+        fl::FieldValue<int32_t> const& value(
             *boxes_attribute->values().cbegin()->second);
         BOOST_REQUIRE_EQUAL(value.num_dimensions(), 2);
         BOOST_REQUIRE_EQUAL(value.shape()[0], 3);
@@ -609,8 +612,8 @@ BOOST_AUTO_TEST_CASE(execute_write_with_raster_input)
 
 BOOST_AUTO_TEST_CASE(execute_read_with_constant_input)
 {
-    fern::Interpreter interpreter;
-    fern::ModuleVertexPtr tree;
+    fl::Interpreter interpreter;
+    fl::ModuleVertexPtr tree;
 
     {
         // Write a constant, read it again. Leave it on the stack, and test
@@ -630,9 +633,9 @@ read(attribute_name))";
 
 BOOST_AUTO_TEST_CASE(execute_with_external_inputs)
 {
-    fern::Interpreter interpreter;
-    fern::ModuleVertexPtr tree;
-    fern::Interpreter::DataSyncSymbolTable data_sync_symbol_table;
+    fl::Interpreter interpreter;
+    fl::ModuleVertexPtr tree;
+    fl::Interpreter::DataSyncSymbolTable data_sync_symbol_table;
 
     // If a script has undefined symbols, they must be provided from the
     // outside. After that, validation should result in fixed result expression
@@ -646,9 +649,9 @@ abs(input)
 
     // Constant input.
     {
-        std::shared_ptr<fern::DataSource> data_source(
-            std::make_shared<fern::ConstantSource<int32_t>>(-9));
-        fern::Interpreter::DataSourceSymbolTable data_source_symbol_table;
+        std::shared_ptr<fl::DataSource> data_source(
+            std::make_shared<fl::ConstantSource<int32_t>>(-9));
+        fl::Interpreter::DataSourceSymbolTable data_source_symbol_table;
         data_source_symbol_table.push_scope();
         data_source_symbol_table.add_value("input", data_source);
 
@@ -669,10 +672,10 @@ abs(input)
 
     // Constant input, from file.
     {
-        std::shared_ptr<fern::DataSource> data_source(
-            std::make_shared<fern::DatasetSource>(
+        std::shared_ptr<fl::DataSource> data_source(
+            std::make_shared<fl::DatasetSource>(
                 "constant-1.h5:earth/gravity"));
-        fern::Interpreter::DataSourceSymbolTable data_source_symbol_table;
+        fl::Interpreter::DataSourceSymbolTable data_source_symbol_table;
         data_source_symbol_table.push_scope();
         data_source_symbol_table.add_value("input", data_source);
 
@@ -698,9 +701,9 @@ abs(input)
 abs(input)
 abs(input)
 )";
-        std::shared_ptr<fern::DataSource> data_source(
-            std::make_shared<fern::ConstantSource<int32_t>>(-9));
-        fern::Interpreter::DataSourceSymbolTable data_source_symbol_table;
+        std::shared_ptr<fl::DataSource> data_source(
+            std::make_shared<fl::ConstantSource<int32_t>>(-9));
+        fl::Interpreter::DataSourceSymbolTable data_source_symbol_table;
         data_source_symbol_table.push_scope();
         data_source_symbol_table.add_value("input", data_source);
 
@@ -714,24 +717,22 @@ abs(input)
 
 BOOST_AUTO_TEST_CASE(execute_with_external_outputs)
 {
-    using namespace fern;
-
-    String script;
-    Interpreter interpreter;
+    fern::String script;
+    fl::Interpreter interpreter;
 
     // Outputs of a script can be coupled to a data sync. That way, data will
     // be saved.
 
     {
-        Interpreter::DataSourceSymbolTable data_source_symbol_table;
-        String dataset_pathname = "execute_with_external_outputs.gnr";
-        std::shared_ptr<Dataset> dataset(open_dataset(dataset_pathname,
-            OpenMode::OVERWRITE));
-        std::shared_ptr<DataSync> data_sync_a(std::make_shared<DatasetSync>(
-            dataset, "my_feature/a"));
-        std::shared_ptr<DataSync> data_sync_b(std::make_shared<DatasetSync>(
-            dataset, "my_feature/b"));
-        Interpreter::DataSyncSymbolTable data_sync_symbol_table;
+        fl::Interpreter::DataSourceSymbolTable data_source_symbol_table;
+        fern::String dataset_pathname = "execute_with_external_outputs.gnr";
+        std::shared_ptr<fl::Dataset> dataset(fl::open_dataset(dataset_pathname,
+            fl::OpenMode::OVERWRITE));
+        std::shared_ptr<fl::DataSync> data_sync_a(
+            std::make_shared<fl::DatasetSync>(dataset, "my_feature/a"));
+        std::shared_ptr<fl::DataSync> data_sync_b(
+            std::make_shared<fl::DatasetSync>(dataset, "my_feature/b"));
+        fl::Interpreter::DataSyncSymbolTable data_sync_symbol_table;
         data_sync_symbol_table.push_scope();
         data_sync_symbol_table.add_value("a", data_sync_a);
         data_sync_symbol_table.add_value("b", data_sync_b);

@@ -15,6 +15,7 @@
 
 
 namespace fern {
+namespace language {
 
 extern std::map<std::string, std::shared_ptr<Driver>> drivers;
 
@@ -35,4 +36,5 @@ std::shared_ptr<Dataset> open_dataset  (std::string const& name,
 //                                         std::string const& name,
 //                                         std::string const& format);
 
+} // namespace language
 } // namespace fern

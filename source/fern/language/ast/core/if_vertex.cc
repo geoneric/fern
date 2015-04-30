@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 IfVertex::IfVertex(
     std::shared_ptr<ExpressionVertex> const& condition,
@@ -69,4 +70,5 @@ std::shared_ptr<SentinelVertex>& IfVertex::sentinel()
     return _sentinel;
 }
 
+} // namespace language
 } // namespace fern

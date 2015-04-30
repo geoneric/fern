@@ -1,7 +1,7 @@
 add_test_conditionally(test)
 
 add_parser_generation_command(operation
-    --namespace-map http://www.geoneric.eu/fern=fern)
+    --namespace-map http://www.geoneric.eu/fern=fern::language)
 
 set(SOURCES
     ${CMAKE_CURRENT_BINARY_DIR}/operation-pskel.cxx

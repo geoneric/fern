@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 
 DatasetSync::DatasetSync(
     DataName const& data_name)
@@ -52,4 +53,5 @@ std::shared_ptr<Dataset> const& DatasetSync::dataset() const
     return _dataset;
 }
 
+} // namespace language
 } // namespace fern

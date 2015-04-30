@@ -11,6 +11,7 @@
 
 
 namespace fern {
+namespace language {
 
 template<
     H5T_class_t TypeClass>
@@ -110,4 +111,5 @@ struct HDF5TypeClassTraits<H5T_NCLASSES>
     static std::string const name;
 };
 
+} // namespace language
 } // namespace fern

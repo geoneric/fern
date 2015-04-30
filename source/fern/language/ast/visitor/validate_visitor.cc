@@ -15,6 +15,7 @@
 
 
 namespace fern {
+namespace language {
 
 void ValidateVisitor::Visit(
     NameVertex& vertex)
@@ -47,7 +48,7 @@ void ValidateVisitor::Visit(
         );
     }
 
-    fern::Operation const& operation(*vertex.operation());
+    Operation const& operation(*vertex.operation());
 
     // Check if the number of arguments provided equals the required number of
     // arguments.
@@ -86,4 +87,5 @@ void ValidateVisitor::Visit(
     }
 }
 
+} // namespace language
 } // namespace fern

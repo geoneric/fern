@@ -16,7 +16,11 @@
 
 
 namespace fern {
+namespace language {
 
+/*!
+    @ingroup    fern_language_group
+*/
 std::tuple<
     std::vector<std::shared_ptr<DataSource>>,
     std::vector<std::shared_ptr<DataSync>>>
@@ -27,4 +31,5 @@ std::tuple<
                                         std::vector<DataDescription> const&
                                             results);
 
+} // Namespace language
 } // Namespace fern

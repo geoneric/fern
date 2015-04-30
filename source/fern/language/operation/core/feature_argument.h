@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 
 class Feature;
 
@@ -48,4 +49,5 @@ private:
 
 };
 
+} // namespace language
 } // namespace fern

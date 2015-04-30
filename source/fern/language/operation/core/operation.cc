@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 
 Operation::Operation(
     String const& name,
@@ -120,4 +121,5 @@ std::vector<Result> const& Operation::results() const
     return _results;
 }
 
+} // namespace language
 } // namespace fern

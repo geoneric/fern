@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 namespace {
 
 void show_execute_help()
@@ -69,4 +70,5 @@ int ExecuteCommand::execute() const
     return status;
 }
 
+} // namespace language
 } // namespace fern

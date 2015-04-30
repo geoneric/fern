@@ -11,6 +11,7 @@
 
 
 namespace fern {
+namespace language {
 
 //!
 /*!
@@ -113,4 +114,5 @@ ExpressionTypes Parameter::expression_types() const
     return _expression_types;
 }
 
+} // namespace language
 } // namespace fern

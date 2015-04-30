@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 FunctionCallVertex::FunctionCallVertex(
     String const& name,
@@ -20,4 +21,5 @@ FunctionCallVertex::FunctionCallVertex(
 {
 }
 
+} // namespace language
 } // namespace fern

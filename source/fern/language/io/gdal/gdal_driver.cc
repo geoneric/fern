@@ -17,6 +17,7 @@
 
 
 namespace fern {
+namespace language {
 
 static auto deleter = [](::GDALDataset* dataset)
     { if(dataset) { GDALClose(dataset); } };
@@ -116,4 +117,5 @@ std::shared_ptr<Dataset> GDALDriver::open(
         name, open_mode));
 }
 
+} // namespace language
 } // namespace fern

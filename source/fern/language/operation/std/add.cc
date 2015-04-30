@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 
 Add::Add()
 
@@ -62,4 +63,5 @@ std::vector<std::shared_ptr<Argument>> Add::execute(
     return std::vector<std::shared_ptr<Argument>>();
 }
 
+} // namespace language
 } // namespace fern

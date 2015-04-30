@@ -13,6 +13,7 @@
 
 
 namespace fern {
+namespace language {
 
 //! Class for visitors that determine input identifiers and potential outputs.
 /*!
@@ -78,4 +79,5 @@ private:
 
 };
 
+} // namespace language
 } // namespace fern

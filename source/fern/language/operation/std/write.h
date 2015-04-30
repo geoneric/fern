@@ -11,6 +11,7 @@
 
 
 namespace fern {
+namespace language {
 
 class Write:
     public Operation
@@ -38,4 +39,5 @@ private:
 
 };
 
+} // namespace language
 } // namespace fern

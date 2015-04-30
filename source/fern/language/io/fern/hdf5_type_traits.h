@@ -11,6 +11,7 @@
 
 
 namespace fern {
+namespace language {
 
 template<
     class T>
@@ -100,4 +101,5 @@ struct HDF5TypeTraits<double>
     static H5T_class_t const type_class = H5T_FLOAT;
 };
 
+} // namespace language
 } // namespace fern

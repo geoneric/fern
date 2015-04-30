@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 AssignmentVertex::AssignmentVertex(
     ExpressionVertexPtr const& target,
@@ -53,4 +54,5 @@ ExpressionVertexPtr const& AssignmentVertex::expression() const
     return _expression;
 }
 
+} // namespace language
 } // namespace fern

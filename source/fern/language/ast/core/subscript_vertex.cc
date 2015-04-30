@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 SubscriptVertex::SubscriptVertex(
     ExpressionVertexPtr const& expression,
@@ -42,4 +43,5 @@ String const& SubscriptVertex::symbol() const
 }
 
 
+} // namespace language
 } // namespace fern

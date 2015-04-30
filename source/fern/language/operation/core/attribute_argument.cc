@@ -11,6 +11,7 @@
 
 
 namespace fern {
+namespace language {
 
 AttributeArgument::AttributeArgument(
     std::shared_ptr<Attribute> const& attribute)
@@ -19,7 +20,7 @@ AttributeArgument::AttributeArgument(
       _attribute(attribute)
 
 {
-    fern::AttributeTypeVisitor visitor;
+    AttributeTypeVisitor visitor;
     attribute->Accept(visitor);
     _data_type = visitor.data_type();
     _value_type = visitor.value_type();
@@ -43,4 +44,5 @@ ValueType AttributeArgument::value_type() const
     return _value_type;
 }
 
+} // namespace language
 } // namespace fern

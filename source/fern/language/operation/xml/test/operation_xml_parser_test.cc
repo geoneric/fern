@@ -13,15 +13,18 @@
 #include "fern/language/operation/xml/operation_xml_parser.h"
 
 
+namespace fl = fern::language;
+
+
 BOOST_AUTO_TEST_SUITE(operation_xml_parser)
 
 BOOST_AUTO_TEST_CASE(parse)
 {
-    fern::OperationXmlParser xml_parser;
+    fl::OperationXmlParser xml_parser;
     fern::String xml;
-    fern::OperationsPtr operations;
-    std::vector<fern::Parameter> parameters;
-    std::vector<fern::Result> results;
+    fl::OperationsPtr operations;
+    std::vector<fl::Parameter> parameters;
+    std::vector<fl::Result> results;
     fern::DataTypes data_types;
     fern::ValueTypes value_types;
 

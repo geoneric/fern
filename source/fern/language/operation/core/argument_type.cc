@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 std::ostream& operator<<(
     std::ostream& stream,
@@ -29,4 +30,5 @@ std::ostream& operator<<(
     return stream;
 }
 
+} // namespace language
 } // namespace fern

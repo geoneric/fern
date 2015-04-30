@@ -13,11 +13,12 @@
 
 
 namespace fern {
+namespace language {
 
-//! Constructor.
 /*!
-  \param     header_extension Filename extension to use for header files.
-  \param     module_extension Filename extension to use for module files.
+    @brief      Constructor.
+    @param      header_extension Filename extension to use for header files.
+    @param      module_extension Filename extension to use for module files.
 */
 Compiler::Compiler(
     String const& header_extension,
@@ -37,16 +38,13 @@ Compiler::Compiler(
 }
 
 
-//! Compile source module to C++ code and write a destination module.
 /*!
-  \param     source_module_path Path to source module.
-  \param     destination_module_path Path to destination module, without
-             extension. Two files will be written: a header file and an
-             module file.
-  \return    .
-  \exception .
-  \warning   .
-  \sa        .
+    @brief      Compile source module to C++ code and write a destination
+                module.
+    @param      source_module_path Path to source module.
+    @param      destination_module_path Path to destination module, without
+                extension. Two files will be written: a header file and an
+                module file.
 */
 void Compiler::compile(
     Path const& source_module_path,
@@ -221,4 +219,5 @@ void Compiler::compile(
     }
 }
 
+} // namespace language
 } // namespace fern

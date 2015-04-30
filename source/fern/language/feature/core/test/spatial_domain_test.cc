@@ -13,6 +13,9 @@
 #include "fern/language/feature/core/spatial_domain.h"
 
 
+namespace fl = fern::language;
+
+
 template<
     class CoordinateType,
     size_t nr_dimensions,
@@ -32,8 +35,8 @@ inline bool operator==(
 template<
     class Point>
 inline bool operator==(
-    fern::Box<Point> const& lhs,
-    fern::Box<Point> const& rhs)
+    fl::Box<Point> const& lhs,
+    fl::Box<Point> const& rhs)
 {
     return
         lhs.min_corner() == rhs.min_corner() &&
@@ -46,8 +49,8 @@ BOOST_AUTO_TEST_SUITE(spatial_domain)
 BOOST_AUTO_TEST_CASE(spatial_domain)
 {
     using Point = fern::Point<double, 2>;
-    using Box = fern::Box<Point>;
-    using BoxDomain = fern::SpatialDomain<Box>;
+    using Box = fl::Box<Point>;
+    using BoxDomain = fl::SpatialDomain<Box>;
 
     BoxDomain spatial_domain;
 

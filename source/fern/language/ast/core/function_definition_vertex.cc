@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 FunctionDefinitionVertex::FunctionDefinitionVertex(
     String const& name,
@@ -54,4 +55,5 @@ std::shared_ptr<ScopeVertex>& FunctionDefinitionVertex::scope()
     return _scope;
 }
 
+} // namespace language
 } // namespace fern

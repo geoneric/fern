@@ -21,6 +21,7 @@
 
 
 namespace fern {
+namespace language {
 
 namespace {
 
@@ -469,4 +470,5 @@ void Interpreter::clear_stack()
     _back_end->clear_stack();
 }
 
+} // namespace language
 } // namespace fern

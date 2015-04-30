@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 //! Return the number of child-features of this feature.
 /*!
@@ -227,4 +228,5 @@ Feature const* Feature::parent_feature(
         ? this : feature(path.parent_path()).get();
 }
 
+} // namespace language
 } // namespace fern

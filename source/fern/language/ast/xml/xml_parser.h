@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 
 class ModuleVertex;
 
@@ -52,4 +53,5 @@ private:
 
 };
 
+} // namespace language
 } // namespace fern

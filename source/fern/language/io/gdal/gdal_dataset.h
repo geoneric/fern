@@ -16,6 +16,7 @@ class GDALDriver;
 class GDALRasterBand;
 
 namespace fern {
+namespace language {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -106,4 +107,5 @@ private:
 
 };
 
+} // namespace language
 } // namespace fern

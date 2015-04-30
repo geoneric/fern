@@ -12,9 +12,11 @@
 
 
 namespace fern {
+namespace language {
 
 // extern std::shared_ptr<Operations> operations;
 
 std::shared_ptr<Operations> const& operations ();
 
+} // namespace language
 } // namespace fern

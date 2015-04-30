@@ -11,6 +11,7 @@
 
 
 namespace fern {
+namespace language {
 
 static DataTypes result_data_type(
     Operation const& operation,
@@ -213,4 +214,5 @@ ExpressionType standard_expression_type(
         result_value_type(operation, index, value_types));
 }
 
+} // namespace language
 } // namespace fern

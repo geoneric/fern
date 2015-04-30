@@ -11,14 +11,16 @@
 #include "fern/language/feature/core/masked_array_value.h"
 
 
+namespace fl = fern::language;
+
+
 BOOST_AUTO_TEST_SUITE(masked_array_value)
 
 BOOST_AUTO_TEST_CASE(array)
 {
     size_t const nr_dimensions = 1;
     size_t const nr_cells = 3;
-    fern::MaskedArrayValue<int, nr_dimensions> array(
-        fern::extents[nr_cells]);
+    fl::MaskedArrayValue<int, nr_dimensions> array(fern::extents[nr_cells]);
 
     array[0] = 3;
     array[1] = 2;
@@ -39,7 +41,7 @@ BOOST_AUTO_TEST_CASE(grid)
     size_t const nr_dimensions = 2;
     size_t const nr_rows = 3;
     size_t const nr_cols = 2;
-    fern::MaskedArrayValue<int, nr_dimensions> array(
+    fl::MaskedArrayValue<int, nr_dimensions> array(
         fern::extents[nr_rows][nr_cols]);
 
     array[0][0] = -2;

@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 Driver::Driver(
     std::string const& name)
@@ -25,4 +26,5 @@ std::string const& Driver::name() const
     return _name;
 }
 
+} // namespace language
 } // namespace fern

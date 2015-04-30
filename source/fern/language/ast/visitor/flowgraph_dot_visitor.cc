@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 
 FlowgraphDotVisitor::FlowgraphDotVisitor()
 
@@ -431,4 +432,5 @@ void FlowgraphDotVisitor::Visit(
     add_script("}\n");
 }
 
+} // namespace language
 } // namespace fern

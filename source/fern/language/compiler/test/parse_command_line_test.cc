@@ -15,28 +15,15 @@
 #include "fern/language/compiler/parse_command_line.h"
 
 
-// class Support:
-//     public fern::IOClient
-// {
-// 
-// public:
-// 
-//     Support()
-//         : fern::IOClient()
-//     {
-//     }
-// 
-// };
+namespace fl = fern::language;
 
 
-BOOST_FIXTURE_TEST_SUITE(parse_command_line, fern::IOClient)
+BOOST_FIXTURE_TEST_SUITE(parse_command_line, fl::IOClient)
 
 BOOST_AUTO_TEST_CASE(parse_command_line)
 {
-    using namespace fern;
-
-    std::vector<std::shared_ptr<DataSource>> data_sources;
-    std::vector<std::shared_ptr<DataSync>> data_syncs;
+    std::vector<std::shared_ptr<fl::DataSource>> data_sources;
+    std::vector<std::shared_ptr<fl::DataSync>> data_syncs;
 
     // No command line arguments.
     {
@@ -44,10 +31,10 @@ BOOST_AUTO_TEST_CASE(parse_command_line)
         char const* argv[] = {
             "my_command"
         };
-        std::vector<DataDescription> arguments;
-        std::vector<DataDescription> results;
+        std::vector<fl::DataDescription> arguments;
+        std::vector<fl::DataDescription> results;
 
-        std::tie(data_sources, data_syncs) = fern::parse_command_line(argc,
+        std::tie(data_sources, data_syncs) = fl::parse_command_line(argc,
             const_cast<char**>(argv), arguments, results);
         BOOST_CHECK_EQUAL(data_sources.size(), 0u);
         BOOST_CHECK_EQUAL(data_syncs.size(), 0u);
@@ -59,12 +46,12 @@ BOOST_AUTO_TEST_CASE(parse_command_line)
         char const* argv[] = {
             "my_command"
         };
-        std::vector<DataDescription> arguments({
-            DataDescription("my_argument")
+        std::vector<fl::DataDescription> arguments({
+                fl::DataDescription("my_argument")
         });
-        std::vector<DataDescription> results;
+        std::vector<fl::DataDescription> results;
 
-        std::tie(data_sources, data_syncs) = fern::parse_command_line(argc,
+        std::tie(data_sources, data_syncs) = fl::parse_command_line(argc,
             const_cast<char**>(argv), arguments, results);
         BOOST_CHECK_EQUAL(data_sources.size(), 0u);
         BOOST_CHECK_EQUAL(data_syncs.size(), 0u);
@@ -77,26 +64,26 @@ BOOST_AUTO_TEST_CASE(parse_command_line)
             "my_command",
             "5"
         };
-        std::vector<DataDescription> arguments({
-            DataDescription("my_argument")
+        std::vector<fl::DataDescription> arguments({
+                fl::DataDescription("my_argument")
         });
-        std::vector<DataDescription> results;
+        std::vector<fl::DataDescription> results;
 
-        std::tie(data_sources, data_syncs) = fern::parse_command_line(argc,
+        std::tie(data_sources, data_syncs) = fl::parse_command_line(argc,
             const_cast<char**>(argv), arguments, results);
         BOOST_CHECK_EQUAL(data_sources.size(), 1u);
         BOOST_CHECK_EQUAL(data_syncs.size(), 0u);
 
         BOOST_REQUIRE(data_sources[0]);
-        std::shared_ptr<ConstantSource<int64_t>> source(
-            std::dynamic_pointer_cast<ConstantSource<int64_t>>(
+        std::shared_ptr<fl::ConstantSource<int64_t>> source(
+            std::dynamic_pointer_cast<fl::ConstantSource<int64_t>>(
                 data_sources[0]));
         BOOST_REQUIRE(source);
-        std::shared_ptr<AttributeArgument> attribute_argument(
-            std::dynamic_pointer_cast<AttributeArgument>(source->read()));
+        std::shared_ptr<fl::AttributeArgument> attribute_argument(
+            std::dynamic_pointer_cast<fl::AttributeArgument>(source->read()));
         BOOST_REQUIRE(attribute_argument);
-        std::shared_ptr<ConstantAttribute<int64_t>> attribute(
-            std::dynamic_pointer_cast<ConstantAttribute<int64_t>>(
+        std::shared_ptr<fl::ConstantAttribute<int64_t>> attribute(
+            std::dynamic_pointer_cast<fl::ConstantAttribute<int64_t>>(
                 attribute_argument->attribute()));
         BOOST_REQUIRE(attribute);
         BOOST_CHECK_EQUAL(attribute->values().value(), 5);
@@ -109,24 +96,24 @@ BOOST_AUTO_TEST_CASE(parse_command_line)
             "my_command",
             "result.frn"
         };
-        std::vector<DataDescription> arguments({
+        std::vector<fl::DataDescription> arguments({
         });
-        std::vector<DataDescription> results({
-            DataDescription("my_result")
+        std::vector<fl::DataDescription> results({
+                fl::DataDescription("my_result")
         });
 
-        std::tie(data_sources, data_syncs) = fern::parse_command_line(argc,
+        std::tie(data_sources, data_syncs) = fl::parse_command_line(argc,
             const_cast<char**>(argv), arguments, results);
         BOOST_CHECK_EQUAL(data_sources.size(), 0u);
         BOOST_CHECK_EQUAL(data_syncs.size(), 1u);
 
         BOOST_REQUIRE(data_syncs[0]);
 
-        std::shared_ptr<DatasetSync> sync(
-            std::dynamic_pointer_cast<DatasetSync>(data_syncs[0]));
+        std::shared_ptr<fl::DatasetSync> sync(
+            std::dynamic_pointer_cast<fl::DatasetSync>(data_syncs[0]));
         BOOST_REQUIRE(sync);
         BOOST_CHECK_EQUAL(sync->dataset()->name(), fern::String("result.frn"));
-        BOOST_CHECK(sync->dataset()->open_mode() == OpenMode::OVERWRITE);
+        BOOST_CHECK(sync->dataset()->open_mode() == fl::OpenMode::OVERWRITE);
     }
 
     // Too many command line arguments.
@@ -136,10 +123,10 @@ BOOST_AUTO_TEST_CASE(parse_command_line)
             "my_command",
             "result.frn"
         };
-        std::vector<DataDescription> arguments;
-        std::vector<DataDescription> results;
+        std::vector<fl::DataDescription> arguments;
+        std::vector<fl::DataDescription> results;
 
-        BOOST_CHECK_THROW(fern::parse_command_line(argc, const_cast<char**>(
+        BOOST_CHECK_THROW(fl::parse_command_line(argc, const_cast<char**>(
             argv), arguments, results), std::invalid_argument);
     }
 }

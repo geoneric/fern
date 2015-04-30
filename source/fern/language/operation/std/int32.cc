@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 
 Int32::Int32()
 
@@ -59,4 +60,5 @@ std::vector<std::shared_ptr<Argument>> Int32::execute(
     return std::vector<std::shared_ptr<Argument>>();
 }
 
+} // namespace language
 } // namespace fern

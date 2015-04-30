@@ -11,6 +11,7 @@
 
 
 namespace fern {
+namespace language {
 
 Result::Result(
     String const& name,
@@ -68,4 +69,5 @@ ExpressionType const& Result::expression_type() const
     return _expression_type;
 }
 
+} // namespace language
 } // namespace fern

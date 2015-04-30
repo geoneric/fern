@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 namespace {
 
 void show_describe_help()
@@ -125,4 +126,5 @@ int DescribeCommand::execute() const
     return status;
 }
 
+} // namespace language
 } // namespace fern

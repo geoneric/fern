@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 enum class OpenMode {
     //! Open dataset for reading.
@@ -22,4 +23,5 @@ enum class OpenMode {
     UPDATE
 };
 
+} // namespace language
 } // namespace fern

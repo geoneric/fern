@@ -11,6 +11,7 @@
 
 
 namespace fern {
+namespace language {
 
 String const& DotVisitor::script() const
 {
@@ -31,4 +32,5 @@ void DotVisitor::add_script(
     _script += string;
 }
 
+} // namespace language
 } // namespace fern

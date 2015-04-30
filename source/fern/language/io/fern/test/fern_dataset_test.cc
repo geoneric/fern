@@ -14,8 +14,11 @@
 #include "fern/language/io/fern/hdf5_client.h"
 
 
+namespace fl = fern::language;
+
+
 class Support:
-    private fern::HDF5Client
+    private fl::HDF5Client
 {
 
 public:
@@ -39,13 +42,13 @@ BOOST_FIXTURE_TEST_SUITE(fern_dataset, Support)
 BOOST_AUTO_TEST_CASE(write_and_read)
 {
     // Create a new dataset.
-    std::shared_ptr<fern::FernDataset> dataset(
-        std::make_shared<fern::FernDataset>("dataset_test_write.gnr",
-            fern::OpenMode::OVERWRITE));
+    std::shared_ptr<fl::FernDataset> dataset(
+        std::make_shared<fl::FernDataset>("dataset_test_write.gnr",
+            fl::OpenMode::OVERWRITE));
     BOOST_CHECK_EQUAL(dataset->nr_features(), 0u);
 
     {
-        fern::ConstantAttribute<int32_t> constant(5);
+        fl::ConstantAttribute<int32_t> constant(5);
         dataset->write_attribute(constant, "planets/gravity");
         BOOST_CHECK_EQUAL(dataset->nr_features(), 1u);
         BOOST_CHECK_EQUAL(dataset->nr_features("planets"), 0u);
@@ -60,56 +63,56 @@ BOOST_AUTO_TEST_CASE(write_and_read)
 
     // Open attribute without re-opening the dataset.
     {
-        std::shared_ptr<fern::Attribute> attribute(dataset->open_attribute(
+        std::shared_ptr<fl::Attribute> attribute(dataset->open_attribute(
             "planets/gravity"));
         BOOST_REQUIRE(attribute);
-        std::shared_ptr<fern::ConstantAttribute<int32_t>>
+        std::shared_ptr<fl::ConstantAttribute<int32_t>>
             constant_attribute(
-                std::dynamic_pointer_cast<fern::ConstantAttribute<int32_t>>(
+                std::dynamic_pointer_cast<fl::ConstantAttribute<int32_t>>(
                     attribute));
         BOOST_REQUIRE(constant_attribute);
     }
 
     // Read attribute without re-opening the dataset.
     {
-        std::shared_ptr<fern::Attribute> attribute(dataset->read_attribute(
+        std::shared_ptr<fl::Attribute> attribute(dataset->read_attribute(
             "planets/gravity"));
         BOOST_REQUIRE(attribute);
-        std::shared_ptr<fern::ConstantAttribute<int32_t>>
+        std::shared_ptr<fl::ConstantAttribute<int32_t>>
             constant_attribute(
-                std::dynamic_pointer_cast<fern::ConstantAttribute<int32_t>>(
+                std::dynamic_pointer_cast<fl::ConstantAttribute<int32_t>>(
                     attribute));
         BOOST_REQUIRE(constant_attribute);
         BOOST_CHECK_EQUAL(constant_attribute->values().value(), 5);
     }
 
     // Read attribute after the dataset was closed.
-    dataset = std::make_shared<fern::FernDataset>(
-        "dataset_test_write.gnr", fern::OpenMode::READ);
+    dataset = std::make_shared<fl::FernDataset>(
+        "dataset_test_write.gnr", fl::OpenMode::READ);
     {
-        std::shared_ptr<fern::Attribute> attribute(dataset->read_attribute(
+        std::shared_ptr<fl::Attribute> attribute(dataset->read_attribute(
             "planets/gravity"));
         BOOST_REQUIRE(attribute);
-        std::shared_ptr<fern::ConstantAttribute<int32_t>>
+        std::shared_ptr<fl::ConstantAttribute<int32_t>>
             constant_attribute(
-                std::dynamic_pointer_cast<fern::ConstantAttribute<int32_t>>(
+                std::dynamic_pointer_cast<fl::ConstantAttribute<int32_t>>(
                     attribute));
         BOOST_REQUIRE(constant_attribute);
         BOOST_CHECK_EQUAL(constant_attribute->values().value(), 5);
     }
 
     // Update the value.
-    dataset = std::make_shared<fern::FernDataset>(
-        "dataset_test_write.gnr", fern::OpenMode::UPDATE);
+    dataset = std::make_shared<fl::FernDataset>(
+        "dataset_test_write.gnr", fl::OpenMode::UPDATE);
     {
-        fern::ConstantAttribute<int32_t> constant(6);
+        fl::ConstantAttribute<int32_t> constant(6);
         dataset->write_attribute(constant, "planets/gravity");
-        std::shared_ptr<fern::Attribute> attribute(dataset->read_attribute(
+        std::shared_ptr<fl::Attribute> attribute(dataset->read_attribute(
             "planets/gravity"));
         BOOST_REQUIRE(attribute);
-        std::shared_ptr<fern::ConstantAttribute<int32_t>>
+        std::shared_ptr<fl::ConstantAttribute<int32_t>>
             constant_attribute(
-                std::dynamic_pointer_cast<fern::ConstantAttribute<int32_t>>(
+                std::dynamic_pointer_cast<fl::ConstantAttribute<int32_t>>(
                     attribute));
         BOOST_REQUIRE(constant_attribute);
         BOOST_CHECK_EQUAL(constant_attribute->values().value(), 6);
@@ -119,19 +122,17 @@ BOOST_AUTO_TEST_CASE(write_and_read)
 
 BOOST_AUTO_TEST_CASE(errors)
 {
-    using namespace fern;
-
     {
-        FernDataset dataset("constant-1.h5", OpenMode::READ);
+        fl::FernDataset dataset("constant-1.h5", fl::OpenMode::READ);
 
         try {
             dataset.read_feature("blahdiblah");
             BOOST_CHECK(false);
         }
-        catch(IOError const& exception) {
-            String message = exception.message();
+        catch(fern::IOError const& exception) {
+            fern::String message = exception.message();
             BOOST_CHECK_EQUAL(message,
-                String(
+                fern::String(
                     "I/O error handling constant-1.h5: "
                     "Does not contain feature: blahdiblah"));
         }
@@ -140,9 +141,9 @@ BOOST_AUTO_TEST_CASE(errors)
             dataset.read_attribute("blahdiblah");
             BOOST_CHECK(false);
         }
-        catch(IOError const& exception) {
-            String message = exception.message();
-            BOOST_CHECK_EQUAL(message, String(
+        catch(fern::IOError const& exception) {
+            fern::String message = exception.message();
+            BOOST_CHECK_EQUAL(message, fern::String(
                 "I/O error handling constant-1.h5: "
                 "Does not contain attribute: blahdiblah"));
         }

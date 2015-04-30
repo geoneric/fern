@@ -19,6 +19,7 @@
 
 
 namespace fern {
+namespace language {
 
 void show_general_help()
 {
@@ -51,6 +52,7 @@ void show_build()
         << "\n";
 }
 
+} // namespace language
 } // namespace fern
 
 
@@ -58,12 +60,14 @@ int main(
     int argc,
     char** argv)
 {
+    namespace fl = fern::language;
+
     int status = EXIT_FAILURE;
 
     if(argc == 1) {
         // No arguments, enter the interpreter.
         try {
-            fern::enter_interpreter();
+            fl::enter_interpreter();
             status = EXIT_SUCCESS;
         }
         catch(std::exception const& exception) {
@@ -73,39 +77,39 @@ int main(
     }
     else if(std::strcmp(argv[1], "--help") == 0) {
         // The help option.
-        fern::show_general_help();
+        fl::show_general_help();
         status = EXIT_SUCCESS;
     }
     else if(std::strcmp(argv[1], "--version") == 0) {
-        fern::show_version();
+        fl::show_version();
         status = EXIT_SUCCESS;
     }
     else if(std::strcmp(argv[1], "--build") == 0) {
-        fern::show_build();
+        fl::show_build();
         status = EXIT_SUCCESS;
     }
     else {
-        std::unique_ptr<fern::Command> command;
+        std::unique_ptr<fl::Command> command;
 
         // A command may be given. Find out which one.
         if(std::strcmp(argv[1], "compile") == 0) {
-            command = std::make_unique<fern::CompileCommand>(argc - 1,
+            command = std::make_unique<fl::CompileCommand>(argc - 1,
                 argv + 1);
         }
         else if(std::strcmp(argv[1], "describe") == 0) {
-            command = std::make_unique<fern::DescribeCommand>(argc - 1,
+            command = std::make_unique<fl::DescribeCommand>(argc - 1,
                 argv + 1);
         }
         else if(std::strcmp(argv[1], "execute") == 0) {
-            command = std::make_unique<fern::ExecuteCommand>(argc - 1,
+            command = std::make_unique<fl::ExecuteCommand>(argc - 1,
                 argv + 1);
         }
         else if(std::strcmp(argv[1], "import") == 0) {
-            command = std::make_unique<fern::ImportCommand>(argc - 1,
+            command = std::make_unique<fl::ImportCommand>(argc - 1,
                 argv + 1);
         }
         else {
-            fern::show_general_help();
+            fl::show_general_help();
             status = EXIT_FAILURE;
         }
 

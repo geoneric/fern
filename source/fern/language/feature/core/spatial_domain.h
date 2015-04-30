@@ -13,6 +13,7 @@
 
 
 namespace fern {
+namespace language {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -148,4 +149,5 @@ inline size_t SpatialDomain<Geometry_>::size() const
     return std::map<GID, Geometry_>::size();
 }
 
+} // namespace language
 } // namespace fern

@@ -11,13 +11,16 @@
 #include "fern/language/feature/core/array_value.h"
 
 
+namespace fl = fern::language;
+
+
 BOOST_AUTO_TEST_SUITE(value)
 
 BOOST_AUTO_TEST_CASE(array)
 {
     size_t const nr_dimensions = 1;
     size_t const nr_cells = 3;
-    fern::ArrayValue<int, nr_dimensions> array(fern::extents[nr_cells]);
+    fl::ArrayValue<int, nr_dimensions> array(fern::extents[nr_cells]);
 
     array[0] = 3;
     array[1] = 2;
@@ -35,8 +38,7 @@ BOOST_AUTO_TEST_CASE(grid)
     size_t const nr_dimensions = 2;
     size_t const nr_rows = 3;
     size_t const nr_cols = 2;
-    fern::ArrayValue<int, nr_dimensions> array(
-        fern::extents[nr_rows][nr_cols]);
+    fl::ArrayValue<int, nr_dimensions> array(fern::extents[nr_rows][nr_cols]);
 
     array[0][0] = -2;
     array[0][1] = -1;

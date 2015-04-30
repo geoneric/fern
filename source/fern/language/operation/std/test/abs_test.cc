@@ -11,11 +11,14 @@
 #include "fern/language/operation/std/abs.h"
 
 
+namespace fl = fern::language;
+
+
 BOOST_AUTO_TEST_SUITE(abs_)
 
 BOOST_AUTO_TEST_CASE(abs)
 {
-    fern::Abs abs;
+    fl::Abs abs;
 }
 
 BOOST_AUTO_TEST_SUITE_END()

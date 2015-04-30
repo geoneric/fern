@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 NameVertex::NameVertex(
     String const& name)
@@ -94,4 +95,5 @@ std::vector<NameVertex*> const& NameVertex::uses() const
     return _uses;
 }
 
+} // namespace language
 } // namespace fern

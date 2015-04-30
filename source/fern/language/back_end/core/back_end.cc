@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 BackEnd::BackEnd(
     OperationsPtr const& operations)
@@ -26,4 +27,5 @@ OperationsPtr const& BackEnd::operations() const
     return _operations;
 }
 
+} // namespace language
 } // namespace fern

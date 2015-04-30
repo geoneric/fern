@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 SentinelVertex::SentinelVertex()
 
@@ -18,4 +19,5 @@ SentinelVertex::SentinelVertex()
 {
 }
 
+} // namespace language
 } // namespace fern

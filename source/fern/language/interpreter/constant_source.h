@@ -15,6 +15,7 @@
 
 
 namespace fern {
+namespace language {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -88,4 +89,5 @@ inline std::shared_ptr<Argument> ConstantSource<T>::read() const
         std::make_shared<ConstantAttribute<T>>(_value)));
 }
 
+} // namespace language
 } // namespace fern

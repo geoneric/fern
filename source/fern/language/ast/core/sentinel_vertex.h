@@ -11,6 +11,7 @@
 
 
 namespace fern {
+namespace language {
 
 class SentinelVertex:
     public AstVertex
@@ -32,4 +33,5 @@ public:
 
 };
 
+} // namespace language
 } // namespace fern

@@ -11,6 +11,7 @@
 
 
 namespace fern {
+namespace language {
 
 class ExpressionTypes:
     private std::vector<ExpressionType>
@@ -68,4 +69,5 @@ private:
 std::ostream&      operator<<          (std::ostream& stream,
                                   ExpressionTypes const& expression_types);
 
+} // namespace language
 } // namespace fern

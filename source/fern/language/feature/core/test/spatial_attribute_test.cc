@@ -11,20 +11,23 @@
 #include "fern/language/feature/core/attributes.h"
 
 
+namespace fl = fern::language;
+
+
 BOOST_AUTO_TEST_SUITE(spatial_attribute)
 
 BOOST_AUTO_TEST_CASE(int_per_box)
 {
-    using FieldAttribute = fern::SpatialAttribute<fern::FieldDomain, int>;
+    using FieldAttribute = fl::SpatialAttribute<fl::FieldDomain, int>;
 
     // // An integer value is stored per box.
-    fern::d2::Point south_west;
+    fl::d2::Point south_west;
     fern::set<0>(south_west, 1.1);
     fern::set<1>(south_west, 2.2);
-    fern::d2::Point north_east;
+    fl::d2::Point north_east;
     fern::set<0>(north_east, 3.3);
     fern::set<1>(north_east, 4.4);
-    fern::d2::Box box(south_west, north_east);
+    fl::d2::Box box(south_west, north_east);
 
     int value = 5;
 
@@ -41,17 +44,17 @@ BOOST_AUTO_TEST_CASE(int_per_box)
 BOOST_AUTO_TEST_CASE(array_per_box)
 {
     // A pointer to a 2D array is stored as value per box.
-    using Value = fern::d2::ArrayValue<int>;
-    using ValuePtr = fern::d2::ArrayValuePtr<int>;
-    using FieldAttribute = fern::SpatialAttribute<fern::FieldDomain, ValuePtr>;
+    using Value = fl::d2::ArrayValue<int>;
+    using ValuePtr = fl::d2::ArrayValuePtr<int>;
+    using FieldAttribute = fl::SpatialAttribute<fl::FieldDomain, ValuePtr>;
 
-    fern::d2::Point south_west;
+    fl::d2::Point south_west;
     fern::set<0>(south_west, 1.1);
     fern::set<1>(south_west, 2.2);
-    fern::d2::Point north_east;
+    fl::d2::Point north_east;
     fern::set<0>(north_east, 3.3);
     fern::set<1>(north_east, 4.4);
-    fern::d2::Box box(south_west, north_east);
+    fl::d2::Box box(south_west, north_east);
 
     size_t const nr_rows = 3;
     size_t const nr_cols = 2;

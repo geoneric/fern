@@ -15,6 +15,7 @@
 
 
 namespace fern {
+namespace language {
 
 // std::shared_ptr<Operations> operations(new Operations({
 //     std::shared_ptr<Operation>(new Abs())
@@ -43,4 +44,5 @@ std::shared_ptr<Operations> const& operations()
     return detail::operations;
 }
 
+} // namespace language
 } // namespace fern

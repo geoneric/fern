@@ -14,6 +14,7 @@
 
 
 namespace fern {
+namespace language {
 
 AnnotateVisitor::AnnotateVisitor(
     OperationsPtr const& operations)
@@ -241,4 +242,5 @@ void AnnotateVisitor::Visit(
 //     // }
 // }
 
+} // namespace language
 } // namespace fern

@@ -42,6 +42,7 @@ struct default_delete<char>
 
 
 namespace fern {
+namespace language {
 
 template<
     typename T>
@@ -71,7 +72,7 @@ void show_value(
 {
     assert(value);
 
-    fern::AttributeTypeVisitor visitor;
+    AttributeTypeVisitor visitor;
     value->Accept(visitor);
 
     switch(visitor.data_type()) {
@@ -178,17 +179,17 @@ void enter_interpreter()
     // can be executed, a scope must be pushed.
 
     std::unique_ptr<char> line;
-    fern::String statement;
-    fern::Interpreter interpreter;
-    std::shared_ptr<fern::ModuleVertex> script_vertex;
+    String statement;
+    Interpreter interpreter;
+    std::shared_ptr<ModuleVertex> script_vertex;
 
-    fern::show_version();
+    show_version();
     using_history();
 
     // Determine path name of history file. Reading the file will fail if it
     // doesn't exists, which is OK.
     std::string history_filename((
-        fern::String::decode_from_default_encoding(std::getenv("HOME")) +
+        String::decode_from_default_encoding(std::getenv("HOME")) +
         String("/.fern")).encode_in_default_encoding());
     /* int result = */ read_history(history_filename.c_str());
 
@@ -211,13 +212,13 @@ void enter_interpreter()
             // Print any values that are left on the stack and clear the stack.
             show_stack_values(interpreter.stack());
         }
-        catch(fern::Exception const& exception) {
-            fern::String message = exception.message();
+        catch(Exception const& exception) {
+            String message = exception.message();
             std::cerr << message << std::endl;
         }
         catch(std::exception const& exception) {
             std::cerr << "TODO: unhandled exception: "
-                << fern::String(exception.what())
+                << String(exception.what())
                 << std::endl;
         }
 
@@ -227,4 +228,5 @@ void enter_interpreter()
     /* result = */ write_history(history_filename.c_str());
 }
 
+} // namespace language
 } // namespace fern

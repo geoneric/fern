@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 
 size_t FernClient::_count = 0u;
 
@@ -53,4 +54,5 @@ void FernClient::deregister_driver()
     drivers.erase(_driver_name);
 }
 
+} // namespace language
 } // namespace fern

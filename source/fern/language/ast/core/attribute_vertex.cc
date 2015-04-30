@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 AttributeVertex::AttributeVertex(
     ExpressionVertexPtr const& expression,
@@ -41,4 +42,5 @@ String const& AttributeVertex::symbol() const
     return _symbol;
 }
 
+} // namespace language
 } // namespace fern

@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 std::string const HDF5TypeClassTraits<H5T_INTEGER>::name = "H5T_INTEGER";
 std::string const HDF5TypeClassTraits<H5T_FLOAT>::name = "H5T_FLOAT";
@@ -25,4 +26,5 @@ std::string const HDF5TypeClassTraits<H5T_VLEN>::name = "H5T_VLEN";
 std::string const HDF5TypeClassTraits<H5T_ARRAY>::name = "H5T_ARRAY";
 std::string const HDF5TypeClassTraits<H5T_NCLASSES>::name = "H5T_NCLASSES";
 
+} // namespace language
 } // namespace fern

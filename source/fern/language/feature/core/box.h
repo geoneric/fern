@@ -11,9 +11,11 @@
 
 
 namespace fern {
+namespace language {
 
 template<
     typename Point>
 using Box = boost::geometry::model::box<Point>;
 
+} // namespace language
 } // namespace fern

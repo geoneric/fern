@@ -11,6 +11,7 @@
 
 
 namespace fern {
+namespace language {
 
 ModuleVisitor::ModuleVisitor(
     size_t tab_size)
@@ -305,4 +306,5 @@ void ModuleVisitor::Visit(
     }
 }
 
+} // namespace language
 } // namespace fern

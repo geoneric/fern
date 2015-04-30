@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 ExpressionVertex::ExpressionVertex(
     String const& name)
@@ -71,4 +72,5 @@ ExpressionVertexPtr const& ExpressionVertex::value() const
     return _value;
 }
 
+} // namespace language
 } // namespace fern

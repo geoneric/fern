@@ -15,6 +15,7 @@
 
 
 namespace fern {
+namespace language {
 
 std::vector<std::shared_ptr<Argument>> write(
         Attribute const& data_attribute,
@@ -106,4 +107,5 @@ std::vector<std::shared_ptr<Argument>> Write::execute(
         *format_attribute_argument.attribute());
 }
 
+} // namespace language
 } // namespace fern

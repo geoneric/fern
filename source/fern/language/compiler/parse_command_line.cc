@@ -13,16 +13,15 @@
 
 
 namespace fern {
+namespace language {
 namespace {
 
-//! Return the data source corresponding with the \a value passed in.
 /*!
-  \param     argument
-  \param     value Data name or value of data to use as source. This name can
-             point to a feature, domain, attribute, ...
-  \exception .
-  \warning   .
-  \sa        .
+    @brief      Return the data source corresponding with the @a value
+                passed in.
+    @param      argument
+    @param      value Data name or value of data to use as source. This
+                name can point to a feature, domain, attribute, ...
 */
 std::shared_ptr<DataSource> data_source(
     DataDescription const& /* argument */,
@@ -69,21 +68,21 @@ std::shared_ptr<DataSync> data_sync(
 } // Anonymous namespace
 
 
-//! Parse the command line arguments and return collections of data sources and syncs.
 /*!
-  \param     argc Argument count.
-  \param     argv Argument vector.
-  \param     arguments Properties of arguments.
-  \param     arguments Properties of results.
-  \exception std::invalid_argument When there are more command line arguments
-             passed in compared to the \a arguments and \a results passed in.
-  \warning   .
-  \sa        .
+    @brief      Parse the command line arguments and return collections
+                of data sources and syncs.
+    @param      argc Argument count.
+    @param      argv Argument vector.
+    @param      arguments Properties of arguments.
+    @param      arguments Properties of results.
+    @exception  std::invalid_argument When there are more command line
+                arguments passed in compared to the @a arguments and @a
+                results passed in.
 
-  For each argument in \a arguments, a command line argument is searched. This
+  For each argument in @a arguments, a command line argument is searched. This
   command line argument is converted to a data source.
 
-  For each result in \a results, a command line argument searched. This command
+  For each result in @a results, a command line argument searched. This command
   line argument is converted to a data sync.
 
   This function does not try to check whether there are enough arguments and
@@ -139,4 +138,5 @@ parse_command_line(
     return std::make_tuple(data_sources, data_syncs);
 }
 
-} // Namespace fern
+} // namespace language
+} // namespace fern

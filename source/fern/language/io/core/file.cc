@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 
 //! Return whether \a path points to a regular file or a symbolic link pointing to a regular file.
 /*!
@@ -110,4 +111,5 @@ void write_file(
     }
 }
 
+} // namespace language
 } // namespace fern

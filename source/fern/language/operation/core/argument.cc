@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 Argument::Argument(
     ArgumentType argument_type)
@@ -25,4 +26,5 @@ ArgumentType Argument::argument_type() const
     return _argument_type;
 }
 
+} // namespace language
 } // namespace fern

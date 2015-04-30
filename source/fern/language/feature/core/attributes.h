@@ -18,6 +18,7 @@
 #include "fern/language/feature/core/spatial_domain.h"
 
 namespace fern {
+namespace language {
 namespace d1 {
 
 template<
@@ -113,3 +114,4 @@ template<
 using FieldAttributePtr = std::shared_ptr<FieldAttribute<T>>;
 
 } // namespace fern
+} // namespace language

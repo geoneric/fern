@@ -13,11 +13,14 @@
 #include "fern/language/script/algebra_parser.h"
 
 
+namespace fl = fern::language;
+
+
 BOOST_AUTO_TEST_SUITE(algebra_parser)
 
 BOOST_AUTO_TEST_CASE(parse_empty_script)
 {
-    fern::AlgebraParser parser;
+    fl::AlgebraParser parser;
 
     {
         fern::String xml(parser.parse_string(fern::String("")));
@@ -32,7 +35,7 @@ BOOST_AUTO_TEST_CASE(parse_empty_script)
 
 BOOST_AUTO_TEST_CASE(parse_name)
 {
-    fern::AlgebraParser parser;
+    fl::AlgebraParser parser;
 
     {
         fern::String xml(parser.parse_string(fern::String("a")));
@@ -69,7 +72,7 @@ BOOST_AUTO_TEST_CASE(parse_name)
 
 BOOST_AUTO_TEST_CASE(parse_assignment)
 {
-    fern::AlgebraParser parser;
+    fl::AlgebraParser parser;
 
     {
         fern::String xml(parser.parse_string(fern::String("a = b")));
@@ -95,7 +98,7 @@ BOOST_AUTO_TEST_CASE(parse_assignment)
 
 BOOST_AUTO_TEST_CASE(parse_string)
 {
-    fern::AlgebraParser parser;
+    fl::AlgebraParser parser;
 
     {
         fern::String xml(parser.parse_string(fern::String("\"five\"")));
@@ -177,7 +180,7 @@ BOOST_AUTO_TEST_CASE(parse_string)
 
 BOOST_AUTO_TEST_CASE(parse_number)
 {
-    fern::AlgebraParser parser;
+    fl::AlgebraParser parser;
 
     {
         fern::String xml(parser.parse_string(fern::String("5")));
@@ -243,7 +246,7 @@ BOOST_AUTO_TEST_CASE(parse_number)
 
 BOOST_AUTO_TEST_CASE(parse_call)
 {
-    fern::AlgebraParser parser;
+    fl::AlgebraParser parser;
     fern::String xml;
 
     {
@@ -307,7 +310,7 @@ BOOST_AUTO_TEST_CASE(parse_call)
 
 // BOOST_AUTO_TEST_CASE(parse_print)
 // {
-//   fern::AlgebraParser parser;
+//   fl::AlgebraParser parser;
 //   fern::String xml;
 // 
 //   {
@@ -371,7 +374,7 @@ BOOST_AUTO_TEST_CASE(parse_call)
 
 BOOST_AUTO_TEST_CASE(parse_unary_operator)
 {
-    fern::AlgebraParser parser;
+    fl::AlgebraParser parser;
     fern::String xml;
 
     {
@@ -400,7 +403,7 @@ BOOST_AUTO_TEST_CASE(parse_unary_operator)
 
 BOOST_AUTO_TEST_CASE(parse_binary_operator)
 {
-    fern::AlgebraParser parser;
+    fl::AlgebraParser parser;
     fern::String xml;
 
     {
@@ -432,7 +435,7 @@ BOOST_AUTO_TEST_CASE(parse_binary_operator)
 
 BOOST_AUTO_TEST_CASE(parse_boolean_operator)
 {
-    fern::AlgebraParser parser;
+    fl::AlgebraParser parser;
     fern::String xml;
 
     {
@@ -464,7 +467,7 @@ BOOST_AUTO_TEST_CASE(parse_boolean_operator)
 
 BOOST_AUTO_TEST_CASE(parse_comparison_operator)
 {
-    fern::AlgebraParser parser;
+    fl::AlgebraParser parser;
     fern::String xml;
 
     {
@@ -496,7 +499,7 @@ BOOST_AUTO_TEST_CASE(parse_comparison_operator)
 
 BOOST_AUTO_TEST_CASE(parse_multiple_statements)
 {
-    fern::AlgebraParser parser;
+    fl::AlgebraParser parser;
 
     {
         fern::String xml(parser.parse_string(fern::String("a\nb")));
@@ -522,7 +525,7 @@ BOOST_AUTO_TEST_CASE(parse_multiple_statements)
 
 BOOST_AUTO_TEST_CASE(parse_if)
 {
-    fern::AlgebraParser parser;
+    fl::AlgebraParser parser;
     fern::String xml;
 
     {
@@ -654,7 +657,7 @@ BOOST_AUTO_TEST_CASE(parse_if)
 
 BOOST_AUTO_TEST_CASE(parse_while)
 {
-    fern::AlgebraParser parser;
+    fl::AlgebraParser parser;
     fern::String xml;
 
     {
@@ -723,7 +726,7 @@ BOOST_AUTO_TEST_CASE(parse_while)
 
 BOOST_AUTO_TEST_CASE(parse_file)
 {
-    fern::AlgebraParser parser;
+    fl::AlgebraParser parser;
     fern::String filename;
 
     {
@@ -736,7 +739,7 @@ BOOST_AUTO_TEST_CASE(parse_file)
 
 BOOST_AUTO_TEST_CASE(parse_slice)
 {
-    fern::AlgebraParser parser;
+    fl::AlgebraParser parser;
     fern::String xml;
 
     {
@@ -766,7 +769,7 @@ BOOST_AUTO_TEST_CASE(parse_slice)
 
 BOOST_AUTO_TEST_CASE(parse_attribute)
 {
-    fern::AlgebraParser parser;
+    fl::AlgebraParser parser;
     fern::String xml;
 
     {
@@ -794,7 +797,7 @@ BOOST_AUTO_TEST_CASE(parse_attribute)
 
 BOOST_AUTO_TEST_CASE(return_)
 {
-    fern::AlgebraParser parser;
+    fl::AlgebraParser parser;
     fern::String xml;
 
     {
@@ -833,7 +836,7 @@ BOOST_AUTO_TEST_CASE(return_)
 
 BOOST_AUTO_TEST_CASE(parse_function)
 {
-    fern::AlgebraParser parser;
+    fl::AlgebraParser parser;
     fern::String xml;
 
     {

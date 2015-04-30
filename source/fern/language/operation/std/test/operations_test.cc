@@ -11,12 +11,15 @@
 #include "fern/language/operation/std/operations.h"
 
 
+namespace fl = fern::language;
+
+
 BOOST_AUTO_TEST_SUITE(operations)
 
 BOOST_AUTO_TEST_CASE(operations)
 {
-    BOOST_CHECK( fern::operations()->has_operation("abs"));
-    BOOST_CHECK(!fern::operations()->has_operation("sba"));
+    BOOST_CHECK( fl::operations()->has_operation("abs"));
+    BOOST_CHECK(!fl::operations()->has_operation("sba"));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -16,6 +16,7 @@
 
 
 namespace fern {
+namespace language {
 
 ExecuteVisitor::ExecuteVisitor(
     OperationsPtr const& operations)
@@ -236,4 +237,5 @@ void ExecuteVisitor::Visit(
     // TODO
 }
 
+} // namespace language
 } // namespace fern

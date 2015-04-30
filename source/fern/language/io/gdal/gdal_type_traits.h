@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 template<
     class T>
@@ -90,4 +91,5 @@ struct GDALTypeTraits<double>
     static GDALDataType const data_type = GDT_Float64;
 };
 
+} // namespace language
 } // namespace fern

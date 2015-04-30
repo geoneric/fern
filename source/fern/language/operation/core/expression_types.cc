@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 ExpressionTypes::ExpressionTypes(
     size_t size)
@@ -157,4 +158,5 @@ std::ostream& operator<<(
     return stream;
 }
 
+} // namespace language
 } // namespace fern

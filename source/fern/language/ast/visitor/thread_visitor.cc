@@ -11,6 +11,7 @@
 
 
 namespace fern {
+namespace language {
 
 ThreadVisitor::ThreadVisitor()
 
@@ -439,4 +440,5 @@ void ThreadVisitor::Visit(
     _symbol_table.pop_scope();
 }
 
+} // namespace language
 } // namespace fern

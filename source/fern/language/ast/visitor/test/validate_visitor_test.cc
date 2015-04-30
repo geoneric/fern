@@ -16,6 +16,9 @@
 #include "fern/language/ast/xml/xml_parser.h"
 
 
+namespace fl = fern::language;
+
+
 class Support
 {
 
@@ -31,13 +34,13 @@ public:
 
 protected:
 
-    fern::AlgebraParser _algebra_parser;
+    fl::AlgebraParser _algebra_parser;
 
-    fern::XmlParser _xml_parser;
+    fl::XmlParser _xml_parser;
 
-    fern::ThreadVisitor _thread_visitor;
+    fl::ThreadVisitor _thread_visitor;
 
-    fern::ValidateVisitor _validate_visitor;
+    fl::ValidateVisitor _validate_visitor;
 
 };
 
@@ -46,7 +49,7 @@ BOOST_FIXTURE_TEST_SUITE(validate_visitor, Support)
 
 BOOST_AUTO_TEST_CASE(visit_function_definition)
 {
-    std::shared_ptr<fern::ModuleVertex> tree;
+    std::shared_ptr<fl::ModuleVertex> tree;
 
     // Call undefined operation. Not built-in and not user-defined.
     {

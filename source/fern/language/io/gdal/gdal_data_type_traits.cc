@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 std::string const GDALDataTypeTraits<GDT_Unknown>::name = "GDT_Unknown";
 std::string const GDALDataTypeTraits<GDT_CInt16>::name = "GDT_CInt16";
@@ -18,4 +19,5 @@ std::string const GDALDataTypeTraits<GDT_CFloat32>::name = "GDT_CFloat32";
 std::string const GDALDataTypeTraits<GDT_CFloat64>::name = "GDT_CFloat64";
 std::string const GDALDataTypeTraits<GDT_TypeCount>::name = "GDT_TypeCount";
 
+} // namespace language
 } // namespace fern

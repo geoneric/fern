@@ -12,6 +12,9 @@
 #include "fern/language/compiler/module.h"
 
 
+namespace fl = fern::language;
+
+
 class Support // :
     // public fern::IOClient
 {
@@ -27,7 +30,7 @@ public:
 
 
 class AbsModule:
-    public fern::Module
+    public fl::Module
 {
 
 public:
@@ -35,12 +38,12 @@ public:
     AbsModule()
         // std::vector<std::shared_ptr<fern::DataSource>> const& data_sources)
 
-        : fern::Module(
+        : fl::Module(
               {
-                  fern::DataDescription("argument_value")
+                  fl::DataDescription("argument_value")
               },
               {
-                  fern::DataDescription("result_value")
+                  fl::DataDescription("result_value")
               })
 
     {
@@ -51,9 +54,9 @@ public:
     //     int argc,
     //     char** argv)
 
-    //     : fern::Module(
+    //     : fl::Module(
     //           {
-    //               fern::DataDescription("Attribute")
+    //               fl::DataDescription("Attribute")
     //           }, argc, argv)
 
     // {

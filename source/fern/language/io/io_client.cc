@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 IOClient::IOClient()
 
@@ -25,4 +26,5 @@ IOClient::~IOClient()
 {
 }
 
+} // namespace language
 } // namespace fern

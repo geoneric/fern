@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 
 //! short_description_HORRIBLE_LONG_STRING_TO_NOTICE_THAT_IT_SHOULD_BE_REPLACED
 /*!
@@ -80,4 +81,5 @@ inline Value const& ConstantValue<Value>::value() const
     return _value;
 }
 
+} // namespace language
 } // namespace fern

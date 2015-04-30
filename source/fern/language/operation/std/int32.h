@@ -11,6 +11,7 @@
 
 
 namespace fern {
+namespace language {
 
 class Int32:
     public Operation
@@ -42,4 +43,5 @@ private:
 
 };
 
+} // namespace language
 } // namespace fern

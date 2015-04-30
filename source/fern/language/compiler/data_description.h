@@ -11,6 +11,7 @@
 
 
 namespace fern {
+namespace language {
 
 class DataDescription
 {
@@ -31,4 +32,5 @@ private:
 
 };
 
+} // namespace language
 } // namespace fern

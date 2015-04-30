@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 template<typename T>
 NumberVertex<T>::NumberVertex(
@@ -53,4 +54,5 @@ template class NumberVertex<uint64_t>;
 template class NumberVertex<float>;
 template class NumberVertex<double>;
 
+} // namespace language
 } // namespace fern

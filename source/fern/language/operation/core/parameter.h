@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 
 //! A parameter is a description of an operation's argument.
 /*!
@@ -58,4 +59,5 @@ private:
 
 };
 
+} // namespace language
 } // namespace fern

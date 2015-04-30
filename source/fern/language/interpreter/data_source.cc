@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 DataSource::DataSource()
 
@@ -35,4 +36,5 @@ void DataSource::set_data_has_been_read() const
 }
 #endif
 
+} // namespace language
 } // namespace fern

@@ -13,6 +13,7 @@
 
 
 namespace fern {
+namespace language {
 
 class AssignmentVertex;
 class AttributeVertex;
@@ -163,4 +164,5 @@ private:
     macro(float)                                                               \
     macro(double)
 
+} // namespace language
 } // namespace fern

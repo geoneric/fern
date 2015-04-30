@@ -13,6 +13,7 @@
 
 
 namespace fern {
+namespace language {
 
 static std::shared_ptr<H5::H5File> open_file_for_overwrite(
     Path const& path)
@@ -119,4 +120,5 @@ std::shared_ptr<H5::H5File> open_file(
     return result;
 }
 
+} // namespace language
 } // namespace fern

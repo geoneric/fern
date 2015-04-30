@@ -14,6 +14,9 @@
 #include "fern/language/ast/xml/xml_parser.h"
 
 
+namespace fl = fern::language;
+
+
 class Support
 {
 
@@ -27,9 +30,9 @@ public:
 
 protected:
 
-    fern::AlgebraParser _algebra_parser;
+    fl::AlgebraParser _algebra_parser;
 
-    fern::XmlParser _xml_parser;
+    fl::XmlParser _xml_parser;
 
 };
 

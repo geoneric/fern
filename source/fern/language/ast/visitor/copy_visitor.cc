@@ -11,6 +11,7 @@
 
 
 namespace fern {
+namespace language {
 
 std::shared_ptr<ModuleVertex> const& CopyVisitor::module_vertex() const
 {
@@ -98,4 +99,5 @@ void CopyVisitor::Visit(
     assert(false);
 }
 
+} // namespace language
 } // namespace fern

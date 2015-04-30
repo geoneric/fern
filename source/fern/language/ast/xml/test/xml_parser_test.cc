@@ -15,14 +15,17 @@
 #include "fern/language/ast/xml/xml_parser.h"
 
 
+namespace fl = fern::language;
+
+
 BOOST_AUTO_TEST_SUITE(xml_parser)
 
 BOOST_AUTO_TEST_CASE(parse_string)
 {
-    fern::AlgebraParser algebra_parser;
-    fern::XmlParser xml_parser;
+    fl::AlgebraParser algebra_parser;
+    fl::XmlParser xml_parser;
     fern::String xml;
-    // std::shared_ptr<fern::AstVertex> tree;
+    // std::shared_ptr<fl::AstVertex> tree;
 
     {
         // Empty xml.

@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 
 std::map<std::string, std::shared_ptr<Driver>> drivers;
 
@@ -24,7 +25,8 @@ static std::vector<std::shared_ptr<Driver>> drivers_to_try(
     std::vector<std::shared_ptr<Driver>> drivers;
 
     if(!format.empty()) {
-        if(fern::drivers.find(format) == fern::drivers.end()) {
+        if(fern::language::drivers.find(format) ==
+                fern::language::drivers.end()) {
             // TODO Just throw an "no such driver" exception and let the
             //      caller add info about the name.
             throw IOError(name,
@@ -32,16 +34,17 @@ static std::vector<std::shared_ptr<Driver>> drivers_to_try(
                 format));
         }
 
-        drivers.emplace_back(fern::drivers.at(format));
+        drivers.emplace_back(fern::language::drivers.at(format));
     }
     else {
         // Make sure the Fern driver is added first. GDAL may otherwise
         // think it can read Fern formatted files, which it can't.
-        if(fern::drivers.find("Fern") != fern::drivers.end()) {
-            drivers.emplace_back(fern::drivers.at("Fern"));
+        if(fern::language::drivers.find("Fern") !=
+                fern::language::drivers.end()) {
+            drivers.emplace_back(fern::language::drivers.at("Fern"));
         }
 
-        for(auto driver: fern::drivers) {
+        for(auto driver: fern::language::drivers) {
             if(driver.second->name() != "Fern") {
                 drivers.emplace_back(driver.second);
             }
@@ -143,4 +146,5 @@ bool dataset_exists(
 //     return drivers[0]->create(attribute, name);
 // }
 
+} // namespace language
 } // namespace fern

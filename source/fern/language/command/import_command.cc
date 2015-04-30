@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 namespace {
 
 void show_import_help()
@@ -68,4 +69,5 @@ int ImportCommand::execute() const
     return status;
 }
 
+} // namespace language
 } // namespace fern

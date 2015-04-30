@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 ScopeVertex::ScopeVertex(
     StatementVertices const& statements)
@@ -45,4 +46,5 @@ std::shared_ptr<SentinelVertex>& ScopeVertex::sentinel()
     return _sentinel;
 }
 
+} // namespace language
 } // namespace fern

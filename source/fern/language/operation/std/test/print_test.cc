@@ -13,6 +13,9 @@
 #include "fern/language/operation/std/print.h"
 
 
+namespace fl = fern::language;
+
+
 BOOST_AUTO_TEST_SUITE(print)
 
 BOOST_AUTO_TEST_CASE(print)
@@ -20,14 +23,14 @@ BOOST_AUTO_TEST_CASE(print)
     {
         int constant = 5;
         std::stringstream stream;
-        fern::print(constant, stream);
+        fl::print(constant, stream);
         BOOST_CHECK_EQUAL(stream.str(), "5\n");
     }
 
     {
         int array[10] = { 1, 2, 3 };
         std::stringstream stream;
-        fern::print(
+        fl::print(
             boost::iterator_range<int*>(&array[0], array + 3), stream);
         BOOST_CHECK_EQUAL(stream.str(), "[1, 2, 3]\n");
     }
@@ -35,13 +38,13 @@ BOOST_AUTO_TEST_CASE(print)
     {
         int array[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
         std::stringstream stream;
-        fern::print(
+        fl::print(
             boost::iterator_range<int*>(&array[0], array + 10), stream);
         BOOST_CHECK_EQUAL(stream.str(), "[1, 2, 3, ..., 8, 9, 10]\n");
     }
 
     {
-        fern::Raster<int, 20, 30> raster;
+        fl::Raster<int, 20, 30> raster;
         for(size_t r = 0; r < raster.nr_rows(); ++r) {
             for(size_t c = 0; c < raster.nr_cols(); ++c) {
                 raster.set(r, c, r * raster.nr_cols() + c);
@@ -49,7 +52,7 @@ BOOST_AUTO_TEST_CASE(print)
         }
         std::stringstream stream;
 
-        fern::print(raster, stream);
+        fl::print(raster, stream);
         BOOST_WARN_EQUAL(stream.str(),
             "[[ 1,  2,  3, ..., 28, 29,  30]\n"
             " [31, 32, 33, ..., 58, 59,  60]\n"

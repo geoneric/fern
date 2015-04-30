@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 
 DatasetSource::DatasetSource(
     DataName const& data_name)
@@ -40,4 +41,5 @@ std::shared_ptr<Argument> DatasetSource::read() const
         _dataset->read_attribute(_data_name.data_pathname())));
 }
 
+} // namespace language
 } // namespace fern

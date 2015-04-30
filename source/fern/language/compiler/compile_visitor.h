@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 
 class CompileVisitor:
     public AstVisitor
@@ -92,4 +93,5 @@ private:
 
 };
 
+} // namespace language
 } // namespace fern

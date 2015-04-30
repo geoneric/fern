@@ -14,6 +14,7 @@
 
 
 namespace fern {
+namespace language {
 
 template<
     typename ValueType,
@@ -104,6 +105,7 @@ struct DataTraits<Raster<ValueType, nr_rows, nr_cols>>
     using DataCategory = RasterTag;
 };
 
+} // namespace language
 } // namespace fern
 
 
@@ -113,9 +115,9 @@ template<
     typename ValueType,
     size_t nr_rows,
     size_t nr_cols>
-struct range_const_iterator<fern::Raster<ValueType, nr_rows, nr_cols>>
+struct range_const_iterator<fern::language::Raster<ValueType, nr_rows, nr_cols>>
 {
-    using type = typename fern::Raster<ValueType, nr_rows, nr_cols>
+    using type = typename fern::language::Raster<ValueType, nr_rows, nr_cols>
         ::const_iterator;
 };
 
@@ -124,9 +126,9 @@ template<
     typename ValueType,
     size_t nr_rows,
     size_t nr_cols>
-struct range_mutable_iterator<fern::Raster<ValueType, nr_rows, nr_cols>>
+struct range_mutable_iterator<fern::language::Raster<ValueType, nr_rows, nr_cols>>
 {
-    using type = typename fern::Raster<ValueType, nr_rows, nr_cols>::iterator;
+    using type = typename fern::language::Raster<ValueType, nr_rows, nr_cols>::iterator;
 };
 
 } // namespace boost

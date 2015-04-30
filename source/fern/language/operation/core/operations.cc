@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 Operations::Operations(
     std::initializer_list<OperationPtr> values)
@@ -51,4 +52,5 @@ OperationPtr const& Operations::operation(
     return (*it).second;
 }
 
+} // namespace language
 } // namespace fern

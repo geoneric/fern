@@ -965,6 +965,7 @@ private:
 
 
 namespace fern {
+namespace language {
 
 //! Construct an AlgebraParser instance.
 /*!
@@ -1034,4 +1035,5 @@ String AlgebraParser::parse_file(
     return String("<?xml version=\"1.0\"?>") + python_ast_to_xml(ast, filename);
 }
 
+} // namespace language
 } // namespace fern

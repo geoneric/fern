@@ -11,6 +11,7 @@
 
 
 namespace fern {
+namespace language {
 
 AstVertex::AstVertex()
 
@@ -166,4 +167,5 @@ void AstVertex::set_successor(
     add_successor(successor);
 }
 
+} // namespace language
 } // namespace fern

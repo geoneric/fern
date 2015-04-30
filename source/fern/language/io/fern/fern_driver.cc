@@ -15,6 +15,7 @@
 
 
 namespace fern {
+namespace language {
 
 FernDriver::FernDriver()
 
@@ -108,4 +109,5 @@ std::shared_ptr<Dataset> FernDriver::open(
         open_mode));
 }
 
+} // namespace language
 } // namespace fern

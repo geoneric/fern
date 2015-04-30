@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 
 //! Class for visitors that connect uses of names with their definitions.
 /*!
@@ -81,4 +82,5 @@ private:
 
 };
 
+} // namespace language
 } // namespace fern

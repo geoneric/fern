@@ -11,6 +11,7 @@
 
 
 namespace fern {
+namespace language {
 
 //! Base class for values that are handled by the interpreter.
 /*!
@@ -44,4 +45,5 @@ private:
 
 };
 
+} // namespace language
 } // namespace fern

@@ -19,6 +19,7 @@
 
 
 namespace fern {
+namespace language {
 namespace {
 
 } // Anonymous namespace
@@ -810,4 +811,5 @@ void FernDataset::write_attribute(
 
 #undef WRITE_ATTRIBUTE_CASE
 
+} // namespace language
 } // namespace fern

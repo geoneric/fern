@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 
 std::map<String, String> unary_operator_symbols = {
     { "Invert", "~" },
@@ -83,4 +84,5 @@ String const& OperatorVertex::symbol() const
     return _symbol;
 }
 
+} // namespace language
 } // namespace fern

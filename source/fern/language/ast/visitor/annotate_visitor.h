@@ -16,6 +16,7 @@
 
 
 namespace fern {
+namespace language {
 
 //! Class for visitors that annotate the syntax tree.
 /*!
@@ -123,4 +124,5 @@ private:
 
 };
 
+} // namespace language
 } // namespace fern

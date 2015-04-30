@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 
 //! Multi-dimensional array value.
 /*!
@@ -63,4 +64,5 @@ inline MaskedArrayValue<T, nr_dimensions>::MaskedArrayValue(
 {
 }
 
+} // namespace language
 } // namespace fern

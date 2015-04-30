@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 OperationVertex::OperationVertex(
     String const& name,
@@ -41,4 +42,5 @@ OperationPtr const& OperationVertex::operation() const
     return _operation;
 }
 
+} // namespace language
 } // namespace fern

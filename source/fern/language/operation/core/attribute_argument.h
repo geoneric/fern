@@ -14,6 +14,7 @@
 
 
 namespace fern {
+namespace language {
 
 class Attribute;
 
@@ -58,4 +59,5 @@ private:
 
 };
 
+} // namespace language
 } // namespace fern

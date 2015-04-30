@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 
 class Dataset;
 
@@ -55,4 +56,5 @@ private:
 
 };
 
+} // namespace language
 } // namespace fern

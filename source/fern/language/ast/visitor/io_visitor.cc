@@ -11,6 +11,7 @@
 
 
 namespace fern {
+namespace language {
 
 IOVisitor::IOVisitor()
 
@@ -96,4 +97,5 @@ void IOVisitor::Visit(
     assert(_output_id_by_name.size() == _outputs.size());
 }
 
+} // namespace language
 } // namespace fern

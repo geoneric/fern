@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 
 void AttributeVisitor::Visit(
     Attribute const& /* attribute */)
@@ -48,4 +49,5 @@ VISIT_ATTRIBUTES(VISIT_FIELD_ATTRIBUTE)
 
 #undef VISIT_FIELD_ATTRIBUTE
 
+} // namespace language
 } // namespace fern

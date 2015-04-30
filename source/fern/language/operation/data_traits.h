@@ -11,6 +11,7 @@
 
 
 namespace fern {
+namespace language {
 
 struct ConstantTag { };
 struct RangeTag { };
@@ -47,4 +48,5 @@ SPECIALIZE_DATA_TRAITS_FOR_SCALAR(double)
 
 #undef SPECIALIZE_DATA_TRAITS_FOR_SCALAR
 
+} // namespace language
 } // namespace fern

@@ -11,6 +11,7 @@
 
 
 namespace fern {
+namespace language {
 
 class Read:
     public Operation
@@ -41,4 +42,5 @@ private:
 
 };
 
+} // namespace language
 } // namespace fern

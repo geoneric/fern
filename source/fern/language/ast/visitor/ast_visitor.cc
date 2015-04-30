@@ -11,6 +11,7 @@
 
 
 namespace fern {
+namespace language {
 
 //! Allow all \a statements to accept the visitor.
 /*!
@@ -312,4 +313,5 @@ void AstVisitor::Visit(
     Visit(dynamic_cast<AstVertex&>(vertex));
 }
 
+} // namespace language
 } // namespace fern

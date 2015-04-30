@@ -11,6 +11,7 @@
 
 
 namespace fern {
+namespace language {
 
 enum class ArgumentType {
 
@@ -24,4 +25,5 @@ enum class ArgumentType {
 std::ostream&      operator<<          (std::ostream& stream,
                                         ArgumentType const& argument_type);
 
+} // namespace language
 } // namespace fern

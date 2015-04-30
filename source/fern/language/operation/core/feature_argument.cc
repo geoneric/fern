@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 FeatureArgument::FeatureArgument(
     std::shared_ptr<Feature> const& feature)
@@ -26,4 +27,5 @@ std::shared_ptr<Feature> const& FeatureArgument::feature() const
     return _feature;
 }
 
+} // namespace language
 } // namespace fern

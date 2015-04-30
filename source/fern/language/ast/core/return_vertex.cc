@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 ReturnVertex::ReturnVertex()
 
@@ -39,4 +40,5 @@ ExpressionVertexPtr const& ReturnVertex::expression() const
     return _expression;
 }
 
+} // namespace language
 } // namespace fern

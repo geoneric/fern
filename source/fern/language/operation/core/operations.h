@@ -18,6 +18,7 @@
 
 
 namespace fern {
+namespace language {
 
 //! Class for storing information about individual operations.
 /*!
@@ -84,4 +85,5 @@ inline Operations::Operations(
 
 using OperationsPtr = std::shared_ptr<Operations>;
 
+} // namespace language
 } // namespace fern

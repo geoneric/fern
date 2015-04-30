@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 
 template<
     GDALDataType data_type>
@@ -117,4 +118,5 @@ struct GDALDataTypeTraits<GDT_Unknown>
     static std::string const name;
 };
 
+} // namespace language
 } // namespace fern

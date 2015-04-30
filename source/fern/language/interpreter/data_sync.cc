@@ -10,5 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
+} // namespace language
 } // namespace fern

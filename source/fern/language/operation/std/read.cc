@@ -16,6 +16,7 @@
 
 
 namespace fern {
+namespace language {
 
 std::vector<std::shared_ptr<Argument>> read(
         Attribute const& attribute)
@@ -110,4 +111,5 @@ std::vector<std::shared_ptr<Argument>> Read::execute(
     return read(attribute);
 }
 
+} // namespace language
 } // namespace fern

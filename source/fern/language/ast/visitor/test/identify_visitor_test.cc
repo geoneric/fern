@@ -14,6 +14,9 @@
 #include "fern/language/ast/xml/xml_parser.h"
 
 
+namespace fl = fern::language;
+
+
 class Support
 {
 
@@ -28,11 +31,11 @@ public:
 
 protected:
 
-    fern::AlgebraParser _algebra_parser;
+    fl::AlgebraParser _algebra_parser;
 
-    fern::XmlParser _xml_parser;
+    fl::XmlParser _xml_parser;
 
-    fern::IdentifyVisitor _visitor;
+    fl::IdentifyVisitor _visitor;
 
 };
 
@@ -65,24 +68,21 @@ BOOST_FIXTURE_TEST_SUITE(identify_visitor, Support)
 
 BOOST_AUTO_TEST_CASE(visit_empty_script)
 {
-    using namespace fern;
+    std::shared_ptr<fl::ModuleVertex> tree;
 
-    std::shared_ptr<ModuleVertex> tree;
-
-    tree = _xml_parser.parse_string(_algebra_parser.parse_string(String("")));
+    tree = _xml_parser.parse_string(_algebra_parser.parse_string(""));
     tree->Accept(_visitor);
 }
 
 
 BOOST_AUTO_TEST_CASE(visit_name)
 {
-    using namespace fern;
+    std::shared_ptr<fl::ModuleVertex> tree;
 
-    std::shared_ptr<ModuleVertex> tree;
+    tree = _xml_parser.parse_string(_algebra_parser.parse_string("a"));
 
-    tree = _xml_parser.parse_string(_algebra_parser.parse_string(String("a")));
-
-    NameVertex const* a = c_ptr<NameVertex>(tree->scope()->statements()[0]);
+    fl::NameVertex const* a = c_ptr<fl::NameVertex>(
+        tree->scope()->statements()[0]);
 
     BOOST_CHECK(a->definitions().empty());
     BOOST_CHECK(a->uses().empty());
@@ -96,18 +96,17 @@ BOOST_AUTO_TEST_CASE(visit_name)
 
 BOOST_AUTO_TEST_CASE(visit_assignment)
 {
-    using namespace fern;
-
-    std::shared_ptr<ModuleVertex> tree;
+    std::shared_ptr<fl::ModuleVertex> tree;
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            String("a = b")));
+            fern::String("a = b")));
 
-        AssignmentVertex const* assignment = c_ptr<AssignmentVertex>(
+        fl::AssignmentVertex const* assignment = c_ptr<fl::AssignmentVertex>(
             tree->scope()->statements()[0]);
-        NameVertex const* a = c_ptr<NameVertex>(assignment->target());
-        NameVertex const* b = c_ptr<NameVertex>(assignment->expression());
+        fl::NameVertex const* a = c_ptr<fl::NameVertex>(assignment->target());
+        fl::NameVertex const* b = c_ptr<fl::NameVertex>(
+            assignment->expression());
 
         BOOST_CHECK(a->definitions().empty());
         BOOST_CHECK(a->uses().empty());
@@ -127,23 +126,26 @@ BOOST_AUTO_TEST_CASE(visit_assignment)
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            String(
+            fern::String(
                 "a = b\n"
                 "d = f(a)\n"
         )));
 
-        AssignmentVertex const* assignment_1 = c_ptr<AssignmentVertex>(
+        fl::AssignmentVertex const* assignment_1 = c_ptr<fl::AssignmentVertex>(
             tree->scope()->statements()[0]);
-        NameVertex const* a1 = c_ptr<NameVertex>(assignment_1->target());
-        NameVertex const* b = c_ptr<NameVertex>(assignment_1->expression());
+        fl::NameVertex const* a1 = c_ptr<fl::NameVertex>(
+            assignment_1->target());
+        fl::NameVertex const* b = c_ptr<fl::NameVertex>(
+            assignment_1->expression());
 
-        AssignmentVertex const* assignment_2 = c_ptr<AssignmentVertex>(
+        fl::AssignmentVertex const* assignment_2 = c_ptr<fl::AssignmentVertex>(
             tree->scope()->statements()[1]);
-        FunctionCallVertex const* function = c_ptr<FunctionCallVertex>(
+        fl::FunctionCallVertex const* function = c_ptr<fl::FunctionCallVertex>(
             assignment_2->expression());
-        NameVertex const* vertex_a2 = c_ptr<NameVertex>(
+        fl::NameVertex const* vertex_a2 = c_ptr<fl::NameVertex>(
             function->expressions()[0]);
-        NameVertex const* vertex_d = c_ptr<NameVertex>(assignment_2->target());
+        fl::NameVertex const* vertex_d = c_ptr<fl::NameVertex>(
+            assignment_2->target());
 
         BOOST_CHECK(a1->definitions().empty());
         BOOST_CHECK(a1->uses().empty());
@@ -180,31 +182,32 @@ BOOST_AUTO_TEST_CASE(visit_assignment)
 
 BOOST_AUTO_TEST_CASE(visit_if)
 {
-    using namespace fern;
-
-    std::shared_ptr<ModuleVertex> tree;
+    std::shared_ptr<fl::ModuleVertex> tree;
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            String(
+            fern::String(
                 "a = b\n"
                 "if True:\n"
                 "    a = c\n"
                 "d = a\n"
         )));
 
-        AssignmentVertex const* assignment_1 = c_ptr<AssignmentVertex>(
+        fl::AssignmentVertex const* assignment_1 = c_ptr<fl::AssignmentVertex>(
             tree->scope()->statements()[0]);
-        NameVertex const* a1 = c_ptr<NameVertex>(assignment_1->target());
+        fl::NameVertex const* a1 = c_ptr<fl::NameVertex>(
+            assignment_1->target());
 
-        IfVertex const* if_ = c_ptr<IfVertex>(tree->scope()->statements()[1]);
-        AssignmentVertex const* assignment_2 = c_ptr<AssignmentVertex>(
+        fl::IfVertex const* if_ = c_ptr<fl::IfVertex>(
+            tree->scope()->statements()[1]);
+        fl::AssignmentVertex const* assignment_2 = c_ptr<fl::AssignmentVertex>(
             if_->true_scope()->statements()[0]);
-        NameVertex const* vertex_a2 = c_ptr<NameVertex>(assignment_2->target());
+        fl::NameVertex const* vertex_a2 = c_ptr<fl::NameVertex>(
+            assignment_2->target());
 
-        AssignmentVertex const* assignment_3 = c_ptr<AssignmentVertex>(
+        fl::AssignmentVertex const* assignment_3 = c_ptr<fl::AssignmentVertex>(
             tree->scope()->statements()[2]);
-        NameVertex const* vertex_a3 = c_ptr<NameVertex>(
+        fl::NameVertex const* vertex_a3 = c_ptr<fl::NameVertex>(
             assignment_3->expression());
 
         tree->Accept(_visitor);
@@ -230,56 +233,59 @@ BOOST_AUTO_TEST_CASE(visit_if)
 
 BOOST_AUTO_TEST_CASE(visit_reuse_of_identifiers)
 {
-    using namespace fern;
-
-    std::shared_ptr<ModuleVertex> tree;
+    std::shared_ptr<fl::ModuleVertex> tree;
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            String(
+            fern::String(
                 "a = \"MyRaster\"\n"
                 "b = abs(a)\n"
                 "c = abs(b)\n"
                 "b = c + b\n"
         )));
 
-        AssignmentVertex const* assignment_1 = c_ptr<AssignmentVertex>(
+        fl::AssignmentVertex const* assignment_1 = c_ptr<fl::AssignmentVertex>(
             tree->scope()->statements()[0]);
-        NameVertex const* a1 = c_ptr<NameVertex>(assignment_1->target());
+        fl::NameVertex const* a1 = c_ptr<fl::NameVertex>(
+            assignment_1->target());
         BOOST_REQUIRE(assignment_1);
         BOOST_REQUIRE(a1);
 
-        AssignmentVertex const* assignment_2 = c_ptr<AssignmentVertex>(
+        fl::AssignmentVertex const* assignment_2 = c_ptr<fl::AssignmentVertex>(
             tree->scope()->statements()[1]);
-        NameVertex const* vertex_b1 = c_ptr<NameVertex>(assignment_2->target());
-        FunctionCallVertex const* vertex_abs1 = c_ptr<FunctionCallVertex>(
-            assignment_2->expression());
-        NameVertex const* vertex_a2 = c_ptr<NameVertex>(
+        fl::NameVertex const* vertex_b1 = c_ptr<fl::NameVertex>(
+            assignment_2->target());
+        fl::FunctionCallVertex const* vertex_abs1 =
+            c_ptr<fl::FunctionCallVertex>(assignment_2->expression());
+        fl::NameVertex const* vertex_a2 = c_ptr<fl::NameVertex>(
             vertex_abs1->expressions()[0]);
         BOOST_REQUIRE(assignment_2);
         BOOST_REQUIRE(vertex_b1);
         BOOST_REQUIRE(vertex_abs1);
         BOOST_REQUIRE(vertex_a2);
 
-        AssignmentVertex const* assignment_3 = c_ptr<AssignmentVertex>(
+        fl::AssignmentVertex const* assignment_3 = c_ptr<fl::AssignmentVertex>(
             tree->scope()->statements()[2]);
-        NameVertex const* c1 = c_ptr<NameVertex>(assignment_3->target());
-        FunctionCallVertex const* vertex_abs2 = c_ptr<FunctionCallVertex>(
-            assignment_3->expression());
-        NameVertex const* b2 = c_ptr<NameVertex>(vertex_abs2->expressions()[0]);
+        fl::NameVertex const* c1 = c_ptr<fl::NameVertex>(
+            assignment_3->target());
+        fl::FunctionCallVertex const* vertex_abs2 =
+            c_ptr<fl::FunctionCallVertex>(assignment_3->expression());
+        fl::NameVertex const* b2 = c_ptr<fl::NameVertex>(
+            vertex_abs2->expressions()[0]);
         BOOST_REQUIRE(assignment_3);
         BOOST_REQUIRE(c1);
         BOOST_REQUIRE(vertex_abs2);
         BOOST_REQUIRE(b2);
 
-        AssignmentVertex const* assignment_4 = c_ptr<AssignmentVertex>(
+        fl::AssignmentVertex const* assignment_4 = c_ptr<fl::AssignmentVertex>(
             tree->scope()->statements()[3]);
-        NameVertex const* vertex_b4 = c_ptr<NameVertex>(
+        fl::NameVertex const* vertex_b4 = c_ptr<fl::NameVertex>(
             assignment_4->target());
-        OperatorVertex const* plus_1 = c_ptr<OperatorVertex>(
+        fl::OperatorVertex const* plus_1 = c_ptr<fl::OperatorVertex>(
             assignment_4->expression());
-        NameVertex const* c2 = c_ptr<NameVertex>(plus_1->expressions()[0]);
-        NameVertex const* vertex_b3 = c_ptr<NameVertex>(
+        fl::NameVertex const* c2 = c_ptr<fl::NameVertex>(
+            plus_1->expressions()[0]);
+        fl::NameVertex const* vertex_b3 = c_ptr<fl::NameVertex>(
             plus_1->expressions()[1]);
         BOOST_REQUIRE(assignment_4);
         BOOST_REQUIRE(vertex_b4);
@@ -314,37 +320,37 @@ BOOST_AUTO_TEST_CASE(visit_reuse_of_identifiers)
 
 BOOST_AUTO_TEST_CASE(visit_attribute)
 {
-    using namespace fern;
-
-    std::shared_ptr<ModuleVertex> tree;
+    std::shared_ptr<fl::ModuleVertex> tree;
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            String(
+            fern::String(
                 "a = read(\"bla.nc\")\n"
                 "c = a.b\n"
         )));
 
         // a
-        AssignmentVertex const* assignment_1 = c_ptr<AssignmentVertex>(
+        fl::AssignmentVertex const* assignment_1 = c_ptr<fl::AssignmentVertex>(
             tree->scope()->statements()[0]);
         BOOST_REQUIRE(assignment_1);
-        NameVertex const* a1 = c_ptr<NameVertex>(assignment_1->target());
+        fl::NameVertex const* a1 = c_ptr<fl::NameVertex>(
+            assignment_1->target());
         BOOST_REQUIRE(a1);
 
         // c
-        AssignmentVertex const* assignment_2 = c_ptr<AssignmentVertex>(
+        fl::AssignmentVertex const* assignment_2 = c_ptr<fl::AssignmentVertex>(
             tree->scope()->statements()[1]);
         BOOST_REQUIRE(assignment_2);
-        NameVertex const* c = c_ptr<NameVertex>(assignment_2->target());
+        fl::NameVertex const* c = c_ptr<fl::NameVertex>(assignment_2->target());
         BOOST_REQUIRE(c);
 
         // a.b
-        AttributeVertex const* attribute = c_ptr<AttributeVertex>(
+        fl::AttributeVertex const* attribute = c_ptr<fl::AttributeVertex>(
             assignment_2->expression());
         BOOST_REQUIRE(attribute);
 
-        NameVertex const* a2 = c_ptr<NameVertex>(attribute->expression());
+        fl::NameVertex const* a2 = c_ptr<fl::NameVertex>(
+            attribute->expression());
         BOOST_REQUIRE(a2);
 
         tree->Accept(_visitor);

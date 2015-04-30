@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 Dataset::Dataset(
     std::string const& name,
@@ -33,4 +34,5 @@ OpenMode Dataset::open_mode() const
     return _open_mode;
 }
 
+} // namespace language
 } // namespace fern

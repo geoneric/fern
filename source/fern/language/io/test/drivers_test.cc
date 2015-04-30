@@ -13,26 +13,28 @@
 #include "fern/language/io/io_client.h"
 
 
-BOOST_FIXTURE_TEST_SUITE(drivers, fern::IOClient)
+namespace fl = fern::language;
+
+
+BOOST_FIXTURE_TEST_SUITE(drivers, fl::IOClient)
 
 BOOST_AUTO_TEST_CASE(drivers)
 {
-    using namespace fern;
-
     {
-        auto dataset = open_dataset("raster-1.asc", OpenMode::READ, "AAIGrid");
+        auto dataset = fl::open_dataset("raster-1.asc", fl::OpenMode::READ,
+            "AAIGrid");
         BOOST_REQUIRE(dataset);
     }
 
     {
         try {
-            open_dataset("../does_not_exist.h5", OpenMode::READ);
+            fl::open_dataset("../does_not_exist.h5", fl::OpenMode::READ);
             BOOST_CHECK(false);
         }
-        catch(IOError const& exception) {
-            String message = exception.message();
-            BOOST_CHECK_EQUAL(message, String(
-                "I/O error handling ../does_not_exist.h5: Cannot be read"));
+        catch(fern::IOError const& exception) {
+            std::string message = exception.message();
+            BOOST_CHECK_EQUAL(message,
+                "I/O error handling ../does_not_exist.h5: Cannot be read");
         }
     }
 }
@@ -40,42 +42,40 @@ BOOST_AUTO_TEST_CASE(drivers)
 
 BOOST_AUTO_TEST_CASE(errors)
 {
-    using namespace fern;
-
-    for(auto pair: fern::drivers) {
+    for(auto pair: fl::drivers) {
         auto driver = pair.second;
 
         // When opening for read, the dataset must already exist.
         try {
-            driver->open("../does_not_exist.h5", OpenMode::READ);
+            driver->open("../does_not_exist.h5", fl::OpenMode::READ);
             BOOST_CHECK(false);
         }
-        catch(IOError const& exception) {
-            String message = exception.message();
-            BOOST_CHECK_EQUAL(message, String(
-                "I/O error handling ../does_not_exist.h5: Does not exist"));
+        catch(fern::IOError const& exception) {
+            std::string message = exception.message();
+            BOOST_CHECK_EQUAL(message,
+                "I/O error handling ../does_not_exist.h5: Does not exist");
         }
 
         // When opening for update, the dataset must already exist.
         try {
-            driver->open("../does_not_exist.h5", OpenMode::UPDATE);
+            driver->open("../does_not_exist.h5", fl::OpenMode::UPDATE);
             BOOST_CHECK(false);
         }
-        catch(IOError const& exception) {
-            String message = exception.message();
-            BOOST_CHECK_EQUAL(message, String(
-                "I/O error handling ../does_not_exist.h5: Does not exist"));
+        catch(fern::IOError const& exception) {
+            std::string message = exception.message();
+            BOOST_CHECK_EQUAL(message,
+                "I/O error handling ../does_not_exist.h5: Does not exist");
         }
 
         // When opening for read, the dataset must be readable.
         try {
-            driver->open("write_only.h5", OpenMode::READ);
+            driver->open("write_only.h5", fl::OpenMode::READ);
             BOOST_CHECK(false);
         }
-        catch(IOError const& exception) {
-            String message = exception.message();
-            BOOST_CHECK_EQUAL(message, String(
-                "I/O error handling write_only.h5: Cannot be read"));
+        catch(fern::IOError const& exception) {
+            std::string message = exception.message();
+            BOOST_CHECK_EQUAL(message,
+                "I/O error handling write_only.h5: Cannot be read");
         }
     }
 }

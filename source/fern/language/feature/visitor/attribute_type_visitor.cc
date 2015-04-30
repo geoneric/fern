@@ -11,6 +11,7 @@
 
 
 namespace fern {
+namespace language {
 
 AttributeTypeVisitor::AttributeTypeVisitor()
 
@@ -69,4 +70,5 @@ ValueType AttributeTypeVisitor::value_type() const
     return _value_type;
 }
 
+} // namespace language
 } // namespace fern

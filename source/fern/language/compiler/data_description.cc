@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 DataDescription::DataDescription(
     String const& name)
@@ -33,4 +34,5 @@ std::string DataDescription::description() const
     return _description.encode_in_default_encoding();
 }
 
+} // namespace language
 } // namespace fern

@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 
 IdentifyVisitor::IdentifyVisitor()
 
@@ -162,4 +163,5 @@ SymbolTable<NameVertex*> const& IdentifyVisitor::symbol_table() const
     return _symbol_table;
 }
 
+} // namespace language
 } // namespace fern

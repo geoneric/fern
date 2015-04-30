@@ -12,11 +12,11 @@
 
 
 namespace fern {
+namespace language {
 
-//! A Compiler translates modules to C++ code.
 /*!
-
-    \sa        .
+    @ingroup    fern_language_group
+    @brief      The Compiler translates modules to C++ code.
 */
 class Compiler
 {
@@ -67,4 +67,5 @@ private:
 
 };
 
+} // namespace language
 } // namespace fern

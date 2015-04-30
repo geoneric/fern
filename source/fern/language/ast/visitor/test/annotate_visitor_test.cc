@@ -17,6 +17,9 @@
 #include "fern/language/ast/xml/xml_parser.h"
 
 
+namespace fl = fern::language;
+
+
 class Support
 {
 
@@ -25,7 +28,7 @@ public:
     Support()
         : _algebra_parser(),
           _xml_parser(),
-          _visitor(fern::operations())
+          _visitor(fl::operations())
     {
     }
 
@@ -36,11 +39,11 @@ public:
 
 protected:
 
-    fern::AlgebraParser _algebra_parser;
+    fl::AlgebraParser _algebra_parser;
 
-    fern::XmlParser _xml_parser;
+    fl::XmlParser _xml_parser;
 
-    fern::AnnotateVisitor _visitor;
+    fl::AnnotateVisitor _visitor;
 };
 
 
@@ -51,14 +54,14 @@ BOOST_FIXTURE_TEST_CASE(visit_empty_script, Support)
 {
     // Parse empty script.
     // Ast before and after should be the same.
-    std::shared_ptr<fern::ModuleVertex> tree1, tree2;
+    std::shared_ptr<fl::ModuleVertex> tree1, tree2;
 
     tree1 = _xml_parser.parse_string(_algebra_parser.parse_string(
         fern::String("")));
     assert(tree1);
 
     // // Create copy of this empty tree.
-    // fern::CopyVisitor copyVisitor;
+    // fl::CopyVisitor copyVisitor;
     // tree1->Accept(copyVisitor);
     // tree2 = copyVisitor.scriptVertex();
 
@@ -77,7 +80,7 @@ BOOST_FIXTURE_TEST_CASE(visit_empty_script, Support)
 BOOST_FIXTURE_TEST_CASE(visit_number, Support)
 {
     {
-        std::shared_ptr<fern::ModuleVertex> tree =
+        std::shared_ptr<fl::ModuleVertex> tree =
             _xml_parser.parse_string(_algebra_parser.parse_string(
                 fern::String("5")));
         tree->Accept(_visitor);
@@ -87,15 +90,15 @@ BOOST_FIXTURE_TEST_CASE(visit_number, Support)
         BOOST_CHECK_EQUAL(tree->col(), 0);
         BOOST_CHECK_EQUAL(tree->scope()->statements().size(), 1u);
 
-        std::shared_ptr<fern::StatementVertex> const& statement(
+        std::shared_ptr<fl::StatementVertex> const& statement(
             tree->scope()->statements()[0]);
         BOOST_REQUIRE(statement);
 
-        fern::NumberVertex<int64_t> const* number_vertex(
-            dynamic_cast<fern::NumberVertex<int64_t>*>(statement.get()));
+        fl::NumberVertex<int64_t> const* number_vertex(
+            dynamic_cast<fl::NumberVertex<int64_t>*>(statement.get()));
         BOOST_REQUIRE(number_vertex);
 
-        fern::ExpressionTypes expression_types(
+        fl::ExpressionTypes expression_types(
             number_vertex->expression_types());
         BOOST_REQUIRE_EQUAL(expression_types.size(), 1u);
         BOOST_CHECK_EQUAL(expression_types[0], fern::ExpressionType(
@@ -103,7 +106,7 @@ BOOST_FIXTURE_TEST_CASE(visit_number, Support)
     }
 
     {
-        std::shared_ptr<fern::ModuleVertex> tree =
+        std::shared_ptr<fl::ModuleVertex> tree =
             _xml_parser.parse_string(_algebra_parser.parse_string(
                 fern::String("5.5")));
         tree->Accept(_visitor);
@@ -113,15 +116,15 @@ BOOST_FIXTURE_TEST_CASE(visit_number, Support)
         BOOST_CHECK_EQUAL(tree->col(), 0);
         BOOST_CHECK_EQUAL(tree->scope()->statements().size(), 1u);
 
-        std::shared_ptr<fern::StatementVertex> const& statement(
+        std::shared_ptr<fl::StatementVertex> const& statement(
             tree->scope()->statements()[0]);
         BOOST_REQUIRE(statement);
 
-        fern::NumberVertex<double> const* number_vertex(
-            dynamic_cast<fern::NumberVertex<double>*>(statement.get()));
+        fl::NumberVertex<double> const* number_vertex(
+            dynamic_cast<fl::NumberVertex<double>*>(statement.get()));
         BOOST_REQUIRE(number_vertex);
 
-        fern::ExpressionTypes expression_types(
+        fl::ExpressionTypes expression_types(
             number_vertex->expression_types());
         BOOST_REQUIRE_EQUAL(expression_types.size(), 1u);
         BOOST_CHECK_EQUAL(expression_types[0], fern::ExpressionType(
@@ -132,7 +135,7 @@ BOOST_FIXTURE_TEST_CASE(visit_number, Support)
 
 BOOST_FIXTURE_TEST_CASE(visit_name, Support)
 {
-    std::shared_ptr<fern::ModuleVertex> tree =
+    std::shared_ptr<fl::ModuleVertex> tree =
         _xml_parser.parse_string(_algebra_parser.parse_string(
             fern::String("a")));
     tree->Accept(_visitor);
@@ -142,15 +145,15 @@ BOOST_FIXTURE_TEST_CASE(visit_name, Support)
     BOOST_CHECK_EQUAL(tree->col(), 0);
     BOOST_CHECK_EQUAL(tree->scope()->statements().size(), 1u);
 
-    std::shared_ptr<fern::StatementVertex> const& statement(
+    std::shared_ptr<fl::StatementVertex> const& statement(
         tree->scope()->statements()[0]);
     BOOST_REQUIRE(statement);
 
-    fern::NameVertex const* name_vertex(
-        dynamic_cast<fern::NameVertex*>(statement.get()));
+    fl::NameVertex const* name_vertex(
+        dynamic_cast<fl::NameVertex*>(statement.get()));
     BOOST_REQUIRE(name_vertex);
 
-    fern::ExpressionTypes expression_types(name_vertex->expression_types());
+    fl::ExpressionTypes expression_types(name_vertex->expression_types());
     BOOST_REQUIRE_EQUAL(expression_types.size(), 1u);
     BOOST_CHECK_EQUAL(expression_types[0], fern::ExpressionType());
 }
@@ -159,7 +162,7 @@ BOOST_FIXTURE_TEST_CASE(visit_name, Support)
 BOOST_FIXTURE_TEST_CASE(visit_operation, Support)
 {
     {
-        std::shared_ptr<fern::ModuleVertex> tree =
+        std::shared_ptr<fl::ModuleVertex> tree =
             _xml_parser.parse_string(_algebra_parser.parse_string(
                 fern::String("abs(a)")));
         tree->Accept(_visitor);
@@ -169,21 +172,21 @@ BOOST_FIXTURE_TEST_CASE(visit_operation, Support)
         BOOST_CHECK_EQUAL(tree->col(), 0);
 
         BOOST_REQUIRE_EQUAL(tree->scope()->statements().size(), 1u);
-        std::shared_ptr<fern::StatementVertex> const& statement(
+        std::shared_ptr<fl::StatementVertex> const& statement(
             tree->scope()->statements()[0]);
         BOOST_REQUIRE(statement);
-        fern::OperationVertex const* function_call_vertex(
-            dynamic_cast<fern::OperationVertex*>(statement.get()));
+        fl::OperationVertex const* function_call_vertex(
+            dynamic_cast<fl::OperationVertex*>(statement.get()));
         BOOST_REQUIRE(function_call_vertex);
 
-        fern::OperationPtr const& operation(
+        fl::OperationPtr const& operation(
             function_call_vertex->operation());
         BOOST_REQUIRE(operation);
 
         BOOST_CHECK_EQUAL(operation->parameters().size(), 1u);
-        std::vector<fern::Parameter> const& parameters(
+        std::vector<fl::Parameter> const& parameters(
             operation->parameters());
-        fern::Parameter const& parameter(parameters[0]);
+        fl::Parameter const& parameter(parameters[0]);
         BOOST_CHECK_EQUAL(parameter.expression_types().size(), 1u);
         BOOST_CHECK_EQUAL(parameter.expression_types()[0].data_type(),
             fern::DataTypes::CONSTANT | fern::DataTypes::STATIC_FIELD);
@@ -191,14 +194,14 @@ BOOST_FIXTURE_TEST_CASE(visit_operation, Support)
             fern::ValueTypes::NUMBER);
 
         BOOST_CHECK_EQUAL(operation->results().size(), 1u);
-        std::vector<fern::Result> const& results(operation->results());
-        fern::Result const& result(results[0]);
+        std::vector<fl::Result> const& results(operation->results());
+        fl::Result const& result(results[0]);
         BOOST_CHECK_EQUAL(result.expression_type().data_type(),
             fern::DataTypes::ALL);
         BOOST_CHECK_EQUAL(result.expression_type().value_type(),
             fern::ValueTypes::NUMBER);
 
-        fern::ExpressionTypes expression_types(
+        fl::ExpressionTypes expression_types(
             function_call_vertex->expression_types());
         BOOST_REQUIRE_EQUAL(expression_types.size(), 1u);
         BOOST_CHECK_EQUAL(expression_types[0], fern::ExpressionType(
@@ -212,7 +215,7 @@ BOOST_FIXTURE_TEST_CASE(visit_operation, Support)
     // abs. Read results in field, so abs must result in field, with the same
     // value types.
     {
-        std::shared_ptr<fern::ModuleVertex> tree =
+        std::shared_ptr<fl::ModuleVertex> tree =
             _xml_parser.parse_string(_algebra_parser.parse_string(
                 fern::String("abs(read(\"a\"))")));
         tree->Accept(_visitor);
@@ -222,14 +225,14 @@ BOOST_FIXTURE_TEST_CASE(visit_operation, Support)
         BOOST_CHECK_EQUAL(tree->col(), 0);
 
         BOOST_REQUIRE_EQUAL(tree->scope()->statements().size(), 1u);
-        std::shared_ptr<fern::StatementVertex> const& statement(
+        std::shared_ptr<fl::StatementVertex> const& statement(
             tree->scope()->statements()[0]);
         BOOST_REQUIRE(statement);
-        fern::OperationVertex const* abs_vertex(
-            dynamic_cast<fern::OperationVertex*>(statement.get()));
+        fl::OperationVertex const* abs_vertex(
+            dynamic_cast<fl::OperationVertex*>(statement.get()));
         BOOST_REQUIRE(abs_vertex);
 
-        fern::ExpressionTypes expression_types(
+        fl::ExpressionTypes expression_types(
             abs_vertex->expression_types());
         BOOST_REQUIRE_EQUAL(expression_types.size(), 1u);
         BOOST_CHECK_EQUAL(expression_types[0], fern::ExpressionType(
@@ -244,9 +247,9 @@ class OperationResultTypeTester
 public:
 
     OperationResultTypeTester(
-        fern::AlgebraParser const& algebra_parser,
-        fern::XmlParser const& xml_parser,
-        fern::AnnotateVisitor& visitor)
+        fl::AlgebraParser const& algebra_parser,
+        fl::XmlParser const& xml_parser,
+        fl::AnnotateVisitor& visitor)
 
         : _algebra_parser(algebra_parser),
           _xml_parser(xml_parser),
@@ -259,14 +262,14 @@ public:
         fern::String const& script,
         fern::ExpressionType const& expression_type)
     {
-        std::shared_ptr<fern::ModuleVertex> tree(_xml_parser.parse_string(
+        std::shared_ptr<fl::ModuleVertex> tree(_xml_parser.parse_string(
             _algebra_parser.parse_string(script)));
         tree->Accept(_visitor);
-        fern::ExpressionVertex* expression_vertex =
-            dynamic_cast<fern::ExpressionVertex*>(
+        fl::ExpressionVertex* expression_vertex =
+            dynamic_cast<fl::ExpressionVertex*>(
                 tree->scope()->statements()[0].get());
 
-        fern::ExpressionTypes expression_types(
+        fl::ExpressionTypes expression_types(
             expression_vertex->expression_types());
         BOOST_REQUIRE_EQUAL(expression_types.size(), 1u);
         BOOST_CHECK_EQUAL(expression_types[0], expression_type);
@@ -274,11 +277,11 @@ public:
 
 private:
 
-    fern::AlgebraParser const& _algebra_parser;
+    fl::AlgebraParser const& _algebra_parser;
 
-    fern::XmlParser const& _xml_parser;
+    fl::XmlParser const& _xml_parser;
 
-    fern::AnnotateVisitor& _visitor;
+    fl::AnnotateVisitor& _visitor;
 
 };
 
@@ -332,7 +335,7 @@ BOOST_FIXTURE_TEST_CASE(visit_attribute, Support)
 {
     {
         // TODO hier verder
-        // std::shared_ptr<fern::ModuleVertex> tree =
+        // std::shared_ptr<fl::ModuleVertex> tree =
         //     _xml_parser.parse_string(_algebra_parser.parse_string(
         //         fern::String("5")));
         // tree->Accept(_visitor);
@@ -342,15 +345,15 @@ BOOST_FIXTURE_TEST_CASE(visit_attribute, Support)
         // BOOST_CHECK_EQUAL(tree->col(), 0);
         // BOOST_CHECK_EQUAL(tree->scope()->statements().size(), 1u);
 
-        // std::shared_ptr<fern::StatementVertex> const& statement(
+        // std::shared_ptr<fl::StatementVertex> const& statement(
         //     tree->scope()->statements()[0]);
         // BOOST_REQUIRE(statement);
 
-        // fern::NumberVertex<int64_t> const* number_vertex(
-        //     dynamic_cast<fern::NumberVertex<int64_t>*>(statement.get()));
+        // fl::NumberVertex<int64_t> const* number_vertex(
+        //     dynamic_cast<fl::NumberVertex<int64_t>*>(statement.get()));
         // BOOST_REQUIRE(number_vertex);
 
-        // fern::ExpressionTypes expression_types(
+        // fl::ExpressionTypes expression_types(
         //     number_vertex->expression_types());
         // BOOST_REQUIRE_EQUAL(expression_types.size(), 1u);
         // BOOST_CHECK_EQUAL(expression_types[0], fern::ExpressionType(

@@ -14,6 +14,7 @@
 
 
 namespace fern {
+namespace language {
 namespace {
 
 void show_compile_help()
@@ -444,4 +445,5 @@ int CompileCommand::execute() const
     return status;
 }
 
+} // namespace language
 } // namespace fern

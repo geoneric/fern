@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 namespace {
 
 String annotate_expression_label(
@@ -682,4 +683,5 @@ void AstDotVisitor::Visit(
     }
 }
 
+} // namespace language
 } // namespace fern

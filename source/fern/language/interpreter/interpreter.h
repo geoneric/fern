@@ -16,6 +16,7 @@
 
 
 namespace fern {
+namespace language {
 
 class DataSource;
 class DataSync;
@@ -93,4 +94,5 @@ private:
 
 };
 
+} // namespace language
 } // namespace fern

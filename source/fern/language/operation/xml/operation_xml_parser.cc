@@ -16,15 +16,19 @@
 #include "fern/language/operation/xml/operation-pskel.hxx"
 
 
-namespace {
+namespace fl = fern::language;
+
+
+namespace fern {
+namespace language {
 
 class Operations_pimpl:
-    public fern::Operations_pskel
+    public Operations_pskel
 {
 
 private:
 
-    using OperationsData = std::vector<std::shared_ptr<fern::Operation>>;
+    using OperationsData = std::vector<std::shared_ptr<fl::Operation>>;
 
     OperationsData   _operations;
 
@@ -36,14 +40,14 @@ public:
     }
 
     void Operation(
-        fern::OperationPtr const& operation)
+        OperationPtr const& operation)
     {
         _operations.emplace_back(operation);
     }
 
-    fern::OperationsPtr post_Operations()
+    OperationsPtr post_Operations()
     {
-        return fern::OperationsPtr(std::make_shared<fern::Operations>(
+        return OperationsPtr(std::make_shared<Operations>(
             _operations));
     }
 
@@ -51,17 +55,17 @@ public:
 
 
 class Operation_pimpl:
-    public fern::Operation_pskel
+    public Operation_pskel
 {
 
 private:
 
     struct OperationData
     {
-        fern::String name;
-        fern::String description;
-        std::vector<fern::Parameter> parameters;
-        std::vector<fern::Result> results;
+        String name;
+        String description;
+        std::vector<Parameter> parameters;
+        std::vector<Result> results;
     };
 
     std::stack<OperationData> _data_stack;
@@ -78,39 +82,39 @@ public:
         std::string const& name)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().name = fern::String(name);
+        _data_stack.top().name = String(name);
     }
 
     void Description(
         std::string const& description)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().description = fern::String(description);
+        _data_stack.top().description = String(description);
     }
 
     void Parameters(
-        std::vector<fern::Parameter> const& parameters)
+        std::vector<Parameter> const& parameters)
     {
         assert(!_data_stack.empty());
         _data_stack.top().parameters = parameters;
     }
 
     void Results(
-        std::vector<fern::Result> const& results)
+        std::vector<Result> const& results)
     {
         assert(!_data_stack.empty());
         _data_stack.top().results = results;
     }
 
-    fern::OperationPtr post_Operation()
+    OperationPtr post_Operation()
     {
         assert(_data_stack.size() == 1);
         assert(!_data_stack.empty());
         OperationData result(_data_stack.top());
         _data_stack.pop();
         assert(false);
-        return fern::OperationPtr();
-        // return fern::OperationPtr(new fern::Operation(result.name,
+        return OperationPtr();
+        // return OperationPtr(new Operation(result.name,
         //     result.description, result.parameters, result.results));
     }
 
@@ -118,12 +122,12 @@ public:
 
 
 class Parameters_pimpl:
-    public fern::Parameters_pskel
+    public Parameters_pskel
 {
 
 private:
 
-    std::vector<fern::Parameter> _parameters;
+    std::vector<fl::Parameter> _parameters;
 
 public:
 
@@ -133,12 +137,12 @@ public:
     }
 
     void Parameter(
-        fern::Parameter const& parameter)
+        fl::Parameter const& parameter)
     {
         _parameters.emplace_back(parameter);
     }
 
-    std::vector<fern::Parameter> const& post_Parameters()
+    std::vector<fl::Parameter> const& post_Parameters()
     {
         return _parameters;
     }
@@ -147,15 +151,15 @@ public:
 
 
 class Parameter_pimpl:
-    public fern::Parameter_pskel
+    public Parameter_pskel
 {
 
 private:
 
     struct ParameterData
     {
-        fern::String name;
-        fern::String description;
+        String name;
+        String description;
         fern::DataTypes data_types;
         fern::ValueTypes value_types;
     };
@@ -174,14 +178,14 @@ public:
         std::string const& name)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().name = fern::String(name);
+        _data_stack.top().name = String(name);
     }
 
     void Description(
         std::string const& description)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().description = fern::String(description);
+        _data_stack.top().description = String(description);
     }
 
     void DataTypes(
@@ -198,13 +202,13 @@ public:
         _data_stack.top().value_types = value_types;
     }
 
-    fern::Parameter post_Parameter()
+    Parameter post_Parameter()
     {
         assert(_data_stack.size() == 1);
         assert(!_data_stack.empty());
         ParameterData result(_data_stack.top());
         _data_stack.pop();
-        return fern::Parameter(result.name, result.description,
+        return Parameter(result.name, result.description,
             result.data_types, result.value_types);
     }
 
@@ -212,12 +216,12 @@ public:
 
 
 class Results_pimpl:
-    public fern::Results_pskel
+    public Results_pskel
 {
 
 private:
 
-    std::vector<fern::Result> _results;
+    std::vector<fl::Result> _results;
 
 public:
 
@@ -227,12 +231,12 @@ public:
     }
 
     void Result(
-        fern::Result const& result)
+        fl::Result const& result)
     {
         _results.emplace_back(result);
     }
 
-    std::vector<fern::Result> const& post_Results()
+    std::vector<fl::Result> const& post_Results()
     {
         return _results;
     }
@@ -241,15 +245,15 @@ public:
 
 
 class Result_pimpl:
-    public fern::Result_pskel
+    public Result_pskel
 {
 
 private:
 
     struct ResultData
     {
-        fern::String name;
-        fern::String description;
+        String name;
+        String description;
         fern::DataTypes data_type;
         fern::ValueTypes value_type;
     };
@@ -268,64 +272,64 @@ public:
         std::string const& name)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().name = fern::String(name);
+        _data_stack.top().name = String(name);
     }
 
     void Description(
         std::string const& description)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().description = fern::String(description);
+        _data_stack.top().description = String(description);
     }
 
     void DataType(
-        // fern::DataType const& data_type)
+        // DataType const& data_type)
         std::string const& data_type)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().data_type = fern::DataTypes::from_string(
+        _data_stack.top().data_type = DataTypes::from_string(
             data_type);
     }
 
     void ValueType(
-        // fern::ValueType const& value_type)
+        // ValueType const& value_type)
         std::string const& value_type)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().value_type = fern::ValueTypes::from_string(
+        _data_stack.top().value_type = ValueTypes::from_string(
             value_type);
     }
 
-    fern::Result post_Result()
+    Result post_Result()
     {
         assert(_data_stack.size() == 1);
         assert(!_data_stack.empty());
         ResultData result(_data_stack.top());
         _data_stack.pop();
-        return fern::Result(result.name, result.description,
-            fern::ExpressionType(result.data_type, result.value_type));
+        return Result(result.name, result.description,
+            ExpressionType(result.data_type, result.value_type));
     }
 
 };
 
 
 class DataTypes_pimpl:
-    public fern::DataTypes_pskel
+    public DataTypes_pskel
 {
 
 private:
 
-    fern::DataTypes _data_types;
+    DataTypes _data_types;
 
 public:
 
     void pre()
     {
-        _data_types = fern::DataTypes::UNKNOWN;
+        _data_types = DataTypes::UNKNOWN;
     }
 
     // void DataType(
-    //     fern::DataType const& data_type)
+    //     DataType const& data_type)
     // {
     //     _data_types.emplace_back(data_type);
     // }
@@ -333,10 +337,10 @@ public:
     void DataType(
         std::string const& data_type)
     {
-        _data_types |= fern::DataTypes::from_string(data_type);
+        _data_types |= DataTypes::from_string(data_type);
     }
 
-    fern::DataTypes post_DataTypes()
+    DataTypes post_DataTypes()
     {
         return _data_types;
     }
@@ -345,7 +349,7 @@ public:
 
 
 // class DataType_pimpl:
-//     public fern::DataType_pskel
+//     public DataType_pskel
 // {
 // 
 // private:
@@ -367,7 +371,7 @@ public:
 //         return _data_type;
 //     }
 // 
-//     fern::DataType post_DataType()
+//     DataType post_DataType()
 //     {
 //         assert(false);
 //         assert(_data_type.empty());
@@ -378,22 +382,22 @@ public:
 
 
 class ValueTypes_pimpl:
-    public fern::ValueTypes_pskel
+    public ValueTypes_pskel
 {
 
 private:
 
-    fern::ValueTypes _value_types;
+    ValueTypes _value_types;
 
 public:
 
     void pre()
     {
-        _value_types = fern::ValueTypes::UNKNOWN;
+        _value_types = ValueTypes::UNKNOWN;
     }
 
     // void ValueType(
-    //     fern::ValueType const& value_type)
+    //     ValueType const& value_type)
     // {
     //     _value_types.emplace_back(value_type);
     // }
@@ -401,16 +405,16 @@ public:
     void ValueType(
         std::string const& value_type)
     {
-        _value_types |= fern::ValueTypes::from_string(value_type);
+        _value_types |= ValueTypes::from_string(value_type);
     }
 
-    fern::ValueTypes post_ValueTypes()
+    ValueTypes post_ValueTypes()
     {
-        // if(_value_types == fern::ValueTypes::UNKNOWN) {
+        // if(_value_types == ValueTypes::UNKNOWN) {
         //     // No ValueType elements are parsed. Aparently, value type is not
         //     // relevant. This happens for operations dealing with the domain
         //     // only, for example.
-        //     _value_types = fern::ValueTypes::NOT_RELEVANT;
+        //     _value_types = ValueTypes::NOT_RELEVANT;
         // }
         return _value_types;
     }
@@ -419,7 +423,7 @@ public:
 
 
 // class ValueType_pimpl:
-//     public fern::ValueType_pskel
+//     public ValueType_pskel
 // {
 // 
 // private:
@@ -439,7 +443,7 @@ public:
 //         return _data_type;
 //     }
 // 
-//     fern::ValueType post_ValueType()
+//     ValueType post_ValueType()
 //     {
 //         assert(_data_type.empty());
 //         return ValueTypes::from_string(_data_type);
@@ -447,10 +451,6 @@ public:
 // 
 // };
 
-} // Anonymous namespace
-
-
-namespace fern {
 
 OperationXmlParser::OperationXmlParser()
 {
@@ -516,4 +516,5 @@ OperationsPtr OperationXmlParser::parse(
     return parse(stream);
 }
 
+} // namespace language
 } // namespace fern

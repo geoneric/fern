@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 
 Command::Command(
     int argc,
@@ -92,4 +93,5 @@ void Command::write(
     }
 }
 
+} // namespace language
 } // namespace fern

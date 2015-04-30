@@ -14,14 +14,17 @@
 #include "fern/language/ast/xml/xml_parser.h"
 
 
+namespace fl = fern::language;
+
+
 class CountVerticesVisitor:
-    public fern::AstVisitor
+    public fl::AstVisitor
 {
 
 public:
 
     CountVerticesVisitor()
-        : fern::AstVisitor(),
+        : fl::AstVisitor(),
           _nr_vertices(0u)
     {
     }
@@ -36,14 +39,14 @@ private:
     size_t           _nr_vertices;
 
     void Visit(
-        fern::ModuleVertex& vertex)
+        fl::ModuleVertex& vertex)
     {
         _nr_vertices = 0u;
-        fern::AstVisitor::Visit(vertex);
+        fl::AstVisitor::Visit(vertex);
     }
 
     void Visit(
-        fern::AstVertex& /* vertex */)
+        fl::AstVertex& /* vertex */)
     {
         ++_nr_vertices;
     }
@@ -64,9 +67,9 @@ public:
 
 protected:
 
-    fern::AlgebraParser _algebra_parser;
+    fl::AlgebraParser _algebra_parser;
 
-    fern::XmlParser _xml_parser;
+    fl::XmlParser _xml_parser;
 
 };
 
@@ -77,7 +80,7 @@ BOOST_FIXTURE_TEST_SUITE(visitor, Support)
 BOOST_AUTO_TEST_CASE(count_vertices_visitor)
 {
     CountVerticesVisitor visitor;
-    std::shared_ptr<fern::ModuleVertex> tree;
+    std::shared_ptr<fl::ModuleVertex> tree;
 
     // Empty script.
     {

@@ -10,6 +10,7 @@
 
 
 namespace fern {
+namespace language {
 
 StatementVertex::StatementVertex(
     int line_nr,
@@ -20,4 +21,5 @@ StatementVertex::StatementVertex(
 {
 }
 
+} // namespace language
 } // namespace fern

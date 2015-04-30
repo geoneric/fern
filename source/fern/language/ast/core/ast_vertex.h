@@ -14,6 +14,7 @@
 
 
 namespace fern {
+namespace language {
 
 class ExpressionVertex;
 class StatementVertex;
@@ -92,4 +93,5 @@ private:
 
 };
 
+} // namespace language
 } // namespace fern

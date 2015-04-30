@@ -12,6 +12,7 @@
 
 
 namespace fern {
+namespace language {
 
 //! Base class for visitors emitting dot graphs.
 /*!
@@ -54,4 +55,5 @@ private:
 
 };
 
+} // namespace language
 } // namespace fern

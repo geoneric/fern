@@ -13,6 +13,7 @@
 
 
 namespace fern {
+namespace language {
 
 CompileVisitor::CompileVisitor(
     OperationsPtr const& operations,
@@ -258,4 +259,5 @@ void CompileVisitor::Visit(
 {
 }
 
+} // namespace language
 } // namespace fern

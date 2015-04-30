@@ -19,6 +19,7 @@
 
 
 namespace fern {
+namespace language {
 namespace {
 
 ::GDALDataset* gdal_open_for_read(
@@ -699,4 +700,5 @@ void GDALDataset::write_attribute(
 
 #undef WRITE_ATTRIBUTE_CASE
 
+} // namespace language
 } // namespace fern
