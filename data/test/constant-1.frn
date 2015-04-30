@@ -1,0 +1,1 @@
+write(-9.8, "constant-1.h5:earth/gravity", "Fern")

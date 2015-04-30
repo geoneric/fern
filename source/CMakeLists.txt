@@ -60,6 +60,13 @@ if(FERN_BUILD_DOCUMENTATION)
         list(APPEND _API_SOURCES
             ${CMAKE_CURRENT_SOURCE_DIR}/fern/python_extension)
     endif()
+
+    if(FERN_BUILD_LANGUAGE)
+        list(APPEND _API_SOURCES
+            ${CMAKE_CURRENT_SOURCE_DIR}/fern/language)
+    endif()
+
+
     # TODO Add more...
 
     string(REPLACE ";" " " FERN_DOXYGEN_INPUT "${_API_SOURCES}")

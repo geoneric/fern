@@ -28,6 +28,13 @@ struct ValueTypeTraits<VT_BOOL>
 
 
 template<>
+struct ValueTypeTraits<VT_CHAR>
+{
+    using type = char;
+};
+
+
+template<>
 struct ValueTypeTraits<VT_UINT8>
 {
     using type = uint8_t;

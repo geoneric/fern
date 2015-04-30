@@ -16,7 +16,7 @@ The Geoneric Fern software depends on 3rd party software. Depending on the Geone
 +------------+--------------------------------------------+
 | NetCDF     | `FERN_BUILD_IO` with `FERN_IO_WITH_NETCDF` |
 +------------+--------------------------------------------+
-| HDF5       | `FERN_BUILD_IO` with `FERN_WITH_HDF5`      |
+| HDF5       | `FERN_BUILD_IO` with `FERN_IO_WITH_HDF5`   |
 +------------+--------------------------------------------+
 | GDAL       | `FERN_BUILD_IO` with `FERN_IO_WITH_GDAL`   |
 +------------+--------------------------------------------+
@@ -38,6 +38,9 @@ Initially, all configuration options are set to `FALSE`.
 `FERN_BUILD_IO`
     Build Fern.IO module.
 
+`FERN_BUILD_LANGUAGE`
+    Build Fern.Language module.
+
 `FERN_BUILD_PYTHON`
     Build Fern.Python module.
 
@@ -49,14 +52,14 @@ Initially, all configuration options are set to `FALSE`.
     Build Fern documentation.
 
 
-`FERN_IO_WITH_NETCDF`
-    Include support for NetCDF in Fern.IO module.
-
-`FERN_WITH_HDF5`
-    Include support for HDF5 in Fern.IO module.
-
 `FERN_IO_WITH_GDAL`
     Include support for GDAL in Fern.IO module.
+
+`FERN_IO_WITH_HDF5`
+    Include support for HDF5 in Fern.IO module.
+
+`FERN_IO_WITH_NETCDF`
+    Include support for NetCDF in Fern.IO module.
 
 
 Some CMake configuration options imply the use of other configuration options:
@@ -64,7 +67,8 @@ Some CMake configuration options imply the use of other configuration options:
 - `FERN_BUILD_ALL` implies `FERN_BUILD_*`.
 - `FERN_BUILD_PYTHON` implies `FERN_BUILD_ALGORITHM`, `FERN_BUILD_IO`,
   `FERN_IO_WITH_GDAL`.
-
+- `FERN_BUILD_LANGUAGE` implies `FERN_BUILD_ALGORITHM`, `FERN_BUILD_IO`,
+  `FERN_IO_WITH_GDAL`, `FERN_IO_WITH_HDF5`.
 
 Instructions per platform:
 

@@ -9,7 +9,6 @@
 #pragma once
 #include <vector>
 #include <boost/filesystem.hpp>
-#include "fern/core/string.h"
 
 
 namespace fern {
@@ -29,9 +28,9 @@ public:
 
                    Path                ()=default;
 
-                   Path                (String const& string);
-
                    Path                (char const* string);
+
+                   Path                (std::string const& string);
 
                    Path                (Path&&)=default;
 
@@ -41,7 +40,7 @@ public:
 
     Path&          operator=           (Path const&)=default;
 
-    // Path&          operator=           (String const& string);
+    // Path&          operator=           (std::string const& string);
 
                    ~Path               ()=default;
 
@@ -49,9 +48,9 @@ public:
 
     Path&          operator/=          (Path const& path);
 
-    String         generic_string      () const;
+    std::string    generic_string      () const;
 
-    String         native_string       () const;
+    std::string    native_string       () const;
 
     bool           is_empty            () const;
 

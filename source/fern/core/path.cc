@@ -7,21 +7,22 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #include "fern/core/path.h"
+#include "fern/core/string.h"
 
 
 namespace fern {
 
 Path::Path(
-    String const& string)
+    char const* string)
 
-    : boost::filesystem::path(string.encode_in_default_encoding())
+    : boost::filesystem::path(string)
 
 {
 }
 
 
 Path::Path(
-    char const* string)
+    std::string const& string)
 
     : boost::filesystem::path(string)
 
@@ -47,9 +48,9 @@ bool Path::operator==(
 /*!
   \sa        native_string()
 */
-String Path::generic_string() const
+std::string Path::generic_string() const
 {
-    return String(boost::filesystem::path::generic_string());
+    return boost::filesystem::path::generic_string();
 }
 
 
@@ -57,7 +58,7 @@ String Path::generic_string() const
 /*!
   \sa        generic_string()
 */
-String Path::native_string() const
+std::string Path::native_string() const
 {
     return String::decode_from_default_encoding(native());
 }

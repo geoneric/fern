@@ -1,0 +1,44 @@
+/*! \page io_netcdf io_netcdf library
+
+\section io_netcdf_introduction Introduction
+This library contains code that is related to I/O of netCDF datasets.
+
+\section io_netcdf_dependencies Dependencies
+
+  - TODO
+
+\section io_netcdf_design Design
+
+We probably have to use the new netCDF-4 format because it includes support for groups, compound types, variable length arrays, new unsigned integer types, parallel I/O access, etc, some of which we probably need. This does have the important drawback that pre-netCDF-4.0 library clients can't read the data.
+
+http://www.unidata.ucar.edu/software/netcdf/docs/data_model.html
+
+There is no way to delete a netCDF variable from a netcdf file.
+
+One feature per dataset?
+
+I/O of *values*, given dataset_name, attribute_name, selection/slice? Instead of I/O of features/attributes. In script we deal with attributes and domains, though.
+
+NetCDF groups act as datasets themselves. We could store multiple features in a single dataset by storing them into groups.
+
+\subsection Initial ideas:
+
+I/O probably should only involve the I/O of individual attributes and the I/O of domains. We need to be able to read and write a specific attribute to/from a dataset. We also need to be able to read and write a domain to a dataset.
+
+The type used to store attribute values and domains is fern::Feature. Behind the scenes, feature attributes from a single dataset share the same fern::Feature. In other words, each fern::Feature instance is linked to a single dataset.
+
+\code
+
+std::shared_ptr<Attribute> read_attribute(
+                                        dataset_name,
+                                        attribute_name);
+
+void               write_attribute     (Attribute const& attribute,
+                                        attribute_name,
+                                        dataset_name);
+
+\endcode
+
+*/
+
+// vim:syntax=cpp

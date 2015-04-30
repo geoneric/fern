@@ -1,0 +1,10 @@
+/*!
+    @brief      Parent group containing the Fern.Language module code
+    @defgroup   fern_language_group Fern.Language module
+    @ingroup    fern_group
+
+
+    Fern.Language is a C++ library with functionality related to the Fern
+    modeling language. It contains the language parser, interpreter,
+    compiler, and the high level modeling operations.
+*/

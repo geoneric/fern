@@ -19,4 +19,6 @@ endif()
 
 force_out_of_tree_build()
 
+set(FERN_DATA_DIR ${PROJECT_SOURCE_DIR}/data)
+
 # TODO Print status information about the current build.
