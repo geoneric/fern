@@ -1,6 +1,6 @@
 /*!
-    @brief      Parent group containing io sub-groups
-    @defgroup   fern_io_group IO
+    @brief      Group containing the Fern.IO module code
+    @defgroup   fern_io_group IO module
     @ingroup    fern_group
 
 

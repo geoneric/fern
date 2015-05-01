@@ -10,7 +10,6 @@
 #include <cassert>
 #include <boost/range/adaptor/reversed.hpp>
 #include "fern/core/scope.h"
-#include "fern/core/string.h"
 
 
 namespace fern {
@@ -20,7 +19,7 @@ namespace fern {
   The table is able to store multiple values of the same name and supports
   scoping.
 
-  Values are added to the current scope using add_value(String const&,
+  Values are added to the current scope using add_value(std::string const&,
   T const&). Make sure that such a scope exists. After creation of
   a SymbolTable instance, push_scope() must be called before symbols
   can be added. You can make multiple calls to push_scope() in case of
@@ -61,18 +60,18 @@ public:
 
     size_type      scope_level         () const;
 
-    size_type      scope_level         (String const& name) const;
+    size_type      scope_level         (std::string const& name) const;
 
     Scope<T> const& scope              (size_type scope_level) const;
 
-    void           add_value           (String const& name,
+    void           add_value           (std::string const& name,
                                         T const& value);
 
-    void           erase_value         (String const& name);
+    void           erase_value         (std::string const& name);
 
-    bool           has_value           (String const& name) const;
+    bool           has_value           (std::string const& name) const;
 
-    T              value               (String const& name) const;
+    T              value               (std::string const& name) const;
 
     bool           empty               () const;
 
@@ -139,7 +138,7 @@ SymbolTable<T>& SymbolTable<T>::operator=(
 /*!
   \sa        pop_scope().
 
-  All subsequent calls to add_value(String const&, T const&) will add
+  All subsequent calls to add_value(std::string const&, T const&) will add
   values to this new scope.
 */
 template<
@@ -199,7 +198,7 @@ inline typename SymbolTable<T>::size_type SymbolTable<T>::scope_level() const
 template<
     class T>
 inline typename SymbolTable<T>::size_type SymbolTable<T>::scope_level(
-    String const& name) const
+    std::string const& name) const
 {
     assert(has_value(name));
 
@@ -244,7 +243,7 @@ inline Scope<T> const& SymbolTable<T>::scope(
 template<
     class T>
 inline void SymbolTable<T>::add_value(
-    String const& name,
+    std::string const& name,
     T const& value)
 {
     // TODO If the name is already defined, we may want to issue a warning that
@@ -274,7 +273,7 @@ inline void SymbolTable<T>::add_value(
 template<
     class T>
 inline void SymbolTable<T>::erase_value(
-    String const& name)
+    std::string const& name)
 {
     assert(!_scopes.empty());
     assert(_scopes.back().has_value(name));
@@ -285,7 +284,7 @@ inline void SymbolTable<T>::erase_value(
 template<
     class T>
 inline bool SymbolTable<T>::has_value(
-    String const& name) const
+    std::string const& name) const
 {
     bool result = false;
 
@@ -303,7 +302,7 @@ inline bool SymbolTable<T>::has_value(
 template<
     class T>
 inline T SymbolTable<T>::value(
-    String const& name) const
+    std::string const& name) const
 {
     assert(has_value(name));
     T result;

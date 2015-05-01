@@ -17,16 +17,16 @@ class ParseError:
 {
 public:
 
-                   ParseError          (String const& source_name,
+                   ParseError          (std::string const& source_name,
                                         long line_nr,
                                         long col_nr,
-                                        String const& message);
+                                        std::string const& message);
 
-                   ParseError          (String const& source_name,
+                   ParseError          (std::string const& source_name,
                                         long line_nr,
                                         long col_nr,
-                                        String statement,
-                                        String const& message);
+                                        std::string statement,
+                                        std::string const& message);
 
                    ParseError          (ParseError const&)=default;
 
@@ -38,13 +38,13 @@ public:
 
                    ~ParseError         ()=default;
 
-    String         message             () const;
+    std::string    message             () const;
 
 private:
 
-    String         _statement;
+    std::string    _statement;
 
-    String         _message;
+    std::string    _message;
 
 };
 

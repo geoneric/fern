@@ -1,26 +1,10 @@
-if(FERN_BUILD_ALGORITHM)
-    set(TEST_NAMES
-        array_test
-        masked_array_test
-        masked_raster_test
-        masked_scalar_test
-        raster_test
-    )
-endif()
-### else()
-###     set(TEST_NAMES
-###         array_test
-###         array_value_test
-###         constant_attribute_test
-###         feature_test
-###         masked_array_test
-###         masked_array_value_test
-###         masked_raster_test
-###         masked_scalar_test
-###         spatial_attribute_test
-###         spatial_domain_test
-###     )
-### endif()
+set(TEST_NAMES
+    array_test
+    masked_array_test
+    masked_raster_test
+    masked_scalar_test
+    raster_test
+)
 
 foreach(NAME ${TEST_NAMES})
     add_unit_test2(

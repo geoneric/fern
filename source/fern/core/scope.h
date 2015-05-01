@@ -9,7 +9,7 @@
 #pragma once
 #include <cassert>
 #include <map>
-#include "fern/core/string.h"
+#include <string>
 
 
 namespace fern {
@@ -21,7 +21,8 @@ class Scope
 
 public:
 
-    using const_iterator = typename std::map<String, Value>::const_iterator;
+    using const_iterator =
+        typename std::map<std::string, Value>::const_iterator;
 
                    Scope               ()=default;
 
@@ -41,21 +42,21 @@ public:
 
     size_t         size                () const;
 
-    void           set_value           (String const& name,
+    void           set_value           (std::string const& name,
                                         Value const& value);
 
-    void           erase_value         (String const& name);
+    void           erase_value         (std::string const& name);
 
-    bool           has_value           (String const& name) const;
+    bool           has_value           (std::string const& name) const;
 
-    Value          value               (String const& name) const;
+    Value          value               (std::string const& name) const;
 
     void           clear               ();
 
 private:
 
     //! Values by name.
-    std::map<String, Value> _values;
+    std::map<std::string, Value> _values;
 
 };
 
@@ -136,7 +137,7 @@ inline size_t Scope<Value>::size() const
 template<
     class Value>
 inline void Scope<Value>::set_value(
-    String const& name,
+    std::string const& name,
     Value const& value)
 {
     _values[name] = value;
@@ -146,7 +147,7 @@ inline void Scope<Value>::set_value(
 template<
     class Value>
 inline void Scope<Value>::erase_value(
-    String const& name)
+    std::string const& name)
 {
     assert(has_value(name));
     _values.erase(name);
@@ -156,7 +157,7 @@ inline void Scope<Value>::erase_value(
 template<
     class Value>
 inline bool Scope<Value>::has_value(
-    String const& name) const
+    std::string const& name) const
 {
     return _values.find(name) != _values.end();
 }
@@ -165,7 +166,7 @@ inline bool Scope<Value>::has_value(
 template<
     class Value>
 inline Value Scope<Value>::value(
-    String const& name) const
+    std::string const& name) const
 {
     assert(has_value(name));
     return _values.find(name)->second;

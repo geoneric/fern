@@ -9,6 +9,7 @@
 #include "fern/core/data_types.h"
 #include <cassert>
 #include <map>
+#include "fern/core/string.h"
 
 
 namespace fern {
@@ -25,7 +26,7 @@ DataTypes const DataTypes::ALL(DataTypes::CONSTANT | DataTypes::STATIC_FIELD);
 
 
 // These strings should match the ones used in the XML schema.
-static std::map<String, DataTypes> data_type_by_string = {
+static std::map<std::string, DataTypes> data_type_by_string = {
     { "Constant", DataTypes::CONSTANT },
     { "StaticField", DataTypes::STATIC_FIELD },
     // { "Point", DataTypes::POINT },
@@ -36,7 +37,7 @@ static std::map<String, DataTypes> data_type_by_string = {
 };
 
 
-static std::map<DataType, String> string_by_data_type = {
+static std::map<DataType, std::string> string_by_data_type = {
     { DataType::DT_CONSTANT, "Constant" },
     { DataType::DT_STATIC_FIELD, "StaticField" }
     // { DataType::DT_POINT   , "Point"    },
@@ -45,7 +46,7 @@ static std::map<DataType, String> string_by_data_type = {
 };
 
 
-static String to_string(
+static std::string to_string(
     DataType data_type)
 {
     assert(string_by_data_type.find(data_type) != string_by_data_type.end());
@@ -54,9 +55,9 @@ static String to_string(
 
 
 DataTypes DataTypes::from_string(
-    String const& string)
+    std::string const& string)
 {
-    assert(!string.is_empty());
+    assert(!string.empty());
     assert(data_type_by_string.find(string) != data_type_by_string.end());
     return data_type_by_string[string];
 }
@@ -79,10 +80,10 @@ DataTypes::DataTypes()
 }
 
 
-String DataTypes::to_string() const
+std::string DataTypes::to_string() const
 {
     assert(DataTypes::DATA_TYPES.size() == DT_LAST_DATA_TYPE + 1);
-    std::vector<String> strings;
+    std::vector<std::string> strings;
 
     for(DataType data_type: DataTypes::DATA_TYPES) {
         if(test(data_type)) {

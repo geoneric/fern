@@ -30,11 +30,11 @@ public:
 protected:
 
                    ScriptError         (MessageId message_id,
-                                        String const& source_name,
+                                        std::string const& source_name,
                                         long line_nr,
                                         long col_nr);
 
-    String         source_name         () const;
+    std::string    source_name         () const;
 
     long           line_nr             () const;
 
@@ -42,7 +42,7 @@ protected:
 
 private:
 
-    String         _source_name;
+    std::string    _source_name;
 
     long           _line_nr;
 

@@ -15,11 +15,11 @@ BOOST_AUTO_TEST_SUITE(data_types)
 
 BOOST_AUTO_TEST_CASE(string)
 {
-    BOOST_CHECK_EQUAL(fern::DataTypes::UNKNOWN.to_string(), fern::String("?"));
+    BOOST_CHECK_EQUAL(fern::DataTypes::UNKNOWN.to_string(), "?");
     // BOOST_CHECK_EQUAL(fern::DataTypes::FEATURE.to_string(),
     //     "Point|Line|Polygon");
     BOOST_CHECK_EQUAL(fern::DataTypes::ALL.to_string(),
-        fern::String("Constant|StaticField"));
+        "Constant|StaticField");
     // BOOST_CHECK_EQUAL(
     //     (fern::DataTypes::CONSTANT | fern::DataTypes::FEATURE).to_string(),
     //     "Constant|Point|Line|Polygon");

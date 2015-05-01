@@ -7,7 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include "fern/core/string.h"
+#include <string>
 #include "fern/core/value_type.h"
 
 
@@ -24,6 +24,13 @@ template<>
 struct ValueTypeTraits<VT_BOOL>
 {
     using type = bool;
+};
+
+
+template<>
+struct ValueTypeTraits<VT_CHAR>
+{
+    using type = char;
 };
 
 
@@ -100,7 +107,7 @@ struct ValueTypeTraits<VT_FLOAT64>
 template<>
 struct ValueTypeTraits<VT_STRING>
 {
-    using type = String;
+    using type = std::string;
 };
 
 } // namespace fern

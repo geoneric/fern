@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------------
 #include "fern/core/data_name.h"
 #include <regex>
+#include "fern/core/string.h"
 
 
 namespace fern {
@@ -23,7 +24,7 @@ static std::regex regular_expression(R"(([^:]+)(?::(.+)?)?)");
 DataName::DataName(
     char const* string)
 
-    : DataName(String(string))
+    : DataName(std::string(string))
 
 {
 }
@@ -31,25 +32,11 @@ DataName::DataName(
 
 DataName::DataName(
     std::string const& string)
-
-    : DataName(String(string))
-
 {
-}
-
-
-DataName::DataName(
-    String const& string)
-
-    : _database_pathname(),
-      _data_pathname()
-
-{
-    String database_pathname, data_pathname;
+    std::string database_pathname, data_pathname;
     std::smatch match;
 
-    if(!std::regex_match(static_cast<std::string const&>(string), match,
-            regular_expression)) {
+    if(!std::regex_match(string, match, regular_expression)) {
         assert(false);
         // TODO raise exception.
     }
@@ -66,15 +53,15 @@ DataName::DataName(
     strip_end(data_pathname, "/");
 
     // Loop, otherwise /// will result in //, instead of /, for example.
-    while(data_pathname.contains("//")) {
-        data_pathname.replace("//", "/");
+    while(contains(data_pathname, "//")) {
+        replace(data_pathname, "//", "/");
     }
 
-    if(data_pathname.is_empty()) {
+    if(data_pathname.empty()) {
         data_pathname = "/";
     }
-    else if(!data_pathname.starts_with("/")) {
-        data_pathname = String("/") + data_pathname;
+    else if(!starts_with(data_pathname, "/")) {
+        data_pathname = "/" + data_pathname;
     }
 
     _database_pathname = database_pathname;

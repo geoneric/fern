@@ -7,26 +7,30 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include "fern/core/string.h"
+#include <string>
 
 
 namespace fern {
 namespace python {
 
-void               raise_runtime_error (String const& message);
+void               raise_runtime_error (std::string const& message);
 
 void               raise_unsupported_argument_type_exception(
-                                        String const& type_represenation);
+                                        std::string const&
+                                            type_represenation);
 
 void               raise_unsupported_argument_type_exception(
                                         PyObject* object);
 
 void               raise_unsupported_overload_exception(
-                                        String const& type_representation);
+                                        std::string const&
+                                            type_representation);
 
 void               raise_unsupported_overload_exception(
-                                        String const& type_representation1,
-                                        String const& type_representation2);
+                                        std::string const&
+                                            type_representation1,
+                                        std::string const&
+                                            type_representation2);
 
 void               raise_unsupported_overload_exception(
                                         PyObject* object);

@@ -8,7 +8,6 @@
 // -----------------------------------------------------------------------------
 #pragma once
 #include "fern/core/path.h"
-#include "fern/core/string.h"
 
 
 namespace fern {
@@ -41,8 +40,6 @@ public:
                    DataName            (char const* string);
 
                    DataName            (std::string const& string);
-
-                   DataName            (String const& string);
 
                    DataName            (DataName&&)=default;
 

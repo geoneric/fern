@@ -17,10 +17,10 @@ class ValidateError:
 {
 public:
 
-                   ValidateError       (String const& source_name,
+                   ValidateError       (std::string const& source_name,
                                         long line_nr,
                                         long col_nr,
-                                        String const& message);
+                                        std::string const& message);
 
                    ValidateError       (ValidateError const&)=default;
 
@@ -32,11 +32,11 @@ public:
 
                    ~ValidateError      ()=default;
 
-    String         message             () const;
+    std::string    message             () const;
 
 private:
 
-    String         _message;
+    std::string    _message;
 
 };
 

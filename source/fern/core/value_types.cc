@@ -9,6 +9,7 @@
 #include "fern/core/value_types.h"
 #include <cassert>
 #include <map>
+#include "fern/core/string.h"
 
 
 namespace fern {
@@ -18,7 +19,7 @@ namespace fern {
 // values yet (the value_types member will all be ValueTypes::UNKNOWN).
 
 // These strings should match the ones used in the XML schema.
-static std::map<String, ValueTypes> value_type_by_string = {
+static std::map<std::string, ValueTypes> value_type_by_string = {
     { "Bool"          , ValueTypes::BOOL             },
     { "Char"          , ValueTypes::CHAR             },
     { "Uint8"         , ValueTypes::UINT8            },
@@ -38,7 +39,7 @@ static std::map<String, ValueTypes> value_type_by_string = {
 };
 
 
-static std::map<ValueType, String> string_by_value_type = {
+static std::map<ValueType, std::string> string_by_value_type = {
     { ValueType::VT_BOOL            , "Bool"           },
     { ValueType::VT_CHAR            , "Char"           },
     { ValueType::VT_UINT8           , "Uint8"          },
@@ -55,7 +56,7 @@ static std::map<ValueType, String> string_by_value_type = {
 };
 
 
-static String to_string(
+static std::string to_string(
     ValueType value_type)
 {
     assert(string_by_value_type.find(value_type) != string_by_value_type.end());
@@ -81,9 +82,9 @@ std::vector<ValueType> const ValueTypes::VALUE_TYPES = {
 
 
 ValueTypes ValueTypes::from_string(
-    String const& string)
+    std::string const& string)
 {
-    assert(!string.is_empty());
+    assert(!string.empty());
     assert(value_type_by_string.find(string) != value_type_by_string.end());
     return value_type_by_string[string];
 }
@@ -98,10 +99,10 @@ ValueTypes::ValueTypes()
 }
 
 
-String ValueTypes::to_string() const
+std::string ValueTypes::to_string() const
 {
     assert(ValueTypes::VALUE_TYPES.size() == VT_LAST_VALUE_TYPE + 1);
-    std::vector<String> strings;
+    std::vector<std::string> strings;
 
     for(ValueType value_type: ValueTypes::VALUE_TYPES) {
         if(test(value_type)) {

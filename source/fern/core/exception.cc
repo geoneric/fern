@@ -36,7 +36,7 @@ Exception::Exception(
 }
 
 
-String Exception::message() const
+std::string Exception::message() const
 {
     return _messages[_message_id];
 }

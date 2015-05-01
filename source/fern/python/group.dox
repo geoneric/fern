@@ -1,6 +1,6 @@
 /*!
-    @brief      Parent group containing python package sub-groups
-    @defgroup   fern_python_package_group Python package
+    @brief      Group containing the Fern.Python module code
+    @defgroup   fern_python_package_group Python module
     @ingroup    fern_group
 
 

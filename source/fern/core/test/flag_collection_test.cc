@@ -41,7 +41,7 @@ public:
     {
     }
 
-    fern::String to_string() const { return "blah"; }
+    std::string to_string() const { return "blah"; }
 
 };
 

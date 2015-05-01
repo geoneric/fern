@@ -18,6 +18,12 @@ BOOST_AUTO_TEST_CASE(constructor)
     using namespace fern;
 
     {
+        DataName name1("blaah");
+        DataName name2(std::string("blaah"));
+        DataName name3(name2);
+    }
+
+    {
         DataName name("dataset:path");
         BOOST_CHECK_EQUAL(name.database_pathname(), Path("dataset"));
         BOOST_CHECK_EQUAL(name.data_pathname(), Path("/path"));
@@ -81,6 +87,18 @@ BOOST_AUTO_TEST_CASE(constructor)
         DataName name("dataset:///path/////to//");
         BOOST_CHECK_EQUAL(name.database_pathname(), Path("dataset"));
         BOOST_CHECK_EQUAL(name.data_pathname(), Path("/path/to"));
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(assignment)
+{
+    using namespace fern;
+
+    {
+        DataName name1 = "blaah";
+        DataName name2 = std::string("blaah");
+        DataName name3 = name2;
     }
 }
 

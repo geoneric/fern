@@ -7,6 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
+#include <vector>
 #include "fern/core/data_type.h"
 #include "fern/core/flag_collection.h"
 
@@ -57,7 +58,7 @@ public:
     //! Alias for all data types.
     static DataTypes const ALL;
 
-    static DataTypes from_string       (String const& string);
+    static DataTypes from_string       (std::string const& string);
 
                    DataTypes           ();
 
@@ -71,7 +72,7 @@ public:
 
     DataTypes&     operator=           (DataTypes const&)=default;
 
-    String         to_string           () const;
+    std::string    to_string           () const;
 
 private:
 

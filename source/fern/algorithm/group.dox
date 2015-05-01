@@ -1,8 +1,8 @@
 /*!
-    @brief      Parent group containing algorithm sub-groups
-    @defgroup   fern_algorithm_group Algorithm
+    @brief      Group containing the Fern.Algorithm module code
+    @defgroup   fern_algorithm_group Algorithm module
     @ingroup    fern_group
-    @sa         fern_algorithm_policies, fern_algorithm_no_data_compression
+    @sa         fern_algorithm_policy_group
 
 
     Fern.Algorithm is a library of algorithms for data manipulation.

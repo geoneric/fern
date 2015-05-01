@@ -7,6 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
+#include <vector>
 #include "fern/core/flag_collection.h"
 #include "fern/core/value_type.h"
 
@@ -81,7 +82,7 @@ public:
     //! Alias for all value types.
     static ValueTypes const ALL;
 
-    static ValueTypes from_string      (String const& string);
+    static ValueTypes from_string      (std::string const& string);
 
                    ValueTypes          ();
 
@@ -95,7 +96,7 @@ public:
 
     ValueTypes&    operator=           (ValueTypes const&)=default;
 
-    String         to_string           () const;
+    std::string    to_string           () const;
 
 private:
 

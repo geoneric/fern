@@ -22,6 +22,7 @@ if(PEACOCK_PREFIX)
         ${PEACOCK_PREFIX}/${peacock_target_platform}
         ${CMAKE_PREFIX_PATH}
     )
+    set(CMAKE_INCLUDE_DIRECTORIES_BEFORE TRUE)
 endif()
 
 
@@ -67,6 +68,9 @@ if(FERN_EXPAT_REQUIRED)
         SYSTEM
         ${EXPAT_INCLUDE_DIRS}
     )
+    list(APPEND FERN_EXTERNAL_LIBRARIES
+        ${EXPAT_LIBRARIES}
+    )
 endif()
 if(FERN_GDAL_REQUIRED)
     find_package(GDAL REQUIRED)
@@ -88,7 +92,7 @@ if(FERN_HDF5_REQUIRED)
     include_directories(
         SYSTEM
         ${HDF5_INCLUDE_DIRS}
-        ${HDF5_INCLUDE_DIRS}/cpp
+        # ${HDF5_INCLUDE_DIRS}/cpp
     )
     list(APPEND FERN_EXTERNAL_LIBRARIES
         ${HDF5_LIBRARIES}
@@ -154,6 +158,9 @@ if(FERN_READLINE_REQUIRED)
     include_directories(
         SYSTEM
         ${READLINE_INCLUDE_DIR}
+    )
+    list(APPEND FERN_EXTERNAL_LIBRARIES
+        ${READLINE_LIBRARY}
     )
 endif()
 if(FERN_SWIG_REQUIRED)

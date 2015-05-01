@@ -11,7 +11,6 @@
 #include <boost/exception/all.hpp>
 #include "fern/core/message_id.h"
 #include "fern/core/messages.h"
-#include "fern/core/string.h"
 
 
 namespace fern {
@@ -45,7 +44,8 @@ public:
 
     virtual        ~Exception          ()=default;
 
-    virtual String message             () const;
+    virtual std::string
+                   message             () const;
 
     static Messages const&
                    messages            ();
@@ -67,13 +67,17 @@ namespace detail {
 // Exception information that is added to the low level exception instances
 // used in the core of the code.
 // using ExceptionMessageId = boost::error_info<struct tag_message_id, MessageId>;
-using ExceptionSourceName = boost::error_info<struct tag_source_name, String>;
-using ExceptionMessage = boost::error_info<struct tag_message, String>;
+using ExceptionSourceName = boost::error_info<struct tag_source_name,
+    std::string>;
+using ExceptionMessage = boost::error_info<struct tag_message, std::string>;
 using ExceptionConstruct = boost::error_info<struct tag_expression_kind,
-    String>;
-using ExceptionStatement = boost::error_info<struct tag_statement, String>;
-using ExceptionIdentifier = boost::error_info<struct tag_identifier, String>;
-using ExceptionFunction = boost::error_info<struct tag_function_name, String>;
+    std::string>;
+using ExceptionStatement = boost::error_info<struct tag_statement,
+    std::string>;
+using ExceptionIdentifier = boost::error_info<struct tag_identifier,
+    std::string>;
+using ExceptionFunction = boost::error_info<struct tag_function_name,
+    std::string>;
 using ExceptionRequiredNrArguments = boost::error_info<
     struct tag_required_nr_arguments, size_t>;
 using ExceptionProvidedNrArguments = boost::error_info<
@@ -82,9 +86,9 @@ using ExceptionLineNr = boost::error_info<struct tag_line_nr, long>;
 using ExceptionColNr = boost::error_info<struct tag_col_nr, long>;
 using ExceptionArgumentId = boost::error_info<struct tag_argument_id, size_t>;
 using ExceptionRequiredArgumentTypes = boost::error_info<
-    struct tag_required_argument_type, String>;
+    struct tag_required_argument_type, std::string>;
 using ExceptionProvidedArgumentTypes = boost::error_info<
-    struct tag_provided_argument_type, String>;
+    struct tag_provided_argument_type, std::string>;
 
 // Low level exception classes.
 struct Exception:
