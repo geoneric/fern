@@ -56,8 +56,7 @@ BOOST_FIXTURE_TEST_CASE(visit_empty_script, Support)
     // Ast before and after should be the same.
     std::shared_ptr<fl::ModuleVertex> tree1, tree2;
 
-    tree1 = _xml_parser.parse_string(_algebra_parser.parse_string(
-        fern::String("")));
+    tree1 = _xml_parser.parse_string(_algebra_parser.parse_string(""));
     assert(tree1);
 
     // // Create copy of this empty tree.
@@ -70,7 +69,7 @@ BOOST_FIXTURE_TEST_CASE(visit_empty_script, Support)
     // // Both trees should be equal.
     // BOOST_CHECK(*tree1 == *tree2);
 
-    BOOST_CHECK_EQUAL(tree1->source_name(), fern::String("<string>"));
+    BOOST_CHECK_EQUAL(tree1->source_name(), "<string>");
     BOOST_CHECK_EQUAL(tree1->line(), 0);
     BOOST_CHECK_EQUAL(tree1->col(), 0);
     BOOST_CHECK(tree1->scope()->statements().empty());
@@ -81,11 +80,10 @@ BOOST_FIXTURE_TEST_CASE(visit_number, Support)
 {
     {
         std::shared_ptr<fl::ModuleVertex> tree =
-            _xml_parser.parse_string(_algebra_parser.parse_string(
-                fern::String("5")));
+            _xml_parser.parse_string(_algebra_parser.parse_string("5"));
         tree->Accept(_visitor);
 
-        BOOST_CHECK_EQUAL(tree->source_name(), fern::String("<string>"));
+        BOOST_CHECK_EQUAL(tree->source_name(), "<string>");
         BOOST_CHECK_EQUAL(tree->line(), 0);
         BOOST_CHECK_EQUAL(tree->col(), 0);
         BOOST_CHECK_EQUAL(tree->scope()->statements().size(), 1u);
@@ -107,11 +105,10 @@ BOOST_FIXTURE_TEST_CASE(visit_number, Support)
 
     {
         std::shared_ptr<fl::ModuleVertex> tree =
-            _xml_parser.parse_string(_algebra_parser.parse_string(
-                fern::String("5.5")));
+            _xml_parser.parse_string(_algebra_parser.parse_string("5.5"));
         tree->Accept(_visitor);
 
-        BOOST_CHECK_EQUAL(tree->source_name(), fern::String("<string>"));
+        BOOST_CHECK_EQUAL(tree->source_name(), "<string>");
         BOOST_CHECK_EQUAL(tree->line(), 0);
         BOOST_CHECK_EQUAL(tree->col(), 0);
         BOOST_CHECK_EQUAL(tree->scope()->statements().size(), 1u);
@@ -136,11 +133,10 @@ BOOST_FIXTURE_TEST_CASE(visit_number, Support)
 BOOST_FIXTURE_TEST_CASE(visit_name, Support)
 {
     std::shared_ptr<fl::ModuleVertex> tree =
-        _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String("a")));
+        _xml_parser.parse_string(_algebra_parser.parse_string("a"));
     tree->Accept(_visitor);
 
-    BOOST_CHECK_EQUAL(tree->source_name(), fern::String("<string>"));
+    BOOST_CHECK_EQUAL(tree->source_name(), "<string>");
     BOOST_CHECK_EQUAL(tree->line(), 0);
     BOOST_CHECK_EQUAL(tree->col(), 0);
     BOOST_CHECK_EQUAL(tree->scope()->statements().size(), 1u);
@@ -163,11 +159,10 @@ BOOST_FIXTURE_TEST_CASE(visit_operation, Support)
 {
     {
         std::shared_ptr<fl::ModuleVertex> tree =
-            _xml_parser.parse_string(_algebra_parser.parse_string(
-                fern::String("abs(a)")));
+            _xml_parser.parse_string(_algebra_parser.parse_string("abs(a)"));
         tree->Accept(_visitor);
 
-        BOOST_CHECK_EQUAL(tree->source_name(), fern::String("<string>"));
+        BOOST_CHECK_EQUAL(tree->source_name(), "<string>");
         BOOST_CHECK_EQUAL(tree->line(), 0);
         BOOST_CHECK_EQUAL(tree->col(), 0);
 
@@ -217,10 +212,10 @@ BOOST_FIXTURE_TEST_CASE(visit_operation, Support)
     {
         std::shared_ptr<fl::ModuleVertex> tree =
             _xml_parser.parse_string(_algebra_parser.parse_string(
-                fern::String("abs(read(\"a\"))")));
+                "abs(read(\"a\"))"));
         tree->Accept(_visitor);
 
-        BOOST_CHECK_EQUAL(tree->source_name(), fern::String("<string>"));
+        BOOST_CHECK_EQUAL(tree->source_name(), "<string>");
         BOOST_CHECK_EQUAL(tree->line(), 0);
         BOOST_CHECK_EQUAL(tree->col(), 0);
 
@@ -259,7 +254,7 @@ public:
     }
 
     void operator()(
-        fern::String const& script,
+        std::string const& script,
         fern::ExpressionType const& expression_type)
     {
         std::shared_ptr<fl::ModuleVertex> tree(_xml_parser.parse_string(
@@ -336,11 +331,10 @@ BOOST_FIXTURE_TEST_CASE(visit_attribute, Support)
     {
         // TODO hier verder
         // std::shared_ptr<fl::ModuleVertex> tree =
-        //     _xml_parser.parse_string(_algebra_parser.parse_string(
-        //         fern::String("5")));
+        //     _xml_parser.parse_string(_algebra_parser.parse_string("5"));
         // tree->Accept(_visitor);
 
-        // BOOST_CHECK_EQUAL(tree->source_name(), fern::String("<string>"));
+        // BOOST_CHECK_EQUAL(tree->source_name(), "<string>");
         // BOOST_CHECK_EQUAL(tree->line(), 0);
         // BOOST_CHECK_EQUAL(tree->col(), 0);
         // BOOST_CHECK_EQUAL(tree->scope()->statements().size(), 1u);

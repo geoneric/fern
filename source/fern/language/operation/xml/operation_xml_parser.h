@@ -7,7 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include "fern/core/string.h"
+#include <string>
 #include "fern/language/operation/core/operations.h"
 
 
@@ -41,7 +41,7 @@ public:
 
     OperationsPtr  parse               (std::istream& stream) const;
 
-    OperationsPtr  parse               (String const& xml) const;
+    OperationsPtr  parse               (std::string const& xml) const;
 
 private:
 

@@ -8,7 +8,7 @@
 // -----------------------------------------------------------------------------
 #pragma once
 #include <bitset>
-#include "fern/core/string.h"
+#include <string>
 
 
 namespace fern {
@@ -46,7 +46,8 @@ public:
 
     FlagCollection& operator=          (FlagCollection const&)=default;
 
-    virtual String to_string           () const=0;
+    virtual std::string
+                   to_string           () const=0;
 
     Flags          operator&           (Flags const& flags) const;
 

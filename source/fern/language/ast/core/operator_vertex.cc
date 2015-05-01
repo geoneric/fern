@@ -7,14 +7,14 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #include "fern/language/ast/core/operator_vertex.h"
+#include <cassert>
 #include <map>
-#include "fern/core/string.h"
 
 
 namespace fern {
 namespace language {
 
-std::map<String, String> unary_operator_symbols = {
+std::map<std::string, std::string> unary_operator_symbols = {
     { "Invert", "~" },
     { "Not", "!" },
     { "UnaryAdd", "+" },
@@ -22,7 +22,7 @@ std::map<String, String> unary_operator_symbols = {
 };
 
 
-std::map<String, String> binary_operator_symbols = {
+std::map<std::string, std::string> binary_operator_symbols = {
     // Binary operators.
     { "add"     , "+"   },
     { "Sub"     , "-"   },
@@ -51,14 +51,14 @@ std::map<String, String> binary_operator_symbols = {
 };
 
 
-std::map<size_t, std::map<String, String>> operator_symbols = {
+std::map<size_t, std::map<std::string, std::string>> operator_symbols = {
     { 1, unary_operator_symbols  },
     { 2, binary_operator_symbols }
 };
 
 
-String name_to_symbol(
-    String const& name,
+std::string name_to_symbol(
+    std::string const& name,
     size_t nr_operands)
 {
     assert(operator_symbols.find(nr_operands) != operator_symbols.end());
@@ -69,7 +69,7 @@ String name_to_symbol(
 
 
 OperatorVertex::OperatorVertex(
-    String const& name,
+    std::string const& name,
     ExpressionVertices const& expressions)
 
     : OperationVertex(name, expressions),
@@ -79,7 +79,7 @@ OperatorVertex::OperatorVertex(
 }
 
 
-String const& OperatorVertex::symbol() const
+std::string const& OperatorVertex::symbol() const
 {
     return _symbol;
 }

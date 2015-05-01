@@ -222,7 +222,7 @@ void ExecuteVisitor::Visit(
     // single value.
     _stack.push(
         std::shared_ptr<Argument>(std::make_shared<AttributeArgument>(
-            std::make_shared<ConstantAttribute<String>>(vertex.value()))));
+            std::make_shared<ConstantAttribute<std::string>>(vertex.value()))));
 }
 
 

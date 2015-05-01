@@ -10,8 +10,8 @@
 #include <memory>
 #include <sstream>
 #include <stack>
+#include <string>
 #include <vector>
-#include "fern/core/string.h"
 #include "fern/language/operation/core/operations.h"
 #include "fern/language/operation/xml/operation-pskel.hxx"
 
@@ -62,8 +62,8 @@ private:
 
     struct OperationData
     {
-        String name;
-        String description;
+        std::string name;
+        std::string description;
         std::vector<Parameter> parameters;
         std::vector<Result> results;
     };
@@ -82,14 +82,14 @@ public:
         std::string const& name)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().name = String(name);
+        _data_stack.top().name = name;
     }
 
     void Description(
         std::string const& description)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().description = String(description);
+        _data_stack.top().description = description;
     }
 
     void Parameters(
@@ -158,8 +158,8 @@ private:
 
     struct ParameterData
     {
-        String name;
-        String description;
+        std::string name;
+        std::string description;
         fern::DataTypes data_types;
         fern::ValueTypes value_types;
     };
@@ -178,14 +178,14 @@ public:
         std::string const& name)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().name = String(name);
+        _data_stack.top().name = name;
     }
 
     void Description(
         std::string const& description)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().description = String(description);
+        _data_stack.top().description = description;
     }
 
     void DataTypes(
@@ -252,8 +252,8 @@ private:
 
     struct ResultData
     {
-        String name;
-        String description;
+        std::string name;
+        std::string description;
         fern::DataTypes data_type;
         fern::ValueTypes value_type;
     };
@@ -272,14 +272,14 @@ public:
         std::string const& name)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().name = String(name);
+        _data_stack.top().name = name;
     }
 
     void Description(
         std::string const& description)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().description = String(description);
+        _data_stack.top().description = description;
     }
 
     void DataType(
@@ -506,12 +506,12 @@ OperationsPtr OperationXmlParser::parse(
 
 
 OperationsPtr OperationXmlParser::parse(
-    String const& xml) const
+    std::string const& xml) const
 {
     // Copy string contents in a string stream and work with that.
     std::stringstream stream;
     stream.exceptions(std::ifstream::badbit | std::ifstream::failbit);
-    stream << xml.encode_in_utf8(); // << std::endl;
+    stream << xml; // << std::endl;
 
     return parse(stream);
 }

@@ -7,6 +7,8 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #include "fern/language/ast/visitor/io_visitor.h"
+#include <algorithm>
+#include <cassert>
 #include "fern/language/ast/core/vertices.h"
 
 
@@ -30,7 +32,7 @@ IOVisitor::~IOVisitor()
 }
 
 
-std::vector<String> const& IOVisitor::inputs() const
+std::vector<std::string> const& IOVisitor::inputs() const
 {
     return _inputs;
 }

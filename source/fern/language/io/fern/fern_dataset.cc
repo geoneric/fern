@@ -7,6 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #include "fern/language/io/fern/fern_dataset.h"
+#include <iostream>
 #include <hdf5.h>
 #include "fern/core/data_name.h"
 #include "fern/core/io_error.h"

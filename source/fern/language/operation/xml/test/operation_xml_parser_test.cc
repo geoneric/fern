@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_SUITE(operation_xml_parser)
 BOOST_AUTO_TEST_CASE(parse)
 {
     fl::OperationXmlParser xml_parser;
-    fern::String xml;
+    std::string xml;
     fl::OperationsPtr operations;
     std::vector<fl::Parameter> parameters;
     std::vector<fl::Result> results;

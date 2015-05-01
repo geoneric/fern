@@ -22,7 +22,7 @@ BOOST_AUTO_TEST_CASE(scoping)
     using SymbolTable = SymbolTable<boost::any>;
 
     SymbolTable table;
-    String name("a");
+    std::string name("a");
     BOOST_CHECK_EQUAL(table.scope_level(), SymbolTable::size_type(0));
 
     // Add and remove one value for 'a'.

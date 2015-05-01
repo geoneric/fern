@@ -8,9 +8,9 @@
 // -----------------------------------------------------------------------------
 #pragma once
 #include <memory>
+#include <string>
 #include <vector>
 #include "fern/core/expression_type.h"
-#include "fern/core/string.h"
 #include "fern/language/operation/core/argument.h"
 #include "fern/language/operation/core/parameter.h"
 #include "fern/language/operation/core/result.h"
@@ -35,8 +35,8 @@ class Operation
 public:
 
                    Operation           (
-                                  String const& name,
-                                  String const& description,
+                                  std::string const& name,
+                                  std::string const& description,
                                   std::vector<Parameter> const& parameters,
                                   std::vector<Result> const& results);
 
@@ -50,11 +50,13 @@ public:
 
     Operation&     operator=           (Operation const& other);
 
-    // String         xml                 () const;
+    // std::string         xml                 () const;
 
-    String const&  name                () const;
+    std::string const&
+                   name                () const;
 
-    String const&  description         () const;
+    std::string const&
+                   description         () const;
 
     size_t         arity               () const;
 
@@ -72,9 +74,9 @@ public:
 
 private:
 
-    String         _name;
+    std::string    _name;
 
-    String         _description;
+    std::string    _description;
 
     std::vector<Parameter> _parameters;
 

@@ -8,13 +8,13 @@
 // -----------------------------------------------------------------------------
 #pragma once
 #include <Python.h>
-#include "fern/core/string.h"
+#include <string>
 
 
 namespace fern {
 namespace python {
 
-String             as_unicode_string   (PyObject* object);
+std::string        as_unicode_string   (PyObject* object);
 
 } // namespace python
 } // namespace fern

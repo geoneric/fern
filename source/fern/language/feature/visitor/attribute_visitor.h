@@ -7,9 +7,8 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include <cstdint>
+#include <string>
 #include <loki/Visitor.h>
-#include "fern/core/string.h"
 #include "fern/language/feature/core/attributes.h"
 
 
@@ -35,7 +34,7 @@ class AttributeVisitor:
     public Loki::Visitor<ConstantAttribute<uint64_t>, void, true>,
     public Loki::Visitor<ConstantAttribute<float>, void, true>,
     public Loki::Visitor<ConstantAttribute<double>, void, true>,
-    public Loki::Visitor<ConstantAttribute<String>, void, true>,
+    public Loki::Visitor<ConstantAttribute<std::string>, void, true>,
     public Loki::Visitor<FieldAttribute<bool>, void, true>,
     public Loki::Visitor<FieldAttribute<int8_t>, void, true>,
     public Loki::Visitor<FieldAttribute<int16_t>, void, true>,
@@ -47,7 +46,7 @@ class AttributeVisitor:
     public Loki::Visitor<FieldAttribute<uint64_t>, void, true>,
     public Loki::Visitor<FieldAttribute<float>, void, true>,
     public Loki::Visitor<FieldAttribute<double>, void, true>,
-    public Loki::Visitor<FieldAttribute<String>, void, true>
+    public Loki::Visitor<FieldAttribute<std::string>, void, true>
 
 {
 
@@ -77,7 +76,7 @@ public:
 
     virtual void   Visit               (ConstantAttribute<double> const& attribute);
 
-    virtual void   Visit               (ConstantAttribute<String> const& attribute);
+    virtual void   Visit               (ConstantAttribute<std::string> const& attribute);
 
     virtual void   Visit               (FieldAttribute<bool> const& attribute);
 
@@ -101,7 +100,7 @@ public:
 
     virtual void   Visit               (FieldAttribute<double> const& attribute);
 
-    virtual void   Visit               (FieldAttribute<String> const& attribute);
+    virtual void   Visit               (FieldAttribute<std::string> const& attribute);
 
 protected:
 
@@ -138,7 +137,7 @@ private:
     macro(uint64_t)                                                            \
     macro(float)                                                               \
     macro(double)                                                              \
-    macro(String)
+    macro(std::string)
 
 } // namespace language
 } // namespace fern

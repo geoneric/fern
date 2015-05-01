@@ -100,7 +100,7 @@ BOOST_AUTO_TEST_CASE(visit_assignment)
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String("a = b")));
+            "a = b"));
 
         fl::AssignmentVertex const* assignment = c_ptr<fl::AssignmentVertex>(
             tree->scope()->statements()[0]);
@@ -126,10 +126,9 @@ BOOST_AUTO_TEST_CASE(visit_assignment)
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String(
-                "a = b\n"
-                "d = f(a)\n"
-        )));
+            "a = b\n"
+            "d = f(a)\n"
+        ));
 
         fl::AssignmentVertex const* assignment_1 = c_ptr<fl::AssignmentVertex>(
             tree->scope()->statements()[0]);
@@ -186,12 +185,11 @@ BOOST_AUTO_TEST_CASE(visit_if)
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String(
-                "a = b\n"
-                "if True:\n"
-                "    a = c\n"
-                "d = a\n"
-        )));
+            "a = b\n"
+            "if True:\n"
+            "    a = c\n"
+            "d = a\n"
+        ));
 
         fl::AssignmentVertex const* assignment_1 = c_ptr<fl::AssignmentVertex>(
             tree->scope()->statements()[0]);
@@ -237,12 +235,11 @@ BOOST_AUTO_TEST_CASE(visit_reuse_of_identifiers)
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String(
-                "a = \"MyRaster\"\n"
-                "b = abs(a)\n"
-                "c = abs(b)\n"
-                "b = c + b\n"
-        )));
+            "a = \"MyRaster\"\n"
+            "b = abs(a)\n"
+            "c = abs(b)\n"
+            "b = c + b\n"
+        ));
 
         fl::AssignmentVertex const* assignment_1 = c_ptr<fl::AssignmentVertex>(
             tree->scope()->statements()[0]);
@@ -324,10 +321,9 @@ BOOST_AUTO_TEST_CASE(visit_attribute)
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String(
-                "a = read(\"bla.nc\")\n"
-                "c = a.b\n"
-        )));
+            "a = read(\"bla.nc\")\n"
+            "c = a.b\n"
+        ));
 
         // a
         fl::AssignmentVertex const* assignment_1 = c_ptr<fl::AssignmentVertex>(

@@ -9,11 +9,11 @@
 #pragma once
 #include <map>
 #include <memory>
+#include <string>
 #include <boost/format.hpp>
 #include <boost/range/begin.hpp>
 #include <boost/range/end.hpp>
 #include <boost/range/iterator.hpp>
-#include "fern/core/string.h"
 #include "fern/language/operation/core/operation.h"
 
 
@@ -50,14 +50,14 @@ public:
 
     size_t         size                () const;
 
-    bool           has_operation       (String const& name) const;
+    bool           has_operation       (std::string const& name) const;
 
-    OperationPtr const& operation      (String const& name) const;
+    OperationPtr const& operation      (std::string const& name) const;
 
 private:
 
     //! Collection of operations, by name.
-    std::map<String, OperationPtr> _operations;
+    std::map<std::string, OperationPtr> _operations;
 
 };
 

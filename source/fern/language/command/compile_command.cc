@@ -206,7 +206,7 @@ int CompileCommand::compile_to_cpp(
 }
 
 
-String CompileCommand::compile_to_dot_ast(
+std::string CompileCommand::compile_to_dot_ast(
     std::shared_ptr<ModuleVertex> const& tree,
     int modes) const
 {
@@ -265,7 +265,7 @@ int CompileCommand::compile_to_dot_ast(
             std::string output_filename = current_argument_id == argc - 1
                 ? argv[current_argument_id] : "";
             ModuleVertexPtr tree(interpreter().parse_file(input_filename));
-            String dot_script = compile_to_dot_ast(tree, modes);
+            std::string dot_script = compile_to_dot_ast(tree, modes);
             write(dot_script, output_filename);
             status = EXIT_SUCCESS;
         }
@@ -275,7 +275,7 @@ int CompileCommand::compile_to_dot_ast(
 }
 
 
-String CompileCommand::compile_to_dot_flowgraph(
+std::string CompileCommand::compile_to_dot_flowgraph(
     ModuleVertexPtr const& tree) const
 {
     const_cast<Interpreter&>(interpreter()).annotate(tree);
@@ -319,7 +319,7 @@ int CompileCommand::compile_to_dot_flowgraph(
             std::string output_filename = current_argument_id == argc - 1
                 ? argv[current_argument_id] : "";
             ModuleVertexPtr tree(interpreter().parse_file(input_filename));
-            String dot_script = compile_to_dot_flowgraph(tree);
+            std::string dot_script = compile_to_dot_flowgraph(tree);
             write(dot_script, output_filename);
             status = EXIT_SUCCESS;
         }
@@ -391,7 +391,7 @@ int CompileCommand::compile_to_xml(
             ++current_argument_id;
             std::string output_filename = current_argument_id == argc - 1
                 ? argv[current_argument_id] : "";
-            // String xml = read(input_filename);
+            // std::string xml = read(input_filename);
             // write(xml, output_filename);
             std::cout << "TODO make XML visitor" << std::endl;
             status = EXIT_SUCCESS;

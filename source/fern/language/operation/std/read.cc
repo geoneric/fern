@@ -21,8 +21,8 @@ namespace language {
 std::vector<std::shared_ptr<Argument>> read(
         Attribute const& attribute)
 {
-    ConstantAttribute<String> const& value(
-        dynamic_cast<ConstantAttribute<String> const&>(attribute));
+    ConstantAttribute<std::string> const& value(
+        dynamic_cast<ConstantAttribute<std::string> const&>(attribute));
 
     // We have the name of a feature or attribute. We need to read it and
     // return the result.

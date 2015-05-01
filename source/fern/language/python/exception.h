@@ -7,13 +7,13 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include "fern/core/string.h"
+#include <string>
 
 
 namespace fern {
 namespace python {
 
-void               throw_exception     (String const& source_name);
+void               throw_exception     (std::string const& source_name);
 
 } // namespace python
 } // namespace fern

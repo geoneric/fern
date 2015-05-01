@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_SUITE(io_uncertml2_parser)
 BOOST_AUTO_TEST_CASE(parse)
 {
     fern::UncertML2Parser parser;
-    fern::String xml;
+    std::string xml;
     std::shared_ptr<fern::Uncertainty> uncertainty;
 
     // Example from the uncertml reference.

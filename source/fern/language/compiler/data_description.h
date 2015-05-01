@@ -7,7 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include "fern/core/string.h"
+#include <string>
 
 
 namespace fern {
@@ -18,7 +18,7 @@ class DataDescription
 
 public:
 
-                   DataDescription     (String const& name);
+                   DataDescription     (std::string const& name);
 
   std::string      name                () const;
 
@@ -26,9 +26,9 @@ public:
 
 private:
 
-  String const     _name;
+  std::string const _name;
 
-  String           _description;
+  std::string      _description;
 
 };
 

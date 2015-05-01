@@ -8,7 +8,7 @@
 // -----------------------------------------------------------------------------
 #include "fern/language/ast/visitor/optimize_visitor.h"
 #include <algorithm>
-#include "fern/core/string.h"
+#include <cassert>
 #include "fern/language/ast/core/assignment_vertex.h"
 
 
@@ -86,7 +86,7 @@ void OptimizeVisitor::Visit(
             std::map<ExpressionVertex const*, ExpressionVertexPtr>::iterator
                 it = _inline_expressions.find(vertex.expression().get());
             if(it != _inline_expressions.end()) {
-std::cout << "inserting " << (*it).second->name().encode_in_utf8() << std::endl;
+// std::cout << "inserting " << (*it).second->name() << std::endl;
                 // Schedule the defining statement for removal.
                 _inlined_expressions.emplace_back((*it).second);
                 vertex.set_expression((*it).second);
@@ -126,7 +126,7 @@ void OptimizeVisitor::Visit(
 
                 // Register the value of the defining expression for
                 // inlining at the use location.
-std::cout << "register inlining of " << vertex.name().encode_in_utf8() << " by " << definitions[0]->value()->name().encode_in_utf8() << std::endl;
+// std::cout << "register inlining of " << vertex.name() << " by " << definitions[0]->value()->name() << std::endl;
                 register_expression_for_inlining(&vertex,
                     definitions[0]->value());
             }
@@ -146,7 +146,7 @@ void OptimizeVisitor::Visit(
     bool inlined_expressions;
 
     do {
-std::cout << "visit script" << std::endl;
+// std::cout << "visit script" << std::endl;
         assert(_inline_expressions.empty());
         assert(_inlined_expressions.empty());
         assert(_superfluous_statements.empty());

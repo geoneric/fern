@@ -7,7 +7,6 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #include "fern/language/ast/visitor/annotate_visitor.h"
-#include "fern/core/string.h"
 #include "fern/core/type_traits.h"
 #include "fern/language/operation/core/result.h"
 #include "fern/language/ast/core/vertices.h"

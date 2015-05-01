@@ -15,16 +15,16 @@ namespace language {
 StringVertex::StringVertex(
     int line_nr,
     int col_id,
-    String const& value)
+    std::string const& value)
 
-    : ExpressionVertex(line_nr, col_id, String("\"") + value + String("\"")),
+    : ExpressionVertex(line_nr, col_id, "\"" + value + "\""),
       _value(value)
 
 {
 }
 
 
-String const& StringVertex::value() const
+std::string const& StringVertex::value() const
 {
     return _value;
 }

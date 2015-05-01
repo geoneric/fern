@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------------
 #include "fern/language/python/exception.h"
 #include "fern/core/exception.h"
+#include "fern/core/string.h"
 #include "fern/language/python/owned_reference.h"
 #include "fern/language/python/string.h"
 
@@ -24,7 +25,7 @@ void throw_error(
     assert(value != Py_None);
     OwnedReference value_description_object(PyObject_Str(value));
     assert(value_description_object);
-    String value_description = as_unicode_string(value_description_object);
+    std::string value_description = as_unicode_string(value_description_object);
 
     BOOST_THROW_EXCEPTION(detail::ParseError()
         << detail::ExceptionMessage(value_description)
@@ -33,7 +34,7 @@ void throw_error(
 
 
 void throw_syntax_error(
-    String const& source_name,
+    std::string const& source_name,
     PyObject* value,
     PyObject* /* traceback */)
 {
@@ -44,7 +45,7 @@ void throw_syntax_error(
     assert(PySequence_Length(value) == 2);
 
     OwnedReference message_object(PySequence_GetItem(value, 0));
-    String message = as_unicode_string(message_object);
+    std::string message = as_unicode_string(message_object);
 
     OwnedReference details_object(PySequence_GetItem(value, 1));
     // (<source name>, <line>, <col>, <statement>)
@@ -52,7 +53,7 @@ void throw_syntax_error(
     assert(PySequence_Length(details_object) == 4);
 
     // OwnedReference source_object(PySequence_GetItem(details_object, 0));
-    // String source_name = as_unicode_string(source_object);
+    // std::string source_name = as_unicode_string(source_object);
 
     OwnedReference line_nr_object(PySequence_GetItem(details_object, 1));
     assert(PyInt_Check((PyObject*)line_nr_object));
@@ -65,7 +66,8 @@ void throw_syntax_error(
     assert(!PyErr_Occurred());
 
     OwnedReference statement_object(PySequence_GetItem(details_object, 3));
-    String statement = as_unicode_string(statement_object).strip("\n");
+    std::string statement = as_unicode_string(statement_object);
+    statement = strip(statement, "\n");
 
     assert(!PyErr_Occurred());
 
@@ -86,7 +88,7 @@ void throw_syntax_error(
 
 
 void throw_exception(
-    String const& source_name)
+    std::string const& source_name)
 {
     assert(PyErr_Occurred());
 
@@ -102,7 +104,7 @@ void throw_exception(
 
     // OwnedReference typeNameObject = PyObject_GetAttrString(type, "__name__");
     // assert(typeNameObject);
-    // String typeName = as_unicode_string(typeNameObject);
+    // std::string typeName = as_unicode_string(typeNameObject);
 
     if(PyErr_GivenExceptionMatches(type, PyExc_SyntaxError)) {
         throw_syntax_error(source_name, value, traceback);

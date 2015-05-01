@@ -7,6 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #include "fern/language/operation/core/expression_type_calculation.h"
+#include <cassert>
 #include "fern/language/operation/core/operation.h"
 
 

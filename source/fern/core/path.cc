@@ -60,7 +60,7 @@ std::string Path::generic_string() const
 */
 std::string Path::native_string() const
 {
-    return String::decode_from_default_encoding(native());
+    return native();
 }
 
 

@@ -7,6 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #include "fern/language/io/gdal/gdal_driver.h"
+#include <iostream>
 #include "gdal_priv.h"
 #include "fern/core/io_error.h"
 #include "fern/core/value_type_traits.h"

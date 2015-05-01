@@ -14,7 +14,7 @@ namespace fern {
 
 ScriptError::ScriptError(
     MessageId message_id,
-    String const& source_name,
+    std::string const& source_name,
     long line_nr,
     long col_nr)
 
@@ -24,11 +24,11 @@ ScriptError::ScriptError(
       _col_nr(col_nr)
 
 {
-    assert(!_source_name.is_empty());
+    assert(!_source_name.empty());
 }
 
 
-String ScriptError::source_name() const
+std::string ScriptError::source_name() const
 {
     return _source_name;
 }

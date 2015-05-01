@@ -12,6 +12,7 @@
 #include <iostream>
 #include "Python-ast.h"
 #include "fern/core/exception.h"
+#include "fern/core/string.h"
 #include "fern/language/python/exception.h"
 
 
@@ -24,19 +25,19 @@ namespace {
 
 void               write_expression_node(
                                         expr_ty const& expression,
-                                        fern::String& xml);
+                                        std::string& xml);
 void               write_expression_nodes(
                                         asdl_seq const* expressions,
-                                        fern::String& xml);
+                                        std::string& xml);
 void               write_statement_nodes(
                                         asdl_seq const* statements,
-                                        fern::String& xml);
+                                        std::string& xml);
 
 
 void throw_unsupported_language_construct(
     long line_nr,
     long col_nr,
-    fern::String const& kind)
+    std::string const& kind)
 {
     BOOST_THROW_EXCEPTION(fern::detail::UnsupportedLanguageConstruct()
         << fern::detail::ExceptionConstruct(kind)
@@ -48,7 +49,7 @@ void throw_unsupported_language_construct(
 
 void write_identifier_node(
     identifier const identifier,
-    fern::String& xml)
+    std::string& xml)
 {
     assert(PyString_Check(identifier));
 
@@ -66,7 +67,7 @@ void write_identifier_node(
 void write_name_node(
     identifier const identifier,
     expr_context_ty const& /* context */,
-    fern::String& xml)
+    std::string& xml)
 {
     write_identifier_node(identifier, xml);
 }
@@ -74,7 +75,7 @@ void write_name_node(
 
 void write_number_node(
     object const& number,
-    fern::String& xml)
+    std::string& xml)
 {
     // TODO Handle all numeric types.
     // TODO Use types with a known size: int32, int64, float32, float64, etc.
@@ -131,7 +132,7 @@ void write_number_node(
 
 void write_string_node(
     string const string,
-    fern::String& xml)
+    std::string& xml)
 {
     // TODO Verify the string is encoded as UTF8.
     // TODO Only support Unicode strings? Convert on the fly when it's not?
@@ -150,7 +151,7 @@ void write_string_node(
 
 void write_expressions_node(
     asdl_seq const* expressions,
-    fern::String& xml)
+    std::string& xml)
 {
     if(expressions == 0) {
         xml += "<Expressions/>";
@@ -182,7 +183,7 @@ void write_call_node(
     expr_ty const,
     expr_ty const,
 #endif
-    fern::String& xml)
+    std::string& xml)
 {
     assert(keywords == 0 || keywords->size == 0); // TODO Support keywords.
     assert(starargs == 0); // TODO
@@ -199,7 +200,7 @@ void write_call_node(
 void write_unary_operator_node(
     unaryop_ty const unaryOperator,
     expr_ty const operand,
-    fern::String& xml)
+    std::string& xml)
 {
     xml += "<Operator><Name>";
 
@@ -236,7 +237,7 @@ void write_binary_operator_node(
     expr_ty const left_operand,
     operator_ty const binary_operator,
     expr_ty const right_operand,
-    fern::String& xml)
+    std::string& xml)
 {
     xml += "<Operator><Name>";
 
@@ -305,7 +306,7 @@ void write_binary_operator_node(
 void write_boolean_operator_node(
     boolop_ty const boolean_operator,
     asdl_seq const* operands,
-    fern::String& xml)
+    std::string& xml)
 {
     xml += "<Operator><Name>";
 
@@ -332,7 +333,7 @@ void write_comparison_operator_node(
     expr_ty const left_operand,
     asdl_int_seq const* operators,
     asdl_seq const* comparators,
-    fern::String& xml)
+    std::string& xml)
 {
     // http://docs.python.org/reference/expressions.html#notin
     // x < y <= z is equivalent to x < y and y <= z
@@ -385,7 +386,7 @@ void write_comparison_operator_node(
 
 void write_slice_node(
     slice_ty const slice,
-    fern::String& xml)
+    std::string& xml)
 {
     // TODO Raise exception.
     assert(slice->kind == Index_kind);
@@ -412,7 +413,7 @@ void write_subscript_node(
     expr_ty const expression,
     slice_ty const slice,
     expr_context_ty const /* context */,
-    fern::String& xml)
+    std::string& xml)
 {
     // expression is the expression being subscripted.
     xml += "<Subscript>";
@@ -426,7 +427,7 @@ void write_attribute_node(
     expr_ty const expression,
     identifier const name,
     expr_context_ty const /* context */,
-    fern::String& xml)
+    std::string& xml)
 {
     xml += "<Attribute>";
     write_expression_node(expression, xml);
@@ -437,7 +438,7 @@ void write_attribute_node(
 
 void write_expression_node(
     expr_ty const& expression,
-    fern::String& xml)
+    std::string& xml)
 {
     assert(expression);
 
@@ -569,7 +570,7 @@ void write_expression_node(
 void write_assignment_node(
     asdl_seq const* targets,
     expr_ty const& value,
-    fern::String& xml)
+    std::string& xml)
 {
     // Copy the value expression to one or more targets.
     // When there is more than one target, value should be an iterable.
@@ -591,7 +592,7 @@ void write_if_node(
     expr_ty const test,
     asdl_seq const* body,
     asdl_seq const* orelse,
-    fern::String& xml)
+    std::string& xml)
 {
     xml += "<If>";
     write_expression_node(test, xml);
@@ -605,7 +606,7 @@ void write_while_node(
     expr_ty const test,
     asdl_seq const* body,
     asdl_seq const* orelse,
-    fern::String& xml)
+    std::string& xml)
 {
     xml += "<While>";
     write_expression_node(test, xml);
@@ -617,7 +618,7 @@ void write_while_node(
 
 void write_arguments_node(
     arguments_ty const arguments,
-    fern::String& xml)
+    std::string& xml)
 {
     // TODO Throw exception in case vararg, kwarg, or defaults are set.
     write_expression_nodes(arguments->args, xml);
@@ -629,7 +630,7 @@ void write_function_definition_node(
     arguments_ty const arguments,
     asdl_seq const* body,
     asdl_seq const* /* decorator_list */,
-    fern::String& xml)
+    std::string& xml)
 {
     // TODO Exception when decorator_list is not empty.
     xml += "<FunctionDefinition>";
@@ -642,7 +643,7 @@ void write_function_definition_node(
 
 void write_return_node(
     expr_ty const value,
-    fern::String& xml)
+    std::string& xml)
 {
     if(!value) {
         xml += "<Return/>";
@@ -658,7 +659,7 @@ void write_return_node(
 // void writePrintFunctionNode(
 //     expr_ty const dest,
 //     asdl_seq const* values,
-//     fern::String& xml)
+//     std::string& xml)
 // {
 //     // assert(!values || values->size == 0); // built-in print specific.
 //     // assert(values->size == 1);
@@ -679,7 +680,7 @@ void write_return_node(
 
 void write_expression_nodes(
     asdl_seq const* expressions,
-    fern::String& xml)
+    std::string& xml)
 {
     if(!expressions || asdl_seq_LEN(expressions) == 0) {
         xml += "<Expressions/>";
@@ -703,7 +704,7 @@ void write_expression_nodes(
 
 void write_statement_nodes(
     asdl_seq const* statements,
-    fern::String& xml)
+    std::string& xml)
 {
     if(!statements || asdl_seq_LEN(statements) == 0) {
         xml += "<Statements/>";
@@ -865,32 +866,34 @@ void write_statement_nodes(
 
 
 // <string> -> "&lt;string&gt;"
-fern::String escape(
-    fern::String const& string)
+std::string escape(
+    std::string const& string)
 {
-    return fern::String(string)
-        .replace("&" , "&amp;")  // This one first!
-        .replace("<" , "&lt;")
-        .replace(">" , "&gt;")
-        .replace("\"", "&quot;")
-        .replace("'" , "&apos;")
-        ;
+    std::string result = string;
+    return fern::replace(fern::replace(fern::replace(fern::replace(
+        fern::replace(result,
+            "&" , "&amp;"),  // This one first!
+            "<" , "&lt;"),
+            ">" , "&gt;"),
+            "\"", "&quot;"),
+            "'" , "&apos;")
+            ;
 }
 
 
-fern::String python_ast_to_xml(
+std::string python_ast_to_xml(
     mod_ty const ast,
-    fern::String const& source_name)
+    std::string const& source_name)
 {
     assert(ast);
 
-    fern::String xml;
+    std::string xml;
 
     try {
         switch(ast->kind) {
             case Module_kind: {
                 xml += (boost::format("<Fern source=\"%1%\">")
-                    % escape(source_name).encode_in_utf8()).str().c_str();
+                    % escape(source_name)).str().c_str();
                 write_statement_nodes(ast->v.Module.body, xml);
                 xml += "</Fern>";
                 break;
@@ -987,20 +990,18 @@ AlgebraParser::AlgebraParser()
   \warning   .
   \sa        .
 */
-String AlgebraParser::parse_string(
-    String const& string) const
+std::string AlgebraParser::parse_string(
+    std::string const& string) const
 {
     SmartArena smart_arena;
-    mod_ty ast = PyParser_ASTFromString(
-        string.encode_in_utf8().c_str(), "", Py_file_input, 0,
+    mod_ty ast = PyParser_ASTFromString(string.c_str(), "", Py_file_input, 0,
         smart_arena.arena());
 
     if(!ast) {
         python::throw_exception("<string>");
     }
 
-    return String("<?xml version=\"1.0\"?>") + python_ast_to_xml(ast,
-        "<string>");
+    return "<?xml version=\"1.0\"?>" + python_ast_to_xml(ast, "<string>");
 }
 
 
@@ -1012,11 +1013,11 @@ String AlgebraParser::parse_string(
   \warning   .
   \sa        .
 */
-String AlgebraParser::parse_file(
-    String const& filename) const
+std::string AlgebraParser::parse_file(
+    std::string const& filename) const
 {
     SmartArena smart_arena;
-    std::string filename_in_utf8(filename.encode_in_utf8());
+    std::string filename_in_utf8(filename);
     FILE* file_pointer = fopen(filename_in_utf8.c_str(), "r");
 
     if(file_pointer == NULL) {
@@ -1032,7 +1033,7 @@ String AlgebraParser::parse_file(
         python::throw_exception(filename);
     }
 
-    return String("<?xml version=\"1.0\"?>") + python_ast_to_xml(ast, filename);
+    return "<?xml version=\"1.0\"?>" + python_ast_to_xml(ast, filename);
 }
 
 } // namespace language

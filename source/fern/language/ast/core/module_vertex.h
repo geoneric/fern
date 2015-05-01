@@ -29,7 +29,7 @@ public:
     LOKI_DEFINE_VISITABLE()
 
                    ModuleVertex        (
-                                  String const& source_name,
+                                  std::string const& source_name,
                                   std::shared_ptr<ScopeVertex> const& scope);
 
                    ~ModuleVertex       ()=default;
@@ -42,7 +42,7 @@ public:
 
     ModuleVertex&  operator=           (ModuleVertex const&)=delete;
 
-    String const&  source_name         () const;
+    std::string const&  source_name         () const;
 
     std::shared_ptr<ScopeVertex> const& scope() const;
 
@@ -50,7 +50,7 @@ public:
 
 private:
 
-    String         _source_name;
+    std::string    _source_name;
 
     std::shared_ptr<ScopeVertex> _scope;
 

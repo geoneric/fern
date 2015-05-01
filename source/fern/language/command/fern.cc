@@ -71,7 +71,7 @@ int main(
             status = EXIT_SUCCESS;
         }
         catch(std::exception const& exception) {
-            std::cerr << fern::String(exception.what()) << '\n';
+            std::cerr << exception.what() << '\n';
             status = EXIT_FAILURE;
         }
     }
@@ -119,7 +119,7 @@ int main(
             status = command->execute();
         }
         catch(std::exception const& exception) {
-            std::cerr << fern::String(exception.what()) << '\n';
+            std::cerr << exception.what() << '\n';
             status = EXIT_FAILURE;
         }
     }

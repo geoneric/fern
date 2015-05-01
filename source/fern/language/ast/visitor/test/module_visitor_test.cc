@@ -7,8 +7,8 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #define BOOST_TEST_MODULE fern ast
+#include <iostream>
 #include <boost/test/unit_test.hpp>
-#include "fern/core/string.h"
 #include "fern/language/script/algebra_parser.h"
 #include "fern/language/ast/core/module_vertex.h"
 #include "fern/language/ast/visitor/module_visitor.h"
@@ -46,60 +46,60 @@ BOOST_FIXTURE_TEST_SUITE(module_visitor, Support)
 
 BOOST_AUTO_TEST_CASE(visit_empty_module)
 {
-    fern::String xml;
+    std::string xml;
 
-    xml = _algebra_parser.parse_string(fern::String(""));
+    xml = _algebra_parser.parse_string("");
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.module(), fern::String(""));
+    BOOST_CHECK_EQUAL(_visitor.module(), "");
 }
 
 
 BOOST_AUTO_TEST_CASE(visit_name)
 {
-    fern::String xml;
+    std::string xml;
 
-    xml = _algebra_parser.parse_string(fern::String("a"));
+    xml = _algebra_parser.parse_string("a");
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.module(), fern::String("a\n"));
+    BOOST_CHECK_EQUAL(_visitor.module(), "a\n");
 }
 
 
 BOOST_AUTO_TEST_CASE(visit_assignment)
 {
-    fern::String xml;
+    std::string xml;
 
-    xml = _algebra_parser.parse_string(fern::String("a = b"));
+    xml = _algebra_parser.parse_string("a = b");
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.module(), fern::String("a = b\n"));
+    BOOST_CHECK_EQUAL(_visitor.module(), "a = b\n");
 }
 
 
 BOOST_AUTO_TEST_CASE(visit_string)
 {
-    fern::String xml;
+    std::string xml;
 
-    xml = _algebra_parser.parse_string(fern::String("\"five\""));
+    xml = _algebra_parser.parse_string("\"five\"");
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.module(), fern::String("\"five\"\n"));
+    BOOST_CHECK_EQUAL(_visitor.module(), "\"five\"\n");
 }
 
 
 BOOST_AUTO_TEST_CASE(visit_number)
 {
-    fern::String xml;
+    std::string xml;
 
-    xml = _algebra_parser.parse_string(fern::String("5"));
+    xml = _algebra_parser.parse_string("5");
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.module(), fern::String("5\n"));
+    BOOST_CHECK_EQUAL(_visitor.module(), "5\n");
 
-    xml = _algebra_parser.parse_string(fern::String("5L"));
+    xml = _algebra_parser.parse_string("5L");
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.module(), fern::String(
-      sizeof(long) == sizeof(int64_t) ? "5\n" : "5L\n"));
+    BOOST_CHECK_EQUAL(_visitor.module(),
+      sizeof(long) == sizeof(int64_t) ? "5\n" : "5L\n");
 
-    xml = _algebra_parser.parse_string(fern::String("5.5"));
+    xml = _algebra_parser.parse_string("5.5");
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.module(), fern::String("5.5\n"));
+    BOOST_CHECK_EQUAL(_visitor.module(), "5.5\n");
 
     // TODO add tests for all numeric types.
 }
@@ -107,85 +107,85 @@ BOOST_AUTO_TEST_CASE(visit_number)
 
 BOOST_AUTO_TEST_CASE(visit_function)
 {
-    fern::String xml;
+    std::string xml;
 
-    xml = _algebra_parser.parse_string(fern::String("f()"));
+    xml = _algebra_parser.parse_string("f()");
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.module(), fern::String("f()\n"));
+    BOOST_CHECK_EQUAL(_visitor.module(), "f()\n");
 
     xml = _algebra_parser.parse_string(
-        fern::String("f(1, \"2\", three, four())"));
+        "f(1, \"2\", three, four())");
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.module(), fern::String(
-        "f(1, \"2\", three, four())\n"));
+    BOOST_CHECK_EQUAL(_visitor.module(),
+        "f(1, \"2\", three, four())\n");
 }
 
 
 BOOST_AUTO_TEST_CASE(visit_operator)
 {
-    fern::String xml;
+    std::string xml;
 
-    xml = _algebra_parser.parse_string(fern::String("-a"));
+    xml = _algebra_parser.parse_string("-a");
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.module(), fern::String("-(a)\n"));
+    BOOST_CHECK_EQUAL(_visitor.module(), "-(a)\n");
 
-    xml = _algebra_parser.parse_string(fern::String("a + b"));
+    xml = _algebra_parser.parse_string("a + b");
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.module(), fern::String("(a) + (b)\n"));
+    BOOST_CHECK_EQUAL(_visitor.module(), "(a) + (b)\n");
 
-    xml = _algebra_parser.parse_string(fern::String("-(a + b)"));
+    xml = _algebra_parser.parse_string("-(a + b)");
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.module(), fern::String("-((a) + (b))\n"));
+    BOOST_CHECK_EQUAL(_visitor.module(), "-((a) + (b))\n");
 
-    xml = _algebra_parser.parse_string(fern::String("a + b * c + d"));
+    xml = _algebra_parser.parse_string("a + b * c + d");
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.module(), fern::String(
-        "((a) + ((b) * (c))) + (d)\n"));
+    BOOST_CHECK_EQUAL(_visitor.module(),
+        "((a) + ((b) * (c))) + (d)\n");
 }
 
 
 BOOST_AUTO_TEST_CASE(visit_multiple_statements)
 {
-    fern::String xml;
+    std::string xml;
 
-    xml = _algebra_parser.parse_string(fern::String("a\nb"));
+    xml = _algebra_parser.parse_string("a\nb");
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.module(), fern::String("a\nb\n"));
+    BOOST_CHECK_EQUAL(_visitor.module(), "a\nb\n");
 }
 
 
 BOOST_AUTO_TEST_CASE(visit_if)
 {
-    fern::String xml;
+    std::string xml;
 
-    xml = _algebra_parser.parse_string(fern::String(
+    xml = _algebra_parser.parse_string(
         "if a:\n"
         "    b\n"
-        "    c"));
+        "    c");
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.module(), fern::String(
+    BOOST_CHECK_EQUAL(_visitor.module(),
         "if a:\n"
         "    b\n"
-        "    c\n"));
+        "    c\n");
 
-    xml = _algebra_parser.parse_string(fern::String(
+    xml = _algebra_parser.parse_string(
         "if a:\n"
         "    b\n"
         "    c\n"
         "elif d:\n"
         "    e\n"
-        "    f\n"));
+        "    f\n");
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.module(), fern::String(
+    BOOST_CHECK_EQUAL(_visitor.module(),
         "if a:\n"
         "    b\n"
         "    c\n"
         "else:\n"
         "    if d:\n"
         "        e\n"
-        "        f\n"));
+        "        f\n");
 
-    xml = _algebra_parser.parse_string(fern::String(
+    xml = _algebra_parser.parse_string(
         "if a:\n"
         "    b\n"
         "    c\n"
@@ -194,9 +194,9 @@ BOOST_AUTO_TEST_CASE(visit_if)
         "    f\n"
         "else:\n"
         "    g\n"
-        "    h\n"));
+        "    h\n");
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.module(), fern::String(
+    BOOST_CHECK_EQUAL(_visitor.module(),
         "if a:\n"
         "    b\n"
         "    c\n"
@@ -206,77 +206,77 @@ BOOST_AUTO_TEST_CASE(visit_if)
         "        f\n"
         "    else:\n"
         "        g\n"
-        "        h\n"));
+        "        h\n");
 }
 
 
 BOOST_AUTO_TEST_CASE(visit_while)
 {
-    fern::String xml;
+    std::string xml;
 
-    xml = _algebra_parser.parse_string(fern::String(
+    xml = _algebra_parser.parse_string(
         "while a:\n"
         "    b\n"
-        "    c"));
+        "    c");
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.module(), fern::String(
+    BOOST_CHECK_EQUAL(_visitor.module(),
         "while a:\n"
         "    b\n"
-        "    c\n"));
+        "    c\n");
 
-    xml = _algebra_parser.parse_string(fern::String(
+    xml = _algebra_parser.parse_string(
         "while a:\n"
         "    b\n"
         "    c\n"
         "else:\n"
         "    d\n"
-        "    e"));
+        "    e");
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.module(), fern::String(
+    BOOST_CHECK_EQUAL(_visitor.module(),
         "while a:\n"
         "    b\n"
         "    c\n"
         "else:\n"
         "    d\n"
-        "    e\n"));
+        "    e\n");
 }
 
 
 BOOST_AUTO_TEST_CASE(visit_subscript)
 {
-    fern::String xml;
+    std::string xml;
 
-    xml = _algebra_parser.parse_string(fern::String(
-        "a = b[c]"));
+    xml = _algebra_parser.parse_string(
+        "a = b[c]");
     std::cout << xml << std::endl;
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.module(), fern::String(
-        "a = (b)[c]\n"));
+    BOOST_CHECK_EQUAL(_visitor.module(),
+        "a = (b)[c]\n");
 
-    xml = _algebra_parser.parse_string(fern::String(
-        "a = (b + c)[c > d]"));
+    xml = _algebra_parser.parse_string(
+        "a = (b + c)[c > d]");
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.module(), fern::String(
-        "a = ((b) + (c))[(c) > (d)]\n"));
+    BOOST_CHECK_EQUAL(_visitor.module(),
+        "a = ((b) + (c))[(c) > (d)]\n");
 }
 
 
 BOOST_AUTO_TEST_CASE(visit_attribute)
 {
-    fern::String xml;
+    std::string xml;
 
-    xml = _algebra_parser.parse_string(fern::String(
-        "a = b.c"));
+    xml = _algebra_parser.parse_string(
+        "a = b.c");
     std::cout << xml << std::endl;
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.module(), fern::String(
-        "a = (b).c\n"));
+    BOOST_CHECK_EQUAL(_visitor.module(),
+        "a = (b).c\n");
 
-    xml = _algebra_parser.parse_string(fern::String(
-        "a = (b + c).d"));
+    xml = _algebra_parser.parse_string(
+        "a = (b + c).d");
     _xml_parser.parse_string(xml)->Accept(_visitor);
-    BOOST_CHECK_EQUAL(_visitor.module(), fern::String(
-        "a = ((b) + (c)).d\n"));
+    BOOST_CHECK_EQUAL(_visitor.module(),
+        "a = ((b) + (c)).d\n");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

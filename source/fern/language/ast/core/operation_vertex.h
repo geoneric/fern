@@ -46,7 +46,7 @@ public:
 
 protected:
 
-                   OperationVertex     (String const& name,
+                   OperationVertex     (std::string const& name,
                                         ExpressionVertices const& expressions);
 
 private:

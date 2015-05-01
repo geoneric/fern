@@ -13,10 +13,10 @@
 namespace fern {
 
 ParseError::ParseError(
-    String const& source_name,
+    std::string const& source_name,
     long line_nr,
     long col_nr,
-    String const& message)
+    std::string const& message)
 
     : ScriptError(MessageId::ERROR_PARSING, source_name, line_nr, col_nr),
       _message(message)
@@ -26,11 +26,11 @@ ParseError::ParseError(
 
 
 ParseError::ParseError(
-    String const& source_name,
+    std::string const& source_name,
     long line_nr,
     long col_nr,
-    String statement,
-    String const& message)
+    std::string statement,
+    std::string const& message)
 
     : ScriptError(MessageId::ERROR_PARSING_STATEMENT, source_name, line_nr,
         col_nr),
@@ -38,30 +38,30 @@ ParseError::ParseError(
       _message(message)
 
 {
-    assert(!_statement.is_empty());
+    assert(!_statement.empty());
 }
 
 
-String ParseError::message() const
+std::string ParseError::message() const
 {
-    String message_;
+    std::string message_;
 
-    if(_statement.is_empty()) {
-        message_ = boost::format(Exception::message().encode_in_utf8())
-            % source_name().encode_in_utf8()
+    if(_statement.empty()) {
+        message_ = (boost::format(Exception::message())
+            % source_name()
             % line_nr()
             % col_nr()
-            % _message.encode_in_utf8()
-            ;
+            % _message
+            ).str();
     }
     else {
-        message_ = boost::format(Exception::message().encode_in_utf8())
-            % source_name().encode_in_utf8()
+        message_ = (boost::format(Exception::message())
+            % source_name()
             % line_nr()
             % col_nr()
             % _statement
-            % _message.encode_in_utf8()
-            ;
+            % _message
+            ).str();
     }
 
     return message_;

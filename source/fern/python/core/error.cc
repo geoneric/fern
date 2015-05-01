@@ -14,7 +14,7 @@ namespace fern {
 namespace python {
 namespace detail {
 
-String type_representation(
+std::string type_representation(
     PyObject* object)
 {
     PyObject* type_object = reinterpret_cast<PyObject*>(object->ob_type);
@@ -27,20 +27,20 @@ String type_representation(
 
 
 void raise_runtime_error(
-    String const& message)
+    std::string const& message)
 {
     assert(!PyErr_Occurred());
     // TODO utf8 or default encoding?
-    PyErr_SetString(PyExc_RuntimeError, message.encode_in_utf8().c_str());
+    PyErr_SetString(PyExc_RuntimeError, message.c_str());
     assert(PyErr_Occurred());
 }
 
 
 void raise_unsupported_argument_type_exception(
-    String const& type_representation)
+    std::string const& type_representation)
 {
-    String message = String("Unsupported argument type (") +
-        type_representation + String(")");
+    std::string message = "Unsupported argument type (" +
+        type_representation + ")";
     raise_runtime_error(message);
 }
 
@@ -57,20 +57,20 @@ void raise_unsupported_argument_type_exception(
 
 
 void raise_unsupported_overload_exception(
-    String const& type_representation)
+    std::string const& type_representation)
 {
-    String message = String("Unsupported overload for argument type ") +
+    std::string message = "Unsupported overload for argument type " +
         type_representation;
     raise_runtime_error(message);
 }
 
 
 void raise_unsupported_overload_exception(
-    String const& type_representation1,
-    String const& type_representation2)
+    std::string const& type_representation1,
+    std::string const& type_representation2)
 {
-    String message = String("Unsupported overload for argument types ") +
-        type_representation1 + String(", ") + type_representation2;
+    std::string message = "Unsupported overload for argument types " +
+        type_representation1 + ", " + type_representation2;
     raise_runtime_error(message);
 }
 

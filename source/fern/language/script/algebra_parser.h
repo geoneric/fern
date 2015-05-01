@@ -7,7 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include "fern/core/string.h"
+#include <string>
 #include "fern/language/python/client.h"
 
 
@@ -47,9 +47,9 @@ public:
 
     AlgebraParser& operator=           (AlgebraParser const&)=delete;
 
-    String         parse_string        (String const& string) const;
+    std::string    parse_string        (std::string const& string) const;
 
-    String         parse_file          (String const& filename) const;
+    std::string    parse_file          (std::string const& filename) const;
 
 private:
 

@@ -22,10 +22,12 @@ std::vector<std::shared_ptr<Argument>> write(
         Attribute const& name_attribute,
         Attribute const& format_attribute)
 {
-    String const& name(dynamic_cast<ConstantAttribute<String> const&>(
-        name_attribute).values().value());
-    String const& format_name(dynamic_cast<ConstantAttribute<String> const&>(
-        format_attribute).values().value());
+    std::string const& name(
+        dynamic_cast<ConstantAttribute<std::string> const&>(
+            name_attribute).values().value());
+    std::string const& format_name(
+        dynamic_cast<ConstantAttribute<std::string> const&>(
+            format_attribute).values().value());
 
     DataName data_name(name);
     std::shared_ptr<Dataset> dataset;
@@ -40,7 +42,7 @@ std::vector<std::shared_ptr<Argument>> write(
             OpenMode::UPDATE, format_name);
     }
 
-    String attribute_name = data_name.data_pathname().generic_string();
+    std::string attribute_name = data_name.data_pathname().generic_string();
 
     // if(attribute_name == "/") {
     //     // Short hand notation is used for the attribute name.

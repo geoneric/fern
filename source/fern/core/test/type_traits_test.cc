@@ -19,11 +19,11 @@ BOOST_AUTO_TEST_CASE(type_traits)
         fern::VT_UINT8);
     BOOST_CHECK_EQUAL(fern::TypeTraits<uint8_t>::value_types.count(), 1u);
     BOOST_CHECK_EQUAL(fern::TypeTraits<double>::value_types.count(), 1u);
-    BOOST_CHECK_EQUAL(fern::TypeTraits<fern::String>::value_types.count(), 1u);
+    BOOST_CHECK_EQUAL(fern::TypeTraits<std::string>::value_types.count(), 1u);
     BOOST_CHECK_EQUAL(fern::TypeTraits<uint8_t>::value_types,
         fern::ValueTypes::UINT8);
     BOOST_CHECK_EQUAL(fern::TypeTraits<uint8_t>::value_types.to_string(),
-        fern::String("Uint8"));
+        "Uint8");
 }
 
 

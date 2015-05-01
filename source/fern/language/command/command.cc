@@ -51,21 +51,21 @@ Interpreter const& Command::interpreter() const
 // 
 //   In case \a filename is empty, the script is read from standard input.
 // */
-// fern::String Command::read(
+// std::string Command::read(
 //     std::string const& filename)
 // {
-//     fern::String xml;
+//     std::string xml;
 //     fern::AlgebraParser parser;
 // 
 //     if(filename.empty()) {
 //         // Read script from the standard input stream.
 //         std::ostringstream script;
 //         script << std::cin.rdbuf();
-//         xml = parser.parseString(fern::String(script.str()));
+//         xml = parser.parseString(script.str());
 //     }
 //     else {
 //         // Read script from a file.
-//         xml = parser.parseFile(fern::String(filename));
+//         xml = parser.parseFile(filename);
 //     }
 // 
 //     return xml;
@@ -81,15 +81,15 @@ Interpreter const& Command::interpreter() const
   output, encoded in UTF8.
 */
 void Command::write(
-    fern::String const& contents,
+    std::string const& contents,
     std::string const& filename) const
 {
     if(filename.empty()) {
-        std::cout << contents.encode_in_utf8();
+        std::cout << contents;
     }
     else {
         std::ofstream file(filename.c_str());
-        file << contents.encode_in_utf8();
+        file << contents;
     }
 }
 

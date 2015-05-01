@@ -31,7 +31,7 @@ public:
 
                    StringVertex        (int line_nr,
                                         int col_id,
-                                        String const& value);
+                                        std::string const& value);
 
                    ~StringVertex       ()=default;
 
@@ -43,11 +43,12 @@ public:
 
     StringVertex&  operator=           (StringVertex const&)=delete;
 
-    String const&  value               () const;
+    std::string const&
+                   value               () const;
 
 private:
 
-    String         _value;
+    std::string    _value;
 
 };
 

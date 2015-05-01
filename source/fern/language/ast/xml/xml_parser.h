@@ -8,7 +8,7 @@
 // -----------------------------------------------------------------------------
 #pragma once
 #include <memory>
-#include "fern/core/string.h"
+#include <string>
 
 
 namespace fern {
@@ -45,7 +45,7 @@ public:
     XmlParser&     operator=           (XmlParser const&)=delete;
 
     std::shared_ptr<ModuleVertex> parse_string(
-                                        String const& xml) const;
+                                        std::string const& xml) const;
 
 private:
 

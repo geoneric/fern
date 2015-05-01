@@ -7,13 +7,14 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #include "fern/language/ast/core/name_vertex.h"
+#include <cassert>
 
 
 namespace fern {
 namespace language {
 
 NameVertex::NameVertex(
-    String const& name)
+    std::string const& name)
 
     : ExpressionVertex(name) // ,
       // _definition(0)
@@ -25,7 +26,7 @@ NameVertex::NameVertex(
 NameVertex::NameVertex(
     int line_nr,
     int col_id,
-    String const& name)
+    std::string const& name)
 
     : ExpressionVertex(line_nr, col_id, name) // ,
       // _definition(0)

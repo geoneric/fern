@@ -14,7 +14,7 @@ namespace fern {
 namespace language {
 
 ModuleVertex::ModuleVertex(
-    String const& source_name,
+    std::string const& source_name,
     std::shared_ptr<ScopeVertex> const& scope)
 
     : AstVertex(),
@@ -42,7 +42,7 @@ ModuleVertex::ModuleVertex(
 // }
 
 
-String const& ModuleVertex::source_name() const
+std::string const& ModuleVertex::source_name() const
 {
     return _source_name;
 }

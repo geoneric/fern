@@ -13,21 +13,21 @@
 namespace fern {
 namespace language {
 
-String const& DotVisitor::script() const
+std::string const& DotVisitor::script() const
 {
     return _script;
 }
 
 
 void DotVisitor::set_script(
-    String const& string)
+    std::string const& string)
 {
     _script = string;
 }
 
 
 void DotVisitor::add_script(
-    String const& string)
+    std::string const& string)
 {
     _script += string;
 }

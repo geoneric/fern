@@ -27,7 +27,7 @@ public:
 
     LOKI_DEFINE_VISITABLE()
 
-                   FunctionCallVertex  (String const& name,
+                   FunctionCallVertex  (std::string const& name,
                                         ExpressionVertices const& expressions);
 
                    ~FunctionCallVertex ()=default;

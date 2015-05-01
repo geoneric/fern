@@ -30,7 +30,7 @@ std::string demangle(
 
 template<
     class T>
-String demangled_type_name()
+std::string demangled_type_name()
 {
     return demangle(typeid(T).name());
 }
@@ -38,7 +38,7 @@ String demangled_type_name()
 
 template<
     class T >
-String typename_(
+std::string typename_(
     std::true_type /* builtin */)
 {
     return TypeTraits<T>::name;
@@ -48,7 +48,7 @@ String typename_(
 
 template<
     class T >
-String typename_(
+std::string typename_(
     std::false_type /* builtin */)
 {
     return demangled_type_name<T>();
@@ -59,9 +59,10 @@ String typename_(
 
 template<
     class T>
-String typename_()
+std::string typename_()
 {
-    return detail::typename_<T>(typename std::integral_constant<bool, TypeTraits<T>::builtin>());
+    return detail::typename_<T>(
+        typename std::integral_constant<bool, TypeTraits<T>::builtin>());
 }
 
 } // namespace fern

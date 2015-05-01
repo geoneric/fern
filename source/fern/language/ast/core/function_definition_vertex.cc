@@ -13,7 +13,7 @@ namespace fern {
 namespace language {
 
 FunctionDefinitionVertex::FunctionDefinitionVertex(
-    String const& name,
+    std::string const& name,
     ExpressionVertices const& arguments,
     std::shared_ptr<ScopeVertex> const& scope)
 
@@ -26,7 +26,7 @@ FunctionDefinitionVertex::FunctionDefinitionVertex(
 }
 
 
-String const& FunctionDefinitionVertex::name() const
+std::string const& FunctionDefinitionVertex::name() const
 {
     return _name;
 }

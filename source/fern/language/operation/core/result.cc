@@ -14,8 +14,8 @@ namespace fern {
 namespace language {
 
 Result::Result(
-    String const& name,
-    String const& description,
+    std::string const& name,
+    std::string const& description,
     ExpressionType const& expression_type)
 
     : _name(name),
@@ -23,8 +23,8 @@ Result::Result(
       _expression_type(expression_type)
 
 {
-    assert(!_name.is_empty());
-    assert(!_description.is_empty());
+    assert(!_name.empty());
+    assert(!_description.empty());
 }
 
 
@@ -52,13 +52,13 @@ Result& Result::operator=(
 }
 
 
-String const& Result::name() const
+std::string const& Result::name() const
 {
     return _name;
 }
 
 
-String const& Result::description() const
+std::string const& Result::description() const
 {
     return _description;
 }

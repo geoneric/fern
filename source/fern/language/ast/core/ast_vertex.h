@@ -10,7 +10,6 @@
 #include <memory>
 #include <vector>
 #include <loki/Visitor.h>
-#include "fern/core/string.h"
 
 
 namespace fern {

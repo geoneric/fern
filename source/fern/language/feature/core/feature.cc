@@ -35,9 +35,9 @@ size_t Feature::nr_features(
 /*!
   \sa        attribute_names()
 */
-std::vector<String> Feature::feature_names() const
+std::vector<std::string> Feature::feature_names() const
 {
-    std::vector<String> result;
+    std::vector<std::string> result;
     result.reserve(_features.size());
 
     for(auto pair: _features) {
@@ -58,7 +58,7 @@ bool Feature::contains_feature(
 {
     return path.parent_path().generic_string().empty()
         ? _features.find(path.generic_string()) != _features.end()
-        : static_cast<bool>(feature(path.generic_string()))
+        : static_cast<bool>(feature(path))
         ;
 }
 
@@ -144,9 +144,9 @@ size_t Feature::nr_attributes(
 /*!
   \sa        feature_names()
 */
-std::vector<String> Feature::attribute_names() const
+std::vector<std::string> Feature::attribute_names() const
 {
-    std::vector<String> result;
+    std::vector<std::string> result;
     result.reserve(_attributes.size());
 
     for(auto pair: _attributes) {
@@ -167,7 +167,7 @@ bool Feature::contains_attribute(
 {
     return path.parent_path().generic_string().empty()
         ? _attributes.find(path.generic_string()) != _attributes.end()
-        : static_cast<bool>(attribute(path.generic_string()))
+        : static_cast<bool>(attribute(path))
         ;
 }
 

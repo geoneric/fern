@@ -9,8 +9,8 @@
 #pragma once
 #include <map>
 #include <memory>
+#include <string>
 #include "fern/core/path.h"
-#include "fern/core/string.h"
 #include "fern/language/feature/core/attribute.h"
 
 
@@ -44,7 +44,8 @@ public:
 
     size_t         nr_features         (Path const& path) const;
 
-    std::vector<String> feature_names  () const;
+    std::vector<std::string>
+                   feature_names       () const;
 
     bool           contains_feature    (Path const& path) const;
 
@@ -58,7 +59,8 @@ public:
 
     size_t         nr_attributes       (Path const& path) const;
 
-    std::vector<String> attribute_names() const;
+    std::vector<std::string>
+                   attribute_names     () const;
 
     bool           contains_attribute  (Path const& path) const;
 
@@ -71,9 +73,9 @@ public:
 
 private:
 
-    std::map<String, std::shared_ptr<Feature>> _features;
+    std::map<std::string, std::shared_ptr<Feature>> _features;
 
-    std::map<String, std::shared_ptr<Attribute>> _attributes;
+    std::map<std::string, std::shared_ptr<Attribute>> _attributes;
 
     std::shared_ptr<Feature> feature   (std::vector<std::string> names) const;
 

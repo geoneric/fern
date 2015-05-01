@@ -7,6 +7,9 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #include "fern/language/ast/visitor/module_visitor.h"
+#include <cassert>
+#include <boost/format.hpp>
+#include "fern/core/string.h"
 #include "fern/language/ast/core/vertices.h"
 
 
@@ -24,25 +27,25 @@ ModuleVisitor::ModuleVisitor(
 }
 
 
-String const& ModuleVisitor::module() const
+std::string const& ModuleVisitor::module() const
 {
     return _module;
 }
 
 
-// String ModuleVisitor::indent(
-//   String const& statement)
+// std::string ModuleVisitor::indent(
+//   std::string const& statement)
 // {
 //   // Only the first line of multi-line statements (if-statement) is indented
 //   // here.
-//   String indentation = std::string(_indent_level * _tab_size, ' ').c_str();
+//   std::string indentation = std::string(_indent_level * _tab_size, ' ').c_str();
 //   return indentation + statement;
 // }
 
 
-String ModuleVisitor::indentation() const
+std::string ModuleVisitor::indentation() const
 {
-    return String(std::string(_indent_level * _tab_size, ' '));
+    return std::string(_indent_level * _tab_size, ' ');
 }
 
 
@@ -53,7 +56,7 @@ void ModuleVisitor::visit_statements(
         _module += indentation();
         statement_vertex->Accept(*this);
 
-        if(!_module.ends_with("\n")) {
+        if(!ends_with(_module, "\n")) {
             _module += "\n";
         }
     }
@@ -133,7 +136,7 @@ void ModuleVisitor::Visit(
     ModuleVertex& vertex)
 {
     _indent_level = 0;
-    _module = String();
+    _module.clear();
     visit_statements(vertex.scope()->statements());
     assert(_indent_level == 0);
 }
@@ -142,7 +145,7 @@ void ModuleVisitor::Visit(
 void ModuleVisitor::Visit(
     StringVertex& vertex)
 {
-    _module += String("\"") + vertex.value() + String("\"");
+    _module += "\"" + vertex.value() + "\"";
 }
 
 
@@ -179,21 +182,21 @@ void ModuleVisitor::Visit(
 void ModuleVisitor::Visit(
     NumberVertex<int8_t>& vertex)
 {
-    _module += String(boost::format("%1%") % vertex.value());
+    _module += (boost::format("%1%") % vertex.value()).str();
 }
 
 
 void ModuleVisitor::Visit(
     NumberVertex<int16_t>& vertex)
 {
-    _module += String(boost::format("%1%") % vertex.value());
+    _module += (boost::format("%1%") % vertex.value()).str();
 }
 
 
 void ModuleVisitor::Visit(
     NumberVertex<int32_t>& vertex)
 {
-    _module += String(boost::format("%1%") % vertex.value());
+    _module += (boost::format("%1%") % vertex.value()).str();
 }
 
 
@@ -202,7 +205,7 @@ void ModuleVisitor::Visit(
 {
     std::string format_string = sizeof(long) == sizeof(int64_t)
         ? "%1%" : "%1%L";
-    _module += String(boost::format(format_string) % vertex.value());
+    _module += (boost::format(format_string) % vertex.value()).str();
 }
 
 
@@ -210,7 +213,7 @@ void ModuleVisitor::Visit(
     NumberVertex<uint8_t>& vertex)
 {
     // U?
-    _module += String(boost::format("%1%U") % vertex.value());
+    _module += (boost::format("%1%U") % vertex.value()).str();
 }
 
 
@@ -218,7 +221,7 @@ void ModuleVisitor::Visit(
     NumberVertex<uint16_t>& vertex)
 {
     // U?
-    _module += String(boost::format("%1%U") % vertex.value());
+    _module += (boost::format("%1%U") % vertex.value()).str();
 }
 
 
@@ -226,7 +229,7 @@ void ModuleVisitor::Visit(
     NumberVertex<uint32_t>& vertex)
 {
     // U?
-    _module += String(boost::format("%1%U") % vertex.value());
+    _module += (boost::format("%1%U") % vertex.value()).str();
 }
 
 
@@ -236,21 +239,21 @@ void ModuleVisitor::Visit(
     // U?
     std::string format_string = sizeof(unsigned long) == sizeof(uint64_t)
       ? "%1%U" : "%1%UL";
-    _module += String(boost::format(format_string) % vertex.value());
+    _module += (boost::format(format_string) % vertex.value()).str();
 }
 
 
 void ModuleVisitor::Visit(
     NumberVertex<float>& vertex)
 {
-    _module += String(boost::format("%1%") % vertex.value());
+    _module += (boost::format("%1%") % vertex.value()).str();
 }
 
 
 void ModuleVisitor::Visit(
     NumberVertex<double>& vertex)
 {
-    _module += String(boost::format("%1%") % vertex.value());
+    _module += (boost::format("%1%") % vertex.value()).str();
 }
 
 
@@ -283,8 +286,6 @@ void ModuleVisitor::Visit(
 void ModuleVisitor::Visit(
     WhileVertex& vertex)
 {
-    String result;
-
     // The indent function called in visit_statements of the parent vertex
     // indents the first line of this while-statement, so we have to indent the
     // else line ourselves.

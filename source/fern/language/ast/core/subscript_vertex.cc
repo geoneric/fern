@@ -37,7 +37,7 @@ ExpressionVertexPtr const& SubscriptVertex::selection() const
 }
 
 
-String const& SubscriptVertex::symbol() const
+std::string const& SubscriptVertex::symbol() const
 {
     return _symbol;
 }

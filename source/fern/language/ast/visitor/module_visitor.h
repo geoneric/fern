@@ -7,7 +7,6 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include "fern/core/string.h"
 #include "fern/language/ast/visitor/ast_visitor.h"
 
 
@@ -38,7 +37,8 @@ public:
 
     ModuleVisitor& operator=           (ModuleVisitor const&)=delete;
 
-    String const&  module              () const;
+    std::string const&
+                   module              () const;
 
 private:
 
@@ -46,11 +46,11 @@ private:
 
     size_t         _indent_level;
 
-    String         _module;
+    std::string    _module;
 
-    // void           indent              (String const& statement);
+    // void           indent              (std::string const& statement);
 
-    String         indentation         () const;
+    std::string    indentation         () const;
 
     void           visit_statements    (StatementVertices& statements);
 

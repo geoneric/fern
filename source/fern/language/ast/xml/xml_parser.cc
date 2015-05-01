@@ -31,7 +31,7 @@ public:
     void source(
         std::string const& sourceName)
     {
-        _source_name = String(sourceName);
+        _source_name = sourceName;
     }
 
     void Statements(
@@ -50,7 +50,7 @@ public:
 
 private:
 
-    String  _source_name;
+    std::string _source_name;
 
     std::shared_ptr<ScopeVertex> _scope_vertex;
 
@@ -261,7 +261,7 @@ public:
         std::string const& name)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().name = String(name);
+        _data_stack.top().name = name;
     }
 
     void Expressions(
@@ -298,7 +298,7 @@ private:
 
     struct FunctionDefinitionData
     {
-        String name;
+        std::string name;
         ExpressionVertices expression_vertices;
         std::shared_ptr<ScopeVertex> scope_vertex;
     };
@@ -787,7 +787,7 @@ public:
         std::string const& name)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().name = String(name);
+        _data_stack.top().name = name;
     }
 
     void Expressions(
@@ -816,7 +816,7 @@ private:
 
     struct FunctionData
     {
-        String name;
+        std::string name;
         ExpressionVertices expression_vertices;
     };
 
@@ -840,7 +840,7 @@ public:
         std::string const& name)
     {
         assert(!_data_stack.empty());
-        _data_stack.top().name = String(name);
+        _data_stack.top().name = name;
     }
 
     void Expressions(
@@ -869,7 +869,7 @@ private:
 
     struct OperatorData
     {
-        String name;
+        std::string name;
         ExpressionVertices expression_vertices;
     };
 
@@ -1193,12 +1193,12 @@ std::shared_ptr<ModuleVertex> XmlParser::parse(
   \param     xml String with Xml to parse.
 */
 std::shared_ptr<ModuleVertex> XmlParser::parse_string(
-    String const& xml) const
+    std::string const& xml) const
 {
     // Copy string contents in a string stream and work with that.
     std::stringstream stream;
     stream.exceptions(std::ifstream::badbit | std::ifstream::failbit);
-    stream << xml.encode_in_utf8(); // << std::endl;
+    stream << xml; // << std::endl;
 
     std::shared_ptr<ModuleVertex> vertex;
 

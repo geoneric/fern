@@ -21,7 +21,7 @@ class CompileVisitor:
 public:
 
                    CompileVisitor      (OperationsPtr const& operations,
-                                        String const& header_filename);
+                                        std::string const& header_filename);
 
                    ~CompileVisitor     ();
 
@@ -33,25 +33,27 @@ public:
 
     CompileVisitor& operator=          (CompileVisitor const&)=delete;
 
-    String const&  header              () const;
+    std::string const&
+                   header              () const;
 
-    String const&  module              () const;
+    std::string const&
+                   module              () const;
 
 private:
 
     OperationsPtr  _operations;
 
-    String         _header_filename;
+    std::string    _header_filename;
 
-    String         _header;
+    std::string    _header;
 
     //! A statement of C++ code.
-    String         _statement;
+    std::string    _statement;
 
     //! The C++ code of the translated tree.
-    std::vector<String> _body;
+    std::vector<std::string> _body;
 
-    String         _module;
+    std::string    _module;
 
     void           Visit               (AssignmentVertex& vertex);
 

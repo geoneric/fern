@@ -29,7 +29,7 @@ public:
     LOKI_DEFINE_VISITABLE()
 
                    FunctionDefinitionVertex(
-                                  String const& name,
+                                  std::string const& name,
                                   ExpressionVertices const& arguments,
                                   std::shared_ptr<ScopeVertex> const& scope);
 
@@ -45,7 +45,8 @@ public:
 
     FunctionDefinitionVertex& operator=(FunctionDefinitionVertex const&)=delete;
 
-    String const&  name                () const;
+    std::string const&
+                   name                () const;
 
     ExpressionVertices const& arguments() const;
 
@@ -57,7 +58,7 @@ public:
 
 private:
 
-    String         _name;
+    std::string    _name;
 
     ExpressionVertices _arguments;
 

@@ -40,8 +40,8 @@ public:
 
     using Flags = int;
 
-                   Compiler            (String const& header_extension,
-                                        String const& module_extension);
+                   Compiler            (std::string const& header_extension,
+                                        std::string const& module_extension);
 
                    ~Compiler           ()=default;
 
@@ -61,9 +61,9 @@ private:
 
     Interpreter    _interpreter;
 
-    String const   _header_extension;
+    std::string const _header_extension;
 
-    String const   _module_extension;
+    std::string const _module_extension;
 
 };
 

@@ -7,6 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #include "fern/language/ast/visitor/copy_visitor.h"
+#include <cassert>
 #include "fern/language/ast/core/vertices.h"
 
 

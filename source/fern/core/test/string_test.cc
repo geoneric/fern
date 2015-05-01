@@ -15,103 +15,105 @@ BOOST_AUTO_TEST_SUITE(string)
 
 BOOST_AUTO_TEST_CASE(constructor)
 {
-    fern::String string;
-
-    string = "aæø";
-    BOOST_CHECK_EQUAL(string.encode_in_utf8(), "aæø");
+    std::string string = "aæø";
+    BOOST_CHECK_EQUAL(string, "aæø");
 }
 
 
 BOOST_AUTO_TEST_CASE(strip)
 {
-    fern::String string;
+    std::string string;
 
     string = "bla";
     string = fern::strip(string);
-    BOOST_CHECK_EQUAL(string, fern::String("bla"));
+    BOOST_CHECK_EQUAL(string, "bla");
 
     string = "bla";
     string = fern::strip(string, "\n");
-    BOOST_CHECK_EQUAL(string, fern::String("bla"));
+    BOOST_CHECK_EQUAL(string, "bla");
 
     string = "bla\n";
     string = fern::strip(string);
-    BOOST_CHECK_EQUAL(string, fern::String("bla"));
+    BOOST_CHECK_EQUAL(string, "bla");
 
     string = "bla\n";
     string = fern::strip(string, "\n");
-    BOOST_CHECK_EQUAL(string, fern::String("bla"));
+    BOOST_CHECK_EQUAL(string, "bla");
 
     string = "\nbla";
     string = fern::strip(string);
-    BOOST_CHECK_EQUAL(string, fern::String("bla"));
+    BOOST_CHECK_EQUAL(string, "bla");
 
     string = "\nbla";
     string = fern::strip(string, "\n");
-    BOOST_CHECK_EQUAL(string, fern::String("bla"));
+    BOOST_CHECK_EQUAL(string, "bla");
 
     string = "\nbla\n";
     string = fern::strip(string);
-    BOOST_CHECK_EQUAL(string, fern::String("bla"));
+    BOOST_CHECK_EQUAL(string, "bla");
 
     string = "\nbla\n";
     string = fern::strip(string, "\n");
-    BOOST_CHECK_EQUAL(string, fern::String("bla"));
+    BOOST_CHECK_EQUAL(string, "bla");
 
     // Strip with argument preserves whitespace.
     string = "\n bla \n";
     string = fern::strip(string, "\n");
-    BOOST_CHECK_EQUAL(string, fern::String(" bla "));
+    BOOST_CHECK_EQUAL(string, " bla ");
 
     // Default strip doesn't preserve whitespace.
     string = "\n bla \n";
     string = fern::strip(string);
-    BOOST_CHECK_EQUAL(string, fern::String("bla"));
+    BOOST_CHECK_EQUAL(string, "bla");
 
     string = "bla bla";
     string = fern::strip(string, "ba");
-    BOOST_CHECK_EQUAL(string, fern::String("la bl"));
+    BOOST_CHECK_EQUAL(string, "la bl");
 
     string = "";
     string = fern::strip(string);
-    BOOST_CHECK_EQUAL(string, fern::String(""));
+    BOOST_CHECK_EQUAL(string, "");
 
     string = "";
     string = fern::strip(string, "");
-    BOOST_CHECK_EQUAL(string, fern::String(""));
+    BOOST_CHECK_EQUAL(string, "");
 
     string = "";
     string = fern::strip(string, "x");
-    BOOST_CHECK_EQUAL(string, fern::String(""));
+    BOOST_CHECK_EQUAL(string, "");
 
     string = "øaø";
     string = fern::strip(string, "ø");
-    BOOST_CHECK_EQUAL(string, fern::String("a"));
+    BOOST_CHECK_EQUAL(string, "a");
 }
 
 
 BOOST_AUTO_TEST_CASE(replace)
 {
-    fern::String string;
+    std::string string;
 
-    string = fern::String("<string>").replace("<", "&lt;");
-    BOOST_CHECK_EQUAL(string, fern::String("&lt;string>"));
+    string = "<string>";
+    string = fern::replace(string, "<", "&lt;");
+    BOOST_CHECK_EQUAL(string, "&lt;string>");
 
-    string = fern::String("//").replace("//", "/");
-    BOOST_CHECK_EQUAL(string, fern::String("/"));
+    string = "//";
+    string = fern::replace(string, "//", "/");
+    BOOST_CHECK_EQUAL(string, "/");
 
-    string = fern::String("///").replace("//", "/");
-    BOOST_CHECK_EQUAL(string, fern::String("//"));
+    string = "///";
+    string = fern::replace(string, "//", "/");
+    BOOST_CHECK_EQUAL(string, "//");
 
-    string = fern::String("////").replace("//", "/");
-    BOOST_CHECK_EQUAL(string, fern::String("//"));
+    string = "////";
+    string = fern::replace(string, "//", "/");
+    BOOST_CHECK_EQUAL(string, "//");
 }
 
 
 BOOST_AUTO_TEST_CASE(contains)
 {
-    BOOST_CHECK( fern::String("<string>").contains("<"));
-    BOOST_CHECK(!fern::String("string>").contains("<"));
+    BOOST_CHECK( fern::contains("<string>", "<"));
+    BOOST_CHECK(!fern::contains("string>", "<"));
 }
 
 
@@ -158,21 +160,21 @@ BOOST_AUTO_TEST_CASE(split_)
 #endif
 
 
-BOOST_AUTO_TEST_CASE(encode_in_default_encoding)
-{
-    fern::String string;
+// BOOST_AUTO_TEST_CASE(encode_in_default_encoding_)
+// {
+//     fern::String string;
+// 
+//     string = "";
+//     BOOST_CHECK_EQUAL(encode_in_default_encoding(string), std::string(""));
+// }
 
-    string = "";
-    BOOST_CHECK_EQUAL(string.encode_in_default_encoding(), std::string(""));
-}
 
-
-BOOST_AUTO_TEST_CASE(encode_in_utf8)
-{
-    fern::String string;
-
-    string = "";
-    BOOST_CHECK_EQUAL(string.encode_in_utf8(), std::string(""));
-}
+// BOOST_AUTO_TEST_CASE(encode_in_utf8_)
+// {
+//     fern::String string;
+// 
+//     string = "";
+//     BOOST_CHECK_EQUAL(encode_in_utf8(string), std::string(""));
+// }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -7,6 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
+#include <ostream>
 #include "fern/language/ast/core/expression_vertex.h"
 
 
@@ -29,11 +30,11 @@ public:
 
     LOKI_DEFINE_VISITABLE()
 
-                   NameVertex          (String const& name);
+                   NameVertex          (std::string const& name);
 
                    NameVertex          (int lineNr,
                                         int colId,
-                                        String const& name);
+                                        std::string const& name);
 
                    ~NameVertex         ()=default;
 
@@ -72,7 +73,7 @@ inline std::ostream& operator<<(
     std::ostream& stream,
     NameVertex const& vertex)
 {
-    stream << "name: " << vertex.name().encode_in_utf8() << "\n";
+    stream << "name: " << vertex.name() << "\n";
 
     if(!vertex.definitions().empty()) {
         stream << "definitions:\n";

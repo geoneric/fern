@@ -47,7 +47,7 @@ public:
 
     IOVisitor&     operator=           (IOVisitor const&)=delete;
 
-    std::vector<String> const&
+    std::vector<std::string> const&
                    inputs              () const;
 
     std::vector<NameVertex const*> const&
@@ -63,13 +63,13 @@ private:
     Mode           _mode;
 
     //! Names of input identifiers.
-    std::vector<String> _inputs;
+    std::vector<std::string> _inputs;
 
     //! Pointers to output identifiers.
     std::vector<NameVertex const*> _outputs;
 
     //! Index of output with a certain name in _outputs.
-    std::map<String, size_t> _output_id_by_name;
+    std::map<std::string, size_t> _output_id_by_name;
 
     void           Visit               (AssignmentVertex& vertex);
 

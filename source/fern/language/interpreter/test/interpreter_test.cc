@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_CASE(parse_string)
     fl::ModuleVertexPtr vertex;
 
     // String with valid statements, should succeed.
-    std::vector<fern::String> valid_statements = {
+    std::vector<std::string> valid_statements = {
         "a = b + c",
         "a",
         "b + c",
@@ -79,7 +79,7 @@ BOOST_AUTO_TEST_CASE(parse_string)
         "# comment"
     };
 
-    for(fern::String const& statement: valid_statements) {
+    for(std::string const& statement: valid_statements) {
         vertex = interpreter.parse_string(statement);
         BOOST_CHECK(vertex);
     }
@@ -90,9 +90,9 @@ BOOST_AUTO_TEST_CASE(parse_string)
         BOOST_CHECK(false);
     }
     catch(fern::ParseError const& exception) {
-        fern::String message = exception.message();
-        BOOST_CHECK_EQUAL(message, fern::String(
-            "Error parsing <string>:1:7:a = b c: invalid syntax"));
+        std::string message = exception.message();
+        BOOST_CHECK_EQUAL(message,
+            "Error parsing <string>:1:7:a = b c: invalid syntax");
     }
 }
 
@@ -103,12 +103,12 @@ BOOST_AUTO_TEST_CASE(parse_file)
     fl::ModuleVertexPtr vertex;
 
     // File with valid statement, should succeed.
-    std::vector<fern::String> valid_files = {
+    std::vector<std::string> valid_files = {
         "valid-1.ran",
         "valid-2.ran"
     };
 
-    for(fern::String const& filename: valid_files) {
+    for(std::string const& filename: valid_files) {
         vertex = interpreter.parse_file(filename);
         BOOST_CHECK(vertex);
     }
@@ -119,9 +119,9 @@ BOOST_AUTO_TEST_CASE(parse_file)
         BOOST_CHECK(false);
     }
     catch(fern::ParseError const& exception) {
-        fern::String message = exception.message();
-        BOOST_CHECK_EQUAL(message, fern::String(
-            "Error parsing invalid-1.ran:1:7:a = b c: invalid syntax"));
+        std::string message = exception.message();
+        BOOST_CHECK_EQUAL(message,
+            "Error parsing invalid-1.ran:1:7:a = b c: invalid syntax");
     }
 
     // Unreadable file, io error.
@@ -130,9 +130,9 @@ BOOST_AUTO_TEST_CASE(parse_file)
         BOOST_CHECK(false);
     }
     catch(fern::IOError const& exception) {
-        fern::String message = exception.message();
-        BOOST_CHECK_EQUAL(message, fern::String(
-            "I/O error handling valid-1_unreadable.ran: Permission denied"));
+        std::string message = exception.message();
+        BOOST_CHECK_EQUAL(message,
+            "I/O error handling valid-1_unreadable.ran: Permission denied");
     }
 }
 
@@ -150,9 +150,9 @@ BOOST_AUTO_TEST_CASE(validate)
         BOOST_CHECK(false);
     }
     catch(fern::ValidateError const& exception) {
-        fern::String message = exception.message();
-        BOOST_CHECK_EQUAL(message, fern::String(
-            "valid-1.ran:3:4: Undefined identifier: b"));
+        std::string message = exception.message();
+        BOOST_CHECK_EQUAL(message,
+            "valid-1.ran:3:4: Undefined identifier: b");
     }
 
     vertex = interpreter.parse_file("valid-2.ran");
@@ -163,9 +163,9 @@ BOOST_AUTO_TEST_CASE(validate)
         BOOST_CHECK(false);
     }
     catch(fern::ValidateError const& exception) {
-        fern::String message = exception.message();
-        BOOST_CHECK_EQUAL(message, fern::String(
-            "valid-2.ran:4:4: Undefined operation: does_not_exist"));
+        std::string message = exception.message();
+        BOOST_CHECK_EQUAL(message,
+            "valid-2.ran:4:4: Undefined operation: does_not_exist");
     }
 
     // String with unknown operation.
@@ -177,9 +177,9 @@ BOOST_AUTO_TEST_CASE(validate)
         BOOST_CHECK(false);
     }
     catch(fern::ValidateError const& exception) {
-        fern::String message = exception.message();
-        BOOST_CHECK_EQUAL(message, fern::String(
-            "<string>:1:4: Undefined operation: blah"));
+        std::string message = exception.message();
+        BOOST_CHECK_EQUAL(message,
+            "<string>:1:4: Undefined operation: blah");
     }
 
     // Verify that calling user-defined operation doesn't throw.
@@ -209,7 +209,7 @@ foo(5)
             BOOST_CHECK(false);
         }
         catch(fern::ValidateError const& exception) {
-            fern::String message = exception.message();
+            std::string message = exception.message();
             // TODO Update message in test.
             // BOOST_CHECK_EQUAL(message,
             //     "<string>:1:4: Undefined operation: blah");
@@ -225,10 +225,10 @@ foo(5)
         BOOST_CHECK(false);
     }
     catch(fern::ValidateError const& exception) {
-        fern::String message = exception.message();
-        BOOST_CHECK_EQUAL(message, fern::String(
+        std::string message = exception.message();
+        BOOST_CHECK_EQUAL(message,
             "<string>:1:0: Wrong number of arguments for operation: abs: "
-            "1 required, but 2 provided"));
+            "1 required, but 2 provided");
     }
 
     // Operation with wrong type of argument.
@@ -240,12 +240,12 @@ foo(5)
         BOOST_CHECK(false);
     }
     catch(fern::ValidateError const& exception) {
-        fern::String message = exception.message();
-        BOOST_CHECK_EQUAL(message, fern::String(
+        std::string message = exception.message();
+        BOOST_CHECK_EQUAL(message,
             "<string>:1:0: Wrong type of argument 1 provided for operation: "
             "abs: Constant|StaticField/Uint8|Int8|Uint16|Int16|Uint32|Int32|"
             "Uint64|Int64|Float32|Float64 required, but Constant/String "
-            "provided"));
+            "provided");
     }
 }
 
@@ -320,7 +320,7 @@ BOOST_AUTO_TEST_CASE(execute_read_with_raster_input)
     // Read feature.
     {
         interpreter.clear_stack();
-        fern::String script = "read(\"raster-1.asc:raster-1\")";
+        std::string script = "read(\"raster-1.asc:raster-1\")";
         tree = interpreter.parse_string(script);
         interpreter.execute(tree);
 
@@ -376,7 +376,7 @@ BOOST_AUTO_TEST_CASE(execute_read_with_raster_input)
     // Read attribute.
     {
         interpreter.clear_stack();
-        fern::String script = "read(\"raster-1.asc:raster-1/raster-1\")";
+        std::string script = "read(\"raster-1.asc:raster-1/raster-1\")";
         tree = interpreter.parse_string(script);
         interpreter.execute(tree);
 
@@ -425,7 +425,7 @@ BOOST_AUTO_TEST_CASE(execute_read_with_raster_input)
 
     /// Hier verder.
     /// {
-    ///     fern::String script =
+    ///     std::string script =
     ///         "feature = read(\"raster-1.asc\")\n"
     ///         "feature.raster-1";
     ///     tree = interpreter.parse_string(script);
@@ -487,7 +487,7 @@ BOOST_AUTO_TEST_CASE(execute_abs_with_raster_input)
     fl::ModuleVertexPtr tree;
 
     {
-        fern::String script =
+        std::string script =
             "abs(read(\"raster-1.asc:raster-1/raster-1\"))";
         tree = interpreter.parse_string(script);
         interpreter.execute(tree);
@@ -546,7 +546,7 @@ BOOST_AUTO_TEST_CASE(execute_write_with_raster_input)
         // Read a raster, calculate the abs, write the result.
         // Read the new raster just written, leave it on the stack, and test
         // the values.
-        fern::String script =
+        std::string script =
             "format = \"HFA\"\n"
             "attribute_name = \"output_dataset.map:output_dataset/output_dataset\"\n"
             "raster1 = read(\"raster-1.asc:raster-1/raster-1\")\n"
@@ -618,7 +618,7 @@ BOOST_AUTO_TEST_CASE(execute_read_with_constant_input)
     {
         // Write a constant, read it again. Leave it on the stack, and test
         // the values.
-        fern::String script = R"(
+        std::string script = R"(
 format = "Fern"
 attribute_name = "earth.gnr:earth/gravity"
 gravity = -9.8
@@ -643,7 +643,7 @@ BOOST_AUTO_TEST_CASE(execute_with_external_inputs)
 
     // In this script, 'input' is undefined. It must be provided, otherwise
     // validation will throw an 'undefined identifier' exception.
-    fern::String script = u8R"(
+    std::string script = u8R"(
 abs(input)
 )";
 
@@ -697,7 +697,7 @@ abs(input)
     // Make sure that data is read only once. An assertion will fail if the
     // same data is read more than once.
     {
-        fern::String script = u8R"(
+        std::string script = u8R"(
 abs(input)
 abs(input)
 )";
@@ -717,7 +717,7 @@ abs(input)
 
 BOOST_AUTO_TEST_CASE(execute_with_external_outputs)
 {
-    fern::String script;
+    std::string script;
     fl::Interpreter interpreter;
 
     // Outputs of a script can be coupled to a data sync. That way, data will
@@ -725,7 +725,7 @@ BOOST_AUTO_TEST_CASE(execute_with_external_outputs)
 
     {
         fl::Interpreter::DataSourceSymbolTable data_source_symbol_table;
-        fern::String dataset_pathname = "execute_with_external_outputs.gnr";
+        std::string dataset_pathname = "execute_with_external_outputs.gnr";
         std::shared_ptr<fl::Dataset> dataset(fl::open_dataset(dataset_pathname,
             fl::OpenMode::OVERWRITE));
         std::shared_ptr<fl::DataSync> data_sync_a(

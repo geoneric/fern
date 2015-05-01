@@ -7,6 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
+#include <string>
 #include <boost/math/constants/constants.hpp>
 #include "fern/core/value_types.h"
 
@@ -43,7 +44,7 @@ struct TypeTraits<bool>
 
     static ValueTypes const value_types;
 
-    static String const name;
+    static std::string const name;
 
     static bool const builtin = true;
 };
@@ -58,7 +59,7 @@ struct TypeTraits<char>
 
     static ValueTypes const value_types;
 
-    static String const name;
+    static std::string const name;
 
     static bool const builtin = true;
 };
@@ -73,7 +74,7 @@ struct TypeTraits<int8_t>
 
     static ValueTypes const value_types;
 
-    static String const name;
+    static std::string const name;
 
     static bool const builtin = true;
 
@@ -94,7 +95,7 @@ struct TypeTraits<uint8_t>
 
     static ValueTypes const value_types;
 
-    static String const name;
+    static std::string const name;
 
     static bool const builtin = true;
 
@@ -115,7 +116,7 @@ struct TypeTraits<int16_t>
 
     static ValueTypes const value_types;
 
-    static String const name;
+    static std::string const name;
 
     static bool const builtin = true;
 
@@ -136,7 +137,7 @@ struct TypeTraits<uint16_t>
 
     static ValueTypes const value_types;
 
-    static String const name;
+    static std::string const name;
 
     static bool const builtin = true;
 
@@ -157,7 +158,7 @@ struct TypeTraits<int32_t>
 
     static ValueTypes const value_types;
 
-    static String const name;
+    static std::string const name;
 
     static bool const builtin = true;
 
@@ -178,7 +179,7 @@ struct TypeTraits<uint32_t>
 
     static ValueTypes const value_types;
 
-    static String const name;
+    static std::string const name;
 
     static bool const builtin = true;
 
@@ -199,7 +200,7 @@ struct TypeTraits<int64_t>
 
     static ValueTypes const value_types;
 
-    static String const name;
+    static std::string const name;
 
     static bool const builtin = true;
 
@@ -220,7 +221,7 @@ struct TypeTraits<uint64_t>
 
     static ValueTypes const value_types;
 
-    static String const name;
+    static std::string const name;
 
     static bool const builtin = true;
 
@@ -241,7 +242,7 @@ struct TypeTraits<float>
 
     static ValueTypes const value_types;
 
-    static String const name;
+    static std::string const name;
 
     static bool const builtin = true;
 
@@ -266,7 +267,7 @@ struct TypeTraits<double>
 
     static ValueTypes const value_types;
 
-    static String const name;
+    static std::string const name;
 
     static bool const builtin = true;
 
@@ -283,13 +284,13 @@ struct TypeTraits<double>
 
 
 template<>
-struct TypeTraits<String>
+struct TypeTraits<std::string>
 {
     static ValueType const value_type;
 
     static ValueTypes const value_types;
 
-    static String const name;
+    static std::string const name;
 
     static bool const builtin = true;
 };

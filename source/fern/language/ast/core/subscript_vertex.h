@@ -43,7 +43,8 @@ public:
 
     SubscriptVertex&      operator=    (SubscriptVertex const&)=delete;
 
-    String const&  symbol              () const;
+    std::string const&
+                   symbol              () const;
 
     std::shared_ptr<ExpressionVertex> const& expression() const;
 
@@ -51,7 +52,7 @@ public:
 
 private:
 
-    String const   _symbol;
+    std::string const _symbol;
 
     //! Expression being subscripted.
     ExpressionVertexPtr _expression;

@@ -21,11 +21,11 @@ SwigPyObject* swig_object(
 
 SwigPyObject* swig_object(
     PyObject* object,
-    String const& typename_)
+    std::string const& typename_)
 {
     SwigPyObject* result = swig_object(object);
 
-    if(result != nullptr && String(result->ty->name) == typename_) {
+    if(result != nullptr && result->ty->name == typename_) {
         return result;
     }
 

@@ -21,10 +21,10 @@ class IOError:
 {
 public:
 
-                   IOError             (String const& source_name,
-                                        String const& message);
+                   IOError             (std::string const& source_name,
+                                        std::string const& message);
 
-                   IOError             (String const& source_name,
+                   IOError             (std::string const& source_name,
                                         int errno_);
 
                    IOError             (IOError const&)=default;
@@ -37,13 +37,13 @@ public:
 
                    ~IOError            ()=default;
 
-    String         message             () const;
+    std::string    message             () const;
 
 private:
 
-    String         _source_name;
+    std::string    _source_name;
 
-    String         _message;
+    std::string    _message;
 
 };
 

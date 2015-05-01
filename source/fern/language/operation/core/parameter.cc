@@ -29,8 +29,8 @@ namespace language {
   that counts the number of feature elements.
 */
 Parameter::Parameter(
-    String const& name,
-    String const& description,
+    std::string const& name,
+    std::string const& description,
     DataTypes data_types,
     ValueTypes value_types)
 
@@ -41,8 +41,8 @@ Parameter::Parameter(
       // _value_types(value_types)
 
 {
-    assert(!_name.is_empty());
-    assert(!_description.is_empty());
+    assert(!_name.empty());
+    assert(!_description.empty());
     // assert(_data_types != DataTypes::UNKNOWN);
 #ifndef NDEBUG
     for(auto const& expression_type: _expression_types) {
@@ -85,13 +85,13 @@ Parameter::~Parameter()
 }
 
 
-String const& Parameter::name() const
+std::string const& Parameter::name() const
 {
     return _name;
 }
 
 
-String const& Parameter::description() const
+std::string const& Parameter::description() const
 {
     return _description;
 }

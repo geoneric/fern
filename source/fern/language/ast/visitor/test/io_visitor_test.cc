@@ -45,7 +45,7 @@ BOOST_FIXTURE_TEST_SUITE(module_visitor, Support)
 
 BOOST_AUTO_TEST_CASE(visit_inputs)
 {
-    fern::String xml;
+    std::string xml;
     std::shared_ptr<fl::ModuleVertex> tree;
 
     // The tree contains four inputs: b, c, a, d.
@@ -61,16 +61,16 @@ a = foo(b, c, a, d, b)
     auto inputs = visitor.inputs();
     BOOST_REQUIRE_EQUAL(inputs.size(), 4u);
 
-    BOOST_CHECK_EQUAL(inputs[0], fern::String("b"));
-    BOOST_CHECK_EQUAL(inputs[1], fern::String("c"));
-    BOOST_CHECK_EQUAL(inputs[2], fern::String("a"));
-    BOOST_CHECK_EQUAL(inputs[3], fern::String("d"));
+    BOOST_CHECK_EQUAL(inputs[0], "b");
+    BOOST_CHECK_EQUAL(inputs[1], "c");
+    BOOST_CHECK_EQUAL(inputs[2], "a");
+    BOOST_CHECK_EQUAL(inputs[3], "d");
 }
 
 
 BOOST_AUTO_TEST_CASE(visit_outputs)
 {
-    fern::String xml;
+    std::string xml;
     std::shared_ptr<fl::ModuleVertex> tree;
 
     // The tree contains five statements. There are four outputs: a, b, c, d.

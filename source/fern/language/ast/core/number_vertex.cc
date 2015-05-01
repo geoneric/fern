@@ -7,6 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #include "fern/language/ast/core/number_vertex.h"
+#include <boost/format.hpp>
 
 
 namespace fern {
@@ -16,7 +17,7 @@ template<typename T>
 NumberVertex<T>::NumberVertex(
     T value)
 
-    : ExpressionVertex(String(boost::format("%1%") % value)),
+    : ExpressionVertex((boost::format("%1%") % value).str()),
       _value(value)
 
 {
@@ -29,7 +30,7 @@ NumberVertex<T>::NumberVertex(
     int col_id,
     T value)
 
-    : ExpressionVertex(line_nr, col_id, String(boost::format("%1%") % value)),
+    : ExpressionVertex(line_nr, col_id, (boost::format("%1%") % value).str()),
       _value(value)
 
 {

@@ -7,6 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #include "fern/language/interpreter/data_source.h"
+#include <cassert>
 
 
 namespace fern {

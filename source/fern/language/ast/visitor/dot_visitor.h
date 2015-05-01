@@ -7,7 +7,6 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include "fern/core/string.h"
 #include "fern/language/ast/visitor/ast_visitor.h"
 
 
@@ -37,19 +36,20 @@ public:
 
     DotVisitor&    operator=           (DotVisitor const&)=delete;
 
-    String const&  script              () const;
+    std::string const&
+                   script              () const;
 
 protected:
 
                    DotVisitor          ()=default;
 
-    void           set_script          (String const& string);
+    void           set_script          (std::string const& string);
 
-    void           add_script          (String const& string);
+    void           add_script          (std::string const& string);
 
 private:
 
-    String         _script;
+    std::string    _script;
 
     virtual void   Visit               (ModuleVertex& vertex)=0;
 

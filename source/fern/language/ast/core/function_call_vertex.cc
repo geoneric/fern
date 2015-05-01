@@ -13,7 +13,7 @@ namespace fern {
 namespace language {
 
 FunctionCallVertex::FunctionCallVertex(
-    String const& name,
+    std::string const& name,
     ExpressionVertices const& expressions)
 
     : OperationVertex(name, expressions)

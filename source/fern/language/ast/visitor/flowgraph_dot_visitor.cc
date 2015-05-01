@@ -7,7 +7,8 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #include "fern/language/ast/visitor/flowgraph_dot_visitor.h"
-#include "fern/core/string.h"
+#include <cassert>
+#include <boost/format.hpp>
 #include "fern/language/ast/core/vertices.h"
 
 
@@ -37,19 +38,19 @@ void FlowgraphDotVisitor::add_flowgraph_vertex(
     if(!source_vertex.definitions().empty()) {
         for(auto definition: source_vertex.definitions()) {
             add_script(
-                String(boost::format("\"%1%\"") % definition) +
-                String(" -> ") +
-                String(boost::format("\"%1%\"") % &target_vertex) +
-                String(" [];\n")
+                (boost::format("\"%1%\"") % definition).str() +
+                " -> " +
+                (boost::format("\"%1%\"") % &target_vertex).str() +
+                " [];\n"
             );
         }
     }
     else {
         add_script(
-            String(boost::format("\"%1%\"") % &source_vertex) +
-            String(" -> ") +
-            String(boost::format("\"%1%\"") % &target_vertex) +
-            String(" [];\n")
+            (boost::format("\"%1%\"") % &source_vertex).str() +
+            " -> " +
+            (boost::format("\"%1%\"") % &target_vertex).str() +
+            " [];\n"
         );
     }
 }
@@ -81,18 +82,18 @@ void FlowgraphDotVisitor::add_flowgraph_vertex(
     ///   : &source_vertex;
 
     /// _script +=
-    ///   String(boost::format("\"%1%\"") % new_source_vertex) + " -> " +
-    ///   String(boost::format("\"%1%\"") % &target_vertex) + " ["
+    ///   (boost::format("\"%1%\"") % new_source_vertex).str() + " -> " +
+    ///   (boost::format("\"%1%\"") % &target_vertex).str() + " ["
     ///   "];\n";
 
     /// _mode = Mode::ConnectingFlowgraph;
     /// _definition = 0;
 
     add_script(
-        String(boost::format("\"%1%\"") % &source_vertex) +
-        String(" -> ") +
-        String(boost::format("\"%1%\"") % &target_vertex) +
-        String(" [];\n")
+        (boost::format("\"%1%\"") % &source_vertex).str() +
+        " -> " +
+        (boost::format("\"%1%\"") % &target_vertex).str() +
+        " [];\n"
     );
 }
 
@@ -103,8 +104,8 @@ void FlowgraphDotVisitor::add_flowgraph_vertex(
 //   assert(_mode == Mode::ConnectingFlowgraph);
 //   BOOST_FOREACH(NameVertex const* use, vertex.uses()) {
 //     _script +=
-//       String(boost::format("\"%1%\"") % &vertex) + " -> " +
-//       String(boost::format("\"%1%\"") % use) + " ["
+//       (boost::format("\"%1%\"") % &vertex).str() + " -> " +
+//       (boost::format("\"%1%\"") % use).str() + " ["
 //       "];\n";
 //   }
 // }
@@ -116,7 +117,7 @@ void FlowgraphDotVisitor::Visit(
     switch(_mode) {
         case Mode::Declaring: {
             // add_script(
-            //   String(boost::format("\"%1%\"") % &vertex) +
+            //   (boost::format("\"%1%\"") % &vertex).str() +
             //   " [label=\"=\"];\n");
             break;
         }
@@ -137,9 +138,9 @@ void FlowgraphDotVisitor::Visit(
     switch(_mode) {
         case Mode::Declaring: {
             add_script(
-                String(boost::format("\"%1%\"") % &vertex) +
-                String(" [label=\"") + vertex.name() +
-                String("\", shape=triangle];\n")
+                (boost::format("\"%1%\"") % &vertex).str() +
+                " [label=\"" + vertex.name() +
+                "\", shape=triangle];\n"
             );
             break;
         }
@@ -164,8 +165,8 @@ void FlowgraphDotVisitor::Visit(
     switch(_mode) {
         case Mode::Declaring: {
             add_script(
-                String(boost::format("\"%1%\"") % &vertex) +
-                String(" [label=\"If\", shape=diamond];\n")
+                (boost::format("\"%1%\"") % &vertex).str() +
+                " [label=\"If\", shape=diamond];\n"
             );
             break;
         }
@@ -178,11 +179,11 @@ void FlowgraphDotVisitor::Visit(
 
     // TODO condition -> sub graph
     if(_mode == Mode::ConnectingFlowgraph) {
-        add_script(String(boost::format(
+        add_script((boost::format(
             "subgraph cluster%1% {\n"
             "ordering=out;\n"
             "rankdir=TB;\n"
-        ) % if_cluster_id++));
+        ) % if_cluster_id++).str());
     }
     for(auto statement_vertex: vertex.true_scope()->statements()) {
         statement_vertex->Accept(*this);
@@ -194,11 +195,11 @@ void FlowgraphDotVisitor::Visit(
     if(!vertex.false_scope()->statements().empty()) {
         // TODO condition -> sub graph
         if(_mode == Mode::ConnectingFlowgraph) {
-            add_script(String(boost::format(
+            add_script((boost::format(
                 "subgraph cluster%1% {\n"
                 "ordering=out;\n"
                 "rankdir=TB;\n"
-            ) % if_cluster_id++));
+            ) % if_cluster_id++).str());
         }
         for(auto statement_vertex: vertex.false_scope()->statements()) {
             statement_vertex->Accept(*this);
@@ -223,8 +224,8 @@ void FlowgraphDotVisitor::Visit(
                         vertex.definitions().end(), &vertex) !=
                     vertex.definitions().end()) {
                 add_script(
-                    String(boost::format("\"%1%\"") % &vertex) +
-                    String(" [label=\"") + vertex.name() + String("\"];\n")
+                    (boost::format("\"%1%\"") % &vertex).str() +
+                    " [label=\"" + vertex.name() + "\"];\n"
                 );
             }
             break;
@@ -242,9 +243,9 @@ void FlowgraphDotVisitor::Visit(
     switch(_mode) {
         case Mode::Declaring: {
             add_script(
-                String(boost::format("\"%1%\"") % &vertex) +
-                String(" [label=\"") + vertex.symbol() +
-                String("\", shape=triangle];\n")
+                (boost::format("\"%1%\"") % &vertex).str() +
+                " [label=\"" + vertex.symbol() +
+                "\", shape=triangle];\n"
             );
             break;
         }
@@ -267,10 +268,10 @@ void FlowgraphDotVisitor::Visit(
     switch(_mode) {
         case Mode::Declaring: {
             add_script(
-                String(boost::format("\"%1%\"") % &vertex) +
-                String(" [label=\"") +
-                String(boost::format("%1%") % vertex.value()) +
-                String("\", fontname=courier, shape=box];\n")
+                (boost::format("\"%1%\"") % &vertex).str() +
+                " [label=\"" +
+                (boost::format("%1%") % vertex.value()).str() +
+                "\", fontname=courier, shape=box];\n"
             );
             break;
         }
@@ -358,9 +359,9 @@ void FlowgraphDotVisitor::Visit(
         case Mode::Declaring: {
             // TODO Implement symbol member.
             add_script(
-                String(boost::format("\"%1%\"") % &vertex) +
-                String(" [label=\"") + vertex.symbol() +
-                String("\", shape=triangle];\n")
+                (boost::format("\"%1%\"") % &vertex).str() +
+                " [label=\"" + vertex.symbol() +
+                "\", shape=triangle];\n"
             );
             break;
         }
@@ -384,9 +385,9 @@ void FlowgraphDotVisitor::Visit(
     switch(_mode) {
         case Mode::Declaring: {
             add_script(
-                String(boost::format("\"%1%\"") % &vertex) +
-                String(" [label=\"\\\"") + vertex.value() +
-                String("\\\"\", fontname=courier, shape=box];\n")
+                (boost::format("\"%1%\"") % &vertex).str() +
+                " [label=\"\\\"" + vertex.value() +
+                "\\\"\", fontname=courier, shape=box];\n"
             );
             break;
         }
@@ -406,18 +407,18 @@ void FlowgraphDotVisitor::Visit(
 void FlowgraphDotVisitor::Visit(
     ModuleVertex& vertex)
 {
-    set_script(String(
+    set_script(
         "digraph G {\n"
         "ordering=out;\n"
         "rankdir=LR;\n"
         "penwidth=0.25;\n"
-    ));
+    );
 
     set_mode(Mode::Declaring);
     // add_script(
-    //   String(boost::format("\"%1%\"") % &vertex) +
-    //   String(boost::format(" [label=\"%1%\"];\n"))
-    //     % vertex.sourceName().encode_in_utf8());
+    //   (boost::format("\"%1%\"") % &vertex).str() +
+    //   (boost::format(" [label=\"%1%\"];\n")
+    //     % vertex.sourceName().encode_in_utf8()).str());
 
     for(auto statement_vertex: vertex.scope()->statements()) {
         statement_vertex->Accept(*this);

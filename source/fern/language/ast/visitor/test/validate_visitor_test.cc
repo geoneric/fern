@@ -53,13 +53,12 @@ BOOST_AUTO_TEST_CASE(visit_function_definition)
 
     // Call undefined operation. Not built-in and not user-defined.
     {
-        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String(u8R"(
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(u8R"(
 def foo():
     return
 
 bar()
-)")));
+)"));
 
         tree->Accept(_thread_visitor);
         BOOST_CHECK_THROW(tree->Accept(_validate_visitor),

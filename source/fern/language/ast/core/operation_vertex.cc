@@ -7,13 +7,14 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #include "fern/language/ast/core/operation_vertex.h"
+#include <cassert>
 
 
 namespace fern {
 namespace language {
 
 OperationVertex::OperationVertex(
-    String const& name,
+    std::string const& name,
     ExpressionVertices const& expressions)
 
     : ExpressionVertex(name),

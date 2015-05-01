@@ -30,7 +30,7 @@ namespace fl = fern::language;
     function_template<uint64_t>(argument);                                     \
     function_template<float>(argument);                                        \
     function_template<double>(argument);                                       \
-    function_template<fern::String>(argument);
+    function_template<std::string>(argument);
 
 
 template<
@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE(attribute_type_visitor)
 
     // Visit a constant string attribute.
     {
-        fl::ConstantAttribute<fern::String> string_attribute;
+        fl::ConstantAttribute<std::string> string_attribute;
         fl::Attribute *attribute = &string_attribute;
         attribute->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.data_type(), fern::DT_CONSTANT);

@@ -29,7 +29,7 @@ public:
 
     LOKI_DEFINE_VISITABLE()
 
-                   OperatorVertex      (String const& name,
+                   OperatorVertex      (std::string const& name,
                                         ExpressionVertices const& expressions);
 
                    ~OperatorVertex     ()=default;
@@ -42,11 +42,12 @@ public:
 
     OperatorVertex& operator=          (OperatorVertex const&)=delete;
 
-    String const&  symbol              () const;
+    std::string const&
+                   symbol              () const;
 
 private:
 
-    String         _symbol;
+    std::string    _symbol;
 
 };
 

@@ -9,7 +9,6 @@
 #define BOOST_TEST_MODULE fern script
 #include <boost/test/unit_test.hpp>
 #include "fern/core/exception.h"
-#include "fern/core/string.h"
 #include "fern/language/script/algebra_parser.h"
 
 
@@ -23,12 +22,12 @@ BOOST_AUTO_TEST_CASE(parse_empty_script)
     fl::AlgebraParser parser;
 
     {
-        fern::String xml(parser.parse_string(fern::String("")));
-        BOOST_CHECK_EQUAL(xml, fern::String(
+        std::string xml(parser.parse_string(""));
+        BOOST_CHECK_EQUAL(xml,
             "<?xml version=\"1.0\"?>"
             "<Fern source=\"&lt;string&gt;\">"
                 "<Statements/>"
-            "</Fern>"));
+            "</Fern>");
     }
 }
 
@@ -38,8 +37,8 @@ BOOST_AUTO_TEST_CASE(parse_name)
     fl::AlgebraParser parser;
 
     {
-        fern::String xml(parser.parse_string(fern::String("a")));
-        BOOST_CHECK_EQUAL(xml, fern::String(
+        std::string xml(parser.parse_string("a"));
+        BOOST_CHECK_EQUAL(xml,
           "<?xml version=\"1.0\"?>"
           "<Fern source=\"&lt;string&gt;\">"
             "<Statements>"
@@ -49,13 +48,13 @@ BOOST_AUTO_TEST_CASE(parse_name)
                 "</Expression>"
               "</Statement>"
             "</Statements>"
-          "</Fern>"));
+          "</Fern>");
     }
 
     // TODO #if PYTHONVER >= 2.7/3.0?
     // {
-    //     fern::String xml(parser.parse_string(fern::String("ñ")));
-    //     BOOST_CHECK_EQUAL(xml, fern::String(
+    //     std::string xml(parser.parse_string("ñ"));
+    //     BOOST_CHECK_EQUAL(xml,
     //       "<?xml version=\"1.0\"?>"
     //       "<Fern>"
     //         "<Statements>"
@@ -65,7 +64,7 @@ BOOST_AUTO_TEST_CASE(parse_name)
     //             "</Expression>"
     //           "</Statement>"
     //         "</Statements>"
-    //       "</Fern>"));
+    //       "</Fern>");
     // }
 }
 
@@ -75,8 +74,8 @@ BOOST_AUTO_TEST_CASE(parse_assignment)
     fl::AlgebraParser parser;
 
     {
-        fern::String xml(parser.parse_string(fern::String("a = b")));
-        BOOST_CHECK_EQUAL(xml, fern::String(
+        std::string xml(parser.parse_string("a = b"));
+        BOOST_CHECK_EQUAL(xml,
             "<?xml version=\"1.0\"?>"
             "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
@@ -91,7 +90,7 @@ BOOST_AUTO_TEST_CASE(parse_assignment)
                   "</Assignment>"
                 "</Statement>"
               "</Statements>"
-            "</Fern>"));
+            "</Fern>");
     }
 }
 
@@ -101,8 +100,8 @@ BOOST_AUTO_TEST_CASE(parse_string)
     fl::AlgebraParser parser;
 
     {
-        fern::String xml(parser.parse_string(fern::String("\"five\"")));
-        BOOST_CHECK_EQUAL(xml, fern::String(
+        std::string xml(parser.parse_string("\"five\""));
+        BOOST_CHECK_EQUAL(xml,
             "<?xml version=\"1.0\"?>"
             "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
@@ -112,12 +111,12 @@ BOOST_AUTO_TEST_CASE(parse_string)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Fern>"));
+            "</Fern>");
     }
 
     {
-        fern::String xml(parser.parse_string(fern::String("\"\"")));
-        BOOST_CHECK_EQUAL(xml, fern::String(
+        std::string xml(parser.parse_string("\"\""));
+        BOOST_CHECK_EQUAL(xml,
             "<?xml version=\"1.0\"?>"
             "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
@@ -127,12 +126,12 @@ BOOST_AUTO_TEST_CASE(parse_string)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Fern>"));
+            "</Fern>");
     }
 
     {
-        fern::String xml(parser.parse_string(fern::String("\" \"")));
-        BOOST_CHECK_EQUAL(xml, fern::String(
+        std::string xml(parser.parse_string("\" \""));
+        BOOST_CHECK_EQUAL(xml,
             "<?xml version=\"1.0\"?>"
             "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
@@ -142,13 +141,13 @@ BOOST_AUTO_TEST_CASE(parse_string)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Fern>"));
+            "</Fern>");
     }
 
     // Test handling of Unicode characters.
     {
-        fern::String xml(parser.parse_string(fern::String("\"mañana\"")));
-        BOOST_CHECK_EQUAL(xml, fern::String(
+        std::string xml(parser.parse_string("\"mañana\""));
+        BOOST_CHECK_EQUAL(xml,
             "<?xml version=\"1.0\"?>"
             "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
@@ -158,21 +157,21 @@ BOOST_AUTO_TEST_CASE(parse_string)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Fern>"));
+            "</Fern>");
     }
 
     {
-        BOOST_CHECK_THROW(parser.parse_string(fern::String("if")),
+        BOOST_CHECK_THROW(parser.parse_string("if"),
             fern::detail::ParseError);
     }
 
     {
-        BOOST_CHECK_THROW(parser.parse_string(fern::String("yield")),
+        BOOST_CHECK_THROW(parser.parse_string("yield"),
             fern::detail::UnsupportedLanguageConstruct);
     }
 
     {
-        BOOST_CHECK_THROW(parser.parse_string(fern::String("print(5)")),
+        BOOST_CHECK_THROW(parser.parse_string("print(5)"),
             fern::detail::UnsupportedLanguageConstruct);
     }
 }
@@ -183,8 +182,8 @@ BOOST_AUTO_TEST_CASE(parse_number)
     fl::AlgebraParser parser;
 
     {
-        fern::String xml(parser.parse_string(fern::String("5")));
-        BOOST_CHECK_EQUAL(xml, fern::String(boost::format(
+        std::string xml(parser.parse_string("5"));
+        BOOST_CHECK_EQUAL(xml, (boost::format(
             "<?xml version=\"1.0\"?>"
             "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
@@ -199,12 +198,12 @@ BOOST_AUTO_TEST_CASE(parse_number)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Fern>") % (sizeof(long) * 8)));
+            "</Fern>") % (sizeof(long) * 8)).str());
     }
 
     {
-        fern::String xml(parser.parse_string(fern::String("5L")));
-        BOOST_CHECK_EQUAL(xml, fern::String(
+        std::string xml(parser.parse_string("5L"));
+        BOOST_CHECK_EQUAL(xml,
             "<?xml version=\"1.0\"?>"
             "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
@@ -219,12 +218,12 @@ BOOST_AUTO_TEST_CASE(parse_number)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Fern>"));
+            "</Fern>");
     }
 
     {
-        fern::String xml(parser.parse_string(fern::String("5.5")));
-        BOOST_CHECK_EQUAL(xml, fern::String(
+        std::string xml(parser.parse_string("5.5"));
+        BOOST_CHECK_EQUAL(xml,
             "<?xml version=\"1.0\"?>"
             "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
@@ -239,7 +238,7 @@ BOOST_AUTO_TEST_CASE(parse_number)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Fern>"));
+            "</Fern>");
     }
 }
 
@@ -247,11 +246,11 @@ BOOST_AUTO_TEST_CASE(parse_number)
 BOOST_AUTO_TEST_CASE(parse_call)
 {
     fl::AlgebraParser parser;
-    fern::String xml;
+    std::string xml;
 
     {
-        xml = parser.parse_string(fern::String("f()"));
-        BOOST_CHECK_EQUAL(xml, fern::String(
+        xml = parser.parse_string("f()");
+        BOOST_CHECK_EQUAL(xml,
             "<?xml version=\"1.0\"?>"
             "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
@@ -264,12 +263,12 @@ BOOST_AUTO_TEST_CASE(parse_call)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Fern>"));
+            "</Fern>");
     }
 
     {
-        xml = parser.parse_string(fern::String("f(1, \"2\", three, four())"));
-        BOOST_CHECK_EQUAL(xml, fern::String(boost::format(
+        xml = parser.parse_string("f(1, \"2\", three, four())");
+        BOOST_CHECK_EQUAL(xml, (boost::format(
             "<?xml version=\"1.0\"?>"
             "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
@@ -303,7 +302,7 @@ BOOST_AUTO_TEST_CASE(parse_call)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Fern>") % (sizeof(long) * 8)));
+            "</Fern>") % (sizeof(long) * 8)).str());
     }
 }
 
@@ -311,11 +310,11 @@ BOOST_AUTO_TEST_CASE(parse_call)
 // BOOST_AUTO_TEST_CASE(parse_print)
 // {
 //   fl::AlgebraParser parser;
-//   fern::String xml;
+//   std::string xml;
 // 
 //   {
-//     xml = parser.parse_string(fern::String("print"));
-//     BOOST_CHECK_EQUAL(xml, fern::String(
+//     xml = parser.parse_string("print");
+//     BOOST_CHECK_EQUAL(xml,
 //       "<?xml version=\"1.0\"?>"
 //       "<Fern source=\"&lt;string&gt;\">"
 //         "<Statements>"
@@ -328,12 +327,12 @@ BOOST_AUTO_TEST_CASE(parse_call)
 //             "</Expression>"
 //           "</Statement>"
 //         "</Statements>"
-//       "</Fern>"));
+//       "</Fern>");
 //   }
 // 
 //   // {
-//   //   xml = parser.parse_string(fern::String("print(1, \"2\", three, four())"));
-//   //   BOOST_CHECK_EQUAL(xml, fern::String(boost::format(
+//   //   xml = parser.parse_string("print(1, \"2\", three, four())");
+//   //   BOOST_CHECK_EQUAL(xml, (boost::format(
 //   //     "<?xml version=\"1.0\"?>"
 //   //     "<Fern source=\"&lt;string&gt;\">"
 //   //       "<Statements>"
@@ -367,7 +366,7 @@ BOOST_AUTO_TEST_CASE(parse_call)
 //   //           "</Expression>"
 //   //         "</Statement>"
 //   //       "</Statements>"
-//   //     "</Fern>") % (sizeof(long) * 8)));
+//   //     "</Fern>") % (sizeof(long) * 8)).str());
 //   // }
 // }
 
@@ -375,11 +374,11 @@ BOOST_AUTO_TEST_CASE(parse_call)
 BOOST_AUTO_TEST_CASE(parse_unary_operator)
 {
     fl::AlgebraParser parser;
-    fern::String xml;
+    std::string xml;
 
     {
-        xml = parser.parse_string(fern::String("-a"));
-        BOOST_CHECK_EQUAL(xml, fern::String(
+        xml = parser.parse_string("-a");
+        BOOST_CHECK_EQUAL(xml,
             "<?xml version=\"1.0\"?>"
             "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
@@ -396,7 +395,7 @@ BOOST_AUTO_TEST_CASE(parse_unary_operator)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Fern>"));
+            "</Fern>");
     }
 }
 
@@ -404,11 +403,11 @@ BOOST_AUTO_TEST_CASE(parse_unary_operator)
 BOOST_AUTO_TEST_CASE(parse_binary_operator)
 {
     fl::AlgebraParser parser;
-    fern::String xml;
+    std::string xml;
 
     {
-        xml = parser.parse_string(fern::String("a + b"));
-        BOOST_CHECK_EQUAL(xml, fern::String(
+        xml = parser.parse_string("a + b");
+        BOOST_CHECK_EQUAL(xml,
             "<?xml version=\"1.0\"?>"
             "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
@@ -428,7 +427,7 @@ BOOST_AUTO_TEST_CASE(parse_binary_operator)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Fern>"));
+            "</Fern>");
     }
 }
 
@@ -436,11 +435,11 @@ BOOST_AUTO_TEST_CASE(parse_binary_operator)
 BOOST_AUTO_TEST_CASE(parse_boolean_operator)
 {
     fl::AlgebraParser parser;
-    fern::String xml;
+    std::string xml;
 
     {
-        xml = parser.parse_string(fern::String("a and b"));
-        BOOST_CHECK_EQUAL(xml, fern::String(
+        xml = parser.parse_string("a and b");
+        BOOST_CHECK_EQUAL(xml,
             "<?xml version=\"1.0\"?>"
             "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
@@ -460,7 +459,7 @@ BOOST_AUTO_TEST_CASE(parse_boolean_operator)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Fern>"));
+            "</Fern>");
     }
 }
 
@@ -468,11 +467,11 @@ BOOST_AUTO_TEST_CASE(parse_boolean_operator)
 BOOST_AUTO_TEST_CASE(parse_comparison_operator)
 {
     fl::AlgebraParser parser;
-    fern::String xml;
+    std::string xml;
 
     {
-        xml = parser.parse_string(fern::String("a <= b"));
-        BOOST_CHECK_EQUAL(xml, fern::String(
+        xml = parser.parse_string("a <= b");
+        BOOST_CHECK_EQUAL(xml,
             "<?xml version=\"1.0\"?>"
             "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
@@ -492,7 +491,7 @@ BOOST_AUTO_TEST_CASE(parse_comparison_operator)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Fern>"));
+            "</Fern>");
     }
 }
 
@@ -502,8 +501,8 @@ BOOST_AUTO_TEST_CASE(parse_multiple_statements)
     fl::AlgebraParser parser;
 
     {
-        fern::String xml(parser.parse_string(fern::String("a\nb")));
-        BOOST_CHECK_EQUAL(xml, fern::String(
+        std::string xml(parser.parse_string("a\nb"));
+        BOOST_CHECK_EQUAL(xml,
             "<?xml version=\"1.0\"?>"
             "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
@@ -518,7 +517,7 @@ BOOST_AUTO_TEST_CASE(parse_multiple_statements)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Fern>"));
+            "</Fern>");
     }
 }
 
@@ -526,13 +525,13 @@ BOOST_AUTO_TEST_CASE(parse_multiple_statements)
 BOOST_AUTO_TEST_CASE(parse_if)
 {
     fl::AlgebraParser parser;
-    fern::String xml;
+    std::string xml;
 
     {
-        xml = parser.parse_string(fern::String(
+        xml = parser.parse_string(
             "if a:\n"
-            "  b"));
-        BOOST_CHECK_EQUAL(xml, fern::String(
+            "  b");
+        BOOST_CHECK_EQUAL(xml,
             "<?xml version=\"1.0\"?>"
             "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
@@ -552,16 +551,16 @@ BOOST_AUTO_TEST_CASE(parse_if)
                   "</If>"
                 "</Statement>"
               "</Statements>"
-            "</Fern>"));
+            "</Fern>");
     }
 
     {
-        xml = parser.parse_string(fern::String(
+        xml = parser.parse_string(
             "if a:\n"
             "  b\n"
             "elif(c):\n"
-            "  d"));
-        BOOST_CHECK_EQUAL(xml, fern::String(
+            "  d");
+        BOOST_CHECK_EQUAL(xml,
             "<?xml version=\"1.0\"?>"
             "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
@@ -597,18 +596,18 @@ BOOST_AUTO_TEST_CASE(parse_if)
                   "</If>"
                 "</Statement>"
               "</Statements>"
-            "</Fern>"));
+            "</Fern>");
     }
 
     {
-        xml = parser.parse_string(fern::String(
+        xml = parser.parse_string(
             "if a:\n"
             "  b\n"
             "elif c:\n"
             "  d\n"
             "else:\n"
-            "  e"));
-        BOOST_CHECK_EQUAL(xml, fern::String(
+            "  e");
+        BOOST_CHECK_EQUAL(xml,
             "<?xml version=\"1.0\"?>"
             "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
@@ -650,7 +649,7 @@ BOOST_AUTO_TEST_CASE(parse_if)
                   "</If>"
                 "</Statement>"
               "</Statements>"
-            "</Fern>"));
+            "</Fern>");
     }
 }
 
@@ -658,13 +657,13 @@ BOOST_AUTO_TEST_CASE(parse_if)
 BOOST_AUTO_TEST_CASE(parse_while)
 {
     fl::AlgebraParser parser;
-    fern::String xml;
+    std::string xml;
 
     {
-        xml = parser.parse_string(fern::String(
+        xml = parser.parse_string(
             "while a:\n"
-            "  b"));
-        BOOST_CHECK_EQUAL(xml, fern::String(
+            "  b");
+        BOOST_CHECK_EQUAL(xml,
             "<?xml version=\"1.0\"?>"
             "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
@@ -684,16 +683,16 @@ BOOST_AUTO_TEST_CASE(parse_while)
                   "</While>"
                 "</Statement>"
               "</Statements>"
-            "</Fern>"));
+            "</Fern>");
     }
 
     {
-        xml = parser.parse_string(fern::String(
+        xml = parser.parse_string(
             "while a:\n"
             "  b\n"
             "else:\n"
-            "  c"));
-        BOOST_CHECK_EQUAL(xml, fern::String(
+            "  c");
+        BOOST_CHECK_EQUAL(xml,
             "<?xml version=\"1.0\"?>"
             "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
@@ -719,7 +718,7 @@ BOOST_AUTO_TEST_CASE(parse_while)
                   "</While>"
                 "</Statement>"
               "</Statements>"
-            "</Fern>"));
+            "</Fern>");
     }
 }
 
@@ -727,7 +726,7 @@ BOOST_AUTO_TEST_CASE(parse_while)
 BOOST_AUTO_TEST_CASE(parse_file)
 {
     fl::AlgebraParser parser;
-    fern::String filename;
+    std::string filename;
 
     {
         filename = "DoesNotExist.ran";
@@ -740,12 +739,12 @@ BOOST_AUTO_TEST_CASE(parse_file)
 BOOST_AUTO_TEST_CASE(parse_slice)
 {
     fl::AlgebraParser parser;
-    fern::String xml;
+    std::string xml;
 
     {
-        xml = parser.parse_string(fern::String(
-            "a[b]"));
-        BOOST_CHECK_EQUAL(xml, fern::String(
+        xml = parser.parse_string(
+            "a[b]");
+        BOOST_CHECK_EQUAL(xml,
             "<?xml version=\"1.0\"?>"
             "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
@@ -762,7 +761,7 @@ BOOST_AUTO_TEST_CASE(parse_slice)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Fern>"));
+            "</Fern>");
     }
 }
 
@@ -770,12 +769,12 @@ BOOST_AUTO_TEST_CASE(parse_slice)
 BOOST_AUTO_TEST_CASE(parse_attribute)
 {
     fl::AlgebraParser parser;
-    fern::String xml;
+    std::string xml;
 
     {
-        xml = parser.parse_string(fern::String(
-            "a.b"));
-        BOOST_CHECK_EQUAL(xml, fern::String(
+        xml = parser.parse_string(
+            "a.b");
+        BOOST_CHECK_EQUAL(xml,
             "<?xml version=\"1.0\"?>"
             "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
@@ -790,7 +789,7 @@ BOOST_AUTO_TEST_CASE(parse_attribute)
                   "</Expression>"
                 "</Statement>"
               "</Statements>"
-            "</Fern>"));
+            "</Fern>");
     }
 }
 
@@ -798,12 +797,12 @@ BOOST_AUTO_TEST_CASE(parse_attribute)
 BOOST_AUTO_TEST_CASE(return_)
 {
     fl::AlgebraParser parser;
-    fern::String xml;
+    std::string xml;
 
     {
-        xml = parser.parse_string(fern::String(
-            "return"));
-        BOOST_CHECK_EQUAL(xml, fern::String(
+        xml = parser.parse_string(
+            "return");
+        BOOST_CHECK_EQUAL(xml,
             "<?xml version=\"1.0\"?>"
             "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
@@ -811,13 +810,13 @@ BOOST_AUTO_TEST_CASE(return_)
                   "<Return/>"
                 "</Statement>"
               "</Statements>"
-            "</Fern>"));
+            "</Fern>");
     }
 
     {
-        xml = parser.parse_string(fern::String(
-            "return c"));
-        BOOST_CHECK_EQUAL(xml, fern::String(
+        xml = parser.parse_string(
+            "return c");
+        BOOST_CHECK_EQUAL(xml,
             "<?xml version=\"1.0\"?>"
             "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
@@ -829,7 +828,7 @@ BOOST_AUTO_TEST_CASE(return_)
                   "</Return>"
                 "</Statement>"
               "</Statements>"
-            "</Fern>"));
+            "</Fern>");
     }
 }
 
@@ -837,13 +836,13 @@ BOOST_AUTO_TEST_CASE(return_)
 BOOST_AUTO_TEST_CASE(parse_function)
 {
     fl::AlgebraParser parser;
-    fern::String xml;
+    std::string xml;
 
     {
-        xml = parser.parse_string(fern::String(
+        xml = parser.parse_string(
             "def foo(a, b):\n"
-            "    c = a + b\n"));
-        BOOST_CHECK_EQUAL(xml, fern::String(
+            "    c = a + b\n");
+        BOOST_CHECK_EQUAL(xml,
             "<?xml version=\"1.0\"?>"
             "<Fern source=\"&lt;string&gt;\">"
               "<Statements>"
@@ -883,7 +882,7 @@ BOOST_AUTO_TEST_CASE(parse_function)
                   "</FunctionDefinition>"
                 "</Statement>"
               "</Statements>"
-            "</Fern>"));
+            "</Fern>");
     }
 }
 

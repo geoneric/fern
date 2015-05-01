@@ -7,8 +7,8 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
+#include <string>
 #include <gdal_priv.h>
-#include "fern/core/string.h"
 
 
 namespace fern {

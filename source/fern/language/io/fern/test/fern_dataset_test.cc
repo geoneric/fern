@@ -58,7 +58,7 @@ BOOST_AUTO_TEST_CASE(write_and_read)
 
         auto feature_names = dataset->feature_names();
         BOOST_REQUIRE_EQUAL(feature_names.size(), 1u);
-        BOOST_CHECK_EQUAL(feature_names[0], fern::String("planets"));
+        BOOST_CHECK_EQUAL(feature_names[0], "planets");
     }
 
     // Open attribute without re-opening the dataset.
@@ -130,11 +130,9 @@ BOOST_AUTO_TEST_CASE(errors)
             BOOST_CHECK(false);
         }
         catch(fern::IOError const& exception) {
-            fern::String message = exception.message();
-            BOOST_CHECK_EQUAL(message,
-                fern::String(
-                    "I/O error handling constant-1.h5: "
-                    "Does not contain feature: blahdiblah"));
+            BOOST_CHECK_EQUAL(exception.message(),
+                "I/O error handling constant-1.h5: "
+                "Does not contain feature: blahdiblah");
         }
 
         try {
@@ -142,10 +140,9 @@ BOOST_AUTO_TEST_CASE(errors)
             BOOST_CHECK(false);
         }
         catch(fern::IOError const& exception) {
-            fern::String message = exception.message();
-            BOOST_CHECK_EQUAL(message, fern::String(
+            BOOST_CHECK_EQUAL(exception.message(),
                 "I/O error handling constant-1.h5: "
-                "Does not contain attribute: blahdiblah"));
+                "Does not contain attribute: blahdiblah");
         }
     }
 }

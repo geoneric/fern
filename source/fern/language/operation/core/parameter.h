@@ -7,7 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include "fern/core/string.h"
+#include <string>
 #include "fern/language/operation/core/expression_types.h"
 
 
@@ -28,8 +28,8 @@ class Parameter
 
 public:
 
-                   Parameter           (String const& name,
-                                        String const& description,
+                   Parameter           (std::string const& name,
+                                        std::string const& description,
                                         DataTypes data_types,
                                         ValueTypes value_types);
 
@@ -43,17 +43,19 @@ public:
 
     Parameter&     operator=           (Parameter const& other);
 
-    String const&  name                () const;
+    std::string const&
+                   name                () const;
 
-    String const&  description         () const;
+    std::string const&
+                   description         () const;
 
     ExpressionTypes expression_types   () const;
 
 private:
 
-    String         _name;
+    std::string    _name;
 
-    String         _description;
+    std::string    _description;
 
     ExpressionTypes _expression_types;
 

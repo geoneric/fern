@@ -90,7 +90,7 @@ Messages::Messages()
 }
 
 
-String const& Messages::operator[](
+std::string const& Messages::operator[](
     MessageId message_id) const
 {
     const_iterator it = find(message_id);

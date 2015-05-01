@@ -9,7 +9,6 @@
 #define BOOST_TEST_MODULE fern ast
 #include <boost/test/unit_test.hpp>
 #include "fern/core/exception.h"
-#include "fern/core/string.h"
 #include "fern/language/script/algebra_parser.h"
 #include "fern/language/ast/xml/syntax_tree-pskel.hxx"
 #include "fern/language/ast/xml/xml_parser.h"
@@ -24,24 +23,24 @@ BOOST_AUTO_TEST_CASE(parse_string)
 {
     fl::AlgebraParser algebra_parser;
     fl::XmlParser xml_parser;
-    fern::String xml;
+    std::string xml;
     // std::shared_ptr<fl::AstVertex> tree;
 
     {
         // Empty xml.
-        xml = algebra_parser.parse_string(fern::String(""));
+        xml = algebra_parser.parse_string("");
         BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
     }
 
     {
         // Name expression.
-        xml = algebra_parser.parse_string(fern::String("a"));
+        xml = algebra_parser.parse_string("a");
         BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
     }
 
     {
         // String expression.
-        xml = algebra_parser.parse_string(fern::String("\"five\""));
+        xml = algebra_parser.parse_string("\"five\"");
         BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
     }
 
@@ -49,99 +48,99 @@ BOOST_AUTO_TEST_CASE(parse_string)
         // TODO test all numeric types.
 
         // Numeric expression.
-        xml = algebra_parser.parse_string(fern::String("5"));
+        xml = algebra_parser.parse_string("5");
         BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
 
-        xml = algebra_parser.parse_string(fern::String("5L"));
+        xml = algebra_parser.parse_string("5L");
         BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
 
         // TODO test unsigned types.
 
-        xml = algebra_parser.parse_string(fern::String("5.5"));
+        xml = algebra_parser.parse_string("5.5");
         BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
     }
 
     {
         // Function call.
-        xml = algebra_parser.parse_string(fern::String("f()"));
+        xml = algebra_parser.parse_string("f()");
         BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
 
-        xml = algebra_parser.parse_string(fern::String(
-            "f(1, \"2\", three, four())"));
+        xml = algebra_parser.parse_string(
+            "f(1, \"2\", three, four())");
         BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
     }
 
     {
         // Operator.
         // Unary.
-        xml = algebra_parser.parse_string(fern::String("-a"));
+        xml = algebra_parser.parse_string("-a");
         BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
 
         // Binary.
-        xml = algebra_parser.parse_string(fern::String("a + b"));
+        xml = algebra_parser.parse_string("a + b");
         BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
 
         // Boolean.
-        xml = algebra_parser.parse_string(fern::String("a and b"));
+        xml = algebra_parser.parse_string("a and b");
         BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
 
         // Comparison.
-        xml = algebra_parser.parse_string(fern::String("a == b"));
+        xml = algebra_parser.parse_string("a == b");
         BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
     }
 
     {
         // Assignment statement.
-        xml = algebra_parser.parse_string(fern::String("a = b"));
+        xml = algebra_parser.parse_string("a = b");
         BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
     }
 
     {
         // Multiple statements.
-        xml = algebra_parser.parse_string(fern::String("a\nb"));
+        xml = algebra_parser.parse_string("a\nb");
         BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
     }
 
     {
         // If statement.
-        xml = algebra_parser.parse_string(fern::String(
+        xml = algebra_parser.parse_string(
             "if a:\n"
-            "    b"));
+            "    b");
         BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
 
-        xml = algebra_parser.parse_string(fern::String(
+        xml = algebra_parser.parse_string(
             "if a:\n"
             "    b\n"
             "else:\n"
-            "    c"));
+            "    c");
         BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
 
-        xml = algebra_parser.parse_string(fern::String(
+        xml = algebra_parser.parse_string(
             "if a:\n"
             "    b\n"
             "elif c:\n"
-            "    d"));
+            "    d");
         BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
     }
 
     {
         // While statement.
-        xml = algebra_parser.parse_string(fern::String(
+        xml = algebra_parser.parse_string(
             "while a:\n"
-            "    b"));
+            "    b");
         BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
 
-        xml = algebra_parser.parse_string(fern::String(
+        xml = algebra_parser.parse_string(
             "while a:\n"
             "    b\n"
             "else:\n"
-            "    c"));
+            "    c");
         BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
     }
 
     {
         // Random string.
-        BOOST_CHECK_THROW(xml_parser.parse_string(fern::String("blabla")),
+        BOOST_CHECK_THROW(xml_parser.parse_string("blabla"),
             fern::detail::ParseError);
 
         // Attribute value missing.
@@ -169,13 +168,13 @@ BOOST_AUTO_TEST_CASE(parse_string)
 
     {
         // Slice expression.
-        xml = algebra_parser.parse_string(fern::String("a[b]"));
+        xml = algebra_parser.parse_string("a[b]");
         BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
     }
 
     {
         // Attribute expression.
-        xml = algebra_parser.parse_string(fern::String("a.b"));
+        xml = algebra_parser.parse_string("a.b");
         BOOST_CHECK_NO_THROW(xml_parser.parse_string(xml));
     }
 

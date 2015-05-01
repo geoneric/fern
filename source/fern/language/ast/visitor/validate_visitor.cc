@@ -9,7 +9,6 @@
 #include "fern/language/ast/visitor/validate_visitor.h"
 #include <sstream>
 #include "fern/core/exception.h"
-#include "fern/core/string.h"
 #include "fern/language/operation/core/operation.h"
 #include "fern/language/ast/core/vertices.h"
 

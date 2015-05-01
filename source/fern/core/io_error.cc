@@ -13,8 +13,8 @@
 namespace fern {
 
 IOError::IOError(
-    String const& source_name,
-    String const& message)
+    std::string const& source_name,
+    std::string const& message)
 
     : Exception(MessageId::IO_ERROR),
       _source_name(source_name),
@@ -25,7 +25,7 @@ IOError::IOError(
 
 
 IOError::IOError(
-    String const& source_name,
+    std::string const& source_name,
     int errno_)
 
     : Exception(MessageId::IO_ERROR),
@@ -36,12 +36,12 @@ IOError::IOError(
 }
 
 
-String IOError::message() const
+std::string IOError::message() const
 {
-    return boost::format(Exception::message().encode_in_utf8())
-        % _source_name.encode_in_utf8()
-        % _message.encode_in_utf8()
-        ;
+    return (boost::format(Exception::message())
+        % _source_name
+        % _message
+        ).str();
 }
 
 } // namespace fern

@@ -13,6 +13,22 @@
 
 BOOST_AUTO_TEST_SUITE(path)
 
+BOOST_AUTO_TEST_CASE(construction)
+{
+    fern::Path p1("blaah");
+    fern::Path p2(std::string("blaah"));
+    fern::Path p3(p2);
+}
+
+
+BOOST_AUTO_TEST_CASE(assignment)
+{
+    fern::Path p1 = "blaah";
+    fern::Path p2 = std::string("blaah");
+    fern::Path p3 = p2;
+}
+
+
 BOOST_AUTO_TEST_CASE(names)
 {
     fern::Path path;

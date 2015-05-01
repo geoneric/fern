@@ -7,6 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #include "fern/language/compiler/compiler.h"
+#include "fern/core/string.h"
 #include "fern/language/io/core/file.h"
 #include "fern/language/operation/std/operations.h"
 #include "fern/language/compiler/compile_visitor.h"
@@ -21,8 +22,8 @@ namespace language {
     @param      module_extension Filename extension to use for module files.
 */
 Compiler::Compiler(
-    String const& header_extension,
-    String const& module_extension)
+    std::string const& header_extension,
+    std::string const& module_extension)
 
     : _interpreter(),
       _header_extension(header_extension),
@@ -30,11 +31,11 @@ Compiler::Compiler(
 
 
 {
-    assert(!_header_extension.is_empty());
-    assert(!_module_extension.is_empty());
+    assert(!_header_extension.empty());
+    assert(!_module_extension.empty());
     assert(_header_extension != _module_extension);
-    assert(!_header_extension.starts_with("."));
-    assert(!_module_extension.starts_with("."));
+    assert(!starts_with(_header_extension, "."));
+    assert(!starts_with(_module_extension, "."));
 }
 
 
@@ -61,12 +62,12 @@ void Compiler::compile(
     // TODO Exception.
     assert(directory_is_writable(destination_module_path));
 
-    String model_name =
+    std::string model_name =
         Path(module_vertex->source_name()).filename().stem().generic_string();
     Path header_path = destination_module_path /
-        (model_name + String(".") + _header_extension);
+        (model_name + "." + _header_extension);
     Path module_path = destination_module_path /
-        (model_name + String(".") + _module_extension);
+        (model_name + "." + _module_extension);
 
     {
         bool can_overwrite_existing_file = file_exists(header_path) &&
@@ -101,30 +102,30 @@ void Compiler::compile(
 
     if(flags & DUMP_CMAKE) {
         Path cmake_file_path = destination_module_path / "CMakeLists.txt";
-        String project_name = model_name;
+        std::string project_name = model_name;
 
-        String cmake_script;
-        std::vector<String> installable_targets;
+        std::string cmake_script;
+        std::vector<std::string> installable_targets;
 
-        cmake_script += String((boost::format(
+        cmake_script += (boost::format(
             "CMAKE_MINIMUM_REQUIRED(VERSION 2.8)\n"
             "PROJECT(%1%)\n"
             "SET(CMAKE_MODULE_PATH $ENV{CMAKE_MODULE_PATH})\n"
             "INCLUDE(FernCompiler)\n"
             "INCLUDE(FernExternal)\n"
-        ) % project_name).str());
+        ) % project_name).str();
 
 
-        String library_target = model_name + String("_library");
+        std::string library_target = model_name + "_library";
         {
             installable_targets.emplace_back(library_target);
-            std::vector<String> library_module_names({
+            std::vector<std::string> library_module_names({
                 model_name
             });
-            std::vector<String> link_libraries({
+            std::vector<std::string> link_libraries({
             });
 
-            cmake_script += String((boost::format(
+            cmake_script += (boost::format(
                 "ADD_LIBRARY(%1%\n"
                 "    %2%\n"
                 ")\n"
@@ -136,21 +137,21 @@ void Compiler::compile(
                 "    %4%\n"
                 ")\n"
             ) % library_target % join(library_module_names, ", ")
-                % model_name % join(link_libraries, " ")).str());
+                % model_name % join(link_libraries, " ")).str();
         }
 
         if(flags & DUMP_DRIVER) {
-            String driver_target = model_name + String("_driver");
+            std::string driver_target = model_name + "_driver";
             installable_targets.emplace_back(driver_target);
-            std::vector<String> driver_module_names({
+            std::vector<std::string> driver_module_names({
                 "main"
             });
-            std::vector<String> link_libraries({
+            std::vector<std::string> link_libraries({
                 library_target,
                 "fernlib",
                 "${FERN_EXTERNAL_LIBRARIES}"
             });
-            cmake_script += String((boost::format(
+            cmake_script += (boost::format(
                 "ADD_EXECUTABLE(%1%\n"
                 "    %2%\n"
                 ")\n"
@@ -162,17 +163,17 @@ void Compiler::compile(
                 "    %4%\n"
                 ")\n"
             ) % driver_target % join(driver_module_names, ", ")
-                % model_name % join(link_libraries, " ")).str());
+                % model_name % join(link_libraries, " ")).str();
         }
 
-        cmake_script += String((boost::format(
+        cmake_script += (boost::format(
             "INSTALL(\n"
             "    TARGETS %1%\n"
             "    RUNTIME DESTINATION bin\n"
             "    ARCHIVE DESTINATION lib\n"
             "    LIBRARY DESTINATION lib\n"
             ")\n"
-        ) % join(installable_targets, " ")).str());
+        ) % join(installable_targets, " ")).str();
 
         write_file(cmake_script, cmake_file_path);
     }
@@ -180,8 +181,8 @@ void Compiler::compile(
     if(flags & DUMP_DRIVER) {
         Path driver_module_path = (destination_module_path / "main")
             .replace_extension(_module_extension);
-        String class_name = model_name;
-        write_file(String((boost::format(
+        std::string class_name = model_name;
+        write_file((boost::format(
             "#include <cstdlib>\n"
             "#include <iostream>\n"
             "#include \"fern/core/exception.h\"\n"
@@ -215,7 +216,7 @@ void Compiler::compile(
             "\n"
             "    return status;\n"
             "}"
-        ) % header_path.filename() % class_name).str()), driver_module_path);
+        ) % header_path.filename() % class_name).str(), driver_module_path);
     }
 }
 

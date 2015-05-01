@@ -44,7 +44,8 @@ public:
 
     ExpressionVertex& operator=        (ExpressionVertex const&)=delete;
 
-    String const&  name                () const;
+    std::string const&
+                   name                () const;
 
     void           set_expression_types(
                                   ExpressionTypes const& expression_types);
@@ -59,16 +60,16 @@ public:
 
 protected:
 
-                   ExpressionVertex    (String const& name);
+                   ExpressionVertex    (std::string const& name);
 
                    ExpressionVertex    (int line_nr,
                                         int col_id,
-                                        String const& name);
+                                        std::string const& name);
 
 private:
 
     //! Name of the expression, eg: abs, myDog, 5.
-    String         _name;
+    std::string    _name;
 
     ExpressionTypes _expression_types;
 

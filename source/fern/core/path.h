@@ -40,8 +40,6 @@ public:
 
     Path&          operator=           (Path const&)=default;
 
-    // Path&          operator=           (std::string const& string);
-
                    ~Path               ()=default;
 
     bool           operator==          (Path const& path) const;

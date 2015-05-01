@@ -7,6 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #include "fern/language/compiler/parse_command_line.h"
+#include "fern/core/string.h"
 #include "fern/language/io/drivers.h"
 #include "fern/language/interpreter/data_sources.h"
 #include "fern/language/interpreter/data_syncs.h"
@@ -25,7 +26,7 @@ namespace {
 */
 std::shared_ptr<DataSource> data_source(
     DataDescription const& /* argument */,
-    String const& value)
+    std::string const& value)
 {
     // First, check if the string passed in is a data name pointing to
     // existing data.
@@ -41,14 +42,14 @@ std::shared_ptr<DataSource> data_source(
         result = std::make_shared<DatasetSource>(data_name);
     }
 
-    if(value.is_convertable_to<int64_t>()) {
-        result = std::make_shared<ConstantSource<int64_t>>(value.as<int64_t>());
+    if(is_convertable_to<int64_t>(value)) {
+        result = std::make_shared<ConstantSource<int64_t>>(as<int64_t>(value));
     }
-    else if(value.is_convertable_to<double>()) {
-        result = std::make_shared<ConstantSource<double>>(value.as<double>());
+    else if(is_convertable_to<double>(value)) {
+        result = std::make_shared<ConstantSource<double>>(as<double>(value));
     }
     else {
-        result = std::make_shared<ConstantSource<String>>(value);
+        result = std::make_shared<ConstantSource<std::string>>(value);
     }
 
     assert(result);
@@ -58,7 +59,7 @@ std::shared_ptr<DataSource> data_source(
 
 std::shared_ptr<DataSync> data_sync(
     DataDescription const& /* argument */,
-    String const& value)
+    std::string const& value)
 {
     // The value passed in must be the name of a data sync that can be opened.
     return std::shared_ptr<DataSync>(std::make_shared<DatasetSync>(

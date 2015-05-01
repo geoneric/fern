@@ -13,7 +13,7 @@ namespace fern {
 namespace language {
 
 DataDescription::DataDescription(
-    String const& name)
+    std::string const& name)
 
     : _name(name)
 
@@ -25,13 +25,13 @@ DataDescription::DataDescription(
 
 std::string DataDescription::name() const
 {
-    return _name.encode_in_default_encoding();
+    return _name;
 }
 
 
 std::string DataDescription::description() const
 {
-    return _description.encode_in_default_encoding();
+    return _description;
 }
 
 } // namespace language

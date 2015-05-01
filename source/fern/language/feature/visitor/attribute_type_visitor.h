@@ -63,7 +63,7 @@ public:
 
     void           Visit               (ConstantAttribute<double> const& attribute);
 
-    void           Visit               (ConstantAttribute<String> const& attribute);
+    void           Visit               (ConstantAttribute<std::string> const& attribute);
 
     virtual void   Visit               (FieldAttribute<bool> const& attribute);
 
@@ -87,7 +87,7 @@ public:
 
     virtual void   Visit               (FieldAttribute<double> const& attribute);
 
-    virtual void   Visit               (FieldAttribute<String> const& attribute);
+    virtual void   Visit               (FieldAttribute<std::string> const& attribute);
 
     DataType       data_type           () const;
 

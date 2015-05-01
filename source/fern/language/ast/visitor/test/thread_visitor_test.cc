@@ -8,7 +8,6 @@
 // -----------------------------------------------------------------------------
 #define BOOST_TEST_MODULE fern ast
 #include <boost/test/unit_test.hpp>
-#include "fern/core/string.h"
 #include "fern/language/script/algebra_parser.h"
 #include "fern/language/ast/core/vertices.h"
 #include "fern/language/ast/visitor/thread_visitor.h"
@@ -65,8 +64,7 @@ BOOST_AUTO_TEST_CASE(visit_empty_script)
 {
     std::shared_ptr<fl::ModuleVertex> tree;
 
-    tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-        fern::String("")));
+    tree = _xml_parser.parse_string(_algebra_parser.parse_string(""));
     tree->Accept(_thread_visitor);
     BOOST_CHECK_EQUAL(tree->successor(), tree->scope());
     BOOST_CHECK_EQUAL(tree->scope()->successor(), tree->scope()->sentinel());
@@ -78,8 +76,7 @@ BOOST_AUTO_TEST_CASE(visit_name)
 {
     std::shared_ptr<fl::ModuleVertex> tree;
 
-    tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-        fern::String("a")));
+    tree = _xml_parser.parse_string(_algebra_parser.parse_string("a"));
     tree->Accept(_thread_visitor);
 
     fl::AstVertex const* vertex_a = &(*tree->scope()->statements()[0]);
@@ -95,8 +92,7 @@ BOOST_AUTO_TEST_CASE(visit_assignment)
 {
     std::shared_ptr<fl::ModuleVertex> tree;
 
-    tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-        fern::String("a = b")));
+    tree = _xml_parser.parse_string(_algebra_parser.parse_string("a = b"));
     tree->Accept(_thread_visitor);
 
     fl::AssignmentVertex const* assignment =
@@ -118,8 +114,7 @@ BOOST_AUTO_TEST_CASE(visit_string)
 {
     std::shared_ptr<fl::ModuleVertex> tree;
 
-    tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-        fern::String("\"five\"")));
+    tree = _xml_parser.parse_string(_algebra_parser.parse_string("\"five\""));
     tree->Accept(_thread_visitor);
 
     fl::AstVertex const* string_vertex =
@@ -137,7 +132,7 @@ BOOST_AUTO_TEST_CASE(visit_number)
     std::shared_ptr<fl::ModuleVertex> tree;
 
     tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-        fern::String("5")));
+        "5"));
     tree->Accept(_thread_visitor);
 
     fl::AstVertex const* number_vertex =
@@ -156,7 +151,7 @@ BOOST_AUTO_TEST_CASE(visit_function)
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String("f()")));
+            "f()"));
         tree->Accept(_thread_visitor);
 
         fl::AstVertex const* function_call_vertex =
@@ -171,7 +166,7 @@ BOOST_AUTO_TEST_CASE(visit_function)
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String("f(1, \"2\", three, four())")));
+            "f(1, \"2\", three, four())"));
         tree->Accept(_thread_visitor);
 
         fl::FunctionCallVertex const* function_call_vertex =
@@ -204,8 +199,7 @@ BOOST_AUTO_TEST_CASE(visit_operator)
     std::shared_ptr<fl::ModuleVertex> tree;
 
     {
-        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String("-a")));
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string("-a"));
         tree->Accept(_thread_visitor);
 
         fl::OperatorVertex const* operator_vertex =
@@ -224,7 +218,7 @@ BOOST_AUTO_TEST_CASE(visit_operator)
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String("a + b")));
+            "a + b"));
         tree->Accept(_thread_visitor);
 
         fl::OperatorVertex const* operator_vertex =
@@ -246,7 +240,7 @@ BOOST_AUTO_TEST_CASE(visit_operator)
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String("-(a + b)")));
+            "-(a + b)"));
         tree->Accept(_thread_visitor);
 
         fl::OperatorVertex const* operator1_vertex =
@@ -277,7 +271,7 @@ BOOST_AUTO_TEST_CASE(visit_multiple_statement)
     std::shared_ptr<fl::ModuleVertex> tree;
 
     tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-        fern::String("a;b;c")));
+        "a;b;c"));
     tree->Accept(_thread_visitor);
 
     fl::AstVertex const* vertex_a = &(*tree->scope()->statements()[0]);
@@ -298,7 +292,7 @@ BOOST_AUTO_TEST_CASE(visit_nested_expressions)
     std::shared_ptr<fl::ModuleVertex> tree;
 
     tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-        fern::String("a = b + c")));
+        "a = b + c"));
     tree->Accept(_thread_visitor);
 
     fl::AssignmentVertex const* assignment =
@@ -330,10 +324,9 @@ BOOST_AUTO_TEST_CASE(visit_if)
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String(
-                "if a:\n"
-                "    b\n"
-                "    c")));
+            "if a:\n"
+            "    b\n"
+            "    c"));
         tree->Accept(_thread_visitor);
 
         fl::IfVertex const* if_vertex =
@@ -363,16 +356,15 @@ BOOST_AUTO_TEST_CASE(visit_if)
 
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String(
-                "if a:\n"
-                "    b\n"
-                "    c\n"
-                "elif d:\n"
-                "    e\n"
-                "    f\n"
-                "else:\n"
-                "    g\n"
-                "    h\n")));
+            "if a:\n"
+            "    b\n"
+            "    c\n"
+            "elif d:\n"
+            "    e\n"
+            "    f\n"
+            "else:\n"
+            "    g\n"
+            "    h\n"));
         tree->Accept(_thread_visitor);
 
         // True block first if.
@@ -461,11 +453,10 @@ BOOST_AUTO_TEST_CASE(visit_function_definition)
     std::shared_ptr<fl::ModuleVertex> tree;
 
     {
-        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String(u8R"(
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(u8R"(
 def foo():
     return
-)")));
+)"));
         tree->Accept(_thread_visitor);
 
         // The defined function isn't called, so the script is in effect
@@ -501,11 +492,10 @@ def foo():
     }
 
     {
-        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String(u8R"(
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(u8R"(
 def foo():
     return 5
-)")));
+)"));
         tree->Accept(_thread_visitor);
 
         // The defined function isn't called, so the script is in effect
@@ -541,12 +531,11 @@ def foo():
     }
 
     {
-        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String(u8R"(
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(u8R"(
 def foo():
     return 5
 
-a = foo())")));
+a = foo())"));
         tree->Accept(_thread_visitor);
 
         BOOST_REQUIRE_EQUAL(tree->scope()->statements().size(), 2u);
@@ -601,12 +590,11 @@ a = foo())")));
 
     {
         // Test function without return statement.
-        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String(u8R"(
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(u8R"(
 def foo():
     bar
 
-foo())")));
+foo())"));
         tree->Accept(_thread_visitor);
 
         BOOST_REQUIRE_EQUAL(tree->scope()->statements().size(), 2u);
@@ -651,14 +639,13 @@ foo())")));
         // Test whether the original order of the statements is maintained.
         // Test whether statements after the return statement are threaded.
         // These are unreachable, but must be threaded anyway.
-        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String(u8R"(
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(u8R"(
 a = foo()
 
 def foo():
     return 5
     6
-)")));
+)"));
         tree->Accept(_thread_visitor);
 
         BOOST_REQUIRE_EQUAL(tree->scope()->statements().size(), 2u);
@@ -733,13 +720,12 @@ def foo():
     {
         // Add two arguments to the function and let the function return
         // the sum.
-        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String(u8R"(
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(u8R"(
 def sum(lhs, rhs):
     return lhs + rhs
 
 s = sum(5, 6)
-)")));
+)"));
         tree->Accept(_thread_visitor);
 
         BOOST_REQUIRE_EQUAL(tree->scope()->statements().size(), 2u);
@@ -858,8 +844,7 @@ s = sum(5, 6)
 
     {
         // Test nested function definitions.
-        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String(u8R"(
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(u8R"(
 def foo(a, b):
     def bar(c, d):
         return c + d
@@ -867,7 +852,7 @@ def foo(a, b):
     return bar(a, b)
 
 result = foo(5, 6)
-)")));
+)"));
         tree->Accept(_thread_visitor);
 
         BOOST_REQUIRE_EQUAL(tree->scope()->statements().size(), 2u);
@@ -1060,8 +1045,7 @@ BOOST_AUTO_TEST_CASE(visit_subscript)
     std::shared_ptr<fl::ModuleVertex> tree;
 
     {
-        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String("a[b]")));
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string("a[b]"));
         tree->Accept(_thread_visitor);
 
         fl::SubscriptVertex const* subscript =
@@ -1088,8 +1072,7 @@ BOOST_AUTO_TEST_CASE(visit_attribute)
     std::shared_ptr<fl::ModuleVertex> tree;
 
     {
-        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String("a.b")));
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string("a.b"));
         tree->Accept(_thread_visitor);
 
         fl::AttributeVertex const* attribute =

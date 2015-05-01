@@ -49,9 +49,9 @@ public:
 
     Interpreter&   operator=           (Interpreter const&)=delete;
 
-    ModuleVertexPtr parse_string       (String const& string) const;
+    ModuleVertexPtr parse_string       (std::string const& string) const;
 
-    ModuleVertexPtr parse_file         (String const& filename) const;
+    ModuleVertexPtr parse_file         (std::string const& filename) const;
 
     void           annotate            (ModuleVertexPtr const& tree);
 

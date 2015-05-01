@@ -50,13 +50,13 @@ private:
     int            compile_to_cpp      (int argc,
                                         char** argv) const;
 
-    String         compile_to_dot_ast  (ModuleVertexPtr const& tree,
+    std::string    compile_to_dot_ast  (ModuleVertexPtr const& tree,
                                         int modes) const;
 
     int            compile_to_dot_ast  (int argc,
                                         char** argv) const;
 
-    String         compile_to_dot_flowgraph(
+    std::string    compile_to_dot_flowgraph(
                                         ModuleVertexPtr const& tree) const;
 
     int            compile_to_dot_flowgraph(

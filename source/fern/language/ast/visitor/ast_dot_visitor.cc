@@ -7,7 +7,8 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #include "fern/language/ast/visitor/ast_dot_visitor.h"
-#include "fern/core/string.h"
+#include <cassert>
+#include <boost/format.hpp>
 #include "fern/language/ast/core/vertices.h"
 
 
@@ -15,11 +16,11 @@ namespace fern {
 namespace language {
 namespace {
 
-String annotate_expression_label(
-    String const& name,
+std::string annotate_expression_label(
+    std::string const& name,
     ExpressionVertex const& vertex)
 {
-    String label = name + String("\\n");
+    std::string label = name + "\\n";
 
     ExpressionTypes const& expression_types(vertex.expression_types());
     if(expression_types.is_empty()) {
@@ -29,12 +30,12 @@ String annotate_expression_label(
     }
     else {
         assert(expression_types.size() == 1);
-        String data_types = expression_types[0].data_type().to_string();
-        String value_types = expression_types[0].value_type().to_string();
+        std::string data_types = expression_types[0].data_type().to_string();
+        std::string value_types = expression_types[0].value_type().to_string();
 
         label +=
-            String("dt: ") + data_types + String("\\n") +
-            String("vt: ") + value_types;
+            "dt: " + data_types + "\\n" +
+            "vt: " + value_types;
     }
 
     return label;
@@ -67,9 +68,9 @@ void AstDotVisitor::add_ast_vertex(
 {
     assert(_mode == Mode::ConnectingAst);
     add_script(
-        String(boost::format("\"%1%\"") % &source_vertex) + String(" -> ") +
-        String(boost::format("\"%1%\"") % &target_vertex) + String(" [") +
-        String("];\n")
+        (boost::format("\"%1%\"") % &source_vertex).str() + " -> " +
+        (boost::format("\"%1%\"") % &target_vertex).str() + " [" +
+        "];\n"
     );
 }
 
@@ -80,9 +81,9 @@ void AstDotVisitor::add_ast_vertex(
 // {
 //     assert(_mode == Mode::ConnectingAst);
 //     add_script(
-//         String(boost::format("\"%1%\"") % &source_vertex) + " -> " +
-//         String(boost::format("\"%1%\"") % &target_vertex) + " ["
-//         // String(boost::format("\"cluster_%1%\"") % &target_vertex) + " ["
+//         (boost::format("\"%1%\"") % &source_vertex).str() + " -> " +
+//         (boost::format("\"%1%\"") % &target_vertex).str() + " ["
+//         // (boost::format("\"cluster_%1%\"") % &target_vertex).str() + " ["
 //         "];\n"
 //     );
 // }
@@ -94,9 +95,9 @@ void AstDotVisitor::add_ast_vertex(
 // {
 //     assert(_mode == Mode::ConnectingAst);
 //     add_script(
-//         // String(boost::format("\"cluster_%1%\"") % &source_vertex) + " -> " +
-//         String(boost::format("\"%1%\"") % &source_vertex) + " -> " +
-//         String(boost::format("\"%1%\"") % &target_vertex) + " ["
+//         // (boost::format("\"cluster_%1%\"") % &source_vertex).str() + " -> " +
+//         (boost::format("\"%1%\"") % &source_vertex).str() + " -> " +
+//         (boost::format("\"%1%\"") % &target_vertex).str() + " ["
 //         "];\n"
 //     );
 // }
@@ -108,14 +109,14 @@ void AstDotVisitor::add_cfg_vertices(
     assert(_mode == Mode::ConnectingCfg);
     for(auto successor: source_vertex.successors()) {
         add_script(
-            String(boost::format("\"%1%\"") % &source_vertex) + String(" -> ") +
-            String(boost::format("\"%1%\"") % successor) + String(" [") +
-                String(
+            (boost::format("\"%1%\"") % &source_vertex).str() + " -> " +
+            (boost::format("\"%1%\"") % successor).str() +
+                " ["
                     "color=\"/spectral11/3\", "
                     "constraint=false, "
                     "style=dashed, "
                     "penwidth=2.0"
-                "];\n")
+                "];\n"
         );
     }
 }
@@ -127,14 +128,14 @@ void AstDotVisitor::add_use_vertices(
     assert(_mode == Mode::ConnectingUses);
     for(auto use: vertex.uses()) {
         add_script(
-            String(boost::format("\"%1%\"") % &vertex) + String(" -> ") +
-            String(boost::format("\"%1%\"") % use) + String(" [") +
-              String(
+            (boost::format("\"%1%\"") % &vertex).str() + " -> " +
+            (boost::format("\"%1%\"") % use).str() +
+                " ["
                   "color=\"/spectral11/8\", "
                   "constraint=false, "
                   "style=dashed, "
                   "penwidth=2.0"
-              "];\n")
+              "];\n"
         );
     }
 }
@@ -147,7 +148,7 @@ void AstDotVisitor::Visit(
     switch(_mode) {
         case Mode::Declaring: {
             add_script(
-                String(boost::format("\"%1%\" ["
+                (boost::format("\"%1%\" ["
                         "label=\"%2%\", "
                         "shape=box, "
                         "style=filled, "
@@ -155,8 +156,8 @@ void AstDotVisitor::Visit(
                     "];\n")
                     % &vertex
                     % annotate_expression_label(
-                        (boost::format("%1%")) % vertex.value(), vertex)
-            ));
+                        (boost::format("%1%") % vertex.value()).str(), vertex)
+            ).str());
 
             break;
         }
@@ -193,7 +194,7 @@ void AstDotVisitor::Visit(
     switch(_mode) {
         case Mode::Declaring: {
             add_script(
-                String(boost::format("\"%1%\" [label=\"=\"];\n") % &vertex)
+                (boost::format("\"%1%\" [label=\"=\"];\n") % &vertex).str()
             );
             break;
         }
@@ -222,7 +223,7 @@ void AstDotVisitor::Visit(
     switch(_mode) {
         case Mode::Declaring: {
             add_script(
-                String(boost::format("\"%1%\" ["
+                (boost::format("\"%1%\" ["
                         "label=\"%2%\""
                         "style=filled, "
                         "fillcolor=\"%3%\""
@@ -231,7 +232,7 @@ void AstDotVisitor::Visit(
                     % annotate_expression_label(vertex.symbol(), vertex)
                     % (vertex.expression_types().fixed()
                         ? "/spectral11/9" : "/spectral11/2")
-            ));
+            ).str());
             break;
         }
         case Mode::ConnectingAst: {
@@ -261,7 +262,7 @@ void AstDotVisitor::Visit(
     switch(_mode) {
         case Mode::Declaring: {
             add_script(
-                String(boost::format("\"%1%\" ["
+                (boost::format("\"%1%\" ["
                         "label=\"%2%\""
                         "style=filled, "
                         "fillcolor=\"%3%\""
@@ -270,7 +271,7 @@ void AstDotVisitor::Visit(
                     % annotate_expression_label(vertex.name(), vertex)
                     % (vertex.expression_types().fixed()
                         ? "/spectral11/9" : "/spectral11/2")
-            ));
+            ).str());
             break;
         }
         case Mode::ConnectingAst: {
@@ -297,25 +298,25 @@ void AstDotVisitor::Visit(
 void AstDotVisitor::Visit(
     FunctionDefinitionVertex& vertex)
 {
-    _scope_names.push(vertex.name().encode_in_utf8());
+    _scope_names.push(vertex.name());
 
     switch(_mode) {
         case Mode::Declaring: {
             add_script(
-                String(boost::format("\"%1%\" ["
+                (boost::format("\"%1%\" ["
                         "label=\"%2%\" "
                     "];\n")
                     % &vertex
-                    % vertex.name()));
+                    % vertex.name()).str());
             break;
         }
         case Mode::ConnectingAst: {
             // Visit(*vertex.scope());
-            // add_script(String(boost::format(
+            // add_script((boost::format(
             //     "subgraph cluster_%1% {\n"
             //         "label=\"%2%\";\n")
             //     % &vertex
-            //     % vertex.name()));
+            //     % vertex.name()).str());
 
             // for(auto expression_vertex: vertex.arguments()) {
             //     add_ast_vertex(vertex, *expression_vertex);
@@ -368,10 +369,10 @@ void AstDotVisitor::Visit(
     switch(_mode) {
         case Mode::Declaring: {
             add_script(
-                String(boost::format("\"%1%\" ["
+                (boost::format("\"%1%\" ["
                         "label=\"return\" "
                     "];\n")
-                    % &vertex));
+                    % &vertex).str());
             break;
         }
         case Mode::ConnectingAst: {
@@ -400,8 +401,8 @@ void AstDotVisitor::Visit(
     switch(_mode) {
         case Mode::Declaring: {
             add_script(
-                String(boost::format("\"%1%\"") % &vertex) +
-                String(" [label=\"If\", shape=diamond];\n")
+                (boost::format("\"%1%\"") % &vertex).str() +
+                " [label=\"If\", shape=diamond];\n"
             );
             break;
         }
@@ -442,7 +443,7 @@ void AstDotVisitor::Visit(
     switch(_mode) {
         case Mode::Declaring: {
             add_script(
-                String(boost::format("\"%1%\" ["
+                (boost::format("\"%1%\" ["
                         "label=\"%2%\" "
                         "style=filled "
                         "fillcolor=\"%3%\""
@@ -451,7 +452,7 @@ void AstDotVisitor::Visit(
                     % annotate_expression_label(vertex.name(), vertex)
                     % (vertex.expression_types().fixed()
                         ? "/spectral11/9" : "/spectral11/2")
-            ));
+            ).str());
 
             break;
         }
@@ -476,7 +477,7 @@ void AstDotVisitor::Visit(
     switch(_mode) {
         case Mode::Declaring: {
             add_script(
-                String(boost::format("\"%1%\" ["
+                (boost::format("\"%1%\" ["
                         "label=\"%2%\""
                         "style=filled, "
                         "fillcolor=\"%3%\""
@@ -485,7 +486,7 @@ void AstDotVisitor::Visit(
                     % annotate_expression_label(vertex.symbol(), vertex)
                     % (vertex.expression_types().fixed()
                         ? "/spectral11/9" : "/spectral11/2")
-            ));
+            ).str());
             break;
         }
         case Mode::ConnectingAst: {
@@ -510,15 +511,15 @@ void AstDotVisitor::Visit(
 void AstDotVisitor::Visit(
     ModuleVertex& vertex)
 {
-    _scope_names.push(vertex.source_name().encode_in_utf8());
+    _scope_names.push(vertex.source_name());
     // TODO 'ordering=out' is current not supported in combination with
     // TODO 'constraint=false'. Check again with dot > 2.28.0, when it becomes
     // TODO available.
-    set_script(String(
+    set_script(
         "digraph G {\n"
         "ordering=out;\n"
         "rankdir=TB;\n"
-    ));
+    );
 
     set_mode(Mode::Declaring);
     Visit(*vertex.scope());
@@ -556,9 +557,9 @@ void AstDotVisitor::Visit(
     switch(_mode) {
         case Mode::Declaring: {
             add_script(
-                String(boost::format("\"%1%\"") % &vertex) +
-                String(" [label=\"\\\"") + vertex.value() +
-                String("\\\"\", fontname=courier, shape=box];\n")
+                (boost::format("\"%1%\"") % &vertex).str() +
+                " [label=\"\\\"" + vertex.value() +
+                "\\\"\", fontname=courier, shape=box];\n"
             );
             break;
         }
@@ -582,8 +583,8 @@ void AstDotVisitor::Visit(
     switch(_mode) {
         case Mode::Declaring: {
             add_script(
-                String(boost::format("\"%1%\"") % &vertex) +
-                String(" [label=\"While\", shape=diamond];\n")
+                (boost::format("\"%1%\"") % &vertex).str() +
+                " [label=\"While\", shape=diamond];\n"
             );
             break;
         }
@@ -624,18 +625,18 @@ void AstDotVisitor::Visit(
     switch(_mode) {
         case Mode::Declaring: {
             add_script(
-                String(boost::format("\"%1%\" ["
+                (boost::format("\"%1%\" ["
                         "label=\"scope\" "
                     "];\n")
-                    % &vertex));
+                    % &vertex).str());
             break;
         }
         case Mode::ConnectingAst: {
-            add_script(String(boost::format(
+            add_script((boost::format(
                 "subgraph cluster_%1% {\n"
                     "label=\"%2%\";\n")
                 % &vertex
-                % _scope_names.top()));
+                % _scope_names.top()).str());
 
             for(auto statement_vertex: vertex.statements()) {
                 add_ast_vertex(vertex, *statement_vertex);
@@ -664,10 +665,10 @@ void AstDotVisitor::Visit(
     switch(_mode) {
         case Mode::Declaring: {
             add_script(
-                String(boost::format("\"%1%\" ["
+                (boost::format("\"%1%\" ["
                         "label=\"sentinel\" "
                     "];\n")
-                    % &vertex));
+                    % &vertex).str());
             break;
         }
         case Mode::ConnectingAst: {

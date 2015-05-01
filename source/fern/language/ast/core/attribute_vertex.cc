@@ -14,7 +14,7 @@ namespace language {
 
 AttributeVertex::AttributeVertex(
     ExpressionVertexPtr const& expression,
-    String const& member_name)
+    std::string const& member_name)
 
     : ExpressionVertex("Attribute"),
       _symbol("."),
@@ -31,13 +31,13 @@ ExpressionVertexPtr const& AttributeVertex::expression() const
 }
 
 
-String const& AttributeVertex::member_name() const
+std::string const& AttributeVertex::member_name() const
 {
     return _member_name;
 }
 
 
-String const& AttributeVertex::symbol() const
+std::string const& AttributeVertex::symbol() const
 {
     return _symbol;
 }

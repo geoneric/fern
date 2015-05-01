@@ -13,7 +13,7 @@ namespace fern {
 namespace language {
 
 ExpressionVertex::ExpressionVertex(
-    String const& name)
+    std::string const& name)
 
     : StatementVertex(),
       _name(name)
@@ -25,7 +25,7 @@ ExpressionVertex::ExpressionVertex(
 ExpressionVertex::ExpressionVertex(
     int line_nr,
     int col_id,
-    String const& name)
+    std::string const& name)
 
     : StatementVertex(line_nr, col_id),
       _name(name)
@@ -34,7 +34,7 @@ ExpressionVertex::ExpressionVertex(
 }
 
 
-String const& ExpressionVertex::name() const
+std::string const& ExpressionVertex::name() const
 {
     return _name;
 }

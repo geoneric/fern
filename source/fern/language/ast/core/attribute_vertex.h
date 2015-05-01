@@ -29,31 +29,35 @@ public:
 
                    AttributeVertex     (
                         std::shared_ptr<ExpressionVertex> const& expression,
-                        String const& member_name);
+                        std::string const& member_name);
 
                    ~AttributeVertex    ()=default;
 
                    AttributeVertex     (AttributeVertex&&)=delete;
 
-    AttributeVertex& operator=         (AttributeVertex&&)=delete;
+    AttributeVertex&
+                   operator=           (AttributeVertex&&)=delete;
 
                    AttributeVertex     (AttributeVertex const&)=delete;
 
-    AttributeVertex& operator=         (AttributeVertex const&)=delete;
+    AttributeVertex&
+                   operator=         (AttributeVertex const&)=delete;
 
-    String const&  symbol              () const;
+    std::string const&
+                   symbol              () const;
 
     std::shared_ptr<ExpressionVertex> const& expression() const;
 
-    String const&  member_name         () const;
+    std::string const&
+                   member_name         () const;
 
 private:
 
-    String const   _symbol;
+    std::string const _symbol;
 
     ExpressionVertexPtr _expression;
 
-    String         _member_name;
+    std::string    _member_name;
 
 };
 

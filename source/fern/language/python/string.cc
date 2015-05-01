@@ -12,15 +12,14 @@
 namespace fern {
 namespace python {
 
-String as_unicode_string(
+std::string as_unicode_string(
     PyObject* object)
 {
-    // TODO What do we know about the encoding of the input string? Use it to
-    //      create the correct UnicodeString instance. Currently UTF8 is assumed
-    //      by String's constructor.
+    // TODO What do we know about the encoding of the input string?
+    //      We assume UTF8.
     char* bytes = PyString_AsString(object);
     assert(bytes);
-    return String(bytes);
+    return bytes;
 }
 
 } // namespace python

@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------------
 #include "fern/language/compiler/compile_visitor.h"
 #include "fern/core/path.h"
+#include "fern/core/string.h"
 #include "fern/language/ast/core/vertices.h"
 #include "fern/language/ast/visitor/io_visitor.h"
 
@@ -17,7 +18,7 @@ namespace language {
 
 CompileVisitor::CompileVisitor(
     OperationsPtr const& operations,
-    String const& header_filename)
+    std::string const& header_filename)
 
     : AstVisitor(),
       _operations(operations),
@@ -36,13 +37,13 @@ CompileVisitor::~CompileVisitor()
 }
 
 
-String const& CompileVisitor::header() const
+std::string const& CompileVisitor::header() const
 {
     return _header;
 }
 
 
-String const& CompileVisitor::module() const
+std::string const& CompileVisitor::module() const
 {
     return _module;
 }
@@ -56,9 +57,9 @@ void CompileVisitor::Visit(
         "std::vector<std::shared_ptr<fern::Argument>> results(";
     vertex.expression()->Accept(*this);
     _body.emplace_back(_statement);
-    _body.emplace_back(boost::format(
+    _body.emplace_back((boost::format(
         "std::shared_ptr<fern::Argument> %1%(results[0])"
-        ) % vertex.target()->name());
+        ) % vertex.target()->name()).str());
 }
 
 
@@ -98,9 +99,9 @@ void CompileVisitor::Visit(
 {
     Operation const& operation(*_operations->operation(vertex.name()));
 
-    _statement += boost::format(
+    _statement += (boost::format(
         "_operations->operation(\"%1%\")->execute(std::vector<std::shared_ptr<fern::Argument>>{"
-        ) % operation.name();
+        ) % operation.name()).str();
     visit_expressions(vertex.expressions());
 
     _statement +=
@@ -128,23 +129,23 @@ void CompileVisitor::Visit(
     // Determine inputs and outputs of the module.
     IOVisitor visitor;
     vertex.Accept(visitor);
-    String arguments_initializer_list;
-    String results_initializer_list;
+    std::string arguments_initializer_list;
+    std::string results_initializer_list;
 
     {
-        std::vector<String> initializers;
+        std::vector<std::string> initializers;
         for(auto const& input: visitor.inputs()) {
-            initializers.emplace_back(boost::format(
+            initializers.emplace_back((boost::format(
                 "fern::DataDescription(\"%1%\")"
-            ) % input);
+            ) % input).str());
         }
         arguments_initializer_list = join(initializers, ", ");
 
         initializers.clear();
         for(auto const& output: visitor.outputs()) {
-            initializers.emplace_back(boost::format(
+            initializers.emplace_back((boost::format(
                 "fern::DataDescription(\"%1%\")"
-            ) % output->name());
+            ) % output->name()).str());
         }
         results_initializer_list = join(initializers, ", ");
     }
@@ -173,11 +174,11 @@ void CompileVisitor::Visit(
     }
 
     // Now put the new module's code in the header and module strings.
-    String model_name =
+    std::string model_name =
         Path(vertex.source_name()).filename().stem().generic_string();
-    String class_name = model_name;
+    std::string class_name = model_name;
 
-    _header = String((boost::format(
+    _header = (boost::format(
 "#pragma once\n"
 "#include \"fern/language/compiler/module.h\"\n"
 "#include \"fern/language/operation/std/operations.h\"\n"
@@ -205,9 +206,9 @@ void CompileVisitor::Visit(
 "    std::shared_ptr<fern::Operations> _operations;\n"
 "\n"
 "};\n"
-    ) % class_name).str());
+    ) % class_name).str();
 
-    _module = String((boost::format(
+    _module = (boost::format(
 "#include \"%1%\"\n"
 "\n"
 "\n"
@@ -244,7 +245,7 @@ void CompileVisitor::Visit(
       % arguments_initializer_list
       % results_initializer_list
       % (join(_body, ";\n    ") +
-            (!_body.empty() ? String(";") : String("")))).str());
+            (!_body.empty() ? ";" : ""))).str();
 }
 
 

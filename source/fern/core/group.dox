@@ -1,0 +1,31 @@
+/*!
+    @brief      Parent group containing the Fern.Core module code
+    @defgroup   fern_core_group Core module
+    @ingroup    fern_group
+
+
+    Fern.Core is a C++ library with functionality common to the other
+    modules.
+*/
+
+
+/*!
+    @brief      Group containing data traits.
+    @defgroup   fern_data_traits_group Data traits
+    @ingroup    fern_core_group
+    @sa         fern_algorithm_argument_traits_group
+
+
+    Data traits provide type traits of various data types.
+*/
+
+
+/*!
+    @brief      Group containing data customization points.
+    @defgroup   fern_data_customization_point_group Data customization point
+    @ingroup    fern_core_group
+
+
+    Customization points are free template functions implementing
+    the same functionality for different data types.
+*/

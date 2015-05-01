@@ -7,7 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include "fern/core/string.h"
+#include <string>
 #include "fern/language/interpreter/interpreter.h"
 
 
@@ -50,7 +50,7 @@ protected:
 
     Interpreter const& interpreter     () const;
 
-    void           write               (String const& contents,
+    void           write               (std::string const& contents,
                                         std::string const& filename) const;
 
 private:

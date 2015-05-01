@@ -85,8 +85,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
     // Empty script.
     {
         // Script, scope, sentinel.
-        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String("")));
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(""));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 3u);
@@ -95,8 +94,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
     // Name.
     {
         // Script, scope, name, sentinel.
-        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String("a")));
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string("a"));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 4u);
@@ -104,8 +102,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
 
     // Number.
     {
-        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String("5")));
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string("5"));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 4u);
@@ -114,7 +111,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
     // String.
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String("\"five\"")));
+            "\"five\""));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 4u);
@@ -123,7 +120,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
     // Operator.
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String("a + b")));
+            "a + b"));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 6u);
@@ -132,7 +129,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
     // Function.
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String("f(a, b)")));
+            "f(a, b)"));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 6u);
@@ -141,7 +138,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
     // Assignment.
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String("c = f(a, b)")));
+            "c = f(a, b)"));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 8u);
@@ -150,11 +147,10 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
     // If.
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String(
-                "if a > b:\n"
-                "    c = d\n"
-                "else:\n"
-                "    e = f")));
+            "if a > b:\n"
+            "    c = d\n"
+            "else:\n"
+            "    e = f"));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 17u);
@@ -163,11 +159,10 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
     // While.
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String(
-                "while a > b:\n"
-                "    c = c + d\n"
-                "else:\n"
-                "    e = f")));
+            "while a > b:\n"
+            "    c = c + d\n"
+            "else:\n"
+            "    e = f"));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 19u);
@@ -176,7 +171,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
     // Slice.
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String("a[b]")));
+            "a[b]"));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 6u);
@@ -185,7 +180,7 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
     // Attribute.
     {
         tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String("a.b")));
+            "a.b"));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 5u);
@@ -193,11 +188,10 @@ BOOST_AUTO_TEST_CASE(count_vertices_visitor)
 
     // Function definition.
     {
-        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String(u8R"(
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(u8R"(
 def foo():
     return
-)")));
+)"));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 7u);
@@ -205,10 +199,9 @@ def foo():
 
     // Function call.
     {
-        tree = _xml_parser.parse_string(_algebra_parser.parse_string(
-            fern::String(u8R"(
+        tree = _xml_parser.parse_string(_algebra_parser.parse_string(u8R"(
 bla()
-)")));
+)"));
         assert(tree);
         tree->Accept(visitor);
         BOOST_CHECK_EQUAL(visitor.nr_vertices(), 4u);

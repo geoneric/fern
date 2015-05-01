@@ -50,7 +50,7 @@ inline void show_value(
     T const& value)
 {
     static_assert(
-        std::is_arithmetic<T>::value || std::is_same<T, String>::value,
+        std::is_arithmetic<T>::value || std::is_same<T, std::string>::value,
         "T must be a number or a string");
     std::cout << value << "\n";
 }
@@ -179,7 +179,7 @@ void enter_interpreter()
     // can be executed, a scope must be pushed.
 
     std::unique_ptr<char> line;
-    String statement;
+    std::string statement;
     Interpreter interpreter;
     std::shared_ptr<ModuleVertex> script_vertex;
 
@@ -188,9 +188,7 @@ void enter_interpreter()
 
     // Determine path name of history file. Reading the file will fail if it
     // doesn't exists, which is OK.
-    std::string history_filename((
-        String::decode_from_default_encoding(std::getenv("HOME")) +
-        String("/.fern")).encode_in_default_encoding());
+    std::string history_filename(std::string(std::getenv("HOME")) + "/.fern");
     /* int result = */ read_history(history_filename.c_str());
 
     while(true) {
@@ -202,7 +200,7 @@ void enter_interpreter()
         }
 
         add_history(line.get());
-        statement = String::decode_from_default_encoding(line.get());
+        statement = line.get();
 
         try {
             // Parse and execute the statement.
@@ -213,12 +211,12 @@ void enter_interpreter()
             show_stack_values(interpreter.stack());
         }
         catch(Exception const& exception) {
-            String message = exception.message();
+            std::string message = exception.message();
             std::cerr << message << std::endl;
         }
         catch(std::exception const& exception) {
             std::cerr << "TODO: unhandled exception: "
-                << String(exception.what())
+                << exception.what()
                 << std::endl;
         }
 

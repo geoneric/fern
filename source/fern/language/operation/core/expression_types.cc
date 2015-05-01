@@ -7,6 +7,8 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #include "fern/language/operation/core/expression_types.h"
+#include <cassert>
+#include <ostream>
 
 
 namespace fern {

@@ -75,7 +75,7 @@ Interpreter::Interpreter()
   \sa        .
 */
 ModuleVertexPtr Interpreter::parse_string(
-    String const& string) const
+    std::string const& string) const
 {
     ModuleVertexPtr script_vertex;
 
@@ -84,7 +84,7 @@ ModuleVertexPtr Interpreter::parse_string(
             string));
     }
     catch(detail::ParseError const& exception) {
-        String const* source_name = boost::get_error_info<
+        std::string const* source_name = boost::get_error_info<
             detail::ExceptionSourceName>(exception);
         assert(source_name);
 
@@ -96,10 +96,10 @@ ModuleVertexPtr Interpreter::parse_string(
             detail::ExceptionColNr>(exception);
         assert(col_nr);
 
-        String const* statement = boost::get_error_info<
+        std::string const* statement = boost::get_error_info<
             detail::ExceptionStatement>(exception);
 
-        String const* message = boost::get_error_info<
+        std::string const* message = boost::get_error_info<
             detail::ExceptionMessage>(exception);
         assert(message);
 
@@ -112,7 +112,7 @@ ModuleVertexPtr Interpreter::parse_string(
         }
     }
     catch(detail::UnsupportedLanguageConstruct const& exception) {
-        String const* source_name = boost::get_error_info<
+        std::string const* source_name = boost::get_error_info<
             detail::ExceptionSourceName>(exception);
         assert(source_name);
 
@@ -124,7 +124,7 @@ ModuleVertexPtr Interpreter::parse_string(
             detail::ExceptionColNr>(exception);
         assert(col_nr);
 
-        String const* construct = boost::get_error_info<
+        std::string const* construct = boost::get_error_info<
             detail::ExceptionConstruct>(exception);
         assert(construct);
 
@@ -146,12 +146,12 @@ ModuleVertexPtr Interpreter::parse_string(
   In case \a filename is empty, the script is read from standard input.
 */
 ModuleVertexPtr Interpreter::parse_file(
-    String const& filename) const
+    std::string const& filename) const
 {
     ModuleVertexPtr script_vertex;
 
     try {
-        if(filename.is_empty()) {
+        if(filename.empty()) {
             // Read script from the standard input stream.
             // Exceptions are handled by parse_string(...).
             std::ostringstream stream;
@@ -165,7 +165,7 @@ ModuleVertexPtr Interpreter::parse_file(
         }
     }
     catch(detail::IOError const& exception) {
-        String const* source_name = boost::get_error_info<
+        std::string const* source_name = boost::get_error_info<
             detail::ExceptionSourceName>(exception);
         assert(source_name);
 
@@ -176,7 +176,7 @@ ModuleVertexPtr Interpreter::parse_file(
         throw IOError(*source_name, *errno_);
     }
     catch(detail::ParseError const& exception) {
-        String const* source_name = boost::get_error_info<
+        std::string const* source_name = boost::get_error_info<
             detail::ExceptionSourceName>(exception);
         assert(source_name);
 
@@ -188,10 +188,10 @@ ModuleVertexPtr Interpreter::parse_file(
             detail::ExceptionColNr>(exception);
         assert(col_nr);
 
-        String const* statement = boost::get_error_info<
+        std::string const* statement = boost::get_error_info<
             detail::ExceptionStatement>(exception);
 
-        String const* message = boost::get_error_info<
+        std::string const* message = boost::get_error_info<
             detail::ExceptionMessage>(exception);
         assert(message);
 
@@ -204,7 +204,7 @@ ModuleVertexPtr Interpreter::parse_file(
         }
     }
     catch(detail::UnsupportedLanguageConstruct const& exception) {
-        String const* source_name = boost::get_error_info<
+        std::string const* source_name = boost::get_error_info<
             detail::ExceptionSourceName>(exception);
         assert(source_name);
 
@@ -216,7 +216,7 @@ ModuleVertexPtr Interpreter::parse_file(
             detail::ExceptionColNr>(exception);
         assert(col_nr);
 
-        String const* construct = boost::get_error_info<
+        std::string const* construct = boost::get_error_info<
             detail::ExceptionConstruct>(exception);
         assert(construct);
 
@@ -300,9 +300,9 @@ void Interpreter::validate(
         tree->Accept(_validate_visitor);
     }
     catch(detail::UndefinedIdentifier const& exception) {
-        String const& source_name = tree->source_name();
+        std::string const& source_name = tree->source_name();
 
-        String const* identifier_name = boost::get_error_info<
+        std::string const* identifier_name = boost::get_error_info<
             detail::ExceptionIdentifier>(exception);
         assert(identifier_name);
 
@@ -319,9 +319,9 @@ void Interpreter::validate(
                 MessageId::UNDEFINED_IDENTIFIER, *identifier_name));
     }
     catch(detail::UndefinedOperation const& exception) {
-        String const& source_name = tree->source_name();
+        std::string const& source_name = tree->source_name();
 
-        String const* operation_name = boost::get_error_info<
+        std::string const* operation_name = boost::get_error_info<
             detail::ExceptionFunction>(exception);
         assert(operation_name);
 
@@ -338,9 +338,9 @@ void Interpreter::validate(
                 MessageId::UNDEFINED_OPERATION, *operation_name));
     }
     catch(detail::WrongNumberOfArguments const& exception) {
-        String const& source_name = tree->source_name();
+        std::string const& source_name = tree->source_name();
 
-        String const* operation_name = boost::get_error_info<
+        std::string const* operation_name = boost::get_error_info<
             detail::ExceptionFunction>(exception);
         assert(operation_name);
 
@@ -363,9 +363,9 @@ void Interpreter::validate(
                 *required_nr_arguments, *provided_nr_arguments));
     }
     catch(detail::WrongTypeOfArgument const& exception) {
-        String const& source_name = tree->source_name();
+        std::string const& source_name = tree->source_name();
 
-        String const* operation_name = boost::get_error_info<
+        std::string const* operation_name = boost::get_error_info<
             detail::ExceptionFunction>(exception);
         assert(operation_name);
 
@@ -379,9 +379,9 @@ void Interpreter::validate(
 
         size_t const* argument_id = boost::get_error_info<
             detail::ExceptionArgumentId>(exception);
-        String const* required_argument_types = boost::get_error_info<
+        std::string const* required_argument_types = boost::get_error_info<
             detail::ExceptionRequiredArgumentTypes>(exception);
-        String const* provided_argument_types = boost::get_error_info<
+        std::string const* provided_argument_types = boost::get_error_info<
             detail::ExceptionProvidedArgumentTypes>(exception);
 
         throw ValidateError(source_name, *line_nr, *col_nr,

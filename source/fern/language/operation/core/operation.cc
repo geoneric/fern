@@ -7,6 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #include "fern/language/operation/core/operation.h"
+#include <cassert>
 #include "fern/language/operation/core/parameter.h"
 #include "fern/language/operation/core/result.h"
 
@@ -15,8 +16,8 @@ namespace fern {
 namespace language {
 
 Operation::Operation(
-    String const& name,
-    String const& description,
+    std::string const& name,
+    std::string const& description,
     std::vector<Parameter> const& parameters,
     std::vector<Result> const& results)
 
@@ -26,8 +27,8 @@ Operation::Operation(
       _results(results)
 
 {
-    assert(!name.is_empty());
-    assert(!description.is_empty());
+    assert(!name.empty());
+    assert(!description.empty());
 }
 
 
@@ -57,9 +58,9 @@ Operation& Operation::operator=(
 }
 
 
-// String Operation::xml() const
+// std::string Operation::xml() const
 // {
-//     String result = boost::format(
+//     std::string result = boost::format(
 //         "<?xml version="1.0"?>\n"
 //         "  <Operation>\n"
 //         "  <Name>%1%</Name>\n"
@@ -77,13 +78,13 @@ Operation& Operation::operator=(
 // }
 
 
-String const& Operation::name() const
+std::string const& Operation::name() const
 {
     return _name;
 }
 
 
-String const& Operation::description() const
+std::string const& Operation::description() const
 {
     return _description;
 }
