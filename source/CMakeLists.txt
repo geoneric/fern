@@ -41,6 +41,7 @@ endif()
 if(FERN_BUILD_DOCUMENTATION)
     list(APPEND _API_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/fern/fern.md)
     list(APPEND _API_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/fern/group.dox)
+
     if(FERN_FERN_ALGORITHM_REQUIRED)
         list(APPEND _API_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/fern/algorithm)
     endif()
@@ -56,14 +57,11 @@ if(FERN_BUILD_DOCUMENTATION)
     if(FERN_FERN_IO_REQUIRED)
         list(APPEND _API_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/fern/io)
     endif()
-    if(FERN_FERN_ALGORITHM_PYTHON_EXTENSION_REQUIRED)
-        list(APPEND _API_SOURCES
-            ${CMAKE_CURRENT_SOURCE_DIR}/fern/python_extension)
-    endif()
-
     if(FERN_BUILD_LANGUAGE)
-        list(APPEND _API_SOURCES
-            ${CMAKE_CURRENT_SOURCE_DIR}/fern/language)
+        list(APPEND _API_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/fern/language)
+    endif()
+    if(FERN_FERN_PYTHON_REQUIRED)
+        list(APPEND _API_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/fern/python)
     endif()
 
 

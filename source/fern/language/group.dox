@@ -1,5 +1,5 @@
 /*!
-    @brief      Parent group containing the Fern.Language module code
+    @brief      Group containing the Fern.Language module code
     @defgroup   fern_language_group Language module
     @ingroup    fern_group
 
