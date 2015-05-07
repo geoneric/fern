@@ -26,6 +26,17 @@ if(PEACOCK_PREFIX)
 endif()
 
 
+# Variable that can be set in this module:
+#
+# FERN_EXTERNAL_SOURCES
+#   List with directory pathnames containing sources to document. These are
+#   used to tell Doxygen which files to document.
+# FERN_EXTERNAL_SOURCES_FILE_PATTERNS
+#   List with filename patterns of external sources to document. Only needed
+#   for non-standard filename patterns. These are used to tell Doxygen which
+#   files to document.
+
+
 # Configure and find packages, configure project. ------------------------------
 if(FERN_BOOST_REQUIRED)
     set(Boost_USE_STATIC_LIBS OFF)
@@ -166,10 +177,31 @@ endif()
 if(FERN_SWIG_REQUIRED)
     find_package(SWIG REQUIRED)
 endif()
+if(FERN_XERCES_REQUIRED)
+    find_package(XercesC REQUIRED)
+    include_directories(
+        SYSTEM
+        ${XercesC_INCLUDE_DIRS}
+    )
+    list(APPEND FERN_EXTERNAL_LIBRARIES
+        ${XercesC_LIBRARIES}
+    )
+endif()
 if(FERN_XSD_REQUIRED)
     find_package(XSD REQUIRED)
     include_directories(
         SYSTEM
         ${XSD_INCLUDE_DIRS}
     )
+    list(APPEND FERN_EXTERNAL_SOURCES ${XSD_INCLUDE_DIRS})
+    list(APPEND FERN_EXTERNAL_SOURCES_FILE_PATTERNS *.ixx)
+    list(APPEND FERN_EXTERNAL_SOURCES_FILE_PATTERNS *.txx)
+    message(STATUS "Found XSD:")
+    message(STATUS "  includes  : ${XSD_INCLUDE_DIRS}")
+    message(STATUS "  executable: ${XSD_EXECUTABLE}")
 endif()
+
+
+# Turn list into a space-separated string.
+string(REPLACE ";" " " FERN_EXTERNAL_SOURCES_FILE_PATTERNS
+    "${FERN_EXTERNAL_SOURCES_FILE_PATTERNS}")

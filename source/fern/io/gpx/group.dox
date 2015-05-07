@@ -1,0 +1,11 @@
+/*!
+    @brief      Group containing code related to handling GPX files.
+    @defgroup   fern_io_gpx_group GPX
+    @ingroup    fern_io_group
+
+
+    See also:
+    - GPX homepage: http://www.topografix.com/gpx
+    - GPX 1.0 schema: http://www.topografix.com/gpx/1/0/gpx.xsd
+    - GPX 1.1 schema: http://www.topografix.com/gpx/1/1/gpx.xsd
+*/

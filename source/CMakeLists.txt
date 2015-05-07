@@ -56,6 +56,7 @@ if(FERN_BUILD_DOCUMENTATION)
     endif()
     if(FERN_FERN_IO_REQUIRED)
         list(APPEND _API_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/fern/io)
+        list(APPEND _API_SOURCES ${CMAKE_CURRENT_BINARY_DIR}/fern/io)
     endif()
     if(FERN_BUILD_LANGUAGE)
         list(APPEND _API_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/fern/language)
@@ -64,8 +65,9 @@ if(FERN_BUILD_DOCUMENTATION)
         list(APPEND _API_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/fern/python)
     endif()
 
-
     # TODO Add more...
+
+    list(APPEND _API_SOURCES ${FERN_EXTERNAL_SOURCES})
 
     string(REPLACE ";" " " FERN_DOXYGEN_INPUT "${_API_SOURCES}")
 

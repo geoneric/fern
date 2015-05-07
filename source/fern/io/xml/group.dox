@@ -1,0 +1,5 @@
+/*!
+    @brief      Group containing code related to handling XML files.
+    @defgroup   fern_io_xml_group XML
+    @ingroup    fern_io_group
+*/
