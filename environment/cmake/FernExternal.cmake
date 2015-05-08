@@ -22,6 +22,7 @@ if(PEACOCK_PREFIX)
         ${PEACOCK_PREFIX}/${peacock_target_platform}
         ${CMAKE_PREFIX_PATH}
     )
+    message(STATUS "Probing Peacock builds in: ${PEACOCK_PREFIX}/${peacock_target_platform}")
     set(CMAKE_INCLUDE_DIRECTORIES_BEFORE TRUE)
 endif()
 
@@ -69,6 +70,8 @@ if(FERN_BOOST_REQUIRED)
         ${Boost_PROGRAM_OPTIONS_LIBRARY}
         ${Boost_SYSTEM_LIBRARY}
     )
+    message(STATUS "  includes : ${Boost_INCLUDE_DIRS}")
+    message(STATUS "  libraries: ${Boost_LIBRARIES}")
 endif()
 if(FERN_BUILD_DOCUMENTATION)
     find_package(Doxygen REQUIRED)

@@ -1,4 +1,5 @@
 include(CheckCXXSourceRuns)
+include(CMakeParseArguments)
 
 
 macro(add_parser_generation_command
