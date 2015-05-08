@@ -14,7 +14,9 @@ macro(add_parser_generation_command
             ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}-pskel.hxx
             ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}-pskel.cxx
         COMMAND
-            ${XSD_EXECUTABLE} cxx-parser --xml-parser expat
+            ${XSD_EXECUTABLE} cxx-parser
+                --std c++11
+                --xml-parser expat
                 --type-map ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.map
                 ${ARGN}
                 ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.xsd
