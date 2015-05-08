@@ -20,7 +20,7 @@
     @brief      Group containing argument traits.
     @defgroup   fern_algorithm_argument_traits_group Argument traits
     @ingroup    fern_algorithm_group
-    @sa         fern_data_traits_group
+    @sa         fern_data_type_traits_group
 
 
     Argument traits provide type traits of various argument types.

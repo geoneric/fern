@@ -9,7 +9,7 @@
 #pragma once
 #include <stack>
 #include "fern/core/expression_type.h"
-#include "fern/core/symbol_table.h"
+#include "fern/language/core/symbol_table.h"
 #include "fern/language/operation/core/operations.h"
 #include "fern/language/ast/visitor/ast_visitor.h"
 

@@ -9,7 +9,7 @@
 #define BOOST_TEST_MODULE fern core
 #include <boost/any.hpp>
 #include <boost/test/unit_test.hpp>
-#include "fern/core/symbol_table.h"
+#include "fern/language/core/symbol_table.h"
 
 
 BOOST_AUTO_TEST_SUITE(symbol_table)

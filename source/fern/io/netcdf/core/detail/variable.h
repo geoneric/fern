@@ -53,7 +53,7 @@ void read_variable(
     DatasetHandle const& handle,
     int variable_id,
     Destination& destination,
-    constant_tag)
+    scalar_tag)
 {
     int status = read_0d(handle, variable_id, get(destination));
 

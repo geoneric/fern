@@ -9,7 +9,7 @@
 #pragma once
 #include <cstddef>
 #include <utility>
-#include "fern/core/data_traits.h"
+#include "fern/core/data_type_traits.h"
 #include "fern/algorithm/core/mask_customization_point.h"
 
 

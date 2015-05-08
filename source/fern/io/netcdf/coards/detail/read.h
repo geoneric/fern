@@ -44,7 +44,7 @@ inline void read_coards(
     OutputNoDataPolicy& output_no_data_policy,
     DataName const& data_name,
     Destination& destination,
-    constant_tag)
+    scalar_tag)
 {
     // Read a scalar value from the Coards dataset pointed to by data_name.
 

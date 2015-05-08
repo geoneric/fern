@@ -8,7 +8,7 @@
 // -----------------------------------------------------------------------------
 #define BOOST_TEST_MODULE fern algorithm policy
 #include <boost/test/unit_test.hpp>
-#include "fern/core/data_traits.h"
+#include "fern/core/data_type_traits.h"
 #include "fern/core/type_traits.h"
 #include "fern/algorithm/policy/mark_no_data_by_value.h"
 

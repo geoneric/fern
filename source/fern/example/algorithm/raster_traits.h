@@ -8,7 +8,7 @@
 // -----------------------------------------------------------------------------
 #pragma once
 #include <cassert>
-#include "fern/core/data_traits.h"
+#include "fern/core/data_type_traits.h"
 #include "fern/example/algorithm/raster.h"
 
 
@@ -19,7 +19,7 @@ namespace fern {
 */
 template<
     typename T>
-struct DataTraits<example::Raster<T>>
+struct DataTypeTraits<example::Raster<T>>
 {
 
     template<
@@ -111,7 +111,7 @@ inline Raster<T> clone(
 
 template<
     typename T>
-inline typename fern::DataTraits<Raster<T>>::iterator begin(
+inline typename fern::DataTypeTraits<Raster<T>>::iterator begin(
     Raster<T>& raster)
 {
     return raster.begin();
@@ -120,7 +120,7 @@ inline typename fern::DataTraits<Raster<T>>::iterator begin(
 
 template<
     typename T>
-inline typename fern::DataTraits<Raster<T>>::iterator end(
+inline typename fern::DataTypeTraits<Raster<T>>::iterator end(
     Raster<T>& raster)
 {
     return raster.end();

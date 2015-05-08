@@ -9,7 +9,6 @@ set(TEST_NAMES
     std_test
     stopwatch_test
     string_test
-    symbol_table_test
     type_traits_test
     typelist_test
     value_types_test

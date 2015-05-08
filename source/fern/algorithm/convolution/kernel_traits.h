@@ -8,7 +8,7 @@
 // -----------------------------------------------------------------------------
 #pragma once
 #include <type_traits>
-#include "fern/core/data_traits.h"
+#include "fern/core/data_type_traits.h"
 
 
 namespace fern {

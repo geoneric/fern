@@ -7,7 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include "fern/core/data_traits.h"
+#include "fern/core/data_type_traits.h"
 #include "fern/core/base_class.h"
 #include "fern/core/data_customization_point.h"
 #include "fern/core/type_traits.h"

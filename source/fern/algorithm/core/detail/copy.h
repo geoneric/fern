@@ -9,7 +9,7 @@
 #pragma once
 #include "fern/core/base_class.h"
 #include "fern/core/data_customization_point.h"
-#include "fern/algorithm/core/data_traits/index_ranges.h"
+#include "fern/algorithm/core/data_type_traits/index_ranges.h"
 #include "fern/algorithm/policy/execution_policy.h"
 
 

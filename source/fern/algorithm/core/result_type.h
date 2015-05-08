@@ -9,7 +9,7 @@
 #pragma once
 #include <boost/mpl/and.hpp>
 #include <boost/mpl/if.hpp>
-#include "fern/core/data_traits/scalar.h"
+#include "fern/core/data_type_traits/scalar.h"
 #include "fern/core/assert.h"
 #include "fern/core/base_class.h"
 #include "fern/algorithm/core/result_value.h"
@@ -39,8 +39,8 @@ struct Result<
     A1,
     A2,
     RValue,
-    constant_tag,
-    constant_tag>
+    scalar_tag,
+    scalar_tag>
 {
 
     /// // Both argument types are not collections. The result's type equals the
@@ -96,7 +96,7 @@ struct Result<
     A1,
     A2,
     RValue,
-    constant_tag,
+    scalar_tag,
     collection_tag>
 {
 
@@ -116,7 +116,7 @@ struct Result<
     A2,
     RValue,
     collection_tag,
-    constant_tag>
+    scalar_tag>
 {
 
     // Use collection template class of first argument as the template class
@@ -152,8 +152,8 @@ template<
     typename A1,
     typename A2,
     typename RValue=typename ResultValue<
-        typename DataTraits<A1>::value_type,
-        typename DataTraits<A2>::value_type>::type>
+        typename DataTypeTraits<A1>::value_type,
+        typename DataTypeTraits<A2>::value_type>::type>
 class Result
 {
 

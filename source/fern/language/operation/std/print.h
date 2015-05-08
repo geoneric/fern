@@ -10,7 +10,7 @@
 #include <boost/range/begin.hpp>
 #include <boost/range/end.hpp>
 #include <boost/range/distance.hpp>
-#include "fern/language/operation/data_traits.h"
+#include "fern/language/operation/data_type_traits.h"
 
 
 namespace fern {
@@ -84,7 +84,7 @@ inline void print(
     Argument const& argument,
     std::ostream& stream)
 {
-    using category = typename DataTraits<Argument>::DataCategory;
+    using category = typename DataTypeTraits<Argument>::DataCategory;
     detail::print(category(), argument, stream);
 }
 

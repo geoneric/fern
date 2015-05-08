@@ -8,14 +8,14 @@
 // -----------------------------------------------------------------------------
 #pragma once
 #include <cstddef>
-#include "fern/core/data_traits.h"
+#include "fern/core/data_type_traits.h"
 
 
 namespace fern {
 
 // Declarations of functions that are used in the implementation of operations.
 // These are not defined. For each collection type they need to be implemented.
-// See also data_traits/vector.h, data_traits/array.h, ...
+// See also data_type_traits/vector.h, data_type_traits/array.h, ...
 
 
 /*!

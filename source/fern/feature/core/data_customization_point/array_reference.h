@@ -9,7 +9,7 @@
 #pragma once
 #include <cassert>
 #include "fern/core/data_customization_point.h"
-#include "fern/feature/core/data_traits/array_reference.h"
+#include "fern/feature/core/data_type_traits/array_reference.h"
 
 
 namespace fern {
@@ -39,7 +39,7 @@ inline size_t size(
 template<
     class T,
     size_t nr_dimensions>
-inline typename DataTraits<ArrayReference<T, nr_dimensions>>
+inline typename DataTypeTraits<ArrayReference<T, nr_dimensions>>
         ::const_reference get(
     ArrayReference<T, nr_dimensions> const& array,
     size_t index)
@@ -52,7 +52,7 @@ inline typename DataTraits<ArrayReference<T, nr_dimensions>>
 template<
     class T,
     size_t nr_dimensions>
-inline typename DataTraits<ArrayReference<T, nr_dimensions>>::reference get(
+inline typename DataTypeTraits<ArrayReference<T, nr_dimensions>>::reference get(
     ArrayReference<T, nr_dimensions>& array,
     size_t index)
 {

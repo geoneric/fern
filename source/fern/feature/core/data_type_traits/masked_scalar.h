@@ -7,27 +7,24 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include "fern/feature/core/data_traits/array.h"
-#include "fern/feature/core/masked_array.h"
+#include "fern/feature/core/masked_scalar.h"
+#include "fern/core/data_type_traits.h"
 
 
 namespace fern {
 
 template<
-    typename T,
-    size_t nr_dimensions>
-struct DataTraits<
-    MaskedArray<T, nr_dimensions>>
+    typename T>
+struct DataTypeTraits<MaskedScalar<T>>
 {
 
-    using argument_category = typename detail::dispatch::ArrayCategoryTag<T,
-        nr_dimensions>::type;
+    using argument_category = scalar_tag;
 
     template<
         typename U>
     struct Clone
     {
-        using type = MaskedArray<U, nr_dimensions>;
+        using type = MaskedScalar<U>;
     };
 
     using value_type = T;
@@ -38,7 +35,7 @@ struct DataTraits<
 
     static bool const is_masking = true;
 
-    static size_t const rank = nr_dimensions;
+    static size_t const rank = 0u;
 
 };
 

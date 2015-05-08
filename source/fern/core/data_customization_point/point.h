@@ -7,7 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include "fern/core/data_traits/point.h"
+#include "fern/core/data_type_traits/point.h"
 
 
 namespace fern {
@@ -15,7 +15,7 @@ namespace fern {
 /// template<
 ///     class Coordinate,
 ///     size_t nr_dimensions>
-/// struct DataTraits<
+/// struct DataTypeTraits<
 ///     Point<Coordinate, nr_dimensions>>
 /// {
 /// 
@@ -34,7 +34,7 @@ template<
     size_t index,
     class Coordinate,
     size_t nr_dimensions>
-inline constexpr typename DataTraits<Point<Coordinate, nr_dimensions>>
+inline constexpr typename DataTypeTraits<Point<Coordinate, nr_dimensions>>
         ::const_reference get(
     Point<Coordinate, nr_dimensions> const& point)
 {
@@ -46,7 +46,7 @@ template<
     size_t index,
     class Coordinate,
     size_t nr_dimensions>
-inline constexpr typename DataTraits<Point<Coordinate, nr_dimensions>>
+inline constexpr typename DataTypeTraits<Point<Coordinate, nr_dimensions>>
         ::reference get(
     Point<Coordinate, nr_dimensions>& point)
 {

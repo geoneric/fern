@@ -7,7 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include "fern/core/data_traits.h"
+#include "fern/core/data_type_traits.h"
 #include "fern/feature/core/array_reference.h"
 
 
@@ -47,7 +47,7 @@ ARRAY_CATEGORY_TAG(3)
 // template<
 //     class T,
 //     size_t nr_dimensions>
-// struct DataTraits<
+// struct DataTypeTraits<
 //     View<T, nr_dimensions>>
 // {
 // 
@@ -68,7 +68,7 @@ ARRAY_CATEGORY_TAG(3)
 template<
     class T,
     size_t nr_dimensions>
-struct DataTraits<
+struct DataTypeTraits<
     ArrayReference<T, nr_dimensions>>
 {
 

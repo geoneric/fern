@@ -8,7 +8,7 @@
 // -----------------------------------------------------------------------------
 #define BOOST_TEST_MODULE fern algorithm core copy
 #include <boost/test/unit_test.hpp>
-#include "fern/core/data_traits/point.h"
+#include "fern/core/data_type_traits/point.h"
 #include "fern/core/data_customization_point/vector.h"
 #include "fern/algorithm/core/copy.h"
 

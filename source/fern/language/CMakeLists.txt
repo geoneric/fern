@@ -2,6 +2,7 @@ add_target_conditionally(language_ast ast)
 add_target_conditionally(language_back_end back_end)
 add_target_conditionally(language_command command)
 add_target_conditionally(language_compiler compiler)
+add_target_conditionally(language_core core)
 add_target_conditionally(language_feature feature)
 add_target_conditionally(language_interpreter interpreter)
 add_target_conditionally(language_io io)
@@ -20,10 +21,10 @@ add_target_conditionally(language_uncertainty uncertainty)
 # Aggregate object libraries into a single shared library. This library is
 # linked against by compiled modules.
 add_library(fern_language SHARED
-    $<TARGET_OBJECTS:fern_language_compiler_objects>
     $<TARGET_OBJECTS:fern_language_ast_visitor_objects>
     $<TARGET_OBJECTS:fern_language_ast_core_objects>
     $<TARGET_OBJECTS:fern_language_ast_xml_objects>
+    $<TARGET_OBJECTS:fern_language_compiler_objects>
     $<TARGET_OBJECTS:fern_language_feature_core_objects>
     $<TARGET_OBJECTS:fern_language_feature_visitor_objects>
     $<TARGET_OBJECTS:fern_language_interpreter_objects>

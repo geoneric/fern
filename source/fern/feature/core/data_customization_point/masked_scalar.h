@@ -7,7 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include "fern/feature/core/data_traits/masked_scalar.h"
+#include "fern/feature/core/data_type_traits/masked_scalar.h"
 #include "fern/core/data_customization_point.h"
 
 
@@ -15,7 +15,7 @@ namespace fern {
 
 template<
     typename T>
-inline typename DataTraits<MaskedScalar<T>>::const_reference get(
+inline typename DataTypeTraits<MaskedScalar<T>>::const_reference get(
     MaskedScalar<T> const& constant)
 {
     return constant.value();
@@ -24,7 +24,7 @@ inline typename DataTraits<MaskedScalar<T>>::const_reference get(
 
 template<
     typename T>
-inline typename DataTraits<MaskedScalar<T>>::reference get(
+inline typename DataTypeTraits<MaskedScalar<T>>::reference get(
     MaskedScalar<T>& constant)
 {
     return constant.value();

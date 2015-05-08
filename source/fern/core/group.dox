@@ -10,8 +10,8 @@
 
 
 /*!
-    @brief      Group containing data traits.
-    @defgroup   fern_data_traits_group Data traits
+    @brief      Group containing data type traits.
+    @defgroup   fern_data_type_traits Data type traits
     @ingroup    fern_core_group
     @sa         fern_algorithm_argument_traits_group
 

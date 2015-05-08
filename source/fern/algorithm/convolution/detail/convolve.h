@@ -17,7 +17,7 @@
 #include "fern/algorithm/convolution/kernel_traits.h"
 #include "fern/algorithm/policy/execution_policy.h"
 #include "fern/core/assert.h"
-#include "fern/core/data_traits.h"
+#include "fern/core/data_type_traits.h"
 #include "fern/core/base_class.h"
 
 
