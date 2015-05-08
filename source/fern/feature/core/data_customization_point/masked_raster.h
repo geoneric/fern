@@ -10,7 +10,7 @@
 #include <cassert>
 #include <utility>
 #include "fern/core/data_customization_point.h"
-#include "fern/feature/core/data_traits/masked_raster.h"
+#include "fern/feature/core/data_type_traits/masked_raster.h"
 
 
 namespace fern {
@@ -52,7 +52,7 @@ inline size_t index(
 template<
     typename T,
     size_t nr_dimensions>
-inline typename DataTraits<MaskedRaster<T, nr_dimensions>>
+inline typename DataTypeTraits<MaskedRaster<T, nr_dimensions>>
         ::const_reference get(
     MaskedRaster<T, nr_dimensions> const& raster,
     size_t index)
@@ -65,7 +65,7 @@ inline typename DataTraits<MaskedRaster<T, nr_dimensions>>
 template<
     typename T,
     size_t nr_dimensions>
-inline typename DataTraits<MaskedRaster<T, nr_dimensions>>::reference get(
+inline typename DataTypeTraits<MaskedRaster<T, nr_dimensions>>::reference get(
     MaskedRaster<T, nr_dimensions>& raster,
     size_t index)
 {

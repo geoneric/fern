@@ -7,36 +7,21 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include "fern/feature/core/data_traits/raster.h"
-#include "fern/feature/core/masked_raster.h"
+#include "fern/core/data_type_traits.h"
+#include "fern/feature/core/point.h"
 
 
 namespace fern {
 
 template<
     typename T,
-    size_t nr_dimensions>
-struct DataTraits<
-    MaskedRaster<T, nr_dimensions>>
+    size_t nr_dimensions,
+    typename CoordinateSystem>
+struct DataTypeTraits<
+    Point<T, nr_dimensions, CoordinateSystem>>
 {
 
-    using argument_category = typename detail::dispatch::RasterCategoryTag<T,
-        nr_dimensions>::type;
-
-    template<
-        typename U>
-    struct Clone
-    {
-        using type = MaskedRaster<U, nr_dimensions>;
-    };
-
     using value_type = T;
-
-    using reference = T&;
-
-    using const_reference = T const&;
-
-    static bool const is_masking = true;
 
     static size_t const rank = nr_dimensions;
 

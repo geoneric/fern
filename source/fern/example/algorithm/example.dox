@@ -46,7 +46,7 @@
     @code
     template<
         typename T>
-    struct fern::DataTraits<SomeType>
+    struct fern::DataTypeTraits<SomeType>
     {
 
         using argument_category = some_category;
@@ -62,7 +62,7 @@
     @code
     template<
         typename T>
-    struct fern::DataTraits<example::Raster<T>>
+    struct fern::DataTypeTraits<example::Raster<T>>
     {
 
         using argument_category = fern::raster_2d_tag;
@@ -78,7 +78,7 @@
     @code
     template<
         typename T>
-    struct fern::DataTraits<example::Raster<T>>
+    struct fern::DataTypeTraits<example::Raster<T>>
     {
 
         using value_type = T;

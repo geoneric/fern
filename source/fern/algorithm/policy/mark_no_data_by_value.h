@@ -8,7 +8,7 @@
 // -----------------------------------------------------------------------------
 #pragma once
 #include <cstddef>
-#include "fern/core/data_traits.h"
+#include "fern/core/data_type_traits.h"
 #include "fern/algorithm/core/mask_customization_point.h"
 
 
@@ -30,7 +30,7 @@ class MarkNoDataByValue {
 
 private:
 
-    using value_type = typename DataTraits<Mask>::value_type;
+    using value_type = typename DataTypeTraits<Mask>::value_type;
 
 public:
 

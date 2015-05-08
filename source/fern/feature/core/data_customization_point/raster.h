@@ -10,7 +10,7 @@
 #include <cstddef>
 #include <utility>
 #include "fern/core/data_customization_point.h"
-#include "fern/feature/core/data_traits/raster.h"
+#include "fern/feature/core/data_type_traits/raster.h"
 
 
 namespace fern {
@@ -52,7 +52,7 @@ inline size_t index(
 template<
     typename T,
     size_t nr_dimensions>
-inline typename DataTraits<Raster<T, nr_dimensions>>::const_reference get(
+inline typename DataTypeTraits<Raster<T, nr_dimensions>>::const_reference get(
     Raster<T, nr_dimensions> const& raster,
     size_t index)
 {
@@ -64,7 +64,7 @@ inline typename DataTraits<Raster<T, nr_dimensions>>::const_reference get(
 template<
     typename T,
     size_t nr_dimensions>
-inline typename DataTraits<Raster<T, nr_dimensions>>::reference get(
+inline typename DataTypeTraits<Raster<T, nr_dimensions>>::reference get(
     Raster<T, nr_dimensions>& raster,
     size_t index)
 {

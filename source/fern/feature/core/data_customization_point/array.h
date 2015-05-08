@@ -10,7 +10,7 @@
 #include <cassert>
 #include <utility>
 #include "fern/core/data_customization_point.h"
-#include "fern/feature/core/data_traits/array.h"
+#include "fern/feature/core/data_type_traits/array.h"
 
 
 namespace fern {
@@ -52,7 +52,7 @@ inline size_t index(
 template<
     typename T,
     size_t nr_dimensions>
-inline typename DataTraits<Array<T, nr_dimensions>>::const_reference get(
+inline typename DataTypeTraits<Array<T, nr_dimensions>>::const_reference get(
     Array<T, nr_dimensions> const& array,
     size_t index)
 {
@@ -64,7 +64,7 @@ inline typename DataTraits<Array<T, nr_dimensions>>::const_reference get(
 template<
     typename T,
     size_t nr_dimensions>
-inline typename DataTraits<Array<T, nr_dimensions>>::reference get(
+inline typename DataTypeTraits<Array<T, nr_dimensions>>::reference get(
     Array<T, nr_dimensions>& array,
     size_t index)
 {

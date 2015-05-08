@@ -8,27 +8,27 @@
 // -----------------------------------------------------------------------------
 #pragma once
 // For convenience, so users don't need to include it explicitly.
-#include "fern/core/data_traits/scalar.h"
+#include "fern/core/data_type_traits/scalar.h"
 #include "fern/core/data_customization_point.h"
 
 
 namespace fern {
 
-#define CONSTANT_CUSTOMIZATION_POINT(                    \
-    T)                                                   \
-template<>                                               \
-inline typename DataTraits<T>::const_reference get(      \
-    typename DataTraits<T>::value_type const& constant)  \
-{                                                        \
-    return constant;                                     \
-}                                                        \
-                                                         \
-                                                         \
-template<>                                               \
-inline typename DataTraits<T>::reference get(            \
-    typename DataTraits<T>::value_type& constant)        \
-{                                                        \
-    return constant;                                     \
+#define CONSTANT_CUSTOMIZATION_POINT(                        \
+    T)                                                       \
+template<>                                                   \
+inline typename DataTypeTraits<T>::const_reference get(      \
+    typename DataTypeTraits<T>::value_type const& constant)  \
+{                                                            \
+    return constant;                                         \
+}                                                            \
+                                                             \
+                                                             \
+template<>                                                   \
+inline typename DataTypeTraits<T>::reference get(            \
+    typename DataTypeTraits<T>::value_type& constant)        \
+{                                                            \
+    return constant;                                         \
 }
 
 

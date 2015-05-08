@@ -7,36 +7,33 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include <cstddef>
-#include "fern/core/data_traits.h"
-#include "fern/algorithm/core/index_ranges.h"
+#include "fern/feature/core/data_type_traits/array.h"
+#include "fern/feature/core/array_view.h"
 
 
 namespace fern {
 
 template<
+    typename T,
     size_t nr_dimensions>
-struct DataTraits<
-    algorithm::IndexRanges<nr_dimensions>>
+struct DataTypeTraits<
+    ArrayView<T, nr_dimensions>>
 {
 
-    /// using value_type = Coordinate;
+    using argument_category = typename detail::dispatch::ArrayCategoryTag<T,
+        nr_dimensions>::type;
 
-    /// using reference = value_type&;
+    template<
+        typename U>
+    struct Clone
+    {
+        using type = ArrayView<U, nr_dimensions>;
+    };
 
-    /// using const_reference = value_type const&;
+    using value_type = T;
 
-    static size_t const rank = nr_dimensions;
+    static bool const is_masking = false;
 
 };
-
-
-template<
-    size_t nr_dimensions>
-inline size_t size(
-    algorithm::IndexRanges<nr_dimensions> const& ranges)
-{
-    return ranges.size();
-}
 
 } // namespace fern

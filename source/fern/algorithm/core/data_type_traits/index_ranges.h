@@ -7,36 +7,36 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include "fern/feature/core/masked_scalar.h"
-#include "fern/core/data_traits.h"
+#include <cstddef>
+#include "fern/core/data_type_traits.h"
+#include "fern/algorithm/core/index_ranges.h"
 
 
 namespace fern {
 
 template<
-    typename T>
-struct DataTraits<MaskedScalar<T>>
+    size_t nr_dimensions>
+struct DataTypeTraits<
+    algorithm::IndexRanges<nr_dimensions>>
 {
 
-    using argument_category = constant_tag;
+    /// using value_type = Coordinate;
 
-    template<
-        typename U>
-    struct Clone
-    {
-        using type = MaskedScalar<U>;
-    };
+    /// using reference = value_type&;
 
-    using value_type = T;
+    /// using const_reference = value_type const&;
 
-    using reference = T&;
-
-    using const_reference = T const&;
-
-    static bool const is_masking = true;
-
-    static size_t const rank = 0u;
+    static size_t const rank = nr_dimensions;
 
 };
+
+
+template<
+    size_t nr_dimensions>
+inline size_t size(
+    algorithm::IndexRanges<nr_dimensions> const& ranges)
+{
+    return ranges.size();
+}
 
 } // namespace fern

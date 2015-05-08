@@ -7,7 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include "fern/feature/core/data_traits/array.h"
+#include "fern/feature/core/data_type_traits/array.h"
 #include "fern/feature/core/masked_array.h"
 
 
@@ -16,7 +16,7 @@ namespace fern {
 template<
     typename T,
     size_t nr_dimensions>
-struct DataTraits<
+struct DataTypeTraits<
     MaskedArray<T, nr_dimensions>>
 {
 

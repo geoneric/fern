@@ -10,7 +10,7 @@
 #include <algorithm>
 #include <array>
 #include <boost/range/iterator.hpp>
-#include "fern/language/operation/data_traits.h"
+#include "fern/language/operation/data_type_traits.h"
 
 
 namespace fern {
@@ -100,7 +100,7 @@ template<
     typename ValueType,
     size_t nr_rows,
     size_t nr_cols>
-struct DataTraits<Raster<ValueType, nr_rows, nr_cols>>
+struct DataTypeTraits<Raster<ValueType, nr_rows, nr_cols>>
 {
     using DataCategory = RasterTag;
 };

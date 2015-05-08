@@ -7,32 +7,36 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include "fern/feature/core/data_traits/array.h"
-#include "fern/feature/core/array_view.h"
+#include "fern/core/data_type_traits.h"
+#include "fern/python/feature/detail/masked_raster.h"
 
 
 namespace fern {
 
 template<
-    typename T,
-    size_t nr_dimensions>
-struct DataTraits<
-    ArrayView<T, nr_dimensions>>
+    typename T>
+struct DataTypeTraits<
+    python::detail::MaskedRaster<T>>
 {
 
-    using argument_category = typename detail::dispatch::ArrayCategoryTag<T,
-        nr_dimensions>::type;
+    using argument_category = raster_2d_tag;
 
     template<
         typename U>
     struct Clone
     {
-        using type = ArrayView<U, nr_dimensions>;
+        using type = python::detail::MaskedRaster<U>;
     };
 
     using value_type = T;
 
-    static bool const is_masking = false;
+    using reference = T&;
+
+    using const_reference = T const&;
+
+    static bool const is_masking = true;
+
+    static size_t const rank = 2;
 
 };
 

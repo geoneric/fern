@@ -8,7 +8,7 @@
 // -----------------------------------------------------------------------------
 #pragma once
 #include "fern/core/data_name.h"
-#include "fern/core/data_traits.h"
+#include "fern/core/data_type_traits.h"
 #include "detail/read.h"
 
 

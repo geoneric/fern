@@ -8,7 +8,7 @@
 // -----------------------------------------------------------------------------
 #pragma once
 #include <cassert>
-#include "fern/core/data_traits.h"
+#include "fern/core/data_type_traits.h"
 #include "fern/algorithm/convolution/neighborhood/square.h"
 
 
@@ -17,7 +17,7 @@ namespace fern {
 template<
     class T,
     size_t radius>
-struct DataTraits<
+struct DataTypeTraits<
     Square<T, radius>>
 {
 
@@ -98,7 +98,7 @@ inline constexpr size_t index(
 template<
     class T,
     size_t radius>
-inline typename DataTraits<Square<T, radius>>::const_reference get(
+inline typename DataTypeTraits<Square<T, radius>>::const_reference get(
     Square<T, radius> const& square,
     size_t index)
 {
@@ -110,7 +110,7 @@ inline typename DataTraits<Square<T, radius>>::const_reference get(
 template<
     class T,
     size_t radius>
-inline typename DataTraits<Square<T, radius>>::reference get(
+inline typename DataTypeTraits<Square<T, radius>>::reference get(
     Square<T, radius>& square,
     size_t index)
 {

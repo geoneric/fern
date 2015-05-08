@@ -9,7 +9,7 @@
 #pragma once
 #include <boost/algorithm/clamp.hpp>
 #include "fern/core/base_class.h"
-#include "fern/core/data_traits.h"
+#include "fern/core/data_type_traits.h"
 #include "fern/algorithm/core/index_ranges.h"
 #include "fern/algorithm/policy/execution_policy.h"
 

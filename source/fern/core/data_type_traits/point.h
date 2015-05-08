@@ -8,7 +8,7 @@
 // -----------------------------------------------------------------------------
 #pragma once
 #include <cstddef>
-#include "fern/core/data_traits.h"
+#include "fern/core/data_type_traits.h"
 #include "fern/core/point.h"
 
 
@@ -17,7 +17,7 @@ namespace fern {
 template<
     class Coordinate,
     size_t nr_dimensions>
-struct DataTraits<
+struct DataTypeTraits<
     Point<Coordinate, nr_dimensions>>
 {
 
@@ -36,7 +36,7 @@ struct DataTraits<
 ///     size_t index,
 ///     class Coordinate,
 ///     size_t nr_dimensions>
-/// inline constexpr typename DataTraits<Point<Coordinate, nr_dimensions>>
+/// inline constexpr typename DataTypeTraits<Point<Coordinate, nr_dimensions>>
 ///         ::const_reference get(
 ///     Point<Coordinate, nr_dimensions> const& point)
 /// {
@@ -48,7 +48,7 @@ struct DataTraits<
 ///     size_t index,
 ///     class Coordinate,
 ///     size_t nr_dimensions>
-/// inline constexpr typename DataTraits<Point<Coordinate, nr_dimensions>>
+/// inline constexpr typename DataTypeTraits<Point<Coordinate, nr_dimensions>>
 ///         ::reference get(
 ///     Point<Coordinate, nr_dimensions>& point)
 /// {

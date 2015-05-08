@@ -9,7 +9,7 @@
 #pragma once
 #include <cassert>
 #include "fern/core/data_customization_point.h"
-#include "fern/python/feature/detail/data_traits/masked_raster.h"
+#include "fern/python/feature/detail/data_type_traits/masked_raster.h"
 
 
 namespace fern {
@@ -73,7 +73,8 @@ inline size_t index(
 
 template<
     typename T>
-inline typename DataTraits<python::detail::MaskedRaster<T>>::const_reference get(
+inline typename DataTypeTraits<python::detail::MaskedRaster<T>>::const_reference
+        get(
     python::detail::MaskedRaster<T> const& raster,
     size_t index)
 {
@@ -84,7 +85,8 @@ inline typename DataTraits<python::detail::MaskedRaster<T>>::const_reference get
 
 template<
     typename T>
-inline typename DataTraits<python::detail::MaskedRaster<T>>::reference get(
+inline typename DataTypeTraits<python::detail::MaskedRaster<T>>::reference
+        get(
     python::detail::MaskedRaster<T>& raster,
     size_t index)
 {
@@ -95,7 +97,8 @@ inline typename DataTraits<python::detail::MaskedRaster<T>>::reference get(
 
 template<
     typename T>
-inline typename DataTraits<python::detail::MaskedRaster<T>>::const_reference get(
+inline typename DataTypeTraits<python::detail::MaskedRaster<T>>::const_reference
+        get(
     python::detail::MaskedRaster<T> const& raster,
     size_t index1,
     size_t index2)
@@ -108,7 +111,7 @@ inline typename DataTraits<python::detail::MaskedRaster<T>>::const_reference get
 
 template<
     typename T>
-inline typename DataTraits<python::detail::MaskedRaster<T>>::reference get(
+inline typename DataTypeTraits<python::detail::MaskedRaster<T>>::reference get(
     python::detail::MaskedRaster<T>& raster,
     size_t index1,
     size_t index2)

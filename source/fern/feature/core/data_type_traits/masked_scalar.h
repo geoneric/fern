@@ -7,43 +7,35 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include <vector>
-#include "fern/core/data_traits.h"
+#include "fern/feature/core/masked_scalar.h"
+#include "fern/core/data_type_traits.h"
 
 
 namespace fern {
 
 template<
-    class T>
-struct DataTraits<
-    std::vector<T>>
+    typename T>
+struct DataTypeTraits<MaskedScalar<T>>
 {
 
-    using argument_category = array_1d_tag;
+    using argument_category = constant_tag;
 
     template<
-        class U>
+        typename U>
     struct Clone
     {
-        using type = std::vector<U>;
+        using type = MaskedScalar<U>;
     };
 
-    // Don't use vector's typedefs. Doing it like this will make it impossible
-    // to use vector<bool>, which is Good. vector<bool> is nasty since it
-    // doesn't store bools. Using it works out bad in combination with threads.
-
-    // typename std::vector<T>::value_type;
     using value_type = T;
 
-    // typename std::vector<T>::reference;
     using reference = T&;
 
-    // typename std::vector<T>::const_reference;
     using const_reference = T const&;
 
-    static bool const is_masking = false;
+    static bool const is_masking = true;
 
-    static size_t const rank = 1u;
+    static size_t const rank = 0u;
 
 };
 

@@ -7,7 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include "fern/core/data_traits/vector.h"
+#include "fern/core/data_type_traits/vector.h"
 
 
 namespace fern {
@@ -23,7 +23,7 @@ inline size_t size(
 
 template<
     class T>
-inline typename DataTraits<std::vector<T>>::const_reference get(
+inline typename DataTypeTraits<std::vector<T>>::const_reference get(
     std::vector<T> const& vector,
     size_t index)
 {
@@ -33,7 +33,7 @@ inline typename DataTraits<std::vector<T>>::const_reference get(
 
 template<
     class T>
-inline typename DataTraits<std::vector<T>>::reference get(
+inline typename DataTypeTraits<std::vector<T>>::reference get(
     std::vector<T>& vector,
     size_t index)
 {

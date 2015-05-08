@@ -9,7 +9,7 @@
 #pragma once
 #include <boost/mpl/and.hpp>
 #include <boost/mpl/if.hpp>
-#include "fern/core/data_traits/scalar.h"
+#include "fern/core/data_type_traits/scalar.h"
 #include "fern/core/assert.h"
 #include "fern/core/base_class.h"
 #include "fern/algorithm/core/result_value.h"
@@ -152,8 +152,8 @@ template<
     typename A1,
     typename A2,
     typename RValue=typename ResultValue<
-        typename DataTraits<A1>::value_type,
-        typename DataTraits<A2>::value_type>::type>
+        typename DataTypeTraits<A1>::value_type,
+        typename DataTypeTraits<A2>::value_type>::type>
 class Result
 {
 
