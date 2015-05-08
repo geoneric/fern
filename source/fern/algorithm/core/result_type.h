@@ -39,8 +39,8 @@ struct Result<
     A1,
     A2,
     RValue,
-    constant_tag,
-    constant_tag>
+    scalar_tag,
+    scalar_tag>
 {
 
     /// // Both argument types are not collections. The result's type equals the
@@ -96,7 +96,7 @@ struct Result<
     A1,
     A2,
     RValue,
-    constant_tag,
+    scalar_tag,
     collection_tag>
 {
 
@@ -116,7 +116,7 @@ struct Result<
     A2,
     RValue,
     collection_tag,
-    constant_tag>
+    scalar_tag>
 {
 
     // Use collection template class of first argument as the template class

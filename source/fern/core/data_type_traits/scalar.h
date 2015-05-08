@@ -13,31 +13,31 @@
 
 namespace fern {
 
-#define CONSTANT_DATA_TYPE_TRAITS(           \
-    T)                                       \
-template<>                                   \
-struct DataTypeTraits<T>                     \
-{                                            \
-                                             \
-    using argument_category = constant_tag;  \
-                                             \
-    template<                                \
-        class U>                             \
-    struct Clone                             \
-    {                                        \
-        using type = U;                      \
-    };                                       \
-                                             \
-    using value_type = T;                    \
-                                             \
-    using reference = T&;                    \
-                                             \
-    using const_reference = T const&;        \
-                                             \
-    static bool const is_masking = false;    \
-                                             \
-    static size_t const rank = 0u;           \
-                                             \
+#define CONSTANT_DATA_TYPE_TRAITS(         \
+    T)                                     \
+template<>                                 \
+struct DataTypeTraits<T>                   \
+{                                          \
+                                           \
+    using argument_category = scalar_tag;  \
+                                           \
+    template<                              \
+        class U>                           \
+    struct Clone                           \
+    {                                      \
+        using type = U;                    \
+    };                                     \
+                                           \
+    using value_type = T;                  \
+                                           \
+    using reference = T&;                  \
+                                           \
+    using const_reference = T const&;      \
+                                           \
+    static bool const is_masking = false;  \
+                                           \
+    static size_t const rank = 0u;         \
+                                           \
 };
 
 

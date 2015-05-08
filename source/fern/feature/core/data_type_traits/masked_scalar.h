@@ -18,7 +18,7 @@ template<
 struct DataTypeTraits<MaskedScalar<T>>
 {
 
-    using argument_category = constant_tag;
+    using argument_category = scalar_tag;
 
     template<
         typename U>
