@@ -17,8 +17,28 @@ macro(add_parser_generation_command
                 --type-map ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.map
                 ${ARGN}
                 ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.xsd
-                DEPENDS
+        DEPENDS
             ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.map
+            ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.xsd
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    )
+endmacro()
+
+
+macro(add_tree_generation_command
+        BASENAME)
+    add_custom_command(
+        OUTPUT
+            ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.hxx
+            ${CMAKE_CURRENT_BINARY_DIR}/${BASENAME}.cxx
+        COMMAND
+            ${XSD_EXECUTABLE} cxx-tree
+                --std c++11
+                --generate-doxygen
+                --generate-serialization
+                ${ARGN}
+                ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.xsd
+        DEPENDS
             ${CMAKE_CURRENT_SOURCE_DIR}/${BASENAME}.xsd
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     )

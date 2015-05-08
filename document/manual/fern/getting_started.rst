@@ -52,8 +52,14 @@ Initially, all configuration options are set to `FALSE`.
     Build Fern documentation.
 
 
+`FERN_IO_WITH_ALL`
+    Include support for all supported formats in Fern.IO module.
+
 `FERN_IO_WITH_GDAL`
     Include support for GDAL in Fern.IO module.
+
+`FERN_IO_WITH_GPX`
+    Include support for GPX in Fern.IO module.
 
 `FERN_IO_WITH_HDF5`
     Include support for HDF5 in Fern.IO module.
@@ -69,6 +75,8 @@ Some CMake configuration options imply the use of other configuration options:
   `FERN_IO_WITH_GDAL`.
 - `FERN_BUILD_LANGUAGE` implies `FERN_BUILD_ALGORITHM`, `FERN_BUILD_IO`,
   `FERN_IO_WITH_GDAL`, `FERN_IO_WITH_HDF5`.
+- `FERN_IO_WITH_ALL` implies `FERN_IO_WITH_*`.
+
 
 Instructions per platform:
 

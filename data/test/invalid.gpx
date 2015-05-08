@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx
+  version="1.0"
+  creator="Copied from OpenStreetMap wiki, adjusted by Geoneric"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.topografix.com/GPX/1/0"
+  xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/gpx/1/0/gpx.xsd">
+    <name>Example gpx</name>
+    <wpt lat="46.57638889" lon="8.89263889">
+        <ele>2372</ele>
+        <name>LAGORETICO</name>
+    </wpt>
+    <trk>
+        <blah/>
+    </trk>
+</gpx>
