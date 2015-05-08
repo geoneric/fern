@@ -24,5 +24,5 @@ add_unit_tests(
         fern_io_netcdf_core
         fern_io_core
         fern_core
-        ${NetCDF_LIBRARIES}
+        ${NETCDF_LIBRARIES}
     DEPENDENCIES io_netcdf_core_test_data)
