@@ -66,9 +66,7 @@ if(FERN_BOOST_REQUIRED)
         ${Boost_INCLUDE_DIRS}
     )
     list(APPEND FERN_EXTERNAL_LIBRARIES
-        ${Boost_FILESYSTEM_LIBRARY}
-        ${Boost_PROGRAM_OPTIONS_LIBRARY}
-        ${Boost_SYSTEM_LIBRARY}
+        ${Boost_LIBRARIES}
     )
     message(STATUS "  includes : ${Boost_INCLUDE_DIRS}")
     message(STATUS "  libraries: ${Boost_LIBRARIES}")

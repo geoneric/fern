@@ -365,7 +365,7 @@ macro(force_out_of_tree_build)
     string(COMPARE EQUAL "${CMAKE_SOURCE_DIR}" "${CMAKE_BINARY_DIR}"
         in_source_build)
     if(in_source_build)
-        message(FATAL_ERROR "Fern must be build out-of-source")
+        message(FATAL_ERROR "Fern must be built out-of-source")
     endif()
 endmacro()
 
