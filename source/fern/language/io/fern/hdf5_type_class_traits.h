@@ -7,7 +7,8 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include <H5Cpp.h>
+#include <string>
+#include <hdf5.h>
 
 
 namespace fern {

@@ -7,7 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include <H5Cpp.h>
+#include <hdf5.h>
 
 
 namespace fern {
@@ -17,7 +17,7 @@ template<
     class T>
 struct HDF5TypeTraits
 {
-    static H5::PredType const data_type;
+    static hid_t const data_type;
     static H5T_class_t const type_class;
 };
 
@@ -25,7 +25,7 @@ struct HDF5TypeTraits
 template<>
 struct HDF5TypeTraits<uint8_t>
 {
-    static H5::PredType const data_type;
+    static hid_t const data_type;
     static H5T_class_t const type_class = H5T_INTEGER;
 };
 
@@ -33,7 +33,7 @@ struct HDF5TypeTraits<uint8_t>
 template<>
 struct HDF5TypeTraits<uint16_t>
 {
-    static H5::PredType const data_type;
+    static hid_t const data_type;
     static H5T_class_t const type_class = H5T_INTEGER;
 };
 
@@ -41,7 +41,7 @@ struct HDF5TypeTraits<uint16_t>
 template<>
 struct HDF5TypeTraits<uint32_t>
 {
-    static H5::PredType const data_type;
+    static hid_t const data_type;
     static H5T_class_t const type_class = H5T_INTEGER;
 };
 
@@ -49,7 +49,7 @@ struct HDF5TypeTraits<uint32_t>
 template<>
 struct HDF5TypeTraits<uint64_t>
 {
-    static H5::PredType const data_type;
+    static hid_t const data_type;
     static H5T_class_t const type_class = H5T_INTEGER;
 };
 
@@ -57,7 +57,7 @@ struct HDF5TypeTraits<uint64_t>
 template<>
 struct HDF5TypeTraits<int8_t>
 {
-    static H5::PredType const data_type;
+    static hid_t const data_type;
     static H5T_class_t const type_class = H5T_INTEGER;
 };
 
@@ -65,7 +65,7 @@ struct HDF5TypeTraits<int8_t>
 template<>
 struct HDF5TypeTraits<int16_t>
 {
-    static H5::PredType const data_type;
+    static hid_t const data_type;
     static H5T_class_t const type_class = H5T_INTEGER;
 };
 
@@ -73,7 +73,7 @@ struct HDF5TypeTraits<int16_t>
 template<>
 struct HDF5TypeTraits<int32_t>
 {
-    static H5::PredType const data_type;
+    static hid_t const data_type;
     static H5T_class_t const type_class = H5T_INTEGER;
 };
 
@@ -81,7 +81,7 @@ struct HDF5TypeTraits<int32_t>
 template<>
 struct HDF5TypeTraits<int64_t>
 {
-    static H5::PredType const data_type;
+    static hid_t const data_type;
     static H5T_class_t const type_class = H5T_INTEGER;
 };
 
@@ -89,7 +89,7 @@ struct HDF5TypeTraits<int64_t>
 template<>
 struct HDF5TypeTraits<float>
 {
-    static H5::PredType const data_type;
+    static hid_t const data_type;
     static H5T_class_t const type_class = H5T_FLOAT;
 };
 
@@ -97,7 +97,7 @@ struct HDF5TypeTraits<float>
 template<>
 struct HDF5TypeTraits<double>
 {
-    static H5::PredType const data_type;
+    static hid_t const data_type;
     static H5T_class_t const type_class = H5T_FLOAT;
 };
 

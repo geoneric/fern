@@ -7,7 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #include "fern/language/io/fern/hdf5_client.h"
-#include <H5Cpp.h>
+#include <hdf5.h>
 #include "fern/language/io/drivers.h"
 
 
@@ -22,8 +22,11 @@ HDF5Client::HDF5Client()
     ++_count;
 
     if(_count == 1u) {
-        H5::Exception::dontPrint();
-        H5::H5Library::open();
+        H5open();
+        H5Eset_auto(H5E_DEFAULT, nullptr, nullptr);
+
+        // H5::Exception::dontPrint();
+        // H5::H5Library::open();
     }
 }
 
@@ -34,6 +37,9 @@ HDF5Client::~HDF5Client()
     --_count;
 
     if(_count == 0) {
+        // H5Eset_auto(H5E_DEFAULT, H5Eprint, nullptr);
+        H5close();
+
         // TODO For some reason closing the library and opening it again
         //      is not supported... So we just not close it for now. *&@#($*&!
         // H5::H5Library::close();
