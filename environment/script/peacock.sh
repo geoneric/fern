@@ -72,10 +72,10 @@ function build_peacock()
     # HDF5.
     # Fern I/O code uses deprecated public API symbols.
     options+=("-Dbuild_hdf5=true")
-    options+=("-Dhdf5_cpp_lib=true")
+    options+=("-Dhdf5_cpp_lib=false")
     options+=("-Dhdf5_deprecated_symbols=true")
     options+=("-Dhdf5_parallel=false")
-    options+=("-Dhdf5_thread_safe=false")
+    options+=("-Dhdf5_thread_safe=true")
     options+=("-Dhdf5_version=1.8.14")
 
     # NetCDF.
@@ -83,11 +83,10 @@ function build_peacock()
     options+=("-Dnetcdf_version=4.3.3.1")
 
     # When building HPX, HDF5 must be build with thread_safe=true.
-    # This, in turn, prevents support for HDF5 C++ support, which we
-    # depend on in our fern I/O code...
+    # This, in turn, prevents support for HDF5 C++ support.
     # HPX.
-    # options+=("-Dbuild_hpx=true")
-    # options+=("-Dhpx_version=0.9.10")
+    options+=("-Dbuild_hpx=true")
+    options+=("-Dhpx_version=0.9.10")
 
     # GDAL.
     options+=("-Dbuild_gdal=true")
