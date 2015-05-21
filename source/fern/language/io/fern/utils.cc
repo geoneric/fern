@@ -15,92 +15,72 @@
 namespace fern {
 namespace language {
 
-static std::shared_ptr<H5::H5File> open_file_for_overwrite(
+static std::unique_ptr<HDF5File> open_file_for_overwrite(
     Path const& path)
 {
-    std::shared_ptr<H5::H5File> result;
+    hid_t id = H5Fcreate(path.native_string().c_str(), H5F_ACC_TRUNC,
+        H5P_DEFAULT, H5P_DEFAULT);
 
-    try {
-        unsigned int access_mode = H5F_ACC_TRUNC;
-        H5::FileCreatPropList creation_properties =
-            H5::FileCreatPropList::DEFAULT;
-        H5::FileAccPropList access_properties = H5::FileAccPropList::DEFAULT;
-        result = std::make_shared<H5::H5File>(path.native_string().c_str(),
-            access_mode, creation_properties, access_properties);
-        result->flush(H5F_SCOPE_GLOBAL);
-    }
-    catch(H5::FileIException const& /* exception */) {
+    if(id < 0) {
         throw IOError(path.native_string(),
             Exception::messages()[MessageId::CANNOT_BE_CREATED]);
     }
 
-    return result;
+    H5Fflush(id, H5F_SCOPE_GLOBAL);
+
+    return std::make_unique<HDF5File>(id);
 }
 
 
-static std::shared_ptr<H5::H5File> open_file_for_update(
+static std::unique_ptr<HDF5File> open_file_for_update(
     Path const& path)
 {
-    std::shared_ptr<H5::H5File> result;
-
     if(!file_exists(path)) {
         throw IOError(path.native_string(),
             Exception::messages()[MessageId::DOES_NOT_EXIST]);
     }
 
-    try {
-        unsigned int access_mode = H5F_ACC_RDWR;
-        H5::FileCreatPropList creation_properties =
-            H5::FileCreatPropList::DEFAULT;
-        H5::FileAccPropList access_properties = H5::FileAccPropList::DEFAULT;
-        result = std::make_shared<H5::H5File>(
-            path.native_string().c_str(), access_mode, creation_properties,
-            access_properties);
-        result->flush(H5F_SCOPE_GLOBAL);
-    }
-    catch(H5::FileIException const& /* exception */) {
+    hid_t id = H5Fopen(path.native_string().c_str(), H5F_ACC_RDWR,
+        H5P_DEFAULT);
+
+    if(id < 0) {
         throw IOError(path.native_string(),
             Exception::messages()[MessageId::CANNOT_BE_WRITTEN]);
     }
 
-    return result;
+    H5Fflush(id, H5F_SCOPE_GLOBAL);
+
+    return std::make_unique<HDF5File>(id);
 }
 
 
-static std::shared_ptr<H5::H5File> open_file_for_read(
+static std::unique_ptr<HDF5File> open_file_for_read(
     Path const& path)
 {
-    std::shared_ptr<H5::H5File> result;
-
     if(!file_exists(path)) {
         throw IOError(path.native_string(),
             Exception::messages()[MessageId::DOES_NOT_EXIST]);
     }
 
-    try {
-        unsigned int access_mode = H5F_ACC_RDONLY;
-        H5::FileCreatPropList creation_properties =
-            H5::FileCreatPropList::DEFAULT;
-        H5::FileAccPropList access_properties = H5::FileAccPropList::DEFAULT;
-        result = std::make_shared<H5::H5File>(
-            path.native_string().c_str(), access_mode, creation_properties,
-            access_properties);
-        result->flush(H5F_SCOPE_GLOBAL);
-    }
-    catch(H5::FileIException const& /* exception */) {
+    hid_t id = H5Fopen(path.native_string().c_str(), H5F_ACC_RDONLY,
+        H5P_DEFAULT);
+
+    if(id < 0) {
         throw IOError(path.native_string(),
             Exception::messages()[MessageId::CANNOT_BE_READ]);
     }
 
-    return result;
+    H5Fflush(id, H5F_SCOPE_GLOBAL);
+
+    return std::make_unique<HDF5File>(id);
 }
 
 
-std::shared_ptr<H5::H5File> open_file(
+std::unique_ptr<HDF5File> open_file(
     Path const& path,
     OpenMode open_mode)
 {
-    std::shared_ptr<H5::H5File> result;
+    std::unique_ptr<HDF5File> result;
 
     switch(open_mode) {
         case OpenMode::OVERWRITE: {

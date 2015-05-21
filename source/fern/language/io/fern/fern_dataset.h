@@ -9,13 +9,9 @@
 #pragma once
 #include "fern/language/feature/core/attributes.h"
 #include "fern/language/io/core/dataset.h"
-
-
-namespace H5 {
-    class DataSet;
-    class Group;
-    class H5File;
-}
+#include "fern/language/io/fern/hdf5_dataset.h"
+#include "fern/language/io/fern/hdf5_file.h"
+#include "fern/language/io/fern/hdf5_group.h"
 
 
 namespace fern {
@@ -36,19 +32,19 @@ public:
                    FernDataset         (std::string const& name,
                                         OpenMode open_mode);
 
-                   FernDataset         (std::shared_ptr<H5::H5File> const& file,
+                   FernDataset         (std::unique_ptr<HDF5File>& file,
                                         std::string const& name,
                                         OpenMode open_mode);
 
                    FernDataset         (FernDataset const&)=delete;
 
-    FernDataset&   operator=           (FernDataset const&)=delete;
-
                    FernDataset         (FernDataset&&)=delete;
 
-    FernDataset&   operator=           (FernDataset&&)=delete;
-
                    ~FernDataset        ();
+
+    FernDataset&   operator=           (FernDataset const&)=delete;
+
+    FernDataset&   operator=           (FernDataset&&)=delete;
 
     size_t         nr_features         () const;
 
@@ -87,13 +83,13 @@ public:
 
 private:
 
-    std::shared_ptr<H5::H5File> _file;
+    std::unique_ptr<HDF5File> _file;
 
-    H5::DataSet    dataset             (Path const& path) const;
+    HDF5Dataset    dataset             (Path const& path) const;
 
-    ValueType      value_type          (H5::DataSet const& dataset) const;
+    ValueType      value_type          (HDF5Dataset const& dataset) const;
 
-    std::shared_ptr<H5::Group> group   (Path const& path) const;
+    HDF5Group      group               (Path const& path) const;
 
     bool           contains_feature    (std::vector<std::string> const&
                                             names) const;
@@ -111,23 +107,23 @@ private:
     template<
         class T>
     ExpressionType expression_type_numeric_attribute(
-                                        H5::DataSet const& dataset) const;
+                                        HDF5Dataset const& dataset) const;
 
     template<
         class T>
     std::shared_ptr<Attribute>
-                   open_attribute      (H5::DataSet const& dataset) const;
+                   open_attribute      (HDF5Dataset const& dataset) const;
 
     template<
         class T>
     std::shared_ptr<Attribute>
                    read_constant_attribute(
-                                        H5::DataSet const& dataset) const;
+                                        HDF5Dataset const& dataset) const;
 
     template<
         class T>
     std::shared_ptr<Attribute>
-                   read_attribute      (H5::DataSet const& dataset) const;
+                   read_attribute      (HDF5Dataset const& dataset) const;
 
 };
 

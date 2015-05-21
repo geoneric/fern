@@ -100,7 +100,7 @@ endif()
 if(FERN_HDF5_REQUIRED)
     set(HDF5_USE_STATIC_LIBRARIES OFF)
     find_package(HDF5 REQUIRED
-        COMPONENTS C CXX HL)
+        COMPONENTS C HL)
     include_directories(
         SYSTEM
         ${HDF5_INCLUDE_DIRS}

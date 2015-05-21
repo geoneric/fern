@@ -5,6 +5,9 @@ set(SOURCES
     fern_dataset
     fern_driver
     hdf5_client
+    hdf5_dataset
+    hdf5_file
+    hdf5_group
     hdf5_type_class_traits
     hdf5_type_traits
     utils

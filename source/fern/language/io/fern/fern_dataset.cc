@@ -8,7 +8,6 @@
 // -----------------------------------------------------------------------------
 #include "fern/language/io/fern/fern_dataset.h"
 #include <iostream>
-#include <hdf5.h>
 #include "fern/core/data_name.h"
 #include "fern/core/io_error.h"
 #include "fern/core/type_traits.h"
@@ -40,12 +39,12 @@ FernDataset::FernDataset(
 
 
 FernDataset::FernDataset(
-    std::shared_ptr<H5::H5File> const& file,
+    std::unique_ptr<HDF5File>& file,
     std::string const& name,
     OpenMode open_mode)
 
     : Dataset(name, open_mode),
-      _file(file)
+      _file(std::move(file))
 
 {
 }
@@ -56,7 +55,7 @@ FernDataset::~FernDataset()
 }
 
 
-H5::DataSet FernDataset::dataset(
+HDF5Dataset FernDataset::dataset(
     Path const& path) const
 {
     if(!contains_attribute(path)) {
@@ -65,9 +64,7 @@ H5::DataSet FernDataset::dataset(
                 MessageId::DOES_NOT_CONTAIN_ATTRIBUTE, path));
     }
 
-    H5::DataSet dataset = _file->openDataSet(path.generic_string());
-
-    return dataset;
+    return HDF5Dataset{_file->open_dataset(path.generic_string())};
 }
 
 
@@ -81,19 +78,19 @@ H5::DataSet FernDataset::dataset(
     }
 
 ValueType FernDataset::value_type(
-    H5::DataSet const& dataset) const
+    HDF5Dataset const& dataset) const
 {
-    H5T_class_t const type_class = dataset.getTypeClass();
-    ValueType result{};
+    ValueType result;
+    H5T_class_t const type_class = dataset.type_class();
+    hid_t const type = dataset.type();
 
     switch(type_class) {
         case H5T_INTEGER: {
-            H5::IntType const int_type = dataset.getIntType();
-            assert(int_type.getSign() == H5T_SGN_NONE ||
-                int_type.getSign() == H5T_SGN_2);
-            size_t const int_size = int_type.getSize();
+            H5T_sign_t const sign = H5Tget_sign(type);
+            size_t const int_size = H5Tget_size(type);
+            assert(sign == H5T_SGN_NONE || sign == H5T_SGN_2);
 
-            if(int_type.getSign() == H5T_SGN_NONE) {
+            if(sign == H5T_SGN_NONE) {
                 // Unsigned.
                 if(int_size == 1u) {
                     result = VT_UINT8;
@@ -134,8 +131,7 @@ ValueType FernDataset::value_type(
             break;
         }
         case H5T_FLOAT: {
-            H5::FloatType const float_type = dataset.getFloatType();
-            size_t const float_size = float_type.getSize();
+            size_t const float_size = H5Tget_size(type);
 
             if(float_size == 4u) {
                 result = VT_FLOAT32;
@@ -179,19 +175,9 @@ size_t FernDataset::nr_features(
         Path const& path) const
 {
     assert(contains_feature(path));
-    H5::Group group(_file->openGroup(path.generic_string()));
+    HDF5Group group(_file->open_group(path.generic_string()));
 
-    size_t result = 0;
-    H5G_obj_t type;
-
-    for(hsize_t i = 0; i < group.getNumObjs(); ++i) {
-        type = group.getObjTypeByIdx(i);
-        if(type == H5G_GROUP) {
-            ++result;
-        }
-    }
-
-    return result;
+    return group.nr_groups();
 }
 
 
@@ -199,19 +185,9 @@ std::vector<std::string> FernDataset::feature_names() const
 {
     Path path("/");
     assert(contains_feature(path));
-    H5::Group group(_file->openGroup(path.generic_string()));
+    HDF5Group group(_file->open_group(path.generic_string()));
 
-    std::vector<std::string> result;
-    H5G_obj_t type;
-
-    for(hsize_t i = 0; i < group.getNumObjs(); ++i) {
-        type = group.getObjTypeByIdx(i);
-        if(type == H5G_GROUP) {
-            result.emplace_back(group.getObjnameByIdx(i));
-        }
-    }
-
-    return result;
+    return group.group_names();
 }
 
 
@@ -219,19 +195,9 @@ size_t FernDataset::nr_attributes(
         Path const& path) const
 {
     assert(contains_feature(path));
-    H5::Group group(_file->openGroup(path.generic_string()));
+    HDF5Group group(_file->open_group(path.generic_string()));
 
-    size_t result = 0;
-    H5G_obj_t type;
-
-    for(hsize_t i = 0; i < group.getNumObjs(); ++i) {
-        type = group.getObjTypeByIdx(i);
-        if(type == H5G_DATASET) {
-            ++result;
-        }
-    }
-
-    return result;
+    return group.nr_datasets();
 }
 
 
@@ -272,15 +238,7 @@ bool FernDataset::contains_feature(
 bool FernDataset::contains_feature_by_name(
     std::string const& pathname) const
 {
-    bool result = false;
-
-    if(H5Lexists(_file->getLocId(), pathname.c_str(), H5P_DEFAULT)) {
-        H5G_stat_t status;
-        _file->getObjinfo(pathname, status);
-        result = status.type == H5G_GROUP;
-    }
-
-    return result;
+    return _file->is_group(pathname);
 }
 
 
@@ -306,29 +264,18 @@ bool FernDataset::contains_attribute(
 bool FernDataset::contains_attribute_by_name(
     std::string const& pathname) const
 {
-    bool result = false;
-
-    if(H5Lexists(_file->getLocId(), pathname.c_str(), H5P_DEFAULT)) {
-        H5G_stat_t status;
-        _file->getObjinfo(pathname, status);
-        result = status.type == H5G_DATASET;
-    }
-
-    return result;
+    return _file->is_dataset(pathname);
 }
 
 
 template<
     class T>
 ExpressionType FernDataset::expression_type_numeric_attribute(
-    H5::DataSet const& dataset) const
+    HDF5Dataset const& dataset) const
 {
     ExpressionType result;
 
-    H5::DataSpace data_space = dataset.getSpace();
-    assert(data_space.isSimple());
-
-    switch(data_space.getSimpleExtentType()) {
+    switch(dataset.extent_type()) {
         case H5S_SCALAR: {
             result = ExpressionType(DataTypes::CONSTANT,
                 TypeTraits<T>::value_types);
@@ -378,17 +325,17 @@ ExpressionType FernDataset::expression_type(
     }
 
     ExpressionType result;
-    H5::DataSet const dataset = _file->openDataSet(path.generic_string());
-    H5T_class_t const type_class = dataset.getTypeClass();
+    HDF5Dataset const dataset{_file->open_dataset(path.generic_string())};
+    H5T_class_t const type_class = dataset.type_class();
+    hid_t const type = dataset.type();
 
     switch(type_class) {
         case H5T_INTEGER: {
-            H5::IntType const int_type = dataset.getIntType();
-            assert(int_type.getSign() == H5T_SGN_NONE ||
-                int_type.getSign() == H5T_SGN_2);
-            size_t const int_size = int_type.getSize();
+            H5T_sign_t const sign = H5Tget_sign(type);
+            size_t const int_size = H5Tget_size(type);
+            assert(sign == H5T_SGN_NONE || sign == H5T_SGN_2);
 
-            if(int_type.getSign() == H5T_SGN_NONE) {
+            if(sign == H5T_SGN_NONE) {
                 // Unsigned.
                 if(int_size == 1u) {
                     NUMBER_CASE(uint8_t);
@@ -429,8 +376,7 @@ ExpressionType FernDataset::expression_type(
             break;
         }
         case H5T_FLOAT: {
-            H5::FloatType const float_type = dataset.getFloatType();
-            size_t const float_size = float_type.getSize();
+            size_t const float_size = H5Tget_size(type);
 
             if(float_size == 4u) {
                 NUMBER_CASE(float);
@@ -476,14 +422,11 @@ std::shared_ptr<Feature> FernDataset::open_feature(
 template<
     class T>
 std::shared_ptr<Attribute> FernDataset::open_attribute(
-    H5::DataSet const& dataset) const
+    HDF5Dataset const& dataset) const
 {
     std::shared_ptr<Attribute> result;
 
-    H5::DataSpace data_space = dataset.getSpace();
-    assert(data_space.isSimple());
-
-    switch(data_space.getSimpleExtentType()) {
+    switch(dataset.extent_type()) {
         case H5S_SCALAR: {
             // This attribute contains a single constant value. We might as
             // well read it.
@@ -525,7 +468,7 @@ std::shared_ptr<Attribute> FernDataset::open_attribute(
     // Determine value type.
     // Open data.
 
-    H5::DataSet const dataset = this->dataset(path);
+    auto const dataset = this->dataset(path);
     ValueType value_type = this->value_type(dataset);
 
     std::shared_ptr<Attribute> result;
@@ -575,10 +518,10 @@ std::shared_ptr<Feature> FernDataset::read_feature(
 template<
     class T>
 std::shared_ptr<Attribute> FernDataset::read_constant_attribute(
-    H5::DataSet const& dataset) const
+    HDF5Dataset const& dataset) const
 {
     T value;
-    dataset.read(&value, HDF5TypeTraits<T>::data_type);
+    dataset.read(value);
     return std::shared_ptr<Attribute>(std::make_shared<ConstantAttribute<T>>(
         value));
 }
@@ -587,14 +530,11 @@ std::shared_ptr<Attribute> FernDataset::read_constant_attribute(
 template<
     class T>
 std::shared_ptr<Attribute> FernDataset::read_attribute(
-    H5::DataSet const& dataset) const
+    HDF5Dataset const& dataset) const
 {
     std::shared_ptr<Attribute> result;
 
-    H5::DataSpace data_space = dataset.getSpace();
-    assert(data_space.isSimple());
-
-    switch(data_space.getSimpleExtentType()) {
+    switch(dataset.extent_type()) {
         case H5S_SCALAR: {
             result = read_constant_attribute<T>(dataset);
             break;
@@ -634,7 +574,7 @@ std::shared_ptr<Attribute> FernDataset::read_attribute(
     // Determine value type.
     // Read data.
 
-    H5::DataSet const dataset = this->dataset(path);
+    auto const dataset = this->dataset(path);
     ValueType value_type = this->value_type(dataset);
 
     std::shared_ptr<Attribute> result;
@@ -685,17 +625,16 @@ void FernDataset::add_feature(
         feature_pathname += std::string("/") + name;
 
         if(!contains_feature_by_name(feature_pathname)) {
-            _file->createGroup(feature_pathname);
+            _file->create_group(feature_pathname);
         }
     }
 }
 
 
-std::shared_ptr<H5::Group> FernDataset::group(
+HDF5Group FernDataset::group(
         Path const& path) const
 {
-    return std::make_shared<H5::Group>(
-        _file->openGroup(path.generic_string()));
+    return HDF5Group{_file->open_group(path.generic_string())};
 }
 
 
@@ -716,49 +655,48 @@ void FernDataset::write_attribute(
         add_feature(feature_path);
     }
 
-    std::shared_ptr<H5::Group> group(this->group(feature_path));
-    H5::DataSet dataset;
+    HDF5Group group(this->group(feature_path));
+    HDF5Dataset dataset;
     std::string attribute_name(path.filename().generic_string());
 
     if(!contains_attribute_by_name(path.generic_string())) {
         // Create new dataset for a scalar value. Destination value has native
         // type. When reading on a different platform, this may require a
         // conversion to another endianess.
-        H5::DataSpace data_space;
-        dataset = group->createDataSet(attribute_name,
-            HDF5TypeTraits<T>::data_type,
-            data_space);
+        dataset = HDF5Dataset{group.create_dataset<T>(attribute_name)};
     }
     else {
         // Open the existing dataset and overwrite the contents.
-        dataset = group->openDataSet(attribute_name);
+        dataset = HDF5Dataset{group.open_dataset(attribute_name)};
 #ifndef NDEBUG
-        H5::DataSpace const data_space = dataset.getSpace();
-        assert(data_space.isSimple());
-        assert(data_space.getSimpleExtentType() == H5S_SCALAR);
-        H5T_class_t const type_class = dataset.getTypeClass();
-        assert(type_class == HDF5TypeTraits<T>::type_class);
+        assert(dataset.space_is_simple());
+        assert(dataset.extent_type() == H5S_SCALAR);
 
-        switch(type_class) {
-            case H5T_INTEGER: {
-                assert(dataset.getIntType() == HDF5TypeTraits<T>::data_type);
-                break;
-            }
-            case H5T_FLOAT: {
-                assert(dataset.getFloatType() == HDF5TypeTraits<T>::data_type);
-                break;
-            }
-            default: {
-                assert(false);
-                break;
-            }
-        }
+        H5T_class_t const type_class = dataset.type_class();
+        assert(type_class == HDF5TypeTraits<T>::type_class);
+        // assert(dataset.type() == HDF5TypeTraits<T>::data_type);
+
+        // switch(type_class) {
+        //     case H5T_INTEGER: {
+        //         assert(dataset.getIntType() == HDF5TypeTraits<T>::data_type);
+        //         break;
+        //     }
+        //     case H5T_FLOAT: {
+        //         assert(dataset.getFloatType() == HDF5TypeTraits<T>::data_type);
+        //         break;
+        //     }
+        //     default: {
+        //         assert(false);
+        //         break;
+        //     }
+        // }
 #endif
     }
 
     // Write scalar value to dataset. Source value has native type.
     ConstantValue<T> const& constant_value(constant.values());
-    dataset.write(&constant_value.value(), HDF5TypeTraits<T>::data_type);
+    dataset.write(constant_value.value());
+    _file->flush();
 }
 
 
