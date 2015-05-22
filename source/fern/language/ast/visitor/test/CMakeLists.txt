@@ -15,7 +15,6 @@ add_unit_tests(
     SCOPE language_ast_visitor
     NAMES ${TEST_NAMES}
     LINK_LIBRARIES
-        fern_language_ast_visitor
-        fern_language_script
-        fern_language_ast_xml
-        fern_language_operation_std)
+        fern_language
+        fern_feature
+)

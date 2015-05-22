@@ -8,10 +8,11 @@ set(EXTENSION_SOURCES
     execution_policy
     python_extension
 )
-add_library(_fern_algorithm SHARED ${EXTENSION_SOURCES})
+add_library(_fern_algorithm SHARED
+    ${EXTENSION_SOURCES}
+)
 target_link_libraries(_fern_algorithm
-    fern_algorithm_policy
-    fern_core
+    fern_algorithm
     ${Boost_PYTHON_LIBRARY}
     ${PYTHON_LIBRARIES}
     stdc++

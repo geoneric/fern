@@ -28,8 +28,11 @@ set(TEST_NAMES
 add_unit_tests(
     SCOPE io_core
     NAMES ${TEST_NAMES}
+    OBJECT_LIBRARIES
+        $<TARGET_OBJECTS:fern_io_core_objects>
     LINK_LIBRARIES
-        fern_io_core
         ${Boost_FILESYSTEM_LIBRARY}
         ${Boost_SYSTEM_LIBRARY}
-    DEPENDENCIES io_core_test_data)
+    DEPENDENCIES
+        io_core_test_data
+)

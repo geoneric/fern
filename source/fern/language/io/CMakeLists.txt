@@ -11,8 +11,7 @@ set(SOURCES
     drivers
     io_client
 )
-add_library_and_object_library(fern_language_io ${SOURCES})
-target_link_libraries(fern_language_io
-    fern_language_io_gdal
-    fern_language_io_fern
-)
+add_object_library(
+    TARGET fern_language_io_objects
+    SOURCES ${SOURCES}
+    LIBRARY fern_language)

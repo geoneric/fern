@@ -36,5 +36,7 @@ add_unit_tests(
     SCOPE language_io
     NAMES ${TEST_NAMES}
     LINK_LIBRARIES
-        fern_language_io
-    DEPENDENCIES language_io_test_data)
+        fern_language
+    DEPENDENCIES
+        language_io_test_data
+)

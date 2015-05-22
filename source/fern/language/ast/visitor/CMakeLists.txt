@@ -14,7 +14,7 @@ set(SOURCES
     thread_visitor
     validate_visitor
 )
-add_library_and_object_library(fern_language_ast_visitor ${SOURCES})
-target_link_libraries(fern_language_ast_visitor
-    fern_language_ast_core
-)
+add_object_library(
+    TARGET fern_language_ast_visitor_objects
+    SOURCES ${SOURCES}
+    LIBRARY fern_language)

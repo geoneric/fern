@@ -4,5 +4,6 @@ set(TEST_NAMES
 add_unit_tests(
     SCOPE language_uncertainty
     NAMES ${TEST_NAMES}
-    LINK_LIBRARIES
-        fern_language_uncertainty)
+    OBJECT_LIBRARIES
+        $<TARGET_OBJECTS:fern_language_uncertainty_objects>
+)

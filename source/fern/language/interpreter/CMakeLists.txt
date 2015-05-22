@@ -8,10 +8,13 @@ set(SOURCES
     execute_visitor
     interpreter
 )
-add_library_and_object_library(fern_language_interpreter ${SOURCES})
-target_link_libraries(fern_language_interpreter
-    fern_language_ast_visitor
-    fern_language_ast_xml
-    fern_language_operation_std
-    fern_language_script
-)
+add_object_library(
+    TARGET fern_language_interpreter_objects
+    SOURCES ${SOURCES}
+    LIBRARY fern_language)
+# target_link_libraries(fern_language_interpreter
+#     fern_language_ast_visitor
+#     fern_language_ast_xml
+#     fern_language_operation_std
+#     fern_language_script
+# )

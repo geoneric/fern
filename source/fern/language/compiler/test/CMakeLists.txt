@@ -7,4 +7,5 @@ add_unit_tests(
     SCOPE language_compiler
     NAMES ${TEST_NAMES}
     LINK_LIBRARIES
-        fern_language_compiler)
+        fern_language
+)

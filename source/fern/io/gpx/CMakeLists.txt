@@ -10,10 +10,7 @@ set(SOURCES
     ${CMAKE_CURRENT_BINARY_DIR}/gpx-1.1.cxx
     parse
 )
-add_library(fern_io_gpx
-    ${SOURCES}
-)
-target_link_libraries(fern_io_gpx
-    fern_core
-    ${XercesC_LIBRARIES}
-)
+add_object_library(
+    TARGET fern_io_gpx_objects
+    SOURCES ${SOURCES}
+    LIBRARY fern_io)

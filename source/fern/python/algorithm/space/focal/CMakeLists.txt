@@ -4,13 +4,13 @@ set(EXTENSION_SOURCES
     python_extension
     slope
 )
-add_library(_fern_algorithm_space_focal SHARED ${EXTENSION_SOURCES})
+add_library(_fern_algorithm_space_focal SHARED
+    ${EXTENSION_SOURCES}
+)
 target_link_libraries(_fern_algorithm_space_focal
     fern_python_extension_feature
-    fern_feature_core
-    fern_algorithm_policy
-    fern_algorithm_core
-    fern_core
+    fern_algorithm
+    fern_feature
     ${Boost_PYTHON_LIBRARY}
     ${PYTHON_LIBRARIES}
     stdc++

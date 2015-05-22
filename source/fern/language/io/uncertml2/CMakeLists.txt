@@ -10,10 +10,7 @@ set(SOURCES
     ${CMAKE_CURRENT_BINARY_DIR}/uncertml2-pskel.cxx
     uncertml2_parser
 )
-add_library(fern_language_io_uncertml2
-    ${SOURCES}
-)
-target_link_libraries(fern_language_io_uncertml2
-    fern_language_uncertainty
-    ${EXPAT_LIBRARY}
-)
+add_object_library(
+    TARGET fern_language_io_uncertml2_objects
+    SOURCES ${SOURCES}
+    LIBRARY fern_language)

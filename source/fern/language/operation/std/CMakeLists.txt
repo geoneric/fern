@@ -32,11 +32,14 @@ set(SOURCES
     read
     write
 )
-add_library_and_object_library(fern_language_operation_std ${SOURCES})
-target_link_libraries(fern_language_operation_std
-    fern_language_operation_core
-    fern_language_io
-)
+add_object_library(
+    TARGET fern_language_operation_std_objects
+    SOURCES ${SOURCES}
+    LIBRARY fern_language)
+# target_link_libraries(fern_language_operation_std
+#     fern_language_operation_core
+#     fern_language_io
+# )
 add_custom_target(operation-xml.h
     DEPENDS
         ${CMAKE_CURRENT_BINARY_DIR}/operation-xml.h

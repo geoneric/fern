@@ -4,12 +4,13 @@ set(EXTENSION_SOURCES
     gdal
     python_extension
 )
-add_library(_fern_io SHARED ${EXTENSION_SOURCES})
+add_library(_fern_io SHARED
+    ${EXTENSION_SOURCES}
+)
 target_link_libraries(_fern_io
     fern_python_extension_feature
-    fern_feature_core
-    fern_io_gdal
-    fern_io_core
+    fern_feature
+    fern_io
     ${Boost_PYTHON_LIBRARY}
     ${PYTHON_LIBRARIES}
     stdc++

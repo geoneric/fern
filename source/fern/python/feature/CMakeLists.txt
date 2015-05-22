@@ -11,10 +11,12 @@ set(EXTENSION_SOURCES
     numpy
     python_extension
 )
-add_library(_fern_feature SHARED ${EXTENSION_SOURCES})
+add_library(_fern_feature SHARED
+    ${EXTENSION_SOURCES}
+)
 target_link_libraries(_fern_feature
     fern_python_extension_feature
-    fern_feature_core
+    fern_feature
     ${Boost_PYTHON_LIBRARY}
     ${PYTHON_LIBRARIES}
     stdc++

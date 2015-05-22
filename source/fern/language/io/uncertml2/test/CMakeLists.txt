@@ -4,6 +4,10 @@ set(TEST_NAMES
 add_unit_tests(
     SCOPE language_io_uncertml2
     NAMES ${TEST_NAMES}
+    OBJECT_LIBRARIES
+        $<TARGET_OBJECTS:fern_language_io_uncertml2_objects>
+        $<TARGET_OBJECTS:fern_language_uncertainty_objects>
     LINK_LIBRARIES
-        fern_language_io_uncertml2
-        fern_core)
+        fern_core
+        ${EXPAT_LIBRARY}
+)

@@ -20,10 +20,12 @@ set(TEST_NAMES
     unary_local_operation_test
     unite_no_data_test
 )
-foreach(NAME ${TEST_NAMES})
-    add_unit_test2(
-        SCOPE algorithm_core
-        NAME ${NAME}
-        LINK_LIBRARIES fern_algorithm_policy fern_algorithm_core
-            fern_feature_core fern_core)
-endforeach()
+add_unit_tests(
+    SCOPE algorithm_core
+    NAMES ${TEST_NAMES}
+    OBJECT_LIBRARIES
+        $<TARGET_OBJECTS:fern_algorithm_policy_objects>
+        $<TARGET_OBJECTS:fern_algorithm_core_objects>
+    LINK_LIBRARIES
+        fern_feature
+)

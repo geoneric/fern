@@ -18,6 +18,17 @@ set(TEST_NAMES
 add_unit_tests(
     SCOPE language_io_gdal
     NAMES ${TEST_NAMES}
+    OBJECT_LIBRARIES
+        $<TARGET_OBJECTS:fern_language_feature_core_objects>
+        $<TARGET_OBJECTS:fern_language_feature_visitor_objects>
+        $<TARGET_OBJECTS:fern_language_io_objects>
+        $<TARGET_OBJECTS:fern_language_io_core_objects>
+        $<TARGET_OBJECTS:fern_language_io_fern_objects>
+        $<TARGET_OBJECTS:fern_language_io_gdal_objects>
     LINK_LIBRARIES
-        fern_language_io_gdal
-    DEPENDENCIES language_io_gdal_test_data)
+        fern_feature
+        ${GDAL_LIBRARIES}
+        ${HDF5_LIBRARIES}
+    DEPENDENCIES
+        language_io_gdal_test_data
+)

@@ -4,4 +4,7 @@ add_test_conditionally(test)
 set(SOURCES
     # index_ranges
 )
-# add_library_and_object_library(fern_algorithm_core ${SOURCES})
+# add_object_library(
+#     TARGET fern_algorithm_convolution_objects
+#     SOURCES ${SOURCES}
+#     LIBRARY fern_algorithm)

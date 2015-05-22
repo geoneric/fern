@@ -12,10 +12,12 @@ set(TEST_NAMES
     sqrt_test
     subtract_test
 )
-foreach(NAME ${TEST_NAMES})
-    add_unit_test2(
-        SCOPE algorithm_algebra_elementary
-        NAME ${NAME}
-        LINK_LIBRARIES fern_algorithm_policy fern_core fern_algorithm_core
-            fern_feature_core)
-endforeach()
+add_unit_tests(
+    SCOPE algorithm_algebra_elementary
+    NAMES ${TEST_NAMES}
+    OBJECT_LIBRARIES
+        $<TARGET_OBJECTS:fern_algorithm_policy_objects>
+        $<TARGET_OBJECTS:fern_algorithm_core_objects>
+    LINK_LIBRARIES
+        fern_feature
+)

@@ -17,4 +17,4 @@ set(TEST_NAMES
 add_unit_tests(
     SCOPE language_ast_core
     NAMES ${TEST_NAMES}
-    LINK_LIBRARIES )
+)
