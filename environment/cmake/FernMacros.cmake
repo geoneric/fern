@@ -85,7 +85,7 @@ endfunction()
 
 
 # Create a static library and an object library.
-# BASENAME: Name of static library to create. The object library will be 
+# BASENAME: Name of static library to create. The object library will be
 #           named ${BASENAME}_objects.
 # SOURCES : Sources that are part of the libraries. Any argument that comes
 #           after the BASENAME is treated as a source.
@@ -205,10 +205,10 @@ endmacro()
 # NAME : Name of test module, without extension.
 # LINK_LIBRARIES: Libraries to link against.
 # DEPENDENCIES: Targets this test target depends on.
-macro(add_unit_test2)
+macro(add_unit_test)
     set(OPTIONS "")
     set(ONE_VALUE_ARGUMENTS SCOPE NAME)
-    set(MULTI_VALUE_ARGUMENTS LINK_LIBRARIES DEPENDENCIES)
+    set(MULTI_VALUE_ARGUMENTS OBJECT_LIBRARIES LINK_LIBRARIES DEPENDENCIES)
 
     cmake_parse_arguments(ADD_UNIT_TEST "${OPTIONS}" "${ONE_VALUE_ARGUMENTS}"
         "${MULTI_VALUE_ARGUMENTS}" ${ARGN})
@@ -223,7 +223,8 @@ macro(add_unit_test2)
     set(TEST_MODULE_NAME ${ADD_UNIT_TEST_NAME})
     set(TEST_EXE_NAME ${ADD_UNIT_TEST_SCOPE}_${TEST_MODULE_NAME})
 
-    add_executable(${TEST_EXE_NAME} ${TEST_MODULE_NAME})
+    add_executable(${TEST_EXE_NAME} ${TEST_MODULE_NAME}
+        ${ADD_UNIT_TEST_OBJECT_LIBRARIES})
     target_link_libraries(${TEST_EXE_NAME}
         ${ADD_UNIT_TEST_LINK_LIBRARIES}
         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
@@ -258,7 +259,8 @@ endmacro()
 function(add_unit_tests)
     set(OPTIONS "")
     set(ONE_VALUE_ARGUMENTS SCOPE)
-    set(MULTI_VALUE_ARGUMENTS NAMES LINK_LIBRARIES DEPENDENCIES)
+    set(MULTI_VALUE_ARGUMENTS NAMES OBJECT_LIBRARIES LINK_LIBRARIES
+        DEPENDENCIES)
 
     cmake_parse_arguments(ADD_UNIT_TESTS "${OPTIONS}" "${ONE_VALUE_ARGUMENTS}"
         "${MULTI_VALUE_ARGUMENTS}" ${ARGN})
@@ -271,9 +273,10 @@ function(add_unit_tests)
     endif()
 
     foreach(NAME ${ADD_UNIT_TESTS_NAMES})
-        add_unit_test2(
+        add_unit_test(
             SCOPE ${ADD_UNIT_TESTS_SCOPE}
             NAME ${NAME}
+            OBJECT_LIBRARIES ${ADD_UNIT_TESTS_OBJECT_LIBRARIES}
             LINK_LIBRARIES ${ADD_UNIT_TESTS_LINK_LIBRARIES})
         set(target_name ${ADD_UNIT_TESTS_SCOPE}_${NAME})
         if(ADD_UNIT_TESTS_DEPENDENCIES)
@@ -423,4 +426,41 @@ function(copy_test_file)
 
     set(${destination_file_pathnames_list} ${${destination_file_pathnames_list}}
         ${destination_file_pathname} PARENT_SCOPE)
+endfunction()
+
+
+function(add_object_library)
+    set(OPTIONS "")
+    set(ONE_VALUE_ARGUMENTS
+        TARGET  # Object library name.
+        LIBRARY)  # Library name the object library is part of.
+    set(MULTI_VALUE_ARGUMENTS SOURCES)  # Source files.
+
+    cmake_parse_arguments(ADD_OBJECT_LIBRARY "${OPTIONS}" "${ONE_VALUE_ARGUMENTS}"
+        "${MULTI_VALUE_ARGUMENTS}" ${ARGN})
+
+    if(ADD_OBJECT_LIBRARY_UNPARSED_ARGUMENTS)
+        message(FATAL_ERROR
+            "Macro called with unrecognized arguments: "
+            "${ADD_OBJECT_LIBRARY_UNPARSED_ARGUMENTS}"
+        )
+    endif()
+
+    set(target ${ADD_OBJECT_LIBRARY_TARGET})
+    set(sources ${ADD_OBJECT_LIBRARY_SOURCES})
+    set(library ${ADD_OBJECT_LIBRARY_LIBRARY})
+
+    # Object library.
+    add_library(${target} OBJECT ${sources})
+
+    # Name of variable containing names of object libraries.
+    string(TOUPPER ${library} library_variable)
+    set(library_variable ${library_variable}_OBJECT_LIBRARIES)
+
+    # Append this object library.
+    get_property(${library_variable} GLOBAL PROPERTY ${library_variable})
+    set_property(GLOBAL PROPERTY
+        ${library_variable}
+        ${${library_variable}} $<TARGET_OBJECTS:${target}>
+    )
 endfunction()

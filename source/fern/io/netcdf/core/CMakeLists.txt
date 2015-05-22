@@ -6,7 +6,7 @@ set(SOURCES
     dataset_handle
     variable
 )
-add_library_and_object_library(fern_io_netcdf_core ${SOURCES})
-target_link_libraries(fern_io_netcdf_core
-    stdc++
-)
+add_object_library(
+    TARGET fern_io_netcdf_core_objects
+    SOURCES ${SOURCES}
+    LIBRARY fern_io)

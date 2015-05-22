@@ -12,8 +12,7 @@ set(SOURCES
     result
     expression_types
 )
-add_library_and_object_library(fern_language_operation_core ${SOURCES})
-target_link_libraries(fern_language_operation_core
-    fern_language_feature_visitor
-    fern_core
-)
+add_object_library(
+    TARGET fern_language_operation_core_objects
+    SOURCES ${SOURCES}
+    LIBRARY fern_language)

@@ -12,10 +12,7 @@ set(SOURCES
     hdf5_type_traits
     utils
 )
-add_library_and_object_library(fern_language_io_fern ${SOURCES})
-target_link_libraries(fern_language_io_fern
-    fern_language_io_core
-    fern_language_feature_visitor
-    fern_language_feature_core
-    ${HDF5_LIBRARIES}
-)
+add_object_library(
+    TARGET fern_language_io_fern_objects
+    SOURCES ${SOURCES}
+    LIBRARY fern_language)

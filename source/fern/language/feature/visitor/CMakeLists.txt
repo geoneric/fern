@@ -4,7 +4,7 @@ set(SOURCES
     attribute_visitor
     attribute_type_visitor
 )
-add_library_and_object_library(fern_language_feature_visitor ${SOURCES})
-target_link_libraries(fern_language_feature_visitor
-    fern_core
-)
+add_object_library(
+    TARGET fern_language_feature_visitor_objects
+    SOURCES ${SOURCES}
+    LIBRARY fern_language)

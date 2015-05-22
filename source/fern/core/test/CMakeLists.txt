@@ -20,10 +20,9 @@ if(FERN_COMPILER_HAS_REGEX)
         path_test
     )
 endif()
-
-foreach(NAME ${TEST_NAMES})
-    add_unit_test2(
-        SCOPE core
-        NAME ${NAME}
-        LINK_LIBRARIES fern_core)
-endforeach()
+add_unit_tests(
+    SCOPE core
+    NAMES ${TEST_NAMES}
+    LINK_LIBRARIES
+        fern_core
+)

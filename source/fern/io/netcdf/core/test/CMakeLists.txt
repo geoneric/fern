@@ -20,9 +20,12 @@ set(TEST_NAMES
 add_unit_tests(
     SCOPE io_netcdf_core
     NAMES ${TEST_NAMES}
+    OBJECT_LIBRARIES
+        $<TARGET_OBJECTS:fern_io_core_objects>
+        $<TARGET_OBJECTS:fern_io_netcdf_core_objects>
     LINK_LIBRARIES
-        fern_io_netcdf_core
-        fern_io_core
         fern_core
         ${NETCDF_LIBRARIES}
-    DEPENDENCIES io_netcdf_core_test_data)
+    DEPENDENCIES
+        io_netcdf_core_test_data
+)

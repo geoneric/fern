@@ -5,10 +5,9 @@ set(TEST_NAMES
     masked_scalar_test
     raster_test
 )
-
-foreach(NAME ${TEST_NAMES})
-    add_unit_test2(
-        SCOPE feature_core
-        NAME ${NAME}
-        LINK_LIBRARIES fern_feature_core)
-endforeach()
+add_unit_tests(
+    SCOPE feature_core
+    NAMES ${TEST_NAMES}
+    OBJECT_LIBRARIES
+        $<TARGET_OBJECTS:fern_feature_core_objects>
+)

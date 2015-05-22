@@ -44,6 +44,10 @@ set(TEST_NAMES
 add_unit_tests(
     SCOPE language_io_core
     NAMES ${TEST_NAMES}
+    OBJECT_LIBRARIES
+        $<TARGET_OBJECTS:fern_language_io_core_objects>
     LINK_LIBRARIES
-        fern_language_io_core
-    DEPENDENCIES language_io_core_test_data)
+        fern_core
+    DEPENDENCIES
+        language_io_core_test_data
+)

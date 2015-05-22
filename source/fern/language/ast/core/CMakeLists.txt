@@ -21,8 +21,7 @@ set(SOURCES
     subscript_vertex
     while_vertex
 )
-add_library_and_object_library(fern_language_ast_core ${SOURCES})
-target_link_libraries(fern_language_ast_core
-    fern_language_operation_core
-    fern_core
-)
+add_object_library(
+    TARGET fern_language_ast_core_objects
+    SOURCES ${SOURCES}
+    LIBRARY fern_language)

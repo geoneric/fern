@@ -5,4 +5,7 @@ set(SOURCES
     owned_reference
     string
 )
-add_library_and_object_library(fern_language_python ${SOURCES})
+add_object_library(
+    TARGET fern_language_python_objects
+    SOURCES ${SOURCES}
+    LIBRARY fern_language)

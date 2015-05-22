@@ -6,7 +6,7 @@ set(SOURCES
     gdal_client
     gdal_value_type_traits
 )
-add_library_and_object_library(fern_io_gdal ${SOURCES})
-target_link_libraries(fern_io_gdal
-    ${GDAL_LIBRARIES}
-)
+add_object_library(
+    TARGET fern_io_gdal_objects
+    SOURCES ${SOURCES}
+    LIBRARY fern_io)

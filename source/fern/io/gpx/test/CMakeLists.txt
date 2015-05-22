@@ -23,7 +23,12 @@ set(TEST_NAMES
 add_unit_tests(
     SCOPE io_gpx
     NAMES ${TEST_NAMES}
+    OBJECT_LIBRARIES
+        $<TARGET_OBJECTS:fern_io_core_objects>
+        $<TARGET_OBJECTS:fern_io_gpx_objects>
     LINK_LIBRARIES
-        fern_io_gpx
-        fern_io_core
-    DEPENDENCIES io_gpx_test_data)
+        fern_core
+        ${XercesC_LIBRARIES}
+    DEPENDENCIES
+        io_gpx_test_data
+)

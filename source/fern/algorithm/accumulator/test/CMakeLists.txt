@@ -11,8 +11,7 @@ set(TEST_NAMES
     sum_test
     variance_test
 )
-foreach(NAME ${TEST_NAMES})
-    add_unit_test2(
-        SCOPE algorithm_accumulator
-        NAME ${NAME})
-endforeach()
+add_unit_tests(
+    SCOPE algorithm_accumulator
+    NAMES ${TEST_NAMES}
+)

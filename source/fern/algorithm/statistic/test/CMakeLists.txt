@@ -7,10 +7,12 @@ set(TEST_NAMES
     unary_max_test
     sum_test
 )
-foreach(NAME ${TEST_NAMES})
-    add_unit_test2(
-        SCOPE algorithm_statistic
-        NAME ${NAME}
-        LINK_LIBRARIES fern_algorithm_policy fern_algorithm_core fern_core
-            fern_feature_core)
-endforeach()
+add_unit_tests(
+    SCOPE algorithm_statistic
+    NAMES ${TEST_NAMES}
+    OBJECT_LIBRARIES
+        $<TARGET_OBJECTS:fern_algorithm_policy_objects>
+        $<TARGET_OBJECTS:fern_algorithm_core_objects>
+    LINK_LIBRARIES
+        fern_feature
+)

@@ -5,8 +5,7 @@ set(SOURCES
     domain
     feature
 )
-
-add_library_and_object_library(fern_language_feature_core ${SOURCES})
-target_link_libraries(fern_language_feature_core
-    fern_core
-)
+add_object_library(
+    TARGET fern_language_feature_core_objects
+    SOURCES ${SOURCES}
+    LIBRARY fern_language)

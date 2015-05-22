@@ -4,9 +4,11 @@ set(TEST_NAMES
     not_test
     or_test
 )
-foreach(NAME ${TEST_NAMES})
-    add_unit_test2(
-        SCOPE algorithm_algebra_boole
-        NAME ${NAME}
-        LINK_LIBRARIES fern_algorithm_policy)
-endforeach()
+add_unit_tests(
+    SCOPE algorithm_algebra_boole
+    NAMES ${TEST_NAMES}
+    OBJECT_LIBRARIES
+        $<TARGET_OBJECTS:fern_algorithm_policy_objects>
+    LINK_LIBRARIES
+        fern_core
+)

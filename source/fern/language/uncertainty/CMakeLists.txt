@@ -5,8 +5,7 @@ set(SOURCES
     normal_distribution
     uncertainty
 )
-add_library(fern_language_uncertainty
-    ${SOURCES}
-)
-target_link_libraries(fern_language_uncertainty
-)
+add_object_library(
+    TARGET fern_language_uncertainty_objects
+    SOURCES ${SOURCES}
+    LIBRARY fern_language)
