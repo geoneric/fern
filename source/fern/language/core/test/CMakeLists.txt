@@ -1,9 +1,7 @@
 set(TEST_NAMES
     symbol_table_test
 )
-
-foreach(NAME ${TEST_NAMES})
-    add_unit_test2(
-        SCOPE language_core
-        NAME ${NAME})
-endforeach()
+add_unit_tests(
+    SCOPE language_core
+    NAMES ${TEST_NAMES}
+)

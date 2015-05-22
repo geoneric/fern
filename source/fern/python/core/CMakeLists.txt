@@ -18,5 +18,3 @@ set(SOURCES
 )
 add_library(fern_python_extension_core ${SOURCES})
 add_dependencies(fern_python_extension_core swig_runtime)
-# target_link_libraries(fern_python_extension_core
-# )

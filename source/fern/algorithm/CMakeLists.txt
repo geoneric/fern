@@ -16,7 +16,6 @@ add_library(fern_algorithm SHARED
 )
 target_link_libraries(fern_algorithm
     fern_core
-    # ${FERN_EXTERNAL_LIBRARIES}
 )
 install(
     TARGETS fern_algorithm

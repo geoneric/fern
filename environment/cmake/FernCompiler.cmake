@@ -14,6 +14,17 @@ endif()
 include(CheckCXXCompilerFlag)
 
 
+
+# Related linking of fern lib to generated C++ code.
+# set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--export-all-symbols")
+# For executables, you can use:
+# ADD_EXECUTABLE(NAME_OF_EXECUTABLE $ $)
+# SET(LINK_FLAGS ${LINK_FLAGS} "-Wl,-whole-archive")
+# TARGET_LINK_LIBRARIES(NAME_OF_EXECUTABLE ${PROJECT_NAME})
+
+
+
+
 # TODO: Treat all warnings as errors and explicitly turn off warning that
 #       we don't consider errors. Example(!):
 # Clang:

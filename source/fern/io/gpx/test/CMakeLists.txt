@@ -28,7 +28,7 @@ add_unit_tests(
         $<TARGET_OBJECTS:fern_io_gpx_objects>
     LINK_LIBRARIES
         fern_core
-        ${FERN_EXTERNAL_LIBRARIES}
+        ${XercesC_LIBRARIES}
     DEPENDENCIES
         io_gpx_test_data
 )

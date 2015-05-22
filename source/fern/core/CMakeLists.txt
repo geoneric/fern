@@ -28,9 +28,19 @@ if(FERN_COMPILER_HAS_REGEX)
     )
 endif()
 add_library(fern_core_objects OBJECT ${SOURCES})
-add_library(fern_core $<TARGET_OBJECTS:fern_core_objects>)
+
+
+add_library(fern_core SHARED
+    $<TARGET_OBJECTS:fern_core_objects>
+)
 target_link_libraries(fern_core
-    # ${FERN_EXTERNAL_LIBRARIES}
     ${Boost_FILESYSTEM_LIBRARY}
+    ${Boost_TIMER_LIBRARY}
     ${Boost_SYSTEM_LIBRARY}
+)
+install(
+    TARGETS fern_core
+    EXPORT fern_targets
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
 )

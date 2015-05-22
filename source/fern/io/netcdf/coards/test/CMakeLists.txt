@@ -56,7 +56,7 @@ add_unit_tests(
         $<TARGET_OBJECTS:fern_io_netcdf_core_objects>
     LINK_LIBRARIES
         fern_core
-        ${FERN_EXTERNAL_LIBRARIES}
+        ${NETCDF_LIBRARIES}
     DEPENDENCIES
         io_netcdf_coards_test_data
 )

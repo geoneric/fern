@@ -19,7 +19,6 @@ add_library(fern_feature SHARED
 )
 target_link_libraries(fern_feature
     fern_core
-    # ${FERN_EXTERNAL_LIBRARIES}
 )
 install(
     TARGETS fern_feature

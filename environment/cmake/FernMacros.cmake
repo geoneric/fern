@@ -205,7 +205,7 @@ endmacro()
 # NAME : Name of test module, without extension.
 # LINK_LIBRARIES: Libraries to link against.
 # DEPENDENCIES: Targets this test target depends on.
-macro(add_unit_test2)
+macro(add_unit_test)
     set(OPTIONS "")
     set(ONE_VALUE_ARGUMENTS SCOPE NAME)
     set(MULTI_VALUE_ARGUMENTS OBJECT_LIBRARIES LINK_LIBRARIES DEPENDENCIES)
@@ -273,7 +273,7 @@ function(add_unit_tests)
     endif()
 
     foreach(NAME ${ADD_UNIT_TESTS_NAMES})
-        add_unit_test2(
+        add_unit_test(
             SCOPE ${ADD_UNIT_TESTS_SCOPE}
             NAME ${NAME}
             OBJECT_LIBRARIES ${ADD_UNIT_TESTS_OBJECT_LIBRARIES}

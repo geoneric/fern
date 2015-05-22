@@ -38,7 +38,7 @@ add_unit_tests(
         $<TARGET_OBJECTS:fern_io_gdal_objects>
     LINK_LIBRARIES
         fern_feature
-        ${FERN_EXTERNAL_LIBRARIES}
+        ${GDAL_LIBRARIES}
     DEPENDENCIES
         io_gdal_test_data
 )

@@ -58,7 +58,7 @@ Here, we changed the floating point values to arrays of floating point values. T
 
    When including a header file with `getter` functions, it is crucial to do so before including the header file with the algorithm. When parsing the algorithm template's implementation, the compiler must have all information it needs to assemble an algorithm's function.
 
-The implementation of the divide algorithm that is selected by the compiler given the arguments we passed uses functionality from the ``fern_algorithm_core`` library. For this example to work, we need to link it.
+The implementation of the divide algorithm that is selected by the compiler given the arguments we passed uses functionality from the ``fern_algorithm`` library. For this example to work, we need to link it.
 
 For 0D values (scalars), Fern.Algorithm assumes that these function templates are implemented:
 

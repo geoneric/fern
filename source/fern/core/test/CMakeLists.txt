@@ -25,5 +25,4 @@ add_unit_tests(
     NAMES ${TEST_NAMES}
     LINK_LIBRARIES
         fern_core
-        ${FERN_EXTERNAL_LIBRARIES}
 )
