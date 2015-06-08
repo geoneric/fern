@@ -9,6 +9,7 @@
 #pragma once
 #include <algorithm>
 #include <array>
+#include <cassert>
 #include <boost/range/iterator.hpp>
 #include "fern/language/operation/data_type_traits.h"
 

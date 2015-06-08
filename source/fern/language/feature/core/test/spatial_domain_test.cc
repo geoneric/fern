@@ -7,6 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #define BOOST_TEST_MODULE fern feature
+#include <cassert>
 #include <boost/test/unit_test.hpp>
 #include "fern/feature/core/point.h"
 #include "fern/language/feature/core/box.h"

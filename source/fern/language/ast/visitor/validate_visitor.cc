@@ -7,6 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #include "fern/language/ast/visitor/validate_visitor.h"
+#include <cassert>
 #include <sstream>
 #include "fern/core/exception.h"
 #include "fern/language/operation/core/operation.h"

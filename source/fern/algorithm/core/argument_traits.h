@@ -7,6 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
+#include <type_traits>
 #include <boost/mpl/if.hpp>
 #include "fern/algorithm/policy/dont_mark_no_data.h"
 #include "fern/algorithm/policy/skip_no_data.h"

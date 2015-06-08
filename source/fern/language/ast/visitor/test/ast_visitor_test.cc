@@ -7,6 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #define BOOST_TEST_MODULE fern ast
+#include <cassert>
 #include <boost/test/unit_test.hpp>
 #include "fern/language/script/algebra_parser.h"
 #include "fern/language/ast/core/module_vertex.h"
