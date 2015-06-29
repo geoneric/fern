@@ -11,3 +11,4 @@
 #include "fern/algorithm/algebra/boole/defined.h"
 #include "fern/algorithm/algebra/boole/not.h"
 #include "fern/algorithm/algebra/boole/or.h"
+#include "fern/algorithm/algebra/boole/xor.h"

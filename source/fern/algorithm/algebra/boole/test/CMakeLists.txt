@@ -3,6 +3,7 @@ set(TEST_NAMES
     defined_test
     not_test
     or_test
+    xor_test
 )
 add_unit_tests(
     SCOPE algorithm_algebra_boole
