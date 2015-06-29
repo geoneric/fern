@@ -1,6 +1,7 @@
 set(TEST_NAMES
     and_test
     defined_test
+    nor_test
     not_test
     or_test
     xor_test
