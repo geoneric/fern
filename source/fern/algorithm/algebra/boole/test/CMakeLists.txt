@@ -4,6 +4,7 @@ set(TEST_NAMES
     nor_test
     not_test
     or_test
+    xnor_test
     xor_test
 )
 add_unit_tests(
