@@ -6,17 +6,17 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern algorithm algebra boole xor_
+#define BOOST_TEST_MODULE fern algorithm algebra boole nor
 #include <boost/test/unit_test.hpp>
 #include "fern/core/data_customization_point/scalar.h"
 #include "fern/core/type_traits.h"
-#include "fern/algorithm/algebra/boole/xor.h"
+#include "fern/algorithm/algebra/boole/nor.h"
 
 
 namespace fa = fern::algorithm;
 
 
-BOOST_AUTO_TEST_SUITE(xor_)
+BOOST_AUTO_TEST_SUITE(nor)
 
 template<
     class Value1,
@@ -28,32 +28,32 @@ void verify_value(
     Result const& result_we_want)
 {
     Result result_we_get;
-    fa::algebra::xor_(fa::sequential, value1, value2, result_we_get);
+    fa::algebra::nor(fa::sequential, value1, value2, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 
 
 BOOST_AUTO_TEST_CASE(algorithm)
 {
+    verify_value<>(false, false, true);
+    verify_value<>(false, true, false);
+    verify_value<>(true, false, false);
     verify_value<>(true, true, false);
-    verify_value<>(true, false, true);
-    verify_value<>(false, true, true);
-    verify_value<>(false, false, false);
 
+    verify_value<>(0, 0, 1);
+    verify_value<>(0, 1, 0);
+    verify_value<>(1, 0, 0);
     verify_value<>(1, 1, 0);
-    verify_value<>(1, 0, 1);
-    verify_value<>(0, 1, 1);
-    verify_value<>(0, 0, 0);
 
+    verify_value<>( 0,  0,  1);
+    verify_value<>( 0, -1,  0);
+    verify_value<>(-1,  0,  0);
     verify_value<>(-1, -1,  0);
-    verify_value<>(-1,  0,  1);
-    verify_value<>( 0, -1,  1);
-    verify_value<>( 0,  0,  0);
 
+    verify_value<>( 0.0,  0.0,  1.0);
+    verify_value<>( 0.0, -1.0,  0.0);
+    verify_value<>(-1.0,  0.0,  0.0);
     verify_value<>(-1.0, -1.0,  0.0);
-    verify_value<>(-1.0,  0.0,  1.0);
-    verify_value<>( 0.0, -1.0,  1.0);
-    verify_value<>( 0.0,  0.0,  0.0);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
