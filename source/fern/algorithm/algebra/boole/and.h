@@ -23,6 +23,15 @@ namespace algebra {
     @sa         fern::algorithm::binary_local_operation
 
     The value types of @a value1, @a value2 and @a result must be arithmetic.
+
+    Truth table:
+
+    arg1  | arg2  | result
+    ------|-------|-------
+    false | false | false
+    false | true  | false
+    true  | false | false
+    true  | true  | true
 */
 template<
     typename InputNoDataPolicy,
