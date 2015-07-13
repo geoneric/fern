@@ -1,5 +1,7 @@
 Fern
 ====
+[![Build Status](https://travis-ci.org/geoneric/fern.svg?branch=master)](https://travis-ci.org/geoneric/fern)
+
 Building blocks for scalable high-performance geocomputing
 
 This project is very much work in progress. We have not created a release
