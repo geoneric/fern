@@ -1,0 +1,10 @@
+language: cpp
+compiler: gcc
+install:
+    - sudo apt-get update -qq
+    - sudo apt-get install -qq boost
+before_script:
+    - mkdir build
+    - cd build
+    - cmake -DFERN_BUILD_TEST:BOOL=TRUE -DFERN_BUILD_ALGORITHM:BOOL=TRUE ..
+script: make
