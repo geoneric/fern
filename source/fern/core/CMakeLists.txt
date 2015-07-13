@@ -38,6 +38,11 @@ target_link_libraries(fern_core
     ${Boost_TIMER_LIBRARY}
     ${Boost_SYSTEM_LIBRARY}
 )
+if(UNIX AND ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
+    target_link_libraries(fern_core
+        pthread
+    )
+endif()
 install(
     TARGETS fern_core
     EXPORT fern_targets
