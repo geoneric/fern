@@ -68,7 +68,8 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR
 
     # Make linker report any unresolved symbols.
     set(CMAKE_SHARED_LINKER_FLAGS
-        "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined -Wl,--no-allow-shlib-undefined"
+        "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined"
+        # -Wl,--no-allow-shlib-undefined"
     )
 
     # This results in an error on mingw/gcc 4.8/windows. Some warning about
