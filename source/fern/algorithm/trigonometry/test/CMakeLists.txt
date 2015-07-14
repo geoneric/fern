@@ -1,5 +1,6 @@
 set(TEST_NAMES
     atan_test
+    acos_test
     cos_test
     sin_test
     tan_test

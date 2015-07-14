@@ -7,6 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
+#include "fern/algorithm/trigonometry/acos.h"
 #include "fern/algorithm/trigonometry/atan.h"
 #include "fern/algorithm/trigonometry/cos.h"
 #include "fern/algorithm/trigonometry/sin.h"
