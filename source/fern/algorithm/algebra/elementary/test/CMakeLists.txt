@@ -3,6 +3,7 @@ set(TEST_NAMES
     add_test
     divide_test
     equal_test
+    factorial_test
     greater_equal_test
     greater_test
     less_test
@@ -11,6 +12,7 @@ set(TEST_NAMES
     pow_test
     sqrt_test
     subtract_test
+    tgamma_test
 )
 add_unit_tests(
     SCOPE algorithm_algebra_elementary

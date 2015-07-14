@@ -9,24 +9,23 @@
 #pragma once
 #include "fern/core/assert.h"
 #include "fern/algorithm/policy/policies.h"
-#include "fern/algorithm/algebra/elementary/detail/sqrt.h"
+#include "fern/algorithm/algebra/elementary/detail/tgamma.h"
 
 
 namespace fern {
 namespace algorithm {
-namespace sqrt {
+namespace tgamma {
 
 /*!
     @ingroup    fern_algorithm_algebra_elementary_group
-    @brief      Out of domain policy for fern::algorithm::algebra::sqrt
+    @brief      Out of domain policy for fern::algorithm::algebra::tgamma
                 algorithm.
     @sa         @ref fern_algorithm_policies_out_of_domain_policy
 
-    Values smaller than 0 are considered out-of-domain.
+    Non-positive integers are considered out-of-domain.
 
     The value types of @a value and @a result must be floating point and
     the same.
-
 */
 template<
     typename Value>
@@ -40,35 +39,68 @@ public:
     inline static bool within_domain(
         Value const& value)
     {
-        return value >= Value(0);
+        return value >= Value{0} || std::trunc(value) != value;
     }
 
 };
 
-} // namespace sqrt
+
+/*!
+    @ingroup    fern_algorithm_algebra_elementary_group
+    @brief      Out of range policy for fern::algorithm::algebra::tgamma
+                algorithm.
+    @sa         fern::algorithm::DetectOutOfRangeByErrno,
+                @ref fern_algorithm_policies_out_of_range_policy
+
+    The value types of @a value and @a Result must be floating point and
+    the same.
+*/
+template<
+    typename Value,
+    typename Result>
+class OutOfRangePolicy
+{
+
+    FERN_STATIC_ASSERT(std::is_floating_point, value_type<Value>)
+    FERN_STATIC_ASSERT(std::is_same, value_type<Value>, value_type<Result>)
+
+public:
+
+    inline static bool within_range(
+        Value const& /* value */,
+        Result const& result)
+    {
+        return std::isfinite(result);
+    }
+
+};
+
+} // namespace tgamma
 
 
 namespace algebra {
 
 /*!
     @ingroup    fern_algorithm_algebra_elementary_group
-    @brief      Calculate the square root of @a value and write the result
+    @brief      Calculate the gamma function of @a value and write the result
                 to @a result.
-    @sa         fern::algorithm::sqrt::OutOfDomainPolicy,
-                fern::algorithm::unary_local_operation
+    @sa         fern::algorithm::tgamma::OutOfRangePolicy,
+                fern::algorithm::unary_local_operation,
+                http://en.wikipedia.com/wiki/Gamma_function
 
     The value types of @a value and @a result must be floating point and the
     same.
 */
 template<
     template<typename> class OutOfDomainPolicy,
+    template<typename, typename> class OutOfRangePolicy,
     typename InputNoDataPolicy,
     typename OutputNoDataPolicy,
     typename ExecutionPolicy,
     typename Value,
     typename Result
 >
-void sqrt(
+void tgamma(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
     ExecutionPolicy& execution_policy,
@@ -78,8 +110,9 @@ void sqrt(
     FERN_STATIC_ASSERT(std::is_floating_point, value_type<Value>)
     FERN_STATIC_ASSERT(std::is_same, value_type<Result>, value_type<Value>)
 
-    sqrt::detail::sqrt<OutOfDomainPolicy>(input_no_data_policy,
-        output_no_data_policy, execution_policy, value, result);
+    tgamma::detail::tgamma<OutOfDomainPolicy, OutOfRangePolicy>(
+        input_no_data_policy, output_no_data_policy, execution_policy,
+        value, result);
 }
 
 
@@ -92,7 +125,7 @@ template<
     typename Value,
     typename Result
 >
-void sqrt(
+void tgamma(
     ExecutionPolicy& execution_policy,
     Value const& value,
     Result& result)
@@ -101,8 +134,9 @@ void sqrt(
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
-    sqrt<unary::DiscardDomainErrors>(InputNoDataPolicy{{}},
-        output_no_data_policy, execution_policy, value, result);
+    tgamma<unary::DiscardDomainErrors, unary::DiscardRangeErrors>(
+        InputNoDataPolicy{{}}, output_no_data_policy, execution_policy,
+        value, result);
 }
 
 } // namespace algebra
