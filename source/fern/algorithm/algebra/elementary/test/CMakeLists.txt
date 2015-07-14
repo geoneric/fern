@@ -3,6 +3,7 @@ set(TEST_NAMES
     add_test
     divide_test
     equal_test
+    factorial_test
     greater_equal_test
     greater_test
     less_test
