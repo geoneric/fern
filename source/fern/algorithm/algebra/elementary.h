@@ -19,3 +19,4 @@
 #include "fern/algorithm/algebra/elementary/pow.h"
 #include "fern/algorithm/algebra/elementary/sqrt.h"
 #include "fern/algorithm/algebra/elementary/subtract.h"
+#include "fern/algorithm/algebra/elementary/tgamma.h"
