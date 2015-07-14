@@ -9,16 +9,16 @@
 #pragma once
 #include "fern/core/assert.h"
 #include "fern/algorithm/policy/policies.h"
-#include "fern/algorithm/trigonometry/detail/acos.h"
+#include "fern/algorithm/trigonometry/detail/asin.h"
 
 
 namespace fern {
 namespace algorithm {
-namespace acos {
+namespace asin {
 
 /*!
     @ingroup    fern_algorithm_trigonometry_group
-    @brief      Out-of-domain policy for fern::algorithm::trigonometry::acos
+    @brief      Out-of-domain policy for fern::algorithm::trigonometry::asin
                 algorithm.
     @sa         @ref fern_algorithm_policies_out_of_domain_policy
 
@@ -49,7 +49,7 @@ public:
 
 };
 
-} // namespace acos
+} // namespace asin
 
 
 namespace trigonometry {
@@ -57,7 +57,7 @@ namespace trigonometry {
 //! Calculate the arc cosine of @a value and write the result to @a result.
 /*!
     @ingroup    fern_algorithm_trigonometry_group
-    @sa         fern::algorithm::acos::OutOfDomainPolicy,
+    @sa         fern::algorithm::asin::OutOfDomainPolicy,
                 fern::algorithm::unary_local_operation
 
     The value types of @a value and @a result must be floating point and the
@@ -70,7 +70,7 @@ template<
     typename ExecutionPolicy,
     typename Value,
     typename Result>
-void acos(
+void asin(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
     ExecutionPolicy& execution_policy,
@@ -80,7 +80,7 @@ void acos(
     FERN_STATIC_ASSERT(std::is_floating_point, value_type<Value>)
     FERN_STATIC_ASSERT(std::is_same, value_type<Result>, value_type<Value>)
 
-    acos::detail::acos<OutOfDomainPolicy>(input_no_data_policy,
+    asin::detail::asin<OutOfDomainPolicy>(input_no_data_policy,
         output_no_data_policy, execution_policy, value, result);
 }
 
@@ -93,7 +93,7 @@ template<
     typename ExecutionPolicy,
     typename Value,
     typename Result>
-void acos(
+void asin(
     ExecutionPolicy& execution_policy,
     Value const& value,
     Result& result)
@@ -102,7 +102,7 @@ void acos(
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
-    acos<unary::DiscardDomainErrors>(InputNoDataPolicy{{}},
+    asin<unary::DiscardDomainErrors>(InputNoDataPolicy{{}},
         output_no_data_policy, execution_policy, value, result);
 }
 
