@@ -62,5 +62,5 @@ before_script:
 script:
     - cd build
     - cmake --build . --config ${TRAVIS_BUILD_TYPE} --target all
-    - cmake --build . --config ${TRAVIS_BUILD_TYPE} --target test
+    # - cmake --build . --config ${TRAVIS_BUILD_TYPE} --target test
     - cd ..
