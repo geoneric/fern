@@ -23,13 +23,12 @@ env:
     - TRAVIS_BUILD_TYPE=Release TRAVIS_CMAKE_GENERATOR="Unix Makefiles"
 
 matrix:
-    exclude:
-        - os: linux
-          compiler: clang
+    - exclude:
         - os: osx
           compiler: gcc
-    allow_failures:
+    - allow_failures:
         - os: osx
+        - compiler: clang
 
 # https://github.com/travis-ci/apt-source-whitelist/blob/master/ubuntu.json
 # https://github.com/travis-ci/apt-package-whitelist/blob/master/ubuntu-precise
@@ -43,6 +42,7 @@ addons:
             - clang-3.5
             - g++-4.9
             - libboost1.55-all-dev
+            - libc++-dev
 
 before_install:
     - wget http://www.cmake.org/files/v3.2/cmake-3.2.3-Linux-x86_64.tar.gz
