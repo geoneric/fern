@@ -9,6 +9,7 @@
 #define BOOST_TEST_MODULE fern algorithm algebra elementary factorial
 #include <boost/test/unit_test.hpp>
 #include "fern/core/data_customization_point/scalar.h"
+#include "fern/algorithm/core/test/test_utils.h"
 #include "fern/algorithm/algebra/elementary/factorial.h"
 
 
@@ -164,7 +165,7 @@ BOOST_AUTO_TEST_CASE(algorithm)
     }
 
     {
-        verify_floating_point_value<double, double>(0.0, 0.0);
+        verify_floating_point_value<double, double>(0.0, 1.0);
         verify_floating_point_value<double, double>(1.0, 1.0);
         verify_floating_point_value<double, double>(10.0, 3628800.0);
     }
