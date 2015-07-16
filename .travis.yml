@@ -47,11 +47,11 @@ install:
 before_script:
     - mkdir build
     - cd build
-    - cmake -G"$TRAVIS_CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=$TRAVIS_BUILD_TYPE -DFERN_BUILD_TEST:BOOL=TRUE -DFERN_BUILD_ALGORITHM:BOOL=TRUE ..
+    - cmake -G"${TRAVIS_CMAKE_GENERATOR}" -DCMAKE_BUILD_TYPE=${TRAVIS_BUILD_TYPE} -DFERN_BUILD_TEST:BOOL=TRUE -DFERN_BUILD_ALGORITHM:BOOL=TRUE ..
     - cd ..
 
 script:
     - cd build
-    - cmake --build . --config $TRAVIS_BUILD_TYPE --target all
-    #- cmake --build . --config $TRAVIS_BUILD_TYPE --target test
+    - cmake --build . --config ${TRAVIS_BUILD_TYPE} --target all
+    # - cmake --build . --config ${TRAVIS_BUILD_TYPE} --target test
     - cd ..
