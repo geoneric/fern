@@ -38,7 +38,9 @@ target_link_libraries(fern_core
     ${Boost_TIMER_LIBRARY}
     ${Boost_SYSTEM_LIBRARY}
 )
-if(UNIX AND ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
+if(UNIX AND (
+        ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR
+        ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang"))
     target_link_libraries(fern_core
         pthread
     )

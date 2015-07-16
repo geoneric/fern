@@ -278,13 +278,21 @@ check_cxx_source_runs("
     int main(int, char**)
     {
         std::string silly;
-        std::regex regular_expression(\"\");
+        std::regex regular_expression(\"blah\");
         std::vector<std::string> words;
 
         std::copy_if(std::sregex_token_iterator(silly.begin(), silly.end(),
             regular_expression, -1), std::sregex_token_iterator(),
             std::back_inserter(words),
             [](std::string const& string) { return !string.empty(); });
+
+        // std::string s = \"Some people\";
+
+        // std::regex self_regex(\"REGULAR EXPRESSIONS\",
+        //         std::regex_constants::ECMAScript | std::regex_constants::icase);
+        // if (std::regex_search(s, self_regex)) {
+        //     // std::cout << \"Text contains the phrase\";
+        // }
     }"
     FERN_COMPILER_HAS_REGEX
 )

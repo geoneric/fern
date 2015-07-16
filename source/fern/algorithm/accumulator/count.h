@@ -173,7 +173,7 @@ template<
 template<
     template<typename, typename, typename> class OutOfRangePolicy>
 inline bool Count<Argument, Result>::operator|=(
-    Count const& other)
+    Count const& /* other */)
 {
     // Value doesn't matter. We're counting, not summing.
     return operator()<OutOfRangePolicy>(Argument{});

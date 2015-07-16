@@ -154,7 +154,7 @@ inline bool Mean<Argument, Result>::operator()(
     Argument const& value)
 {
     _count(value);
-    return _sum.operator()<OutOfRangePolicy>(value);
+    return _sum.template operator()<OutOfRangePolicy>(value);
 }
 
 
@@ -203,7 +203,7 @@ inline bool Mean<Argument, Result>::operator|=(
     Mean const& other)
 {
     _count |= other._count;
-    return _sum.operator|=<OutOfRangePolicy>(other._sum);
+    return _sum.template operator|=<OutOfRangePolicy>(other._sum);
 }
 
 

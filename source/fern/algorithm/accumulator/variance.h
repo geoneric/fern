@@ -54,7 +54,7 @@ private:
     //      instead of this one.
     template<
         typename T>
-    inline constexpr T square(
+    static inline constexpr T square(
         T const& value)
     {
         return value * value;

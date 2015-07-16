@@ -150,7 +150,7 @@ inline IndexRanges<nr_dimensions>& IndexRanges<nr_dimensions>::operator=(
 //! Subscript instance by \a index.
 /*!
   \return    The index range of dimension \a index.
-  \exception \a index must be smaller than \a nr_dimensions.
+  \warning   \a index must be smaller than \a nr_dimensions.
 */
 template<
     size_t nr_dimensions>
@@ -165,7 +165,7 @@ inline IndexRange const& IndexRanges<nr_dimensions>::operator[](
 //! Subscript instance by \a index.
 /*!
   \return    The index range of dimension \a index.
-  \exception \a index must be smaller than \a nr_dimensions.
+  \warning   \a index must be smaller than \a nr_dimensions.
 */
 template<
     size_t nr_dimensions>

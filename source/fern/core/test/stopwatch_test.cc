@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------------
 #define BOOST_TEST_MODULE fern core
 #include <boost/test/unit_test.hpp>
+#include <cmath>
 #include "fern/core/stopwatch.h"
 
 
