@@ -15,12 +15,21 @@ os:
       # - osx
 
 compiler:
-    # - clang
+    - clang
     - gcc
 
 env:
     - TRAVIS_BUILD_TYPE=Debug TRAVIS_CMAKE_GENERATOR="Unix Makefiles"
     - TRAVIS_BUILD_TYPE=Release TRAVIS_CMAKE_GENERATOR="Unix Makefiles"
+
+matrix:
+    exclude:
+        - os: linux
+          compiler: clang
+        - os: osx
+          compiler: gcc
+    allow_failures:
+        - os: osx
 
 # https://github.com/travis-ci/apt-source-whitelist/blob/master/ubuntu.json
 # https://github.com/travis-ci/apt-package-whitelist/blob/master/ubuntu-precise
