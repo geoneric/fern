@@ -104,8 +104,8 @@ template<
 inline Raster<T> clone(
     Raster<U> const& raster)
 {
-    return std::move(Raster<T>(raster.cell_size(), raster.nr_rows(),
-        raster.nr_cols()));
+    return Raster<T>(raster.cell_size(), raster.nr_rows(),
+        raster.nr_cols());
 }
 
 

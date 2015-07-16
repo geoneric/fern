@@ -20,7 +20,7 @@ fern::algorithm::add::result_type<Value1, Value2> operator+(
     Value1 const& lhs,
     Value2 const& rhs)
 {
-    return std::move(add(lhs, rhs));
+    return add(lhs, rhs);
 }
 
 } // namespace example

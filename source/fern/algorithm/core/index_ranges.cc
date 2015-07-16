@@ -47,7 +47,7 @@ std::vector<IndexRanges<1>> index_ranges(
         ranges.emplace_back(IndexRange(offset, offset + remainder));
     }
 
-    return std::move(ranges);
+    return ranges;
 }
 
 
@@ -94,7 +94,7 @@ std::vector<IndexRanges<2>> index_ranges(
             IndexRange(0, block_width));
     }
 
-    return std::move(ranges);
+    return ranges;
 }
 
 } // namespace algorithm

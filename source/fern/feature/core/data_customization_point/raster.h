@@ -79,8 +79,8 @@ template<
 inline Raster<U, 1> clone(
     Raster<V, 1> const& raster)
 {
-    return std::move(Raster<U, 1>(extents[raster.shape()[0]],
-        raster.transformation()));
+    return Raster<U, 1>(extents[raster.shape()[0]],
+        raster.transformation());
 }
 
 
@@ -91,9 +91,8 @@ inline Raster<U, 1> clone(
     Raster<V, 1> const& raster,
     U const& value)
 {
-    return std::move(Raster<U, 1>(extents[raster.shape()[0]],
-        raster.transformation(),
-        value));
+    return Raster<U, 1>(extents[raster.shape()[0]], raster.transformation(),
+        value);
 }
 
 
@@ -123,9 +122,8 @@ template<
 inline Raster<U, 2> clone(
     Raster<V, 2> const& raster)
 {
-    return std::move(Raster<U, 2>(
-        extents[raster.shape()[0]][raster.shape()[1]],
-        raster.transformation()));
+    return Raster<U, 2>(extents[raster.shape()[0]][raster.shape()[1]],
+        raster.transformation());
 }
 
 
@@ -136,10 +134,8 @@ inline Raster<U, 2> clone(
     Raster<V, 2> const& raster,
     U const& value)
 {
-    return std::move(Raster<U, 2>(
-        extents[raster.shape()[0]][raster.shape()[1]],
-        raster.transformation(),
-        value));
+    return Raster<U, 2>(extents[raster.shape()[0]][raster.shape()[1]],
+        raster.transformation(), value);
 }
 
 
@@ -149,9 +145,9 @@ template<
 inline Raster<U, 3> clone(
     Raster<V, 3> const& raster)
 {
-    return std::move(Raster<U, 3>(
+    return Raster<U, 3>(
         extents[raster.shape()[0]][raster.shape()[1],raster.shape()[2]],
-        raster.transformation()));
+        raster.transformation());
 }
 
 
@@ -162,10 +158,9 @@ inline Raster<U, 3> clone(
     Raster<V, 3> const& raster,
     U const& value)
 {
-    return std::move(Raster<U, 3>(
+    return Raster<U, 3>(
         extents[raster.shape()[0]][raster.shape()[1],raster.shape()[2]],
-        raster.transformation(),
-        value));
+        raster.transformation(), value);
 }
 
 } // namespace fern

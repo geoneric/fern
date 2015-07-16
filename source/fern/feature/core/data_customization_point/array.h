@@ -79,7 +79,7 @@ template<
 inline Array<U, 1> clone(
     Array<V, 1> const& array)
 {
-    return std::move(Array<U, 1>(extents[array.shape()[0]]));
+    return Array<U, 1>(extents[array.shape()[0]]);
 }
 
 
@@ -90,7 +90,7 @@ inline Array<U, 1> clone(
     Array<V, 1> const& array,
     U const& value)
 {
-    return std::move(Array<U, 1>(extents[array.shape()[0]], value));
+    return Array<U, 1>(extents[array.shape()[0]], value);
 }
 
 
@@ -100,7 +100,7 @@ template<
 inline Array<U, 2> clone(
     Array<V, 2> const& array)
 {
-    return std::move(Array<U, 2>(extents[array.shape()[0]][array.shape()[1]]));
+    return Array<U, 2>(extents[array.shape()[0]][array.shape()[1]]);
 }
 
 
@@ -111,8 +111,8 @@ inline Array<U, 2> clone(
     Array<V, 2> const& array,
     U const& value)
 {
-    return std::move(Array<U, 2>(extents[array.shape()[0]][array.shape()[1]],
-        value));
+    return Array<U, 2>(extents[array.shape()[0]][array.shape()[1]],
+        value);
 }
 
 
@@ -122,8 +122,8 @@ template<
 inline Array<U, 3> clone(
     Array<V, 3> const& array)
 {
-    return std::move(Array<U, 3>(
-        extents[array.shape()[0]][array.shape()[1]][array.shape()[2]]));
+    return Array<U, 3>(
+        extents[array.shape()[0]][array.shape()[1]][array.shape()[2]]);
 }
 
 
@@ -134,9 +134,9 @@ inline Array<U, 3> clone(
     Array<V, 3> const& array,
     U const& value)
 {
-    return std::move(Array<U, 3>(
+    return Array<U, 3>(
         extents[array.shape()[0]][array.shape()[1]][array.shape()[2]],
-        value));
+        value);
 }
 
 } // namespace fern

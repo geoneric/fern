@@ -66,12 +66,6 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR
         "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wcast-qual -Wwrite-strings -Werror=strict-aliasing -pedantic -fno-strict-overflow -ftemplate-backtrace-limit=0"
     )
 
-    # Make linker report any unresolved symbols.
-    set(CMAKE_SHARED_LINKER_FLAGS
-        "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined"
-        # -Wl,--no-allow-shlib-undefined"
-    )
-
     # This results in an error on mingw/gcc 4.8/windows. Some warning about
     # and unused parameters. Skip for now.
     # set(CMAKE_CXX_FLAGS_RELEASE
@@ -106,17 +100,12 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR
 endif()
 
 if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
-    if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
-        set(CMAKE_CXX_FLAGS
-            "${CMAKE_CXX_FLAGS} -std=c++1y"
-        )
-    else()
-        set(CMAKE_CXX_FLAGS
-            "${CMAKE_CXX_FLAGS} -std=c++14"
-        )
-    endif()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+
+    # Make linker report any unresolved symbols.
+    set(CMAKE_SHARED_LINKER_FLAGS
+        "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined")
 elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
-    set(CMAKE_CXX_FLAGS
-        "${CMAKE_CXX_FLAGS} -stdlib=libc++ -std=c++1y"
-    )
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 endif()

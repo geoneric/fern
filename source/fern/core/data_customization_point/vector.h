@@ -47,7 +47,7 @@ template<
 inline std::vector<U> clone(
     std::vector<V> const& vector)
 {
-    return std::move(std::vector<U>(vector.size()));
+    return std::vector<U>(vector.size());
 }
 
 
@@ -58,7 +58,7 @@ inline std::vector<U> clone(
     std::vector<V> const& vector,
     U const& value)
 {
-    return std::move(std::vector<U>(vector.size(), value));
+    return std::vector<U>(vector.size(), value);
 }
 
 } // namespace fern

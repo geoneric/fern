@@ -42,7 +42,7 @@ fern::algorithm::add::result_type<Value1, Value2> add(
 
     fern::algorithm::algebra::add(execution_policy, lhs, rhs, result);
 
-    return std::move(result);
+    return result;
 }
 
 
@@ -61,7 +61,7 @@ fern::CloneT<Value, ResultValueType> cast(
 
     fern::algorithm::core::cast(execution_policy, value, result);
 
-    return std::move(result);
+    return result;
 }
 
 
@@ -77,7 +77,7 @@ fern::CloneT<Value, fern::value_type<Value>> slope(
 
     fern::algorithm::space::slope(execution_policy, value, result);
 
-    return std::move(result);
+    return result;
 }
 
 } // namespace example

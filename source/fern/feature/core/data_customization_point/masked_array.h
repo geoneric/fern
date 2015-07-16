@@ -80,7 +80,7 @@ template<
 inline MaskedArray<U, 1> clone(
     MaskedArray<V, 1> const& array)
 {
-    return std::move(MaskedArray<U, 1>(extents[array.shape()[0]]));
+    return MaskedArray<U, 1>(extents[array.shape()[0]]);
 }
 
 
@@ -91,7 +91,7 @@ inline MaskedArray<U, 1> clone(
     MaskedArray<V, 1> const& array,
     U const& value)
 {
-    return std::move(MaskedArray<U, 1>(extents[array.shape()[0]], value));
+    return MaskedArray<U, 1>(extents[array.shape()[0]], value);
 }
 
 
@@ -101,8 +101,7 @@ template<
 inline MaskedArray<U, 2> clone(
     MaskedArray<V, 2> const& array)
 {
-    return std::move(MaskedArray<U, 2>(
-        extents[array.shape()[0]][array.shape()[1]]));
+    return MaskedArray<U, 2>(extents[array.shape()[0]][array.shape()[1]]);
 }
 
 
@@ -113,8 +112,8 @@ inline MaskedArray<U, 2> clone(
     MaskedArray<V, 2> const& array,
     U const& value)
 {
-    return std::move(MaskedArray<U, 2>(
-        extents[array.shape()[0]][array.shape()[1]], value));
+    return MaskedArray<U, 2>(
+        extents[array.shape()[0]][array.shape()[1]], value);
 }
 
 
@@ -124,8 +123,8 @@ template<
 inline MaskedArray<U, 3> clone(
     MaskedArray<V, 3> const& array)
 {
-    return std::move(MaskedArray<U, 3>(
-        extents[array.shape()[0]][array.shape()[1]][array.shape()[1]]));
+    return MaskedArray<U, 3>(
+        extents[array.shape()[0]][array.shape()[1]][array.shape()[1]]);
 }
 
 
@@ -136,8 +135,8 @@ inline MaskedArray<U, 3> clone(
     MaskedArray<V, 3> const& array,
     U const& value)
 {
-    return std::move(MaskedArray<U, 3>(
-        extents[array.shape()[0]][array.shape()[1]][array.shape()[2]], value));
+    return MaskedArray<U, 3>(
+        extents[array.shape()[0]][array.shape()[1]][array.shape()[2]], value);
 }
 
 } // namespace fern
