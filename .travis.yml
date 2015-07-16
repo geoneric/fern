@@ -8,35 +8,45 @@
 # ------------------------------------------------------------------------------
 language: cpp
 
-# sudo: false
+sudo: false
 
 os:
     - linux
       # - osx
 
-compiler: gcc
+compiler:
+    # - clang
+    - gcc
+
+env:
+    - TRAVIS_BUILD_TYPE=Debug TRAVIS_CMAKE_GENERATOR="Unix Makefiles"
+    - TRAVIS_BUILD_TYPE=Release TRAVIS_CMAKE_GENERATOR="Unix Makefiles"
+
+# https://github.com/travis-ci/apt-package-whitelist/blob/master/ubuntu-precise
+addons:
+    apt:
+        sources:
+            - boost-latest/ppa
+            # - llvm-toolchain-precise-3.5
+            - sschuberth/cmake-here
+            - ubuntu-toolchain-r/test
+        packages:
+            - cmake
+            - libboost1.55-all-dev
+            - g++-4.9
 
 before_install:
-    - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo add-apt-repository -y ppa:sschuberth/cmake-here; fi
-    - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test; fi
-    - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo add-apt-repository -y ppa:boost-latest/ppa; fi
-    - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get update -q; fi
-    - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get remove -q cmake; fi
-    - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get install -q cmake; fi
-    - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get install -q libboost1.55-all-dev; fi
-    - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$CXX" = "g++" ]; then sudo apt-get install -q g++-4.9; fi
-    - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$CXX" = "g++" ]; then export CXX="g++-4.9" CC="gcc-4.9"; fi
-
-      # # https://github.com/travis-ci/apt-package-whitelist/blob/master/ubuntu-precise
-      # addons:
-      #     apt:
-      #         packages:
-      #             - cmake
-      #             - libboost-dev
+    - if [ "$CC" = "clang" ]; then export CC="clang-3.7" CXX="clang++-3.7"; fi
+    - if [ "$CC" = "gcc" ]; then export CC="gcc-4.9" CXX="g++-4.9"; fi
 
 before_script:
     - mkdir build
     - cd build
-    - cmake -DFERN_BUILD_TEST:BOOL=TRUE -DFERN_BUILD_ALGORITHM:BOOL=TRUE ..
+    - cmake -G"${TRAVIS_CMAKE_GENERATOR}" -DCMAKE_BUILD_TYPE=${TRAVIS_BUILD_TYPE} -DFERN_BUILD_TEST:BOOL=TRUE -DFERN_BUILD_ALGORITHM:BOOL=TRUE ..
+    - cd ..
 
-script: make
+script:
+    - cd build
+    - cmake --build . --config ${TRAVIS_BUILD_TYPE} --target all
+    - cmake --build . --config ${TRAVIS_BUILD_TYPE} --target test
+    - cd ..
