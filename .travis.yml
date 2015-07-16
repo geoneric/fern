@@ -26,18 +26,24 @@ env:
 addons:
     apt:
         sources:
-            - boost-latest/ppa
+            # - boost-latest/ppa
+            - boost-latest
             # - llvm-toolchain-precise-3.5
-            - sschuberth/cmake-here
-            - ubuntu-toolchain-r/test
+            # - sschuberth/cmake-here
+            - ubuntu-toolchain-r-test
         packages:
-            - cmake
+            # - cmake
             - libboost1.55-all-dev
             - g++-4.9
 
 before_install:
+    - wget http://www.cmake.org/files/v3.2/cmake-3.2.3-Linux-x86_64.tar.gz /tmp
     - if [ "$CC" = "clang" ]; then export CC="clang-3.7" CXX="clang++-3.7"; fi
     - if [ "$CC" = "gcc" ]; then export CC="gcc-4.9" CXX="g++-4.9"; fi
+
+install:
+    - tar zxf /tmp/cmake-3.2.3-Linux-x86_64.tar.gz
+    - export PATH=$PATH:$PWD/cmake-3.2.3-Linux-x86_64/bin
 
 before_script:
     - mkdir build
