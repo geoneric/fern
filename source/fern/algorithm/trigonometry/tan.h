@@ -70,8 +70,8 @@ namespace trigonometry {
 
 /*!
     @ingroup    fern_algorithm_trigonometry_group
-    @brief      Calculate the tangent of @a value and write the result
-                to @a result.
+    @brief      Calculate the tangent of @a value (in radians) and write
+                the result to @a result.
     @sa         fern::algorithm::tan::OutOfDomainPolicy,
                 fern::algorithm::unary_local_operation
 

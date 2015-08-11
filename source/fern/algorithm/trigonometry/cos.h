@@ -48,9 +48,10 @@ public:
 
 namespace trigonometry {
 
-//! Calculate the cosine of @a value and write the result to @a result.
 /*!
     @ingroup    fern_algorithm_trigonometry_group
+    @brief      Calculate the cosine of @a value (in radians) and write
+                the result to @a result.
     @sa         fern::algorithm::cos::OutOfDomainPolicy,
                 fern::algorithm::unary_local_operation
 
