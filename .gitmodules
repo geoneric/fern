@@ -1,0 +1,3 @@
+[submodule "environment/devbase"]
+	path = environment/devbase
+	url = git@github.com:geoneric/devbase.git
