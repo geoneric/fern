@@ -9,6 +9,7 @@
 #pragma once
 #include "fern/algorithm/algebra/elementary/absolute.h"
 #include "fern/algorithm/algebra/elementary/add.h"
+#include "fern/algorithm/algebra/elementary/ceil.h"
 #include "fern/algorithm/algebra/elementary/divide.h"
 #include "fern/algorithm/algebra/elementary/equal.h"
 #include "fern/algorithm/algebra/elementary/factorial.h"

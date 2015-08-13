@@ -1,6 +1,7 @@
 set(TEST_NAMES
     absolute_test
     add_test
+    ceil_test
     divide_test
     equal_test
     factorial_test
