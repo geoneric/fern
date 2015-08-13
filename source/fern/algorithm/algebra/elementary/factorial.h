@@ -116,8 +116,8 @@ void factorial(
     Value const& value,
     Result& result)
 {
-    static_assert(std::is_integral<Value>::value ||
-        std::is_floating_point<Value>::value, "");
+    static_assert(std::is_integral<value_type<Value>>::value ||
+        std::is_floating_point<value_type<Value>>::value, "");
     FERN_STATIC_ASSERT(std::is_same, value_type<Result>, value_type<Value>)
 
     factorial::detail::factorial<OutOfDomainPolicy, OutOfRangePolicy>(
