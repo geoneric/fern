@@ -10,6 +10,7 @@ set(TEST_NAMES
     greater_test
     less_test
     less_equal_test
+    log_test
     multiply_test
     pow_test
     round_test
