@@ -7,7 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include "fern/algorithm/algebra/elementary/detail/round.h"
+#include "fern/algorithm/algebra/elementary/detail/floor.h"
 
 
 namespace fern {
@@ -16,14 +16,15 @@ namespace algebra {
 
 /*!
     @ingroup    fern_algorithm_algebra_elementary_group
-    @brief      Compute the nearest integer value of each value in @a value
-                and write the result to @a result.
+    @brief      For each value in @a value, compute the largest integer value
+                not greater than that value and write each result value to
+                @a result.
     @sa         fern::algorithm::unary_local_operation,
-                http://en.cppreference.com/w/cpp/numeric/math/round
+                http://en.cppreference.com/w/cpp/numeric/math/floor
 
     - The value types of @a value and @a result must be floating point and the
       same.
-    - All input values are considered within round's domain.
+    - All input values are considered within floor's domain.
     - All result values are considered within the result's value type's range.
 */
 template<
@@ -33,7 +34,7 @@ template<
     typename Value,
     typename Result
 >
-void round(
+void floor(
     InputNoDataPolicy const& input_no_data_policy,
     OutputNoDataPolicy& output_no_data_policy,
     ExecutionPolicy& execution_policy,
@@ -43,7 +44,7 @@ void round(
     FERN_STATIC_ASSERT(std::is_floating_point, value_type<Value>)
     FERN_STATIC_ASSERT(std::is_same, value_type<Result>, value_type<Value>)
 
-    round::detail::round(input_no_data_policy,
+    floor::detail::floor(input_no_data_policy,
         output_no_data_policy, execution_policy, value, result);
 }
 
@@ -57,7 +58,7 @@ template<
     typename Value,
     typename Result
 >
-void round(
+void floor(
     ExecutionPolicy& execution_policy,
     Value const& value,
     Result& result)
@@ -66,7 +67,7 @@ void round(
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
-    round(InputNoDataPolicy{{}}, output_no_data_policy, execution_policy,
+    floor(InputNoDataPolicy{{}}, output_no_data_policy, execution_policy,
         value, result);
 }
 

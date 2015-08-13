@@ -12,6 +12,7 @@
 #include "fern/algorithm/algebra/elementary/divide.h"
 #include "fern/algorithm/algebra/elementary/equal.h"
 #include "fern/algorithm/algebra/elementary/factorial.h"
+#include "fern/algorithm/algebra/elementary/floor.h"
 #include "fern/algorithm/algebra/elementary/greater_equal.h"
 #include "fern/algorithm/algebra/elementary/greater.h"
 #include "fern/algorithm/algebra/elementary/less_equal.h"

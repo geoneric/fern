@@ -4,6 +4,7 @@ set(TEST_NAMES
     divide_test
     equal_test
     factorial_test
+    floor_test
     greater_equal_test
     greater_test
     less_test
