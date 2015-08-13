@@ -228,16 +228,6 @@ if(FERN_BUILD_TEST)
 endif()
 
 
-# Only generate the TODO page in Debug configurations. Note that this only
-# works for single-configuration generators like make. The idea is not to
-# install a TODO list page in the API docs when releasing Fern.
-# This variable is used in DoxygenDoc.cmake.
-set(FERN_DOXYGEN_GENERATE_TODOLIST "NO")
-if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-    set(FERN_DOXYGEN_GENERATE_TODOLIST "YES")
-endif()
-
-
 include(CheckIncludeFile)
 include(CheckSymbolExists)
 
