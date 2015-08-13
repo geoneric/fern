@@ -15,7 +15,7 @@
 namespace fa = fern::algorithm;
 
 
-BOOST_AUTO_TEST_SUITE(tgamma_)
+BOOST_AUTO_TEST_SUITE(round_)
 
 template<
     class Value,

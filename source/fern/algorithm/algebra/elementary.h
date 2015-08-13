@@ -24,3 +24,4 @@
 #include "fern/algorithm/algebra/elementary/sqrt.h"
 #include "fern/algorithm/algebra/elementary/subtract.h"
 #include "fern/algorithm/algebra/elementary/tgamma.h"
+#include "fern/algorithm/algebra/elementary/trunc.h"
