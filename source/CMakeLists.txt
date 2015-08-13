@@ -69,7 +69,7 @@ if(FERN_BUILD_DOCUMENTATION)
 
     list(APPEND _API_SOURCES ${FERN_EXTERNAL_SOURCES})
 
-    string(REPLACE ";" " " FERN_DOXYGEN_INPUT "${_API_SOURCES}")
+    string(REPLACE ";" " " DEVBASE_DOXYGEN_INPUT "${_API_SOURCES}")
 
     include(DoxygenDoc)
 

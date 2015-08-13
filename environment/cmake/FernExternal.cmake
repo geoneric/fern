@@ -32,7 +32,7 @@ endif()
 # FERN_EXTERNAL_SOURCES
 #   List with directory pathnames containing sources to document. These are
 #   used to tell Doxygen which files to document.
-# FERN_EXTERNAL_SOURCES_FILE_PATTERNS
+# DEVBASE_DOGEN_EXTERNAL_SOURCES_FILE_PATTERNS
 #   List with filename patterns of external sources to document. Only needed
 #   for non-standard filename patterns. These are used to tell Doxygen which
 #   files to document.
@@ -195,8 +195,8 @@ if(FERN_XSD_REQUIRED)
         ${XSD_INCLUDE_DIRS}
     )
     list(APPEND FERN_EXTERNAL_SOURCES ${XSD_INCLUDE_DIRS})
-    list(APPEND FERN_EXTERNAL_SOURCES_FILE_PATTERNS *.ixx)
-    list(APPEND FERN_EXTERNAL_SOURCES_FILE_PATTERNS *.txx)
+    list(APPEND DEVBASE_DOXYGEN_EXTERNAL_SOURCES_FILE_PATTERNS *.ixx)
+    list(APPEND DEVBASE_DOXYGEN_EXTERNAL_SOURCES_FILE_PATTERNS *.txx)
     message(STATUS "Found XSD:")
     message(STATUS "  includes  : ${XSD_INCLUDE_DIRS}")
     message(STATUS "  executable: ${XSD_EXECUTABLE}")
@@ -204,5 +204,5 @@ endif()
 
 
 # Turn list into a space-separated string.
-string(REPLACE ";" " " FERN_EXTERNAL_SOURCES_FILE_PATTERNS
-    "${FERN_EXTERNAL_SOURCES_FILE_PATTERNS}")
+string(REPLACE ";" " " DEVBASE_DGEN_EXTERNAL_SOURCES_FILE_PATTERNS
+    "${DEVBASE_DGEN_EXTERNAL_SOURCES_FILE_PATTERNS}")

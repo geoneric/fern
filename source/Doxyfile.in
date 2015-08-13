@@ -1,7 +1,6 @@
 PROJECT_NAME            = ${PROJECT_NAME}
 PROJECT_BRIEF           = www.geoneric.eu
 # TODO PROJECT_LOGO            = ${PROJECT_BINARY_DIR}/document/texts/logo/...
-INPUT                   = ${FERN_DOXYGEN_INPUT}
 ${DOXYGEN_TEMPLATE}
 EXCLUDE_PATTERNS        = */detail/* \
                           *_test.cc \
