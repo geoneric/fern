@@ -10,6 +10,7 @@ set(TEST_NAMES
     less_equal_test
     multiply_test
     pow_test
+    round_test
     sqrt_test
     subtract_test
     tgamma_test
