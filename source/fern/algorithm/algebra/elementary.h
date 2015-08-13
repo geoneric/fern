@@ -20,6 +20,7 @@
 #include "fern/algorithm/algebra/elementary/less.h"
 #include "fern/algorithm/algebra/elementary/log.h"
 #include "fern/algorithm/algebra/elementary/log10.h"
+#include "fern/algorithm/algebra/elementary/log2.h"
 #include "fern/algorithm/algebra/elementary/multiply.h"
 #include "fern/algorithm/algebra/elementary/pow.h"
 #include "fern/algorithm/algebra/elementary/round.h"
