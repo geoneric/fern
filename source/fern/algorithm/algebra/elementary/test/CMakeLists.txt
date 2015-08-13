@@ -16,6 +16,7 @@ set(TEST_NAMES
     sqrt_test
     subtract_test
     tgamma_test
+    trunc_test
 )
 add_unit_tests(
     SCOPE algorithm_algebra_elementary
