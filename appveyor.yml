@@ -16,7 +16,7 @@ install:
     - git submodule update --init --recursive
     # - nuget install boost-vc140 -o "${env:APPVEYOR_BUILD_FOLDER}"
     - nuget install boost -Version 1.59.0 -o "${env:APPVEYOR_BUILD_FOLDER}"
-    - nuget install boost_signals-vc140 -Version 1.59.0 -o "${env:APPVEYOR_BUILD_FOLDER}"
+    # - nuget install boost_signals-vc140 -Version 1.59.0 -o "${env:APPVEYOR_BUILD_FOLDER}"
 
 before_build:
     - cd "${env:APPVEYOR_BUILD_FOLDER}"
@@ -31,4 +31,4 @@ before_build:
 build:
     project: C:\projects\fern\build\fern.sln
     parallel: true
-    verbosity: normal
+    verbosity: high  # normal
