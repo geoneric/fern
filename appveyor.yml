@@ -21,10 +21,11 @@ install:
     - nuget install boost_timer-vc140 -Version 1.59.0
     - nuget install boost_unit_test_framework-vc140 -Version 1.59.0
     # TODO Move libs to boost.1.59.0.0\lib\native\lib
+    - mkdir boost.1.59.0.0\lib\native\lib
+    - copy boost_filesystem-vc140.1.59.0.0\lib\native\address-model-64\lib\* boost.1.59.0.0\lib\native\lib
 
 before_build:
     - dir
-    # - dir /s /b boost.1.59.0.0
     - dir /s /b boost_filesystem-vc140.1.59.0.0
     - md build
     - cd build
