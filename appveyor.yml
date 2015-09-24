@@ -14,13 +14,14 @@ matrix:
 
 install:
     - git submodule update --init --recursive
-    # - nuget install boost-vc140 -o "${env:APPVEYOR_BUILD_FOLDER}"
-    # - nuget install boost -Version 1.59.0 -o "${env:APPVEYOR_BUILD_FOLDER}"
-    - nuget install boost -Version 1.59.0 -o  blah
-    # - nuget install boost_signals-vc140 -Version 1.59.0 -o "${env:APPVEYOR_BUILD_FOLDER}"
+      # - nuget install boost-vc140
+    - nuget install boost -Version 1.59.0
+    - nuget install boost_filesystem-vc140 -Version 1.59.0
+    - nuget install boost_system-vc140 -Version 1.59.0
+    - nuget install boost_timer-vc140 -Version 1.59.0
+    - nuget install boost_unit_test_framework-vc140 -Version 1.59.0
 
 before_build:
-    - cd "${env:APPVEYOR_BUILD_FOLDER}"
     - dir
     - dir boost.1.59.0.0
     - dir boost.1.59.0.0/lib
