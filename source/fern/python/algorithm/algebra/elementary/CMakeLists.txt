@@ -18,7 +18,6 @@ target_link_libraries(_fern_algorithm_algebra_elementary
     fern_feature
     ${Boost_PYTHON_LIBRARY}
     ${PYTHON_LIBRARIES}
-    stdc++
 )
 configure_python_extension(_fern_algorithm_algebra_elementary
     "_fern_algorithm_algebra_elementary")

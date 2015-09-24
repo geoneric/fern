@@ -63,7 +63,7 @@ ValueTypes ExpressionType::value_type() const
 */
 bool ExpressionType::defined() const
 {
-    return _data_types.count() > 0 and _value_types.count() > 0;
+    return _data_types.count() > 0 && _value_types.count() > 0;
 }
 
 

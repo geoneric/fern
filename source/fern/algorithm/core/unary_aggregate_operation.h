@@ -88,14 +88,22 @@ public:
             Accumulator& accumulator,
             Value const& value)
     {
+#if defined(_MSC_VER)
+        return accumulator.operator()<OutOfRangePolicy>(value);
+#else
         return accumulator.template operator()<OutOfRangePolicy>(value);
+#endif
     }
 
     static inline bool merge(
         Accumulator& accumulator,
         Accumulator&& other)
     {
+#if defined(_MSC_VER)
+        return accumulator.operator|=<OutOfRangePolicy>(other);
+#else
         return accumulator.template operator|=<OutOfRangePolicy>(other);
+#endif
     }
 
 };

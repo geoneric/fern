@@ -49,7 +49,9 @@ BOOST_AUTO_TEST_CASE(accumulate)
         frequency_table(6);
         // 5 5 5
         // 6 6 6
-        BOOST_CHECK_EQUAL(frequency_table.mode(), 6);
+        // Multi-modal. Undefined which one is returned.
+        BOOST_CHECK(frequency_table.mode() == 5 ||
+            frequency_table.mode() == 6);
 
         frequency_table = 8;
         BOOST_CHECK_EQUAL(frequency_table.mode(), 8);

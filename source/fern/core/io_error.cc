@@ -24,6 +24,10 @@ IOError::IOError(
 }
 
 
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable: 4996)
+#endif
 IOError::IOError(
     std::string const& source_name,
     int errno_)
@@ -34,6 +38,9 @@ IOError::IOError(
 
 {
 }
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
 
 
 std::string IOError::message() const

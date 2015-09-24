@@ -83,7 +83,18 @@ inline Square<T, radius>::Square(
     assert(weights.size() == _size);
     for(size_t i = 0; i < _size; ++i) {
         assert(it->size() == _size);
-        std::copy(it->begin(), it->end(), &_weights[i * _size]);
+        T* target = &_weights[i * _size];
+
+        // We are passing an array as the target of the copy. By default,
+        // Visual Studio throws a C4996 warning because of that, which we
+        // silence here.
+        std::copy(it->begin(), it->end(),
+#if defined(_MSC_VER)
+            stdext::make_unchecked_array_iterator(target)
+#else
+            target
+#endif
+        );
         ++it;
     }
 }

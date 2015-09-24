@@ -4,9 +4,6 @@ set(LIB_SOURCES
     masked_raster
 )
 add_library(fern_python_extension_feature ${LIB_SOURCES})
-target_link_libraries(fern_python_extension_feature
-    stdc++
-)
 set(EXTENSION_SOURCES
     numpy
     python_extension
@@ -19,7 +16,6 @@ target_link_libraries(_fern_feature
     fern_feature
     ${Boost_PYTHON_LIBRARY}
     ${PYTHON_LIBRARIES}
-    stdc++
 )
 configure_python_extension(_fern_feature "_fern_feature")
 set_target_properties(_fern_feature

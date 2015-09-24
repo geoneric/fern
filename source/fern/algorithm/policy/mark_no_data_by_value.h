@@ -91,7 +91,7 @@ template<
     typename Mask>
 inline MarkNoDataByValue<Mask>::MarkNoDataByValue(
     Mask& mask,
-    MarkNoDataByValue<Mask>::value_type const& no_data_value)
+    typename MarkNoDataByValue<Mask>::value_type const& no_data_value)
 
     : _mask(mask),
       _no_data_value(no_data_value)

@@ -33,10 +33,10 @@ BOOST_AUTO_TEST_CASE(out_of_range_policy)
 {
     {
         OutOfRangePolicy<fern::float32_t, fern::float32_t> policy;
-        BOOST_CHECK(policy.within_range(123.456, 4.5));
-        BOOST_CHECK(!policy.within_range(123.456,
+        BOOST_CHECK(policy.within_range(123.456f, 4.5f));
+        BOOST_CHECK(!policy.within_range(123.456f,
             fern::nan<fern::float32_t>()));
-        BOOST_CHECK(!policy.within_range(123.456,
+        BOOST_CHECK(!policy.within_range(123.456f,
             fern::infinity<fern::float32_t>()));
     }
 }

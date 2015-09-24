@@ -8,7 +8,9 @@
 // -----------------------------------------------------------------------------
 #pragma once
 #include <cassert>
-#include <cxxabi.h>
+#if !defined(_MSC_VER)
+#include <cxxabi.h>  // abi::__cxa_demangle
+#endif
 #include "fern/core/type_traits.h"
 
 
@@ -18,6 +20,10 @@ namespace detail {
 std::string demangle(
     std::string const& name)
 {
+#if defined(_MSC_VER)
+    // TODO
+    return name;
+#else
     int status;
     char* buffer;
     buffer = abi::__cxa_demangle(name.c_str(), nullptr, nullptr, &status);
@@ -25,6 +31,7 @@ std::string demangle(
     std::string real_name(buffer);
     free(buffer);
     return real_name;
+#endif
 }
 
 

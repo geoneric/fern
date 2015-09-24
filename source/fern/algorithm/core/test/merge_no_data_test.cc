@@ -200,7 +200,7 @@ void test_array_2d_masked(
         auto value1_mask_it = value.mask().data();
         std::transform(result_we_want.data(),
             result_we_want.data() + nr_elements, result_we_want.mask().data(),
-            [&](bool const& /* value */) {
+            [&](int const& /* value */) {
                 ++value1_mask_it;
                 return *(value1_mask_it-1); });
     }

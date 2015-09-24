@@ -960,7 +960,7 @@ void test_array_2d_2d_2d_masked(
             // If true_value is masked, the result must be masked.
             std::transform(condition.data(), condition.data() + nr_elements,
                 result_we_want.mask().data(), [&](int const& value) {
-                    return value ? 0 : 1; });
+                    return value ? false : true; });
             fa::algebra::or_(execution_policy, condition.mask(),
                 result_we_want.mask(), result_we_want.mask());
             fa::algebra::or_(execution_policy, true_value.mask(),

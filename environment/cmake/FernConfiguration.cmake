@@ -27,6 +27,23 @@ option(FERN_BUILD_DOCUMENTATION "Build documentation" FALSE)
 option(FERN_BUILD_TEST "Build tests" FALSE)
 
 
+# TODO Make this an option. Allow this to be changed per library.
+set(FERN_ALL_DYN_LINK FALSE)
+if(NOT WIN32)
+    set(FERN_ALL_DYN_LINK TRUE)
+endif()
+
+if(FERN_ALL_DYN_LINK)
+    set(FERN_ALGORITHM_DYN_LINK TRUE)
+    set(FERN_CORE_DYN_LINK TRUE)
+    set(FERN_FEATURE_DYN_LINK TRUE)
+else()
+    set(FERN_ALGORITHM_DYN_LINK FALSE)
+    set(FERN_CORE_DYN_LINK FALSE)
+    set(FERN_FEATURE_DYN_LINK FALSE)
+endif()
+
+
 # Some modules require the build of other modules and support for certain
 # features.
 if(FERN_BUILD_ALL)

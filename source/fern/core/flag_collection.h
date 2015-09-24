@@ -23,11 +23,11 @@ namespace fern {
   instance would be sliced.
 */
 template<
-    class Flags,
+    typename Flags,
     typename Flag,
-    size_t size>
+    size_t size_>
 class FlagCollection:
-    private std::bitset<size>
+    private std::bitset<size_>
 {
 
     friend class FlagCollectionTest;
@@ -75,7 +75,7 @@ public:
 
 protected:
 
-    constexpr      FlagCollection      (unsigned long long bits);
+                   FlagCollection      (unsigned long long bits);
 
 private:
 
@@ -83,23 +83,23 @@ private:
 
 
 template<
-    class Flags,
+    typename Flags,
     typename Flag,
-    size_t size>
-inline constexpr FlagCollection<Flags, Flag, size>::FlagCollection(
+    size_t size_>
+inline FlagCollection<Flags, Flag, size_>::FlagCollection(
     unsigned long long bits)
 
-    : std::bitset<size>(bits )
+    : std::bitset<size_>(bits)
 
 {
 }
 
 
 template<
-    class Flags,
+    typename Flags,
     typename Flag,
-    size_t size>
-inline Flags FlagCollection<Flags, Flag, size>::operator&(
+    size_t size_>
+inline Flags FlagCollection<Flags, Flag, size_>::operator&(
     Flags const& flags) const
 {
     Flags result(dynamic_cast<Flags const&>(*this));
@@ -109,79 +109,79 @@ inline Flags FlagCollection<Flags, Flag, size>::operator&(
 
 
 template<
-    class Flags,
+    typename Flags,
     typename Flag,
-    size_t size>
-inline Flags& FlagCollection<Flags, Flag, size>::operator&=(
+    size_t size_>
+inline Flags& FlagCollection<Flags, Flag, size_>::operator&=(
     Flags const& flags)
 {
-    std::bitset<size>::operator&=(flags);
+    std::bitset<size_>::operator&=(flags);
     return dynamic_cast<Flags&>(*this);
 }
 
 
 template<
-    class Flags,
+    typename Flags,
     typename Flag,
-    size_t size>
-inline Flags& FlagCollection<Flags, Flag, size>::operator|=(
+    size_t size_>
+inline Flags& FlagCollection<Flags, Flag, size_>::operator|=(
     Flags const& flags)
 {
-    std::bitset<size>::operator|=(flags);
+    std::bitset<size_>::operator|=(flags);
     return dynamic_cast<Flags&>(*this);
 }
 
 
 template<
-    class Flags,
+    typename Flags,
     typename Flag,
-    size_t size>
-inline Flags& FlagCollection<Flags, Flag, size>::operator^=(
+    size_t size_>
+inline Flags& FlagCollection<Flags, Flag, size_>::operator^=(
     Flags const& flags)
 {
-    std::bitset<size>::operator^=(flags);
+    std::bitset<size_>::operator^=(flags);
     return dynamic_cast<Flags&>(*this);
 }
 
 
 template<
-    class Flags,
+    typename Flags,
     typename Flag,
-    size_t size>
-inline size_t FlagCollection<Flags, Flag, size>::count() const
+    size_t size_>
+inline size_t FlagCollection<Flags, Flag, size_>::count() const
 {
-    return std::bitset<size>::count();
+    return std::bitset<size_>::count();
 }
 
 
 template<
-    class Flags,
+    typename Flags,
     typename Flag,
-    size_t size>
-inline bool FlagCollection<Flags, Flag, size>::test(
+    size_t size_>
+inline bool FlagCollection<Flags, Flag, size_>::test(
     size_t pos) const
 {
-    return std::bitset<size>::test(pos);
+    return std::bitset<size_>::test(pos);
 }
 
 
 template<
-    class Flags,
+    typename Flags,
     typename Flag,
-    size_t size>
-inline bool FlagCollection<Flags, Flag, size>::none() const
+    size_t size_>
+inline bool FlagCollection<Flags, Flag, size_>::none() const
 {
-    return std::bitset<size>::none();
+    return std::bitset<size_>::none();
 }
 
 
 template<
-    class Flags,
+    typename Flags,
     typename Flag,
-    size_t size>
-inline bool FlagCollection<Flags, Flag, size>::any() const
+    size_t size_>
+inline bool FlagCollection<Flags, Flag, size_>::any() const
 {
-    return std::bitset<size>::any();
+    return std::bitset<size_>::any();
 }
 
 
@@ -195,20 +195,20 @@ inline bool FlagCollection<Flags, Flag, size>::any() const
   to be fixed, which means that this is the final setting.
 */
 template<
-    class Flags,
+    typename Flags,
     typename Flag,
-    size_t size>
-inline bool FlagCollection<Flags, Flag, size>::fixed() const
+    size_t size_>
+inline bool FlagCollection<Flags, Flag, size_>::fixed() const
 {
     return count() == 1u;
 }
 
 
 template<
-    class Flags,
+    typename Flags,
     typename Flag,
-    size_t size>
-inline bool FlagCollection<Flags, Flag, size>::is_subset_of(
+    size_t size_>
+inline bool FlagCollection<Flags, Flag, size_>::is_subset_of(
     FlagCollection const& flags) const
 {
     return any() && ((*this & flags).count() == count());
@@ -216,24 +216,24 @@ inline bool FlagCollection<Flags, Flag, size>::is_subset_of(
 
 
 template<
-    class Flags,
+    typename Flags,
     typename Flag,
-    size_t size>
-inline bool FlagCollection<Flags, Flag, size>::operator==(
+    size_t size_>
+inline bool FlagCollection<Flags, Flag, size_>::operator==(
     FlagCollection const& flags) const
 {
-    return std::bitset<size>::operator==(flags);
+    return std::bitset<size_>::operator==(flags);
 }
 
 
 template<
-    class Flags,
+    typename Flags,
     typename Flag,
-    size_t size>
-inline bool FlagCollection<Flags, Flag, size>::operator!=(
+    size_t size_>
+inline bool FlagCollection<Flags, Flag, size_>::operator!=(
     FlagCollection const& flags) const
 {
-    return std::bitset<size>::operator!=(flags);
+    return std::bitset<size_>::operator!=(flags);
 }
 
 } // namespace fern

@@ -60,7 +60,10 @@ std::string Path::generic_string() const
 */
 std::string Path::native_string() const
 {
-    return native();
+    // http://boost.2283326.n4.nabble.com/boost-filesystem-path-as-utf-8-td4320098.html
+    return string<std::string>();
+    // TODO: This class should only accept utf8 and return utf8.
+    // return native();
 }
 
 

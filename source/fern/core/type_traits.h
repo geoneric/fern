@@ -7,6 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
+#include <limits>
 #include <string>
 #include <boost/math/constants/constants.hpp>
 #include "fern/core/value_types.h"
@@ -32,6 +33,7 @@ struct TypeTraits
     // static ValueTypes const value_types;
 
     static bool const builtin = false;
+
 };
 
 
@@ -78,11 +80,20 @@ struct TypeTraits<int8_t>
 
     static bool const builtin = true;
 
-    static int8_t const min;
+    static constexpr int8_t min()
+    {
+        return std::numeric_limits<int8_t>::min();
+    }
 
-    static int8_t const max;
+    static constexpr int8_t max()
+    {
+        return std::numeric_limits<int8_t>::max();
+    }
 
-    static int8_t const no_data_value;
+    static constexpr int8_t no_data_value()
+    {
+        return min();
+    }
 };
 
 
@@ -99,11 +110,20 @@ struct TypeTraits<uint8_t>
 
     static bool const builtin = true;
 
-    static uint8_t const min;
+    static constexpr uint8_t min()
+    {
+        return std::numeric_limits<uint8_t>::min();
+    }
 
-    static uint8_t const max;
+    static constexpr uint8_t max()
+    {
+        return std::numeric_limits<uint8_t>::max();
+    }
 
-    static uint8_t const no_data_value;
+    static constexpr uint8_t no_data_value()
+    {
+        return max();
+    }
 };
 
 
@@ -120,11 +140,20 @@ struct TypeTraits<int16_t>
 
     static bool const builtin = true;
 
-    static int16_t const min;
+    static constexpr int16_t min()
+    {
+        return std::numeric_limits<int16_t>::min();
+    }
 
-    static int16_t const max;
+    static constexpr int16_t max()
+    {
+        return std::numeric_limits<int16_t>::max();
+    }
 
-    static int16_t const no_data_value;
+    static constexpr int16_t no_data_value()
+    {
+        return min();
+    }
 };
 
 
@@ -141,11 +170,20 @@ struct TypeTraits<uint16_t>
 
     static bool const builtin = true;
 
-    static uint16_t const min;
+    static constexpr uint16_t min()
+    {
+        return std::numeric_limits<uint16_t>::min();
+    }
 
-    static uint16_t const max;
+    static constexpr uint16_t max()
+    {
+        return std::numeric_limits<uint16_t>::max();
+    }
 
-    static uint16_t const no_data_value;
+    static constexpr uint16_t no_data_value()
+    {
+        return max();
+    }
 };
 
 
@@ -162,11 +200,20 @@ struct TypeTraits<int32_t>
 
     static bool const builtin = true;
 
-    static int32_t const min;
+    static constexpr int32_t min()
+    {
+        return std::numeric_limits<int32_t>::min();
+    }
 
-    static int32_t const max;
+    static constexpr int32_t max()
+    {
+        return std::numeric_limits<int32_t>::max();
+    }
 
-    static int32_t const no_data_value;
+    static constexpr int32_t no_data_value()
+    {
+        return min();
+    }
 };
 
 
@@ -183,11 +230,20 @@ struct TypeTraits<uint32_t>
 
     static bool const builtin = true;
 
-    static uint32_t const min;
+    static constexpr uint32_t min()
+    {
+        return std::numeric_limits<uint32_t>::min();
+    }
 
-    static uint32_t const max;
+    static constexpr uint32_t max()
+    {
+        return std::numeric_limits<uint32_t>::max();
+    }
 
-    static uint32_t const no_data_value;
+    static constexpr uint32_t no_data_value()
+    {
+        return max();
+    }
 };
 
 
@@ -204,11 +260,20 @@ struct TypeTraits<int64_t>
 
     static bool const builtin = true;
 
-    static int64_t const min;
+    static constexpr int64_t min()
+    {
+        return std::numeric_limits<int64_t>::min();
+    }
 
-    static int64_t const max;
+    static constexpr int64_t max()
+    {
+        return std::numeric_limits<int64_t>::max();
+    }
 
-    static int64_t const no_data_value;
+    static constexpr int64_t no_data_value()
+    {
+        return min();
+    }
 };
 
 
@@ -225,11 +290,20 @@ struct TypeTraits<uint64_t>
 
     static bool const builtin = true;
 
-    static uint64_t const min;
+    static constexpr uint64_t min()
+    {
+        return std::numeric_limits<uint64_t>::min();
+    }
 
-    static uint64_t const max;
+    static constexpr uint64_t max()
+    {
+        return std::numeric_limits<uint64_t>::max();
+    }
 
-    static uint64_t const no_data_value;
+    static constexpr uint64_t no_data_value()
+    {
+        return max();
+    }
 };
 
 
@@ -246,15 +320,32 @@ struct TypeTraits<float>
 
     static bool const builtin = true;
 
-    static float const min;
+    static constexpr float min()
+    {
+        return std::numeric_limits<float>::min();
+    }
 
-    static float const max;
+    static constexpr float max()
+    {
+        return std::numeric_limits<float>::max();
+    }
 
-    static float const nan;
+    static_assert(std::numeric_limits<float>::has_quiet_NaN, "");
 
-    static float const infinity;
+    static constexpr float nan()
+    {
+        return std::numeric_limits<float>::quiet_NaN();
+    }
 
-    static float const no_data_value;
+    static constexpr float infinity()
+    {
+        return std::numeric_limits<float>::infinity();
+    }
+
+    static constexpr float no_data_value()
+    {
+        return min();
+    }
 };
 
 
@@ -271,15 +362,33 @@ struct TypeTraits<double>
 
     static bool const builtin = true;
 
-    static double const min;
+    static constexpr double min()
+    {
+        return std::numeric_limits<double>::min();
+    }
 
-    static double const max;
+    static constexpr double max()
+    {
+        return std::numeric_limits<double>::max();
+    }
 
-    static double const nan;
+    static_assert(std::numeric_limits<double>::has_quiet_NaN, "");
 
-    static double const infinity;
+    static constexpr double nan()
+    {
+        return std::numeric_limits<double>::quiet_NaN();
+    }
 
-    static double const no_data_value;
+    static constexpr double infinity()
+    {
+        return std::numeric_limits<double>::infinity();
+    }
+
+
+    static constexpr double no_data_value()
+    {
+        return min();
+    }
 };
 
 
@@ -300,7 +409,7 @@ template<
     typename T>
 constexpr inline T min()
 {
-  return TypeTraits<T>::min;
+    return TypeTraits<T>::min();
 }
 
 
@@ -308,7 +417,7 @@ template<
     typename T>
 constexpr inline T max()
 {
-  return TypeTraits<T>::max;
+    return TypeTraits<T>::max();
 }
 
 
@@ -316,7 +425,7 @@ template<
     typename T>
 constexpr inline T nan()
 {
-  return TypeTraits<T>::nan;
+    return TypeTraits<T>::nan();
 }
 
 
@@ -324,7 +433,7 @@ template<
     typename T>
 constexpr inline T infinity()
 {
-  return TypeTraits<T>::infinity;
+    return TypeTraits<T>::infinity();
 }
 
 
@@ -332,7 +441,7 @@ template<
     typename T>
 constexpr inline T no_data_value()
 {
-  return TypeTraits<T>::no_data_value;
+    return TypeTraits<T>::no_data_value();
 }
 
 
