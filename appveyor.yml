@@ -35,6 +35,6 @@ before_build:
     - cmake %FERN_CMAKE_ARGUMENTS% -G"Visual Studio 14 Win64" ..
 
 build:
-    project: fern.sln
+    project: ALL_BUILD.vcxproj  # Fern.sln
     parallel: true
     verbosity: normal
