@@ -1,29 +1,34 @@
 environment:
-    FERN_CMAKE_ARGUMENTS: -DFERN_BUILD_ALGORITHM:BOOL=TRUE -DFERN_BUILD_DOCUMENTATION:BOOL=FALSE -DFERN_BUILD_TEST:BOOL=TRUE
+    FERN_CMAKE_ARGUMENTS: -DBOOST_ROOT=C:/projects/fern/boost.1.59.0.0 -DFERN_BUILD_ALGORITHM:BOOL=TRUE -DFERN_BUILD_DOCUMENTATION:BOOL=FALSE -DFERN_BUILD_TEST:BOOL=TRUE
 
 platform:
-    - x86
+    # - x86
     - x64
 
 configuration:
     - Debug
-    - Release
+      # - Release
 
 matrix:
     fast_finish: true
 
 install:
-    - ps: nuget install boost-vc140 -o "${env:APPVEYOR_BUILD_FOLDER}"
+    - git submodule update --init --recursive
+    # - nuget install boost-vc140 -o "${env:APPVEYOR_BUILD_FOLDER}"
+    - nuget install boost.1.59.0 -o "${env:APPVEYOR_BUILD_FOLDER}"
+    - nuget install boost_signals-vc140.1.59.0 -o "${env:APPVEYOR_BUILD_FOLDER}"
 
 before_build:
-    - ps: cd "${env:APPVEYOR_BUILD_FOLDER}"
-    - cmd: dir
-    - cmd: md build
-    - cmd: cd build
-    - cmd: cmake --version
-    - cmd: cmake -G"Visual Studio 14 Win64" ..
+    - cd "${env:APPVEYOR_BUILD_FOLDER}"
+    - dir
+    - dir boost.1.59.0.0
+    - dir boost.1.59.0.0/lib
+    - md build
+    - cd build
+    - cmake --version
+    - cmake -G"Visual Studio 14 Win64" ..
 
 build:
-    project: C:\projects\morebin\build\morebin.sln
+    project: C:\projects\fern\build\fern.sln
     parallel: true
     verbosity: normal
