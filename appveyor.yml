@@ -2,8 +2,17 @@ environment:
     FERN_CMAKE_ARGUMENTS: -DBOOST_ROOT=C:\projects\fern\boost.1.59.0.0\lib\native -DFERN_BUILD_ALGORITHM:BOOL=TRUE -DFERN_BUILD_DOCUMENTATION:BOOL=FALSE -DFERN_BUILD_TEST:BOOL=TRUE
 
     matrix:
+        # - GENERATOR: "Visual Studio 14 Win32"
+        #   CONFIG: Debug
+
+        # - GENERATOR: "Visual Studio 14 Win32"
+        #   CONFIG: Release
+
         - GENERATOR: "Visual Studio 14 Win64"
           CONFIG: Debug
+
+        # - GENERATOR: "Visual Studio 14 Win64"
+        #   CONFIG: Release
 
 platform:
     # - x86
@@ -32,7 +41,7 @@ install:
 
 
 build_script:
-    - cmake -G"%GENERATOR%" %FERN_CMAKE_ARGUMENTS% -H . -B build
+    - cmake -G"%GENERATOR%" %FERN_CMAKE_ARGUMENTS% -H. -Bbuild
     - cmake --build build --config "%CONFIG%"
 
 test_script:
