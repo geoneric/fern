@@ -28,13 +28,13 @@ install:
 
 before_build:
     - dir
-    - dir /s /b boost_filesystem-vc140.1.59.0.0
     - md build
     - cd build
     - cmake --version
     - cmake %FERN_CMAKE_ARGUMENTS% -G"Visual Studio 14 Win64" ..
+    - dir
 
 build:
-    project: ALL_BUILD.vcxproj  # Fern.sln
+    project: build/ALL_BUILD.vcxproj  # Fern.sln
     parallel: true
     verbosity: normal
