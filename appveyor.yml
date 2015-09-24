@@ -24,7 +24,8 @@ install:
 before_build:
     - dir
     - dir boost.1.59.0.0
-    - dir boost.1.59.0.0/lib
+    - dir boost.1.59.0.0\build
+    - dir boost.1.59.0.0\lib
     - md build
     - cd build
     - cmake --version
@@ -33,4 +34,4 @@ before_build:
 build:
     project: C:\projects\fern\build\fern.sln
     parallel: true
-    verbosity: high  # normal
+    verbosity: normal
