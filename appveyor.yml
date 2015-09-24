@@ -1,5 +1,5 @@
-environment:
-    FERN_CMAKE_ARGUMENTS: -DBOOST_ROOT=C:/projects/fern/boost.1.59.0.0 -DFERN_BUILD_ALGORITHM:BOOL=TRUE -DFERN_BUILD_DOCUMENTATION:BOOL=FALSE -DFERN_BUILD_TEST:BOOL=TRUE
+# environment:
+#     FERN_CMAKE_ARGUMENTS: -DBOOST_ROOT=C:\projects\fern\boost.1.59.0.0\lib\native\include -DFERN_BUILD_ALGORITHM:BOOL=TRUE -DFERN_BUILD_DOCUMENTATION:BOOL=FALSE -DFERN_BUILD_TEST:BOOL=TRUE
 
 platform:
     # - x86
@@ -14,22 +14,24 @@ matrix:
 
 install:
     - git submodule update --init --recursive
-    - nuget install boost -Version 1.59.0
-    - nuget install boost_filesystem-vc140 -Version 1.59.0
-      # - nuget install boost_system-vc140 -Version 1.59.0
-      # - nuget install boost_timer-vc140 -Version 1.59.0
-      # - nuget install boost_unit_test_framework-vc140 -Version 1.59.0
+    - nuget install boost-vc140 -Version 1.59.0
+    # - nuget install boost -Version 1.59.0
+    # - nuget install boost_filesystem-vc140 -Version 1.59.0
+    # - nuget install boost_system-vc140 -Version 1.59.0
+    # - nuget install boost_timer-vc140 -Version 1.59.0
+    # - nuget install boost_unit_test_framework-vc140 -Version 1.59.0
 
 before_build:
     - dir
     - dir /s /b boost.1.59.0.0
-    - dir /s /b boost_filesystem-vc140.1.59.0.0
+    # - dir /s /b boost_filesystem-vc140.1.59.0.0
     - md build
     - cd build
     - cmake --version
+    - set FERN_CMAKE_ARGUMENTS="-DBOOST_ROOT=C:\projects\fern\boost.1.59.0.0\lib\native\include -DFERN_BUILD_ALGORITHM:BOOL=TRUE -DFERN_BUILD_DOCUMENTATION:BOOL=FALSE -DFERN_BUILD_TEST:BOOL=TRUE"
     - cmake -G"Visual Studio 14 Win64" ..
 
 build:
-    project: C:\projects\fern\build\fern.sln
+    # project: C:\projects\fern\build\fern.sln
     parallel: true
     verbosity: normal
