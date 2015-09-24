@@ -14,18 +14,16 @@ matrix:
 
 install:
     - git submodule update --init --recursive
-      # - nuget install boost-vc140
     - nuget install boost -Version 1.59.0
     - nuget install boost_filesystem-vc140 -Version 1.59.0
-    - nuget install boost_system-vc140 -Version 1.59.0
-    - nuget install boost_timer-vc140 -Version 1.59.0
-    - nuget install boost_unit_test_framework-vc140 -Version 1.59.0
+      # - nuget install boost_system-vc140 -Version 1.59.0
+      # - nuget install boost_timer-vc140 -Version 1.59.0
+      # - nuget install boost_unit_test_framework-vc140 -Version 1.59.0
 
 before_build:
     - dir
-    - dir boost.1.59.0.0
-    - dir boost.1.59.0.0\build
-    - dir boost.1.59.0.0\lib
+    - dir /s /b boost.1.59.0.0
+    - dir /s /b boost_filesystem-vc140.1.59.0.0
     - md build
     - cd build
     - cmake --version
