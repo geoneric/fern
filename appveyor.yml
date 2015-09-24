@@ -22,9 +22,9 @@ install:
     - nuget install boost_unit_test_framework-vc140 -Version 1.59.0
     - mkdir boost.1.59.0.0\lib\native\lib
     - copy boost_filesystem-vc140.1.59.0.0\lib\native\address-model-64\lib\* boost.1.59.0.0\lib\native\lib
-    - copy boost_system-vc140\lib\native\address-model-64\lib\* boost.1.59.0.0\lib\native\lib
-    - copy boost_timer-vc140\lib\native\address-model-64\lib\* boost.1.59.0.0\lib\native\lib
-    - copy boost_unit_test_framework-vc140\lib\native\address-model-64\lib\* boost.1.59.0.0\lib\native\lib
+    - copy boost_system-vc140.1.59.0.0\lib\native\address-model-64\lib\* boost.1.59.0.0\lib\native\lib
+    - copy boost_timer-vc140.1.59.0.0\lib\native\address-model-64\lib\* boost.1.59.0.0\lib\native\lib
+    - copy boost_unit_test_framework-vc140.1.59.0.0\lib\native\address-model-64\lib\* boost.1.59.0.0\lib\native\lib
 
 before_build:
     - dir
