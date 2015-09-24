@@ -30,8 +30,18 @@ endif()
 add_library(fern_core_objects OBJECT ${SOURCES})
 
 
-add_library(fern_core SHARED
-    $<TARGET_OBJECTS:fern_core_objects>
+if(FERN_CORE_DYN_LINK)
+    add_library(fern_core SHARED
+        $<TARGET_OBJECTS:fern_core_objects>
+    )
+else()
+    add_library(fern_core STATIC
+        $<TARGET_OBJECTS:fern_core_objects>
+    )
+endif()
+set_target_properties(fern_core
+    PROPERTIES
+        COMPILE_FLAGS "-DFERN_CORE_SOURCE"
 )
 target_link_libraries(fern_core
     ${Boost_FILESYSTEM_LIBRARY}
@@ -50,4 +60,5 @@ install(
     EXPORT fern_targets
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
 )

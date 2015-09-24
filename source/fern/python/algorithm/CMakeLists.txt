@@ -15,7 +15,6 @@ target_link_libraries(_fern_algorithm
     fern_algorithm
     ${Boost_PYTHON_LIBRARY}
     ${PYTHON_LIBRARIES}
-    stdc++
 )
 configure_python_extension(_fern_algorithm "_fern_algorithm")
 set_target_properties(_fern_algorithm

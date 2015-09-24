@@ -8,7 +8,6 @@ add_unit_tests(
     NAMES ${TEST_NAMES}
     LINK_LIBRARIES
         ${PYTHON_LIBRARIES}
-        stdc++
     DEPENDENCIES
         _fern_feature
         _fern_algorithm_core

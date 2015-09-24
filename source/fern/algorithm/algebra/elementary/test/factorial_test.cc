@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_CASE(out_of_range_policy)
         VerifyWithinRange<int32_t, int32_t> verify;
         BOOST_CHECK_EQUAL(verify(0), true);
         BOOST_CHECK_EQUAL(verify(5), true);
-        BOOST_CHECK_EQUAL(verify(12), true);
+        BOOST_CHECK_EQUAL(verify(11), true);
         BOOST_CHECK_EQUAL(verify(13), false);
     }
 
@@ -90,7 +90,7 @@ BOOST_AUTO_TEST_CASE(out_of_range_policy)
         VerifyWithinRange<uint32_t, uint32_t> verify;
         BOOST_CHECK_EQUAL(verify(0), true);
         BOOST_CHECK_EQUAL(verify(5), true);
-        BOOST_CHECK_EQUAL(verify(12), true);
+        BOOST_CHECK_EQUAL(verify(11), true);
         BOOST_CHECK_EQUAL(verify(13), false);
     }
 

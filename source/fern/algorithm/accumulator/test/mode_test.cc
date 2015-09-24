@@ -32,7 +32,8 @@ BOOST_AUTO_TEST_CASE(accumulate)
         mode(2);
         // 2
         // 5
-        BOOST_CHECK_EQUAL(mode(), 2);
+        // Multi-modal. Undefined which one is returned.
+        BOOST_CHECK(mode() == 2 || mode() == 5);
 
         mode(5);
         // 2

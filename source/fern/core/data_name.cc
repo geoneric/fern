@@ -67,7 +67,7 @@ DataName::DataName(
     _database_pathname = database_pathname;
     _data_pathname = data_pathname;
 
-    assert(_data_pathname.is_absolute());
+    assert(starts_with(data_pathname, "/"));
 }
 
 

@@ -17,7 +17,7 @@ namespace fa = fern::algorithm;
 #define verify_result_value_type(                                 \
     A1, A2, TypeWeWant)                                           \
 {                                                                 \
-    using TypeWeGet = typename fa::ResultValue<A1, A2>::type;     \
+    using TypeWeGet = fa::ResultValue<A1, A2>::type;              \
                                                                   \
     BOOST_CHECK_MESSAGE((std::is_same<TypeWeGet, TypeWeWant>()),  \
         fern::TypeTraits<TypeWeGet>::name + " != " +              \

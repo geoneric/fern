@@ -13,7 +13,6 @@ target_link_libraries(_fern_io
     fern_io
     ${Boost_PYTHON_LIBRARY}
     ${PYTHON_LIBRARIES}
-    stdc++
 )
 configure_python_extension(_fern_io "_fern_io")
 set_target_properties(_fern_io
