@@ -1,0 +1,54 @@
+environment:
+    FERN_CMAKE_ARGUMENTS: -DBOOST_ROOT=C:\projects\fern\boost.1.59.0.0\lib\native -DFERN_BUILD_ALGORITHM:BOOL=TRUE -DFERN_BUILD_DOCUMENTATION:BOOL=FALSE -DFERN_BUILD_TEST:BOOL=TRUE
+
+    matrix:
+        # - GENERATOR: "Visual Studio 14 Win32"
+        #   CONFIG: Debug
+
+        # - GENERATOR: "Visual Studio 14 Win32"
+        #   CONFIG: Release
+
+        - GENERATOR: "Visual Studio 14 Win64"
+          CONFIG: Debug
+
+        - GENERATOR: "Visual Studio 14 Win64"
+          CONFIG: Release
+
+
+platform:
+    - x64
+
+
+# configuration:
+#     - Debug
+#       # - Release
+
+
+matrix:
+    fast_finish: true
+
+
+# Copy libs to boost.1.59.0.0\lib\native\lib, for CMake to pick up.
+install:
+    - git submodule update --init --recursive
+    - nuget install boost -Version 1.59.0
+    - nuget install boost_filesystem-vc140 -Version 1.59.0
+    - nuget install boost_system-vc140 -Version 1.59.0
+    - nuget install boost_timer-vc140 -Version 1.59.0
+    - nuget install boost_unit_test_framework-vc140 -Version 1.59.0
+    - mkdir boost.1.59.0.0\lib\native\lib
+    - copy boost_filesystem-vc140.1.59.0.0\lib\native\address-model-64\lib\* boost.1.59.0.0\lib\native\lib
+    - copy boost_system-vc140.1.59.0.0\lib\native\address-model-64\lib\* boost.1.59.0.0\lib\native\lib
+    - copy boost_timer-vc140.1.59.0.0\lib\native\address-model-64\lib\* boost.1.59.0.0\lib\native\lib
+    - copy boost_unit_test_framework-vc140.1.59.0.0\lib\native\address-model-64\lib\* boost.1.59.0.0\lib\native\lib
+
+
+build_script:
+    - cmake -G"%GENERATOR%" %FERN_CMAKE_ARGUMENTS% -H. -Bbuild
+    - cmake --build build --config "%CONFIG%"
+
+
+# TODO Hangs in core_stopwatch_test?
+# test_script:
+#     - cd build
+#     - ctest -C "%CONFIG%"
