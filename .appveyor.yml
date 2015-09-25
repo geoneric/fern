@@ -5,28 +5,28 @@ environment:
     matrix:
         - ADDRESS_MODEL: 32
           GENERATOR: "Visual Studio 14 Win%ADDRESS_MODEL%"
-          CONFIG: Debug
+          # CONFIG: Debug
 
-        - ADDRESS_MODEL: 32
-          GENERATOR: "Visual Studio 14 Win%ADDRESS_MODEL%"
-          CONFIG: Release
+          # - ADDRESS_MODEL: 32
+          #   GENERATOR: "Visual Studio 14 Win%ADDRESS_MODEL%"
+          #   CONFIG: Release
 
-        - ADDRESS_MODEL: 64
-          GENERATOR: "Visual Studio 14 Win%ADDRESS_MODEL%"
-          CONFIG: Debug
+          # - ADDRESS_MODEL: 64
+          #   GENERATOR: "Visual Studio 14 Win%ADDRESS_MODEL%"
+          #   CONFIG: Debug
 
-        - ADDRESS_MODEL: 64
-          GENERATOR: "Visual Studio 14 Win%ADDRESS_MODEL%"
-          CONFIG: Release
+          # - ADDRESS_MODEL: 64
+          #   GENERATOR: "Visual Studio 14 Win%ADDRESS_MODEL%"
+          #   CONFIG: Release
 
 
 platform:
     - x64
 
 
-# configuration:
-#     - Debug
-#       # - Release
+configuration:
+    - Debug
+    - Release
 
 
 matrix:
@@ -48,12 +48,12 @@ install:
     - copy boost_unit_test_framework-vc140.%BOOST_VERSION%.0\lib\native\address-model-%ADDRESS_MODEL%\lib\* boost.%BOOST_VERSION%.0\lib\native\lib
 
 
-# build_script:
-#     - cmake -G"%GENERATOR%" %FERN_CMAKE_ARGUMENTS% -H. -Bbuild
-#     - cmake --build build --config "%CONFIG%"
+build_script:
+    - cmake -G"%GENERATOR%" %FERN_CMAKE_ARGUMENTS% -H. -Bbuild
+    - cmake --build build --config "%CONFIGURATION%"
 
 
 # TODO Hangs in core_stopwatch_test?
 # test_script:
 #     - cd build
-#     - ctest -C "%CONFIG%"
+#     - ctest -C "%CONFIGURATION%"
