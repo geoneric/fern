@@ -5,22 +5,22 @@ environment:
     matrix:
         - ADDRESS_MODEL: 32
           TARGET_PLATFORM_NAME:
-          GENERATOR: "Visual Studio 14 %TARGET_PLATFORM_NAME%"
+          GENERATOR: "Visual Studio 14 2015 %TARGET_PLATFORM_NAME%"
           # CONFIG: Debug
 
           # - ADDRESS_MODEL: 32
           #   TARGET_PLATFORM_NAME:
-          #   GENERATOR: "Visual Studio 14 %TARGET_PLATFORM_NAME%"
+          #   GENERATOR: "Visual Studio 14 2015 %TARGET_PLATFORM_NAME%"
           #   CONFIG: Release
 
           # - ADDRESS_MODEL: 64
           #   TARGET_PLATFORM_NAME: Win%ADDRESS_MODEL%
-          #   GENERATOR: "Visual Studio 14 %TARGET_PLATFORM_NAME%"
+          #   GENERATOR: "Visual Studio 14 2015 %TARGET_PLATFORM_NAME%"
           #   CONFIG: Debug
 
           # - ADDRESS_MODEL: 64
           #   TARGET_PLATFORM_NAME: Win%ADDRESS_MODEL%
-          #   GENERATOR: "Visual Studio 14 %TARGET_PLATFORM_NAME%"
+          #   GENERATOR: "Visual Studio 14 2015 %TARGET_PLATFORM_NAME%"
           #   CONFIG: Release
 
 
