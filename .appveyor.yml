@@ -1,17 +1,22 @@
 environment:
-    FERN_CMAKE_ARGUMENTS: -DBOOST_ROOT=C:\projects\fern\boost.1.59.0.0\lib\native -DFERN_BUILD_ALGORITHM:BOOL=TRUE -DFERN_BUILD_DOCUMENTATION:BOOL=FALSE -DFERN_BUILD_TEST:BOOL=TRUE
+    BOOST_VERSION: 1.59.0
+    FERN_CMAKE_ARGUMENTS: -DBOOST_ROOT=C:\projects\fern\boost.%BOOST_VERSION%.0\lib\native -DFERN_BUILD_ALGORITHM:BOOL=TRUE -DFERN_BUILD_DOCUMENTATION:BOOL=FALSE -DFERN_BUILD_TEST:BOOL=TRUE
 
     matrix:
-        # - GENERATOR: "Visual Studio 14 Win32"
-        #   CONFIG: Debug
-
-        # - GENERATOR: "Visual Studio 14 Win32"
-        #   CONFIG: Release
-
-        - GENERATOR: "Visual Studio 14 Win64"
+        - ADDRESS_MODEL: 32
+          GENERATOR: "Visual Studio 14 Win%ADDRESS_MODEL%"
           CONFIG: Debug
 
-        - GENERATOR: "Visual Studio 14 Win64"
+        - ADDRESS_MODEL: 32
+          GENERATOR: "Visual Studio 14 Win%ADDRESS_MODEL%"
+          CONFIG: Release
+
+        - ADDRESS_MODEL: 64
+          GENERATOR: "Visual Studio 14 Win%ADDRESS_MODEL%"
+          CONFIG: Debug
+
+        - ADDRESS_MODEL: 64
+          GENERATOR: "Visual Studio 14 Win%ADDRESS_MODEL%"
           CONFIG: Release
 
 
@@ -31,21 +36,21 @@ matrix:
 # Copy libs to boost.1.59.0.0\lib\native\lib, for CMake to pick up.
 install:
     - git submodule update --init --recursive
-    - nuget install boost -Version 1.59.0
-    - nuget install boost_filesystem-vc140 -Version 1.59.0
-    - nuget install boost_system-vc140 -Version 1.59.0
-    - nuget install boost_timer-vc140 -Version 1.59.0
-    - nuget install boost_unit_test_framework-vc140 -Version 1.59.0
-    - mkdir boost.1.59.0.0\lib\native\lib
-    - copy boost_filesystem-vc140.1.59.0.0\lib\native\address-model-64\lib\* boost.1.59.0.0\lib\native\lib
-    - copy boost_system-vc140.1.59.0.0\lib\native\address-model-64\lib\* boost.1.59.0.0\lib\native\lib
-    - copy boost_timer-vc140.1.59.0.0\lib\native\address-model-64\lib\* boost.1.59.0.0\lib\native\lib
-    - copy boost_unit_test_framework-vc140.1.59.0.0\lib\native\address-model-64\lib\* boost.1.59.0.0\lib\native\lib
+    - nuget install boost -Version %BOOST_VERSION%
+    - nuget install boost_filesystem-vc140 -Version %BOOST_VERSION%
+    - nuget install boost_system-vc140 -Version %BOOST_VERSION%
+    - nuget install boost_timer-vc140 -Version %BOOST_VERSION%
+    - nuget install boost_unit_test_framework-vc140 -Version %BOOST_VERSION%
+    - mkdir boost.%BOOST_VERSION%.0\lib\native\lib
+    - copy boost_filesystem-vc140.%BOOST_VERSION%.0\lib\native\address-model-%ADDRESS_MODEL%\lib\* boost.%BOOST_VERSION%.0\lib\native\lib
+    - copy boost_system-vc140.%BOOST_VERSION%.0\lib\native\address-model-%ADDRESS_MODEL%\lib\* boost.%BOOST_VERSION%.0\lib\native\lib
+    - copy boost_timer-vc140.%BOOST_VERSION%.0\lib\native\address-model-%ADDRESS_MODEL%\lib\* boost.%BOOST_VERSION%.0\lib\native\lib
+    - copy boost_unit_test_framework-vc140.%BOOST_VERSION%.0\lib\native\address-model-%ADDRESS_MODEL%\lib\* boost.%BOOST_VERSION%.0\lib\native\lib
 
 
-build_script:
-    - cmake -G"%GENERATOR%" %FERN_CMAKE_ARGUMENTS% -H. -Bbuild
-    - cmake --build build --config "%CONFIG%"
+# build_script:
+#     - cmake -G"%GENERATOR%" %FERN_CMAKE_ARGUMENTS% -H. -Bbuild
+#     - cmake --build build --config "%CONFIG%"
 
 
 # TODO Hangs in core_stopwatch_test?
