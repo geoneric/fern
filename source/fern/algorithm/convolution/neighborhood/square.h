@@ -37,11 +37,12 @@ public:
                                            std::initializer_list<T>> const&
                                                weights);
 
-    T&                weight              (size_t index);
+    T&             weight              (size_t index);
 
-    T const&          weight              (size_t index) const;
+    T const&       weight              (size_t index) const;
 
-    static constexpr size_t  size      ();
+    static constexpr size_t
+                   size                ();
 
 private:
 
