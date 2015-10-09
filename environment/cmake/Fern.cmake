@@ -1,9 +1,7 @@
-# https://github.com/geoneric/peacock/blob/master/cmake/PeacockPlatform.cmake
-include(PeacockPlatform) # This one first. Other modules use the variables.
-
-include(DevBaseCompiler)  # This one first. Configuration uses the compiler.
+include(PeacockPlatform)
+include(DevBaseCompiler)
 include(FernConfiguration)
-include(FernExternal)
+include(DevBaseExternal)
 include(DevBaseMacro)
 include(FernMacro)
 include(CppCheck)
