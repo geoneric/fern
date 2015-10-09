@@ -13,6 +13,7 @@
 #include <functional>
 #include <type_traits>
 #include "fern/algorithm/core/index_ranges.h"
+#include "fern/algorithm/core/accumulation_traits.h"
 #include "fern/algorithm/convolution/neighborhood/square_traits.h"
 #include "fern/algorithm/convolution/kernel_traits.h"
 #include "fern/algorithm/policy/execution_policy.h"
@@ -47,79 +48,56 @@ struct OutOfRangePolicy
 namespace dispatch {
 
 template<
-    bool weigh_values
->
+    typename SV,
+    typename SW,
+    typename V,
+    typename W>
+struct HandleValue
+{
+
+    inline static void apply(
+        V const& value,
+        W const& weight,
+        SV& sum_of_values,
+        SW& sum_of_weights)
+    {
+        // Kernel weights are not booleans.
+        sum_of_values += value * weight;
+        sum_of_weights += weight;
+    }
+
+};
+
+
+template<
+    typename SV,
+    typename SW,
+    typename V>
+struct HandleValue<
+    SV,
+    SW,
+    V,
+    bool>
+
+{
+
+    inline static void apply(
+        V const& value,
+        bool const& weight,
+        SV& sum_of_values,
+        SW& sum_of_weights)
+    {
+        // Kernel weights are booleans.
+        if(weight) {
+            sum_of_values += value;
+            sum_of_weights += 1;
+        }
+    }
+
+};
+
+
 struct ConvolveNorthWestCorner
-{
-};
-
-
-template<
-    bool weigh_values
->
-struct ConvolveNorthEastCorner
-{
-};
-
-
-template<
-    bool weigh_values
->
-struct ConvolveSouthWestCorner
-{
-};
-
-
-template<
-    bool weigh_values
->
-struct ConvolveSouthEastCorner
-{
-};
-
-
-template<
-    bool weigh_values
->
-struct ConvolveNorthSide
-{
-};
-
-
-template<
-    bool weigh_values
->
-struct ConvolveWestSide
-{
-};
-
-
-template<
-    bool weigh_values
->
-struct ConvolveEastSide
-{
-};
-
-
-template<
-    bool weigh_values
->
-struct ConvolveSouthSide
-{
-};
-
-
-template<
-    bool weigh_values
->
-struct ConvolveInnerPart
-{
-};
-
-
-template<>
-struct ConvolveNorthWestCorner<true>
 {
 
     template<
@@ -149,10 +127,15 @@ struct ConvolveNorthWestCorner<true>
         size_t nr_rows_outside_of_image{radius_};
         size_t nr_cols_outside_of_image;
 
-        value_type<SourceImage> sum_of_values;
-        value_type<Kernel> sum_of_weights;
-        value_type<SourceImage> out_of_image_value;
-        value_type<SourceImage> alternative_value;
+        using V = value_type<SourceImage>;
+        using SV = accumulate_type<V>;
+        using W = value_type<Kernel>;
+        using SW = accumulate_type<W>;
+
+        SV sum_of_values;
+        SW sum_of_weights;
+        V out_of_image_value;
+        V alternative_value;
 
         using OORP = OutOfRangePolicy<value_type<SourceImage>,
             value_type<DestinationImage>>;
@@ -175,8 +158,8 @@ struct ConvolveNorthWestCorner<true>
 
             for(size_t col_source = 0; col_source < radius_; ++col_source) {
 
-                sum_of_values = 0;
-                sum_of_weights = 0;
+                sum_of_values = AccumulationTraits<V>::zero;
+                sum_of_weights = AccumulationTraits<W>::zero;
                 value_seen = false;
 
                 if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
@@ -217,10 +200,10 @@ struct ConvolveNorthWestCorner<true>
                                             nr_rows_kernel, nr_cols_kernel,
                                             first_row_source, first_col_source,
                                             out_of_image_value)) {
-                                        sum_of_values += out_of_image_value *
-                                            get(kernel, kernel_index);
-                                        sum_of_weights += get(kernel,
-                                            kernel_index);
+                                        HandleValue<SV, SW, V, W>::apply(
+                                            out_of_image_value,
+                                            get(kernel, kernel_index),
+                                            sum_of_values, sum_of_weights);
                                         value_seen = true;
                                     }
                                 }
@@ -249,18 +232,18 @@ struct ConvolveNorthWestCorner<true>
                                         first_row_source + row,
                                         first_col_source + col,
                                         alternative_value)) {
-                                    sum_of_values += alternative_value *
-                                        get(kernel, kernel_index);
-                                    sum_of_weights +=
-                                        get(kernel, kernel_index);
+                                    HandleValue<SV, SW, V, W>::apply(
+                                        alternative_value,
+                                        get(kernel, kernel_index),
+                                        sum_of_values, sum_of_weights);
                                     value_seen = true;
                                 }
                             }
                             else {
-                                sum_of_values +=
-                                    get(kernel, kernel_index) *
-                                    get(source, source_index);
-                                sum_of_weights += get(kernel, kernel_index);
+                                HandleValue<SV, SW, V, W>::apply(
+                                    get(source, source_index),
+                                    get(kernel, kernel_index),
+                                    sum_of_values, sum_of_weights);
                                 value_seen = true;
                             }
 
@@ -299,8 +282,7 @@ struct ConvolveNorthWestCorner<true>
 };
 
 
-template<>
-struct ConvolveNorthEastCorner<true>
+struct ConvolveNorthEastCorner
 {
 
     template<
@@ -331,10 +313,15 @@ struct ConvolveNorthEastCorner<true>
         size_t nr_rows_outside_of_image{radius_};
         size_t nr_cols_outside_of_image;
 
-        value_type<SourceImage> sum_of_values;
-        value_type<Kernel> sum_of_weights;
-        value_type<SourceImage> out_of_image_value;
-        value_type<SourceImage> alternative_value;
+        using V = value_type<SourceImage>;
+        using SV = accumulate_type<V>;
+        using W = value_type<Kernel>;
+        using SW = accumulate_type<W>;
+
+        SV sum_of_values = AccumulationTraits<V>::zero;
+        SW sum_of_weights = AccumulationTraits<W>::zero;
+        V out_of_image_value;
+        V alternative_value;
 
         using OORP = OutOfRangePolicy<value_type<SourceImage>,
             value_type<DestinationImage>>;
@@ -358,8 +345,8 @@ struct ConvolveNorthEastCorner<true>
             for(size_t col_source = nr_cols_source - radius_;
                     col_source < nr_cols_source; ++col_source) {
 
-                sum_of_values = 0;
-                sum_of_weights = 0;
+                sum_of_values = AccumulationTraits<V>::zero;
+                sum_of_weights = AccumulationTraits<W>::zero;
                 value_seen = false;
 
                 if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
@@ -390,10 +377,10 @@ struct ConvolveNorthEastCorner<true>
                                             nr_rows_kernel, nr_cols_kernel,
                                             first_row_source, first_col_source,
                                             out_of_image_value)) {
-                                        sum_of_values += out_of_image_value *
-                                            get(kernel, kernel_index);
-                                        sum_of_weights += get(kernel,
-                                            kernel_index);
+                                        HandleValue<SV, SW, V, W>::apply(
+                                            out_of_image_value,
+                                            get(kernel, kernel_index),
+                                            sum_of_values, sum_of_weights);
                                         value_seen = true;
                                     }
                                 }
@@ -422,16 +409,18 @@ struct ConvolveNorthEastCorner<true>
                                         first_row_source + row,
                                         first_col_source + col,
                                         alternative_value)) {
-                                    sum_of_values += alternative_value *
-                                        get(kernel, kernel_index);
-                                    sum_of_weights += get(kernel, kernel_index);
+                                    HandleValue<SV, SW, V, W>::apply(
+                                        alternative_value,
+                                        get(kernel, kernel_index),
+                                        sum_of_values, sum_of_weights);
                                     value_seen = true;
                                 }
                             }
                             else {
-                                sum_of_values += get(kernel, kernel_index) *
-                                    get(source, source_index);
-                                sum_of_weights += get(kernel, kernel_index);
+                                HandleValue<SV, SW, V, W>::apply(
+                                    get(source, source_index),
+                                    get(kernel, kernel_index),
+                                    sum_of_values, sum_of_weights);
                                 value_seen = true;
                             }
 
@@ -470,8 +459,7 @@ struct ConvolveNorthEastCorner<true>
 };
 
 
-template<>
-struct ConvolveSouthWestCorner<true>
+struct ConvolveSouthWestCorner
 {
 
     template<
@@ -502,10 +490,15 @@ struct ConvolveSouthWestCorner<true>
         size_t nr_rows_outside_of_image{0};
         size_t nr_cols_outside_of_image;
 
-        value_type<SourceImage> sum_of_values;
-        value_type<Kernel> sum_of_weights;
-        value_type<SourceImage> out_of_image_value;
-        value_type<SourceImage> alternative_value;
+        using V = value_type<SourceImage>;
+        using SV = accumulate_type<V>;
+        using W = value_type<Kernel>;
+        using SW = accumulate_type<W>;
+
+        SV sum_of_values;
+        SW sum_of_weights;
+        V out_of_image_value;
+        V alternative_value;
 
         using OORP = OutOfRangePolicy<value_type<SourceImage>,
             value_type<DestinationImage>>;
@@ -529,8 +522,8 @@ struct ConvolveSouthWestCorner<true>
 
             for(size_t col_source = 0; col_source < radius_; ++col_source) {
 
-                sum_of_values = 0;
-                sum_of_weights = 0;
+                sum_of_values = AccumulationTraits<V>::zero;
+                sum_of_weights = AccumulationTraits<W>::zero;
                 value_seen = false;
 
                 if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
@@ -562,10 +555,10 @@ struct ConvolveSouthWestCorner<true>
                                             nr_rows_kernel, nr_cols_kernel,
                                             first_row_source, first_col_source,
                                             out_of_image_value)) {
-                                        sum_of_values += out_of_image_value *
-                                            get(kernel, kernel_index);
-                                        sum_of_weights += get(kernel,
-                                            kernel_index);
+                                        HandleValue<SV, SW, V, W>::apply(
+                                            out_of_image_value,
+                                            get(kernel, kernel_index),
+                                            sum_of_values, sum_of_weights);
                                         value_seen = true;
                                     }
                                 }
@@ -594,17 +587,18 @@ struct ConvolveSouthWestCorner<true>
                                         first_row_source + row,
                                         first_col_source + col,
                                         alternative_value)) {
-                                    sum_of_values += alternative_value *
-                                        get(kernel, kernel_index);
-                                    sum_of_weights +=
-                                        get(kernel, kernel_index);
+                                    HandleValue<SV, SW, V, W>::apply(
+                                        alternative_value,
+                                        get(kernel, kernel_index),
+                                        sum_of_values, sum_of_weights);
                                     value_seen = true;
                                 }
                             }
                             else {
-                                sum_of_values += get(kernel, kernel_index) *
-                                    get(source, source_index);
-                                sum_of_weights += get(kernel, kernel_index);
+                                HandleValue<SV, SW, V, W>::apply(
+                                    get(source, source_index),
+                                    get(kernel, kernel_index),
+                                    sum_of_values, sum_of_weights);
                                 value_seen = true;
                             }
 
@@ -643,8 +637,7 @@ struct ConvolveSouthWestCorner<true>
 };
 
 
-template<>
-struct ConvolveSouthEastCorner<true>
+struct ConvolveSouthEastCorner
 {
 
     template<
@@ -676,10 +669,15 @@ struct ConvolveSouthEastCorner<true>
         size_t nr_rows_outside_of_image{0};
         size_t nr_cols_outside_of_image;
 
-        value_type<SourceImage> sum_of_values;
-        value_type<Kernel> sum_of_weights;
-        value_type<SourceImage> out_of_image_value;
-        value_type<SourceImage> alternative_value;
+        using V = value_type<SourceImage>;
+        using SV = accumulate_type<V>;
+        using W = value_type<Kernel>;
+        using SW = accumulate_type<W>;
+
+        SV sum_of_values;
+        SW sum_of_weights;
+        V out_of_image_value;
+        V alternative_value;
 
         using OORP = OutOfRangePolicy<value_type<SourceImage>,
             value_type<DestinationImage>>;
@@ -704,8 +702,8 @@ struct ConvolveSouthEastCorner<true>
             for(size_t col_source = nr_cols_source - radius_;
                     col_source < nr_cols_source; ++col_source) {
 
-                sum_of_values = 0;
-                sum_of_weights = 0;
+                sum_of_values = AccumulationTraits<V>::zero;
+                sum_of_weights = AccumulationTraits<W>::zero;
                 value_seen = false;
 
                 if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
@@ -737,10 +735,10 @@ struct ConvolveSouthEastCorner<true>
                                             nr_rows_kernel, nr_cols_kernel,
                                             first_row_source, first_col_source,
                                             out_of_image_value)) {
-                                        sum_of_values += out_of_image_value *
-                                            get(kernel, kernel_index);
-                                        sum_of_weights += get(kernel,
-                                            kernel_index);
+                                        HandleValue<SV, SW, V, W>::apply(
+                                            out_of_image_value,
+                                            get(kernel, kernel_index),
+                                            sum_of_values, sum_of_weights);
                                         value_seen = true;
                                     }
                                 }
@@ -769,16 +767,18 @@ struct ConvolveSouthEastCorner<true>
                                         first_row_source + row,
                                         first_col_source + col,
                                         alternative_value)) {
-                                    sum_of_values += alternative_value *
-                                        get(kernel, kernel_index);
-                                    sum_of_weights += get(kernel, kernel_index);
+                                    HandleValue<SV, SW, V, W>::apply(
+                                        alternative_value,
+                                        get(kernel, kernel_index),
+                                        sum_of_values, sum_of_weights);
                                     value_seen = true;
                                 }
                             }
                             else {
-                                sum_of_values += get(kernel, kernel_index) *
-                                    get(source, source_index);
-                                sum_of_weights += get(kernel, kernel_index);
+                                HandleValue<SV, SW, V, W>::apply(
+                                    get(source, source_index),
+                                    get(kernel, kernel_index),
+                                    sum_of_values, sum_of_weights);
                                 value_seen = true;
                             }
 
@@ -817,8 +817,7 @@ struct ConvolveSouthEastCorner<true>
 };
 
 
-template<>
-struct ConvolveNorthSide<true>
+struct ConvolveNorthSide
 {
 
     template<
@@ -848,10 +847,15 @@ struct ConvolveNorthSide<true>
         size_t const nr_cols_kernel{width(kernel)};
         size_t nr_rows_outside_of_image{radius_};
 
-        value_type<SourceImage> sum_of_values;
-        value_type<Kernel> sum_of_weights;
-        value_type<SourceImage> out_of_image_value;
-        value_type<SourceImage> alternative_value;
+        using V = value_type<SourceImage>;
+        using SV = accumulate_type<V>;
+        using W = value_type<Kernel>;
+        using SW = accumulate_type<W>;
+
+        SV sum_of_values;
+        SW sum_of_weights;
+        V out_of_image_value;
+        V alternative_value;
 
         using OORP = OutOfRangePolicy<value_type<SourceImage>,
             value_type<DestinationImage>>;
@@ -873,8 +877,8 @@ struct ConvolveNorthSide<true>
             for(size_t col_source = radius_; col_source <
                     nr_cols_source - radius_; ++col_source) {
 
-                sum_of_values = 0;
-                sum_of_weights = 0;
+                sum_of_values = AccumulationTraits<V>::zero;
+                sum_of_weights = AccumulationTraits<W>::zero;
                 value_seen = false;
 
                 if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
@@ -908,10 +912,10 @@ struct ConvolveNorthSide<true>
                                             nr_rows_kernel, nr_cols_kernel,
                                             first_row_source, first_col_source,
                                             out_of_image_value)) {
-                                        sum_of_values += out_of_image_value *
-                                            get(kernel, kernel_index);
-                                        sum_of_weights += get(kernel,
-                                            kernel_index);
+                                        HandleValue<SV, SW, V, W>::apply(
+                                            out_of_image_value,
+                                            get(kernel, kernel_index),
+                                            sum_of_values, sum_of_weights);
                                         value_seen = true;
                                     }
                                 }
@@ -940,16 +944,18 @@ struct ConvolveNorthSide<true>
                                         first_row_source + row,
                                         first_col_source + col,
                                         alternative_value)) {
-                                    sum_of_values += alternative_value *
-                                        get(kernel, kernel_index);
-                                    sum_of_weights += get(kernel, kernel_index);
+                                    HandleValue<SV, SW, V, W>::apply(
+                                        alternative_value,
+                                        get(kernel, kernel_index),
+                                        sum_of_values, sum_of_weights);
                                     value_seen = true;
                                 }
                             }
                             else {
-                                sum_of_values += get(kernel, kernel_index) *
-                                    get(source, source_index);
-                                sum_of_weights += get(kernel, kernel_index);
+                                HandleValue<SV, SW, V, W>::apply(
+                                    get(source, source_index),
+                                    get(kernel, kernel_index),
+                                    sum_of_values, sum_of_weights);
                                 value_seen = true;
                             }
 
@@ -986,8 +992,7 @@ struct ConvolveNorthSide<true>
 };
 
 
-template<>
-struct ConvolveWestSide<true>
+struct ConvolveWestSide
 {
 
     template<
@@ -1017,10 +1022,15 @@ struct ConvolveWestSide<true>
         size_t nr_cols_kernel;
         size_t nr_cols_outside_of_image;
 
-        value_type<SourceImage> sum_of_values;
-        value_type<Kernel> sum_of_weights;
-        value_type<SourceImage> out_of_image_value;
-        value_type<SourceImage> alternative_value;
+        using V = value_type<SourceImage>;
+        using SV = accumulate_type<V>;
+        using W = value_type<Kernel>;
+        using SW = accumulate_type<W>;
+
+        SV sum_of_values;
+        SW sum_of_weights;
+        V out_of_image_value;
+        V alternative_value;
 
         using OORP = OutOfRangePolicy<value_type<SourceImage>,
             value_type<DestinationImage>>;
@@ -1044,8 +1054,8 @@ struct ConvolveWestSide<true>
 
             for(size_t col_source = 0; col_source < radius_; ++col_source) {
 
-                sum_of_values = 0;
-                sum_of_weights = 0;
+                sum_of_values = AccumulationTraits<V>::zero;
+                sum_of_weights = AccumulationTraits<W>::zero;
                 value_seen = false;
 
                 if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
@@ -1079,10 +1089,10 @@ struct ConvolveWestSide<true>
                                             nr_rows_kernel, nr_cols_kernel,
                                             first_row_source, first_col_source,
                                             out_of_image_value)) {
-                                        sum_of_values += out_of_image_value *
-                                            get(kernel, kernel_index);
-                                        sum_of_weights += get(kernel,
-                                            kernel_index);
+                                        HandleValue<SV, SW, V, W>::apply(
+                                            out_of_image_value,
+                                            get(kernel, kernel_index),
+                                            sum_of_values, sum_of_weights);
                                         value_seen = true;
                                     }
                                 }
@@ -1111,16 +1121,18 @@ struct ConvolveWestSide<true>
                                         first_row_source + row,
                                         first_col_source + col,
                                         alternative_value)) {
-                                    sum_of_values += alternative_value *
-                                        get(kernel, kernel_index);
-                                    sum_of_weights += get(kernel, kernel_index);
+                                    HandleValue<SV, SW, V, W>::apply(
+                                        alternative_value,
+                                        get(kernel, kernel_index),
+                                        sum_of_values, sum_of_weights);
                                     value_seen = true;
                                 }
                             }
                             else {
-                                sum_of_values += get(kernel, kernel_index) *
-                                    get(source, source_index);
-                                sum_of_weights += get(kernel, kernel_index);
+                                HandleValue<SV, SW, V, W>::apply(
+                                    get(source, source_index),
+                                    get(kernel, kernel_index),
+                                    sum_of_values, sum_of_weights);
                                 value_seen = true;
                             }
 
@@ -1157,8 +1169,7 @@ struct ConvolveWestSide<true>
 };
 
 
-template<>
-struct ConvolveEastSide<true>
+struct ConvolveEastSide
 {
 
     template<
@@ -1189,10 +1200,15 @@ struct ConvolveEastSide<true>
         size_t nr_cols_kernel;
         size_t nr_cols_outside_of_image;
 
-        value_type<SourceImage> sum_of_values;
-        value_type<Kernel> sum_of_weights;
-        value_type<SourceImage> out_of_image_value;
-        value_type<SourceImage> alternative_value;
+        using V = value_type<SourceImage>;
+        using SV = accumulate_type<V>;
+        using W = value_type<Kernel>;
+        using SW = accumulate_type<W>;
+
+        SV sum_of_values;
+        SW sum_of_weights;
+        V out_of_image_value;
+        V alternative_value;
 
         using OORP = OutOfRangePolicy<value_type<SourceImage>,
             value_type<DestinationImage>>;
@@ -1217,8 +1233,8 @@ struct ConvolveEastSide<true>
             for(size_t col_source = nr_cols_source - radius_;
                     col_source < nr_cols_source; ++col_source) {
 
-                sum_of_values = 0;
-                sum_of_weights = 0;
+                sum_of_values = AccumulationTraits<V>::zero;
+                sum_of_weights = AccumulationTraits<W>::zero;
                 value_seen = false;
 
                 if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
@@ -1252,10 +1268,10 @@ struct ConvolveEastSide<true>
                                             nr_rows_kernel, nr_cols_kernel,
                                             first_row_source, first_col_source,
                                             out_of_image_value)) {
-                                        sum_of_values += out_of_image_value *
-                                            get(kernel, kernel_index);
-                                        sum_of_weights += get(kernel,
-                                            kernel_index);
+                                        HandleValue<SV, SW, V, W>::apply(
+                                            out_of_image_value,
+                                            get(kernel, kernel_index),
+                                            sum_of_values, sum_of_weights);
                                         value_seen = true;
                                     }
                                 }
@@ -1284,17 +1300,18 @@ struct ConvolveEastSide<true>
                                         first_row_source + row,
                                         first_col_source + col,
                                         alternative_value)) {
-                                    sum_of_values += alternative_value *
-                                        get(kernel, kernel_index);
-                                    sum_of_weights +=
-                                        get(kernel, kernel_index);
+                                    HandleValue<SV, SW, V, W>::apply(
+                                        alternative_value,
+                                        get(kernel, kernel_index),
+                                        sum_of_values, sum_of_weights);
                                     value_seen = true;
                                 }
                             }
                             else {
-                                sum_of_values += get(kernel, kernel_index) *
-                                    get(source, source_index);
-                                sum_of_weights += get(kernel, kernel_index);
+                                HandleValue<SV, SW, V, W>::apply(
+                                    get(source, source_index),
+                                    get(kernel, kernel_index),
+                                    sum_of_values, sum_of_weights);
                                 value_seen = true;
                             }
 
@@ -1331,8 +1348,7 @@ struct ConvolveEastSide<true>
 };
 
 
-template<>
-struct ConvolveSouthSide<true>
+struct ConvolveSouthSide
 {
 
     template<
@@ -1363,10 +1379,15 @@ struct ConvolveSouthSide<true>
         size_t const nr_cols_kernel{width(kernel)};
         size_t nr_rows_outside_of_image{1};
 
-        value_type<SourceImage> sum_of_values;
-        value_type<Kernel> sum_of_weights;
-        value_type<SourceImage> out_of_image_value;
-        value_type<SourceImage> alternative_value;
+        using V = value_type<SourceImage>;
+        using SV = accumulate_type<V>;
+        using W = value_type<Kernel>;
+        using SW = accumulate_type<W>;
+
+        SV sum_of_values;
+        SW sum_of_weights;
+        V out_of_image_value;
+        V alternative_value;
 
         using OORP = OutOfRangePolicy<value_type<SourceImage>,
             value_type<DestinationImage>>;
@@ -1389,8 +1410,8 @@ struct ConvolveSouthSide<true>
             for(size_t col_source = radius_; col_source <
                     nr_cols_source - radius_; ++col_source) {
 
-                sum_of_values = 0;
-                sum_of_weights = 0;
+                sum_of_values = AccumulationTraits<V>::zero;
+                sum_of_weights = AccumulationTraits<W>::zero;
                 value_seen = false;
 
                 if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
@@ -1424,10 +1445,10 @@ struct ConvolveSouthSide<true>
                                             nr_rows_kernel, nr_cols_kernel,
                                             first_row_source, first_col_source,
                                             out_of_image_value)) {
-                                        sum_of_values += out_of_image_value *
-                                            get(kernel, kernel_index);
-                                        sum_of_weights += get(kernel,
-                                            kernel_index);
+                                        HandleValue<SV, SW, V, W>::apply(
+                                            out_of_image_value,
+                                            get(kernel, kernel_index),
+                                            sum_of_values, sum_of_weights);
                                         value_seen = true;
                                     }
                                 }
@@ -1456,16 +1477,18 @@ struct ConvolveSouthSide<true>
                                         first_row_source + row,
                                         first_col_source + col,
                                         alternative_value)) {
-                                    sum_of_values += alternative_value *
-                                        get(kernel, kernel_index);
-                                    sum_of_weights += get(kernel, kernel_index);
+                                    HandleValue<SV, SW, V, W>::apply(
+                                        alternative_value,
+                                        get(kernel, kernel_index),
+                                        sum_of_values, sum_of_weights);
                                     value_seen = true;
                                 }
                             }
                             else {
-                                sum_of_values += get(kernel, kernel_index) *
-                                    get(source, source_index);
-                                sum_of_weights += get(kernel, kernel_index);
+                                HandleValue<SV, SW, V, W>::apply(
+                                    get(source, source_index),
+                                    get(kernel, kernel_index),
+                                    sum_of_values, sum_of_weights);
                                 value_seen = true;
                             }
 
@@ -1503,6 +1526,12 @@ struct ConvolveSouthSide<true>
 };
 
 
+template<
+    bool weigh_values
+>
+struct ConvolveInnerPart;
+
+
 template<>
 struct ConvolveInnerPart<true>
 {
@@ -1530,9 +1559,14 @@ struct ConvolveInnerPart<true>
         size_t const nr_rows_kernel{height(kernel)};
         size_t const nr_cols_kernel{width(kernel)};
 
-        value_type<SourceImage> sum_of_values;
-        value_type<Kernel> sum_of_weights;
-        value_type<SourceImage> alternative_value;
+        using V = value_type<SourceImage>;
+        using SV = accumulate_type<V>;
+        using W = value_type<Kernel>;
+        using SW = accumulate_type<W>;
+
+        SV sum_of_values;
+        SW sum_of_weights;
+        V alternative_value;
 
         using OORP = OutOfRangePolicy<value_type<SourceImage>,
             value_type<DestinationImage>>;
@@ -1555,8 +1589,8 @@ struct ConvolveInnerPart<true>
             for(size_t col_source = index_ranges[1].begin(); col_source <
                     index_ranges[1].end(); ++col_source) {
 
-                sum_of_values = 0;
-                sum_of_weights = 0;
+                sum_of_values = AccumulationTraits<V>::zero;
+                sum_of_weights = AccumulationTraits<W>::zero;
                 value_seen = false;
 
                 if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
@@ -1581,16 +1615,18 @@ struct ConvolveInnerPart<true>
                                         first_row_source + row,
                                         first_col_source + col,
                                         alternative_value)) {
-                                    sum_of_values += alternative_value *
-                                        get(kernel, kernel_index);
-                                    sum_of_weights += get(kernel, kernel_index);
+                                    HandleValue<SV, SW, V, W>::apply(
+                                        alternative_value,
+                                        get(kernel, kernel_index),
+                                        sum_of_values, sum_of_weights);
                                     value_seen = true;
                                 }
                             }
                             else {
-                                sum_of_values += get(kernel, kernel_index) *
-                                    get(source, source_index);
-                                sum_of_weights += get(kernel, kernel_index);
+                                HandleValue<SV, SW, V, W>::apply(
+                                    get(source, source_index),
+                                    get(kernel, kernel_index),
+                                    sum_of_values, sum_of_weights);
                                 value_seen = true;
                             }
 
@@ -1614,6 +1650,163 @@ struct ConvolveInnerPart<true>
                         sum_of_weights);
                 }
 
+                ++first_col_source;
+                ++index_;
+            }
+
+            ++first_row_source;
+        }
+    }
+
+};
+
+
+template<>
+struct ConvolveInnerPart<false>
+{
+
+    template<
+        typename AlternativeForNoDataPolicy,
+        typename NormalizePolicy,
+        template<typename, typename> class OutOfRangePolicy,
+        typename InputNoDataPolicy,
+        typename OutputNoDataPolicy,
+        typename SourceImage,
+        typename Kernel,
+        typename DestinationImage>
+    static void apply(
+        InputNoDataPolicy const& input_no_data_policy,
+        OutputNoDataPolicy& output_no_data_policy,
+        IndexRanges<2> const& index_ranges,
+        SourceImage const& source,
+        Kernel const& kernel,
+        DestinationImage& destination)
+    {
+        size_t const radius_{radius(kernel)};
+        size_t first_row_source{index_ranges[0].begin() - radius_};
+        size_t first_col_source;
+        size_t const nr_rows_kernel{height(kernel)};
+        size_t const nr_cols_kernel{width(kernel)};
+
+        using V = value_type<SourceImage>;
+        using SV = accumulate_type<V>;
+        using W = value_type<Kernel>;
+        using SW = accumulate_type<W>;
+
+        SV sum_of_values;
+        SW sum_of_weights;
+        V alternative_value;
+
+        using OORP = OutOfRangePolicy<value_type<SourceImage>,
+            value_type<DestinationImage>>;
+        using NP = NormalizePolicy;
+        using AFNP = AlternativeForNoDataPolicy;
+
+
+        // Here, we don't have to multiply the cell values by the kernel
+        // weights. Most probably this is because the kernel weights are
+        // boolean values.
+        // Instead of multiplying cell values by kernel weights, we just
+        // need to add them, which is cheaper. Also, because we don't need
+        // to add all cells that lie withing the kernel window. We
+        // only need to add those cells for which the kernel weight
+        // evaluates to true.
+        // To prevent testing the kernel weights over and over again for
+        // true-ness, we determine the offsets in de image, relative
+        // to the image cell positioned in the upper left kernel window
+        // cell, for which the corresponding kernel weight evaluates to true.
+        // Then we just need to iterate over this collection,
+        // calculate the real image cell index, and add its value (if not
+        // skipped for no-data-ness).
+
+        std::vector<std::tuple<size_t, size_t, size_t>> cell_offset_tuples;
+        {
+            cell_offset_tuples.reserve(size(kernel));
+            size_t nr_cols = size(source, 1);
+
+            for(size_t i = 0, r = 0; r < nr_rows_kernel; ++r) {
+                for(size_t c = 0; c < nr_cols_kernel; ++c) {
+                    if(get(kernel, i)) {
+                        cell_offset_tuples.emplace_back(r, c, r * nr_cols + c);
+                    }
+                    i++;
+                }
+            }
+        }
+
+
+        bool value_seen;
+
+        size_t index_;
+
+        // Loop over all cells that are situated in the inner part. The kernel
+        // does not extent outside of the source image.
+        for(size_t row_source = index_ranges[0].begin(); row_source <
+                index_ranges[0].end(); ++row_source) {
+
+            first_col_source = index_ranges[1].begin() - radius_;
+
+            index_ = index(source, row_source, index_ranges[1].begin());
+
+            for(size_t col_source = index_ranges[1].begin(); col_source <
+                    index_ranges[1].end(); ++col_source) {
+
+                sum_of_values = AccumulationTraits<V>::zero;
+                sum_of_weights = AccumulationTraits<W>::zero;
+                value_seen = false;
+
+                if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                    output_no_data_policy.mark_as_no_data(index_);
+                }
+                else {
+                    // Handle cells positioned in the kernel, and in the source
+                    // image.
+                    size_t source_index = index(source, first_row_source,
+                        first_col_source);
+                    size_t row, col, offset;
+
+                    for(auto const& tuple: cell_offset_tuples) {
+                        row = get<0>(tuple);
+                        col = get<1>(tuple);
+                        offset = get<2>(tuple);
+
+                        if(std::get<0>(input_no_data_policy).is_no_data(
+                                source_index)) {
+                            if(AFNP::value(
+                                    input_no_data_policy,
+                                    source,
+                                    size(source, 0),
+                                    size(source, 1),
+                                    first_row_source + row,
+                                    first_col_source + col,
+                                    alternative_value)) {
+                                sum_of_values += alternative_value;
+                                sum_of_weights += 1;
+                                value_seen = true;
+                            }
+                        }
+                        else {
+                            sum_of_values += get(source, source_index + offset),
+                            sum_of_weights += 1;
+                            value_seen = true;
+                        }
+                    }
+                }
+
+                // The result can go out of range when the convolution
+                // results in an infinite value. Normalizing such a
+                // value makes no sense.
+
+                // TODO OutOfRangePolicy must handle integral results too.
+                if(!value_seen || !OORP::within_range(sum_of_values)) {
+                    output_no_data_policy.mark_as_no_data(index_);
+                }
+                else {
+                    get(destination, index_) = NP::normalize(sum_of_values,
+                        sum_of_weights);
+                }
+
+                ++index_;
                 ++first_col_source;
                 ++index_;
             }
@@ -1673,44 +1866,44 @@ struct Convolve<
         DestinationImage& destination)
     {
         // Corners.
-        dispatch::ConvolveNorthWestCorner<KernelTraits<Kernel>::weigh_values>::
+        dispatch::ConvolveNorthWestCorner::
             template apply<AlternativeForNoDataPolicy, NormalizePolicy,
                 OutOfImagePolicy, OutOfRangePolicy>(
                     input_no_data_policy, output_no_data_policy,
                     source, kernel, destination);
-        dispatch::ConvolveNorthEastCorner<KernelTraits<Kernel>::weigh_values>::
+        dispatch::ConvolveNorthEastCorner::
             template apply<AlternativeForNoDataPolicy, NormalizePolicy,
                 OutOfImagePolicy, OutOfRangePolicy>(
                     input_no_data_policy, output_no_data_policy,
                     source, kernel, destination);
-        dispatch::ConvolveSouthWestCorner<KernelTraits<Kernel>::weigh_values>::
+        dispatch::ConvolveSouthWestCorner::
             template apply<AlternativeForNoDataPolicy, NormalizePolicy,
                 OutOfImagePolicy, OutOfRangePolicy>(
                     input_no_data_policy, output_no_data_policy,
                     source, kernel, destination);
-        dispatch::ConvolveSouthEastCorner<KernelTraits<Kernel>::weigh_values>::
+        dispatch::ConvolveSouthEastCorner::
             template apply<AlternativeForNoDataPolicy, NormalizePolicy,
                 OutOfImagePolicy, OutOfRangePolicy>(
                     input_no_data_policy, output_no_data_policy,
                     source, kernel, destination);
 
         // Sides.
-        dispatch::ConvolveNorthSide<KernelTraits<Kernel>::weigh_values>::
+        dispatch::ConvolveNorthSide::
             template apply<AlternativeForNoDataPolicy, NormalizePolicy,
                 OutOfImagePolicy, OutOfRangePolicy>(
                     input_no_data_policy, output_no_data_policy,
                     source, kernel, destination);
-        dispatch::ConvolveWestSide<KernelTraits<Kernel>::weigh_values>::
+        dispatch::ConvolveWestSide::
             template apply<AlternativeForNoDataPolicy, NormalizePolicy,
                 OutOfImagePolicy, OutOfRangePolicy>(
                     input_no_data_policy, output_no_data_policy,
                     source, kernel, destination);
-        dispatch::ConvolveEastSide<KernelTraits<Kernel>::weigh_values>::
+        dispatch::ConvolveEastSide::
             template apply<AlternativeForNoDataPolicy, NormalizePolicy,
                 OutOfImagePolicy, OutOfRangePolicy>(
                     input_no_data_policy, output_no_data_policy,
                     source, kernel, destination);
-        dispatch::ConvolveSouthSide<KernelTraits<Kernel>::weigh_values>::
+        dispatch::ConvolveSouthSide::
             template apply<AlternativeForNoDataPolicy, NormalizePolicy,
                 OutOfImagePolicy, OutOfRangePolicy>(
                     input_no_data_policy, output_no_data_policy,
@@ -1736,8 +1929,7 @@ struct Convolve<
     part)                                                                      \
 {                                                                              \
     auto function = std::bind((BorderFunction)                                 \
-        dispatch::Convolve##part<                                              \
-            KernelTraits<Kernel>::weigh_values>::template                      \
+        dispatch::Convolve##part::template                                     \
                 apply<AlternativeForNoDataPolicy, NormalizePolicy,             \
                     OutOfImagePolicy, OutOfRangePolicy>,                       \
         std::cref(input_no_data_policy),                                       \

@@ -615,4 +615,80 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
     }
 }
 
+
+BOOST_AUTO_TEST_CASE(boolean_kernel_weights)
+{
+    // Kernel with radius 1 and boolean weights.
+    {
+        // Create input array:
+        // +----+----+----+----+----+----+
+        // |  0 |  1 |  2 |  3 |  4 |  5 |
+        // +----+----+----+----+----+----+
+        // |  6 |  7 |  8 |  9 | 10 | 11 |
+        // +----+----+----+----+----+----+
+        // | 12 | 13 | 14 | 15 | 16 | 17 |
+        // +----+----+----+----+----+----+
+        // | 18 | 19 | 20 | 21 | 22 | 23 |
+        // +----+----+----+----+----+----+
+        // | 24 | 25 | 26 | 27 | 28 | 29 |
+        // +----+----+----+----+----+----+
+        // | 30 | 31 | 32 | 33 | 34 | 35 |
+        // +----+----+----+----+----+----+
+        // | 36 | 37 | 38 | 39 | 40 | 41 |
+        // +----+----+----+----+----+----+
+        size_t const nr_rows = 7;
+        size_t const nr_cols = 6;
+        auto extents = fern::extents[nr_rows][nr_cols];
+        fern::Array<double, 2> argument(extents);
+        std::iota(argument.data(), argument.data() + argument.num_elements(),
+            0);
+
+        // Define kernel shape and weights.
+        fern::Square<bool, 1> kernel({
+            {false, true, false},
+            {true , true, true },
+            {false, true, false}
+        });
+
+        // Parallel.
+        {
+            fern::Array<double, 2> result(extents);
+            fa::convolution::convolve(fa::sequential, argument, kernel,
+                result);
+
+            // +----+----+
+            // |  0 |  1 |
+            // +----+----+
+            // |  6 |  7 |
+            // +----+----+
+            BOOST_CHECK_CLOSE(result[0][0], (0 + 1 + 6) / 3.0, 1e-6);
+
+            // +----+----+
+            // | 34 | 35 |
+            // +----+----+
+            // | 40 | 41 |
+            // +----+----+
+            BOOST_CHECK_CLOSE(result[6][5], (35 + 40 + 41) / 3.0, 1e-6);
+
+            // +----+----+----+
+            // |  0 |  1 |  2 |
+            // +----+----+----+
+            // |  6 |  7 |  8 |
+            // +----+----+----+
+            // | 12 | 13 | 14 |
+            // +----+----+----+
+            BOOST_CHECK_CLOSE(result[1][1], (1 + 6 + 8 + 13) / 4.0, 1e-6);
+
+            // +----+----+
+            // | 18 | 19 |
+            // +----+----+
+            // | 24 | 25 |
+            // +----+----+
+            // | 30 | 31 |
+            // +----+----+
+            BOOST_CHECK_CLOSE(result[4][0], (18 + 24 + 25 + 30) / 4.0, 1e-6);
+        }
+    }
+}
+
 BOOST_AUTO_TEST_SUITE_END()

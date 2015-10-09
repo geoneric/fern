@@ -3,7 +3,7 @@ set(TEST_NAMES
 )
 add_unit_tests(
     SCOPE algorithm_spatial_focal
-    NAMES ${TEST_NAME}
+    NAMES ${TEST_NAMES}
     OBJECT_LIBRARIES
         $<TARGET_OBJECTS:fern_algorithm_policy_objects>
         $<TARGET_OBJECTS:fern_algorithm_core_objects>
