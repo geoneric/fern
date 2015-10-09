@@ -29,7 +29,7 @@ endif()
 ###     INCLUDES
 ###         ${INCLUDES}
 ###     LIBRARIES
-###         ${FERN_EXTERNAL_LIBRARIES}
+###         ${DEVBASE_EXTERNAL_LIBRARIES}
 ###         ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
 ###     FLAGS
 ###         ${CMAKE_CXX_FLAGS}
@@ -67,7 +67,7 @@ if(FERN_BUILD_DOCUMENTATION)
 
     # TODO Add more...
 
-    list(APPEND _API_SOURCES ${FERN_EXTERNAL_SOURCES})
+    list(APPEND _API_SOURCES ${DEVBASE_EXTERNAL_SOURCES})
 
     string(REPLACE ";" " " DEVBASE_DOXYGEN_INPUT "${_API_SOURCES}")
 
