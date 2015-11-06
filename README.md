@@ -30,10 +30,11 @@ If you are also a Fern user, then please let us know (info@geoneric.eu), and we 
 
 Supported platforms
 -------------------
-Fern is portable software. The following table lists the platforms that we use ourselves to verify whether Fern builds and works. Given this range in platforms, we feel confident that Fern builds (or can be made to build) on other platforms as well.
+Fern is portable software. The following table lists the platforms that we use ourselves to verify whether Fern builds and works (Fern.Algorithm module only for now). Given this range in platforms, we feel confident that Fern builds (or can be made to build) on other platforms as well.
 
 | OS | Compilers | Status |
 |----|-----------|--------|
 | Linux | gcc-4.9 · x64 | [![Linux build Status](https://travis-ci.org/geoneric/fern.svg?branch=master)](https://travis-ci.org/geoneric/fern)  |
+| Linux | clang-3.7 · x64 | Checked 'by hand' |
 | Windows | vs-2015 · x64 | [![Windows build Status](https://ci.appveyor.com/api/projects/status/github/geoneric/fern?branch=master&svg=true)](https://ci.appveyor.com/project/kordejong/fern) |
 | OS X | clang-3.7 · x64 | Checked 'by hand' |
