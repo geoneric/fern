@@ -4,7 +4,8 @@
 # Options for selecting features.
 # FERN_WITH_<feature>
 
-option(FERN_BUILD_ALL "Build everything" FALSE)
+option(FERN_BUILD_ALL "Build everything, except for documentation and tests"
+    FALSE)
 option(FERN_WITH_ALL "Support all features" FALSE)
 
 option(FERN_BUILD_ALGORITHM "Build Fern.Algorithm module" FALSE)
@@ -49,11 +50,9 @@ endif()
 # features.
 if(FERN_BUILD_ALL)
     set(FERN_BUILD_ALGORITHM TRUE)
-    set(FERN_BUILD_DOCUMENTATION TRUE)
     set(FERN_BUILD_IO TRUE)
     set(FERN_BUILD_LANGUAGE TRUE)
     set(FERN_BUILD_PYTHON TRUE)
-    set(FERN_BUILD_TEST TRUE)
 endif()
 
 if(FERN_BUILD_LANGUAGE)
