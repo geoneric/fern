@@ -24,7 +24,7 @@ else()
         ${FERN_FEATURE_OBJECT_LIBRARIES}
     )
 endif()
-set_target_properties(fern_algorithm
+set_target_properties(fern_feature
     PROPERTIES
         COMPILE_FLAGS "-DFERN_FEATURE_SOURCE"
 )
