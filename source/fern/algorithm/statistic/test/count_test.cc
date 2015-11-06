@@ -33,8 +33,6 @@ void verify_value(
 }
 
 
-BOOST_AUTO_TEST_SUITE(count)
-
 BOOST_AUTO_TEST_CASE(d0_array)
 {
     verify_value<int8_t, uint64_t>(-5, 6, 0u);
@@ -302,5 +300,3 @@ BOOST_AUTO_TEST_CASE(concurrent)
             fa::parallel, argument, 5, result_we_got);
     }
 }
-
-BOOST_AUTO_TEST_SUITE_END()

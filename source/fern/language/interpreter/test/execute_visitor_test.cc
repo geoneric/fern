@@ -6,16 +6,12 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern ast
+#define BOOST_TEST_MODULE fern ast execute_visitor
 #include <boost/test/unit_test.hpp>
 
-
-BOOST_AUTO_TEST_SUITE(execute_visitor)
 
 BOOST_AUTO_TEST_CASE(dummy)
 {
     bool test_implemented = false;
     BOOST_WARN(test_implemented);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

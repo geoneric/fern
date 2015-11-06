@@ -16,8 +16,6 @@
 namespace fa = fern::algorithm;
 
 
-BOOST_AUTO_TEST_SUITE(atan_)
-
 template<
     class Value,
     class Result>
@@ -40,5 +38,3 @@ BOOST_AUTO_TEST_CASE(algorithm)
     verify_value<float, float>(-fern::infinity<float>(),
         -fern::pi<float>() / 2.0f);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

@@ -6,7 +6,7 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern core
+#define BOOST_TEST_MODULE fern core flag_collection
 #include <boost/test/unit_test.hpp>
 #include "fern/core/flag_collection.h"
 
@@ -49,8 +49,6 @@ MyFlagCollection const MyFlagCollection::YES(1 << MF_YES);
 MyFlagCollection const MyFlagCollection::NO(1 << MF_NO);
 MyFlagCollection const MyFlagCollection::MAYBE(1 << MF_MAYBE);
 
-
-BOOST_AUTO_TEST_SUITE(flag_collection)
 
 BOOST_AUTO_TEST_CASE(flag_collection)
 {
@@ -123,5 +121,3 @@ BOOST_AUTO_TEST_CASE(is_subset_of)
     flags2 |= MyFlagCollection(1 << MF_MAYBE);
     BOOST_CHECK(flags1.is_subset_of(flags2));
 }
-
-BOOST_AUTO_TEST_SUITE_END()

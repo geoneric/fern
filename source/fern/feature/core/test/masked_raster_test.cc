@@ -12,8 +12,6 @@
 #include "fern/feature/core/masked_raster.h"
 
 
-BOOST_AUTO_TEST_SUITE(masked_raster)
-
 BOOST_AUTO_TEST_CASE(raster)
 {
     size_t const nr_rows = 5;
@@ -38,5 +36,3 @@ BOOST_AUTO_TEST_CASE(raster)
     BOOST_CHECK_EQUAL(raster.transformation()[2], north);
     BOOST_CHECK_EQUAL(raster.transformation()[3], cell_height);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

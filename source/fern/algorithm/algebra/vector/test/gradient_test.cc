@@ -19,8 +19,6 @@
 namespace fa = fern::algorithm;
 
 
-BOOST_AUTO_TEST_SUITE(gradient)
-
 BOOST_AUTO_TEST_CASE(algorithm)
 {
     // Create input raster:
@@ -123,5 +121,3 @@ BOOST_AUTO_TEST_CASE(algorithm)
             result_we_want));
     }
 }
-
-BOOST_AUTO_TEST_SUITE_END()

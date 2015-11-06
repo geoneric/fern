@@ -6,12 +6,10 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern core
+#define BOOST_TEST_MODULE fern core path
 #include <boost/test/unit_test.hpp>
 #include "fern/core/path.h"
 
-
-BOOST_AUTO_TEST_SUITE(path)
 
 BOOST_AUTO_TEST_CASE(construction)
 {
@@ -66,6 +64,3 @@ BOOST_AUTO_TEST_CASE(names)
     BOOST_CHECK_EQUAL(names[0], "\\");
 #endif
 }
-
-
-BOOST_AUTO_TEST_SUITE_END()

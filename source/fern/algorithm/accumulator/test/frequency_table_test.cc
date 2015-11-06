@@ -6,14 +6,13 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern algorithm accumulator
+#define BOOST_TEST_MODULE fern algorithm accumulator frequency table
 #include <boost/test/unit_test.hpp>
 #include "fern/algorithm/accumulator/detail/frequency_table.h"
 
 
 namespace faa = fern::algorithm::accumulator;
 
-BOOST_AUTO_TEST_SUITE(frequency_table)
 
 BOOST_AUTO_TEST_CASE(default_construct)
 {
@@ -67,5 +66,3 @@ BOOST_AUTO_TEST_CASE(merge)
     BOOST_CHECK_EQUAL(frequency_table.size(), 2);
     BOOST_CHECK_EQUAL(frequency_table.mode(), 15);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

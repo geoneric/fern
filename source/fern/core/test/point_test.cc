@@ -6,12 +6,10 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern core
+#define BOOST_TEST_MODULE fern core point
 #include <boost/test/unit_test.hpp>
 #include "fern/core/data_customization_point/point.h"
 
-
-BOOST_AUTO_TEST_SUITE(point)
 
 BOOST_AUTO_TEST_CASE(constructor)
 {
@@ -69,5 +67,3 @@ BOOST_AUTO_TEST_CASE(copy)
         BOOST_CHECK_EQUAL(fern::get<1>(point2), 6);
     }
 }
-
-BOOST_AUTO_TEST_SUITE_END()

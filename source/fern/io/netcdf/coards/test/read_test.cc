@@ -18,8 +18,6 @@ namespace fi = fern::io;
 namespace fin = fern::io::netcdf;
 
 
-BOOST_AUTO_TEST_SUITE(read_)
-
 BOOST_AUTO_TEST_CASE(file_does_no_exist)
 {
     bool exception_thrown{false};
@@ -124,5 +122,3 @@ BOOST_AUTO_TEST_CASE(scalar)
     fin::read_coards(output_no_data_policy, data_name, age);
     BOOST_CHECK_CLOSE(age, 4.54e9, 7);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

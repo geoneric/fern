@@ -6,14 +6,12 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern algorithm accumulator
+#define BOOST_TEST_MODULE fern algorithm accumulator mode
 #include <boost/test/unit_test.hpp>
 #include "fern/algorithm/accumulator/mode.h"
 
 
 namespace faa = fern::algorithm::accumulator;
-
-BOOST_AUTO_TEST_SUITE(mode)
 
 BOOST_AUTO_TEST_CASE(default_construct)
 {
@@ -57,5 +55,3 @@ BOOST_AUTO_TEST_CASE(merge)
     auto mode(faa::Mode<int>(5) | faa::Mode<int>(15) | faa::Mode<int>(15));
     BOOST_CHECK_EQUAL(mode(), 15);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

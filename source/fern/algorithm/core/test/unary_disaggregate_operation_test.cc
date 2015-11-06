@@ -27,8 +27,6 @@ template<
 using Algorithm = fa::fill::detail::Algorithm<Value>;
 
 
-BOOST_AUTO_TEST_SUITE(unary_disaggregate_operation)
-
 BOOST_AUTO_TEST_CASE(array_0d)
 {
     using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData>;
@@ -445,5 +443,3 @@ BOOST_AUTO_TEST_CASE(array_2d_masked)
         BOOST_CHECK_EQUAL(result.size(), 0u);
     }
 }
-
-BOOST_AUTO_TEST_SUITE_END()

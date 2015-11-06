@@ -6,13 +6,11 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern uncertainty
+#define BOOST_TEST_MODULE fern uncertainty normal distribution
 #include <boost/test/unit_test.hpp>
 #include <boost/random/mersenne_twister.hpp>
 #include "fern/language/uncertainty/normal_distribution.h"
 
-
-BOOST_AUTO_TEST_SUITE(normal_distribution)
 
 BOOST_AUTO_TEST_CASE(constructor)
 {
@@ -29,5 +27,3 @@ BOOST_AUTO_TEST_CASE(constructor)
 
     // BOOST_CHECK(false);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

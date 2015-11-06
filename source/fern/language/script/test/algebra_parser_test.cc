@@ -6,7 +6,7 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern script
+#define BOOST_TEST_MODULE fern script algebra_parser
 #include <boost/test/unit_test.hpp>
 #include "fern/core/exception.h"
 #include "fern/language/script/algebra_parser.h"
@@ -14,8 +14,6 @@
 
 namespace fl = fern::language;
 
-
-BOOST_AUTO_TEST_SUITE(algebra_parser)
 
 BOOST_AUTO_TEST_CASE(parse_empty_script)
 {
@@ -885,5 +883,3 @@ BOOST_AUTO_TEST_CASE(parse_function)
             "</Fern>");
     }
 }
-
-BOOST_AUTO_TEST_SUITE_END()

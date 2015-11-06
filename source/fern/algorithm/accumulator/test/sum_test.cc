@@ -6,7 +6,7 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern algorithm accumulator
+#define BOOST_TEST_MODULE fern algorithm accumulator sum
 #include <boost/test/unit_test.hpp>
 #include "fern/algorithm/algebra/elementary/add.h"
 #include "fern/algorithm/accumulator/sum.h"
@@ -14,8 +14,6 @@
 
 namespace fa = fern::algorithm;
 namespace faa = fa::accumulator;
-
-BOOST_AUTO_TEST_SUITE(sum)
 
 BOOST_AUTO_TEST_CASE(default_construct)
 {
@@ -52,5 +50,3 @@ BOOST_AUTO_TEST_CASE(merge)
     auto sum(faa::Sum<int>(5) | faa::Sum<int>(6));
     BOOST_CHECK_EQUAL(sum(), 11);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

@@ -6,7 +6,7 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern ast
+#define BOOST_TEST_MODULE fern ast annotate_visitor
 #include <boost/test/unit_test.hpp>
 #include "fern/language/operation/core/parameter.h"
 #include "fern/language/operation/core/result.h"

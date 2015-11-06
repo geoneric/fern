@@ -19,8 +19,6 @@ namespace fi = fern::io;
 namespace fig = fern::io::gpx_1_0;
 
 
-BOOST_AUTO_TEST_SUITE(parse)
-
 BOOST_AUTO_TEST_CASE(does_not_exist)
 {
     std::string pathname = "does_not_exist.gpx";
@@ -89,5 +87,3 @@ BOOST_AUTO_TEST_CASE(valid)
     BOOST_CHECK_EQUAL(date_time.zone_hours(), 0);
     BOOST_CHECK_EQUAL(date_time.zone_minutes(), 0);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

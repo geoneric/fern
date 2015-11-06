@@ -6,12 +6,10 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern core
+#define BOOST_TEST_MODULE fern core data_types
 #include <boost/test/unit_test.hpp>
 #include "fern/core/data_types.h"
 
-
-BOOST_AUTO_TEST_SUITE(data_types)
 
 BOOST_AUTO_TEST_CASE(string)
 {
@@ -52,7 +50,7 @@ BOOST_AUTO_TEST_CASE(add)
 }
 
 
-BOOST_AUTO_TEST_CASE(remove)
+BOOST_AUTO_TEST_CASE(remove_)
 {
     fern::DataTypes data_types;
 
@@ -78,5 +76,3 @@ BOOST_AUTO_TEST_CASE(count)
     BOOST_CHECK_EQUAL(fern::DataTypes::CONSTANT.count(), 1u);
     BOOST_CHECK_EQUAL(fern::DataTypes::ALL.count(), 2u);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

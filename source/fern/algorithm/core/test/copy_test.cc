@@ -17,8 +17,6 @@
 namespace fa = fern::algorithm;
 
 
-BOOST_AUTO_TEST_SUITE(copy)
-
 template<
     typename ExecutionPolicy>
 void test_array_1d(
@@ -86,5 +84,3 @@ BOOST_AUTO_TEST_CASE(array_1d_masked_parallel)
 {
     test_array_1d_masked(fa::parallel);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

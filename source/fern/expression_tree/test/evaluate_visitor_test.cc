@@ -77,8 +77,6 @@ Operation<typename Plus<U, V>::result_type> operator+(
 } // namespace fern
 
 
-BOOST_AUTO_TEST_SUITE(evaluate_visitor)
-
 BOOST_AUTO_TEST_CASE(visit_constants)
 {
     namespace fet = fern::expression_tree;
@@ -376,5 +374,3 @@ BOOST_AUTO_TEST_CASE(visit_vector)
 //         // BOOST_CHECK_EQUAL(boost::get<Result3>(result).value, 3);
 //     }
 // }
-
-BOOST_AUTO_TEST_SUITE_END()

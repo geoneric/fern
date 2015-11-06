@@ -16,8 +16,6 @@
 namespace fa = fern::algorithm;
 
 
-BOOST_AUTO_TEST_SUITE(factorial)
-
 template<
     class Value>
 using OutOfDomainPolicy = fa::factorial::OutOfDomainPolicy<Value>;
@@ -172,5 +170,3 @@ BOOST_AUTO_TEST_CASE(algorithm)
         verify_floating_point_value<double, double>(10.0, 3628800.0);
     }
 }
-
-BOOST_AUTO_TEST_SUITE_END()

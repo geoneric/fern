@@ -12,8 +12,6 @@
 #include "fern/example/algorithm/raster.h"
 
 
-BOOST_AUTO_TEST_SUITE(raster)
-
 BOOST_AUTO_TEST_CASE(constructor)
 {
     double const cell_size = 5.0;
@@ -22,6 +20,3 @@ BOOST_AUTO_TEST_CASE(constructor)
     example::Raster<int32_t> raster1(cell_size, nr_rows, nr_cols);
     // std::iota(raster1.values().begin(), raster1.values().end(), 0);
 }
-
-
-BOOST_AUTO_TEST_SUITE_END()

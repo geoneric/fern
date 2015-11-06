@@ -25,8 +25,6 @@ namespace fa = fern::algorithm;
 }
 
 
-BOOST_AUTO_TEST_SUITE(result_value)
-
 BOOST_AUTO_TEST_CASE(ResultValue)
 {
     // uint + uint
@@ -110,5 +108,3 @@ BOOST_AUTO_TEST_CASE(ResultValue)
     verify_result_value_type(int64_t, float, float);
     verify_result_value_type(int64_t, double, double);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

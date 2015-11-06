@@ -15,8 +15,6 @@
 namespace fa = fern::algorithm;
 
 
-BOOST_AUTO_TEST_SUITE(sqrt_)
-
 template<
     class Value>
 using OutOfDomainPolicy = fa::sqrt::OutOfDomainPolicy<Value>;
@@ -53,5 +51,3 @@ BOOST_AUTO_TEST_CASE(algorithm)
     verify_value<float, float>( 1.0f, 1.0f);
     verify_value<float, float>( 9.0f, 3.0f);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

@@ -6,7 +6,7 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern algorithm accumulator
+#define BOOST_TEST_MODULE fern algorithm accumulator standard_deviation
 #include <boost/test/unit_test.hpp>
 #include "fern/algorithm/accumulator/standard_deviation.h"
 
@@ -24,8 +24,6 @@ inline constexpr T square(
     return value * value;
 }
 
-
-BOOST_AUTO_TEST_SUITE(standard_deviation)
 
 BOOST_AUTO_TEST_CASE(default_construct)
 {
@@ -100,5 +98,3 @@ BOOST_AUTO_TEST_CASE(merge)
             square(12.5 - 20.0)) / 2.0));
     }
 }
-
-BOOST_AUTO_TEST_SUITE_END()

@@ -6,12 +6,10 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern feature core
+#define BOOST_TEST_MODULE fern feature core masked_scalar
 #include <boost/test/unit_test.hpp>
 #include "fern/feature/core/masked_scalar.h"
 
-
-BOOST_AUTO_TEST_SUITE(masked_scalar)
 
 BOOST_AUTO_TEST_CASE(construct)
 {
@@ -82,5 +80,3 @@ BOOST_AUTO_TEST_CASE(assign)
     BOOST_CHECK(!value.mask());
     BOOST_CHECK_EQUAL(value, 7);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

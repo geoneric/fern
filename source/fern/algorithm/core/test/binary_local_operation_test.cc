@@ -35,8 +35,6 @@ template<
 using OutOfRangePolicy = fa::add::OutOfRangePolicy<Value1, Value2, Result>;
 
 
-BOOST_AUTO_TEST_SUITE(binary_local_operation)
-
 BOOST_AUTO_TEST_CASE(d0_array_d0_array)
 {
     using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData,
@@ -571,9 +569,6 @@ BOOST_AUTO_TEST_CASE(d1_array_d0_array_sequential)
 ///         BOOST_CHECK(result.empty());
 ///     }
 /// }
-
-BOOST_AUTO_TEST_SUITE_END()
-
 
 
 /// #include "fern/feature/core/array_traits.h"

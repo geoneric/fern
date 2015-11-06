@@ -20,8 +20,6 @@ namespace fi = fern::io;
 namespace fin = fern::io::netcdf;
 
 
-BOOST_AUTO_TEST_SUITE(variable)
-
 BOOST_AUTO_TEST_CASE(contains_variable)
 {
     std::string dataset_pathname = "earth.nc";
@@ -73,6 +71,3 @@ BOOST_AUTO_TEST_CASE(read_variable)
 
     BOOST_CHECK_CLOSE(gravity, 9.8, 7);
 }
-
-
-BOOST_AUTO_TEST_SUITE_END()

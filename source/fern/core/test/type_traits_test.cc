@@ -6,12 +6,10 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern core
+#define BOOST_TEST_MODULE fern core type_traits
 #include <boost/test/unit_test.hpp>
 #include "fern/core/type_traits.h"
 
-
-BOOST_AUTO_TEST_SUITE(type_traits)
 
 BOOST_AUTO_TEST_CASE(type_traits)
 {
@@ -35,5 +33,3 @@ BOOST_AUTO_TEST_CASE(are_same)
     BOOST_CHECK( (fern::are_same<int, int, int>::value));
     BOOST_CHECK(!(fern::are_same<int, int, int, double>::value));
 }
-
-BOOST_AUTO_TEST_SUITE_END()

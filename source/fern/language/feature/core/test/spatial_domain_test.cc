@@ -6,7 +6,7 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern feature
+#define BOOST_TEST_MODULE fern feature spatial_domain
 #include <cassert>
 #include <boost/test/unit_test.hpp>
 #include "fern/feature/core/point.h"
@@ -45,8 +45,6 @@ inline bool operator==(
 }
 
 
-BOOST_AUTO_TEST_SUITE(spatial_domain)
-
 BOOST_AUTO_TEST_CASE(spatial_domain)
 {
     using Point = fern::Point<double, 2>;
@@ -74,5 +72,3 @@ BOOST_AUTO_TEST_CASE(spatial_domain)
     BOOST_CHECK(spatial_domain.geometry(gid1) == box1);
     BOOST_CHECK(spatial_domain.geometry(gid2) == box2);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

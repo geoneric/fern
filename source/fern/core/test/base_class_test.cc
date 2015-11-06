@@ -6,7 +6,7 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern core
+#define BOOST_TEST_MODULE fern core base_class
 #include <boost/test/unit_test.hpp>
 #include "fern/core/base_class.h"
 
@@ -23,8 +23,6 @@ struct lemon_tag: citrus_tag {};
 struct lime_tag: citrus_tag {};
 
 
-BOOST_AUTO_TEST_SUITE(base_class)
-
 BOOST_AUTO_TEST_CASE(base_class)
 {
     BOOST_CHECK((std::is_same<
@@ -38,5 +36,3 @@ BOOST_AUTO_TEST_CASE(base_class)
     BOOST_CHECK((std::is_same<
         fern::base_class<pear_tag, citrus_tag, pome_tag>, pome_tag>::value));
 }
-
-BOOST_AUTO_TEST_SUITE_END()

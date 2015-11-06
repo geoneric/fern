@@ -15,8 +15,6 @@
 #include "fern/algorithm/algebra/elementary/divide.h"
 
 
-BOOST_AUTO_TEST_SUITE(divide)
-
 namespace fa = fern::algorithm;
 
 
@@ -244,5 +242,3 @@ BOOST_AUTO_TEST_CASE(algorithm)
     verify_value<uint8_t, uint8_t, uint8_t>(30, 6, 5);
     verify_value<double, float, double>(30.0, 6.0f, 5.0);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

@@ -6,7 +6,7 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern operation_std
+#define BOOST_TEST_MODULE fern operation std print
 #include <boost/range/iterator_range.hpp>
 #include <boost/test/unit_test.hpp>
 #include "fern/language/operation/raster.h"
@@ -15,8 +15,6 @@
 
 namespace fl = fern::language;
 
-
-BOOST_AUTO_TEST_SUITE(print)
 
 BOOST_AUTO_TEST_CASE(print)
 {
@@ -62,5 +60,3 @@ BOOST_AUTO_TEST_CASE(print)
         );
     }
 }
-
-BOOST_AUTO_TEST_SUITE_END()

@@ -6,13 +6,10 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern core
+#define BOOST_TEST_MODULE fern core symbol_table
 #include <boost/any.hpp>
 #include <boost/test/unit_test.hpp>
 #include "fern/language/core/symbol_table.h"
-
-
-BOOST_AUTO_TEST_SUITE(symbol_table)
 
 
 BOOST_AUTO_TEST_CASE(scoping)
@@ -121,5 +118,3 @@ BOOST_AUTO_TEST_CASE(erase_value)
     BOOST_CHECK(!table.has_value("a"));
     BOOST_CHECK( table.has_value("b"));
 }
-
-BOOST_AUTO_TEST_SUITE_END()

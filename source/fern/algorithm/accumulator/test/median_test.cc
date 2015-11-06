@@ -6,14 +6,12 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern algorithm accumulator
+#define BOOST_TEST_MODULE fern algorithm accumulator median
 #include <boost/test/unit_test.hpp>
 #include "fern/algorithm/accumulator/median.h"
 
 
 namespace faa = fern::algorithm::accumulator;
-
-BOOST_AUTO_TEST_SUITE(median)
 
 BOOST_AUTO_TEST_CASE(default_construct)
 {
@@ -70,5 +68,3 @@ BOOST_AUTO_TEST_CASE(merge)
         BOOST_CHECK_EQUAL(median(), 12.5);
     }
 }
-
-BOOST_AUTO_TEST_SUITE_END()
