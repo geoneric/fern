@@ -91,7 +91,7 @@ struct within_range<
         // Calculate the result as if the argument was a floating point and
         // compare the results. If the integral result does not equal the
         // floating point result, then the integral result has overflown.
-        return std::tgamma(static_cast<double>(value) + 1.0) ==
+        return std::round(std::tgamma(value + 1)) ==
             static_cast<double>(result);
     }
 
@@ -132,7 +132,7 @@ struct Algorithm
     {
         FERN_STATIC_ASSERT(std::is_same, Result, Value)
 
-        result = static_cast<Value>(std::tgamma(value + Value{1}));
+        result = static_cast<Value>(std::round(std::tgamma(value + Value{1})));
     }
 
 };
