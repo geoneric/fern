@@ -11,8 +11,6 @@
 #include "fern/expression_tree/ast.h"
 
 
-BOOST_AUTO_TEST_SUITE(expression)
-
 BOOST_AUTO_TEST_CASE(constructor)
 {
     // Default constructor.
@@ -20,5 +18,3 @@ BOOST_AUTO_TEST_CASE(constructor)
 
     // Constructor with 
 }
-
-BOOST_AUTO_TEST_SUITE_END()

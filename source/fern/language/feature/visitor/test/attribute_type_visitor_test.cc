@@ -6,7 +6,7 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern feature
+#define BOOST_TEST_MODULE fern feature attribute_type_visitor
 #include <boost/test/unit_test.hpp>
 #include "fern/core/type_traits.h"
 #include "fern/language/feature/core/constant_attribute.h"
@@ -46,8 +46,6 @@ void test_constant_attribute(
 }
 
 
-BOOST_AUTO_TEST_SUITE(attribute_type_visitor)
-
 BOOST_AUTO_TEST_CASE(attribute_type_visitor)
 {
     fl::AttributeTypeVisitor visitor;
@@ -73,5 +71,3 @@ BOOST_AUTO_TEST_CASE(attribute_type_visitor)
         BOOST_CHECK_EQUAL(visitor.value_type(), fern::VT_STRING);
     }
 }
-
-BOOST_AUTO_TEST_SUITE_END()

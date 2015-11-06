@@ -34,8 +34,6 @@ template<
 using OutOfRangePolicy = fa::absolute::OutOfRangePolicy<Value, Result>;
 
 
-BOOST_AUTO_TEST_SUITE(unary_local_operation)
-
 BOOST_AUTO_TEST_CASE(array_0d)
 {
     using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData>;
@@ -529,5 +527,3 @@ BOOST_AUTO_TEST_CASE(array_2d_masked)
         BOOST_CHECK_EQUAL(result.size(), 0u);
     }
 }
-
-BOOST_AUTO_TEST_SUITE_END()

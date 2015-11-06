@@ -15,8 +15,6 @@
 namespace fa = fern::algorithm;
 
 
-BOOST_AUTO_TEST_SUITE(tan_)
-
 template<
     class Value>
 using OutOfDomainPolicy = fa::tan::OutOfDomainPolicy<Value>;
@@ -89,5 +87,3 @@ BOOST_AUTO_TEST_CASE(algorithm)
     verify_value<double, double>(-fern::half_pi<double>(),
         std::tan(-fern::half_pi<double>()));
 }
-
-BOOST_AUTO_TEST_SUITE_END()

@@ -17,8 +17,6 @@
 namespace fa = fern::algorithm;
 
 
-BOOST_AUTO_TEST_SUITE(fill)
-
 BOOST_AUTO_TEST_CASE(array_0d)
 {
     int result = 5;
@@ -36,5 +34,3 @@ BOOST_AUTO_TEST_CASE(array_1d)
     fa::statistic::count(fa::sequential, result, 3, count);
     BOOST_CHECK_EQUAL(count, 5u);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

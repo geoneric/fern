@@ -6,14 +6,12 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern operation_xml
+#define BOOST_TEST_MODULE fern operation_xml parser
 #include <boost/test/unit_test.hpp>
 #include "fern/core/exception.h"
 #include "fern/language/io/uncertml2/uncertml2_parser.h"
 #include "fern/language/uncertainty/normal_distribution.h"
 
-
-BOOST_AUTO_TEST_SUITE(io_uncertml2_parser)
 
 BOOST_AUTO_TEST_CASE(parse)
 {
@@ -54,5 +52,3 @@ BOOST_AUTO_TEST_CASE(parse)
         BOOST_CHECK_THROW(parser.parse(xml), fern::detail::ParseError);
     }
 }
-
-BOOST_AUTO_TEST_SUITE_END()

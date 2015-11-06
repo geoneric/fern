@@ -14,8 +14,6 @@
 #include "fern/algorithm/core/test/test_utils.h"
 
 
-BOOST_AUTO_TEST_SUITE(cast)
-
 namespace fa = fern::algorithm;
 
 
@@ -114,5 +112,3 @@ BOOST_AUTO_TEST_CASE(algorithm)
     verify_value<bool, double>(true, 1.0);
     verify_value<bool, double>(false, 0.0);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

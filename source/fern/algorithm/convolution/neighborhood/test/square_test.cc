@@ -16,8 +16,6 @@
 namespace fa = fern::algorithm;
 
 
-BOOST_AUTO_TEST_SUITE(square)
-
 BOOST_AUTO_TEST_CASE(square)
 {
     {
@@ -59,5 +57,3 @@ BOOST_AUTO_TEST_CASE(verify_use_in_algorithm)
         BOOST_CHECK_EQUAL(square.weight(8), 18);
     }
 }
-
-BOOST_AUTO_TEST_SUITE_END()

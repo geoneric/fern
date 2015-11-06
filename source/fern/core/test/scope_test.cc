@@ -6,13 +6,10 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern core
+#define BOOST_TEST_MODULE fern core scope
 #include <boost/any.hpp>
 #include <boost/test/unit_test.hpp>
 #include "fern/core/scope.h"
-
-
-BOOST_AUTO_TEST_SUITE(scope)
 
 
 BOOST_AUTO_TEST_CASE(general)
@@ -43,6 +40,3 @@ BOOST_AUTO_TEST_CASE(general)
         BOOST_CHECK_EQUAL(boost::any_cast<int const&>(scope.value("a")), 6);
     }
 }
-
-
-BOOST_AUTO_TEST_SUITE_END()

@@ -6,7 +6,7 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern operation_xml
+#define BOOST_TEST_MODULE fern operation xml operation_xml_parser
 #include <boost/test/unit_test.hpp>
 #include "fern/language/operation/core/parameter.h"
 #include "fern/language/operation/core/result.h"
@@ -15,8 +15,6 @@
 
 namespace fl = fern::language;
 
-
-BOOST_AUTO_TEST_SUITE(operation_xml_parser)
 
 BOOST_AUTO_TEST_CASE(parse)
 {
@@ -87,5 +85,3 @@ BOOST_AUTO_TEST_CASE(parse)
         // BOOST_CHECK(results.empty());
     }
 }
-
-BOOST_AUTO_TEST_SUITE_END()

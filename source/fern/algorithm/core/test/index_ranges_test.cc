@@ -6,15 +6,13 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern algorithm core
+#define BOOST_TEST_MODULE fern algorithm core index_ranges
 #include <boost/test/unit_test.hpp>
 #include "fern/algorithm/core/index_ranges.h"
 
 
 namespace fa = fern::algorithm;
 
-
-BOOST_AUTO_TEST_SUITE(index_ranges)
 
 BOOST_AUTO_TEST_CASE(constructor)
 {
@@ -198,5 +196,3 @@ BOOST_AUTO_TEST_CASE(index_ranges_2)
         BOOST_CHECK_EQUAL(ranges.size(), 0u);
     }
 }
-
-BOOST_AUTO_TEST_SUITE_END()

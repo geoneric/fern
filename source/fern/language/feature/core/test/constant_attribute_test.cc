@@ -6,7 +6,7 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern feature
+#define BOOST_TEST_MODULE fern feature constant_attribute
 #include <boost/test/unit_test.hpp>
 #include "fern/language/feature/core/array_value.h"
 #include "fern/language/feature/core/constant_attribute.h"
@@ -14,8 +14,6 @@
 
 namespace fl = fern::language;
 
-
-BOOST_AUTO_TEST_SUITE(constant_attribute)
 
 BOOST_AUTO_TEST_CASE(int_)
 {
@@ -52,5 +50,3 @@ BOOST_AUTO_TEST_CASE(array_per_box)
     attribute.set(grid);
     // TODO BOOST_CHECK(*attribute.values().value() == *grid);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

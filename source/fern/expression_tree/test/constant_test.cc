@@ -11,8 +11,6 @@
 #include "fern/expression_tree/constant.h"
 
 
-BOOST_AUTO_TEST_SUITE(constant)
-
 BOOST_AUTO_TEST_CASE(use_cases)
 {
     {
@@ -22,5 +20,3 @@ BOOST_AUTO_TEST_CASE(use_cases)
         BOOST_CHECK_EQUAL(int(constant), 2);
     }
 }
-
-BOOST_AUTO_TEST_SUITE_END()

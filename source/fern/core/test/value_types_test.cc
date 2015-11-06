@@ -6,12 +6,10 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern core
+#define BOOST_TEST_MODULE fern core value_types
 #include <boost/test/unit_test.hpp>
 #include "fern/core/value_types.h"
 
-
-BOOST_AUTO_TEST_SUITE(value_types)
 
 BOOST_AUTO_TEST_CASE(string)
 {
@@ -31,5 +29,3 @@ BOOST_AUTO_TEST_CASE(unknown)
 
     BOOST_CHECK_EQUAL(value_types, fern::ValueTypes::UNKNOWN);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

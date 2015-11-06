@@ -15,8 +15,6 @@
 namespace fa = fern::algorithm;
 
 
-BOOST_AUTO_TEST_SUITE(log_)
-
 template<
     class Value>
 using OutOfDomainPolicy = fa::log::OutOfDomainPolicy<Value>;
@@ -53,5 +51,3 @@ BOOST_AUTO_TEST_CASE(algorithm)
     verify_value<float, float>( 1.0f, 0.0f);
     verify_value<float, float>( 9.0f, std::log(9.0f));
 }
-
-BOOST_AUTO_TEST_SUITE_END()

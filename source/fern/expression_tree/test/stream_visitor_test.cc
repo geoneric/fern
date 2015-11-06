@@ -15,8 +15,6 @@
 #include "fern/expression_tree/stream_visitor.h"
 
 
-BOOST_AUTO_TEST_SUITE(stream_visitor)
-
 BOOST_AUTO_TEST_CASE(stream_visitor)
 {
     namespace fet = fern::expression_tree;
@@ -128,5 +126,3 @@ BOOST_AUTO_TEST_CASE(stream_visitor)
             "(slope(times(plus(int32_t(4), int64_t(5)), double(3.4))))");
     }
 }
-
-BOOST_AUTO_TEST_SUITE_END()

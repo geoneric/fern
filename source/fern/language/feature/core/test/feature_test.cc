@@ -6,15 +6,13 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern feature
+#define BOOST_TEST_MODULE fern feature feature
 #include <boost/test/unit_test.hpp>
 #include "fern/language/feature/core/attributes.h"
 
 
 namespace fl = fern::language;
 
-
-BOOST_AUTO_TEST_SUITE(feature)
 
 BOOST_AUTO_TEST_CASE(feature)
 {
@@ -65,5 +63,3 @@ BOOST_AUTO_TEST_CASE(feature)
         BOOST_CHECK_EQUAL(planets.nr_attributes(), 1);
     }
 }
-
-BOOST_AUTO_TEST_SUITE_END()

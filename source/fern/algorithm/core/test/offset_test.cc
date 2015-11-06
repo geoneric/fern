@@ -20,8 +20,6 @@
 namespace fa = fern::algorithm;
 
 
-BOOST_AUTO_TEST_SUITE(offset)
-
 template<
     typename ExecutionPolicy>
 void test_array_1d(
@@ -865,5 +863,3 @@ BOOST_AUTO_TEST_CASE(pcraster_example_3)
     BOOST_CHECK(fern::compare(fa::sequential, result_we_got,
         result_we_want));
 }
-
-BOOST_AUTO_TEST_SUITE_END()

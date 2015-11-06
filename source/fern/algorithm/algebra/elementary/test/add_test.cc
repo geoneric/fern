@@ -15,8 +15,6 @@
 namespace fa = fern::algorithm;
 
 
-BOOST_AUTO_TEST_SUITE(add)
-
 template<
     class Value1,
     class Value2,
@@ -38,5 +36,3 @@ BOOST_AUTO_TEST_CASE(d0_array_d0_array)
     verify_value<int8_t, int8_t, int8_t>(-5, -5, -10);
     verify_value<double, uint8_t, double>(-5.5, 5, -0.5);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

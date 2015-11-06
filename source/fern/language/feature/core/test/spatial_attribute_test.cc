@@ -6,15 +6,13 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern feature
+#define BOOST_TEST_MODULE fern feature spatial_attribute
 #include <boost/test/unit_test.hpp>
 #include "fern/language/feature/core/attributes.h"
 
 
 namespace fl = fern::language;
 
-
-BOOST_AUTO_TEST_SUITE(spatial_attribute)
 
 BOOST_AUTO_TEST_CASE(int_per_box)
 {
@@ -74,5 +72,3 @@ BOOST_AUTO_TEST_CASE(array_per_box)
     BOOST_CHECK_EQUAL(attribute.domain().size(), 1u);
     // TODO BOOST_CHECK(*attribute.values().value(gid) == *grid);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

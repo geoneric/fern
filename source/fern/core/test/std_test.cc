@@ -6,13 +6,11 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern core
+#define BOOST_TEST_MODULE fern core std
 #include <vector>
 #include <boost/test/unit_test.hpp>
 #include "fern/core/std.h"
 
-
-BOOST_AUTO_TEST_SUITE(std_)
 
 BOOST_AUTO_TEST_CASE(sort)
 {
@@ -32,5 +30,3 @@ BOOST_AUTO_TEST_CASE(sort)
         BOOST_CHECK(container == (Container{5, 4, 3, 2, 1}));
     }
 }
-
-BOOST_AUTO_TEST_SUITE_END()

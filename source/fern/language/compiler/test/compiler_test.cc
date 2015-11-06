@@ -11,11 +11,7 @@
 #include "fern/language/compiler/compiler.h"
 
 
-BOOST_AUTO_TEST_SUITE(compiler)
-
 BOOST_AUTO_TEST_CASE(constructor)
 {
     fern::language::Compiler compiler("h", "cc");
 }
-
-BOOST_AUTO_TEST_SUITE_END()

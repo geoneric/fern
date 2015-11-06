@@ -18,8 +18,6 @@
 namespace fa = fern::algorithm;
 
 
-BOOST_AUTO_TEST_SUITE(clamp)
-
 BOOST_AUTO_TEST_CASE(overload)
 {
     int array_0d{};
@@ -140,5 +138,3 @@ FERN_TEST_CASES(2d_2d_2d_masked)
 // FERN_TEST_CASES(2d_2d_0d_masked)
 // FERN_TEST_CASES(2d_0d_2d)
 // FERN_TEST_CASES(2d_0d_2d_masked)
-
-BOOST_AUTO_TEST_SUITE_END()

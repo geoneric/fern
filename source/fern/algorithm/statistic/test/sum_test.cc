@@ -23,8 +23,6 @@ namespace fa = f::algorithm;
 namespace ft = f::test;
 
 
-BOOST_AUTO_TEST_SUITE(sum)
-
 template<
     typename ExecutionPolicy,
     typename Argument,
@@ -379,5 +377,3 @@ void test_2d_0d_masked(
 
 
 FERN_UNARY_AGGREGATE_TEST_CASES()
-
-BOOST_AUTO_TEST_SUITE_END()

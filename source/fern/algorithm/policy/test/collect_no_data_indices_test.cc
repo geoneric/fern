@@ -6,7 +6,7 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern algorithm policy
+#define BOOST_TEST_MODULE fern algorithm policy collect_no_data_indices
 #include <boost/test/unit_test.hpp>
 #include "fern/core/type_traits.h"
 #include "fern/algorithm/policy/collect_no_data_indices.h"
@@ -20,8 +20,6 @@ struct PolicyHost:
 };
 
 
-BOOST_AUTO_TEST_SUITE(collect_no_data_indices)
-
 BOOST_AUTO_TEST_CASE(collect_no_data_indices)
 {
     using IndexContainer = std::vector<size_t>;
@@ -33,5 +31,3 @@ BOOST_AUTO_TEST_CASE(collect_no_data_indices)
     BOOST_CHECK_EQUAL(policy.indices()[0], 0u);
     BOOST_CHECK_EQUAL(policy.indices()[1], 4u);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

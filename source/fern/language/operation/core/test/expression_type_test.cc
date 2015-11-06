@@ -6,12 +6,10 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern operation_core
+#define BOOST_TEST_MODULE fern operation_core expression_type
 #include <boost/test/unit_test.hpp>
 #include "fern/core/expression_type.h"
 
-
-BOOST_AUTO_TEST_SUITE(expression_type)
 
 BOOST_AUTO_TEST_CASE(expression_type)
 {
@@ -75,5 +73,3 @@ BOOST_AUTO_TEST_CASE(is_satisfied_by)
         BOOST_CHECK(!parameter_type.is_satisfied_by(expression_type));
     }
 }
-
-BOOST_AUTO_TEST_SUITE_END()

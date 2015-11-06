@@ -29,8 +29,6 @@ namespace fa = fern::algorithm;
 }
 
 
-BOOST_AUTO_TEST_SUITE(result_type)
-
 BOOST_AUTO_TEST_CASE(result_type)
 {
     using namespace fern;
@@ -57,5 +55,3 @@ BOOST_AUTO_TEST_CASE(result_type)
     verify_result_type(std::vector<int8_t>, std::vector<float>,
         std::vector<float>);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

@@ -20,8 +20,6 @@
 #include "fern/algorithm/convolution/replace_no_data_by_focal_average.h"
 
 
-BOOST_AUTO_TEST_SUITE(convolve)
-
 namespace fa = fern::algorithm;
 
 
@@ -690,5 +688,3 @@ BOOST_AUTO_TEST_CASE(boolean_kernel_weights)
         }
     }
 }
-
-BOOST_AUTO_TEST_SUITE_END()

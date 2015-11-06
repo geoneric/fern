@@ -12,8 +12,6 @@
 #include "fern/expression_tree/raster.h"
 
 
-BOOST_AUTO_TEST_SUITE(raster)
-
 BOOST_AUTO_TEST_CASE(use_cases)
 {
     // size_t const nr_rows = 3000;
@@ -39,5 +37,3 @@ BOOST_AUTO_TEST_CASE(use_cases)
     //     fern::Raster<Array> raster(array);
     // }
 }
-
-BOOST_AUTO_TEST_SUITE_END()

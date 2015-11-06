@@ -17,8 +17,6 @@ namespace fi = fern::io;
 namespace fin = fern::io::netcdf;
 
 
-BOOST_AUTO_TEST_SUITE(attribute)
-
 BOOST_AUTO_TEST_CASE(has_attribute)
 {
     std::string dataset_pathname = "earth.nc";
@@ -29,5 +27,3 @@ BOOST_AUTO_TEST_CASE(has_attribute)
     BOOST_CHECK(!fin::has_attribute(dataset, "does_not_exist"));
     BOOST_CHECK( fin::has_attribute(dataset, "Conventions"));
 }
-
-BOOST_AUTO_TEST_SUITE_END()

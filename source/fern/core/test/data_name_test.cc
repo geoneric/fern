@@ -6,12 +6,10 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern core
+#define BOOST_TEST_MODULE fern core data_name
 #include <boost/test/unit_test.hpp>
 #include "fern/core/data_name.h"
 
-
-BOOST_AUTO_TEST_SUITE(data_name)
 
 BOOST_AUTO_TEST_CASE(constructor)
 {
@@ -101,5 +99,3 @@ BOOST_AUTO_TEST_CASE(assignment)
         DataName name3 = name2;
     }
 }
-
-BOOST_AUTO_TEST_SUITE_END()

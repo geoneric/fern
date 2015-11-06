@@ -6,12 +6,10 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern feature
+#define BOOST_TEST_MODULE fern feature masked_array
 #include <boost/test/unit_test.hpp>
 #include "fern/feature/core/masked_array.h"
 
-
-BOOST_AUTO_TEST_SUITE(masked_array)
 
 BOOST_AUTO_TEST_CASE(value)
 {
@@ -92,5 +90,3 @@ BOOST_AUTO_TEST_CASE(grid)
     BOOST_CHECK_EQUAL(array[2][0], 1);
     BOOST_CHECK_EQUAL(array[2][1], 2);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

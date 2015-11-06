@@ -6,12 +6,10 @@
 // be bound by the terms of the GPL, you may purchase a proprietary license
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
-#define BOOST_TEST_MODULE fern algorithm policy
+#define BOOST_TEST_MODULE fern algorithm policy parallel_execution_policy
 #include <boost/test/unit_test.hpp>
 #include "fern/algorithm/policy/parallel_execution_policy.h"
 
-
-BOOST_AUTO_TEST_SUITE(parallel_execution_policy)
 
 BOOST_AUTO_TEST_CASE(thread_pool_size)
 {
@@ -28,5 +26,3 @@ BOOST_AUTO_TEST_CASE(thread_pool_size)
         BOOST_CHECK_EQUAL(policy.thread_pool().size(), 3);
     }
 }
-
-BOOST_AUTO_TEST_SUITE_END()

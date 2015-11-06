@@ -16,8 +16,6 @@
 namespace fa = fern::algorithm;
 
 
-BOOST_AUTO_TEST_SUITE(cos_)
-
 template<
     class Value>
 using OutOfDomainPolicy = fa::cos::OutOfDomainPolicy<Value>;
@@ -55,5 +53,3 @@ BOOST_AUTO_TEST_CASE(algorithm)
     verify_value<double, double>(fern::pi<double>(), -1.0);
     verify_value<double, double>(-fern::pi<double>(), -1.0);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

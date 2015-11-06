@@ -18,8 +18,6 @@
 #include "fern/algorithm/algebra/vector/laplacian.h"
 
 
-BOOST_AUTO_TEST_SUITE(laplacian)
-
 namespace fa = fern::algorithm;
 
 
@@ -118,5 +116,3 @@ BOOST_AUTO_TEST_CASE(algorithm)
         BOOST_CHECK_EQUAL(get(result, index(result, 1, 1)), 999.0);
     }
 }
-
-BOOST_AUTO_TEST_SUITE_END()

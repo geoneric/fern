@@ -14,13 +14,9 @@
 namespace fi = fern::io;
 
 
-BOOST_AUTO_TEST_SUITE(file)
-
 BOOST_AUTO_TEST_CASE(file_exists)
 {
     BOOST_CHECK(!fi::file_exists("does_not_exist.txt"));
     BOOST_CHECK( fi::file_exists("unreadable.txt"));
     BOOST_CHECK( fi::file_exists("unwritable.txt"));
 }
-
-BOOST_AUTO_TEST_SUITE_END()

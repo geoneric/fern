@@ -19,8 +19,6 @@
 namespace fa = fern::algorithm;
 
 
-BOOST_AUTO_TEST_SUITE(cover)
-
 template<
     class Value1,
     class Value2,
@@ -198,5 +196,3 @@ BOOST_AUTO_TEST_CASE(array_2d_masked_2d)
     BOOST_CHECK(fern::compare(execution_policy, result_we_got2,
         result_we_want));
 }
-
-BOOST_AUTO_TEST_SUITE_END()
