@@ -62,5 +62,5 @@ before_script:
 script:
     - cd build
     - cmake --build . --config ${TRAVIS_BUILD_TYPE} --target all
-    - ctest -C ${TRAVIS_BUILD_TYPE} -E algorithm_statistic_mean_test -E algorithm_statistic_sum_test
+    - ctest -C ${TRAVIS_BUILD_TYPE} -E "algorithm_statistic_mean_test|algorithm_statistic_sum_test"
     - cd ..
