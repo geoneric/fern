@@ -37,11 +37,10 @@ install:
 
 build_script:
     - cmake -G"%CMAKE_GENERATOR%" %CMAKE_ARGUMENTS% -H. -Bbuild
-    - cmake --build build --config "%CONFIGURATION%" --target all
+    - cmake --build build --config "%CONFIGURATION%"
 
 
 # TODO Hangs in core_stopwatch_test?
 test_script:
     - cd build
-    # - ctest -C "%CONFIGURATION%"
-    - cmake --build build --config "%CONFIGURATION%" --target test
+    - ctest -C "%CONFIGURATION%"
