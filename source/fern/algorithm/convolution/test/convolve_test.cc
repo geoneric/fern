@@ -254,6 +254,43 @@ void compare_result2(
 }
 
 
+void compare_result3(
+    fern::Array<double, 2> const& result)
+{
+    // +----+----+
+    // |  0 |  1 |
+    // +----+----+
+    // |  6 |  7 |
+    // +----+----+
+    BOOST_CHECK_CLOSE(result[0][0], (0 + 1 + 6) / 3.0, 1e-6);
+
+    // +----+----+
+    // | 34 | 35 |
+    // +----+----+
+    // | 40 | 41 |
+    // +----+----+
+    BOOST_CHECK_CLOSE(result[6][5], (35 + 40 + 41) / 3.0, 1e-6);
+
+    // +----+----+----+
+    // |  0 |  1 |  2 |
+    // +----+----+----+
+    // |  6 |  7 |  8 |
+    // +----+----+----+
+    // | 12 | 13 | 14 |
+    // +----+----+----+
+    BOOST_CHECK_CLOSE(result[1][1], (1 + 6 + 8 + 13) / 4.0, 1e-6);
+
+    // +----+----+
+    // | 18 | 19 |
+    // +----+----+
+    // | 24 | 25 |
+    // +----+----+
+    // | 30 | 31 |
+    // +----+----+
+    BOOST_CHECK_CLOSE(result[4][0], (18 + 24 + 25 + 30) / 4.0, 1e-6);
+}
+
+
 BOOST_AUTO_TEST_CASE(convolve)
 {
     // Kernel with radius 2.
@@ -648,43 +685,21 @@ BOOST_AUTO_TEST_CASE(boolean_kernel_weights)
             {false, true, false}
         });
 
-        // Parallel.
+
+        // Sequential.
         {
             fern::Array<double, 2> result(extents);
             fa::convolution::convolve(fa::sequential, argument, kernel,
                 result);
+            compare_result3(result);
+        }
 
-            // +----+----+
-            // |  0 |  1 |
-            // +----+----+
-            // |  6 |  7 |
-            // +----+----+
-            BOOST_CHECK_CLOSE(result[0][0], (0 + 1 + 6) / 3.0, 1e-6);
-
-            // +----+----+
-            // | 34 | 35 |
-            // +----+----+
-            // | 40 | 41 |
-            // +----+----+
-            BOOST_CHECK_CLOSE(result[6][5], (35 + 40 + 41) / 3.0, 1e-6);
-
-            // +----+----+----+
-            // |  0 |  1 |  2 |
-            // +----+----+----+
-            // |  6 |  7 |  8 |
-            // +----+----+----+
-            // | 12 | 13 | 14 |
-            // +----+----+----+
-            BOOST_CHECK_CLOSE(result[1][1], (1 + 6 + 8 + 13) / 4.0, 1e-6);
-
-            // +----+----+
-            // | 18 | 19 |
-            // +----+----+
-            // | 24 | 25 |
-            // +----+----+
-            // | 30 | 31 |
-            // +----+----+
-            BOOST_CHECK_CLOSE(result[4][0], (18 + 24 + 25 + 30) / 4.0, 1e-6);
+        // Parallel.
+        {
+            fern::Array<double, 2> result(extents);
+            fa::convolution::convolve(fa::parallel, argument, kernel,
+                result);
+            compare_result3(result);
         }
     }
 }
