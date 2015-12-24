@@ -216,7 +216,7 @@ static void clamp_2d_2d_0d(
             }
             else {
                 assert(!std::get<1>(input_no_data_policy).is_no_data(index_));
-                assert(!std::get<2>(input_no_data_policy).is_no_data(index_));
+                assert(!std::get<2>(input_no_data_policy).is_no_data());
 
                 get(result, index_) = boost::algorithm::clamp(
                     get(value, index_), get(lower_bound, index_),
@@ -258,7 +258,7 @@ static void clamp_2d_0d_2d(
                 output_no_data_policy.mark_as_no_data(index_);
             }
             else {
-                assert(!std::get<1>(input_no_data_policy).is_no_data(index_));
+                assert(!std::get<1>(input_no_data_policy).is_no_data());
                 assert(!std::get<2>(input_no_data_policy).is_no_data(index_));
 
                 get(result, index_) = boost::algorithm::clamp(

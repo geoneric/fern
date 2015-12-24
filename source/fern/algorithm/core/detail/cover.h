@@ -70,7 +70,7 @@ static void cover_2d_0d(
             if(!std::get<0>(input_no_data_policy).is_no_data(index_)) {
                 get(result, index_) = get(value1, index_);
             }
-            else if(!std::get<1>(input_no_data_policy).is_no_data(index_)) {
+            else if(!std::get<1>(input_no_data_policy).is_no_data()) {
                 get(result, index_) = get(value2);
             }
             else {

@@ -121,23 +121,45 @@ void if_then_2d_0d(
 {
     size_t index_;
 
-    for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+    if(std::get<1>(input_no_data_policy).is_no_data()) {
+        // true_value is no-data.
+        // It doesn't matter whether or not the condition contains no-data
+        // or is false. The result has to be filled with no-data.
+        for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end();
+                ++i) {
 
-        index_ = index(result, i, index_ranges[1].begin());
+            index_ = index(result, i, index_ranges[1].begin());
 
-        for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
-                ++j) {
+            for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
+                    ++j) {
 
-            if(!std::get<0>(input_no_data_policy).is_no_data(index_) &&
-                    get(condition, index_) &&
-                    !std::get<1>(input_no_data_policy).is_no_data(index_)) {
-                get(result, index_) = get(true_value);
-            }
-            else {
                 output_no_data_policy.mark_as_no_data(index_);
+                ++index_;
             }
+        }
+    }
+    else {
+        // true_value is not no-data.
+        const_reference<TrueValue> tv(get(true_value));
 
-            ++index_;
+        for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end();
+                ++i) {
+
+            index_ = index(result, i, index_ranges[1].begin());
+
+            for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
+                    ++j) {
+
+                if(!std::get<0>(input_no_data_policy).is_no_data(index_) &&
+                        get(condition, index_)) {
+                    get(result, index_) = tv;
+                }
+                else {
+                    output_no_data_policy.mark_as_no_data(index_);
+                }
+
+                ++index_;
+            }
         }
     }
 }
@@ -234,30 +256,72 @@ void if_then_else_1d_0d_0d(
     FalseValue const& false_value,
     Result& result)
 {
-    for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
-
-        if(std::get<0>(input_no_data_policy).is_no_data(i)) {
-            output_no_data_policy.mark_as_no_data(i);
+    if(std::get<1>(input_no_data_policy).is_no_data()) {
+        if(std::get<2>(input_no_data_policy).is_no_data()) {
+            // True value and false value contain no-data.
+            // It doesn't matter whether or not the condition contains valid
+            // values or not, and whether valid values evaluate to true or
+            // not. Fill the result with no-data.
+            for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end();
+                    ++i) {
+                output_no_data_policy.mark_as_no_data(i);
+            }
         }
         else {
-            if(get(condition, i)) {
-                if(std::get<1>(input_no_data_policy).is_no_data(i)) {
+            // True value contains no-data, but false value does not.
+            const_reference<FalseValue> fv(get(false_value));
+
+            for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end();
+                    ++i) {
+
+                if(std::get<0>(input_no_data_policy).is_no_data(i) ||
+                        get(condition, i)) {
                     output_no_data_policy.mark_as_no_data(i);
                 }
                 else {
-                    get(result, i) = get(true_value);
-                }
-            }
-            else {
-                if(std::get<2>(input_no_data_policy).is_no_data(i)) {
-                    output_no_data_policy.mark_as_no_data(i);
-                }
-                else {
-                    get(result, i) = get(false_value);
+                    get(result, i) = fv;
                 }
             }
         }
+    }
+    else {
+        if(std::get<2>(input_no_data_policy).is_no_data()) {
+            // True value contains valid value, but false contains no-data.
+            const_reference<TrueValue> tv(get(true_value));
 
+            for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end();
+                    ++i) {
+
+                if(std::get<0>(input_no_data_policy).is_no_data(i) ||
+                        !get(condition, i)) {
+                    output_no_data_policy.mark_as_no_data(i);
+                }
+                else {
+                    get(result, i) = tv;
+                }
+            }
+        }
+        else {
+            // True value and false value contain valid value.
+            const_reference<TrueValue> tv(get(true_value));
+            const_reference<FalseValue> fv(get(false_value));
+
+            for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end();
+                    ++i) {
+
+                if(std::get<0>(input_no_data_policy).is_no_data(i)) {
+                    output_no_data_policy.mark_as_no_data(i);
+                }
+                else {
+                    if(get(condition, i)) {
+                        get(result, i) = tv;
+                    }
+                    else {
+                        get(result, i) = fv;
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -278,30 +342,49 @@ void if_then_else_1d_1d_0d(
     FalseValue const& false_value,
     Result& result)
 {
-    for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+    if(std::get<2>(input_no_data_policy).is_no_data()) {
 
-        if(std::get<0>(input_no_data_policy).is_no_data(i)) {
-            output_no_data_policy.mark_as_no_data(i);
-        }
-        else {
-            if(get(condition, i)) {
-                if(std::get<1>(input_no_data_policy).is_no_data(i)) {
-                    output_no_data_policy.mark_as_no_data(i);
-                }
-                else {
-                    get(result, i) = get(true_value, i);
-                }
+        // False value contains no-data.
+        for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end();
+                ++i) {
+
+            if(std::get<0>(input_no_data_policy).is_no_data(i) ||
+                    !get(condition, i) ||
+                    std::get<1>(input_no_data_policy).is_no_data(i)) {
+                // condition contains no-data, or
+                // condition is false, or
+                // true value contains no-data
+                output_no_data_policy.mark_as_no_data(i);
             }
             else {
-                if(std::get<2>(input_no_data_policy).is_no_data(i)) {
-                    output_no_data_policy.mark_as_no_data(i);
+                get(result, i) = get(true_value, i);
+            }
+        }
+    }
+    else {
+        // False value contains valid value.
+        const_reference<FalseValue> fv(get(false_value));
+
+        for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end();
+                ++i) {
+
+            if(std::get<0>(input_no_data_policy).is_no_data(i)) {
+                output_no_data_policy.mark_as_no_data(i);
+            }
+            else {
+                if(get(condition, i)) {
+                    if(std::get<1>(input_no_data_policy).is_no_data(i)) {
+                        output_no_data_policy.mark_as_no_data(i);
+                    }
+                    else {
+                        get(result, i) = get(true_value, i);
+                    }
                 }
                 else {
-                    get(result, i) = get(false_value);
+                    get(result, i) = fv;
                 }
             }
         }
-
     }
 }
 
@@ -322,30 +405,49 @@ void if_then_else_1d_0d_1d(
     FalseValue const& false_value,
     Result& result)
 {
-    for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+    if(std::get<1>(input_no_data_policy).is_no_data()) {
+        // True value contains no-data.
 
-        if(std::get<0>(input_no_data_policy).is_no_data(i)) {
-            output_no_data_policy.mark_as_no_data(i);
-        }
-        else {
-            if(get(condition, i)) {
-                if(std::get<1>(input_no_data_policy).is_no_data(i)) {
-                    output_no_data_policy.mark_as_no_data(i);
-                }
-                else {
-                    get(result, i) = get(true_value);
-                }
+        for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end();
+                ++i) {
+
+            if(std::get<0>(input_no_data_policy).is_no_data(i) ||
+                    get(condition, i) ||
+                    std::get<2>(input_no_data_policy).is_no_data(i)) {
+                // condition contains no-data, or
+                // condition is true, or
+                // false value contains no-data
+                output_no_data_policy.mark_as_no_data(i);
             }
             else {
-                if(std::get<2>(input_no_data_policy).is_no_data(i)) {
-                    output_no_data_policy.mark_as_no_data(i);
+                get(result, i) = get(false_value, i);
+            }
+        }
+    }
+    else {
+        // True value contains valid value.
+        const_reference<TrueValue> tv(get(true_value));
+
+        for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end();
+                ++i) {
+
+            if(std::get<0>(input_no_data_policy).is_no_data(i)) {
+                output_no_data_policy.mark_as_no_data(i);
+            }
+            else {
+                if(get(condition, i)) {
+                    get(result, i) = tv;
                 }
                 else {
-                    get(result, i) = get(false_value, i);
+                    if(std::get<2>(input_no_data_policy).is_no_data(i)) {
+                        output_no_data_policy.mark_as_no_data(i);
+                    }
+                    else {
+                        get(result, i) = get(false_value, i);
+                    }
                 }
             }
         }
-
     }
 }
 
@@ -555,6 +657,8 @@ void if_then_else_0d_0d_2d(
             // TODO Use fill algorithm.
             //      fill(sequential, index_ranges, true_value, result);
 
+            const_reference<TrueValue> tv(get(true_value));
+
             for(size_t i = index_ranges[0].begin(); i <
                     index_ranges[0].end(); ++i) {
 
@@ -563,7 +667,7 @@ void if_then_else_0d_0d_2d(
                 for(size_t j = index_ranges[1].begin();
                         j < index_ranges[1].end(); ++j) {
 
-                    get(result, index_) = get(true_value);
+                    get(result, index_) = tv;
 
                     ++index_;
                 }
@@ -641,7 +745,8 @@ void if_then_else_0d_2d_0d(
         // Condition is true.
         // Copy true_value to result.
 
-        for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+        for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end();
+                ++i) {
 
             index_ = index(result, i, index_ranges[1].begin());
 
@@ -692,15 +797,17 @@ void if_then_else_0d_2d_0d(
             // TODO Use fill algorithm.
             //      fill(sequential, index_ranges, true_value, result);
 
-            for(size_t i = index_ranges[0].begin(); i <
-                    index_ranges[0].end(); ++i) {
+            const_reference<FalseValue> fv(get(false_value));
+
+            for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end();
+                    ++i) {
 
                 index_ = index(result, i, index_ranges[1].begin());
 
                 for(size_t j = index_ranges[1].begin();
                         j < index_ranges[1].end(); ++j) {
 
-                    get(result, index_) = get(false_value);
+                    get(result, index_) = fv;
 
                     ++index_;
                 }
@@ -781,18 +888,23 @@ void if_then_else_2d_2d_0d(
 {
     size_t index_;
 
-    for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+    if(std::get<2>(input_no_data_policy).is_no_data()) {
+        // False value contains no-data.
 
-        index_ = index(result, i, index_ranges[1].begin());
+        for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
 
-        for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
-                ++j) {
+            index_ = index(result, i, index_ranges[1].begin());
 
-            if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
-                output_no_data_policy.mark_as_no_data(index_);
-            }
-            else {
-                if(get(condition, index_)) {
+            for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
+                    ++j) {
+
+                if(std::get<0>(input_no_data_policy).is_no_data(index_) ||
+                        !get(condition, index_)) {
+                    // condition contains no-data, or
+                    // condition is false
+                    output_no_data_policy.mark_as_no_data(index_);
+                }
+                else {
                     if(std::get<1>(input_no_data_policy).is_no_data(index_)) {
                         output_no_data_policy.mark_as_no_data(index_);
                     }
@@ -800,17 +912,42 @@ void if_then_else_2d_2d_0d(
                         get(result, index_) = get(true_value, index_);
                     }
                 }
+
+                ++index_;
+            }
+        }
+    }
+    else {
+        // False value contains a valid value.
+        const_reference<FalseValue> fv(get(false_value));
+
+        for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+
+            index_ = index(result, i, index_ranges[1].begin());
+
+            for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
+                    ++j) {
+
+                if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                    output_no_data_policy.mark_as_no_data(index_);
+                }
                 else {
-                    if(std::get<2>(input_no_data_policy).is_no_data(index_)) {
-                        output_no_data_policy.mark_as_no_data(index_);
+                    if(get(condition, index_)) {
+                        if(std::get<1>(input_no_data_policy).is_no_data(
+                                index_)) {
+                            output_no_data_policy.mark_as_no_data(index_);
+                        }
+                        else {
+                            get(result, index_) = get(true_value, index_);
+                        }
                     }
                     else {
-                        get(result, index_) = get(false_value);
+                        get(result, index_) = fv;
                     }
                 }
-            }
 
-            ++index_;
+                ++index_;
+            }
         }
     }
 }
@@ -834,24 +971,22 @@ void if_then_else_2d_0d_2d(
 {
     size_t index_;
 
-    for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+    if(std::get<1>(input_no_data_policy).is_no_data()) {
+        // True value contains no-data.
 
-        index_ = index(result, i, index_ranges[1].begin());
+        for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end();
+            ++i) {
 
-        for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
-                ++j) {
+            index_ = index(result, i, index_ranges[1].begin());
 
-            if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
-                output_no_data_policy.mark_as_no_data(index_);
-            }
-            else {
-                if(get(condition, index_)) {
-                    if(std::get<1>(input_no_data_policy).is_no_data(index_)) {
-                        output_no_data_policy.mark_as_no_data(index_);
-                    }
-                    else {
-                        get(result, index_) = get(true_value);
-                    }
+            for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
+                    ++j) {
+
+                if(std::get<0>(input_no_data_policy).is_no_data(index_) ||
+                        get(condition, index_)) {
+                    // condition contains no-data, or
+                    // condition is true
+                    output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
                     if(std::get<2>(input_no_data_policy).is_no_data(index_)) {
@@ -861,9 +996,45 @@ void if_then_else_2d_0d_2d(
                         get(result, index_) = get(false_value, index_);
                     }
                 }
-            }
 
-            ++index_;
+                ++index_;
+            }
+        }
+
+
+    }
+    else {
+        // True value contains a valid value.
+        const_reference<TrueValue> tv(get(true_value));
+
+        for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end();
+                ++i) {
+
+            index_ = index(result, i, index_ranges[1].begin());
+
+            for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
+                    ++j) {
+
+                if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                    output_no_data_policy.mark_as_no_data(index_);
+                }
+                else {
+                    if(get(condition, index_)) {
+                        get(result, index_) = tv;
+                    }
+                    else {
+                        if(std::get<2>(input_no_data_policy).is_no_data(
+                                index_)) {
+                            output_no_data_policy.mark_as_no_data(index_);
+                        }
+                        else {
+                            get(result, index_) = get(false_value, index_);
+                        }
+                    }
+                }
+
+                ++index_;
+            }
         }
     }
 }
@@ -887,36 +1058,108 @@ void if_then_else_2d_0d_0d(
 {
     size_t index_;
 
-    for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end(); ++i) {
+    if(std::get<1>(input_no_data_policy).is_no_data()) {
+        if(std::get<2>(input_no_data_policy).is_no_data()) {
+            // True value and false value contain no-data.
+            // Fill the result with no-data.
 
-        index_ = index(result, i, index_ranges[1].begin());
+            for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end();
+                    ++i) {
 
-        for(size_t j = index_ranges[1].begin(); j < index_ranges[1].end();
-                ++j) {
+                index_ = index(result, i, index_ranges[1].begin());
 
-            if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
-                output_no_data_policy.mark_as_no_data(index_);
+                for(size_t j = index_ranges[1].begin();
+                        j < index_ranges[1].end(); ++j) {
+
+                    output_no_data_policy.mark_as_no_data(index_);
+                    ++index_;
+                }
             }
-            else {
-                if(get(condition, index_)) {
-                    if(std::get<1>(input_no_data_policy).is_no_data(index_)) {
+        }
+        else {
+            // True value contains no-data, but false value contains a
+            // valid value.
+            const_reference<FalseValue> fv(get(false_value));
+
+            for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end();
+                    ++i) {
+
+                index_ = index(result, i, index_ranges[1].begin());
+
+                for(size_t j = index_ranges[1].begin();
+                        j < index_ranges[1].end(); ++j) {
+
+                    if(std::get<0>(input_no_data_policy).is_no_data(index_) ||
+                            get(condition, index_)) {
+                        // condition contains no-data, or
+                        // condition is true
                         output_no_data_policy.mark_as_no_data(index_);
                     }
                     else {
-                        get(result, index_) = get(true_value);
+                        get(result, index_) = fv;
                     }
+
+                    ++index_;
                 }
-                else {
-                    if(std::get<2>(input_no_data_policy).is_no_data(index_)) {
+            }
+        }
+    }
+    else {
+        if(std::get<2>(input_no_data_policy).is_no_data()) {
+            // True value contains a valid value, but false value contains
+            // no-data.
+            const_reference<TrueValue> tv(get(true_value));
+
+            for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end();
+                    ++i) {
+
+                index_ = index(result, i, index_ranges[1].begin());
+
+                for(size_t j = index_ranges[1].begin();
+                        j < index_ranges[1].end(); ++j) {
+
+                    if(std::get<0>(input_no_data_policy).is_no_data(index_) ||
+                            !get(condition, index_)) {
+                        // condition contains no-data, or
+                        // condition is false
                         output_no_data_policy.mark_as_no_data(index_);
                     }
                     else {
-                        get(result, index_) = get(false_value);
+                        get(result, index_) = tv;
                     }
+
+                    ++index_;
                 }
             }
+        }
+        else {
+            // True value and false value contain valid values.
+            const_reference<TrueValue> tv(get(true_value));
+            const_reference<FalseValue> fv(get(false_value));
 
-            ++index_;
+            for(size_t i = index_ranges[0].begin(); i < index_ranges[0].end();
+                    ++i) {
+
+                index_ = index(result, i, index_ranges[1].begin());
+
+                for(size_t j = index_ranges[1].begin();
+                        j < index_ranges[1].end(); ++j) {
+
+                    if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                        output_no_data_policy.mark_as_no_data(index_);
+                    }
+                    else {
+                        if(get(condition, index_)) {
+                            get(result, index_) = tv;
+                        }
+                        else {
+                            get(result, index_) = fv;
+                        }
+                    }
+
+                    ++index_;
+                }
+            }
         }
     }
 }
