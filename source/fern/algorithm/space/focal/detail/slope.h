@@ -84,7 +84,7 @@ struct Slope<
             {1, 0, -1}
         });
 
-        // dz_dx: convolve using this kernel.
+        // dz_dy: convolve using this kernel.
         Square<Float, 1> dz_dy_kernel({
             {-1, -2, -1},
             {0, 0, 0},
