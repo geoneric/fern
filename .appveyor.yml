@@ -1,7 +1,7 @@
 environment:
     BOOST_VERSION: 1.59.0
     # BOOST_ROOT: "C:\\projects\\fern\\boost.%BOOST_VERSION%.0\\lib\\native"
-    CMAKE_ARGUMENTS: "-DBOOST_ROOT=C:\\projects\\fern\\boost.%BOOST_VERSION%.0\\lib\\native -DFERN_BUILD_ALGORITHM:BOOL=TRUE -DFERN_BUILD_DOCUMENTATION:BOOL=FALSE -DFERN_BUILD_TEST:BOOL=TRUE"
+    CMAKE_ARGUMENTS: "-DBOOST_ROOT=C:\\projects\\fern\\boost.%BOOST_VERSION%.0\\lib\\native -DFERN_BUILD_ALGORITHM:BOOL=TRUE -DFERN_BUILD_TEST:BOOL=TRUE"
 
     matrix:
         - ADDRESS_MODEL: 64
@@ -33,6 +33,7 @@ install:
     - copy boost_system-vc140.%BOOST_VERSION%.0\lib\native\address-model-%ADDRESS_MODEL%\lib\* boost.%BOOST_VERSION%.0\lib\native\lib
     - copy boost_timer-vc140.%BOOST_VERSION%.0\lib\native\address-model-%ADDRESS_MODEL%\lib\* boost.%BOOST_VERSION%.0\lib\native\lib
     - copy boost_unit_test_framework-vc140.%BOOST_VERSION%.0\lib\native\address-model-%ADDRESS_MODEL%\lib\* boost.%BOOST_VERSION%.0\lib\native\lib
+    - dir boost.%BOOST_VERSION%.0\lib\native\
 
 
 build_script:
