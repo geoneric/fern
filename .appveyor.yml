@@ -33,7 +33,7 @@ install:
     - copy boost_system-vc140.%BOOST_VERSION%.0\lib\native\address-model-%ADDRESS_MODEL%\lib\* boost.%BOOST_VERSION%.0\lib\native\lib
     - copy boost_timer-vc140.%BOOST_VERSION%.0\lib\native\address-model-%ADDRESS_MODEL%\lib\* boost.%BOOST_VERSION%.0\lib\native\lib
     - copy boost_unit_test_framework-vc140.%BOOST_VERSION%.0\lib\native\address-model-%ADDRESS_MODEL%\lib\* boost.%BOOST_VERSION%.0\lib\native\lib
-    - dir boost.%BOOST_VERSION%.0\lib\native\
+    - dir boost.%BOOST_VERSION%.0\lib\native\lib
 
 
 build_script:
