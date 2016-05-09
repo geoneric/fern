@@ -17,6 +17,7 @@ add_target_conditionally(io io)
 add_target_conditionally(python python)
 # add_target_conditionally(hpx hpx)
 
+add_subdirectory(edsl)
 
 if(FERN_BUILD_ALGORITHM)
     # Install all headers for now. Otherwise we have to keep tweaking the
