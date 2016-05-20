@@ -1,3 +1,10 @@
+Spirit X3
+- No grammars anymore, just compose rules
+- Only use auto for non-recursive rules
+
+
+
+
 [Geographic information - Well-known text representation of coordinate reference systems](http://docs.opengeospatial.org/is/12-063r5/12-063r5.html)
 
 - The WKT string is a representation of the definition of a CRS or coordinate operation. A string describes one CRS or coordinate operation object. Each object is represented by a token comprised of a keyword followed by a set of attributes of the object, the set enclosed by delimiters. Some objects are composed of other objects so the result may be a nested structure. Nesting may continue to any depth.

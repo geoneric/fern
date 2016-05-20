@@ -1,5 +1,5 @@
 set(TEST_NAMES
-    scope_test
+    common_attributes_test
 )
 add_unit_tests(
     SCOPE wkt
