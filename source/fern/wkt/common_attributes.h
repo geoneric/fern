@@ -47,14 +47,15 @@ static auto const unit_name =
         ;
 
 static auto const conversion_factor =
-    // boost::spirit::x3::rule<class conversion_factor, double>() =
+    boost::spirit::x3::rule<class conversion_factor, double>() =
         unsigned_numeric_literal
         ;
 
-static auto length_unit =
+static auto const length_unit =
     boost::spirit::x3::rule<class length_unit,
-            std::tuple<std::string, std::string, double>>() =
-        (boost::spirit::x3::lit("LENGTHUNIT") | boost::spirit::x3::lit("UNIT")) >>
+            std::tuple<std::string, double>>() =
+        (boost::spirit::x3::lit("LENGTHUNIT") |
+            boost::spirit::x3::lit("UNIT")) >>
         left_delimiter >>
         unit_name >>
         wkt_separator >>
