@@ -18,6 +18,26 @@
 namespace x3 = boost::spirit::x3;
 
 
+template<
+    typename Parser,
+    typename Value>
+void check_parse(
+    std::string const& wkt,
+    Parser& parser,
+    Value const& value_we_want)
+{
+    auto first = wkt.begin();
+    auto last = wkt.end();
+    Value value_we_got;
+    bool status = x3::phrase_parse(first, last, parser, x3::space,
+        value_we_got);
+
+    BOOST_CHECK(status);
+    BOOST_CHECK(first == last);
+    BOOST_CHECK_EQUAL(value_we_got, value_we_want);
+}
+
+
 BOOST_AUTO_TEST_CASE(scope_example_from_spec)
 {
     std::string wkt =
@@ -25,7 +45,7 @@ BOOST_AUTO_TEST_CASE(scope_example_from_spec)
     std::string scope;
     auto first = wkt.begin();
     auto last = wkt.end();
-    bool status = x3::phrase_parse(first, last, fern::wkt::scope,
+    bool status = x3::phrase_parse(first, last, fern::wkt::grammar::scope,
         x3::space, scope);
 
     BOOST_CHECK(status);
@@ -41,7 +61,7 @@ BOOST_AUTO_TEST_CASE(area_example_from_spec)
     std::string area;
     auto first = wkt.begin();
     auto last = wkt.end();
-    bool status = x3::phrase_parse(first, last, fern::wkt::area,
+    bool status = x3::phrase_parse(first, last, fern::wkt::grammar::area,
         x3::space, area);
 
     BOOST_CHECK(status);
@@ -52,21 +72,15 @@ BOOST_AUTO_TEST_CASE(area_example_from_spec)
 
 BOOST_AUTO_TEST_CASE(bbox_example_from_spec)
 {
-    std::string wkt =
-        R"(BBOX[51.43,2.54,55.77,6.40])";
-    std::vector<double> bbox;
-    auto first = wkt.begin();
-    auto last = wkt.end();
-    bool status = x3::phrase_parse(first, last, fern::wkt::bbox,
-        x3::space, bbox);
+    std::string wkt = R"(BBOX[51.43,2.54,55.77,6.40])";
 
-    BOOST_CHECK(status);
-    BOOST_CHECK(first == last);
-    BOOST_REQUIRE_EQUAL(bbox.size(), 4);
-    BOOST_CHECK_EQUAL(bbox[0], 51.43);
-    BOOST_CHECK_EQUAL(bbox[1], 2.54);
-    BOOST_CHECK_EQUAL(bbox[2], 55.77);
-    BOOST_CHECK_EQUAL(bbox[3], 6.40);
+    fern::wkt::ast::BBox bbox;
+    bbox.lower_left_latitude = 51.43;
+    bbox.lower_left_longitude = 2.54;
+    bbox.upper_right_latitude = 55.77;
+    bbox.upper_right_longitude = 6.40;
+
+    check_parse(wkt, fern::wkt::grammar::bbox, bbox);
 }
 
 
@@ -74,15 +88,9 @@ BOOST_AUTO_TEST_CASE(unsigned_integer)
 {
     {
         std::string wkt = R"(51)";
-        uint64_t unsigned_integer;
-        auto first = wkt.begin();
-        auto last = wkt.end();
-        bool status = x3::phrase_parse(first, last,
-            fern::wkt::unsigned_integer, x3::space, unsigned_integer);
-
-        BOOST_CHECK(status);
-        BOOST_CHECK(first == last);
-        BOOST_CHECK_EQUAL(unsigned_integer, 51);
+        uint64_t unsigned_integer{51};
+        check_parse(wkt, fern::wkt::grammar::unsigned_integer,
+            unsigned_integer);
     }
 
     {
@@ -91,7 +99,7 @@ BOOST_AUTO_TEST_CASE(unsigned_integer)
         auto first = wkt.begin();
         auto last = wkt.end();
         bool status = x3::phrase_parse(first, last,
-            fern::wkt::unsigned_integer, x3::space, unsigned_integer);
+            fern::wkt::grammar::unsigned_integer, x3::space, unsigned_integer);
 
         BOOST_CHECK(!status);
         BOOST_CHECK(first != last);
@@ -103,15 +111,8 @@ BOOST_AUTO_TEST_CASE(signed_integer)
 {
     {
         std::string wkt = R"(51)";
-        uint64_t signed_integer;
-        auto first = wkt.begin();
-        auto last = wkt.end();
-        bool status = x3::phrase_parse(first, last,
-            fern::wkt::signed_integer, x3::space, signed_integer);
-
-        BOOST_CHECK(status);
-        BOOST_CHECK(first == last);
-        BOOST_CHECK_EQUAL(signed_integer, 51);
+        uint64_t signed_float{51};
+        check_parse(wkt, fern::wkt::grammar::signed_float, signed_float);
     }
 
     // TODO Add support for negative sign.
@@ -121,7 +122,7 @@ BOOST_AUTO_TEST_CASE(signed_integer)
     //     auto first = wkt.begin();
     //     auto last = wkt.end();
     //     bool status = x3::phrase_parse(first, last,
-    //         fern::wkt::signed_integer, x3::space, signed_integer);
+    //         fern::wkt::grammar::signed_integer, x3::space, signed_integer);
 
     //     BOOST_CHECK(status);
     //     BOOST_CHECK(first != last);
@@ -134,15 +135,8 @@ BOOST_AUTO_TEST_CASE(unsigned_float)
 {
     {
         std::string wkt = R"(51)";
-        double unsigned_float;
-        auto first = wkt.begin();
-        auto last = wkt.end();
-        bool status = x3::phrase_parse(first, last,
-            fern::wkt::unsigned_float, x3::space, unsigned_float);
-
-        BOOST_CHECK(status);
-        BOOST_CHECK(first == last);
-        BOOST_CHECK_EQUAL(unsigned_float, 51);
+        double unsigned_float{51.0};
+        check_parse(wkt, fern::wkt::grammar::unsigned_float, unsigned_float);
     }
 
     {
@@ -151,7 +145,7 @@ BOOST_AUTO_TEST_CASE(unsigned_float)
         auto first = wkt.begin();
         auto last = wkt.end();
         /* bool status = */ x3::phrase_parse(first, last,
-            fern::wkt::unsigned_float, x3::space, unsigned_float);
+            fern::wkt::grammar::unsigned_float, x3::space, unsigned_float);
 
         // TODO Update rule to not accept unary minus.
         // BOOST_CHECK(!status);
@@ -164,28 +158,14 @@ BOOST_AUTO_TEST_CASE(signed_float)
 {
     {
         std::string wkt = R"(51.3)";
-        double signed_float;
-        auto first = wkt.begin();
-        auto last = wkt.end();
-        bool status = x3::phrase_parse(first, last,
-            fern::wkt::signed_float, x3::space, signed_float);
-
-        BOOST_CHECK(status);
-        BOOST_CHECK(first == last);
-        BOOST_CHECK_EQUAL(signed_float, 51.3);
+        double signed_float{51.3};
+        check_parse(wkt, fern::wkt::grammar::signed_float, signed_float);
     }
 
     {
         std::string wkt = R"(-51.3)";
-        double signed_float;
-        auto first = wkt.begin();
-        auto last = wkt.end();
-        bool status = x3::phrase_parse(first, last,
-            fern::wkt::signed_float, x3::space, signed_float);
-
-        BOOST_CHECK(status);
-        BOOST_CHECK(first == last);
-        BOOST_CHECK_EQUAL(signed_float, -51.3);
+        double signed_float{-51.3};
+        check_parse(wkt, fern::wkt::grammar::signed_float, signed_float);
     }
 }
 
@@ -194,46 +174,29 @@ BOOST_AUTO_TEST_CASE(conversion_factor)
 {
     {
         std::string wkt = R"(1)";
-        double conversion_factor;
-        auto first = wkt.begin();
-        auto last = wkt.end();
-        bool status = x3::phrase_parse(first, last,
-            fern::wkt::conversion_factor, x3::space, conversion_factor);
-
-        BOOST_CHECK(status);
-        BOOST_CHECK(first == last);
-        BOOST_CHECK_EQUAL(conversion_factor, 1);
+        double conversion_factor{1.0};
+        check_parse(wkt, fern::wkt::grammar::conversion_factor,
+            conversion_factor);
     }
 
     {
         std::string wkt = R"(1.0000135965)";
-        double conversion_factor;
-        auto first = wkt.begin();
-        auto last = wkt.end();
-        bool status = x3::phrase_parse(first, last,
-            fern::wkt::conversion_factor, x3::space, conversion_factor);
-
-        BOOST_CHECK(status);
-        BOOST_CHECK(first == last);
-        BOOST_CHECK_EQUAL(conversion_factor, 1.0000135965);
+        double conversion_factor{1.0000135965};
+        check_parse(wkt, fern::wkt::grammar::conversion_factor,
+            conversion_factor);
     }
 }
 
 
 BOOST_AUTO_TEST_CASE(length_unit_from_spec)
 {
-    std::string wkt =
-        R"(LENGTHUNIT["metre",1])";
+    {
+        std::string wkt = R"(LENGTHUNIT["metre",1])";
 
-    std::tuple<std::string, double> length_unitt;
-    auto first = wkt.begin();
-    auto last = wkt.end();
+        fern::wkt::ast::LengthUnit length_unit;
+        length_unit.name = "metre";
+        length_unit.conversion_factor = 1.0;
 
-    bool status = x3::phrase_parse(first, last, fern::wkt::length_unit,
-        x3::space, length_unitt);
-
-    BOOST_CHECK(status);
-    // BOOST_CHECK(first == last);
-    // BOOST_CHECK_EQUAL(std::get<0>(length_unit), "metre");
-    // BOOST_CHECK_EQUAL(std::get<1>(length_unit), 0.0);
+        check_parse(wkt, fern::wkt::grammar::length_unit, length_unit);
+    }
 }
