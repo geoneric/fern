@@ -1708,7 +1708,7 @@ struct ConvolveInnerPart<false>
         // boolean values.
         // Instead of multiplying cell values by kernel weights, we just
         // need to add them, which is cheaper. Also, because we don't need
-        // to add all cells that lie withing the kernel window. We
+        // to add all cells that lie within the kernel window. We
         // only need to add those cells for which the kernel weight
         // evaluates to true.
         // To prevent testing the kernel weights over and over again for
@@ -1806,7 +1806,6 @@ struct ConvolveInnerPart<false>
                         sum_of_weights);
                 }
 
-                ++index_;
                 ++first_col_source;
                 ++index_;
             }
