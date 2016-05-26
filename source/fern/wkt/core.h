@@ -28,6 +28,21 @@ static auto const right_delimiter =
 static auto const wkt_separator =
     boost::spirit::x3::lit(',');
 
+static auto const hyphen =
+    boost::spirit::x3::lit('-');
+
+static auto const colon =
+    boost::spirit::x3::lit(':');
+
+static auto const period =
+    boost::spirit::x3::lit('.');
+
+// static auto const plus_sign =
+//     boost::spirit::x3::char_('+');
+// 
+// static auto const minus_sign =
+//     boost::spirit::x3::char_('-');
+
 static auto const double_quote =
     boost::spirit::x3::lit('"');
 
