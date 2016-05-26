@@ -158,11 +158,11 @@ static auto const gregorian_ordinal_date =
     as<ast::GregorianOrdinalDate>(
         year >> -(hyphen >> ordinal_day));
 
-// static auto const gregorian_ordinal_date_time =
-//     as<ast::GregorianOrdinalDateTime>(
-//         gregorian_ordinal_date >>
-//         -hour_clock);
-// 
+static auto const gregorian_ordinal_date_time =
+    as<ast::GregorianOrdinalDateTime>(
+        gregorian_ordinal_date >>
+        -hour_clock);
+
 // static auto const date_time = as<ast::DateTime>(
 //     gregorian_calendar_date_time | gregorian_ordinal_date_time);
 // 
