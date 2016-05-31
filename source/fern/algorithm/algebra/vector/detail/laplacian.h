@@ -95,6 +95,7 @@ struct Laplacian<
             convolve::SkipNoData,
             convolve::DontDivideByWeights,
             convolve::SkipOutOfImage,
+            convolve::KeepNoDataFocusElement,
             convolve::OutOfRangePolicy>(
                 input_no_data_policy, output_no_data_policy, execution_policy,
                 value, kernel, result);
@@ -122,6 +123,7 @@ struct Laplacian<
             convolve::SkipNoData,
             convolve::DontDivideByWeights,
             convolve::SkipOutOfImage,
+            convolve::KeepNoDataFocusElement,
             unary::DiscardRangeErrors>(
                 input_no_data_policy, output_no_data_policy, execution_policy,
                 defined_as_floats, kernel, sum_of_weights);

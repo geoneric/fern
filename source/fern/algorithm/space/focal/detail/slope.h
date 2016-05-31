@@ -103,6 +103,7 @@ struct Slope<
             convolve::ReplaceNoDataByFocalAverage,
             convolve::DontDivideByWeights,
             convolve::ReplaceOutOfImageByFocalAverage,
+            convolve::KeepNoDataFocusElement,
             convolve::OutOfRangePolicy>(
                 input_no_data_policy, output_no_data_policy_dz_dx,
                 execution_policy, value, dz_dx_kernel, dz_dx);
@@ -136,6 +137,7 @@ struct Slope<
             convolve::ReplaceNoDataByFocalAverage,
             convolve::DontDivideByWeights,
             convolve::ReplaceOutOfImageByFocalAverage,
+            convolve::KeepNoDataFocusElement,
             convolve::OutOfRangePolicy>(
                 input_no_data_policy, output_no_data_policy_dz_dy,
                 execution_policy, value, dz_dy_kernel, dz_dy);

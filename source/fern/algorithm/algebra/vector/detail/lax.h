@@ -82,6 +82,7 @@ struct Lax<
             convolve::SkipNoData,
             convolve::DivideByWeights,
             convolve::SkipOutOfImage,
+            convolve::KeepNoDataFocusElement,
             // TODO: Select OutOfRange policy based on the
             //       output-no-data-policy passed in.
             convolve::OutOfRangePolicy>(

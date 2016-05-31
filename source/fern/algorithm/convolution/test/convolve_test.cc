@@ -300,6 +300,45 @@ void compare_result3(
 }
 
 
+void compare_result4(
+    fern::MaskedArray<double, 2> const& result)
+{
+    // +----+----+----+
+    // | 10 |  7 |  6 |
+    // +----+----+----+
+    // |  2 | 18 | -1 |
+    // +----+----+----+
+    // | 12 | -6 |  8 |
+    // +----+----+----+
+    BOOST_CHECK(!result.mask()[0][0]);
+    BOOST_CHECK_CLOSE(result[0][0], 6 + 4, 1e-6);
+
+    BOOST_CHECK(!result.mask()[0][1]);
+    BOOST_CHECK_CLOSE(result[0][1], 8 + -2 + 1, 1e-6);
+
+    BOOST_CHECK(!result.mask()[0][2]);
+    BOOST_CHECK_CLOSE(result[0][2], 6 + 0, 1e-6);
+
+    BOOST_CHECK(!result.mask()[1][0]);
+    BOOST_CHECK_CLOSE(result[1][0], 8 + 1 + -7, 1e-6);
+
+    BOOST_CHECK(!result.mask()[1][1]);
+    BOOST_CHECK_CLOSE(result[1][1], 6 + 4 + 0 + 8, 1e-6);
+
+    BOOST_CHECK(!result.mask()[1][2]);
+    BOOST_CHECK_CLOSE(result[1][2], -2 + 1, 1e-6);
+
+    BOOST_CHECK(!result.mask()[2][0]);
+    BOOST_CHECK_CLOSE(result[2][0], 4 + 8, 1e-6);
+
+    BOOST_CHECK(!result.mask()[2][1]);
+    BOOST_CHECK_CLOSE(result[2][1], 1 + -7, 1e-6);
+
+    BOOST_CHECK(!result.mask()[2][2]);
+    BOOST_CHECK_CLOSE(result[2][2], 0 + 8, 1e-6);
+}
+
+
 BOOST_AUTO_TEST_CASE(convolve)
 {
     // Kernel with radius 2.
@@ -362,6 +401,7 @@ BOOST_AUTO_TEST_CASE(convolve)
             using NormalizePolicy=fa::convolve::DivideByWeights;
             using OutOfImagePolicy=
                 fa::convolve::ReplaceOutOfImageByFocalAverage;
+            using NoDataFocusElementPolicy=fa::convolve::KeepNoDataFocusElement;
             using InputNoDataPolicy=fa::InputNoDataPolicies<fa::SkipNoData>;
             using OutputNoDataPolicy=fa::DontMarkNoData;
 
@@ -374,6 +414,7 @@ BOOST_AUTO_TEST_CASE(convolve)
                     AlternativeForNoDataPolicy,
                     NormalizePolicy,
                     OutOfImagePolicy,
+                    NoDataFocusElementPolicy,
                     fa::unary::DiscardRangeErrors,
                     InputNoDataPolicy,
                     OutputNoDataPolicy>(
@@ -389,6 +430,7 @@ BOOST_AUTO_TEST_CASE(convolve)
                     AlternativeForNoDataPolicy,
                     NormalizePolicy,
                     OutOfImagePolicy,
+                    NoDataFocusElementPolicy,
                     fa::unary::DiscardRangeErrors,
                     InputNoDataPolicy,
                     OutputNoDataPolicy>(
@@ -529,6 +571,7 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
                 fa::convolve::SkipNoData,
                 fa::convolve::DivideByWeights,
                 fa::convolve::SkipOutOfImage,
+                fa::convolve::KeepNoDataFocusElement,
                 fa::unary::DiscardRangeErrors>(
                     InputNoDataPolicy{{source.mask(), true}},
                     output_no_data_policy,
@@ -622,6 +665,7 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
             fa::convolve::SkipNoData,
             fa::convolve::DivideByWeights,
             fa::convolve::SkipOutOfImage,
+            fa::convolve::KeepNoDataFocusElement,
             fa::unary::DiscardRangeErrors>(
                 InputNoDataPolicy{{source.mask(), true}},
                 output_no_data_policy,
@@ -647,6 +691,7 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
             fa::convolve::SkipNoData,
             fa::convolve::DivideByWeights,
             fa::convolve::SkipOutOfImage,
+            fa::convolve::KeepNoDataFocusElement,
             fa::convolve::OutOfRangePolicy>(
                 InputNoDataPolicy{{source.mask(), true}},
                 output_no_data_policy,
@@ -709,6 +754,91 @@ BOOST_AUTO_TEST_CASE(boolean_kernel_weights)
             fa::convolution::convolve(fa::parallel, argument, kernel,
                 result);
             compare_result3(result);
+        }
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(no_data_focus_element_policy)
+{
+    using InputNoDataPolicy = fa::InputNoDataPolicies<
+        fa::DetectNoDataByValue<fern::Mask<2>>>;
+    using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<2>>;
+
+    // PCRaster window4total example
+    {
+        // Create input array:
+        // +----+----+----+
+        // |  8 |  6 | -2 |
+        // +----+----+----+
+        // |  4 |  1 |  0 |
+        // +----+----+----+
+        // | -7 |  8 |  X |
+        // +----+----+----+
+        size_t const nr_rows = 3;
+        size_t const nr_cols = 3;
+        auto extents = fern::extents[nr_rows][nr_cols];
+        fern::MaskedArray<double, 2> argument(extents);
+
+        argument[0][0] = 8;
+        argument[0][1] = 6;
+        argument[0][2] = -2;
+        argument[1][0] = 4;
+        argument[1][1] = 1;
+        argument[1][2] = 0;
+        argument[2][0] = -7;
+        argument[2][1] = 8;
+        argument.mask()[2][2] = true;
+
+        // Define kernel shape and weights.
+        // Similar to PCRaster's window4total algorithm.
+        fern::Square<bool, 1> kernel({
+            {false, true, false},
+            {true , false, true },
+            {false, true, false}
+        });
+
+
+        // Sequential.
+        {
+            fern::MaskedArray<double, 2> result(extents);
+            fa::convolution::convolve(fa::sequential, argument, kernel,
+                result);
+            OutputNoDataPolicy output_no_data_policy(result.mask(), true);
+
+            fa::convolution::convolve<
+                fa::convolve::SkipNoData,
+                fa::convolve::DontDivideByWeights,
+                fa::convolve::SkipOutOfImage,
+                fa::convolve::ReplaceNoDataFocusElement,
+                fa::unary::DiscardRangeErrors>(
+                    InputNoDataPolicy{{argument.mask(), true}},
+                    output_no_data_policy,
+                    fa::sequential,
+                    argument, kernel, result);
+
+            compare_result4(result);
+        }
+
+        // Parallel.
+        {
+            fern::MaskedArray<double, 2> result(extents);
+            fa::convolution::convolve(fa::sequential, argument, kernel,
+                result);
+            OutputNoDataPolicy output_no_data_policy(result.mask(), true);
+
+            fa::convolution::convolve<
+                fa::convolve::SkipNoData,
+                fa::convolve::DontDivideByWeights,
+                fa::convolve::SkipOutOfImage,
+                fa::convolve::ReplaceNoDataFocusElement,
+                fa::unary::DiscardRangeErrors>(
+                    InputNoDataPolicy{{argument.mask(), true}},
+                    output_no_data_policy,
+                    fa::parallel,
+                    argument, kernel, result);
+
+            compare_result4(result);
         }
     }
 }

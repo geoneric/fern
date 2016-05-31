@@ -59,6 +59,7 @@ template<
     typename AlternativeForNoDataPolicy,
     typename NormalizePolicy,
     typename OutOfImagePolicy,
+    typename NoDataFocusElementPolicy,
     template<typename, typename> class OutOfRangePolicy,
     typename InputNoDataPolicy,
     typename OutputNoDataPolicy,
@@ -83,6 +84,7 @@ void convolve(
         AlternativeForNoDataPolicy,
         NormalizePolicy,
         OutOfImagePolicy,
+        NoDataFocusElementPolicy,
         OutOfRangePolicy>(
             input_no_data_policy, output_no_data_policy,
             execution_policy,
@@ -120,13 +122,14 @@ void convolve(
     using AlternativeForNoDataPolicy = convolve::SkipNoData;
     using NormalizePolicy = convolve::DivideByWeights;
     using OutOfImagePolicy = convolve::SkipOutOfImage;
+    using NoDataFocusElementPolicy = convolve::KeepNoDataFocusElement;
     using InputNoDataPolicy = InputNoDataPolicies<SkipNoData>;
     using OutputNoDataPolicy = DontMarkNoData;
 
     OutputNoDataPolicy output_no_data_policy;
 
     convolve<AlternativeForNoDataPolicy, NormalizePolicy, OutOfImagePolicy,
-        unary::DiscardRangeErrors>(
+        NoDataFocusElementPolicy, unary::DiscardRangeErrors>(
             InputNoDataPolicy{{}}, output_no_data_policy,
             execution_policy,
             source, kernel, destination);
