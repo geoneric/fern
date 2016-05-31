@@ -43,6 +43,17 @@
         - fern::algorithm::convolve::SkipOutOfImage
         - fern::algorithm::convolve::ReplaceOutOfImageByFocalAverage
 
+    - `NoDataFocusElementPolicy`
+
+        Even though the focus element may contain no-data, convolution
+        may be able to calculate a result from the surrounding elements.
+        This policy determines whether or not no-data in the input should
+        result in no-data in the output or whether the convolution result
+        should be written.
+
+        - fern::algorithm::convolve::ReplaceNoDataFocusElement
+        - fern::algorithm::convolve::KeepNoDataFocusElement
+
     The algorithm uses more policies, but these are the [general policies]
     (@ref fern_algorithm_policies) used also in the implementation of other
     algorithms.

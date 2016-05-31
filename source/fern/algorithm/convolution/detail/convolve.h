@@ -104,6 +104,7 @@ struct ConvolveNorthWestCorner
         typename AlternativeForNoDataPolicy,
         typename NormalizePolicy,
         typename OutOfImagePolicy,
+        typename NoDataFocusElementPolicy,
         template<typename, typename> class OutOfRangePolicy,
         typename InputNoDataPolicy,
         typename OutputNoDataPolicy,
@@ -162,7 +163,8 @@ struct ConvolveNorthWestCorner
                 sum_of_weights = AccumulationTraits<W>::zero;
                 value_seen = false;
 
-                if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                if(NoDataFocusElementPolicy::keep_no_data &&
+                        std::get<0>(input_no_data_policy).is_no_data(index_)) {
                     output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
@@ -289,6 +291,7 @@ struct ConvolveNorthEastCorner
         typename AlternativeForNoDataPolicy,
         typename NormalizePolicy,
         typename OutOfImagePolicy,
+        typename NoDataFocusElementPolicy,
         template<typename, typename> class OutOfRangePolicy,
         typename InputNoDataPolicy,
         typename OutputNoDataPolicy,
@@ -349,7 +352,8 @@ struct ConvolveNorthEastCorner
                 sum_of_weights = AccumulationTraits<W>::zero;
                 value_seen = false;
 
-                if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                if(NoDataFocusElementPolicy::keep_no_data &&
+                        std::get<0>(input_no_data_policy).is_no_data(index_)) {
                     output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
@@ -466,6 +470,7 @@ struct ConvolveSouthWestCorner
         typename AlternativeForNoDataPolicy,
         typename NormalizePolicy,
         typename OutOfImagePolicy,
+        typename NoDataFocusElementPolicy,
         template<typename, typename> class OutOfRangePolicy,
         typename InputNoDataPolicy,
         typename OutputNoDataPolicy,
@@ -526,7 +531,8 @@ struct ConvolveSouthWestCorner
                 sum_of_weights = AccumulationTraits<W>::zero;
                 value_seen = false;
 
-                if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                if(NoDataFocusElementPolicy::keep_no_data &&
+                        std::get<0>(input_no_data_policy).is_no_data(index_)) {
                     output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
@@ -644,6 +650,7 @@ struct ConvolveSouthEastCorner
         typename AlternativeForNoDataPolicy,
         typename NormalizePolicy,
         typename OutOfImagePolicy,
+        typename NoDataFocusElementPolicy,
         template<typename, typename> class OutOfRangePolicy,
         typename InputNoDataPolicy,
         typename OutputNoDataPolicy,
@@ -706,7 +713,8 @@ struct ConvolveSouthEastCorner
                 sum_of_weights = AccumulationTraits<W>::zero;
                 value_seen = false;
 
-                if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                if(NoDataFocusElementPolicy::keep_no_data &&
+                        std::get<0>(input_no_data_policy).is_no_data(index_)) {
                     output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
@@ -824,6 +832,7 @@ struct ConvolveNorthSide
         typename AlternativeForNoDataPolicy,
         typename NormalizePolicy,
         typename OutOfImagePolicy,
+        typename NoDataFocusElementPolicy,
         template<typename, typename> class OutOfRangePolicy,
         typename InputNoDataPolicy,
         typename OutputNoDataPolicy,
@@ -881,7 +890,8 @@ struct ConvolveNorthSide
                 sum_of_weights = AccumulationTraits<W>::zero;
                 value_seen = false;
 
-                if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                if(NoDataFocusElementPolicy::keep_no_data &&
+                        std::get<0>(input_no_data_policy).is_no_data(index_)) {
                     output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
@@ -999,6 +1009,7 @@ struct ConvolveWestSide
         typename AlternativeForNoDataPolicy,
         typename NormalizePolicy,
         typename OutOfImagePolicy,
+        typename NoDataFocusElementPolicy,
         template<typename, typename> class OutOfRangePolicy,
         typename InputNoDataPolicy,
         typename OutputNoDataPolicy,
@@ -1058,7 +1069,8 @@ struct ConvolveWestSide
                 sum_of_weights = AccumulationTraits<W>::zero;
                 value_seen = false;
 
-                if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                if(NoDataFocusElementPolicy::keep_no_data &&
+                        std::get<0>(input_no_data_policy).is_no_data(index_)) {
                     output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
@@ -1176,6 +1188,7 @@ struct ConvolveEastSide
         typename AlternativeForNoDataPolicy,
         typename NormalizePolicy,
         typename OutOfImagePolicy,
+        typename NoDataFocusElementPolicy,
         template<typename, typename> class OutOfRangePolicy,
         typename InputNoDataPolicy,
         typename OutputNoDataPolicy,
@@ -1237,7 +1250,8 @@ struct ConvolveEastSide
                 sum_of_weights = AccumulationTraits<W>::zero;
                 value_seen = false;
 
-                if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                if(NoDataFocusElementPolicy::keep_no_data &&
+                        std::get<0>(input_no_data_policy).is_no_data(index_)) {
                     output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
@@ -1355,6 +1369,7 @@ struct ConvolveSouthSide
         typename AlternativeForNoDataPolicy,
         typename NormalizePolicy,
         typename OutOfImagePolicy,
+        typename NoDataFocusElementPolicy,
         template<typename, typename> class OutOfRangePolicy,
         typename InputNoDataPolicy,
         typename OutputNoDataPolicy,
@@ -1414,7 +1429,8 @@ struct ConvolveSouthSide
                 sum_of_weights = AccumulationTraits<W>::zero;
                 value_seen = false;
 
-                if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                if(NoDataFocusElementPolicy::keep_no_data &&
+                        std::get<0>(input_no_data_policy).is_no_data(index_)) {
                     output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
@@ -1539,6 +1555,7 @@ struct ConvolveInnerPart<true>
     template<
         typename AlternativeForNoDataPolicy,
         typename NormalizePolicy,
+        typename NoDataFocusElementPolicy,
         template<typename, typename> class OutOfRangePolicy,
         typename InputNoDataPolicy,
         typename OutputNoDataPolicy,
@@ -1593,7 +1610,8 @@ struct ConvolveInnerPart<true>
                 sum_of_weights = AccumulationTraits<W>::zero;
                 value_seen = false;
 
-                if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                if(NoDataFocusElementPolicy::keep_no_data &&
+                        std::get<0>(input_no_data_policy).is_no_data(index_)) {
                     output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
@@ -1668,6 +1686,7 @@ struct ConvolveInnerPart<false>
     template<
         typename AlternativeForNoDataPolicy,
         typename NormalizePolicy,
+        typename NoDataFocusElementPolicy,
         template<typename, typename> class OutOfRangePolicy,
         typename InputNoDataPolicy,
         typename OutputNoDataPolicy,
@@ -1755,7 +1774,8 @@ struct ConvolveInnerPart<false>
                 sum_of_weights = AccumulationTraits<W>::zero;
                 value_seen = false;
 
-                if(std::get<0>(input_no_data_policy).is_no_data(index_)) {
+                if(NoDataFocusElementPolicy::keep_no_data &&
+                        std::get<0>(input_no_data_policy).is_no_data(index_)) {
                     output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
@@ -1821,6 +1841,7 @@ template<
     typename AlternativeForNoDataPolicy,
     typename NormalizePolicy,
     typename OutOfImagePolicy,
+    typename NoDataFocusElementPolicy,
     template<typename, typename> class OutOfRangePolicy,
     typename InputNoDataPolicy,
     typename OutputNoDataPolicy,
@@ -1837,6 +1858,7 @@ template<
     typename AlternativeForNoDataPolicy,
     typename NormalizePolicy,
     typename OutOfImagePolicy,
+    typename NoDataFocusElementPolicy,
     template<typename, typename> class OutOfRangePolicy,
     typename InputNoDataPolicy,
     typename OutputNoDataPolicy,
@@ -1847,6 +1869,7 @@ struct Convolve<
     AlternativeForNoDataPolicy,
     NormalizePolicy,
     OutOfImagePolicy,
+    NoDataFocusElementPolicy,
     OutOfRangePolicy,
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -1867,51 +1890,51 @@ struct Convolve<
         // Corners.
         dispatch::ConvolveNorthWestCorner::
             template apply<AlternativeForNoDataPolicy, NormalizePolicy,
-                OutOfImagePolicy, OutOfRangePolicy>(
+                OutOfImagePolicy, NoDataFocusElementPolicy, OutOfRangePolicy>(
                     input_no_data_policy, output_no_data_policy,
                     source, kernel, destination);
         dispatch::ConvolveNorthEastCorner::
             template apply<AlternativeForNoDataPolicy, NormalizePolicy,
-                OutOfImagePolicy, OutOfRangePolicy>(
+                OutOfImagePolicy, NoDataFocusElementPolicy, OutOfRangePolicy>(
                     input_no_data_policy, output_no_data_policy,
                     source, kernel, destination);
         dispatch::ConvolveSouthWestCorner::
             template apply<AlternativeForNoDataPolicy, NormalizePolicy,
-                OutOfImagePolicy, OutOfRangePolicy>(
+                OutOfImagePolicy, NoDataFocusElementPolicy, OutOfRangePolicy>(
                     input_no_data_policy, output_no_data_policy,
                     source, kernel, destination);
         dispatch::ConvolveSouthEastCorner::
             template apply<AlternativeForNoDataPolicy, NormalizePolicy,
-                OutOfImagePolicy, OutOfRangePolicy>(
+                OutOfImagePolicy, NoDataFocusElementPolicy, OutOfRangePolicy>(
                     input_no_data_policy, output_no_data_policy,
                     source, kernel, destination);
 
         // Sides.
         dispatch::ConvolveNorthSide::
             template apply<AlternativeForNoDataPolicy, NormalizePolicy,
-                OutOfImagePolicy, OutOfRangePolicy>(
+                OutOfImagePolicy, NoDataFocusElementPolicy, OutOfRangePolicy>(
                     input_no_data_policy, output_no_data_policy,
                     source, kernel, destination);
         dispatch::ConvolveWestSide::
             template apply<AlternativeForNoDataPolicy, NormalizePolicy,
-                OutOfImagePolicy, OutOfRangePolicy>(
+                OutOfImagePolicy, NoDataFocusElementPolicy, OutOfRangePolicy>(
                     input_no_data_policy, output_no_data_policy,
                     source, kernel, destination);
         dispatch::ConvolveEastSide::
             template apply<AlternativeForNoDataPolicy, NormalizePolicy,
-                OutOfImagePolicy, OutOfRangePolicy>(
+                OutOfImagePolicy, NoDataFocusElementPolicy, OutOfRangePolicy>(
                     input_no_data_policy, output_no_data_policy,
                     source, kernel, destination);
         dispatch::ConvolveSouthSide::
             template apply<AlternativeForNoDataPolicy, NormalizePolicy,
-                OutOfImagePolicy, OutOfRangePolicy>(
+                OutOfImagePolicy, NoDataFocusElementPolicy, OutOfRangePolicy>(
                     input_no_data_policy, output_no_data_policy,
                     source, kernel, destination);
 
         // Inner part.
         dispatch::ConvolveInnerPart<KernelTraits<Kernel>::weigh_values>::
             template apply<AlternativeForNoDataPolicy, NormalizePolicy,
-                OutOfRangePolicy>(
+                NoDataFocusElementPolicy, OutOfRangePolicy>(
                     input_no_data_policy, output_no_data_policy,
                     IndexRanges<2>{
                         IndexRange(fern::radius(kernel),
@@ -1930,7 +1953,8 @@ struct Convolve<
     auto function = std::bind((BorderFunction)                                 \
         dispatch::Convolve##part::template                                     \
                 apply<AlternativeForNoDataPolicy, NormalizePolicy,             \
-                    OutOfImagePolicy, OutOfRangePolicy>,                       \
+                    OutOfImagePolicy, NoDataFocusElementPolicy,                \
+                    OutOfRangePolicy>,                                         \
         std::cref(input_no_data_policy),                                       \
         std::ref(output_no_data_policy),                                       \
         std::cref(source), std::cref(kernel), std::ref(destination));          \
@@ -1944,7 +1968,7 @@ struct Convolve<
         dispatch::ConvolveInnerPart<                                           \
             KernelTraits<Kernel>::weigh_values>::template                      \
                 apply<AlternativeForNoDataPolicy, NormalizePolicy,             \
-                    OutOfRangePolicy>,                                         \
+                    NoDataFocusElementPolicy, OutOfRangePolicy>,               \
         std::cref(input_no_data_policy),                                       \
         std::ref(output_no_data_policy),                                       \
         std::cref(index_ranges),                                               \
@@ -1957,6 +1981,7 @@ template<
     typename AlternativeForNoDataPolicy,
     typename NormalizePolicy,
     typename OutOfImagePolicy,
+    typename NoDataFocusElementPolicy,
     template<typename, typename> class OutOfRangePolicy,
     typename InputNoDataPolicy,
     typename OutputNoDataPolicy,
@@ -1967,6 +1992,7 @@ struct Convolve<
     AlternativeForNoDataPolicy,
     NormalizePolicy,
     OutOfImagePolicy,
+    NoDataFocusElementPolicy,
     OutOfRangePolicy,
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -2046,6 +2072,7 @@ template<
     typename AlternativeForNoDataPolicy,
     typename NormalizePolicy,
     typename OutOfImagePolicy,
+    typename NoDataFocusElementPolicy,
     template<typename, typename> class OutOfRangePolicy,
     typename InputNoDataPolicy,
     typename OutputNoDataPolicy,
@@ -2056,6 +2083,7 @@ struct Convolve<
     AlternativeForNoDataPolicy,
     NormalizePolicy,
     OutOfImagePolicy,
+    NoDataFocusElementPolicy,
     OutOfRangePolicy,
     InputNoDataPolicy,
     OutputNoDataPolicy,
@@ -2076,7 +2104,8 @@ struct Convolve<
         switch(execution_policy.which()) {
             case fern::algorithm::detail::sequential_execution_policy_id: {
                 Convolve<AlternativeForNoDataPolicy, NormalizePolicy,
-                    OutOfImagePolicy, OutOfRangePolicy, InputNoDataPolicy,
+                    OutOfImagePolicy, NoDataFocusElementPolicy,
+                    OutOfRangePolicy, InputNoDataPolicy,
                     OutputNoDataPolicy, SourceImage, Kernel, DestinationImage,
                     SequentialExecutionPolicy>::apply(
                         input_no_data_policy, output_no_data_policy,
@@ -2086,7 +2115,8 @@ struct Convolve<
             }
             case fern::algorithm::detail::parallel_execution_policy_id: {
                 Convolve<AlternativeForNoDataPolicy, NormalizePolicy,
-                    OutOfImagePolicy, OutOfRangePolicy, InputNoDataPolicy,
+                    OutOfImagePolicy, NoDataFocusElementPolicy,
+                    OutOfRangePolicy, InputNoDataPolicy,
                     OutputNoDataPolicy, SourceImage, Kernel, DestinationImage,
                     ParallelExecutionPolicy>::apply(
                         input_no_data_policy, output_no_data_policy,
@@ -2106,6 +2136,7 @@ template<
     typename AlternativeForNoDataPolicy,
     typename NormalizePolicy,
     typename OutOfImagePolicy,
+    typename NoDataFocusElementPolicy,
     template<typename, typename> class OutOfRangePolicy,
     typename InputNoDataPolicy,
     typename OutputNoDataPolicy,
@@ -2124,8 +2155,9 @@ void convolve(
 {
     // Dispatch on execution policy.
     dispatch::Convolve<AlternativeForNoDataPolicy, NormalizePolicy,
-        OutOfImagePolicy, OutOfRangePolicy, InputNoDataPolicy,
-        OutputNoDataPolicy, SourceImage, Kernel, DestinationImage,
+        OutOfImagePolicy, NoDataFocusElementPolicy, OutOfRangePolicy,
+        InputNoDataPolicy, OutputNoDataPolicy,
+        SourceImage, Kernel, DestinationImage,
         ExecutionPolicy>::apply(
             input_no_data_policy, output_no_data_policy, execution_policy,
             source, kernel, destination);
