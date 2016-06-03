@@ -253,20 +253,19 @@ struct ConvolveNorthWestCorner
                             ++kernel_index;
                         }
                     }
-                }
 
+                    // The result can go out of range when the convolution
+                    // results in an infinite value. Normalizing such a
+                    // value makes no sense.
 
-                // The result can go out of range when the convolution
-                // results in an infinite value. Normalizing such a
-                // value makes no sense.
-
-                // TODO OutOfRangePolicy must handle integral results too.
-                if(!value_seen || !OORP::within_range(sum_of_values)) {
-                    output_no_data_policy.mark_as_no_data(index_);
-                }
-                else {
-                    get(destination, index_) = NP::normalize(sum_of_values,
-                        sum_of_weights);
+                    // TODO OutOfRangePolicy must handle integral results too.
+                    if(!value_seen || !OORP::within_range(sum_of_values)) {
+                        output_no_data_policy.mark_as_no_data(index_);
+                    }
+                    else {
+                        get(destination, index_) = NP::normalize(sum_of_values,
+                            sum_of_weights);
+                    }
                 }
 
                 --first_col_kernel;
@@ -432,20 +431,19 @@ struct ConvolveNorthEastCorner
                             ++kernel_index;
                         }
                     }
-                }
 
+                    // The result can go out of range when the convolution
+                    // results in an infinite value. Normalizing such a
+                    // value makes no sense.
 
-                // The result can go out of range when the convolution
-                // results in an infinite value. Normalizing such a
-                // value makes no sense.
-
-                // TODO OutOfRangePolicy must handle integral results too.
-                if(!value_seen || !OORP::within_range(sum_of_values)) {
-                    output_no_data_policy.mark_as_no_data(index_);
-                }
-                else {
-                    get(destination, index_) = NP::normalize(sum_of_values,
-                        sum_of_weights);
+                    // TODO OutOfRangePolicy must handle integral results too.
+                    if(!value_seen || !OORP::within_range(sum_of_values)) {
+                        output_no_data_policy.mark_as_no_data(index_);
+                    }
+                    else {
+                        get(destination, index_) = NP::normalize(sum_of_values,
+                            sum_of_weights);
+                    }
                 }
 
                 ++first_col_source;
@@ -612,20 +610,19 @@ struct ConvolveSouthWestCorner
                             ++kernel_index;
                         }
                     }
-                }
 
+                    // The result can go out of range when the convolution
+                    // results in an infinite value. Normalizing such a
+                    // value makes no sense.
 
-                // The result can go out of range when the convolution
-                // results in an infinite value. Normalizing such a
-                // value makes no sense.
-
-                // TODO OutOfRangePolicy must handle integral results too.
-                if(!value_seen || !OORP::within_range(sum_of_values)) {
-                    output_no_data_policy.mark_as_no_data(index_);
-                }
-                else {
-                    get(destination, index_) = NP::normalize(sum_of_values,
-                        sum_of_weights);
+                    // TODO OutOfRangePolicy must handle integral results too.
+                    if(!value_seen || !OORP::within_range(sum_of_values)) {
+                        output_no_data_policy.mark_as_no_data(index_);
+                    }
+                    else {
+                        get(destination, index_) = NP::normalize(sum_of_values,
+                            sum_of_weights);
+                    }
                 }
 
                 --first_col_kernel;
@@ -794,20 +791,19 @@ struct ConvolveSouthEastCorner
                             ++kernel_index;
                         }
                     }
-                }
 
+                    // The result can go out of range when the convolution
+                    // results in an infinite value. Normalizing such a
+                    // value makes no sense.
 
-                // The result can go out of range when the convolution
-                // results in an infinite value. Normalizing such a
-                // value makes no sense.
-
-                // TODO OutOfRangePolicy must handle integral results too.
-                if(!value_seen || !OORP::within_range(sum_of_values)) {
-                    output_no_data_policy.mark_as_no_data(index_);
-                }
-                else {
-                    get(destination, index_) = NP::normalize(sum_of_values,
-                        sum_of_weights);
+                    // TODO OutOfRangePolicy must handle integral results too.
+                    if(!value_seen || !OORP::within_range(sum_of_values)) {
+                        output_no_data_policy.mark_as_no_data(index_);
+                    }
+                    else {
+                        get(destination, index_) = NP::normalize(sum_of_values,
+                            sum_of_weights);
+                    }
                 }
 
                 ++first_col_source;
@@ -973,20 +969,19 @@ struct ConvolveNorthSide
                             ++kernel_index;
                         }
                     }
-                }
 
+                    // The result can go out of range when the convolution
+                    // results in an infinite value. Normalizing such a
+                    // value makes no sense.
 
-                // The result can go out of range when the convolution
-                // results in an infinite value. Normalizing such a
-                // value makes no sense.
-
-                // TODO OutOfRangePolicy must handle integral results too.
-                if(!value_seen || !OORP::within_range(sum_of_values)) {
-                    output_no_data_policy.mark_as_no_data(index_);
-                }
-                else {
-                    get(destination, index_) = NP::normalize(sum_of_values,
-                        sum_of_weights);
+                    // TODO OutOfRangePolicy must handle integral results too.
+                    if(!value_seen || !OORP::within_range(sum_of_values)) {
+                        output_no_data_policy.mark_as_no_data(index_);
+                    }
+                    else {
+                        get(destination, index_) = NP::normalize(sum_of_values,
+                            sum_of_weights);
+                    }
                 }
 
                 ++first_col_source;
@@ -1152,20 +1147,19 @@ struct ConvolveWestSide
                             ++kernel_index;
                         }
                     }
-                }
 
+                    // The result can go out of range when the convolution
+                    // results in an infinite value. Normalizing such a
+                    // value makes no sense.
 
-                // The result can go out of range when the convolution
-                // results in an infinite value. Normalizing such a
-                // value makes no sense.
-
-                // TODO OutOfRangePolicy must handle integral results too.
-                if(!value_seen || !OORP::within_range(sum_of_values)) {
-                    output_no_data_policy.mark_as_no_data(index_);
-                }
-                else {
-                    get(destination, index_) = NP::normalize(sum_of_values,
-                        sum_of_weights);
+                    // TODO OutOfRangePolicy must handle integral results too.
+                    if(!value_seen || !OORP::within_range(sum_of_values)) {
+                        output_no_data_policy.mark_as_no_data(index_);
+                    }
+                    else {
+                        get(destination, index_) = NP::normalize(sum_of_values,
+                            sum_of_weights);
+                    }
                 }
 
                 --first_col_kernel;
@@ -1333,21 +1327,21 @@ struct ConvolveEastSide
                             ++kernel_index;
                         }
                     }
+
+                    // The result can go out of range when the convolution
+                    // results in an infinite value. Normalizing such a
+                    // value makes no sense.
+
+                    // TODO OutOfRangePolicy must handle integral results too.
+                    if(!value_seen || !OORP::within_range(sum_of_values)) {
+                        output_no_data_policy.mark_as_no_data(index_);
+                    }
+                    else {
+                        get(destination, index_) = NP::normalize(sum_of_values,
+                            sum_of_weights);
+                    }
                 }
 
-
-                // The result can go out of range when the convolution
-                // results in an infinite value. Normalizing such a
-                // value makes no sense.
-
-                // TODO OutOfRangePolicy must handle integral results too.
-                if(!value_seen || !OORP::within_range(sum_of_values)) {
-                    output_no_data_policy.mark_as_no_data(index_);
-                }
-                else {
-                    get(destination, index_) = NP::normalize(sum_of_values,
-                        sum_of_weights);
-                }
 
                 ++first_col_source;
                 --nr_cols_kernel;
@@ -1512,20 +1506,19 @@ struct ConvolveSouthSide
                             ++kernel_index;
                         }
                     }
-                }
 
+                    // The result can go out of range when the convolution
+                    // results in an infinite value. Normalizing such a
+                    // value makes no sense.
 
-                // The result can go out of range when the convolution
-                // results in an infinite value. Normalizing such a
-                // value makes no sense.
-
-                // TODO OutOfRangePolicy must handle integral results too.
-                if(!value_seen || !OORP::within_range(sum_of_values)) {
-                    output_no_data_policy.mark_as_no_data(index_);
-                }
-                else {
-                    get(destination, index_) = NP::normalize(sum_of_values,
-                        sum_of_weights);
+                    // TODO OutOfRangePolicy must handle integral results too.
+                    if(!value_seen || !OORP::within_range(sum_of_values)) {
+                        output_no_data_policy.mark_as_no_data(index_);
+                    }
+                    else {
+                        get(destination, index_) = NP::normalize(sum_of_values,
+                            sum_of_weights);
+                    }
                 }
 
                 ++first_col_source;
@@ -1652,21 +1645,21 @@ struct ConvolveInnerPart<true>
                             ++kernel_index;
                         }
                     }
+
+                    // The result can go out of range when the convolution
+                    // results in an infinite value. Normalizing such a
+                    // value makes no sense.
+
+                    // TODO OutOfRangePolicy must handle integral results too.
+                    if(!value_seen || !OORP::within_range(sum_of_values)) {
+                        output_no_data_policy.mark_as_no_data(index_);
+                    }
+                    else {
+                        get(destination, index_) = NP::normalize(sum_of_values,
+                            sum_of_weights);
+                    }
                 }
 
-
-                // The result can go out of range when the convolution
-                // results in an infinite value. Normalizing such a
-                // value makes no sense.
-
-                // TODO OutOfRangePolicy must handle integral results too.
-                if(!value_seen || !OORP::within_range(sum_of_values)) {
-                    output_no_data_policy.mark_as_no_data(index_);
-                }
-                else {
-                    get(destination, index_) = NP::normalize(sum_of_values,
-                        sum_of_weights);
-                }
 
                 ++first_col_source;
                 ++index_;
@@ -1746,6 +1739,10 @@ struct ConvolveInnerPart<false>
             for(size_t i = 0, r = 0; r < nr_rows_kernel; ++r) {
                 for(size_t c = 0; c < nr_cols_kernel; ++c) {
                     if(get(kernel, i)) {
+                        // r: kernel row
+                        // c: kernel col
+                        // offset: offset relative to image cell positioned
+                        //     in upper left kernel cell
                         cell_offset_tuples.emplace_back(r, c, r * nr_cols + c);
                     }
                     i++;
@@ -1791,7 +1788,7 @@ struct ConvolveInnerPart<false>
                         offset = get<2>(tuple);
 
                         if(std::get<0>(input_no_data_policy).is_no_data(
-                                source_index)) {
+                                source_index + offset)) {
                             if(AFNP::value(
                                     input_no_data_policy,
                                     source,
@@ -1806,24 +1803,25 @@ struct ConvolveInnerPart<false>
                             }
                         }
                         else {
-                            sum_of_values += get(source, source_index + offset),
+                            sum_of_values += get(source, source_index +
+                                offset),
                             sum_of_weights += 1;
                             value_seen = true;
                         }
                     }
-                }
 
-                // The result can go out of range when the convolution
-                // results in an infinite value. Normalizing such a
-                // value makes no sense.
+                    // The result can go out of range when the convolution
+                    // results in an infinite value. Normalizing such a
+                    // value makes no sense.
 
-                // TODO OutOfRangePolicy must handle integral results too.
-                if(!value_seen || !OORP::within_range(sum_of_values)) {
-                    output_no_data_policy.mark_as_no_data(index_);
-                }
-                else {
-                    get(destination, index_) = NP::normalize(sum_of_values,
-                        sum_of_weights);
+                    // TODO OutOfRangePolicy must handle integral results too.
+                    if(!value_seen || !OORP::within_range(sum_of_values)) {
+                        output_no_data_policy.mark_as_no_data(index_);
+                    }
+                    else {
+                        get(destination, index_) = NP::normalize(sum_of_values,
+                            sum_of_weights);
+                    }
                 }
 
                 ++first_col_source;
