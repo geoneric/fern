@@ -339,6 +339,114 @@ void compare_result4(
 }
 
 
+void compare_result5(
+    fern::MaskedArray<double, 2> const& result)
+{
+    // +----+----+----+----+-----+-----+
+    // |  7 |  7 |  1 |  4 |  15 |  15 |
+    // +----+----+----+----+-----+-----+
+    // | 19 | 20 |  7 | 10 |  15 |  15 |
+    // +----+----+----+----+-----+-----+
+    // | 37 | 38 | 13 |  X |  32 |  34 |
+    // +----+----+----+----+-----+-----+
+    // | 55 | 56 | 19 | 22 |  51 |  51 |
+    // +----+----+----+----+-----+-----+
+    // | 73 | 74 | 25 | 28 |  85 |  86 |
+    // +----+----+----+----+-----+-----+
+    // | 91 | 92 | 31 | 34 | 103 | 104 |
+    // +----+----+----+----+-----+-----+
+    // | 67 | 67 | 37 | 40 |  75 |  75 |
+    // +----+----+----+----+-----+-----+
+
+    size_t const nr_cols = 6;
+
+    size_t row_id = 0;
+    std::vector<double> values = { 7, 7, 1, 4, 15, 15 };
+    std::vector<bool> no_data = { false, false, false, false, false, false };
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(no_data.begin(), no_data.end(),
+        result.mask().data() + row_id * nr_cols,
+        result.mask().data() + row_id * nr_cols + nr_cols);
+    BOOST_CHECK_EQUAL_COLLECTIONS(values.begin(), values.end(),
+        result.data() + row_id * nr_cols,
+        result.data() + row_id * nr_cols + nr_cols);
+
+
+    ++row_id;
+    values = { 19, 20, 7, 10, 15, 15 };
+    no_data = { false, false, false, false, false, false };
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(no_data.begin(), no_data.end(),
+        result.mask().data() + row_id * nr_cols,
+        result.mask().data() + row_id * nr_cols + nr_cols);
+    BOOST_CHECK_EQUAL_COLLECTIONS(values.begin(), values.end(),
+        result.data() + row_id * nr_cols,
+        result.data() + row_id * nr_cols + nr_cols);
+
+
+    ++row_id;
+    no_data = { false, false, false, true, false, false };
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(no_data.begin(), no_data.end(),
+        result.mask().data() + row_id * nr_cols,
+        result.mask().data() + row_id * nr_cols + nr_cols);
+
+    BOOST_CHECK_CLOSE(result[2][0], 37, 1e-6);
+    BOOST_CHECK_CLOSE(result[2][1], 38, 1e-6);
+    BOOST_CHECK_CLOSE(result[2][2], 13, 1e-6);
+    BOOST_CHECK_CLOSE(result[2][4], 32, 1e-6);
+    BOOST_CHECK_CLOSE(result[2][5], 34, 1e-6);
+
+
+    ++row_id;
+    values = { 55, 56, 19, 22, 51, 51 };
+    no_data = { false, false, false, false, false, false };
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(no_data.begin(), no_data.end(),
+        result.mask().data() + row_id * nr_cols,
+        result.mask().data() + row_id * nr_cols + nr_cols);
+    BOOST_CHECK_EQUAL_COLLECTIONS(values.begin(), values.end(),
+        result.data() + row_id * nr_cols,
+        result.data() + row_id * nr_cols + nr_cols);
+
+
+    ++row_id;
+    values = { 73, 74, 25, 28, 85, 86 };
+    no_data = { false, false, false, false, false, false };
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(no_data.begin(), no_data.end(),
+        result.mask().data() + row_id * nr_cols,
+        result.mask().data() + row_id * nr_cols + nr_cols);
+    BOOST_CHECK_EQUAL_COLLECTIONS(values.begin(), values.end(),
+        result.data() + row_id * nr_cols,
+        result.data() + row_id * nr_cols + nr_cols);
+
+
+    ++row_id;
+    values = { 91, 92, 31, 34, 103, 104 };
+    no_data = { false, false, false, false, false, false };
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(no_data.begin(), no_data.end(),
+        result.mask().data() + row_id * nr_cols,
+        result.mask().data() + row_id * nr_cols + nr_cols);
+    BOOST_CHECK_EQUAL_COLLECTIONS(values.begin(), values.end(),
+        result.data() + row_id * nr_cols,
+        result.data() + row_id * nr_cols + nr_cols);
+
+
+    ++row_id;
+    values = { 67, 67, 37, 40, 75, 75 };
+    no_data = { false, false, false, false, false, false };
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(no_data.begin(), no_data.end(),
+        result.mask().data() + row_id * nr_cols,
+        result.mask().data() + row_id * nr_cols + nr_cols);
+    BOOST_CHECK_EQUAL_COLLECTIONS(values.begin(), values.end(),
+        result.data() + row_id * nr_cols,
+        result.data() + row_id * nr_cols + nr_cols);
+}
+
+
 BOOST_AUTO_TEST_CASE(convolve)
 {
     // Kernel with radius 2.
@@ -839,6 +947,102 @@ BOOST_AUTO_TEST_CASE(no_data_focus_element_policy)
                     argument, kernel, result);
 
             compare_result4(result);
+        }
+    }
+
+    {
+        // Create input array:
+        // +----+----+---+---+----+----+
+        // |  0 |  1 | X | X |  4 |  5 |
+        // +----+----+---+---+----+----+
+        // |  6 |  7 | X | X | 10 | 11 |
+        // +----+----+---+---+----+----+
+        // | 12 | 13 | X | X |  X |  X |
+        // +----+----+---+---+----+----+
+        // | 18 | 19 | X | X | 22 | 23 |
+        // +----+----+---+---+----+----+
+        // | 24 | 25 | X | X | 28 | 29 |
+        // +----+----+---+---+----+----+
+        // | 30 | 31 | X | X | 34 | 35 |
+        // +----+----+---+---+----+----+
+        // | 36 | 37 | X | X | 40 | 41 |
+        // +----+----+---+---+----+----+
+
+        size_t const nr_rows = 7;
+        size_t const nr_cols = 6;
+        auto extents = fern::extents[nr_rows][nr_cols];
+        fern::MaskedArray<double, 2> argument(extents);
+
+        std::iota(argument.data(), argument.data() + argument.num_elements(),
+            0);
+
+        argument.mask()[0][2] = true;
+        argument.mask()[0][3] = true;
+        argument.mask()[1][2] = true;
+        argument.mask()[1][3] = true;
+        argument.mask()[2][2] = true;
+        argument.mask()[2][3] = true;
+        argument.mask()[2][4] = true;
+        argument.mask()[2][5] = true;
+        argument.mask()[3][2] = true;
+        argument.mask()[3][3] = true;
+        argument.mask()[4][2] = true;
+        argument.mask()[4][3] = true;
+        argument.mask()[5][2] = true;
+        argument.mask()[5][3] = true;
+        argument.mask()[6][2] = true;
+        argument.mask()[6][3] = true;
+
+
+        // Define kernel shape and weights.
+        // Similar to PCRaster's window4total algorithm.
+        fern::Square<bool, 1> kernel({
+            {false, true, false},
+            {true , false, true },
+            {false, true, false}
+        });
+
+
+        // Sequential.
+        {
+            fern::MaskedArray<double, 2> result(extents);
+            fa::convolution::convolve(fa::sequential, argument, kernel,
+                result);
+            OutputNoDataPolicy output_no_data_policy(result.mask(), true);
+
+            fa::convolution::convolve<
+                fa::convolve::SkipNoData,
+                fa::convolve::DontDivideByWeights,
+                fa::convolve::SkipOutOfImage,
+                fa::convolve::ReplaceNoDataFocusElement,
+                fa::unary::DiscardRangeErrors>(
+                    InputNoDataPolicy{{argument.mask(), true}},
+                    output_no_data_policy,
+                    fa::sequential,
+                    argument, kernel, result);
+
+            compare_result5(result);
+        }
+
+        // Parallel.
+        {
+            fern::MaskedArray<double, 2> result(extents);
+            fa::convolution::convolve(fa::sequential, argument, kernel,
+                result);
+            OutputNoDataPolicy output_no_data_policy(result.mask(), true);
+
+            fa::convolution::convolve<
+                fa::convolve::SkipNoData,
+                fa::convolve::DontDivideByWeights,
+                fa::convolve::SkipOutOfImage,
+                fa::convolve::ReplaceNoDataFocusElement,
+                fa::unary::DiscardRangeErrors>(
+                    InputNoDataPolicy{{argument.mask(), true}},
+                    output_no_data_policy,
+                    fa::parallel,
+                    argument, kernel, result);
+
+            compare_result5(result);
         }
     }
 }
