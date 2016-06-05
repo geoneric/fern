@@ -159,10 +159,6 @@ struct ConvolveNorthWestCorner
 
             for(size_t col_source = 0; col_source < radius_; ++col_source) {
 
-                sum_of_values = AccumulationTraits<V>::zero;
-                sum_of_weights = AccumulationTraits<W>::zero;
-                value_seen = false;
-
                 if(NoDataFocusElementPolicy::keep_no_data &&
                         std::get<0>(input_no_data_policy).is_no_data(index_)) {
                     output_no_data_policy.mark_as_no_data(index_);
@@ -177,6 +173,10 @@ struct ConvolveNorthWestCorner
                     // the policy doesn't want to consider out of image
                     // cells, or when it has to base a new value upon only
                     // no-data values.
+
+                    sum_of_values = AccumulationTraits<V>::zero;
+                    sum_of_weights = AccumulationTraits<W>::zero;
+                    value_seen = false;
 
                     // Handle cells positioned in the kernel, but outside of
                     // the source image.
@@ -241,7 +241,7 @@ struct ConvolveNorthWestCorner
                                     value_seen = true;
                                 }
                             }
-                            else {
+                            else if(get(kernel, kernel_index) != W{0}) {
                                 HandleValue<SV, SW, V, W>::apply(
                                     get(source, source_index),
                                     get(kernel, kernel_index),
@@ -347,15 +347,15 @@ struct ConvolveNorthEastCorner
             for(size_t col_source = nr_cols_source - radius_;
                     col_source < nr_cols_source; ++col_source) {
 
-                sum_of_values = AccumulationTraits<V>::zero;
-                sum_of_weights = AccumulationTraits<W>::zero;
-                value_seen = false;
-
                 if(NoDataFocusElementPolicy::keep_no_data &&
                         std::get<0>(input_no_data_policy).is_no_data(index_)) {
                     output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
+                    sum_of_values = AccumulationTraits<V>::zero;
+                    sum_of_weights = AccumulationTraits<W>::zero;
+                    value_seen = false;
+
                     // Handle cells positioned in the kernel, but outside of
                     // the source image.
                     {
@@ -419,7 +419,7 @@ struct ConvolveNorthEastCorner
                                     value_seen = true;
                                 }
                             }
-                            else {
+                            else if(get(kernel, kernel_index) != W{0}) {
                                 HandleValue<SV, SW, V, W>::apply(
                                     get(source, source_index),
                                     get(kernel, kernel_index),
@@ -525,15 +525,15 @@ struct ConvolveSouthWestCorner
 
             for(size_t col_source = 0; col_source < radius_; ++col_source) {
 
-                sum_of_values = AccumulationTraits<V>::zero;
-                sum_of_weights = AccumulationTraits<W>::zero;
-                value_seen = false;
-
                 if(NoDataFocusElementPolicy::keep_no_data &&
                         std::get<0>(input_no_data_policy).is_no_data(index_)) {
                     output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
+                    sum_of_values = AccumulationTraits<V>::zero;
+                    sum_of_weights = AccumulationTraits<W>::zero;
+                    value_seen = false;
+
                     // Handle cells positioned in the kernel, but outside of
                     // the source image.
                     {
@@ -598,7 +598,7 @@ struct ConvolveSouthWestCorner
                                     value_seen = true;
                                 }
                             }
-                            else {
+                            else if(get(kernel, kernel_index) != W{0}) {
                                 HandleValue<SV, SW, V, W>::apply(
                                     get(source, source_index),
                                     get(kernel, kernel_index),
@@ -706,15 +706,15 @@ struct ConvolveSouthEastCorner
             for(size_t col_source = nr_cols_source - radius_;
                     col_source < nr_cols_source; ++col_source) {
 
-                sum_of_values = AccumulationTraits<V>::zero;
-                sum_of_weights = AccumulationTraits<W>::zero;
-                value_seen = false;
-
                 if(NoDataFocusElementPolicy::keep_no_data &&
                         std::get<0>(input_no_data_policy).is_no_data(index_)) {
                     output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
+                    sum_of_values = AccumulationTraits<V>::zero;
+                    sum_of_weights = AccumulationTraits<W>::zero;
+                    value_seen = false;
+
                     // Handle cells positioned in the kernel, but outside of
                     // the source image.
                     {
@@ -779,7 +779,7 @@ struct ConvolveSouthEastCorner
                                     value_seen = true;
                                 }
                             }
-                            else {
+                            else if(get(kernel, kernel_index) != W{0}) {
                                 HandleValue<SV, SW, V, W>::apply(
                                     get(source, source_index),
                                     get(kernel, kernel_index),
@@ -882,15 +882,15 @@ struct ConvolveNorthSide
             for(size_t col_source = radius_; col_source <
                     nr_cols_source - radius_; ++col_source) {
 
-                sum_of_values = AccumulationTraits<V>::zero;
-                sum_of_weights = AccumulationTraits<W>::zero;
-                value_seen = false;
-
                 if(NoDataFocusElementPolicy::keep_no_data &&
                         std::get<0>(input_no_data_policy).is_no_data(index_)) {
                     output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
+                    sum_of_values = AccumulationTraits<V>::zero;
+                    sum_of_weights = AccumulationTraits<W>::zero;
+                    value_seen = false;
+
                     // Handle cells positioned in the kernel, but outside of
                     // the source image.
                     {
@@ -957,7 +957,7 @@ struct ConvolveNorthSide
                                     value_seen = true;
                                 }
                             }
-                            else {
+                            else if(get(kernel, kernel_index) != W{0}) {
                                 HandleValue<SV, SW, V, W>::apply(
                                     get(source, source_index),
                                     get(kernel, kernel_index),
@@ -1060,15 +1060,15 @@ struct ConvolveWestSide
 
             for(size_t col_source = 0; col_source < radius_; ++col_source) {
 
-                sum_of_values = AccumulationTraits<V>::zero;
-                sum_of_weights = AccumulationTraits<W>::zero;
-                value_seen = false;
-
                 if(NoDataFocusElementPolicy::keep_no_data &&
                         std::get<0>(input_no_data_policy).is_no_data(index_)) {
                     output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
+                    sum_of_values = AccumulationTraits<V>::zero;
+                    sum_of_weights = AccumulationTraits<W>::zero;
+                    value_seen = false;
+
                     // Handle cells positioned in the kernel, but outside of
                     // the source image.
                     {
@@ -1135,7 +1135,7 @@ struct ConvolveWestSide
                                     value_seen = true;
                                 }
                             }
-                            else {
+                            else if(get(kernel, kernel_index) != W{0}) {
                                 HandleValue<SV, SW, V, W>::apply(
                                     get(source, source_index),
                                     get(kernel, kernel_index),
@@ -1240,15 +1240,15 @@ struct ConvolveEastSide
             for(size_t col_source = nr_cols_source - radius_;
                     col_source < nr_cols_source; ++col_source) {
 
-                sum_of_values = AccumulationTraits<V>::zero;
-                sum_of_weights = AccumulationTraits<W>::zero;
-                value_seen = false;
-
                 if(NoDataFocusElementPolicy::keep_no_data &&
                         std::get<0>(input_no_data_policy).is_no_data(index_)) {
                     output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
+                    sum_of_values = AccumulationTraits<V>::zero;
+                    sum_of_weights = AccumulationTraits<W>::zero;
+                    value_seen = false;
+
                     // Handle cells positioned in the kernel, but outside of
                     // the source image.
                     {
@@ -1315,7 +1315,7 @@ struct ConvolveEastSide
                                     value_seen = true;
                                 }
                             }
-                            else {
+                            else if(get(kernel, kernel_index) != W{0}) {
                                 HandleValue<SV, SW, V, W>::apply(
                                     get(source, source_index),
                                     get(kernel, kernel_index),
@@ -1419,15 +1419,15 @@ struct ConvolveSouthSide
             for(size_t col_source = radius_; col_source <
                     nr_cols_source - radius_; ++col_source) {
 
-                sum_of_values = AccumulationTraits<V>::zero;
-                sum_of_weights = AccumulationTraits<W>::zero;
-                value_seen = false;
-
                 if(NoDataFocusElementPolicy::keep_no_data &&
                         std::get<0>(input_no_data_policy).is_no_data(index_)) {
                     output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
+                    sum_of_values = AccumulationTraits<V>::zero;
+                    sum_of_weights = AccumulationTraits<W>::zero;
+                    value_seen = false;
+
                     // Handle cells positioned in the kernel, but outside of
                     // the source image.
                     {
@@ -1494,7 +1494,7 @@ struct ConvolveSouthSide
                                     value_seen = true;
                                 }
                             }
-                            else {
+                            else if(get(kernel, kernel_index) != W{0}) {
                                 HandleValue<SV, SW, V, W>::apply(
                                     get(source, source_index),
                                     get(kernel, kernel_index),
@@ -1599,15 +1599,15 @@ struct ConvolveInnerPart<true>
             for(size_t col_source = index_ranges[1].begin(); col_source <
                     index_ranges[1].end(); ++col_source) {
 
-                sum_of_values = AccumulationTraits<V>::zero;
-                sum_of_weights = AccumulationTraits<W>::zero;
-                value_seen = false;
-
                 if(NoDataFocusElementPolicy::keep_no_data &&
                         std::get<0>(input_no_data_policy).is_no_data(index_)) {
                     output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
+                    sum_of_values = AccumulationTraits<V>::zero;
+                    sum_of_weights = AccumulationTraits<W>::zero;
+                    value_seen = false;
+
                     // Handle cells positioned in the kernel, and in the source
                     // image.
                     size_t source_index, kernel_index;
@@ -1633,7 +1633,7 @@ struct ConvolveInnerPart<true>
                                     value_seen = true;
                                 }
                             }
-                            else {
+                            else if(get(kernel, kernel_index) != W{0}) {
                                 HandleValue<SV, SW, V, W>::apply(
                                     get(source, source_index),
                                     get(kernel, kernel_index),
@@ -1767,15 +1767,15 @@ struct ConvolveInnerPart<false>
             for(size_t col_source = index_ranges[1].begin(); col_source <
                     index_ranges[1].end(); ++col_source) {
 
-                sum_of_values = AccumulationTraits<V>::zero;
-                sum_of_weights = AccumulationTraits<W>::zero;
-                value_seen = false;
-
                 if(NoDataFocusElementPolicy::keep_no_data &&
                         std::get<0>(input_no_data_policy).is_no_data(index_)) {
                     output_no_data_policy.mark_as_no_data(index_);
                 }
                 else {
+                    sum_of_values = AccumulationTraits<V>::zero;
+                    sum_of_weights = AccumulationTraits<W>::zero;
+                    value_seen = false;
+
                     // Handle cells positioned in the kernel, and in the source
                     // image.
                     size_t source_index = index(source, first_row_source,
@@ -1803,8 +1803,7 @@ struct ConvolveInnerPart<false>
                             }
                         }
                         else {
-                            sum_of_values += get(source, source_index +
-                                offset),
+                            sum_of_values += get(source, source_index + offset);
                             sum_of_weights += 1;
                             value_seen = true;
                         }
