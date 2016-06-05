@@ -18,6 +18,7 @@
 #include "fern/algorithm/convolution/neighborhood/square_traits.h"
 #include "fern/algorithm/convolution/convolve.h"
 #include "fern/algorithm/convolution/replace_no_data_by_focal_average.h"
+#include "fern/algorithm/core/test/test_utils.h"
 
 
 namespace fa = fern::algorithm;
@@ -444,6 +445,119 @@ void compare_result5(
     BOOST_CHECK_EQUAL_COLLECTIONS(values.begin(), values.end(),
         result.data() + row_id * nr_cols,
         result.data() + row_id * nr_cols + nr_cols);
+}
+
+
+void compare_result6(
+    fern::MaskedArray<double, 2> const& result)
+{
+    // +----+----ٍ+-----+-----+----+----+
+    // |  X |  X |   8 |   9 |  X |  X |
+    // +----+----ٍ+-----+-----+----+----+
+    // |  X | 21 |  23 |  23 | 25 |  X |
+    // +----+----ٍ+-----+-----+----+----+
+    // | 31 | 33 |  56 |  60 | 37 | 39 |
+    // +----+----ٍ+-----+-----+----+----+
+    // | 19 | 76 |  80 |  84 | 88 | 22 |
+    // +----+----ٍ+-----+-----+----+----+
+    // | 43 | 45 | 104 | 108 | 49 | 51 |
+    // +----+----ٍ+-----+-----+----+----+
+    // |  X | 57 |  97 |  59 | 61 |  X |
+    // +----+----ٍ+-----+-----+----+----+
+    // |  X | 38 |  32 |  71 |  X |  X |
+    // +----+----ٍ+-----+-----+----+----+
+
+    size_t const nr_cols = 6;
+    size_t row_id = 0;
+    std::vector<double> values;
+    std::vector<bool> no_data;
+
+    no_data = { true, true, false, false, true, true };
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(no_data.begin(), no_data.end(),
+        result.mask().data() + row_id * nr_cols,
+        result.mask().data() + row_id * nr_cols + nr_cols);
+    BOOST_CHECK_CLOSE(result[0][2], 8.0, 1e-6);
+    BOOST_CHECK_CLOSE(result[0][3], 9.0, 1e-6);
+
+
+    ++row_id;
+    no_data = { true, false, false, false, false, true };
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(no_data.begin(), no_data.end(),
+        result.mask().data() + row_id * nr_cols,
+        result.mask().data() + row_id * nr_cols + nr_cols);
+    BOOST_CHECK_CLOSE(result[1][1], 21.0, 1e-6);
+    BOOST_CHECK_CLOSE(result[1][2], 23.0, 1e-6);
+    BOOST_CHECK_CLOSE(result[1][3], 23.0, 1e-6);
+    BOOST_CHECK_CLOSE(result[1][4], 25.0, 1e-6);
+
+
+    ++row_id;
+    no_data = { false, false, false, false, false, false };
+    values = { 31, 33,  56,  60, 37, 39 };
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(no_data.begin(), no_data.end(),
+        result.mask().data() + row_id * nr_cols,
+        result.mask().data() + row_id * nr_cols + nr_cols);
+    BOOST_CHECK_CLOSE(result[2][0], 31.0, 1e-6);
+    BOOST_CHECK_CLOSE(result[2][1], 33.0, 1e-6);
+    BOOST_CHECK_CLOSE(result[2][2], 56.0, 1e-6);
+    BOOST_CHECK_CLOSE(result[2][3], 60.0, 1e-6);
+    BOOST_CHECK_CLOSE(result[2][4], 37.0, 1e-6);
+    BOOST_CHECK_CLOSE(result[2][5], 39.0, 1e-6);
+
+
+    ++row_id;
+    no_data = { false, false, false, false, false, false };
+    values = { 19, 76,  80,  84, 88, 22 };
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(no_data.begin(), no_data.end(),
+        result.mask().data() + row_id * nr_cols,
+        result.mask().data() + row_id * nr_cols + nr_cols);
+    BOOST_CHECK_CLOSE(result[3][0], 19.0, 1e-6);
+    BOOST_CHECK_CLOSE(result[3][1], 76.0, 1e-6);
+    BOOST_CHECK_CLOSE(result[3][2], 80.0, 1e-6);
+    BOOST_CHECK_CLOSE(result[3][3], 84.0, 1e-6);
+    BOOST_CHECK_CLOSE(result[3][4], 88.0, 1e-6);
+    BOOST_CHECK_CLOSE(result[3][5], 22.0, 1e-6);
+
+
+    ++row_id;
+    no_data = { false, false, false, false, false, false };
+    values = { 43, 45, 104, 108, 49, 51 };
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(no_data.begin(), no_data.end(),
+        result.mask().data() + row_id * nr_cols,
+        result.mask().data() + row_id * nr_cols + nr_cols);
+    BOOST_CHECK_CLOSE(result[4][0], 43.0, 1e-6);
+    BOOST_CHECK_CLOSE(result[4][1], 45.0, 1e-6);
+    BOOST_CHECK_CLOSE(result[4][2], 104.0, 1e-6);
+    BOOST_CHECK_CLOSE(result[4][3], 108.0, 1e-6);
+    BOOST_CHECK_CLOSE(result[4][4], 49.0, 1e-6);
+    BOOST_CHECK_CLOSE(result[4][5], 51.0, 1e-6);
+
+
+    ++row_id;
+    no_data = { true, false, false, false, false, true };
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(no_data.begin(), no_data.end(),
+        result.mask().data() + row_id * nr_cols,
+        result.mask().data() + row_id * nr_cols + nr_cols);
+    BOOST_CHECK_CLOSE(result[5][1], 57.0, 1e-6);
+    BOOST_CHECK_CLOSE(result[5][2], 97.0, 1e-6);
+    BOOST_CHECK_CLOSE(result[5][3], 59.0, 1e-6);
+    BOOST_CHECK_CLOSE(result[5][4], 61.0, 1e-6);
+
+
+    ++row_id;
+    no_data = { true, false, false, false, true, true };
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(no_data.begin(), no_data.end(),
+        result.mask().data() + row_id * nr_cols,
+        result.mask().data() + row_id * nr_cols + nr_cols);
+    BOOST_CHECK_CLOSE(result[6][1], 38.0, 1e-6);
+    BOOST_CHECK_CLOSE(result[6][2], 32.0, 1e-6);
+    BOOST_CHECK_CLOSE(result[6][3], 71.0, 1e-6);
 }
 
 
@@ -910,8 +1024,6 @@ BOOST_AUTO_TEST_CASE(no_data_focus_element_policy)
         // Sequential.
         {
             fern::MaskedArray<double, 2> result(extents);
-            fa::convolution::convolve(fa::sequential, argument, kernel,
-                result);
             OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
             fa::convolution::convolve<
@@ -931,8 +1043,6 @@ BOOST_AUTO_TEST_CASE(no_data_focus_element_policy)
         // Parallel.
         {
             fern::MaskedArray<double, 2> result(extents);
-            fa::convolution::convolve(fa::sequential, argument, kernel,
-                result);
             OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
             fa::convolution::convolve<
@@ -1043,6 +1153,91 @@ BOOST_AUTO_TEST_CASE(no_data_focus_element_policy)
                     argument, kernel, result);
 
             compare_result5(result);
+        }
+    }
+
+    {
+        // Create input array:
+        // +----+----+----+----+----+----+
+        // |  X |  X |  X |  X |  X |  X |
+        // +----+----+----+----+----+----+
+        // |  X |  X |  8 |  9 |  X |  X |
+        // +----+----+----+----+----+----+
+        // |  X | 13 | 14 | 15 | 16 |  X |
+        // +----+----+----+----+----+----+
+        // | 18 | 19 | 20 | 21 | 22 | 23 |
+        // +----+----+----+----+----+----+
+        // |  X | 25 | 26 | 27 | 28 |  X |
+        // +----+----+----+----+----+----+
+        // |  X |  X | 32 | 33 |  X |  X |
+        // +----+----+----+----+----+----+
+        // |  X |  X | 38 |  X |  X |  X |
+        // +----+----+----+----+----+----+
+
+        size_t const nr_rows = 7;
+        size_t const nr_cols = 6;
+        auto extents = fern::extents[nr_rows][nr_cols];
+        fern::MaskedArray<double, 2> argument(extents);
+
+        std::iota(argument.data(), argument.data() + argument.num_elements(),
+            0);
+        argument.mask() = {
+            {  true,  true,  true,  true,  true,  true },
+            {  true,  true, false, false,  true,  true },
+            {  true, false, false, false, false,  true },
+            { false, false, false, false, false, false },
+            {  true, false, false, false, false,  true },
+            {  true,  true, false, false,  true,  true },
+            {  true,  true, false,  true,  true,  true }
+        };
+
+
+        // Define kernel shape and weights.
+        // Similar to PCRaster's window4total algorithm.
+        fern::Square<bool, 1> kernel({
+            { false,  true, false },
+            {  true, false,  true },
+            { false,  true, false }
+        });
+
+        // Sequential.
+        {
+            fern::MaskedArray<double, 2> result(extents);
+            // fa::convolution::convolve(fa::sequential, argument, kernel,
+            //     result);
+            OutputNoDataPolicy output_no_data_policy(result.mask(), true);
+
+            fa::convolution::convolve<
+                fa::convolve::SkipNoData,
+                fa::convolve::DontDivideByWeights,
+                fa::convolve::SkipOutOfImage,
+                fa::convolve::ReplaceNoDataFocusElement,
+                fa::unary::DiscardRangeErrors>(
+                    InputNoDataPolicy{{argument.mask(), true}},
+                    output_no_data_policy,
+                    fa::sequential,
+                    argument, kernel, result);
+
+            compare_result6(result);
+        }
+
+        // Parallel.
+        {
+            fern::MaskedArray<double, 2> result(extents);
+            OutputNoDataPolicy output_no_data_policy(result.mask(), true);
+
+            fa::convolution::convolve<
+                fa::convolve::SkipNoData,
+                fa::convolve::DontDivideByWeights,
+                fa::convolve::SkipOutOfImage,
+                fa::convolve::ReplaceNoDataFocusElement,
+                fa::unary::DiscardRangeErrors>(
+                    InputNoDataPolicy{{argument.mask(), true}},
+                    output_no_data_policy,
+                    fa::parallel,
+                    argument, kernel, result);
+
+            compare_result6(result);
         }
     }
 }
