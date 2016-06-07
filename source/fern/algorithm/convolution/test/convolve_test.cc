@@ -1241,3 +1241,118 @@ BOOST_AUTO_TEST_CASE(no_data_focus_element_policy)
         }
     }
 }
+
+
+template<
+    typename T>
+void compare_result_use_case1(
+    fern::MaskedArray<T, 2> const& result)
+{
+    // +-----+-----+-----+
+    // | 0.0 | 0.0 | 0.0 |
+    // +-----+-----+-----+
+    // | 0.0 | 0.0 | 0.0 |
+    // +-----+-----+-----+
+    // | 0.0 | 0.0 | 0.0 |
+    // +-----+-----+-----+
+
+    std::vector<bool> no_data = {
+        false, false, false,
+        false, false, false,
+        false, false, false
+    };
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(no_data.begin(), no_data.end(),
+        result.mask().data(), result.mask().data() +
+            result.mask().num_elements());
+
+
+    std::vector<T> values = {
+        0.0, 0.0, 0.0,
+        0.0, 0.0, 0.0,
+        0.0, 0.0, 0.0
+    };
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(values.begin(), values.end(),
+        result.data(), result.data() + result.num_elements());
+}
+
+
+template<
+    typename T>
+void test_use_case1(
+    T const& value)
+{
+    using InputNoDataPolicy = fa::InputNoDataPolicies<
+        fa::DetectNoDataByValue<fern::Mask<2>>>;
+    using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<2>>;
+
+    // +-------+-------+-------+
+    // | value | value | value |
+    // +-------+-------+-------+
+    // | value | value | value |
+    // +-------+-------+-------+
+    // | value | value | value |
+    // +-------+-------+-------+
+
+    size_t const nr_rows = 3;
+    size_t const nr_cols = 3;
+    auto extents = fern::extents[nr_rows][nr_cols];
+    fern::MaskedArray<T, 2> argument(extents);
+
+    std::fill(argument.data(), argument.data() + argument.num_elements(),
+        value);
+
+    fern::Square<T, 1> kernel({
+        {1, 0, -1},
+        {2, 0, -2},
+        {1, 0, -1}
+    });
+
+
+    // Sequential.
+    {
+        fern::MaskedArray<T, 2> result(extents);
+        OutputNoDataPolicy output_no_data_policy(result.mask(), true);
+
+        fa::convolution::convolve<
+            fa::convolve::ReplaceNoDataByFocalAverage,
+            fa::convolve::DontDivideByWeights,
+            fa::convolve::ReplaceOutOfImageByFocalAverage,
+            fa::convolve::KeepNoDataFocusElement,
+            fa::unary::DiscardRangeErrors>(
+                InputNoDataPolicy{{argument.mask(), true}},
+                output_no_data_policy,
+                fa::sequential,
+                argument, kernel, result);
+
+        compare_result_use_case1(result);
+    }
+
+    // Parallel.
+    {
+        fern::MaskedArray<T, 2> result(extents);
+        OutputNoDataPolicy output_no_data_policy(result.mask(), true);
+
+        fa::convolution::convolve<
+            fa::convolve::ReplaceNoDataByFocalAverage,
+            fa::convolve::DontDivideByWeights,
+            fa::convolve::ReplaceOutOfImageByFocalAverage,
+            fa::convolve::KeepNoDataFocusElement,
+            fa::unary::DiscardRangeErrors>(
+                InputNoDataPolicy{{argument.mask(), true}},
+                output_no_data_policy,
+                fa::parallel,
+                argument, kernel, result);
+
+        compare_result_use_case1(result);
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(use_case1)
+{
+    for(auto const& value: {0.0, 0.055, 0.0925, 0.1, 0.1225, 0.17, 1.0}) {
+        test_use_case1<float>(value);
+    }
+}

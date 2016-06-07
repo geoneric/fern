@@ -9,6 +9,7 @@
 #pragma once
 #include <algorithm>
 #include <cassert>
+#include "fern/algorithm/core/accumulation_traits.h"
 
 
 namespace fern {
@@ -161,7 +162,7 @@ inline bool ReplaceOutOfImageByFocalAverage::value_north_west(
         size_t const first_col_source,
         Value& value)
 {
-    Value sum_of_values{0};
+    auto sum_of_values = AccumulationTraits<Value>::zero;
     size_t nr_values_seen{0};
     size_t const radius{1};
 
@@ -294,7 +295,7 @@ inline bool ReplaceOutOfImageByFocalAverage::value_north_east(
         size_t const first_col_source,
         Value& value)
 {
-    Value sum_of_values{0};
+    auto sum_of_values = AccumulationTraits<Value>::zero;
     size_t nr_values_seen{0};
     size_t const radius{1};
 
@@ -435,7 +436,7 @@ inline bool ReplaceOutOfImageByFocalAverage::value_south_west(
         size_t const first_col_source,
         Value& value)
 {
-    Value sum_of_values{0};
+    auto sum_of_values = AccumulationTraits<Value>::zero;
     size_t nr_values_seen{0};
     size_t const radius{1};
 
@@ -576,7 +577,7 @@ inline bool ReplaceOutOfImageByFocalAverage::value_south_east(
         size_t const first_col_source,
         Value& value)
 {
-    Value sum_of_values{0};
+    auto sum_of_values = AccumulationTraits<Value>::zero;
     size_t nr_values_seen{0};
     size_t const radius{1};
 
@@ -719,7 +720,7 @@ inline bool ReplaceOutOfImageByFocalAverage::value_north(
         size_t const first_col_source,
         Value& value)
 {
-    Value sum_of_values{0};
+    auto sum_of_values = AccumulationTraits<Value>::zero;
     size_t nr_values_seen{0};
     size_t const radius{1};
 
@@ -785,7 +786,7 @@ inline bool ReplaceOutOfImageByFocalAverage::value_west(
         size_t const first_col_source,
         Value& value)
 {
-    Value sum_of_values{0};
+    auto sum_of_values = AccumulationTraits<Value>::zero;
     size_t nr_values_seen{0};
     size_t const radius{1};
 
@@ -849,7 +850,7 @@ inline bool ReplaceOutOfImageByFocalAverage::value_east(
         size_t const /* first_col_source */,
         Value& value)
 {
-    Value sum_of_values{0};
+    auto sum_of_values = AccumulationTraits<Value>::zero;
     size_t nr_values_seen{0};
     size_t const radius{1};
 
@@ -916,7 +917,7 @@ inline bool ReplaceOutOfImageByFocalAverage::value_south(
         size_t const first_col_source,
         Value& value)
 {
-    Value sum_of_values{0};
+    auto sum_of_values = AccumulationTraits<Value>::zero;
     size_t nr_values_seen{0};
     size_t const radius{1};
 
