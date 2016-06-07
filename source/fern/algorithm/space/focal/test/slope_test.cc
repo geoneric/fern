@@ -155,3 +155,111 @@ BOOST_AUTO_TEST_CASE(algorithm)
         }
     }
 }
+
+
+template<
+    typename T>
+void compare_result_flat(
+    MaskedRaster<T> const& result)
+{
+    // +-----+-----+-----+
+    // | 0.0 | 0.0 | 0.0 |
+    // +-----+-----+-----+
+    // | 0.0 | 0.0 | 0.0 |
+    // +-----+-----+-----+
+    // | 0.0 | 0.0 | 0.0 |
+    // +-----+-----+-----+
+
+    std::vector<bool> no_data = {
+        false, false, false,
+        false, false, false,
+        false, false, false
+    };
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(no_data.begin(), no_data.end(),
+        result.mask().data(), result.mask().data() +
+            result.mask().num_elements());
+
+
+    std::vector<T> values = {
+        0.0, 0.0, 0.0,
+        0.0, 0.0, 0.0,
+        0.0, 0.0, 0.0
+    };
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(values.begin(), values.end(),
+        result.data(), result.data() + result.num_elements());
+}
+
+
+template<
+    typename T>
+void test_flat(
+    T const& value)
+{
+    // +-------+-------+-------+
+    // | value | value | value |
+    // +-------+-------+-------+
+    // | value | value | value |
+    // +-------+-------+-------+
+    // | value | value | value |
+    // +-------+-------+-------+
+    size_t const nr_rows = 3;
+    size_t const nr_cols = 3;
+    auto extents = fern::extents[nr_rows][nr_cols];
+
+    double const cell_width = 50.0;
+    double const cell_height = 50.0;
+    double const west = 0.0;
+    double const north = 0.0;
+
+    typename MaskedRaster<T>::Transformation transformation{{west, cell_width,
+        north, cell_height}};
+    MaskedRaster<T> raster(extents, transformation);
+
+    for(size_t r = 0; r < nr_rows; ++r) {
+        for(size_t c = 0; c < nr_cols; ++c) {
+            raster[r][c] = value;
+        }
+    }
+
+
+    using InputNoDataPolicy = fa::InputNoDataPolicies<
+        fa::DetectNoDataByValue<fern::Mask<2>>>;
+    using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<2>>;
+
+    {
+        MaskedRaster<T> result_we_get(extents, transformation);
+        OutputNoDataPolicy output_no_data_policy(result_we_get.mask(), true);
+
+        fa::space::slope<fa::unary::DiscardRangeErrors>(
+            InputNoDataPolicy{{raster.mask(), true}},
+            output_no_data_policy,
+            fa::sequential,
+            raster, result_we_get);
+
+        compare_result_flat<T>(result_we_get);
+    }
+
+    {
+        MaskedRaster<T> result_we_get(extents, transformation);
+        OutputNoDataPolicy output_no_data_policy(result_we_get.mask(), true);
+
+        fa::space::slope<fa::unary::DiscardRangeErrors>(
+            InputNoDataPolicy{{raster.mask(), true}},
+            output_no_data_policy,
+            fa::parallel,
+            raster, result_we_get);
+
+        compare_result_flat<T>(result_we_get);
+    }
+}
+
+
+BOOST_AUTO_TEST_CASE(flat)
+{
+    for(auto const& value: {0.0, 0.055, 0.0925, 0.1, 0.1225, 0.17, 1.0}) {
+        test_flat<float>(value);
+        // test_flat<double>(value);
+    }
+}

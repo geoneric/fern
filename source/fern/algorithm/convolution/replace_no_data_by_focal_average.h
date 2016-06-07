@@ -11,6 +11,7 @@
 #include <cstddef>
 #include <tuple>
 #include "fern/core/data_customization_point.h"
+#include "fern/algorithm/core/accumulation_traits.h"
 
 
 namespace fern {
@@ -55,13 +56,13 @@ inline bool ReplaceNoDataByFocalAverage::value(
 {
     // Use average of cells surrounding current cell as the value.
 
-    value = Value{0};
+    auto sum_of_values = AccumulationTraits<Value>::zero;
+    size_t nr_values_seen{0};
+
     size_t const first_row = row > 0u ? row - 1 : row;
     size_t const first_col = col > 0u ? col - 1 : col;
     size_t const last_row = row < nr_rows - 1 ? row + 1 : row;
     size_t const last_col = col < nr_cols - 1 ? col + 1 : col;
-
-    size_t count = 0;
 
     size_t index_;
 
@@ -73,8 +74,8 @@ inline bool ReplaceNoDataByFocalAverage::value(
 
             if(!(r == row && c == col)) {
                 if(!std::get<0>(input_no_data_policy).is_no_data(index_)) {
-                    value += get(source, index_);
-                    ++count;
+                    sum_of_values += get(source, index_);
+                    ++nr_values_seen;
                 }
             }
 
@@ -88,8 +89,8 @@ inline bool ReplaceNoDataByFocalAverage::value(
     // the focal cell is not surrounding cell row, col. It is possible that
     // cell row, col is surrounded by only no-data.
     // TODO Handle this once this assertion fails for the first time.
-    assert(count > 0u);
-    value /= count;
+    assert(nr_values_seen > 0u);
+    value = sum_of_values / nr_values_seen;
 
     return true;
 }
