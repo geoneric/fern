@@ -259,7 +259,7 @@ void verify_2d_0d_masked(
         fa::DetectNoDataByValue<f::Mask<2>>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
 
-    f::MaskedScalar<int> result_we_got{-9};
+    f::MaskedScalar<f::value_type<Result>> result_we_got{-9};
 
     InputNoDataPolicy input_no_data_policy{{value.mask(), true}};
     OutputNoDataPolicy output_no_data_policy(result_we_got.mask(), true);
@@ -313,3 +313,19 @@ void test_2d_0d_masked(
 
 
 FERN_UNARY_AGGREGATE_TEST_CASES()
+
+
+BOOST_AUTO_TEST_CASE(gh59)
+{
+    f::MaskedArray<int, 2> value = {
+        { 0, 0 },
+        { 5, 0 },
+    };
+    value.mask() = {
+        {  true, true },
+        { false, true },
+    };
+
+    f::MaskedScalar<int> result_we_want{5};
+    verify_2d_0d_masked(fa::sequential, value, result_we_want);
+}
