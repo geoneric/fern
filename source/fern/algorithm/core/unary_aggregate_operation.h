@@ -7,6 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
+#include <iostream>
 #include <tuple>
 #include "fern/core/data_customization_point.h"
 #include "fern/core/base_class.h"
@@ -223,13 +224,14 @@ std::tuple<bool, bool, Accumulator> operation_2d(
     if(begin1 < end1 && begin2 < end2) {
 
         // Input is not empty, find first non-no-data value.
-        size_t i = begin1;
-        size_t j = begin2;
+        size_t i;
+        size_t j;
         size_t index_;
 
         // Initialize result.
-        for(; i < end1; ++i) {
+        for(i = begin1; i < end1; ++i) {
 
+            j = begin2;
             index_ = index(value, i, j);
 
             for(; j < end2; ++j) {
@@ -240,7 +242,15 @@ std::tuple<bool, bool, Accumulator> operation_2d(
                         get(value, index_));
                     accumulator_initialized = true;
 
-                    // Found first value, continue with the result.
+                    // Found first value, continue with the rest.
+                    if(j < end2 - 1) {
+                        ++j;
+                    }
+                    else {
+                        j = begin2;
+                        ++i;
+                    }
+
                     break;
                 }
 
@@ -254,7 +264,6 @@ std::tuple<bool, bool, Accumulator> operation_2d(
 
         // Continue where the previous loop stopped.
         if(accumulator_initialized) {
-            ++j;
 
             for(; i < end1; ++i) {
 
