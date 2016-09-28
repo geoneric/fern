@@ -329,3 +329,37 @@ BOOST_AUTO_TEST_CASE(gh59)
     f::MaskedScalar<int> result_we_want{5};
     verify_2d_0d_masked(fa::sequential, value, result_we_want);
 }
+
+
+BOOST_AUTO_TEST_CASE(gh61)
+{
+    f::MaskedArray<int, 2> value = {
+        { -9, -9, -9, -9, -9, -9 },
+        { -9, -9,  8,  9, -9, -9 },
+        { -9, 13, 14, 15, 16, -9 },
+        { 18, 19, 20, 21, 22, 23 },
+        { -9, 25, 26, 27, 28, -9 },
+        { -9, -9, 32, 33, -9, -9 },
+        { -9, -9, 38, -9, -9, -9 },
+    };
+    value.mask() = {
+        { true,  true,  true,  true,  true,  true  },
+        { true,  true,  false, false, true,  true  },
+        { true,  false, false, false, false, true  },
+        { false, false, false, false, false, false },
+        { true,  false, false, false, false, true  },
+        { true,  true,  false, false, true,  true  },
+        { true,  true,  false, true,  true,  true  },
+    };
+
+    {
+        f::MaskedScalar<int> result_we_want{8};
+        verify_2d_0d_masked(fa::sequential, value, result_we_want);
+    }
+
+    for(size_t n = 1; n <= 8; ++n) {
+        f::MaskedScalar<int> result_we_want{8};
+        fa::ParallelExecutionPolicy parallel(n);
+        verify_2d_0d_masked(parallel, value, result_we_want);
+    }
+}

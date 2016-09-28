@@ -7,7 +7,6 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include <iostream>
 #include <tuple>
 #include "fern/core/data_customization_point.h"
 #include "fern/core/base_class.h"
@@ -481,19 +480,23 @@ struct UnaryAggregateOperation<
             auto const& accumulator_initialized = get<0>(result);
             auto const& result_within_range = get<1>(result);
 
-            if(accumulator_initialized && result_within_range) {
-                auto& accumulator(get<2>(result));
-                aggregated_accumulator_initialized = true;
-                aggregated_result_within_range = Adder_::merge(
-                    aggregated_accumulator, std::move(accumulator));
-                if(!aggregated_result_within_range) {
+            if(accumulator_initialized) {
+                if(result_within_range) {
+                    auto& accumulator(get<2>(result));
+                    aggregated_accumulator_initialized = true;
+                    aggregated_result_within_range = Adder_::merge(
+                        aggregated_accumulator, std::move(accumulator));
+                    if(!aggregated_result_within_range) {
+                        // Combining block results resulted in an out-of-range
+                        // value.
+                        break;
+                    }
+                }
+                else {
+                    // At least one block resulted in an out-of-range value.
+                    aggregated_result_within_range = false;
                     break;
                 }
-            }
-            else {
-                // At least one block resulted in an out-of-range value.
-                aggregated_result_within_range = false;
-                break;
             }
         }
 
@@ -689,19 +692,23 @@ struct UnaryAggregateOperation<
             auto const& accumulator_initialized = get<0>(result);
             auto const& result_within_range = get<1>(result);
 
-            if(accumulator_initialized && result_within_range) {
-                auto& accumulator(get<2>(result));
-                aggregated_accumulator_initialized = true;
-                aggregated_result_within_range = Adder_::merge(
-                    aggregated_accumulator, std::move(accumulator));
-                if(!aggregated_result_within_range) {
+            if(accumulator_initialized) {
+                if(result_within_range) {
+                    auto& accumulator(get<2>(result));
+                    aggregated_accumulator_initialized = true;
+                    aggregated_result_within_range = Adder_::merge(
+                        aggregated_accumulator, std::move(accumulator));
+                    if(!aggregated_result_within_range) {
+                        // Combining block results resulted in an out-of-range
+                        // value.
+                        break;
+                    }
+                }
+                else {
+                    // At least one block resulted in an out-of-range value.
+                    aggregated_result_within_range = false;
                     break;
                 }
-            }
-            else {
-                // At least one block resulted in an out-of-range value.
-                aggregated_result_within_range = false;
-                break;
             }
         }
 
