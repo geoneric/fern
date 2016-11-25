@@ -81,7 +81,6 @@ template double as<double>(std::string const&);
 template int64_t as<int64_t>(std::string const&);
 
 
-#ifndef FERN_COMPILER_DOES_NOT_HAVE_REGEX
 /*!
     @ingroup    fern_core_group
     @brief      Split @a string by @a characters and return the result.
@@ -112,7 +111,6 @@ std::vector<std::string> split(
 
     return words;
 }
-#endif
 
 
 /*!

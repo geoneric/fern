@@ -115,7 +115,6 @@ BOOST_AUTO_TEST_CASE(contains)
 }
 
 
-#ifndef FERN_COMPILER_DOES_NOT_HAVE_REGEX
 BOOST_AUTO_TEST_CASE(split_)
 {
     std::string string;
@@ -155,7 +154,6 @@ BOOST_AUTO_TEST_CASE(split_)
     BOOST_CHECK_EQUAL(words[1], std::string(" b "));
     BOOST_CHECK_EQUAL(words[2], std::string("c "));
 }
-#endif
 
 
 // BOOST_AUTO_TEST_CASE(encode_in_default_encoding_)

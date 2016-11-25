@@ -35,11 +35,9 @@ T                  as                  (std::string const& string);
 //                                         std::string const& string);
 
 
-#ifndef FERN_COMPILER_DOES_NOT_HAVE_REGEX
 std::vector<std::string>
                    split               (std::string const& string,
                                         std::string characters=std::string());
-#endif
 
 std::string&       strip               (std::string& string,
                                         std::string const& characters=
