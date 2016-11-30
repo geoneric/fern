@@ -1,5 +1,4 @@
 #pragma once
-#include <tuple>
 #include "fern/wkt/ast.h"
 #include "fern/wkt/core.h"
 
@@ -7,6 +6,10 @@
 namespace fern {
 namespace wkt {
 namespace grammar {
+
+// [] optional
+// ... multiplicity
+// {} grouping
 
 // wkt separator: ','
 
@@ -80,9 +83,47 @@ static auto const conversion_factor = as<double>(
 static auto const unit_name = as<std::string>(
     quoted_latin_text);
 
+static auto const angle_unit = as<ast::AngleUnit>(
+    // UNIT is deprecated.
+    (boost::spirit::x3::lit("ANGLEUNIT") | boost::spirit::x3::lit("UNIT")) >>
+    left_delimiter >>
+        unit_name >>
+        wkt_separator >>
+        conversion_factor >>
+        *(wkt_separator >> identifier) >>
+    right_delimiter);
+
 static auto const length_unit = as<ast::LengthUnit>(
     // UNIT is deprecated.
     (boost::spirit::x3::lit("LENGTHUNIT") | boost::spirit::x3::lit("UNIT")) >>
+    left_delimiter >>
+        unit_name >>
+        wkt_separator >>
+        conversion_factor >>
+        *(wkt_separator >> identifier) >>
+    right_delimiter);
+
+static auto const scale_unit = as<ast::ScaleUnit>(
+    // UNIT is deprecated.
+    (boost::spirit::x3::lit("SCALEUNIT") | boost::spirit::x3::lit("UNIT")) >>
+    left_delimiter >>
+        unit_name >>
+        wkt_separator >>
+        conversion_factor >>
+        *(wkt_separator >> identifier) >>
+    right_delimiter);
+
+static auto const parametric_unit = as<ast::ParametricUnit>(
+    boost::spirit::x3::lit("PARAMETRICUNIT") >>
+    left_delimiter >>
+        unit_name >>
+        wkt_separator >>
+        conversion_factor >>
+        *(wkt_separator >> identifier) >>
+    right_delimiter);
+
+static auto const time_unit = as<ast::TimeUnit>(
+    boost::spirit::x3::lit("TIMEUNIT") >>
     left_delimiter >>
         unit_name >>
         wkt_separator >>
@@ -98,25 +139,27 @@ static auto const vertical_extent = as<ast::VerticalExtent>(
     right_delimiter);
 
 
-// TODO Four digits.
-static auto const year = unsigned_integer;
+// Four digits.
+static auto const year = boost::spirit::x3::uint_parser<uint32_t, 10, 4, 4>();
 
-// TODO Two digits, leading zero if less than 10.
-static auto const month = unsigned_integer;
+// Two digits, leading zero if less than 10.
+static auto const month = boost::spirit::x3::uint_parser<uint32_t, 10, 2, 2>();
 
-// TODO Two digits, leading zero if less than 10.
-static auto const day = unsigned_integer;
+// Two digits, leading zero if less than 10.
+static auto const day = boost::spirit::x3::uint_parser<uint32_t, 10, 2, 2>();
 
-// TODO Two digits, leading zero if less than 10.
-static auto const hour = unsigned_integer;
+// Two digits, leading zero if less than 10.
+static auto const hour =
+    boost::spirit::x3::uint_parser<uint32_t, 10, 2, 2>();
 
-// TODO Two digits, leading zero if less than 10.
-static auto const minute = unsigned_integer;
+// Two digits, leading zero if less than 10.
+static auto const minute =
+    boost::spirit::x3::uint_parser<uint32_t, 10, 2, 2>();
 
-// TODO Two digits, leading zero if less than 10.
-static auto const seconds_integer = unsigned_integer;
+// Two digits, leading zero if less than 10.
+static auto const seconds_integer =
+    boost::spirit::x3::uint_parser<uint32_t, 10, 2, 2>();
 
-// TODO Two digits, leading zero if less than 10.
 static auto const seconds_fraction = unsigned_integer;
 
 static auto const second = as<ast::Second>(
@@ -151,8 +194,9 @@ static auto const gregorian_calendar_date_time =
         gregorian_calendar_date >>
         -hour_clock);
 
-// TODO Three digits, leading zeros if less than 100.
-static auto const ordinal_day = unsigned_integer;
+// Three digits, leading zeros if less than 100.
+static auto const ordinal_day =
+    boost::spirit::x3::uint_parser<uint32_t, 10, 3, 3>();
 
 static auto const gregorian_ordinal_date =
     as<ast::GregorianOrdinalDate>(
@@ -163,20 +207,22 @@ static auto const gregorian_ordinal_date_time =
         gregorian_ordinal_date >>
         -hour_clock);
 
-// static auto const date_time = as<ast::DateTime>(
-//     gregorian_calendar_date_time | gregorian_ordinal_date_time);
-// 
-// static auto const temporal_extent = as<ast::TemporalExtent>(
-//     boost::spirit::x3::lit("TIMEEXTENT") >>
-//     left_delimiter >>
-//         -(date_time | quoted_latin_text) >>
-//         -(date_time | quoted_latin_text) >>
-//     right_delimiter);
+static auto const date_time = as<ast::DateTime>(
+    gregorian_calendar_date_time | gregorian_ordinal_date_time);
 
+static auto const temporal_extent = as<ast::TemporalExtent>(
+    boost::spirit::x3::lit("TIMEEXTENT") >>
+    left_delimiter >>
+        (date_time | quoted_latin_text) >>
+        wkt_separator >>
+        (date_time | quoted_latin_text) >>
+    right_delimiter);
 
-
-
-
+static auto const remark = as<std::string>(
+    boost::spirit::x3::lit("REMARK") >>
+    left_delimiter >>
+        quoted_unicode_text >>
+    right_delimiter);
 
 } // namespace grammar
 } // namespace wkt

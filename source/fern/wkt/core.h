@@ -52,7 +52,19 @@ static auto const non_double_quote =
 static auto const double_quote_symbol =
     double_quote >> double_quote;
 
+static auto const wkt_latin_text_characters = as<std::string>(
+        // Turn skipper off.
+        boost::spirit::x3::lexeme[*non_double_quote]);
+
 static auto const quoted_latin_text = as<std::string>(
+    double_quote >>
+        wkt_latin_text_characters >>
+        // // Turn skipper off.
+        // boost::spirit::x3::lexeme[*non_double_quote] >>
+    double_quote);
+
+// TODO Unicode
+static auto const quoted_unicode_text = as<std::string>(
     double_quote >>
         // Turn skipper off.
         boost::spirit::x3::lexeme[*non_double_quote] >>

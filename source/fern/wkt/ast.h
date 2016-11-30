@@ -60,6 +60,24 @@ struct GregorianOrdinalDate
 };
 
 
+struct GregorianOrdinalDateTime
+{
+    GregorianOrdinalDate date;
+    boost::optional<HourClock> time;
+};
+
+
+using DateTime = boost::variant<GregorianCalendarDateTime,
+    GregorianOrdinalDateTime>;
+
+
+struct TemporalExtent
+{
+    boost::variant<DateTime, std::string> start;
+    boost::variant<DateTime, std::string> end;
+};
+
+
 struct BBox
 {
     double lower_left_latitude;
@@ -85,7 +103,39 @@ struct Identifier
 };
 
 
+struct AngleUnit
+{
+    std::string name;
+    double conversion_factor;
+    std::vector<Identifier> identifiers;
+};
+
+
 struct LengthUnit
+{
+    std::string name;
+    double conversion_factor;
+    std::vector<Identifier> identifiers;
+};
+
+
+struct ScaleUnit
+{
+    std::string name;
+    double conversion_factor;
+    std::vector<Identifier> identifiers;
+};
+
+
+struct ParametricUnit
+{
+    std::string name;
+    double conversion_factor;
+    std::vector<Identifier> identifiers;
+};
+
+
+struct TimeUnit
 {
     std::string name;
     double conversion_factor;
@@ -172,6 +222,28 @@ inline bool operator==(
 
 
 inline bool operator==(
+    GregorianOrdinalDateTime const& lhs,
+    GregorianOrdinalDateTime const& rhs)
+{
+    return
+        lhs.date == rhs.date &&
+        lhs.time == rhs.time
+        ;
+}
+
+
+inline bool operator==(
+    TemporalExtent const& lhs,
+    TemporalExtent const& rhs)
+{
+    return
+        lhs.start == rhs.start &&
+        lhs.end == rhs.end
+        ;
+}
+
+
+inline bool operator==(
     BBox const& lhs,
     BBox const& rhs)
 {
@@ -185,8 +257,56 @@ inline bool operator==(
 
 
 inline bool operator==(
+    AngleUnit const& lhs,
+    AngleUnit const& rhs)
+{
+    return
+        lhs.name == rhs.name &&
+        lhs.conversion_factor == rhs.conversion_factor &&
+        lhs.identifiers == rhs.identifiers
+        ;
+}
+
+
+inline bool operator==(
     LengthUnit const& lhs,
     LengthUnit const& rhs)
+{
+    return
+        lhs.name == rhs.name &&
+        lhs.conversion_factor == rhs.conversion_factor &&
+        lhs.identifiers == rhs.identifiers
+        ;
+}
+
+
+inline bool operator==(
+    ScaleUnit const& lhs,
+    ScaleUnit const& rhs)
+{
+    return
+        lhs.name == rhs.name &&
+        lhs.conversion_factor == rhs.conversion_factor &&
+        lhs.identifiers == rhs.identifiers
+        ;
+}
+
+
+inline bool operator==(
+    ParametricUnit const& lhs,
+    ParametricUnit const& rhs)
+{
+    return
+        lhs.name == rhs.name &&
+        lhs.conversion_factor == rhs.conversion_factor &&
+        lhs.identifiers == rhs.identifiers
+        ;
+}
+
+
+inline bool operator==(
+    TimeUnit const& lhs,
+    TimeUnit const& rhs)
 {
     return
         lhs.name == rhs.name &&
@@ -279,6 +399,24 @@ inline std::ostream& operator<<(
 
 inline std::ostream& operator<<(
     std::ostream& stream,
+    GregorianOrdinalDateTime const& date_time)
+{
+    return stream
+        << date_time.date << 'T' << date_time.time;
+}
+
+
+inline std::ostream& operator<<(
+    std::ostream& stream,
+    TemporalExtent const& extent)
+{
+    return stream
+        << extent.start << ", " << extent.end;
+}
+
+
+inline std::ostream& operator<<(
+    std::ostream& stream,
     BBox const& bbox)
 {
     return stream
@@ -306,6 +444,22 @@ inline std::ostream& operator<<(
 
 inline std::ostream& operator<<(
     std::ostream& stream,
+    AngleUnit const& length_unit)
+{
+    stream
+        << length_unit.name << ", "
+        << length_unit.conversion_factor;
+
+    for(auto const& identifier: length_unit.identifiers) {
+        stream << ", " << identifier;
+    }
+
+    return stream;
+}
+
+
+inline std::ostream& operator<<(
+    std::ostream& stream,
     LengthUnit const& length_unit)
 {
     stream
@@ -313,6 +467,54 @@ inline std::ostream& operator<<(
         << length_unit.conversion_factor;
 
     for(auto const& identifier: length_unit.identifiers) {
+        stream << ", " << identifier;
+    }
+
+    return stream;
+}
+
+
+inline std::ostream& operator<<(
+    std::ostream& stream,
+    ScaleUnit const& scale_unit)
+{
+    stream
+        << scale_unit.name << ", "
+        << scale_unit.conversion_factor;
+
+    for(auto const& identifier: scale_unit.identifiers) {
+        stream << ", " << identifier;
+    }
+
+    return stream;
+}
+
+
+inline std::ostream& operator<<(
+    std::ostream& stream,
+    ParametricUnit const& parametric_unit)
+{
+    stream
+        << parametric_unit.name << ", "
+        << parametric_unit.conversion_factor;
+
+    for(auto const& identifier: parametric_unit.identifiers) {
+        stream << ", " << identifier;
+    }
+
+    return stream;
+}
+
+
+inline std::ostream& operator<<(
+    std::ostream& stream,
+    TimeUnit const& time_unit)
+{
+    stream
+        << time_unit.name << ", "
+        << time_unit.conversion_factor;
+
+    for(auto const& identifier: time_unit.identifiers) {
         stream << ", " << identifier;
     }
 
@@ -426,6 +628,20 @@ BOOST_FUSION_ADAPT_STRUCT(
 
 
 BOOST_FUSION_ADAPT_STRUCT(
+    fern::wkt::ast::GregorianOrdinalDateTime,
+    date,
+    time
+)
+
+
+BOOST_FUSION_ADAPT_STRUCT(
+    fern::wkt::ast::TemporalExtent,
+    start,
+    end
+)
+
+
+BOOST_FUSION_ADAPT_STRUCT(
     fern::wkt::ast::BBox,
     lower_left_latitude,
     lower_left_longitude,
@@ -434,7 +650,35 @@ BOOST_FUSION_ADAPT_STRUCT(
 )
 
 BOOST_FUSION_ADAPT_STRUCT(
+    fern::wkt::ast::AngleUnit,
+    name,
+    conversion_factor,
+    identifiers
+)
+
+BOOST_FUSION_ADAPT_STRUCT(
     fern::wkt::ast::LengthUnit,
+    name,
+    conversion_factor,
+    identifiers
+)
+
+BOOST_FUSION_ADAPT_STRUCT(
+    fern::wkt::ast::ScaleUnit,
+    name,
+    conversion_factor,
+    identifiers
+)
+
+BOOST_FUSION_ADAPT_STRUCT(
+    fern::wkt::ast::ParametricUnit,
+    name,
+    conversion_factor,
+    identifiers
+)
+
+BOOST_FUSION_ADAPT_STRUCT(
+    fern::wkt::ast::TimeUnit,
     name,
     conversion_factor,
     identifiers
