@@ -7,15 +7,15 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #include "fern/core/string.h"
-#include <algorithm>
-#include <cassert>
-#include <iterator>
-#include <regex>
 #include <boost/algorithm/string/join.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/algorithm/string/trim.hpp>
 #include <boost/lexical_cast.hpp>
+#include <algorithm>
+#include <cassert>
+#include <iterator>
+#include <regex>
 
 
 namespace fern {

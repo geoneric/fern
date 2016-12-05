@@ -7,9 +7,9 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
+#include "fern/configure.h"
 #include <string>
 #include <vector>
-#include "fern/configure.h"
 
 
 namespace fern {

@@ -7,9 +7,10 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #include "fern/core/data_types.h"
-#include <cassert>
-#include <map>
 #include "fern/core/string.h"
+#include <cassert>
+#include <iostream>
+#include <map>
 
 
 namespace fern {

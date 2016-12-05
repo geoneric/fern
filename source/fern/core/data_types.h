@@ -7,9 +7,10 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
-#include <vector>
 #include "fern/core/data_type.h"
 #include "fern/core/flag_collection.h"
+#include <ostream>
+#include <vector>
 
 
 namespace fern {
