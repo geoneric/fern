@@ -1,7 +1,9 @@
 set(TEST_NAMES
     base_class_test
+    data_name_test
     data_types_test
     flag_collection_test
+    path_test
     point_test
     scope_exit_test
     scope_test
@@ -13,13 +15,6 @@ set(TEST_NAMES
     typelist_test
     value_types_test
 )
-if(FERN_COMPILER_HAS_REGEX)
-    set(TEST_NAMES
-        ${TEST_NAMES}
-        data_name_test
-        path_test
-    )
-endif()
 add_unit_tests(
     SCOPE core
     NAMES ${TEST_NAMES}

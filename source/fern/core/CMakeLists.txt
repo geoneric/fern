@@ -1,6 +1,7 @@
 add_test_conditionally(test)
 
 set(SOURCES
+    data_name
     data_types
     detail/function_wrapper
     exception
@@ -9,6 +10,7 @@ set(SOURCES
     join_threads
     messages
     parse_error
+    path
     script_error
     stack
     stopwatch
@@ -18,15 +20,6 @@ set(SOURCES
     validate_error
     value_types
 )
-if(FERN_COMPILER_HAS_REGEX)
-    # Skip modules that depend on String::split, which is not included if
-    # the compiler doesn't support std::regex.
-    set(SOURCES
-        ${SOURCES}
-        data_name
-        path
-    )
-endif()
 add_library(fern_core_objects OBJECT ${SOURCES})
 
 
