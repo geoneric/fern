@@ -34,9 +34,7 @@ Fern is portable software. The following table lists the platforms that we use o
 
 | OS | Compilers | Status |
 |----|-----------|--------|
-| Linux | gcc-4.9 · x64 | [![Linux build Status](https://travis-ci.org/geoneric/fern.svg?branch=master)](https://travis-ci.org/geoneric/fern)  |
+| Linux | gcc-4.9 · {x64} | [![Linux build Status](https://travis-ci.org/geoneric/fern.svg?branch=master)](https://travis-ci.org/geoneric/fern)  |
 | Linux | clang-3.7 · x64 | Checked 'by hand' |
 | Windows | vs-2015 · x64 | [![Windows build Status](https://ci.appveyor.com/api/projects/status/github/geoneric/fern?branch=master&svg=true)](https://ci.appveyor.com/project/kordejong/fern) |
-| OS X | clang-3.7 · x64 | Checked 'by hand' |
-
-20160425: Windows build fails because of [bug in CMake 3.5](https://cmake.org/Bug/view.php?id=16020) which is currently used by AppVeyor.
+| OS X | clang-{3.7,3.8} · x64 | Checked 'by hand' |
