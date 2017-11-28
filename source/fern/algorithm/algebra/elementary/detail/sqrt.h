@@ -39,6 +39,44 @@ struct Algorithm
 };
 
 
+// http://www.codeproject.com/Articles/69941/Best-Square-Root-Method-Algorithm-Function-Precisi
+
+
+// #define SQRT_MAGIC_F 0x5f3759df 
+// double sqrt2(const double x)
+// {
+//   const double xhalf = 0.5f*x;
+//  
+//   union // get bits for double value
+//   {
+//     double x;
+//     int i;
+//   } u;
+//   u.x = x;
+//   u.i = SQRT_MAGIC_F - (u.i >> 1);  // gives initial guess y0
+//   return x*u.x*(1.5f - xhalf*u.x*u.x);// Newton step, repeating increases accuracy 
+// }
+
+
+// template<>
+// struct Algorithm<
+//     float>
+// {
+// 
+//     template<
+//         typename Result>
+//     inline void operator()(
+//         float const& value,
+//         Result& result) const
+//     {
+//         FERN_STATIC_ASSERT(std::is_same, Result, float)
+// 
+//         _mm_store_ss( &result, _mm_sqrt_ss( _mm_load_ss( &value ) ) );
+//     }
+// 
+// };
+
+
 template<
     template<typename> class OutOfDomainPolicy,
     typename InputNoDataPolicy,
