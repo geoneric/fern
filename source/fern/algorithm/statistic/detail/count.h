@@ -34,7 +34,7 @@ struct Algorithm
         FERN_STATIC_ASSERT(std::is_integral, Result)
         FERN_STATIC_ASSERT(!std::is_same, Result, bool)
 
-        result = value1 == value2 ? 1 : 0;
+        result = is_equal(value1, value2) ? 1 : 0;
     }
 
     template<

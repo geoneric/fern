@@ -9,6 +9,7 @@
 #pragma once
 #include <cmath>
 #include "fern/core/assert.h"
+#include "fern/core/math.h"
 #include "fern/core/type_traits.h"
 #include "fern/algorithm/policy/policies.h"
 #include "fern/algorithm/core/binary_local_operation.h"
@@ -249,7 +250,7 @@ struct Algorithm
         Value2 const& value2,
         R& result) const
     {
-        assert(value2 != Value2(0));
+        assert(is_not_equal(value2, Value2(0)));
         result = static_cast<R>(value1) / static_cast<R>(value2);
     }
 

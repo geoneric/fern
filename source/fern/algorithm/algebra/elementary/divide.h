@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------------
 #pragma once
 #include "fern/core/base_class.h"
+#include "fern/core/math.h"
 #include "fern/algorithm/policy/policies.h"
 #include "fern/algorithm/algebra/elementary/detail/divide.h"
 
@@ -71,7 +72,7 @@ public:
         Value1 const& /* value1 */,
         Value2 const& value2)
     {
-        return value2 != Value2(0);
+        return is_not_equal(value2, Value2(0));
     }
 
 };

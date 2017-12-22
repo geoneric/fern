@@ -10,6 +10,7 @@
 #include <cstddef>
 #include <utility>
 #include "fern/core/data_type_traits.h"
+#include "fern/core/math.h"
 #include "fern/algorithm/core/mask_customization_point.h"
 
 
@@ -119,7 +120,7 @@ template<
 inline bool DetectNoDataByValue<Mask>::is_no_data(
     size_t index) const
 {
-    return get(_mask, index) == _no_data_value;
+    return is_equal(get(_mask, index), _no_data_value);
 }
 
 

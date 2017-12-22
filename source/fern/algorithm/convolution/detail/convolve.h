@@ -20,6 +20,7 @@
 #include "fern/core/assert.h"
 #include "fern/core/data_type_traits.h"
 #include "fern/core/base_class.h"
+#include "fern/core/math.h"
 
 
 namespace fern {
@@ -241,7 +242,8 @@ struct ConvolveNorthWestCorner
                                     value_seen = true;
                                 }
                             }
-                            else if(get(kernel, kernel_index) != W{0}) {
+                            else if(is_not_equal(
+                                    get(kernel, kernel_index), W{0})) {
                                 HandleValue<SV, SW, V, W>::apply(
                                     get(source, source_index),
                                     get(kernel, kernel_index),
@@ -419,7 +421,8 @@ struct ConvolveNorthEastCorner
                                     value_seen = true;
                                 }
                             }
-                            else if(get(kernel, kernel_index) != W{0}) {
+                            else if(is_not_equal(
+                                    get(kernel, kernel_index), W{0})) {
                                 HandleValue<SV, SW, V, W>::apply(
                                     get(source, source_index),
                                     get(kernel, kernel_index),
@@ -598,7 +601,8 @@ struct ConvolveSouthWestCorner
                                     value_seen = true;
                                 }
                             }
-                            else if(get(kernel, kernel_index) != W{0}) {
+                            else if(is_not_equal(
+                                    get(kernel, kernel_index), W{0})) {
                                 HandleValue<SV, SW, V, W>::apply(
                                     get(source, source_index),
                                     get(kernel, kernel_index),
@@ -779,7 +783,8 @@ struct ConvolveSouthEastCorner
                                     value_seen = true;
                                 }
                             }
-                            else if(get(kernel, kernel_index) != W{0}) {
+                            else if(is_not_equal(
+                                    get(kernel, kernel_index), W{0})) {
                                 HandleValue<SV, SW, V, W>::apply(
                                     get(source, source_index),
                                     get(kernel, kernel_index),
@@ -957,7 +962,8 @@ struct ConvolveNorthSide
                                     value_seen = true;
                                 }
                             }
-                            else if(get(kernel, kernel_index) != W{0}) {
+                            else if(is_not_equal(
+                                    get(kernel, kernel_index), W{0})) {
                                 HandleValue<SV, SW, V, W>::apply(
                                     get(source, source_index),
                                     get(kernel, kernel_index),
@@ -1135,7 +1141,8 @@ struct ConvolveWestSide
                                     value_seen = true;
                                 }
                             }
-                            else if(get(kernel, kernel_index) != W{0}) {
+                            else if(is_not_equal(
+                                    get(kernel, kernel_index), W{0})) {
                                 HandleValue<SV, SW, V, W>::apply(
                                     get(source, source_index),
                                     get(kernel, kernel_index),
@@ -1315,7 +1322,8 @@ struct ConvolveEastSide
                                     value_seen = true;
                                 }
                             }
-                            else if(get(kernel, kernel_index) != W{0}) {
+                            else if(is_not_equal(
+                                    get(kernel, kernel_index), W{0})) {
                                 HandleValue<SV, SW, V, W>::apply(
                                     get(source, source_index),
                                     get(kernel, kernel_index),
@@ -1494,7 +1502,8 @@ struct ConvolveSouthSide
                                     value_seen = true;
                                 }
                             }
-                            else if(get(kernel, kernel_index) != W{0}) {
+                            else if(is_not_equal(
+                                    get(kernel, kernel_index), W{0})) {
                                 HandleValue<SV, SW, V, W>::apply(
                                     get(source, source_index),
                                     get(kernel, kernel_index),
@@ -1633,7 +1642,8 @@ struct ConvolveInnerPart<true>
                                     value_seen = true;
                                 }
                             }
-                            else if(get(kernel, kernel_index) != W{0}) {
+                            else if(is_not_equal(
+                                    get(kernel, kernel_index), W{0})) {
                                 HandleValue<SV, SW, V, W>::apply(
                                     get(source, source_index),
                                     get(kernel, kernel_index),

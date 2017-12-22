@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------------
 #pragma once
 #include "fern/core/assert.h"
+#include "fern/core/math.h"
 #include "fern/core/type_traits.h"
 #include "fern/algorithm/policy/policies.h"
 #include "fern/algorithm/core/binary_local_operation.h"
@@ -31,7 +32,7 @@ struct Algorithm
         Value2 const& value2,
         Result& result) const
     {
-        result = value1 == value2;
+        result = is_equal(value1, value2);
     }
 
 };

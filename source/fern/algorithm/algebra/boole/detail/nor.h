@@ -29,7 +29,7 @@ struct Algorithm
         Value2 const& value2,
         Result& result) const
     {
-        result = !(value1 || value2);
+        result = !(bool(value1) || bool(value2));
     }
 
 };

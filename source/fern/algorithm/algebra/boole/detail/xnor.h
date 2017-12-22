@@ -9,6 +9,7 @@
 #pragma once
 #include "fern/algorithm/core/binary_local_operation.h"
 #include "fern/algorithm/policy/policies.h"
+#include "fern/core/math.h"
 
 
 namespace fern {
@@ -29,7 +30,7 @@ struct Algorithm
         Value2 const& value2,
         Result& result) const
     {
-        result = !value1 == !value2;
+        result = !bool(value1) == !bool(value2);
     }
 
 };

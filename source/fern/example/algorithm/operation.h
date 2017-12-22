@@ -16,6 +16,7 @@
 #include "fern/algorithm/core/cast.h"
 #include "fern/algorithm/space/focal/slope.h"
 #include "fern/algorithm/algebra/elementary/add.h"
+#include "fern/core/math.h"
 
 
 namespace example {
@@ -31,9 +32,9 @@ fern::algorithm::add::result_type<Value1, Value2> add(
     Value1 const& lhs,
     Value2 const& rhs)
 {
-    assert(cell_size(lhs, 0) == cell_size(lhs, 1));
-    assert(cell_size(lhs, 0) == cell_size(rhs, 0));
-    assert(cell_size(lhs, 1) == cell_size(rhs, 1));
+    assert(fern::is_equal(cell_size(lhs, 0), cell_size(lhs, 1)));
+    assert(fern::is_equal(cell_size(lhs, 0), cell_size(rhs, 0)));
+    assert(fern::is_equal(cell_size(lhs, 1), cell_size(rhs, 1)));
     assert(size(lhs, 0) == size(rhs, 0));
     assert(size(lhs, 1) == size(rhs, 1));
 
@@ -52,7 +53,7 @@ template<
 fern::CloneT<Value, ResultValueType> cast(
     Value const& value)
 {
-    assert(cell_size(value, 0) == cell_size(value, 1));
+    assert(fern::is_equal(cell_size(value, 0), cell_size(value, 1)));
 
     fern::CloneT<Value, ResultValueType> result(
         cell_size(value, 0),
@@ -70,7 +71,7 @@ template<
 fern::CloneT<Value, fern::value_type<Value>> slope(
     Value const& value)
 {
-    assert(cell_size(value, 0) == cell_size(value, 1));
+    assert(fern::is_equal(cell_size(value, 0), cell_size(value, 1)));
 
     fern::CloneT<Value, fern::value_type<Value>> result(
         cell_size(value, 0), size(value, 0), size(value, 1));

@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------------
 #pragma once
 #include "fern/core/assert.h"
+#include "fern/core/math.h"
 #include "fern/algorithm/policy/policies.h"
 #include "fern/algorithm/algebra/elementary/detail/tgamma.h"
 
@@ -39,7 +40,7 @@ public:
     inline static bool within_domain(
         Value const& value)
     {
-        return value >= Value{0} || std::trunc(value) != value;
+        return value >= Value{0} || is_not_equal(std::trunc(value), value);
     }
 
 };

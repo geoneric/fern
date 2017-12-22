@@ -9,6 +9,7 @@
 #pragma once
 #include <cmath>
 #include "fern/core/assert.h"
+#include "fern/core/math.h"
 #include "fern/algorithm/policy/policies.h"
 #include "fern/algorithm/core/unary_local_operation.h"
 
@@ -56,7 +57,7 @@ struct within_domain<
     inline static constexpr bool calculate(
         Value const& value)
     {
-        return value >= Value{0.0} && std::trunc(value) == value;
+        return value >= Value{0.0} && is_equal(std::trunc(value), value);
     }
 
 };
@@ -91,8 +92,11 @@ struct within_range<
         // Calculate the result as if the argument was a floating point and
         // compare the results. If the integral result does not equal the
         // floating point result, then the integral result has overflown.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wfloat-equal"
         return std::round(std::tgamma(value + 1)) ==
             static_cast<double>(result);
+#pragma GCC diagnostic pop
     }
 
 };

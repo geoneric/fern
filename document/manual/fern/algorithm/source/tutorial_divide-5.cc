@@ -4,6 +4,7 @@
 #include "fern/core/data_customization_point/vector.h"
 #include "fern/algorithm/algebra/elementary/divide.h"
 #include "fern/algorithm/policy/detect_no_data_by_value.h"
+#include "fern/core/math.h"
 
 
 int main()
@@ -29,11 +30,11 @@ int main()
         fa::divide::OutOfRangePolicy>(input_no_data_policy,
             output_no_data_policy, fa::sequential, value1, value2, result);
 
-    assert(result[0] == no_data);  // Zero in second argument.
-    assert(result[1] == 2.0 / 4.0);
-    assert(result[2] == no_data);  // No-data in second argument.
-    assert(result[3] == 4.0 / 2.0);
-    assert(result[4] == no_data);  // No-data in first argument.
+    assert(fern::is_equal(result[0], no_data));  // Zero in second argument.
+    assert(fern::is_equal(result[1], 2.0 / 4.0));
+    assert(fern::is_equal(result[2], no_data));  // No-data in second argument.
+    assert(fern::is_equal(result[3], 4.0 / 2.0));
+    assert(fern::is_equal(result[4], no_data));  // No-data in first argument.
 
     return EXIT_SUCCESS;
 }

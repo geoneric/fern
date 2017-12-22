@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------------
 #pragma once
 #include "fern/core/base_class.h"
+#include "fern/core/math.h"
 #include "fern/algorithm/policy/policies.h"
 #include "fern/algorithm/algebra/elementary/detail/pow.h"
 
@@ -49,11 +50,11 @@ public:
             Base integral, fractional;
             fractional = std::modf(exponent, &integral);
 
-            if(fractional != Base(0)) {
+            if(is_not_equal(fractional, Base(0))) {
                 return false;
             }
         }
-        else if(base == Base(0) && exponent < Exponent(0)) {
+        else if(is_equal(base, Base(0)) && exponent < Exponent(0)) {
             return false;
         }
 
