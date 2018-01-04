@@ -92,11 +92,8 @@ struct within_range<
         // Calculate the result as if the argument was a floating point and
         // compare the results. If the integral result does not equal the
         // floating point result, then the integral result has overflown.
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wfloat-equal"
-        return std::round(std::tgamma(value + 1)) ==
-            static_cast<double>(result);
-#pragma GCC diagnostic pop
+        return is_equal(
+            std::round(std::tgamma(value + 1)), static_cast<double>(result));
     }
 
 };

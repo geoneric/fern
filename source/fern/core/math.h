@@ -5,7 +5,7 @@ namespace fern {
 
 template<
     typename T>
-bool is_equal(
+inline bool is_equal(
     T const value1,
     T const value2)
 {
@@ -14,32 +14,40 @@ bool is_equal(
 
 
 template<>
-bool is_equal(
+inline bool is_equal(
     float const value1,
     float const value2)
 {
+#if defined(__GNUC__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif
     return value1 == value2;
+#if defined(__GNUC__)
 #pragma GCC diagnostic pop
+#endif
 }
 
 
 template<>
-bool is_equal(
+inline bool is_equal(
     double const value1,
     double const value2)
 {
+#if defined(__GNUC__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif
     return value1 == value2;
+#if defined(__GNUC__)
 #pragma GCC diagnostic pop
+#endif
 }
 
 
 template<
     typename T>
-bool is_not_equal(
+inline bool is_not_equal(
     T const value1,
     T const value2)
 {
@@ -48,26 +56,34 @@ bool is_not_equal(
 
 
 template<>
-bool is_not_equal(
+inline bool is_not_equal(
     float const value1,
     float const value2)
 {
+#if defined(__GNUC__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif
     return value1 != value2;
+#if defined(__GNUC__)
 #pragma GCC diagnostic pop
+#endif
 }
 
 
 template<>
-bool is_not_equal(
+inline bool is_not_equal(
     double const value1,
     double const value2)
 {
+#if defined(__GNUC__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif
     return value1 != value2;
+#if defined(__GNUC__)
 #pragma GCC diagnostic pop
+#endif
 }
 
 }  // namespace fern
