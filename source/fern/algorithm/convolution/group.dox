@@ -62,9 +62,10 @@
     Neighborhoods  {#fern_algorithm_convolution_neighborhoods}
     -------------
 
-    Name                    | Description
-    ----------------------- | -----------
-    fern::algorithm::Square | Square neighborhood
+    Name         | Description
+    ------------ | -----------
+    fern::Kernel | Square neighborhood, runtime
+    fern::Square | Square neighborhood, compile-time
 
 
     Theory  {#fern_algorithm_convolution_theory}

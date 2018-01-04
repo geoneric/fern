@@ -101,11 +101,11 @@ void convolve(
 
     Policy                     | Implementation
     -------------------------- | --------------
-    AlternativeForNoDataPolicy | fern::convolve::SkipNoData
-    NormalizePolicy            | fern::convolve::DivideByWeights
-    OutOfImagePolicy           | fern::convolve::SkipOutOfImage
-    InputNoDataPolicy          | fern::SkipNoData (as always)
-    OutputNoDataPolicy         | fern::DontMarkNoData (as always)
+    AlternativeForNoDataPolicy | fern::algorithm::convolve::SkipNoData
+    NormalizePolicy            | fern::algorithm::convolve::DivideByWeights
+    OutOfImagePolicy           | fern::algorithm::convolve::SkipOutOfImage
+    InputNoDataPolicy          | fern::algorithm::SkipNoData (as always)
+    OutputNoDataPolicy         | fern::algorithm::DontMarkNoData (as always)
 */
 template<
     typename ExecutionPolicy,

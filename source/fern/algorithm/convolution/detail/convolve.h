@@ -14,6 +14,7 @@
 #include <type_traits>
 #include "fern/algorithm/core/index_ranges.h"
 #include "fern/algorithm/core/accumulation_traits.h"
+#include "fern/algorithm/convolution/neighborhood/kernel_traits.h"
 #include "fern/algorithm/convolution/neighborhood/square_traits.h"
 #include "fern/algorithm/convolution/kernel_traits.h"
 #include "fern/algorithm/policy/execution_policy.h"
