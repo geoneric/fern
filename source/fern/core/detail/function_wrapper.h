@@ -22,17 +22,19 @@ public:
 
                    FunctionWrapper     ()=default;
 
-                   FunctionWrapper     (FunctionWrapper&& other);
+                   FunctionWrapper     (FunctionWrapper const&)=delete;
 
-                   FunctionWrapper     (FunctionWrapper const& other)=delete;
+                   FunctionWrapper     (FunctionWrapper&&)=default;
 
     template<
         class Function>
                    FunctionWrapper     (Function&& function);
 
-    FunctionWrapper& operator=         (FunctionWrapper&& other);
+                   ~FunctionWrapper    ()=default;
 
-    FunctionWrapper& operator=         (FunctionWrapper const& other)=delete;
+    FunctionWrapper& operator=         (FunctionWrapper const&)=delete;
+
+    FunctionWrapper& operator=         (FunctionWrapper&&)=default;
 
     void           operator()          ();
 
@@ -82,9 +84,15 @@ template<
 inline FunctionWrapper::FunctionWrapper(
     Function&& function)
 
-    : _concept(std::make_unique<Model<Function>>(std::move(function)))
+    : _concept{std::make_unique<Model<Function>>(std::move(function))}
 
 {
+}
+
+
+inline void FunctionWrapper::operator()()
+{
+    _concept->call();
 }
 
 } // namespace detail

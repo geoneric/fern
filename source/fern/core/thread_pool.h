@@ -58,10 +58,16 @@ public:
 
 private:
 
+    // Declaration order is relevant:
+    // - done
+    // - work_queue
+    // - threads
+    // - joiner
+
     //! Variable to signal worker threads to stop executing new tasks.
     std::atomic_bool _done;
 
-    //! Condition variable to block threads when there are not tasks.
+    //! Condition variable to block threads when there are no tasks.
     std::condition_variable _work_condition;
 
     //! Mutex used to protect access to _done and _work_condition.
@@ -102,10 +108,7 @@ inline std::future<typename std::result_of<Function()>::type>
 
     // Notify a waiting thread (if there is any), that there is a new
     // task to perform.
-    {
-        std::lock_guard<std::mutex> lock(_mutex);
-        _work_condition.notify_one();
-    }
+    _work_condition.notify_one();
 
     return result;
 }

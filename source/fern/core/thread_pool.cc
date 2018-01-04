@@ -21,8 +21,12 @@ namespace fern {
 ThreadPool::ThreadPool(
     size_t nr_threads)
 
-    : _done(false),
-      _joiner(_threads)
+    : _done{false},
+      _work_condition{},
+      _mutex{},
+      _work_queue{},
+      _threads{},
+      _joiner{_threads}
 
 {
     assert(nr_threads > 0);
@@ -103,13 +107,15 @@ void ThreadPool::execute_task_or_wait()
 
         if(_work_queue.try_pop(task)) {
 
+            // Execute the task...
             task();
         }
         else {
 
+            // Wait for a task to become available... The wait
+            // automatically releases the mutex.
             std::unique_lock<std::mutex> lock(_mutex);
-            _work_condition.wait(lock, [this] {
-                return !_work_queue.empty() || _done; });
+            _work_condition.wait(lock);
         }
     }
 }
