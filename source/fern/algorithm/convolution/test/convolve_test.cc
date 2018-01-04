@@ -14,8 +14,7 @@
 #include "fern/feature/core/data_customization_point/masked_array.h"
 #include "fern/algorithm/algebra/elementary/equal.h"
 #include "fern/algorithm/statistic/count.h"
-#include "fern/algorithm/convolution/neighborhood/square.h"
-#include "fern/algorithm/convolution/neighborhood/square_traits.h"
+#include "fern/algorithm/convolution/neighborhood.h"
 #include "fern/algorithm/convolution/convolve.h"
 #include "fern/algorithm/convolution/replace_no_data_by_focal_average.h"
 #include "fern/algorithm/core/test/test_utils.h"
@@ -563,6 +562,8 @@ void compare_result6(
 
 BOOST_AUTO_TEST_CASE(convolve)
 {
+    using Weights = std::initializer_list<std::initializer_list<int>>;
+
     // Kernel with radius 2.
     {
         // Create input array:
@@ -585,34 +586,54 @@ BOOST_AUTO_TEST_CASE(convolve)
         size_t const nr_cols = 6;
         auto extents = fern::extents[nr_rows][nr_cols];
         fern::Array<double, 2> argument(extents);
-        std::iota(argument.data(), argument.data() + argument.num_elements(),
-            0);
+        std::iota(
+            argument.data(), argument.data() + argument.num_elements(), 0);
 
         // Calculate local average.
         // Define kernel shape and weights.
-        fern::Square<int, 2> kernel({
+
+        Weights weights{
             {1, 1, 1, 1, 1},
             {1, 1, 1, 1, 1},
             {1, 1, 1, 1, 1},
             {1, 1, 1, 1, 1},
             {1, 1, 1, 1, 1}
-        });
+        };
+
+        fern::Square<int, 2> compile_time_kernel(weights);
+        fern::Kernel<int> runtime_kernel(2, weights);
 
         // Convolute while skipping out-of-image cells.
         {
-            // Sequential.
+            // Sequential, compile-time kernel
             {
                 fern::Array<double, 2> result(extents);
-                fa::convolution::convolve(fa::sequential, argument, kernel,
-                    result);
+                fa::convolution::convolve(
+                    fa::sequential, argument, compile_time_kernel, result);
                 compare_result1(result);
             }
 
-            // Parallel.
+            // Sequential, runtime kernel
             {
                 fern::Array<double, 2> result(extents);
-                fa::convolution::convolve(fa::parallel, argument, kernel,
-                    result);
+                fa::convolution::convolve(
+                    fa::sequential, argument, runtime_kernel, result);
+                compare_result1(result);
+            }
+
+            // Parallel, compile-time kernel
+            {
+                fern::Array<double, 2> result(extents);
+                fa::convolution::convolve(
+                    fa::parallel, argument, compile_time_kernel, result);
+                compare_result1(result);
+            }
+
+            // Parallel, runtime kernel
+            {
+                fern::Array<double, 2> result(extents);
+                fa::convolution::convolve(
+                    fa::parallel, argument, runtime_kernel, result);
                 compare_result1(result);
             }
         }
@@ -629,7 +650,7 @@ BOOST_AUTO_TEST_CASE(convolve)
 
             OutputNoDataPolicy output_no_data_policy;
 
-            // Sequential.
+            // Sequential, compile-time kernel
             {
                 fern::Array<double, 2> result(extents);
                 fa::convolution::convolve<
@@ -641,11 +662,11 @@ BOOST_AUTO_TEST_CASE(convolve)
                     InputNoDataPolicy,
                     OutputNoDataPolicy>(
                         InputNoDataPolicy{{}}, output_no_data_policy,
-                        fa::sequential, argument, kernel, result);
+                        fa::sequential, argument, compile_time_kernel, result);
                 compare_result2(result);
             }
 
-            // Parallel.
+            // Sequential, runtime kernel
             {
                 fern::Array<double, 2> result(extents);
                 fa::convolution::convolve<
@@ -657,7 +678,39 @@ BOOST_AUTO_TEST_CASE(convolve)
                     InputNoDataPolicy,
                     OutputNoDataPolicy>(
                         InputNoDataPolicy{{}}, output_no_data_policy,
-                        fa::parallel, argument, kernel, result);
+                        fa::sequential, argument, runtime_kernel, result);
+                compare_result2(result);
+            }
+
+            // Parallel, compile-time kernel
+            {
+                fern::Array<double, 2> result(extents);
+                fa::convolution::convolve<
+                    AlternativeForNoDataPolicy,
+                    NormalizePolicy,
+                    OutOfImagePolicy,
+                    NoDataFocusElementPolicy,
+                    fa::unary::DiscardRangeErrors,
+                    InputNoDataPolicy,
+                    OutputNoDataPolicy>(
+                        InputNoDataPolicy{{}}, output_no_data_policy,
+                        fa::parallel, argument, compile_time_kernel, result);
+                compare_result2(result);
+            }
+
+            // Parallel, runtime kernel
+            {
+                fern::Array<double, 2> result(extents);
+                fa::convolution::convolve<
+                    AlternativeForNoDataPolicy,
+                    NormalizePolicy,
+                    OutOfImagePolicy,
+                    NoDataFocusElementPolicy,
+                    fa::unary::DiscardRangeErrors,
+                    InputNoDataPolicy,
+                    OutputNoDataPolicy>(
+                        InputNoDataPolicy{{}}, output_no_data_policy,
+                        fa::parallel, argument, runtime_kernel, result);
                 compare_result2(result);
             }
         }
@@ -691,24 +744,41 @@ BOOST_AUTO_TEST_CASE(convolve)
 
         // Calculate local average.
         // Define kernel shape and weights.
-        fern::Square<int, 1> kernel({
+        Weights weights{
             {1, 1, 1},
             {1, 1, 1},
             {1, 1, 1}
-        });
+        };
 
-        // Sequential.
+        fern::Square<int, 1> compile_time_kernel(weights);
+        fern::Kernel<int> runtime_kernel(1, weights);
+
+        // Sequential, compile-time kernel
         {
             fern::Array<double, 2> result(extents);
-            fa::convolution::convolve(fa::sequential, argument, kernel,
-                result);
+            fa::convolution::convolve(
+                fa::sequential, argument, compile_time_kernel, result);
         }
 
-        // Parallel.
+        // Sequential, runtime kernel
         {
             fern::Array<double, 2> result(extents);
-            fa::convolution::convolve(fa::parallel, argument, kernel,
-                result);
+            fa::convolution::convolve(
+                fa::sequential, argument, runtime_kernel, result);
+        }
+
+        // Parallel, compile-time kernel
+        {
+            fern::Array<double, 2> result(extents);
+            fa::convolution::convolve(
+                fa::parallel, argument, compile_time_kernel, result);
+        }
+
+        // Parallel, runtime kernel
+        {
+            fern::Array<double, 2> result(extents);
+            fa::convolution::convolve(
+                fa::parallel, argument, runtime_kernel, result);
         }
     }
 }
@@ -746,6 +816,8 @@ BOOST_AUTO_TEST_CASE(out_of_range_policy)
 
 BOOST_AUTO_TEST_CASE(no_data_policies)
 {
+    using Weights = std::initializer_list<std::initializer_list<int>>;
+
     // Make sure that input no-data is detected and handled correctly.
     using InputNoDataPolicy = fa::InputNoDataPolicies<
         fa::DetectNoDataByValue<fern::Mask<2>>>;
@@ -756,17 +828,19 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
     auto extents = fern::extents[nr_rows][nr_cols];
 
     // Local average kernel.
-    fern::Square<int, 1> kernel_1({
+    Weights weights_1{
         {1, 1, 1},
         {1, 1, 1},
         {1, 1, 1}
-    });
-
-    fern::Square<int, 1> kernel_2({
+    };
+    Weights weights_2{
         {2, 2, 2},
         {2, 2, 2},
         {2, 2, 2}
-    });
+    };
+
+    fern::Kernel<int> kernel_1(1, weights_1);
+    fern::Kernel<int> kernel_2(1, weights_2);
 
 
     // Source image with a few masked values.
@@ -929,6 +1003,8 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
 
 BOOST_AUTO_TEST_CASE(boolean_kernel_weights)
 {
+    using Weights = std::initializer_list<std::initializer_list<bool>>;
+
     // Kernel with radius 1 and boolean weights.
     {
         // Create input array:
@@ -955,26 +1031,43 @@ BOOST_AUTO_TEST_CASE(boolean_kernel_weights)
             0);
 
         // Define kernel shape and weights.
-        fern::Square<bool, 1> kernel({
+        Weights weights{
             {false, true, false},
             {true , true, true },
             {false, true, false}
-        });
+        };
+        fern::Square<bool, 1> compile_time_kernel{weights};
+        fern::Kernel<bool> runtime_kernel{1, weights};
 
-
-        // Sequential.
+        // Sequential, compile-time kernel
         {
             fern::Array<double, 2> result(extents);
-            fa::convolution::convolve(fa::sequential, argument, kernel,
-                result);
+            fa::convolution::convolve(
+                fa::sequential, argument, compile_time_kernel, result);
             compare_result3(result);
         }
 
-        // Parallel.
+        // Sequential, runtime kernel
         {
             fern::Array<double, 2> result(extents);
-            fa::convolution::convolve(fa::parallel, argument, kernel,
-                result);
+            fa::convolution::convolve(
+                fa::sequential, argument, runtime_kernel, result);
+            compare_result3(result);
+        }
+
+        // Parallel, compile-time kernel
+        {
+            fern::Array<double, 2> result(extents);
+            fa::convolution::convolve(
+                fa::parallel, argument, compile_time_kernel, result);
+            compare_result3(result);
+        }
+
+        // Parallel, runtime kernel
+        {
+            fern::Array<double, 2> result(extents);
+            fa::convolution::convolve(
+                fa::parallel, argument, runtime_kernel, result);
             compare_result3(result);
         }
     }
