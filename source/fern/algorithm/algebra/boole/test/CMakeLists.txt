@@ -1,17 +1,13 @@
-set(TEST_NAMES
-    and_test
-    defined_test
-    nor_test
-    not_test
-    or_test
-    xnor_test
-    xor_test
-)
 add_unit_tests(
     SCOPE algorithm_algebra_boole
-    NAMES ${TEST_NAMES}
-    OBJECT_LIBRARIES
-        $<TARGET_OBJECTS:fern_algorithm_policy_objects>
+    NAMES
+        and_test
+        defined_test
+        nor_test
+        not_test
+        or_test
+        xnor_test
+        xor_test
     LINK_LIBRARIES
-        fern_core
+        fern::algorithm
 )

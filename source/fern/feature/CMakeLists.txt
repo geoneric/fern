@@ -11,26 +11,22 @@ if(FERN_BUILD_ALGORITHM)
     )
 endif()
 
-
-get_property(FERN_FEATURE_OBJECT_LIBRARIES GLOBAL
-    PROPERTY FERN_FEATURE_OBJECT_LIBRARIES)
-
-if(FERN_FEATURE_DYN_LINK)
-    add_library(fern_feature SHARED
-        ${FERN_FEATURE_OBJECT_LIBRARIES}
-    )
-else()
-    add_library(fern_feature STATIC
-        ${FERN_FEATURE_OBJECT_LIBRARIES}
-    )
-endif()
-set_target_properties(fern_feature
-    PROPERTIES
-        COMPILE_FLAGS "-DFERN_FEATURE_SOURCE"
+add_library(fern_feature SHARED
+    core/array
 )
+
+add_library(fern::feature ALIAS fern_feature)
+
+target_include_directories(fern_feature
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../..>
+)
+
 target_link_libraries(fern_feature
-    fern_core
+    PUBLIC
+        fern::core
 )
+
 install(
     TARGETS fern_feature
     EXPORT fern_targets

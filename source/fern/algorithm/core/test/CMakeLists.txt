@@ -1,31 +1,27 @@
-set(TEST_NAMES
-    binary_local_operation_test
-    cast_test
-    clamp_test
-    compress_test
-    copy_test
-    cover_test
-    decompress_test
-    if_test
-    index_range_test
-    index_ranges_test
-    intersect_no_data_test
-    fill_test
-    merge_no_data_test
-    nullary_local_operation_test
-    offset_test
-    result_type_test
-    result_value_test
-    unary_disaggregate_operation_test
-    unary_local_operation_test
-    unite_no_data_test
-)
 add_unit_tests(
     SCOPE algorithm_core
-    NAMES ${TEST_NAMES}
-    OBJECT_LIBRARIES
-        $<TARGET_OBJECTS:fern_algorithm_policy_objects>
-        $<TARGET_OBJECTS:fern_algorithm_core_objects>
+    NAMES
+        binary_local_operation_test
+        cast_test
+        clamp_test
+        compress_test
+        copy_test
+        cover_test
+        decompress_test
+        if_test
+        index_range_test
+        index_ranges_test
+        intersect_no_data_test
+        fill_test
+        merge_no_data_test
+        nullary_local_operation_test
+        offset_test
+        result_type_test
+        result_value_test
+        unary_disaggregate_operation_test
+        unary_local_operation_test
+        unite_no_data_test
     LINK_LIBRARIES
-        fern_feature
+        fern::algorithm
+        fern::feature
 )

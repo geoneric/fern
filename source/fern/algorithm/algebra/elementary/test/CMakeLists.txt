@@ -1,32 +1,28 @@
-set(TEST_NAMES
-    absolute_test
-    add_test
-    ceil_test
-    divide_test
-    equal_test
-    factorial_test
-    floor_test
-    greater_equal_test
-    greater_test
-    less_test
-    less_equal_test
-    log_test
-    log10_test
-    log2_test
-    multiply_test
-    pow_test
-    round_test
-    sqrt_test
-    subtract_test
-    tgamma_test
-    trunc_test
-)
 add_unit_tests(
     SCOPE algorithm_algebra_elementary
-    NAMES ${TEST_NAMES}
-    OBJECT_LIBRARIES
-        $<TARGET_OBJECTS:fern_algorithm_policy_objects>
-        $<TARGET_OBJECTS:fern_algorithm_core_objects>
+    NAMES
+        absolute_test
+        add_test
+        ceil_test
+        divide_test
+        equal_test
+        factorial_test
+        floor_test
+        greater_equal_test
+        greater_test
+        less_test
+        less_equal_test
+        log_test
+        log10_test
+        log2_test
+        multiply_test
+        pow_test
+        round_test
+        sqrt_test
+        subtract_test
+        tgamma_test
+        trunc_test
     LINK_LIBRARIES
-        fern_feature
+        fern::algorithm
+        fern::feature
 )

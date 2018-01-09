@@ -29,23 +29,6 @@ option(FERN_BUILD_DOCUMENTATION "Build documentation" FALSE)
 option(FERN_BUILD_TEST "Build tests" FALSE)
 
 
-# TODO Make this an option. Allow this to be changed per library.
-set(FERN_ALL_DYN_LINK FALSE)
-if(NOT WIN32)
-    set(FERN_ALL_DYN_LINK TRUE)
-endif()
-
-if(FERN_ALL_DYN_LINK)
-    set(FERN_ALGORITHM_DYN_LINK TRUE)
-    set(FERN_CORE_DYN_LINK TRUE)
-    set(FERN_FEATURE_DYN_LINK TRUE)
-else()
-    set(FERN_ALGORITHM_DYN_LINK FALSE)
-    set(FERN_CORE_DYN_LINK FALSE)
-    set(FERN_FEATURE_DYN_LINK FALSE)
-endif()
-
-
 # Some modules require the build of other modules and support for certain
 # features.
 if(FERN_BUILD_ALL)
@@ -223,4 +206,10 @@ check_include_file(malloc.h FERN_MALLOC_H_EXISTS)
 if(FERN_MALLOC_H_EXISTS)
    check_symbol_exists(M_TRIM_THRESHOLD malloc.h
        FERN_REQUIRED_MALLOC_SYMBOLS_AVAILABLE)
+endif()
+
+
+if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR
+        ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
+    find_package(Threads REQUIRED)
 endif()

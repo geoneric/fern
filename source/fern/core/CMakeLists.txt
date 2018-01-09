@@ -1,6 +1,6 @@
 add_test_conditionally(test)
 
-set(SOURCES
+add_library(fern_core
     data_name
     data_types
     exception
@@ -19,34 +19,23 @@ set(SOURCES
     validate_error
     value_types
 )
-add_library(fern_core_objects OBJECT ${SOURCES})
 
+add_library(fern::core ALIAS fern_core)
 
-if(FERN_CORE_DYN_LINK)
-    add_library(fern_core SHARED
-        $<TARGET_OBJECTS:fern_core_objects>
-    )
-else()
-    add_library(fern_core STATIC
-        $<TARGET_OBJECTS:fern_core_objects>
-    )
-endif()
-set_target_properties(fern_core
-    PROPERTIES
-        COMPILE_FLAGS "-DFERN_CORE_SOURCE"
+target_include_directories(fern_core
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/../..>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../..>
 )
+
 target_link_libraries(fern_core
-    ${Boost_FILESYSTEM_LIBRARY}
-    ${Boost_TIMER_LIBRARY}
-    ${Boost_SYSTEM_LIBRARY}
+    PUBLIC
+        Boost::filesystem
+    PRIVATE
+        Boost::timer
+        $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>:Threads::Threads>
 )
-if(UNIX AND (
-        ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR
-        ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang"))
-    target_link_libraries(fern_core
-        pthread
-    )
-endif()
+
 install(
     TARGETS fern_core
     EXPORT fern_targets

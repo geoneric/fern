@@ -359,7 +359,7 @@ BOOST_AUTO_TEST_CASE(gh61)
 
     for(size_t n = 1; n <= 8; ++n) {
         f::MaskedScalar<int> result_we_want{8};
-        fa::ParallelExecutionPolicy parallel(n);
+        fa::ParallelExecutionPolicy parallel{n};
         verify_2d_0d_masked(parallel, value, result_we_want);
     }
 }

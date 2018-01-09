@@ -1,12 +1,8 @@
-set(TEST_NAMES
-    slope_test
-)
 add_unit_tests(
     SCOPE algorithm_spatial_focal
-    NAMES ${TEST_NAMES}
-    OBJECT_LIBRARIES
-        $<TARGET_OBJECTS:fern_algorithm_policy_objects>
-        $<TARGET_OBJECTS:fern_algorithm_core_objects>
+    NAMES
+        slope_test
     LINK_LIBRARIES
-        fern_feature
+        fern::algorithm
+        fern::feature
 )
