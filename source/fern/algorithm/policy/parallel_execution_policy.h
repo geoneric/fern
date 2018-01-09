@@ -25,26 +25,22 @@ class ParallelExecutionPolicy
 public:
 
                    ParallelExecutionPolicy(
-                                        size_t nr_threads=
+                                        std::size_t nr_threads=
                                             hardware_concurrency());
 
                    ParallelExecutionPolicy(
-                                        ParallelExecutionPolicy const& other)
-                                            =default;
+                                        ParallelExecutionPolicy const&)=default;
 
                    ParallelExecutionPolicy(
-                                        ParallelExecutionPolicy&& other)
-                                            =default;
+                                        ParallelExecutionPolicy&&)=default;
 
                    ~ParallelExecutionPolicy()=default;
 
     ParallelExecutionPolicy&
-                   operator=           (ParallelExecutionPolicy const& other)
-                                            =default;
+                   operator=           (ParallelExecutionPolicy const&)=default;
 
     ParallelExecutionPolicy&
-                   operator=           (ParallelExecutionPolicy&& other)
-                                            =default;
+                   operator=           (ParallelExecutionPolicy&&)=default;
 
     ThreadPool&    thread_pool         ();
 

@@ -18,20 +18,20 @@
 
 namespace fern {
 
-//! Return the number of concurrent threads supported by the implementation.
+//! Return the number of concurrent threads supported by the implementation
 /*!
     If this number cannot be determined reliably, this function returns 1. The
     result of this function can be used as the default size of a thread pool.
 */
-inline size_t hardware_concurrency()
+inline std::size_t hardware_concurrency()
 {
-    size_t result = std::thread::hardware_concurrency();
+    std::size_t result = std::thread::hardware_concurrency();
 
     return result > 0u ? result: 1u;
 }
 
 
-//! Thread pool.
+//! Thread pool
 /*!
     This thread pool contains a collection of threads that will pop tasks
     from a queue of tasks and execute them. In case there are no tasks
@@ -45,16 +45,24 @@ class ThreadPool
 
 public:
 
-                   ThreadPool          (size_t nr_threads);
+                   ThreadPool          (std::size_t nr_threads);
+
+                   ThreadPool          (ThreadPool const&)=delete;
+
+                   ThreadPool          (ThreadPool&&)=delete;
 
                    ~ThreadPool         ();
+
+    ThreadPool&    operator=           (ThreadPool const&)=delete;
+
+    ThreadPool&    operator=           (ThreadPool&&)=delete;
 
     template<
         class Function>
     std::future<typename std::result_of<Function()>::type>
                    submit              (Function function);
 
-    size_t         size                () const;
+    std::size_t    size                () const;
 
 private:
 

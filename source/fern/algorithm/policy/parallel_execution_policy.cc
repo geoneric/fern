@@ -13,9 +13,9 @@ namespace fern {
 namespace algorithm {
 
 ParallelExecutionPolicy::ParallelExecutionPolicy(
-    size_t nr_threads)
+    std::size_t nr_threads)
 
-    : _thread_pool(std::make_shared<ThreadPool>(nr_threads))
+    : _thread_pool{std::make_shared<ThreadPool>(nr_threads)}
 
 {
 }

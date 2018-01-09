@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------------
 #include "fern/core/thread_pool.h"
 #include <cassert>
+#include <chrono>
 
 
 namespace fern {
@@ -19,7 +20,7 @@ namespace fern {
                    probing the work queue for work.
 */
 ThreadPool::ThreadPool(
-    size_t nr_threads)
+    std::size_t nr_threads)
 
     : _done{false},
       _work_condition{},
@@ -32,7 +33,7 @@ ThreadPool::ThreadPool(
     assert(nr_threads > 0);
 
     try {
-        for(size_t i = 0; i < nr_threads; ++i) {
+        for(std::size_t i = 0; i < nr_threads; ++i) {
             _threads.emplace_back(&ThreadPool::execute_task_or_wait, this);
         }
     }
@@ -57,7 +58,7 @@ ThreadPool::~ThreadPool()
 //! Return the number of threads in the pool.
 /*!
 */
-size_t ThreadPool::size() const
+std::size_t ThreadPool::size() const
 {
     return _threads.size();
 }
@@ -99,6 +100,8 @@ size_t ThreadPool::size() const
 */
 void ThreadPool::execute_task_or_wait()
 {
+    using namespace std::chrono_literals;
+
     while(!_done) {
 
         // Check the queue for a task to execute, else wait for one to be
@@ -114,8 +117,17 @@ void ThreadPool::execute_task_or_wait()
 
             // Wait for a task to become available... The wait
             // automatically releases the mutex.
+
+            // It seems that we can enter the wait while in fact the pool is
+            // being destructed. The joiner will end up waiting for this
+            // sleeping thread forever... By waking up once in a while, we
+            // prevent this situation. Ideally, this should never happen...
+
             std::unique_lock<std::mutex> lock(_mutex);
-            _work_condition.wait(lock);
+            if(!_done) {
+                _work_condition.wait_for(lock, 100ms);
+            }
+            // _work_condition.wait(lock);
         }
     }
 }
