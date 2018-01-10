@@ -31,8 +31,8 @@ target_include_directories(fern_core
 target_link_libraries(fern_core
     PUBLIC
         Boost::filesystem
-    PRIVATE
         Boost::timer
+    PRIVATE
         $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>:Threads::Threads>
 )
 
