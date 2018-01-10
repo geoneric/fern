@@ -76,7 +76,7 @@ inline Kernel<T>::Kernel(
       _weights{std::make_unique<T[]>(_size * _size)}
 
 {
-    std::fill(_weights, _weights + _size * _size, weight);
+    std::fill(_weights.get(), _weights.get() + _size * _size, weight);
 }
 
 
