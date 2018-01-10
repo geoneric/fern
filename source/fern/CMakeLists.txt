@@ -24,12 +24,10 @@ if(FERN_BUILD_ALGORITHM)
     install(
         FILES ${CMAKE_CURRENT_BINARY_DIR}/configure.h
         DESTINATION include/fern
-        CONFIGURATIONS Release
     )
     install(
         DIRECTORY algorithm core
         DESTINATION include/fern
-        CONFIGURATIONS Release
         FILES_MATCHING
             PATTERN "*.h"
             PATTERN "test" EXCLUDE
@@ -37,7 +35,6 @@ if(FERN_BUILD_ALGORITHM)
     install(
         DIRECTORY example
         DESTINATION doc/fern
-        CONFIGURATIONS Release
         FILES_MATCHING
             PATTERN "*.h"
             PATTERN "*.cc"

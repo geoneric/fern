@@ -6,12 +6,11 @@ if(FERN_BUILD_ALGORITHM)
     install(
         DIRECTORY core
         DESTINATION include/fern/feature
-        CONFIGURATIONS Release
         FILES_MATCHING PATTERN "*.h"
     )
 endif()
 
-add_library(fern_feature SHARED
+add_library(fern_feature
     core/array
 )
 

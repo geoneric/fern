@@ -39,9 +39,22 @@ add_subdirectory(environment)
 add_subdirectory(source)
 add_subdirectory(document)
 
-if(TARGET fern_targets)
-    install(
-        EXPORT fern_targets
-        DESTINATION lib/fern
-    )
-endif()
+
+install(
+    EXPORT fern_targets
+    FILE fern_targets.cmake
+    NAMESPACE fern::
+    DESTINATION lib/cmake/fern
+)
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file("fern_config_version.cmake"
+    VERSION ${${PROJECT_NAME}_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+install(
+    FILES
+        "fern-config.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/fern_config_version.cmake"
+    DESTINATION
+        lib/cmake/fern
+)
