@@ -8,7 +8,7 @@ Looking in the Fern.Algorithm API documentation, we find the divide algorithm ca
 
 Each algorithm is a function template. When calling an algorithm, we must always provide the function arguments, of course. Depending on our needs, we must also provide one or more template arguments. The algorithm arguments consist of one or more input argument values and the result value. The type of these values depends on the context. Fern.Algorithm uses specific template functions (customization points) to access the values, and as long as they are implemented, the algorithm can be called. This has the advantage that the implementation of the algorithms doesn't depend on a certain type. We will see how this works later on in this tutorial.
 
-Each ``fern::divide`` overload also accepts an execution policy argument which must be provided. This argument determines how the algorithm should perform its work. Currently we can use a ``fern::SequentialExecutionPolicy`` instance or a ``fern::ParallelExecutionPolicy`` instance. These instances are predefined in the library, and named ``fern::sequential`` and ``fern::parallel``.
+Each ``fern::divide`` overload also accepts an execution policy argument which must be provided. This argument determines how the algorithm should perform its work. Currently we can use a ``fern::SequentialExecutionPolicy`` instance or a ``fern::ParallelExecutionPolicy`` instance.
 
 
 One algorithm, multiple data types
@@ -118,7 +118,7 @@ Let's now return to our example of dividing two argument values, but use an algo
 .. literalinclude:: source/tutorial_divide-4.cc
    :language: cpp
 
-This example uses the Fern provided fern::parallel instance of the execution policy. This will tell the algorithm to concurrently calculate the result.
+This example uses an instance of the fern::algorithm::ParallelExecutionPolicy. This will tell the algorithm to concurrently calculate the result.
 
 In many real-world contexts, we need to handle no-data in the argument values. For this we can use one of the input no-data policies. The algorithm will use this policy internally to determine whether or not an element contains no-data. No-data elements can be signalled by special values (eg: -999, ``std::numerical_limits<int32_t>::min()``), or a seperate mask with boolean values or bits. This doesn't matter to the algorithm. As long as the input no-data policy provides the correct anwser.
 

@@ -48,10 +48,12 @@ struct VerifyWithinRange
     bool operator()(
         Value const& value)
     {
+        fa::SequentialExecutionPolicy sequential;
+
         OutOfRangePolicy<Value, Result> policy;
         Result result;
 
-        fa::algebra::tgamma(fa::sequential, value, result);
+        fa::algebra::tgamma(sequential, value, result);
 
         return policy.within_range(value, result);
     }
@@ -75,8 +77,10 @@ void verify_value(
     Value const& value,
     Result const& result_we_want)
 {
+    fa::SequentialExecutionPolicy sequential;
+
     Result result_we_get;
-    fa::algebra::tgamma(fa::sequential, value, result_we_get);
+    fa::algebra::tgamma(sequential, value, result_we_get);
     BOOST_CHECK_CLOSE(result_we_get, result_we_want, 1e-6);
 }
 

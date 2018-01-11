@@ -74,12 +74,14 @@ BOOST_AUTO_TEST_CASE(algorithm)
 
     std::iota(raster.data(), raster.data() + raster.num_elements(), 0);
 
+    fa::SequentialExecutionPolicy sequential;
+
     // Calculate laplacian.
     MaskedRaster<double> result(extents, transformation);
 
     // Without masking input and output values.
     {
-        fa::algebra::laplacian(fa::sequential, raster, result);
+        fa::algebra::laplacian(sequential, raster, result);
 
         // Verify the result.
         BOOST_CHECK_EQUAL(get(result, index(result, 0, 0)),
@@ -103,7 +105,7 @@ BOOST_AUTO_TEST_CASE(algorithm)
         fa::algebra::laplacian<fa::laplacian::OutOfRangePolicy>(
             InputNoDataPolicy{{raster.mask(), true}},
             output_no_data_policy,
-            fa::sequential,
+            sequential,
             raster, result);
 
         // Verify the result.

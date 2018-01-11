@@ -20,19 +20,21 @@ namespace fa = fern::algorithm;
 
 BOOST_AUTO_TEST_CASE(overload)
 {
+    fa::SequentialExecutionPolicy sequential;
+
     int array_0d{};
     fern::Array<int, 1> array_1d;
     fern::Array<int, 2> array_2d;
 
-    fa::core::clamp<>(fa::sequential, array_0d, array_0d, array_0d, array_0d);
+    fa::core::clamp<>(sequential, array_0d, array_0d, array_0d, array_0d);
 
-    fa::core::clamp<>(fa::sequential, array_1d, array_1d, array_1d, array_1d);
-    fa::core::clamp<>(fa::sequential, array_1d, array_0d, array_1d, array_1d);
-    fa::core::clamp<>(fa::sequential, array_1d, array_1d, array_0d, array_1d);
+    fa::core::clamp<>(sequential, array_1d, array_1d, array_1d, array_1d);
+    fa::core::clamp<>(sequential, array_1d, array_0d, array_1d, array_1d);
+    fa::core::clamp<>(sequential, array_1d, array_1d, array_0d, array_1d);
 
-    fa::core::clamp<>(fa::sequential, array_2d, array_2d, array_2d, array_2d);
-    fa::core::clamp<>(fa::sequential, array_2d, array_0d, array_2d, array_2d);
-    fa::core::clamp<>(fa::sequential, array_2d, array_2d, array_0d, array_2d);
+    fa::core::clamp<>(sequential, array_2d, array_2d, array_2d, array_2d);
+    fa::core::clamp<>(sequential, array_2d, array_0d, array_2d, array_2d);
+    fa::core::clamp<>(sequential, array_2d, array_2d, array_0d, array_2d);
 }
 
 

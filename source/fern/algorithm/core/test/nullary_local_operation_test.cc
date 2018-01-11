@@ -30,12 +30,15 @@ BOOST_AUTO_TEST_CASE(array_0d)
     using OutputNoDataPolicy = fa::DontMarkNoData;
     using Result = ResultValue;
 
+    fa::ParallelExecutionPolicy parallel;
+    fa::SequentialExecutionPolicy sequential;
+
     OutputNoDataPolicy output_no_data_policy;
     Result result{3};
 
     fa::nullary_local_operation<Algorithm>(
         InputNoDataPolicy{{}}, output_no_data_policy,
-        fa::sequential, result);
+        sequential, result);
 
     BOOST_REQUIRE_EQUAL(result, 1);
 
@@ -43,7 +46,7 @@ BOOST_AUTO_TEST_CASE(array_0d)
 
     fa::nullary_local_operation<Algorithm>(
         InputNoDataPolicy{{}}, output_no_data_policy,
-        fa::parallel, result);
+        parallel, result);
 
     BOOST_REQUIRE_EQUAL(result, 1);
 }
@@ -55,6 +58,8 @@ BOOST_AUTO_TEST_CASE(array_0d_masked)
         fa::DetectNoDataByValue<bool>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
     using Result = fern::MaskedScalar<ResultValue>;
+
+    fa::SequentialExecutionPolicy sequential;
 
     Result result;
 
@@ -68,7 +73,7 @@ BOOST_AUTO_TEST_CASE(array_0d_masked)
 
         fa::nullary_local_operation<Algorithm>(
             input_no_data_policy, output_no_data_policy,
-            fa::sequential, result);
+            sequential, result);
 
         BOOST_REQUIRE_EQUAL(result.mask(), false);
         BOOST_REQUIRE_EQUAL(result.value(), 1);
@@ -83,7 +88,7 @@ BOOST_AUTO_TEST_CASE(array_0d_masked)
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
         fa::nullary_local_operation<Algorithm>(
             input_no_data_policy, output_no_data_policy,
-            fa::sequential, result);
+            sequential, result);
 
         BOOST_REQUIRE_EQUAL(result.mask(), true);
         BOOST_REQUIRE_EQUAL(result.value(), 3);
@@ -96,6 +101,8 @@ BOOST_AUTO_TEST_CASE(array_1d_sequential)
     using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData>;
     using OutputNoDataPolicy = fa::DontMarkNoData;
 
+    fa::SequentialExecutionPolicy sequential;
+
     OutputNoDataPolicy output_no_data_policy;
 
     // vector
@@ -106,7 +113,7 @@ BOOST_AUTO_TEST_CASE(array_1d_sequential)
 
         fa::nullary_local_operation<Algorithm>(
             InputNoDataPolicy{{}}, output_no_data_policy,
-            fa::sequential, result);
+            sequential, result);
 
         BOOST_REQUIRE_EQUAL(result[0], 1);
         BOOST_REQUIRE_EQUAL(result[1], 1);
@@ -121,7 +128,7 @@ BOOST_AUTO_TEST_CASE(array_1d_sequential)
 
         fa::nullary_local_operation<Algorithm>(
             InputNoDataPolicy{{}}, output_no_data_policy,
-            fa::sequential, result);
+            sequential, result);
 
         BOOST_REQUIRE_EQUAL(result[0], 1);
         BOOST_REQUIRE_EQUAL(result[1], 1);
@@ -136,7 +143,7 @@ BOOST_AUTO_TEST_CASE(array_1d_sequential)
 
         fa::nullary_local_operation<Algorithm>(
             InputNoDataPolicy{{}}, output_no_data_policy,
-            fa::sequential, result);
+            sequential, result);
 
         BOOST_CHECK(result.empty());
     }
@@ -148,6 +155,8 @@ BOOST_AUTO_TEST_CASE(array_1d_parallel)
     using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData>;
     using OutputNoDataPolicy = fa::DontMarkNoData;
 
+    fa::ParallelExecutionPolicy parallel;
+
     OutputNoDataPolicy output_no_data_policy;
 
     // vector
@@ -158,7 +167,7 @@ BOOST_AUTO_TEST_CASE(array_1d_parallel)
 
         fa::nullary_local_operation<Algorithm>(
             InputNoDataPolicy{{}}, output_no_data_policy,
-            fa::parallel, result);
+            parallel, result);
 
         BOOST_REQUIRE_EQUAL(result[0], 1);
         BOOST_REQUIRE_EQUAL(result[1], 1);
@@ -173,7 +182,7 @@ BOOST_AUTO_TEST_CASE(array_1d_parallel)
 
         fa::nullary_local_operation<Algorithm>(
             InputNoDataPolicy{{}}, output_no_data_policy,
-            fa::parallel, result);
+            parallel, result);
 
         BOOST_REQUIRE_EQUAL(result[0], 1);
         BOOST_REQUIRE_EQUAL(result[1], 1);
@@ -188,7 +197,7 @@ BOOST_AUTO_TEST_CASE(array_1d_parallel)
 
         fa::nullary_local_operation<Algorithm>(
             InputNoDataPolicy{{}}, output_no_data_policy,
-            fa::parallel, result);
+            parallel, result);
 
         BOOST_CHECK(result.empty());
     }
@@ -202,6 +211,8 @@ BOOST_AUTO_TEST_CASE(array_1d_masked)
         fa::DetectNoDataByValue<fern::Mask<1>>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<1>>;
 
+    fa::SequentialExecutionPolicy sequential;
+
     {
         Result result(3);
 
@@ -212,7 +223,7 @@ BOOST_AUTO_TEST_CASE(array_1d_masked)
 
         fa::nullary_local_operation<Algorithm>(
             input_no_data_policy, output_no_data_policy,
-            fa::sequential, result);
+            sequential, result);
 
         BOOST_REQUIRE_EQUAL(result.mask()[0], false);
         BOOST_REQUIRE_EQUAL(result.mask()[1], false);
@@ -226,7 +237,7 @@ BOOST_AUTO_TEST_CASE(array_1d_masked)
 
         fa::nullary_local_operation<Algorithm>(
             input_no_data_policy, output_no_data_policy,
-            fa::sequential, result);
+            sequential, result);
 
         BOOST_REQUIRE_EQUAL(result.mask()[0], false);
         BOOST_REQUIRE_EQUAL(result.mask()[1], true);
@@ -245,7 +256,7 @@ BOOST_AUTO_TEST_CASE(array_1d_masked)
 
         fa::nullary_local_operation<Algorithm>(
             input_no_data_policy, output_no_data_policy,
-            fa::sequential, result);
+            sequential, result);
 
         BOOST_CHECK_EQUAL(result.size(), 0u);
     }
@@ -258,6 +269,8 @@ BOOST_AUTO_TEST_CASE(array_2d_sequential)
     using OutputNoDataPolicy = fa::DontMarkNoData;
     using Result = fern::Array<ResultValue, 2>;
 
+    fa::SequentialExecutionPolicy sequential;
+
     OutputNoDataPolicy output_no_data_policy;
 
     Result result{
@@ -268,7 +281,7 @@ BOOST_AUTO_TEST_CASE(array_2d_sequential)
 
     fa::nullary_local_operation<Algorithm>(
         InputNoDataPolicy{{}}, output_no_data_policy,
-        fa::sequential, result);
+        sequential, result);
 
     BOOST_CHECK_EQUAL(result[0][0], 1);
     BOOST_CHECK_EQUAL(result[0][1], 1);
@@ -285,6 +298,8 @@ BOOST_AUTO_TEST_CASE(array_2d_parallel)
     using OutputNoDataPolicy = fa::DontMarkNoData;
     using Result = fern::Array<ResultValue, 2>;
 
+    fa::ParallelExecutionPolicy parallel;
+
     OutputNoDataPolicy output_no_data_policy;
 
     Result result{
@@ -295,7 +310,7 @@ BOOST_AUTO_TEST_CASE(array_2d_parallel)
 
     fa::nullary_local_operation<Algorithm>(
         InputNoDataPolicy{{}}, output_no_data_policy,
-        fa::parallel, result);
+        parallel, result);
 
     BOOST_CHECK_EQUAL(result[0][0], 1);
     BOOST_CHECK_EQUAL(result[0][1], 1);
@@ -313,6 +328,8 @@ BOOST_AUTO_TEST_CASE(array_2d_masked)
         fa::DetectNoDataByValue<fern::Mask<2>>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<2>>;
 
+    fa::SequentialExecutionPolicy sequential;
+
     {
         Result result{
             { 3, 3 },
@@ -327,7 +344,7 @@ BOOST_AUTO_TEST_CASE(array_2d_masked)
 
         fa::nullary_local_operation<Algorithm>(
             input_no_data_policy, output_no_data_policy,
-            fa::sequential, result);
+            sequential, result);
 
         BOOST_REQUIRE_EQUAL(result.mask()[0][0], false);
         BOOST_REQUIRE_EQUAL(result.mask()[0][0], false);
@@ -347,7 +364,7 @@ BOOST_AUTO_TEST_CASE(array_2d_masked)
 
         fa::nullary_local_operation<Algorithm>(
             input_no_data_policy, output_no_data_policy,
-            fa::sequential, result);
+            sequential, result);
 
         BOOST_REQUIRE_EQUAL(result.mask()[0][0], false);
         BOOST_REQUIRE_EQUAL(result.mask()[0][0], false);
@@ -372,7 +389,7 @@ BOOST_AUTO_TEST_CASE(array_2d_masked)
 
         fa::nullary_local_operation<Algorithm>(
             input_no_data_policy, output_no_data_policy,
-            fa::sequential, result);
+            sequential, result);
 
         BOOST_CHECK_EQUAL(result.size(), 0u);
     }

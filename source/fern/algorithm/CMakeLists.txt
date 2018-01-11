@@ -11,7 +11,6 @@ add_subdirectory(trigonometry)
 add_library(fern_algorithm
     core/index_range
     core/index_ranges
-    policy/execution_policy
     policy/parallel_execution_policy
 )
 

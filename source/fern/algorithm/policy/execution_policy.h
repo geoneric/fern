@@ -17,31 +17,31 @@ namespace algorithm {
 //! Execution policy class for sequential execution of algorithms.
 /*!
     @ingroup    fern_algorithm_policy_group
-    @sa         sequential, parallel, ExecutionPolicy
+    @sa         ParallelExecutionPolicy, ExecutionPolicy
 */
 class SequentialExecutionPolicy{};
 
 
-//! Execution policy instance for sequential execution of algorithms.
-/*!
-    @ingroup    fern_algorithm_policy_group
-    @sa         parallel, ExecutionPolicy
-*/
-extern SequentialExecutionPolicy sequential;
+// //! Execution policy instance for sequential execution of algorithms.
+// /*!
+//     @ingroup    fern_algorithm_policy_group
+//     @sa         parallel, ExecutionPolicy
+// */
+// extern SequentialExecutionPolicy sequential;
 
 
-//! Execution policy instance for parallel execution of algorithms.
-/*!
-    @ingroup    fern_algorithm_policy_group
-    @sa         sequential, ExecutionPolicy
-*/
-extern ParallelExecutionPolicy parallel;
+// //! Execution policy instance for parallel execution of algorithms.
+// /*!
+//     @ingroup    fern_algorithm_policy_group
+//     @sa         sequential, ExecutionPolicy
+// */
+// extern ParallelExecutionPolicy parallel;
 
 
 //! Generic execution policy class.
 /*!
     @ingroup    fern_algorithm_policy_group
-    @sa         sequential, parallel
+    @sa         SequentialExecutionPolicy, ParallelExecutionPolicy
 
     An ExecutionPolicy instance can be created and assigned from sequential
     or parallel.

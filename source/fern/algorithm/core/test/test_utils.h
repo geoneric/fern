@@ -20,25 +20,27 @@
 // argument must be the execution policy's type, which is passed in.
 // The template function will be called 4 times, with different execution
 // policies:
-// - fern::algorithm::sequential
-// - fern::algorithm::ExecutionPolicy{fern::algorithm::sequential}
-// - fern::algorithm::parallel
-// - fern::algorithm::ExecutionPolicy{fern::algorithm::parallel}
-#define FERN_TEST_CASES(name)                           \
-BOOST_AUTO_TEST_CASE(array_##name##_sequential)         \
-{                                                       \
-    test_##name(fern::algorithm::sequential);           \
-    fern::algorithm::ExecutionPolicy execution_policy{  \
-        fern::algorithm::sequential};                   \
-    test_##name(execution_policy);                      \
-}                                                       \
-                                                        \
-BOOST_AUTO_TEST_CASE(array_##name##_parallel)           \
-{                                                       \
-    test_##name(fern::algorithm::parallel);             \
-    fern::algorithm::ExecutionPolicy execution_policy{  \
-        fern::algorithm::parallel};                     \
-    test_##name(execution_policy);                      \
+// - fern::algorithm::SequentialExecutionPolicy
+// - fern::algorithm::ExecutionPolicy{fern::algorithm::SequentialExecutionPolicy}
+// - fern::algorithm::ParallelExecutionPolicy
+// - fern::algorithm::ExecutionPolicy{fern::algorithm::ParallelExecutionPolicy}
+#define FERN_TEST_CASES(name)                              \
+BOOST_AUTO_TEST_CASE(array_##name##_sequential)            \
+{                                                          \
+    fern::algorithm::SequentialExecutionPolicy sequential; \
+    test_##name(sequential);                               \
+    fern::algorithm::ExecutionPolicy execution_policy{     \
+        sequential};                                       \
+    test_##name(execution_policy);                         \
+}                                                          \
+                                                           \
+BOOST_AUTO_TEST_CASE(array_##name##_parallel)              \
+{                                                          \
+    fern::algorithm::ParallelExecutionPolicy parallel;     \
+    test_##name(parallel);                                 \
+    fern::algorithm::ExecutionPolicy execution_policy{     \
+        parallel};                                         \
+    test_##name(execution_policy);                         \
 }
 
 

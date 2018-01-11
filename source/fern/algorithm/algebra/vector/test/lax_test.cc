@@ -48,6 +48,8 @@ BOOST_AUTO_TEST_CASE(algorithm)
 
     std::iota(raster.data(), raster.data() + raster.num_elements(), 0);
 
+    fa::SequentialExecutionPolicy sequential;
+
     double const fraction = 0.6;
 
     // Calculate lax.
@@ -55,7 +57,7 @@ BOOST_AUTO_TEST_CASE(algorithm)
 
     // Without masking input and output values.
     {
-        fa::algebra::lax(fa::sequential, raster, fraction, result);
+        fa::algebra::lax(sequential, raster, fraction, result);
 
         /// // Verify the result.
         BOOST_CHECK_EQUAL(get(result, index(result, 0, 0)),
@@ -80,7 +82,7 @@ BOOST_AUTO_TEST_CASE(algorithm)
         fa::algebra::lax(
             input_no_data_policy,
             output_no_data_policy,
-            fa::sequential,
+            sequential,
             raster, fraction, result);
 
         // Verify the result.

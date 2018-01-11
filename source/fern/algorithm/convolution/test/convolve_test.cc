@@ -564,6 +564,9 @@ BOOST_AUTO_TEST_CASE(convolve)
 {
     using Weights = std::initializer_list<std::initializer_list<int>>;
 
+    fa::ParallelExecutionPolicy parallel;
+    fa::SequentialExecutionPolicy sequential;
+
     // Kernel with radius 2.
     {
         // Create input array:
@@ -609,7 +612,7 @@ BOOST_AUTO_TEST_CASE(convolve)
             {
                 fern::Array<double, 2> result(extents);
                 fa::convolution::convolve(
-                    fa::sequential, argument, compile_time_kernel, result);
+                    sequential, argument, compile_time_kernel, result);
                 compare_result1(result);
             }
 
@@ -617,7 +620,7 @@ BOOST_AUTO_TEST_CASE(convolve)
             {
                 fern::Array<double, 2> result(extents);
                 fa::convolution::convolve(
-                    fa::sequential, argument, runtime_kernel, result);
+                    sequential, argument, runtime_kernel, result);
                 compare_result1(result);
             }
 
@@ -625,7 +628,7 @@ BOOST_AUTO_TEST_CASE(convolve)
             {
                 fern::Array<double, 2> result(extents);
                 fa::convolution::convolve(
-                    fa::parallel, argument, compile_time_kernel, result);
+                    parallel, argument, compile_time_kernel, result);
                 compare_result1(result);
             }
 
@@ -633,7 +636,7 @@ BOOST_AUTO_TEST_CASE(convolve)
             {
                 fern::Array<double, 2> result(extents);
                 fa::convolution::convolve(
-                    fa::parallel, argument, runtime_kernel, result);
+                    parallel, argument, runtime_kernel, result);
                 compare_result1(result);
             }
         }
@@ -662,7 +665,7 @@ BOOST_AUTO_TEST_CASE(convolve)
                     InputNoDataPolicy,
                     OutputNoDataPolicy>(
                         InputNoDataPolicy{{}}, output_no_data_policy,
-                        fa::sequential, argument, compile_time_kernel, result);
+                        sequential, argument, compile_time_kernel, result);
                 compare_result2(result);
             }
 
@@ -678,7 +681,7 @@ BOOST_AUTO_TEST_CASE(convolve)
                     InputNoDataPolicy,
                     OutputNoDataPolicy>(
                         InputNoDataPolicy{{}}, output_no_data_policy,
-                        fa::sequential, argument, runtime_kernel, result);
+                        sequential, argument, runtime_kernel, result);
                 compare_result2(result);
             }
 
@@ -694,7 +697,7 @@ BOOST_AUTO_TEST_CASE(convolve)
                     InputNoDataPolicy,
                     OutputNoDataPolicy>(
                         InputNoDataPolicy{{}}, output_no_data_policy,
-                        fa::parallel, argument, compile_time_kernel, result);
+                        parallel, argument, compile_time_kernel, result);
                 compare_result2(result);
             }
 
@@ -710,7 +713,7 @@ BOOST_AUTO_TEST_CASE(convolve)
                     InputNoDataPolicy,
                     OutputNoDataPolicy>(
                         InputNoDataPolicy{{}}, output_no_data_policy,
-                        fa::parallel, argument, runtime_kernel, result);
+                        parallel, argument, runtime_kernel, result);
                 compare_result2(result);
             }
         }
@@ -757,28 +760,28 @@ BOOST_AUTO_TEST_CASE(convolve)
         {
             fern::Array<double, 2> result(extents);
             fa::convolution::convolve(
-                fa::sequential, argument, compile_time_kernel, result);
+                sequential, argument, compile_time_kernel, result);
         }
 
         // Sequential, runtime kernel
         {
             fern::Array<double, 2> result(extents);
             fa::convolution::convolve(
-                fa::sequential, argument, runtime_kernel, result);
+                sequential, argument, runtime_kernel, result);
         }
 
         // Parallel, compile-time kernel
         {
             fern::Array<double, 2> result(extents);
             fa::convolution::convolve(
-                fa::parallel, argument, compile_time_kernel, result);
+                parallel, argument, compile_time_kernel, result);
         }
 
         // Parallel, runtime kernel
         {
             fern::Array<double, 2> result(extents);
             fa::convolution::convolve(
-                fa::parallel, argument, runtime_kernel, result);
+                parallel, argument, runtime_kernel, result);
         }
     }
 }
@@ -822,6 +825,8 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
     using InputNoDataPolicy = fa::InputNoDataPolicies<
         fa::DetectNoDataByValue<fern::Mask<2>>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<2>>;
+
+    fa::SequentialExecutionPolicy sequential;
 
     size_t const nr_rows = 3;
     size_t const nr_cols = 3;
@@ -871,12 +876,12 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
                 fa::unary::DiscardRangeErrors>(
                     InputNoDataPolicy{{source.mask(), true}},
                     output_no_data_policy,
-                    fa::sequential,
+                    sequential,
                     source, kernel_1, destination);
 
             // Verify mask.
             uint64_t nr_masked_cells{0};
-            fa::statistic::count(fa::sequential, destination.mask(),
+            fa::statistic::count(sequential, destination.mask(),
                 true, nr_masked_cells);
             BOOST_CHECK_EQUAL(nr_masked_cells, 2u);
             BOOST_CHECK(destination.mask()[1][1]);
@@ -889,11 +894,11 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
                 {   999.9, 23.0/4.0, 20.0/3.0}
             });
             fern::Array<bool, 2> equal_cells(extents);
-            fa::algebra::equal(fa::sequential, destination, result_we_want,
+            fa::algebra::equal(sequential, destination, result_we_want,
                 equal_cells);
 
             uint64_t nr_equal_cells{0};
-            fa::statistic::count(fa::sequential, equal_cells, true,
+            fa::statistic::count(sequential, equal_cells, true,
                 nr_equal_cells);
             BOOST_CHECK_EQUAL(nr_equal_cells, 9u);
         }
@@ -918,7 +923,7 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
         ///         fa::convolve::SkipOutOfImage,
         ///         fern::unary::DiscardRangeErrors>(
         ///         fa::convolve::ReplaceNoDataByFocalAverage,
-        ///             fa::sequential,
+        ///             sequential,
         ///             InputNoDataPolicy{{source.mask(), true}},
         ///             OutputNoDataPolicy(destination.mask(), true),
         ///             source, kernel_1, destination);
@@ -965,10 +970,10 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
             fa::unary::DiscardRangeErrors>(
                 InputNoDataPolicy{{source.mask(), true}},
                 output_no_data_policy,
-                fa::sequential, source, kernel_1, destination);
+                sequential, source, kernel_1, destination);
 
         uint64_t nr_masked_cells;
-        fa::statistic::count(fa::sequential, destination.mask(), true,
+        fa::statistic::count(sequential, destination.mask(), true,
             nr_masked_cells);
         BOOST_CHECK_EQUAL(nr_masked_cells, nr_rows * nr_cols);
     }
@@ -991,10 +996,10 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
             fa::convolve::OutOfRangePolicy>(
                 InputNoDataPolicy{{source.mask(), true}},
                 output_no_data_policy,
-                fa::sequential, source, kernel_2, destination);
+                sequential, source, kernel_2, destination);
 
         uint64_t nr_masked_cells;
-        fa::statistic::count(fa::sequential, destination.mask(), true,
+        fa::statistic::count(sequential, destination.mask(), true,
             nr_masked_cells);
         BOOST_CHECK_EQUAL(nr_masked_cells, nr_rows * nr_cols);
     }
@@ -1004,6 +1009,9 @@ BOOST_AUTO_TEST_CASE(no_data_policies)
 BOOST_AUTO_TEST_CASE(boolean_kernel_weights)
 {
     using Weights = std::initializer_list<std::initializer_list<bool>>;
+
+    fa::ParallelExecutionPolicy parallel;
+    fa::SequentialExecutionPolicy sequential;
 
     // Kernel with radius 1 and boolean weights.
     {
@@ -1043,7 +1051,7 @@ BOOST_AUTO_TEST_CASE(boolean_kernel_weights)
         {
             fern::Array<double, 2> result(extents);
             fa::convolution::convolve(
-                fa::sequential, argument, compile_time_kernel, result);
+                sequential, argument, compile_time_kernel, result);
             compare_result3(result);
         }
 
@@ -1051,7 +1059,7 @@ BOOST_AUTO_TEST_CASE(boolean_kernel_weights)
         {
             fern::Array<double, 2> result(extents);
             fa::convolution::convolve(
-                fa::sequential, argument, runtime_kernel, result);
+                sequential, argument, runtime_kernel, result);
             compare_result3(result);
         }
 
@@ -1059,7 +1067,7 @@ BOOST_AUTO_TEST_CASE(boolean_kernel_weights)
         {
             fern::Array<double, 2> result(extents);
             fa::convolution::convolve(
-                fa::parallel, argument, compile_time_kernel, result);
+                parallel, argument, compile_time_kernel, result);
             compare_result3(result);
         }
 
@@ -1067,7 +1075,7 @@ BOOST_AUTO_TEST_CASE(boolean_kernel_weights)
         {
             fern::Array<double, 2> result(extents);
             fa::convolution::convolve(
-                fa::parallel, argument, runtime_kernel, result);
+                parallel, argument, runtime_kernel, result);
             compare_result3(result);
         }
     }
@@ -1079,6 +1087,9 @@ BOOST_AUTO_TEST_CASE(no_data_focus_element_policy)
     using InputNoDataPolicy = fa::InputNoDataPolicies<
         fa::DetectNoDataByValue<fern::Mask<2>>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<2>>;
+
+    fa::ParallelExecutionPolicy parallel;
+    fa::SequentialExecutionPolicy sequential;
 
     // PCRaster window4total example
     {
@@ -1127,7 +1138,7 @@ BOOST_AUTO_TEST_CASE(no_data_focus_element_policy)
                 fa::unary::DiscardRangeErrors>(
                     InputNoDataPolicy{{argument.mask(), true}},
                     output_no_data_policy,
-                    fa::sequential,
+                    sequential,
                     argument, kernel, result);
 
             compare_result4(result);
@@ -1146,7 +1157,7 @@ BOOST_AUTO_TEST_CASE(no_data_focus_element_policy)
                 fa::unary::DiscardRangeErrors>(
                     InputNoDataPolicy{{argument.mask(), true}},
                     output_no_data_policy,
-                    fa::parallel,
+                    parallel,
                     argument, kernel, result);
 
             compare_result4(result);
@@ -1209,7 +1220,7 @@ BOOST_AUTO_TEST_CASE(no_data_focus_element_policy)
         // Sequential.
         {
             fern::MaskedArray<double, 2> result(extents);
-            fa::convolution::convolve(fa::sequential, argument, kernel,
+            fa::convolution::convolve(sequential, argument, kernel,
                 result);
             OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
@@ -1221,7 +1232,7 @@ BOOST_AUTO_TEST_CASE(no_data_focus_element_policy)
                 fa::unary::DiscardRangeErrors>(
                     InputNoDataPolicy{{argument.mask(), true}},
                     output_no_data_policy,
-                    fa::sequential,
+                    sequential,
                     argument, kernel, result);
 
             compare_result5(result);
@@ -1230,7 +1241,7 @@ BOOST_AUTO_TEST_CASE(no_data_focus_element_policy)
         // Parallel.
         {
             fern::MaskedArray<double, 2> result(extents);
-            fa::convolution::convolve(fa::sequential, argument, kernel,
+            fa::convolution::convolve(sequential, argument, kernel,
                 result);
             OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
@@ -1242,7 +1253,7 @@ BOOST_AUTO_TEST_CASE(no_data_focus_element_policy)
                 fa::unary::DiscardRangeErrors>(
                     InputNoDataPolicy{{argument.mask(), true}},
                     output_no_data_policy,
-                    fa::parallel,
+                    parallel,
                     argument, kernel, result);
 
             compare_result5(result);
@@ -1296,7 +1307,7 @@ BOOST_AUTO_TEST_CASE(no_data_focus_element_policy)
         // Sequential.
         {
             fern::MaskedArray<double, 2> result(extents);
-            // fa::convolution::convolve(fa::sequential, argument, kernel,
+            // fa::convolution::convolve(sequential, argument, kernel,
             //     result);
             OutputNoDataPolicy output_no_data_policy(result.mask(), true);
 
@@ -1308,7 +1319,7 @@ BOOST_AUTO_TEST_CASE(no_data_focus_element_policy)
                 fa::unary::DiscardRangeErrors>(
                     InputNoDataPolicy{{argument.mask(), true}},
                     output_no_data_policy,
-                    fa::sequential,
+                    sequential,
                     argument, kernel, result);
 
             compare_result6(result);
@@ -1327,7 +1338,7 @@ BOOST_AUTO_TEST_CASE(no_data_focus_element_policy)
                 fa::unary::DiscardRangeErrors>(
                     InputNoDataPolicy{{argument.mask(), true}},
                     output_no_data_policy,
-                    fa::parallel,
+                    parallel,
                     argument, kernel, result);
 
             compare_result6(result);
@@ -1380,6 +1391,9 @@ void test_use_case1(
         fa::DetectNoDataByValue<fern::Mask<2>>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<2>>;
 
+    fa::ParallelExecutionPolicy parallel;
+    fa::SequentialExecutionPolicy sequential;
+
     // +-------+-------+-------+
     // | value | value | value |
     // +-------+-------+-------+
@@ -1416,7 +1430,7 @@ void test_use_case1(
             fa::unary::DiscardRangeErrors>(
                 InputNoDataPolicy{{argument.mask(), true}},
                 output_no_data_policy,
-                fa::sequential,
+                sequential,
                 argument, kernel, result);
 
         compare_result_use_case1(result);
@@ -1435,7 +1449,7 @@ void test_use_case1(
             fa::unary::DiscardRangeErrors>(
                 InputNoDataPolicy{{argument.mask(), true}},
                 output_no_data_policy,
-                fa::parallel,
+                parallel,
                 argument, kernel, result);
 
         compare_result_use_case1(result);

@@ -317,6 +317,8 @@ FERN_UNARY_AGGREGATE_TEST_CASES()
 
 BOOST_AUTO_TEST_CASE(gh59)
 {
+    fa::SequentialExecutionPolicy sequential;
+
     f::MaskedArray<int, 2> value = {
         { 0, 0 },
         { 5, 0 },
@@ -327,12 +329,14 @@ BOOST_AUTO_TEST_CASE(gh59)
     };
 
     f::MaskedScalar<int> result_we_want{5};
-    verify_2d_0d_masked(fa::sequential, value, result_we_want);
+    verify_2d_0d_masked(sequential, value, result_we_want);
 }
 
 
 BOOST_AUTO_TEST_CASE(gh61)
 {
+    fa::SequentialExecutionPolicy sequential;
+
     f::MaskedArray<int, 2> value = {
         { -9, -9, -9, -9, -9, -9 },
         { -9, -9,  8,  9, -9, -9 },
@@ -354,7 +358,7 @@ BOOST_AUTO_TEST_CASE(gh61)
 
     {
         f::MaskedScalar<int> result_we_want{8};
-        verify_2d_0d_masked(fa::sequential, value, result_we_want);
+        verify_2d_0d_masked(sequential, value, result_we_want);
     }
 
     for(size_t n = 1; n <= 8; ++n) {

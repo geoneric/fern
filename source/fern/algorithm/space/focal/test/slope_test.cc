@@ -135,12 +135,14 @@ BOOST_AUTO_TEST_CASE(algorithm)
         fa::DetectNoDataByValue<fern::Mask<2>>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<2>>;
 
+    fa::SequentialExecutionPolicy sequential;
+
     OutputNoDataPolicy output_no_data_policy(result_we_get.mask(), true);
 
     fa::space::slope<fa::unary::DiscardRangeErrors>(
         InputNoDataPolicy{{raster.mask(), true}},
         output_no_data_policy,
-        fa::sequential,
+        sequential,
         raster, result_we_get);
 
     for(size_t r = 0; r < nr_rows; ++r) {
@@ -228,6 +230,9 @@ void test_flat(
         fa::DetectNoDataByValue<fern::Mask<2>>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<2>>;
 
+    fa::ParallelExecutionPolicy parallel;
+    fa::SequentialExecutionPolicy sequential;
+
     {
         MaskedRaster<T> result_we_get(extents, transformation);
         OutputNoDataPolicy output_no_data_policy(result_we_get.mask(), true);
@@ -235,7 +240,7 @@ void test_flat(
         fa::space::slope<fa::unary::DiscardRangeErrors>(
             InputNoDataPolicy{{raster.mask(), true}},
             output_no_data_policy,
-            fa::sequential,
+            sequential,
             raster, result_we_get);
 
         compare_result_flat<T>(result_we_get);
@@ -248,7 +253,7 @@ void test_flat(
         fa::space::slope<fa::unary::DiscardRangeErrors>(
             InputNoDataPolicy{{raster.mask(), true}},
             output_no_data_policy,
-            fa::parallel,
+            parallel,
             raster, result_we_get);
 
         compare_result_flat<T>(result_we_get);

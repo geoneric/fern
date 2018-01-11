@@ -109,16 +109,20 @@ void test_array_1d(
 
 BOOST_AUTO_TEST_CASE(array_1d_sequential)
 {
-    test_array_1d(fa::sequential);
-    fa::ExecutionPolicy execution_policy{fa::sequential};
+    fa::SequentialExecutionPolicy sequential;
+
+    test_array_1d(sequential);
+    fa::ExecutionPolicy execution_policy{sequential};
     test_array_1d(execution_policy);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_1d_parallel)
 {
-    test_array_1d(fa::parallel);
-    fa::ExecutionPolicy execution_policy{fa::parallel};
+    fa::ParallelExecutionPolicy parallel;
+
+    test_array_1d(parallel);
+    fa::ExecutionPolicy execution_policy{parallel};
     test_array_1d(execution_policy);
 }
 
@@ -243,16 +247,20 @@ void test_array_1d_masked(
 
 BOOST_AUTO_TEST_CASE(array_1d_masked_sequential)
 {
-    test_array_1d_masked(fa::sequential);
-    fa::ExecutionPolicy execution_policy{fa::sequential};
+    fa::SequentialExecutionPolicy sequential;
+
+    test_array_1d_masked(sequential);
+    fa::ExecutionPolicy execution_policy{sequential};
     test_array_1d_masked(execution_policy);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_1d_masked_parallel)
 {
-    test_array_1d_masked(fa::parallel);
-    fa::ExecutionPolicy execution_policy{fa::parallel};
+    fa::ParallelExecutionPolicy parallel;
+
+    test_array_1d_masked(parallel);
+    fa::ExecutionPolicy execution_policy{parallel};
     test_array_1d_masked(execution_policy);
 }
 
@@ -352,16 +360,20 @@ void test_array_1d_fill_value(
 
 BOOST_AUTO_TEST_CASE(array_1d_fill_value_sequential)
 {
-    test_array_1d_fill_value(fa::sequential);
-    fa::ExecutionPolicy execution_policy{fa::sequential};
+    fa::SequentialExecutionPolicy sequential;
+
+    test_array_1d_fill_value(sequential);
+    fa::ExecutionPolicy execution_policy{sequential};
     test_array_1d_fill_value(execution_policy);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_1d_fill_value_parallel)
 {
-    test_array_1d_fill_value(fa::parallel);
-    fa::ExecutionPolicy execution_policy{fa::parallel};
+    fa::ParallelExecutionPolicy parallel;
+
+    test_array_1d_fill_value(parallel);
+    fa::ExecutionPolicy execution_policy{parallel};
     test_array_1d_fill_value(execution_policy);
 }
 
@@ -486,16 +498,20 @@ void test_array_1d_fill_value_masked(
 
 BOOST_AUTO_TEST_CASE(array_1d_fill_value_masked_sequential)
 {
-    test_array_1d_fill_value_masked(fa::sequential);
-    fa::ExecutionPolicy execution_policy{fa::sequential};
+    fa::SequentialExecutionPolicy sequential;
+
+    test_array_1d_fill_value_masked(sequential);
+    fa::ExecutionPolicy execution_policy{sequential};
     test_array_1d_fill_value_masked(execution_policy);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_1d_fill_value_masked_parallel)
 {
-    test_array_1d_fill_value_masked(fa::parallel);
-    fa::ExecutionPolicy execution_policy{fa::parallel};
+    fa::ParallelExecutionPolicy parallel;
+
+    test_array_1d_fill_value_masked(parallel);
+    fa::ExecutionPolicy execution_policy{parallel};
     test_array_1d_fill_value_masked(execution_policy);
 }
 
@@ -536,16 +552,20 @@ void test_array_2d(
 
 BOOST_AUTO_TEST_CASE(array_2d_sequential)
 {
-    test_array_2d(fa::sequential);
-    fa::ExecutionPolicy execution_policy{fa::sequential};
+    fa::SequentialExecutionPolicy sequential;
+
+    test_array_2d(sequential);
+    fa::ExecutionPolicy execution_policy{sequential};
     test_array_2d(execution_policy);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_2d_parallel)
 {
-    test_array_2d(fa::parallel);
-    fa::ExecutionPolicy execution_policy{fa::parallel};
+    fa::ParallelExecutionPolicy parallel;
+
+    test_array_2d(parallel);
+    fa::ExecutionPolicy execution_policy{parallel};
     test_array_2d(execution_policy);
 }
 
@@ -596,16 +616,20 @@ void test_array_2d_masked(
 
 BOOST_AUTO_TEST_CASE(array_2d_masked_sequential)
 {
-    test_array_2d_masked(fa::sequential);
-    fa::ExecutionPolicy execution_policy{fa::sequential};
+    fa::SequentialExecutionPolicy sequential;
+
+    test_array_2d_masked(sequential);
+    fa::ExecutionPolicy execution_policy{sequential};
     test_array_2d_masked(execution_policy);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_2d_masked_parallel)
 {
-    test_array_2d_masked(fa::parallel);
-    fa::ExecutionPolicy execution_policy{fa::parallel};
+    fa::ParallelExecutionPolicy parallel;
+
+    test_array_2d_masked(parallel);
+    fa::ExecutionPolicy execution_policy{parallel};
     test_array_2d_masked(execution_policy);
 }
 
@@ -649,16 +673,20 @@ void test_array_2d_fill_value(
 
 BOOST_AUTO_TEST_CASE(array_2d_fill_value_sequential)
 {
-    test_array_2d_fill_value(fa::sequential);
-    fa::ExecutionPolicy execution_policy{fa::sequential};
+    fa::SequentialExecutionPolicy sequential;
+
+    test_array_2d_fill_value(sequential);
+    fa::ExecutionPolicy execution_policy{sequential};
     test_array_2d_fill_value(execution_policy);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_2d_fill_value_parallel)
 {
-    test_array_2d_fill_value(fa::parallel);
-    fa::ExecutionPolicy execution_policy{fa::parallel};
+    fa::ParallelExecutionPolicy parallel;
+
+    test_array_2d_fill_value(parallel);
+    fa::ExecutionPolicy execution_policy{parallel};
     test_array_2d_fill_value(execution_policy);
 }
 
@@ -711,16 +739,20 @@ void test_array_2d_fill_value_masked(
 
 BOOST_AUTO_TEST_CASE(array_2d_fill_value_masked_sequential)
 {
-    test_array_2d_fill_value_masked(fa::sequential);
-    fa::ExecutionPolicy execution_policy{fa::sequential};
+    fa::SequentialExecutionPolicy sequential;
+
+    test_array_2d_fill_value_masked(sequential);
+    fa::ExecutionPolicy execution_policy{sequential};
     test_array_2d_fill_value_masked(execution_policy);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_2d_fill_value_masked_parallel)
 {
-    test_array_2d_fill_value_masked(fa::parallel);
-    fa::ExecutionPolicy execution_policy{fa::parallel};
+    fa::ParallelExecutionPolicy parallel;
+
+    test_array_2d_fill_value_masked(parallel);
+    fa::ExecutionPolicy execution_policy{parallel};
     test_array_2d_fill_value_masked(execution_policy);
 }
 
@@ -765,10 +797,12 @@ BOOST_AUTO_TEST_CASE(pcraster_example_1)
     fa::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
         result_we_got.mask(), true);
 
-    fa::core::offset(input_no_data_policy, output_no_data_policy,
-        fa::sequential, values, offset, result_we_got);
+    fa::SequentialExecutionPolicy sequential;
 
-    BOOST_CHECK(fern::compare(fa::sequential, result_we_got,
+    fa::core::offset(input_no_data_policy, output_no_data_policy,
+        sequential, values, offset, result_we_got);
+
+    BOOST_CHECK(fern::compare(sequential, result_we_got,
         result_we_want));
 }
 
@@ -813,10 +847,12 @@ BOOST_AUTO_TEST_CASE(pcraster_example_2)
     fa::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
         result_we_got.mask(), true);
 
-    fa::core::offset(input_no_data_policy, output_no_data_policy,
-        fa::sequential, values, offset, result_we_got);
+    fa::SequentialExecutionPolicy sequential;
 
-    BOOST_CHECK(fern::compare(fa::sequential, result_we_got,
+    fa::core::offset(input_no_data_policy, output_no_data_policy,
+        sequential, values, offset, result_we_got);
+
+    BOOST_CHECK(fern::compare(sequential, result_we_got,
         result_we_want));
 }
 
@@ -855,11 +891,13 @@ BOOST_AUTO_TEST_CASE(pcraster_example_3)
     fa::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
         result_we_got.mask(), true);
 
+    fa::SequentialExecutionPolicy sequential;
+
     int const fill_value{0};
 
     fa::core::offset(input_no_data_policy, output_no_data_policy,
-        fa::sequential, values, offset, fill_value, result_we_got);
+        sequential, values, offset, fill_value, result_we_got);
 
-    BOOST_CHECK(fern::compare(fa::sequential, result_we_got,
+    BOOST_CHECK(fern::compare(sequential, result_we_got,
         result_we_want));
 }

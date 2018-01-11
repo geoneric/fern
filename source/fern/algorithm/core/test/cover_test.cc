@@ -28,8 +28,10 @@ void verify_value(
     Value2 const& value2,
     Result const& result_we_want)
 {
+    fa::SequentialExecutionPolicy sequential;
+
     Result result_we_get;
-    fa::core::cover<>(fa::sequential, value1, value2, result_we_get);
+    fa::core::cover<>(sequential, value1, value2, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 
@@ -78,13 +80,12 @@ BOOST_AUTO_TEST_CASE(array_2d_masked_0d)
     result_we_want[2][1] = value1[2][1];
     result_we_want[2][2] = value1[2][2];
 
-    auto& execution_policy(fa::sequential);
+    fa::SequentialExecutionPolicy sequential;
 
     fa::core::cover(input_no_data_policy, output_no_data_policy,
-        execution_policy, value1, value2, result_we_got);
+        sequential, value1, value2, result_we_got);
 
-    BOOST_CHECK(fern::compare(execution_policy, result_we_got,
-        result_we_want));
+    BOOST_CHECK(fern::compare(sequential, result_we_got, result_we_want));
 }
 
 
@@ -159,7 +160,7 @@ BOOST_AUTO_TEST_CASE(array_2d_masked_2d)
     result_we_want.mask()[2][0] = true;
 
 
-    auto& execution_policy(fa::sequential);
+    fa::SequentialExecutionPolicy sequential;
 
     fa::MarkNoDataByValue<fern::Mask<2>> output_no_data_policy(
         result_we_got1.mask(), true);
@@ -171,11 +172,11 @@ BOOST_AUTO_TEST_CASE(array_2d_masked_2d)
             fa::DetectNoDataByValue<fern::Mask<2>>> input_no_data_policy{
                 {value1.mask(), true}, {value2.mask(), true}};
 
-        fa::algebra::and_(execution_policy, value1.mask(), value2.mask(),
+        fa::algebra::and_(sequential, value1.mask(), value2.mask(),
             result_we_got1.mask());
 
         fa::core::cover(input_no_data_policy, output_no_data_policy,
-            execution_policy, value1, value2, result_we_got1);
+            sequential, value1, value2, result_we_got1);
 
     }
 
@@ -186,13 +187,12 @@ BOOST_AUTO_TEST_CASE(array_2d_masked_2d)
             fa::DetectNoDataByValue<fern::Mask<2>>> input_no_data_policy{
                 {result_we_got1.mask(), true}, {value3.mask(), true}};
 
-        fa::algebra::and_(execution_policy, result_we_got1.mask(),
+        fa::algebra::and_(sequential, result_we_got1.mask(),
             value3.mask(), result_we_got2.mask());
 
         fa::core::cover(input_no_data_policy, output_no_data_policy,
-            execution_policy, result_we_got1, value3, result_we_got2);
+            sequential, result_we_got1, value3, result_we_got2);
     }
 
-    BOOST_CHECK(fern::compare(execution_policy, result_we_got2,
-        result_we_want));
+    BOOST_CHECK(fern::compare(sequential, result_we_got2, result_we_want));
 }

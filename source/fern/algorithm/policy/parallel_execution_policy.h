@@ -17,7 +17,7 @@ namespace algorithm {
 //! Execution policy class for parallel execution of algorithms.
 /*!
     @ingroup    fern_algorithm_policy_group
-    @sa         sequential, parallel, ExecutionPolicy
+    @sa         SequentialExecutionPolicy, ExecutionPolicy
 */
 class ParallelExecutionPolicy
 {

@@ -53,16 +53,20 @@ void test_array_1d(
 
 BOOST_AUTO_TEST_CASE(array_1d_sequential)
 {
-    test_array_1d(fa::sequential);
-    fa::ExecutionPolicy execution_policy{fa::sequential};
+    fa::SequentialExecutionPolicy sequential;
+
+    test_array_1d(sequential);
+    fa::ExecutionPolicy execution_policy{sequential};
     test_array_1d(execution_policy);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_1d_parallel)
 {
-    test_array_1d(fa::parallel);
-    fa::ExecutionPolicy execution_policy{fa::parallel};
+    fa::ParallelExecutionPolicy parallel;
+
+    test_array_1d(parallel);
+    fa::ExecutionPolicy execution_policy{parallel};
     test_array_1d(execution_policy);
 }
 
@@ -76,11 +80,15 @@ void test_array_1d_masked(
 
 BOOST_AUTO_TEST_CASE(array_1d_masked_sequential)
 {
-    test_array_1d_masked(fa::sequential);
+    fa::SequentialExecutionPolicy sequential;
+
+    test_array_1d_masked(sequential);
 }
 
 
 BOOST_AUTO_TEST_CASE(array_1d_masked_parallel)
 {
-    test_array_1d_masked(fa::parallel);
+    fa::ParallelExecutionPolicy parallel;
+
+    test_array_1d_masked(parallel);
 }
