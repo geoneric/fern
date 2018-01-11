@@ -26,6 +26,7 @@ target_include_directories(fern_core
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/../..>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../..>
+        $<INSTALL_INTERFACE:include>
 )
 
 target_link_libraries(fern_core

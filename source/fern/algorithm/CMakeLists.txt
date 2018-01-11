@@ -20,6 +20,7 @@ add_library(fern::algorithm ALIAS fern_algorithm)
 target_include_directories(fern_algorithm
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../..>
+        $<INSTALL_INTERFACE:include>
 )
 
 target_link_libraries(fern_algorithm
