@@ -9,9 +9,38 @@
 #include "fern/core/thread_pool.h"
 #include <cassert>
 #include <chrono>
+// #include <iostream>
 
 
 namespace fern {
+namespace {
+
+// class Logger
+// {
+// 
+// public:
+// 
+// 	template<
+//         typename T>
+// 	Logger& operator<<(
+//         T const& data)
+//     {
+// 		std::lock_guard<std::recursive_mutex> lock(cout_guard);
+// 		std::cout << data;
+//         std::cout.flush();
+// 		return *this;
+// 	}
+// 
+// private:
+// 
+//     std::recursive_mutex cout_guard;
+// 
+// };
+// 
+// Logger safe_cout;
+
+}  // Anonymous namespace
+
 
 //! Construct a thread pool.
 /*!
