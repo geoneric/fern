@@ -34,6 +34,9 @@ BOOST_AUTO_TEST_CASE(array_0d)
     using Argument = ArgumentValue;
     using Result = ResultValue;
 
+    fa::SequentialExecutionPolicy sequential;
+    fa::ParallelExecutionPolicy parallel;
+
     OutputNoDataPolicy output_no_data_policy;
     Argument value{5};
     Result result{3};
@@ -42,7 +45,7 @@ BOOST_AUTO_TEST_CASE(array_0d)
         fa::unary::DiscardDomainErrors,
         fa::unary::DiscardRangeErrors>(
             InputNoDataPolicy{{}}, output_no_data_policy,
-            fa::sequential, value, result);
+            sequential, value, result);
 
     BOOST_REQUIRE_EQUAL(result, 5);
 
@@ -52,7 +55,7 @@ BOOST_AUTO_TEST_CASE(array_0d)
         fa::unary::DiscardDomainErrors,
         fa::unary::DiscardRangeErrors>(
             InputNoDataPolicy{{}}, output_no_data_policy,
-            fa::parallel, value, result);
+            parallel, value, result);
 
     BOOST_REQUIRE_EQUAL(result, 5);
 }
@@ -65,6 +68,8 @@ BOOST_AUTO_TEST_CASE(array_0d_masked)
     using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
     using Argument = fern::MaskedScalar<ArgumentValue>;
     using Result = fern::MaskedScalar<ResultValue>;
+
+    fa::SequentialExecutionPolicy sequential;
 
     Argument argument;
     Result result;
@@ -83,7 +88,7 @@ BOOST_AUTO_TEST_CASE(array_0d_masked)
             fa::unary::DiscardDomainErrors,
             fa::unary::DiscardRangeErrors>(
                 input_no_data_policy, output_no_data_policy,
-                fa::sequential, argument, result);
+                sequential, argument, result);
 
         BOOST_REQUIRE_EQUAL(result.mask(), false);
         BOOST_REQUIRE_EQUAL(result.value(), 5);
@@ -102,7 +107,7 @@ BOOST_AUTO_TEST_CASE(array_0d_masked)
             fa::unary::DiscardDomainErrors,
             fa::unary::DiscardRangeErrors>(
                 input_no_data_policy, output_no_data_policy,
-                fa::sequential, argument, result);
+                sequential, argument, result);
 
         BOOST_REQUIRE_EQUAL(result.mask(), true);
         BOOST_REQUIRE_EQUAL(result.value(), 3);
@@ -116,6 +121,8 @@ BOOST_AUTO_TEST_CASE(array_1d_sequential)
     using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData>;
     using OutputNoDataPolicy = fa::DontMarkNoData;
 
+    fa::SequentialExecutionPolicy sequential;
+
     Argument argument{5};
 
     OutputNoDataPolicy output_no_data_policy;
@@ -130,7 +137,7 @@ BOOST_AUTO_TEST_CASE(array_1d_sequential)
             fa::unary::DiscardDomainErrors,
             fa::unary::DiscardRangeErrors>(
                 InputNoDataPolicy{{}}, output_no_data_policy,
-                fa::sequential, argument, result);
+                sequential, argument, result);
 
         BOOST_REQUIRE_EQUAL(result[0], 5);
         BOOST_REQUIRE_EQUAL(result[1], 5);
@@ -147,7 +154,7 @@ BOOST_AUTO_TEST_CASE(array_1d_sequential)
             fa::unary::DiscardDomainErrors,
             fa::unary::DiscardRangeErrors>(
                 InputNoDataPolicy{{}}, output_no_data_policy,
-                fa::sequential, argument, result);
+                sequential, argument, result);
 
         BOOST_REQUIRE_EQUAL(result[0], 5);
         BOOST_REQUIRE_EQUAL(result[1], 5);
@@ -164,7 +171,7 @@ BOOST_AUTO_TEST_CASE(array_1d_sequential)
             fa::unary::DiscardDomainErrors,
             fa::unary::DiscardRangeErrors>(
                 InputNoDataPolicy{{}}, output_no_data_policy,
-                fa::sequential, argument, result);
+                sequential, argument, result);
 
         BOOST_CHECK(result.empty());
     }
@@ -177,6 +184,8 @@ BOOST_AUTO_TEST_CASE(array_1d_parallel)
     using InputNoDataPolicy = fa::InputNoDataPolicies<fa::SkipNoData>;
     using OutputNoDataPolicy = fa::DontMarkNoData;
 
+    fa::ParallelExecutionPolicy parallel;
+
     Argument argument{5};
 
     OutputNoDataPolicy output_no_data_policy;
@@ -191,7 +200,7 @@ BOOST_AUTO_TEST_CASE(array_1d_parallel)
             fa::unary::DiscardDomainErrors,
             fa::unary::DiscardRangeErrors>(
                 InputNoDataPolicy{{}}, output_no_data_policy,
-                fa::parallel, argument, result);
+                parallel, argument, result);
 
         BOOST_REQUIRE_EQUAL(result[0], 5);
         BOOST_REQUIRE_EQUAL(result[1], 5);
@@ -208,7 +217,7 @@ BOOST_AUTO_TEST_CASE(array_1d_parallel)
             fa::unary::DiscardDomainErrors,
             fa::unary::DiscardRangeErrors>(
                 InputNoDataPolicy{{}}, output_no_data_policy,
-                fa::parallel, argument, result);
+                parallel, argument, result);
 
         BOOST_REQUIRE_EQUAL(result[0], 5);
         BOOST_REQUIRE_EQUAL(result[1], 5);
@@ -225,7 +234,7 @@ BOOST_AUTO_TEST_CASE(array_1d_parallel)
             fa::unary::DiscardDomainErrors,
             fa::unary::DiscardRangeErrors>(
                 InputNoDataPolicy{{}}, output_no_data_policy,
-                fa::parallel, argument, result);
+                parallel, argument, result);
 
         BOOST_CHECK(result.empty());
     }
@@ -240,6 +249,7 @@ BOOST_AUTO_TEST_CASE(array_1d_masked)
         fa::DetectNoDataByValue<bool>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<1>>;
 
+    fa::SequentialExecutionPolicy sequential;
 
     {
         Argument argument(5);
@@ -254,7 +264,7 @@ BOOST_AUTO_TEST_CASE(array_1d_masked)
             fa::unary::DiscardDomainErrors,
             fa::unary::DiscardRangeErrors>(
                 input_no_data_policy, output_no_data_policy,
-                fa::sequential, argument, result);
+                sequential, argument, result);
 
         BOOST_REQUIRE_EQUAL(result.mask()[0], false);
         BOOST_REQUIRE_EQUAL(result.mask()[1], false);
@@ -271,7 +281,7 @@ BOOST_AUTO_TEST_CASE(array_1d_masked)
             fa::unary::DiscardDomainErrors,
             fa::unary::DiscardRangeErrors>(
                 input_no_data_policy, output_no_data_policy,
-                fa::sequential, argument, result);
+                sequential, argument, result);
 
         BOOST_REQUIRE_EQUAL(result.mask()[0], true);
         BOOST_REQUIRE_EQUAL(result.mask()[1], true);
@@ -293,7 +303,7 @@ BOOST_AUTO_TEST_CASE(array_1d_masked)
             fa::unary::DiscardDomainErrors,
             fa::unary::DiscardRangeErrors>(
                 input_no_data_policy, output_no_data_policy,
-                fa::sequential, argument, result);
+                sequential, argument, result);
 
         BOOST_CHECK_EQUAL(result.size(), 0u);
     }
@@ -306,6 +316,8 @@ BOOST_AUTO_TEST_CASE(array_2d_sequential)
     using OutputNoDataPolicy = fa::DontMarkNoData;
     using Argument = ArgumentValue;
     using Result = fern::Array<ResultValue, 2>;
+
+    fa::SequentialExecutionPolicy sequential;
 
     OutputNoDataPolicy output_no_data_policy;
 
@@ -320,7 +332,7 @@ BOOST_AUTO_TEST_CASE(array_2d_sequential)
         fa::unary::DiscardDomainErrors,
         fa::unary::DiscardRangeErrors>(
             InputNoDataPolicy{{}}, output_no_data_policy,
-            fa::sequential, argument, result);
+            sequential, argument, result);
 
     BOOST_CHECK_EQUAL(result[0][0], 5);
     BOOST_CHECK_EQUAL(result[0][1], 5);
@@ -338,6 +350,8 @@ BOOST_AUTO_TEST_CASE(array_2d_parallel)
     using Argument = ArgumentValue;
     using Result = fern::Array<ResultValue, 2>;
 
+    fa::ParallelExecutionPolicy parallel;
+
     OutputNoDataPolicy output_no_data_policy;
 
     Argument argument{5};
@@ -351,7 +365,7 @@ BOOST_AUTO_TEST_CASE(array_2d_parallel)
         fa::unary::DiscardDomainErrors,
         fa::unary::DiscardRangeErrors>(
             InputNoDataPolicy{{}}, output_no_data_policy,
-            fa::parallel, argument, result);
+            parallel, argument, result);
 
     BOOST_CHECK_EQUAL(result[0][0], 5);
     BOOST_CHECK_EQUAL(result[0][1], 5);
@@ -370,6 +384,8 @@ BOOST_AUTO_TEST_CASE(array_2d_masked)
         fa::DetectNoDataByValue<bool>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<fern::Mask<2>>;
 
+    fa::SequentialExecutionPolicy sequential;
+
     {
         Argument argument{5};
         Result result{
@@ -387,7 +403,7 @@ BOOST_AUTO_TEST_CASE(array_2d_masked)
             fa::unary::DiscardDomainErrors,
             fa::unary::DiscardRangeErrors>(
                 input_no_data_policy, output_no_data_policy,
-                fa::sequential, argument, result);
+                sequential, argument, result);
 
         BOOST_REQUIRE_EQUAL(result.mask()[0][0], false);
         BOOST_REQUIRE_EQUAL(result.mask()[0][0], false);
@@ -410,7 +426,7 @@ BOOST_AUTO_TEST_CASE(array_2d_masked)
             fa::unary::DiscardDomainErrors,
             fa::unary::DiscardRangeErrors>(
                 input_no_data_policy, output_no_data_policy,
-                fa::sequential, argument, result);
+                sequential, argument, result);
 
         BOOST_REQUIRE_EQUAL(result.mask()[0][0], true);
         BOOST_REQUIRE_EQUAL(result.mask()[0][0], true);
@@ -438,7 +454,7 @@ BOOST_AUTO_TEST_CASE(array_2d_masked)
             fa::unary::DiscardDomainErrors,
             fa::unary::DiscardRangeErrors>(
                 input_no_data_policy, output_no_data_policy,
-                fa::sequential, argument, result);
+                sequential, argument, result);
 
         BOOST_CHECK_EQUAL(result.size(), 0u);
     }

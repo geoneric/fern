@@ -48,9 +48,11 @@ template<
 void verify_zero(
     Value const& value)
 {
+    fa::SequentialExecutionPolicy sequential;
+
     Result result_we_want{0};
     Result result_we_get;
-    fa::trigonometry::tan(fa::sequential, value, result_we_get);
+    fa::trigonometry::tan(sequential, value, result_we_get);
     BOOST_CHECK_CLOSE(1.0 + result_we_get, 1.0 + result_we_want, 1e-10);
 }
 
@@ -62,8 +64,10 @@ void verify_value(
     Value const& value,
     Result const& result_we_want)
 {
+    fa::SequentialExecutionPolicy sequential;
+
     Result result_we_get;
-    fa::trigonometry::tan(fa::sequential, value, result_we_get);
+    fa::trigonometry::tan(sequential, value, result_we_get);
 
     // TODO mingw 32 bit / gcc 4.8.2 requires us to use 4e-3. Other compilers
     //      allow the use of 1e-10.

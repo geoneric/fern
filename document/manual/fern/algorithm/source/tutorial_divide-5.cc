@@ -16,6 +16,8 @@ int main()
         fa::DetectNoDataByValue<std::vector<double>>>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<std::vector<double>>;
 
+    fa::SequentialExecutionPolicy sequential;
+
     double const no_data{-999.0};
 
     std::vector<double> value1 = { 1.0, 2.0, 3.0, 4.0, no_data };
@@ -28,7 +30,7 @@ int main()
 
     fa::algebra::divide<fa::divide::OutOfDomainPolicy,
         fa::divide::OutOfRangePolicy>(input_no_data_policy,
-            output_no_data_policy, fa::sequential, value1, value2, result);
+            output_no_data_policy, sequential, value1, value2, result);
 
     assert(fern::is_equal(result[0], no_data));  // Zero in second argument.
     assert(fern::is_equal(result[1], 2.0 / 4.0));

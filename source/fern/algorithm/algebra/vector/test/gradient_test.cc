@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE(algorithm)
     raster.mask()[1][1] = true;
     raster.mask()[2][2] = true;
 
-    fa::ExecutionPolicy execution_policy = fa::sequential;
+    fa::ExecutionPolicy execution_policy = fa::SequentialExecutionPolicy{};
 
     // Calculate gradient_x.
     {

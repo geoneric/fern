@@ -25,8 +25,10 @@ void verify_value(
     Value2 const& value2,
     Result const& result_we_want)
 {
+    fa::SequentialExecutionPolicy sequential;
+
     Result result_we_get;
-    fa::algebra::or_(fa::sequential, value1, value2, result_we_get);
+    fa::algebra::or_(sequential, value1, value2, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 

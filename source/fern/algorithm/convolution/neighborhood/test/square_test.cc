@@ -36,6 +36,8 @@ BOOST_AUTO_TEST_CASE(verify_use_in_algorithm)
 {
     // Verify we can pass a square to an operation.
 
+    fa::SequentialExecutionPolicy sequential;
+
     // Multiply.
     {
         fern::Square<int, 1> square({
@@ -44,7 +46,7 @@ BOOST_AUTO_TEST_CASE(verify_use_in_algorithm)
             {7, 8, 9}
         });
 
-        fa::algebra::multiply(fa::sequential, square, 2, square);
+        fa::algebra::multiply(sequential, square, 2, square);
 
         BOOST_CHECK_EQUAL(square.weight(0), 2);
         BOOST_CHECK_EQUAL(square.weight(1), 4);

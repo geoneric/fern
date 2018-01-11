@@ -39,8 +39,10 @@ void verify_value(
     Value const& value,
     Result const& result_we_want)
 {
+    fa::SequentialExecutionPolicy sequential;
+
     Result result_we_get;
-    fa::algebra::log10(fa::sequential, value, result_we_get);
+    fa::algebra::log10(sequential, value, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 

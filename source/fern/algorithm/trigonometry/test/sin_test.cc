@@ -41,8 +41,10 @@ void verify_value(
     Value const& value,
     Result const& result_we_want)
 {
+    fa::SequentialExecutionPolicy sequential;
+
     Result result_we_get;
-    fa::trigonometry::sin(fa::sequential, value, result_we_get);
+    fa::trigonometry::sin(sequential, value, result_we_get);
     BOOST_CHECK_CLOSE(1.0 + result_we_get, 1.0 + result_we_want, 1e-10);
 }
 

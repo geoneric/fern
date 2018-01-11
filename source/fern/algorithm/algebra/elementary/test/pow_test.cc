@@ -52,10 +52,12 @@ struct VerifyWithinRange
         Value1 const& value1,
         Value2 const& value2)
     {
+        fa::SequentialExecutionPolicy sequential;
+
         OutOfRangePolicy<Value1, Value2, Result> policy;
         Result result;
 
-        fa::algebra::pow(fa::sequential, value1, value2, result);
+        fa::algebra::pow(sequential, value1, value2, result);
 
         return policy.within_range(value1, value2, result);
     }
@@ -84,8 +86,10 @@ void verify_value(
     Value2 const& value2,
     Result const& result_we_want)
 {
+    fa::SequentialExecutionPolicy sequential;
+
     Result result_we_get;
-    fa::algebra::pow(fa::sequential, value1, value2, result_we_get);
+    fa::algebra::pow(sequential, value1, value2, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 

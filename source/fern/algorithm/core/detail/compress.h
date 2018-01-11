@@ -101,6 +101,8 @@ void copy_regional_results_to_front(
     Result& result,
     Count& count)
 {
+    SequentialExecutionPolicy sequential;
+
     // Start position of elements to copy from.
     size_t source_index{0};
 

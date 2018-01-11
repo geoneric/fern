@@ -253,6 +253,8 @@ struct Aggregate<
         Results const& results,
         Result& result)
     {
+        SequentialExecutionPolicy sequential;
+
         Array<value_type<Result>, 1> results_(results);
 
         // Accumulate the results into one single result.
@@ -271,6 +273,8 @@ struct Aggregate<
     true>
 {
 
+    static constexpr SequentialExecutionPolicy sequential{};
+
     template<
         template<typename, typename, typename> class OutOfRangePolicy,
         typename Aggregator,
@@ -285,6 +289,8 @@ struct Aggregate<
         Results const& results,
         Result& result)
     {
+        SequentialExecutionPolicy sequential;
+
         MaskedArray<value_type<Result>, 1> results_(results);
 
         // Accumulate the results into one single result.

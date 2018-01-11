@@ -27,8 +27,10 @@ void verify_value(
     A const& value,
     R const& result_we_want)
 {
+    fa::SequentialExecutionPolicy sequential;
+
     R result_we_get;
-    fa::statistic::count(fa::sequential, array, value, result_we_get);
+    fa::statistic::count(sequential, array, value, result_we_get);
     BOOST_CHECK_EQUAL(result_we_get, result_we_want);
 }
 
@@ -44,6 +46,8 @@ BOOST_AUTO_TEST_CASE(d0_array)
 
 BOOST_AUTO_TEST_CASE(masked_d0_array)
 {
+    fa::SequentialExecutionPolicy sequential;
+
     fern::MaskedScalar<int32_t> constant;
     fern::MaskedScalar<uint64_t> result_we_get;
 
@@ -54,7 +58,7 @@ BOOST_AUTO_TEST_CASE(masked_d0_array)
     result_we_get.value() = 9;
     result_we_get.mask() = false;
     BOOST_CHECK(!constant.mask());
-    fa::statistic::count(fa::sequential, constant, 5, result_we_get);
+    fa::statistic::count(sequential, constant, 5, result_we_get);
     BOOST_CHECK(!result_we_get.mask());
     BOOST_CHECK_EQUAL(result_we_get.value(), 1u);
 
@@ -64,7 +68,7 @@ BOOST_AUTO_TEST_CASE(masked_d0_array)
     result_we_get.value() = 9;
     result_we_get.mask() = false;
     BOOST_CHECK(constant.mask());
-    fa::statistic::count(fa::sequential, constant, 5, result_we_get);
+    fa::statistic::count(sequential, constant, 5, result_we_get);
     BOOST_CHECK(!result_we_get.mask());
     BOOST_CHECK_EQUAL(result_we_get.value(), 1u);
 
@@ -84,7 +88,7 @@ BOOST_AUTO_TEST_CASE(masked_d0_array)
     fa::statistic::count(
         InputNoDataPolicy{{constant.mask(), true}, {}},
         output_no_data_policy,
-        fa::sequential,
+        sequential,
         constant, 5, result_we_get);
     BOOST_CHECK(!result_we_get.mask());
     BOOST_CHECK_EQUAL(result_we_get.value(), 1u);
@@ -99,7 +103,7 @@ BOOST_AUTO_TEST_CASE(masked_d0_array)
     fa::statistic::count(
         InputNoDataPolicy{{constant.mask(), true}, {}},
         output_no_data_policy,
-        fa::sequential,
+        sequential,
         constant, 5, result_we_get);
     BOOST_CHECK(result_we_get.mask());
     BOOST_CHECK_EQUAL(result_we_get.value(), 9u);
@@ -108,19 +112,21 @@ BOOST_AUTO_TEST_CASE(masked_d0_array)
 
 BOOST_AUTO_TEST_CASE(d1_array)
 {
+    fa::SequentialExecutionPolicy sequential;
+
     uint64_t result;
 
     // vector
     {
         std::vector<int32_t> array{ 1, 2, 3, 5 };
-        fa::statistic::count(fa::sequential, array, 2, result);
+        fa::statistic::count(sequential, array, 2, result);
         BOOST_CHECK_EQUAL(result, 1u);
     }
 
     // 1d array
     {
         fern::Array<int32_t, 1> array{ 1, 2, 2, 5 };
-        fa::statistic::count(fa::sequential, array, 2, result);
+        fa::statistic::count(sequential, array, 2, result);
         BOOST_CHECK_EQUAL(result, 2u);
     }
 
@@ -129,7 +135,7 @@ BOOST_AUTO_TEST_CASE(d1_array)
         // The result value is not touched.
         std::vector<int32_t> array;
         result = 5;
-        fa::statistic::count(fa::sequential, array, 2, result);
+        fa::statistic::count(sequential, array, 2, result);
         BOOST_CHECK_EQUAL(result, 5u);
     }
 }
@@ -141,6 +147,8 @@ BOOST_AUTO_TEST_CASE(masked_d1_array)
         fa::DetectNoDataByValue<fern::Mask<1>>, fa::SkipNoData>;
     using OutputNoDataPolicy = fa::MarkNoDataByValue<bool>;
 
+    fa::SequentialExecutionPolicy sequential;
+
     fern::MaskedArray<int32_t, 1> array{ 1, 2, 3, 5 };
     fern::MaskedScalar<size_t> result;
 
@@ -148,7 +156,7 @@ BOOST_AUTO_TEST_CASE(masked_d1_array)
     {
         result.value() = 9;
         result.mask() = false;
-        fa::statistic::count(fa::sequential, array, 2, result);
+        fa::statistic::count(sequential, array, 2, result);
         BOOST_CHECK_EQUAL(result.value(), 1u);
     }
 
@@ -161,7 +169,7 @@ BOOST_AUTO_TEST_CASE(masked_d1_array)
         fa::statistic::count(
             InputNoDataPolicy{{array.mask(), true}, {}},
             output_no_data_policy,
-            fa::sequential, array, 2, result);
+            sequential, array, 2, result);
         BOOST_CHECK(!result.mask());
         BOOST_CHECK_EQUAL(result.value(), 1u);
 
@@ -170,7 +178,7 @@ BOOST_AUTO_TEST_CASE(masked_d1_array)
         fa::statistic::count(
             InputNoDataPolicy{{array.mask(), true}, {}},
             output_no_data_policy,
-            fa::sequential, array, 2, result);
+            sequential, array, 2, result);
         BOOST_CHECK(result.mask());
     }
 
@@ -183,7 +191,7 @@ BOOST_AUTO_TEST_CASE(masked_d1_array)
         fa::statistic::count(
             InputNoDataPolicy{{empty_array.mask(), true}, {}},
             output_no_data_policy,
-            fa::sequential, empty_array, 2, result);
+            sequential, empty_array, 2, result);
         BOOST_CHECK(result.mask());
         BOOST_CHECK_EQUAL(result.value(), 9u);
     }
@@ -192,6 +200,8 @@ BOOST_AUTO_TEST_CASE(masked_d1_array)
 
 BOOST_AUTO_TEST_CASE(d2_array)
 {
+    fa::SequentialExecutionPolicy sequential;
+
     // 2d array
     {
         fern::Array<int8_t, 2> array{
@@ -200,7 +210,7 @@ BOOST_AUTO_TEST_CASE(d2_array)
             {  1,  2 }
         };
         uint64_t result;
-        fa::statistic::count(fa::sequential, array, 1, result);
+        fa::statistic::count(sequential, array, 1, result);
         BOOST_CHECK_EQUAL(result, 1u);
     }
 }
@@ -208,6 +218,8 @@ BOOST_AUTO_TEST_CASE(d2_array)
 
 BOOST_AUTO_TEST_CASE(masked_d2_array)
 {
+    fa::SequentialExecutionPolicy sequential;
+
     fern::MaskedArray<int8_t, 2> array{
         { -2, -1 },
         {  5,  9 },
@@ -217,7 +229,7 @@ BOOST_AUTO_TEST_CASE(masked_d2_array)
     // 2d masked array with non-masking count
     {
         fern::MaskedScalar<uint64_t> result;
-        fa::statistic::count(fa::sequential, array, -2, result);
+        fa::statistic::count(sequential, array, -2, result);
         BOOST_CHECK(!result.mask());
         BOOST_CHECK_EQUAL(result.value(), 1u);
     }
@@ -236,7 +248,7 @@ BOOST_AUTO_TEST_CASE(masked_d2_array)
         OutputNoDataPolicy output_no_data_policy(result.mask(), true);
         fa::statistic::count(
             InputNoDataPolicy{{array.mask(), true}, {}}, output_no_data_policy,
-            fa::sequential, array, 2, result);
+            sequential, array, 2, result);
         BOOST_CHECK(!result.mask());
         BOOST_CHECK_EQUAL(result.value(), 1u);
 
@@ -244,7 +256,7 @@ BOOST_AUTO_TEST_CASE(masked_d2_array)
         result.value() = 999;
         fa::statistic::count(
             InputNoDataPolicy{{array.mask(), true}, {}}, output_no_data_policy,
-            fa::sequential, array, 9, result);
+            sequential, array, 9, result);
         BOOST_CHECK(!result.mask());
         BOOST_CHECK_EQUAL(result.value(), 0u);
 
@@ -254,7 +266,7 @@ BOOST_AUTO_TEST_CASE(masked_d2_array)
         result.value() = 999;
         fa::statistic::count(
             InputNoDataPolicy{{array.mask(), true}, {}}, output_no_data_policy,
-            fa::sequential, array, 9, result);
+            sequential, array, 9, result);
         BOOST_CHECK(result.mask());
     }
 }
@@ -262,6 +274,9 @@ BOOST_AUTO_TEST_CASE(masked_d2_array)
 
 BOOST_AUTO_TEST_CASE(concurrent)
 {
+    fa::ParallelExecutionPolicy parallel;
+    fa::SequentialExecutionPolicy sequential;
+
     // Create a somewhat larger array.
     size_t const nr_rows = 600;
     size_t const nr_cols = 400;
@@ -276,14 +291,14 @@ BOOST_AUTO_TEST_CASE(concurrent)
     // Serial.
     {
         result_we_got = 9;
-        fa::statistic::count(fa::sequential, argument, 5, result_we_got);
+        fa::statistic::count(sequential, argument, 5, result_we_got);
         BOOST_CHECK_EQUAL(result_we_got, result_we_want);
     }
 
     // Concurrent.
     {
         result_we_got = 9;
-        fa::statistic::count(fa::parallel, argument, 5, result_we_got);
+        fa::statistic::count(parallel, argument, 5, result_we_got);
         BOOST_CHECK_EQUAL(result_we_got, result_we_want);
     }
 
@@ -297,6 +312,6 @@ BOOST_AUTO_TEST_CASE(concurrent)
         // Verify executor can handle masked result.
         fa::statistic::count(
             InputNoDataPolicy{{}, {}}, output_no_data_policy,
-            fa::parallel, argument, 5, result_we_got);
+            parallel, argument, 5, result_we_got);
     }
 }

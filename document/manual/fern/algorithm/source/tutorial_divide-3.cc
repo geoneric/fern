@@ -8,6 +8,8 @@ int main()
 {
     namespace fa = fern::algorithm;
 
+    fa::SequentialExecutionPolicy sequential;
+
     fern::Array<double, 2> value1 = {
         { 1.0, 2.0 },
         { 3.0, 4.0 },
@@ -16,7 +18,7 @@ int main()
     double value2 = 9.0;
     fern::Array<double, 2> result(fern::extents[2][3]);
 
-    fa::algebra::divide(fa::sequential, value1, value2, result);
+    fa::algebra::divide(sequential, value1, value2, result);
 
     return EXIT_SUCCESS;
 }

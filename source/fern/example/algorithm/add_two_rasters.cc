@@ -20,7 +20,8 @@
 namespace example {
 
 // Execution policy to use.
-fern::algorithm::ExecutionPolicy execution_policy = fern::algorithm::parallel;
+fern::algorithm::ExecutionPolicy execution_policy =
+    fern::algorithm::ParallelExecutionPolicy{};
 
 }  // namespace example
 
