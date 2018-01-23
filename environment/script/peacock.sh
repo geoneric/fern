@@ -96,6 +96,10 @@ function build_peacock()
     options+=("-Dgdal_with_hdf5=true")
     options+=("-Dgdal_with_netcdf=true")
 
+    # Google Benchmark
+    options+=("-Dbuild_google_benchmark=true")
+    options+=("-Dgoogle_benchmark_version=1.3.0")
+
 
     cmake "${options[@]}" $source
     cmake --build . --target all
