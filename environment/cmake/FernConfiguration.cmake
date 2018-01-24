@@ -27,6 +27,7 @@ option(FERN_BUILD_PYTHON "Build Fern.Python module" FALSE)
 
 option(FERN_BUILD_DOCUMENTATION "Build documentation" FALSE)
 option(FERN_BUILD_TEST "Build tests" FALSE)
+option(FERN_BUILD_BENCHMARK "Build benchmarks" FALSE)
 
 
 # Some modules require the build of other modules and support for certain
@@ -212,4 +213,9 @@ endif()
 if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR
         ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
     find_package(Threads REQUIRED)
+endif()
+
+
+if(FERN_BUILD_BENCHMARK)
+    find_package(Benchmark REQUIRED)
 endif()
