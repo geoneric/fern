@@ -24,11 +24,13 @@ matrix:
 install:
     - git submodule update --init --recursive
     - nuget install boost -Version %BOOST_VERSION%
+    - nuget install boost_chrono-vc140 -Version %BOOST_VERSION%
     - nuget install boost_filesystem-vc140 -Version %BOOST_VERSION%
     - nuget install boost_system-vc140 -Version %BOOST_VERSION%
     - nuget install boost_timer-vc140 -Version %BOOST_VERSION%
     - nuget install boost_unit_test_framework-vc140 -Version %BOOST_VERSION%
     - mkdir boost.%BOOST_VERSION%.0\lib\native\lib
+    - copy boost_chrono-vc140.%BOOST_VERSION%.0\lib\native\address-model-%ADDRESS_MODEL%\lib\* boost.%BOOST_VERSION%.0\lib\native\lib
     - copy boost_filesystem-vc140.%BOOST_VERSION%.0\lib\native\address-model-%ADDRESS_MODEL%\lib\* boost.%BOOST_VERSION%.0\lib\native\lib
     - copy boost_system-vc140.%BOOST_VERSION%.0\lib\native\address-model-%ADDRESS_MODEL%\lib\* boost.%BOOST_VERSION%.0\lib\native\lib
     - copy boost_timer-vc140.%BOOST_VERSION%.0\lib\native\address-model-%ADDRESS_MODEL%\lib\* boost.%BOOST_VERSION%.0\lib\native\lib
@@ -43,4 +45,4 @@ build_script:
 # TODO Hangs in core_stopwatch_test???
 test_script:
     - cd build
-    - ctest -C "%CONFIGURATION%" -E core_stopwatch_test
+    - ctest -C "%CONFIGURATION%"  # -E core_stopwatch_test
