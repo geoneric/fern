@@ -74,9 +74,12 @@ namespace fern {
 namespace test {
 
 static size_t const nr_cores{fern::hardware_concurrency()};
-static size_t const nr_rows{30 * nr_cores};
-static size_t const nr_cols{20 * nr_cores};
-static size_t const nr_elements_1d{10 * nr_cores};
+// Using nr_cores to scale the test data size messes things up on machines
+// with many cores. Tests will fail because suddenly results end up
+// being out of range. Use a fixed number, like 8.
+static size_t const nr_rows{30 * 8};  // nr_cores};
+static size_t const nr_cols{20 * 8};  // nr_cores};
+static size_t const nr_elements_1d{10 * 8};  // nr_cores};
 static size_t const nr_elements_2d{nr_rows * nr_cols};
 
 } // namespace test
