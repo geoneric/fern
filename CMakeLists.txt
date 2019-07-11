@@ -1,6 +1,14 @@
 # We need support for cmake -E env.
 cmake_minimum_required(VERSION 3.1)
 
+if(POLICY CMP0063)
+    cmake_policy(SET CMP0063 NEW)
+endif()
+
+if(POLICY CMP0069)
+    cmake_policy(SET CMP0069 NEW)
+endif()
+
 project(Fern)
 
 set(${PROJECT_NAME}_ORGANISATION_NAME "Geoneric")
