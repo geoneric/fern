@@ -1,13 +1,13 @@
 add_unit_tests(
     SCOPE algorithm_algebra_boole
     NAMES
-        and_test
-        defined_test
-        nor_test
-        not_test
-        or_test
-        xnor_test
-        xor_test
+        and_test.cc
+        defined_test.cc
+        nor_test.cc
+        not_test.cc
+        or_test.cc
+        xnor_test.cc
+        xor_test.cc
     LINK_LIBRARIES
         fern::algorithm
 )

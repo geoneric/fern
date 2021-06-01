@@ -11,7 +11,7 @@ if(FERN_BUILD_ALGORITHM)
 endif()
 
 add_library(fern_feature
-    core/array
+    core/array.cc
 )
 
 add_library(fern::feature ALIAS fern_feature)

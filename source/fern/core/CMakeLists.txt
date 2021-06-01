@@ -1,23 +1,23 @@
 add_test_conditionally(test)
 
 add_library(fern_core
-    data_name
-    data_types
-    exception
-    expression_type
-    io_error
-    join_threads
-    messages
-    parse_error
-    path
-    script_error
-    stack
-    stopwatch
-    string
-    thread_pool
-    type_traits
-    validate_error
-    value_types
+    data_name.cc
+    data_types.cc
+    exception.cc
+    expression_type.cc
+    io_error.cc
+    join_threads.cc
+    messages.cc
+    parse_error.cc
+    path.cc
+    script_error.cc
+    stack.cc
+    stopwatch.cc
+    string.cc
+    thread_pool.cc
+    type_traits.cc
+    validate_error.cc
+    value_types.cc
 )
 
 add_library(fern::core ALIAS fern_core)

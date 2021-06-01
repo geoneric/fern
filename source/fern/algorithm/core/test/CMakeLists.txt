@@ -1,26 +1,26 @@
 add_unit_tests(
     SCOPE algorithm_core
     NAMES
-        binary_local_operation_test
-        cast_test
-        clamp_test
-        compress_test
-        copy_test
-        cover_test
-        decompress_test
-        if_test
-        index_range_test
-        index_ranges_test
-        intersect_no_data_test
-        fill_test
-        merge_no_data_test
-        nullary_local_operation_test
-        offset_test
-        result_type_test
-        result_value_test
-        unary_disaggregate_operation_test
-        unary_local_operation_test
-        unite_no_data_test
+        binary_local_operation_test.cc
+        cast_test.cc
+        clamp_test.cc
+        compress_test.cc
+        copy_test.cc
+        cover_test.cc
+        decompress_test.cc
+        if_test.cc
+        index_range_test.cc
+        index_ranges_test.cc
+        intersect_no_data_test.cc
+        fill_test.cc
+        merge_no_data_test.cc
+        nullary_local_operation_test.cc
+        offset_test.cc
+        result_type_test.cc
+        result_value_test.cc
+        unary_disaggregate_operation_test.cc
+        unary_local_operation_test.cc
+        unite_no_data_test.cc
     LINK_LIBRARIES
         fern::algorithm
         fern::feature
