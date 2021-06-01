@@ -9,9 +9,9 @@ add_test_conditionally(test)
 add_subdirectory(trigonometry)
 
 add_library(fern_algorithm
-    core/index_range
-    core/index_ranges
-    policy/parallel_execution_policy
+    core/index_range.cc
+    core/index_ranges.cc
+    policy/parallel_execution_policy.cc
 )
 
 add_library(fern::algorithm ALIAS fern_algorithm)
