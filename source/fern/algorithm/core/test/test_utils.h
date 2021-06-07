@@ -8,6 +8,7 @@
 // -----------------------------------------------------------------------------
 #pragma once
 #include <boost/test/unit_test.hpp>
+#include <iomanip>
 #include <iostream>
 #include "fern/feature/core/masked_scalar.h"
 #include "fern/feature/core/masked_raster.h"
