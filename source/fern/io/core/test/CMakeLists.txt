@@ -23,7 +23,7 @@ add_custom_target(
 
 
 set(TEST_NAMES
-    file_test
+    file_test.cc
 )
 add_unit_tests(
     SCOPE io_core

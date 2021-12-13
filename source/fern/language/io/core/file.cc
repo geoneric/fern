@@ -7,8 +7,8 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #include "fern/language/io/core/file.h"
+#include <filesystem>
 #include <fstream>
-#include <boost/filesystem.hpp>
 
 
 namespace fern {
@@ -21,7 +21,7 @@ namespace language {
 bool file_exists(
     Path const& path)
 {
-    namespace fs = boost::filesystem;
+    namespace fs = std::filesystem;
 
     fs::path pathname(path.native_string());
     fs::file_status status(fs::status(pathname));
@@ -48,7 +48,7 @@ bool file_exists(
 bool file_is_writable(
     Path const& path)
 {
-    namespace fs = boost::filesystem;
+    namespace fs = std::filesystem;
 
     fs::path pathname(path.native_string());
     fs::file_status status(fs::status(pathname));
@@ -76,7 +76,7 @@ bool file_is_writable(
 bool directory_is_writable(
     Path const& path)
 {
-    namespace fs = boost::filesystem;
+    namespace fs = std::filesystem;
 
     fs::path pathname(path.is_empty() ? "." : path.native_string());
     fs::file_status status(fs::status(pathname));

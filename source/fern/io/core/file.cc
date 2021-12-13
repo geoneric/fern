@@ -7,7 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #include "fern/io/core/file.h"
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 
 namespace fern {
@@ -20,7 +20,7 @@ namespace io {
 bool file_exists(
     std::string const& pathname)
 {
-    return boost::filesystem::exists(pathname);
+    return std::filesystem::exists(pathname);
 }
 
 } // namespace io
