@@ -7,8 +7,8 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
+#include <filesystem>
 #include <vector>
-#include <boost/filesystem.hpp>
 
 
 namespace fern {
@@ -21,7 +21,7 @@ namespace fern {
   \sa        DataName
 */
 class Path:
-    private boost::filesystem::path
+    private std::filesystem::path
 {
 
 public:

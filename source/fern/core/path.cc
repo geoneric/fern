@@ -15,7 +15,7 @@ namespace fern {
 Path::Path(
     char const* string)
 
-    : boost::filesystem::path(string)
+    : std::filesystem::path(string)
 
 {
 }
@@ -24,7 +24,7 @@ Path::Path(
 Path::Path(
     std::string const& string)
 
-    : boost::filesystem::path(string)
+    : std::filesystem::path(string)
 
 {
 }
@@ -32,15 +32,15 @@ Path::Path(
 
 Path Path::stem() const
 {
-    return Path(boost::filesystem::path::stem().generic_string());
+    return Path(std::filesystem::path::stem().generic_string());
 }
 
 
 bool Path::operator==(
     Path const& path) const
 {
-    return dynamic_cast<boost::filesystem::path const&>(*this) ==
-        dynamic_cast<boost::filesystem::path const&>(path);
+    return dynamic_cast<std::filesystem::path const&>(*this) ==
+        dynamic_cast<std::filesystem::path const&>(path);
 }
 
 
@@ -50,7 +50,7 @@ bool Path::operator==(
 */
 std::string Path::generic_string() const
 {
-    return boost::filesystem::path::generic_string();
+    return std::filesystem::path::generic_string();
 }
 
 
@@ -61,7 +61,7 @@ std::string Path::generic_string() const
 std::string Path::native_string() const
 {
     // http://boost.2283326.n4.nabble.com/boost-filesystem-path-as-utf-8-td4320098.html
-    return string<std::string>();
+    return string();
     // TODO: This class should only accept utf8 and return utf8.
     // return native();
 }
@@ -69,13 +69,13 @@ std::string Path::native_string() const
 
 bool Path::is_empty() const
 {
-    return boost::filesystem::path::empty();
+    return std::filesystem::path::empty();
 }
 
 
 bool Path::is_absolute() const
 {
-    return boost::filesystem::path::is_absolute();
+    return std::filesystem::path::is_absolute();
 }
 
 
@@ -87,20 +87,20 @@ std::vector<std::string> Path::names() const
 
 Path Path::parent_path() const
 {
-    return Path(boost::filesystem::path::parent_path().generic_string());
+    return Path(std::filesystem::path::parent_path().generic_string());
 }
 
 
 Path Path::filename() const
 {
-    return Path(boost::filesystem::path::filename().generic_string());
+    return Path(std::filesystem::path::filename().generic_string());
 }
 
 
 Path& Path::replace_extension(
     Path const& extension)
 {
-    boost::filesystem::path::replace_extension(extension);
+    std::filesystem::path::replace_extension(extension);
     return *this;
 }
 
@@ -108,7 +108,7 @@ Path& Path::replace_extension(
 Path& Path::operator/=(
     Path const& path)
 {
-    boost::filesystem::path::operator/=(path);
+    std::filesystem::path::operator/=(path);
     return *this;
 }
 

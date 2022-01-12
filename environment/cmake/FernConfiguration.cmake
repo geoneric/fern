@@ -82,8 +82,7 @@ endif()
 if(FERN_BUILD_ALGORITHM)
     # Required third party software.
     set(DEVBASE_BOOST_REQUIRED TRUE)
-    list(APPEND DEVBASE_REQUIRED_BOOST_COMPONENTS
-        filesystem system timer)
+    list(APPEND DEVBASE_REQUIRED_BOOST_COMPONENTS timer)
 
     # Required Fern targets.
     set(FERN_FERN_ALGORITHM_REQUIRED TRUE)
@@ -104,7 +103,7 @@ endif()
 #     list(APPEND DEVBASE_REQUIRED_BOOST_COMPONENTS
 #         date_time program_options regex serialization thread chrono)
 #     set(FERN_HPX_REQUIRED TRUE)
-# 
+#
 #     # Required Fern targets.
 #     set(FERN_FERN_HPX_REQUIRED TRUE)
 # endif()
@@ -113,8 +112,7 @@ endif()
 if(FERN_BUILD_IO)
     # Required third party software.
     set(DEVBASE_BOOST_REQUIRED TRUE)
-    list(APPEND DEVBASE_REQUIRED_BOOST_COMPONENTS
-        filesystem system timer)
+    list(APPEND DEVBASE_REQUIRED_BOOST_COMPONENTS timer)
     if(FERN_IO_WITH_GDAL)
         set(DEVBASE_GDAL_REQUIRED TRUE)
     endif()
@@ -142,8 +140,7 @@ endif()
 if(FERN_BUILD_LANGUAGE)
     # Required third party software.
     set(DEVBASE_BOOST_REQUIRED TRUE)
-    list(APPEND DEVBASE_REQUIRED_BOOST_COMPONENTS
-        filesystem system timer)
+    list(APPEND DEVBASE_REQUIRED_BOOST_COMPONENTS timer)
     set(DEVBASE_EXPAT_REQUIRED TRUE)
     set(DEVBASE_LOKI_REQUIRED TRUE)
     set(DEVBASE_PYTHON_LIBS_REQUIRED TRUE)
@@ -193,8 +190,7 @@ endif()
 if(FERN_BUILD_TEST)
     set(DEVBASE_BUILD_TEST TRUE)
     set(DEVBASE_BOOST_REQUIRED TRUE)
-    list(APPEND DEVBASE_REQUIRED_BOOST_COMPONENTS
-        system unit_test_framework)
+    list(APPEND DEVBASE_REQUIRED_BOOST_COMPONENTS unit_test_framework)
 endif()
 
 

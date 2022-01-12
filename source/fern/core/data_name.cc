@@ -7,6 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #include "fern/core/data_name.h"
+#include <cassert>
 #include <regex>
 #include "fern/core/string.h"
 
