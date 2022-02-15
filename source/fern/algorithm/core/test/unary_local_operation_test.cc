@@ -151,7 +151,9 @@ BOOST_AUTO_TEST_CASE(array_0d_masked)
 
         // Result value is max<ArgumentValue> + 1, which equals
         // min<ArgumentValue>.
-        BOOST_REQUIRE_EQUAL(result.value(), fern::min<ArgumentValue>());
+
+        // No, abs(INT_MIN) results in undefined behaviour on 2's complement systems
+        // BOOST_REQUIRE_EQUAL(result.value(), fern::min<ArgumentValue>());
     }
 }
 
