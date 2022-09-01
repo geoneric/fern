@@ -33,7 +33,7 @@ template<
 inline auto parse(
     Parser const& parse,
     std::string const& pathname) ->
-        typename std::result_of<Parser(std::istream&)>::type
+        typename std::invoke_result<Parser, std::istream&>::type
 {
     if(!file_exists(pathname)) {
         throw IOError(pathname,
@@ -48,7 +48,7 @@ inline auto parse(
     }
 
 
-    using Document = typename std::result_of<Parser(std::istream&)>::type;
+    using Document = typename std::invoke_result<Parser, std::istream&>::type;
 
     Document document;
 

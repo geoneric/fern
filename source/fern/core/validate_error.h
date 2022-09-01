@@ -30,9 +30,7 @@ public:
 
     ValidateError& operator=           (ValidateError&&)=default;
 
-                   ~ValidateError      ()=default;
-
-    std::string    message             () const;
+    std::string    message             () const override;
 
 private:
 

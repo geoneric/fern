@@ -65,7 +65,7 @@ private:
         {
         }
 
-        void call()
+        void call() override
         {
             _function();
         }

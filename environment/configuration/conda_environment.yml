@@ -1,0 +1,7 @@
+name: fern
+channels:
+- conda-forge
+- defaults
+dependencies:
+- docopt
+- sphinx

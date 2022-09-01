@@ -87,8 +87,6 @@ public:
 
                    ValueTypes          ();
 
-                   ~ValueTypes         ()=default;
-
                    ValueTypes          (ValueTypes&&)=default;
 
     ValueTypes&    operator=           (ValueTypes&&)=default;
@@ -97,7 +95,7 @@ public:
 
     ValueTypes&    operator=           (ValueTypes const&)=default;
 
-    std::string    to_string           () const;
+    std::string    to_string           () const override;
 
 private:
 

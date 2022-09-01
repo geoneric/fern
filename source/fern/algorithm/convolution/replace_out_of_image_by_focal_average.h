@@ -270,7 +270,7 @@ inline bool ReplaceOutOfImageByFocalAverage::value_north_west(
     }
 
     if(nr_values_seen > 0) {
-        value = sum_of_values / nr_values_seen;
+        value = sum_of_values / static_cast<Value>(nr_values_seen);
     }
 
     return nr_values_seen > 0;
@@ -317,7 +317,6 @@ inline bool ReplaceOutOfImageByFocalAverage::value_north_east(
                 size_t row = first_row_source;
                 size_t const last_row = radius - (first_row_kernel -
                     out_of_image_kernel_row);
-                size_t index_;
 
                 for(; row <= last_row; ++row) {
 
@@ -411,7 +410,7 @@ inline bool ReplaceOutOfImageByFocalAverage::value_north_east(
     }
 
     if(nr_values_seen > 0) {
-        value = sum_of_values / nr_values_seen;
+        value = sum_of_values / static_cast<Value>(nr_values_seen);
     }
 
     return nr_values_seen > 0;
@@ -552,7 +551,7 @@ inline bool ReplaceOutOfImageByFocalAverage::value_south_west(
 
 
     if(nr_values_seen > 0) {
-        value = sum_of_values / nr_values_seen;
+        value = sum_of_values / static_cast<Value>(nr_values_seen);
     }
 
     return nr_values_seen > 0;
@@ -695,7 +694,7 @@ inline bool ReplaceOutOfImageByFocalAverage::value_south_east(
 
 
     if(nr_values_seen > 0) {
-        value = sum_of_values / nr_values_seen;
+        value = sum_of_values / static_cast<Value>(nr_values_seen);
     }
 
     return nr_values_seen > 0;
@@ -761,7 +760,7 @@ inline bool ReplaceOutOfImageByFocalAverage::value_north(
     }
 
     if(nr_values_seen > 0) {
-        value = sum_of_values / nr_values_seen;
+        value = sum_of_values / static_cast<Value>(nr_values_seen);
     }
 
     return nr_values_seen > 0;
@@ -825,7 +824,7 @@ inline bool ReplaceOutOfImageByFocalAverage::value_west(
     }
 
     if(nr_values_seen > 0) {
-        value = sum_of_values / nr_values_seen;
+        value = sum_of_values / static_cast<Value>(nr_values_seen);
     }
 
     return nr_values_seen > 0;
@@ -892,7 +891,7 @@ inline bool ReplaceOutOfImageByFocalAverage::value_east(
     }
 
     if(nr_values_seen > 0) {
-        value = sum_of_values / nr_values_seen;
+        value = sum_of_values / static_cast<Value>(nr_values_seen);
     }
 
     return nr_values_seen > 0;
@@ -960,7 +959,7 @@ inline bool ReplaceOutOfImageByFocalAverage::value_south(
     }
 
     if(nr_values_seen > 0) {
-        value = sum_of_values / nr_values_seen;
+        value = sum_of_values / static_cast<Value>(nr_values_seen);
     }
 
     return nr_values_seen > 0;

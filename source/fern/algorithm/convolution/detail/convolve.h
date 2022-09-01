@@ -1958,7 +1958,7 @@ struct Convolve<
 #define CREATE_BORDER_TASK(                                                    \
     part)                                                                      \
 {                                                                              \
-    auto function = std::bind((BorderFunction)                                 \
+    auto function = std::bind<BorderFunction>(                                 \
         dispatch::Convolve##part::template                                     \
                 apply<AlternativeForNoDataPolicy, NormalizePolicy,             \
                     OutOfImagePolicy, NoDataFocusElementPolicy,                \
@@ -1972,7 +1972,7 @@ struct Convolve<
 #define CREATE_INNER_PART_TASK(                                                \
     index_ranges)                                                              \
 {                                                                              \
-    auto function = std::bind((InnerPartFunction)                              \
+    auto function = std::bind<InnerPartFunction>(                              \
         dispatch::ConvolveInnerPart<                                           \
             KernelTraits<Kernel>::weigh_values>::template                      \
                 apply<AlternativeForNoDataPolicy, NormalizePolicy,             \
@@ -2062,7 +2062,7 @@ struct Convolve<
                 IndexRange(
                     ranges[1].begin() + fern::radius(kernel),
                     ranges[1].end() + fern::radius(kernel))};
-            CREATE_INNER_PART_TASK(ranges);
+            CREATE_INNER_PART_TASK(ranges)
         }
 
         for(auto& future: futures) {

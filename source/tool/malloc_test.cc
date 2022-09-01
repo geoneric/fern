@@ -26,7 +26,7 @@ int main(
         int const nr_bytes_in_megabyte = 1024 * 1024;
         int const nr_megabytes = std::stoi(argv[1]);
         assert(nr_megabytes > 0);
-        int const nr_bytes = nr_megabytes * nr_bytes_in_megabyte;
+        unsigned int const nr_bytes = static_cast<unsigned int>(nr_megabytes * nr_bytes_in_megabyte);
 
         while(true) {
             // Allocate the number of bytes, and de-allocate them again.

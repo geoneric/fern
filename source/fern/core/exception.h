@@ -46,8 +46,6 @@ public:
 
     Exception&     operator=           (Exception&&)=default;
 
-    virtual        ~Exception          ()=default;
-
     virtual std::string
                    message             () const;
 

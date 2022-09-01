@@ -1,7 +1,7 @@
 add_test_conditionally(test)
 
 add_executable(tutorial_divide-1
-    tutorial_divide-1
+    tutorial_divide-1.cc
 )
 # target_include_directories(tutorial_divide-1
 #     ${CMAKE_SOURCE_DIR}/source
@@ -13,7 +13,7 @@ target_link_libraries(tutorial_divide-1
 )
 
 add_executable(tutorial_divide-2
-    tutorial_divide-2
+    tutorial_divide-2.cc
 )
 target_link_libraries(tutorial_divide-2
     PRIVATE
@@ -21,7 +21,7 @@ target_link_libraries(tutorial_divide-2
 )
 
 add_executable(tutorial_divide-3
-    tutorial_divide-3
+    tutorial_divide-3.cc
 )
 target_link_libraries(tutorial_divide-3
     PRIVATE
@@ -30,7 +30,7 @@ target_link_libraries(tutorial_divide-3
 )
 
 add_executable(tutorial_divide-4
-    tutorial_divide-4
+    tutorial_divide-4.cc
 )
 target_link_libraries(tutorial_divide-4
     PRIVATE
@@ -39,7 +39,7 @@ target_link_libraries(tutorial_divide-4
 )
 
 add_executable(tutorial_divide-5
-    tutorial_divide-5
+    tutorial_divide-5.cc
 )
 target_link_libraries(tutorial_divide-5
     PRIVATE
