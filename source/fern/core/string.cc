@@ -107,7 +107,7 @@ std::vector<std::string> split(
     std::copy_if(std::sregex_token_iterator(string.begin(), string.end(),
         regular_expression, -1), std::sregex_token_iterator(),
         std::back_inserter(words),
-        [](std::string const& string) { return !string.empty(); });
+        [](std::string const& string_) { return !string_.empty(); });
 
     return words;
 }

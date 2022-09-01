@@ -63,8 +63,6 @@ public:
 
                    DataTypes           ();
 
-                   ~DataTypes          ()=default;
-
                    DataTypes           (DataTypes&&)=default;
 
     DataTypes&     operator=           (DataTypes&&)=default;
@@ -73,7 +71,7 @@ public:
 
     DataTypes&     operator=           (DataTypes const&)=default;
 
-    std::string    to_string           () const;
+    std::string    to_string           () const override;
 
 private:
 

@@ -59,7 +59,7 @@ public:
 
     template<
         class Function>
-    std::future<typename std::result_of<Function()>::type>
+    std::future<typename std::invoke_result<Function>::type>
                    submit              (Function function);
 
     std::size_t    size                () const;
@@ -104,11 +104,11 @@ private:
 */
 template<
     class Function>
-inline std::future<typename std::result_of<Function()>::type>
+inline std::future<typename std::invoke_result<Function>::type>
     ThreadPool::submit(
         Function function)
 {
-    using result_type = typename std::result_of<Function()>::type;
+    using result_type = typename std::invoke_result<Function>::type;
 
     std::packaged_task<result_type()> task(std::move(function));
     std::future<result_type> result(task.get_future());

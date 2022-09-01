@@ -35,9 +35,7 @@ public:
 
     IOError&       operator=           (IOError&&)=default;
 
-                   ~IOError            ()=default;
-
-    std::string    message             () const;
+    std::string    message             () const override;
 
 private:
 

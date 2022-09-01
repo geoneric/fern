@@ -90,7 +90,7 @@ inline bool ReplaceNoDataByFocalAverage::value(
     // cell row, col is surrounded by only no-data.
     // TODO Handle this once this assertion fails for the first time.
     assert(nr_values_seen > 0u);
-    value = sum_of_values / nr_values_seen;
+    value = sum_of_values / static_cast<Value>(nr_values_seen);
 
     return true;
 }

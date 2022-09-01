@@ -36,9 +36,7 @@ public:
 
     ParseError&    operator=           (ParseError&&)=default;
 
-                   ~ParseError         ()=default;
-
-    std::string    message             () const;
+    std::string    message             () const override;
 
 private:
 

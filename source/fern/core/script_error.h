@@ -25,8 +25,6 @@ public:
 
     ScriptError&   operator=           (ScriptError&&)=default;
 
-                   ~ScriptError        ()=default;
-
 protected:
 
                    ScriptError         (MessageId message_id,
