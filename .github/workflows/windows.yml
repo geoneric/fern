@@ -1,0 +1,60 @@
+name: Windows CI
+
+on: [push]
+
+jobs:
+    build:
+
+        strategy:
+            matrix:
+                os: ["windows-2022"]
+            fail-fast: false
+
+        runs-on: ${{ matrix.os }}
+
+        name: ${{ matrix.os }}
+
+        steps:
+
+        - name: checkout fern
+          uses: actions/checkout@v2
+          with:
+            submodules: recursive
+
+        - name: configure system
+          run: |
+              brew install \
+                  boost \
+                  ninja
+
+        - name: configure fern
+          shell: bash -l {0}
+          run: |
+              mkdir build
+              cmake \
+                  -S . \
+                  -B build \
+                  -G "Visual Studio 17 2022" -A x64 \
+                  -D CMAKE_CONFIGURATION_TYPES="Release;Debug" \
+                  -D FERN_BUILD_ALGORITHM=TRUE \
+                  -D FERN_BUILD_TEST=TRUE
+
+        - name: build debug
+          shell: bash -l {0}
+          run: |
+              cmake --build build --config Debug --target all
+
+        - name: build release
+          shell: bash -l {0}
+          run: |
+              cmake --build build --config Release --target all
+
+        - name: test debug
+          shell: bash -l {0}
+          run: |
+              ctest --test-dir build --output-on-failure --build-config Debug
+
+        - name: test release
+          shell: bash -l {0}
+          run: |
+              ctest --test-dir build --output-on-failure --build-config Release
