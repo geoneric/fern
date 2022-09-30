@@ -2,6 +2,10 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# Fern assumes signed integers wrap. AppleClang Release build don't do this.
+# This options forces AppleClang to behave similar to other compilers.
+add_compile_options($<$<CXX_COMPILER_ID:AppleClang>:-fwrapv>)
+
 set(CMAKE_DEBUG_POSTFIX "d")
 
 include(PeacockPlatform)

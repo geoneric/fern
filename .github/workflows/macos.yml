@@ -24,7 +24,6 @@ jobs:
         - name: configure system
           run: |
               brew install \
-                  cmake \
                   boost \
                   ninja
 
