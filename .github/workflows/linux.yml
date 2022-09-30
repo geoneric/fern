@@ -26,7 +26,7 @@ jobs:
 
         - name: configure system
           run: |
-              sudo apt install ${{ matrix.compiler.cxx }} cmake ninja-build libboost-dev libboost-test-dev
+              sudo apt install ${{ matrix.compiler.cxx }} cmake ninja-build libboost-all-dev
 
         - name: configure fern
           shell: bash -l {0}

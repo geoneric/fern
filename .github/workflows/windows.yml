@@ -1,6 +1,7 @@
 name: Windows CI
 
-on: [push]
+# TODO
+# on: [push]
 
 jobs:
     build:
@@ -20,6 +21,8 @@ jobs:
           uses: actions/checkout@v2
           with:
             submodules: recursive
+
+        # TODO Install Boost
 
         - name: configure fern
           shell: bash -l {0}
