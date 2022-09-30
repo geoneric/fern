@@ -1,7 +1,6 @@
 name: Windows CI
 
-# TODO
-# on: [push]
+on: [push]
 
 jobs:
     build:
