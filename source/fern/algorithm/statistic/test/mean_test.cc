@@ -132,20 +132,22 @@ void test_1d_0d(
     // Regular case.
     {
         f::Array<int, 1> value(ft::nr_elements_1d);
-        std::iota(value.data(), value.data() + ft::nr_elements_1d, 0);
-        int result_we_want{static_cast<int>(std::accumulate(value.data(),
-            value.data() + ft::nr_elements_1d, 0) / ft::nr_elements_1d)};
+        std::iota(value.data(), value.data() + ft::nr_elements_1d, int{0});
+        int result_we_want{
+            std::accumulate(value.data(), value.data() + ft::nr_elements_1d, int{0}) /
+            static_cast<int>(ft::nr_elements_1d)};
         verify_1d_0d(execution_policy, value, result_we_want);
     }
 
     // Out of range.
     {
         f::Array<int, 1> value(ft::nr_elements_1d);
-        std::iota(value.data(), value.data() + ft::nr_elements_1d, 0);
+        std::iota(value.data(), value.data() + ft::nr_elements_1d, int{0});
         get(value, 5) = std::numeric_limits<int>::max();
         // Overflow, integer wrap.
-        int result_we_want{static_cast<int>(std::accumulate(value.data(),
-            value.data() + ft::nr_elements_1d, 0) / ft::nr_elements_1d)};
+        int result_we_want{
+            std::accumulate(value.data(), value.data() + ft::nr_elements_1d, int{0}) /
+            static_cast<int>(ft::nr_elements_1d)};
         verify_1d_0d(execution_policy, value, result_we_want);
     }
 
@@ -192,9 +194,9 @@ void test_1d_0d_masked(
     {
         f::MaskedArray<int, 1> value(ft::nr_elements_1d);
         std::iota(value.data(), value.data() + ft::nr_elements_1d, 0);
-        f::MaskedScalar<int> result_we_want{static_cast<int>(std::accumulate(
-            value.data(), value.data() + ft::nr_elements_1d, 0) /
-                ft::nr_elements_1d)};
+        f::MaskedScalar<int> result_we_want{
+            std::accumulate(value.data(), value.data() + ft::nr_elements_1d, int{0}) /
+            static_cast<int>(ft::nr_elements_1d)};
         verify_1d_0d_masked(execution_policy, value, result_we_want);
     }
 
@@ -204,9 +206,9 @@ void test_1d_0d_masked(
         f::MaskedArray<int, 1> value(ft::nr_elements_1d);
         std::iota(value.data(), value.data() + ft::nr_elements_1d, 0);
         get(value.mask(), 5) = true;
-        f::MaskedScalar<int> result_we_want{static_cast<int>((std::accumulate(
-            value.data(), value.data() + ft::nr_elements_1d, 0) - 5) /
-                ft::nr_elements_1d)};
+        f::MaskedScalar<int> result_we_want{
+            (std::accumulate(value.data(), value.data() + ft::nr_elements_1d, int{0}) - 5) /
+            static_cast<int>(ft::nr_elements_1d)};
         verify_1d_0d_masked(execution_policy, value, result_we_want);
     }
 
@@ -273,8 +275,9 @@ void test_2d_0d(
     {
         f::Array<int, 2> value(f::extents[ft::nr_rows][ft::nr_cols]);
         std::iota(value.data(), value.data() + ft::nr_elements_2d, 0);
-        int result_we_want{static_cast<int>(std::accumulate(value.data(),
-            value.data() + ft::nr_elements_2d, 0) / ft::nr_elements_2d)};
+        int result_we_want{
+            std::accumulate(value.data(), value.data() + ft::nr_elements_2d, int{0}) /
+            static_cast<int>(ft::nr_elements_2d)};
         verify_2d_0d(execution_policy, value, result_we_want);
     }
 
@@ -321,9 +324,9 @@ void test_2d_0d_masked(
     {
         f::MaskedArray<int, 2> value(f::extents[ft::nr_rows][ft::nr_cols]);
         std::iota(value.data(), value.data() + ft::nr_elements_2d, 0);
-        f::MaskedScalar<int> result_we_want{static_cast<int>(std::accumulate(
-            value.data(), value.data() + ft::nr_elements_2d, 0) /
-                ft::nr_elements_2d)};
+        f::MaskedScalar<int> result_we_want{
+            std::accumulate(value.data(), value.data() + ft::nr_elements_2d, int(0)) /
+            static_cast<int>(ft::nr_elements_2d)};
         verify_2d_0d(execution_policy, value, result_we_want);
     }
 
@@ -333,9 +336,9 @@ void test_2d_0d_masked(
         f::MaskedArray<int, 2> value(f::extents[ft::nr_rows][ft::nr_cols]);
         std::iota(value.data(), value.data() + ft::nr_elements_2d, 0);
         get(value.mask(), 5) = true;
-        f::MaskedScalar<int> result_we_want{static_cast<int>((std::accumulate(
-            value.data(), value.data() + ft::nr_elements_2d, 0) - 5) /
-                ft::nr_elements_2d)};
+        f::MaskedScalar<int> result_we_want{
+            (std::accumulate(value.data(), value.data() + ft::nr_elements_2d, int{0}) - 5) /
+            static_cast<int>(ft::nr_elements_2d)};
         verify_2d_0d_masked(execution_policy, value, result_we_want);
     }
 

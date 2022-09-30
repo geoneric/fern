@@ -166,7 +166,7 @@ inline MaskedArray<T, nr_dimensions>::MaskedArray(
     std::initializer_list<T> const& values)
 
     : Array<T, nr_dimensions>(values),
-      _mask(extents[values.size()], false)
+      _mask(extents[static_cast<Index>(values.size())], false)
 
 {
     /// std::fill(_mask.data(), _mask.data() + _mask.num_elements(), false);
@@ -181,7 +181,7 @@ inline MaskedArray<T, nr_dimensions>::MaskedArray(
     std::initializer_list<std::initializer_list<T>> const& values)
 
     : Array<T, nr_dimensions>(values),
-      _mask(extents[values.size()][values.begin()->size()], false)
+      _mask(extents[static_cast<Index>(values.size())][static_cast<Index>(values.begin()->size())], false)
 
 {
     /// std::fill(_mask.data(), _mask.data() + _mask.num_elements(), false);

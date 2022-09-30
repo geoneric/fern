@@ -64,6 +64,8 @@ struct VerifyWithinRange
 
         fa::algebra::factorial(sequential, value, result);
 
+        std::cout << int(result) << std::endl;
+
         return policy.within_range(value, result);
     }
 };

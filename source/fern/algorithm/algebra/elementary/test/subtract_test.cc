@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_CASE(out_of_range_policy)
     {
         // unsigned - unsigned
         OutOfRangePolicy<uint32_t, uint32_t, uint32_t> policy;
-        BOOST_CHECK(!policy.within_range(5, 6, -1));
+        BOOST_CHECK(!policy.within_range(5, 6, uint32_t{5} - uint32_t{6}));
         BOOST_CHECK(policy.within_range(6, 5, 1));
         BOOST_CHECK(policy.within_range(0, 0, 0));
         BOOST_CHECK(policy.within_range(max_uint32, max_uint32,

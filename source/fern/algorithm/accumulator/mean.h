@@ -176,7 +176,7 @@ inline Result Mean<Argument, Result>::operator()() const
 
     // _sum() returns result in Result. Dividing by _count may implicitly cast
     // it to some other type.
-    return Result(_sum() / _count());
+    return _sum() / static_cast<Result>(_count());
 }
 
 
