@@ -103,7 +103,7 @@ template<
 inline MaskedRaster<U, 1> clone(
     MaskedRaster<V, 1> const& raster)
 {
-    return MaskedRaster<U, 1>(extents[raster.shape()[0]],
+    return MaskedRaster<U, 1>(extents[static_cast<Index>(raster.shape()[0])],
         raster.transformation());
 }
 
@@ -115,7 +115,7 @@ inline MaskedRaster<U, 1> clone(
     MaskedRaster<V, 1> const& raster,
     U const& value)
 {
-    return MaskedRaster<U, 1>(extents[raster.shape()[0]],
+    return MaskedRaster<U, 1>(extents[static_cast<Index>(raster.shape()[0])],
         raster.transformation(),
         value);
 }
@@ -147,7 +147,7 @@ template<
 inline MaskedRaster<U, 2> clone(
     MaskedRaster<V, 2> const& raster)
 {
-    return MaskedRaster<U, 2>(extents[raster.shape()[0]][raster.shape()[1]],
+    return MaskedRaster<U, 2>(extents[static_cast<Index>(raster.shape()[0])][static_cast<Index>(raster.shape()[1])],
         raster.transformation());
 }
 
@@ -159,7 +159,7 @@ inline MaskedRaster<U, 2> clone(
     MaskedRaster<V, 2> const& raster,
     U const& value)
 {
-    return MaskedRaster<U, 2>(extents[raster.shape()[0]][raster.shape()[1]],
+    return MaskedRaster<U, 2>(extents[static_cast<Index>(raster.shape()[0])][static_cast<Index>(raster.shape()[1])],
         raster.transformation(),
         value);
 }
@@ -172,7 +172,7 @@ inline MaskedRaster<U, 3> clone(
     MaskedRaster<V, 3> const& raster)
 {
     return MaskedRaster<U, 3>(
-        extents[raster.shape()[0]][raster.shape()[1],raster.shape()[2]],
+        extents[static_cast<Index>(raster.shape()[0])][static_cast<Index>(raster.shape()[1]), static_cast<Index>(raster.shape()[2])],
         raster.transformation());
 }
 
@@ -185,7 +185,7 @@ inline MaskedRaster<U, 3> clone(
     U const& value)
 {
     return MaskedRaster<U, 3>(
-        extents[raster.shape()[0]][raster.shape()[1],raster.shape()[2]],
+        extents[static_cast<Index>(raster.shape()[0])][static_cast<Index>(raster.shape()[1]), static_cast<Index>(raster.shape()[2])],
         raster.transformation(),
         value);
 }

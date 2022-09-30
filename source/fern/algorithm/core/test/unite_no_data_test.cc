@@ -182,10 +182,10 @@ template<
 void test_array_2d_2d(
     ExecutionPolicy& execution_policy)
 {
-    size_t const nr_threads{fern::hardware_concurrency()};
-    size_t const nr_rows{30 * nr_threads};
-    size_t const nr_cols{20 * nr_threads};
-    size_t const nr_elements{nr_rows * nr_cols};
+    fern::Index const nr_threads{static_cast<fern::Index>(fern::hardware_concurrency())};
+    fern::Index const nr_rows{30 * nr_threads};
+    fern::Index const nr_cols{20 * nr_threads};
+    fern::Index const nr_elements{nr_rows * nr_cols};
 
     fern::Array<int, 2> value1(fern::extents[nr_rows][nr_cols]);
     fern::Array<int, 2> value2(fern::extents[nr_rows][nr_cols]);
@@ -232,10 +232,10 @@ template<
 void test_array_2d_2d_masked(
     ExecutionPolicy& execution_policy)
 {
-    size_t const nr_threads{fern::hardware_concurrency()};
-    size_t const nr_rows{3 * nr_threads};
-    size_t const nr_cols{2 * nr_threads};
-    size_t const nr_elements{nr_rows * nr_cols};
+    fern::Index const nr_threads{static_cast<fern::Index>(fern::hardware_concurrency())};
+    fern::Index const nr_rows{3 * nr_threads};
+    fern::Index const nr_cols{2 * nr_threads};
+    fern::Index const nr_elements{nr_rows * nr_cols};
 
     fern::MaskedArray<int, 2> value1(fern::extents[nr_rows][nr_cols]);
     fern::MaskedArray<int, 2> value2(fern::extents[nr_rows][nr_cols]);
