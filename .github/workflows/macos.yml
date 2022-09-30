@@ -18,6 +18,8 @@ jobs:
 
         - name: checkout fern
           uses: actions/checkout@v2
+          with:
+            submodules: recursive
 
         - name: configure system
           run: |
