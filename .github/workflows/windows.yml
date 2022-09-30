@@ -21,12 +21,6 @@ jobs:
           with:
             submodules: recursive
 
-        - name: configure system
-          run: |
-              brew install \
-                  boost \
-                  ninja
-
         - name: configure fern
           shell: bash -l {0}
           run: |

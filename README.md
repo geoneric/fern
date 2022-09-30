@@ -1,5 +1,10 @@
 Fern
 ====
+
+[![Linux build status](https://github.com/geoneric/fern/workflows/Linux%20CI/badge.svg)](https://github.com/geoneric/fern/actions/workflows/linux.yml)
+[![macOS build status](https://github.com/geoneric/fern/workflows/macOS%20CI/badge.svg)](https://github.com/geoneric/fern/actions/workflows/macos.yml)
+[![Windows build status](https://github.com/geoneric/fern/workflows/Windows%20CI/badge.svg)](https://github.com/geoneric/fern/actions/workflows/windows.yml)
+
 Software components for scalable geocomputing
 ---------------------------------------------
 
@@ -26,15 +31,3 @@ We have not created an official release yet. Nevertheless, Fern is currently bei
 - PCRaster (http://www.pcraster.eu): Software for environmental modelling
 
 If you are also a Fern user, then please let us know (info@geoneric.eu), and we will add you to the list. Also, in case you have questions, don't hesitate to contact us.
-
-
-Supported platforms
--------------------
-Fern is portable software. The following table lists the platforms that we use ourselves to verify whether Fern builds and works (Fern.Algorithm module only for now). Given this range in platforms, we feel confident that Fern builds (or can be made to build) on other platforms as well.
-
-| OS | Compilers | Status |
-|----|-----------|--------|
-| Linux | gcc-4.9 · {x64} | [![Linux build Status](https://travis-ci.org/geoneric/fern.svg?branch=master)](https://travis-ci.org/geoneric/fern)  |
-| Linux | clang-3.7 · x64 | Checked 'by hand' |
-| Windows | vs-2015 · x64 | [![Windows build Status](https://ci.appveyor.com/api/projects/status/github/geoneric/fern?branch=master&svg=true)](https://ci.appveyor.com/project/kordejong/fern) |
-| OS X | clang-{3.7,3.8} · x64 | Checked 'by hand' |
