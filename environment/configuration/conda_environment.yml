@@ -3,5 +3,9 @@ channels:
 - conda-forge
 - defaults
 dependencies:
+# - boost-cpp
+# - cmake
+# - compilers
 - docopt
+# - ninja
 - sphinx

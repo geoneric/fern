@@ -16,6 +16,8 @@ extern boost::multi_array_types::extent_gen extents;
 
 extern boost::multi_array_types::index_gen indices;
 
+using Index = boost::multi_array_types::index;
+
 using Range = boost::multi_array_types::index_range;
 
 template<size_t nr_ranges>
@@ -146,7 +148,7 @@ template<
 inline Array<T, nr_dimensions>::Array(
     std::vector<T> const& values)
 
-    : _array(extents[values.size()])
+    : _array(extents[static_cast<Index>(values.size())])
 
 {
     static_assert(nr_dimensions == 1, "");
@@ -163,7 +165,7 @@ inline Array<T, nr_dimensions>::Array(
     size_t size,
     T const& value)
 
-    : _array(extents[size])
+    : _array(extents[static_cast<Index>(size)])
 
 {
     static_assert(nr_dimensions == 1, "");
@@ -180,7 +182,7 @@ inline Array<T, nr_dimensions>::Array(
     size_t size2,
     T const& value)
 
-    : _array(extents[size1][size2])
+    : _array(extents[static_cast<Index>(size1)][static_cast<Index>(size2)])
 
 {
     static_assert(nr_dimensions == 2, "");
@@ -211,7 +213,7 @@ template<
 inline Array<T, nr_dimensions>::Array(
     std::initializer_list<T> const& values)
 
-    : _array(extents[values.size()])
+    : _array(extents[static_cast<Index>(values.size())])
 
 {
     static_assert(nr_dimensions == 1, "");
@@ -230,7 +232,7 @@ template<
 inline Array<T, nr_dimensions>::Array(
     std::initializer_list<std::initializer_list<T>> const& values)
 
-    : _array(extents[values.size()][values.begin()->size()])
+    : _array(extents[static_cast<Index>(values.size())][static_cast<Index>(values.begin()->size())])
 
 {
     static_assert(nr_dimensions == 2, "");

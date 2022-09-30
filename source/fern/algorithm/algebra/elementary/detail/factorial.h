@@ -90,10 +90,18 @@ struct within_range<
         Result const& result)
     {
         // Calculate the result as if the argument was a floating point and
-        // compare the results. If the integral result does not equal the
-        // floating point result, then the integral result has overflown.
-        return is_equal(
-            std::round(std::tgamma(value + 1)), static_cast<double>(result));
+        // compare the results.
+
+        // If the integral result does not equal the floating point result,
+        // then the integral result has overflown.
+        // NO, this does not always work. Casting the result to a double might
+        // result in the correct value, although it is not representable by the
+        // Result type.
+        // return is_equal(
+        //     std::round(std::tgamma(value + 1)), static_cast<double>(result));
+
+        // Compare the floating point result with the integral numeric limit
+        return std::round(std::tgamma(value + 1)) <= std::numeric_limits<Result>::max();
     }
 
 };

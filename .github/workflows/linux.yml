@@ -1,0 +1,62 @@
+name: Linux CI
+
+on: [push]
+
+jobs:
+    build:
+
+        strategy:
+            matrix:
+                os: ["ubuntu-22.04"]
+                compiler:
+                  - {version: 11, cc: gcc-11, cxx: g++-11}
+                  - {version: 12, cc: clang-12, cxx: clang++-12}
+            fail-fast: false
+
+        runs-on: ${{ matrix.os }}
+
+        name: ${{ matrix.os }} / ${{ matrix.compiler.cxx }}
+
+        steps:
+
+        - name: checkout fern
+          uses: actions/checkout@v2
+          with:
+            submodules: recursive
+
+        - name: configure system
+          run: |
+              sudo apt install ${{ matrix.compiler.cc }} cmake ninja-build libboost-all-dev
+
+        - name: configure fern
+          shell: bash -l {0}
+          run: |
+              mkdir build
+              cmake \
+                  -S . \
+                  -B build \
+                  -G "Ninja Multi-Config" \
+                  -D CMAKE_CXX_COMPILER=${{ matrix.compiler.cxx }} \
+                  -D CMAKE_CONFIGURATION_TYPES="Release;Debug" \
+                  -D FERN_BUILD_ALGORITHM=TRUE \
+                  -D FERN_BUILD_TEST=TRUE
+
+        - name: build debug
+          shell: bash -l {0}
+          run: |
+              cmake --build build --config Debug --target all
+
+        - name: build release
+          shell: bash -l {0}
+          run: |
+              cmake --build build --config Release --target all
+
+        - name: test debug
+          shell: bash -l {0}
+          run: |
+              ctest --test-dir build --output-on-failure --build-config Debug
+
+        - name: test release
+          shell: bash -l {0}
+          run: |
+              ctest --test-dir build --output-on-failure --build-config Release

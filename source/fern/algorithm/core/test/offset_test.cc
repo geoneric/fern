@@ -428,7 +428,7 @@ void test_array_1d_fill_value_masked(
         // false, false, false, true, false, ..., false
         std::fill(result_we_want.mask().data(), result_we_want.mask().data() +
             fern::get<0>(offset), false);
-        result_we_want.mask()[fern::get<0>(offset) + 1] = true;
+        result_we_want.mask()[static_cast<fern::Index>(fern::get<0>(offset) + 1)] = true;
         result_we_got.fill(-9);
         result_we_got.mask().fill(false);
 
@@ -521,10 +521,10 @@ template<
 void test_array_2d(
     ExecutionPolicy& execution_policy)
 {
-    size_t const nr_threads{fern::hardware_concurrency()};
-    size_t const nr_rows{30 * nr_threads};
-    size_t const nr_cols{20 * nr_threads};
-    size_t const nr_elements{nr_rows * nr_cols};
+    fern::Index const nr_threads{static_cast<fern::Index>(fern::hardware_concurrency())};
+    fern::Index const nr_rows{30 * nr_threads};
+    fern::Index const nr_cols{20 * nr_threads};
+    fern::Index const nr_elements{nr_rows * nr_cols};
 
     fern::Array<int, 2> values(fern::extents[nr_rows][nr_cols]);
     fern::Array<int, 2> result_we_want(fern::extents[nr_rows][nr_cols]);
@@ -575,10 +575,10 @@ template<
 void test_array_2d_masked(
     ExecutionPolicy& execution_policy)
 {
-    size_t const nr_threads{fern::hardware_concurrency()};
-    size_t const nr_rows{30 * nr_threads};
-    size_t const nr_cols{20 * nr_threads};
-    size_t const nr_elements{nr_rows * nr_cols};
+    fern::Index const nr_threads{static_cast<fern::Index>(fern::hardware_concurrency())};
+    fern::Index const nr_rows{30 * nr_threads};
+    fern::Index const nr_cols{20 * nr_threads};
+    fern::Index const nr_elements{nr_rows * nr_cols};
 
     fern::MaskedArray<int, 2> values(fern::extents[nr_rows][nr_cols]);
     fern::MaskedArray<int, 2> result_we_want(fern::extents[nr_rows][nr_cols]);
@@ -639,10 +639,10 @@ template<
 void test_array_2d_fill_value(
     ExecutionPolicy& execution_policy)
 {
-    size_t const nr_threads{fern::hardware_concurrency()};
-    size_t const nr_rows{30 * nr_threads};
-    size_t const nr_cols{20 * nr_threads};
-    size_t const nr_elements{nr_rows * nr_cols};
+    fern::Index const nr_threads{static_cast<fern::Index>(fern::hardware_concurrency())};
+    fern::Index const nr_rows{30 * nr_threads};
+    fern::Index const nr_cols{20 * nr_threads};
+    fern::Index const nr_elements{nr_rows * nr_cols};
 
     fern::Array<int, 2> values(fern::extents[nr_rows][nr_cols]);
     fern::Array<int, 2> result_we_want(fern::extents[nr_rows][nr_cols]);
@@ -696,10 +696,10 @@ template<
 void test_array_2d_fill_value_masked(
     ExecutionPolicy& execution_policy)
 {
-    size_t const nr_threads{fern::hardware_concurrency()};
-    size_t const nr_rows{30 * nr_threads};
-    size_t const nr_cols{20 * nr_threads};
-    size_t const nr_elements{nr_rows * nr_cols};
+    fern::Index const nr_threads{static_cast<fern::Index>(fern::hardware_concurrency())};
+    fern::Index const nr_rows{30 * nr_threads};
+    fern::Index const nr_cols{20 * nr_threads};
+    fern::Index const nr_elements{nr_rows * nr_cols};
 
     fern::MaskedArray<int, 2> values(fern::extents[nr_rows][nr_cols]);
     fern::MaskedArray<int, 2> result_we_want(fern::extents[nr_rows][nr_cols]);
@@ -760,8 +760,8 @@ BOOST_AUTO_TEST_CASE(array_2d_fill_value_masked_parallel)
 BOOST_AUTO_TEST_CASE(pcraster_example_1)
 {
     // First example from the PCRaster manual page for shift/shift0.
-    size_t const nr_rows{5};
-    size_t const nr_cols{5};
+    fern::Index const nr_rows{5};
+    fern::Index const nr_cols{5};
 
     fern::MaskedArray<int, 2> values({
         {0,  -1, 1, -30,  0},
@@ -780,10 +780,10 @@ BOOST_AUTO_TEST_CASE(pcraster_example_1)
         {999, 999, 999,  999, 999}
     });
     result_we_want.mask()[0][0] = true;
-    for(size_t row = 0; row < nr_rows; ++row) {
+    for(fern::Index row = 0; row < nr_rows; ++row) {
         result_we_want.mask()[row][nr_cols-1] = true;
     }
-    for(size_t col = 0; col < nr_cols; ++col) {
+    for(fern::Index col = 0; col < nr_cols; ++col) {
         result_we_want.mask()[nr_rows-1][col] = true;
     }
 
@@ -810,8 +810,8 @@ BOOST_AUTO_TEST_CASE(pcraster_example_1)
 BOOST_AUTO_TEST_CASE(pcraster_example_2)
 {
     // First example from the PCRaster manual page for shift/shift0.
-    size_t const nr_rows{5};
-    size_t const nr_cols{5};
+    fern::Index const nr_rows{5};
+    fern::Index const nr_cols{5};
 
     fern::MaskedArray<int, 2> values({
         {0,  -1, 1, -30,  0},
@@ -830,10 +830,10 @@ BOOST_AUTO_TEST_CASE(pcraster_example_2)
         {999,   0,    0,  2,   40}
     });
     result_we_want.mask()[2][2] = true;
-    for(size_t row = 0; row < nr_rows; ++row) {
+    for(fern::Index row = 0; row < nr_rows; ++row) {
         result_we_want.mask()[row][0] = true;
     }
-    for(size_t col = 0; col < nr_cols; ++col) {
+    for(fern::Index col = 0; col < nr_cols; ++col) {
         result_we_want.mask()[0][col] = true;
     }
 
