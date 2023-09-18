@@ -17,7 +17,7 @@ namespace fern {
 #define CONSTANT_CUSTOMIZATION_POINT(                        \
     T)                                                       \
 template<>                                                   \
-inline typename DataTypeTraits<T>::const_reference get(      \
+inline typename DataTypeTraits<T>::const_reference get<T>(   \
     typename DataTypeTraits<T>::value_type const& constant)  \
 {                                                            \
     return constant;                                         \
@@ -25,7 +25,7 @@ inline typename DataTypeTraits<T>::const_reference get(      \
                                                              \
                                                              \
 template<>                                                   \
-inline typename DataTypeTraits<T>::reference get(            \
+inline typename DataTypeTraits<T>::reference get<T>(         \
     typename DataTypeTraits<T>::value_type& constant)        \
 {                                                            \
     return constant;                                         \
