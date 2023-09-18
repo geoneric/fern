@@ -28,10 +28,19 @@ jobs:
           with:
             submodules: recursive
 
-        # TODO Install Boost
+        - name: Install boost
+          uses: MarkusJx/install-boost@v2.4.4
+          id: install-boost
+          with:
+              # https://github.com/MarkusJx/prebuilt-boost/blob/main/versions-manifest.json
+              boost_version: 1.83.0
+              platform_version: 2022
+              toolset: msvc
 
         - name: configure fern
           shell: bash -l {0}
+          env:
+              BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
           run: |
               mkdir build
               cmake \
