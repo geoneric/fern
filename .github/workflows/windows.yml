@@ -1,6 +1,13 @@
 name: Windows CI
 
-on: [push]
+on:
+  push:
+    branches-ignore:
+      - "ghxyz"
+    paths:
+      - ".github/workflows/windows.yml"
+      - "environment/cmake/**"
+      - "source/**"
 
 jobs:
     build:

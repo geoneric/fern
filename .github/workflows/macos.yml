@@ -1,6 +1,13 @@
 name: macOS CI
 
-on: [push]
+on:
+  push:
+    branches-ignore:
+      - "ghxyz"
+    paths:
+      - ".github/workflows/macos.yml"
+      - "environment/cmake/**"
+      - "source/**"
 
 jobs:
     build:
