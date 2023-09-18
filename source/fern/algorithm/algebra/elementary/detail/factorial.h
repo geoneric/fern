@@ -87,7 +87,7 @@ struct within_range<
 
     inline static constexpr bool calculate(
         Value const& value,
-        Result const& result)
+        [[maybe_unused]] Result const& result)
     {
         // Calculate the result as if the argument was a floating point and
         // compare the results.

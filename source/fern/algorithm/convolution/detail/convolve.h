@@ -127,8 +127,8 @@ struct ConvolveNorthWestCorner
         size_t first_col_kernel;
         size_t nr_rows_kernel{radius_ + 1};
         size_t nr_cols_kernel;
-        size_t nr_rows_outside_of_image{radius_};
-        size_t nr_cols_outside_of_image;
+        // size_t nr_rows_outside_of_image{radius_};
+        // size_t nr_cols_outside_of_image;
 
         using V = value_type<SourceImage>;
         using SV = accumulate_type<V>;
@@ -155,7 +155,7 @@ struct ConvolveNorthWestCorner
 
             first_col_kernel = radius_;
             nr_cols_kernel = radius_ + 1;
-            nr_cols_outside_of_image = radius_;
+            // nr_cols_outside_of_image = radius_;
 
             index_ = index(source, row_source, 0);
 
@@ -273,13 +273,13 @@ struct ConvolveNorthWestCorner
 
                 --first_col_kernel;
                 ++nr_cols_kernel;
-                --nr_cols_outside_of_image;
+                // --nr_cols_outside_of_image;
                 ++index_;
             }
 
             --first_row_kernel;
             ++nr_rows_kernel;
-            --nr_rows_outside_of_image;
+            // --nr_rows_outside_of_image;
         }
     }
 
@@ -315,8 +315,8 @@ struct ConvolveNorthEastCorner
         size_t const first_col_kernel{0};
         size_t nr_rows_kernel{radius_ + 1};
         size_t nr_cols_kernel;
-        size_t nr_rows_outside_of_image{radius_};
-        size_t nr_cols_outside_of_image;
+        // size_t nr_rows_outside_of_image{radius_};
+        // size_t nr_cols_outside_of_image;
 
         using V = value_type<SourceImage>;
         using SV = accumulate_type<V>;
@@ -343,7 +343,7 @@ struct ConvolveNorthEastCorner
 
             first_col_source = nr_cols_source - radius_ - radius_;
             nr_cols_kernel = radius_ + radius_;
-            nr_cols_outside_of_image = 1;
+            // nr_cols_outside_of_image = 1;
 
             index_ = index(source, row_source, nr_cols_source - radius_);
 
@@ -452,13 +452,13 @@ struct ConvolveNorthEastCorner
 
                 ++first_col_source;
                 --nr_cols_kernel;
-                ++nr_cols_outside_of_image;
+                // ++nr_cols_outside_of_image;
                 ++index_;
             }
 
             --first_row_kernel;
             ++nr_rows_kernel;
-            --nr_rows_outside_of_image;
+            // --nr_rows_outside_of_image;
         }
     }
 
@@ -494,8 +494,8 @@ struct ConvolveSouthWestCorner
         size_t first_col_kernel;
         size_t nr_rows_kernel = radius_ + radius_;
         size_t nr_cols_kernel;
-        size_t nr_rows_outside_of_image{0};
-        size_t nr_cols_outside_of_image;
+        // size_t nr_rows_outside_of_image{0};
+        // size_t nr_cols_outside_of_image;
 
         using V = value_type<SourceImage>;
         using SV = accumulate_type<V>;
@@ -523,7 +523,7 @@ struct ConvolveSouthWestCorner
 
             first_col_kernel = radius_;
             nr_cols_kernel = radius_ + 1;
-            nr_cols_outside_of_image = radius_;
+            // nr_cols_outside_of_image = radius_;
 
             index_ = index(source, row_source, 0);
 
@@ -632,13 +632,13 @@ struct ConvolveSouthWestCorner
 
                 --first_col_kernel;
                 ++nr_cols_kernel;
-                --nr_cols_outside_of_image;
+                // --nr_cols_outside_of_image;
                 ++index_;
             }
 
             ++first_row_source;
             --nr_rows_kernel;
-            ++nr_rows_outside_of_image;
+            // ++nr_rows_outside_of_image;
         }
     }
 
@@ -675,8 +675,8 @@ struct ConvolveSouthEastCorner
         size_t const first_col_kernel{0};
         size_t nr_rows_kernel = radius_ + radius_;
         size_t nr_cols_kernel;
-        size_t nr_rows_outside_of_image{0};
-        size_t nr_cols_outside_of_image;
+        // size_t nr_rows_outside_of_image{0};
+        // size_t nr_cols_outside_of_image;
 
         using V = value_type<SourceImage>;
         using SV = accumulate_type<V>;
@@ -704,7 +704,7 @@ struct ConvolveSouthEastCorner
 
             first_col_source = nr_cols_source - radius_ - radius_;
             nr_cols_kernel = radius_ + radius_;
-            nr_cols_outside_of_image = 1;
+            // nr_cols_outside_of_image = 1;
 
             index_ = index(source, row_source, nr_cols_source - radius_);
 
@@ -814,13 +814,13 @@ struct ConvolveSouthEastCorner
 
                 ++first_col_source;
                 --nr_cols_kernel;
-                ++nr_cols_outside_of_image;
+                // ++nr_cols_outside_of_image;
                 ++index_;
             }
 
             ++first_row_source;
             --nr_rows_kernel;
-            ++nr_rows_outside_of_image;
+            // ++nr_rows_outside_of_image;
         }
     }
 
@@ -856,7 +856,7 @@ struct ConvolveNorthSide
         size_t const first_col_kernel{0};
         size_t nr_rows_kernel{radius_ + 1};
         size_t const nr_cols_kernel{width(kernel)};
-        size_t nr_rows_outside_of_image{radius_};
+        // size_t nr_rows_outside_of_image{radius_};
 
         using V = value_type<SourceImage>;
         using SV = accumulate_type<V>;
@@ -997,7 +997,7 @@ struct ConvolveNorthSide
 
             --first_row_kernel;
             ++nr_rows_kernel;
-            --nr_rows_outside_of_image;
+            // --nr_rows_outside_of_image;
         }
     }
 
@@ -1033,7 +1033,7 @@ struct ConvolveWestSide
         size_t first_col_kernel;
         size_t const nr_rows_kernel{height(kernel)};
         size_t nr_cols_kernel;
-        size_t nr_cols_outside_of_image;
+        // size_t nr_cols_outside_of_image;
 
         using V = value_type<SourceImage>;
         using SV = accumulate_type<V>;
@@ -1061,7 +1061,7 @@ struct ConvolveWestSide
 
             first_col_kernel = radius_;
             nr_cols_kernel = radius_ + 1;
-            nr_cols_outside_of_image = radius_;
+            // nr_cols_outside_of_image = radius_;
 
             index_ = index(source, row_source, 0);
 
@@ -1172,7 +1172,7 @@ struct ConvolveWestSide
 
                 --first_col_kernel;
                 ++nr_cols_kernel;
-                --nr_cols_outside_of_image;
+                // --nr_cols_outside_of_image;
                 ++index_;
             }
 
@@ -1213,7 +1213,7 @@ struct ConvolveEastSide
         size_t const first_col_kernel{0};
         size_t const nr_rows_kernel{height(kernel)};
         size_t nr_cols_kernel;
-        size_t nr_cols_outside_of_image;
+        // size_t nr_cols_outside_of_image;
 
         using V = value_type<SourceImage>;
         using SV = accumulate_type<V>;
@@ -1241,7 +1241,7 @@ struct ConvolveEastSide
 
             first_col_source = nr_cols_source - radius_ - radius_;
             nr_cols_kernel = radius_ + radius_;
-            nr_cols_outside_of_image = 1;
+            // nr_cols_outside_of_image = 1;
 
             index_ = index(source, row_source, nr_cols_source - radius_);
 
@@ -1354,7 +1354,7 @@ struct ConvolveEastSide
 
                 ++first_col_source;
                 --nr_cols_kernel;
-                ++nr_cols_outside_of_image;
+                // ++nr_cols_outside_of_image;
                 ++index_;
             }
 
@@ -1395,7 +1395,7 @@ struct ConvolveSouthSide
         size_t const first_col_kernel{0};
         size_t nr_rows_kernel{radius_ + radius_};
         size_t const nr_cols_kernel{width(kernel)};
-        size_t nr_rows_outside_of_image{1};
+        // size_t nr_rows_outside_of_image{1};
 
         using V = value_type<SourceImage>;
         using SV = accumulate_type<V>;
@@ -1538,7 +1538,7 @@ struct ConvolveSouthSide
             // --first_row_kernel;
             ++first_row_source;
             --nr_rows_kernel;
-            ++nr_rows_outside_of_image;
+            // ++nr_rows_outside_of_image;
         }
     }
 
