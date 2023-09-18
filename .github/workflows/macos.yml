@@ -1,6 +1,13 @@
 name: macOS CI
 
-on: [push]
+on:
+  push:
+    branches-ignore:
+      - "ghxyz"
+    paths:
+      - ".github/workflows/macos.yml"
+      - "environment/cmake/**"
+      - "source/**"
 
 jobs:
     build:
@@ -17,7 +24,7 @@ jobs:
         steps:
 
         - name: checkout fern
-          uses: actions/checkout@v2
+          uses: actions/checkout@v3
           with:
             submodules: recursive
 
