@@ -36,6 +36,7 @@ jobs:
               boost_version: 1.78.0
               platform_version: 2022
               toolset: msvc
+              link: shared
 
         - name: configure fern
           shell: bash -l {0}
