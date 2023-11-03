@@ -12,7 +12,7 @@ add_library(fern_core
     path.cc
     script_error.cc
     stack.cc
-    stopwatch.cc
+    # stopwatch.cc
     string.cc
     thread_pool.cc
     type_traits.cc
@@ -30,8 +30,8 @@ target_include_directories(fern_core
 )
 
 target_link_libraries(fern_core
-    PUBLIC
-        Boost::timer
+    # PUBLIC
+    #     Boost::timer
     PRIVATE
         $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>:Threads::Threads>
 )
