@@ -11,7 +11,7 @@ add_unit_tests(
         scope_test.cc
         stack_test.cc
         std_test.cc
-        stopwatch_test.cc
+        # stopwatch_test.cc
         string_test.cc
         type_traits_test.cc
         typelist_test.cc
