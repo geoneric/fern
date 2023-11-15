@@ -9,6 +9,10 @@ if(POLICY CMP0069)
     cmake_policy(SET CMP0069 NEW)
 endif()
 
+if(POLICY CMP0074)
+    cmake_policy(SET CMP0074 NEW)
+endif()
+
 project(Fern LANGUAGES CXX)
 
 set(${PROJECT_NAME}_ORGANISATION_NAME "Geoneric")
