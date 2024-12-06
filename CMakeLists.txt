@@ -1,5 +1,4 @@
-# We need support for cmake -E env.
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.24)
 
 if(POLICY CMP0063)
     cmake_policy(SET CMP0063 NEW)
@@ -12,7 +11,7 @@ endif()
 project(Fern LANGUAGES CXX)
 
 set(${PROJECT_NAME}_ORGANISATION_NAME "Geoneric")
-set(${PROJECT_NAME}_COPYRIGHT "2010-2022 Geoneric")
+set(${PROJECT_NAME}_COPYRIGHT "2010-now Geoneric")
 set(${PROJECT_NAME}_PROJECT_NAME "${PROJECT_NAME}")
 set(${PROJECT_NAME}_HOMEPAGE "https://www.geoneric.eu")
 set(${PROJECT_NAME}_MAJOR_VERSION "0")
