@@ -30,7 +30,7 @@ int main(
 
         while(true) {
             // Allocate the number of bytes, and de-allocate them again.
-            std::unique_ptr<int8_t>(new int8_t[nr_bytes]);
+            std::unique_ptr<int8_t[]>(new int8_t[nr_bytes]);
         }
     }
     catch(std::exception const& exception) {
