@@ -90,7 +90,7 @@ inline Square<T, radius>::Square(
         // Visual Studio throws a C4996 warning because of that, which we
         // silence here.
         std::copy(it->begin(), it->end(),
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) && _MSC_VER < 1950
             stdext::make_unchecked_array_iterator(target)
 #else
             target
