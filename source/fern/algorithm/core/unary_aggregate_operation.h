@@ -88,7 +88,7 @@ public:
             Accumulator& accumulator,
             Value const& value)
     {
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) && _MSC_VER < 1930
         return accumulator.operator()<OutOfRangePolicy>(value);
 #else
         return accumulator.template operator()<OutOfRangePolicy>(value);
@@ -99,7 +99,7 @@ public:
         Accumulator& accumulator,
         Accumulator&& other)
     {
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) && _MSC_VER < 1930
         return accumulator.operator|=<OutOfRangePolicy>(other);
 #else
         return accumulator.template operator|=<OutOfRangePolicy>(other);

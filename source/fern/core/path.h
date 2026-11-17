@@ -8,6 +8,8 @@
 // -----------------------------------------------------------------------------
 #pragma once
 #include <filesystem>
+#include <ostream>
+#include <string>
 #include <vector>
 
 

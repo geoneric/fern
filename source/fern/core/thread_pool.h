@@ -7,6 +7,7 @@
 // from Geoneric (http://www.geoneric.eu/contact).
 // -----------------------------------------------------------------------------
 #pragma once
+#include <atomic>
 #include <condition_variable>
 #include <future>
 #include <thread>
